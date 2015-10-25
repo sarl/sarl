@@ -23,6 +23,8 @@ package io.sarl.lang.validation;
 
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 
+import io.sarl.lang.util.Utils;
+
 /** Validator of the feature calls.
  *
  * @author $Author: sgalland$
@@ -62,6 +64,10 @@ public class DefaultFeatureCallValidator implements FeatureCallValidator {
 					return true;
 				default:
 					if (id.startsWith("org.eclipse.xtext.xbase.lib.InputOutput")) { //$NON-NLS-1$
+						return true;
+					}
+					if (Utils.isHiddenAction(call.getFeature().getSimpleName())
+							|| Utils.isHiddenAttribute(call.getFeature().getSimpleName())) {
 						return true;
 					}
 				}

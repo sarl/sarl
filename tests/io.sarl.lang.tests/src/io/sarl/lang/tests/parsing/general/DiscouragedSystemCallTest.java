@@ -66,7 +66,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -82,7 +82,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -97,7 +97,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -113,7 +113,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -131,7 +131,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -147,7 +147,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -165,7 +165,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -187,7 +187,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -208,7 +208,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 	}
@@ -227,7 +227,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -243,7 +243,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -258,7 +258,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -274,7 +274,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -291,7 +291,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -307,7 +307,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -325,7 +325,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -341,7 +341,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -358,7 +358,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -374,7 +374,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -391,7 +391,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -409,7 +409,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -426,7 +426,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -445,7 +445,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 	}
@@ -464,7 +464,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -480,7 +480,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -495,7 +495,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -511,7 +511,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -528,7 +528,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -544,7 +544,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -562,7 +562,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -578,7 +578,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -595,7 +595,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -611,7 +611,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -628,7 +628,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -646,7 +646,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -663,7 +663,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -682,7 +682,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 	}
@@ -701,7 +701,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -717,7 +717,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -732,7 +732,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -748,7 +748,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -765,7 +765,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -781,7 +781,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -799,7 +799,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -815,7 +815,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -832,7 +832,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -848,7 +848,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -865,7 +865,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -883,7 +883,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -900,7 +900,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -919,7 +919,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 	}
@@ -938,7 +938,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -954,7 +954,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -969,7 +969,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -985,7 +985,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1002,7 +1002,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1018,7 +1018,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1036,7 +1036,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1052,7 +1052,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1069,7 +1069,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1085,7 +1085,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1102,7 +1102,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1120,7 +1120,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1137,7 +1137,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1156,7 +1156,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 	}
@@ -1175,7 +1175,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1191,7 +1191,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1206,7 +1206,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1222,7 +1222,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1239,7 +1239,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1255,7 +1255,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1273,7 +1273,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use: println. You should use an agents capacity in place of this feature call");
+					"Discouraged feature call");
 		}
 
 	}
@@ -1292,7 +1292,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1308,7 +1308,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1323,7 +1323,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1339,7 +1339,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1356,7 +1356,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1372,7 +1372,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1390,7 +1390,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1406,7 +1406,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1423,7 +1423,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1439,7 +1439,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1456,7 +1456,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1474,7 +1474,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1491,7 +1491,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 		@Test
@@ -1510,7 +1510,7 @@ public class DiscouragedSystemCallTest {
 			validate(mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
-					"Discouraged feature use");
+					"Discouraged feature call");
 		}
 
 	}
