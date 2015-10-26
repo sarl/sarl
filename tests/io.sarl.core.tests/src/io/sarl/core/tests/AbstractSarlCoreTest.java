@@ -52,23 +52,23 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 
 	/** Load the given class, generated from the SARL code.
 	 *
-	 * @param classname - the name of the class.
+	 * @param iclassname - the name of the class.
 	 * @param expectedType - the type of the expected loaded class.
 	 */
-	protected void loadSARL(String classname, Class<T> expectedType) {
-		assertNotNull(classname);
+	protected void loadSARL(String iclassname, Class<T> expectedType) {
+		assertNotNull(iclassname);
 		assertNotNull(expectedType);
 		assertNull(this.classname);
-		this.classname = classname;
-		Class<?> type;
+		this.classname = iclassname;
+		Class<?> itype;
 		try {
-			type = Class.forName(classname);
+			itype = Class.forName(iclassname);
 		} catch (ClassNotFoundException e) {
 			throw new Error(e);
 		}
-		assertNotNull(type);
-		assertTrue(expectedType.isAssignableFrom(type));
-		this.type = type.asSubclass(expectedType);
+		assertNotNull(itype);
+		assertTrue(expectedType.isAssignableFrom(itype));
+		this.type = itype.asSubclass(expectedType);
 		assertNotNull(this.classname);
 		assertNotNull(this.type);
 	}

@@ -417,7 +417,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @param configuration - the configuration to read.
 	 * @param verify  - if true verify the SRE validity, do nothing otherwise
 	 * @return the project SRE or <code>null</code>.
-	 * @throws CoreException 
+	 * @throws CoreException
 	 */
 	private ISREInstall getProjectSpecificSRE(ILaunchConfiguration configuration, boolean verify) throws CoreException {
 		IJavaProject jprj = getJavaProject(configuration);
