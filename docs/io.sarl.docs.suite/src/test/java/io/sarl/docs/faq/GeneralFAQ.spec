@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -255,6 +255,36 @@ describe "General FAQ on SARL" {
 				//
 				"%compilerlevel%" should beMavenVersion false
 				"%compilerlevel%" should beJavaRange _
+			}
+
+			/* Most of the time, the problem is due to an incompatibility of between
+			 * the configuration of your operating system or Java virtual machine,
+			 * and the requirements of the SARL Eclipse product.
+			 *
+			 * <p>If a problem occured, find the ".log" file in which Eclipse is writting
+			 * the complete error trace. Usually, it is in your home directory or in
+			 * the folder of the SARL Eclipse executable file.
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Why is the SARL product not launching and display an error dialog box?" {
+				true
+			}
+
+			/* This is due to a problem in your configuration. Most of the time, the log file
+			 * (see the previous question) contains an error with the label
+			 * "Cannot load 64-bit SWT libraries on 32-bit JVM".
+			 *
+			 * <p>It means that you're trying to run the 64-bit version of the SARL Eclipse with
+			 * a Java virtual machine (JVM) that is 32-bit. You should install a fully 64-bit JVM,
+			 * or use the 32-bit version of the SARL Eclipse product.
+			 *
+			 * <p>If another error occurs, you should go on the SARL forum and report this problem.
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Why cannot SARL Eclipse be launched on the Windows 10 operating system?" {
+				true
 			}
 
 		}
