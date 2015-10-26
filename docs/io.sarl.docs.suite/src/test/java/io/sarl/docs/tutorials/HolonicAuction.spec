@@ -132,8 +132,8 @@ describe "English Auction with Holons"{
 		 * Each agent defines its own context, called the inner context,
 		 * where other agents can live. Therefore, every agent can be seen 
 		 * as a part of a larger
-		 * [holon](http://en.wikipedia.org/wiki/Holon_(philosophy)),
-		 * __and__ at the same time be composed 
+		 * <a href="http://en.wikipedia.org/wiki/Holon_(philosophy)">holon</a>,
+		 * _and_ at the same time be composed 
 		 * by other agents that exist in its _inner context_. 
 		 * 
 		 * <note> According to the
