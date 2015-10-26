@@ -673,18 +673,17 @@
 				<role>Developer</role>
 			</roles>
 		</developer>
-		<developer>
-			<id>jjost</id>
+	</developers>
+	
+	<contributors>
+		<contributor>
 			<name>J&amp;eacute;r&amp;eacute;mie Jost</name>
 			<email>jeremiejost@gmail.com</email>
 			<roles>
-				<role>Contributor</role>
+				<role>Documentation Contributor</role>
 			</roles>
-			<properties>
-				<contributionModules>[docs]</contributionModules>
-			</properties>
-		</developer>
-	</developers>
+		</contributor>
+	</contributors>
 
 	<!-- =================== -->
 	<!-- ==== Deployment === -->
