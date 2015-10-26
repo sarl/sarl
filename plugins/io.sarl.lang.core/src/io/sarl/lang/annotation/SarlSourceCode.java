@@ -26,24 +26,27 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** Annotation for marking a function that is using default parameter values.
+/** Annotation for marking a JvmElement with the original SARL code
+ * that is the cause of the generation.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see javax.annotation.Generated
+ * @see DefaultValueSource
  * @see DefaultValue
- * @see SarlSourceCode
  */
-@Target({ ElementType.METHOD, ElementType.CONSTRUCTOR })
+@Target({ ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DefaultValueUse {
+public @interface SarlSourceCode {
 
-	/** Replies the original signature of the function with default value parameters.
+	/** Replies the SARL code that is the cause of the generation.
 	 *
-	 * @return the signature.
+	 * <p>The value may be an empty string if the SARL code is unknown or too long to
+	 * be stored in the annotation.
+	 *
+	 * @return the SARL code at the source of the generated code.
 	 */
-	String value();
+	String value() default "";
 
 }

@@ -173,9 +173,9 @@ public class AnnotationTypeCompilerTest {
 		public void basic() throws Exception {
 			String source = "agent Container { annotation A1 { } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import java.util.UUID;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
@@ -186,7 +186,7 @@ public class AnnotationTypeCompilerTest {
 					"   * Construct an agent.",
 					"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public Container(final UUID parentID) {",
 					"    super(parentID, null);",
 					"  }",
@@ -196,7 +196,7 @@ public class AnnotationTypeCompilerTest {
 					"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 					"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public Container(final UUID parentID, final UUID agentID) {",
 					"    super(parentID, agentID);",
 					"  }",
@@ -210,9 +210,9 @@ public class AnnotationTypeCompilerTest {
 		public void variable() throws Exception {
 			String source = "agent Container { annotation A1 { var v = 45 } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import java.util.UUID;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
@@ -224,7 +224,7 @@ public class AnnotationTypeCompilerTest {
 					"   * Construct an agent.",
 					"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public Container(final UUID parentID) {",
 					"    super(parentID, null);",
 					"  }",
@@ -234,7 +234,7 @@ public class AnnotationTypeCompilerTest {
 					"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 					"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public Container(final UUID parentID, final UUID agentID) {",
 					"    super(parentID, agentID);",
 					"  }",
@@ -248,9 +248,9 @@ public class AnnotationTypeCompilerTest {
 		public void value() throws Exception {
 			String source = "agent Container { annotation A1 { val v = 45 } }";
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import java.util.UUID;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
@@ -262,7 +262,7 @@ public class AnnotationTypeCompilerTest {
 					"   * Construct an agent.",
 					"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public Container(final UUID parentID) {",
 					"    super(parentID, null);",
 					"  }",
@@ -272,7 +272,7 @@ public class AnnotationTypeCompilerTest {
 					"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 					"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public Container(final UUID parentID, final UUID agentID) {",
 					"    super(parentID, agentID);",
 					"  }",

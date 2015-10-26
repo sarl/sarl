@@ -49,10 +49,10 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
-				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Agent;",
 				"import java.util.List;",
 				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
 				"",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
@@ -66,7 +66,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * Construct an agent.",
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID) {",
 				"    super(parentID, null);",
 				"  }",
@@ -76,7 +76,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID, final UUID agentID) {",
 				"    super(parentID, agentID);",
 				"  }",
@@ -102,10 +102,10 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
-				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Agent;",
 				"import java.util.List;",
 				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
 				"",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
@@ -122,7 +122,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * Construct an agent.",
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID) {",
 				"    super(parentID, null);",
 				"  }",
@@ -132,7 +132,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID, final UUID agentID) {",
 				"    super(parentID, agentID);",
 				"  }",
@@ -153,10 +153,10 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
-				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Agent;",
 				"import java.util.List;",
 				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
 				"",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
@@ -170,7 +170,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * Construct an agent.",
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID) {",
 				"    super(parentID, null);",
 				"  }",
@@ -180,7 +180,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID, final UUID agentID) {",
 				"    super(parentID, agentID);",
 				"  }",
@@ -203,9 +203,9 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
-				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Agent;",
 				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
 				"",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
@@ -220,7 +220,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * Construct an agent.",
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID) {",
 				"    super(parentID, null);",
 				"  }",
@@ -230,7 +230,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID, final UUID agentID) {",
 				"    super(parentID, agentID);",
 				"  }",
@@ -254,10 +254,10 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
-				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Agent;",
 				"import java.util.List;",
 				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
 				"",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
@@ -273,7 +273,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * Construct an agent.",
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID) {",
 				"    super(parentID, null);",
 				"  }",
@@ -283,7 +283,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID, final UUID agentID) {",
 				"    super(parentID, agentID);",
 				"  }",
@@ -307,10 +307,10 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
-				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Agent;",
 				"import java.util.List;",
 				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
 				"",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
@@ -326,7 +326,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * Construct an agent.",
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID) {",
 				"    super(parentID, null);",
 				"  }",
@@ -336,7 +336,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID, final UUID agentID) {",
 				"    super(parentID, agentID);",
 				"  }",
@@ -361,9 +361,9 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
-				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Agent;",
 				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
 				"import org.eclipse.xtext.xbase.lib.Exceptions;",
 				"",
 				"@SuppressWarnings(\"all\")",
@@ -385,7 +385,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * Construct an agent.",
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID) {",
 				"    super(parentID, null);",
 				"  }",
@@ -395,7 +395,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID, final UUID agentID) {",
 				"    super(parentID, agentID);",
 				"  }",
@@ -423,9 +423,9 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
-				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Agent;",
 				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
 				"import org.eclipse.xtext.xbase.lib.Exceptions;",
 				"",
 				"@SuppressWarnings(\"all\")",
@@ -450,7 +450,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * Construct an agent.",
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID) {",
 				"    super(parentID, null);",
 				"  }",
@@ -460,7 +460,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID, final UUID agentID) {",
 				"    super(parentID, agentID);",
 				"  }",
@@ -485,9 +485,9 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
-				"import io.sarl.lang.annotation.Generated;",
 				"import io.sarl.lang.core.Agent;",
 				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
 				"import org.eclipse.xtext.xbase.lib.Functions.Function2;",
 				"",
 				"@SuppressWarnings(\"all\")",
@@ -513,7 +513,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * Construct an agent.",
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID) {",
 				"    super(parentID, null);",
 				"  }",
@@ -523,7 +523,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public A1(final UUID parentID, final UUID agentID) {",
 				"    super(parentID, agentID);",
 				"  }",

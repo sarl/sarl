@@ -32,8 +32,9 @@ import java.lang.annotation.Target;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see Generated
+ * @see javax.annotation.Generated
  * @see DefaultValueSource
+ * @see SarlSourceCode
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

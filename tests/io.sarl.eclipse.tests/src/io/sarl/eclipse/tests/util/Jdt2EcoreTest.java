@@ -52,6 +52,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.annotation.Generated;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.core.Flags;
@@ -291,7 +293,7 @@ public class Jdt2EcoreTest {
 		@Test
 		public void isGeneratedOperation_generatedAnnotation() throws JavaModelException {
 			IAnnotation annot = mock(IAnnotation.class);
-			when(annot.getElementName()).thenReturn("io.sarl.lang.annotation.Generated");
+			when(annot.getElementName()).thenReturn("javax.annotation.Generated");
 			IMethod m = mock(IMethod.class);
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 					annot
@@ -302,7 +304,7 @@ public class Jdt2EcoreTest {
 		@Test
 		public void isGeneratedOperation_otherAnnotation() throws JavaModelException {
 			IAnnotation annot = mock(IAnnotation.class);
-			when(annot.getElementName()).thenReturn("javax.annotation.Generated");
+			when(annot.getElementName()).thenReturn("io.sarl.lang.annotation.Generated");
 			IMethod m = mock(IMethod.class);
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 					annot
@@ -325,31 +327,31 @@ public class Jdt2EcoreTest {
 			IMethod m = mock(IMethod.class);
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 			});
-			assertNull(Jdt2Ecore.getAnnotation(m, "io.sarl.lang.annotation.Generated"));
+			assertNull(Jdt2Ecore.getAnnotation(m, Generated.class.getName()));
 		}
 
 		@Test
 		public void getAnnotation_generatedAnnotation() throws JavaModelException {
+			IAnnotation annot = mock(IAnnotation.class);
+			when(annot.getElementName()).thenReturn(Generated.class.getName());
+			IMethod m = mock(IMethod.class);
+			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
+					annot
+			});
+			IAnnotation a = Jdt2Ecore.getAnnotation(m, Generated.class.getName());
+			assertNotNull(a);
+			assertEquals(Generated.class.getName(), a.getElementName());
+		}
+
+		@Test
+		public void getAnnotation_otherAnnotation() throws JavaModelException {
 			IAnnotation annot = mock(IAnnotation.class);
 			when(annot.getElementName()).thenReturn("io.sarl.lang.annotation.Generated");
 			IMethod m = mock(IMethod.class);
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 					annot
 			});
-			IAnnotation a = Jdt2Ecore.getAnnotation(m, "io.sarl.lang.annotation.Generated");
-			assertNotNull(a);
-			assertEquals("io.sarl.lang.annotation.Generated", a.getElementName());
-		}
-
-		@Test
-		public void getAnnotation_otherAnnotation() throws JavaModelException {
-			IAnnotation annot = mock(IAnnotation.class);
-			when(annot.getElementName()).thenReturn("javax.annotation.Generated");
-			IMethod m = mock(IMethod.class);
-			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
-					annot
-			});
-			assertNull(Jdt2Ecore.getAnnotation(m, "io.sarl.lang.annotation.Generated"));
+			assertNull(Jdt2Ecore.getAnnotation(m, Generated.class.getName()));
 		}
 
 	}
@@ -1094,7 +1096,7 @@ public class Jdt2EcoreTest {
 				public IField answer(InvocationOnMock invocation) throws Throwable {
 					String fieldName = (String) invocation.getArguments()[0];
 					IAnnotation annotation = mock(IAnnotation.class);
-					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.Generated");
+					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.SarlSourceCode");
 					IMemberValuePair pair = mock(IMemberValuePair.class);
 					when(pair.getValue()).thenReturn("1+2");
 					when(annotation.getMemberValuePairs()).thenReturn(new IMemberValuePair[] { pair });
@@ -1168,7 +1170,7 @@ public class Jdt2EcoreTest {
 				public IField answer(InvocationOnMock invocation) throws Throwable {
 					String fieldName = (String) invocation.getArguments()[0];
 					IAnnotation annotation = mock(IAnnotation.class);
-					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.Generated");
+					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.SarlSourceCode");
 					IMemberValuePair pair = mock(IMemberValuePair.class);
 					when(pair.getValue()).thenReturn("1+2");
 					when(annotation.getMemberValuePairs()).thenReturn(new IMemberValuePair[] { pair });

@@ -62,9 +62,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -73,7 +73,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -82,7 +82,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -106,9 +106,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -117,7 +117,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -126,7 +126,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -150,9 +150,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -161,7 +161,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -170,7 +170,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -194,9 +194,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -205,7 +205,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -214,7 +214,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -238,9 +238,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -249,7 +249,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -258,7 +258,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -282,9 +282,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -293,7 +293,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -302,7 +302,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -326,9 +326,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -337,7 +337,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -346,7 +346,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -370,9 +370,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -381,7 +381,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -390,7 +390,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -414,9 +414,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -425,7 +425,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -434,7 +434,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -460,9 +460,9 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -473,7 +473,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -482,7 +482,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -524,9 +524,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public abstract class S1 extends Skill implements C1 {",
@@ -535,7 +535,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -544,7 +544,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -552,9 +552,9 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS2 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Capacity;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S2 extends S1 implements Capacity {",
@@ -565,7 +565,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S2() {",
 					"    super();",
 					"  }",
@@ -574,7 +574,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S2(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -599,9 +599,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -611,7 +611,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -620,7 +620,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -644,9 +644,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -656,7 +656,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -665,7 +665,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -689,9 +689,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -701,7 +701,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -710,7 +710,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -734,9 +734,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -746,7 +746,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -755,7 +755,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -779,9 +779,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -791,7 +791,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -800,7 +800,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -824,9 +824,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public abstract class S1 extends Skill implements C1 {",
@@ -835,7 +835,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -844,7 +844,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -868,9 +868,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public abstract class S1 extends Skill implements C1 {",
@@ -879,7 +879,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -888,7 +888,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -912,9 +912,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -929,7 +929,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -938,7 +938,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -962,9 +962,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -979,7 +979,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -988,7 +988,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1012,9 +1012,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -1024,7 +1024,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1033,7 +1033,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1057,9 +1057,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -1069,7 +1069,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1078,7 +1078,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1102,9 +1102,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -1114,7 +1114,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1123,7 +1123,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1159,9 +1159,9 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1, C2 {",
@@ -1174,7 +1174,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1183,7 +1183,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1238,9 +1238,9 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -1251,7 +1251,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1260,7 +1260,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1268,8 +1268,8 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS2 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S2 extends S1 implements C2 {",
@@ -1280,7 +1280,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S2() {",
 					"    super();",
 					"  }",
@@ -1289,7 +1289,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S2(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1340,9 +1340,9 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -1353,7 +1353,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1362,7 +1362,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1370,8 +1370,8 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS2 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S2 extends S1 implements C2 {",
@@ -1382,7 +1382,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S2() {",
 					"    super();",
 					"  }",
@@ -1391,7 +1391,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S2(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1434,9 +1434,9 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -1447,7 +1447,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1456,7 +1456,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1492,9 +1492,9 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -1505,7 +1505,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1514,7 +1514,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1554,16 +1554,16 @@ public class SkillCompilerTest {
 					"skill S1 implements C1 { }"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1572,7 +1572,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1594,16 +1594,16 @@ public class SkillCompilerTest {
 					"public skill S1 implements C1 { }"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1612,7 +1612,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1634,16 +1634,16 @@ public class SkillCompilerTest {
 					"package skill S1 implements C1 { }"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"class S1 extends Skill implements C1 {",
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1652,7 +1652,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1674,16 +1674,16 @@ public class SkillCompilerTest {
 					"abstract skill S1 implements C1 { }"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public abstract class S1 extends Skill implements C1 {",
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1692,7 +1692,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1716,9 +1716,9 @@ public class SkillCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public abstract class S1 extends Skill implements C1 {",
@@ -1727,7 +1727,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1736,7 +1736,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1758,16 +1758,16 @@ public class SkillCompilerTest {
 					"final skill S1 implements C1 { }"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public final class S1 extends Skill implements C1 {",
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1776,7 +1776,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -1816,10 +1816,10 @@ public class SkillCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -1836,7 +1836,7 @@ public class SkillCompilerTest {
 					"   * ",
 					"   * @see C2#myaction3(int)",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  @ImportedCapacityFeature(C2.class)",
 					"  protected final float myaction3(final int a) {",
 					"    return getSkill(C2.class).myaction3(a);",
@@ -1847,7 +1847,7 @@ public class SkillCompilerTest {
 					"   * ",
 					"   * @see C2#myaction4(boolean)",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  @ImportedCapacityFeature(C2.class)",
 					"  protected final void myaction4(final boolean a) {",
 					"    getSkill(C2.class).myaction4(a);",
@@ -1856,7 +1856,7 @@ public class SkillCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -1865,7 +1865,7 @@ public class SkillCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",

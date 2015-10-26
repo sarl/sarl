@@ -35,7 +35,9 @@ import java.lang.annotation.Target;
  * @mavenartifactid $ArtifactId$
  * @see DefaultValueSource
  * @see DefaultValue
+ * @deprecated Use the @Generated from the JRE.
  */
+@Deprecated
 @Target({ ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Generated {

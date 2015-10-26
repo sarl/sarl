@@ -33,6 +33,8 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import javax.annotation.Generated;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
@@ -51,6 +53,7 @@ import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
+import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmExecutable;
@@ -94,8 +97,8 @@ import io.sarl.lang.annotation.DefaultValueSource;
 import io.sarl.lang.annotation.DefaultValueUse;
 import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.annotation.FiredEvent;
-import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
+import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
@@ -360,7 +363,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				constructor.getParameters().add(jvmParam);
 				this.typeBuilder.setBody(constructor,
 						toStringConcatenation("super(parentID, null);")); //$NON-NLS-1$
-				constructor.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(constructor);
 
 				// new(parentID : UUID, agentID : UUID)
 				constructor = this.typesFactory.createJvmConstructor();
@@ -384,7 +387,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				constructor.getParameters().add(jvmParam);
 				this.typeBuilder.setBody(constructor,
 						toStringConcatenation("super(parentID, agentID);")); //$NON-NLS-1$
-				constructor.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(constructor);
 			}
 
 			// Resolving any name conflict with the generated JVM type
@@ -457,7 +460,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				constructor.getParameters().add(jvmParam);
 				this.typeBuilder.setBody(constructor,
 						toStringConcatenation("super(owner);")); //$NON-NLS-1$
-				constructor.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(constructor);
 			}
 
 			// Resolving any name conflict with the generated JVM type
@@ -520,7 +523,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.typeExtensions.setSynthetic(constructor, true);
 				this.typeBuilder.setDocumentation(constructor, Messages.SARLJvmModelInferrer_0);
 				this.typeBuilder.setBody(constructor, toStringConcatenation("super();")); //$NON-NLS-1$
-				constructor.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(constructor);
 
 				// new(source: Address)
 				constructor = this.typesFactory.createJvmConstructor();
@@ -538,7 +541,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				constructor.getParameters().add(jvmParam);
 				this.typeBuilder.setBody(constructor,
 						toStringConcatenation("super(source);")); //$NON-NLS-1$
-				constructor.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(constructor);
 			}
 
 			// Add functions dedicated to comparisons (equals, hashCode, etc.)
@@ -613,7 +616,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.typeExtensions.setSynthetic(constructor, true);
 				this.typeBuilder.setDocumentation(constructor, Messages.SARLJvmModelInferrer_4);
 				this.typeBuilder.setBody(constructor, toStringConcatenation("super();")); //$NON-NLS-1$
-				constructor.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(constructor);
 
 				// new(owner: Agent)
 				constructor = this.typesFactory.createJvmConstructor();
@@ -631,7 +634,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				constructor.getParameters().add(jvmParam);
 				this.typeBuilder.setBody(constructor,
 						toStringConcatenation("super(owner);")); //$NON-NLS-1$
-				constructor.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(constructor);
 			}
 
 			// Resolving any name conflict with the generated JVM type
@@ -780,8 +783,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						constructor2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
 								DefaultValueUse.class,
 								constructorSignatures.getFormalParameterTypes().toString()));
-						constructor2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
-								Generated.class));
+						appendGeneratedAnnotation(constructor2);
 
 						SARLJvmModelInferrer.this.typeBuilder.setBody(constructor2, toStringConcatenation(
 								"this(" //$NON-NLS-1$
@@ -1078,8 +1080,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						operation2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
 								DefaultValueUse.class,
 								actionSignatures.getFormalParameterTypes().toString()));
-						operation2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
-								Generated.class));
+						appendGeneratedAnnotation(operation2);
 
 						// If the main action is an early-exit action, the additional operation is also an early-exit operation.
 						//TODO: Generalize the detection of the EarlyExit
@@ -1201,7 +1202,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Body
 				this.typeBuilder.setBody(guardOperation, guard);
 				// Annotations
-				guardOperation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(guardOperation);
 				guardOperation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
 				// Synthetic flag
 				this.typeExtensions.setSynthetic(guardOperation, true);
@@ -1235,7 +1236,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Body
 				this.typeBuilder.setBody(bodyOperation, source.getExpression());
 				// Annotations
-				bodyOperation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(bodyOperation);
 				if (!this.services.getExpressionHelper().hasSideEffects(source.getExpression())) {
 					bodyOperation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
 				}
@@ -1361,7 +1362,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								operation.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
 							}
 							// Add the annotation dedicated to this particular method
-							operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+							appendGeneratedAnnotation(operation);
 							// Add the imported feature marker
 							operation.getAnnotations().add(annotationClassRef(ImportedCapacityFeature.class,
 									Collections.singletonList(capacityType)));
@@ -1556,7 +1557,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					// Add the annotations.
 					op.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
 							DefaultValueUse.class, originalSignature));
-					op.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+					appendGeneratedAnnotation(op);
 
 					// Add the operation in the container.
 					target.getMembers().add(op);
@@ -1663,6 +1664,34 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 	}
 
+	/** Add the @Generated annotation to the given target.
+	 * The annotation will not have any generated SARL code associated to it.
+	 *
+	 * @param target - the target of the annotation.
+	 */
+	protected final void appendGeneratedAnnotation(JvmAnnotationTarget target) {
+		appendGeneratedAnnotation(target, null);
+	}
+
+	/** Add the @Generated annotation to the given target.
+	 *
+	 * @param target - the target of the annotation.
+	 * @param sarlCode - the code that is the cause of the generation.
+	 */
+	protected void appendGeneratedAnnotation(JvmAnnotationTarget target, String sarlCode) {
+		JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(
+				Generated.class,
+				getClass().getName());
+		target.getAnnotations().add(annotationRef);
+
+		if (!Strings.isNullOrEmpty(sarlCode)) {
+			annotationRef = this._annotationTypesBuilder.annotationRef(
+					SarlSourceCode.class,
+					sarlCode);
+			target.getAnnotations().add(annotationRef);
+		}
+	}
+
 	/** Create the functions that permits to compare the object.
 	 *
 	 * @param context the current generation context.
@@ -1681,14 +1710,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (!declaredInstanceFields.isEmpty()) {
 			JvmOperation op = toEqualsMethod(source, target, declaredInstanceFields);
 			if (op != null) {
-				op.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(op);
 				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
 				target.getMembers().add(op);
 			}
 
 			op = toHashCodeMethod(source, declaredInstanceFields);
 			if (op != null) {
-				op.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(op);
 				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
 				target.getMembers().add(op);
 			}
@@ -1741,7 +1770,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						}
 					});
 			if (op != null) {
-				op.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Generated.class));
+				appendGeneratedAnnotation(op);
 				op.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Pure.class));
 				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
 				target.getMembers().add(op);
@@ -1776,7 +1805,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		field.setType(this.typeBuilder.cloneWithProxies(this._typeReferenceBuilder.typeRef(long.class)));
 		long serial = context.getSerial();
 		this.typeBuilder.setInitializer(field, toStringConcatenation(serial + "L")); //$NON-NLS-1$
-		field.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Generated.class));
+		appendGeneratedAnnotation(field);
 		this.typeExtensions.setSynthetic(field, true);
 		this.readAndWriteTracking.markInitialized(field, null);
 	}
@@ -1853,10 +1882,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									}
 									SARLJvmModelInferrer.this.typeBuilder.setInitializer(it, defaultValue);
 									if (defaultValue != null) {
-										it.getAnnotations().add(
-												SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
-												Generated.class,
-												SARLJvmModelInferrer.this.sarlSerializer.serialize(defaultValue)));
+										appendGeneratedAnnotation(it,
+												SARLJvmModelInferrer.this.sarlSerializer.serialize(defaultValue));
 									}
 								}
 							});

@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.annotation.Generated;
+
 import com.google.common.base.Strings;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -41,6 +43,7 @@ import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.tasks.TaskTags;
@@ -59,8 +62,8 @@ import io.sarl.lang.annotation.DefaultValueSource;
 import io.sarl.lang.annotation.DefaultValueUse;
 import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.annotation.FiredEvent;
-import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
+import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 import io.sarl.lang.util.Utils;
@@ -137,7 +140,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 			appendable.increaseIndentation();
 		}
 		Set<String> hiddenAnnotations = new TreeSet<>();
-		for (Class<?> type : Arrays.asList(Generated.class, DefaultValueUse.class, DefaultValue.class,
+		for (Class<?> type : Arrays.asList(Generated.class, SarlSourceCode.class, DefaultValueUse.class, DefaultValue.class,
 				DefaultValueSource.class, FiredEvent.class, EarlyExit.class, ImportedCapacityFeature.class)) {
 			hiddenAnnotations.add(type.getName());
 		}
@@ -157,27 +160,47 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 						}
 					}
 					// Modifiers
-					switch (operation.getVisibility()) {
-					case PRIVATE:
-						appendable.append("private "); //$NON-NLS-1$
-						break;
-					case PROTECTED:
-						appendable.append("protected "); //$NON-NLS-1$
-						break;
-					case PUBLIC:
-						// Default visibility
-						//appendable.append("public "); //$NON-NLS-1$
-						break;
-					case DEFAULT:
-					default:
-						appendable.append("package "); //$NON-NLS-1$
-						break;
+					JvmVisibility visibility = container.getDeclaredVisibility();
+					if (visibility != null) {
+						switch (visibility) {
+						case PRIVATE:
+							appendable.append(
+									getTools().getGrammarAccess().getXtendGrammarAccess()
+									.getCommonModifierAccess().getPrivateKeyword_1().getValue())
+									.append(" "); //$NON-NLS-1$
+							break;
+						case PROTECTED:
+							appendable.append(
+									getTools().getGrammarAccess().getXtendGrammarAccess()
+									.getCommonModifierAccess().getProtectedKeyword_2().getValue())
+									.append(" "); //$NON-NLS-1$
+							break;
+						case PUBLIC:
+							appendable.append(
+									getTools().getGrammarAccess().getXtendGrammarAccess()
+									.getCommonModifierAccess().getPublicKeyword_0().getValue())
+									.append(" "); //$NON-NLS-1$
+							break;
+						case DEFAULT:
+						default:
+							appendable.append(
+									getTools().getGrammarAccess().getXtendGrammarAccess()
+									.getCommonModifierAccess().getPackageKeyword_3().getValue())
+									.append(" "); //$NON-NLS-1$
+							break;
+						}
 					}
 					if (operation.isStrictFloatingPoint()) {
-						appendable.append("strictfp "); //$NON-NLS-1$
+						appendable.append(
+								getTools().getGrammarAccess().getXtendGrammarAccess()
+								.getCommonModifierAccess().getStrictfpKeyword_8().getValue())
+								.append(" "); //$NON-NLS-1$
 					}
 					if (operation.isSynchronized()) {
-						appendable.append("synchronized "); //$NON-NLS-1$
+						appendable.append(
+								getTools().getGrammarAccess().getXtendGrammarAccess()
+								.getCommonModifierAccess().getSynchronizedKeyword_11().getValue())
+								.append(" "); //$NON-NLS-1$
 					}
 					// Type parameters
 					if (!operation.getTypeParameters().isEmpty()) {
@@ -265,10 +288,10 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 									while (defaultValue == null && iterator.hasNext()) {
 										JvmField field = iterator.next();
 										if (fieldName.equals(field.getSimpleName())) {
-											String value = Utils.annotationString(field, Generated.class);
-											if (value != null) {
+											String value = Utils.annotationString(field, SarlSourceCode.class);
+											if (!Strings.isNullOrEmpty(value)) {
 												value = value.trim();
-												if (!value.isEmpty()) {
+												if (!Strings.isNullOrEmpty(value)) {
 													defaultValue = value;
 												}
 											}

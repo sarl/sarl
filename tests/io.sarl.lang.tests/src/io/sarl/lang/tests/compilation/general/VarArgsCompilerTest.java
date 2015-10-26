@@ -65,9 +65,9 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import java.util.UUID;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
@@ -79,7 +79,7 @@ public class VarArgsCompilerTest {
 					"   * Construct an agent.",
 					"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public A1(final UUID parentID) {",
 					"    super(parentID, null);",
 					"  }",
@@ -89,7 +89,7 @@ public class VarArgsCompilerTest {
 					"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 					"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public A1(final UUID parentID, final UUID agentID) {",
 					"    super(parentID, agentID);",
 					"  }",
@@ -109,9 +109,9 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import java.util.UUID;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
@@ -123,7 +123,7 @@ public class VarArgsCompilerTest {
 					"   * Construct an agent.",
 					"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public A1(final UUID parentID) {",
 					"    super(parentID, null);",
 					"  }",
@@ -133,7 +133,7 @@ public class VarArgsCompilerTest {
 					"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
 					"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public A1(final UUID parentID, final UUID agentID) {",
 					"    super(parentID, agentID);",
 					"  }",
@@ -160,9 +160,9 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Behavior;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
@@ -174,7 +174,7 @@ public class VarArgsCompilerTest {
 					"   * Construct a behavior.",
 					"   * @param owner - reference to the agent that is owning this behavior.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public B1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -194,9 +194,9 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Behavior;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
@@ -208,7 +208,7 @@ public class VarArgsCompilerTest {
 					"   * Construct a behavior.",
 					"   * @param owner - reference to the agent that is owning this behavior.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public B1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -330,8 +330,8 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Event;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class E1 extends Event {",
@@ -339,7 +339,7 @@ public class VarArgsCompilerTest {
 					"    System.out.println(arg);",
 					"  }",
 					"  ",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  private final static long serialVersionUID = -595401426L;",
 					"}",
 					""
@@ -357,8 +357,8 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Event;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class E1 extends Event {",
@@ -366,7 +366,7 @@ public class VarArgsCompilerTest {
 					"    System.out.println(arg3);",
 					"  }",
 					"  ",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  private final static long serialVersionUID = 2202902528L;",
 					"}",
 					""
@@ -400,9 +400,9 @@ public class VarArgsCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -413,7 +413,7 @@ public class VarArgsCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -422,7 +422,7 @@ public class VarArgsCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -449,9 +449,9 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
-					"import io.sarl.lang.annotation.Generated;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
+					"import javax.annotation.Generated;",
 					"",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
@@ -462,7 +462,7 @@ public class VarArgsCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -471,7 +471,7 @@ public class VarArgsCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated",
+					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",

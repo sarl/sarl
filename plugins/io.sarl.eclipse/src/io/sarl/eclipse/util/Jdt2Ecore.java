@@ -33,6 +33,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.annotation.Generated;
+
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.util.EList;
@@ -67,7 +69,7 @@ import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.actionprototype.FormalParameterProvider;
 import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.annotation.Generated;
+import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlConstructor;
@@ -373,7 +375,7 @@ public final class Jdt2Ecore {
 			String fieldName = Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + fieldId;
 			IField field = operation.getDeclaringType().getField(fieldName);
 			if (field != null) {
-				annotation = Jdt2Ecore.getAnnotation(field, Generated.class.getName());
+				annotation = Jdt2Ecore.getAnnotation(field, SarlSourceCode.class.getName());
 				if (annotation != null) {
 					return annotation.getMemberValuePairs()[0].getValue().toString();
 				}

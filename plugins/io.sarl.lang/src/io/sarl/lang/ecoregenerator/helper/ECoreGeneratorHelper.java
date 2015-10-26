@@ -69,7 +69,7 @@ import org.eclipse.xtext.xtype.XImportSection;
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.FiredEvent;
-import io.sarl.lang.annotation.Generated;
+import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
@@ -874,7 +874,10 @@ public class ECoreGeneratorHelper {
 		if (type instanceof JvmDeclaredType) {
 			for (JvmField field : ((JvmDeclaredType) type).getDeclaredFields()) {
 				if (field.getSimpleName().equals(dfName)) {
-					return Utils.annotationString(field, Generated.class);
+					String value = Utils.annotationString(field, SarlSourceCode.class);
+					if (!Strings.isNullOrEmpty(value)) {
+						return value;
+					}
 				}
 			}
 		}
@@ -895,7 +898,10 @@ public class ECoreGeneratorHelper {
 			}
 			for (JvmField field : container.getDeclaredFields()) {
 				if (field.getSimpleName().equals(dfName)) {
-					return Utils.annotationString(field, Generated.class);
+					String value = Utils.annotationString(field, SarlSourceCode.class);
+					if (!Strings.isNullOrEmpty(value)) {
+						return value;
+					}
 				}
 			}
 		}
