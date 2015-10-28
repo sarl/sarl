@@ -44,6 +44,7 @@ import org.apache.maven.plugin.PluginConfigurationException;
 import org.apache.maven.plugin.PluginManagerException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugin.logging.Log;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** This class permits to support the incompatible Maven API
  * from the same Mojo code (says 3.0 and 3.1 APIs).
@@ -89,7 +90,7 @@ public class MavenHelper {
 			}
 		}
 		if (method == null) {
-			throw new MojoExecutionException("Unsupported Maven API", //$NON-NLS-1$
+			throw new MojoExecutionException(Locale.getString(MavenHelper.class, "UNSUPPORTED_MAVEN_API"), //$NON-NLS-1$
 					new NoSuchMethodError("getRepositorySystem")); //$NON-NLS-1$
 		}
 		this.getRepositorySessionMethod = method;
@@ -102,7 +103,7 @@ public class MavenHelper {
 			}
 		}
 		if (method == null) {
-			throw new MojoExecutionException("Unsupported Maven API", //$NON-NLS-1$
+			throw new MojoExecutionException(Locale.getString(MavenHelper.class, "UNSUPPORTED_MAVEN_API"), //$NON-NLS-1$
 					new NoSuchMethodError("loadPlugin")); //$NON-NLS-1$
 		}
 		this.loadPluginMethod = method;
@@ -142,7 +143,8 @@ public class MavenHelper {
 		}
 		String value = resource.getString(key);
 		if (value == null || value.isEmpty()) {
-			throw new MojoExecutionException("Cannot find the configuration entry: " + key); //$NON-NLS-1$
+			throw new MojoExecutionException(Locale.getString(MavenHelper.class,
+					"NO_CONFIGURATION_ENTRY", key)); //$NON-NLS-1$
 		}
 		return value;
 	}
@@ -244,19 +246,19 @@ public class MavenHelper {
 								dep.setType(pair[1].trim());
 								break;
 							default:
-								throw new MojoExecutionException(
-										"Invalid format of the 'plugin.dependencies' configuration value"); //$NON-NLS-1$
+								throw new MojoExecutionException(Locale.getString(MavenHelper.class,
+										"INVALID_DEPENDENCY_FORMAT")); //$NON-NLS-1$
 							}
 						}
 						if (groupId == null || artifactId == null) {
-							throw new MojoExecutionException(
-									"Invalid format of the 'plugin.dependencies' configuration value"); //$NON-NLS-1$
+							throw new MojoExecutionException(Locale.getString(MavenHelper.class,
+									"INVALID_DEPENDENCY_FORMAT")); //$NON-NLS-1$
 						}
 						deps.put(ArtifactUtils.versionlessKey(groupId, artifactId), dep);
 					}
 				} else {
-					throw new MojoExecutionException(
-							"Invalid format of the 'plugin.dependencies' configuration value"); //$NON-NLS-1$
+					throw new MojoExecutionException(Locale.getString(MavenHelper.class,
+							"INVALID_DEPENDENCY_FORMAT")); //$NON-NLS-1$
 				}
 
 				pluginDependencies = deps;
@@ -285,10 +287,11 @@ public class MavenHelper {
 			if (version != null && !version.isEmpty()) {
 				return version;
 			}
-			throw new MojoExecutionException("Cannot determine the version for the plugin " + key); //$NON-NLS-1$
+			throw new MojoExecutionException(Locale.getString(MavenHelper.class,
+					"UNKNOWN_PLUGIN_VERSION", key)); //$NON-NLS-1$
 		}
-		throw new MojoExecutionException("Cannot find the plugin " + key //$NON-NLS-1$
-				+ " in dependencies: " + deps); //$NON-NLS-1$
+		throw new MojoExecutionException(Locale.getString(MavenHelper.class,
+				"PLUGIN_NOT_FOUND_IN_DEPS", key, deps)); //$NON-NLS-1$
 	}
 
 }

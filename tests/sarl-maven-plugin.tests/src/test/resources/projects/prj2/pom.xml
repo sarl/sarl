@@ -13,7 +13,7 @@
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang.core</artifactId>
-			<version>${project.version}</version>
+			<version>0.2.0</version>
 		</dependency>
 	</dependencies>
 

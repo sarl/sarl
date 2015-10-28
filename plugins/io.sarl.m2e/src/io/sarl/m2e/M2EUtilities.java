@@ -21,7 +21,11 @@
 
 package io.sarl.m2e;
 
-import org.apache.maven.artifact.ArtifactUtils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.google.common.base.Strings;
+import org.apache.maven.artifact.Artifact;
 import org.osgi.framework.Version;
 
 
@@ -35,6 +39,17 @@ import org.osgi.framework.Version;
  */
 public final class M2EUtilities {
 
+	/** The qualifier string that is representing a snapshot version
+	 * in the OGSi framework.
+	 */
+	public static final String SNAPSHOT_QUALIFIER = "qualifier"; //$NON-NLS-1$
+
+	/** The pattern that is matching a SNAPSHOT version.
+	 */
+	public static final Pattern SNAPSHOT_VERSION_PATTERN = Pattern.compile("^(.*)" //$NON-NLS-1$
+			+ Pattern.quote("-" + Artifact.SNAPSHOT_VERSION) //$NON-NLS-1$
+			+ "$"); //$NON-NLS-1$
+
 	private M2EUtilities() {
 		//
 	}
@@ -45,24 +60,45 @@ public final class M2EUtilities {
 	 * @return the version.
 	 */
 	public static Version parseMavenVersion(String version) {
-		boolean isSnapshot = ArtifactUtils.isSnapshot(version);
-		String[] parts = version.split("[.]"); //$NON-NLS-1$
-		int minor = 0;
-		int micro = 0;
-		int major = Integer.parseInt(parts[0]);
-		if (parts.length > 1) {
-			minor = Integer.parseInt(parts[1]);
-			if (parts.length > 1) {
-				if (isSnapshot) {
-					parts[2] = parts[2].replaceFirst("\\-.+$", ""); //$NON-NLS-1$//$NON-NLS-2$
-				}
-				micro = Integer.parseInt(parts[2]);
+		if (Strings.isNullOrEmpty(version)) {
+			return new Version(0, 0, 0);
+		}
+
+		// Detect the snapshot
+		boolean isSnapshot;
+		String coreVersion;
+		Matcher matcher = Artifact.VERSION_FILE_PATTERN.matcher(version);
+		if (matcher.matches()) {
+			coreVersion = matcher.group(1);
+			isSnapshot = true;
+		} else {
+			matcher = SNAPSHOT_VERSION_PATTERN.matcher(version);
+			if (matcher.matches()) {
+				coreVersion = matcher.group(1);
+				isSnapshot = true;
+			} else {
+				coreVersion = version;
+				isSnapshot = false;
 			}
 		}
-		if (isSnapshot) {
-			return new Version(major, minor, micro, "qualifier"); //$NON-NLS-1$
+
+		// Parse the numbers
+		String[] parts = coreVersion.split("[.]"); //$NON-NLS-1$
+		int[] numbers = new int[] {0, 0, 0};
+		for (int i = 0; i < numbers.length && i < parts.length; ++i) {
+			try {
+				int value = Integer.parseInt(parts[i]);
+				numbers[i] = value;
+			} catch (Exception _) {
+				// Force the exit of the loop since a number cannot be find.
+				i = numbers.length;
+			}
 		}
-		return new Version(major, minor, micro);
+		// Reply
+		if (isSnapshot) {
+			return new Version(numbers[0], numbers[1], numbers[2], SNAPSHOT_QUALIFIER);
+		}
+		return new Version(numbers[0], numbers[1], numbers[2]);
 	}
 
 }

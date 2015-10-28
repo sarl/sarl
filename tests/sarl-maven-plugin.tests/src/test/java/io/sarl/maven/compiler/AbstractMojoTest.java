@@ -91,7 +91,6 @@ public abstract class AbstractMojoTest {
 		verifier.setAutoclean(false);
 		verifier.setDebug(false);
 		verifier.executeGoals(Arrays.asList("clean", goalName)); //$NON-NLS-1$
-
 		return verifier;
 	}
 

@@ -48,8 +48,12 @@ import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Proxy;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -138,6 +142,14 @@ import com.google.inject.Provider;
 @InjectWith(SARLInjectorProvider.class)
 public abstract class AbstractSarlTest {
 
+	/** URL of the Maven central repository.
+	 */
+	public static final String MAVEN_CENTRAL_REPOSITORY_URL = "http://repo1.maven.org/maven2/io/sarl/lang/io.sarl.lang.core/0.2.0/io.sarl.lang.core-0.2.0.pom";
+	
+	/** Timeout for connecting to the Maven central server (in milliseconds).
+	 */
+	public static final int MAVEN_CENTRAL_TIMEOUT = 15000;
+
 	@Inject
 	private ValidationTestHelper validationHelper;
 
@@ -193,6 +205,24 @@ public abstract class AbstractSarlTest {
 						Assume.assumeTrue(isEclipse);
 					}
 				}
+				if (scope.needmavencentral()) {
+					boolean canAccessNetwork = true;
+					try {
+						URL central = new URL(MAVEN_CENTRAL_REPOSITORY_URL);
+						URLConnection connection = central.openConnection();
+						connection.setConnectTimeout(MAVEN_CENTRAL_TIMEOUT);
+						try (InputStream is = connection.getInputStream()) {
+							byte[] buffer = new byte[128];
+							int length = is.read(buffer);
+							while (length > 0) {
+								length = is.read(buffer);
+							}
+						}
+					} catch (Exception _) {
+						canAccessNetwork = false;
+					}
+					Assume.assumeTrue(canAccessNetwork);
+				}
 			}
 			return super.apply(base, description);
 		}
@@ -231,6 +261,26 @@ public abstract class AbstractSarlTest {
 	public static void assertNullOrEmpty(Iterable<?> actual) {
 		if (actual != null) {
 			assertFalse("Not null nor empty", actual.iterator().hasNext());
+		}
+	}
+
+	/** Check if the given value is <code>null</code> or empty.
+	 *
+	 * @param actual
+	 */
+	public static void assertNullOrEmpty(String actual) {
+		if (!Strings.isNullOrEmpty(actual)) {
+			fail("Not null nor empty. Actual value: " + actual);
+		}
+	}
+
+	/** Check if the given value is not <code>null</code> nor empty.
+	 *
+	 * @param actual
+	 */
+	public static void assertNotNullOrEmpty(String actual) {
+		if (Strings.isNullOrEmpty(actual)) {
+			fail("Null or empty.");
 		}
 	}
 

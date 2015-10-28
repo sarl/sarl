@@ -21,27 +21,15 @@
 package io.sarl.maven.compiler;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Arrays;
-import java.util.Collections;
+
+import org.apache.maven.it.VerificationException;
 
 import org.apache.maven.it.Verifier;
-import org.apache.maven.it.util.ResourceExtractor;
-import org.apache.maven.shared.utils.io.FileUtils;
-import org.junit.After;
+import org.apache.maven.plugin.MojoFailureException;
 import org.junit.Test;
 
 /**
@@ -53,9 +41,6 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class CompileMojoTest extends AbstractMojoTest {
 
-	/**
-	 * @throws Exception if any.
-	 */
 	@Test
 	public void compile() throws Exception {
 		Verifier verifier = executeMojo("prj1", "compile");
@@ -64,6 +49,11 @@ public class CompileMojoTest extends AbstractMojoTest {
 				"io", "sarl", "maven", "compiler", "tests", "MyAgent.java");
 		assertNotNull(path);
 		verifier.assertFilePresent(path.toString());
+	}
+
+	@Test(expected = VerificationException.class)
+	public void invalidSdk() throws Exception {
+		executeMojo("prj2", "compile");
 	}
 
 }

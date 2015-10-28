@@ -23,8 +23,6 @@ package io.sarl.tests.api;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.ui.preferences.SARLPreferences;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,13 +31,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.jar.Manifest;
 import java.util.logging.Logger;
 
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Singleton;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -61,6 +63,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
@@ -74,9 +77,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
-import org.eclipse.xtext.junit4.ui.util.JavaProjectSetupUtil;
 import org.eclipse.xtext.resource.FileExtensionProvider;
-import org.eclipse.xtext.ui.XtextProjectHelper;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.XtextEditorInfo;
 import org.eclipse.xtext.ui.editor.utils.EditorUtils;
@@ -87,10 +88,8 @@ import org.eclipse.xtext.xbase.compiler.JavaVersion;
 import org.eclipse.xtext.xbase.lib.Functions;
 import org.osgi.framework.Bundle;
 
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Singleton;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.ui.preferences.SARLPreferences;
 
 /** Provides tools for setting up and managing the Eclipse workspace.
  * This class was adapted from the Xtend test suite.
@@ -147,9 +146,9 @@ public class WorkbenchTestHelper {
 
 	@Inject
 	private IResourceSetProvider resourceSetProvider;
-
+	
 	@Inject
-	private Injector injector;
+	private ProjectCreator projectCreator;
 
 	private boolean isLazyCreatedProject = false;
 
@@ -237,7 +236,7 @@ public class WorkbenchTestHelper {
 		if (createOnDemand && !project.exists()) {
 			try {
 				this.isLazyCreatedProject = true;
-				project = createPluginProject(this.injector, TESTPROJECT_NAME);
+				project = createPluginProject(TESTPROJECT_NAME, this.projectCreator);
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
@@ -267,10 +266,10 @@ public class WorkbenchTestHelper {
 	 * @param content the content of the file.
 	 * @return the file.
 	 * @throws Exception
-	 * see {@link #getFullFileName(String)}
+	 * see {@link #getFullFileNameInSources(String)}
 	 */
 	public IFile createFile(String fileName, String content) throws Exception {
-		String fullFileName = getFullFileName(fileName);
+		String fullFileName = getFullFileNameInSources(fileName);
 		return createFileImpl(fullFileName, content);
 	}
 
@@ -293,17 +292,30 @@ public class WorkbenchTestHelper {
 	 * @return the file.
 	 */
 	public IFile getFile(String fileName) {
-		return this.workspace.getRoot().getFile(new Path(getFullFileName(fileName)));
+		return this.workspace.getRoot().getFile(new Path(getFullFileNameInSources(fileName)));
 	}
 
 	/** Compute the full filename.
 	 * 
 	 * @param fileName the name without the file extension.
 	 * @return the full filename.
+	 * @see #getFullFileNameInProject(String)
 	 */
-	public String getFullFileName(String fileName) {
+	public String getFullFileNameInSources(String fileName) {
 		String extension = (fileName.indexOf(".") != -1) ? "" : "." + getFileExtension(); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		String fullFileName = getProject().getName() + "/src/" + fileName + extension; //$NON-NLS-1$
+		return fullFileName;
+	}
+
+	/** Compute the full filename inside the proejct root directory.
+	 * 
+	 * @param fileName the name without the file extension.
+	 * @return the full filename.
+	 * @see #getFullFileNameInSources(String)
+	 */
+	public String getFullFileNameInProject(String fileName) {
+		String extension = (fileName.indexOf(".") != -1) ? "" : "." + getFileExtension(); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		String fullFileName = getProject().getName() + "/" + fileName + extension; //$NON-NLS-1$
 		return fullFileName;
 	}
 
@@ -392,7 +404,13 @@ public class WorkbenchTestHelper {
 	 * @return the resource.
 	 */
 	public Resource getResourceFor(IProject project, IFile file) {
-		return this.resourceSetProvider.get(project).createResource(uri(file));
+		URI uri = uri(file);
+		ResourceSet resourceSet = this.resourceSetProvider.get(project);
+		Resource resource = resourceSet.getResource(uri, false);
+		if (resource == null) {
+			resource = resourceSet.createResource(uri);
+		}
+		return resource;
 	}
 
 	/** Create a SARL file with a SARL agent inside.
@@ -478,55 +496,28 @@ public class WorkbenchTestHelper {
 					PlatformUI.getWorkbench().getIntroManager().getIntro());
 		}
 	}
-
+	
 	/** Create a project.
 	 *
-	 * @param injector the injector.
 	 * @param name the name of the project.
-	 * @return the project.
-	 * @throws CoreException
-	 */
-	public static IProject createPluginProject(Injector injector, String name) throws CoreException {
-		return createPluginProject(injector, name, DEFAULT_REQ_BUNDLES.toArray(new String[DEFAULT_REQ_BUNDLES.size()]));
-	}
-
-	/** Create a project.
-	 *
-	 * @param injector the injector.
-	 * @param name the name of the project.
-	 * @param javaVersion the version of the Java to consider.
-	 * @return the project.
-	 * @throws CoreException
-	 */
-	public static IProject createPluginProject(Injector injector, String name, JavaVersion javaVersion) throws CoreException {
-		return createPluginProject(injector, name, javaVersion, DEFAULT_REQ_BUNDLES.toArray(new String[DEFAULT_REQ_BUNDLES.size()]));
-	}
-
-	/** Create a project.
-	 *
-	 * @param injector the injector.
-	 * @param name the name of the project.
+	 * @param creator the creator of project.
 	 * @param requiredBundles the bundles to add into the build path.
 	 * @return the project.
 	 * @throws CoreException
 	 */
-	public static IProject createPluginProject(Injector injector, String name, String... requiredBundles) throws CoreException {
-		return createPluginProject(injector, name, null, requiredBundles);
-	}
-
-	/** Create a project.
-	 *
-	 * @param injector the injector.
-	 * @param name the name of the project.
-	 * @param javaVersion the version of the Java to consider.
-	 * @param requiredBundles the bundles to add into the build path.
-	 * @return the project.
-	 * @throws CoreException
-	 */
-	public static IProject createPluginProject(Injector injector, String name, JavaVersion javaVersion, String... requiredBundles) throws CoreException {
-		PluginProjectFactory projectFactory = injector.getInstance(PluginProjectFactory.class);
+	public static IProject createPluginProject(String name, ProjectCreator creator, String... requiredBundles) throws CoreException {
+		// If no required bundle is given, use the defaults.
+		String[] bundleDependencies;
+		if (requiredBundles == null || requiredBundles.length == 0) {
+			bundleDependencies = new String[WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.size()];
+			WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.toArray(bundleDependencies);
+		} else {
+			bundleDependencies = requiredBundles;
+		}
+		
+		PluginProjectFactory projectFactory = creator.getProjectFactory();
 		projectFactory.setProjectName(name);
-		JavaVersion jVersion = javaVersion;
+		JavaVersion jVersion = creator.getJavaVersion();
 		if (jVersion == null) {
 			jVersion = JavaVersion.JAVA7;
 		}
@@ -547,19 +538,14 @@ public class WorkbenchTestHelper {
 			break;
 		}
 		projectFactory.setBreeToUse("JavaSE-" + jseVersion); //$NON-NLS-1$
-		projectFactory.addFolders(Arrays.asList("src", "src-gen")); //$NON-NLS-1$ //$NON-NLS-2$
-		IPath srcGenFolder = Path.fromPortableString("src-gen"); //$NON-NLS-1$
-		projectFactory.addBuilderIds(
-				XtextProjectHelper.BUILDER_ID,
-				JavaCore.BUILDER_ID);
-		projectFactory.addProjectNatures(
-				XtextProjectHelper.NATURE_ID,
-				JavaCore.NATURE_ID,
-				NATURE_ID);
+		projectFactory.addFolders(creator.getSourceFolders());
+		IPath srcGenFolder = Path.fromPortableString(creator.getGenerationFolder());
+		projectFactory.addBuilderIds(creator.getBuilderIds());
+		projectFactory.addProjectNatures(creator.getNatures());
 		IProject result = projectFactory.createProject(new NullProgressMonitor(), null);
 		IJavaProject javaProject = JavaCore.create(result);
 		makeCompliantFor(javaProject, jVersion);
-		JavaProjectSetupUtil.addJreClasspathEntry(javaProject);
+		creator.addJreClasspathEntry(javaProject);
 
 		IPath workspaceRoot;
 		IPath platformLocation;
@@ -574,7 +560,7 @@ public class WorkbenchTestHelper {
 		}
 
 		// Retreive the bundles
-		for(String bundleName : requiredBundles) {
+		for(String bundleName : bundleDependencies) {
 			Bundle bundle = Platform.getBundle(bundleName);
 			if (bundle == null) {
 				throw new RuntimeException("Reference library not found: " + bundleName); //$NON-NLS-1$
@@ -595,7 +581,7 @@ public class WorkbenchTestHelper {
 					binPath,
 					null,
 					null);
-			JavaProjectSetupUtil.addToClasspath(javaProject, classPathEntry);
+			creator.addToClasspath(javaProject, classPathEntry);
 		}
 
 		// Configure SARL source folder
@@ -901,7 +887,7 @@ public class WorkbenchTestHelper {
 	 * @return <code>true</code> if the file exists, otherwise <code>false</code>.
 	 */
 	public boolean isFileInSourceFolder(String basename) {
-		String fullFileName = getFullFileName(basename);
+		String fullFileName = getFullFileNameInSources(basename);
 		return this.workspace.getRoot().exists(new Path(fullFileName));
 	}
 
@@ -926,6 +912,74 @@ public class WorkbenchTestHelper {
 	 */
 	public static String pathStr(String... path) {
 		return path(path).toOSString();
+	}
+
+	/** Factory of a project.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public interface ProjectCreator {
+		
+		/** Replies the injector.
+		 * 
+		 * @return the injector.
+		 */
+		Injector getInjector();
+		
+		/** Replies the project factory.
+		 *
+		 * @return the factory.
+		 */
+		PluginProjectFactory getProjectFactory();
+		
+		/** Replies the version of Java that is supported by the project.
+		 *
+		 * @return the java version.
+		 */
+		JavaVersion getJavaVersion();
+
+		/** Replies the source folders.
+		 *
+		 * @return the source folders.
+		 */
+		List<String> getSourceFolders();
+		
+		/** Replies the folder in which the sources are generated.
+		 *
+		 * @return the generation folder.
+		 */
+		String getGenerationFolder();
+
+		/** Replies the identifiers of the builders.
+		 *
+		 * @return the identifiers.
+		 */
+		String[] getBuilderIds();
+
+		/** Replies the identifiers of the natures
+		 *
+		 * @return the identifiers.
+		 */
+		String[] getNatures();
+
+		/** Add a JRE library to the class path.
+		 *
+		 * @param javaProject the proejct to update.
+		 * @throws JavaModelException
+		 */
+		void addJreClasspathEntry(IJavaProject javaProject) throws JavaModelException;
+		
+		/** Add a SARL library to the class path.
+		 *
+		 * @param javaProject the proejct to update.
+		 * @param newClassPathEntry the entry to add.
+		 * @throws JavaModelException
+		 */
+		void addToClasspath(IJavaProject javaProject, IClasspathEntry newClassPathEntry)throws JavaModelException;
+
 	}
 
 }

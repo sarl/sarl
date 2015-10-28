@@ -39,16 +39,23 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD, ElementType.TYPE })
 public @interface TestScope {
 
-	/** The test is valid for a run in Tycho.
+	/** The test is valid for a run in Maven Tycho.
 	 *
 	 * @return <code>true</code> if the unit test could be run in Tycho.
 	 */
 	boolean tycho() default true;
 
-	/** List of the bundles to add in the classpath.
+	/** The test is valid for a run in Eclipse.
 	 *
 	 * @return <code>true</code> if the unit test could be run in Eclipse.
 	 */
 	boolean eclipse() default true;
+
+	/** The test is valid for a run in an environment in which the Maven central repository is available.
+	 *
+	 * @return <code>true</code> if the unit test could be run only if a connection to the Maven
+	 * central repository is possible.
+	 */
+	boolean needmavencentral() default false;
 
 }

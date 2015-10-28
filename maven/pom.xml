@@ -18,8 +18,8 @@
 	<!-- ======================================= -->
 	<modules>
 		<module>io.sarl.maven.sdk</module>
-		<module>io.sarl.maven.docs.generator</module>
 		<module>sarl-maven-plugin</module>
+		<module>io.sarl.maven.docs.generator</module>
 	</modules>
 
 	<!-- ======================================= -->

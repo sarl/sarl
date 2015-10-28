@@ -44,12 +44,15 @@ import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.arakhne.afc.vmutil.locale.Locale;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+import io.sarl.lang.SARLConfig;
 
 /** Abstract mojo for compiling SARL.
  *
@@ -59,22 +62,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractSarlMojo extends AbstractMojo {
-
-	/** Default input folder.
-	 */
-	protected static final String DEFAULT_INPUT = "src/main/sarl"; //$NON-NLS-1$
-
-	/** Default output folder.
-	 */
-	protected static final String DEFAULT_OUTPUT = "src/main/generated-sources/xtend"; //$NON-NLS-1$
-
-	/** Default test input folder.
-	 */
-	protected static final String DEFAULT_TEST_INPUT = "src/test/sarl"; //$NON-NLS-1$
-
-	/** Default test output folder.
-	 */
-	protected static final String DEFAULT_TEST_OUTPUT = "src/test/generated-sources/xtend"; //$NON-NLS-1$
 
 	/** The tool that permits to access to Maven features.
 	 */
@@ -147,7 +134,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the input folder.
 	 */
 	protected File getInput() {
-		return makeAbsolute((this.input == null) ? new File(DEFAULT_INPUT) : this.input);
+		return makeAbsolute((this.input == null) ? new File(SARLConfig.FOLDER_SOURCE_SARL) : this.input);
 	}
 
 	/** Replies the output folder.
@@ -155,7 +142,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the output folder.
 	 */
 	protected File getOutput() {
-		return makeAbsolute((this.output == null) ? new File(DEFAULT_OUTPUT) : this.output);
+		return makeAbsolute((this.output == null) ? new File(SARLConfig.FOLDER_SOURCE_GENERATED) : this.output);
 	}
 
 	/** Replies the test input folder.
@@ -163,7 +150,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the test input folder.
 	 */
 	protected File getTestInput() {
-		return makeAbsolute((this.testInput == null) ? new File(DEFAULT_TEST_INPUT) : this.testInput);
+		return makeAbsolute((this.testInput == null) ? new File(SARLConfig.FOLDER_TEST_SOURCE_SARL) : this.testInput);
 	}
 
 	/** Replies the test output folder.
@@ -171,7 +158,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the test output folder.
 	 */
 	protected File getTestOutput() {
-		return makeAbsolute((this.testOutput == null) ? new File(DEFAULT_TEST_OUTPUT) : this.testOutput);
+		return makeAbsolute((this.testOutput == null) ? new File(SARLConfig.FOLDER_TEST_SOURCE_GENERATED) : this.testOutput);
 	}
 
 	/** Execute the mojo.
@@ -205,16 +192,17 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		plugin.setVersion(version);
 		plugin.setDependencies(Arrays.asList(dependencies));
 
-		getLog().debug("Launching " + plugin.getId()); //$NON-NLS-1$
+		getLog().debug(Locale.getString(AbstractSarlMojo.class, "LAUNCHING", plugin.getId())); //$NON-NLS-1$
 
 		PluginDescriptor pluginDescriptor = this.mavenHelper.loadPlugin(plugin);
 		if (pluginDescriptor == null) {
-			throw new MojoExecutionException("Could not find the plugin '" //$NON-NLS-1$
-					+ plugin.getId() + "'"); //$NON-NLS-1$
+			throw new MojoExecutionException(Locale.getString(AbstractSarlMojo.class,
+					"PLUGIN_NOT_FOUND", plugin.getId())); //$NON-NLS-1$
 		}
 		MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
 		if (mojoDescriptor == null) {
-			throw new MojoExecutionException("Could not find the goal '" + goal + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new MojoExecutionException(Locale.getString(AbstractSarlMojo.class,
+					"GOAL_NOT_FOUND", goal)); //$NON-NLS-1$
 		}
 
 		Xpp3Dom mojoXml;
@@ -241,8 +229,8 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 			configurationXml = mojoXml;
 		}
 
-		getLog().debug("Configuration for " + plugin.getId() //$NON-NLS-1$
-				+ "\n" + configurationXml.toString()); //$NON-NLS-1$
+		getLog().debug(Locale.getString(AbstractSarlMojo.class, "CONFIGURATION_FOR", //$NON-NLS-1$
+				plugin.getId(), configurationXml.toString()));
 
 		MojoExecution execution = new MojoExecution(mojoDescriptor, configurationXml);
 
@@ -289,7 +277,8 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 				String dependencyKey = ArtifactUtils.versionlessKey(dependencyGroupId, dependencyArtifactId);
 				Dependency dependencyObject = pomDependencies.get(dependencyKey);
 				if (dependencyObject == null) {
-					throw new MojoExecutionException("Cannot find the artifact " + dependencyKey); //$NON-NLS-1$
+					throw new MojoExecutionException(Locale.getString(AbstractSarlMojo.class,
+							"ARTIFACT_NOT_FOUND", dependencyKey)); //$NON-NLS-1$
 				}
 				dependencies.add(dependencyObject);
 			}
@@ -302,7 +291,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 
 	@Override
 	public String toString() {
-		return super.toString();
+		return getClass().getSimpleName();
 	}
 
 	/** Put the string representation of the properties of this object into the given buffer.

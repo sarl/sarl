@@ -25,45 +25,43 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import io.sarl.lang.SARLUiInjectorProvider;
-import io.sarl.lang.sarl.SarlScript;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.xtext.ui.util.PluginProjectFactory;
+
+import com.google.inject.Provider;
+import com.google.inject.Binder;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.Singleton;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
-import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.junit4.ui.util.JavaProjectSetupUtil;
+import org.eclipse.xtext.ui.XtextProjectHelper;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.validation.Issue;
-import org.junit.Assume;
-import org.junit.ClassRule;
+import org.eclipse.xtext.xbase.compiler.JavaVersion;
 import org.junit.ComparisonFailure;
 import org.junit.Rule;
-import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
+import io.sarl.lang.SARLUiInjectorProvider;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.tests.api.WorkbenchTestHelper.ProjectCreator;
 
 /** This class is inspired from AbstractXbaseUITestCase of Xtext.
  *
@@ -80,6 +78,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 */
 	@Rule
 	public TestWatcher rootSarlUiWatchter = new TestWatcher() {
+		
 		@SuppressWarnings("synthetic-access")
 		@Override
 		protected void starting(Description description) {
@@ -111,10 +110,11 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 			}
 			
 			try {
+				ProjectCreator creator = getInjector().getInstance(ProjectCreator.class);
 				if (buildPath == null) {
-					WorkbenchTestHelper.createPluginProject(getInjector(), WorkbenchTestHelper.TESTPROJECT_NAME);
+					WorkbenchTestHelper.createPluginProject(WorkbenchTestHelper.TESTPROJECT_NAME, creator);
 				} else {
-					WorkbenchTestHelper.createPluginProject(getInjector(), WorkbenchTestHelper.TESTPROJECT_NAME, buildPath);
+					WorkbenchTestHelper.createPluginProject(WorkbenchTestHelper.TESTPROJECT_NAME, creator, buildPath);
 				}
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
@@ -136,19 +136,37 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	};
 
 	@Inject
-	private Injector injector;
+	private Injector injectedInjector;
 
 	/** Helper for interaction with the Eclipse workbench.
 	 */
-	@Inject
-	private WorkbenchTestHelper helper;
+	private WorkbenchTestHelper workbenchHelper;
+	
+	/** Replies the injected injector.
+	 *
+	 * @return the injector.
+	 */
+	public final Injector getInjectedInjector() {
+		return this.injectedInjector;
+	}	
 	
 	/** Replies the injector.
 	 *
-	 * @return the injector
+	 * @return the injector.
 	 */
 	public Injector getInjector() {
-		return injector;
+		return getInjectedInjector().createChildInjector(new Module() {
+			@Override
+			public void configure(Binder binder) {
+				binder.bind(ProjectCreator.class).to(JavaProjectCreator.class);
+				binder.bind(JavaVersion.class).toProvider(new Provider<JavaVersion>() {
+					@Override
+					public JavaVersion get() {
+						return null;
+					}
+				});
+			}
+		});
 	}
 	
 	/** Assert the given image descriptor is for an image in a bundle.
@@ -260,8 +278,82 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 *
 	 * @return the helper.
 	 */
-	protected WorkbenchTestHelper helper() {
-		return this.helper;
+	protected synchronized WorkbenchTestHelper helper() {
+		if (this.workbenchHelper == null) {
+			this.workbenchHelper = getInjector().getInstance(WorkbenchTestHelper.class);
+		}
+		return this.workbenchHelper;
+	}
+
+	/** Factory of a Java project.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@Singleton
+	private static class JavaProjectCreator implements ProjectCreator {
+		
+		@Inject
+		private Injector injector;
+
+		@Inject
+		@Nullable
+		private JavaVersion javaVersion;
+		
+		@Override
+		public Injector getInjector() {
+			return this.injector;
+		}
+		
+		@Override
+		public PluginProjectFactory getProjectFactory() {
+			return getInjector().getInstance(PluginProjectFactory.class);
+		}
+
+		@Override
+		public JavaVersion getJavaVersion() {
+			return this.javaVersion;
+		}
+
+		@Override
+		public List<String> getSourceFolders() {
+			return Arrays.asList("src", "src-gen");  //$NON-NLS-1$//$NON-NLS-2$
+		}
+
+		@Override
+		public String getGenerationFolder() {
+			return "src-gen"; //$NON-NLS-1$
+		}
+
+		@Override
+		public String[] getBuilderIds() {
+			return new String[] {
+					XtextProjectHelper.BUILDER_ID,
+					JavaCore.BUILDER_ID
+			};
+		}
+
+		@Override
+		public String[] getNatures() {
+			return new String[] {
+					XtextProjectHelper.NATURE_ID,
+					JavaCore.NATURE_ID,
+					WorkbenchTestHelper.NATURE_ID
+			};
+		}
+
+		@Override
+		public void addJreClasspathEntry(IJavaProject javaProject) throws JavaModelException {
+			JavaProjectSetupUtil.addJreClasspathEntry(javaProject);
+		}
+
+		@Override
+		public void addToClasspath(IJavaProject javaProject, IClasspathEntry newClassPathEntry)throws JavaModelException {
+			JavaProjectSetupUtil.addToClasspath(javaProject, newClassPathEntry);
+		}
+
 	}
 
 }
