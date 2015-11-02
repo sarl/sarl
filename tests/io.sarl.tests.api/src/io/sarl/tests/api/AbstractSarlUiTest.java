@@ -248,6 +248,24 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		}
 	}
 
+	
+	/** Assert the given image descriptor is for an image in the platform.
+	 *
+	 * @param filename - the name of the image file.
+	 * @param desc - the image descriptor to test.
+	 */
+	protected static void assertPlaformImage(String filename, ImageDescriptor desc) {
+		assertNotNull(desc);
+		String s = desc.toString();
+		String regex = Pattern.quote("URLImageDescriptor(platform:") //$NON-NLS-1$
+				+ "([/][^/]+)*" //$NON-NLS-1$
+				+ Pattern.quote("/icons/") //$NON-NLS-1$
+				+ "([^/]+[/])*" //$NON-NLS-1$
+				+ Pattern.quote(filename + ")"); //$NON-NLS-1$
+		assertTrue("Image not found: " + filename //$NON-NLS-1$
+				+ ". Actual: " + s, Pattern.matches(regex, s)); //$NON-NLS-1$
+	}
+	
 	/** Assert the given image descriptor is for an image given by JDT.
 	 *
 	 * @param expected - the expected base image descriptor.

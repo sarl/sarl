@@ -19,7 +19,7 @@
 	<!-- ======================================= -->
 
 	<properties>
-		<tycho.version>0.23.1</tycho.version>
+		<tycho.version>0.24.0</tycho.version>
 		<jre.environment>JavaSE-1.7</jre.environment>
 	</properties>
 
@@ -67,11 +67,6 @@
 							<os>macosx</os>
 							<ws>cocoa</ws>
 							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86</arch>
 						</environment>
 						<environment>
 							<os>linux</os>
@@ -151,9 +146,9 @@
 
 	<repositories>
 		<repository>
-			<id>org.eclipse.ide.luna</id>
+			<id>org.eclipse.ide.mars</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/luna</url>
+			<url>http://download.eclipse.org/releases/mars</url>
 		</repository>
 		<repository>
 			<id>org.eclipse.xtext.update.lastest</id>

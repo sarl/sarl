@@ -63,6 +63,7 @@ import io.sarl.lang.services.SARLGrammarAccess.XVariableDeclarationElements;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+
 public class SARLFormatter extends XbaseFormatter {
 
 	private static final int LINE_WRAP = 400;
@@ -282,15 +283,9 @@ public class SARLFormatter extends XbaseFormatter {
 
 	@Override
 	public void configureXTryCatchFinallyExpression(FormattingConfig config, XTryCatchFinallyExpressionElements ele) {
-		//		c.setIndentationIncrement().before(ele.getExpressionAssignment_2());
 		config.setLinewrap().around(ele.getExpressionAssignment_2());
-		//		c.setIndentationDecrement().after(ele.getExpressionAssignment_2());
-		//		c.setIndentationIncrement().before(ele.getFinallyExpressionAssignment_3_0_1_1());
 		config.setLinewrap().around(ele.getFinallyExpressionAssignment_3_0_1_1());
-		//		c.setIndentationDecrement().after(ele.getFinallyExpressionAssignment_3_0_1_1());
-		//		c.setIndentationIncrement().before(ele.getFinallyExpressionAssignment_3_1_1());
 		config.setLinewrap().around(ele.getFinallyExpressionAssignment_3_1_1());
-		//		c.setIndentationDecrement().after(ele.getFinallyExpressionAssignment_3_1_1());
 	}
 
 	@Override
@@ -299,10 +294,8 @@ public class SARLFormatter extends XbaseFormatter {
 		config.setNoSpace().around(ele.getColonKeyword_0_0_4());
 		config.setNoSpace().around(ele.getRightParenthesisKeyword_2());
 
-		//		c.setIndentationIncrement().before(ele.getEachExpressionAssignment_7());
 		config.setLinewrap().around(ele.getEachExpressionAssignment_3());
 
-		//		c.setIndentationDecrement().after(ele.getEachExpressionAssignment_7());
 		config.setLinewrap(2).before(ele.getGroup());
 	}
 

@@ -162,6 +162,7 @@ public class SARLParser {
 		}
 		return b.toString();
 	}
+
 	/** Parse a SARL code and replies the SARL model.
 	 *
 	 * <p>This function returns even if the SARL code is

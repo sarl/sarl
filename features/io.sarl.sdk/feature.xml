@@ -223,53 +223,48 @@
 
    <requires>
       <import plugin="io.sarl.lang.ui" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="io.sarl.lang.core" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui" version="2.8.4" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.builder" version="2.8.4" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtend.core" version="2.8.4" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.ide" version="3.10.2" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.navigator" version="3.5.401" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.ui" version="3.10.2" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.core" version="3.10.2" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.launching" version="3.7.102" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.equinox.bidi" version="0.10.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.filesystem" version="1.4.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.debug.ui" version="3.6.300" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.filesystem" version="1.5.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.variables" version="3.2.800" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.codegen.ecore" version="2.10.2" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.xbase.lib" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.bidi" version="0.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.codegen.ecore" version="2.11.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.11.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.debug.ui" version="3.7.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.launching" version="3.8.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.11.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide" version="3.11.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.navigator" version="3.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.core" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.builder" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang.core" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.eclipse" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.m2e.core" version="1.5.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.m2e.maven.runtime" version="1.5.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.m2e.jdt" version="1.5.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.core" version="1.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.maven.runtime" version="1.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.jdt" version="1.6.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
          id="io.sarl.eclipse"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="io.sarl.core"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="io.sarl.util"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="io.sarl.m2e"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>

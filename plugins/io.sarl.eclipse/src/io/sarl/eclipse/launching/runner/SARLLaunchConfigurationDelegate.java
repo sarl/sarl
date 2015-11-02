@@ -323,7 +323,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		int index;
 		Pair<IRuntimeClasspathEntry, Integer> pair = getJreEntry(entries, bootEntriesPrepend);
 		jreEntry = pair.getKey();
-		index = pair.getValue();
+		index = pair.getValue().intValue();
 		IRuntimeClasspathEntry[] bootEntriesPrep = JavaRuntime
 				.resolveRuntimeClasspath(
 						bootEntriesPrepend
@@ -419,7 +419,9 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	/** Replies the project SRE from the given configuration.
 	 *
 	 * @param configuration - the configuration to read.
+	 * @param verify  - if true verify the SRE validity, do nothing otherwise
 	 * @return the project SRE or <code>null</code>.
+	 * @throws CoreException Some error occurs when accessing to the ecore elements.
 	 */
 	private ISREInstall getProjectSpecificSRE(ILaunchConfiguration configuration, boolean verify) throws CoreException {
 		IJavaProject jprj = getJavaProject(configuration);

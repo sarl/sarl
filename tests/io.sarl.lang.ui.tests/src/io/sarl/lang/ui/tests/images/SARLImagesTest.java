@@ -15,15 +15,15 @@
  */
 package io.sarl.lang.ui.tests.images;
 
-import io.sarl.lang.ui.images.SARLImages;
-import io.sarl.tests.api.AbstractSarlUiTest;
-
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.junit.Test;
 
 import com.google.inject.Inject;
+
+import io.sarl.lang.ui.images.SARLImages;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 /**
  * @author $Author: sgalland$
@@ -155,7 +155,7 @@ public class SARLImagesTest extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void forCapacityUse() {
-		assertBundleImage("imp_obj.gif", this.images.forCapacityUse()); //$NON-NLS-1$
+		assertPlaformImage("imp_obj.png", this.images.forCapacityUse()); //$NON-NLS-1$
 	}
 
 	/**

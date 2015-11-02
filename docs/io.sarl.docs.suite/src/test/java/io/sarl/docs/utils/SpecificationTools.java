@@ -163,6 +163,10 @@ public final class SpecificationTools {
 
 	/**
 	 * Copied from <a href="https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/StandardJREResourceWrapper.java">AFC</a>.
+	 *
+	 * @param classLoader - the class loader to use for loading the specified resource
+	 * @param path - the path to the resource you're looking for
+	 * @return the full URL of the corresponding resource
 	 */
 	private static URL getResource(ClassLoader classLoader, String path) {
 		if (path == null) {
@@ -230,7 +234,7 @@ public final class SpecificationTools {
 				String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
 				assertEquals(
 						String.format("Invalid link format: %s", ref), //$NON-NLS-1$
-						2, parts.length);
+						new Integer(2), new Integer(parts.length));
 				fragments = parts[1].split(java.util.regex.Matcher.quoteReplacement("_") + "+"); //$NON-NLS-1$ //$NON-NLS-2$
 				StringBuilder b = new StringBuilder();
 				for (String s : fragments) {
@@ -547,7 +551,7 @@ public final class SpecificationTools {
 			b = (Boolean) expected;
 		} else {
 			try {
-				b = Boolean.parseBoolean(expected.toString());
+				b =  new Boolean(expected.toString());
 			} catch (Throwable _) {
 				return false;
 			}
