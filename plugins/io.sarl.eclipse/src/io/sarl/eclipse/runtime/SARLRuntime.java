@@ -901,6 +901,9 @@ public final class SARLRuntime {
 	public static boolean isPackedSRE(File jarFile) {
 		try (JarFile jFile = new JarFile(jarFile)) {
 			Manifest manifest = jFile.getManifest();
+			if (manifest == null) {
+				return false;
+			}
 			Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
 			if (sarlSection == null) {
 				return false;
