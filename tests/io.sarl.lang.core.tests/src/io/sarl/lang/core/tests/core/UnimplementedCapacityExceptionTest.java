@@ -20,17 +20,17 @@
  */
 package io.sarl.lang.core.tests.core;
 
-import io.sarl.lang.core.Capacity;
-import io.sarl.lang.core.UnimplementedCapacityException;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
+import static org.junit.Assert.assertSame;
 
 import java.util.UUID;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.UnimplementedCapacityException;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -40,11 +40,13 @@ import static org.junit.Assert.*;
  */
 public class UnimplementedCapacityExceptionTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private UUID agentID;
-	@Nullable
+
+	@NonNullByDefault
 	private Class<? extends Capacity> capacity;
-	@Nullable
+
+	@NonNullByDefault
 	private UnimplementedCapacityException exception;
 
 	/**

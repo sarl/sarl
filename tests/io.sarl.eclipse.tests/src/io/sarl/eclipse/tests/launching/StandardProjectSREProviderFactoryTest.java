@@ -23,16 +23,16 @@ package io.sarl.eclipse.tests.launching;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.junit.Before;
+import org.junit.Test;
+
 import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
 import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
-import org.eclipse.core.resources.IProject;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author $Author: sgalland$
@@ -43,7 +43,7 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class StandardProjectSREProviderFactoryTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private StandardProjectSREProviderFactory factory;
 
 	@Before

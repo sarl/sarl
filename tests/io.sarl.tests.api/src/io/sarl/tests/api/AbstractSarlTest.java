@@ -20,15 +20,66 @@
  */
 package io.sarl.tests.api;
 
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.isEmpty;
-import static com.google.common.collect.Lists.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+
+import org.mockito.internal.matchers.NotNull;
+import org.eclipse.jdt.annotation.Nullable;
+import com.google.common.base.Joiner;
+import com.google.common.base.Objects;
+import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.inject.Inject;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendParameter;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.junit4.InjectWith;
+import org.eclipse.xtext.junit4.XtextRunner;
+import org.eclipse.xtext.junit4.util.ParseHelper;
+import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
+import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.validation.Issue;
+import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XNullLiteral;
+import org.eclipse.xtext.xbase.XNumberLiteral;
+import org.eclipse.xtext.xbase.XStringLiteral;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.junit.Assume;
+import org.junit.ComparisonFailure;
+import org.junit.Rule;
+import org.junit.internal.AssumptionViolatedException;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
+import org.junit.runner.RunWith;
+import org.junit.runners.model.Statement;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
@@ -47,82 +98,6 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
-
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Proxy;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.PlatformResourceURIHandlerImpl.WorkbenchHelper;
-import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
-import org.eclipse.jdt.ui.JavaElementImageDescriptor;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.xtend.core.xtend.XtendParameter;
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtext.common.types.JvmConstructor;
-import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.diagnostics.Severity;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.TemporaryFolder;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
-import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.resource.XtextResourceSet;
-import org.eclipse.xtext.util.CancelIndicator;
-import org.eclipse.xtext.util.StringInputStream;
-import org.eclipse.xtext.validation.CheckMode;
-import org.eclipse.xtext.validation.IResourceValidator;
-import org.eclipse.xtext.validation.Issue;
-import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.XNullLiteral;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XStringLiteral;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.junit.Assume;
-import org.junit.ClassRule;
-import org.junit.ComparisonFailure;
-import org.junit.Rule;
-import org.junit.internal.AssumptionViolatedException;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.junit.runner.RunWith;
-import org.junit.runners.model.Statement;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import com.google.common.base.Joiner;
-import com.google.common.base.Objects;
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /** Abstract class that is providing useful tools for unit tests.
  *
@@ -218,7 +193,7 @@ public abstract class AbstractSarlTest {
 								length = is.read(buffer);
 							}
 						}
-					} catch (Exception _) {
+					} catch (Exception exception) {
 						canAccessNetwork = false;
 					}
 					Assume.assumeTrue(canAccessNetwork);
@@ -235,7 +210,8 @@ public abstract class AbstractSarlTest {
 				for (Field field : type.getDeclaredFields()) {
 					if ((field.getAnnotation(Mock.class) != null
 							|| field.getAnnotation(InjectMocks.class) != null
-							|| field.getAnnotation(Nullable.class) != null)
+							|| field.getAnnotation(Nullable.class) != null
+							|| field.getAnnotation(NonNullByDefault.class) != null)
 							&& (field.getModifiers() & (Modifier.FINAL | Modifier.STATIC)) == 0) {
 						boolean isAcc = field.isAccessible();
 						try {

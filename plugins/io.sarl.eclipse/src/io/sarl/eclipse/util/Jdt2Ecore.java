@@ -566,7 +566,7 @@ public final class Jdt2Ecore {
 						this.queue.add(signature);
 					}
 				}
-			} catch (JavaModelException _) {
+			} catch (JavaModelException exception) {
 				//
 			}
 			updateCurrent();

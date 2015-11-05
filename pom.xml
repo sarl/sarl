@@ -41,8 +41,9 @@
 		<sarl.url>http://www.sarl.io</sarl.url>
 		<!-- Default encoding of the source files -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- JRE Configuration -->
-		<compiler.level>1.7</compiler.level>
+		<!-- Java Configuration -->
+		<compiler.level>1.8</compiler.level>
+		<jre.environment>JavaSE-1.8</jre.environment>
 		<!-- String to put after the copyright sign -->
 		<copyrighters>the original authors or authors</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->

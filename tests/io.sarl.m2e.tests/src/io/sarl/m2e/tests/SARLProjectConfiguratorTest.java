@@ -20,26 +20,18 @@
  */
 package io.sarl.m2e.tests;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
-import org.junit.Assume;
-
-import org.eclipse.core.runtime.CoreException;
-import org.junit.Ignore;
-import org.eclipse.core.resources.IMarker;
 import com.google.common.base.Strings;
 import org.apache.maven.artifact.Artifact;
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
-import io.sarl.tests.api.Nullable;
 import io.sarl.tests.api.TestScope;
 
 
@@ -54,7 +46,7 @@ public final class SARLProjectConfiguratorTest extends AbstractSarlMavenTest {
 
 	private static final String SARL_LANG_BUNDLE_NAME = "io.sarl.lang.core"; //$NON-NLS-1$
 	
-	@Nullable
+	@NonNullByDefault
 	private String bundleVersion;
 	
 	@Before
@@ -94,8 +86,8 @@ public final class SARLProjectConfiguratorTest extends AbstractSarlMavenTest {
 				"            <version>" + this.bundleVersion.toString() + "</version>",
 				"            <extensions>true</extensions>",
 				"            <configuration>",
-				"                <source>1.7</source>",
-				"                <target>1.7</target>",
+				"                <source>1.8</source>",
+				"                <target>1.8</target>",
 				"            </configuration>",
 				"        </plugin>",
 				"    </plugins>",
@@ -132,8 +124,8 @@ public final class SARLProjectConfiguratorTest extends AbstractSarlMavenTest {
 					"            <version>0.2.0</version>",
 					"            <extensions>true</extensions>",
 					"            <configuration>",
-					"                <source>1.7</source>",
-					"                <target>1.7</target>",
+					"                <source>1.8</source>",
+					"                <target>1.8</target>",
 					"            </configuration>",
 					"        </plugin>",
 					"    </plugins>",
@@ -175,8 +167,8 @@ public final class SARLProjectConfiguratorTest extends AbstractSarlMavenTest {
 					"            <version>" + this.bundleVersion.toString() + "</version>",
 					"            <extensions>true</extensions>",
 					"            <configuration>",
-					"                <source>1.7</source>",
-					"                <target>1.7</target>",
+					"                <source>1.8</source>",
+					"                <target>1.8</target>",
 					"            </configuration>",
 					"        </plugin>",
 					"    </plugins>",

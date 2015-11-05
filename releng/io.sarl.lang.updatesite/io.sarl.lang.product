@@ -35,7 +35,12 @@
       </win>
    </launcher>
 
+
    <vm>
+      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
+      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</macos>
+      <solaris include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</solaris>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
    </vm>
 
    <license>
@@ -249,16 +254,16 @@
    </plugins>
 
    <features>
-      <feature id="io.sarl.sdk" version="1.0.0.qualifier"/>
       <feature id="io.sarl.lang.sdk" version="1.0.0.qualifier"/>
-      <feature id="org.eclipse.xtend.sdk" version="2.8.4.v201508050135"/>
+      <feature id="io.sarl.sdk" version="1.0.0.qualifier"/>
       <feature id="org.eclipse.xtext.redist" version="2.8.4.v201508050135"/>
-      <feature id="org.eclipse.platform" version="4.5.1.v20150904-0015"/>
+      <feature id="org.eclipse.xtend.sdk" version="2.8.4.v201508050135"/>
       <feature id="org.eclipse.m2e.feature" version="1.6.2.20150902-0002"/>
       <feature id="org.jboss.tools.m2e.jdt.feature" version="1.0.1.201209200903"/>
       <feature id="org.eclipse.egit" version="4.0.3.201509231615-r"/>
       <feature id="org.eclipse.egit.gitflow.feature" version="4.0.3.201509231615-r"/>
-      <feature id="org.eclipse.m2e.logback.feature" version="1.6.2.20150902-0002"/>
+      <feature id="org.eclipse.xtext.ui"/>
+      <feature id="org.eclipse.xtext.runtime"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.help"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
@@ -267,25 +272,24 @@
       <feature id="org.eclipse.equinox.p2.core.feature"/>
       <feature id="org.eclipse.ecf.core.ssl.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
-      <feature id="org.eclipse.xtext.runtime"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.equinox.p2.user.ui"/>
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.ecf.core.feature"/>
-      <feature id="org.eclipse.jgit"/>
       <feature id="org.eclipse.equinox.p2.rcp.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.feature"/>
-      <feature id="org.eclipse.xtext.ui"/>
+      <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.e4.rcp"/>
+      <feature id="org.eclipse.jgit"/>
    </features>
 
    <configurations>
-      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
    </configurations>
 

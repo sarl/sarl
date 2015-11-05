@@ -232,7 +232,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 							minVersion = new Version(sarlVer.getMajor(), sarlVer.getMinor(), 0).toString();
 							maxVersion = new Version(sarlVer.getMajor(), sarlVer.getMinor() + 1, 0).toString();
 						}
-					} catch (Throwable _) {
+					} catch (Throwable exception) {
 						//
 					}
 				}
@@ -426,7 +426,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 							try {
 								String urlTxt = libraryNode.getAttribute(SREConstants.XML_JAVADOC_PATH);
 								javadoc = new URL(urlTxt);
-							} catch (Throwable _) {
+							} catch (Throwable exception) {
 								//
 							}
 							LibraryLocation location = new LibraryLocation(
@@ -447,7 +447,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 				return;
 			}
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			//
 		}
 		throw new IOException(MessageFormat.format(Messages.StandardSREInstall_5, getId()));
@@ -460,7 +460,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 				if (pathObject != null) {
 					return pathObject;
 				}
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				//
 			}
 		}

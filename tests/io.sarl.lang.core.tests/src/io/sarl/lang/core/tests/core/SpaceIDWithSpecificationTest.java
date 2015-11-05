@@ -25,15 +25,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import io.sarl.lang.core.SpaceID;
-import io.sarl.lang.core.SpaceSpecification;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
 
 import java.util.UUID;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
+
+import io.sarl.lang.core.SpaceID;
+import io.sarl.lang.core.SpaceSpecification;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -44,13 +45,16 @@ import org.junit.Test;
 @SuppressWarnings({"rawtypes","unchecked"})
 public class SpaceIDWithSpecificationTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private UUID contextID;
-	@Nullable
+
+	@NonNullByDefault
 	private UUID id;
-	@Nullable
+
+	@NonNullByDefault
 	private Class specification;
-	@Nullable
+
+	@NonNullByDefault
 	private SpaceID spaceID;
 
 	private int cmp(UUID a, UUID b) {

@@ -22,24 +22,17 @@ package io.sarl.m2e.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.*;
-import io.sarl.m2e.M2EUtilities;
-import io.sarl.m2e.SARLMavenEclipsePlugin;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
+import static org.mockito.Mockito.spy;
 
-import org.eclipse.core.runtime.ILog;
-import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-import org.mockito.ArgumentCaptor;
 import org.osgi.framework.Version;
+
+import io.sarl.m2e.M2EUtilities;
+import io.sarl.m2e.SARLMavenEclipsePlugin;
+import io.sarl.tests.api.AbstractSarlTest;
 
 
 /**
@@ -51,9 +44,10 @@ import org.osgi.framework.Version;
 @SuppressWarnings("all")
 public final class M2EUtilitiesTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private SARLMavenEclipsePlugin plugin;
-	@Nullable
+
+	@NonNullByDefault
 	private SARLMavenEclipsePlugin spy;
 
 	@Before

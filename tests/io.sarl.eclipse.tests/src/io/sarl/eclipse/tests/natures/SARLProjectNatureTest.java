@@ -20,16 +20,17 @@
  */
 package io.sarl.eclipse.tests.natures;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-import io.sarl.eclipse.natures.SARLProjectNature;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
 
 import org.eclipse.core.resources.IProject;
-import org.junit.After;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
+
+import io.sarl.eclipse.natures.SARLProjectNature;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: ngaud$
@@ -40,7 +41,7 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class SARLProjectNatureTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private SARLProjectNature nature;
 
 	@Before

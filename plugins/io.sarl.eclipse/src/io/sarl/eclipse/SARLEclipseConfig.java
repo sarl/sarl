@@ -116,7 +116,7 @@ public final class SARLEclipseConfig {
 
 	/** Minimal version of the JRE supported by the SARL launch application.
 	 */
-	public static final String MINIMAL_JRE_VERSION = "1.7"; //$NON-NLS-1$
+	public static final String MINIMAL_JRE_VERSION = "1.8"; //$NON-NLS-1$
 
 	/** Filename of the image that may be used at
 	 * the top of the wizard dialog when creating new SARL project.

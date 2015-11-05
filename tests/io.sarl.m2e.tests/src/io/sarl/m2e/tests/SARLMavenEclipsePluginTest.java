@@ -28,14 +28,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import io.sarl.m2e.SARLMavenEclipsePlugin;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
 
 import java.io.PrintStream;
 
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.internal.debug.Debug;
 import org.junit.After;
 import org.junit.Before;
@@ -44,6 +42,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.mockito.ArgumentCaptor;
+
+import io.sarl.m2e.SARLMavenEclipsePlugin;
+import io.sarl.tests.api.AbstractSarlTest;
 
 
 /**
@@ -101,9 +102,10 @@ public final class SARLMavenEclipsePluginTest {
 	 */
 	public static class PluginInstance extends AbstractSarlTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SARLMavenEclipsePlugin plugin;
-		@Nullable
+
+		@NonNullByDefault
 		private SARLMavenEclipsePlugin spy;
 
 		@Before
@@ -151,11 +153,13 @@ public final class SARLMavenEclipsePluginTest {
 	 */
 	public static class Logging extends AbstractSarlTest {
 
-		@Nullable
+		@NonNullByDefault
 		private PrintStream old;
-		@Nullable
+
+		@NonNullByDefault
 		private ILog logger;
-		@Nullable
+
+		@NonNullByDefault
 		private SARLMavenEclipsePlugin plugin;
 
 		@Before

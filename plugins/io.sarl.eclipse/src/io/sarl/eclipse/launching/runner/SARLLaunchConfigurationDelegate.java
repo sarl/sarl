@@ -640,7 +640,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		if (!Strings.isNullOrEmpty(typeName)) {
 			try {
 				type = RootContextIdentifierType.valueOf(typeName);
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				//
 			}
 		}

@@ -32,8 +32,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.xtext.ui.util.PluginProjectFactory;
+import org.eclipse.jdt.annotation.Nullable;
 
+import org.eclipse.xtext.ui.util.PluginProjectFactory;
 import com.google.inject.Provider;
 import com.google.inject.Binder;
 import com.google.inject.Inject;

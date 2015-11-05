@@ -25,20 +25,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
-import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.Nullable;
-import io.sarl.tests.api.TestScope;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+
+import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.tests.api.AbstractSarlUiTest;
+import io.sarl.tests.api.TestScope;
 
 /**
  * @author $Author: sgalland$
@@ -50,11 +50,13 @@ import org.mockito.stubbing.Answer;
 @SuppressWarnings("all")
 public class StandardProjectSREProviderTest extends AbstractSarlUiTest {
 
-	@Nullable
+	@NonNullByDefault
 	private String id;
-	@Nullable
+
+	@NonNullByDefault
 	private IProject project;
-	@Nullable
+
+	@NonNullByDefault
 	private StandardProjectSREProvider provider;
 
 	@Before

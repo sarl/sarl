@@ -549,7 +549,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 					}
 				});
 				return res[0];
-			} catch (Exception _) {
+			} catch (Exception exception) {
 				//
 			}
 		}

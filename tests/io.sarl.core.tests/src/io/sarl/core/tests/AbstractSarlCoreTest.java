@@ -24,12 +24,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @param <T> - the type of the expected loaded class.
@@ -42,12 +44,12 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 
 	/** Name of the loaded class.
 	 */
-	@Nullable
+	@NonNullByDefault
 	protected String classname;
 
 	/** Loaded type.
 	 */
-	@Nullable
+	@NonNullByDefault
 	protected Class<? extends T> type;
 
 	/** Load the given class, generated from the SARL code.

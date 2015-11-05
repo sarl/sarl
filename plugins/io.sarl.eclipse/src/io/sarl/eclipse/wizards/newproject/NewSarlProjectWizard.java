@@ -129,7 +129,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 						return true;
 					}
 				}
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				//
 			}
 		}
@@ -146,7 +146,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 					sourceFolders.append("\n"); //$NON-NLS-1$
 				}
 			}
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			//
 		}
 		return sourceFolders.toString();

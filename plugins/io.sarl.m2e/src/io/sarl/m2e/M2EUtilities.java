@@ -89,7 +89,7 @@ public final class M2EUtilities {
 			try {
 				int value = Integer.parseInt(parts[i]);
 				numbers[i] = value;
-			} catch (Exception _) {
+			} catch (Exception exception) {
 				// Force the exit of the loop since a number cannot be find.
 				i = numbers.length;
 			}

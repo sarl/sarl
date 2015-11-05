@@ -18,17 +18,18 @@ package io.sarl.lang.ui.tests.outline;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
-import io.sarl.tests.api.Nullable;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
 import org.eclipse.xtext.xtype.XtypePackage;
 import org.junit.Before;
 import org.junit.Test;
+
+import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
 
 
 /**
@@ -39,67 +40,88 @@ import org.junit.Test;
  */
 public class SARLOutlineNodeComparatorTest {
 
-	@Nullable
+	@NonNullByDefault
 	private SARLOutlineNodeComparator comparator;
 
-	@Nullable
+	@NonNullByDefault
 	private EStructuralFeatureNode sarlScript;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode agentFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode agentFeature2;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode behaviorFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode behaviorFeature2;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode capacityFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode capacityFeature2;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode skillFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode skillFeature2;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode eventFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode eventFeature2;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode otherFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EStructuralFeatureNode otherFeature2;
 
-	@Nullable
+	@NonNullByDefault
 	private EObjectNode importFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode importFeature2;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode capacityUseFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode capacityUseFeature2;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode capacityRequirementFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode capacityRequirementFeature2;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode attributeFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode attributeFeature2;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode constructorFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode constructorFeature2;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode actionFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode actionFeature2;
-	@Nullable
-	private EObjectNode actionSignatureFeature1;
-	@Nullable
-	private EObjectNode actionSignatureFeature2;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode behaviorUnitFeature1;
-	@Nullable
+
+	@NonNullByDefault
 	private EObjectNode behaviorUnitFeature2;
 
 	/**

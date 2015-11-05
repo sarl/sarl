@@ -31,21 +31,6 @@ import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
-import io.sarl.lang.actionprototype.FormalParameterProvider;
-import io.sarl.lang.actionprototype.InferredPrototype;
-import io.sarl.lang.actionprototype.InferredStandardParameter;
-import io.sarl.lang.actionprototype.InferredValuedParameter;
-import io.sarl.lang.actionprototype.QualifiedActionName;
-import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlFormalParameter;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,11 +38,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
@@ -73,7 +60,20 @@ import org.junit.runners.Suite.SuiteClasses;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.google.inject.Inject;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
+import io.sarl.lang.actionprototype.FormalParameterProvider;
+import io.sarl.lang.actionprototype.InferredPrototype;
+import io.sarl.lang.actionprototype.InferredStandardParameter;
+import io.sarl.lang.actionprototype.InferredValuedParameter;
+import io.sarl.lang.actionprototype.QualifiedActionName;
+import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -232,13 +232,13 @@ public class DefaultActionPrototypeProviderTest {
 		@Inject
 		private DefaultActionPrototypeProvider provider;
 
-		@Nullable
+		@NonNullByDefault
 		private FormalParameterProvider parameterProvider;
 
-		@Nullable
+		@NonNullByDefault
 		private EList<SarlFormalParameter> sarlParameters;
 
-		@Nullable
+		@NonNullByDefault
 		private EList<JvmFormalParameter> jvmParameters;
 
 		@Before
@@ -840,13 +840,13 @@ public class DefaultActionPrototypeProviderTest {
 		@Inject
 		private DefaultActionPrototypeProvider provider;
 
-		@Nullable
+		@NonNullByDefault
 		private FormalParameterProvider parameterProvider;
 
-		@Nullable
+		@NonNullByDefault
 		private EList<SarlFormalParameter> sarlParameters;
 
-		@Nullable
+		@NonNullByDefault
 		private EList<JvmFormalParameter> jvmParameters;
 
 		@Before

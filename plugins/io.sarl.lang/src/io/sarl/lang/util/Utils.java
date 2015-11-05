@@ -739,7 +739,7 @@ public final class Utils {
 		try {
 			//TODO: Check if there is a way to serialize without context
 			return serializer.serialize(signature);
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			// No working, perhaps the context's of the signature is unknown
 		}
 		ActionElements signatureElements = grammarAccess.getActionAccess();

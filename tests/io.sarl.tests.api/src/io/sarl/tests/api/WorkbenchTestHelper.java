@@ -425,14 +425,14 @@ public class WorkbenchTestHelper {
 			String fileName, Class<T> type,
 			String content) throws Exception {
 		SarlScript script = sarlScript(fileName, content);
-		T latest = null;
+		Object latest = null;
 		for (XtendTypeDeclaration declaration : script.getXtendTypes()) {
 			if (type.isInstance(declaration)) {
-				latest = type.cast(declaration);
+				latest = declaration;
 			}
 		}
 		if (latest != null) {
-			return latest;
+			return type.cast(latest);
 		}
 		throw new NoSuchElementException();
 	}

@@ -34,20 +34,13 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import foo.Foo;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.ISREInstallChangedListener;
-import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.Nullable;
 
 import java.io.File;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.UUID;
 
+import foo.Foo;
 import org.eclipse.core.internal.preferences.EclipsePreferences;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -56,6 +49,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
 import org.junit.After;
 import org.junit.Before;
@@ -71,6 +65,13 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ISREInstallChangedListener;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 /**
  * @author $Author: sgalland$
@@ -158,16 +159,16 @@ public final class SARLRuntimeTest {
 	 */
 	public static class GetterSetter extends AbstractSarlUiTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SARLEclipsePlugin plugin;
 
-		@Nullable
+		@NonNullByDefault
 		private IEclipsePreferences preferences;
 
-		@Nullable
+		@NonNullByDefault
 		private BundleContext bundleContext;
 
-		@Nullable
+		@NonNullByDefault
 		private Bundle bundle;
 
 		@Before
@@ -531,13 +532,13 @@ public final class SARLRuntimeTest {
 	 */
 	public static class EventFiring extends AbstractSarlUiTest {
 
-		@Nullable
+		@NonNullByDefault
 		private ISREInstallChangedListener listener;
 
-		@Nullable
+		@NonNullByDefault
 		private SARLEclipsePlugin plugin;
 
-		@Nullable
+		@NonNullByDefault
 		private IEclipsePreferences preferences;
 
 		@Before
@@ -601,16 +602,16 @@ public final class SARLRuntimeTest {
 	 */
 	public static class InputOutput extends AbstractSarlTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SARLEclipsePlugin plugin;
 
-		@Nullable
+		@NonNullByDefault
 		private IEclipsePreferences preferences;
 
-		@Nullable
+		@NonNullByDefault
 		private BundleContext bundleContext;
 
-		@Nullable
+		@NonNullByDefault
 		private Bundle bundle;
 
 		@Before

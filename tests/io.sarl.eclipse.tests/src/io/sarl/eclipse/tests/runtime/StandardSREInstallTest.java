@@ -29,13 +29,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
-import foo.Foo;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.runtime.StandardSREInstall;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.Nullable;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -51,6 +44,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.google.common.io.Resources;
+import foo.Foo;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.internal.preferences.EclipsePreferences;
 import org.eclipse.core.runtime.FileLocator;
@@ -58,8 +53,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.launching.LibraryLocation;
-import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,7 +68,10 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.google.common.io.Resources;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.StandardSREInstall;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 /**
  * @author $Author: sgalland$
@@ -99,28 +97,28 @@ public class StandardSREInstallTest {
 	 */
 	public static class Valid extends AbstractSarlUiTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SARLEclipsePlugin plugin;
 
-		@Nullable
+		@NonNullByDefault
 		private IEclipsePreferences preferences;
 
-		@Nullable
+		@NonNullByDefault
 		private BundleContext bundleContext;
 
-		@Nullable
+		@NonNullByDefault
 		private Bundle bundle;
 
-		@Nullable
+		@NonNullByDefault
 		private URL jarFile;
 
-		@Nullable
+		@NonNullByDefault
 		private String id;
 
-		@Nullable
+		@NonNullByDefault
 		private StandardSREInstall sre;
 
-		@Nullable
+		@NonNullByDefault
 		private IPath path;
 
 		@Before
@@ -317,28 +315,28 @@ public class StandardSREInstallTest {
 	 */
 	public static class Invalid extends AbstractSarlUiTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SARLEclipsePlugin plugin;
 
-		@Nullable
+		@NonNullByDefault
 		private IEclipsePreferences preferences;
 
-		@Nullable
+		@NonNullByDefault
 		private BundleContext bundleContext;
 
-		@Nullable
+		@NonNullByDefault
 		private Bundle bundle;
 
-		@Nullable
+		@NonNullByDefault
 		private URL jarFile;
 
-		@Nullable
+		@NonNullByDefault
 		private String id;
 
-		@Nullable
+		@NonNullByDefault
 		private StandardSREInstall sre;
 
-		@Nullable
+		@NonNullByDefault
 		private IPath path;
 
 		@Before

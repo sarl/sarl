@@ -20,23 +20,25 @@
  */
 package io.sarl.eclipse.tests.navigator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.junit.Before;
+import org.junit.Test;
+
 import io.sarl.eclipse.navigator.ContentProvider;
 import io.sarl.eclipse.navigator.ISARLProjectElement;
 import io.sarl.eclipse.navigator.SARLProjectWorkbenchRoot;
 import io.sarl.eclipse.navigator.node.SARLProjectParent;
-import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.Nullable;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author $Author: ngaud$
@@ -47,19 +49,25 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class ContentProviderTest extends AbstractSarlUiTest {
 
-	@Nullable
+	@NonNullByDefault
 	private ContentProvider provider;
-	@Nullable
+
+	@NonNullByDefault
 	private SARLProjectWorkbenchRoot root;
-	@Nullable
+
+	@NonNullByDefault
 	private ISARLProjectElement element;
-	@Nullable
+
+	@NonNullByDefault
 	private ISARLProjectElement child1;
-	@Nullable
+	@NonNullByDefault
+
 	private ISARLProjectElement child2;
-	@Nullable
+
+	@NonNullByDefault
 	private Object other;
-	@Nullable
+
+	@NonNullByDefault
 	private Object[] children;
 
 	@Before

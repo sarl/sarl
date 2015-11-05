@@ -20,7 +20,6 @@
 
 	<properties>
 		<tycho.version>0.24.0</tycho.version>
-		<jre.environment>JavaSE-1.7</jre.environment>
 	</properties>
 
 	<!-- ======================================= -->
@@ -101,6 +100,15 @@
 
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-compiler-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<configuration>
+						<compilerArgument>-warn:+discouraged,forbidden</compilerArgument>
+					</configuration>
+				</plugin>
+
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-surefire-plugin</artifactId>

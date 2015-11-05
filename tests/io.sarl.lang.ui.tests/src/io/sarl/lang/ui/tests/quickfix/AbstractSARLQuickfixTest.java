@@ -18,9 +18,6 @@ package io.sarl.lang.ui.tests.quickfix;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
-import io.sarl.tests.api.AbstractSarlUiTest;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -30,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import com.google.inject.Inject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -52,7 +50,9 @@ import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.eclipse.xtext.validation.Issue;
 import org.junit.ComparisonFailure;
 
-import com.google.inject.Inject;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 /** Abstract implementation for the quick fix tests.
  *
@@ -595,6 +595,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@SuppressWarnings("null")
 	private static class TestXtextDocument extends Document implements IXtextDocument {
 
 		private final XtextResource resource;

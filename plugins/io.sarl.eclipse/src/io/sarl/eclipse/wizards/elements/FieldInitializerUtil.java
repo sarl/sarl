@@ -60,7 +60,7 @@ public class FieldInitializerUtil {
 			Object object = selection.getFirstElement();
 			if (object instanceof IAdaptable) {
 				IAdaptable adaptable = (IAdaptable) object;
-				elem = (IJavaElement) adaptable.getAdapter(IJavaElement.class);
+				elem = adaptable.getAdapter(IJavaElement.class);
 				if (elem == null) {
 					elem = getPackage(adaptable);
 				}
@@ -93,11 +93,11 @@ public class FieldInitializerUtil {
 
 	private static IJavaElement getPackage(IAdaptable adaptable) {
 		IJavaElement elem = null;
-		IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+		IResource resource = adaptable.getAdapter(IResource.class);
 		if (resource != null && resource.getType() != IResource.ROOT) {
 			while (elem == null && resource.getType() != IResource.PROJECT) {
 				resource = resource.getParent();
-				elem = (IJavaElement) resource.getAdapter(IJavaElement.class);
+				elem = resource.getAdapter(IJavaElement.class);
 			}
 		}
 		if (elem == null) {

@@ -216,7 +216,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		if (element instanceof XtendMember) {
 			try {
 				return ((XtendMember) element).isStatic();
-			} catch (Exception _) {
+			} catch (Exception exception) {
 				// Some XtendMember does not support
 			}
 		}

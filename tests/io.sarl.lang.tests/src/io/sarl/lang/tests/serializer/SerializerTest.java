@@ -16,10 +16,10 @@
 package io.sarl.lang.tests.serializer;
 
 import static org.junit.Assert.assertEquals;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
 
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.xtext.resource.SaveOptions;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.junit.Test;
@@ -27,7 +27,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.google.inject.Inject;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /** This class tests the {@link ISerializer} for SARL.
  * The serializer is creating a string from SARL Ecore elements.
@@ -70,7 +70,7 @@ public class SerializerTest {
 		@Inject
 		protected ISerializer serializer;
 
-		@Nullable
+		@NonNullByDefault
 		protected EObject object;
 		
 		protected void assertSerialize(String expected) {

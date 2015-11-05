@@ -618,7 +618,7 @@ public final class SARLRuntime {
 				Class<? extends ISREInstall> type = Class.forName(classname).asSubclass(ISREInstall.class);
 				Constructor<? extends ISREInstall> cons = type.getConstructor(String.class);
 				return cons.newInstance(id);
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				//
 			}
 		}
@@ -869,7 +869,7 @@ public final class SARLRuntime {
 				}
 				Version sarlVer = Version.parseVersion(sarlVersion);
 				return sarlVer != null;
-			} catch (IOException _) {
+			} catch (IOException exception) {
 				return false;
 			}
 		}
@@ -921,7 +921,7 @@ public final class SARLRuntime {
 			}
 			Version sarlVer = Version.parseVersion(sarlVersion);
 			return sarlVer != null;
-		} catch (IOException _) {
+		} catch (IOException exception) {
 			return false;
 		}
 	}

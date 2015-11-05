@@ -24,7 +24,38 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import io.sarl.lang.SARLInjectorProvider;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import com.google.inject.Inject;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.TypesFactory;
+import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.resource.IResourceFactory;
+import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.serializer.ISerializer;
+import org.eclipse.xtext.xbase.XBlockExpression;
+import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XNumberLiteral;
+import org.eclipse.xtext.xbase.XStringLiteral;
+import org.eclipse.xtext.xbase.XbaseFactory;
+import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
+import org.eclipse.xtext.xbase.compiler.ImportManager;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.ecoregenerator.helper.BlockInnerDocumentationAdapter;
 import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
@@ -42,39 +73,6 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtend.core.xtend.XtendExecutable;
-import org.eclipse.xtext.common.types.JvmConstructor;
-import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
-import org.eclipse.xtext.common.types.TypesFactory;
-import org.eclipse.xtext.common.types.util.TypeReferences;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.resource.IResourceFactory;
-import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.resource.XtextResourceSet;
-import org.eclipse.xtext.serializer.ISerializer;
-import org.eclipse.xtext.xbase.XBlockExpression;
-import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XStringLiteral;
-import org.eclipse.xtext.xbase.XbaseFactory;
-import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
-import org.eclipse.xtext.xbase.compiler.ImportManager;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-import com.google.inject.Inject;
 
 /** This class tests the functions of {@link ECoreGeneratorHelper}.
  *
@@ -123,7 +121,7 @@ public class EcoreGeneratorHelperTest {
 		@Inject
 		protected ECoreGeneratorHelper generator;
 
-		@Nullable
+		@NonNullByDefault
 		protected SarlEcoreCode code;
 
 		@Before
@@ -333,10 +331,10 @@ public class EcoreGeneratorHelperTest {
 
 	public static class Comments extends AbstractCodeGeneratorTest {
 
-		@Nullable
+		@NonNullByDefault
 		private XBlockExpression block;
 		
-		@Nullable
+		@NonNullByDefault
 		private SarlAgent agent;
 
 		@Before
@@ -713,10 +711,10 @@ public class EcoreGeneratorHelperTest {
 
 	public static class AgentFeatures extends AbstractCodeGeneratorTest {
 
-		@Nullable
+		@NonNullByDefault
 		private XBlockExpression block;
 
-		@Nullable
+		@NonNullByDefault
 		private SarlAgent agent;
 
 		@Before
@@ -870,10 +868,10 @@ public class EcoreGeneratorHelperTest {
 
 	public static class BehaviorFeatures extends AbstractCodeGeneratorTest {
 
-		@Nullable
+		@NonNullByDefault
 		private XBlockExpression block;
 
-		@Nullable
+		@NonNullByDefault
 		private SarlBehavior behavior;
 
 		@Before
@@ -1027,7 +1025,7 @@ public class EcoreGeneratorHelperTest {
 
 	public static class CapacityFeatures extends AbstractCodeGeneratorTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SarlCapacity capacity;
 
 		@Before
@@ -1079,10 +1077,10 @@ public class EcoreGeneratorHelperTest {
 
 	public static class EventFeatures extends AbstractCodeGeneratorTest {
 
-		@Nullable
+		@NonNullByDefault
 		private XBlockExpression block;
 
-		@Nullable
+		@NonNullByDefault
 		private SarlEvent event;
 
 		@Before
@@ -1181,10 +1179,10 @@ public class EcoreGeneratorHelperTest {
 
 	public static class SkillFeatures extends AbstractCodeGeneratorTest {
 
-		@Nullable
+		@NonNullByDefault
 		private XBlockExpression block;
 
-		@Nullable
+		@NonNullByDefault
 		private SarlSkill skill;
 
 		@Before
@@ -1338,7 +1336,7 @@ public class EcoreGeneratorHelperTest {
 
 	public static class FormalParameters extends AbstractCodeGeneratorTest {
 
-		@Nullable
+		@NonNullByDefault
 		private XtendExecutable container;
 
 		@Before

@@ -20,20 +20,25 @@
  */
 package io.sarl.lang.core.tests.core;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.util.UUID;
 
-import io.sarl.lang.core.Address;
-import io.sarl.lang.core.Event;
-import io.sarl.lang.core.SpaceID;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.*;
+import io.sarl.lang.core.Address;
+import io.sarl.lang.core.Event;
+import io.sarl.lang.core.SpaceID;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -44,7 +49,7 @@ import static org.junit.Assert.*;
 @SuppressWarnings("all")
 public class EventTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private Event event;
 
 	private static Event mockEvent() {

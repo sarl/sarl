@@ -16,12 +16,22 @@
 package io.sarl.lang.tests.generator;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 
-import io.sarl.lang.SARLInjectorProvider;
+import com.google.inject.Inject;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.serializer.ISerializer;
+import org.eclipse.xtext.xbase.XBlockExpression;
+import org.eclipse.xtext.xbase.XbaseFactory;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
 import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
 import io.sarl.lang.ecoregenerator.helper.SARLHiddenTokenSequencer;
 import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
@@ -33,25 +43,6 @@ import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.resource.XtextResourceSet;
-import org.eclipse.xtext.serializer.ISerializer;
-import org.eclipse.xtext.xbase.XBlockExpression;
-import org.eclipse.xtext.xbase.XbaseFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-import com.google.inject.Inject;
 
 /** This class tests the functions of {@link SARLHiddenTokenSequencer}.
  *
@@ -89,7 +80,7 @@ public class SARLHiddenTokenSequencerTest {
 		@Inject
 		protected ECoreGeneratorHelper generator;
 
-		@Nullable
+		@NonNullByDefault
 		protected SarlEcoreCode code;
 
 		@Before
@@ -115,7 +106,7 @@ public class SARLHiddenTokenSequencerTest {
 	 */
 	public static abstract class AbstractMemberTokenSequencerTest extends AbstractTokenSequencerTest {
 		
-		@Nullable
+		@NonNullByDefault
 		protected SarlAgent container;
 
 		@Before
@@ -134,7 +125,7 @@ public class SARLHiddenTokenSequencerTest {
 	 */
 	public static class AgentComments extends AbstractTokenSequencerTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SarlAgent agent;
 		
 		@Before
@@ -167,7 +158,7 @@ public class SARLHiddenTokenSequencerTest {
 	 */
 	public static class EventComments extends AbstractTokenSequencerTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SarlEvent event;
 		
 		@Before
@@ -200,7 +191,7 @@ public class SARLHiddenTokenSequencerTest {
 	 */
 	public static class BehaviorComments extends AbstractTokenSequencerTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SarlBehavior behavior;
 		
 		@Before
@@ -233,7 +224,7 @@ public class SARLHiddenTokenSequencerTest {
 	 */
 	public static class CapacityComments extends AbstractTokenSequencerTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SarlCapacity capacity;
 		
 		@Before
@@ -266,7 +257,7 @@ public class SARLHiddenTokenSequencerTest {
 	 */
 	public static class SkillComments extends AbstractTokenSequencerTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SarlSkill skill;
 		
 		@Before
@@ -299,7 +290,7 @@ public class SARLHiddenTokenSequencerTest {
 	 */
 	public static class ValueComments extends AbstractMemberTokenSequencerTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SarlField field;
 		
 		@Before
@@ -332,7 +323,7 @@ public class SARLHiddenTokenSequencerTest {
 	 */
 	public static class VariableComments extends AbstractMemberTokenSequencerTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SarlField field;
 		
 		@Before
@@ -365,7 +356,7 @@ public class SARLHiddenTokenSequencerTest {
 	 */
 	public static class ActionComments extends AbstractMemberTokenSequencerTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SarlAction action;
 		
 		@Before
@@ -398,7 +389,7 @@ public class SARLHiddenTokenSequencerTest {
 	 */
 	public static class ActionBlockComments extends AbstractMemberTokenSequencerTest {
 
-		@Nullable
+		@NonNullByDefault
 		private XBlockExpression block;
 		
 		@Before

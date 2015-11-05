@@ -26,6 +26,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.security.InvalidParameterException;
+import java.util.UUID;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Capacity;
@@ -33,14 +42,6 @@ import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.UnimplementedCapacityException;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
-import java.security.InvalidParameterException;
-import java.util.UUID;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
  * @author $Author: sgalland$
@@ -50,9 +51,10 @@ import org.mockito.Mockito;
  */
 public class AgentTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private UUID id;
-	@Nullable
+
+	@NonNullByDefault
 	private AgentMock agent;
 
 	private static Address mockAddress(UUID agentID) {
@@ -72,7 +74,7 @@ public class AgentTest extends AbstractSarlTest {
 		try {
 			this.agent.getSkill(c);
 			fail("Expecting the exception UnimplementedCapacityException, but got no exception."); //$NON-NLS-1$
-		} catch (UnimplementedCapacityException _) {
+		} catch (UnimplementedCapacityException exception) {
 			//
 		}
 	}
@@ -134,7 +136,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.setSkill(Capacity1.class, new Skill2());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -142,7 +144,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.setSkill(Capacity1.class, new Skill3());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -158,7 +160,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.setSkill(Capacity2.class, new Skill1());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -166,7 +168,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.setSkill(Capacity2.class, new Skill3());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 	}
@@ -259,7 +261,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.operator_mappedTo(Capacity1.class, new Skill2());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -267,7 +269,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.operator_mappedTo(Capacity1.class, new Skill3());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -282,7 +284,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.operator_mappedTo(Capacity2.class, new Skill1());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -290,7 +292,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.operator_mappedTo(Capacity2.class, new Skill3());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 	}

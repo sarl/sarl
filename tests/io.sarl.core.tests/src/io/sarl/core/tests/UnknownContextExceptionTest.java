@@ -20,16 +20,16 @@
  */
 package io.sarl.core.tests;
 
+import static org.junit.Assert.assertSame;
+
 import java.util.UUID;
 
-import io.sarl.core.UnknownContextException;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import io.sarl.core.UnknownContextException;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -39,10 +39,10 @@ import static org.junit.Assert.*;
  */
 public class UnknownContextExceptionTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private UUID id;
 
-	@Nullable
+	@NonNullByDefault
 	private UnknownContextException exception;
 
 	/**

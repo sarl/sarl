@@ -19,6 +19,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.spy;
 
+import java.util.Arrays;
+import java.util.Map;
+
+import com.google.common.collect.Maps;
+import com.google.inject.Inject;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.xtext.serializer.ISerializer;
+import org.junit.Before;
+import org.junit.Test;
+
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
@@ -29,20 +42,7 @@ import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.Nullable;
 import io.sarl.tests.api.TestClasspath;
-
-import java.util.Arrays;
-import java.util.Map;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.xtext.serializer.ISerializer;
-import org.junit.Before;
-import org.junit.Test;
-import com.google.common.collect.Maps;
-import com.google.inject.Inject;
 
 /**
  * @author $Author: sgalland$
@@ -53,7 +53,7 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class Bug277 extends AbstractSarlUiTest {
 
-	@Nullable
+	@NonNullByDefault
 	private SARLEclipsePlugin plugin;
 	
 	@Inject

@@ -554,7 +554,7 @@ public class ECoreGeneratorHelper {
 						}
 					}
 				}
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				//
 			} finally {
 				resourceSet.getResources().remove(resource);

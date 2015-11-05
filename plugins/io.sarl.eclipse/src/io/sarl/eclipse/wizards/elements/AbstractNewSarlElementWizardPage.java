@@ -225,7 +225,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 						return true;
 					}
 				}
-			} catch (JavaModelException _) {
+			} catch (JavaModelException exception) {
 				// silent error
 			}
 		}
@@ -317,14 +317,14 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		try {
 			getRootSuperType();
 			reinitSuperClass();
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			//
 		}
 		//
 		try {
 			getRootSuperInterface();
 			reinitSuperInterfaces();
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			//
 		}
 		//
@@ -420,7 +420,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 						IStatus.ERROR, MessageFormat.format(
 						getMissedSuperInterfaceErrorMessage(),
 						getRootSuperInterface().getFullyQualifiedName())));
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				//
 			}
 		}
@@ -480,7 +480,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 							IStatus.ERROR, MessageFormat.format(
 							getMissedSuperInterfaceErrorMessage(),
 							getRootSuperInterface().getFullyQualifiedName())));
-				} catch (Throwable _) {
+				} catch (Throwable exception) {
 					//
 				}
 			}

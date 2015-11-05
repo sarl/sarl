@@ -51,7 +51,7 @@ public final class Utilities {
 		if (!Strings.isNullOrEmpty(version)) {
 			try {
 				return Version.parseVersion(version);
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				//
 			}
 		}

@@ -33,19 +33,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Jdt2Ecore;
-import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
-import io.sarl.lang.actionprototype.FormalParameterProvider;
-import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
-import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
-import io.sarl.lang.sarl.SarlFormalParameter;
-import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.Nullable;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
@@ -54,8 +41,14 @@ import java.util.Set;
 
 import javax.annotation.Generated;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.google.inject.Inject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IField;
@@ -68,7 +61,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
-import org.eclipse.xtext.xbase.XExpression;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,11 +70,18 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.inject.Inject;
+
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
+import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.FormalParameterProvider;
+import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
+import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
+import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 /**
  * @author $Author: sgalland$
@@ -364,7 +363,7 @@ public class Jdt2EcoreTest {
 	 */
 	public static class FindType extends AbstractSarlUiTest {
 
-		@Nullable
+		@NonNullByDefault
 		private IJavaProject project;
 
 		@Before
@@ -408,7 +407,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class DefaultpackageDefaultpackageNosubtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -474,7 +473,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class DefaultpackageDefaultpackageSubtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -540,7 +539,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class DefaultpackagePackage1Nosubtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -606,7 +605,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class DefaultpackagePackage1Subtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -672,7 +671,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class Package1Package1Nosubtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -738,7 +737,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class Package1Package1Subtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -804,7 +803,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class Package1Package2Nosubtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -870,7 +869,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class Package1Package2Subtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -1229,25 +1228,25 @@ public class Jdt2EcoreTest {
 	 */
 	public static class PopulateInheritanceContext extends AbstractSarlUiTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SARLEclipsePlugin plugin;
 		
 		@Inject
 		private ActionPrototypeProvider sarlSignatureProvider;
 
-		@Nullable
+		@NonNullByDefault
 		private Map<ActionPrototype, IMethod> finalOperations;
 
-		@Nullable
+		@NonNullByDefault
 		private Map<ActionPrototype, IMethod> overridableOperations;
 
-		@Nullable
+		@NonNullByDefault
 		private Map<String, IField> inheritedFields;
 
-		@Nullable
+		@NonNullByDefault
 		private Map<ActionPrototype, IMethod> operationsToImplement;
 
-		@Nullable
+		@NonNullByDefault
 		private Map<ActionParameterTypes, IMethod> superConstructors;
 
 		private void ensureEclipsePlugin() {

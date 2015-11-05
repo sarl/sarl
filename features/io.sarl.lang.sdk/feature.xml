@@ -224,25 +224,23 @@ integrated tools for the Eclipse IDE.
 
    <requires>
       <import plugin="io.sarl.lang.core" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.equinox.common" version="3.7.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.mwe2.launch" version="2.8.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.10.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.core" version="2.8.4" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.generator" version="2.8.4" match="greaterOrEqual"/>
-      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.osgi" version="3.10.101" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.common" version="3.7.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.lang" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.core" version="3.11.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.ui" version="3.11.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.compare" version="3.5.600" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtend.ide" version="2.8.4" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.builder" version="2.8.4" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.common.types.ui" version="2.8.4" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui" version="2.8.4" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui.codetemplates.ui" version="2.8.4" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui.shared" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui.codetemplates.ui" version="2.8.4" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.ui" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.builder" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.ide" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.common.types.ui" version="2.8.4" match="greaterOrEqual"/>
+      <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.11.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.11.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.compare" version="3.5.600" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.8.4" match="greaterOrEqual"/>
-      <import plugin="javax.inject"/>
+      <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

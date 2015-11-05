@@ -373,7 +373,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			// Check version number
 			try {
 				Version.parseVersion(newVersion);
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				return;
 			}
 		}
@@ -399,7 +399,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			// Check version number
 			try {
 				Version.parseVersion(newVersion);
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				return;
 			}
 		}

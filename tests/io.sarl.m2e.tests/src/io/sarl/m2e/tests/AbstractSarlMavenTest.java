@@ -25,47 +25,38 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.junit.Assume;
-
-import org.junit.ComparisonFailure;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.xtext.ui.util.PluginProjectFactory;
-import com.google.common.base.Strings;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Provider;
-import org.apache.maven.artifact.Artifact;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.internal.MavenPluginActivator;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.xtext.junit4.ui.util.JavaProjectSetupUtil;
 import org.eclipse.xtext.ui.XtextProjectHelper;
+import org.eclipse.xtext.ui.util.PluginProjectFactory;
 import org.eclipse.xtext.xbase.compiler.JavaVersion;
-import org.junit.Before;
-import org.junit.Test;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
+import org.junit.Assume;
+import org.junit.ComparisonFailure;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.lang.SARLConfig;
 import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.Nullable;
 import io.sarl.tests.api.WorkbenchTestHelper;
 import io.sarl.tests.api.WorkbenchTestHelper.ProjectCreator;
 
@@ -127,7 +118,7 @@ public abstract class AbstractSarlMavenTest extends AbstractSarlUiTest {
 				}
 				markerText.append(markerMsg);
 				markerText.append("\n");
-			} catch (CoreException _) {
+			} catch (CoreException exception) {
 				//
 			}
 		}
@@ -152,7 +143,7 @@ public abstract class AbstractSarlMavenTest extends AbstractSarlUiTest {
 				}
 				markerText.append(markerMsg);
 				markerText.append("\n");
-			} catch (CoreException _) {
+			} catch (CoreException exception) {
 				//
 			}
 		}
@@ -170,7 +161,7 @@ public abstract class AbstractSarlMavenTest extends AbstractSarlUiTest {
 				if (ids.contains(marker.getType())) {
 					return true;
 				}
-			} catch (CoreException _) {
+			} catch (CoreException exception) {
 				//
 			}
 		}
@@ -239,7 +230,7 @@ public abstract class AbstractSarlMavenTest extends AbstractSarlUiTest {
 		private Injector injector;
 
 		@Inject
-		@Nullable
+		@NonNullByDefault
 		private JavaVersion javaVersion;
 
 		@Override

@@ -40,7 +40,7 @@ public class SARLSpecCreator extends AbstractSpecCreator {
 
 	private Injector injector;
 
-	private final SARLInjectorProvider injectorProvider = new SARLInjectorProvider();
+	private final IInjectorProvider injectorProvider = new SARLInjectorProvider();
 
 	@Override
 	protected <T> T create(Class<T> klass) {

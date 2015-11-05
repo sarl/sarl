@@ -1146,7 +1146,7 @@ public class SARLParser {
 		}
 		Object value = result.getResult();
 		if (value == null) {
-			return null;
+			return resultType.cast(null);
 		}
 		if (resultType.isInstance(value)) {
 			return resultType.cast(value);
@@ -1154,7 +1154,7 @@ public class SARLParser {
 		fail("Invalid type. Expected: " //$NON-NLS-1$
 				+ resultType.getName() + ", but was: " //$NON-NLS-1$
 				+ value.getClass().getName());
-		return null;
+		return resultType.cast(null);
 	}
 
 	/** Evaluate a byte expression and reply the result.

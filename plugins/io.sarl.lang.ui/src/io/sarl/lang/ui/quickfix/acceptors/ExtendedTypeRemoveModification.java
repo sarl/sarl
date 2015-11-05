@@ -85,7 +85,7 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 				if (!Strings.isNullOrEmpty(mode)) {
 					try {
 						removalType = RemovalType.valueOf(mode.toUpperCase());
-					} catch (Throwable _) {
+					} catch (Throwable exception) {
 						//
 					}
 				}

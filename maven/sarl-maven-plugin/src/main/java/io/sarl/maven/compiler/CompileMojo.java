@@ -50,7 +50,7 @@ public class CompileMojo extends AbstractSarlMojo {
 
 	/** Version of the Java specification used for the source files.
 	 */
-	@Parameter(defaultValue = "1.7", required = false)
+	@Parameter(defaultValue = "1.8", required = false)
 	protected String source;
 
 	/** Version of the Java specification used for the output files.

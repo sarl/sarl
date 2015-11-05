@@ -20,14 +20,19 @@
  */
 package io.sarl.lang.tests.actionprototype;
 
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.tests.api.Nullable;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
 
 /**
  * @author $Author: sgalland$
@@ -38,10 +43,10 @@ import static org.junit.Assert.*;
 @SuppressWarnings("all")
 public class ActionPrototypeTest {
 
-	@Nullable
+	@NonNullByDefault
 	private ActionParameterTypes parameters;
 
-	@Nullable
+	@NonNullByDefault
 	private ActionPrototype prototype;
 
 	@Before

@@ -703,7 +703,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			int width = -1;
 			try {
 				width = settings.getInt(ID + ".columnWidth" + i); //$NON-NLS-1$
-			} catch (NumberFormatException _) {
+			} catch (NumberFormatException exception) {
 				//
 			}
 
@@ -733,7 +733,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 					this.sortColumn = Column.NAME;
 				}
 			}
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			//
 		}
 		switch (this.sortColumn) {

@@ -20,20 +20,22 @@
  */
 package io.sarl.eclipse.tests.navigator;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.UUID;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.swt.graphics.Image;
+import org.junit.Before;
+import org.junit.Test;
 
 import io.sarl.eclipse.navigator.ISARLProjectElement;
 import io.sarl.eclipse.navigator.LabelProvider;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
-import org.eclipse.swt.graphics.Image;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author $Author: sgalland$
@@ -44,7 +46,7 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class LabelProviderTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private LabelProvider provider;
 
 	@Before

@@ -198,7 +198,7 @@ public final class SpecificationTools {
 			URL fileURL;
 			try {
 				fileURL = new URL(url);
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				fileURL = new URL("file:" + url); //$NON-NLS-1$
 			}
 			if ("file".equalsIgnoreCase(fileURL.getProtocol())) { //$NON-NLS-1$
@@ -211,7 +211,7 @@ public final class SpecificationTools {
 					return true;
 				}
 			}
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			//
 		}
 		return false;
@@ -268,7 +268,7 @@ public final class SpecificationTools {
 					try {
 						source.getClass().getMethod(operationNameStr);
 						return true;
-					} catch (Throwable _) {
+					} catch (Throwable exception) {
 						// Failure
 					}
 				}
@@ -276,7 +276,7 @@ public final class SpecificationTools {
 				return false;
 			}
 			return true;
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			return false;
 		}
 	}
@@ -299,7 +299,7 @@ public final class SpecificationTools {
 		try {
 			ReflectionUtil.forName(resolvedPath);
 			return true;
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			return false;
 		}
 	}
@@ -413,7 +413,7 @@ public final class SpecificationTools {
 				format = new SimpleDateFormat(dateFormat);
 			}
 			return format.parse(actual) != null;
-		} catch (Throwable _)  {
+		} catch (Throwable exception)  {
 			//
 		}
 		return false;
@@ -462,13 +462,13 @@ public final class SpecificationTools {
 			if (isValidURL(u, requiredSchemes)) {
 				try (InputStream is = u.openStream()) {
 					is.read();
-				} catch (Throwable _) {
+				} catch (Throwable exception) {
 					Logger.getLogger(SpecificationTools.class.getName()).warning("Unable to connect to: " //$NON-NLS-1$
 							+ u);
 				}
 				return true;
 			}
-		} catch (Throwable _)  {
+		} catch (Throwable exception)  {
 			//
 		}
 		return false;
@@ -494,7 +494,7 @@ public final class SpecificationTools {
 				format = new DecimalFormat(numberFormat);
 			}
 			return format.parse(actual) != null;
-		} catch (Throwable _)  {
+		} catch (Throwable exception)  {
 			//
 		}
 		return false;
@@ -552,7 +552,7 @@ public final class SpecificationTools {
 		} else {
 			try {
 				b =  new Boolean(expected.toString());
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				return false;
 			}
 		}
@@ -575,7 +575,7 @@ public final class SpecificationTools {
 		} else {
 			try {
 				number = NumberFormat.getInstance().parse(expected.toString());
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				return false;
 			}
 		}
@@ -691,13 +691,13 @@ public final class SpecificationTools {
 				String paramText;
 				try {
 					paramText = matcher.group(2).trim();
-				} catch (Throwable _) {
+				} catch (Throwable exception) {
 					paramText = ""; //$NON-NLS-1$
 				}
 				String returnText;
 				try {
 					returnText = matcher.group(3).trim();
-				} catch (Throwable _) {
+				} catch (Throwable exception) {
 					returnText = ""; //$NON-NLS-1$
 				}
 				String[] params;
@@ -749,7 +749,7 @@ public final class SpecificationTools {
 				String fieldType;
 				try {
 					fieldType = matcher.group(2).trim();
-				} catch (Throwable _) {
+				} catch (Throwable exception) {
 					fieldType = ""; //$NON-NLS-1$
 				}
 				Field field = type.getDeclaredField(fieldName);
@@ -837,7 +837,7 @@ public final class SpecificationTools {
 				if (group != null && !group.isEmpty()) {
 					try {
 						minor = Integer.parseInt(group);
-					} catch (Exception _) {
+					} catch (Exception exception) {
 						//
 					}
 				}
@@ -846,7 +846,7 @@ public final class SpecificationTools {
 				if (group != null && !group.isEmpty()) {
 					try {
 						micro = Integer.parseInt(group);
-					} catch (Exception _) {
+					} catch (Exception exception) {
 						//
 					}
 				}
@@ -859,7 +859,7 @@ public final class SpecificationTools {
 					return v;
 				}
 			}
-		} catch (Exception _) {
+		} catch (Exception exception) {
 			//
 		}
 		return defaultVersion;
@@ -962,7 +962,7 @@ public final class SpecificationTools {
 				String value = props.getProperty(propertyName, null);
 				return value != null;
 			}
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			//
 		}
 		return false;
@@ -983,7 +983,7 @@ public final class SpecificationTools {
 					String value = props.getProperty(property.getKey(), null);
 					return (Objects.equals(value, property.getValue()));
 				}
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				//
 			}
 		}
@@ -1007,7 +1007,7 @@ public final class SpecificationTools {
 					return FileSystem.toJarURL(url, filename);
 				}
 			}
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			//
 		}
 		return null;
@@ -1041,7 +1041,7 @@ public final class SpecificationTools {
 			try {
 				this.obj = Array.get(this.array, this.index);
 				++this.index;
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				this.obj = null;
 			}
 		}
