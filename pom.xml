@@ -8,7 +8,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 
 	<name>SARL Agent Oriented Programming Language</name>
-	<url>${sarl.url}</url>
+	<url>${sarlUrl}</url>
 	<inceptionYear>2014</inceptionYear>
 
 	<packaging>pom</packaging>
@@ -38,7 +38,7 @@
 			and documentation) -->
 		<year>2015</year>
 		<!-- URL of the SARL project (use in POM, Eclipse about and documentation) -->
-		<sarl.url>http://www.sarl.io</sarl.url>
+		<sarlUrl>http://www.sarl.io</sarlUrl>
 		<!-- Default encoding of the source files -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Java Configuration -->
@@ -56,6 +56,14 @@
 		<afc.version>12.0</afc.version>
 		<!-- Version of the Guava API -->
 		<guava.version>18.0</guava.version>
+		<!-- The following properties are overridden by the Groovy script below.
+			 They are defined at the location for ensuring that the Eclipse IDE
+			 will have a value defined (since it may not execute the Groovy script). -->
+		<sarlspecificationreleaseversion>0.0</sarlspecificationreleaseversion>
+		<sarlreleaseversion>${project.version}</sarlreleaseversion>
+		<sarlspecificationreleasedate>0000-00-00</sarlspecificationreleasedate>
+		<sarlspecificationreleasestatus>Draft Release</sarlspecificationreleasestatus>
+		<janusversion>0.0.0.0</janusversion>
 	</properties>
 
 	<!-- ======================================= -->
@@ -64,7 +72,7 @@
 
 	<organization>
 		<name>SARL Consortium</name>
-		<url>${sarl.url}</url>
+		<url>${sarlUrl}</url>
 	</organization>
 
 	<licenses>
@@ -101,8 +109,12 @@
 					<configuration>
 						<source>${compiler.level}</source>
 						<target>${compiler.level}</target>
+						<testSource>${compiler.level}</testSource>
+						<testTarget>${compiler.level}</testTarget>
 						<encoding>${project.build.sourceEncoding}</encoding>
-					</configuration>
+						<showDeprecation>false</showDeprecation>
+                     	<showWarnings>false</showWarnings>
+                     </configuration>
 				</plugin>
 
 				<plugin>

@@ -15,11 +15,11 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.SarlSkill#getExtends <em>Extends</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.SarlSkill#getImplements <em>Implements</em>}</li>
  * </ul>
- * </p>
  *
  * @see io.sarl.lang.sarl.SarlPackage#getSarlSkill()
  * @model

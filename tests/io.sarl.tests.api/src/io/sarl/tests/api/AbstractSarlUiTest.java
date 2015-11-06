@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import org.eclipse.xtext.ui.util.PluginProjectFactory;
 import com.google.inject.Provider;
 import com.google.inject.Binder;
@@ -42,6 +40,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -163,7 +162,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				binder.bind(JavaVersion.class).toProvider(new Provider<JavaVersion>() {
 					@Override
 					public JavaVersion get() {
-						return null;
+						return JavaVersion.JAVA8;
 					}
 				});
 			}

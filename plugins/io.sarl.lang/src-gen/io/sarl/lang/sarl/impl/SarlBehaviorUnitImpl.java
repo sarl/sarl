@@ -25,12 +25,12 @@ import org.eclipse.xtext.xbase.XExpression;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlBehaviorUnitImpl#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlBehaviorUnitImpl#getGuard <em>Guard</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlBehaviorUnitImpl#getExpression <em>Expression</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

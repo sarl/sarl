@@ -15,11 +15,14 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>.</directory>
+				<directory>aboutfeature</directory>
 				<filtering>true</filtering>
-				<includes>
-					<include>about.mappings</include>
-				</includes>
+				<targetPath>.</targetPath>
+			</resource>
+			<resource>
+				<directory>OSGI-INF/l10n</directory>
+				<filtering>true</filtering>
+				<targetPath>OSGI-INF/l10n</targetPath>
 			</resource>
 		</resources>
 		<plugins>

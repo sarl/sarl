@@ -23,10 +23,10 @@ import org.eclipse.xtext.xbase.XExpression;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlFormalParameterImpl#getDefaultValue <em>Default Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

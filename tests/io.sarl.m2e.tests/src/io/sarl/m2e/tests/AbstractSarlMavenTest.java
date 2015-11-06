@@ -181,7 +181,7 @@ public abstract class AbstractSarlMavenTest extends AbstractSarlUiTest {
 				binder.bind(JavaVersion.class).toProvider(new Provider<JavaVersion>() {
 					@Override
 					public JavaVersion get() {
-						return null;
+						return JavaVersion.JAVA8;
 					}
 				});
 			}

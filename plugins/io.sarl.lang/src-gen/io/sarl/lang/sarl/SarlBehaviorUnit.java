@@ -15,12 +15,12 @@ import org.eclipse.xtext.xbase.XExpression;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.SarlBehaviorUnit#getName <em>Name</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.SarlBehaviorUnit#getGuard <em>Guard</em>}</li>
  *   <li>{@link io.sarl.lang.sarl.SarlBehaviorUnit#getExpression <em>Expression</em>}</li>
  * </ul>
- * </p>
  *
  * @see io.sarl.lang.sarl.SarlPackage#getSarlBehaviorUnit()
  * @model

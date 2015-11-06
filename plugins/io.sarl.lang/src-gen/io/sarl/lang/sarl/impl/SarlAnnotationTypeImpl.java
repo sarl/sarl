@@ -13,8 +13,6 @@ import org.eclipse.xtend.core.xtend.impl.XtendAnnotationTypeImplCustom;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Annotation Type</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */

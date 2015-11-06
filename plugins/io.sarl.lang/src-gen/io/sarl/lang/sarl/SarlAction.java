@@ -15,10 +15,10 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.SarlAction#getFiredEvents <em>Fired Events</em>}</li>
  * </ul>
- * </p>
  *
  * @see io.sarl.lang.sarl.SarlPackage#getSarlAction()
  * @model

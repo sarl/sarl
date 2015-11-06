@@ -646,17 +646,20 @@ public final class SARLRuntime {
 				config = parseXML(rawXml, true);
 			} else {
 				// Otherwise, look for the old file that previously held the SRE definitions
-				IPath stateLocation = SARLEclipsePlugin.getDefault().getStateLocation();
-				IPath stateFile = stateLocation.append("sreConfiguration.xml"); //$NON-NLS-1$
-				File file = stateFile.toFile();
-				if (file.exists()) {
-					// If file exists, load SRE definitions from it into memory and
-					// write the definitions to the preference store WITHOUT triggering
-					// any processing of the new value
-					try (InputStream fileInputStream = new BufferedInputStream(new FileInputStream(file))) {
-						config = parseXML(fileInputStream, true);
-					} catch (IOException e) {
-						SARLEclipsePlugin.getDefault().log(e);
+				SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
+				if (plugin.getBundle() != null) {
+					IPath stateLocation = plugin.getStateLocation();
+					IPath stateFile = stateLocation.append("sreConfiguration.xml"); //$NON-NLS-1$
+					File file = stateFile.toFile();
+					if (file.exists()) {
+						// If file exists, load SRE definitions from it into memory and
+						// write the definitions to the preference store WITHOUT triggering
+						// any processing of the new value
+						try (InputStream fileInputStream = new BufferedInputStream(new FileInputStream(file))) {
+							config = parseXML(fileInputStream, true);
+						} catch (IOException e) {
+							SARLEclipsePlugin.getDefault().log(e);
+						}
 					}
 				}
 			}

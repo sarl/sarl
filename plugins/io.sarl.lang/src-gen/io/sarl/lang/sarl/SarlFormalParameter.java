@@ -13,10 +13,10 @@ import org.eclipse.xtext.xbase.XExpression;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.SarlFormalParameter#getDefaultValue <em>Default Value</em>}</li>
  * </ul>
- * </p>
  *
  * @see io.sarl.lang.sarl.SarlPackage#getSarlFormalParameter()
  * @model

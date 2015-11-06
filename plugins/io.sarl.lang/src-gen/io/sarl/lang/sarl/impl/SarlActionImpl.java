@@ -27,10 +27,10 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link io.sarl.lang.sarl.impl.SarlActionImpl#getFiredEvents <em>Fired Events</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

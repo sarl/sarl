@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -38,10 +39,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
-
 import org.mockito.internal.matchers.NotNull;
-import org.eclipse.jdt.annotation.Nullable;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
@@ -201,6 +199,20 @@ public abstract class AbstractSarlTest {
 			}
 			return super.apply(base, description);
 		}
+		
+		private boolean isNullable(Field field) {
+			if (field.getAnnotation(Mock.class) != null
+				|| field.getAnnotation(InjectMocks.class) != null) {
+				return true;
+			}
+			for (Annotation annotation : field.getAnnotations()) {
+				if ("Nullable".equals(annotation.annotationType().getSimpleName())
+					|| "NonNullByDefault".equals(annotation.annotationType().getSimpleName())) {
+					return true;
+				}
+			}
+			return true;
+		}
 
 		@Override
 		protected void finished(Description description) {
@@ -208,11 +220,7 @@ public abstract class AbstractSarlTest {
 			Class<?> type = AbstractSarlTest.this.getClass();
 			while (type != null && !Object.class.equals(type)) {
 				for (Field field : type.getDeclaredFields()) {
-					if ((field.getAnnotation(Mock.class) != null
-							|| field.getAnnotation(InjectMocks.class) != null
-							|| field.getAnnotation(Nullable.class) != null
-							|| field.getAnnotation(NonNullByDefault.class) != null)
-							&& (field.getModifiers() & (Modifier.FINAL | Modifier.STATIC)) == 0) {
+					if (isNullable(field) && (field.getModifiers() & (Modifier.FINAL | Modifier.STATIC)) == 0) {
 						boolean isAcc = field.isAccessible();
 						try {
 							field.setAccessible(true);
@@ -229,6 +237,36 @@ public abstract class AbstractSarlTest {
 		}
 		
 	};
+	
+	/** Helpfer for setting a field, even if it is not visible.
+	 *
+	 * @param instance - the object.
+	 * @param fieldType - the type of the field.
+	 * @param fieldName - the name of the field.
+	 * @param fieldValue - the field value.
+	 */
+	public static <T> void setField(Object instance, Class<T> fieldType,
+			String fieldName, T fieldValue) {
+		Field field = null;
+		Class<?> type = instance.getClass();
+		while (type != null) {
+			try {
+				field = type.getDeclaredField(fieldName);
+				assertEquals(fieldType, field.getType());
+				boolean acc = field.isAccessible();
+				try {
+					field.setAccessible(true);
+					field.set(instance, fieldValue);
+					return;
+				} finally {
+					field.setAccessible(acc);
+				}
+			} catch (Throwable exception) {
+				type = type.getSuperclass();
+			}
+		}
+		throw new NoSuchFieldError(fieldName);
+	}
 
 	/** Check if the given value is <code>null</code> or empty.
 	 *

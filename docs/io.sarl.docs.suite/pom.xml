@@ -184,7 +184,7 @@
 					<replacements>
 						<replacement>
 							<token>%website%</token>
-							<value>${sarl.url}</value>
+							<value>${sarlUrl}</value>
 						</replacement>
 						<replacement>
 							<token>%compilerlevel%</token>

@@ -543,6 +543,7 @@ public final class SARLRuntimeTest {
 
 		@Before
 		public void setUp() throws Exception {
+			Bundle mockedBundle = mock(Bundle.class);
 			this.preferences = mock(IEclipsePreferences.class);
 			this.plugin = mock(SARLEclipsePlugin.class);
 			when(this.plugin.getPreferences()).thenReturn(this.preferences);

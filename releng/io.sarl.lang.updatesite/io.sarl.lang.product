@@ -256,6 +256,8 @@
       <feature id="io.sarl.compiler" version="1.0.0.qualifier"/>
       <feature id="io.sarl.ide" version="1.0.0.qualifier"/>
       <feature id="io.sarl.lib" version="1.0.0.qualifier"/>
+      <feature id="org.eclipse.egit" version="4.0.3.201509231615-r"/>
+      <feature id="org.eclipse.epp.mpc" version="1.4.1.v20150916-1928"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.help"/>
       <feature id="org.jboss.tools.m2e.jdt.feature"/>
@@ -263,7 +265,6 @@
       <feature id="org.eclipse.jdt"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
-      <feature id="org.eclipse.egit"/>
       <feature id="org.eclipse.xtend.sdk"/>
       <feature id="org.eclipse.ecf.core.ssl.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
@@ -276,6 +277,7 @@
       <feature id="org.eclipse.ecf.core.feature"/>
       <feature id="org.eclipse.jgit"/>
       <feature id="org.eclipse.equinox.p2.rcp.feature"/>
+      <feature id="org.eclipse.equinox.p2.discovery.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.feature"/>
       <feature id="org.eclipse.xtext.ui"/>
       <feature id="org.eclipse.platform"/>
@@ -283,7 +285,7 @@
    </features>
 
    <configurations>
-      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
@@ -297,7 +299,8 @@
    </repositories>
 
    <preferencesInfo>
-      <targetfile overwrite="false"/>
+      <sourcefile path="/home/sgalland/sarl.epf"/>
+      <targetfile overwrite="false" path="/io.sarl.lang.updatesite/plugin_customization.ini"/>
    </preferencesInfo>
 
    <cssInfo>

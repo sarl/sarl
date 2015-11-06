@@ -11,16 +11,19 @@
 	<groupId>io.sarl.lang</groupId>
 	<artifactId>io.sarl.lang.core</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	<name>Foundation Classes for SARL Language</name>
+	<name>Base Library for the SARL Language</name>
 
 	<build>
 		<resources>
 			<resource>
-				<directory>.</directory>
+				<directory>aboutfeature</directory>
 				<filtering>true</filtering>
-				<includes>
-					<include>about.mappings</include>
-				</includes>
+				<targetPath>.</targetPath>
+			</resource>
+			<resource>
+				<directory>OSGI-INF/l10n</directory>
+				<filtering>true</filtering>
+				<targetPath>OSGI-INF/l10n</targetPath>
 			</resource>
 		</resources>
 		<plugins>

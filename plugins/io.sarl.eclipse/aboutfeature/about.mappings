@@ -6,5 +6,5 @@
 0=${buildId}
 1=${year}
 2=${copyrighters}
-3=${sarl.url}
+3=${sarlUrl}
 

@@ -13,8 +13,6 @@ import org.eclipse.xtend.core.xtend.impl.XtendFieldImplCustom;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Field</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */

@@ -1,4 +1,0 @@
-Follow the tutorial:
-http://www.lorenzobettini.it/2014/02/switching-from-an-inferred-ecore-model-to-an-imported-one-in-your-xtext-grammar/
-
-Additional Ecore elements are:
