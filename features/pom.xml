@@ -14,8 +14,9 @@
 	<name>Eclipse Features Parent</name>
 
 	<modules>
-		<module>io.sarl.lang.sdk</module>
-		<module>io.sarl.sdk</module>
+		<module>io.sarl.lib</module>
+		<module>io.sarl.compiler</module>
+		<module>io.sarl.ide</module>
 	</modules>
 
 	<!-- ======================================= -->

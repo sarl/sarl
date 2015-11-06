@@ -159,11 +159,6 @@
 			<url>http://download.eclipse.org/releases/mars</url>
 		</repository>
 		<repository>
-			<id>org.eclipse.xtext.update.lastest</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</url>
-		</repository>
-		<repository>
 			<id>org.jboss.m2e-jdt-compiler.update.lastest</id>
 			<layout>p2</layout>
 			<url>http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/</url>
