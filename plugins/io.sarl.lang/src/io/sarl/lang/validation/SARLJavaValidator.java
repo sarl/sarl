@@ -73,7 +73,6 @@ import static org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENC
 import static org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES;
-import static org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_TYPE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED;
@@ -149,7 +148,6 @@ import org.eclipse.xtext.xbase.lib.ReassignFirstArgument;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
 import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
-import org.eclipse.xtext.xbase.util.XExpressionHelper;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 
 import io.sarl.lang.SARLLangActivator;
@@ -326,9 +324,6 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 
 	@Inject
 	private SARLGrammarAccess grammarAccess;
-
-	@Inject
-	private XExpressionHelper expressionHelper;
 
 	@Inject
 	private TypeReferences typeReferences;
@@ -1215,14 +1210,15 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	public void checkBehaviorUnitGuardType(SarlBehaviorUnit behaviorUnit) {
 		XExpression guard = behaviorUnit.getGuard();
 		if (guard != null) {
-			if (this.expressionHelper.hasSideEffects(guard)) {
+			// FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=481864
+			/*if (this.expressionHelper.hasSideEffects(guard)) {
 				error(Messages.SARLJavaValidator_18,
 						guard,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 						INVALID_INNER_EXPRESSION);
 				return;
-			}
+			}*/
 			if (guard instanceof XBooleanLiteral) {
 				XBooleanLiteral booleanLiteral = (XBooleanLiteral) guard;
 				if (booleanLiteral.isIsTrue()) {

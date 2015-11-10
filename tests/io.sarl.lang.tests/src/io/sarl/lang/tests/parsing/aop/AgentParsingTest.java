@@ -30,6 +30,7 @@ import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -578,6 +579,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Ignore("https://bugs.eclipse.org/bugs/show_bug.cgi?id=481864")
 		public void synchronizedGuard() throws Exception {
 			SarlScript mas = file(multilineString(
 					"event E {}",
@@ -722,6 +724,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Ignore("https://bugs.eclipse.org/bugs/show_bug.cgi?id=481864")
 		public void invalidBehaviorUnit_SideEffect0() throws Exception {
 			SarlScript mas = file(multilineString(
 					"event E1",
@@ -730,7 +733,6 @@ public class AgentParsingTest {
 					"on E1 [t += 5] {",
 					"}"
 					));
-
 			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXBinaryOperation(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
@@ -739,6 +741,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Ignore("https://bugs.eclipse.org/bugs/show_bug.cgi?id=481864")
 		public void invalidBehaviorUnit_SideEffect1() throws Exception {
 			SarlScript mas = file(multilineString(
 					"event E1",
@@ -747,7 +750,6 @@ public class AgentParsingTest {
 					"on E1 [(t += 5) > 0] {",
 					"}"
 					));
-
 			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXBinaryOperation(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
