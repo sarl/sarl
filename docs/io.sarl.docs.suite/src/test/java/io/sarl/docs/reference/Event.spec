@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors and authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -431,14 +431,11 @@ describe "Event Reference"{
 				 *     <li>`package`: the behavior is accessible from only the types in the same package.</li>
 				 *     </ul></li>
 				 * <li>`final`: avoid to be derived.</li>
-				 * <li>
+				 * </ul>
 				 *
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
 				 */
 				fact "Behavior Modifiers" {
-					// Test URL in the enclosing section text.
-					"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
-					//
 					'''
 						public event Example1 {
 						}
@@ -451,6 +448,8 @@ describe "Event Reference"{
 						// TEXT
 						""
 					)
+					// Test URL in the enclosing section text.
+					"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
 				}
 	
 				/** The modifiers for the fields in a n event are: <ul>

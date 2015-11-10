@@ -43,14 +43,14 @@ describe "SARL Syntax FAQ" {
 			 * be specify also, even if these parts are equal
 			 * to zero.
 			 * 
-			 * @filter(.* = '''|'''|.parsesWithError.*) 
+			 * @filter(.* = '''|'''|.parseWithError.*) 
 			 */
 			fact "Can I use the same syntax as in Java for number literals?" {
 				'''
-					124.0 // Correct syntax
-					124.  // Incorrect syntax
-					0.123 // Correct syntax
-					.123  // Incorrect syntax
+					var a = 123.0 // Correct syntax
+					var b = 123.  // Incorrect syntax
+					var c = 0.123 // Correct syntax
+					var d = .123  // Incorrect syntax
 				'''.parseWithError(
 						"package io.sarl.docs.faq.syntax
 						agent A {

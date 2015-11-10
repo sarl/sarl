@@ -56,14 +56,6 @@
 		<afc.version>12.0</afc.version>
 		<!-- Version of the Guava API -->
 		<guava.version>18.0</guava.version>
-		<!-- The following properties are overridden by the Groovy script below.
-			 They are defined at the location for ensuring that the Eclipse IDE
-			 will have a value defined (since it may not execute the Groovy script). -->
-		<sarlspecificationreleaseversion>0.0</sarlspecificationreleaseversion>
-		<sarlreleaseversion>${project.version}</sarlreleaseversion>
-		<sarlspecificationreleasedate>0000-00-00</sarlspecificationreleasedate>
-		<sarlspecificationreleasestatus>Draft Release</sarlspecificationreleasestatus>
-		<janusversion>0.0.0.0</janusversion>
 	</properties>
 
 	<!-- ======================================= -->

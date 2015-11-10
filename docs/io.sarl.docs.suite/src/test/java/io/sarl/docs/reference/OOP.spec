@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors and authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -358,7 +358,7 @@ describe "Basic Object-Oriented Programming Support" {
 			 * <li>`abstract`: the class is abstract and cannot be instanced.</li>
 			 * <li>`final`: avoid to be derived.</li>
 			 * <li>`strictfp`: avoid the methods of the class to use intermediate floating number formats.</li>
-			 * <li>
+			 * </ul>
 			 *
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
@@ -395,7 +395,7 @@ describe "Basic Object-Oriented Programming Support" {
 			 * <li>`final`: avoid to be derived.</li>
 			 * <li>`static`: the inner class do not have access to the non-static members of the enclosing type.</li>
 			 * <li>`strictfp`: avoid the methods of the class to use intermediate floating number formats.</li>
-			 * <li>
+			 * </ul>
 			 *
 			 * <note>Terminology: Nested classes are divided into two categories: static and non-static.
 			 * Nested classes that are declared static are called <i>static nested classes</i>.
@@ -918,7 +918,7 @@ describe "Basic Object-Oriented Programming Support" {
 			 *     </ul></li>
 			 * <li>`abstract`: the interface is abstract (not needed since all the interfaces are abstract).</li>
 			 * <li>`strictfp`: avoid the methods of the implementing classes to use intermediate floating number formats.</li>
-			 * <li>
+			 * </ul>
 			 *
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
@@ -952,7 +952,7 @@ describe "Basic Object-Oriented Programming Support" {
 			 * <li>`abstract`: the interface is abstract (not needed since all the interfaces are abstract).</li>
 			 * <li>`static`: the inner interface do not have access to the non-static members of the enclosing type.</li>
 			 * <li>`strictfp`: avoid the methods of the interface to use intermediate floating number formats.</li>
-			 * <li>
+			 * </ul>
 			 *
 			 * <note>Terminology: Nested interfaces are divided into two categories: static and non-static.
 			 * Nested interfaces that are declared static are called <i>static nested interfaces</i>.
@@ -1096,7 +1096,7 @@ describe "Basic Object-Oriented Programming Support" {
 			 *     <li>`public`:  the class is accessible from any other type;</li>
 			 *     <li>`package`: the class is accessible from only the types in the same package.</li>
 			 *     </ul></li>
-			 * <li>
+			 * </ul>
 			 *
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
@@ -1126,7 +1126,7 @@ describe "Basic Object-Oriented Programming Support" {
 			 *     <li>`private`: the enumeration is accessible only within its class.</li>
 			 *     </ul></li>
 			 * <li>`static`: the inner enumeration do not have access to the non-static members of the enclosing type.</li>
-			 * <li>
+			 * </ul>
 			 *
 			 * <note>Terminology: Nested enumerations are divided into two categories: static and non-static.
 			 * Nested enumerations that are declared static are called <i>static nested enumerations</i>.
@@ -1241,7 +1241,7 @@ describe "Basic Object-Oriented Programming Support" {
 			 *     <li>`package`: the annotation type is accessible from only the types in the same package.</li>
 			 *     </ul></li>
 			 * <li>`abstract`: the annotation type is abstract and cannot be instanced.</li>
-			 * <li>
+			 * </ul>
 			 *
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
@@ -1272,7 +1272,7 @@ describe "Basic Object-Oriented Programming Support" {
 			 *     </ul></li>
 			 * <li>`abstract`: the annotation type is abstract and cannot be instanced.</li>
 			 * <li>`static`: the inner annotation type do not have access to the non-static members of the enclosing type.</li>
-			 * <li>
+			 * </ul>
 			 *
 			 * <note>Terminology: Nested annotation types are divided into two categories: static and non-static.
 			 * Nested annotation types that are declared static are called <i>static nested annotation types</i>.

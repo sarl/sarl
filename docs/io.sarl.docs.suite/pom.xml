@@ -170,7 +170,6 @@
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
 							<basedir>${project.basedir}/src/test/generated-sources/xtend</basedir>
-							<outputDir>.</outputDir>
 							<includes>
 								<include>**/*Spec.java</include>
 								<include>**/*Feature.java</include>
@@ -242,6 +241,10 @@
 							<token>%copyrighters%</token>
 							<value>${copyrighters}</value>
 						</replacement>
+						<replacement>
+							<token>&lt;table&gt;</token>
+							<value>&lt;table class="table-bordered"&gt;</value>
+						</replacement>
 					</replacements>
 				</configuration>
 			</plugin>
@@ -299,6 +302,7 @@
 						<sourceDirectory>${project.basedir}/target/generated-test-sources/reports-jnario</sourceDirectory>
 					</configuration>
 				</plugin>
+
 				<plugin>
 					<groupId>io.sarl.maven</groupId>
 					<artifactId>io.sarl.maven.docs.generator</artifactId>

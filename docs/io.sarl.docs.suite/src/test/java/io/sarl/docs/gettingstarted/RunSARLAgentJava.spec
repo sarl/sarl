@@ -46,20 +46,7 @@ describe "Run SARL Agent from a Java Program" {
 	 * permits to launch Janus programmatically.
 	 * 
 	 * <p>Let consider you want to launch your agent, defined in the `MyAgent` class.
-	 * The following Java code gives you an example of how to launch this agent in Janus.
-	 * 
-	 *     import io.sarl.lang.core.Agent;
-	 *     import io.janusproject.Boot;
-	 *     import myprogram.MyAgent;
-	 *     public class MyProgram {
-	 *         public static void main(String[] args) {
-	 *             Class<? extends Agent> agentType = MyAgent.class;
-	 *             Boot.startJanus(
-	 *                 null,
-	 *                 agentType,
-	 *                 args);
-	 *         }
-	 *     }
+	 * The following SARL code gives you an example of how to launch this agent in Janus.
 	 * 
 	 * <p>The first parameter of the `startJanus` function is the injection module to use.
 	 * When passing `null`, the Janus platform is using the default injection module.
@@ -74,10 +61,21 @@ describe "Run SARL Agent from a Java Program" {
 	 * <importantnode>The Janus platform enables to launch a single agent at start-up.
 	 * If you want to launch more agents, please read the next section.</importantnote>
 	 * 
-	 * @filter(.*)
+	 * @filter(.* = '''|'''|.parse.*) 
 	 */
 	fact "Boot of Janus" {
-		true
+		'''
+			import io.janusproject.Boot
+			import myprogram.MyAgent
+			class MyProgram {
+			 	static def main(args : String[]) : void {
+					Boot::startJanus(
+						null,
+						typeof(MyAgent),
+						args)
+				}
+			}
+		'''.parse
 	} 
 
 	/* In  the case you want to launch more than one agent programmatically,
@@ -87,22 +85,8 @@ describe "Run SARL Agent from a Java Program" {
 	 * <p>The `Kernel` type provides the `spawn` function, which permits launching
 	 * an agent programmatically.
 	 * 
-	 * <p>The previous example could be updated for launching two agents of the same type:
-	 * 
-	 *     import io.sarl.lang.core.Agent;
-	 *     import io.janusproject.Boot;
-	 *     import io.janusproject.kernel.Kernel;
-	 *     import myprogram.MyAgent;
-	 *     public class MyProgram {
-	 *         public static void main(String[] args) {
-	 *             Class<? extends Agent> agentType = MyAgent.class;
-	 *             Kernel janusKernel = Boot.startJanus(
-	 *                 null,
-	 *                 agentType,
-	 *                 args);
-	 *             janusKernel.spawn(agentType, args);
-	 *         }
-	 *     }
+	 * <p>The previous example could be updated for launching two agents of the same type.
+	 * The resulting code is shown below.
 	 * 
 	 * <p>The first parameter of the `spawn` function is the Java type of the agent
 	 * to launch.
@@ -112,11 +96,23 @@ describe "Run SARL Agent from a Java Program" {
 	 * 
 	 * <p>Note that the first agent is launched by the `startJanus` function, and the 
 	 * second agent is launched by the `spawn` function.
-	 *
-	 * @filter(.*)
+	 * 
+	 * @filter(.* = '''|'''|.parse.*) 
 	 */
-	fact "Launching more agents programmatically in Janus" {
-		true
+	fact "Launching more agents programmatically with Janus" {
+		'''
+			import io.janusproject.Boot
+			import myprogram.MyAgent
+			class MyProgram {
+				static def main(args : String[]) : void {
+					var janusKernel = Boot::startJanus(
+						null,
+						typeof(MyAgent),
+						args)
+					janusKernel.spawn(typeof(MyAgent), args)
+				}
+			}
+		'''.parse
 	} 
 
 	/*

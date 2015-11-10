@@ -99,7 +99,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 	/**
 	 * The project itself. This parameter is set by maven.
 	 */
-	@Parameter(required = true)
+	@Parameter(required = true, defaultValue = "${project}")
 	@SuppressWarnings("hiding")
 	protected MavenProject project;
 
@@ -203,7 +203,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 	protected void compileTestSources(XtendBatchCompiler xtend2BatchCompiler) throws MojoExecutionException {
 		List<String> testCompileSourceRoots = Lists.newArrayList(this.project.getTestCompileSourceRoots());
 		String testClassPath = Strings.concat(File.pathSeparator, getTestClassPath());
-		if (this.sourceDirectory != null) {
+		if (this.sourceDirectory != null && !this.sourceDirectory.isEmpty()) {
 			testCompileSourceRoots = Collections.singletonList(this.sourceDirectory);
 		}
 		getLog().debug("source folders: " + testCompileSourceRoots); //$NON-NLS-1$

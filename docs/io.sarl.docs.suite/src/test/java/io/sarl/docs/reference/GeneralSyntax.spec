@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors and authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -325,7 +325,7 @@ describe "General Syntax Reference" {
 		 * write your application  with a single language.
 		 * This support is described in the
 		 * [reference documentation](./BasicObjectOrientedProgrammingSupportSpec.html)
-		 * on object-oriented programming support of SARL.
+		 * on the object-oriented programming in SARL.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
@@ -2056,7 +2056,7 @@ describe "General Syntax Reference" {
 		/* 
 		 * Generic functions are methods that introduce their own type parameters.
 		 * This is similar to declaring a
-		 * [generic type](./BasicObjectOrientedProgrammingSupportClassSpec.html#DefineAGenericClassSpec),
+		 * [generic type](./BasicObjectOrientedProgrammingSupportSpec.html#Define_a_Generic_Class),
 		 * but the type parameter's scope
 		 * is limited to the function where it is declared. 
 		 * Static and non-static generic functions are allowed.
@@ -2096,7 +2096,7 @@ describe "General Syntax Reference" {
 			 */
 			fact "Definition with \"with\"" {
 				// Verify the URL in the upper section text.
-				"./BasicObjectOrientedProgrammingSupportClassSpec.html" should beAccessibleFrom this
+				"./BasicObjectOrientedProgrammingSupportSpec.html" should beAccessibleFrom this
 				//	
 				var model = '''
 					def addAndReturn(element : T, collection : Collection<T>) : T with T {
@@ -2202,6 +2202,8 @@ describe "General Syntax Reference" {
 			 *
 			 * <p>To declare a bounded type parameter, list the type parameter's name, followed by the 
 			 * `extends` keyword, followed by its upper bound. 
+			 *
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
 			 fact "Bounded Type Parameters" {
 				var model = '''
@@ -4173,21 +4175,17 @@ describe "General Syntax Reference" {
 	 * The mechanism is similar to the one of Java.
 	 * 
 	 * <p>For defining the exceptions that may be thrown by a function,
-	 * please see [how to declare exceptinos in a function prototype](#DeclareExceptionsInTheFunctionPrototype).
+	 * please see [how to declare exceptions in a function prototype](#DeclareExceptionsInTheFunctionPrototype).
 	 */
 	describe "Exception Support" {
 		
-		/* Throwing objects of type `Throwable` up the call stack has the same semantics
-		 * and syntax as in Java see 
-		 * [Java Language Specification](http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.18)). 
+		/* Throwing objects of type `Throwable` and the `throw` keyword have the same semantics
+		 * and syntax as in Java, see 
+		 * [Java Language Specification](http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.18). 
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Throwing Exceptions"{
-			"#DeclareExceptionsInTheFunctionPrototype" should beAccessibleFrom this
-			
-			"http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.18" should beURL _
-			
 			'''
 						throw new IllegalArgumentException("explanation")
 			'''.parseSuccessfully(
@@ -4197,6 +4195,8 @@ describe "General Syntax Reference" {
 				// TEXT
 				"} }"
 			)
+			"#DeclareExceptionsInTheFunctionPrototype" should beAccessibleFrom this
+			"http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.18" should beURL _
 		}
 		
 		/* The try-catch-finally expression is used to handle exceptional situations. 
