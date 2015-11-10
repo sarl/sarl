@@ -49,11 +49,6 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 public class Bug92 extends AbstractSarlTest {
-	@Inject
-	private ParseHelper<SarlScript> parser;
-
-	@Inject
-	private ValidationTestHelper validator;
 
 	@Inject
 	private CompilationTestHelper compiler;
@@ -79,12 +74,12 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationSyntax_inferredDouble() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		SarlScript mas = file(multilineString(
 				"agent A1 {",
 				"  var myDouble = 0d",
 				"}"
 				));
-		this.validator.assertNoErrors(mas);
+		validate(mas).assertNoErrors();
 		assertEquals(1, mas.getXtendTypes().size());
 		assertInstance(SarlAgent.class, mas.getXtendTypes().get(0));
 		SarlAgent ag = (SarlAgent) mas.getXtendTypes().get(0);
@@ -101,12 +96,12 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationSyntax_Double() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		SarlScript mas = file(multilineString(
 				"agent A1 {",
 				"  var myDouble : Double = 0d",
 				"}"
 				));
-		this.validator.assertNoErrors(mas);
+		validate(mas).assertNoErrors();
 		assertEquals(1, mas.getXtendTypes().size());
 		assertInstance(SarlAgent.class, mas.getXtendTypes().get(0));
 		SarlAgent ag = (SarlAgent) mas.getXtendTypes().get(0);
@@ -125,12 +120,12 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationSyntax_double() throws Exception {
-		SarlScript mas = this.parser.parse(multilineString(
+		SarlScript mas = file(multilineString(
 				"agent A1 {",
 				"  var myDouble : double = 0d",
 				"}"
 				));
-		this.validator.assertNoErrors(mas);
+		validate(mas).assertNoErrors();
 		assertEquals(1, mas.getXtendTypes().size());
 		assertEquals(1, mas.getXtendTypes().size());
 		assertInstance(SarlAgent.class, mas.getXtendTypes().get(0));
@@ -309,7 +304,7 @@ public class Bug92 extends AbstractSarlTest {
 				"   */",
 				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  @ImportedCapacityFeature(ComputeEnergyCapacity.class)",
-				"  protected final Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {",
+				"  protected Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {",
 				"    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);",
 				"  }",
 				"  ",
@@ -320,7 +315,7 @@ public class Bug92 extends AbstractSarlTest {
 				"   */",
 				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  @ImportedCapacityFeature(ComputeEnergyCapacity.class)",
-				"  protected final void setVoltage(final Double currentVoltage) {",
+				"  protected void setVoltage(final Double currentVoltage) {",
 				"    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);",
 				"  }",
 				"  ",
@@ -426,7 +421,7 @@ public class Bug92 extends AbstractSarlTest {
 				"   */",
 				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  @ImportedCapacityFeature(ComputeEnergyCapacity.class)",
-				"  protected final Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {",
+				"  protected Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {",
 				"    return getSkill(ComputeEnergyCapacity.class).getEnergy(currentTime, deltaTime, wantedEnergy);",
 				"  }",
 				"  ",
@@ -437,7 +432,7 @@ public class Bug92 extends AbstractSarlTest {
 				"   */",
 				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  @ImportedCapacityFeature(ComputeEnergyCapacity.class)",
-				"  protected final void setVoltage(final Double currentVoltage) {",
+				"  protected void setVoltage(final Double currentVoltage) {",
 				"    getSkill(ComputeEnergyCapacity.class).setVoltage(currentVoltage);",
 				"  }",
 				"  ",

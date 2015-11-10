@@ -42,15 +42,9 @@ import com.google.inject.Inject;
 public class Bug23 extends AbstractSarlTest {
 
 	@Inject
-	private ParseHelper<SarlScript> parser;
-
-	@Inject
-	private ValidationTestHelper validator;
-
-	@Inject
 	private CompilationTestHelper compiler;
 
-	private CharSequence snippet = multilineString(
+	private String snippet = multilineString(
 			"import java.util.UUID\n",
 			"event AgentSpawned {",
 			"  var agentID : UUID",
@@ -69,8 +63,8 @@ public class Bug23 extends AbstractSarlTest {
 
 	@Test
 	public void bug23() throws Exception {
-		SarlScript mas = this.parser.parse(snippet);
-		this.validator.assertNoErrors(mas);
+		SarlScript mas = file(snippet);
+		validate(mas).assertNoErrors();
 	}
 
 	@Test

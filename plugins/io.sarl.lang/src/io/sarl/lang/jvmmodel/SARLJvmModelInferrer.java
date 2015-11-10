@@ -1304,7 +1304,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							operation.setNative(false);
 							operation.setSynchronized(false);
 							operation.setStrictFloatingPoint(false);
-							operation.setFinal(true);
+							operation.setFinal(false);
 							operation.setVisibility(JvmVisibility.PROTECTED);
 							operation.setStatic(false);
 							operation.setSimpleName(entry.getValue().getSimpleName());

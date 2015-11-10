@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -32,31 +33,63 @@ import org.junit.runner.RunWith;
 
 import com.google.inject.Inject;
 
-/** See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=481864">Xtext issue 481864</a>.
- *
+/**
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class Bug335 extends AbstractSarlTest {
-
+public class Bug336 extends AbstractSarlTest {
+	
 	private String snippet = multilineString(
-			"event Factorial {",
-			"    var number : Long",
-			"    var value : Long",
-			"}", 
-			"agent A {",
-			"    var upto : Long = 5l",
-			"    on Factorial [ number < upto ] {}",
-			"}"
-			);
+			"event E1",
+			"event E2",
+			"capacity C1 {",
+			"	def debug(txt : String)",
+			"}",
+			"agent AbstractAgent {",
+			"    uses C1",
+			"    on E1 {",
+			"        debug(\"Hello World in the super agent!\")",
+			"    }",
+			"}",
+			"agent HelloChildAgent extends AbstractAgent {",
+			"    uses C1",
+			"    on E2 {",
+			"        debug(\"Hello World in the child agent!\")",
+			"    }",
+			"}");
 
+	private String snippet2 = multilineString(
+			"event E1",
+			"event E2",
+			"capacity C1 {",
+			"	def debug(txt : String)",
+			"}",
+			"agent AbstractAgent {",
+			"    uses C1",
+			"    on E1 {",
+			"        debug(\"Hello World in the super agent!\")",
+			"    }",
+			"}",
+			"agent HelloChildAgent extends AbstractAgent {",
+			"    uses C1",
+			"    on E2 {",
+			"        debug(\"Hello World in the child agent!\")",
+			"    }",
+			"	 def debug(m : String) { }",	
+			"}");
 
 	@Test
-	public void bug335() throws Exception {
+	public void bug336() throws Exception {
 		SarlScript mas = file(snippet);
+		validate(mas).assertNoErrors();
+	}
+
+	@Test
+	public void localOverride() throws Exception {
+		SarlScript mas = file(snippet2);
 		validate(mas).assertNoErrors();
 	}
 
