@@ -81,7 +81,7 @@ public class CompileMojo extends AbstractSarlMojo {
 				this.encoding = Charset.defaultCharset().name();
 			}
 		}
-		if (Strings.isNullOrEmpty(this.encoding)) {
+		if (Strings.isNullOrEmpty(this.target)) {
 			this.target = this.source;
 		}
 	}
