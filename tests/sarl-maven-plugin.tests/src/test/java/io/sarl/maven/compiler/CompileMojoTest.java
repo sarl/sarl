@@ -45,7 +45,7 @@ public class CompileMojoTest extends AbstractMojoTest {
 	public void compile() throws Exception {
 		Verifier verifier = executeMojo("prj1", "compile");
 		Path path = FileSystems.getDefault().getPath(
-				"src", "main", "generated-sources", "xtend",
+				"src", "main", "generated-sources", "sarl",
 				"io", "sarl", "maven", "compiler", "tests", "MyAgent.java");
 		assertNotNull(path);
 		verifier.assertFilePresent(path.toString());

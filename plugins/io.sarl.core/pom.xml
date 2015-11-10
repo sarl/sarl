@@ -36,8 +36,8 @@
 						<configuration>
 							<sources>
 								<source>src/main/sarl</source>
-								<source>src/main/generated-sources/xtend/</source>
-								<source>src/test/generated-sources/xtend/</source>
+								<source>src/main/generated-sources/sarl/</source>
+								<source>src/test/generated-sources/sarl/</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -56,7 +56,13 @@
 						<configuration>
 							<filesets>
 								<fileset>
+									<directory>src/main/generated-sources/sarl</directory>
+								</fileset>
+								<fileset>
 									<directory>src/main/generated-sources/xtend</directory>
+								</fileset>
+								<fileset>
+									<directory>src/test/generated-sources/sarl</directory>
 								</fileset>
 								<fileset>
 									<directory>src/test/generated-sources/xtend</directory>
@@ -87,7 +93,7 @@
 							<setup>io.sarl.lang.SARLStandaloneSetup</setup>
 							<outputConfigurations>
 								<outputConfiguration>
-									<outputDirectory>src/main/generated-sources/xtend/</outputDirectory>
+									<outputDirectory>src/main/generated-sources/sarl/</outputDirectory>
 								</outputConfiguration>
 							</outputConfigurations>
 						</language>

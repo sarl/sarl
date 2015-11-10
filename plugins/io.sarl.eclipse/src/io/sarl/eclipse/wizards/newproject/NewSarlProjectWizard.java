@@ -62,6 +62,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.util.Utilities;
+import io.sarl.lang.SARLConfig;
 import io.sarl.lang.ui.preferences.SARLPreferences;
 
 /**
@@ -167,35 +168,23 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	protected boolean validateSARLSpecificElements(IJavaElement element) {
 		IJavaProject javaProject = (IJavaProject) element;
 		// Check if the "SARL" generation directory is a source folder.
-		IPath outputPath;
-		IPath generalPreferencePath;
-		IPath projectSpecificPath = SARLPreferences.getSARLOutputPathFor(javaProject.getProject());
+		IPath outputPath = SARLPreferences.getSARLOutputPathFor(javaProject.getProject());
 
-		generalPreferencePath = SARLPreferences.getGlobalSARLOutputPath();
-
-		if (projectSpecificPath != null) {
-			outputPath = projectSpecificPath;
-			generalPreferencePath = null;
-		} else {
-			generalPreferencePath = SARLPreferences.getGlobalSARLOutputPath();
-			outputPath = generalPreferencePath;
+		if (outputPath == null) {
+			String message = MessageFormat.format(
+					Messages.BuildSettingWizardPage_0,
+					SARLConfig.FOLDER_SOURCE_GENERATED);
+			IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
+			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
+			return false;
 		}
-		assert (outputPath != null);
 		if (!hasSourcePath(javaProject, outputPath)) {
-			if (generalPreferencePath == null) {
-				generalPreferencePath = SARLPreferences.getGlobalSARLOutputPath();
-			}
-			assert (generalPreferencePath != null);
 			String message = MessageFormat.format(
 					Messages.SARLProjectCreationWizard_0,
 					toOSString(outputPath),
-					toOSString(projectSpecificPath),
-					toOSString(generalPreferencePath),
 					buildInvalidOutputPathMessageFragment(javaProject));
 			IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
-
 			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
-
 			return false;
 		}
 		return true;

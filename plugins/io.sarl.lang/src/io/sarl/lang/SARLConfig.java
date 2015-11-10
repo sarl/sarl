@@ -42,7 +42,7 @@ public final class SARLConfig {
 
 	/** Path of the generated source files.
 	 */
-	public static final String FOLDER_SOURCE_GENERATED = "src/main/generated-sources/xtend"; //$NON-NLS-1$
+	public static final String FOLDER_SOURCE_GENERATED = "src/main/generated-sources/sarl"; //$NON-NLS-1$
 
 	/** Path of the Java source files.
 	 */
@@ -50,7 +50,7 @@ public final class SARLConfig {
 
 	/** Path of the SARL source files.
 	 */
-	public static final String FOLDER_TEST_SOURCE_GENERATED = "src/test/generated-sources/xtend"; //$NON-NLS-1$
+	public static final String FOLDER_TEST_SOURCE_GENERATED = "src/test/generated-sources/sarl"; //$NON-NLS-1$
 
 	/** Path of the generated source files that should be no more used when creating
 	 * new projects. This value is the default generation folder form Xtext.

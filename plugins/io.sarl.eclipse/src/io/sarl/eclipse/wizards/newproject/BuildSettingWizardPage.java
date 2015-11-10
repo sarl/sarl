@@ -603,13 +603,16 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 			configureJavaProject(newProjectCompliance, new SubProgressMonitor(monitor, 1));
 
 			IPath generationFolder = findGenerationSourcePath();
-			if (generationFolder != null) {
-				SARLPreferences.setSpecificSARLConfigurationFor(
-						getJavaProject().getProject(), generationFolder);
-			} else {
-				SARLPreferences.setSystemSARLConfigurationFor(
-						getJavaProject().getProject());
+			if (generationFolder == null) {
+				IStatus status = SARLEclipsePlugin.getDefault().createStatus(
+						IStatus.ERROR,
+						MessageFormat.format(
+						Messages.BuildSettingWizardPage_0,
+						SARLConfig.FOLDER_SOURCE_GENERATED));
+				throw new CoreException(status);
 			}
+			SARLPreferences.setSpecificSARLConfigurationFor(
+					getJavaProject().getProject(), generationFolder);
 		} catch (Throwable e) {
 			if (this.fCurrProject != null) {
 				removeProvisonalProject();

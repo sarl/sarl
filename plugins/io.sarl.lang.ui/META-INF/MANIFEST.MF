@@ -23,7 +23,11 @@ Require-Bundle: io.sarl.lang;bundle-version="1.0.0";visibility:=reexport,
  org.eclipse.jdt.debug.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Activator: io.sarl.lang.ui.internal.SARLActivator
-Export-Package: io.sarl.lang.ui.highlighting;x-friends:="io.sarl.lang.ui.tests",
+Export-Package: io.sarl.lang.ui;x-friends:="io.sarl.lang.ui.tests",
+ io.sarl.lang.ui.contentassist,
+ io.sarl.lang.ui.contentassist.antlr,
+ io.sarl.lang.ui.contentassist.antlr.internal;x-friends:="io.sarl.lang.ui.tests",
+ io.sarl.lang.ui.highlighting;x-friends:="io.sarl.lang.ui.tests",
  io.sarl.lang.ui.images;x-friends:="io.sarl.lang.ui.tests",
  io.sarl.lang.ui.internal,
  io.sarl.lang.ui.labeling;x-friends:="io.sarl.lang.ui.tests",
@@ -31,6 +35,7 @@ Export-Package: io.sarl.lang.ui.highlighting;x-friends:="io.sarl.lang.ui.tests",
  io.sarl.lang.ui.preferences,
  io.sarl.lang.ui.quickfix;x-friends:="io.sarl.lang.ui.tests",
  io.sarl.lang.ui.quickfix.acceptors;x-friends:="io.sarl.lang.ui.tests",
- io.sarl.lang.ui.contentassist,
- io.sarl.lang.ui.contentassist.antlr
+ io.sarl.lang.ui.tasks;x-friends:="io.sarl.lang.ui.tests",
+ io.sarl.lang.ui.validation;x-friends:="io.sarl.lang.ui.tests",
+ org.eclipse.xtend.core.ui.contentassist;x-friends:="io.sarl.lang.ui.tests"
 Import-Package: org.apache.log4j
