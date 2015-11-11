@@ -39,6 +39,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
@@ -139,6 +140,11 @@ import io.sarl.lang.util.Utils;
 @Singleton
 public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
+	/** The injector.
+	 */
+	@Inject
+	private Injector injector;
+
 	/** Generator of JVM elements.
 	 */
 	@Inject
@@ -211,6 +217,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	}
 
 	private void openContext(JvmGenericType type, GenerationContext context) {
+		this.injector.injectMembers(context);
 		this.ctx.put(contextKey(type), context);
 	}
 
@@ -912,7 +919,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 			if (inheritedOperation != null) {
 				returnTypeCandidate = inheritedOperation.getReturnType();
-			} else if (expression != null
+				if (returnTypeCandidate != null) {
+					// XXX: Ensure the type is resolved
+					returnTypeCandidate.getType();
+				}
+			}
+			if (returnTypeCandidate == null
+					&& expression != null
 					&& ((!(expression instanceof XBlockExpression))
 					|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
 				returnTypeCandidate = this.typeBuilder.inferredType(expression);
@@ -1441,6 +1454,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		//
 		// Fixing the behavior for determining the visibility of the dispatcher since
 		// it does not fit the SARL requirements.
+		// FIXME: Move to Xtend?
 		//
 		JvmVisibility higherVisibility = JvmVisibility.PRIVATE;
 		for (JvmOperation jvmOperation : localOperations) {
