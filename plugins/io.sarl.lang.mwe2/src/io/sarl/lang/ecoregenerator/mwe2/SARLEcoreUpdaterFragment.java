@@ -21,11 +21,16 @@
 
 package io.sarl.lang.ecoregenerator.mwe2;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xpand2.XpandExecutionContext;
@@ -47,7 +52,41 @@ import org.eclipse.xtext.util.Strings;
 public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 
 	private static final Logger LOG = Logger.getLogger(SARLEcoreUpdaterFragment.class);
+	
+	/** Replies the Ecore classifier for the given type.
+	 *
+	 * <p>It must be accessible with {@link EcorePackage#eINSTANCE}.
+	 *
+	 * @param name the name.
+	 * @return the classifier.
+	 */
+	protected static EClassifier findType(String name) {
+		if (!Strings.isEmpty(name)) {
+			String upperFirst = 
+					name.substring(0, 1).toUpperCase()
+					+ name.substring(1);
+			try {
+				Method method = EcorePackage.class.getMethod("getE" + upperFirst); //$NON-NLS-1$
+				return (EClassifier) method.invoke(EcorePackage.eINSTANCE);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return null;
+	}
 
+	private final List<MethodUpdater> methodUpdaters = new ArrayList<>();
+	
+	/** Register an updater for adding a method into an Ecore.
+	 *
+	 * @param updater - the updater.
+	 */
+	public void addMethod(MethodUpdater updater) {
+		if (updater != null) {
+			this.methodUpdaters.add(updater);
+		}
+	}
+	
 	@Override
 	public void generate(Grammar grammar, XpandExecutionContext ctx) {
 		LOG.info("Updating SARL Ecore Package with additional elements."); //$NON-NLS-1$
@@ -75,35 +114,14 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 	 *
 	 * @param sarlPackage - the package of SARL elements.
 	 */
-	protected static void updateEcorePackage(EPackage sarlPackage) {
-		addMethodInClass(sarlPackage,
-				"SarlAgent", //$NON-NLS-1$
-				"isAbstract", //$NON-NLS-1$
-				EcorePackage.eINSTANCE.getEBoolean());
-		addMethodInClass(sarlPackage,
-				"SarlAgent", //$NON-NLS-1$
-				"isStrictFloatingPoint", //$NON-NLS-1$
-				EcorePackage.eINSTANCE.getEBoolean());
-		addMethodInClass(sarlPackage,
-				"SarlBehavior", //$NON-NLS-1$
-				"isAbstract", //$NON-NLS-1$
-				EcorePackage.eINSTANCE.getEBoolean());
-		addMethodInClass(sarlPackage,
-				"SarlBehavior", //$NON-NLS-1$
-				"isStrictFloatingPoint", //$NON-NLS-1$
-				EcorePackage.eINSTANCE.getEBoolean());
-		addMethodInClass(sarlPackage,
-				"SarlEvent", //$NON-NLS-1$
-				"isAbstract", //$NON-NLS-1$
-				EcorePackage.eINSTANCE.getEBoolean());
-		addMethodInClass(sarlPackage,
-				"SarlSkill", //$NON-NLS-1$
-				"isAbstract", //$NON-NLS-1$
-				EcorePackage.eINSTANCE.getEBoolean());
-		addMethodInClass(sarlPackage,
-				"SarlSkill", //$NON-NLS-1$
-				"isStrictFloatingPoint", //$NON-NLS-1$
-				EcorePackage.eINSTANCE.getEBoolean());
+	protected void updateEcorePackage(EPackage sarlPackage) {
+		for (MethodUpdater updater : this.methodUpdaters) {
+			addMethodInClass(sarlPackage,
+					updater.getContainerName(),
+					updater.getMethodName(),
+					updater.getReturnType(),
+					updater.getParameters());
+		}
 	}
 
 	/** Add a method in the definition of the givne class.
@@ -112,8 +130,9 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 	 * @param classname - the name of the class to upgrade.
 	 * @param functionName - the name of the new function.
 	 * @param returnType - the return type.
+	 * @param parameters - the formal parameters.
 	 */
-	protected static void addMethodInClass(EPackage epackage, String classname, String functionName, EClassifier returnType) {
+	protected static void addMethodInClass(EPackage epackage, String classname, String functionName, EClassifier returnType, List<FormalParameter> parameters) {
 		LOG.info("\tadding " + functionName + " into " + classname); //$NON-NLS-1$ //$NON-NLS-2$
 		EClassifier eclassifier = epackage.getEClassifier(classname);
 		if (eclassifier == null || !(eclassifier instanceof EClass)) {
@@ -125,8 +144,163 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 		if (returnType != null) {
 			eoperation.setEType(returnType);
 		}
+		for (FormalParameter parameter : parameters) {
+			EParameter eparameter = EcoreFactory.eINSTANCE.createEParameter();
+			eparameter.setName(parameter.getName());
+			eparameter.setEType(parameter.getType());
+			eoperation.getEParameters().add(eparameter);
+		}
 		eclass.getEOperations().add(eoperation);
 	}
 
+	/** Describe the addition of a method in a Ecore container.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class MethodUpdater {
+		
+		private String className;
+
+		private String methodName;
+
+		private String returnType;
+		
+		private final List<FormalParameter> parameters = new ArrayList<>();
+		
+		/** Set the name of the container.
+		 *
+		 * @param classname - the name of the container in the EPackage.
+		 */
+		public void setContainerName(String classname) {
+			this.className = classname;
+		}
+
+		/** Replies the name of the container.
+		 *
+		 * @return the name of the container in the EPackage.
+		 */
+		public String getContainerName() {
+			if (Strings.isEmpty(this.className)) {
+				throw new RuntimeException("no classname specified."); //$NON-NLS-1$
+			}
+			return this.className;
+		}
+
+		/** Set the name of the method to add.
+		 *
+		 * @param name - the name of the method.
+		 */
+		public void setMethodName(String name) {
+			this.methodName = name;
+		}
+		
+		/** Replies the name of the method to add.
+		 *
+		 * @return the name of the method.
+		 */
+		public String getMethodName() {
+			if (Strings.isEmpty(this.className)) {
+				throw new RuntimeException("no method name specified."); //$NON-NLS-1$
+			}
+			return this.methodName;
+		}
+
+		/** Set the return type.
+		 *
+		 * It must be accessible with {@link EcorePackage#eINSTANCE}.
+		 *
+		 * @param type - the name of the type.
+		 */
+		public void setReturnType(String type) {
+			this.returnType = type;
+		}
+		
+		/** Replies the return type.
+		 *
+		 * <p>It must be accessible with {@link EcorePackage#eINSTANCE}.
+		 *
+		 * @return the return type.
+		 */
+		public EClassifier getReturnType() {
+			return findType(this.returnType);
+		}
+		
+		/** Add a formal parameter.
+		 *
+		 * @param parameter - the parameter.
+		 */
+		public void addParameter(FormalParameter parameter) {
+			if (parameter != null) {
+				this.parameters.add(parameter);
+			}
+		}
+		
+		/** Replies the formal parameters.
+		 *
+		 * @return the formal parameters.
+		 */
+		public List<FormalParameter> getParameters() {
+			return this.parameters;
+		}
+
+	}
+
+	/** Describe the addition of a formal parameter
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class FormalParameter {
+
+		private String name;
+
+		private String type;
+		
+		/** Set the name of the formal parameter.
+		 *
+		 * @param name - the name of the formal parameter.
+		 */
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		/** Replies the name of the formal parameter.
+		 *
+		 * @return the name of the formal parameter.
+		 */
+		public String getName() {
+			if (Strings.isEmpty(this.name)) {
+				throw new RuntimeException("no parameter name specified."); //$NON-NLS-1$
+			}
+			return this.name;
+		}
+
+		/** Set the type.
+		 *
+		 * It must be accessible with {@link EcorePackage#eINSTANCE}.
+		 *
+		 * @param type - the name of the formal parameter.
+		 */
+		public void setType(String type) {
+			this.type = type;
+		}
+		
+		/** Replies the type.
+		 *
+		 * <p>It must be accessible with {@link EcorePackage#eINSTANCE}.
+		 *
+		 * @return the return type.
+		 */
+		public EClassifier getType() {
+			return findType(this.type);
+		}
+
+	}
+	
 }
 

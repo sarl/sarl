@@ -112,6 +112,41 @@ Workflow {
     
     		// update the created Ecore elements.
     		fragment = SARLEcoreUpdaterFragment auto-inject {
+    			method = {
+    				containerName = "SarlAgent"
+    				methodName = "isAbstract"
+    				returnType = "boolean"
+    			}
+    			method = {
+    				containerName = "SarlAgent"
+    				methodName = "isStrictFloatingPoint"
+    				returnType = "boolean"
+    			}
+    			method = {
+    				containerName = "SarlBehavior"
+    				methodName = "isAbstract"
+    				returnType = "boolean"
+    			}
+    			method = {
+    				containerName = "SarlBehavior"
+    				methodName = "isStrictFloatingPoint"
+    				returnType = "boolean"
+    			}
+    			method = {
+    				containerName = "SarlEvent"
+    				methodName = "isAbstract"
+    				returnType = "boolean"
+    			}
+    			method = {
+    				containerName = "SarlSkill"
+    				methodName = "isAbstract"
+    				returnType = "boolean"
+    			}
+    			method = {
+    				containerName = "SarlSkill"
+    				methodName = "isStrictFloatingPoint"
+    				returnType = "boolean"
+    			}
 			}
 
     		// generates Java API for the generated EPackages
