@@ -52,7 +52,9 @@ import org.eclipse.xtext.util.Strings;
 public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 
 	private static final Logger LOG = Logger.getLogger(SARLEcoreUpdaterFragment.class);
-	
+
+	private final List<MethodUpdater> methodUpdaters = new ArrayList<>();
+
 	/** Replies the Ecore classifier for the given type.
 	 *
 	 * <p>It must be accessible with {@link EcorePackage#eINSTANCE}.
@@ -62,7 +64,7 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 	 */
 	protected static EClassifier findType(String name) {
 		if (!Strings.isEmpty(name)) {
-			String upperFirst = 
+			String upperFirst =
 					name.substring(0, 1).toUpperCase()
 					+ name.substring(1);
 			try {
@@ -75,8 +77,35 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 		return null;
 	}
 
-	private final List<MethodUpdater> methodUpdaters = new ArrayList<>();
-	
+	/** Add a method in the definition of the givne class.
+	 *
+	 * @param epackage - the containing package.
+	 * @param classname - the name of the class to upgrade.
+	 * @param functionName - the name of the new function.
+	 * @param returnType - the return type.
+	 * @param parameters - the formal parameters.
+	 */
+	protected static void addMethodInClass(EPackage epackage, String classname, String functionName,
+			EClassifier returnType, List<FormalParameter> parameters) {
+		LOG.info("\tadding " + functionName + " into " + classname); //$NON-NLS-1$ //$NON-NLS-2$
+		EClassifier eclassifier = epackage.getEClassifier(classname);
+		if (eclassifier == null || !(eclassifier instanceof EClass)) {
+			throw new RuntimeException("No a class with name: " + classname); //$NON-NLS-1$
+		}
+		EOperation eoperation = EcoreFactory.eINSTANCE.createEOperation();
+		eoperation.setName(functionName);
+		if (returnType != null) {
+			eoperation.setEType(returnType);
+		}
+		for (FormalParameter parameter : parameters) {
+			EParameter eparameter = EcoreFactory.eINSTANCE.createEParameter();
+			eparameter.setName(parameter.getName());
+			eparameter.setEType(parameter.getType());
+			eoperation.getEParameters().add(eparameter);
+		}
+		((EClass) eclassifier).getEOperations().add(eoperation);
+	}
+
 	/** Register an updater for adding a method into an Ecore.
 	 *
 	 * @param updater - the updater.
@@ -86,7 +115,7 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 			this.methodUpdaters.add(updater);
 		}
 	}
-	
+
 	@Override
 	public void generate(Grammar grammar, XpandExecutionContext ctx) {
 		LOG.info("Updating SARL Ecore Package with additional elements."); //$NON-NLS-1$
@@ -124,52 +153,23 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 		}
 	}
 
-	/** Add a method in the definition of the givne class.
-	 *
-	 * @param epackage - the containing package.
-	 * @param classname - the name of the class to upgrade.
-	 * @param functionName - the name of the new function.
-	 * @param returnType - the return type.
-	 * @param parameters - the formal parameters.
-	 */
-	protected static void addMethodInClass(EPackage epackage, String classname, String functionName, EClassifier returnType, List<FormalParameter> parameters) {
-		LOG.info("\tadding " + functionName + " into " + classname); //$NON-NLS-1$ //$NON-NLS-2$
-		EClassifier eclassifier = epackage.getEClassifier(classname);
-		if (eclassifier == null || !(eclassifier instanceof EClass)) {
-			throw new RuntimeException("No a class with name: " + classname); //$NON-NLS-1$
-		}
-		EClass eclass = (EClass) eclassifier;
-		EOperation eoperation = EcoreFactory.eINSTANCE.createEOperation();
-		eoperation.setName(functionName);
-		if (returnType != null) {
-			eoperation.setEType(returnType);
-		}
-		for (FormalParameter parameter : parameters) {
-			EParameter eparameter = EcoreFactory.eINSTANCE.createEParameter();
-			eparameter.setName(parameter.getName());
-			eparameter.setEType(parameter.getType());
-			eoperation.getEParameters().add(eparameter);
-		}
-		eclass.getEOperations().add(eoperation);
-	}
-
 	/** Describe the addition of a method in a Ecore container.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
 	public static class MethodUpdater {
-		
+
 		private String className;
 
 		private String methodName;
 
 		private String returnType;
-		
+
 		private final List<FormalParameter> parameters = new ArrayList<>();
-		
+
 		/** Set the name of the container.
 		 *
 		 * @param classname - the name of the container in the EPackage.
@@ -196,7 +196,7 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 		public void setMethodName(String name) {
 			this.methodName = name;
 		}
-		
+
 		/** Replies the name of the method to add.
 		 *
 		 * @return the name of the method.
@@ -210,14 +210,14 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 
 		/** Set the return type.
 		 *
-		 * It must be accessible with {@link EcorePackage#eINSTANCE}.
+		 * <p>It must be accessible with {@link EcorePackage#eINSTANCE}.
 		 *
 		 * @param type - the name of the type.
 		 */
 		public void setReturnType(String type) {
 			this.returnType = type;
 		}
-		
+
 		/** Replies the return type.
 		 *
 		 * <p>It must be accessible with {@link EcorePackage#eINSTANCE}.
@@ -227,7 +227,7 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 		public EClassifier getReturnType() {
 			return findType(this.returnType);
 		}
-		
+
 		/** Add a formal parameter.
 		 *
 		 * @param parameter - the parameter.
@@ -237,7 +237,7 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 				this.parameters.add(parameter);
 			}
 		}
-		
+
 		/** Replies the formal parameters.
 		 *
 		 * @return the formal parameters.
@@ -248,8 +248,8 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 
 	}
 
-	/** Describe the addition of a formal parameter
-	 * 
+	/** Describe the addition of a formal parameter.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -260,7 +260,7 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 		private String name;
 
 		private String type;
-		
+
 		/** Set the name of the formal parameter.
 		 *
 		 * @param name - the name of the formal parameter.
@@ -282,14 +282,14 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 
 		/** Set the type.
 		 *
-		 * It must be accessible with {@link EcorePackage#eINSTANCE}.
+		 * <p>It must be accessible with {@link EcorePackage#eINSTANCE}.
 		 *
 		 * @param type - the name of the formal parameter.
 		 */
 		public void setType(String type) {
 			this.type = type;
 		}
-		
+
 		/** Replies the type.
 		 *
 		 * <p>It must be accessible with {@link EcorePackage#eINSTANCE}.
@@ -301,6 +301,6 @@ public class SARLEcoreUpdaterFragment extends DefaultGeneratorFragment {
 		}
 
 	}
-	
+
 }
 
