@@ -24,6 +24,7 @@ package io.sarl.lang.actionprototype;
 import java.io.Serializable;
 
 import com.google.common.base.Objects;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.util.Strings;
 
 /**
@@ -40,19 +41,19 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 
 	private String resourceID;
 
-	private String declaringType;
+	private JvmIdentifiableElement declaringType;
 
 	private String functionName;
 
 	/**
 	 * @param resourceID - the name of the resource where the action is defined.
-	 * @param declaringType - the fully qualified name of the declaring type of the action.
+	 * @param declaringType - the declaring type of the action.
 	 * @param functionName - the name of the action.
 	 */
-	protected QualifiedActionName(String resourceID, String declaringType, String functionName) {
+	protected QualifiedActionName(String resourceID, JvmIdentifiableElement declaringType, String functionName) {
 		this.functionName = Strings.emptyIfNull(functionName);
 		this.resourceID = Strings.emptyIfNull(resourceID);
-		this.declaringType = Strings.emptyIfNull(declaringType);
+		this.declaringType = declaringType;
 	}
 
 	/** Replies the ID of the resource.
@@ -63,11 +64,11 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 		return this.resourceID;
 	}
 
-	/** Replies the fully qualified name of the declaring type in which the action is defined.
+	/** Replies the declaring type in which the action is defined.
 	 *
-	 * @return the ID.
+	 * @return the container.
 	 */
-	public String getDeclaringType() {
+	public JvmIdentifiableElement getDeclaringType() {
 		return this.declaringType;
 	}
 
@@ -96,7 +97,9 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 		if (obj instanceof QualifiedActionName) {
 			QualifiedActionName k = (QualifiedActionName) obj;
 			return Objects.equal(this.resourceID, k.resourceID)
-					&& Objects.equal(this.declaringType, k.declaringType)
+					&& Objects.equal(
+							this.declaringType.getQualifiedName(),
+							k.declaringType.getQualifiedName())
 					&& Objects.equal(this.functionName, k.functionName);
 		}
 		return false;
@@ -121,7 +124,7 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 	 * @return the container identifier.
 	 */
 	public String getContainerID() {
-		return this.resourceID + "/" + this.declaringType; //$NON-NLS-1$
+		return this.resourceID + "/" + this.declaringType.getQualifiedName(); //$NON-NLS-1$
 	}
 
 	@Override
@@ -133,7 +136,8 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 		if (cmp != 0) {
 			return cmp;
 		}
-		cmp = this.declaringType.compareTo(otherName.declaringType);
+		cmp = this.declaringType.getQualifiedName().compareTo(
+				otherName.declaringType.getQualifiedName());
 		if (cmp != 0) {
 			return cmp;
 		}

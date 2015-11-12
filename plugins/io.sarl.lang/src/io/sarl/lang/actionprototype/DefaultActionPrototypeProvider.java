@@ -29,6 +29,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.xtend.core.xtend.XtendParameter;
@@ -36,6 +37,7 @@ import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.services.SARLGrammarAccess;
@@ -61,13 +63,15 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 
 	private final Map<String, Map<String, Map<ActionParameterTypes, InferredPrototype>>> prototypes = new TreeMap<>();
 
+	private final Map<String, Map<String, Integer>> defaultValueIDPrefixes = new TreeMap<>();
+
 	/** Construct a provider of action prototypes.
 	 */
 	public DefaultActionPrototypeProvider() {
 		//
 	}
 
-	private static Map<ActionParameterTypes, List<InferredStandardParameter>> buildParameter(
+	private static Pair<Map<ActionParameterTypes, List<InferredStandardParameter>>, Boolean> buildParameter(
 			int parameterIndex,
 			final int lastParameterIndex,
 			String argumentValue,
@@ -123,31 +127,57 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 				tmpSignatures.put(key, paramList);
 			}
 		}
-		return tmpSignatures;
+		return new Pair<>(tmpSignatures, isOptional);
 	}
 
-	private static Map<ActionParameterTypes, List<InferredStandardParameter>> buildSignaturesForArgDefaultValues(
-			String containerQualifiedName, String actionId,
+	private Map<ActionParameterTypes, List<InferredStandardParameter>> buildSignaturesForArgDefaultValues(
+			JvmIdentifiableElement container, String actionId,
 			FormalParameterProvider params, ActionParameterTypes fillSignatureKeyOutputParameter) {
 		Map<ActionParameterTypes, List<InferredStandardParameter>> signatures = new TreeMap<>();
 		fillSignatureKeyOutputParameter.clear();
 		if (params.getFormalParameterCount() > 0) {
 			final int lastParamIndex = params.getFormalParameterCount() - 1;
-			String prefix = containerQualifiedName + "#" + actionId.toUpperCase() + "_"; //$NON-NLS-1$//$NON-NLS-2$
+
+			String containerFullyQualifiedName = createQualifiedActionName(container, null).getContainerID();
+			Map<String, Integer> indexes = this.defaultValueIDPrefixes.get(containerFullyQualifiedName);
+			if (indexes == null) {
+				indexes = new TreeMap<>();
+				this.defaultValueIDPrefixes.put(containerFullyQualifiedName, indexes);
+			}
+			Integer lastIndex = indexes.get(actionId);
+			int defaultValueIndex;
+			if (lastIndex == null) {
+				defaultValueIndex = 0;
+			} else {
+				defaultValueIndex = lastIndex.intValue();
+			}
+
+			String[] annotationValues = new String[params.getFormalParameterCount()];
+			String prefix = container.getQualifiedName() + "#" //$NON-NLS-1$
+					+ actionId.toUpperCase() + "_"; //$NON-NLS-1$
 			for (int i = 0; i <= lastParamIndex; ++i) {
-				signatures = buildParameter(
+				Pair<Map<ActionParameterTypes, List<InferredStandardParameter>>, Boolean> pair = buildParameter(
 						i,
 						lastParamIndex,
-						prefix + i,
+						prefix + defaultValueIndex,
 						params,
 						signatures,
 						fillSignatureKeyOutputParameter);
+				signatures = pair.getKey();
+				if (pair.getValue()) {
+					annotationValues[i] = prefix + defaultValueIndex;
+					++defaultValueIndex;
+				}
 			}
+
+			indexes.put(actionId, defaultValueIndex);
 
 			List<InferredStandardParameter> parameters = signatures.get(fillSignatureKeyOutputParameter);
 			if (parameters != null) {
 				for (int i = 0; i < parameters.size(); ++i) {
-					parameters.get(i).setDefaultValueAnnotationValue(prefix + i);
+					if (!Strings.isNullOrEmpty(annotationValues[i])) {
+						parameters.get(i).setDefaultValueAnnotationValue(annotationValues[i]);
+					}
 				}
 			}
 		}
@@ -235,7 +265,7 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 			String functionName) {
 		return new QualifiedActionName(
 				container.eResource().getURI().toString(),
-				container.getQualifiedName(),
+				container,
 				functionName);
 	}
 
@@ -243,7 +273,7 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 	public QualifiedActionName createConstructorQualifiedName(JvmIdentifiableElement container) {
 		return new QualifiedActionName(
 				container.eResource().getURI().toString(),
-				container.getQualifiedName(),
+				container,
 				this.grammarAccess.getConstructorAccess().getNewKeyword_3().getValue());
 	}
 
@@ -322,12 +352,15 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 	@Override
 	public void clear(JvmIdentifiableElement container) {
 		QualifiedActionName qn = createQualifiedActionName(container, null);
-		this.prototypes.remove(qn.getContainerID());
+		String fqn = qn.getContainerID();
+		this.prototypes.remove(fqn);
+		this.defaultValueIDPrefixes.remove(fqn);
 	}
 
 	@Override
 	public void clear() {
 		this.prototypes.clear();
+		this.defaultValueIDPrefixes.clear();
 	}
 
 	@Override

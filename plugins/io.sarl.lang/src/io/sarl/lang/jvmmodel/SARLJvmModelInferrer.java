@@ -45,22 +45,29 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.core.jvmmodel.SyntheticNameClashResolver;
 import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
+import org.eclipse.xtend.core.xtend.XtendAnnotationType;
+import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendEnum;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
+import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmEnumerationType;
 import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
@@ -212,20 +219,45 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	private Map<String, GenerationContext> ctx = new TreeMap<>();
 
-	private static String contextKey(JvmGenericType type) {
+	private static String contextKey(JvmIdentifiableElement type) {
 		return type.eResource().getURI() + "/" + type.getQualifiedName(); //$NON-NLS-1$
 	}
 
-	private void openContext(JvmGenericType type, GenerationContext context) {
+	/** Open the context for the generation of a SARL-specific element.
+	 *
+	 * @param type - the generated type.
+	 * @param context - the SARL generation context.
+	 */
+	protected void openContext(JvmIdentifiableElement type, GenerationContext context) {
+		openContext(type);
 		this.injector.injectMembers(context);
 		this.ctx.put(contextKey(type), context);
 	}
 
-	private void closeContext(JvmGenericType type) {
+	/** Open the context for the generation of an element.
+	 * The generated element may be an extension of Xtend or a
+	 * SARL-specirfic element.
+	 *
+	 * @param type - the generated type.
+	 */
+	protected void openContext(JvmIdentifiableElement type) {
+		this.sarlSignatureProvider.clear(type);
+	}
+
+	/** Close a generation context.
+	 *
+	 * @param type - the generated type.
+	 */
+	protected void closeContext(JvmIdentifiableElement type) {
 		this.ctx.remove(contextKey(type));
 	}
 
-	private GenerationContext getContext(JvmGenericType type) {
+	/** Replies the SARL-specific generation context.
+	 *
+	 * @param type - the generated type.
+	 * @return the SARL-specific generation context.
+	 */
+	protected GenerationContext getContext(JvmIdentifiableElement type) {
 		return this.ctx.get(contextKey(type));
 	}
 
@@ -306,6 +338,46 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return javaType;
 		}
 		return null;
+	}
+
+	@Override
+	protected void initialize(XtendClass source, JvmGenericType inferredJvmType) {
+		openContext(inferredJvmType);
+		try {
+			super.initialize(source, inferredJvmType);
+		} finally {
+			closeContext(inferredJvmType);
+		}
+	}
+
+	@Override
+	protected void initialize(XtendAnnotationType source, JvmAnnotationType inferredJvmType) {
+		openContext(inferredJvmType);
+		try {
+			super.initialize(source, inferredJvmType);
+		} finally {
+			closeContext(inferredJvmType);
+		}
+	}
+
+	@Override
+	protected void initialize(XtendInterface source, JvmGenericType inferredJvmType) {
+		openContext(inferredJvmType);
+		try {
+			super.initialize(source, inferredJvmType);
+		} finally {
+			closeContext(inferredJvmType);
+		}
+	}
+
+	@Override
+	protected void initialize(XtendEnum source, JvmEnumerationType inferredJvmType) {
+		openContext(inferredJvmType);
+		try {
+			super.initialize(source, inferredJvmType);
+		} finally {
+			closeContext(inferredJvmType);
+		}
 	}
 
 	/** Initialize the SARL agent type.
