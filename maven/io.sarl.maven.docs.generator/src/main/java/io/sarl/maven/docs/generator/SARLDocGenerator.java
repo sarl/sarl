@@ -39,6 +39,7 @@ import org.jnario.doc.AbstractDocGenerator;
 import org.jnario.doc.Filter;
 import org.jnario.doc.FilterExtractor;
 import org.jnario.doc.FilteringResult;
+import org.jnario.doc.HtmlAssets;
 import org.jnario.doc.HtmlFile;
 import org.jnario.spec.naming.ExampleNameProvider;
 import org.jnario.spec.spec.Example;
@@ -82,6 +83,9 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	@Inject
 	private FilterExtractor filterExtractor;
 
+	@Inject
+	private HtmlAssets htmlAsserts;
+
 	/** Construct the documentation generator.
 	 */
 	SARLDocGenerator() {
@@ -98,6 +102,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void apply(HtmlFile it) {
+				it.setAssets(SARLDocGenerator.this.htmlAsserts);
 				it.setName(SARLDocGenerator.this.nameProvider.toJavaClassName(exampleGroup));
 				it.setTitle(asTitle(exampleGroup));
 				it.setContent(generateRootContent(exampleGroup));
@@ -125,11 +130,14 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 * @return the HTML code.
 	 */
 	protected String toCodeBlock(Example example, List<Filter> filters) {
-		String prefix = "<pre class=\"prettyprint lang-spec linenums\">"; //$NON-NLS-1$
-		prefix = apply(filters, prefix);
 		String code = serialize(example.getExpression(), filters);
 		if (code == null || code.isEmpty()) {
 			return ""; //$NON-NLS-1$
+		}
+		String prefix = "<pre class=\"prettyprint lang-sarl linenums\">"; //$NON-NLS-1$
+		prefix = apply(filters, prefix);
+		if (prefix == null || prefix.isEmpty()) {
+			return code;
 		}
 		return prefix + code + "</pre>\n"; //$NON-NLS-1$
 	}
