@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>io.sarl.maven.sdk</artifactId>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<name>SDK for Maven</name>
 	<description>Provides all necessary dependencies to develop a MAS using SARL.</description>
 
@@ -58,22 +58,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.xtend</groupId>
-			<artifactId>org.eclipse.xtend.core</artifactId>
-			<version>${xtext.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
- 		<dependency> 
- 			<groupId>org.eclipse</groupId> 
- 			<artifactId>osgi</artifactId> 
-			<version>${osgi.nls.version}</version>
- 		</dependency> 
  		<dependency> 
  			<groupId>com.google.guava</groupId> 
  			<artifactId>guava</artifactId> 

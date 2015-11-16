@@ -27,6 +27,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse</groupId> 
+ 			<artifactId>osgi</artifactId> 
+			<version>${osgi.nls.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>vmutils</artifactId>
 			<version>12.0</version>
@@ -36,7 +41,6 @@
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.sdk</artifactId>
 			<version>${project.version}</version>
-			<type>pom</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
