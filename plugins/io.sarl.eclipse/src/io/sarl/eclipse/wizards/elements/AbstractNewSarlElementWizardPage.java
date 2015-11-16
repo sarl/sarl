@@ -350,7 +350,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (!Strings.isNullOrEmpty(className)) {
 			IType rootType = getRootSuperType();
 			if (rootType == null) {
-				IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, Messages.AbstractNewSarlElementWizardPage_3);
+				IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
+						Messages.AbstractNewSarlElementWizardPage_3);
 				throw new JavaModelException(new CoreException(status));
 			}
 			IType type = getJavaProject().findType(className);

@@ -163,6 +163,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @param monitor - the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	protected void addSourceFolders(
 			IMavenProjectFacade facade, SARLConfiguration config,
 			IClasspathDescriptor classpath, IProgressMonitor monitor)
@@ -173,8 +174,6 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		assertHasNature(facade.getProject(), JavaCore.NATURE_ID);
 
 		String encoding = config.getEncoding();
-
-		IClasspathEntryDescriptor descriptor;
 
 		SubProgressMonitor subMonitor = new SubProgressMonitor(monitor, 4);
 
@@ -195,7 +194,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		if (encoding != null && outputFolder != null && outputFolder.exists()) {
 			outputFolder.setDefaultCharset(encoding, monitor);
 		}
-		descriptor = classpath.addSourceEntry(
+		IClasspathEntryDescriptor descriptor = classpath.addSourceEntry(
 				outputPath,
 				facade.getOutputLocation(),
 				true);
@@ -425,7 +424,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			throws CoreException {
 		//
 	}
-	
+
 	@Override
 	public void configureRawClasspath(ProjectConfigurationRequest request,
 			IClasspathDescriptor classpath, IProgressMonitor monitor)
