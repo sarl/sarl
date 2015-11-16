@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: io.sarl.tests.api;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.3.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Require-Bundle: io.sarl.lang.ui;bundle-version="1.0.0";visibility:=reexport,
+Require-Bundle: io.sarl.lang.ui;bundle-version="0.3.0";visibility:=reexport,
  org.junit;bundle-version="4.12.0";visibility:=reexport,
  org.eclipse.xtext.junit4;bundle-version="2.8.4";visibility:=reexport,
  org.eclipse.xtext.xbase.junit;bundle-version="2.8.4";visibility:=reexport,

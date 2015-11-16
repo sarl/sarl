@@ -5,7 +5,7 @@
 
 	<groupId>io.sarl</groupId>
 	<artifactId>io.sarl</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>0.3.0-SNAPSHOT</version>
 
 	<name>SARL Agent Oriented Programming Language</name>
 	<url>${sarlUrl}</url>

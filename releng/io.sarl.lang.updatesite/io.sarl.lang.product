@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="%product.name" uid="io.sarl.lang.product" id="io.sarl.eclipse.io_sarl_lang_product" application="org.eclipse.ui.ide.workbench" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="%product.name" uid="io.sarl.lang.product" id="io.sarl.eclipse.io_sarl_lang_product" application="org.eclipse.ui.ide.workbench" version="0.3.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/io.sarl.eclipse/icons/eclipse-about-banner.png"/>
@@ -253,9 +253,9 @@
    </plugins>
 
    <features>
-      <feature id="io.sarl.compiler" version="1.0.0.qualifier"/>
-      <feature id="io.sarl.ide" version="1.0.0.qualifier"/>
-      <feature id="io.sarl.lib" version="1.0.0.qualifier"/>
+      <feature id="io.sarl.compiler" version="0.3.0.qualifier"/>
+      <feature id="io.sarl.ide" version="0.3.0.qualifier"/>
+      <feature id="io.sarl.lib" version="0.3.0.qualifier"/>
       <feature id="org.eclipse.egit" version="4.0.3.201509231615-r"/>
       <feature id="org.eclipse.epp.mpc" version="1.4.1.v20150916-1928"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
