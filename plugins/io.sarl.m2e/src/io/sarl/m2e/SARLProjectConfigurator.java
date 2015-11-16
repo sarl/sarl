@@ -41,10 +41,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.m2e.core.internal.M2EUtils;
 import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.MavenProjectUtils;
@@ -143,8 +145,14 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		return MavenProjectUtils.getProjectRelativePath(project, file.getAbsolutePath());
 	}
 
-	private static IFolder makeFolder(IMavenProjectFacade facade, IPath path) {
-		return facade.getProject().getFolder(path.makeRelativeTo(facade.getProject().getFullPath()));
+	private static IFolder ensureFolderExists(IMavenProjectFacade facade, IPath path,
+			IProgressMonitor monitor) throws CoreException {
+		IFolder folder = facade.getProject().getFolder(path.makeRelativeTo(facade.getProject().getFullPath()));
+		assert (folder != null);
+		if (!folder.exists()) {
+			M2EUtils.createFolder(folder, folder.isDerived(), monitor);
+		}
+		return folder;
 	}
 
 	/** Invoked to add the source folders.
@@ -168,49 +176,55 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		IClasspathEntryDescriptor descriptor;
 
+		SubProgressMonitor subMonitor = new SubProgressMonitor(monitor, 4);
+
 		// Add the source folders
 		IPath inputPath = makeFullPath(facade, config.getInput());
+		IFolder inputFolder = ensureFolderExists(facade, inputPath, subMonitor);
+		if (encoding != null && inputFolder != null && inputFolder.exists()) {
+			inputFolder.setDefaultCharset(encoding, monitor);
+		}
 		classpath.addSourceEntry(
 				inputPath,
 				facade.getOutputLocation(),
 				true);
-		IFolder inputFolder = makeFolder(facade, inputPath);
-		if (encoding != null && inputFolder != null && inputFolder.exists()) {
-			inputFolder.setDefaultCharset(encoding, monitor);
-		}
+		subMonitor.worked(1);
 
 		IPath outputPath = makeFullPath(facade, config.getOutput());
+		IFolder outputFolder = ensureFolderExists(facade, outputPath, subMonitor);
+		if (encoding != null && outputFolder != null && outputFolder.exists()) {
+			outputFolder.setDefaultCharset(encoding, monitor);
+		}
 		descriptor = classpath.addSourceEntry(
 				outputPath,
 				facade.getOutputLocation(),
 				true);
 		descriptor.setClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, Boolean.TRUE.toString());
-		IFolder outputFolder = makeFolder(facade, outputPath);
-		if (encoding != null && outputFolder != null && outputFolder.exists()) {
-			outputFolder.setDefaultCharset(encoding, monitor);
-		}
+		subMonitor.worked(1);
 
 		// Add the test folders
 		IPath testInputPath = makeFullPath(facade, config.getTestInput());
+		IFolder testInputFolder = ensureFolderExists(facade, testInputPath, subMonitor);
+		if (encoding != null && testInputFolder != null && testInputFolder.exists()) {
+			testInputFolder.setDefaultCharset(encoding, monitor);
+		}
 		classpath.addSourceEntry(
 				testInputPath,
 				facade.getOutputLocation(),
 				true);
-		IFolder testInputFolder = makeFolder(facade, testInputPath);
-		if (encoding != null && testInputFolder != null && testInputFolder.exists()) {
-			testInputFolder.setDefaultCharset(encoding, monitor);
-		}
+		subMonitor.worked(1);
 
 		IPath testOutputPath = makeFullPath(facade, config.getTestOutput());
+		IFolder testOutputFolder = ensureFolderExists(facade, testOutputPath, subMonitor);
+		if (encoding != null && testOutputFolder != null && testOutputFolder.exists()) {
+			testOutputFolder.setDefaultCharset(encoding, monitor);
+		}
 		descriptor = classpath.addSourceEntry(
 				testOutputPath,
 				facade.getOutputLocation(),
 				true);
 		descriptor.setClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, Boolean.TRUE.toString());
-		IFolder testOutputFolder = makeFolder(facade, testOutputPath);
-		if (encoding != null && testOutputFolder != null && testOutputFolder.exists()) {
-			testOutputFolder.setDefaultCharset(encoding, monitor);
-		}
+		subMonitor.done();
 	}
 
 	/** Replies the configuration value.
@@ -411,7 +425,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			throws CoreException {
 		//
 	}
-
+	
 	@Override
 	public void configureRawClasspath(ProjectConfigurationRequest request,
 			IClasspathDescriptor classpath, IProgressMonitor monitor)
@@ -448,8 +462,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		@Override
 		public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
 			if (kind == AbstractBuildParticipant.AUTO_BUILD
-					|| kind == AbstractBuildParticipant.FULL_BUILD
-					|| kind == AbstractBuildParticipant.AUTO_BUILD) {
+					|| kind == AbstractBuildParticipant.FULL_BUILD) {
 				getBuildContext().removeMessages(getMavenProjectFacade().getPomFile());
 				//
 				validateSARLCompilerPlugin();
@@ -539,6 +552,12 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 					return;
 				}
 			}
+			getBuildContext().addMessage(
+					getMavenProjectFacade().getPomFile(),
+					-1, -1,
+					Messages.SARLProjectConfigurator_6,
+					BuildContext.SEVERITY_ERROR,
+					null);
 		}
 
 		/** Validate the version of the SARL compiler in the Maven configuration.

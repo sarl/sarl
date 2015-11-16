@@ -349,12 +349,18 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		// accept the empty field (stands for java.lang.Object)
 		if (!Strings.isNullOrEmpty(className)) {
 			IType rootType = getRootSuperType();
-			assert (rootType != null);
+			if (rootType == null) {
+				IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, Messages.AbstractNewSarlElementWizardPage_3);
+				throw new JavaModelException(new CoreException(status));
+			}
 			IType type = getJavaProject().findType(className);
-			assert (type != null);
+			if (type == null) {
+				IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
+						MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_4, className));
+				throw new JavaModelException(new CoreException(status));
+			}
 			ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
-			assert (hierarchy != null);
-			if (!hierarchy.contains(rootType)) {
+			if (hierarchy == null || !hierarchy.contains(rootType)) {
 				return false;
 			}
 		}
@@ -447,7 +453,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 									className));
 				}
 			} catch (JavaModelException ex) {
-				status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, ex);
+				status = ex.getJavaModelStatus();
 			}
 		}
 		return status;

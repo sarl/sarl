@@ -35,6 +35,8 @@ public class Messages extends NLS {
 	public static String AbstractNewSarlElementWizardPage_0;
 	public static String AbstractNewSarlElementWizardPage_1;
 	public static String AbstractNewSarlElementWizardPage_2;
+	public static String AbstractNewSarlElementWizardPage_3;
+	public static String AbstractNewSarlElementWizardPage_4;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
