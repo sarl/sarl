@@ -253,7 +253,7 @@ class MavenHelper {
 	 */
 	public Set<Artifact> resolveDependencies(String artifactId) throws MojoExecutionException {
 		Artifact pluginArtifact = getSession().getCurrentProject().getPluginArtifactMap().get(artifactId);
-		
+
 		ArtifactResolutionRequest request = new ArtifactResolutionRequest();
 		request.setResolveRoot(false);
 		request.setResolveTransitively(true);
@@ -268,7 +268,7 @@ class MavenHelper {
 		ArtifactResolutionResult result = this.repositorySystem.resolve(request);
 
 		try {
-			this.resolutionErrorHandler.throwErrors( request, result );
+			this.resolutionErrorHandler.throwErrors(request, result);
 		} catch (MultipleArtifactsNotFoundException e) {
 			Collection<Artifact> missing = new HashSet<>(e.getMissingArtifacts());
 			if (!missing.isEmpty()) {

@@ -56,6 +56,8 @@
 		<afc.version>12.0</afc.version>
 		<!-- Version of the Guava API -->
 		<guava.version>18.0</guava.version>
+		<!-- Version of the javax.inject module -->
+		<javaxinject.version>1</javaxinject.version>
 	</properties>
 
 	<!-- ======================================= -->

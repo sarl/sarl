@@ -80,7 +80,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 */
 	@Component
 	private BuildPluginManager buildPluginManager;
-	
+
 	@Component
 	private RepositorySystem repositorySystem;
 

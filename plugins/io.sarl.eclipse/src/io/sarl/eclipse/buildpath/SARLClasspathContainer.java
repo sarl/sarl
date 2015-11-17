@@ -52,6 +52,7 @@ public class SARLClasspathContainer implements IClasspathContainer {
 	public static final String[] SARL_REFERENCE_LIBRARIES = {
 		"org.eclipse.xtext.xbase.lib", //$NON-NLS-1$
 		"com.google.guava", //$NON-NLS-1$
+		"javax.inject", //$NON-NLS-1$
 		"io.sarl.lang.core", //$NON-NLS-1$
 		"io.sarl.util", //$NON-NLS-1$
 		"io.sarl.core", //$NON-NLS-1$
