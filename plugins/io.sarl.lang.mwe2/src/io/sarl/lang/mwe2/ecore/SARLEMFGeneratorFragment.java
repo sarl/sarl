@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ecoregenerator.mwe2;
+package io.sarl.lang.mwe2.ecore;
 
 import java.io.IOException;
 import java.text.MessageFormat;

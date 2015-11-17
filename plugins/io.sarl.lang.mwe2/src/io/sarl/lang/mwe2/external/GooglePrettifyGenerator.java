@@ -19,30 +19,18 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ecoregenerator.mwe2;
+package io.sarl.lang.mwe2.external;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xpand2.XpandExecutionContext;
-import org.eclipse.xtext.AbstractRule;
-import org.eclipse.xtext.Grammar;
-import org.eclipse.xtext.Keyword;
-import org.eclipse.xtext.common.types.access.impl.Primitives;
-import org.eclipse.xtext.generator.DefaultGeneratorFragment;
 import org.eclipse.xtext.generator.IGeneratorFragment;
 import org.eclipse.xtext.util.Strings;
 
@@ -55,29 +43,7 @@ import org.eclipse.xtext.util.Strings;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-public class GooglePrettifyGeneratorFragment extends DefaultGeneratorFragment {
-
-	private static final Logger LOG = Logger.getLogger(GooglePrettifyGeneratorFragment.class);
-
-	private static final Pattern KEYWORD_PATTERN = Pattern.compile("^[a-zA-Z]{2,}$"); //$NON-NLS-1$
-
-	@SuppressWarnings("checkstyle:linelength")
-	private static final Pattern PUNCTUATION_PATTERN = Pattern.compile("^[!#%&()*/+,\\-:;<=>?@\\[\\\\\\]^{|}~.%]+$"); //$NON-NLS-1$
-
-	private final Set<String> outputDirectories = new TreeSet<>();
-
-	private final Set<String> additionalLiterals = new TreeSet<>();
-
-	private final Set<String> additionalKeywords = new TreeSet<>();
-
-	private final Set<String> excludedKeywords = new TreeSet<>();
-
-	private final Set<String> additionalPunctuation = new TreeSet<>();
-
-	private boolean addNativeTypes = true;
-
-	private String language = "sarl"; //$NON-NLS-1$
+public class GooglePrettifyGenerator extends ExternalLanguageSpecificationGenerator {
 
 	private String whitespaces = "\\t\\n\\r \\xA0"; //$NON-NLS-1$
 
@@ -95,16 +61,6 @@ public class GooglePrettifyGeneratorFragment extends DefaultGeneratorFragment {
 	private String plainTextPattern = "^[$a-zA-Z_][\\w$]*"; //$NON-NLS-1$
 
 	private String commentPattern = "^\\/(?:\\/.*|\\*(?:\\/|\\**[^*/])*(?:\\*+\\/?)?)"; //$NON-NLS-1$
-
-	/** Set the name of the language.
-	 *
-	 * @param name the language name.
-	 */
-	public void setLanguage(String name) {
-		if (!Strings.isEmpty(name)) {
-			this.language = name;
-		}
-	}
 
 	/** Set the pattern that match a white space.
 	 *
@@ -186,103 +142,9 @@ public class GooglePrettifyGeneratorFragment extends DefaultGeneratorFragment {
 		}
 	}
 
-	/** Add a directory into which the Groogle Prettify must be written.
-	 *
-	 * @param directory the output directory.
-	 */
-	public void addOutput(String directory) {
-		if (!Strings.isEmpty(directory)) {
-			this.outputDirectories.add(directory);
-		}
-	}
-
-	/** Add a literal into which the Groogle Prettify CSS.
-	 *
-	 * @param literal the additional literal.
-	 */
-	public void addLiteral(String literal) {
-		if (!Strings.isEmpty(literal)) {
-			this.additionalLiterals.add(literal);
-		}
-	}
-
-	/** Add a keyword into which the Groogle Prettify CSS.
-	 *
-	 * @param keyword the additional keyword.
-	 */
-	public void addKeyword(String keyword) {
-		if (!Strings.isEmpty(keyword)) {
-			this.additionalKeywords.add(keyword);
-		}
-	}
-
-	/** Ignore a keyword into which the Groogle Prettify CSS.
-	 *
-	 * @param keyword the keyword to ignore.
-	 */
-	public void addIgnoreKeyword(String keyword) {
-		if (!Strings.isEmpty(keyword)) {
-			this.excludedKeywords.add(keyword);
-		}
-	}
-
-	/** Add a punctuation symbol into which the Groogle Prettify CSS.
-	 *
-	 * @param symbol the additional punctuation symbol.
-	 */
-	public void addPunctuation(String symbol) {
-		if (!Strings.isEmpty(symbol)) {
-			this.additionalPunctuation.add(symbol);
-		}
-	}
-
-	/** Indicates if the native types must be added in the keyword list.
-	 *
-	 * @param addNativeTypes <code>true</code> for adding the native types.
-	 */
-	public void setAddNativeTypes(boolean addNativeTypes) {
-		this.addNativeTypes = addNativeTypes;
-	}
-
-	@SuppressWarnings("checkstyle:nestedifdepth")
-	private void exploreGrammar(Grammar grammar, Set<String> keywords, Set<String> punctuation,
-			Set<String> literals, Set<String> ignored) {
-		for (AbstractRule rule : grammar.getRules()) {
-			TreeIterator<EObject> iterator = rule.eAllContents();
-			while (iterator.hasNext()) {
-				EObject object = iterator.next();
-				if (object instanceof Keyword) {
-					Keyword xkeyword = (Keyword) object;
-					String value = xkeyword.getValue();
-					if (!Strings.isEmpty(value)) {
-						if (KEYWORD_PATTERN.matcher(value).matches()) {
-							if (!literals.contains(value)) {
-								if (this.excludedKeywords.contains(value)) {
-									ignored.add(value);
-								} else {
-									keywords.add(value);
-								}
-							}
-						} else if (PUNCTUATION_PATTERN.matcher(value).matches()) {
-							punctuation.add(value);
-						} else {
-							LOG.debug(MessageFormat.format("IGNORE TOKEN = {0}", value)); //$NON-NLS-1$
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private static String toString(Iterable<?> list) {
-		StringBuilder builder = new StringBuilder();
-		for (Object o : list) {
-			if (builder.length() > 0) {
-				builder.append(", "); //$NON-NLS-1$
-			}
-			builder.append(o.toString());
-		}
-		return builder.toString();
+	@Override
+	protected String getHumanReadableSpecificationName() {
+		return "Google Prettify Style"; //$NON-NLS-1$
 	}
 
 	private static void append(List<String> buffer, String text, Object... parameters) {
@@ -290,55 +152,11 @@ public class GooglePrettifyGeneratorFragment extends DefaultGeneratorFragment {
 	}
 
 	@Override
-	public void generate(Grammar grammar, XpandExecutionContext ctx) {
-		LOG.info("Generating the CSS of SARL for Google Prettify"); //$NON-NLS-1$
-
-		if (grammar == null) {
-			throw new RuntimeException("No grammar defined"); //$NON-NLS-1$
-		}
-
-		Set<String> literals = new TreeSet<>();
-		Set<String> keywords = new TreeSet<>();
-
-		literals.addAll(this.additionalLiterals);
-
-		for (String keyword : this.additionalKeywords) {
-			if (!literals.contains(keyword)) {
-				keywords.add(keyword);
-			}
-		}
-
-		if (this.addNativeTypes) {
-			for (Class<?> type : Primitives.ALL_PRIMITIVE_TYPES) {
-				keywords.add(type.getSimpleName());
-			}
-		}
-
-		Set<String> punctuation = new TreeSet<>();
-		punctuation.addAll(this.additionalPunctuation);
-
-		Queue<Grammar> grammars = new ArrayDeque<>();
-		grammars.add(grammar);
-
-		Set<String> ignored = new TreeSet<>();
-
-		while (!grammars.isEmpty()) {
-			Grammar grammarToTreat = grammars.poll();
-			grammars.addAll(grammarToTreat.getUsedGrammars());
-			exploreGrammar(grammarToTreat, keywords, punctuation, literals, ignored);
-		}
-
-		LOG.info(MessageFormat.format("Keywords: {0}", toString(keywords))); //$NON-NLS-1$
-		LOG.info(MessageFormat.format("Literals: {0}", toString(literals))); //$NON-NLS-1$
-		LOG.info(MessageFormat.format("Punctuation symbols: {0}", toString(punctuation))); //$NON-NLS-1$
-
-		Set<String> tmp = new TreeSet<>(this.excludedKeywords);
-		tmp.removeAll(ignored);
-		if (!tmp.isEmpty()) {
-			throw new RuntimeException(MessageFormat.format(
-					"The following keywords cannot be ignored because they are not defined in the grammars: {0}", //$NON-NLS-1$
-					toString(tmp)));
-		}
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored) {
+		this.log.info(MessageFormat.format("\tKeywords: {0}", toString(keywords))); //$NON-NLS-1$
+		this.log.info(MessageFormat.format("\tLiterals: {0}", toString(literals))); //$NON-NLS-1$
+		this.log.info(MessageFormat.format("\tPunctuation symbols: {0}", toString(punctuation))); //$NON-NLS-1$
 
 		Set<Character> characters = new TreeSet<>();
 		for (String punct : punctuation) {
@@ -410,16 +228,17 @@ public class GooglePrettifyGeneratorFragment extends DefaultGeneratorFragment {
 		append(css, "         [PR[''PR_COMMENT''], /{0}/],", this.commentPattern); //$NON-NLS-1$
 		append(css, "         [PR[''PR_PUNCTUATION''], /^(?:\\.+|\\/)/]"); //$NON-NLS-1$
 		append(css, "      ]),"); //$NON-NLS-1$
-		append(css, "   [''{0}'']);", this.language); //$NON-NLS-1$
+		String language = getLanguage().toLowerCase();
+		append(css, "   [''{0}'']);", language); //$NON-NLS-1$
 
-		LOG.debug(css.toString());
+		this.log.debug(css.toString());
 
-		for (String output : this.outputDirectories) {
+		for (String output : getOutputs()) {
 			File directory = new File(output).getAbsoluteFile();
 			try {
-				LOG.info(MessageFormat.format("\twriting into {0}", directory.getAbsolutePath())); //$NON-NLS-1$
+				this.log.info(MessageFormat.format("\twriting into {0}", directory.getAbsolutePath())); //$NON-NLS-1$
 				directory.mkdirs();
-				File outputFile = new File(directory, "lang-" + this.language.toLowerCase() + ".js");  //$NON-NLS-1$//$NON-NLS-2$
+				File outputFile = new File(directory, "lang-" + language + ".js");  //$NON-NLS-1$//$NON-NLS-2$
 				Files.write(Paths.get(outputFile.getAbsolutePath()), css);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
