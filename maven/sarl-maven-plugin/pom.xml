@@ -19,8 +19,25 @@
 		<dependency.xtext-compiler.groupId>org.eclipse.xtext</dependency.xtext-compiler.groupId>
 		<dependency.xtext-compiler.artifactId>xtext-maven-plugin</dependency.xtext-compiler.artifactId>
 		<dependency.xtext-compiler.mojo>generate</dependency.xtext-compiler.mojo>
+		<!-- The following dependencies are determined from the required Bundles:
+			BUNDLE						=	MAVEN ARTIFACT
+			=======================================================================
+			javax.inject				=	javax.inject:javax.inject
+			com.google.inject			=	com.google.inject:guice
+			org.eclipse.osgi			=	org.eclipse:osgi
+			org.eclipse.xtext.xbase.lib	=	org.eclipse.xtext:org.eclipse.xtext.xbase.lib
+			org.eclipse.xtend.lib		=	org.eclipse.xtend:org.eclipse.xtend.lib
+			io.sarl.lang				=	io.sarl.lang:io.sarl.lang
+			io.sarl.lang.core			=	io.sarl.lang:io.sarl.lang.core
+		-->
 		<dependency.xtext-compiler.dependencies>
-			io.sarl.lang:io.sarl.lang|io.sarl.lang:io.sarl.lang.core|org.eclipse.xtend:org.eclipse.xtend.core|org.eclipse:osgi
+			javax.inject:javax.inject |
+			com.google.inject:guice |
+			org.eclipse:osgi |
+			org.eclipse.xtext.xbase.lib |
+			org.eclipse.xtend.lib |
+			io.sarl.lang |
+			io.sarl.lang.core
 		</dependency.xtext-compiler.dependencies>
 		<dependency.java-compiler.groupId>org.apache.maven.plugins</dependency.java-compiler.groupId>
 		<dependency.java-compiler.artifactId>maven-compiler-plugin</dependency.java-compiler.artifactId>
@@ -30,7 +47,24 @@
 		<dependency.cleaner.mojo>clean</dependency.cleaner.mojo>
 	</properties>
 
+	<!-- The dependencies contains the ones required for compiling and running this plugin,
+	     AND the plugins that are required for running the SARL compiler. -->
 	<dependencies>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>osgi</artifactId>
+			<version>${osgi.nls.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang</artifactId>
@@ -42,13 +76,8 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>osgi</artifactId>
-			<version>${osgi.nls.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.xtend</groupId>
-			<artifactId>org.eclipse.xtend.core</artifactId>
+			<artifactId>org.eclipse.xtend.lib</artifactId>
 			<version>${xtext.version}</version>
 		</dependency>
 		<dependency>
@@ -75,7 +104,6 @@
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
 			<version>3.4</version>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

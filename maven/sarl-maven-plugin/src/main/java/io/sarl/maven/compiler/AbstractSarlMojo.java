@@ -269,7 +269,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 
 		Map<String, Dependency> pomDependencies = MavenHelper.getPluginDependencies(mojoGoal);
 
-		for (String dependencyId : rawDependencies.split("[;|,]+")) { //$NON-NLS-1$
+		for (String dependencyId : rawDependencies.split("\\s*[;|,]+\\s*")) { //$NON-NLS-1$
 			Matcher matcher = pattern.matcher(dependencyId);
 			if (matcher != null && matcher.matches()) {
 				String dependencyGroupId = matcher.group(1);
