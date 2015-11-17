@@ -24,6 +24,7 @@ package foo;
 import java.util.UUID;
 
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.BuiltinCapacitiesProvider;
 
 /**
  * @author $Author: sgalland$
@@ -34,10 +35,12 @@ import io.sarl.lang.core.Agent;
 public final class MockFinalAgent extends Agent {
 
 	/**
+	 * @param provider
 	 * @param parent
+	 * @param uuid
 	 */
-	public MockFinalAgent(UUID parent) {
-		super(parent);
+	public MockFinalAgent(BuiltinCapacitiesProvider provider, UUID parent, UUID uuid) {
+		super(provider, parent, uuid);
 	}
 
 }

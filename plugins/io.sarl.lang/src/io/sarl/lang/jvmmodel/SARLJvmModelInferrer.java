@@ -111,6 +111,7 @@ import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
+import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Percept;
@@ -426,7 +427,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the default constructors for the agent, if not already added
 			if (!context.hasConstructor()) {
-				// new(parentID: UUID)
+				// new(builtinCapacityProvider : BuiltinCapacitiesProvider, parentID : UUID, agentID : UUID)
 				JvmConstructor constructor = this.typesFactory.createJvmConstructor();
 				inferredJvmType.getMembers().add(constructor);
 				this.associator.associate(source, constructor);
@@ -434,26 +435,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				constructor.setVisibility(JvmVisibility.PUBLIC);
 				this.typeExtensions.setSynthetic(constructor, true);
 				this.typeBuilder.setDocumentation(constructor, MessageFormat.format(
-						Messages.SARLJvmModelInferrer_6, "parentID")); //$NON-NLS-1$
+						Messages.SARLJvmModelInferrer_7, "builtinCapacityProvider", //$NON-NLS-1$
+						"parentID", "agentID")); //$NON-NLS-1$ //$NON-NLS-2$
 				JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName("parentID"); //$NON-NLS-1$
-				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(UUID.class));
+				jvmParam.setName("builtinCapacityProvider"); //$NON-NLS-1$
+				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(BuiltinCapacitiesProvider.class));
 				this.associator.associate(source, jvmParam);
 				constructor.getParameters().add(jvmParam);
-				this.typeBuilder.setBody(constructor,
-						toStringConcatenation("super(parentID, null);")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor);
-
-				// new(parentID : UUID, agentID : UUID)
-				constructor = this.typesFactory.createJvmConstructor();
-				inferredJvmType.getMembers().add(constructor);
-				this.associator.associate(source, constructor);
-				constructor.setSimpleName(source.getName());
-				constructor.setVisibility(JvmVisibility.PUBLIC);
-				this.typeExtensions.setSynthetic(constructor, true);
-				this.typeBuilder.setDocumentation(constructor, MessageFormat.format(
-						Messages.SARLJvmModelInferrer_7,
-						"parentID", "agentID")); //$NON-NLS-1$ //$NON-NLS-2$
 				jvmParam = this.typesFactory.createJvmFormalParameter();
 				jvmParam.setName("parentID"); //$NON-NLS-1$
 				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(UUID.class));
@@ -465,7 +453,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.associator.associate(source, jvmParam);
 				constructor.getParameters().add(jvmParam);
 				this.typeBuilder.setBody(constructor,
-						toStringConcatenation("super(parentID, agentID);")); //$NON-NLS-1$
+						toStringConcatenation("super(builtinCapacityProvider, parentID, agentID);")); //$NON-NLS-1$
+				JvmAnnotationReference injectAnnotationRef = this._annotationTypesBuilder.annotationRef(
+						javax.inject.Inject.class);
+				constructor.getAnnotations().add(injectAnnotationRef);
 				appendGeneratedAnnotation(constructor);
 			}
 

@@ -62,10 +62,14 @@
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-surefire-plugin</artifactId>
+					<version>${tycho.version}</version>
 					<configuration>
+						<useUIHarness>true</useUIHarness>
+						<useUIThread>true</useUIThread>
+						<runOrder>alphabetical</runOrder>
+						<product>io.sarl.eclipse.io_sarl_lang_product</product>
+						<application>org.eclipse.ui.ide.workbench</application>
 						<argLine>-ea ${tycho-surefire-plugin-os-jvm-flags}</argLine>
-<!-- 						<parallel>classes</parallel> -->
-<!-- 						<threadCount>5</threadCount> -->
 					</configuration>
 				</plugin>
 			</plugins>

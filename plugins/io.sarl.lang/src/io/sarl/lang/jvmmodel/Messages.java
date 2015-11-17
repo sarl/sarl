@@ -38,7 +38,6 @@ public class Messages extends NLS {
 	public static String SARLJvmModelInferrer_3;
 	public static String SARLJvmModelInferrer_4;
 	public static String SARLJvmModelInferrer_5;
-	public static String SARLJvmModelInferrer_6;
 	public static String SARLJvmModelInferrer_7;
 	public static String SARLJvmModelInferrer_8;
 	public static String SARLJvmModelInferrer_9;

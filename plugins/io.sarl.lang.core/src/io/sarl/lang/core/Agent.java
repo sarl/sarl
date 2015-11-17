@@ -36,6 +36,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * the capacities it exhibits. An agent defines a context.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -44,29 +45,28 @@ public class Agent implements Identifiable {
 
 	private final UUID id;
 
-	private Map<Class<? extends Capacity>, Skill> capacities = new ConcurrentHashMap<>();
+	private final Map<Class<? extends Capacity>, Skill> capacities = new ConcurrentHashMap<>();
 
 	private final UUID parentID;
 
 	/**
 	 * Creates a new agent by parent <code>parentID</code>.
 	 *
-	 * @param parentID - the agent's spawner.
-	 */
-	public Agent(UUID parentID) {
-		this(parentID, null);
-	}
-
-	/**
-	 * Creates a new agent by parent <code>parentID</code>.
-	 *
+	 * @param provider - the provider of built-in capacities for this agent.
 	 * @param parentID - the agent's spawner.
 	 * @param agentID - the identifier of the agent, or
 	 *                  <code>null</code> for computing it randomly.
 	 */
-	public Agent(UUID parentID, UUID agentID) {
+	@Inject
+	public Agent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
 		this.parentID = parentID;
 		this.id = ((agentID == null) ? UUID.randomUUID() : agentID);
+		if (provider != null) {
+			Map<Class<? extends Capacity>, Skill> builtinCapacities = provider.getBuiltinCapacities(this);
+			if (builtinCapacities != null && !builtinCapacities.isEmpty()) {
+				this.capacities.putAll(builtinCapacities);
+			}
+		}
 	}
 
 	/**
@@ -194,15 +194,6 @@ public class Agent implements Identifiable {
 	protected boolean hasSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
 		return this.capacities.containsKey(capacity);
-	}
-
-	/** Set the provider of the built-in capacities.
-	 *
-	 * @param provider - the provider of built-in capacities for this agent.
-	 */
-	@Inject
-	void setBuiltinCapacitiesProvider(BuiltinCapacitiesProvider provider) {
-		this.capacities.putAll(provider.getBuiltinCapacities(this));
 	}
 
 	/** Replies if the given address is one of the addresses of this agent.

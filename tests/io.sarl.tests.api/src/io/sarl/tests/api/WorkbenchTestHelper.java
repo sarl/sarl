@@ -124,6 +124,7 @@ public class WorkbenchTestHelper {
 			"com.google.inject", //$NON-NLS-1$
 			"org.eclipse.xtend.lib", //$NON-NLS-1$
 			"org.eclipse.xtext.xbase.lib", //$NON-NLS-1$
+			"javax.inject", //$NON-NLS-1$
 			"io.sarl.lang", //$NON-NLS-1$
 			"io.sarl.lang.core", //$NON-NLS-1$
 			"io.sarl.lang.ui", //$NON-NLS-1$

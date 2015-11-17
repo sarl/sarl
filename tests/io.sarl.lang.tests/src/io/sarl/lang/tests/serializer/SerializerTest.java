@@ -349,7 +349,7 @@ public class SerializerTest {
 		public void noSuper() throws Exception {
 			String s = multilineString(
 					"agent Foo {",
-					"new() { super(null) }",
+					"new() { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -359,7 +359,7 @@ public class SerializerTest {
 		public void noParDelim_noSuper() throws Exception {
 			String s = multilineString(
 					"agent Foo {",
-					"new { super(null) }",
+					"new { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -369,7 +369,7 @@ public class SerializerTest {
 		public void param_noSuper() throws Exception {
 			String s = multilineString(
 					"agent Foo {",
-					"new(b : int) { super(null) }",
+					"new(b : int) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -379,7 +379,7 @@ public class SerializerTest {
 		public void params_noSuper() throws Exception {
 			String s = multilineString(
 					"agent Foo {",
-					"new(b : int, c : float) { super(null) }",
+					"new(b : int, c : float) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -389,7 +389,7 @@ public class SerializerTest {
 		public void paramDef_noSuper() throws Exception {
 			String s = multilineString(
 					"agent Foo {",
-					"new(b : int = 5) { super(null) }",
+					"new(b : int = 5) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -399,7 +399,7 @@ public class SerializerTest {
 		public void paramsDef_noSuper_0() throws Exception {
 			String s = multilineString(
 					"agent Foo {",
-					"new(b : int = 6, c : float) { super(null) }",
+					"new(b : int = 6, c : float) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -409,7 +409,7 @@ public class SerializerTest {
 		public void paramsDef_noSuper_1() throws Exception {
 			String s = multilineString(
 					"agent Foo {",
-					"new(b : int, c : float = 5.9f) { super(null) }",
+					"new(b : int, c : float = 5.9f) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -419,7 +419,7 @@ public class SerializerTest {
 		public void paramsDef_noSuper_2() throws Exception {
 			String s = multilineString(
 					"agent Foo {",
-					"new(b : int = 8, c : float = 5.9f) { super(null) }",
+					"new(b : int = 8, c : float = 5.9f) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -429,7 +429,7 @@ public class SerializerTest {
 		public void paramsVar_noSuper() throws Exception {
 			String s = multilineString(
 					"agent Foo {",
-					"new(b : int, c : float*) { super(null) }",
+					"new(b : int, c : float*) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -439,7 +439,7 @@ public class SerializerTest {
 		public void paramsDefVar_noSuper() throws Exception {
 			String s = multilineString(
 					"agent Foo {",
-					"new(b : int = 6, c : float*) { super(null) }",
+					"new(b : int = 6, c : float*) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -449,7 +449,7 @@ public class SerializerTest {
 		public void noParDelim_super() throws Exception {
 			String s = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"new { super(null) }",
+					"new { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -459,7 +459,7 @@ public class SerializerTest {
 		public void param_super() throws Exception {
 			String s = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"new(b : int) { super(null) }",
+					"new(b : int) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -469,7 +469,7 @@ public class SerializerTest {
 		public void params_super() throws Exception {
 			String s = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"new(b : int, c : float) { super(null) }",
+					"new(b : int, c : float) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -479,7 +479,7 @@ public class SerializerTest {
 		public void paramDef_super() throws Exception {
 			String s = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"new(b : int = 5) { super(null) }",
+					"new(b : int = 5) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -489,7 +489,7 @@ public class SerializerTest {
 		public void paramsDef_super_0() throws Exception {
 			String s = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"new(b : int = 6, c : float) { super(null) }",
+					"new(b : int = 6, c : float) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -499,7 +499,7 @@ public class SerializerTest {
 		public void paramsDef_super_1() throws Exception {
 			String s = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"new(b : int, c : float = 5.9f) { super(null) }",
+					"new(b : int, c : float = 5.9f) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -509,7 +509,7 @@ public class SerializerTest {
 		public void paramsDef_super_2() throws Exception {
 			String s = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"new(b : int = 8, c : float = 5.9f) { super(null) }",
+					"new(b : int = 8, c : float = 5.9f) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -519,7 +519,7 @@ public class SerializerTest {
 		public void paramsVar_super() throws Exception {
 			String s = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"new(b : int, c : float*) { super(null) }",
+					"new(b : int, c : float*) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);
@@ -529,7 +529,7 @@ public class SerializerTest {
 		public void paramsDefVar_super() throws Exception {
 			String s = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"new(b : int = 6, c : float*) { super(null) }",
+					"new(b : int = 6, c : float*) { super(null, null, null) }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(s);

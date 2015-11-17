@@ -37,6 +37,7 @@ import org.mockito.Mockito;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
@@ -351,7 +352,7 @@ public class AgentTest extends AbstractSarlTest {
 		 * @param parentID
 		 */
 		public AgentMock(UUID parentID) {
-			super(parentID);
+			super(Mockito.mock(BuiltinCapacitiesProvider.class), parentID, null);
 		}
 
 		/** {@inheritDoc}

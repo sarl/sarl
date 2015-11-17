@@ -24,6 +24,7 @@ package foo.ecore;
 import java.util.UUID;
 
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.BuiltinCapacitiesProvider;
 
 
 /**
@@ -35,12 +36,8 @@ import io.sarl.lang.core.Agent;
 @SuppressWarnings("all")
 public class SubAgent extends Agent {
 
-	public SubAgent(UUID parentID) {
-		super(parentID);
-	}
-
-	public SubAgent(UUID parentID, UUID agentID) {
-		super(parentID, agentID);
+	public SubAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
+		super(provider, parentID, agentID);
 	}
 
 }
