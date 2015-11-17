@@ -41,15 +41,14 @@ public class CleanMojo extends AbstractSarlMojo {
 
 	@Override
 	protected void executeMojo() throws MojoExecutionException, MojoFailureException {
-		String cleanerGroupId = MavenHelper.getConfig("cleaner.groupId"); //$NON-NLS-1$
-		String cleanerArtifactId = MavenHelper.getConfig("cleaner.artifactId"); //$NON-NLS-1$
-		String cleanerVersion = this.mavenHelper.getPluginDependencyVersion(
-				cleanerGroupId, cleanerArtifactId, "clean"); //$NON-NLS-1$
-		String cleanerMojo = MavenHelper.getConfig("cleaner.mojo"); //$NON-NLS-1$
+		String cleanerGroupId = this.mavenHelper.getConfig("cleaner.groupId"); //$NON-NLS-1$
+		String cleanerArtifactId = this.mavenHelper.getConfig("cleaner.artifactId"); //$NON-NLS-1$
+		String cleanerVersion = this.mavenHelper.getPluginDependencyVersion(cleanerGroupId, cleanerArtifactId);
+		String cleanerMojo = this.mavenHelper.getConfig("cleaner.mojo"); //$NON-NLS-1$
 		executeMojo(
 				cleanerGroupId, cleanerArtifactId, cleanerVersion, cleanerMojo,
 				MessageFormat.format(
-				MavenHelper.getConfig("cleaner.configuration"), //$NON-NLS-1$
+				this.mavenHelper.getConfig("cleaner.configuration"), //$NON-NLS-1$
 				getOutput().getAbsolutePath(),
 				getTestOutput().getAbsolutePath()));
 	}

@@ -23,16 +23,23 @@ package io.sarl.maven.compiler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import com.google.common.base.Strings;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
+import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+import org.apache.maven.artifact.resolver.MultipleArtifactsNotFoundException;
+import org.apache.maven.artifact.resolver.ResolutionErrorHandler;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
@@ -44,6 +51,7 @@ import org.apache.maven.plugin.PluginConfigurationException;
 import org.apache.maven.plugin.PluginManagerException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.repository.RepositorySystem;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /** This class permits to support the incompatible Maven API
@@ -54,9 +62,9 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class MavenHelper {
+class MavenHelper {
 
-	private static Map<String, Dependency> pluginDependencies;
+	private Map<String, Dependency> pluginDependencies;
 
 	private final MavenSession session;
 
@@ -68,17 +76,25 @@ public class MavenHelper {
 
 	private final Method loadPluginMethod;
 
+	private final RepositorySystem repositorySystem;
+
+	private final ResolutionErrorHandler resolutionErrorHandler;
+
 	/**
 	 * @param session - the Maven session.
 	 * @param buildPluginManager - the Maven build plugin manager.
+	 * @param repositorySystem - the Repository system.
+	 * @param resolutionErrorHandler - the error handler during artifact resolution.
 	 * @param log - the log for the caller.
 	 * @throws MojoExecutionException if cannot get the accessors.
 	 */
-	public MavenHelper(MavenSession session, BuildPluginManager buildPluginManager, Log log)
-			throws MojoExecutionException {
+	MavenHelper(MavenSession session, BuildPluginManager buildPluginManager, RepositorySystem repositorySystem,
+			ResolutionErrorHandler resolutionErrorHandler, Log log) throws MojoExecutionException {
 		this.session = session;
 		this.buildPluginManager = buildPluginManager;
 		this.log = log;
+		this.repositorySystem = repositorySystem;
+		this.resolutionErrorHandler = resolutionErrorHandler;
 
 		Method method;
 
@@ -131,7 +147,7 @@ public class MavenHelper {
 	 * @return the value.
 	 * @throws MojoExecutionException on error.
 	 */
-	public static String getConfig(String key) throws MojoExecutionException {
+	public String getConfig(String key) throws MojoExecutionException {
 		ResourceBundle resource = null;
 		try {
 			resource = ResourceBundle.getBundle(
@@ -143,7 +159,8 @@ public class MavenHelper {
 		}
 		String value = resource.getString(key);
 		if (value == null || value.isEmpty()) {
-			throw new MojoExecutionException(Locale.getString(MavenHelper.class,
+			value = Strings.nullToEmpty(value);
+			this.log.warn(Locale.getString(MavenHelper.class,
 					"NO_CONFIGURATION_ENTRY", key)); //$NON-NLS-1$
 		}
 		return value;
@@ -205,66 +222,63 @@ public class MavenHelper {
 
 	/** Build the map of dependencies for the current plugin.
 	 *
-	 * @param mojoGoal - name of the mojo goal.
 	 * @return the artifact.
 	 * @throws MojoExecutionException if the current plugin cannot be determined.
 	 */
-	public static Map<String, Dependency> getPluginDependencies(String mojoGoal) throws MojoExecutionException {
-		synchronized (MavenHelper.class) {
-			if (pluginDependencies == null) {
-				Map<String, Dependency> deps = new TreeMap<>();
-				String dependencies = getConfig("plugin.dependencies"); //$NON-NLS-1$
-				Pattern pattern = Pattern.compile("^\\s*\\[\\s*(.*?)\\s*\\]\\s*$", Pattern.DOTALL); //$NON-NLS-1$
-				Matcher matcher = pattern.matcher(dependencies);
-				if (matcher.matches()) {
-					dependencies = matcher.group(1);
-					pattern = Pattern.compile("Dependency\\s*\\{\\s*(.+?)\\s*\\}", Pattern.DOTALL); //$NON-NLS-1$
-					matcher = pattern.matcher(dependencies);
-					while (matcher.find()) {
-						Dependency dep = new Dependency();
-						dep.setClassifier(""); //$NON-NLS-1$
-						dep.setOptional(false);
-						dep.setScope("compile"); //$NON-NLS-1$
-						String groupId = null;
-						String artifactId = null;
-						String element = matcher.group(1);
-						for (String entry : element.split(",\\s")) { //$NON-NLS-1$
-							String[] pair = entry.trim().split("="); //$NON-NLS-1$
-							switch (pair[0]) {
-							case "groupId": //$NON-NLS-1$
-								groupId = pair[1].trim();
-								dep.setGroupId(groupId);
-								break;
-							case "artifactId": //$NON-NLS-1$
-								artifactId = pair[1].trim();
-								dep.setArtifactId(artifactId);
-								break;
-							case "version": //$NON-NLS-1$
-								dep.setVersion(pair[1].trim());
-								break;
-							case "type": //$NON-NLS-1$
-								dep.setType(pair[1].trim());
-								break;
-							default:
-								throw new MojoExecutionException(Locale.getString(MavenHelper.class,
-										"INVALID_DEPENDENCY_FORMAT")); //$NON-NLS-1$
-							}
-						}
-						if (groupId == null || artifactId == null) {
-							throw new MojoExecutionException(Locale.getString(MavenHelper.class,
-									"INVALID_DEPENDENCY_FORMAT")); //$NON-NLS-1$
-						}
-						deps.put(ArtifactUtils.versionlessKey(groupId, artifactId), dep);
-					}
-				} else {
-					throw new MojoExecutionException(Locale.getString(MavenHelper.class,
-							"INVALID_DEPENDENCY_FORMAT")); //$NON-NLS-1$
-				}
+	public synchronized Map<String, Dependency> getPluginDependencies() throws MojoExecutionException {
+		if (this.pluginDependencies == null) {
+			String groupId = getConfig("plugin.groupId"); //$NON-NLS-1$
+			String artifactId = getConfig("plugin.artifactId"); //$NON-NLS-1$
+			String pluginArtifactKey = ArtifactUtils.versionlessKey(groupId, artifactId);
 
-				pluginDependencies = deps;
+			Set<Artifact> dependencies = resolveDependencies(pluginArtifactKey);
+
+			Map<String, Dependency> deps = new TreeMap<>();
+
+			for (Artifact artifact : dependencies) {
+				Dependency dep = toDependency(artifact);
+				deps.put(ArtifactUtils.versionlessKey(artifact), dep);
 			}
-			return pluginDependencies;
+
+			this.pluginDependencies = deps;
 		}
+		return this.pluginDependencies;
+	}
+
+	/** Replies the dependencies for the given artifact.
+	 *
+	 * @param artifactId - the artifact identifier.
+	 * @return the dependencies.
+	 * @throws MojoExecutionException if the resolution cannot be done.
+	 */
+	public Set<Artifact> resolveDependencies(String artifactId) throws MojoExecutionException {
+		Artifact pluginArtifact = getSession().getCurrentProject().getPluginArtifactMap().get(artifactId);
+		
+		ArtifactResolutionRequest request = new ArtifactResolutionRequest();
+		request.setResolveRoot(false);
+		request.setResolveTransitively(true);
+		request.setLocalRepository(getSession().getLocalRepository());
+		request.setOffline(getSession().isOffline());
+		request.setForceUpdate(getSession().getRequest().isUpdateSnapshots());
+		request.setServers(getSession().getRequest().getServers());
+		request.setMirrors(getSession().getRequest().getMirrors());
+		request.setProxies(getSession().getRequest().getProxies());
+		request.setArtifact(pluginArtifact);
+
+		ArtifactResolutionResult result = this.repositorySystem.resolve(request);
+
+		try {
+			this.resolutionErrorHandler.throwErrors( request, result );
+		} catch (MultipleArtifactsNotFoundException e) {
+			Collection<Artifact> missing = new HashSet<>(e.getMissingArtifacts());
+			if (!missing.isEmpty()) {
+				throw new MojoExecutionException(e.getLocalizedMessage(), e);
+			}
+		} catch (ArtifactResolutionException e) {
+			throw new MojoExecutionException(e.getLocalizedMessage(), e);
+		}
+
+		return result.getArtifacts();
 	}
 
 	/** Replies the version of the given plugin that is specified in the POM of the
@@ -272,12 +286,11 @@ public class MavenHelper {
 	 *
 	 * @param groupId - the identifier of the group.
 	 * @param artifactId - thidentifier of the artifact.
-	 * @param mojoGoal - name of the mojo goal.
 	 * @return the version, never <code>null</code>
 	 * @throws MojoExecutionException if the plugin was not found.
 	 */
-	public String getPluginDependencyVersion(String groupId, String artifactId, String mojoGoal) throws MojoExecutionException {
-		Map<String, Dependency> deps = getPluginDependencies(mojoGoal);
+	public String getPluginDependencyVersion(String groupId, String artifactId) throws MojoExecutionException {
+		Map<String, Dependency> deps = getPluginDependencies();
 		String key = ArtifactUtils.versionlessKey(groupId, artifactId);
 		this.log.debug("COMPONENT DEPENDENCIES(getPluginVersionFromDependencies):"); //$NON-NLS-1$
 		this.log.debug(deps.toString());

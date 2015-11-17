@@ -23,6 +23,8 @@ package io.sarl.maven.compiler;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
@@ -30,6 +32,8 @@ import org.apache.maven.it.VerificationException;
 
 import org.apache.maven.it.Verifier;
 import org.apache.maven.plugin.MojoFailureException;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Test;
 
 /**

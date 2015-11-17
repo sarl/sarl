@@ -32,6 +32,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.maven.artifact.ArtifactUtils;
+import org.apache.maven.artifact.resolver.ResolutionErrorHandler;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
@@ -44,6 +45,7 @@ import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.repository.RepositorySystem;
 import org.arakhne.afc.vmutil.locale.Locale;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
@@ -78,6 +80,12 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 */
 	@Component
 	private BuildPluginManager buildPluginManager;
+	
+	@Component
+	private RepositorySystem repositorySystem;
+
+	@Component
+	private ResolutionErrorHandler resolutionErrorHandler;
 
 	/** Output directory.
 	 */
@@ -104,10 +112,15 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 
 	@Override
 	public final void execute() throws MojoExecutionException, MojoFailureException {
-		this.mavenHelper = new MavenHelper(this.session, this.buildPluginManager, getLog());
-		ensureDefaultParameterValues();
-		getLog().info(toString());
-		executeMojo();
+		try {
+			this.mavenHelper = new MavenHelper(this.session, this.buildPluginManager, this.repositorySystem,
+					this.resolutionErrorHandler, getLog());
+			ensureDefaultParameterValues();
+			executeMojo();
+		} catch (Exception e) {
+			getLog().error(e.getLocalizedMessage());
+			throw e;
+		}
 	}
 
 	/** Ensure the mojo parameters have at least their default values.
@@ -256,18 +269,16 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * <code>&lt;configurationKeyPrefix&gt;.dependencies</code>.
 	 *
 	 * @param configurationKeyPrefix - the string that is the prefix in the configuration file.
-	 * @param mojoGoal - name of the mojo goal.
 	 * @return the list of the dependencies.
 	 * @throws MojoExecutionException if something cannot be done when extracting the dependencies.
 	 */
-	protected static Dependency[] getDependenciesFor(String configurationKeyPrefix,
-			String mojoGoal) throws MojoExecutionException {
+	protected Dependency[] getDependenciesFor(String configurationKeyPrefix) throws MojoExecutionException {
 		List<Dependency> dependencies = new ArrayList<>();
 		Pattern pattern = Pattern.compile(
 				"^[ \t\n\r]*([^: \t\n\t]+)[ \t\n\r]*:[ \t\n\r]*([^: \t\n\t]+)[ \t\n\r]*$"); //$NON-NLS-1$
-		String rawDependencies = MavenHelper.getConfig(configurationKeyPrefix + ".dependencies"); //$NON-NLS-1$
+		String rawDependencies = this.mavenHelper.getConfig(configurationKeyPrefix + ".dependencies"); //$NON-NLS-1$
 
-		Map<String, Dependency> pomDependencies = MavenHelper.getPluginDependencies(mojoGoal);
+		Map<String, Dependency> pomDependencies = this.mavenHelper.getPluginDependencies();
 
 		for (String dependencyId : rawDependencies.split("\\s*[;|,]+\\s*")) { //$NON-NLS-1$
 			Matcher matcher = pattern.matcher(dependencyId);
@@ -287,11 +298,6 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		Dependency[] dependencyArray = new Dependency[dependencies.size()];
 		dependencies.toArray(dependencyArray);
 		return dependencyArray;
-	}
-
-	@Override
-	public String toString() {
-		return getClass().getSimpleName();
 	}
 
 	/** Put the string representation of the properties of this object into the given buffer.

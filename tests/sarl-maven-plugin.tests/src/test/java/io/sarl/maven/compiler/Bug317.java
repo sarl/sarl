@@ -21,15 +21,15 @@
 package io.sarl.maven.compiler;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
-import org.apache.maven.it.VerificationException;
-
 import org.apache.maven.it.Verifier;
-import org.apache.maven.plugin.MojoFailureException;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -41,6 +41,18 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class Bug317 extends AbstractMojoTest {
 
+	@Before
+	public void setUp() throws Exception {
+		// The test can be run only of Janus is available.
+		URL url = new URL("http://maven.janusproject.io/io.janusproject/io.janusproject.kernel/0.3.0-SNAPSHOT");
+		try {
+			InputStream inputStream = url.openStream();
+			inputStream.close();
+		} catch (Exception e) {
+			Assume.assumeNoException(e);
+		}
+	}
+	
 	@Test
 	public void compile() throws Exception {
 		Verifier verifier = executeMojo("prj3", "compile");
