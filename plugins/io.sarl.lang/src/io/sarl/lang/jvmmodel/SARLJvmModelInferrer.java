@@ -88,6 +88,7 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.typesystem.InferredTypeIndicator;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
@@ -969,9 +970,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		// Infer the return type
 		XExpression expression = source.getExpression();
 
-		JvmTypeReference returnTypeCandidate = null;
+		JvmTypeReference returnType = null;
 		if (source.getReturnType() != null) {
-			returnTypeCandidate = source.getReturnType();
+			returnType = source.getReturnType();
 		} else if (context != null) {
 			JvmOperation inheritedOperation = context.getInheritedFinalOperations().get(actSigKey);
 			if (inheritedOperation == null) {
@@ -981,30 +982,28 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				inheritedOperation = context.getInheritedOperationsToImplement().get(actSigKey);
 			}
 			if (inheritedOperation != null) {
-				returnTypeCandidate = inheritedOperation.getReturnType();
-				if (returnTypeCandidate != null) {
-					// XXX: Ensure the type is resolved
-					returnTypeCandidate.getType();
-				}
+				returnType = inheritedOperation.getReturnType();
 			}
-			if (returnTypeCandidate == null
+			if (returnType == null
 					&& expression != null
 					&& ((!(expression instanceof XBlockExpression))
 					|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
-				returnTypeCandidate = this.typeBuilder.inferredType(expression);
+				returnType = this.typeBuilder.inferredType(expression);
 			}
 		} else if (expression != null
 				&& ((!(expression instanceof XBlockExpression))
 				|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
-			returnTypeCandidate = this.typeBuilder.inferredType(expression);
+			returnType = this.typeBuilder.inferredType(expression);
 		}
-		final JvmTypeReference returnType;
-		if (returnTypeCandidate == null) {
-			returnType = this._typeReferenceBuilder.typeRef(Void.TYPE);
+		final JvmTypeReference selectedReturnType;
+		if (returnType == null) {
+			selectedReturnType = this._typeReferenceBuilder.typeRef(Void.TYPE);
+		} else if (InferredTypeIndicator.isInferred(returnType)) {
+			selectedReturnType = returnType;
 		} else {
-			returnType = returnTypeCandidate;
+			selectedReturnType = this.typeBuilder.cloneWithProxies(returnType);
 		}
-		operation.setReturnType(this.typeBuilder.cloneWithProxies(returnType));
+		operation.setReturnType(selectedReturnType);
 
 		// Exceptions
 		for (JvmTypeReference exception : source.getExceptions()) {
@@ -1115,7 +1114,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						operation2.setAbstract(operation.isAbstract());
 						operation2.setDeprecated(operation.isDeprecated());
 						operation2.setReturnType(
-								SARLJvmModelInferrer.this.typeBuilder.cloneWithProxies(returnType));
+								SARLJvmModelInferrer.this.typeBuilder.cloneWithProxies(selectedReturnType));
 						operation2.setFinal(!container.isInterface());
 						operation2.setNative(false);
 						operation2.setStrictFloatingPoint(false);

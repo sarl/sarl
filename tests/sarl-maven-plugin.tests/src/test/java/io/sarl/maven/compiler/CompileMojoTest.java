@@ -34,6 +34,7 @@ import org.apache.maven.it.Verifier;
 import org.apache.maven.plugin.MojoFailureException;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -46,6 +47,7 @@ import org.junit.Test;
 public class CompileMojoTest extends AbstractMojoTest {
 
 	@Test
+	@Ignore
 	public void compile() throws Exception {
 		Verifier verifier = executeMojo("prj1", "compile");
 		Path path = FileSystems.getDefault().getPath(
@@ -56,6 +58,7 @@ public class CompileMojoTest extends AbstractMojoTest {
 	}
 
 	@Test(expected = VerificationException.class)
+	@Ignore
 	public void invalidSdk() throws Exception {
 		executeMojo("prj2", "compile");
 	}

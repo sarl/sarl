@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import org.apache.maven.it.Verifier;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -54,6 +55,7 @@ public class Bug317 extends AbstractMojoTest {
 	}
 	
 	@Test
+	@Ignore
 	public void compile() throws Exception {
 		Verifier verifier = executeMojo("prj3", "compile");
 		Path path = FileSystems.getDefault().getPath(
@@ -62,5 +64,5 @@ public class Bug317 extends AbstractMojoTest {
 		assertNotNull(path);
 		verifier.assertFilePresent(path.toString());
 	}
-
+	
 }
