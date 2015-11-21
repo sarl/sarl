@@ -36,7 +36,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.bugfixes.SARLContextPDAProvider;
+import io.sarl.lang.bugfixes.bug277.Bug277SARLContextPDAProvider;
 import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
 import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlScript;
@@ -57,7 +57,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	private SARLEclipsePlugin plugin;
 	
 	@Inject
-	private SARLContextPDAProvider pdaProvider;
+	private Bug277SARLContextPDAProvider pdaProvider;
 
 	@Inject
 	private ISerializer serializer;

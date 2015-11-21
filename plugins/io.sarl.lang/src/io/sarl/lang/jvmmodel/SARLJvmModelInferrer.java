@@ -70,6 +70,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
@@ -344,6 +345,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Override
 	protected void initialize(XtendClass source, JvmGenericType inferredJvmType) {
+		// Issue #356: do not generate if the class has no name.
+		assert (source != null);
+		assert (inferredJvmType != null);
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
 		openContext(inferredJvmType);
 		try {
 			super.initialize(source, inferredJvmType);
@@ -354,6 +361,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Override
 	protected void initialize(XtendAnnotationType source, JvmAnnotationType inferredJvmType) {
+		// Issue #356: do not generate if the annotation type has no name.
+		assert (source != null);
+		assert (inferredJvmType != null);
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
 		openContext(inferredJvmType);
 		try {
 			super.initialize(source, inferredJvmType);
@@ -364,6 +377,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Override
 	protected void initialize(XtendInterface source, JvmGenericType inferredJvmType) {
+		// Issue #356: do not generate if the interface has no name.
+		assert (source != null);
+		assert (inferredJvmType != null);
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
 		openContext(inferredJvmType);
 		try {
 			super.initialize(source, inferredJvmType);
@@ -374,6 +393,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Override
 	protected void initialize(XtendEnum source, JvmEnumerationType inferredJvmType) {
+		// Issue #356: do not generate if the enumeration has no name.
+		assert (source != null);
+		assert (inferredJvmType != null);
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
 		openContext(inferredJvmType);
 		try {
 			super.initialize(source, inferredJvmType);
@@ -388,6 +413,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param inferredJvmType the JVM type.
 	 */
 	protected void initialize(SarlAgent source, JvmGenericType inferredJvmType) {
+		// Issue #356: do not generate if the agent has no name.
+		assert (source != null);
+		assert (inferredJvmType != null);
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
 		try {
 			// Create the generation context that is used by the other transformation functions.
 			GenerationContext context = new GenerationContext() {
@@ -474,6 +505,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param inferredJvmType the JVM type.
 	 */
 	protected void initialize(SarlBehavior source, JvmGenericType inferredJvmType) {
+		// Issue #356: do not generate if the behavior has no name.
+		assert (source != null);
+		assert (inferredJvmType != null);
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
 		try {
 			// Create the generation context that is used by the other transformation functions.
 			GenerationContext context = new GenerationContext() {
@@ -547,6 +584,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param inferredJvmType the JVM type.
 	 */
 	protected void initialize(SarlEvent source, JvmGenericType inferredJvmType) {
+		// Issue #356: do not generate if the event has no name.
+		assert (source != null);
+		assert (inferredJvmType != null);
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
 		try {
 			// Create the generation context that is used by the other transformation functions.
 			GenerationContext context = new GenerationContext() {
@@ -637,6 +680,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param inferredJvmType the JVM type.
 	 */
 	protected void initialize(SarlSkill source, JvmGenericType inferredJvmType) {
+		// Issue #356: do not generate if the skill has no name.
+		assert (source != null);
+		assert (inferredJvmType != null);
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
 		try {
 			// Create the generation context that is used by the other transformation functions.
 			GenerationContext context = new GenerationContext() {
@@ -721,6 +770,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param inferredJvmType the JVM type.
 	 */
 	protected void initialize(SarlCapacity source, JvmGenericType inferredJvmType) {
+		// Issue #356: do not generate if the capacity has no name.
+		assert (source != null);
+		assert (inferredJvmType != null);
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
 		try {
 			// Create the generation context that is used by the other transformation functions.
 			GenerationContext context = new GenerationContext() {
@@ -1131,7 +1186,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							translateAnnotationsTo(source.getAnnotations(), operation2);
 							if (source.isOverride()
 									&& !Utils.hasAnnotation(operation, Override.class)
-									&& SARLJvmModelInferrer.this.typeReferences.findDeclaredType(Override.class, source) != null) {
+									&& SARLJvmModelInferrer.this.typeReferences.findDeclaredType(
+									Override.class, source) != null) {
 								operation.getAnnotations().add(
 										SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Override.class));
 							}
@@ -1161,7 +1217,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									actionSignatures.getFormalParameterTypes().toString()));
 							appendGeneratedAnnotation(operation2);
 
-							// If the main action is an early-exit action, the additional operation is also an early-exit operation.
+							// If the main action is an early-exit action, the additional operation
+							// is also an early-exit operation.
 							//TODO: Generalize the detection of the EarlyExit
 							if (isEarlyExit) {
 								operation2.getAnnotations().add(
@@ -1364,13 +1421,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return;
 		}
 		for (JvmTypeReference capacityType : source.getCapacities()) {
-			if (capacityType.getType() instanceof JvmGenericType) {
+			JvmType type = capacityType.getType();
+			if (type instanceof JvmGenericType) {
 				LightweightTypeReference reference = Utils.toLightweightTypeReference(capacityType, this.services);
 				if (reference.isSubtypeOf(Capacity.class)) {
 					final Map<ActionPrototype, JvmOperation> capacityOperations = CollectionLiterals.newTreeMap(null);
 
 					Utils.populateInterfaceElements(
-							(JvmGenericType) capacityType.getType(),
+							(JvmGenericType) type,
 							capacityOperations,
 							null,
 							this.sarlSignatureProvider);

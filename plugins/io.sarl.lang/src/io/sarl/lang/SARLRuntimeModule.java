@@ -113,8 +113,9 @@ import org.eclipse.xtext.xbase.validation.ImplicitReturnFinder;
 
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
-import io.sarl.lang.bugfixes.SARLContextPDAProvider;
-import io.sarl.lang.bugfixes.TypeDeclarationAwareBatchTypeResolver;
+import io.sarl.lang.bugfixes.bug277.Bug277SARLContextPDAProvider;
+import io.sarl.lang.bugfixes.bug335.Bug335TypeDeclarationAwareBatchTypeResolver;
+import io.sarl.lang.bugfixes.bug356.Bug356ImportedNamespaceScopeProvider;
 import io.sarl.lang.compiler.SarlOutputConfigurationProvider;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
@@ -292,7 +293,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	 * @return the context PDA provider
 	 */
 	public Class<? extends IContextPDAProvider> bindContextPDAProvider() {
-		return SARLContextPDAProvider.class;
+		return Bug277SARLContextPDAProvider.class;
 	}
 
 	/** Bind to the SARL JVM model inferred.
@@ -342,7 +343,8 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	@Override
 	public void configureIScopeProviderDelegate(Binder binder) {
 		binder.bind(IScopeProvider.class).annotatedWith(Names.named(AbstractDeclarativeScopeProvider.NAMED_DELEGATE))
-		.to(XtendImportedNamespaceScopeProvider.class);
+		.to(Bug356ImportedNamespaceScopeProvider.class);
+		//.to(XtendImportedNamespaceScopeProvider.class);
 	}
 
 	@Override
@@ -422,7 +424,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 
 	@Override
 	public Class<? extends DefaultBatchTypeResolver> bindDefaultBatchTypeResolver() {
-		return TypeDeclarationAwareBatchTypeResolver.class;
+		return Bug335TypeDeclarationAwareBatchTypeResolver.class;
 	}
 
 	@Override

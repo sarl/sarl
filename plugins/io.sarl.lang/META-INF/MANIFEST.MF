@@ -16,7 +16,7 @@ Require-Bundle: io.sarl.lang.core;bundle-version="0.3.0";visibility:=reexport,
 Bundle-Activator: io.sarl.lang.SARLLangActivator
 Export-Package: io.sarl.lang,
  io.sarl.lang.actionprototype,
- io.sarl.lang.bugfixes;x-friends:="io.sarl.eclipse.tests,io.sarl.lang.core.tests,io.sarl.lang.ui.tests",
+ io.sarl.lang.bugfixes.bug277;x-friends:="io.sarl.eclipse.tests,io.sarl.lang.core.tests,io.sarl.lang.ui.tests",
  io.sarl.lang.ecoregenerator.helper,
  io.sarl.lang.formatting,
  io.sarl.lang.jvmmodel,

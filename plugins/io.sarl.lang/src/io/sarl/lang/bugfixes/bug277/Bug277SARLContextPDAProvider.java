@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes;
+package io.sarl.lang.bugfixes.bug277;
 
 import com.google.inject.Singleton;
 import org.eclipse.xtext.Action;
@@ -49,11 +49,11 @@ import org.eclipse.xtext.util.formallang.Pda;
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-public class SARLContextPDAProvider extends ContextPDAProvider {
+public class Bug277SARLContextPDAProvider extends ContextPDAProvider {
 
 	/** Construct a provider of PDA context.
 	 */
-	public SARLContextPDAProvider() {
+	public Bug277SARLContextPDAProvider() {
 		//
 	}
 

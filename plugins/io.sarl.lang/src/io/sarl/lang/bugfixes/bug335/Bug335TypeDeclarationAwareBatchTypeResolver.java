@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes;
+package io.sarl.lang.bugfixes.bug335;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ import org.eclipse.xtext.xbase.typesystem.internal.LogicalContainerAwareBatchTyp
  */
 @Deprecated
 @SuppressWarnings("all")
-public class TypeDeclarationAwareBatchTypeResolver extends LogicalContainerAwareBatchTypeResolver {
+public class Bug335TypeDeclarationAwareBatchTypeResolver extends LogicalContainerAwareBatchTypeResolver {
 
 	/**
 	 * Checks the internal state of the resource and logs if type resolution was triggered unexpectedly.
