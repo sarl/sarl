@@ -249,6 +249,10 @@
 	            name="cssTheme"
 	            value="org.eclipse.e4.ui.css.theme.e4_classic">
 	      </property>
+          <property
+                name="preferenceCustomization"
+                value="platform:/plugin/io.sarl.eclipse/plugin_customization.ini">
+          </property>
        </product>
     </extension>
 

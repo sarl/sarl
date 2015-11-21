@@ -912,279 +912,284 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		final GenerationContext context = getContext(container);
 
 		// Compute the operation name
-		StringBuilder sourceNameBuffer = new StringBuilder(source.getName());
-		JvmVisibility visibility = source.getVisibility();
-		if (visibility == null) {
-			visibility = JvmVisibility.DEFAULT;
-		}
-		if (allowDispatch && source.isDispatch()) {
-			sourceNameBuffer.insert(0, "_"); //$NON-NLS-1$
-		}
-		final String sourceName = sourceNameBuffer.toString();
-
-		// Create the main function
-		final JvmOperation operation = this.typesFactory.createJvmOperation();
-		container.getMembers().add(operation);
-		operation.setAbstract(source.isAbstract() || container.isAbstract() || container.isInterface());
-		operation.setNative(source.isNative());
-		operation.setSynchronized(source.isSynchonized());
-		operation.setStrictFloatingPoint(source.isStrictFloatingPoint());
-		if (!operation.isAbstract()) {
-			operation.setFinal(source.isFinal());
-		}
-		this.associator.associatePrimary(source, operation);
-		operation.setSimpleName(sourceName);
-		operation.setVisibility(visibility);
-		operation.setStatic(source.isStatic());
-		if (!operation.isAbstract() && !operation.isStatic() && container.isInterface()) {
-			operation.setDefault(true);
-		}
-		this.typeBuilder.copyDocumentationTo(source, operation);
-
-		// Type parameters
-		copyAndFixTypeParameters(source.getTypeParameters(), operation);
-
-		// Compute the identifier of the action.
-		QualifiedActionName actionKey = this.sarlSignatureProvider.createQualifiedActionName(
-				container, sourceName);
-
-		// Compute the different action prototypes associated to the action to create.
-		final boolean isVarArgs = Utils.isVarArg(source.getParameters());
-		final InferredPrototype actionSignatures = this.sarlSignatureProvider.createPrototypeFromSarlModel(
-				actionKey,
-				isVarArgs, source.getParameters());
-
-		// Compute the action prototype of the action without optional parameter
-		final ActionPrototype actSigKey = this.sarlSignatureProvider.createActionPrototype(
-				sourceName,
-				actionSignatures.getFormalParameterTypes());
-
-		// Generate the parameters
-		List<InferredStandardParameter> paramList = actionSignatures.getOriginalParameterTypes();
-		translateSarlFormalParameters(
-				context,
-				operation, container, isVarArgs,
-				source.getParameters(),
-				container.isInterface(), paramList);
-
-		// Infer the return type
-		XExpression expression = source.getExpression();
-
-		JvmTypeReference returnType = null;
-		if (source.getReturnType() != null) {
-			returnType = source.getReturnType();
-		} else if (context != null) {
-			JvmOperation inheritedOperation = context.getInheritedFinalOperations().get(actSigKey);
-			if (inheritedOperation == null) {
-				inheritedOperation = context.getInheritedOverridableOperations().get(actSigKey);
+		// Issue #355: null or empty name is possible.
+		String originalFunctionName = source.getName();
+		if (!Strings.isNullOrEmpty(originalFunctionName)) {
+			StringBuilder sourceNameBuffer = new StringBuilder(originalFunctionName);
+			if (allowDispatch && source.isDispatch()) {
+				sourceNameBuffer.insert(0, "_"); //$NON-NLS-1$
 			}
-			if (inheritedOperation == null) {
-				inheritedOperation = context.getInheritedOperationsToImplement().get(actSigKey);
+			final String sourceName = sourceNameBuffer.toString();
+
+			JvmVisibility visibility = source.getVisibility();
+			if (visibility == null) {
+				visibility = JvmVisibility.DEFAULT;
 			}
-			if (inheritedOperation != null) {
-				returnType = inheritedOperation.getReturnType();
+
+			// Create the main function
+			final JvmOperation operation = this.typesFactory.createJvmOperation();
+			container.getMembers().add(operation);
+			operation.setAbstract(source.isAbstract() || container.isAbstract() || container.isInterface());
+			operation.setNative(source.isNative());
+			operation.setSynchronized(source.isSynchonized());
+			operation.setStrictFloatingPoint(source.isStrictFloatingPoint());
+			if (!operation.isAbstract()) {
+				operation.setFinal(source.isFinal());
 			}
-			if (returnType == null
-					&& expression != null
+			this.associator.associatePrimary(source, operation);
+			operation.setSimpleName(sourceName);
+			operation.setVisibility(visibility);
+			operation.setStatic(source.isStatic());
+			if (!operation.isAbstract() && !operation.isStatic() && container.isInterface()) {
+				operation.setDefault(true);
+			}
+			this.typeBuilder.copyDocumentationTo(source, operation);
+
+			// Type parameters
+			copyAndFixTypeParameters(source.getTypeParameters(), operation);
+
+			// Compute the identifier of the action.
+			QualifiedActionName actionKey = this.sarlSignatureProvider.createQualifiedActionName(
+					container, sourceName);
+
+			// Compute the different action prototypes associated to the action to create.
+			final boolean isVarArgs = Utils.isVarArg(source.getParameters());
+			final InferredPrototype actionSignatures = this.sarlSignatureProvider.createPrototypeFromSarlModel(
+					actionKey,
+					isVarArgs, source.getParameters());
+
+			// Compute the action prototype of the action without optional parameter
+			final ActionPrototype actSigKey = this.sarlSignatureProvider.createActionPrototype(
+					sourceName,
+					actionSignatures.getFormalParameterTypes());
+
+			// Generate the parameters
+			List<InferredStandardParameter> paramList = actionSignatures.getOriginalParameterTypes();
+			translateSarlFormalParameters(
+					context,
+					operation, container, isVarArgs,
+					source.getParameters(),
+					container.isInterface(), paramList);
+
+			// Infer the return type
+			XExpression expression = source.getExpression();
+
+			JvmTypeReference returnType = null;
+			if (source.getReturnType() != null) {
+				returnType = source.getReturnType();
+			} else if (context != null) {
+				JvmOperation inheritedOperation = context.getInheritedFinalOperations().get(actSigKey);
+				if (inheritedOperation == null) {
+					inheritedOperation = context.getInheritedOverridableOperations().get(actSigKey);
+				}
+				if (inheritedOperation == null) {
+					inheritedOperation = context.getInheritedOperationsToImplement().get(actSigKey);
+				}
+				if (inheritedOperation != null) {
+					returnType = inheritedOperation.getReturnType();
+				}
+				if (returnType == null
+						&& expression != null
+						&& ((!(expression instanceof XBlockExpression))
+						|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
+					returnType = this.typeBuilder.inferredType(expression);
+				}
+			} else if (expression != null
 					&& ((!(expression instanceof XBlockExpression))
 					|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
 				returnType = this.typeBuilder.inferredType(expression);
 			}
-		} else if (expression != null
-				&& ((!(expression instanceof XBlockExpression))
-				|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
-			returnType = this.typeBuilder.inferredType(expression);
-		}
-		final JvmTypeReference selectedReturnType;
-		if (returnType == null) {
-			selectedReturnType = this._typeReferenceBuilder.typeRef(Void.TYPE);
-		} else if (InferredTypeIndicator.isInferred(returnType)) {
-			selectedReturnType = returnType;
-		} else {
-			selectedReturnType = this.typeBuilder.cloneWithProxies(returnType);
-		}
-		operation.setReturnType(selectedReturnType);
-
-		// Exceptions
-		for (JvmTypeReference exception : source.getExceptions()) {
-			operation.getExceptions().add(this.typeBuilder.cloneWithProxies(exception));
-		}
-
-		// Create extension / Body
-		if (!operation.isAbstract() && !container.isInterface()) {
-			setBody(operation, expression);
-		}
-
-		// Annotations
-		translateAnnotationsTo(source.getAnnotations(), operation);
-		if (source.isOverride()
-				&& !Utils.hasAnnotation(operation, Override.class)
-				&& this.typeReferences.findDeclaredType(Override.class, source) != null) {
-			operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
-		}
-		if ((this.extendedExpressionHelper.isPureOperation(operation, expression))
-				&& (!Utils.hasAnnotation(operation, Pure.class))
-				&& (this.typeReferences.findDeclaredType(Pure.class, source) != null)) {
-			// The function is pure
-			operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
-		}
-
-		final List<JvmTypeReference> firedEvents;
-		if (source instanceof SarlAction) {
-			firedEvents = ((SarlAction) source).getFiredEvents();
-		} else {
-			firedEvents = Collections.emptyList();
-		}
-
-		// Detecting if the action is an early-exit action.
-		// If true, the Java code is annotated to be usable by the SARL validator.
-		//TODO: Generalize the detection of the EarlyExit
-		boolean isEarlyExitTmp = false;
-		Iterator<JvmTypeReference> eventIterator = firedEvents.iterator();
-		while (!isEarlyExitTmp && eventIterator.hasNext()) {
-			if (this.earlyExitComputer.isEarlyExitEvent(eventIterator.next())) {
-				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(EarlyExit.class));
-				isEarlyExitTmp = true;
+			final JvmTypeReference selectedReturnType;
+			if (returnType == null) {
+				selectedReturnType = this._typeReferenceBuilder.typeRef(Void.TYPE);
+			} else if (InferredTypeIndicator.isInferred(returnType)) {
+				selectedReturnType = returnType;
+			} else {
+				selectedReturnType = this.typeBuilder.cloneWithProxies(returnType);
 			}
-		}
-		final boolean isEarlyExit = isEarlyExitTmp;
+			operation.setReturnType(selectedReturnType);
 
-		// Put the fired SARL events as Java annotations for beeing usable by the SARL validator.
-		if (!firedEvents.isEmpty()) {
-			operation.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
-		}
+			// Exceptions
+			for (JvmTypeReference exception : source.getExceptions()) {
+				operation.getExceptions().add(this.typeBuilder.cloneWithProxies(exception));
+			}
 
-		// 1. Ensure that the Java annotations related to the default value are really present.
-		//    They may be not present if the generated action is a specific version of an inherited
-		//    action with default values for parameters.
-		// 2. Update the two collections that describes the implemented and implementable operations.
-		if (context != null) {
-			JvmOperation implementedOperation = context.getInheritedOperationsToImplement().remove(actSigKey);
-			// Put the annotations that were defined in the implemented operation
-			if (implementedOperation != null) {
-				if (Utils.hasAnnotation(implementedOperation, DefaultValueSource.class)
-						&& !Utils.hasAnnotation(operation, DefaultValueSource.class)) {
-					operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
-							DefaultValueSource.class));
+			// Create extension / Body
+			if (!operation.isAbstract() && !container.isInterface()) {
+				setBody(operation, expression);
+			}
+
+			// Annotations
+			translateAnnotationsTo(source.getAnnotations(), operation);
+			if (source.isOverride()
+					&& !Utils.hasAnnotation(operation, Override.class)
+					&& this.typeReferences.findDeclaredType(Override.class, source) != null) {
+				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
+			}
+			if ((this.extendedExpressionHelper.isPureOperation(operation, expression))
+					&& (!Utils.hasAnnotation(operation, Pure.class))
+					&& (this.typeReferences.findDeclaredType(Pure.class, source) != null)) {
+				// The function is pure
+				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
+			}
+
+			final List<JvmTypeReference> firedEvents;
+			if (source instanceof SarlAction) {
+				firedEvents = ((SarlAction) source).getFiredEvents();
+			} else {
+				firedEvents = Collections.emptyList();
+			}
+
+			// Detecting if the action is an early-exit action.
+			// If true, the Java code is annotated to be usable by the SARL validator.
+			//TODO: Generalize the detection of the EarlyExit
+			boolean isEarlyExitTmp = false;
+			Iterator<JvmTypeReference> eventIterator = firedEvents.iterator();
+			while (!isEarlyExitTmp && eventIterator.hasNext()) {
+				if (this.earlyExitComputer.isEarlyExitEvent(eventIterator.next())) {
+					operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(EarlyExit.class));
+					isEarlyExitTmp = true;
 				}
-				// Reinject the @DefaultValue annotations
-				List<JvmFormalParameter> oparams = implementedOperation.getParameters();
-				List<JvmFormalParameter> cparams = operation.getParameters();
-				assert (oparams.size() == cparams.size());
-				for (int i = 0; i < oparams.size(); ++i) {
-					JvmFormalParameter op = oparams.get(i);
-					JvmFormalParameter cp = cparams.get(i);
-					String ovalue = Utils.annotationString(op, DefaultValue.class);
-					if (ovalue != null
-							&& !Utils.hasAnnotation(cp, DefaultValue.class)) {
-						cp.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
-								DefaultValue.class,
-								this.sarlSignatureProvider.qualifyDefaultValueID(
-								implementedOperation.getDeclaringType().getIdentifier(),
-								ovalue)));
+			}
+			final boolean isEarlyExit = isEarlyExitTmp;
+
+			// Put the fired SARL events as Java annotations for beeing usable by the SARL validator.
+			if (!firedEvents.isEmpty()) {
+				operation.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
+			}
+
+			// 1. Ensure that the Java annotations related to the default value are really present.
+			//    They may be not present if the generated action is a specific version of an inherited
+			//    action with default values for parameters.
+			// 2. Update the two collections that describes the implemented and implementable operations.
+			if (context != null) {
+				JvmOperation implementedOperation = context.getInheritedOperationsToImplement().remove(actSigKey);
+				// Put the annotations that were defined in the implemented operation
+				if (implementedOperation != null) {
+					if (Utils.hasAnnotation(implementedOperation, DefaultValueSource.class)
+							&& !Utils.hasAnnotation(operation, DefaultValueSource.class)) {
+						operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
+								DefaultValueSource.class));
+					}
+					// Reinject the @DefaultValue annotations
+					List<JvmFormalParameter> oparams = implementedOperation.getParameters();
+					List<JvmFormalParameter> cparams = operation.getParameters();
+					assert (oparams.size() == cparams.size());
+					for (int i = 0; i < oparams.size(); ++i) {
+						JvmFormalParameter op = oparams.get(i);
+						JvmFormalParameter cp = cparams.get(i);
+						String ovalue = Utils.annotationString(op, DefaultValue.class);
+						if (ovalue != null
+								&& !Utils.hasAnnotation(cp, DefaultValue.class)) {
+							cp.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
+									DefaultValue.class,
+									this.sarlSignatureProvider.qualifyDefaultValueID(
+									implementedOperation.getDeclaringType().getIdentifier(),
+									ovalue)));
+						}
 					}
 				}
+				// Add the main operation into the list of overridable operations
+				context.getInheritedOverridableOperations().put(actSigKey, operation);
 			}
-			// Add the main operation into the list of overridable operations
-			context.getInheritedOverridableOperations().put(actSigKey, operation);
-		}
 
-		Runnable differedGeneration = new Runnable() {
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void run() {
-				// Generate the Java functions that correspond to the action with the parameter default values applied.
-				for (final Entry<ActionParameterTypes, List<InferredStandardParameter>> otherSignature
-						: actionSignatures.getInferredParameterTypes().entrySet()) {
-					ActionPrototype ak = SARLJvmModelInferrer.this.sarlSignatureProvider.createActionPrototype(
-							sourceName,
-							otherSignature.getKey());
-					if (ak != null
-							&& (context == null
-							|| (!context.getInheritedFinalOperations().containsKey(ak)
-							&& !context.getInheritedOverridableOperations().containsKey(ak)))) {
+			Runnable differedGeneration = new Runnable() {
+				@SuppressWarnings("synthetic-access")
+				@Override
+				public void run() {
+					// Generate the Java functions that correspond to the action with the parameter default values applied.
+					for (final Entry<ActionParameterTypes, List<InferredStandardParameter>> otherSignature
+							: actionSignatures.getInferredParameterTypes().entrySet()) {
+						ActionPrototype ak = SARLJvmModelInferrer.this.sarlSignatureProvider.createActionPrototype(
+								sourceName,
+								otherSignature.getKey());
+						if (ak != null
+								&& (context == null
+								|| (!context.getInheritedFinalOperations().containsKey(ak)
+								&& !context.getInheritedOverridableOperations().containsKey(ak)))) {
 
-						// Generate the additional constructor that is invoke the main constructor previously generated.
-						final JvmOperation operation2 = SARLJvmModelInferrer.this.typesFactory.createJvmOperation();
-						container.getMembers().add(operation2);
-						SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(source, operation2);
-						operation2.setSimpleName(operation.getSimpleName());
-						operation2.setVisibility(operation.getVisibility());
-						operation2.setVarArgs(operation.isVarArgs());
-						operation2.setAbstract(operation.isAbstract());
-						operation2.setDeprecated(operation.isDeprecated());
-						operation2.setReturnType(
-								SARLJvmModelInferrer.this.typeBuilder.cloneWithProxies(selectedReturnType));
-						operation2.setFinal(!container.isInterface());
-						operation2.setNative(false);
-						operation2.setStrictFloatingPoint(false);
-						operation2.setSynchronized(false);
+							// Generate the additional constructor that is invoke the main constructor previously generated.
+							final JvmOperation operation2 = SARLJvmModelInferrer.this.typesFactory.createJvmOperation();
+							container.getMembers().add(operation2);
+							SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(source, operation2);
+							operation2.setSimpleName(operation.getSimpleName());
+							operation2.setVisibility(operation.getVisibility());
+							operation2.setVarArgs(operation.isVarArgs());
+							operation2.setAbstract(operation.isAbstract());
+							operation2.setDeprecated(operation.isDeprecated());
+							operation2.setReturnType(
+									SARLJvmModelInferrer.this.typeBuilder.cloneWithProxies(selectedReturnType));
+							operation2.setFinal(!container.isInterface());
+							operation2.setNative(false);
+							operation2.setStrictFloatingPoint(false);
+							operation2.setSynchronized(false);
 
-						for (JvmTypeReference exception : operation.getExceptions()) {
-							operation2.getExceptions().add(SARLJvmModelInferrer.this.typeBuilder.cloneWithProxies(exception));
-						}
+							for (JvmTypeReference exception : operation.getExceptions()) {
+								operation2.getExceptions().add(SARLJvmModelInferrer.this.typeBuilder.cloneWithProxies(exception));
+							}
 
-						translateAnnotationsTo(source.getAnnotations(), operation2);
-						if (source.isOverride()
-								&& !Utils.hasAnnotation(operation, Override.class)
-								&& SARLJvmModelInferrer.this.typeReferences.findDeclaredType(Override.class, source) != null) {
-							operation.getAnnotations().add(
-									SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Override.class));
-						}
+							translateAnnotationsTo(source.getAnnotations(), operation2);
+							if (source.isOverride()
+									&& !Utils.hasAnnotation(operation, Override.class)
+									&& SARLJvmModelInferrer.this.typeReferences.findDeclaredType(Override.class, source) != null) {
+								operation.getAnnotations().add(
+										SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Override.class));
+							}
 
-						final List<String> args = translateSarlFormalParametersForSyntheticOperation(
-								operation2, container, isVarArgs, otherSignature.getValue());
+							final List<String> args = translateSarlFormalParametersForSyntheticOperation(
+									operation2, container, isVarArgs, otherSignature.getValue());
 
-						if (!operation2.isAbstract()) {
-							SARLJvmModelInferrer.this.typeBuilder.setBody(operation2,
-									new Procedures.Procedure1<ITreeAppendable>() {
-										@Override
-										public void apply(ITreeAppendable it) {
-											JvmTypeReference type = operation2.getReturnType();
-											if (!SARLJvmModelInferrer.this.typeReferences.is(type, void.class)) {
-												it.append("return "); //$NON-NLS-1$
+							if (!operation2.isAbstract()) {
+								SARLJvmModelInferrer.this.typeBuilder.setBody(operation2,
+										new Procedures.Procedure1<ITreeAppendable>() {
+											@Override
+											public void apply(ITreeAppendable it) {
+												JvmTypeReference type = operation2.getReturnType();
+												if (!SARLJvmModelInferrer.this.typeReferences.is(type, void.class)) {
+													it.append("return "); //$NON-NLS-1$
+												}
+												it.append(sourceName);
+												it.append("("); //$NON-NLS-1$
+												it.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
+												it.append(");"); //$NON-NLS-1$
 											}
-											it.append(sourceName);
-											it.append("("); //$NON-NLS-1$
-											it.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
-											it.append(");"); //$NON-NLS-1$
-										}
-									});
-						}
+										});
+							}
 
-						operation2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
-								DefaultValueUse.class,
-								actionSignatures.getFormalParameterTypes().toString()));
-						appendGeneratedAnnotation(operation2);
+							operation2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
+									DefaultValueUse.class,
+									actionSignatures.getFormalParameterTypes().toString()));
+							appendGeneratedAnnotation(operation2);
 
-						// If the main action is an early-exit action, the additional operation is also an early-exit operation.
-						//TODO: Generalize the detection of the EarlyExit
-						if (isEarlyExit) {
-							operation2.getAnnotations().add(
-									SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(EarlyExit.class));
-						}
+							// If the main action is an early-exit action, the additional operation is also an early-exit operation.
+							//TODO: Generalize the detection of the EarlyExit
+							if (isEarlyExit) {
+								operation2.getAnnotations().add(
+										SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(EarlyExit.class));
+							}
 
-						// Put the fired SARL events as Java annotations for beeing usable by the SARL validator.
-						if (!firedEvents.isEmpty()) {
-							operation2.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
-						}
+							// Put the fired SARL events as Java annotations for beeing usable by the SARL validator.
+							if (!firedEvents.isEmpty()) {
+								operation2.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
+							}
 
-						// Update the two collections that describes the implemented and implementable operations.
-						if (context != null) {
-							context.getInheritedOperationsToImplement().remove(ak);
-							context.getInheritedOverridableOperations().put(ak, operation2);
+							// Update the two collections that describes the implemented and implementable operations.
+							if (context != null) {
+								context.getInheritedOperationsToImplement().remove(ak);
+								context.getInheritedOverridableOperations().put(ak, operation2);
+							}
 						}
 					}
 				}
-			}
-		};
+			};
 
-		if (context != null) {
-			context.getDifferedGenerationElements().add(differedGeneration);
-			context.setActionIndex(context.getActionIndex() + 1);
-			context.incrementSerial(actSigKey.hashCode());
-		} else {
-			differedGeneration.run();
+			if (context != null) {
+				context.getDifferedGenerationElements().add(differedGeneration);
+				context.setActionIndex(context.getActionIndex() + 1);
+				context.incrementSerial(actSigKey.hashCode());
+			} else {
+				differedGeneration.run();
+			}
 		}
 	}
 

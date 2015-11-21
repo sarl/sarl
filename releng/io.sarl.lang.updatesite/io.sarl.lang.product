@@ -300,7 +300,7 @@
 
    <preferencesInfo>
       <sourcefile path="/home/sgalland/sarl.epf"/>
-      <targetfile overwrite="false" path="/io.sarl.lang.updatesite/plugin_customization.ini"/>
+      <targetfile overwrite="false" path="/io.sarl.eclipse/plugin_customization.ini"/>
    </preferencesInfo>
 
    <cssInfo>
