@@ -42,6 +42,10 @@ import org.eclipse.xtext.xbase.typesystem.internal.LogicalContainerAwareBatchTyp
  *
  * <p>FIXME: Fixed in Xtext 2.9.0.
  *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  * @deprecated Fixed in Xtext 2.9.0
  */
 @Deprecated
@@ -51,47 +55,51 @@ public class Bug335TypeDeclarationAwareBatchTypeResolver extends LogicalContaine
 	/**
 	 * Checks the internal state of the resource and logs if type resolution was triggered unexpectedly.
 	 * If such a condition is detected, an {@link IllegalStateException exception} is thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException if the resource is in an unexpected state.
 	 */
 	@Override
 	protected void validateResourceState(Resource resource) {
 		if (resource instanceof StorageAwareResource && ((StorageAwareResource) resource).isLoadedFromStorage()) {
-			throw new IllegalStateException("Discouraged attempt to compute types for resource that was loaded from storage. Resource was : "+resource.getURI());
+			throw new IllegalStateException("Discouraged attempt to compute types for resource that was "
+					+ "loaded from storage. Resource was : " + resource.getURI());
 		}
 		if (resource instanceof DerivedStateAwareResource && ((DerivedStateAwareResource) resource).isInitializing()) {
-			throw new IllegalStateException("Discouraged attempt to compute types during model inference. Resource was : "+resource.getURI());
+			throw new IllegalStateException("Discouraged attempt to compute types during model inference. "
+					+ "Resource was : " + resource.getURI());
 		}
-		if (resource instanceof JvmMemberInitializableResource && ((JvmMemberInitializableResource) resource).isInitializingJvmMembers()) {
-			throw new IllegalStateException("Discouraged attempt to compute types during JvmMember initialization. Resource was : "+resource.getURI());
+		if (resource instanceof JvmMemberInitializableResource
+				&& ((JvmMemberInitializableResource) resource).isInitializingJvmMembers()) {
+			throw new IllegalStateException("Discouraged attempt to compute types during JvmMember "
+					+ "initialization. Resource was : " + resource.getURI());
 		}
 	}
-	
+
 	@Override
 	protected List<EObject> getEntryPoints(EObject object) {
-		 List<EObject> result = super.getEntryPoints(object);
-		 EObject rootContainer = EcoreUtil.getRootContainer(object);
-		 if (rootContainer instanceof XtendFile) {
-			 result = Lists.newArrayList(result);
-			 List<XtendTypeDeclaration> typeDeclarations = ((XtendFile) rootContainer).getXtendTypes();
-			 for(XtendTypeDeclaration declaration: typeDeclarations) {
-				 addXtendTypes(declaration, result);
-			 }
-			 return result;
-		 }
-		 return result;
+		List<EObject> result = super.getEntryPoints(object);
+		EObject rootContainer = EcoreUtil.getRootContainer(object);
+		if (rootContainer instanceof XtendFile) {
+			result = Lists.newArrayList(result);
+			List<XtendTypeDeclaration> typeDeclarations = ((XtendFile) rootContainer).getXtendTypes();
+			for (XtendTypeDeclaration declaration: typeDeclarations) {
+				addXtendTypes(declaration, result);
+			}
+			return result;
+		}
+		return result;
 	}
 
 	/**
 	 * Collects all Xtend type declarations and adds them to the list. The types are added
-	 * from the innermost to the outermost type declaration. That is, nested classes are 
+	 * from the innermost to the outermost type declaration. That is, nested classes are
 	 * added before their declarators are added. This greatly simplifies the implementation of
 	 * {@code isHandled} in the concrete {@link org.eclipse.xtext.xbase.typesystem.internal.AbstractRootedReentrantTypeResolver}.
 	 */
 	private void addXtendTypes(XtendTypeDeclaration declaration, List<EObject> result) {
-		for(XtendMember member: declaration.getMembers()) {
+		for (XtendMember member: declaration.getMembers()) {
 			TreeIterator<EObject> iterator = EcoreUtil2.getAllNonDerivedContents(member, true);
-			while(iterator.hasNext()) {
+			while (iterator.hasNext()) {
 				EObject next = iterator.next();
 				if (next instanceof XtendTypeDeclaration) {
 					addXtendTypes((XtendTypeDeclaration) next, result);
@@ -101,5 +109,5 @@ public class Bug335TypeDeclarationAwareBatchTypeResolver extends LogicalContaine
 		}
 		result.add(declaration);
 	}
-	
+
 }

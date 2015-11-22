@@ -27,6 +27,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -43,6 +44,16 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class Agent implements Identifiable {
 
+	/** Name of the key that permits to find the parent's identifier when injecting/constructing
+	 * an agent.
+	 */
+	public static final String PARENT_ID_KEY_NAME = "io.sarl.lang.core.Agent.parentID"; //$NON-NLS-1$
+
+	/** Name of the key that permits to find the agent's identifier when injecting/constructing
+	 * an agent.
+	 */
+	public static final String AGENT_ID_KEY_NAME = "io.sarl.lang.core.Agent.agentID"; //$NON-NLS-1$
+
 	private final UUID id;
 
 	private final Map<Class<? extends Capacity>, Skill> capacities = new ConcurrentHashMap<>();
@@ -58,9 +69,12 @@ public class Agent implements Identifiable {
 	 *                  <code>null</code> for computing it randomly.
 	 */
 	@Inject
-	public Agent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
+	public Agent(
+			BuiltinCapacitiesProvider provider,
+			@Named(PARENT_ID_KEY_NAME) UUID parentID,
+			@Named(AGENT_ID_KEY_NAME) UUID agentID) {
 		this.parentID = parentID;
-		this.id = ((agentID == null) ? UUID.randomUUID() : agentID);
+		this.id = (agentID == null) ? UUID.randomUUID() : agentID;
 		if (provider != null) {
 			Map<Class<? extends Capacity>, Skill> builtinCapacities = provider.getBuiltinCapacities(this);
 			if (builtinCapacities != null && !builtinCapacities.isEmpty()) {

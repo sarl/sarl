@@ -60,7 +60,7 @@ public class Bug356ImportedNamespaceScopeProvider extends XtendImportedNamespace
 	@Override
 	protected ISelectable internalGetAllDescriptions(final Resource resource) {
 		List<IEObjectDescription> descriptions = Lists.newArrayList();
-		for(EObject content: resource.getContents()) {
+		for (EObject content: resource.getContents()) {
 			if (content instanceof JvmDeclaredType) {
 				// Begin fixing of issue #356.
 				JvmDeclaredType type = (JvmDeclaredType) content;
@@ -72,22 +72,23 @@ public class Bug356ImportedNamespaceScopeProvider extends XtendImportedNamespace
 		}
 		return new MultimapBasedSelectable(descriptions);
 	}
-	
+
 	private void doGetAllDescriptions(JvmDeclaredType type, List<IEObjectDescription> descriptions) {
 		descriptions.add(EObjectDescription.create(getQualifiedNameConverter().toQualifiedName(type.getIdentifier()), type));
 		EList<JvmMember> members = null;
 		if (type instanceof JvmDeclaredTypeImplCustom) {
-			members = ((JvmDeclaredTypeImplCustom)type).basicGetMembers();
+			members = ((JvmDeclaredTypeImplCustom) type).basicGetMembers();
 		} else {
 			members = type.getMembers();
 		}
-		for(JvmMember member: members) {
+		for (JvmMember member: members) {
 			if (member instanceof JvmDeclaredType) {
 				// add nested types also with the dot delimiter
-				descriptions.add(EObjectDescription.create(getQualifiedNameConverter().toQualifiedName(member.getQualifiedName('.')), member));
+				descriptions.add(EObjectDescription.create(getQualifiedNameConverter().toQualifiedName(
+						member.getQualifiedName('.')), member));
 				doGetAllDescriptions((JvmDeclaredType) member, descriptions);
 			}
 		}
 	}
-	
+
 }
