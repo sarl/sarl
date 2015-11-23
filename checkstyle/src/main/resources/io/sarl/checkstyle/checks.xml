@@ -7,11 +7,6 @@
 
 <module name="Checker">
 
-	<!-- TMP -->
-	<module name="SuppressionFilter">
-    	<property name="file" value="${mainbasedir}/checkstyle/src/main/resources/io/sarl/checkstyle/suppressions_tmp.xml"/>
-	</module>
-
 	<!-- Default charset (Google). -->
 	<property name="charset" value="UTF-8" />
 
@@ -24,7 +19,7 @@
 	<!-- Checks for Headers. -->
 	<module name="Header">
 		<property name="headerFile"
-			value="${mainbasedir}/checkstyle/src/main/resources/io/sarl/checkstyle/class_header.txt" />
+			value="${checkstyleheaderdir}/class_header.txt" />
 		<property name="fileExtensions" value="java,sarl,xtend,xtext,suite,spec" />
 	</module>
 

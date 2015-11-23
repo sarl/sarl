@@ -86,7 +86,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 
 		// Change the label for the program arguments
 		Group group = (Group) this.fPrgmArgumentsText.getParent();
-		String newLabel = io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_0;
+		String newLabel = Messages.SARLArgumentsTab_0;
 		group.setText(newLabel);
 		ControlAccessibleListener.addListener(this.fPrgmArgumentsText, group.getText());
 
@@ -111,7 +111,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		// Move the SRE argument block before the JVM argument block
 		group.moveAbove(this.fVMArgumentsBlock.getControl());
 
-		String controlName = io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_1;
+		String controlName = Messages.SARLArgumentsTab_1;
 		group.setText(controlName);
 
 		createSREArgsText(group, font);
@@ -197,7 +197,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 
 		@Override
 		public String getName() {
-			return io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_2;
+			return Messages.SARLArgumentsTab_2;
 		}
 
 		@Override
@@ -209,7 +209,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 
 			// Change the label for the program arguments
 			group = (Group) this.fVMArgumentsText.getParent();
-			newLabel = io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_3;
+			newLabel = Messages.SARLArgumentsTab_3;
 			group.setText(newLabel);
 			ControlAccessibleListener.addListener(this.fVMArgumentsText, group.getText());
 		}
@@ -230,7 +230,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 					SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, Strings.emptyIfNull(null)));
 		} catch (CoreException e) {
 			setErrorMessage(MessageFormat.format(
-					io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_4,
+					Messages.SARLArgumentsTab_4,
 					e.getStatus().getMessage()));
 			JDIDebugUIPlugin.log(e);
 		}

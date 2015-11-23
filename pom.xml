@@ -214,6 +214,7 @@
 						<includeTestResources>false</includeTestResources>
 						<enableRulesSummary>true</enableRulesSummary>
 						<propertyExpansion>mainbasedir=${mainbasedir}</propertyExpansion>
+						<propertyExpansion>checkstyleheaderdir=${mainbasedir}/checkstyle/src/main/resources/io/sarl/checkstyle</propertyExpansion>
 					</configuration>
 				</plugin>
 

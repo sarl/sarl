@@ -23,7 +23,8 @@ package io.sarl.eclipse.runtime;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
+/** Messages for the sarl runtime environment.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

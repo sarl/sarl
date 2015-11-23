@@ -18,11 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.wizards.newproject;
 
 import org.eclipse.osgi.util.NLS;
 
-/** Messages for the wozard "new SARL project".
+/** Messages for the wizard "new SARL project".
  *
  * @author $Author: ngaud$
  * @version $FullVersion$

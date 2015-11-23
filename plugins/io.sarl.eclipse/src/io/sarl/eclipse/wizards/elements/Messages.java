@@ -23,7 +23,8 @@ package io.sarl.eclipse.wizards.elements;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
+/** Messages.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
