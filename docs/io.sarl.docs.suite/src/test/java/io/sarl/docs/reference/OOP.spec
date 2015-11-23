@@ -363,9 +363,6 @@ describe "Basic Object-Oriented Programming Support" {
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Top Class Modifiers" {
-				// Test URL in the enclosing section text.
-				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
-				//
 				'''
 					public class TopClass1 {
 					}
@@ -382,6 +379,8 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					""
 				)
+				// Test URL in the enclosing section text.
+				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
 			}
 
 			/** A nested class may be declared with one or more modifiers, which affect its runtime behavior: <ul>
@@ -923,9 +922,6 @@ describe "Basic Object-Oriented Programming Support" {
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Top Interface Modifiers" {
-				// Test URL in the enclosing section text.
-				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
-				//
 				'''
 					public interface TopInterface1 {
 					}
@@ -940,6 +936,8 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					""
 				)
+				// Test URL in the enclosing section text.
+				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
 			}
 
 			/** A nested interface may be declared with one or more modifiers, which affect its runtime behavior: <ul>
@@ -1101,9 +1099,6 @@ describe "Basic Object-Oriented Programming Support" {
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Top Enumeration Modifiers" {
-				// Test URL in the enclosing section text.
-				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
-				//
 				'''
 					public enum TopEnumeration1 {
 						CST1, CST2
@@ -1116,6 +1111,8 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					""
 				)
+				// Test URL in the enclosing section text.
+				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
 			}
 
 			/** A nested interface may be declared with one or more modifiers, which affect its runtime behavior: <ul>
@@ -1246,9 +1243,6 @@ describe "Basic Object-Oriented Programming Support" {
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Top Annotation Type Modifiers" {
-				// Test URL in the enclosing section text.
-				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
-				//
 				'''
 					public annotation TopAnnotationType1 {
 					}
@@ -1261,6 +1255,8 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					""
 				)
+				// Test URL in the enclosing section text.
+				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
 			}
 
 			/** A nested annotation type may be declared with one or more modifiers, which affect its runtime behavior: <ul>
@@ -1512,8 +1508,6 @@ describe "Basic Object-Oriented Programming Support" {
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "extension Modifier" {
-			"./GeneralSyntaxReferenceSpec.html#ExtensionMethods" should beAccessibleFrom this
-			//
 			'''
 				class Examples {
 					//
@@ -1542,6 +1536,7 @@ describe "Basic Object-Oriented Programming Support" {
 				import java.util.ArrayList",
 				// TEXT,
 				"")
+			"./GeneralSyntaxReferenceSpec.html#ExtensionMethods" should beAccessibleFrom this
 		}
 
 		/*
@@ -1712,7 +1707,6 @@ describe "Basic Object-Oriented Programming Support" {
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "synchronized Modifier" {
-			"./GeneralSyntaxReferenceSpec.html#SynchronizedExpression" should beAccessibleFrom this
 			'''
 				class SynchronizedCounter {
 					var c = 0
@@ -1733,6 +1727,7 @@ describe "Basic Object-Oriented Programming Support" {
 				"package io.sarl.docs.reference.gsr",
 				// TEXT,
 				"")
+			"./GeneralSyntaxReferenceSpec.html#SynchronizedExpression" should beAccessibleFrom this
 		}		
 
 		/* Java and SARL provide a mechanism, called object serialization where an object can be represented as
