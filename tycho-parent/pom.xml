@@ -105,7 +105,7 @@
 					<artifactId>tycho-compiler-plugin</artifactId>
 					<version>${tycho.version}</version>
 					<configuration>
-						<compilerArgument>-warn:+discouraged,forbidden</compilerArgument>
+						<compilerArgument>-warn:none</compilerArgument>
 					</configuration>
 				</plugin>
 
