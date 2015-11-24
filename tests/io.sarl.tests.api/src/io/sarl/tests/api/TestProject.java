@@ -27,7 +27,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 
-/** Annotation for specifying additional bundles in the classpath of the project.
+/** Annotation for specifying how the project is created.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -37,23 +37,19 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })
-public @interface TestClasspath {
+public @interface TestProject {
 
-	/** The test is valid for a run in Tycho.
+	/** Indicates if the project is created automatically.
 	 *
-	 * @return <code>true</code> if the unit test could be run in Tycho.
+	 * @return <code>true</code> if the project is created; <code>false</code>
+	 * otherwise.
 	 */
-	String[] value() default {};
-	
-	/** Indicates if the default bundles of the SARL library must be included on
-	 * the classpath.
+	boolean automaticProjectCreation() default true;
+
+	/** Clear the workspace at start up.
 	 *
-	 * <p>If the default bundles are not included, the classpath will contains only
-	 * the bundles given by {@link #value()}.
-	 *
-	 * @return <code>true</code> if the bundles are included; <code>false</code> if
-	 * the classpath will contains only the values given by {@link #value()}
+	 * @return <code>true</code> if the workspace is clear at startup.
 	 */
-	boolean includeDefaultBundles() default true;
+	boolean clearWorkspaceAtStartup() default false;
 
 }

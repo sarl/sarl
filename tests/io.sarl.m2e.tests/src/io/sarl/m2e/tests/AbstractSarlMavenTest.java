@@ -20,6 +20,9 @@
  */
 package io.sarl.m2e.tests;
 
+import static org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil.reallyWaitForAutoBuild;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -287,6 +290,23 @@ public abstract class AbstractSarlMavenTest extends AbstractSarlUiTest {
 		@Override
 		public void addToClasspath(IJavaProject javaProject, IClasspathEntry newClassPathEntry)throws JavaModelException {
 			JavaProjectSetupUtil.addToClasspath(javaProject, newClassPathEntry);
+		}
+
+		@Override
+		public void addToClasspath(IJavaProject javaProject, boolean autobuild,
+				Iterable<IClasspathEntry> newClassPathEntries) throws JavaModelException {
+			List<IClasspathEntry> newClassPath = new ArrayList<>(Arrays.asList(javaProject.getRawClasspath()));
+			for (IClasspathEntry classPathEntry : newClassPathEntries) {
+				if (!newClassPath.contains(classPathEntry)) {
+					newClassPath.add(classPathEntry);
+				}
+			}
+			IClasspathEntry[] classPath = new IClasspathEntry[newClassPath.size()];
+			newClassPath.toArray(classPath);
+			javaProject.setRawClasspath(classPath, null);
+			if (autobuild) {
+				reallyWaitForAutoBuild();
+			}			
 		}
 
 	}

@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -38,6 +40,7 @@ import java.util.Set;
 import java.util.jar.Manifest;
 import java.util.logging.Logger;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -48,11 +51,13 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -152,6 +157,8 @@ public class WorkbenchTestHelper {
 	private ProjectCreator projectCreator;
 
 	private boolean isLazyCreatedProject = false;
+	
+	private String lastProjectName = null;
 
 	/** Init the helper for the unit test.
 	 * 
@@ -166,6 +173,7 @@ public class WorkbenchTestHelper {
 	 * @throws Exception
 	 */
 	public void tearDown() throws Exception {
+		this.lastProjectName = null;
 		if (this.workbench.getActiveWorkbenchWindow() != null) {
 			this.workbench.getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
 		}
@@ -203,6 +211,16 @@ public class WorkbenchTestHelper {
 		IResourcesSetupUtil.reallyWaitForAutoBuild();
 	}
 
+	/** Clear the workspace.
+	 */
+	public void clearWorkspace() {
+		try {
+			IResourcesSetupUtil.cleanWorkspace();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	/** Replies the ccreated files.
 	 *
 	 * @return the created files.
@@ -233,11 +251,15 @@ public class WorkbenchTestHelper {
 	 * @return the project.
 	 */
 	protected IProject getProject(boolean createOnDemand) {
-		IProject project = this.workspace.getRoot().getProject(TESTPROJECT_NAME);
+		String projectName = this.lastProjectName;
+		if (Strings.isNullOrEmpty(projectName)) {
+			projectName = TESTPROJECT_NAME;
+		}
+		IProject project = this.workspace.getRoot().getProject(projectName);
 		if (createOnDemand && !project.exists()) {
 			try {
 				this.isLazyCreatedProject = true;
-				project = createPluginProject(TESTPROJECT_NAME, this.projectCreator);
+				project = createPluginProject(projectName, this.projectCreator);
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
@@ -506,7 +528,7 @@ public class WorkbenchTestHelper {
 	 * @return the project.
 	 * @throws CoreException
 	 */
-	public static IProject createPluginProject(String name, ProjectCreator creator, String... requiredBundles) throws CoreException {
+	public IProject createPluginProject(String name, ProjectCreator creator, String... requiredBundles) throws CoreException {
 		// If no required bundle is given, use the defaults.
 		String[] bundleDependencies;
 		if (requiredBundles == null || requiredBundles.length == 0) {
@@ -516,8 +538,21 @@ public class WorkbenchTestHelper {
 			bundleDependencies = requiredBundles;
 		}
 		
+		// Disable "Build automatically"
+		try {
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			IWorkspaceDescription workspaceDescription = workspace.getDescription();
+			workspaceDescription.setAutoBuilding(false);
+			workspace.setDescription(workspaceDescription);
+		} catch (Throwable exception) {
+			throw new CoreException(new Status(IStatus.ERROR, "io.sarl.tests.api", //$NON-NLS-1$
+					exception.getLocalizedMessage(), exception));
+		}
+		
+		
 		PluginProjectFactory projectFactory = creator.getProjectFactory();
 		projectFactory.setProjectName(name);
+		this.lastProjectName = name;
 		JavaVersion jVersion = creator.getJavaVersion();
 		if (jVersion == null) {
 			jVersion = JavaVersion.JAVA7;
@@ -559,35 +594,78 @@ public class WorkbenchTestHelper {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-
+		
 		// Retreive the bundles
+		List<IClasspathEntry> classpathEntries = new ArrayList<>(bundleDependencies.length);
 		for(String bundleName : bundleDependencies) {
-			Bundle bundle = Platform.getBundle(bundleName);
-			if (bundle == null) {
-				throw new RuntimeException("Reference library not found: " + bundleName); //$NON-NLS-1$
+			URL url;
+			try {
+				url = new URL(bundleName);
+			} catch (Throwable exception) {
+				url = null;
 			}
+			if (url != null) {
+				URL newUrl;
+				try {
+					newUrl = FileLocator.toFileURL(url);
+				} catch (Exception exception) {
+					throw new RuntimeException("Reference library not found: " + url, exception); //$NON-NLS-1$
+				}
+				if (newUrl == null) {
+					throw new RuntimeException("Reference library not found: " + url); //$NON-NLS-1$
+				}
+				
+				IPath path = Path.fromPortableString(newUrl.getPath());
 
-			IPath bundlePath = computeBundlePath(bundle, workspaceRoot, platformLocation);
-			if (bundlePath == null) {
-				throw new RuntimeException("Reference library not found: " + bundleName); //$NON-NLS-1$
+				IClasspathEntry classPathEntry = JavaCore.newLibraryEntry(
+						path,
+						null,
+						null);
+				classpathEntries.add(classPathEntry);
+			} else {
+				Bundle bundle = Platform.getBundle(bundleName);
+				if (bundle == null) {
+					throw new RuntimeException("Reference library not found: " + bundleName); //$NON-NLS-1$
+				}
+	
+				IPath bundlePath = computeBundlePath(bundle, workspaceRoot, platformLocation);
+				if (bundlePath == null) {
+					throw new RuntimeException("Reference library not found: " + bundleName); //$NON-NLS-1$
+				}
+	
+				IPath binPath = computeBinaryPathForBundle(bundlePath, workspaceRoot);
+				if (binPath == null) {
+					throw new RuntimeException("Reference library not found: " + bundleName); //$NON-NLS-1$
+				}
+	
+				IClasspathEntry classPathEntry = JavaCore.newLibraryEntry(
+						binPath,
+						null,
+						null);
+				classpathEntries.add(classPathEntry);
 			}
+		}
 
-			IPath binPath = computeBinaryPathForBundle(bundlePath, workspaceRoot);
-			if (binPath == null) {
-				throw new RuntimeException("Reference library not found: " + bundleName); //$NON-NLS-1$
-			}
-
-			// Create the classpath entry
-			IClasspathEntry classPathEntry = JavaCore.newLibraryEntry(
-					binPath,
-					null,
-					null);
-			creator.addToClasspath(javaProject, classPathEntry);
+		if (!classpathEntries.isEmpty()) {
+			creator.addToClasspath(javaProject, false, classpathEntries);
 		}
 
 		// Configure SARL source folder
 		SARLPreferences.setSpecificSARLConfigurationFor(result, srcGenFolder);
 
+		// Enable "Build automatically"
+		try {
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			IWorkspaceDescription workspaceDescription = workspace.getDescription();
+			workspaceDescription.setAutoBuilding(true);
+			workspace.setDescription(workspaceDescription);
+		} catch (Throwable exception) {
+			throw new CoreException(new Status(IStatus.ERROR, "io.sarl.tests.api", //$NON-NLS-1$
+					exception.getLocalizedMessage(), exception));
+		}
+		
+		IResourcesSetupUtil.reallyWaitForAutoBuild();
+		
 		return result;
 	}
 	
@@ -711,6 +789,29 @@ public class WorkbenchTestHelper {
 			}
 		}
 		mf.getMainAttributes().putValue("Export-Package", value); //$NON-NLS-1$
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		mf.write(stream);
+		manifest.setContents(new ByteArrayInputStream(stream.toByteArray()), true, true, null);
+	}
+	
+	/** Add required plugin into the project.
+	 *
+	 * @param project the project.
+	 * @param requiredBundles the required bundles.
+	 * @throws Exception
+	 */
+	public static void addRequiredBundle(IProject project, Iterable<String> requiredBundles) throws Exception{
+		IFile manifest = project.getFile("META-INF/MANIFEST.MF"); //$NON-NLS-1$
+		Manifest mf = new Manifest(manifest.getContents());
+		String value = mf.getMainAttributes().getValue("Required-Bundles"); //$NON-NLS-1$
+		for (String required : requiredBundles) {
+			if (value == null) {
+				value = required;
+			} else {
+				value += ","+required; //$NON-NLS-1$
+			}
+		}
+		mf.getMainAttributes().putValue("Required-Bundles", value); //$NON-NLS-1$
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		mf.write(stream);
 		manifest.setContents(new ByteArrayInputStream(stream.toByteArray()), true, true, null);
@@ -973,13 +1074,24 @@ public class WorkbenchTestHelper {
 		 */
 		void addJreClasspathEntry(IJavaProject javaProject) throws JavaModelException;
 		
-		/** Add a SARL library to the class path.
+		/** Add a library to the class path.
 		 *
 		 * @param javaProject the proejct to update.
 		 * @param newClassPathEntry the entry to add.
 		 * @throws JavaModelException
 		 */
-		void addToClasspath(IJavaProject javaProject, IClasspathEntry newClassPathEntry)throws JavaModelException;
+		void addToClasspath(IJavaProject javaProject, IClasspathEntry newClassPathEntry) throws JavaModelException;
+
+		/** Add libraries to the class path.
+		 *
+		 * @param javaProject the proejct to update.
+		 * @param autobuild indicates if the function should wait for end of autobuild.
+		 * @param newClassPathEntry the entry to add.
+		 * @throws JavaModelException
+		 */
+		void addToClasspath(IJavaProject javaProject,
+				boolean autobuild,
+				Iterable<IClasspathEntry> newClassPathEntry) throws JavaModelException;
 
 	}
 

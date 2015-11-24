@@ -21,25 +21,31 @@
 
 package io.sarl.tests.api;
 
+import static org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil.reallyWaitForAutoBuild;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.xtext.ui.util.PluginProjectFactory;
-import com.google.inject.Provider;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -48,11 +54,16 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
 import org.eclipse.xtext.junit4.ui.util.JavaProjectSetupUtil;
+import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.ui.XtextProjectHelper;
+import org.eclipse.xtext.ui.util.PluginProjectFactory;
+import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.validation.IDiagnosticConverter;
+import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.compiler.JavaVersion;
 import org.junit.ComparisonFailure;
 import org.junit.Rule;
@@ -78,7 +89,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 */
 	@Rule
 	public TestWatcher rootSarlUiWatchter = new TestWatcher() {
-		
+
 		@SuppressWarnings("synthetic-access")
 		@Override
 		protected void starting(Description description) {
@@ -87,6 +98,15 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
+			TestProject projectAnnotation = description.getAnnotation(TestProject.class);
+			if (projectAnnotation == null) {
+				Class<?> type = description.getTestClass();
+				while (projectAnnotation == null && type != null) {
+					projectAnnotation = type.getAnnotation(TestProject.class);
+					type = type.getDeclaringClass();
+				}
+			}
+
 			TestClasspath classPathAnnotation = description.getAnnotation(TestClasspath.class);
 			if (classPathAnnotation == null) {
 				Class<?> type = description.getTestClass();
@@ -95,38 +115,46 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 					type = type.getDeclaringClass();
 				}
 			}
-			
+
 			String[] buildPath;
 			if (classPathAnnotation != null) {
 				String[] addedBundles = classPathAnnotation.value();
-				buildPath = new String[WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.size() + addedBundles.length];
-				WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.toArray(buildPath);
-				for (int i = WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.size(), j = 0;
-						i < buildPath.length && j < addedBundles.length; ++i, ++j) {
-					buildPath[i] = addedBundles[j];
+				if (classPathAnnotation.includeDefaultBundles()) {
+					buildPath = new String[WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.size() + addedBundles.length];
+					WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.toArray(buildPath);
+					for (int i = WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.size(), j = 0;
+							i < buildPath.length && j < addedBundles.length; ++i, ++j) {
+						buildPath[i] = addedBundles[j];
+					}
+				} else {
+					buildPath = addedBundles;
 				}
 			} else {
 				buildPath = null;
 			}
-			
-			try {
-				ProjectCreator creator = getInjector().getInstance(ProjectCreator.class);
-				if (buildPath == null) {
-					WorkbenchTestHelper.createPluginProject(WorkbenchTestHelper.TESTPROJECT_NAME, creator);
-				} else {
-					WorkbenchTestHelper.createPluginProject(WorkbenchTestHelper.TESTPROJECT_NAME, creator, buildPath);
+
+			if (buildPath == null) {
+				AbstractSarlUiTest.this.initialClasspath = new String[WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.size()];
+				WorkbenchTestHelper.DEFAULT_REQ_BUNDLES.toArray(AbstractSarlUiTest.this.initialClasspath);
+			} else {
+				AbstractSarlUiTest.this.initialClasspath = buildPath;
+			}
+
+			if (projectAnnotation != null && projectAnnotation.clearWorkspaceAtStartup()) {
+				helper().clearWorkspace();
+			}
+
+			if (projectAnnotation == null || projectAnnotation.automaticProjectCreation()) {
+				try {
+					createDefaultTestProject(buildPath);
+				} catch (CoreException e) {
+					throw new RuntimeException(e);
 				}
-			} catch (CoreException e) {
-				throw new RuntimeException(e);
 			}
 		}
 		@Override
 		protected void finished(Description description) {
-			try {
-				IResourcesSetupUtil.cleanWorkspace();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+			helper().clearWorkspace();
 			try {
 				helper().tearDown();
 			} catch (Exception e) {
@@ -141,7 +169,44 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	/** Helper for interaction with the Eclipse workbench.
 	 */
 	private WorkbenchTestHelper workbenchHelper;
-	
+
+	private volatile String[] initialClasspath;
+
+	/** Replies the classpath that is specified by {@link TestClasspath}.
+	 *
+	 * @return the classpath.
+	 * @since 0.3.0
+	 */
+	protected String[] getTestClasspath() {
+		return this.initialClasspath;
+	}
+
+	/** Create the default test project with the given classpath.
+	 *
+	 * @param classpath - the bundles on the classpath.
+	 * @throws CoreException if the project cannot be created.
+	 * @since 0.3.0
+	 */
+	protected void createDefaultTestProject(String[] classpath) throws CoreException {
+		createDefaultTestProject(classpath, WorkbenchTestHelper.TESTPROJECT_NAME);
+	}
+
+	/** Create the default test project with the given classpath.
+	 *
+	 * @param classpath - the bundles on the classpath.
+	 * @param projectName - the name of the project.
+	 * @throws CoreException if the project cannot be created.
+	 * @since 0.3.0
+	 */
+	protected void createDefaultTestProject(String[] classpath, String projectName) throws CoreException {
+		ProjectCreator creator = getInjector().getInstance(ProjectCreator.class);
+		if (classpath == null) {
+			this.workbenchHelper.createPluginProject(projectName, creator);
+		} else {
+			this.workbenchHelper.createPluginProject(projectName, creator, classpath);
+		}
+	}
+
 	/** Replies the injected injector.
 	 *
 	 * @return the injector.
@@ -149,7 +214,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	public final Injector getInjectedInjector() {
 		return this.injectedInjector;
 	}	
-	
+
 	/** Replies the injector.
 	 *
 	 * @return the injector.
@@ -168,7 +233,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 			}
 		});
 	}
-	
+
 	/** Assert the given image descriptor is for an image in a bundle.
 	 *
 	 * @param filename - the name of the image file.
@@ -203,7 +268,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 			}
 		}
 	}
-	
+
 	private static String getImage(ImageDescriptor d) throws Exception {
 		String regex = Pattern.quote("URLImageDescriptor(bundleentry://") //$NON-NLS-1$
 				+ "[^/]+" //$NON-NLS-1$
@@ -233,7 +298,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		}
 		return "";
 	}
-	
+
 	/** Assert the given image descriptors are the equal.
 	 *
 	 * @param expected - the expected image descriptor.
@@ -248,7 +313,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		}
 	}
 
-	
+
 	/** Assert the given image descriptor is for an image in the platform.
 	 *
 	 * @param filename - the name of the image file.
@@ -265,7 +330,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		assertTrue("Image not found: " + filename //$NON-NLS-1$
 				+ ". Actual: " + s, Pattern.matches(regex, s)); //$NON-NLS-1$
 	}
-	
+
 	/** Assert the given image descriptor is for an image given by JDT.
 	 *
 	 * @param expected - the expected base image descriptor.
@@ -283,15 +348,14 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				((JavaElementImageDescriptor) actual).getImageSize());
 	}
 
-	/** Create an instance of class.
-	 */
 	@Override
 	protected SarlScript file(String string, boolean validate) throws Exception {
 		return helper().sarlScript(
 				helper().generateFilename("io", "sarl", "tests", getClass().getSimpleName()),
-				string);
+				string,
+				validate);
 	}
-	
+
 	/** Replies the workspace test helper.
 	 *
 	 * @return the helper.
@@ -312,19 +376,19 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 */
 	@Singleton
 	private static class JavaProjectCreator implements ProjectCreator {
-		
+
 		@Inject
 		private Injector injector;
 
 		@Inject
 		@Nullable
 		private JavaVersion javaVersion;
-		
+
 		@Override
 		public Injector getInjector() {
 			return this.injector;
 		}
-		
+
 		@Override
 		public PluginProjectFactory getProjectFactory() {
 			return getInjector().getInstance(PluginProjectFactory.class);
@@ -368,8 +432,49 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 		}
 
 		@Override
-		public void addToClasspath(IJavaProject javaProject, IClasspathEntry newClassPathEntry)throws JavaModelException {
+		public void addToClasspath(IJavaProject javaProject, IClasspathEntry newClassPathEntry) throws JavaModelException {
 			JavaProjectSetupUtil.addToClasspath(javaProject, newClassPathEntry);
+		}
+
+		@Override
+		public void addToClasspath(IJavaProject javaProject,
+				boolean autobuild,
+				Iterable<IClasspathEntry> newClassPathEntries) throws JavaModelException {
+			List<IClasspathEntry> newClassPath = new ArrayList<>(Arrays.asList(javaProject.getRawClasspath()));
+			for (IClasspathEntry classPathEntry : newClassPathEntries) {
+				if (!newClassPath.contains(classPathEntry)) {
+					newClassPath.add(classPathEntry);
+				}
+			}
+			IClasspathEntry[] classPath = new IClasspathEntry[newClassPath.size()];
+			newClassPath.toArray(classPath);
+			javaProject.setRawClasspath(classPath, null);
+			if (autobuild) {
+				reallyWaitForAutoBuild();
+			}
+		}
+
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class ListBasedMarkerAcceptor implements IAcceptor<Issue> {
+
+		private final List<Issue> result;
+
+		ListBasedMarkerAcceptor(List<Issue> result) {
+			this.result = result;
+		}
+
+		@Override
+		public void accept(Issue issue) {
+			if (issue != null) {
+				result.add(issue);
+			}
 		}
 
 	}

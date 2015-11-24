@@ -910,7 +910,7 @@ public abstract class AbstractSarlTest {
 	/** Validate the given resource and reply the validator.
 	 */
 	protected Validator validate(Resource resource) {
-		return new Validator(resource);
+		return new XtextValidator(resource);
 	}
 
 	/** Create an instance of annotation type.
@@ -1198,6 +1198,53 @@ public abstract class AbstractSarlTest {
 		}
 	}
 
+	/** Validation helper on a specific resource.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public interface Validator {
+
+		public List<Issue> validate();
+
+		public Validator assertNoIssues();
+
+		public Validator assertNoErrors();
+
+		public Validator assertNoError(String issuecode);
+
+		public Validator assertNoErrors(EClass objectType, String code, String... messageParts);
+
+		public Validator assertNoErrors(String code);
+
+		public Validator assertNoIssues(EClass objectType);
+
+		public Validator assertNoIssue(EClass objectType, String issuecode);
+
+		public Validator assertError(EClass objectType, String code, int offset, int length, String... messageParts);
+
+		public Validator assertError(EClass objectType, String code, String... messageParts);
+
+		public Validator assertIssue(EClass objectType, String code, Severity severity, String... messageParts);
+
+		public Validator assertIssue(EClass objectType, String code, int offset, int length,  Severity severity,
+				String... messageParts);
+
+		public Validator assertNoIssues(EClass objectType, String code, Severity severity, String... messageParts);
+
+		public Validator assertNoIssues(EClass objectType, String code, int offset, int length, Severity severity,
+				String... messageParts);
+
+		public Validator assertWarning(EClass objectType, String code, String... messageParts);
+
+		public Validator assertNoWarnings(EClass objectType, String code, String... messageParts);
+
+		public Validator assertWarning(EClass objectType, String code, int offset, int length, String... messageParts);
+
+	}
+
 	/** Wrapper for the validation helper on a specific resource.
 	 *
 	 * @author $Author: sgalland$
@@ -1205,14 +1252,14 @@ public abstract class AbstractSarlTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public class Validator {
+	private class XtextValidator implements Validator {
 
 		private final Resource resource;
 
 		/**
 		 * @param resource - the resource to validate.
 		 */
-		private Validator(Resource resource) {
+		private XtextValidator(Resource resource) {
 			this.resource = resource;
 		}
 
