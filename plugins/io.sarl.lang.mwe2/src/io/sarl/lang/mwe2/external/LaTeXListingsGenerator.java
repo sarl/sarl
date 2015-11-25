@@ -50,7 +50,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 	/** Default definition for the basic style for floating algorithms (without colors).
 	 */
 	public static final String DEFAULT_FLOAT_BASIC_STYLE = "\\normalcolor\\scriptsize"; //$NON-NLS-1$
-	
+
 	/** Default definition for the basic style for floating algorithms (with colors).
 	 */
 	public static final String DEFAULT_COLORIZED_FLOAT_BASIC_STYLE = DEFAULT_FLOAT_BASIC_STYLE;
@@ -70,7 +70,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 	/** Default definition for the identifier style (with color).
 	 */
 	public static final String DEFAULT_COLORIZED_IDENTIFIER_STYLE = "\\color{SARLidentifier}" //$NON-NLS-1$
-				+ DEFAULT_IDENTIFIER_STYLE;
+			+ DEFAULT_IDENTIFIER_STYLE;
 
 	/** Default definition for the comment style (without color).
 	 */
@@ -79,7 +79,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 	/** Default definition for the identifier style (with color).
 	 */
 	public static final String DEFAULT_COLORIZED_COMMENT_STYLE = "\\color{SARLcomment}" //$NON-NLS-1$
-				+ DEFAULT_COMMENT_STYLE;
+			+ DEFAULT_COMMENT_STYLE;
 
 	/** Default definition for the string style (without color).
 	 */
@@ -88,7 +88,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 	/** Default definition for the string style (with color).
 	 */
 	public static final String DEFAULT_COLORIZED_STRING_STYLE = "\\color{SARLstring}" //$NON-NLS-1$
-				+ DEFAULT_STRING_STYLE;
+			+ DEFAULT_STRING_STYLE;
 
 	/** Default definition for the keyword style (without color).
 	 */
@@ -97,7 +97,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 	/** Default definition for the keyword style (with color).
 	 */
 	public static final String DEFAULT_COLORIZED_KEYWORD_STYLE = "\\color{SARLkeyword}" //$NON-NLS-1$
-				+ DEFAULT_KEYWORD_STYLE;
+			+ DEFAULT_KEYWORD_STYLE;
 
 	private String outputName;
 
@@ -112,7 +112,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 	private String keywordStyle;
 
 	private String inlineBasicStyle;
-	
+
 	private boolean useColors = true;
 
 	/** Construct the LaTeX generator.
@@ -213,6 +213,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 	}
 
 	@Override
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored) {
 		Set<String> texKeywords = new TreeSet<>(keywords);
 		texKeywords.addAll(literals);
@@ -224,7 +225,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 		if (Strings.isEmpty(basename)) {
 			basename = computeDefaultStyBasename(getLanguage());
 		}
-		
+
 		append(sty, "\\NeedsTeXFormat'{'LaTeX2e'}'[1995/12/01]"); //$NON-NLS-1$
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); //$NON-NLS-1$
 		append(sty, "\\ProvidesPackage'{'{0}'}'[{1}]", basename, dateFormat.format(new Date())); //$NON-NLS-1$
@@ -258,14 +259,14 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 		append(sty, "'}'"); //$NON-NLS-1$
 
 		append(sty, "\\lstset'{'%"); //$NON-NLS-1$
-		
+
 		String floatBasicStyle = this.floatBasicStyle;
 		if (floatBasicStyle == null) {
-			floatBasicStyle =(this.useColors) ? DEFAULT_COLORIZED_FLOAT_BASIC_STYLE : DEFAULT_FLOAT_BASIC_STYLE;
+			floatBasicStyle = (this.useColors) ? DEFAULT_COLORIZED_FLOAT_BASIC_STYLE : DEFAULT_FLOAT_BASIC_STYLE;
 		}
 		floatBasicStyle = Strings.emptyIfNull(floatBasicStyle);
-		append(sty, "   basicstyle={0}, % the size of the fonts that are used for the code", floatBasicStyle);//$NON-NLS-1$
-		
+		append(sty, "   basicstyle={0}, % the size of the fonts that are used for the code", floatBasicStyle); //$NON-NLS-1$
+
 		append(sty, "   breakatwhitespace=false, % sets if automatic breaks should only happen at whitespace"); //$NON-NLS-1$
 		append(sty, "   breaklines=true, % sets automatic line breaking"); //$NON-NLS-1$
 		append(sty, "   captionpos=b, % sets the caption-position to bottom"); //$NON-NLS-1$
@@ -276,31 +277,31 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 		append(sty, "   frame=none, % no frame around the code"); //$NON-NLS-1$
 		append(sty, "   keepspaces=true, % keeps spaces in text, useful for keeping " //$NON-NLS-1$
 				+ "indentation of code (possibly needs columns=flexible)"); //$NON-NLS-1$
-		
+
 		String identifierStyle = this.identifierStyle;
 		if (identifierStyle == null) {
-			identifierStyle =(this.useColors) ? DEFAULT_COLORIZED_IDENTIFIER_STYLE : DEFAULT_IDENTIFIER_STYLE;
+			identifierStyle = (this.useColors) ? DEFAULT_COLORIZED_IDENTIFIER_STYLE : DEFAULT_IDENTIFIER_STYLE;
 		}
 		identifierStyle = Strings.emptyIfNull(identifierStyle);
 		append(sty, "   identifierstyle={0},", identifierStyle); //$NON-NLS-1$
 
 		String commentStyle = this.commentStyle;
 		if (commentStyle == null) {
-			commentStyle =(this.useColors) ? DEFAULT_COLORIZED_COMMENT_STYLE : DEFAULT_COMMENT_STYLE;
+			commentStyle = (this.useColors) ? DEFAULT_COLORIZED_COMMENT_STYLE : DEFAULT_COMMENT_STYLE;
 		}
 		commentStyle = Strings.emptyIfNull(commentStyle);
 		append(sty, "   commentstyle={0},", commentStyle); //$NON-NLS-1$
 
 		String stringStyle = this.stringStyle;
 		if (stringStyle == null) {
-			stringStyle =(this.useColors) ? DEFAULT_COLORIZED_STRING_STYLE : DEFAULT_STRING_STYLE;
+			stringStyle = (this.useColors) ? DEFAULT_COLORIZED_STRING_STYLE : DEFAULT_STRING_STYLE;
 		}
 		stringStyle = Strings.emptyIfNull(stringStyle);
 		append(sty, "   stringstyle={0},", stringStyle); //$NON-NLS-1$
 
 		String keywordStyle = this.keywordStyle;
 		if (keywordStyle == null) {
-			keywordStyle =(this.useColors) ? DEFAULT_COLORIZED_KEYWORD_STYLE : DEFAULT_KEYWORD_STYLE;
+			keywordStyle = (this.useColors) ? DEFAULT_COLORIZED_KEYWORD_STYLE : DEFAULT_KEYWORD_STYLE;
 		}
 		keywordStyle = Strings.emptyIfNull(keywordStyle);
 		append(sty, "   keywordstyle={0}, % keyword style", keywordStyle); //$NON-NLS-1$
@@ -320,7 +321,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 
 		String inlineBasicStyle = this.inlineBasicStyle;
 		if (inlineBasicStyle == null) {
-			inlineBasicStyle =(this.useColors) ? DEFAULT_COLORIZED_INLINE_BASIC_STYLE : DEFAULT_INLINE_BASIC_STYLE;
+			inlineBasicStyle = (this.useColors) ? DEFAULT_COLORIZED_INLINE_BASIC_STYLE : DEFAULT_INLINE_BASIC_STYLE;
 		}
 		inlineBasicStyle = Strings.emptyIfNull(inlineBasicStyle);
 		append(sty, "\\newcommand'{'\\code'}'[1]'{{'\\lstinline[basicstyle={0}]'{'#1'}}}'", inlineBasicStyle); //$NON-NLS-1$
