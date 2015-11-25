@@ -303,8 +303,17 @@ Workflow {
 	    			// generate the LaTeX Beamer style
 		    		generator = LaTeXBeamerGenerator auto-inject { }
 
-	    			// generate the LaTeX Beamer style
-		    		generator = LaTeXListingsGenerator auto-inject { }
+	    			// generate the LaTeX algorithmic style with colors
+		    		generator = LaTeXListingsGenerator auto-inject {
+		    			outputName = "sarl-colorized-listing"
+		    			useColors = true
+		    		}
+
+	    			// generate the LaTeX algorithmic style without colors
+		    		generator = LaTeXListingsGenerator auto-inject {
+		    			outputName = "sarl-listing"
+		    			useColors = false
+		    		}
 
 				}
 

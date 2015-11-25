@@ -1,7 +1,20 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesPackage{sarl-listing}[2015/11/25]
+\ProvidesPackage{sarl-colorized-listing}[2015/11/25]
 \RequirePackage{algpseudocode}
 \RequirePackage{listings}
+\RequirePackage{xcolor}
+\definecolor{SARLblue}{RGB}{43,88,121}
+\definecolor{SARLlightblue}{RGB}{0,123,191}
+\definecolor{SARLlightestblue}{RGB}{223,239,247}
+\definecolor{SARLmagenta}{RGB}{153,30,102}
+\definecolor{SARLlightmagenta}{RGB}{204,122,170}
+\definecolor{SARLlightestmagenta}{RGB}{250,240,246}
+\definecolor{SARLgreen}{RGB}{0,128,0}
+\definecolor{SARLdarkgray}{RGB}{99,104,110}
+\colorlet{SARLcomment}{SARLgreen}
+\colorlet{SARLstring}{SARLmagenta}
+\colorlet{SARLkeyword}{SARLblue}
+\colorlet{SARLidentifier}{SARLdarkgray}
 \lstdefinelanguage{SARL}{%
    morecomment=[s]{/*}{*/},
    morestring=[b]",
@@ -17,10 +30,10 @@
    extendedchars=true, % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
    frame=none, % no frame around the code
    keepspaces=true, % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
-   identifierstyle=\ttfamily,
-   commentstyle=\tiny\bfseries,
-   stringstyle=\ttfamily,
-   keywordstyle=\bfseries, % keyword style
+   identifierstyle=\color{SARLidentifier}\ttfamily,
+   commentstyle=\color{SARLcomment}\tiny\bfseries,
+   stringstyle=\color{SARLstring}\ttfamily,
+   keywordstyle=\color{SARLkeyword}\bfseries, % keyword style
    language=SARL, % the default language of the code
    showspaces=false, % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
    showstringspaces=false, % underline spaces within strings only

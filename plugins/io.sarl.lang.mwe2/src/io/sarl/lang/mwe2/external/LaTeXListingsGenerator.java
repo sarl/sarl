@@ -47,6 +47,58 @@ import org.eclipse.xtext.util.Strings;
  */
 public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerator {
 
+	/** Default definition for the basic style for floating algorithms (without colors).
+	 */
+	public static final String DEFAULT_FLOAT_BASIC_STYLE = "\\normalcolor\\scriptsize"; //$NON-NLS-1$
+	
+	/** Default definition for the basic style for floating algorithms (with colors).
+	 */
+	public static final String DEFAULT_COLORIZED_FLOAT_BASIC_STYLE = DEFAULT_FLOAT_BASIC_STYLE;
+
+	/** Default definition for the basic style for inline code (without color).
+	 */
+	public static final String DEFAULT_INLINE_BASIC_STYLE = "\\normalcolor\\normalsize"; //$NON-NLS-1$
+
+	/** Default definition for the basic style for inline code (with colors).
+	 */
+	public static final String DEFAULT_COLORIZED_INLINE_BASIC_STYLE = DEFAULT_INLINE_BASIC_STYLE;
+
+	/** Default definition for the identifier style (without color).
+	 */
+	public static final String DEFAULT_IDENTIFIER_STYLE = "\\ttfamily"; //$NON-NLS-1$
+
+	/** Default definition for the identifier style (with color).
+	 */
+	public static final String DEFAULT_COLORIZED_IDENTIFIER_STYLE = "\\color{SARLidentifier}" //$NON-NLS-1$
+				+ DEFAULT_IDENTIFIER_STYLE;
+
+	/** Default definition for the comment style (without color).
+	 */
+	public static final String DEFAULT_COMMENT_STYLE = "\\tiny\\bfseries"; //$NON-NLS-1$
+
+	/** Default definition for the identifier style (with color).
+	 */
+	public static final String DEFAULT_COLORIZED_COMMENT_STYLE = "\\color{SARLcomment}" //$NON-NLS-1$
+				+ DEFAULT_COMMENT_STYLE;
+
+	/** Default definition for the string style (without color).
+	 */
+	public static final String DEFAULT_STRING_STYLE = "\\ttfamily"; //$NON-NLS-1$
+
+	/** Default definition for the string style (with color).
+	 */
+	public static final String DEFAULT_COLORIZED_STRING_STYLE = "\\color{SARLstring}" //$NON-NLS-1$
+				+ DEFAULT_STRING_STYLE;
+
+	/** Default definition for the keyword style (without color).
+	 */
+	public static final String DEFAULT_KEYWORD_STYLE = "\\bfseries"; //$NON-NLS-1$
+
+	/** Default definition for the keyword style (with color).
+	 */
+	public static final String DEFAULT_COLORIZED_KEYWORD_STYLE = "\\color{SARLkeyword}" //$NON-NLS-1$
+				+ DEFAULT_KEYWORD_STYLE;
+
 	private String outputName;
 
 	private String floatBasicStyle;
@@ -60,16 +112,13 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 	private String keywordStyle;
 
 	private String inlineBasicStyle;
+	
+	private boolean useColors = true;
 
 	/** Construct the LaTeX generator.
 	 */
 	public LaTeXListingsGenerator() {
-		setFloatBasicStyle("\\normalcolor\\scriptsize"); //$NON-NLS-1$
-		setInlineBasicStyle("\\normalcolor\\normalsize"); //$NON-NLS-1$
-		setIdentifierStyle("\\color{SARLidentifier}\\ttfamily"); //$NON-NLS-1$
-		setCommentStyle("\\color{SARLcomment}\\tiny\\bfseries"); //$NON-NLS-1$
-		setStringStyle("\\color{SARLstring}\ttfamily"); //$NON-NLS-1$
-		setKeywordStyle("\\color{SARLkeyword}\\bfseries"); //$NON-NLS-1$
+		//
 	}
 
 	/** Set the TeX style of the standard code in floats.
@@ -126,6 +175,14 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 		this.keywordStyle = style;
 	}
 
+	/** Set if the TeX style uses colors.
+	 *
+	 * @param useColors <code>true</code> for generating a style that uses colors.
+	 */
+	public void setUseColors(boolean useColors) {
+		this.useColors = useColors;
+	}
+
 	@Override
 	protected String getHumanReadableSpecificationName() {
 		return "LaTeX Listings style"; //$NON-NLS-1$
@@ -167,27 +224,31 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 		if (Strings.isEmpty(basename)) {
 			basename = computeDefaultStyBasename(getLanguage());
 		}
-
+		
 		append(sty, "\\NeedsTeXFormat'{'LaTeX2e'}'[1995/12/01]"); //$NON-NLS-1$
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); //$NON-NLS-1$
 		append(sty, "\\ProvidesPackage'{'{0}'}'[{1}]", basename, dateFormat.format(new Date())); //$NON-NLS-1$
 
 		append(sty, "\\RequirePackage'{'algpseudocode'}'"); //$NON-NLS-1$
 		append(sty, "\\RequirePackage'{'listings'}'"); //$NON-NLS-1$
-		append(sty, "\\RequirePackage'{'xcolor'}'"); //$NON-NLS-1$
+		if (this.useColors) {
+			append(sty, "\\RequirePackage'{'xcolor'}'"); //$NON-NLS-1$
+		}
 
-		append(sty, "\\definecolor'{'SARLblue'}{'RGB'}{'43,88,121'}'"); //$NON-NLS-1$
-		append(sty, "\\definecolor'{'SARLlightblue'}{'RGB'}{'0,123,191'}'"); //$NON-NLS-1$
-		append(sty, "\\definecolor'{'SARLlightestblue'}{'RGB'}{'223,239,247'}'"); //$NON-NLS-1$
-		append(sty, "\\definecolor'{'SARLmagenta'}{'RGB'}{'153,30,102'}'"); //$NON-NLS-1$
-		append(sty, "\\definecolor'{'SARLlightmagenta'}{'RGB'}{'204,122,170'}'"); //$NON-NLS-1$
-		append(sty, "\\definecolor'{'SARLlightestmagenta'}{'RGB'}{'250,240,246'}'"); //$NON-NLS-1$
-		append(sty, "\\definecolor'{'SARLgreen'}{'RGB'}{'0,128,0'}'"); //$NON-NLS-1$
-		append(sty, "\\definecolor'{'SARLdarkgray'}{'RGB'}{'99,104,110'}'"); //$NON-NLS-1$
-		append(sty, "\\colorlet'{'SARLcomment'}{'SARLgreen'}'"); //$NON-NLS-1$
-		append(sty, "\\colorlet'{'SARLstring'}{'SARLmagenta'}'"); //$NON-NLS-1$
-		append(sty, "\\colorlet'{'SARLkeyword'}{'SARLblue'}'"); //$NON-NLS-1$
-		append(sty, "\\colorlet'{'SARLidentifier'}{'SARLdarkgray'}'"); //$NON-NLS-1$
+		if (this.useColors) {
+			append(sty, "\\definecolor'{'SARLblue'}{'RGB'}{'43,88,121'}'"); //$NON-NLS-1$
+			append(sty, "\\definecolor'{'SARLlightblue'}{'RGB'}{'0,123,191'}'"); //$NON-NLS-1$
+			append(sty, "\\definecolor'{'SARLlightestblue'}{'RGB'}{'223,239,247'}'"); //$NON-NLS-1$
+			append(sty, "\\definecolor'{'SARLmagenta'}{'RGB'}{'153,30,102'}'"); //$NON-NLS-1$
+			append(sty, "\\definecolor'{'SARLlightmagenta'}{'RGB'}{'204,122,170'}'"); //$NON-NLS-1$
+			append(sty, "\\definecolor'{'SARLlightestmagenta'}{'RGB'}{'250,240,246'}'"); //$NON-NLS-1$
+			append(sty, "\\definecolor'{'SARLgreen'}{'RGB'}{'0,128,0'}'"); //$NON-NLS-1$
+			append(sty, "\\definecolor'{'SARLdarkgray'}{'RGB'}{'99,104,110'}'"); //$NON-NLS-1$
+			append(sty, "\\colorlet'{'SARLcomment'}{'SARLgreen'}'"); //$NON-NLS-1$
+			append(sty, "\\colorlet'{'SARLstring'}{'SARLmagenta'}'"); //$NON-NLS-1$
+			append(sty, "\\colorlet'{'SARLkeyword'}{'SARLblue'}'"); //$NON-NLS-1$
+			append(sty, "\\colorlet'{'SARLidentifier'}{'SARLdarkgray'}'"); //$NON-NLS-1$
+		}
 
 		String langName = getLanguage().toUpperCase();
 		append(sty, "\\lstdefinelanguage'{'{0}'}{'%", langName); //$NON-NLS-1$
@@ -197,8 +258,14 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 		append(sty, "'}'"); //$NON-NLS-1$
 
 		append(sty, "\\lstset'{'%"); //$NON-NLS-1$
-		append(sty, "   basicstyle={0}, % the size of the fonts that are used for the code", //$NON-NLS-1$
-				Strings.emptyIfNull(this.floatBasicStyle));
+		
+		String floatBasicStyle = this.floatBasicStyle;
+		if (floatBasicStyle == null) {
+			floatBasicStyle =(this.useColors) ? DEFAULT_COLORIZED_FLOAT_BASIC_STYLE : DEFAULT_FLOAT_BASIC_STYLE;
+		}
+		floatBasicStyle = Strings.emptyIfNull(floatBasicStyle);
+		append(sty, "   basicstyle={0}, % the size of the fonts that are used for the code", floatBasicStyle);//$NON-NLS-1$
+		
 		append(sty, "   breakatwhitespace=false, % sets if automatic breaks should only happen at whitespace"); //$NON-NLS-1$
 		append(sty, "   breaklines=true, % sets automatic line breaking"); //$NON-NLS-1$
 		append(sty, "   captionpos=b, % sets the caption-position to bottom"); //$NON-NLS-1$
@@ -209,11 +276,37 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 		append(sty, "   frame=none, % no frame around the code"); //$NON-NLS-1$
 		append(sty, "   keepspaces=true, % keeps spaces in text, useful for keeping " //$NON-NLS-1$
 				+ "indentation of code (possibly needs columns=flexible)"); //$NON-NLS-1$
-		append(sty, "   identifierstyle={0},", Strings.emptyIfNull(this.identifierStyle)); //$NON-NLS-1$
-		append(sty, "   commentstyle={0},", Strings.emptyIfNull(this.commentStyle)); //$NON-NLS-1$
-		append(sty, "   stringstyle={0},", Strings.emptyIfNull(this.stringStyle)); //$NON-NLS-1$
-		append(sty, "   keywordstyle={0}, % keyword style", Strings.emptyIfNull(this.keywordStyle)); //$NON-NLS-1$
+		
+		String identifierStyle = this.identifierStyle;
+		if (identifierStyle == null) {
+			identifierStyle =(this.useColors) ? DEFAULT_COLORIZED_IDENTIFIER_STYLE : DEFAULT_IDENTIFIER_STYLE;
+		}
+		identifierStyle = Strings.emptyIfNull(identifierStyle);
+		append(sty, "   identifierstyle={0},", identifierStyle); //$NON-NLS-1$
+
+		String commentStyle = this.commentStyle;
+		if (commentStyle == null) {
+			commentStyle =(this.useColors) ? DEFAULT_COLORIZED_COMMENT_STYLE : DEFAULT_COMMENT_STYLE;
+		}
+		commentStyle = Strings.emptyIfNull(commentStyle);
+		append(sty, "   commentstyle={0},", commentStyle); //$NON-NLS-1$
+
+		String stringStyle = this.stringStyle;
+		if (stringStyle == null) {
+			stringStyle =(this.useColors) ? DEFAULT_COLORIZED_STRING_STYLE : DEFAULT_STRING_STYLE;
+		}
+		stringStyle = Strings.emptyIfNull(stringStyle);
+		append(sty, "   stringstyle={0},", stringStyle); //$NON-NLS-1$
+
+		String keywordStyle = this.keywordStyle;
+		if (keywordStyle == null) {
+			keywordStyle =(this.useColors) ? DEFAULT_COLORIZED_KEYWORD_STYLE : DEFAULT_KEYWORD_STYLE;
+		}
+		keywordStyle = Strings.emptyIfNull(keywordStyle);
+		append(sty, "   keywordstyle={0}, % keyword style", keywordStyle); //$NON-NLS-1$
+
 		append(sty, "   language={0}, % the default language of the code", langName); //$NON-NLS-1$
+
 		append(sty, "   showspaces=false, % show spaces everywhere adding particular " //$NON-NLS-1$
 				+ "underscores; it overrides ''showstringspaces''"); //$NON-NLS-1$
 		append(sty, "   showstringspaces=false, % underline spaces within strings only"); //$NON-NLS-1$
@@ -225,8 +318,12 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 		append(sty, "   frameround=fttt, % If framed, use this rounded corner style"); //$NON-NLS-1$
 		append(sty, "'}'"); //$NON-NLS-1$
 
-		append(sty, "\\newcommand'{'\\code'}'[1]'{{'\\lstinline[basicstyle={0}]'{'#1'}}}'", //$NON-NLS-1$
-				Strings.emptyIfNull(this.inlineBasicStyle));
+		String inlineBasicStyle = this.inlineBasicStyle;
+		if (inlineBasicStyle == null) {
+			inlineBasicStyle =(this.useColors) ? DEFAULT_COLORIZED_INLINE_BASIC_STYLE : DEFAULT_INLINE_BASIC_STYLE;
+		}
+		inlineBasicStyle = Strings.emptyIfNull(inlineBasicStyle);
+		append(sty, "\\newcommand'{'\\code'}'[1]'{{'\\lstinline[basicstyle={0}]'{'#1'}}}'", inlineBasicStyle); //$NON-NLS-1$
 
 		append(sty, "\\endinput"); //$NON-NLS-1$
 
