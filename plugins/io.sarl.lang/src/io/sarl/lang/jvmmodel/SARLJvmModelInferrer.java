@@ -351,6 +351,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
+		// Issue #363: do not generate the agent if the SARL library is incompatible.
+		if (!Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
+			return;
+		}
 		openContext(inferredJvmType);
 		try {
 			super.initialize(source, inferredJvmType);
@@ -365,6 +369,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		assert (source != null);
 		assert (inferredJvmType != null);
 		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
+		// Issue #363: do not generate the agent if the SARL library is incompatible.
+		if (!Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 			return;
 		}
 		openContext(inferredJvmType);
@@ -383,6 +391,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
+		// Issue #363: do not generate the agent if the SARL library is incompatible.
+		if (!Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
+			return;
+		}
 		openContext(inferredJvmType);
 		try {
 			super.initialize(source, inferredJvmType);
@@ -397,6 +409,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		assert (source != null);
 		assert (inferredJvmType != null);
 		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
+		// Issue #363: do not generate the agent if the SARL library is incompatible.
+		if (!Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 			return;
 		}
 		openContext(inferredJvmType);
@@ -451,11 +467,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Generate the extended types.
 			appendConstrainedExtends(context, inferredJvmType, Agent.class, source.getExtends());
 
-			// Generate the members of the generated type.
-			appendSarlMembers(
-					inferredJvmType,
-					source,
-					context);
+			// Issue #363: do not generate the agent if the SARL library is incompatible.
+			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
+				// Generate the members of the generated type.
+				appendSarlMembers(
+						inferredJvmType,
+						source,
+						context);
+			}
 
 			// Add the default constructors for the agent, if not already added
 			if (!context.hasConstructor()) {
@@ -543,11 +562,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Generate the extended types.
 			appendConstrainedExtends(context, inferredJvmType, Behavior.class, source.getExtends());
 
-			// Generate the members of the generated type.
-			appendSarlMembers(
-					inferredJvmType,
-					source,
-					context);
+			// Issue #363: do not generate the agent if the SARL library is incompatible.
+			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
+				// Generate the members of the generated type.
+				appendSarlMembers(
+						inferredJvmType,
+						source,
+						context);
+			}
 
 			// Add the default constructors for the behavior, if not already added
 
@@ -619,11 +641,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Generate the extended types.
 			appendConstrainedExtends(context, inferredJvmType, Event.class, source.getExtends());
 
-			// Generate the members of the generated type.
-			appendSarlMembers(
-					inferredJvmType,
-					source,
-					context);
+			// Issue #363: do not generate the agent if the SARL library is incompatible.
+			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
+				// Generate the members of the generated type.
+				appendSarlMembers(
+						inferredJvmType,
+						source,
+						context);
+			}
 
 			if (!context.hasConstructor()) {
 				// Add the default constructors for the behavior, if not already added
@@ -719,11 +744,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			appendConstrainedExtends(context, inferredJvmType, Skill.class, source.getExtends());
 			appendConstrainedImplements(context, inferredJvmType, Capacity.class, source.getImplements());
 
-			// Generate the members of the generated type.
-			appendSarlMembers(
-					inferredJvmType,
-					source,
-					context);
+			// Issue #363: do not generate the agent if the SARL library is incompatible.
+			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
+				// Generate the members of the generated type.
+				appendSarlMembers(
+						inferredJvmType,
+						source,
+						context);
+			}
 
 			// Add the default constructors for the behavior, if not already added
 			if (!context.hasConstructor()) {
@@ -803,11 +831,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Generate the extended types.
 			appendConstrainedExtends(context, inferredJvmType, Capacity.class, source.getExtends());
 
-			// Generate the members of the generated type.
-			appendSarlMembers(
-					inferredJvmType,
-					source,
-					context);
+			// Issue #363: do not generate the agent if the SARL library is incompatible.
+			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
+				// Generate the members of the generated type.
+				appendSarlMembers(
+						inferredJvmType,
+						source,
+						context);
+			}
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);

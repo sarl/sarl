@@ -27,12 +27,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
 import com.google.common.base.Strings;
 import com.ibm.icu.util.VersionInfo;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
@@ -56,6 +58,7 @@ import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.xbase.XExpression;
@@ -70,6 +73,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFac
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
@@ -1039,6 +1043,56 @@ public final class Utils {
 			}
 		}
 		return false;
+	}
+
+	/** Check if a compatible SARL library is available on the classpath.
+	 *
+	 * @param typeReferences - the accessor to the types.
+	 * @param context - the context that is providing the access to the classpath.
+	 * @return <code>true</code> if a compatible SARL library was found.
+	 *     Otherwise <code>false</code>.
+	 */
+	public static boolean isCompatibleSARLLibraryOnClasspath(TypeReferences typeReferences, Notifier context) {
+		return isCompatibleSARLLibraryVersion(getSARLLibraryVersionOnClasspath(typeReferences, context));
+	}
+
+	/** Check if a version in compatible with the expected SARL library.
+	 *
+	 * @param version - the version to test.
+	 * @return <code>true</code> if a compatible SARL library was found.
+	 *     Otherwise <code>false</code>.
+	 */
+	public static boolean isCompatibleSARLLibraryVersion(String version) {
+		return org.eclipse.xtext.util.Strings.equal(SARLVersion.SPECIFICATION_RELEASE_VERSION, version);
+	}
+
+	/** Replies the version of the SARL library on the classpath.
+	 *
+	 * @param typeReferences - the accessor to the types.
+	 * @param context - the context that is providing the access to the classpath.
+	 * @return the version, or <code>null</code> if the SARL library cannot be found or
+	 *     is too old.
+	 */
+	public static String getSARLLibraryVersionOnClasspath(TypeReferences typeReferences, Notifier context) {
+		try {
+			JvmType type = typeReferences.findDeclaredType(SARLVersion.class.getName(), context);
+			if (type instanceof JvmDeclaredType) {
+				JvmField versionField = null;
+				Iterator<JvmField> iterator = ((JvmDeclaredType) type).getDeclaredFields().iterator();
+				while (versionField == null && iterator.hasNext()) {
+					JvmField field = iterator.next();
+					if ("SPECIFICATION_RELEASE_VERSION".equals(field.getSimpleName())) { //$NON-NLS-1$
+						versionField = field;
+					}
+				}
+				if (versionField != null) {
+					return versionField.getConstantValueAsString();
+				}
+			}
+		} catch (Throwable exception) {
+			//
+		}
+		return null;
 	}
 
 }

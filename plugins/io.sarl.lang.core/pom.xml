@@ -28,6 +28,48 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<basedir>${project.basedir}/src-templates</basedir>
+							<outputDir>../src-gen</outputDir>
+							<includes>
+								<include>**/*.java</include>
+							</includes>
+							<replacements>
+								<replacement>
+									<token>@sarlspecificationreleaseversion@</token>
+									<value>${sarlspecificationreleaseversion}</value>
+								</replacement>
+								<replacement>
+									<token>@sarlreleaseversion@</token>
+									<value>${sarlreleaseversion}</value>
+								</replacement>
+								<replacement>
+									<token>@sarlspecificationreleasestatus@</token>
+									<value>${sarlspecificationreleasestatus}</value>
+								</replacement>
+								<replacement>
+									<token>@sarlisstableversion@</token>
+									<value>${sarlisstableversion}</value>
+								</replacement>
+								<replacement>
+									<token>@janusversion@</token>
+									<value>${janusversion}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>

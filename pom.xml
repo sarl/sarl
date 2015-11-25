@@ -357,15 +357,18 @@
 							def snapshotTag = "-SNAPSHOT";
 							def version;
 							def releaseStatus;
+							def isSnapshot;
 							def endOfVersion;
 							if (project.version.endsWith(snapshotTag)) {
 								def len = project.version.size() - snapshotTag.size();
 								version = project.version.substring(0, len);
 								releaseStatus = "Draft Release";
+								isSnapshot = true;
 								endOfVersion = snapshotTag;
 							} else {
 								version = project.version;
 								releaseStatus = "Stable Release";
+								isSnapshot = false;
 								endOfVersion = "";
 							}
 							versionFields = version.split("\\.");
@@ -376,12 +379,14 @@
 							project.properties.sarlreleaseversion = project.properties.sarlspecificationreleaseversion + "." + versionFields[2];
 							project.properties.sarlspecificationreleasedate = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
 							project.properties.sarlspecificationreleasestatus = releaseStatus;
+							project.properties.sarlisstableversion = Boolean.toString(!isSnapshot);
 							project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+".0"+endOfVersion;
 
 							println("\tset sarlspecificationreleaseversion to: " + project.properties.sarlspecificationreleaseversion);
 							println("\tset sarlreleaseversion to: " + project.properties.sarlreleaseversion);
 							println("\tset sarlspecificationreleasedate to: " + project.properties.sarlspecificationreleasedate);
 							println("\tset sarlspecificationreleasestatus to: " + project.properties.sarlspecificationreleasestatus);
+							println("\tset sarlisstableversion to: " + project.properties.sarlisstableversion);
 							println("\tset janusversion to: " + project.properties.janusversion);
 						]]></script>
 					</scripts>

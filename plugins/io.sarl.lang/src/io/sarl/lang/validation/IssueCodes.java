@@ -116,6 +116,18 @@ public final class IssueCodes {
 	public static final String RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED =
 			ISSUE_CODE_PREFIX + "return_type_specification_is_recommended"; //$NON-NLS-1$
 
+	/**
+	 * The SARL library is not on the classpath.
+	 */
+	public static final String SARL_LIB_NOT_ON_CLASSPATH =
+			ISSUE_CODE_PREFIX + "sarl_lib_not_on_classpath"; //$NON-NLS-1$
+
+	/**
+	 * The SARL library found on the classpath is not compatible with the compiler's version.
+	 */
+	public static final String INVALID_SARL_LIB_ON_CLASSPATH =
+			ISSUE_CODE_PREFIX + "invalid_sarl_lib_on_classpath"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

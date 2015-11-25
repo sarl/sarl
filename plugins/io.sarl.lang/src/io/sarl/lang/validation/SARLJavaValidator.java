@@ -92,6 +92,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -117,6 +118,7 @@ import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendMember;
+import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationValue;
@@ -144,13 +146,14 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.ReassignFirstArgument;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
 import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 
 import io.sarl.lang.SARLLangActivator;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
@@ -360,10 +363,10 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 				null);
 	}
 
-	/** Check if the SARL libraries are in the classpath.
+	/** Check if the JRE, the XBase, and the SARL libraries are on the classpath.
 	 *
 	 * <p>This function is overriding the function given by the Xtend validator
-	 * for firing a warning in place of an error.
+	 * for having finer tests, and firing a warning in place of an error.
 	 *
 	 * @param sarlScript - the SARL script.
 	 */
@@ -382,16 +385,33 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 			error(
 					MessageFormat.format(Messages.SARLValidator_0, minJdkVersion),
 					sarlScript,
-					null,
+					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					JDK_NOT_ON_CLASSPATH);
 		}
 
-		if (typeReferences.findDeclaredType(ReassignFirstArgument.class, sarlScript) == null) {
+		// XXX: Update the following type according to the super type's implementation.
+		if (typeReferences.findDeclaredType(ToStringBuilder.class, sarlScript) == null) {
 			error(
 					MessageFormat.format(Messages.SARLValidator_1, minXtextVersion),
 					sarlScript,
-					null,
+					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					XBASE_LIB_NOT_ON_CLASSPATH);
+		}
+
+		String sarlOnClasspath = Utils.getSARLLibraryVersionOnClasspath(typeReferences, sarlScript);
+		if (Strings.isNullOrEmpty(sarlOnClasspath)) {
+			error(
+					Messages.SARLJavaValidator_39,
+					sarlScript,
+					XtendPackage.Literals.XTEND_FILE__PACKAGE,
+					io.sarl.lang.validation.IssueCodes.SARL_LIB_NOT_ON_CLASSPATH);
+		} else if (!Utils.isCompatibleSARLLibraryVersion(sarlOnClasspath)) {
+			error(
+					MessageFormat.format(Messages.SARLJavaValidator_40,
+					sarlOnClasspath, SARLVersion.SPECIFICATION_RELEASE_VERSION),
+					sarlScript,
+					XtendPackage.Literals.XTEND_FILE__PACKAGE,
+					io.sarl.lang.validation.IssueCodes.INVALID_SARL_LIB_ON_CLASSPATH);
 		}
 	}
 
