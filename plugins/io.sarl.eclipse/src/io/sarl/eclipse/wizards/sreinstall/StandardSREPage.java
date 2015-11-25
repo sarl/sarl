@@ -45,7 +45,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Text;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SREException;
@@ -167,10 +166,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		}
 		String selectedFile = dialog.open();
 		if (selectedFile != null) {
-			SARLEclipsePlugin.getDefault().logDebugMessage("Selected SRE file (String): " //$NON-NLS-1$
-					+ Strings.nullToEmpty(selectedFile));
 			IPath path = Path.fromOSString(selectedFile);
-			SARLEclipsePlugin.getDefault().logDebugMessage("Associated Eclipse Path (Path): " + path); //$NON-NLS-1$
 			//			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			//			IPath workspaceLocation = workspace.getRoot().getLocation();
 			//			SARLEclipsePlugin.logDebugMessage("Workspace (Path): " + workspaceLocation); //$NON-NLS-1$
@@ -183,7 +179,6 @@ public class StandardSREPage extends AbstractSREInstallPage {
 			createWorkingCopy();
 			this.workingCopy.setJarFile(path);
 			IStatus status = validate();
-			SARLEclipsePlugin.getDefault().logDebugMessage("SRE status: " + status); //$NON-NLS-1$
 			//
 			initializeFields();
 			setPageStatus(status);
