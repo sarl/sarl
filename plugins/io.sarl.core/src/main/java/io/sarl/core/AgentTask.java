@@ -21,7 +21,6 @@
 
 package io.sarl.core;
 
-import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Procedures;
 
@@ -39,7 +38,7 @@ public class AgentTask {
 
 	private String name;
 
-	private Functions.Function1<Agent, Boolean> guard;
+	private Function1<Agent, Boolean> guard;
 
 	private Procedures.Procedure1<? super Agent> procedure;
 
@@ -69,7 +68,7 @@ public class AgentTask {
 	 *
 	 * @return the guard.
 	 */
-	public Functions.Function1<Agent, Boolean> getGuard() {
+	public Function1<Agent, Boolean> getGuard() {
 		return this.guard;
 	}
 
@@ -79,7 +78,7 @@ public class AgentTask {
 	 * @see #unless(Function1)
 	 * @see #ifTrue(Function1)
 	 */
-	public void setGuard(Functions.Function1<Agent, Boolean> guard) {
+	public void setGuard(Function1<Agent, Boolean> guard) {
 		this.guard = guard;
 	}
 
@@ -105,7 +104,7 @@ public class AgentTask {
 	 * @return <code>this</code>.
 	 * @see #setGuard(Function1)
 	 */
-	public AgentTask unless(Functions.Function1<Agent, Boolean> predicate) {
+	public AgentTask unless(Function1<Agent, Boolean> predicate) {
 		this.guard = new NegateFunction(predicate);
 		return this;
 	}
@@ -116,7 +115,7 @@ public class AgentTask {
 	 * @return <code>this</code>.
 	 * @see #setGuard(Function1)
 	 */
-	public AgentTask ifTrue(Functions.Function1<Agent, Boolean> predicate) {
+	public AgentTask ifTrue(Function1<Agent, Boolean> predicate) {
 		this.guard = predicate;
 		return this;
 	}

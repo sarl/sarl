@@ -44,7 +44,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *
  * <p>This extension is provided for the elements that are not (yet) provided
  * by the Xbase API.
- * The enhancement of Xbase is asked in <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=454319>this issue</a>.
+ * The enhancement of Xbase is asked in <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=454319">this issue</a>.
  *
  * <p>FIXME: Remove if Xbase or Xtend are providing these functions.
  *

@@ -131,6 +131,21 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.arakhne.afc.maven</groupId>
+					<artifactId>tag-replacer</artifactId>
+					<configuration>
+						<sources>
+							<source>${project.basedir}/src/main/generated-sources/sarl</source>
+							<source>${project.basedir}/src/main/java</source>
+						</sources>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 </project>

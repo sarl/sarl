@@ -28,7 +28,10 @@
 		<buildId>${maven.build.timestamp}</buildId>
 		<!-- Version of the Xtext API -->
 		<xtext.version>2.8.4</xtext.version>
-		<xtext.versionRange>[2.8.4,2.8.5)</xtext.versionRange><!-- For generating a correct version range you need to create a range integrating ONLY the current version and excluding all other possible versions especially the greater ones-->
+		<xtext.versionRange>[2.8.4,2.8.5)</xtext.versionRange><!-- For generating 
+			a correct version range you need to create a range integrating ONLY the current 
+			version and excluding all other possible versions especially the greater 
+			ones -->
 		<!-- Version of the Jnario PI -->
 		<jnario.version>1.0.0</jnario.version>
 		<jnario.report.version>1.0.1</jnario.report.version>
@@ -107,14 +110,8 @@
 						<testTarget>${compiler.level}</testTarget>
 						<encoding>${project.build.sourceEncoding}</encoding>
 						<showDeprecation>false</showDeprecation>
-                     	<showWarnings>false</showWarnings>
-                     </configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.3</version>
+						<showWarnings>false</showWarnings>
+					</configuration>
 				</plugin>
 
 				<plugin>
@@ -163,6 +160,12 @@
 					<groupId>com.google.code.maven-replacer-plugin</groupId>
 					<artifactId>replacer</artifactId>
 					<version>1.5.3</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.arakhne.afc.maven</groupId>
+					<artifactId>tag-replacer</artifactId>
+					<version>${afc.version}</version>
 				</plugin>
 
 				<plugin>
@@ -245,6 +248,71 @@
 					<groupId>org.eclipse.xtext</groupId>
 					<artifactId>xtext-maven-plugin</artifactId>
 					<version>${xtext.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.3</version>
+					<configuration>
+						<docencoding>${project.build.sourceEncoding}</docencoding>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<charset>${project.build.sourceEncoding}</charset>
+						<show>protected</show>
+						<detectLinks>true</detectLinks>
+						<detectJavaApiLink>true</detectJavaApiLink>
+						<links>
+							<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.8/</link>
+						</links>
+						<docfilessubdirs>true</docfilessubdirs>
+						<excludePackageNames></excludePackageNames>
+						<breakiterator>true</breakiterator>
+						<version>true</version>
+						<author>true</author>
+						<keywords>true</keywords>
+						<useStandardDocletOptions>true</useStandardDocletOptions>
+						<excludePackageNames></excludePackageNames>
+						<bottom>&lt;small&gt;Copyright &amp;copy; ${year}
+							${copyrighters}.
+						</bottom>
+						<groups>
+							<group>
+								<title>SARL Metamodel</title>
+								<packages>io.sarl.lang.core:io.sarl.lang.annotation:io.sarl.lang.util</packages>
+							</group>
+							<group>
+								<title>Standard Development Kit</title>
+								<packages>io.sarl.lang.scoping.batch:io.sarl.core:io.sarl.util</packages>
+							</group>
+						</groups>
+						<tags>
+							<tag>
+								<name>mavengroupid</name>
+								<placement>pt</placement>
+								<head>Maven Group Id:</head>
+							</tag>
+							<tag>
+								<name>mavenartifactid</name>
+								<placement>pt</placement>
+								<head>Maven Artifact Id:</head>
+							</tag>
+							<tag>
+								<name>fires</name>
+								<placement>mc</placement>
+								<head>Fired Events:</head>
+							</tag>
+							<tag>
+								<name>generated</name>
+								<placement>a</placement>
+								<head>Generated element</head>
+							</tag>
+							<tag>
+								<name>model</name>
+								<placement>a</placement>
+								<head>Model element</head>
+							</tag>
+						</tags>
+					</configuration>
 				</plugin>
 
 				<!-- This plugin's configuration is used to store Eclipse m2e settings 
@@ -522,10 +590,10 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>release-tasks</id>
+			<id>public-sarl-api-module-set</id>
 			<activation>
 				<property>
-					<name>performRelease</name>
+					<name>publicSarlApiModuleSet</name>
 					<value>true</value>
 				</property>
 			</activation>
@@ -537,70 +605,17 @@
 				<!-- Maven plugins and artifacts dedicated to SARL -->
 				<module>maven</module>
 			</modules>
+		</profile>
+		<profile>
+			<id>release-tasks</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<sourcepath>${project.basedir}/src/;${project.basedir}/src-gen;${project.basedir}/xtend-gen;</sourcepath>
-							<docencoding>${project.build.sourceEncoding}</docencoding>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<charset>${project.build.sourceEncoding}</charset>
-							<show>protected</show>
-							<detectLinks>true</detectLinks>
-							<detectJavaApiLink>true</detectJavaApiLink>
-							<links>
-								<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.8.4/</link>
-							</links>
-							<docfilessubdirs>true</docfilessubdirs>
-							<excludePackageNames></excludePackageNames>
-							<breakiterator>true</breakiterator>
-							<version>true</version>
-							<author>true</author>
-							<keywords>true</keywords>
-							<useStandardDocletOptions>true</useStandardDocletOptions>
-							<excludePackageNames></excludePackageNames>
-							<bottom>&lt;small&gt;Copyright &amp;copy; ${year}
-								${copyrighters}.
-							</bottom>
-							<tags>
-								<tag>
-									<name>mavengroupid</name>
-									<placement>pt</placement>
-									<head>Maven Group Id:</head>
-								</tag>
-								<tag>
-									<name>mavenartifactid</name>
-									<placement>pt</placement>
-									<head>Maven Artifact Id:</head>
-								</tag>
-								<tag>
-									<name>fires</name>
-									<placement>mc</placement>
-									<head>Fired Events:</head>
-								</tag>
-								<tag>
-									<name>generated</name>
-									<placement>a</placement>
-									<head>Generated element</head>
-								</tag>
-								<tag>
-									<name>model</name>
-									<placement>a</placement>
-									<head>Model element</head>
-								</tag>
-							</tags>
-						</configuration>
-					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
@@ -616,9 +631,20 @@
 						</executions>
 					</plugin>
 					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
 						<groupId>org.arakhne.afc.maven</groupId>
 						<artifactId>tag-replacer</artifactId>
-						<version>${afc.version}</version>
 						<executions>
 							<execution>
 								<id>update-source-tags</id>
@@ -687,7 +713,7 @@
 			</roles>
 		</developer>
 	</developers>
-	
+
 	<contributors>
 		<contributor>
 			<name>J&amp;eacute;r&amp;eacute;mie Jost</name>
