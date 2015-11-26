@@ -447,31 +447,34 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	}
 
 	private String extractNameFromJavaElement(final IJavaElement javaElement) {
-		final String[] name = new String[1];
-		try {
-			getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void run(IProgressMonitor pm) throws InvocationTargetException {
-					try {
-						IJavaProject javaProject = javaElement.getJavaProject();
-						IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
-						IType[] types = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
-						if (types != null && types.length > 0) {
-							name[0] = types[0].getFullyQualifiedName();
+		String name = null;
+		if (javaElement != null) {
+			final String[] nameRef = new String[1];
+			try {
+				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
+					@SuppressWarnings("synthetic-access")
+					@Override
+					public void run(IProgressMonitor pm) throws InvocationTargetException {
+						try {
+							IJavaProject javaProject = javaElement.getJavaProject();
+							IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
+							IType[] types = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
+							if (types != null && types.length > 0) {
+								nameRef[0] = types[0].getFullyQualifiedName();
+							}
+						} catch (JavaModelException e) {
+							setErrorMessage(e.getLocalizedMessage());
+							JDIDebugUIPlugin.log(e);
 						}
-					} catch (JavaModelException e) {
-						setErrorMessage(e.getLocalizedMessage());
-						JDIDebugUIPlugin.log(e);
 					}
-				}
-			});
-		} catch (Exception e) {
-			setErrorMessage(e.getLocalizedMessage());
-			JDIDebugUIPlugin.log(e);
+				});
+			} catch (Exception e) {
+				setErrorMessage(e.getLocalizedMessage());
+				JDIDebugUIPlugin.log(e);
+			}
+			name = nameRef[0];
 		}
-
-		return Strings.nullToEmpty(name[0]);
+		return Strings.nullToEmpty(name);
 	}
 
 	/**
