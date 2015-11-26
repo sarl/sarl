@@ -936,20 +936,24 @@ public final class SARLRuntime {
 	 * @see #isUnpackedSRE(File)
 	 */
 	public static boolean isPackedSRE(IPath jarFile) {
-		IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(jarFile);
-		if (location != null) {
-			IPath path = location.getLocation();
-			if (path != null) {
-				File file = path.toFile();
-				if (file.exists()) {
-					if (file.isFile()) {
-						return isPackedSRE(file);
+		try {
+			IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(jarFile);
+			if (location != null) {
+				IPath path = location.getLocation();
+				if (path != null) {
+					File file = path.toFile();
+					if (file.exists()) {
+						if (file.isFile()) {
+							return isPackedSRE(file);
+						}
+						return false;
 					}
-					return false;
 				}
 			}
+			return isPackedSRE(jarFile.makeAbsolute().toFile());
+		} catch (Exception exception) {
+			return false;
 		}
-		return isPackedSRE(jarFile.makeAbsolute().toFile());
 	}
 
 }
