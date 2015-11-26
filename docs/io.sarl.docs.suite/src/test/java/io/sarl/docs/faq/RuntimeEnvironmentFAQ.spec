@@ -222,6 +222,26 @@ describe "Runtime Environment FAQ" {
 				true
 			}
 
+			/* When installing Janus as an SRE in the Eclipse interface, the plugin loads the Jar file of the
+			 * SRE with the default API.
+			 * The Jar archiver uses the default file encoding of the operating system.
+			 * On Linux and MacOS 10, it is almost UTF-8. On Windows, it is Latin1. And on MacOS (before 10),
+			 * it is Mac-Roman.
+			 *
+			 * <p>Unfortunately, the Janus Jar file is generated on a Linux operating system (UTF-8).
+			 * When the Java virtual machine tries to uncompress and use the content of the Jar, it
+			 * complains about an invalid charset format.
+			 * 
+			 * <p>For solving this issue, you could launch your Eclipse with the command line option
+			 * <code>-Dfile.encoding=UTF-8</code>, which is forcing the Eclipse product to consider the
+			 * file as encoded with the UTF-8 charset.
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Error: \"Invalid byte 2 of 4-byte UTF-8 sequence.\"" {
+				true
+			}
+
 		}
 
 		/*  
