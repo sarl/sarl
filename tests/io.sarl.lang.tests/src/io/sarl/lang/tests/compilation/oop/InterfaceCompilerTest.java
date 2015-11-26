@@ -18,6 +18,7 @@ package io.sarl.lang.tests.compilation.oop;
 import static org.junit.Assert.assertEquals;
 
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.tests.parsing.aop.BehaviorParsingTest;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -301,12 +302,14 @@ public class InterfaceCompilerTest {
 		public void basic() throws Exception {
 			String source = "agent Container { interface I1 { } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  protected interface I1 {",
@@ -333,12 +336,14 @@ public class InterfaceCompilerTest {
 		public void variable() throws Exception {
 			String source = "agent Container { interface I1 { var v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  protected interface I1 {",
@@ -366,12 +371,14 @@ public class InterfaceCompilerTest {
 		public void value() throws Exception {
 			String source = "agent Container { interface I1 { val v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  protected interface I1 {",
@@ -399,12 +406,14 @@ public class InterfaceCompilerTest {
 		public void method_0() throws Exception {
 			String source = "agent Container { interface I1 { def fct } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  protected interface I1 {",
@@ -432,12 +441,14 @@ public class InterfaceCompilerTest {
 		public void method_1() throws Exception {
 			String source = "agent Container { interface I1 { def fct(a : int) } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  protected interface I1 {",
@@ -465,12 +476,14 @@ public class InterfaceCompilerTest {
 		public void method_2() throws Exception {
 			String source = "agent Container { interface I1 { def fct(a : int*) } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  protected interface I1 {",
@@ -502,12 +515,14 @@ public class InterfaceCompilerTest {
 					"import io.sarl.lang.annotation.DefaultValueSource;",
 					"import io.sarl.lang.annotation.DefaultValueUse;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  protected interface I1 {",

@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNull;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
 
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlField;
@@ -69,6 +70,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.Map;",
@@ -77,6 +79,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Pair;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Map<String, Integer> map;",
@@ -125,6 +128,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.Map;",
@@ -133,6 +137,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Pair;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Map<String, Integer> map;",
@@ -183,6 +188,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.Map;",
@@ -190,6 +196,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Map<String, Number> map1;",
@@ -235,6 +242,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.Map;",
@@ -243,6 +251,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Pair;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Map<String, Integer> map;",
@@ -295,6 +304,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.Map;",
@@ -303,6 +313,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Pair;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Map<String, Integer> map;",
@@ -357,6 +368,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.Map;",
@@ -364,6 +376,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Map<String, Integer> map1;",
@@ -411,6 +424,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.Map;",
@@ -418,6 +432,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Map<String, Integer> map1;",
@@ -465,6 +480,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.Map;",
@@ -472,6 +488,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Map<String, Integer> map1;",
@@ -520,6 +537,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.Map;",
@@ -527,6 +545,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Map<String, Integer> map;",
@@ -576,6 +595,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import io.sarl.lang.scoping.batch.SARLMapExtensions;",
@@ -584,6 +604,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Map<String, Integer> map;",

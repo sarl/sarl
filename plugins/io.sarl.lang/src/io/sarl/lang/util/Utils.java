@@ -106,7 +106,7 @@ public final class Utils {
 	 */
 	public static final String PREFIX_HANDLE_BODY = "_eventhandler_body_"; //$NON-NLS-1$
 
-	/** Préfix for the names of the hidden fields related to the default values.
+	/** Prefix for the names of the hidden fields related to the default values.
 	 */
 	public static final String PREFIX_ATTRIBUTE_DEFAULT_VALUE = "___FORMAL_PARAMETER_DEFAULT_VALUE_"; //$NON-NLS-1$
 
@@ -1063,7 +1063,7 @@ public final class Utils {
 	 *     Otherwise <code>false</code>.
 	 */
 	public static boolean isCompatibleSARLLibraryVersion(String version) {
-		return org.eclipse.xtext.util.Strings.equal(SARLVersion.SPECIFICATION_RELEASE_VERSION, version);
+		return org.eclipse.xtext.util.Strings.equal(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING, version);
 	}
 
 	/** Replies the version of the SARL library on the classpath.
@@ -1081,7 +1081,7 @@ public final class Utils {
 				Iterator<JvmField> iterator = ((JvmDeclaredType) type).getDeclaredFields().iterator();
 				while (versionField == null && iterator.hasNext()) {
 					JvmField field = iterator.next();
-					if ("SPECIFICATION_RELEASE_VERSION".equals(field.getSimpleName())) { //$NON-NLS-1$
+					if ("SPECIFICATION_RELEASE_VERSION_STRING".equals(field.getSimpleName())) { //$NON-NLS-1$
 						versionField = field;
 					}
 				}

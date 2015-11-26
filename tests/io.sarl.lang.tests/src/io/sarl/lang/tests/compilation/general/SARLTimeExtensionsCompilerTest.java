@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNull;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
 
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlField;
@@ -71,12 +72,14 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
@@ -113,12 +116,14 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
@@ -155,12 +160,14 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
@@ -197,12 +204,14 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
@@ -239,12 +248,14 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
@@ -281,12 +292,14 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",

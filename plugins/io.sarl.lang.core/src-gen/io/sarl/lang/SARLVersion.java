@@ -31,6 +31,7 @@ package io.sarl.lang;
  * @mavenartifactid $ArtifactId$
  * @since 0.3.0
  */
+@SuppressWarnings("all")
 public final class SARLVersion {
 
 	/** Version number of the SARL specification.
@@ -38,7 +39,14 @@ public final class SARLVersion {
 	 * <p>The version number is usually composed of two digits that
 	 * represent the version of the SARL specification and tools.
 	 */
-	public static final String SPECIFICATION_RELEASE_VERSION = "0.3"; //$NON-NLS-1$
+	public static final float SPECIFICATION_RELEASE_VERSION = (float) (0.3); //$NON-NLS-1$
+
+	/** Version number of the SARL specification.
+	 *
+	 * <p>The version number is usually composed of two digits that
+	 * represent the version of the SARL specification and tools.
+	 */
+	public static final String SPECIFICATION_RELEASE_VERSION_STRING = "0.3"; //$NON-NLS-1$
 
 	/** The version number of the current release of the SARL library.
 	 *

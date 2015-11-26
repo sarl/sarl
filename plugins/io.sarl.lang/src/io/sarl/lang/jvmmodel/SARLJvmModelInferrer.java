@@ -95,6 +95,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
 import io.sarl.lang.SARLKeywords;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.actionprototype.ActionPrototypeProvider;
@@ -109,6 +110,7 @@ import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.annotation.FiredEvent;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.SarlSourceCode;
+import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
@@ -511,6 +513,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				appendGeneratedAnnotation(constructor);
 			}
 
+			// Add the specification version of SARL
+			appendSARLSpecificationVersion(context, source, inferredJvmType);
+
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
 		} finally {
@@ -691,6 +696,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the serial number
 			appendSerialNumber(context, source, inferredJvmType);
+
+			// Add the specification version of SARL
+			appendSARLSpecificationVersion(context, source, inferredJvmType);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -1978,6 +1986,21 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		appendGeneratedAnnotation(field);
 		this.typeExtensions.setSynthetic(field, true);
 		this.readAndWriteTracking.markInitialized(field, null);
+	}
+
+	/** Append the SARL specification version as a private field of the given container.
+	 *
+	 * <p>The added field may be used by any underground platform for determining what is
+	 * the version of the SARL specification that was used for generating the container.
+	 * The principle is inspired from the serialVersionUID from Java.
+	 *
+	 * @param context the current generation context.
+	 * @param source the source object.
+	 * @param target the inferred JVM object.
+	 */
+	protected void appendSARLSpecificationVersion(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
+		target.getAnnotations().add(this._annotationTypesBuilder.annotationRef(SarlSpecification.class,
+				SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING));
 	}
 
 	/** Create an annotation with classes as values.

@@ -18,6 +18,7 @@ package io.sarl.lang.tests.compilation.aop;
 import static org.junit.Assert.assertEquals;
 
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.SARLVersion;
 import io.sarl.tests.api.AbstractSarlTest;
 
 import org.eclipse.xtext.junit4.InjectWith;
@@ -68,10 +69,12 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 	@Test
 	public void trueGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"import javax.annotation.Generated;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  /**",
@@ -140,10 +143,12 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 	@Test
 	public void falseGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"import javax.annotation.Generated;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  /**",
@@ -206,11 +211,13 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 	@Test
 	public void generalGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"import javax.annotation.Generated;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  public int i;",

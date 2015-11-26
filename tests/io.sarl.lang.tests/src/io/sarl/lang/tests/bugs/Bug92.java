@@ -18,6 +18,7 @@ package io.sarl.lang.tests.bugs;
 import com.google.inject.Inject;
 
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlScript;
@@ -152,12 +153,14 @@ public class Bug92 extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 						"import java.util.UUID;",
 						"import javax.annotation.Generated;",
 						"import javax.inject.Inject;",
 						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected double myDouble = 0d;",
@@ -186,12 +189,14 @@ public class Bug92 extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 						"import java.util.UUID;",
 						"import javax.annotation.Generated;",
 						"import javax.inject.Inject;",
 						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected Double myDouble = Double.valueOf(0d);",
@@ -220,12 +225,14 @@ public class Bug92 extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.core.Agent;",
 						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 						"import java.util.UUID;",
 						"import javax.annotation.Generated;",
 						"import javax.inject.Inject;",
 						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected double myDouble = 0d;",
@@ -272,12 +279,14 @@ public class Bug92 extends AbstractSarlTest {
 				"}",
 				"");
 		final String expected2 = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class DeviceAgent extends EntityAgent {",
 				"  protected Double busTime = Double.valueOf(0d);",
@@ -320,12 +329,14 @@ public class Bug92 extends AbstractSarlTest {
 				"}",
 				"");
 		final String expected3 = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class EntityAgent extends Agent {",
 				"  /**",
@@ -380,11 +391,13 @@ public class Bug92 extends AbstractSarlTest {
 				"");
 		final String expected2 = multilineString(
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class DeviceAgent extends EntityAgent {",
 				"  protected double busTime = 0d;",
@@ -427,12 +440,14 @@ public class Bug92 extends AbstractSarlTest {
 				"}",
 				"");
 		final String expected3 = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class EntityAgent extends Agent {",
 				"  /**",

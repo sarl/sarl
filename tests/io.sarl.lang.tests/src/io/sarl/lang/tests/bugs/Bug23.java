@@ -17,6 +17,7 @@ package io.sarl.lang.tests.bugs;
 
 import static org.junit.Assert.assertEquals;
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -70,11 +71,13 @@ public class Bug23 extends AbstractSarlTest {
 	@Test
 	public void myAgentSpawnedCompile() throws Exception {
 		final String expectedMyAgentSpawned = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Address;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgentSpawned extends AgentSpawned {",
 				"  public UUID titi;",

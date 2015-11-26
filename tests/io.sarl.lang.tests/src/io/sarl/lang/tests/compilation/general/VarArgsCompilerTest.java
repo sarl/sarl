@@ -24,6 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import org.eclipse.xtext.junit4.InjectWith;
 
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.SARLVersion;
 
 import org.junit.Test;
 import org.eclipse.xtext.util.IAcceptor;
@@ -65,12 +66,14 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
 					"  protected void myaction(final int... arg) {",
@@ -104,12 +107,14 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
 					"  protected void myaction(final char arg1, final boolean arg2, final int... arg3) {",
@@ -320,9 +325,11 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Event;",
 					"import javax.annotation.Generated;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class E1 extends Event {",
 					"  public E1(final int... arg) {",
@@ -347,9 +354,11 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Event;",
 					"import javax.annotation.Generated;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class E1 extends Event {",
 					"  public E1(final char arg1, final boolean arg2, final int... arg3) {",

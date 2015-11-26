@@ -17,6 +17,7 @@ package io.sarl.lang.tests.compilation.oop;
 
 import static org.junit.Assert.assertEquals;
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.tests.parsing.aop.BehaviorParsingTest;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -173,12 +174,14 @@ public class AnnotationTypeCompilerTest {
 		public void basic() throws Exception {
 			String source = "agent Container { annotation A1 { } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  protected @interface A1 {",
@@ -205,12 +208,14 @@ public class AnnotationTypeCompilerTest {
 		public void variable() throws Exception {
 			String source = "agent Container { annotation A1 { var v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  protected @interface A1 {",
@@ -238,12 +243,14 @@ public class AnnotationTypeCompilerTest {
 		public void value() throws Exception {
 			String source = "agent Container { annotation A1 { val v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
 					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  protected @interface A1 {",
