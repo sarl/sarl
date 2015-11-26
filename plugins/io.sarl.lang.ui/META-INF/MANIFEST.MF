@@ -24,6 +24,7 @@ Require-Bundle: io.sarl.lang;bundle-version="0.3.0";visibility:=reexport,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Activator: io.sarl.lang.ui.internal.SARLActivator
 Export-Package: io.sarl.lang.ui;x-friends:="io.sarl.lang.ui.tests",
+ io.sarl.lang.ui.builder,
  io.sarl.lang.ui.contentassist,
  io.sarl.lang.ui.contentassist.antlr,
  io.sarl.lang.ui.contentassist.antlr.internal;x-friends:="io.sarl.lang.ui.tests",

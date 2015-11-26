@@ -28,7 +28,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.xtend.ide.XtendResourceUiServiceProvider;
 import org.eclipse.xtend.ide.autoedit.AutoEditStrategyProvider;
-import org.eclipse.xtend.ide.builder.SourceRelativeFileSystemAccess;
 import org.eclipse.xtend.ide.common.editor.bracketmatching.XtendBracePairProvider;
 import org.eclipse.xtend.ide.editor.OccurrenceComputer;
 import org.eclipse.xtend.ide.editor.OverrideIndicatorModelListener;
@@ -75,6 +74,7 @@ import org.eclipse.xtext.xbase.file.AbstractFileSystemSupport;
 import org.eclipse.xtext.xbase.ui.contentassist.ImportingTypesProposalProvider;
 import org.eclipse.xtext.xbase.ui.file.EclipseFileSystemSupportImpl;
 
+import io.sarl.lang.ui.builder.ProjectRelativeFileSystemAccess;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.outline.SARLBehaviorUnitOutlineFilter;
 import io.sarl.lang.ui.outline.SARLFieldOutlineFilter;
@@ -232,12 +232,12 @@ public class SARLUiModule extends AbstractSARLUiModule {
 
 	@Override
 	public Class<? extends EclipseResourceFileSystemAccess2> bindEclipseResourceFileSystemAccess2() {
-		return SourceRelativeFileSystemAccess.class;
+		return ProjectRelativeFileSystemAccess.class;
 	}
 
 	@Override
 	public Class<? extends AbstractFileSystemAccess2> bindAbstractFileSystemAccess2() {
-		return SourceRelativeFileSystemAccess.class;
+		return ProjectRelativeFileSystemAccess.class;
 	}
 
 	/** Bind the support to the file system.
