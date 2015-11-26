@@ -31,6 +31,9 @@ import javax.inject.Named;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.SARLVersion;
+import io.sarl.lang.annotation.SarlSpecification;
+
 /**
  * The definition of the notion of Agent in SARL.
  * An agent is an autonomous entity having some intrinsic skills to realize
@@ -42,6 +45,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 public class Agent implements Identifiable {
 
 	/** Name of the key that permits to find the parent's identifier when injecting/constructing
