@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaJRETab;
+import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstall2;
@@ -246,6 +247,10 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 			return super.isValid(config) && isValidJREVersion(config);
 		}
 		setErrorMessage(status.getMessage());
+		Throwable throwable = status.getException();
+		if (throwable != null) {
+			JDIDebugUIPlugin.log(throwable);
+		}
 		return false;
 	}
 

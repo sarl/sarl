@@ -41,6 +41,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
 import org.eclipse.jdt.internal.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.jdt.internal.debug.ui.launcher.AbstractJavaMainTab;
 import org.eclipse.jdt.internal.debug.ui.launcher.DebugTypeSelectionDialog;
@@ -461,11 +462,13 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 						}
 					} catch (JavaModelException e) {
 						setErrorMessage(e.getLocalizedMessage());
+						JDIDebugUIPlugin.log(e);
 					}
 				}
 			});
 		} catch (Exception e) {
 			setErrorMessage(e.getLocalizedMessage());
+			JDIDebugUIPlugin.log(e);
 		}
 
 		return Strings.nullToEmpty(name[0]);
@@ -513,11 +516,13 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 							res[0] = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
 						} catch (JavaModelException e) {
 							setErrorMessage(e.getLocalizedMessage());
+							JDIDebugUIPlugin.log(e);
 						}
 					}
 				});
 			} catch (Exception e) {
 				setErrorMessage(e.getLocalizedMessage());
+				JDIDebugUIPlugin.log(e);
 			}
 		}
 		return res[0];
@@ -545,6 +550,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 							}
 						} catch (JavaModelException e) {
 							setErrorMessage(e.getLocalizedMessage());
+							JDIDebugUIPlugin.log(e);
 						}
 					}
 				});
