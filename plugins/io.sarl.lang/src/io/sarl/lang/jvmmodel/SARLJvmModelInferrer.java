@@ -72,6 +72,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeConstraint;
@@ -92,6 +93,7 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeExtensions;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -1508,7 +1510,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 							// Parameters
 							final List<String> args = CollectionLiterals.newArrayList();
+							final List<String> inlineArgs = CollectionLiterals.newArrayList();
 							List<String> argTypes = CollectionLiterals.newArrayList();
+							int i = 1;
 							for (JvmFormalParameter param : entry.getValue().getParameters()) {
 								JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
 								jvmParam.setName(param.getSimpleName());
@@ -1521,6 +1525,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								args.add(param.getSimpleName());
 								argTypes.add(
 										param.getParameterType().getIdentifier());
+								inlineArgs.add("$" + i); //$NON-NLS-1$
+								++i;
 							}
 
 							// Documentation
@@ -1558,6 +1564,20 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 							// Annotations
 							translateAnnotationsTo(source.getAnnotations(), operation);
+
+							// Add the inline annotation
+							if (!Utils.hasAnnotation(operation, Inline.class)) {
+								JvmDeclaredType declaringType = entry.getValue().getDeclaringType();
+								StringBuilder it = new StringBuilder();
+								it.append("getSkill("); //$NON-NLS-1$
+								it.append(declaringType.getQualifiedName());
+								it.append(".class)."); //$NON-NLS-1$
+								it.append(entry.getValue().getSimpleName());
+								it.append("("); //$NON-NLS-1$
+								it.append(IterableExtensions.join(inlineArgs, ", ")); //$NON-NLS-1$
+								it.append(")"); //$NON-NLS-1$
+								appendInlineAnnotation(operation, it.toString(), declaringType);
+							}
 
 							// Copy the EarlyExit Annotation from the capacity
 							if (Utils.hasAnnotation(entry.getValue(), EarlyExit.class)) {
@@ -2034,6 +2054,45 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	protected void appendSARLSpecificationVersion(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
 		target.getAnnotations().add(this._annotationTypesBuilder.annotationRef(SarlSpecification.class,
 				SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING));
+	}
+
+	/** Append the inline annotation to the given operation.
+	 *
+	 * @param operation the operation to annotate.
+	 * @param inlineExpression the inline expression.
+	 * @param types the types to import if the inline expression is used.
+	 */
+	protected void appendInlineAnnotation(JvmOperation operation, String inlineExpression, JvmDeclaredType... types) {
+		JvmAnnotationReference annotationReference = this._annotationTypesBuilder.annotationRef(
+				Inline.class);
+		JvmOperation valueOperation = null;
+		JvmOperation importOperation = null;
+		Iterator<JvmOperation> operationIterator = annotationReference.getAnnotation()
+				.getDeclaredOperations().iterator();
+		while ((valueOperation == null || importOperation == null)
+				&& operationIterator.hasNext()) {
+			JvmOperation annotationOperation = operationIterator.next();
+			if (annotationOperation.getSimpleName().equals("value")) { //$NON-NLS-1$
+				valueOperation = annotationOperation;
+			} else if (annotationOperation.getSimpleName().equals("imported")) { //$NON-NLS-1$
+				importOperation = annotationOperation;
+			}
+		}
+		assert (valueOperation != null);
+		assert (importOperation != null);
+		JvmStringAnnotationValue annotationStringValue = this.services.getTypesFactory().createJvmStringAnnotationValue();
+		annotationStringValue.getValues().add(inlineExpression);
+		annotationStringValue.setOperation(valueOperation);
+		annotationReference.getExplicitValues().add(annotationStringValue);
+
+		for (JvmDeclaredType type : types) {
+			JvmTypeAnnotationValue annotationTypeValue = this.services.getTypesFactory().createJvmTypeAnnotationValue();
+			annotationTypeValue.getValues().add(this.typeReferences.createTypeRef(type));
+			annotationTypeValue.setOperation(importOperation);
+			annotationReference.getExplicitValues().add(annotationTypeValue);
+		}
+
+		operation.getAnnotations().add(annotationReference);
 	}
 
 	/** Create an annotation with classes as values.
