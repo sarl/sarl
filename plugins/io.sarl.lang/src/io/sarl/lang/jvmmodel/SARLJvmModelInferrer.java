@@ -42,7 +42,8 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.jvmmodel.SyntheticNameClashResolver;
 import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
@@ -57,6 +58,7 @@ import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
+import org.eclipse.xtext.LanguageInfo;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
@@ -72,8 +74,12 @@ import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
+import org.eclipse.xtext.common.types.JvmTypeConstraint;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.serializer.ISerializer;
@@ -215,10 +221,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	private IJvmModelAssociator associator;
 
 	@Inject
-	private IXtendJvmAssociations xtendAssociations;
+	private SarlJvmModelAssociations sarlAssociations;
 
 	@Inject
 	private JvmVisibilityComparator visibilityComparator;
+
+	@Inject
+	private LanguageInfo languageInfo;
 
 	/** Generation contexts.
 	 */
@@ -1485,23 +1494,36 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							operation.setVisibility(JvmVisibility.PROTECTED);
 							operation.setStatic(false);
 							operation.setSimpleName(entry.getValue().getSimpleName());
-							operation.setReturnType(
-									this.typeBuilder.cloneWithProxies(entry.getValue().getReturnType()));
 							container.getMembers().add(operation);
 							this.associator.associatePrimary(source, operation);
 
+							// Type parameters
+							copyAndFixTypeParameters(entry.getValue().getTypeParameters(), operation);
+
+							// Return type
+							operation.setReturnType(cloneWithTypeParametersAndProxies(
+									entry.getValue(),
+									entry.getValue().getReturnType(),
+									operation));
+
+							// Parameters
 							final List<String> args = CollectionLiterals.newArrayList();
 							List<String> argTypes = CollectionLiterals.newArrayList();
 							for (JvmFormalParameter param : entry.getValue().getParameters()) {
 								JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
 								jvmParam.setName(param.getSimpleName());
-								jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(param.getParameterType()));
+								jvmParam.setParameterType(cloneWithTypeParametersAndProxies(
+										entry.getValue(),
+										param.getParameterType(),
+										operation));
 								this.associator.associate(source, jvmParam);
 								operation.getParameters().add(jvmParam);
 								args.add(param.getSimpleName());
 								argTypes.add(
 										param.getParameterType().getIdentifier());
 							}
+
+							// Documentation
 							String hyperrefLink = capacityType.getIdentifier() + "#" //$NON-NLS-1$
 									+ entry.getValue().getSimpleName() + "(" //$NON-NLS-1$
 									+ IterableExtensions.join(argTypes, ",") + ")"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -1510,6 +1532,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									Messages.SARLJvmModelInferrer_13,
 									hyperrefLink));
 							operation.setVarArgs(entry.getValue().isVarArgs());
+
+							// Exceptions
+							for (JvmTypeReference exception : entry.getValue().getExceptions()) {
+								operation.getExceptions().add(this.typeBuilder.cloneWithProxies(exception));
+							}
 
 							// Body
 							this.typeBuilder.setBody(operation, new Procedures.Procedure1<ITreeAppendable>() {
@@ -1529,17 +1556,23 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								}
 							});
 
+							// Annotations
+							translateAnnotationsTo(source.getAnnotations(), operation);
+
 							// Copy the EarlyExit Annotation from the capacity
 							if (Utils.hasAnnotation(entry.getValue(), EarlyExit.class)) {
 								operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(EarlyExit.class));
 							}
+
 							// Copy the FiredEvent annotation from the capacity
 							List<JvmTypeReference> firedEvents = Utils.annotationClasses(entry.getValue(), FiredEvent.class);
 							if (!firedEvents.isEmpty()) {
 								operation.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
 							}
+
 							// Add the annotation dedicated to this particular method
 							appendGeneratedAnnotation(operation);
+
 							// Add the imported feature marker
 							operation.getAnnotations().add(annotationClassRef(ImportedCapacityFeature.class,
 									Collections.singletonList(capacityType)));
@@ -1622,7 +1655,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		//
 		JvmVisibility higherVisibility = JvmVisibility.PRIVATE;
 		for (JvmOperation jvmOperation : localOperations) {
-			Iterable<XtendFunction> xtendFunctions = Iterables.filter(this.xtendAssociations.getSourceElements(jvmOperation),
+			Iterable<XtendFunction> xtendFunctions = Iterables.filter(this.sarlAssociations.getSourceElements(jvmOperation),
 					XtendFunction.class);
 			for (XtendFunction func : xtendFunctions) {
 				JvmVisibility visibility = func.getVisibility();
@@ -2284,6 +2317,121 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 		});
 		return result;
+	}
+
+	/** Clone the given type reference that for being link to the given operation.
+	 *
+	 * <p>The proxies are not resolved, and the type parameters are clone when they are
+	 * related to the type parameter of the type container.
+	 *
+	 * @param typeReferenceContainer the operation that contains the source type reference.
+	 * @param type the source type.
+	 * @param forOperation the operation that will contain the result type.
+	 * @return the result type, i.e. a copy of the source type.
+	 */
+	protected JvmTypeReference cloneWithTypeParametersAndProxies(JvmOperation typeReferenceContainer,
+			JvmTypeReference type, JvmOperation forOperation) {
+		// TODO: Is similar function exist in Xtext?
+
+		if (type == null) {
+			return this._typeReferenceBuilder.typeRef(Object.class);
+		}
+
+		boolean cloneType = true;
+		JvmTypeReference typeCandidate = type;
+
+		// Use also cloneType as a flag that indicates if the type was already found in type parameters.
+		if (cloneType && type instanceof JvmParameterizedTypeReference) {
+			// Try to clone the type parameters.
+			List<JvmTypeParameter> typeParameters = forOperation.getTypeParameters();
+			if (!typeParameters.isEmpty()) {
+				cloneType = false;
+				typeCandidate = cloneAndAssociate(type, typeParameters);
+			}
+		}
+
+		// Do the clone according to the type of the entity.
+		assert (typeCandidate != null);
+		JvmTypeReference returnType;
+		if (InferredTypeIndicator.isInferred(typeCandidate) || !cloneType) {
+			returnType = typeCandidate;
+		} else {
+			returnType = this.typeBuilder.cloneWithProxies(typeCandidate);
+		}
+		return returnType;
+	}
+
+	private JvmTypeReference cloneAndAssociate(
+			final JvmTypeReference type,
+			final List<JvmTypeParameter> typeParameters) {
+		final Map<String, JvmTypeParameter> typeParameterIdentifiers = new TreeMap<>();
+		for (JvmTypeParameter typeParameter : typeParameters) {
+			typeParameterIdentifiers.put(typeParameter.getIdentifier(), typeParameter);
+		}
+
+		final boolean canAssociate = this.languageInfo.isLanguage(type.eResource());
+
+		EcoreUtil.Copier copier = new EcoreUtil.Copier(false) {
+			private static final long serialVersionUID = 698510355384773254L;
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			protected EObject createCopy(EObject eobject) {
+				EObject result = super.createCopy(eobject);
+				if (result != null && eobject != null && !eobject.eIsProxy()) {
+					if (canAssociate) {
+						SARLJvmModelInferrer.this.associator.associate(eobject, result);
+					}
+				}
+				return result;
+			}
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public EObject copy(EObject eobject) {
+				String id;
+				if (eobject instanceof JvmTypeReference) {
+					id = ((JvmTypeReference) eobject).getIdentifier();
+				} else if (eobject instanceof JvmIdentifiableElement) {
+					id = ((JvmIdentifiableElement) eobject).getIdentifier();
+				} else {
+					id = null;
+				}
+				if (id != null) {
+					JvmTypeParameter param = typeParameterIdentifiers.get(id);
+					if (param != null) {
+						return SARLJvmModelInferrer.this.typeReferences.createTypeRef(param);
+					}
+				}
+				EObject result = super.copy(eobject);
+				if (result instanceof JvmWildcardTypeReference) {
+					JvmWildcardTypeReference wildcardType = (JvmWildcardTypeReference) result;
+					boolean upperBoundSeen = false;
+					for (JvmTypeConstraint constraint : wildcardType.getConstraints()) {
+						if (constraint instanceof JvmUpperBound) {
+							upperBoundSeen = true;
+							break;
+						}
+					}
+					if (!upperBoundSeen) {
+						// no upper bound found - seems to be an invalid - assume object as upper bound
+						JvmTypeReference object = SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(Object.class);
+						JvmUpperBound upperBound = SARLJvmModelInferrer.this.typesFactory.createJvmUpperBound();
+						upperBound.setTypeReference(object);
+						wildcardType.getConstraints().add(0, upperBound);
+					}
+				}
+				return result;
+			}
+
+			@Override
+			protected void copyReference(EReference ereference, EObject eobject, EObject copyEObject) {
+				super.copyReference(ereference, eobject, copyEObject);
+			}
+		};
+		JvmTypeReference copy = (JvmTypeReference) copier.copy(type);
+		copier.copyReferences();
+		return copy;
 	}
 
 	/** Describe generation context.

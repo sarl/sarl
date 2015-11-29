@@ -279,8 +279,8 @@ public class Bug92 extends AbstractSarlTest {
 				"}",
 				"");
 		final String expected2 = multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
