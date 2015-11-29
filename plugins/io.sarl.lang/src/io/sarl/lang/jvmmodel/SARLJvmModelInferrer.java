@@ -1566,6 +1566,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							translateAnnotationsTo(source.getAnnotations(), operation);
 
 							// Add the inline annotation
+							/* TODO: The inline may cause problems due to type argument.
+							 * Indeed, when the capacity function should take a Class, it could
+							 * be written "TypeName" or "typeof(TypeName)". Both expressions
+							 * are not valid Java expressions.
+
 							if (!Utils.hasAnnotation(operation, Inline.class)) {
 								JvmDeclaredType declaringType = entry.getValue().getDeclaringType();
 								StringBuilder it = new StringBuilder();
@@ -1578,6 +1583,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								it.append(")"); //$NON-NLS-1$
 								appendInlineAnnotation(operation, it.toString(), declaringType);
 							}
+							*/
 
 							// Copy the EarlyExit Annotation from the capacity
 							if (Utils.hasAnnotation(entry.getValue(), EarlyExit.class)) {
