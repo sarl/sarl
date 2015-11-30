@@ -4339,7 +4339,7 @@ describe "General Syntax Reference" {
 		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
 		//
 		"%sarlversion%" should startWith "%sarlspecversion%"
-		("%sarlspecreleasestatus%" == "Final Release"
+		("%sarlspecreleasestatus%" == "Stable Release"
 			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
 		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
 		"%copyrightdate%" should beNumber "0000";

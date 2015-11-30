@@ -35,6 +35,7 @@ A.6) Test the generation of the  bundles for Maven Central:
 B) PHASE 2: RELEASE VERSION
 
 B.1) Remove "-SNAPSHOT" in all the poms.
+     CAUTION: Do not remove the "-SNAPSHOT" in the Grooby scripts.
 
 B.2) Update the versions in the Eclipse configurations:
      a) Remove ".qualifier" in the MANIFEST.MF files
@@ -62,6 +63,8 @@ B.4) Compiling locally without error.
 B.5) Prepare the bundles for Maven Central:
 
      $> ./scripts/prepare-bundles-for-central
+
+     Copy the bundles inside a safe folder for the Phase 3.
 
 B.6) Commit and push to Github:
 

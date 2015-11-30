@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 0.3.0
 Bundle-SymbolicName: io.sarl.lang.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.sarl.lang;bundle-version="0.3.0";visibility:=reexport,
