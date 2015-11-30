@@ -48,10 +48,6 @@ target
 
 # Compiled files
 *.class
-*.o
-*.obj
-*.a
-*.lib
 *.dll
 *.exe
 
