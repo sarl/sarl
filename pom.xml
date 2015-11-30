@@ -438,9 +438,7 @@
 								releaseStatus = "Draft Release";
 								isSnapshot = true;
 								endOfVersion = snapshotTag;
-								def buildidformatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss")
-								def releaseNumber = "R"+formatter.format(session.getStartTime())
-								p2UploadToDir = "/snapshots/"+version+"/"+releaseNumber
+								p2UploadToDir = "/snapshots/"+version+"/R"+project.properties.buildId
 							} else {
 								version = project.version;
 								releaseStatus = "Stable Release";
