@@ -29,7 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -62,6 +64,7 @@ import org.eclipse.xtext.LanguageInfo;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
+import org.eclipse.xtext.common.types.JvmAnnotationValue;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmEnumerationType;
@@ -1012,7 +1015,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	@Override
 	@SuppressWarnings({"checkstyle:methodlength", "checkstyle:cyclomaticcomplexity",
-	  "checkstyle:npathcomplexity"})
+	"checkstyle:npathcomplexity"})
 	protected void transform(final XtendFunction source, final JvmGenericType container, boolean allowDispatch) {
 		final GenerationContext context = getContext(container);
 
@@ -1096,12 +1099,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				if (returnType == null
 						&& expression != null
 						&& ((!(expression instanceof XBlockExpression))
-						|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
+								|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
 					returnType = this.typeBuilder.inferredType(expression);
 				}
 			} else if (expression != null
 					&& ((!(expression instanceof XBlockExpression))
-					|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
+							|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
 				returnType = this.typeBuilder.inferredType(expression);
 			}
 			final JvmTypeReference selectedReturnType;
@@ -1189,8 +1192,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							cp.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
 									DefaultValue.class,
 									this.sarlSignatureProvider.qualifyDefaultValueID(
-									implementedOperation.getDeclaringType().getIdentifier(),
-									ovalue)));
+											implementedOperation.getDeclaringType().getIdentifier(),
+											ovalue)));
 						}
 					}
 				}
@@ -1211,12 +1214,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						if (ak != null
 								&& (context == null
 								|| (!context.getInheritedFinalOperations().containsKey(ak)
-								&& !context.getInheritedOverridableOperations().containsKey(ak)))) {
+										&& !context.getInheritedOverridableOperations().containsKey(ak)))) {
 
 							// Generate the additional constructor that is invoke the main constructor previously generated.
 							final JvmOperation operation2 = SARLJvmModelInferrer.this.typesFactory.createJvmOperation();
 							container.getMembers().add(operation2);
-							SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(source, operation2);
 							operation2.setSimpleName(operation.getSimpleName());
 							operation2.setVisibility(operation.getVisibility());
 							operation2.setVarArgs(operation.isVarArgs());
@@ -1237,7 +1239,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							if (source.isOverride()
 									&& !Utils.hasAnnotation(operation, Override.class)
 									&& SARLJvmModelInferrer.this.typeReferences.findDeclaredType(
-									Override.class, source) != null) {
+											Override.class, source) != null) {
 								operation.getAnnotations().add(
 										SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Override.class));
 							}
@@ -1248,18 +1250,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							if (!operation2.isAbstract()) {
 								SARLJvmModelInferrer.this.typeBuilder.setBody(operation2,
 										new Procedures.Procedure1<ITreeAppendable>() {
-											@Override
-											public void apply(ITreeAppendable it) {
-												JvmTypeReference type = operation2.getReturnType();
-												if (!SARLJvmModelInferrer.this.typeReferences.is(type, void.class)) {
-													it.append("return "); //$NON-NLS-1$
-												}
-												it.append(sourceName);
-												it.append("("); //$NON-NLS-1$
-												it.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
-												it.append(");"); //$NON-NLS-1$
-											}
-										});
+									@Override
+									public void apply(ITreeAppendable it) {
+										JvmTypeReference type = operation2.getReturnType();
+										if (!SARLJvmModelInferrer.this.typeReferences.is(type, void.class)) {
+											it.append("return "); //$NON-NLS-1$
+										}
+										it.append(sourceName);
+										it.append("("); //$NON-NLS-1$
+										it.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
+										it.append(");"); //$NON-NLS-1$
+									}
+								});
 							}
 
 							operation2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
@@ -1279,6 +1281,25 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							if (!firedEvents.isEmpty()) {
 								operation2.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
 							}
+
+							// Copy the other annotations from the original operations
+							for (JvmAnnotationReference annotation : operation.getAnnotations()) {
+								String id = annotation.getAnnotation().getIdentifier();
+								if ((!DefaultValueSource.class.getName().equals(id)
+										&& (!EarlyExit.class.getName().equals(id)))
+										&& (!FiredEvent.class.getName().equals(id))
+										&& (!Generated.class.getName().equals(id))) {
+									JvmAnnotationReference clone = SARLJvmModelInferrer.this._annotationTypesBuilder
+											.annotationRef(id);
+									for (JvmAnnotationValue annotationValue : annotation.getExplicitValues()) {
+										clone.getExplicitValues().add(EcoreUtil.copy(annotationValue));
+									}
+									operation2.getAnnotations().add(clone);
+								}	
+							}
+							
+							// Copy and clean the documentation
+							copyAndCleanDocumentationTo(operation, operation2);
 
 							// Update the two collections that describes the implemented and implementable operations.
 							if (context != null) {
@@ -1535,8 +1556,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									+ IterableExtensions.join(argTypes, ",") + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 							this.typeBuilder.setDocumentation(operation,
 									MessageFormat.format(
-									Messages.SARLJvmModelInferrer_13,
-									hyperrefLink));
+											Messages.SARLJvmModelInferrer_13,
+											hyperrefLink));
 							operation.setVarArgs(entry.getValue().isVarArgs());
 
 							// Exceptions
@@ -1583,7 +1604,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								it.append(")"); //$NON-NLS-1$
 								appendInlineAnnotation(operation, it.toString(), declaringType);
 							}
-							*/
+							 */
 
 							// Copy the EarlyExit Annotation from the capacity
 							if (Utils.hasAnnotation(entry.getValue(), EarlyExit.class)) {
@@ -1655,7 +1676,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		for (XtendMember feature : container.getMembers()) {
 			if (context.isSupportedMember(feature)
 					&& ((feature instanceof SarlCapacityUses)
-					|| (feature instanceof SarlRequiredCapacity))) {
+							|| (feature instanceof SarlRequiredCapacity))) {
 				transform(feature, featureContainerType, false);
 			}
 		}
@@ -1727,8 +1748,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Find the definition of the operation from the inheritance context.
 				final JvmOperation redefinedOperation = context.getInheritedOverridableOperations().get(
 						this.sarlSignatureProvider.createActionPrototype(
-						missedOperation.getKey().getActionName(),
-						this.sarlSignatureProvider.createParameterTypesFromString(originalSignature)));
+								missedOperation.getKey().getActionName(),
+								this.sarlSignatureProvider.createParameterTypesFromString(originalSignature)));
 				if (redefinedOperation != null) {
 					ActionParameterTypes parameterTypes = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
 							redefinedOperation.isVarArgs(), redefinedOperation.getParameters());
@@ -1768,8 +1789,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							InferredValuedParameter inferredParameter = (InferredValuedParameter) parameter;
 							arguments.add(
 									this.sarlSignatureProvider.toJavaArgument(
-									target.getIdentifier(),
-									inferredParameter.getCallingArgument()));
+											target.getIdentifier(),
+											inferredParameter.getCallingArgument()));
 						} else {
 							arguments.add(parameter.getName());
 							JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
@@ -1989,21 +2010,21 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							it2.setVisibility(JvmVisibility.PROTECTED);
 							SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it2,
 									MessageFormat.format(Messages.SARLJvmModelInferrer_2,
-									target.getSimpleName()));
+											target.getSimpleName()));
 							SARLJvmModelInferrer.this.typeBuilder.setBody(it2,
 									new Procedures.Procedure1<ITreeAppendable>() {
-										@Override
-										public void apply(ITreeAppendable it3) {
-											it3.append("StringBuilder result = new StringBuilder(" //$NON-NLS-1$
-													+ "super.attributesToString());").newLine(); //$NON-NLS-1$
-											for (JvmField attr : declaredInstanceFields) {
-												it3.append("result.append(\"" + attr.getSimpleName() //$NON-NLS-1$
-														+ "  = \").append(this." //$NON-NLS-1$
-														+ attr.getSimpleName() + ");").newLine(); //$NON-NLS-1$
-											}
-											it3.append("return result.toString();"); //$NON-NLS-1$
-										}
-									});
+								@Override
+								public void apply(ITreeAppendable it3) {
+									it3.append("StringBuilder result = new StringBuilder(" //$NON-NLS-1$
+											+ "super.attributesToString());").newLine(); //$NON-NLS-1$
+									for (JvmField attr : declaredInstanceFields) {
+										it3.append("result.append(\"" + attr.getSimpleName() //$NON-NLS-1$
+										+ "  = \").append(this." //$NON-NLS-1$
+										+ attr.getSimpleName() + ");").newLine(); //$NON-NLS-1$
+									}
+									it3.append("return result.toString();"); //$NON-NLS-1$
+								}
+							});
 						}
 					});
 			if (op != null) {
@@ -2159,25 +2180,25 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					// FIXME: Hide these attributes into an inner interface.
 					JvmField field = this.typeBuilder.toField(defaultValue, name,
 							paramType, new Procedures.Procedure1<JvmField>() {
-								@SuppressWarnings("synthetic-access")
-								@Override
-								public void apply(JvmField it) {
-									SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it,
-											MessageFormat.format(Messages.SARLJvmModelInferrer_11, paramName));
-									it.setStatic(true);
-									it.setFinal(true);
-									if (isForInterface) {
-										it.setVisibility(JvmVisibility.PUBLIC);
-									} else {
-										it.setVisibility(JvmVisibility.PRIVATE);
-									}
-									SARLJvmModelInferrer.this.typeBuilder.setInitializer(it, defaultValue);
-									if (defaultValue != null) {
-										appendGeneratedAnnotation(it,
-												SARLJvmModelInferrer.this.sarlSerializer.serialize(defaultValue));
-									}
-								}
-							});
+						@SuppressWarnings("synthetic-access")
+						@Override
+						public void apply(JvmField it) {
+							SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it,
+									MessageFormat.format(Messages.SARLJvmModelInferrer_11, paramName));
+							it.setStatic(true);
+							it.setFinal(true);
+							if (isForInterface) {
+								it.setVisibility(JvmVisibility.PUBLIC);
+							} else {
+								it.setVisibility(JvmVisibility.PRIVATE);
+							}
+							SARLJvmModelInferrer.this.typeBuilder.setInitializer(it, defaultValue);
+							if (defaultValue != null) {
+								appendGeneratedAnnotation(it,
+										SARLJvmModelInferrer.this.sarlSerializer.serialize(defaultValue));
+							}
+						}
+					});
 					actionContainer.getMembers().add(field);
 					if (owner instanceof JvmConstructor) {
 						this.readAndWriteTracking.markInitialized(field, (JvmConstructor) owner);
@@ -2211,8 +2232,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (parameterSpec instanceof InferredValuedParameter) {
 				arguments.add(
 						this.sarlSignatureProvider.toJavaArgument(
-						actionContainer.getIdentifier(),
-						((InferredValuedParameter) parameterSpec).getCallingArgument()));
+								actionContainer.getIdentifier(),
+								((InferredValuedParameter) parameterSpec).getCallingArgument()));
 			} else {
 				EObject param = parameterSpec.getParameter();
 				String paramName = parameterSpec.getName();
@@ -2295,28 +2316,28 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						Byte.TYPE.getName(),
 						Short.TYPE.getName())) {
 					it.newLine().append("if (other." + field.getSimpleName() //$NON-NLS-1$
-							+ " != this." + field.getSimpleName() + ")").increaseIndentation(); //$NON-NLS-1$ //$NON-NLS-2$
+					+ " != this." + field.getSimpleName() + ")").increaseIndentation(); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
 				} else if (Objects.equal(Double.TYPE.getName(), typeName)) {
 					it.newLine().append("if (Double.doubleToLongBits(other." + field.getSimpleName() //$NON-NLS-1$
-							+ ") != Double.doubleToLongBits(this." + field.getSimpleName() //$NON-NLS-1$
-							+ "))").increaseIndentation(); //$NON-NLS-1$
+					+ ") != Double.doubleToLongBits(this." + field.getSimpleName() //$NON-NLS-1$
+					+ "))").increaseIndentation(); //$NON-NLS-1$
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
 				} else if (Objects.equal(Float.TYPE.getName(), typeName)) {
 					it.newLine().append("if (Float.floatToIntBits(other." + field.getSimpleName() //$NON-NLS-1$
-							+ ") != Float.floatToIntBits(this." + field.getSimpleName() //$NON-NLS-1$
-							+ "))").increaseIndentation(); //$NON-NLS-1$
+					+ ") != Float.floatToIntBits(this." + field.getSimpleName() //$NON-NLS-1$
+					+ "))").increaseIndentation(); //$NON-NLS-1$
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
 				} else  {
 					it.newLine().append("if (this." + field.getSimpleName() //$NON-NLS-1$
-							+ " == null) {").increaseIndentation(); //$NON-NLS-1$
+					+ " == null) {").increaseIndentation(); //$NON-NLS-1$
 					it.newLine().append("if (other." + field.getSimpleName() //$NON-NLS-1$
-							+ " != null)").increaseIndentation(); //$NON-NLS-1$
+					+ " != null)").increaseIndentation(); //$NON-NLS-1$
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
 					it.decreaseIndentation();
 					it.newLine().append("} else if (!this." + field.getSimpleName() //$NON-NLS-1$
-							+ ".equals(other." + field.getSimpleName() //$NON-NLS-1$
-							+ "))").increaseIndentation(); //$NON-NLS-1$
+					+ ".equals(other." + field.getSimpleName() //$NON-NLS-1$
+					+ "))").increaseIndentation(); //$NON-NLS-1$
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
 				}
 			}
@@ -2497,6 +2518,37 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		JvmTypeReference copy = (JvmTypeReference) copier.copy(type);
 		copier.copyReferences();
 		return copy;
+	}
+
+	/** Copy and clean the given documentation by removing any unecessary <code>@param</code>.
+	 *
+	 * @param sourceOperation the source for the documentation.
+	 * @param targetOperation the target for the documentation. 
+	 */
+	protected void copyAndCleanDocumentationTo(JvmOperation sourceOperation, JvmOperation targetOperation) {
+		assert (sourceOperation != null);
+		assert (targetOperation != null);
+
+		String comment = SARLJvmModelInferrer.this.typeBuilder.getDocumentation(sourceOperation);
+		if (Strings.isNullOrEmpty(comment)) {
+			return;
+		}
+
+		Set<String> targetParams = new TreeSet<>();
+		for (JvmFormalParameter param : targetOperation.getParameters()) {
+			targetParams.add(param.getSimpleName());
+		}
+
+		for (JvmFormalParameter param : sourceOperation.getParameters()) {
+			String id = param.getSimpleName();
+			if (!targetParams.contains(id)) {
+				comment = comment.replaceAll(
+						"\\Q@param\\E\\s+\\Q" + id + "\\E", //$NON-NLS-1$//$NON-NLS-2$
+						"@optionalparam " + id ); //$NON-NLS-1$
+			}
+		}
+		
+		SARLJvmModelInferrer.this.typeBuilder.setDocumentation(targetOperation, comment);
 	}
 
 	/** Describe generation context.

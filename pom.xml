@@ -311,6 +311,10 @@
 								<placement>a</placement>
 								<head>Model element</head>
 							</tag>
+							<tag>
+								<name>optionalparam</name>
+								<placement>X</placement>
+							</tag>
 						</tags>
 					</configuration>
 				</plugin>

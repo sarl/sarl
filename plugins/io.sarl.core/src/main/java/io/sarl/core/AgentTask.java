@@ -75,8 +75,8 @@ public class AgentTask {
 	/** Change the guard of this task.
 	 *
 	 * @param guard - the code of the function that is the predicate associated to the guard.
-	 * @see #unless(Function1)
-	 * @see #ifTrue(Function1)
+	 * @see #unless
+	 * @see #ifTrue
 	 */
 	public void setGuard(Function1<Agent, Boolean> guard) {
 		this.guard = guard;
@@ -102,7 +102,7 @@ public class AgentTask {
 	 *
 	 * @param predicate - the code of the function that is the predicate to test.
 	 * @return <code>this</code>.
-	 * @see #setGuard(Function1)
+	 * @see #setGuard
 	 */
 	public AgentTask unless(Function1<Agent, Boolean> predicate) {
 		this.guard = new NegateFunction(predicate);
@@ -113,7 +113,7 @@ public class AgentTask {
 	 *
 	 * @param predicate - the code of the function that is the predicate to test.
 	 * @return <code>this</code>.
-	 * @see #setGuard(Function1)
+	 * @see #setGuard
 	 */
 	public AgentTask ifTrue(Function1<Agent, Boolean> predicate) {
 		this.guard = predicate;

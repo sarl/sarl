@@ -124,4 +124,41 @@
 		</plugins>
 	</build>
 
+	<!-- ======================================= -->
+	<!-- ==== Release Management === -->
+	<!-- ======================================= -->
+	<profiles>
+		<profile>
+			<id>maven-release-of-util-plugin</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.arakhne.afc.maven</groupId>
+							<artifactId>tag-replacer</artifactId>
+							<configuration>
+								<sources>
+									<source>${project.basedir}/src/main/java</source>
+								</sources>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<configuration>
+								<sourcepath>${project.build.directory}/generated-sources/java</sourcepath>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

@@ -44,8 +44,8 @@ capacity ExternalContextAccess {
 	/**
 	 * Replies the AgentContext for the given ID.
 	 * The agent must have joined the context before calling this action or use its parentContextID
-	 * @see{Agent#getParentID}
-	 * @see{#join}
+	 * @see io.sarl.lang.core.Agent#getParentID
+	 * @see #join
 	 * 
 	 * @throws UnknownContextException if the context specified context is not known by the agent.
 	 * @param contextID the ID of the context to get.
@@ -488,7 +488,7 @@ capacity Logging {
 	 *
 	 * @param name - the name used for logging.
 	 */
-	def setLoggingName(message : String)
+	def setLoggingName(name : String)
 
 	/** Print the given message at information logging level.
 	 * <p>
