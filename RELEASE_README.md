@@ -35,7 +35,7 @@ A.6) Test the generation of the  bundles for Maven Central:
 B) PHASE 2: RELEASE VERSION
 
 B.1) Remove "-SNAPSHOT" in all the poms.
-     CAUTION: Do not remove the "-SNAPSHOT" in the Grooby scripts.
+     CAUTION: Do not remove the "-SNAPSHOT" in the Groovy scripts.
 
 B.2) Update the versions in the Eclipse configurations:
      a) Remove ".qualifier" in the MANIFEST.MF files
@@ -47,9 +47,11 @@ B.2) Update the versions in the Eclipse configurations:
      d) Remove ".qualifier" in the category.xml files
         (in feature tags, url and version).
 
-B.3) Update the graphical resources (splash screen, icons...)
+B.3) Comment any reference to the Snapshot Maven repository.
 
-B.4) Compiling locally without error.
+B.4) Update the graphical resources (splash screen, icons...)
+
+B.5) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
      $> mvn clean install
@@ -60,25 +62,25 @@ B.4) Compiling locally without error.
      $> cd docs/io.sarl.docs.suite
      $> mvn clean install
 
-B.5) Prepare the bundles for Maven Central:
+B.6) Prepare the bundles for Maven Central:
 
      $> ./scripts/prepare-bundles-for-central
 
      Copy the bundles inside a safe folder for the Phase 3.
 
-B.6) Commit and push to Github:
+B.7) Commit and push to Github:
 
      $> git commit
      $> git push --all
 
-B.7) Tag the Git with the version number.
+B.8) Tag the Git with the version number.
 
      $> git tag "vX.Y.Z"
      $> git push --tags
 
-B.8) On Hudson, launch a build for updating the maven repositories and
+B.9) On Hudson, launch a build for updating the maven repositories and
      the Eclipse update sites.
-     If failing, revert B.7, fix the problem, and go back to B.4.
+     If failing, revert B.8, fix the problem, and go back to B.5.
 
 C) PHASE 3: DISSEMINATION OF THE RELEASE VERSION
 
@@ -115,9 +117,12 @@ C.10) Announce the new version of SARL on the mailing lists.
 
 D) PHASE 4: DEVELOPMENT VERSION
 
-D.1) Revert steps B.1 to B.3; and change the following:
+D.1) Revert steps B.1 to B.4; and change the following:
      * Version ranges in the Required-Bundles of MANIFEST.MF.
      * Versions in the requirements of feature.xml.
+     * Versions in the *.product.
+     * Versions in the category.xml.
+     * Uncomment the Snapshot Maven repository.
 
 D.2) Compiling locally without error.
 
