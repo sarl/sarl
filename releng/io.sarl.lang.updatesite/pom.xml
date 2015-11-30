@@ -78,36 +78,6 @@
 
 			<build>
 				<plugins>
-					<!-- Compute the target folder -->
-					<plugin>
-						<groupId>org.codehaus.gmavenplus</groupId>
-						<artifactId>gmavenplus-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>add-dynamic-properties</id>
-								<phase>initialize</phase>
-								<goals>
-									<goal>execute</goal>
-								</goals>
-								<configuration>
-									<source>
-										snapshotTag = "-SNAPSHOT"
-										if (project.version.endsWith(snapshotTag)) {
-											len = project.version.size() - snapshotTag.size()
-											version = project.version.substring(0,len)
-											formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss")
-											releaseNumber = "R"+formatter.format(session.getStartTime())
-											project.properties.p2UploadToDir = "/snapshots/"+version+"/"+releaseNumber
-										}
-										else {
-											project.properties.p2UploadToDir = "/releases/"+project.version
-										}
-									</source>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
 					<!-- Upload the repo to the server -->
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>

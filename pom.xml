@@ -431,17 +431,22 @@
 							def releaseStatus;
 							def isSnapshot;
 							def endOfVersion;
+							def p2UploadToDir;
 							if (project.version.endsWith(snapshotTag)) {
 								def len = project.version.size() - snapshotTag.size();
 								version = project.version.substring(0, len);
 								releaseStatus = "Draft Release";
 								isSnapshot = true;
 								endOfVersion = snapshotTag;
+								def buildidformatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss")
+								def releaseNumber = "R"+formatter.format(session.getStartTime())
+								p2UploadToDir = "/snapshots/"+version+"/"+releaseNumber
 							} else {
 								version = project.version;
 								releaseStatus = "Stable Release";
 								isSnapshot = false;
 								endOfVersion = "";
+								p2UploadToDir = "/releases/"+version
 							}
 							versionFields = version.split("\\.");
 							//************************
@@ -452,6 +457,7 @@
 							project.properties.sarlspecificationreleasedate = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
 							project.properties.sarlspecificationreleasestatus = releaseStatus;
 							project.properties.sarlisstableversion = Boolean.toString(!isSnapshot);
+							project.properties.p2UploadToDir = p2UploadToDir;
 							project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+".0"+endOfVersion;
 
 							println("\tset sarlspecificationreleaseversion to: " + project.properties.sarlspecificationreleaseversion);
@@ -459,6 +465,7 @@
 							println("\tset sarlspecificationreleasedate to: " + project.properties.sarlspecificationreleasedate);
 							println("\tset sarlspecificationreleasestatus to: " + project.properties.sarlspecificationreleasestatus);
 							println("\tset sarlisstableversion to: " + project.properties.sarlisstableversion);
+							println("\tset p2UploadToDir to: " + project.properties.p2UploadToDir);
 							println("\tset janusversion to: " + project.properties.janusversion);
 						]]></script>
 					</scripts>
