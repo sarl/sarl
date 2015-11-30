@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.util;
 
-import io.sarl.lang.sarl.Attribute;
-
 import java.util.Comparator;
+
+import io.sarl.lang.sarl.SarlField;
 
 /**
  * Comparator of Attribute.
@@ -32,16 +33,10 @@ import java.util.Comparator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AttributeComparator implements Comparator<Attribute> {
-
-	/** Construct a comparator of attributes.
-	 */
-	public AttributeComparator() {
-		//
-	}
+public class AttributeComparator implements Comparator<SarlField> {
 
 	@Override
-	public int compare(Attribute o1, Attribute o2) {
+	public int compare(SarlField o1, SarlField o2) {
 		if (o1 == o2) {
 			return 0;
 		}

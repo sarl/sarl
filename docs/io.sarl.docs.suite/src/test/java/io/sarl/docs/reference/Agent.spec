@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors and authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,26 +23,26 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.lang.sarl.Action
-import io.sarl.lang.sarl.Agent
-import io.sarl.lang.sarl.Attribute
-import io.sarl.lang.sarl.Capacity
-import io.sarl.lang.sarl.Skill
+import io.sarl.lang.sarl.SarlAction
+import io.sarl.lang.sarl.SarlAgent
+import io.sarl.lang.sarl.SarlSkill
+import org.eclipse.xtend.core.xtend.XtendField
 import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
+import io.sarl.lang.sarl.SarlCapacity
 
 /** @outline
  * 
- * This document describes the features related to the definition of an agent in SARL.
+ * <p>This document describes the features related to the definition of an agent in SARL.
  * Before reading this document, it is recommended reading
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
  * the [Skill Reference](SkillReferenceSpec.html), and the
  * [Built-in Capacity Reference](BuiltInCapacityReferenceSpec.html).
  * 
- * __An agent is an autonomous entity having a set of skills to realize the 
+ * <p>__An agent is an autonomous entity having a set of skills to realize the 
  * capacities it exhibits__.
  */
 @CreateWith(SARLSpecCreator)
@@ -54,17 +54,17 @@ describe "Agent Reference"{
 		 * it may be helpful to understand where is "living" an agent in the
 		 * multi-agent system.
 		 * 
-		 * The following figure illustrates the position of an agent (at the center
+		 * <p>The following figure illustrates the position of an agent (at the center
 		 * of the figure) in different contexts. The details are discussed below. 
 		 *
-		 * ![Contexts](./contexts.png)
+		 * <p>![Contexts](./contexts.png)
 		 */		
 		describe "Where is living an agent?" {
 			
 			/* When it is spawn, an agent is living inside the system in
 			 * a place named "_Context_".
 			 * 
-			 * __A Context defines the boundary of a sub-system, and 
+			 * <p>__A Context defines the boundary of a sub-system, and 
 			 * gathers a collection of spaces__.
 			 * A Space is the support of the interaction between agents respecting 
 			 * the rules defined in the spaces' specification.
@@ -73,7 +73,7 @@ describe "Agent Reference"{
 			 * there is at least one particular space called _Default Space_ to which 
 			 * all agents in this context belong.</importantnote>
 			 * 
-			 * It ensures the existence of a common shared space to all agents
+			 * <p>It ensures the existence of a common shared space to all agents
 			 * in the same context. Each agent can then create specific public or 
 			 * private spaces to achieve its personal goals (the blue space on
 			 * the figure above).
@@ -83,7 +83,7 @@ describe "Agent Reference"{
 			 * It is important to notice that the _Default Context_ is not necessarily
 			 * the same for every agent.</importantnote>
 			 * 
-			 * An agent has an identifier for each space it is involved in.
+			 * <p>An agent has an identifier for each space it is involved in.
 			 * For the case of event-based interaction spaces, this identifier is
 			 * called "address". 
 			 *  
@@ -105,7 +105,7 @@ describe "Agent Reference"{
 			 * about the number of contexts in which an agent is belonging to, except
 			 * that it is always in its default context.</note>
 			 * 
-			 * For joining or leaving a context, the agent must use the `ExternalContextAccess`
+			 * <p>For joining or leaving a context, the agent must use the `ExternalContextAccess`
 			 * built-in capacity. It is detailed in the
 			 * [Built-in Capacity Reference](BuiltInCapacityReferenceSpec.html). 
 			 *  
@@ -121,16 +121,16 @@ describe "Agent Reference"{
 			 * component of a higher level system or as whole composed of other 
 			 * self-similar holons as substructures.
 			 * 
-			 * Holonic Systems grew from the need to find comprehensive construct 
+			 * <p>Holonic Systems grew from the need to find comprehensive construct 
 			 * that could help explain social phenomena. Since then, it came to be 
 			 * used in a wide range of domains, including Philosophy,
 			 * Manufacturing Systems, and Multi-Agents Systems.
 			 * 
-			 * Several works have studied this question and they have proposed a number
+			 * <p>Several works have studied this question and they have proposed a number
 			 * of models inspired from their experience in different domains.
 			 * In many cases, we find the idea of _agents composed of other agents_.
 			 * 
-			 * More recently, the importance of holonic multi-agent systems has been
+			 * <p>More recently, the importance of holonic multi-agent systems has been
 			 * recognized by different methodologies such as [ASPECS](http://www.aspecs.org)
 			 * or O-MASE.
 			 * 
@@ -139,7 +139,7 @@ describe "Agent Reference"{
 			 * are in fact holons that can compose each other to define hierarchical 
 			 * or recursive multi-agent system, called holarchies.</note>
 			 * 
-			 * In order to achieve this, SARL agents are self-similar structures that 
+			 * <p>In order to achieve this, SARL agents are self-similar structures that 
 			 * compose each other via their contexts. Each agent defines its own context,
 			 * called __Inner Context__.
 			 * Because this inner context may be joined by other agents, or agents may
@@ -164,7 +164,7 @@ describe "Agent Reference"{
 			 * The runtime environment will be in charge of spawning the 
 			 * first agents in the system as members of the Universe Agent. 
 			 * 
-			 * The inner context of the Universe Agent is called the
+			 * <p>The inner context of the Universe Agent is called the
 			 * Universe Context, or the Janus Context if you are using the
 			 * [Janus runtime environment](http://www.janusproject.io).
 			 *  
@@ -178,7 +178,7 @@ describe "Agent Reference"{
 		
 		/* The architecture of an agent is illustrated by the following figure.
 		 * 
-		 * ![Agent](./agent.png)
+		 * <p>![Agent](./agent.png)
 		 */
 		describe "Open Architecture of an Agent" {
 			
@@ -187,7 +187,7 @@ describe "Agent Reference"{
 			 * commonly accepted competencies of agents, such autonomy, reactivity, pro-activity 
 			 * and social capacities. 
 			 * 
-			 * The full set of Built-in Capacities will be presented in the corresponding
+			 * <p>The full set of Built-in Capacities will be presented in the corresponding
 			 * [Reference document](BuiltInCapacityReferenceSpec.html). Among these
 			 * built-in capacities, is the `Behaviors` capacity that enables 
 			 * agents to incorporate a collection of behaviors that will determine 
@@ -204,12 +204,12 @@ describe "Agent Reference"{
 			 * An agent has also a default behavior directly described within its 
 			 * definition.
 			 *  
-			 * __A Behavior maps a collection of perceptions represented 
+			 * <p>__A Behavior maps a collection of perceptions represented 
 			 * by Events to a sequence of Actions.__
 			 * The various behaviors of an agent communicate using an event-driven 
 			 * approach.
 			 * 
-			 * __An Event is the specification of some occurrence in a Space that may 
+			 * <p>__An Event is the specification of some occurrence in a Space that may 
 			 * potentially trigger effects by a listener__ (e.g., agent, behavior, etc.) 
 			 *  
 			 * @filter(.*) 
@@ -229,7 +229,7 @@ describe "Agent Reference"{
 			/* The following code illustrates the definition of an agent
 			 * named `MyAgent`, and that is empty.
 			 * 
-			 * Basically, this agent does nothing, and does not react
+			 * <p>Basically, this agent does nothing, and does not react
 			 * on events. 
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -250,7 +250,7 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 0
@@ -262,7 +262,7 @@ describe "Agent Reference"{
 			 * Most of the time, the mental state is implemented as a
 			 * collection of attributes in the agent.
 			 * 
-			 * According to the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
+			 * <p>According to the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
 			 * the attributes may be modifiable (when declared with the `var`
 			 * keyword), or unmodifiable (when declared with the `val`
 			 * keyword).
@@ -280,7 +280,8 @@ describe "Agent Reference"{
 					val mentalStateElement2 : boolean = true
 				}
 				'''.parseSuccessfully(
-					"package io.sarl.docs.reference.ar",
+					"package io.sarl.docs.reference.ar
+					class MyType { }",
 					// TEXT
 					""
 				)
@@ -288,25 +289,25 @@ describe "Agent Reference"{
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
 					it should haveNbImports 0
-					it should haveNbElements 1
+					it should haveNbElements 2
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beVariable "mentalStateElement1"
 					it should haveType "java.lang.String"
-					(it as Attribute).initialValue should be null
+					(it as XtendField).initialValue should be null
 				]
 
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beValue "mentalStateElement2"
 					it should haveType "boolean"
-					(it as Attribute).initialValue => [
+					(it as XtendField).initialValue => [
 						it should be typeof(XBooleanLiteral)
 						it should beLiteral (true as Object)
 					]
@@ -316,7 +317,7 @@ describe "Agent Reference"{
 			/* It is allowed to define actions (methods) in the agent.
 			 * The syntax described is described in the [General Syntax Reference](GeneralSyntaxReferenceSpec.html).
 			 * 
-			 * The example below illustrates the creation of two actions in the agent.
+			 * <p>The example below illustrates the creation of two actions in the agent.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
@@ -348,29 +349,29 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
 
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beAction "myAction1"
 					it should reply _;
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				a.features.get(2) => [
+				a.members.get(2) => [
 					it should beAction "myAction2"
 					it should reply _;
 					it should haveNbParameters 1
 					it should beVariadic true
-					(it as Action).params.get(0) => [
+					(it as SarlAction).parameters.get(0) => [
 						it should beParameter "param"
 						it should haveType "int"
 						it should haveDefaultValue _
@@ -383,7 +384,7 @@ describe "Agent Reference"{
 			 * feature of SARL, which has the same semantic as the inheritance
 			 * mechanism as the Java object-oriented language.
 			 * 
-			 * The extended agent is specified just after the `extends`
+			 * <p>The extended agent is specified just after the `extends`
 			 * keyword.
 			 * 
 			 * <veryimportantnote> An agent 
@@ -391,7 +392,7 @@ describe "Agent Reference"{
 			 * to the constraint on the extension of classes in the Java
 			 * language.</veryimportantnote>
 			 * 
-			 * In the following code, a first agent is defined with the name
+			 * <p>In the following code, a first agent is defined with the name
 			 * `MyAgent` and an attribute named `attr`.
 			 * A second agent `MySubAgent` is defined as the extension
 			 * of the first agent. It contains a function named
@@ -424,28 +425,28 @@ describe "Agent Reference"{
 					it should haveNbElements 2
 				]
 				
-				var a1 = (model.elements.get(0) => [
+				var a1 = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 1
-				]) as Agent
+				]) as SarlAgent
 
-				a1.features.get(0) => [
+				a1.members.get(0) => [
 					it should beVariable "attr"
 					it should haveType "java.lang.String"
 					it should haveInitialValue _
 				]
 
-				var a2 = (model.elements.get(1) => [
+				var a2 = (model.xtendTypes.get(1) => [
 					it should beAgent "MySubAgent"
 					it should extend "io.sarl.docs.reference.ar.MyAgent"
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a2.features.get(0) => [
+				a2.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				a2.features.get(1) => [
+				a2.members.get(1) => [
 					it should beAction "action"
 					it should reply _
 					it should haveNbParameters 0
@@ -453,12 +454,142 @@ describe "Agent Reference"{
 				]
 			}
 
+			/** Modifiers are used to modify declarations of types and type members.
+			 * This section introduces the modifiers for the agent.
+			 * The modifiers are usually written before the keyword for defining the agent.
+			 * 
+			 * <p>The complete description of the modifiers' semantic is available in
+			 * <a href="./BasicObjectOrientedProgrammingSupportModifiersSpec.html">this section</a>.
+			 */
+			describe "Modifiers" {
+				
+				/** An agent may be declared with one or more modifiers, which affect its runtime behavior: <ul>
+				 * <li>Access modifiers: <ul>
+				 *     <li>`public`:  the agent is accessible from any other type;</li>
+				 *     <li>`package`: the agent is accessible from only the types in the same package.</li>
+				 *     </ul></li>
+				 * <li>`abstract`: the agent is abstract and cannot be instanced.</li>
+				 * <li>`final`: avoid to be derived.</li>
+			 	 * <li>`strictfp`: avoid the methods of the agent to use intermediate floating number formats.</li>
+				 * </ul>
+				 *
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
+				 */
+				fact "Agent Modifiers" {
+					'''
+						public agent Example1 {
+						}
+						package agent Example2 {
+						}
+						abstract agent Example3 {
+						}
+						final agent Example4 {
+						}
+						strictfp agent Example5 {
+						}
+					'''.parseSuccessfully(
+						"package io.sarl.docs.reference.ar",
+						// TEXT
+						""
+					)
+					// Test URL in the enclosing section text.
+					"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
+				}
+	
+				/** The modifiers for the fields in an agent are: <ul>
+				 * <li>Access modifiers: <ul>
+				 *     <li>`protected`:  the field is accessible within the same package, and derived agents;</li>
+				 *     <li>`package`: the field is accessible only within the same package of its agent;</li>
+				 *     <li>`private`: the field is accessible only within its agent.</li>
+				 *     </ul></li>
+				 * <li>`transient`: the field is never serialized.</li>
+				 * <li>`volatile`: the field is modified by different threads. It is never cached thread-locally, and synchronized.</li>
+				 * </ul>
+				 *
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
+				 */
+				fact "Field Modifiers" {
+					'''
+						protected var example1 : Object;
+						package var example2 : Object;
+						private var example3 : Object;
+						transient var example5 : Object;
+						volatile var example6 : Object;
+					'''.parseSuccessfully(
+						"package io.sarl.docs.reference.ar
+						public agent Agent1 {",
+						// TEXT
+						"}"
+					)
+				}
+	
+				/** The modifiers for the methods in an agent are: <ul>
+				 * <li>Access modifiers: <ul>
+				 *     <li>`protected`:  the method is accessible within the same package, and derived classes;</li>
+				 *     <li>`package`: the method is accessible only within the same package as its class;</li>
+				 *     <li>`private`: the method is accessible only within its class.</li>
+				 *     </ul></li>
+				 * <li>`abstract`: the method has no implementation in the class.</li>
+				 * <li>`dispatch`: the method provides an implementation for the dispatch method mechanism.</li>
+				 * <li>`final`: the method cannot be overridden in derived classes.</li>
+				 * <li>`static`: the method is a class method, not an instance method.</li>
+				 * <li>`strictfp`: avoid the method to use intermediate floating number formats.</li>
+				 * <li>`synchronized`: the method is synchronized on the class instance.</li>
+				 * </ul>
+				 *
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
+				 */
+				fact "Method Modifiers" {
+					'''
+						// Protected access function
+						protected def example1 { }
+						// Package access function
+						package def example2 { }
+						// Private access function
+						private def example3 { }
+						// Abstract function
+						abstract def example4
+						// Not-overridable function
+						final def example5 { }
+						// Static function
+						static def example6 { }
+						// Function with strict floating point management
+						strictfp def example7 { }
+						// Synchronized function
+						synchronized def example8 { }
+						// Dispatch functions
+						dispatch def example9(p : Integer) { }
+						dispatch def example9(p : Float) { }
+					'''.parseSuccessfully(
+						"package io.sarl.docs.reference.ar
+						abstract agent Agent1 {",
+						// TEXT
+						"}"
+					)
+				}
+	
+				/** All the <a href="./BasicObjectOrientedProgrammingSupportSpec.html">modifiers for the
+				 * nested types</a> are allowed <strong>except</strong> `public`. 
+				 *
+				 * @filter(.*)
+				 */
+				fact "Restriction on the Nested Type Modifiers" {
+					'''
+						package io.sarl.docs.reference.ar
+						agent Agent1 {
+							public class NedtedClass1 { }
+						}
+					'''.parseWithError
+				}
+	
+			}
+	
 		}
 		
 		/* The behaviors of an agent correspond to the units that are
 		 * executed by the agent for exhibiting its general behavior.
 		 * 
-		 * The execution of the behaviors are related to the life cycle of
+		 * <p>The execution of the behaviors are related to the life cycle of
 		 * the agents. Every agent is following the steps:
 		 * 
 		 *  * Initialization: the agent react on the `Initialize` event;
@@ -468,7 +599,7 @@ describe "Agent Reference"{
 		 *  * Destruction: the agent react on the `Destroy` event.
 		 * 
 		 * 
-		 * The definition of the reactive behaviors is based on the event handling
+		 * <p>The definition of the reactive behaviors is based on the event handling
 		 * mechanism of SARL. Events may be emitted in [spaces](SpaceReferenceSpec.html),
 		 * and received by the agents belonging to these spaces.
 		 * An agent may indicate that it is interesting for receiving an event by specifying
@@ -479,13 +610,13 @@ describe "Agent Reference"{
 		 *     }
 		 *
 		 * 
-		 * `<EventName>` is the name of the events to wait for.
+		 * <p>`<EventName>` is the name of the events to wait for.
 		 * `<Guard>` is the optional definition of a predicate
 		 * that may be true for executing the `<Statements>`.
 		 * The statements are executed only if an event with the given name is
 		 * received, __and__ if the guard is true.
 		 * 
-		 * In the guard and the statements, it is possible to use the instance
+		 * <p>In the guard and the statements, it is possible to use the instance
 		 * of the received event: the occurrence. This instance is represented
 		 * by the `occurrence` keyword. It is an implicit
 		 * variable as the keywords `this` and `it`.
@@ -501,7 +632,7 @@ describe "Agent Reference"{
 			 *     }
 			 *
 			 * 
-			 * It contains the list of the parameters given to the spawning
+			 * <p>It contains the list of the parameters given to the spawning
 			 * function (as specified in the 
 			 * [built-in capacities](BuiltInCapacityReferenceSpec.html)).
 			 * 
@@ -538,16 +669,16 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
@@ -558,7 +689,7 @@ describe "Agent Reference"{
 			 * the developer to write different initialization blocks
 			 * depending on the guards of the handlers.
 			 * 
-			 * In the following example, the first event handler is
+			 * <p>In the following example, the first event handler is
 			 * executed when the `Initialize` event has
 			 * no parameter. The second event handler is executed
 			 * when the event has at least one parameter.
@@ -593,20 +724,20 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith "occurrence.parameters.empty"
 				]
-				a.features.get(2) => [
+				a.members.get(2) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith "! occurrence.parameters.empty"
 				]
@@ -645,16 +776,16 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith _
 				]
@@ -662,7 +793,7 @@ describe "Agent Reference"{
 			/* As for `Initialize`, the handlers of
 			 * the `Destroy` event could be guarded.
 			 * 
-			 * In the following example, the first event handler is
+			 * <p>In the following example, the first event handler is
 			 * executed when the `Destroy` is received
 			 * and there is resource stored in the corresponding
 			 * field. The second event handler is executed
@@ -698,25 +829,25 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 4
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beVariable "resource"
 					it should haveType "java.lang.Object"
 					it should haveInitialValue _
 				]
-				a.features.get(2) => [
+				a.members.get(2) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith "resource !== null"
 				]
-				a.features.get(3) => [
+				a.members.get(3) => [
 					it should beBehaviorUnit "io.sarl.core.Destroy"
 					it should beGuardedWith "resource === null"
 				]
@@ -727,10 +858,10 @@ describe "Agent Reference"{
 			 * is to execute a part of the global agent behavior when something
 			 * has happening in the agent, or in its environment.
 			 * 
-			 * In the following example, the agent is reacting to the reception
+			 * <p>In the following example, the agent is reacting to the reception
 			 * of the `SomethingChanged` event.
 			 * 
-			 * As for all the event handlers, it could be guarded by a predicate.
+			 * <p>As for all the event handlers, it could be guarded by a predicate.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
@@ -757,20 +888,20 @@ describe "Agent Reference"{
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomethingChanged"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-					(it as Agent).features.get(0) => [
+					(it as SarlAgent).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Agent).features.get(1) => [
+					(it as SarlAgent).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -780,7 +911,7 @@ describe "Agent Reference"{
 			/* When an event is received and the guard of the corresponding
 			 * handler is true, the event handler is said to be triggered.
 			 * 
-			 * When multiple event handlers are triggered at the same time,
+			 * <p>When multiple event handlers are triggered at the same time,
 			 * they are all executed in parallel.
 			 * In the following example, the two handlers for the
 			 * `SomethingChanged` event are executed in parallel.
@@ -813,24 +944,24 @@ describe "Agent Reference"{
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomethingChanged"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
-					(it as Agent).features.get(0) => [
+					(it as SarlAgent).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Agent).features.get(1) => [
+					(it as SarlAgent).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
 						it should beGuardedWith _
 					]
-					(it as Agent).features.get(2) => [
+					(it as SarlAgent).members.get(2) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.ar.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -843,7 +974,7 @@ describe "Agent Reference"{
 			 * the code external to this behavior. In opposite, the initiator
 			 * of the execution of a proactive behavior is the agent itself.
 			 * 
-			 * In SARL, a proactive behavior is a behavior that is scheduled
+			 * <p>In SARL, a proactive behavior is a behavior that is scheduled
 			 * by the agent. The scheduling mechanism is provided by the 
 			 * [`Schedules` built-in capacity](BuiltInCapacityReferenceSpec.html).
 			 * In the following example, the agent execute its proactive behavior
@@ -881,14 +1012,14 @@ describe "Agent Reference"{
 					it should haveNbElements 1
 				]
 				
-				var a = (model.elements.get(0) => [
+				var a = (model.xtendTypes.get(0) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) should beCapacityUse #["io.sarl.core.Schedules", "io.sarl.core.Logging"]
-				a.features.get(1) => [
+				a.members.get(0) should beCapacityUse #["io.sarl.core.Schedules", "io.sarl.core.Logging"]
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
@@ -909,7 +1040,7 @@ describe "Agent Reference"{
 			 * the [Capacity Reference](CapacityReferenceSpec.html), and
 			 * the [Skill Reference](SkillReferenceSpec.html).
 			 * 
-			 * In the rest of this section, it is assumed that the following
+			 * <p>In the rest of this section, it is assumed that the following
 			 * capacity and skill are defined:
 			 * 
 			 *     capacity Cap {
@@ -933,7 +1064,7 @@ describe "Agent Reference"{
 			/* When an agent must use a capacity in one of its behaviors,
 			 * it must own an implementation of this capacity: a skill.
 			 * 
-			 * For assigning a skill to an agent, the instance of the skill
+			 * <p>For assigning a skill to an agent, the instance of the skill
 			 * must be created. Then, it is associated with the
 			 * implemented capacity.
 			 * In the following example, the agent is creating the
@@ -941,7 +1072,7 @@ describe "Agent Reference"{
 			 * the corresponding capacity `Cap` with the
 			 * function `setSkill(Class<? extends Capacity>, Skill)`.
 			 * 
-			 * When the function `setSkill` is returning, the agent
+			 * <p>When the function `setSkill` is returning, the agent
 			 * becomes able to use the skill.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -977,43 +1108,43 @@ describe "Agent Reference"{
 					it should haveNbElements 3
 				]
 				
-				var c = (model.elements.get(0) => [
+				var c = (model.xtendTypes.get(0) => [
 					it should beCapacity "Cap"
 					it should extend _
 					it should haveNbElements 1
-				]) as Capacity
+				]) as SarlCapacity
 				
-				c.features.get(0) => [
+				c.members.get(0) => [
 					it should beActionSignature "action"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				var s = (model.elements.get(1) => [
+				var s = (model.xtendTypes.get(1) => [
 					it should beSkill "Ski"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.ar.Cap"]
 					it should haveNbElements 2
-				]) as Skill
+				]) as SarlSkill
 				
-				s.features.get(0) => [
+				s.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				s.features.get(1) => [
+				s.members.get(1) => [
 					it should beAction "action"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				var a = (model.elements.get(2) => [
+				var a = (model.xtendTypes.get(2) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 1
-				]) as Agent
+				]) as SarlAgent
 				
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
@@ -1024,7 +1155,7 @@ describe "Agent Reference"{
 			 * It means that there is no need for an agent to set a skill for
 			 * a built-in capacity.
 			 * 
-			 * However, in rare cases, it is possible to use the function
+			 * <p>However, in rare cases, it is possible to use the function
 			 * `setSkill(Class<? extends Capacity>, Skill)` for
 			 * changing the implementation of a built-in capacity.
 			 * 
@@ -1037,7 +1168,7 @@ describe "Agent Reference"{
 			/* After a skill is registered into the agent,
 			 * it could be invoked.
 			 *
-			 * For invoking a function implemented by a skill,
+			 * <p>For invoking a function implemented by a skill,
 			 * the two following steps must be done:
 			 * 
 			 *  * Retrieve the skill instance: the function
@@ -1091,54 +1222,54 @@ describe "Agent Reference"{
 					it should haveNbElements 4
 				]
 				
-				var c = (model.elements.get(0) => [
+				var c = (model.xtendTypes.get(0) => [
 					it should beCapacity "Cap"
 					it should extend _
 					it should haveNbElements 1
-				]) as Capacity
+				]) as SarlCapacity
 				
-				c.features.get(0) => [
+				c.members.get(0) => [
 					it should beActionSignature "action"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 				
-				var s = (model.elements.get(1) => [
+				var s = (model.xtendTypes.get(1) => [
 					it should beSkill "Ski"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.ar.Cap"]
 					it should haveNbElements 2
-				]) as Skill
+				]) as SarlSkill
 				
-				s.features.get(0) => [
+				s.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				s.features.get(1) => [
+				s.members.get(1) => [
 					it should beAction "action"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				model.elements.get(2) => [
+				model.xtendTypes.get(2) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				var a = (model.elements.get(3) => [
+				var a = (model.xtendTypes.get(3) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
 
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
 					it should beGuardedWith _
 				]
@@ -1174,19 +1305,19 @@ describe "Agent Reference"{
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				var a = (model.elements.get(1) => [
+				var a = (model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 1
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) => [
+				a.members.get(0) => [
 					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
 					it should beGuardedWith _
 				]
@@ -1198,12 +1329,12 @@ describe "Agent Reference"{
 			 * describes the "extension method" mechanism, it is possible
 			 * to use it for invoking the capacities.
 			 * 
-			 * But, instead of using an `import` directive,
+			 * <p>But, instead of using an `import` directive,
 			 * the `uses` keyword is provided for importing the
 			 * capacities into the agent. In the following example,
 			 * the `Cap` capacity is imported.
 			 * 
-			 * After a capacity was "imported", it is possible to
+			 * <p>After a capacity was "imported", it is possible to
 			 * directly call the functions of the capacity
 			 * (according to the extension method syntax).
 			 * In the following example, the action
@@ -1252,11 +1383,11 @@ describe "Agent Reference"{
 					it should haveNbElements 4
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Cap"
 					it should extend _
 					it should haveNbElements 1
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "action"
 						it should reply _
 						it should haveNbParameters 0
@@ -1264,15 +1395,15 @@ describe "Agent Reference"{
 					]
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beSkill "Ski"
 					it should extend _
 					it should implement #["io.sarl.docs.reference.ar.Cap"]
 					it should haveNbElements 2
-					(it as Skill).features.get(0) => [
+					(it as SarlSkill).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Skill).features.get(1) => [
+					(it as SarlSkill).members.get(1) => [
 						it should beAction "action"
 						it should reply _
 						it should haveNbParameters 0
@@ -1280,26 +1411,26 @@ describe "Agent Reference"{
 					]
 				]
 
-				model.elements.get(2) => [
+				model.xtendTypes.get(2) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				var a = (model.elements.get(3) => [
+				var a = (model.xtendTypes.get(3) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) should beCapacityUse #["io.sarl.docs.reference.ar.Cap"]
+				a.members.get(0) should beCapacityUse #["io.sarl.docs.reference.ar.Cap"]
 
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
 
-				a.features.get(2) => [
+				a.members.get(2) => [
 					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
 					it should beGuardedWith _
 				]
@@ -1334,21 +1465,21 @@ describe "Agent Reference"{
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				var a = (model.elements.get(1) => [
+				var a = (model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-				]) as Agent
+				]) as SarlAgent
 
-				a.features.get(0) should beCapacityUse #["io.sarl.core.Lifecycle"]
+				a.members.get(0) should beCapacityUse #["io.sarl.core.Lifecycle"]
 
-				a.features.get(1) => [
+				a.members.get(1) => [
 					it should beBehaviorUnit "io.sarl.docs.reference.ar.SomeEvent"
 					it should beGuardedWith _
 				]
@@ -1362,9 +1493,9 @@ describe "Agent Reference"{
 	 * Release: %sarlspecreleasedate%
 	 * 
 	 * 
-	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
 	 * 
-	 * Licensed under the Apache License, Version 2.0;
+	 * <p>Licensed under the Apache License, Version 2.0;
 	 * you may not use this file except in compliance with the License.
 	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *

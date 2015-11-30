@@ -1,0 +1,1403 @@
+/*
+ * Copyright (C) 2014-2015 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.lang.tests.parsing.oop;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import org.eclipse.xtext.common.types.JvmVisibility;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+import org.eclipse.xtend.core.validation.IssueCodes;
+import org.junit.Test;
+
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlAnnotationType;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlClass;
+import io.sarl.lang.sarl.SarlAnnotationType;
+import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.tests.api.AbstractSarlTest;
+
+/**
+ * @author $Author: sgalland$
+ * @version $Name$ $Revision$ $Date$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@RunWith(Suite.class)
+@SuiteClasses({
+	AnnotationTypeParsingTest.TopAnnotationTypeTest.class,
+	AnnotationTypeParsingTest.InsideClassTest.class,
+	AnnotationTypeParsingTest.InsideAgentTest.class,
+	AnnotationTypeParsingTest.InsideBehaviorTest.class,
+	AnnotationTypeParsingTest.InsideSkillTest.class,
+	AnnotationTypeParsingTest.UsageTest.class,
+})
+@SuppressWarnings("all")
+public class AnnotationTypeParsingTest extends AbstractSarlTest {
+
+	public static class TopAnnotationTypeTest extends AbstractSarlTest {
+
+		protected SarlAnnotationType getAnnotationType(SarlScript script) {
+			return (SarlAnnotationType) script.getXtendTypes().get(0);
+		}
+
+		@Test
+		public void classmodifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public annotation A1 { }"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertFalse(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"annotation A1 { }"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertFalse(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"private annotation A1 { }"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 7,
+					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"protected annotation A1 { }"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 9,
+					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"package annotation A1 { }"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.DEFAULT, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertFalse(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"abstract annotation A1 { }"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertFalse(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"static annotation A1 { }"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 6,
+					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"dispatch annotation A1 { }"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8,
+					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"final annotation A1 { }"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 5,
+					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"strictfp annotation A1 { }"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8,
+					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"native annotation A1 { }"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 6,
+					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"volatile annotation A1 { }"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8,
+					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"synchronized annotation A1 { }"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 12,
+					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"transient annotation A1 { }"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 9,
+					"Illegal modifier for the annotation type A1; only public, package & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_abstract_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"abstract final annotation A1 { }"), false);
+			validate(mas).assertError(
+				SarlPackage.eINSTANCE.getSarlAnnotationType(),
+				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+				41, 5,
+				"The annotation type A1 can either be abstract or final, not both");
+		}
+
+		@Test
+		public void classmodifier_public_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public private annotation A1 { }"), false);
+			validate(mas).assertError(
+				SarlPackage.eINSTANCE.getSarlAnnotationType(),
+				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+				39, 7,
+				"The annotation type A1 can only set one of public / package / protected / private");
+		}
+
+	}
+
+	public static class InsideClassTest extends AbstractSarlTest {
+
+		protected SarlAnnotationType getAnnotationType(SarlScript script) {
+			SarlClass enclosing = (SarlClass) script.getXtendTypes().get(0);
+			return (SarlAnnotationType) enclosing.getMembers().get(0);
+		}
+
+		@Test
+		public void classmodifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  public annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  private annotation A1 { }",
+					"}"), false);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PRIVATE, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  protected annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  package annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.DEFAULT, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  abstract annotation A1 { }",
+					"}"), false);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  static annotation A1 { }",
+					"}"), false);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  dispatch annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 8,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  final annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 5,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  strictfp annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 8,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  native annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 6,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  volatile annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 8,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  synchronized annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 12,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  transient annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 9,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_public_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public class EnclosingClass {",
+					"  public private annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+				SarlPackage.eINSTANCE.getSarlAnnotationType(),
+				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+				71, 7,
+				"The annotation type A1 can only set one of public / package / protected / private");
+		}
+
+	}
+
+	public static class InsideAgentTest extends AbstractSarlTest {
+
+		protected SarlAnnotationType getAnnotationType(SarlScript script) {
+			SarlAgent enclosing = (SarlAgent) script.getXtendTypes().get(0);
+			return (SarlAnnotationType) enclosing.getMembers().get(0);
+		}
+
+		@Test
+		public void classmodifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  public annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 6,
+					"Illegal modifier for the annotation type A1; only package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  private annotation A1 { }",
+					"}"), false);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PRIVATE, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  protected annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  package annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.DEFAULT, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  abstract annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  static annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  dispatch annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 8,
+					"Illegal modifier for the annotation type A1; only package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  final annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 5,
+					"Illegal modifier for the annotation type A1; only package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  strictfp annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 8,
+					"Illegal modifier for the annotation type A1; only package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  native annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 6,
+					"Illegal modifier for the annotation type A1; only package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  volatile annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 8,
+					"Illegal modifier for the annotation type A1; only package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  synchronized annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 12,
+					"Illegal modifier for the annotation type A1; only package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  transient annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 9,
+					"Illegal modifier for the annotation type A1; only package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_public_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public agent EnclosingAgent {",
+					"  public private annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+				SarlPackage.eINSTANCE.getSarlAnnotationType(),
+				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+				71, 7,
+				"The annotation type A1 can only set one of public / package / protected / private");
+		}
+
+	}
+
+	public static class InsideBehaviorTest extends AbstractSarlTest {
+
+		protected SarlAnnotationType getAnnotationType(SarlScript script) {
+			SarlBehavior enclosing = (SarlBehavior) script.getXtendTypes().get(0);
+			return (SarlAnnotationType) enclosing.getMembers().get(0);
+		}
+
+		@Test
+		public void classmodifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  public annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  private annotation A1 { }",
+					"}"), false);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PRIVATE, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  protected annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  package annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.DEFAULT, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  abstract annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  static annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  dispatch annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					70, 8,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  final annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					70, 5,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  strictfp annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					70, 8,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  native annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					70, 6,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  volatile annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					70, 8,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  synchronized annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					70, 12,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  transient annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					70, 9,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_public_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public behavior EnclosingBehavior {",
+					"  public private annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+				SarlPackage.eINSTANCE.getSarlAnnotationType(),
+				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+				77, 7,
+					"The annotation type A1 can only set one of public / package / protected / private");
+		}
+
+	}
+
+	public static class InsideSkillTest extends AbstractSarlTest {
+
+		protected SarlAnnotationType getAnnotationType(SarlScript script) {
+			SarlSkill enclosing = (SarlSkill) script.getXtendTypes().get(1);
+			return (SarlAnnotationType) enclosing.getMembers().get(0);
+		}
+
+		@Test
+		public void classmodifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  public annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  private annotation A1 { }",
+					"}"), false);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PRIVATE, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  protected annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  package annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.DEFAULT, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  abstract annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  static annotation A1 { }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlAnnotationType annotationType = getAnnotationType(mas);
+			assertNotNull(annotationType);
+			//
+			assertEquals("A1", annotationType.getName());
+			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(0, annotationType.getMembers().size());
+			assertFalse(annotationType.isAnonymous());
+			assertFalse(annotationType.isFinal());
+			assertFalse(annotationType.isLocal());
+			assertTrue(annotationType.isStatic());
+		}
+
+		@Test
+		public void classmodifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  dispatch annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					101, 8,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  final annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					101, 5,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  strictfp annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					101, 8,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  native annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					101, 6,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  volatile annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					101, 8,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  synchronized annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					101, 12,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  transient annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAnnotationType(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					101, 9,
+					"Illegal modifier for the annotation type A1; only public, package, protected, private, static & abstract are permitted");
+		}
+
+		@Test
+		public void classmodifier_public_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"public capacity C1 { }",
+					"public skill EnclosingSkill implements C1 {",
+					"  public private annotation A1 { }",
+					"}"), false);
+			validate(mas).assertError(
+				SarlPackage.eINSTANCE.getSarlAnnotationType(),
+				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+				108, 7,
+				"The annotation type A1 can only set one of public / package / protected / private");
+		}
+
+	}
+
+	public static class UsageTest extends AbstractSarlTest {
+
+		@Test
+		public void varUsage() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"annotation A1 {",
+					"	var field1 : String",
+					"}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					IssueCodes.INVALID_MODIFIER,
+					49, 3,
+					"Illegal modifier for the field field1; only public, static, final & val are permitted");
+		}
+	
+		@Test
+		public void valUsage_0() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"annotation A1 {",
+					"	val field1 : String",
+					"}"
+					), false);
+			validate(mas).assertNoIssues();
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlAnnotationType annotation = (SarlAnnotationType) mas.getXtendTypes().get(0);
+			assertEquals("A1", annotation.getName());
+			assertEquals(1, annotation.getMembers().size());
+			//
+			SarlField field = (SarlField) annotation.getMembers().get(0);
+			assertEquals("field1", field.getName());
+			assertTypeReferenceIdentifier(field.getType(), "java.lang.String");
+			assertContains(field.getModifiers(), "val");
+		}
+	
+		@Test
+		public void valUsage_1() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"annotation A1 {",
+					"	val field1 = \"a\"",
+					"}"
+					), false);
+			validate(mas).assertNoIssues();
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlAnnotationType annotation = (SarlAnnotationType) mas.getXtendTypes().get(0);
+			assertEquals("A1", annotation.getName());
+			assertEquals(1, annotation.getMembers().size());
+			//
+			SarlField field = (SarlField) annotation.getMembers().get(0);
+			assertEquals("field1", field.getName());
+			assertNull(field.getType());
+			assertContains(field.getModifiers(), "val");
+		}
+
+	}
+
+}

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,12 @@
 
 package io.sarl.lang.controlflow;
 
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import com.google.inject.Singleton;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer;
-
-import com.google.inject.Singleton;
 
 /** Compute the early-exit flag for the SARL statements.
  *
@@ -39,8 +38,6 @@ import com.google.inject.Singleton;
 @Singleton
 public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean isDefiniteEarlyExit(XExpression expression) {
 		if (super.isDefiniteEarlyExit(expression)) {
@@ -49,8 +46,6 @@ public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 		return isEarlyExitSARLStatement(expression);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean isIntentionalEarlyExit(XExpression expression) {
 		if (super.isIntentionalEarlyExit(expression)) {
@@ -63,7 +58,7 @@ public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 	 *
 	 * @param expression - the expression to test.
 	 * @return <code>true</code> if the given expression is a SARL early-exit
-	 * statement, <code>false</code> otherwise.
+	 *     statement, <code>false</code> otherwise.
 	 * @see SARLEarlyExitComputerUtil#isEarlyExitAnnotatedElement(Object)
 	 */
 	@SuppressWarnings("static-method")
@@ -84,11 +79,11 @@ public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 	 *
 	 * @param expression - the expression to test.
 	 * @return <code>true</code> if the given expression is a SARL early-exit
-	 * statement, <code>false</code> otherwise.
-	 * @see SARLEarlyExitComputerUtil#isEarlyExitEvent(JvmParameterizedTypeReference)
+	 *     statement, <code>false</code> otherwise.
+	 * @see SARLEarlyExitComputerUtil#isEarlyExitEvent(JvmTypeReference)
 	 */
 	@SuppressWarnings("static-method")
-	public boolean isEarlyExitEvent(JvmParameterizedTypeReference expression) {
+	public boolean isEarlyExitEvent(JvmTypeReference expression) {
 		return SARLEarlyExitComputerUtil.isEarlyExitEvent(expression);
 	}
 

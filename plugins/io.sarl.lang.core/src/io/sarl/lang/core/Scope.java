@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 import java.io.Serializable;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Defines the scope of an Event. Scopes are specialized based on the addressing
  * mechanism internally used by a {@link Space}.
- * <p>
- * A scope is a predicate used to filter the potentially called listeners for a given event.
+ *
+ * <p>A scope is a predicate used to filter the potentially called listeners for a given event.
  * The most basic Scope is represented by a collection of Addresses (Agent, Role, etc.
  *
  * @param <T> is the type of objects that should be matched by this scope.
@@ -43,6 +46,7 @@ public interface Scope<T> extends Serializable {
 	 * @param element - the element to test. <strong>It must NOT BE NULL</strong>.
 	 * @return true if the element is inside the scope, false otherwise
 	 */
+	@Pure
 	boolean matches(T element);
 
 }

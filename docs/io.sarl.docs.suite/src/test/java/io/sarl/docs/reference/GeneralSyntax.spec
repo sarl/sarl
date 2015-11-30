@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors and authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,14 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.lang.sarl.Action
-import io.sarl.lang.sarl.Agent
-import io.sarl.lang.sarl.Constructor
-import io.sarl.lang.sarl.Event
+import io.sarl.lang.sarl.SarlAction
+import io.sarl.lang.sarl.SarlAgent
+import io.sarl.lang.sarl.SarlEvent
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.List
+import java.util.Map
+import org.eclipse.xtend.core.xtend.XtendConstructor
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XbasePackage
@@ -37,11 +38,10 @@ import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
-import java.util.Map
 
 /* @outline
  * 
- * This document describes the general syntax of the SARL Language. 
+ * <p>This document describes the general syntax of the SARL Language. 
  */
 @CreateWith(SARLSpecCreator)
 describe "General Syntax Reference" {
@@ -54,24 +54,24 @@ describe "General Syntax Reference" {
 	 * arrays and all the Java classes, interfaces, enumerations and annotations that reside 
 	 * on the class path.
 	 * 
-	 * Java generic types are fully supported as well: you can define type parameters on 
+	 * <p>Java generic types are fully supported as well: you can define type parameters on 
 	 * methods and classes and pass type arguments to generic types just as you are 
 	 * used to from Java. The type system and its conformance and casting rules are 
 	 * implemented as defined in the
 	 * [Java Language Specification](http://docs.oracle.com/javase/specs/jls/se5.0/html/conversions.html).
 	 * 
-	 * One of the problems with Java is that you are forced to write type signatures 
+	 * <p>One of the problems with Java is that you are forced to write type signatures 
 	 * over and over again. That is why so many people do not like static typing. 
 	 * But this is in fact not a problem of static typing, but simply a problem with 
 	 * Java. Although SARL is statically typed just like Java, you rarely have to 
 	 * write types down because they can be computed from the context.
 	 * 
-	 * In addition to Java's auto-boxing to convert primitives to their corresponding wrapper 
+	 * <p>In addition to Java's auto-boxing to convert primitives to their corresponding wrapper 
 	 * types (e.g. _int_ is automatically converted to _Integer_ when needed), there are 
 	 * additional conversion rules in SARL: arrays are automatically converted to
 	 * `List<ComponentType>` and vice versa.
 	 *
-	 * Resembling and supporting every aspect of Java's type system ensures that there is 
+	 * <p>Resembling and supporting every aspect of Java's type system ensures that there is 
 	 * no impedance mismatch between Java and SARL. __This means that SARL and Java are 
 	 * 100% interoperable__. There are no exceptional cases and you do not have to 
 	 * think in two worlds. You can invoke SARL code from Java and vice versa without any
@@ -90,10 +90,10 @@ describe "General Syntax Reference" {
 	 *     import io.sarl.event.ActionEvent 
 	 *
 	 *
-	 * Indeed, the name fragment `event` corresponds to a keyword
+	 * <p>Indeed, the name fragment `event` corresponds to a keyword
 	 * of SARL.
 	 * 
-	 * For solving this problem (since some names come from Java, and
+	 * <p>For solving this problem (since some names come from Java, and
 	 * this language has not the same set of keywords than SARL), it
 	 * is possible to prefix the name fragment with the character `^`:
 	 * 
@@ -109,6 +109,33 @@ describe "General Syntax Reference" {
 		model should havePackage "io.sarl.event.ActionEvent"
 	}
 
+	/* In SARL, the statements are the instructions that must be executed.
+	 * The statement may be one of the elements described in the rest of
+	 * this document.
+	 * 
+	 * <p>In the opposite as programming languages as Java and C++, there is no
+	 * need to terminate a statement with the ```;``` character.
+	 * But, you are still able to put it in your code.
+	 * 
+	 * <p>For instance, the two following lines are equivalent:
+	 * 
+	 *     var myVariable : int = 5
+	 *
+	 *     var myVariable : int = 5;
+	 * 
+	 * @filter(.*)
+	 */
+	fact "Statement Syntax" {
+		'''var myVariable : int = 5'''.parseSuccessfully(
+			"agent A1 {",
+			"}"
+		)
+		'''var myVariable : int = 5;'''.parseSuccessfully(
+			"agent A1 {",
+			"}"
+		)
+	}
+
 	/* A script is a file in which you must type the SARL code.
 	 * Each script must follow the format:
 	 * 
@@ -122,17 +149,17 @@ describe "General Syntax Reference" {
 		 * For structuring your software, it is convenient to put the scripts
 		 * in different packages (as Java does for the classes).
 		 * 
-		 * The keyword `package` permits to define the name of
+		 * <p>The keyword `package` permits to define the name of
 		 * the package associated to a SARL file. Consequently, all
 		 * the features defined in the script are defined in this package,
 		 * and their names are qualified with the name of the package.
 		 * 
-		 * The package's name has also a consequence in the generation of
+		 * <p>The package's name has also a consequence in the generation of
 		 * the Java files behind the SARL script. Indeed, all the
 		 * Java files are generated in a folder, which is matching the
 		 * name of the package.
 		 * 
-		 * In the following example, the qualified name of the agent is
+		 * <p>In the following example, the qualified name of the agent is
 		 * `io.sarl.docs.reference.gsr`.
 		 * 
 		 * <note> If the 
@@ -156,7 +183,7 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should haveNbElements 0
 			]
@@ -171,11 +198,11 @@ describe "General Syntax Reference" {
 		 * <note>This directive 
 		 * works in a similar way as in the Java language.</note>
 		 * 
-		 * The `import` keyword is followed by the qualified name
+		 * <p>The `import` keyword is followed by the qualified name
 		 * of the feature to import. In the following code, it is illustrated
 		 * by the first directive.
 		 * 
-		 * Optionally, you could import all the features defined inside a package.
+		 * <p>Optionally, you could import all the features defined inside a package.
 		 * This could be done by replacing the name of the feature by the
 		 * wildcard character `*`. The second import directive is
 		 * an example of the inclusion of all the classes defined in
@@ -201,7 +228,7 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1;
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 0
@@ -212,18 +239,18 @@ describe "General Syntax Reference" {
 		 * statically defined functions, i.e. a function that can be
 		 * called without any associated object's instance.
 		 * 
-		 * In this case, the name of the static function is qualified
+		 * <p>In this case, the name of the static function is qualified
 		 * by the fully qualified name of the class. For example, 
 		 * the function `max()` is invoked with this
 		 * syntax, in the example below.
 		 * 
-		 * However, if there is plenty of invocations to static
+		 * <p>However, if there is plenty of invocations to static
 		 * methods in your source code, the static-import mechanism
 		 * permits to make the code more readable by removing the
 		 * fully qualified name of the classes, in which the called
 		 * functions are defined.
 		 * 
-		 * A static import is specify with the `static`
+		 * <p>A static import is specify with the `static`
 		 * keyword just after the `import` keyword.
 		 * The following identifier must be a fully qualified name of
 		 * one or more functions (with the wildcard character).
@@ -231,7 +258,7 @@ describe "General Syntax Reference" {
 		 * `java.util.Arrays` are imported.
 		 * <pre><code>import static java.util.Arrays.*</code></pre>
 		 * 
-		 * Then,
+		 * <p>Then,
 		 * it is possible to invoke one of them by typing its
 		 * name, as the call to `toString(int[])` below.
 		 * 
@@ -268,13 +295,13 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			var a = model.elements.get(0) => [
+			var a = model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 1
 			]
 			
-			var sig = (a as Agent).features.get(0) => [
+			var sig = (a as SarlAgent).members.get(0) => [
 				it should beAction "example";
 				it should reply _;
 				it should haveNbParameters 0
@@ -282,20 +309,29 @@ describe "General Syntax Reference" {
 			]
 			
 			// Do not test the block content since it should be validated by the Xbase library.
-			(sig as Action).body should be XBlockExpression
+			(sig as SarlAction).expression should be XBlockExpression
 		}	 
 
 		/* A large part of a SARL script contains the definitions of
 		 * the top-level features. These features are the core concepts
 		 * of SARL, such as `agent`, `event`, or
 		 * `capacity`.
-		 * 
 		 * All these top-level features are documented in their own
 		 * reference document.
+		 *
+		 * <p>Additionally, it is possible to write object-oriented statements with
+		 * the SARL syntax: `class`, `interface`, `enum`, `annotation`.
+		 * The inclusion of the object-oriented statements will help you to
+		 * write your application  with a single language.
+		 * This support is described in the
+		 * [reference documentation](./BasicObjectOrientedProgrammingSupportSpec.html)
+		 * on the object-oriented programming in SARL.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Top-Level Features" {
+			"./BasicObjectOrientedProgrammingSupportSpec.html" should beAccessibleFrom this
+			//
 			var model = '''
 			event E {
 			}
@@ -323,19 +359,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 5
 			]
 			
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beEvent "E"
 				it should extend _
 				it should haveNbElements 0
 			]
 			
-			model.elements.get(1) => [
+			model.xtendTypes.get(1) => [
 				it should beCapacity "C"
 				it should extend _
 				it should haveNbElements 0
 			]
 			
-			model.elements.get(2) => [
+			model.xtendTypes.get(2) => [
 				it should beSkill "S"
 				it should extend _
 				it should haveNbImplements 1
@@ -343,14 +379,14 @@ describe "General Syntax Reference" {
 				it should haveNbElements 0
 			]
 			
-			model.elements.get(3) => [
+			model.xtendTypes.get(3) => [
 				it should beBehavior "B"
 				it should extend _
 				it should haveNbElements 0
 			]
 			
-			model.elements.get(4) => [
-				it should be Agent "A"
+			model.xtendTypes.get(4) => [
+				it should be SarlAgent "A"
 				it should extend _
 				it should haveNbElements 0
 			]
@@ -395,37 +431,37 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			var a = model.elements.get(0) => [
+			var a = model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 5
 			]
 
-			(a as Agent).features.get(0) => [
+			(a as SarlAgent).members.get(0) => [
 				it should beVariable "a"
 				it should haveType _;
 				it should haveInitialValue "Hello World!"
 			]
 
-			(a as Agent).features.get(1) => [
+			(a as SarlAgent).members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue "Hello World!"
 			]
 
-			(a as Agent).features.get(2) => [
+			(a as SarlAgent).members.get(2) => [
 				it should beVariable "c"
 				it should haveType _
 				it should haveInitialValue "Hello \"World!\""
 			]
 
-			(a as Agent).features.get(3) => [
+			(a as SarlAgent).members.get(3) => [
 				it should beVariable "d"
 				it should haveType _
 				it should haveInitialValue "Hello \"World!\""
 			]
 
-			(a as Agent).features.get(4) => [
+			(a as SarlAgent).members.get(4) => [
 				it should beVariable "e"
 				it should haveType _
 				it should haveInitialValue "Hello \n			World!"
@@ -457,19 +493,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 			
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType "char"
 				it should haveInitialValue 'a'
 			]
 			
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType "char"
 				it should haveInitialValue 'b'
@@ -502,37 +538,37 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 5
-			]) as Agent
+			]) as SarlAgent
 			
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue (42 as Object)
 			]
 			
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue (0xbeef as Object)
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "c"
 				it should haveType _
 				it should haveInitialValue (77 as Object)
 			]
 
-			a.features.get(3) => [
+			a.members.get(3) => [
 				it should beVariable "d"
 				it should haveType _
 				it should haveInitialValue (0.1 as Object)
 			]
 
-			a.features.get(4) => [
+			a.members.get(4) => [
 				it should beVariable "e"
 				it should haveType _
 				it should haveInitialValue (1.0 as Object)
@@ -560,13 +596,13 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 			
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 1
-			]) as Agent
+			]) as SarlAgent
 			
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue (12345678l as Object)
@@ -598,25 +634,25 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "anInteger"
 				it should haveType _
 				it should haveInitialValue (1234 as Object)
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "aLong"
 				it should haveType _
 				it should haveInitialValue (1234l as Object)
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "aBigInteger"
 				it should haveType _
 				it should haveInitialValue new BigInteger("1234")
@@ -651,37 +687,37 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 5
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "aDouble"
 				it should haveType _
 				it should haveInitialValue (1234.0 as Object)
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "anotherDouble"
 				it should haveType _
 				it should haveInitialValue (5678d as Object)
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "aFloat"
 				it should haveType _
 				it should haveInitialValue (1234f as Object)
 			]
 
-			a.features.get(3) => [
+			a.members.get(3) => [
 				it should beVariable "anotherFloat"
 				it should haveType _
 				it should haveInitialValue (5678f as Object)
 			]
 
-			a.features.get(4) => [
+			a.members.get(4) => [
 				it should beVariable "aBigDecimal"
 				it should haveType _
 				it should haveInitialValue new BigDecimal("1234")
@@ -709,19 +745,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue (true as Object)
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue(false as Object)
@@ -749,13 +785,13 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 1
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _;
 				it should haveInitialValue "null"
@@ -765,10 +801,10 @@ describe "General Syntax Reference" {
 		/* The syntax for type literals is generally the plain name of the 
 		 * type. Nested types use the delimiter `.`.
 		 * 
-		 * To disambiguate the expression, type literals may also be specified 
+		 * <p>To disambiguate the expression, type literals may also be specified 
 		 * using the keyword `typeof`.
 		 * 
-		 * Consequently it is possible to access the members of a type 
+		 * <p>Consequently it is possible to access the members of a type 
 		 * reflectively by using its plain name.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -795,25 +831,25 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue "java.lang.String"
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue "java.lang.Integer"
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "c"
 				it should haveType _;
 				it should haveInitialValue "java.lang.Class.getDeclaredFields"
@@ -826,7 +862,7 @@ describe "General Syntax Reference" {
 	 */
 	describe "Collection Literals"{
 
-		 /* It is easy to create instances of collections since the methods in 
+	   /* It is easy to create instances of collections since the methods in 
 		* `CollectionLiterals` are automatically imported.
 		* They permit to create instances of the collections from the JDK.
 		* 
@@ -849,19 +885,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "myList"
 				it should haveType _
 				it should haveInitialValue "org.eclipse.xtext.xbase.lib.CollectionLiterals.newArrayList"
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "myMap"
 				it should haveType _
 				it should haveInitialValue "org.eclipse.xtext.xbase.lib.CollectionLiterals.newLinkedHashMap"
@@ -896,25 +932,25 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue #['Hello','World']
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue #{'Hello','World'}
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "c"
 				it should haveType _
 				it should haveInitialValue #{'a' -> 1 ,'b' ->2}
@@ -955,19 +991,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType "java.lang.String[]"
 				it should haveInitialValue "org.eclipse.xtext.xbase.lib.ArrayLiterals.newArrayOfSize"
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType "int[]"
 				it should haveInitialValue "org.eclipse.xtext.xbase.lib.ArrayLiterals.newIntArrayOfSize"
@@ -978,7 +1014,7 @@ describe "General Syntax Reference" {
 		 * methods `get(int)` and `set(int, T)`.
 		 * As for Java, the index of the elements in the array starts with `0`. 
 		 * 
-		 * The method `length` is available for retrieving the size of the array.
+		 * <p>The method `length` is available for retrieving the size of the array.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */		
@@ -1002,25 +1038,25 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue #['Hello', 'world', '!']
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue "java.util.List.get"
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beVariable "c"
 				it should haveType _
 				it should haveInitialValue"org.eclipse.xtext.xbase.lib.ArrayExtensions.length"
@@ -1053,19 +1089,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beValue "myArray"
 				it should haveType "int[]"
 				it should haveInitialValue #[1,2,3]
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beValue "myList"
 				it should haveType "java.util.List<java.lang.Integer>"
 				it should haveInitialValue "io.sarl.docs.reference.gsr.A.myArray"
@@ -1078,7 +1114,7 @@ describe "General Syntax Reference" {
 	 * the `as` keyword. This keywords must be typed after the expression,
 	 * but before the casting type.
 	 * 
-	 * The conformance rules for type casts are defined in the
+	 * <p>The conformance rules for type casts are defined in the
 	 * [Java Language Specification](http://docs.oracle.com/javase/specs/jls/se5.0/html/conversions.html#5.5).
 	 * 
 	 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -1106,25 +1142,25 @@ describe "General Syntax Reference" {
 			it should haveNbElements 1
 		]
 
-		var a = (model.elements.get(0) => [
+		var a = (model.xtendTypes.get(0) => [
 			it should beAgent "A"
 			it should extend _
 			it should haveNbElements 3
-		]) as Agent
+		]) as SarlAgent
 
-		a.features.get(0) => [
+		a.members.get(0) => [
 			it should beVariable "something"
 			it should haveType "java.lang.Number"
 			it should haveInitialValue "java.lang.Integer.Integer"
 		]
 
-		a.features.get(1) => [
+		a.members.get(1) => [
 			it should beVariable "a"
 			it should haveType _
 			it should haveInitialValue "java.lang.Integer"
 		]
 
-		a.features.get(2) => [
+		a.members.get(2) => [
 			it should beVariable "b"
 			it should haveType _
 			it should haveInitialValue (56 as Object)
@@ -1140,13 +1176,13 @@ describe "General Syntax Reference" {
 		 * The arithmetic operators take numbers as operands. They could
 		 * be unary (one operand) or binary (two operands).
 		 * 
-		 * Each operator has an associated function name. This function contains
+		 * <p>Each operator has an associated function name. This function contains
 		 * the concrete implementation of the operational semantic of the
 		 * operator. This function could be redefined as it is explained in the 
 		 * [operator overloading section](#Operator_Overloading).
 		 * 
 		 * <table><thead>
-		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * <tr><th>Operator</th><th>Function Name</th><th>Operator Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a + b</td><td>operator_plus</td><td>Add a and b.</td></tr>
 		 * <tr><td>a - b</td><td>operator_minus (binary)</td><td>Subtract b to a.</td></tr>
@@ -1178,13 +1214,13 @@ describe "General Syntax Reference" {
 
 		/** The comparison operators primitive types are listed below.
 		 * 
-		 * Each operator has an associated function name. This function contains
+		 * <p>Each operator has an associated function name. This function contains
 		 * the concrete implementation of the operational semantic of the
 		 * operator. This function could be redefined as it is explained in the 
 		 * [operator overloading section](#Operator_Overloading).
 		 * 
 		 * <table><thead>
-		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * <tr><th>Operator</th><th>Function Name</th><th>Operator Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a == b</td><td>operator_equals</td><td>Test if a and b are equal.</td></tr>
 		 * <tr><td>a != b</td><td>operator_notEquals</td><td>Test if a and b are not equal.</td></tr>
@@ -1229,13 +1265,13 @@ describe "General Syntax Reference" {
 
 		/** The comparison operators on objects are listed below.
 		 * 
-		 * Each operator has an associated function name. This function contains
+		 * <p>Each operator has an associated function name. This function contains
 		 * the concrete implementation of the operational semantic of the
 		 * operator. This function could be redefined as it is explained in the 
 		 * [operator overloading section](#Operator_Overloading).
 		 * 
 		 * <table><thead>
-		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * <tr><th>Operator</th><th>Function Name</th><th>Operator Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a == b</td><td>operator_equals</td><td>Determine if a and b are equal. If a is Comparable then it is
 		 *                        equivalent to `a.compareTo(b) == 0` else `a.equals(b)`. This operator is null-safe.</td></tr>
@@ -1278,13 +1314,13 @@ describe "General Syntax Reference" {
 		 * replies a boolean value resulting of the operational semantic of the
 		 * operator. 
 		 * 
-		 * Each operator has an associated function name. This function contains
+		 * <p>Each operator has an associated function name. This function contains
 		 * the concrete implementation of the operational semantic of the
 		 * operator. This function could be redefined as it is explained in the 
 		 * [operator overloading section](#Operator_Overloading).
 		 * 
 		 * <table><thead>
-		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * <tr><th>Operator</th><th>Function Name</th><th>Operator Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a || b</td><td>operator_or</td><td>If a then true else b.</td></tr>
 		 * <tr><td>a &amp;&amp; b</td><td>operator_and</td><td>If a then b else false.</td></tr>
@@ -1306,13 +1342,13 @@ describe "General Syntax Reference" {
 		 * The bit operators apply operations on the bits that are representing
 		 * a numeric value.
 		 * 
-		 * Each operator has an associated function name. This function contains
+		 * <p>Each operator has an associated function name. This function contains
 		 * the concrete implementation of the operational semantic of the
 		 * operator. This function could be redefined as it is explained in the 
 		 * [operator overloading section](#Operator_Overloading).
 		 * 
 		 * <table><thead>
-		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * <tr><th>Operator</th><th>Function Name</th><th>Operator Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a &lt;&lt; b</td><td>operator_doubleLessThan</td><td>Shift the signed bit representation of a to the left
 		 *                              by b units.</td></tr>
@@ -1350,13 +1386,13 @@ describe "General Syntax Reference" {
 		/** The string operators are listed below.
 		 * These operators are dedicated to strings of characters.
 		 * 
-		 * Each operator has an associated function name. This function contains
+		 * <p>Each operator has an associated function name. This function contains
 		 * the concrete implementation of the operational semantic of the
 		 * operator. This function could be redefined as it is explained in the 
 		 * [operator overloading section](#Operator_Overloading).
 		 * 
 		 * <table><thead>
-		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * <tr><th>Operator</th><th>Function Name</th><th>Operator Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a + b</td><td>operator_plus</td><td>Concatenate the string representations of a and b.</td></tr>
 		 * </tbody></table>
@@ -1376,13 +1412,13 @@ describe "General Syntax Reference" {
 		 * Most of the time, the first operand is the collection on which the
 		 * operator must be applied. 
 		 * 
-		 * Each operator has an associated function name. This function contains
+		 * <p>Each operator has an associated function name. This function contains
 		 * the concrete implementation of the operational semantic of the
 		 * operator. This function could be redefined as it is explained in the 
 		 * [operator overloading section](#Operator_Overloading).
 		 * 
 		 * <table><thead>
-		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * <tr><th>Operator</th><th>Function Name</th><th>Operator Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>c += e</td><td>operator_add</td><td>Equivalent to: <code>c.add(e)</code></td></tr>
 		 * <tr><td>c -= e</td><td>operator_remove</td><td>Equivalent to: <code>c.remove(e)<code></td></tr>
@@ -1433,7 +1469,7 @@ describe "General Syntax Reference" {
 		 * They work automatically when the corresponding infix operator is declared.
 		 * 
 		 * <table><thead>
-		 * <tr><td>Operator</td><td>Operator Semantic</td></tr>
+		 * <tr><th>Operator</th><th>Operator Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a = b</td><td>Set the variable a with the value of b.</td></tr>
 		 * <tr><td>a += b</td><td>Equivalent to: <code>a = a + b</code></td></tr>
@@ -1457,13 +1493,13 @@ describe "General Syntax Reference" {
 		/** This section presents a collection of operators that permit
 		 * to define ranges of values.
 		 * 
-		 * Each operator has an associated function name. This function contains
+		 * <p>Each operator has an associated function name. This function contains
 		 * the concrete implementation of the operational semantic of the
 		 * operator. This function could be redefined as it is explained in the 
 		 * [operator overloading section](#Operator_Overloading).
 		 * 
 		 * <table><thead>
-		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * <tr><th>Operator</th><th>Function Name</th><th>Operator Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a .. b</td><td>operator_upTo</td><td>Create a list of integer values from a (inclusive) to b (inclusive).<br/>
 		 *                        <code>1..5</code> is the range from 1 to 5 with 1 &lt;= x &lt;= 5.<br/><code>5..1</code> is the
@@ -1473,14 +1509,14 @@ describe "General Syntax Reference" {
 		 *                            b (inclusive).<br/><code>5&gt;..1</code> is the range from 4 to 1 with
 		 *                            5 &gt; x &gt;= 1.<br/>
 		 *                            <code>1&gt;..5</code> is the empty range since the constraint is wrong 1 &gt; x &gt;= 5.<br/>
-		 *                            See [Xtext](https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258)" for
+		 *                            See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">Xtext</a> for
 		 *                            discussion on the operational semantics of this operator.<br/>The type of this expression
 		 *                            is ExclusiveRange.</td></tr>
 		 * <tr><td>a ..&lt; b</td><td>operator_doubleDotLessThan</td><td>Create a list of integer values from a (inclusive) to
 		 *                            b (exclusive).<br/><code>1..&lt;5</code> is the range from 1 to 5 with
 		 *                            1 &lt;= x &lt; 5.<br/>
 		 *                            <code>5..&lt;1</code> is the empty range since the constraint is wrong 5 &lt;= x &lt; 1.<br/>
-		 *                            See [Xtext](https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258") for
+		 *                            See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=443258">Xtext</a> for
 		 *                            discussion on the operational semantics of this operator.<br/>The type of this expression
 		 *                            is ExclusiveRange.</td></tr>
 		 * </tbody></table>
@@ -1527,13 +1563,13 @@ describe "General Syntax Reference" {
 		/** This section presents a collection of operators that are not
 		 * related to the categories in the previous sections.
 		 * 
-		 * Each operator has an associated function name. This function contains
+		 * <p>Each operator has an associated function name. This function contains
 		 * the concrete implementation of the operational semantic of the
 		 * operator. This function could be redefined as it is explained in the 
 		 * [operator overloading section](#Operator_Overloading).
 		 * 
 		 * <table><thead>
-		 * <tr><td>Operator</td><td>Function Name</td><td>Operator Semantic</td></tr>
+		 * <tr><th>Operator</th><th>Function Name</th><th>Operator Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a ?: b</td><td>operator_elvis</td><td>If a is not null then a else b.</td></tr>
 		 * <tr><td>a =&gt; b</td><td>operator_doubleArrow</td><td>Used as a 'with'- or 'let'-operation. It allows to bind an
@@ -1542,7 +1578,7 @@ describe "General Syntax Reference" {
 		 * <tr><td>a &lt;&gt; b</td><td>operator_diamond</td><td>Not yet supported.</td></tr>
 		 * </tbody></table>
 		 * 
-		 * For illustrating an usage of the `=>` operator, consider the class `Person`
+		 * <p>For illustrating an usage of the `=>` operator, consider the class `Person`
 		 * with two attributes inside: `firstName` and `lastName`.
 		 * The creation of an instance of `Person` could be done with:
 		 * <pre><code>new Person => [
@@ -1573,10 +1609,10 @@ describe "General Syntax Reference" {
 		/* In SARL, it is easy to overload an existing operator or
 		 * to re-define the algorithm of one.
 		 * 
-		 * You should define the operator mapping function (see the
+		 * <p>You should define the operator mapping function (see the
 		 * previous sections for a comprehensive list of them).
 		 * 
-		 * Below, the addition operator `+` between two `Pair` is defined.
+		 * <p>Below, the addition operator `+` between two `Pair` is defined.
 		 * The function that is defining the operator must have
 		 * a name with the `operator_` prefix, and one parameter
 		 * for each operand associated to the operator.
@@ -1617,30 +1653,30 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 	
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "operator_plus"
 				it should reply "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
 				it should haveNbParameters 2
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "b"
 					it should haveType "org.eclipse.xtext.xbase.lib.Pair<java.lang.Integer, java.lang.Integer>"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beAction "example"
 				it should reply _
 				it should haveNbParameters 0
@@ -1656,7 +1692,7 @@ describe "General Syntax Reference" {
 	 * The type of a block is also the type of the last expression. 
 	 * Empty blocks return `null` and have the type `Object`.
 	 * 
-	 * A block expression is surrounded by curly braces. The expressions in a block can be terminated by an optional semicolon.
+	 * <p>A block expression is surrounded by curly braces. The expressions in a block can be terminated by an optional semicolon.
 	 * 
 	 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 	 */
@@ -1686,12 +1722,12 @@ describe "General Syntax Reference" {
 	 * variable (see below for details), its name, and optionally its type and its
 	 * initial value.
 	 * 
-	 * The variable/value declaration follows the syntax:
+	 * <p>The variable/value declaration follows the syntax:
 	 * 
 	 *     var NAME [: TYPE] [= INITIAL VALUE]
 	 *     val NAME [: TYPE] [= INITIAL VALUE]
 	 * 
-	 * Shadowing variables from outer scopes is not allowed, the only exception is the 
+	 * <p>Shadowing variables from outer scopes is not allowed, the only exception is the 
 	 * implicit variable `it`.
 	 * 
 	 */
@@ -1700,14 +1736,14 @@ describe "General Syntax Reference" {
 		/* A variable declaration starting with the keyword `val` denotes 
 		 * a value, which is essentially a final, unsettable variable.
 		 * 
-		 * The variable needs to be declared with the keyword `var`, which 
+		 * <p>The variable needs to be declared with the keyword `var`, which 
 		 * stands for 'variable' if it should be allowed to reassign its value.
 		 * 
-		 * Variables declared outside a lambda expression using the `var` keyword
+		 * <p>Variables declared outside a lambda expression using the `var` keyword
 		 * are not accessible from within the lambda expressions. Those declared with the
 		 * `val` keyword are accessible.
 		 * 
-		 * Fields declared outside a lambda expression using the `var` keyword
+		 * <p>Fields declared outside a lambda expression using the `var` keyword
 		 * or the `val` keyword are accessible from within the lambda expressions.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -1734,13 +1770,13 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 1
-			]) as Agent
+			]) as SarlAgent
 	
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "example"
 				it should reply _
 				it should haveNbParameters 0
@@ -1771,46 +1807,76 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType "java.lang.String"
 				it should haveInitialValue "abc"
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue "abc"
 			]
 		}
 
+		/* Like in Java the current object is bound to the keyword `this`.
+		 * This allows for either qualified field access or method invocations.
+		 * 
+		 * <p>You can use the variable name `it` to get the same behavior for
+		 * any variable or parameter.
+		 * Moreover, the variable `it` is that it is allowed to
+		 * be shadowed. This is especially useful when used together with lambda
+		 * expressions.
+		 * 
+		 * <p>It means that if you type a name, the compiler tries to find a member
+		 * with the same name on the `it` object, then in the `this` object.
+		 * 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+		 */
+		fact "Implicit Variables this and it"{
+			'''
+			agent A {
+				var a = 35
+				def example : int {
+					this.a = 123
+					
+					val it = new String("abc")
+					return length // translates to 'it.length()'
+				}
+			}
+			'''.parseSuccessfully(
+				"package io.sarl.docs.reference.gsr",
+				// TEXT
+				""
+			)
+		}
+
 	}
 
 	/* A function, or method, or action, is a named block of code that could be invoked.
 	 *
-	 * A function declaration starts with the keyword `def`.
+	 * <p>A function declaration starts with the keyword `def`.
 	 * This declaration can only occur in top-level features
 	 * (`agent`, `skill`, etc.)
-	 *
-	 * The function declaration follows the syntax:
-	 * 
-	 *      def NAME [([PARAMETER, PARAMETER, PARAMETER...])] [: RETURN TYPE] [BLOCK]
-	 *
-	 * 
-	 * <note> The parameters are 
-	 * implicitly declared with the keyword `val`.</note>
 	 */
 	describe "Function Declarations" {
 		
 		/* 
+		 * The standard function declaration follows the syntax:
 		 * 
-		 * The following code gives examples of function declarations:
+		 *      def NAME [([PARAMETER, PARAMETER, PARAMETER...])] [: RETURN TYPE] [BLOCK]
+		 *
+		 * 
+		 * <note> The parameters are implicitly declared with the keyword `val`.</note>
+		 * 
+		 * <p>The following code gives examples of function declarations:
 		 *
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
@@ -1857,78 +1923,78 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 6
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "action1"
 				it should reply _
 				it should haveNbParameters 0
 				it should beVariadic false
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beAction "action2"
 				it should reply "int"
 				it should haveNbParameters 0
 				it should beVariadic false
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beAction "action3"
 				it should reply _
 				it should haveNbParameters 1
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(3) => [
+			a.members.get(3) => [
 				it should beAction "action4"
 				it should reply _
 				it should haveNbParameters 2
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "b"
 					it should haveType "java.lang.String"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(4) => [
+			a.members.get(4) => [
 				it should beAction "action5"
 				it should reply "double"
 				it should haveNbParameters 1
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(5) => [
+			a.members.get(5) => [
 				it should beAction "action6"
 				it should reply "java.lang.String"
 				it should haveNbParameters 2
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "b"
 					it should haveType "java.lang.String"
 					it should haveDefaultValue _
@@ -1936,15 +2002,259 @@ describe "General Syntax Reference" {
 			]
 		}
 
+		/* The section "[Exception Support](#ExceptionSupport)" shows how to write an exception handler
+		 * in the code. Sometimes, it is appropriate for code to catch exceptions that can occur within it.
+		 * In other cases, however, it is better to let a method further up the call stack handle the exception.
+		 * 
+		 * <p>If a function doesn't catch the checked exceptions that can occur within it, the function could
+		 * specify that it can throw these exceptions.
+		 * <note>This specification is optional since the SARL compiler determines the
+		 * exceptions that are not catched, and assumes that they are implicitly thrown outside the function.
+		 *
+		 * <p>The declaration of the thrown exceptions is done with the <code>throws</code> keyword, followed
+		 * by a list of thrown exception types. This declaration must be put between the list of formal
+		 * parameters and the function's code.
+		 *
+		 * <p>In the following example, the function <code>myaction</code> is defined without formal parameter
+		 * and returned value. This function indicates to its caller that it could throw an exception of
+		 * type <code>IllegalStateException</code>. 
+		 *  
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+		 */
+		 fact "Declare exceptions in the function prototype" {
+			var model = '''
+				def myaction throws IllegalStateException {
+				}
+			'''.parseSuccessfully(
+				"package io.sarl.docs.reference.gsr
+				agent A {",
+				// TEXT
+				"}"
+			)
+
+			model => [
+				it should havePackage "io.sarl.docs.reference.gsr"
+				it should haveNbImports 0
+				it should haveNbElements 1
+			]
+	
+			var a = (model.xtendTypes.get(0) => [
+				it should beAgent "A"
+				it should extend _
+				it should haveNbElements 1
+			]) as SarlAgent
+
+			a.members.get(0) => [
+				it should beAction "myaction"
+				it should reply _
+				it should haveNbParameters 0
+				it should beVariadic false
+				it should throwException 'java.lang.IllegalStateException'
+			]
+		 }
+
+		/* 
+		 * Generic functions are methods that introduce their own type parameters.
+		 * This is similar to declaring a
+		 * [generic type](./BasicObjectOrientedProgrammingSupportSpec.html#Define_a_Generic_Class),
+		 * but the type parameter's scope
+		 * is limited to the function where it is declared. 
+		 * Static and non-static generic functions are allowed.
+		 * 
+		 * <p>You can write a single generic method declaration that can be called with arguments of
+		 * different types. Based on the types of the arguments passed to the generic method,
+		 * the compiler handles each method call appropriately. Following are the rules to define
+		 * generic functions: <ul>
+		 * <li>All generic method declarations have a type parameter section written with
+		 *     the "with" or the bracket syntax.</li>
+		 * <li>Each type parameter section contains one or more type parameters separated by commas. 
+		 *     A type parameter, also known as a type variable, is an identifier that specifies a generic
+		 *     type name.</li>
+		 * <li>The type parameters can be used to declare the return type and act as placeholders for
+		 *     the types of the arguments passed to the generic method, which are known as actual type
+		 *     arguments.</li>
+		 * </ul>
+		 * 
+		 * <p>A generic method's body is declared like that of any other method.
+		 * 
+		 * <note>Type parameters can represent only reference types, not primitive types
+		 * (like `int`, `double` and `char`).</note>
+		 
+		 * <p>Two syntaxes are allowed for defining the type parameters of the actions:
+		 * the "with" syntax, and the bracket syntax.
+		 */
+		describe "Generic Function"{
+			
+			/**  
+			 * The "with" syntax for a generic function includes a type parameter, after the `with`
+			 * keyword, between the function's return type and the function's body.
+			 *
+			 * <p>In the following example, the function specifies a type <code>T</code>, which is used both
+			 * as type for the element parameter and the generic type of the Collection.
+			 *
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Definition with \"with\"" {
+				// Verify the URL in the upper section text.
+				"./BasicObjectOrientedProgrammingSupportSpec.html" should beAccessibleFrom this
+				//	
+				var model = '''
+					def addAndReturn(element : T, collection : Collection<T>) : T with T {
+					    collection.add(element);
+					    return element;
+					}
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.gsr
+					import java.util.Collection
+					agent A {",
+					// TEXT
+					"}"
+				)
+	
+				model => [
+					it should havePackage "io.sarl.docs.reference.gsr"
+					it should haveNbImports 1
+					it should haveNbElements 1
+				]
+		
+				var a = (model.xtendTypes.get(0) => [
+					it should beAgent "A"
+					it should extend _
+					it should haveNbElements 1
+				]) as SarlAgent
+	
+				a.members.get(0) => [
+					it should beAction "addAndReturn"
+					it should reply "T"
+					it should haveNbParameters 2
+					it should beVariadic false
+					(it as SarlAction).parameters.get(0) => [
+						it should beParameter "element"
+						it should haveType "T"
+						it should haveDefaultValue _
+					]
+					(it as SarlAction).parameters.get(1) => [
+						it should beParameter "collection"
+						it should haveType "java.util.Collection<T>"
+						it should haveDefaultValue _
+					]
+				]
+			}
+
+			/**  
+			 * The bracket syntax for a generic function includes a type parameter, inside angle brackets, and 
+			 * appears before the function's name.
+			 * 
+			 * <p>In the following example, the function specifies a type <code>T</code>, which is used both
+			 * as type for the element parameter and the generic type of the Collection.
+			 *
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Definition with Brackets" {
+				var model = '''
+					def <T> addAndReturn(element : T, collection : Collection<T>) : T {
+					    collection.add(element);
+					    return element;
+					}
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.gsr
+					import java.util.Collection
+					agent A {",
+					// TEXT
+					"}"
+				)
+	
+				model => [
+					it should havePackage "io.sarl.docs.reference.gsr"
+					it should haveNbImports 1
+					it should haveNbElements 1
+				]
+		
+				var a = (model.xtendTypes.get(0) => [
+					it should beAgent "A"
+					it should extend _
+					it should haveNbElements 1
+				]) as SarlAgent
+	
+				a.members.get(0) => [
+					it should beAction "addAndReturn"
+					it should reply "T"
+					it should haveNbParameters 2
+					it should beVariadic false
+					(it as SarlAction).parameters.get(0) => [
+						it should beParameter "element"
+						it should haveType "T"
+						it should haveDefaultValue _
+					]
+					(it as SarlAction).parameters.get(1) => [
+						it should beParameter "collection"
+						it should haveType "java.util.Collection<T>"
+						it should haveDefaultValue _
+					]
+				]
+			}
+
+			/*
+			 * There may be times when you'll want to restrict the kinds of types that are allowed to be
+			 * passed to a type parameter. For example, a method that operates on numbers might only want
+			 * to accept instances of Number or its subclasses. This is what bounded type parameters
+			 * are for.
+			 *
+			 * <p>To declare a bounded type parameter, list the type parameter's name, followed by the 
+			 * `extends` keyword, followed by its upper bound. 
+			 *
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			 fact "Bounded Type Parameters" {
+				var model = '''
+					def print(value : T) with T extends Number {
+					    System.out.println("Type = " + value.getClass)
+					    System.out.println("Value = " + value)
+					}
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.gsr
+					import java.util.Collection
+					agent A {",
+					// TEXT
+					"}"
+				)
+	
+				model => [
+					it should havePackage "io.sarl.docs.reference.gsr"
+					it should haveNbImports 1
+					it should haveNbElements 1
+				]
+		
+				var a = (model.xtendTypes.get(0) => [
+					it should beAgent "A"
+					it should extend _
+					it should haveNbElements 1
+				]) as SarlAgent
+	
+				a.members.get(0) => [
+					it should beAction "print"
+					it should reply _
+					it should haveNbParameters 1
+					it should beVariadic false
+					(it as SarlAction).parameters.get(0) => [
+						it should beParameter "value"
+						it should haveType "T"
+						it should haveDefaultValue _
+					]
+				]
+			 }
+
+		}
+
 		/* A variadic function is a function of indefinite arity: 
 		 * one which accepts a variable number of arguments.
 		 * 
-		 * SARL enables to define the last parameter of a function
+		 * <p>SARL enables to define the last parameter of a function
 		 * as variadic with the operator `*`.
 		 * This operator has an informal meaning similar to the
 		 * cardinality in UML: zero to many.
 		 * 
-		 * In other languages, such as Java and C++, the variadic
+		 * <p>In other languages, such as Java and C++, the variadic
 		 * operator is `...`
 		 *
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -1979,47 +2289,47 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "action1"
 				it should reply _
 				it should haveNbParameters 1
 				it should beVariadic true
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "v"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beAction "action2"
 				it should reply _
 				it should haveNbParameters 3
 				it should beVariadic true
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "boolean"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "b"
 					it should haveType "double"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(2) => [
+				(it as SarlAction).parameters.get(2) => [
 					it should beParameter "c"
 					it should haveType "int"
 					it should haveDefaultValue _
 				]
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beAction "calls"
 				it should reply _
 				it should haveNbParameters 0
@@ -2029,7 +2339,7 @@ describe "General Syntax Reference" {
 
 		/* SARL allows to specify a default value for a formal parameter.
 		 * 
-		 * When a default value is specified, it means that the caller of
+		 * <p>When a default value is specified, it means that the caller of
 		 * the action can skip to pass a value for the corresponding argument.
 		 * And, when the function is run, the default value is given to the
 		 * skipped argument.
@@ -2078,47 +2388,47 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 3
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "action1"
 				it should reply _
 				it should haveNbParameters 1
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "v"
 					it should haveType "int"
 					it should haveDefaultValue "5"
 				]
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beAction "action2"
 				it should reply _
 				it should haveNbParameters 3
 				it should beVariadic false
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "a"
 					it should haveType "boolean"
 					it should haveDefaultValue "true"
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "b"
 					it should haveType "double"
 					it should haveDefaultValue _
 				]
-				(it as Action).params.get(2) => [
+				(it as SarlAction).parameters.get(2) => [
 					it should beParameter "c"
 					it should haveType "int"
 					it should haveDefaultValue "7"
 				]
 			]
 
-			a.features.get(2) => [
+			a.members.get(2) => [
 				it should beAction "calls"
 				it should reply _
 				it should haveNbParameters 0
@@ -2159,23 +2469,23 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beAction "action"
 				it should reply _
 				it should haveNbParameters 2
 				it should beVariadic true
-				(it as Action).params.get(0) => [
+				(it as SarlAction).parameters.get(0) => [
 					it should beParameter "v"
 					it should haveType "int"
 					it should haveDefaultValue "5"
 				]
-				(it as Action).params.get(1) => [
+				(it as SarlAction).parameters.get(1) => [
 					it should beParameter "a"
 					it should haveType "float"
 					it should haveDefaultValue _
@@ -2185,19 +2495,54 @@ describe "General Syntax Reference" {
 
 	}
 
-	/* A simple name can refer to a field, variable or parameter. 
+	/* This section describes the syntax for using or calling the members
+	 * of an object.
+	 * 
+	 * <p>A simple name can refer to a field, variable or parameter. 
 	 * In addition, it can point to a method with zero argument since 
 	 * empty parentheses are optional.
+	 * 
+	 * <p>The rest of this section describes particular mechanisms for
+	 * calling the object members.
 	 */
-	describe "Field Access and Method Invocation" {
+	describe "Object Member Invocation" {
 		
-		/* If there is no field with the given name and also no method with 
+		/* The SARL language provides a very powerfull mecanism for calling members of an object as
+		 * properties of this object.
+		 * 
+		 * <p>Indeed, if there is no field with the given name and also no method with 
 		 * the name and zero parameters accessible, a simple name binds to a 
-		 * corresponding Java-Bean getter method if available:
+		 * corresponding Java-Bean getter method if available.
+		 * The getter method must have a name starting with one of the strings of
+		 * characters <code>"get"</code>, <code>"is"</code>, <code>"has"</code>, followed
+		 * by the given name.
+		 * 
+		 * <p>In the following example, two fields are defined: <code>prop1</code> and <code>prop2</code>.
+		 * As usual, these properties have a private scope, and the getter and setter functions must
+		 * be defined for enabling public scope access.
+		 * In the example, only the getter and setter functions for <code>prop2</code> are defined.
+		 * 
+		 * <p>In the function <code>getters</code>, four examples of calls are given:<ol>
+		 * <li><code>this.prop1</code>: this expression accesses directly to the field <code>prop1</code>;</li>
+		 * <li><code>this.prop2</code>: this expression accesses directly to the field <code>prop2</code>;</li>
+		 * <li><code>this.getProperty2</code>: this expression calls the getter function;</li>
+		 * <li><code>this.property2</code>: since there is no field with the name <code>property2</code>, and
+		 * a function is defined with the prefix <code>"get"</code> and the name, then the getter is called.</li>
+		 * </ol>
+		 * This last example illustrates the well-known property-access syntax.
+		 * 
+		 * <p>In the function <code>setters</code>, four examples of calls are given:<ol>
+		 * <li><code>this.prop1</code>: this expression sets directly to the field <code>prop1</code>;</li>
+		 * <li><code>this.prop2</code>: this expression sets directly to the field <code>prop2</code>;</li>
+		 * <li><code>this.setProperty2</code>: this expression calls the setter function;</li>
+		 * <li><code>this.property2</code>: since there is no field with the name <code>property2</code>, and
+		 * a function is defined with the prefix <code>"set"</code> and the name, then the setter is called.</li>
+		 * </ol>
+		 * This last example also illustrates the well-known property-access syntax.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
-		fact "Property Access"{
+		fact "Property Syntax"{
 			'''
 			agent A {
 				var prop1 : Object
@@ -2208,6 +2553,7 @@ describe "General Syntax Reference" {
 				def setProperty2(o : Object) {
 					this.prop2 = o
 				}
+				
 				def getters {
 					// Direct access to the property
 					println(this.prop1)
@@ -2216,43 +2562,14 @@ describe "General Syntax Reference" {
 					println(this.getProperty2)
 					println(this.property2)
 				}
+				
 				def setters {
 					// Direct access to the property
 					this.prop1 = 4
 					this.prop2 = new Object
 					// Use the setter
 					this.setProperty2(new Object)
-					this.setProperty2 = new Object
 					this.property2 = new Object
-				}
-			}
-			'''.parseSuccessfully(
-				"package io.sarl.docs.reference.gsr",
-				// TEXT
-				""
-			)
-		}
-
-		/* Like in Java the current object is bound to the keyword `this`.
-		 * This allows for either qualified field access or method invocations.
-		 * 
-		 * You can use the variable name `it` to get the same behavior for
-		 * any variable or parameter.
-		 * Moreover, the variable `it` is that it is allowed to
-		 * be shadowed. This is especially useful when used together with lambda
-		 * expressions.
-		 * 
-		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
-		 */
-		fact "Implicit Variables this and it"{
-			'''
-			agent A {
-				var a = 35
-				def example : int {
-					this.a = 123
-					
-					val it = new String("abc")
-					return length // translates to 'it.length()'
 				}
 			}
 			'''.parseSuccessfully(
@@ -2268,7 +2585,7 @@ describe "General Syntax Reference" {
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
-		fact "Static Access"{
+		fact "Static Access to Members"{
 			var model = '''
 				var a = Integer::TYPE
 				var b = Integer.TYPE
@@ -2285,19 +2602,19 @@ describe "General Syntax Reference" {
 				it should haveNbElements 1
 			]
 	
-			var a = (model.elements.get(0) => [
+			var a = (model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 2
-			]) as Agent
+			]) as SarlAgent
 
-			a.features.get(0) => [
+			a.members.get(0) => [
 				it should beVariable "a"
 				it should haveType _
 				it should haveInitialValue "java.lang.Integer.TYPE"
 			]
 
-			a.features.get(1) => [
+			a.members.get(1) => [
 				it should beVariable "b"
 				it should haveType _
 				it should haveInitialValue "java.lang.Integer.TYPE"
@@ -2308,7 +2625,7 @@ describe "General Syntax Reference" {
 		 * In many situations, it is correct for an expression to return `null`
 		 * if a receiver was `null`.
 		 * 
-		 * SARL supports the safe navigation operator `?`. to make such code
+		 * <p>SARL supports the safe navigation operator `?`. to make such code
 		 * better readable.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -2360,11 +2677,11 @@ describe "General Syntax Reference" {
 				it should haveNbElements 2
 			]
 	
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beAgent "A"
 				it should extend _
 				it should haveNbElements 1
-				(it as Agent).features.get(0) => [
+				(it as SarlAgent).members.get(0) => [
 					it should beAction "anAction"
 					it should reply _
 					it should haveNbParameters 0
@@ -2372,11 +2689,11 @@ describe "General Syntax Reference" {
 				]
 			]
 
-			model.elements.get(1) => [
+			model.xtendTypes.get(1) => [
 				it should beAgent "B"
 				it should extend "io.sarl.docs.reference.gsr.A"
 				it should haveNbElements 1
-				(it as Agent).features.get(0) => [
+				(it as SarlAgent).members.get(0) => [
 					it should beAction "anAction"
 					it should reply _
 					it should haveNbParameters 0
@@ -2385,127 +2702,127 @@ describe "General Syntax Reference" {
 			]
 		}
 
-	}
-
-	/* Constructor calls correspond to the calls of a constructor function for
-	 * an object.
-	 */ 
-	describe "Constructor Call" {
+		/* Constructor calls correspond to the calls of a constructor function for
+		 * an object.
+		 */ 
+		describe "Constructor Call" {
+			
+			/* Constructor calls have the same syntax as in Java. 
+			 * The only difference is that empty parentheses are optional.
+			 * If type arguments are omitted, they will be inferred from the current context similar to Java's 
+			 * diamond operator on generic method and constructor call.
+			 *  
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Instance Creation" {
+				var model = '''
+					var a = new Integer(345)
+					var b = new ArrayList<Integer>()
+					var c = new ArrayList<Integer>
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.gsr
+					import java.util.ArrayList
+					agent A {",
+					// TEXT
+					"}"
+				)
+	
+				model => [
+					it should havePackage "io.sarl.docs.reference.gsr"
+					it should haveNbImports 1
+					it should importClass "java.util.ArrayList"
+					it should haveNbElements 1
+				]
 		
-		/* Constructor calls have the same syntax as in Java. 
-		 * The only difference is that empty parentheses are optional.
-		 * If type arguments are omitted, they will be inferred from the current context similar to Java's 
-		 * diamond operator on generic method and constructor call.
-		 *  
-		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
-		 */
-		fact "Instance Creation" {
-			var model = '''
-				var a = new Integer(345)
-				var b = new ArrayList<Integer>()
-				var c = new ArrayList<Integer>
-			'''.parseSuccessfully(
-				"package io.sarl.docs.reference.gsr
-				import java.util.ArrayList
-				agent A {",
-				// TEXT
-				"}"
-			)
-
-			model => [
-				it should havePackage "io.sarl.docs.reference.gsr"
-				it should haveNbImports 1
-				it should importClass "java.util.ArrayList"
-				it should haveNbElements 1
-			]
+				var a = (model.xtendTypes.get(0) => [
+					it should beAgent "A"
+					it should extend _
+					it should haveNbElements 3
+				]) as SarlAgent
 	
-			var a = (model.elements.get(0) => [
-				it should beAgent "A"
-				it should extend _
-				it should haveNbElements 3
-			]) as Agent
-
-			a.features.get(0) => [
-				it should beVariable "a"
-				it should haveType _
-				it should haveInitialValue "java.lang.Integer.Integer"
-			]
-
-			a.features.get(1) => [
-				it should beVariable "b"
-				it should haveType _
-				it should haveInitialValue "java.util.ArrayList.ArrayList"
-			]
-			
-			a.features.get(2) => [
-				it should beVariable "c"
-				it should haveType _
-				it should haveInitialValue "java.util.ArrayList.ArrayList"
-			]
-		}
-
-		/* In the implementation of a constructor, it is possible to
-		 * call one of the inherited constructors.
-		 * The syntax is similar to Java: the `super` keyword
-		 * is used to represent the inherited constructor.
-		 * 
-		 * <importantnote> It is recommended typing the
-		 * two parentheses when invoking the default constructor of the super type.
-		 * Indeed, in some cases, typing `super` causes no side-effect that is an error.
-		 * </importantnote>
-		 * 
-		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
-		 */
-		fact "Inherited Constructor" {
-			var model = '''
-			new () {
-				super() // Call the inherited default constructor
-			}
-			new (param : Address) {
-				super(param) // Call the inherited constructor with a parameter
-			}
-			'''.parseSuccessfully(
-				"package io.sarl.docs.reference.gsr
-				import io.sarl.lang.core.Address
-				event E1
-				event E2 extends E1 {",
-				// TEXT
-				"}"
-			)
-			
-			model => [
-				it should havePackage "io.sarl.docs.reference.gsr"
-				it should haveNbImports 1
-				it should importClass "io.sarl.lang.core.Address"
-				it should haveNbElements 2
-			]
+				a.members.get(0) => [
+					it should beVariable "a"
+					it should haveType _
+					it should haveInitialValue "java.lang.Integer.Integer"
+				]
 	
-			model.elements.get(0) => [
-				it should beEvent "E1"
-				it should extend _
-				it should haveNbElements 0
-			]
-
-			model.elements.get(1) => [
-				it should beEvent "E2"
-				it should extend "io.sarl.docs.reference.gsr.E1"
-				it should haveNbElements 2
-				(it as Event).features.get(0) => [
-					it should beConstructor _
-					it should haveNbParameters 0
-					it should beVariadic false 
-				] 
-				(it as Event).features.get(1) => [
-					it should beConstructor _
-					it should haveNbParameters 1
-					it should beVariadic false
-					(it as Constructor).params.get(0) => [
-						it should beParameter "param"
-						it should haveType "io.sarl.lang.core.Address"
-						it should haveDefaultValue _
-					]
-				] 
-			]
+				a.members.get(1) => [
+					it should beVariable "b"
+					it should haveType _
+					it should haveInitialValue "java.util.ArrayList.ArrayList"
+				]
+				
+				a.members.get(2) => [
+					it should beVariable "c"
+					it should haveType _
+					it should haveInitialValue "java.util.ArrayList.ArrayList"
+				]
+			}
+	
+			/* In the implementation of a constructor, it is possible to
+			 * call one of the inherited constructors.
+			 * The syntax is similar to Java: the `super` keyword
+			 * is used to represent the inherited constructor.
+			 * 
+			 * <importantnote> It is recommended typing the
+			 * two parentheses when invoking the default constructor of the super type.
+			 * Indeed, in some cases, typing `super` causes no side-effect that is an error.
+			 * </importantnote>
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Inherited Constructor" {
+				var model = '''
+				new () {
+					super() // Call the inherited default constructor
+				}
+				new (param : Address) {
+					super(param) // Call the inherited constructor with a parameter
+				}
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.gsr
+					import io.sarl.lang.core.Address
+					event E1
+					event E2 extends E1 {",
+					// TEXT
+					"}"
+				)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.gsr"
+					it should haveNbImports 1
+					it should importClass "io.sarl.lang.core.Address"
+					it should haveNbElements 2
+				]
+		
+				model.xtendTypes.get(0) => [
+					it should beEvent "E1"
+					it should extend _
+					it should haveNbElements 0
+				]
+	
+				model.xtendTypes.get(1) => [
+					it should beEvent "E2"
+					it should extend "io.sarl.docs.reference.gsr.E1"
+					it should haveNbElements 2
+					(it as SarlEvent).members.get(0) => [
+						it should beConstructor _
+						it should haveNbParameters 0
+						it should beVariadic false 
+					] 
+					(it as SarlEvent).members.get(1) => [
+						it should beConstructor _
+						it should haveNbParameters 1
+						it should beVariadic false
+						(it as XtendConstructor).parameters.get(0) => [
+							it should beParameter "param"
+							it should haveType "io.sarl.lang.core.Address"
+							it should haveDefaultValue _
+						]
+					] 
+				]
+			}
+	
 		}
 
 	}
@@ -2518,22 +2835,22 @@ describe "General Syntax Reference" {
 	 * can either be passed in after opening the parentheses or before the 
 	 * method call. For example, given a method:
 	 *  
-	 *     def removeVowels (String s) {
-	 *         s.replaceAll("[aeiouAEIOU]", "")
+	 *     def removeVowels (s : String) {
+	 *         s.replaceAll("[aeiouyAEIOUY]", "")
 	 *     }
 	 *
 	 * 
-	 * We can call this method either like in Java:
+	 * <p>We can call this method either like in Java:
 	 *  
 	 *     removeVowels("Hello")
 	 *
 	 * 
-	 * or as an extension method of String:
+	 * <p>or as an extension method of String:
 	 *  
 	 *     "Hello".removeVowels
 	 */
 	describe "Extension Methods"{
- 
+		
 		/*
 		 * You can import static methods as extensions, directly call the 
 		 * imported static methods on our list objects:
@@ -2541,6 +2858,21 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Import static extension methods"{
+			parseSuccessfully("
+			package io.sarl.docs.reference.gsr
+			class C1 {
+				def removeVowels (s : String) {
+					s.replaceAll(\"[aziouyAEIOUY]+\", \"\")
+				}
+				def caller1 {
+					removeVowels(\"Hello\")
+				}
+				def caller2 {
+					\"Hello\".removeVowels
+				}
+			}
+			")
+			//
 			'''
 			import static extension java.util.Collections.*
 			agent A {
@@ -2562,7 +2894,7 @@ describe "General Syntax Reference" {
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
-		fact "Local extension methods."{
+		fact "Local extension methods"{
 			'''
 				// Define an extension method for List
 				def hasOneElement(list : List<?>) : boolean {
@@ -2580,11 +2912,57 @@ describe "General Syntax Reference" {
 				"}")
 		}
 		
+		/*
+		 * By adding the `extension` keyword to a field, a local variable or a parameter declaration, its
+		 * instance methods become extension methods.
+		 * 
+		 * <caution>The `extension` keyword must be always written just before the `var`|`var` keywords for
+		 * fields and local variables, or before the parameter's name.</caution>
+		 * 
+		 * <caution>In the case of an extension field, you must give the type of the field. Indeed, the type resolved
+		 * of SARL cannot infer the type of the field yet.</caution>
+		 * 
+		 * <p>In the following example, three functions are defined for illustrating the three types of
+		 * extension providers.
+		 * 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+		 */
+		fact "Extension Provider" {
+			'''
+				class ExtensionProviderExamples {
+					//
+					// Example of an extension provider on a class field.
+					//
+					extension var list : ArrayList<String> = newArrayList
+					def extensionFieldExample(value : String) : boolean {
+						value.contains // calls this.list.contains(value)
+					}
+					//
+					// Example of an extension provider on a method parameter.
+					//
+					def extensionParameterExample(value : String, extension o : ArrayList<String>) : boolean {
+						value.contains // calls o.contains(value)
+					}
+					//
+					// Example of an extension provider on a local variable.
+					//
+					def extensionLocalVariableExample(value : String) : boolean {
+						extension var o : ArrayList<String> = newArrayList
+						value.contains // calls o.contains(value)
+					}
+				}
+			'''.parseSuccessfully(
+				"package io.sarl.docs.reference.gsr
+				import java.util.ArrayList",
+				// TEXT,
+				"")
+		}
+
 		/* The `String` class is extended with the following functions, where
 		 * s is a `String`.
 		 * 
 		 * <table><thead>
-		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * <tr><th>Method</th><th>Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>s.isNullOrEmpty()</td><td>Replies if s is null or empty.</td></tr>
 		 * <tr><td>s.toFirstLower()</td><td>Replies a copy of s in which the first letter is lowercase.</td></tr>
@@ -2615,7 +2993,7 @@ describe "General Syntax Reference" {
 		 * a and b are numbers.
 		 * 
 		 * <table><thead>
-		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * <tr><th>Method</th><th>Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a.bitwiseAnd(b)</td><td>The bitwise <code>and</code> operation. This is the equivalent
 		 *                                 to the java <code>&</code> operator.</td></tr>
@@ -2655,7 +3033,7 @@ describe "General Syntax Reference" {
 		 * a and b are `Boolean` objects.
 		 * 
 		 * <table><thead>
-		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * <tr><th>Method</th><th>Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a.xor(b)</td><td>A logical <code>xor</code>. This is the equivalent to the java
 		 *                          <code>^</code> operator.</td></tr>
@@ -2680,7 +3058,7 @@ describe "General Syntax Reference" {
 		 * a and b are an `Object`.
 		 * 
 		 * <table><thead>
-		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * <tr><th>Method</th><th>Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>a.identityEquals(b)</td><td>Equivalent to: <code>a === b</code></td></tr>
 		 * </tbody></table>
@@ -2704,7 +3082,7 @@ describe "General Syntax Reference" {
 		 * i is an instance of `Iterable`, and ii is an instanceof of `Iterable<Iterable>`.
 		 *  
 		 * <table><thead>
-		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * <tr><th>Method</th><th>Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>i.drop(n)</td><td>Returns a view on this iterable object that provides all elements except the first n entries.</td></tr>
 		 * <tr><td>i.dropWhile [e | predicate]</td><td>Returns an Iterable containing all elements starting from the first
@@ -2992,14 +3370,14 @@ describe "General Syntax Reference" {
 
 		/* The `Iterator` classes is extended with a collection of functions.
 		 * 
-		 * The same functions as for the `Iterable` class are provided (see above), except
+		 * <p>The same functions as for the `Iterable` class are provided (see above), except
 		 * `flatten`, `sort`, `sortBy`, `sortWith`.
 		 * 
-		 * Additionnaly, the following functions extends the iterator type, where
+		 * <p>Additionnaly, the following functions extends the iterator type, where
 		 * i is an instance of `Iterator`.
 		 *  
 		 * <table><thead>
-		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * <tr><th>Method</th><th>Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>i.toIterable</td><td>Wraps an iterator in an Iterable.</td></tr>
 		 * </tbody></table>
@@ -3024,7 +3402,7 @@ describe "General Syntax Reference" {
 		 * l is a `List`.
 		 * 
 		 * <table><thead>
-		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * <tr><th>Method</th><th>Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>l.immutableCopy</td><td>Returns an immutable copy of the specified list.</td></tr>
 		 * <tr><td>l.unmodifiableView</td><td>Returns an unmodifiable view of the specified list.</td></tr>
@@ -3094,7 +3472,7 @@ describe "General Syntax Reference" {
 		 * s is a `Set`.
 		 * 
 		 * <table><thead>
-		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * <tr><th>Method</th><th>Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>s.immutableCopy</td><td>Returns an immutable copy of the specified set.</td></tr>
 		 * <tr><td>s.unmodifiableView</td><td>Returns an unmodifiable view of the specified set.</td></tr>
@@ -3120,21 +3498,36 @@ describe "General Syntax Reference" {
 		}
 
 		/* The `Map` data structure is extended with the following functions, where
-		 * m is a `Map`.
+		 * m, m1 are instances of `Map`. p is an instance of `Pair`. k is a key instance, and
+		 * ks is an iterable on keys. 
 		 * 
 		 * <table><thead>
-		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * <tr><th>Method</th><th>Semantic</th></tr>
 		 * </thead><tbody>
-		 * <tr><td>m.filter [k,v | true]</td><td>Returns a filtered live view on top of the original map.
-		 *                                       Changes to one affect the other.
-		 *                                       The replied map contains the elements of m for which
-		 *                                       the given function has replied true.</td></tr>
+		 * <tr><td>m-&gt;k</td><td>Replies the value associated to the given key in the map.</td></tr>
+		 * <tr><td>m + m1</td><td>Merge the two maps for obtaining a new map.</td></tr>
+		 * <tr><td>m + p</td><td>Add the entries of the input map into the output map.</td></tr>
+		 * <tr><td>m += m1</td><td>Add the entries of the input map into the output map.
+		 *                                    If a key in the input map already exists in the output map,
+		 *                                    its value is replaced in the output map by the value from
+		 *                                    the input map.</td></tr>
+		 * <tr><td>m += p</td><td>Add the given pair into the map. If the pair key already exists in the map, 
+		 *                        its value is replaced by the value in the pair, and the old value in the
+		 *                        map is returned.</td></tr>
+		 * <tr><td>m - k</td><td>Replies in a new map the elements of the given map except the pair with the given key.</td></tr>
+		 * <tr><td>m - ks</td><td>Replies the elements of the given map except the pairs with the given keys.</td></tr>
+		 * <tr><td>m - m1</td><td>Replies the elements of the left map without the pairs in the right map.</td></tr>
+		 * <tr><td>m -= k</td><td>emove a key (and the associated value) from the given map.</td></tr>
+		 * <tr><td>m -= ks</td><td>Remove the pairs that have there key equals to the values in the given iterable.</td></tr>
+		 * <tr><td>m.filter [k,v | boolean value]</td><td>Returns a filtered live view on top of the original map.
+		 *                                                Changes to one affect the other.
+		 *                                                The replied map contains the elements of m for which
+		 *                                                the given function has replied true.</td></tr>
 		 * <tr><td>m.forEach [k,v | statements]<br/>
 		 *         m.forEach [k,v,c:int | statements]</td><td>Applies the given procedure for each key-value pair
 		 *                                              of the given map. c is the loop counter, starting with
 		 *                                              0 for the first pair.</td></tr>
 		 * <tr><td>m.immutableCopy</td><td>Returns an immutable copy of the specified map.</td></tr>
-		 * <tr><td>m.unmodifiableView</td><td>Returns an unmodifiable view of the specified map.</td></tr>
 		 * <tr><td>m.mapValues [v | transformation]</td><td>Returns a map that performs the given transformation
 		 *                                                  for each value of original when requested.
 		 *                                                  The mapping is done lazily. That is, subsequent access of
@@ -3143,6 +3536,8 @@ describe "General Syntax Reference" {
 		 *                                                  such as iteration order, are left intact. Changes in the
 		 *                                                  original map are reflected in the result map. The results
 		 *                                                  supports removal if the original map supports removal.</td></tr>
+		 * <tr><td>m.union(m1)</td><td>Replies a view on the merging of the two given maps.</td></tr>
+		 * <tr><td>m.unmodifiableView</td><td>Returns an unmodifiable view of the specified map.</td></tr>
 		 * </tbody></table>
 		 * 
 		 * @filter(.*) 
@@ -3150,29 +3545,57 @@ describe "General Syntax Reference" {
 		fact "Map extension" {
 			'''
 			package io.sarl.docs.reference.gsr
+			import static io.sarl.lang.scoping.batch.SARLMapExtensions.*
 			import java.util.Map
 			agent A {
-				var m : Map<String, Integer>
-				var r1 : Map<String, Integer>
-				var r2 : Map<String, Double>
-				def doNothing {}
-				def example0 : Object {
-					r1 = m.filter [k,v | k == "a"]
+				def checkMapsTo(m : Map<String, Integer>, k : String) : Integer {
+					m->k
 				}
-				def example1_a : void {
-					m.forEach [k,v | doNothing]
+				def checkPlusMap(m1 : Map<String, Integer>, m2 : Map<String, Integer>) : Map<String, Integer> {
+					m1 + m2
 				}
-				def example1_b : void {
-					m.forEach [k,v,c | doNothing]
+				def checkPlusPair(m : Map<String, Integer>, p : Pair<String, Integer>) : Map<String, Integer> {
+					m + p
 				}
-				def example2 : Object {
-					r1 = m.immutableCopy
+				def checkAddMap(m1 : Map<String, Integer>, m2 : Map<String, Integer>) : void {
+					m1 += m2
 				}
-				def example3 : Object {
-					r1 = m.unmodifiableView
+				def checkAddPair(m : Map<String, Integer>, p : Pair<String, Integer>) : void {
+					m += p
 				}
-				def example4 : Object {
-					r2 = m.mapValues [v | v.doubleValue]
+				def checkMinusPair(m : Map<String, Integer>, k : String) : Map<String, Integer> {
+					m - k
+				}
+				def checkMinusPairs(m : Map<String, Integer>, ks : Iterable<String>) : Map<String, Integer> {
+					m - ks
+				}
+				def checkMinusMap(m1 : Map<String, Integer>, m2 : Map<String, Integer>) : Map<String, Integer> {
+					m1 - m2
+				}
+				def checkRemovePair(m : Map<String, Integer>, k : String) : void {
+					m -= k
+				}
+				def checkRemovePairs(m : Map<String, Integer>, ks : Iterable<String>) : void {
+					m -= ks
+				}
+				def checkFilter(m : Map<String, Integer>) : Map<String, Integer> {
+					m.filter [k,v | true]
+				}
+				def checkForEach(m : Map<String, Integer>) : void {
+					val i = new StringBuffer
+					m.forEach [k,v | i.append(v)]
+				}
+				def checkImmutableCopy(m : Map<String, Integer>) : Map<String, Integer> {
+					m.immutableCopy
+				}
+				def checkMapValues(m : Map<String, Integer>) : Map<String, Integer> {
+					m.mapValues [it + 1]
+				}
+				def checkUnion(m1 : Map<String, Integer>, m2 : Map<String, Integer>) : Map<String, Integer> {
+					m1.union(m2)
+				}
+				def checkUnmodifiableView(m : Map<String, Integer>) : Map<String, Integer> {
+					m.unmodifiableView
 				}
 			}
 			'''.parseSuccessfully
@@ -3184,17 +3607,17 @@ describe "General Syntax Reference" {
 		 * 		var proc : () => void
 		 * 		proc = [ statements ]
 		 * 
-		 * A function is a lambda expression replying a value. For example, the following
+		 * <p>A function is a lambda expression replying a value. For example, the following
 		 * code is defining a function without parameter and replying an integer:
 		 *
 		 * 		var func : () => int
 		 * 		func = [ 1 ]
 		 * 
-		 * For the procedures/functions with 1 to 6 formal parameters, the following function is defined below,
+		 * <p>For the procedures/functions with 1 to 6 formal parameters, the following function is defined below,
 		 * where f is the procedure/function and p is the first parameter of proc.
 		 * 
 		 * <table><thead>
-		 * <tr><td>Method</td><td>Semantic</td></tr>
+		 * <tr><th>Method</th><th>Semantic</th></tr>
 		 * </thead><tbody>
 		 * <tr><td>f.curry(p)</td><td>If f has n formal parameters, the curly function replies
 		 *                               a procedure/function with (n-1) parameters. This replied
@@ -3214,57 +3637,96 @@ describe "General Syntax Reference" {
 		fact "Procedure and Function extensions" {
 			'''
 			package io.sarl.docs.reference.gsr
-			import org.eclipse.xtext.xbase.lib.Procedures.*
-			import org.eclipse.xtext.xbase.lib.Functions.*
+			import org.eclipse.xtext.xbase.lib.Procedures
+			import org.eclipse.xtext.xbase.lib.Functions
 			agent A {
 				var n : Integer
 				def example0_0 {
-					var cproc : Procedure1<Integer>
+					var cproc : Procedures.Procedure1<Integer>
 					cproc.curry(n).apply
 				}
 				def example0_1 {
-					var cproc : Procedure2<Integer,Integer>
+					var cproc : Procedures.Procedure2<Integer,Integer>
 					cproc.curry(n).apply(1)
 				}
 				def example0_2 {
-					var cproc : Procedure3<Integer,Integer,Integer>
+					var cproc : Procedures.Procedure3<Integer,Integer,Integer>
 					cproc.curry(n).apply(1,2)
 				}
 				def example0_3 {
-					var cproc : Procedure4<Integer,Integer,Integer,Integer>
+					var cproc : Procedures.Procedure4<Integer,Integer,Integer,Integer>
 					cproc.curry(n).apply(1,2,3)
 				}
 				def example0_4 {
-					var cproc : Procedure5<Integer,Integer,Integer,Integer,Integer>
+					var cproc : Procedures.Procedure5<Integer,Integer,Integer,Integer,Integer>
 					cproc.curry(n).apply(1,2,3,4)
 				}
 				def example0_5 {
-					var cproc : Procedure6<Integer,Integer,Integer,Integer,Integer,Integer>
+					var cproc : Procedures.Procedure6<Integer,Integer,Integer,Integer,Integer,Integer>
 					cproc.curry(n).apply(1,2,3,4,5)
 				}
 				def example1_0 : Integer {
-					var cfunc : Function1<Integer,Integer>
+					var cfunc : Functions.Function1<Integer,Integer>
 					cfunc.curry(n).apply
 				}
 				def example1_1 : Integer {
-					var cfunc : Function2<Integer,Integer,Integer>
+					var cfunc : Functions.Function2<Integer,Integer,Integer>
 					cfunc.curry(n).apply(1)
 				}
 				def example1_2 : Integer {
-					var cfunc : Function3<Integer,Integer,Integer,Integer>
+					var cfunc : Functions.Function3<Integer,Integer,Integer,Integer>
 					cfunc.curry(n).apply(1,2)
 				}
 				def example1_3 : Integer {
-					var cfunc : Function4<Integer,Integer,Integer,Integer,Integer>
+					var cfunc : Functions.Function4<Integer,Integer,Integer,Integer,Integer>
 					cfunc.curry(n).apply(1,2,3)
 				}
 				def example1_4 : Integer {
-					var cfunc : Function5<Integer,Integer,Integer,Integer,Integer,Integer>
+					var cfunc : Functions.Function5<Integer,Integer,Integer,Integer,Integer,Integer>
 					cfunc.curry(n).apply(1,2,3,4)
 				}
 				def example1_5 : Integer {
-					var cfunc : Function6<Integer,Integer,Integer,Integer,Integer,Integer,Integer>
+					var cfunc : Functions.Function6<Integer,Integer,Integer,Integer,Integer,Integer,Integer>
 					cfunc.curry(n).apply(1,2,3,4,5)
+				}
+			}
+			'''.parseSuccessfully
+		}
+
+		/* The SARL language provides extension functions for computing times and durations.
+		 * In the following table, x is a long integer number.
+		 * 
+		 * <table><thead>
+		 * <tr><th>Method</th><th>Semantic</th></tr>
+		 * </thead><tbody>
+		 * <tr><td>x.milliseconds</td><td>Convert x milliseconds to milliseconds.</td></tr>
+		 * <tr><td>x.seconds</td><td>Convert x seconds to milliseconds.</td></tr>
+		 * <tr><td>x.minutes</td><td>Convert x minutes to milliseconds.</td></tr>
+		 * <tr><td>x.hours</td><td>Convert x hours to milliseconds.</td></tr>
+		 * <tr><td>x.weeks</td><td>Convert x weeks to milliseconds.</td></tr>
+		 * </tbody></table>
+		 * 
+		 * @filter(.*) 
+		 */
+		fact "Time computation extension" {
+			'''
+			package io.sarl.docs.reference.gsr
+			import java.util.Set
+			agent A {
+				def example0 : Object {
+					1234.milliseconds
+				}
+				def example1 : Object {
+					1234.seconds
+				}
+				def example2 : Object {
+					1234.minutes
+				}
+				def example3 : Object {
+					1234.hours
+				}
+				def example4 : Object {
+					1234.weeks
 				}
 			}
 			'''.parseSuccessfully
@@ -3306,7 +3768,7 @@ describe "General Syntax Reference" {
 		
 		/* The lambda above has one parameter called e which is of type `ActionEvent`.
 		 *
-		 * You do not have to specify the type explicitly because it can be inferred from the context.
+		 * <p>You do not have to specify the type explicitly because it can be inferred from the context.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
@@ -3373,7 +3835,7 @@ describe "General Syntax Reference" {
 		/* When the last argument of a method call is a lambda, it can be passed right after 
 		 * the argument list.
 		 * 
-		 * For instance if you want to sort some strings by their length, you could write
+		 * <p>For instance if you want to sort some strings by their length, you could write
 		 * the following two codes.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -3408,7 +3870,7 @@ describe "General Syntax Reference" {
 		 * or `Procedures`. It is a procedure if the return type is `void`,
 		 * otherwise it is a function.
 		 * 
-		 * The syntax for specifying the type of a lambda is: `(parameter types) => return type`
+		 * <p>The syntax for specifying the type of a lambda is: `(parameter types) => return type`
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
@@ -3485,8 +3947,8 @@ describe "General Syntax Reference" {
 			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
-					var e1
-					var e2
+					var e1 : Object
+					var e2 : Object
 					def example {",
 				// TEXT
 				"} }"
@@ -3508,12 +3970,12 @@ describe "General Syntax Reference" {
 		 * if the expression evaluates to `true`. If it is not of type boolean it is 
 		 * compared to the value of the main expression using the operator `==`.
 		 * 
-		 * If a case is a match, the case expression after the colon is evaluated and is 
+		 * <p>If a case is a match, the case expression after the colon is evaluated and is 
 		 * the result of the whole switch expression. Note that there is no need for 
 		 * a `break` keyword, as in Java: the case following the matching case is
 		 * never evaluated.
 		 * 
-		 * The main expression (parameter of `switch`) can also be a computed value instead 
+		 * <p>The main expression (parameter of `switch`) can also be a computed value instead 
 		 * of a field or variable.
 		 * 
 		 * <importantnote> 
@@ -3611,9 +4073,9 @@ describe "General Syntax Reference" {
 		/* The for loop is used to execute a certain expression for each 
 		 * element of an array or an instance of `Iterable`. 
 		 * 
-		 * The for's variable is local and final, hence cannot be updated.
+		 * <p>The for's variable is local and final, hence cannot be updated.
 		 * 
-		 * The type of a for loop is `void`. The type of the local
+		 * <p>The type of a for loop is `void`. The type of the local
 		 * variable can be inferred from the 
 		 * iterable or array that is processed.
 		 * 
@@ -3711,12 +4173,15 @@ describe "General Syntax Reference" {
 
 	/* SARL supports exception throwing and catching.
 	 * The mechanism is similar to the one of Java.
+	 * 
+	 * <p>For defining the exceptions that may be thrown by a function,
+	 * please see [how to declare exceptions in a function prototype](#DeclareExceptionsInTheFunctionPrototype).
 	 */
 	describe "Exception Support" {
 		
-		/* Throwing objects of type `Throwable` up the call stack has the same semantics
-		 * and syntax as in Java see 
-		 * [Java Language Specification](http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.18)). 
+		/* Throwing objects of type `Throwable` and the `throw` keyword have the same semantics
+		 * and syntax as in Java, see 
+		 * [Java Language Specification](http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.18). 
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
@@ -3730,6 +4195,8 @@ describe "General Syntax Reference" {
 				// TEXT
 				"} }"
 			)
+			"#DeclareExceptionsInTheFunctionPrototype" should beAccessibleFrom this
+			"http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.18" should beURL _
 		}
 		
 		/* The try-catch-finally expression is used to handle exceptional situations. 
@@ -3857,9 +4324,9 @@ describe "General Syntax Reference" {
 	 * Release: %sarlspecreleasedate%
 	 * 
 	 * 
-	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
 	 * 
-	 * Licensed under the Apache License, Version 2.0;
+	 * <p>Licensed under the Apache License, Version 2.0;
 	 * you may not use this file except in compliance with the License.
 	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *

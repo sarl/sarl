@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 import java.util.Map;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 
@@ -40,6 +43,7 @@ public interface BuiltinCapacitiesProvider {
 	 * @param agent - the agent for which the built-in capacities must be retreived.
 	 * @return the built-in capacities for the given agent.
 	 */
+	@Pure
 	Map<Class<? extends Capacity>, Skill> getBuiltinCapacities(Agent agent);
 
 }

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,18 +56,18 @@ describe "Runtime Environment FAQ" {
 			 * in Java 1.7. Janus enables developers to quickly create 
 			 * web, enterprise and desktop agent-based applications.
 			 *  
-			 * It provides a comprehensive set of features to develop, 
+			 * <p>__Janus is an agent execution platform not an agent-oriented language.__
+			 * 
+			 * <p>It provides a comprehensive set of features to develop, 
 			 * run, display and monitor agent-based applications.
 			 *  
-			 * Janus-based applications can be distributed across a network. 
+			 * <p>Janus-based applications can be distributed across a network. 
 			 * Janus could be used as an agent-oriented platform, an 
 			 * organizational platform, and/or a holonic platform. It 
 			 * also natively manages the concept of recursive agents and 
 			 * holons.
 			 * 
-			 * __Janus is a platform not a language.__
-			 * 
-			 * Official website: [www.janusproject.io](http://www.janusproject.io)
+			 * <p>Official website: [www.janusproject.io](http://www.janusproject.io)
 			 * 
 			 * @filter(.*) 
 			 */
@@ -94,13 +94,18 @@ describe "Runtime Environment FAQ" {
 			 * [milestones' page](https://github.com/janus-project/janusproject/milestones) on
 			 * the Github web site.
 			 * 
-			 * The release planning of the Janus multi-agent platform is following
+			 * <p>The versions of the latest stable and development releases are displayed on
+			 * [this page](http://maven.janusproject.io/VERSION.txt).
+			 * 
+			 * <p>The release planning of the Janus multi-agent platform is following
 			 * the [planning of SARL](https://github.com/sarl/sarl/milestones).
+			 * 
 			 * 
 			 * @filter(.*) 
 			 */
 			fact "Where can I found information on the release planning of Janus?" {
 				"https://github.com/janus-project/janusproject/milestones" should beURL _
+				"http://maven.janusproject.io/VERSION.txt" should beURL _
 				"https://github.com/sarl/sarl/milestones" should beURL _
 			}
 
@@ -112,12 +117,12 @@ describe "Runtime Environment FAQ" {
 
 			/* The [Janus runtime platform](http://www.janusproject.io)
 			 * is a Java application. Every operating system which has 
-			 * a compatible Java Virtual Machine (at least with the %compilerlevel%
-			 * standard) with Janus may be used to run it. 
+			 * a Java Virtual Machine with at least with the %compilerlevel%
+			 * standard may be used to run Janus. 
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Does my operating system is compatible with Janus?" {
+			fact "Is my operating system compatible with Janus?" {
 				"http://www.janusproject.io" should beURL _
 				// The checks are valid only if the macro replacements were done.
 				// The replacements are done by Maven.
@@ -129,8 +134,9 @@ describe "Runtime Environment FAQ" {
 			}
 
 			/* Janus requires the JRE and the JDK %compilerlevel% or higher to run and compile.
-			 * Note that if you plan to create Android applications, you must 
-			 * configure your JDK to produce 1.6 class files from %compilerlevel% Java code. 
+			 * Note that if you plan to create Android applications, you may 
+			 * configure your JDK to produce 1.6 class files from %compilerlevel% Java code,
+			 * depending of the current supported standard on Android platforms.
 			 * 
 			 * @filter(.*) 
 			 */
@@ -162,7 +168,7 @@ describe "Runtime Environment FAQ" {
 			 * Eclipse environment, OR when the installed SRE is not compatible with the installed
 			 * version of the SARL tools, which are embedded in Eclipse.
 			 *
-			 * For solving this problem, you must download the latest
+			 * <p>For solving this problem, you must download the latest
 			 * [Janus platform](http://www.janusproject.io), and install it in your Eclipse
 			 * (Menu <code>Window&gt; Preferences&gt; SARL&gt; Installed SREs</code>).
 			 * 
@@ -178,22 +184,61 @@ describe "Runtime Environment FAQ" {
 				propertyFile should haveProperty "preference.installedSREs" -> "Installed SREs"
 			}
 
+			/* This error occurs when the SARL Runtime Environment (SRE) has a version lower than
+			 * the version of the SARL tools, which are embedded in the Eclipse IDE.
+			 * This difference of version may cause problems during the execution of your agents, since
+			 * the capacities' definitions may not be the same.
+			 *
+			 * <p>For solving this problem, you must download the version of the SARL Runtime Environment (SRE)
+			 * that is implementing the version of the SARL specification that you're using on Eclipse IDE.
+			 * For the Janus platform, the versions of the latest stable and development releases are displayed on
+			 * [this page](http://maven.janusproject.io/VERSION.txt).
+			 * For determining if the Janus platform implements the correct version of the SARL specification,
+			 * please read the explanation  on [how Janus version numbers are built](http://www.janusproject.io/#versionnumber).
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Error: \"Incompatible SRE with SARL 1.1.1.1. Version must be lower than 0.0.0.\"" {
+				"http://maven.janusproject.io/VERSION.txt" should beURL _
+				"http://www.janusproject.io/#versionnumber" should beURL _
+			}
+
 			/* When the Janus platform cannot find the class file for the start-up agent, it
 			 * displays the error message <code>"Agent class not found"</code>.
 			 *
-			 * For resolving this problem, you should child if: <ul>
+			 * <p>For resolving this problem, you should check if: <ul>
 			 * <li>the class with the given name exists in the application's class path.</li>
 			 * <li>the class name is given as the first command-line argument to your application.</li>
 			 * <li>the class with the given name is a subtype of <code>Agent</code>.</li>
 			 * </ul>
 			 * 
-			 * For getting the arguments given to Janus, you could launch Janus with the command line option:
+			 * <p>For showing the arguments given to Janus, you could launch Janus with the command line option:
 			 * <code>--cli</code>. This option stops Janus after displaying the command line arguments
 			 * (including the <code>--cli</code> option).
 			 * 
 			 * @filter(.*) 
 			 */
 			fact "Error: \"Agent class not found.\"" {
+				true
+			}
+
+			/* When installing Janus as an SRE in the Eclipse interface, the plugin loads the Jar file of the
+			 * SRE with the default API.
+			 * The Jar archiver uses the default file encoding of the operating system.
+			 * On Linux and MacOS 10, it is almost UTF-8. On Windows, it is Latin1. And on MacOS (before 10),
+			 * it is Mac-Roman.
+			 *
+			 * <p>Unfortunately, the Janus Jar file is generated on a Linux operating system (UTF-8).
+			 * When the Java virtual machine tries to uncompress and use the content of the Jar, it
+			 * complains about an invalid charset format.
+			 * 
+			 * <p>For solving this issue, you could launch your Eclipse with the command line option
+			 * <code>-Dfile.encoding=UTF-8</code>, which is forcing the Eclipse product to consider the
+			 * file as encoded with the UTF-8 charset.
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Error: \"Invalid byte 2 of 4-byte UTF-8 sequence.\"" {
 				true
 			}
 

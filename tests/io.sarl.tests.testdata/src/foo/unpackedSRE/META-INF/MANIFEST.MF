@@ -7,5 +7,5 @@ Archiver-Version: Plexus Archiver
 
 Name: SARL-Runtime-Environment
 SRE-Name: My SRE 2
-SARL-Spec-Version: 1.0
+SARL-Spec-Version: 0.3
 Standalone-SRE: false

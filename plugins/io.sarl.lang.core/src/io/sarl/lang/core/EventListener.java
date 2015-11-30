@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 /**
  * Entity capable listening to events inside an Interaction {@link Space}.
  *
- * {@link Space}s in SARL are event driven. Most of the time,
+ * <p>{@link Space}s in SARL are event driven. Most of the time,
  * {@link EventListener}s in a {@link Space} will be {@link Agent}s. However,
  * any entity implementing the {@link EventListener} can interact inside an
  * {@link EventSpace} (e.g. UI)

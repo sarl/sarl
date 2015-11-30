@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,20 +20,25 @@
  */
 package io.sarl.lang.core.tests.core;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.util.UUID;
 
-import io.sarl.lang.core.Address;
-import io.sarl.lang.core.Event;
-import io.sarl.lang.core.SpaceID;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.*;
+import io.sarl.lang.core.Address;
+import io.sarl.lang.core.Event;
+import io.sarl.lang.core.SpaceID;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -44,7 +49,7 @@ import static org.junit.Assert.*;
 @SuppressWarnings("all")
 public class EventTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private Event event;
 
 	private static Event mockEvent() {

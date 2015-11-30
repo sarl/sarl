@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package io.sarl.lang.ui.tests.validation;
 
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
 import org.junit.Test;
@@ -35,10 +34,10 @@ public class SARLUIValidatorTest extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void checkFileNamingConventions_validPackageName() throws Exception {
-		SarlScript script = this.helper.createSARLScript(
-				pathStr("io","sarl","mypackage","test"), //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
-				"package io.sarl.mypackage"); //$NON-NLS-1$
-		this.helper.getValidator().assertNoIssues(script);
+		SarlScript script = helper().sarlScript(
+				helper().generateFilename(),
+				"package " + helper().getDefaultTestPackage()); //$NON-NLS-1$
+		validate(script).assertNoIssues();
 	}
 
 	/**
@@ -46,14 +45,13 @@ public class SARLUIValidatorTest extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void checkFileNamingConventions_wrongPackageName() throws Exception {
-		SarlScript script = this.helper.createSARLScript(
-				pathStr("io","sarl","mypackage","test"), //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
-				"package io.sarl.myotherpackage"); //$NON-NLS-1$
-		this.helper.getValidator().assertWarning(
-				script,
+		SarlScript script = helper().sarlScript(
+				helper().generateFilename(),
+				"package fake." + helper().getDefaultTestPackage()); //$NON-NLS-1$
+		validate(script).assertWarning(
 				SarlPackage.eINSTANCE.getSarlScript(),
-				IssueCodes.WRONG_PACKAGE,
-				"The declared package 'io.sarl.myotherpackage' does not match the expected package 'io.sarl.mypackage'"); //$NON-NLS-1$
+				org.eclipse.xtend.core.validation.IssueCodes.WRONG_PACKAGE,
+				"Expecting package definition io.sarl.tests"); //$NON-NLS-1$
 	}
 
 }

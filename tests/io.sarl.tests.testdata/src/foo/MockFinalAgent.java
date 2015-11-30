@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ package foo;
 import java.util.UUID;
 
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.BuiltinCapacitiesProvider;
 
 /**
  * @author $Author: sgalland$
@@ -34,10 +35,12 @@ import io.sarl.lang.core.Agent;
 public final class MockFinalAgent extends Agent {
 
 	/**
+	 * @param provider
 	 * @param parent
+	 * @param uuid
 	 */
-	public MockFinalAgent(UUID parent) {
-		super(parent);
+	public MockFinalAgent(BuiltinCapacitiesProvider provider, UUID parent, UUID uuid) {
+		super(provider, parent, uuid);
 	}
 
 }

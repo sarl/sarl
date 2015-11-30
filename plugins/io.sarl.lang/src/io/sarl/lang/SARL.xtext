@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,209 +18,247 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-grammar io.sarl.lang.SARL with org.eclipse.xtext.xbase.Xbase
+grammar io.sarl.lang.SARL with org.eclipse.xtend.core.Xtend
 
 generate sarl "http://www.sarl.io/lang/SARL"
+
 import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvm
 import "http://www.eclipse.org/xtext/xbase/Xbase" as xbase
 import "http://www.eclipse.org/xtext/xbase/Xtype" as xtype
+import "http://www.eclipse.org/xtend" as xtend
 
-SarlScript:
-	('package' name=QualifiedName ';'?)?
+SarlScript returns xtend::XtendFile:
+	{SarlScript}
+	('package' package=QualifiedName ';'?)?
 	importSection=XImportSection?
-	elements+=TopElement*
-;
-
-TopElement:
-	Event | Capacity | Agent | Behavior | Skill 
-;
-
-// Define an interface that is providing the 'name' feature.
-// This rule is declared only for generated the Java interface
-// with the expected features.
-// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANOTHER RULE.
-NamedElement:
-	name=ValidID
-;
-
-// Define an interface that is providing the 'features' feature.
-// This rule is declared only for generated the Java interface
-// with the expected features.
-// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANOTHER RULE.
-FeatureContainer returns NamedElement:
-	{FeatureContainer}
-	features+=Feature
-;
-
-// Define an interface that is a feature.
-// This rule is declared only for generated the Java interface
-// with the expected features.
-// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANOTHER RULE.
-Feature:
-	{Feature}
-;
-
-// Define an interface that is a feature with parameters.
-// This rule is declared only for generated the Java interface
-// with the expected features.
-// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANOTHER RULE.
-ParameterizedFeature returns Feature:
-	{ParameterizedFeature}
-	params+=FormalParameter
-	varargs?=ID
-;
-
-// Define an interface that is providing the 'superTypes' feature.
-// This rule is declared only for generated the Java interface
-// with the expected features.
-// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
-InheritingElement returns FeatureContainer:
-	{InheritingElement}
-	superTypes+=JvmParameterizedTypeReference
-;
-
-// Define an interface that is providing the 'implementedTypes' feature.
-// This rule is declared only for generated the Java interface
-// with the expected features.
-// YOU SHOULD NEVER USE THIS RULE IN THE BODY OF ANTHOER RULE.
-ImplementingElement returns InheritingElement:
-	{ImplementingElement}
-	implementedTypes+=JvmParameterizedTypeReference
-;
-
-Event returns InheritingElement:
-	{Event}
-	'event' name=ValidID ('extends' superTypes+=JvmParameterizedTypeReference)? 
-	('{' features+=EventFeature* '}')?
-;
-
-Capacity returns InheritingElement:
-	{Capacity}
-	'capacity' name=ValidID ('extends' superTypes+=JvmParameterizedTypeReference
-		( ',' superTypes+=JvmParameterizedTypeReference )* )? 
-	'{' features+=ActionSignature* '}'
-;
-
-Agent returns InheritingElement:
-	{Agent}
-	'agent' name=ValidID ('extends' superTypes+=JvmParameterizedTypeReference)? '{'
-	features+=AgentFeature*
-	'}'
-;
-
-Behavior returns InheritingElement:
-	{Behavior}
-	'behavior' name=ValidID ('extends' superTypes+=JvmParameterizedTypeReference)? '{'
-	features+=BehaviorFeature*
-	'}'
-;
-
-Skill returns ImplementingElement:
-	{Skill}
-	'skill' name=ValidID 
-	(	('extends' superTypes+=JvmParameterizedTypeReference)?
-		&
-		(	'implements' 
-				(	implementedTypes+=JvmSuperTypeReference
-					(',' implementedTypes+=JvmSuperTypeReference)*
-				)
-		)?
-	)
-	'{' features+=SkillFeature* '}'
-;
-
-EventFeature:
-	Attribute | Constructor
-;
-	
-AgentFeature:
-	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity
-;
-
-BehaviorFeature:
-	Attribute | BehaviorUnit | Action | CapacityUses | RequiredCapacity | Constructor
-;
-
-SkillFeature:
-	Attribute | Action | RequiredCapacity | Constructor | CapacityUses
-;
-
-Attribute returns Feature:
-	{Attribute}
-	(writeable?='var' | 'val') (=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID) 
-	('=' initialValue=XExpression)? ';'?
-;
-	
-CapacityUses returns Feature:
-	{CapacityUses}
-	'uses' capacitiesUsed+=JvmParameterizedTypeReference
-	(',' capacitiesUsed+=JvmParameterizedTypeReference)* ';'?
-;
-
-RequiredCapacity returns Feature:
-	{RequiredCapacity}
-	'requires' requiredCapacities+=JvmParameterizedTypeReference
-	(',' requiredCapacities+=JvmParameterizedTypeReference)* ';'?
-;
-
-BehaviorUnit returns Feature:
-	{BehaviorUnit}
-	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')? body=XBlockExpression
-;
-
-ActionSignature returns ParameterizedFeature:
-	{ActionSignature}
-	'def' name=ValidID 
-	(	=>'('
-		(	params+=FormalParameter
-			(=>',' params+=FormalParameter)* 
-			(varargs?=VarArgToken)?
-		)?
-		')'
-	)?
-	(':' type=JvmTypeReference)?
-	('fires' firedEvents+=JvmParameterizedTypeReference 
-		(',' firedEvents+=JvmParameterizedTypeReference)*
-	)?
-;
-
-Action returns ParameterizedFeature:
-	{Action}
-	'def' name=ValidID 
-	(	=>'('
-		(	params+=FormalParameter
-			(=>',' params+=FormalParameter)* 
-			(varargs?=VarArgToken)?
-		)?
-		')'
-	)?
-	(':' type=JvmTypeReference)?
-	('fires' firedEvents+=JvmParameterizedTypeReference 
-		(',' firedEvents+=JvmParameterizedTypeReference)*
-	)?
-	body=XBlockExpression
+	xtendTypes+=Type*
 ;
 
 VarArgToken:
 	'*'
 ;
-	
-Constructor returns ParameterizedFeature:
-	{Constructor}
-	'new'
-	(	=>'('
-		(	params+=FormalParameter
-			(=>',' params+=FormalParameter)* 
-			(varargs?=VarArgToken)?
+
+Type returns xtend::XtendTypeDeclaration:
+	Event | Capacity | Agent | Behavior | Skill | Class | Interface | Enum | AnnotationType 
+;
+
+Member returns xtend::XtendMember:
+	Field | Constructor | Action | Class | Interface | Enum | AnnotationType 
+;
+
+// Type reference is mandatory if "extension" modifier is given. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=408323
+Field returns xtend::XtendField:
+	{SarlField}
+	annotations+=XAnnotation*
+	modifiers+=CommonModifier*
+	((	modifiers += 'extension'
+		modifiers+=FieldModifier
+		modifiers+=CommonModifier*
+		(=>(name=ValidID ':' type=JvmTypeReference)) 
+	)|(
+		modifiers+=FieldModifier
+		modifiers+=CommonModifier*
+		(=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID) 
+	))
+	('=' initialValue=XExpression)? ';'?
+;
+
+AnnotationField returns xtend::XtendMember:
+	(
+		{SarlField}
+		annotations+=XAnnotation*
+		modifiers+=CommonModifier*
+		modifiers+=FieldModifier
+		modifiers+=CommonModifier*
+		=> name=ValidID
+		(':' type=JvmTypeReference)? 
+		('=' initialValue=XAnnotationElementValue)? ';'?
+	)
+	| Class
+	| Interface
+	| Enum
+ 	| AnnotationType
+;
+
+Action returns xtend::XtendFunction:
+	{SarlAction}
+	annotations+=XAnnotation*
+	modifiers+=CommonModifier*
+	modifiers+=MethodModifier
+	modifiers+=CommonModifier* 
+	('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?
+	name=FunctionID
+	(
+		'('
+		(	parameters+=Parameter
+			(=>',' parameters+=Parameter)* 
 		)?
 		')'
 	)?
-	body=XBlockExpression
+	( ':'
+	  (	(returnType=TypeReferenceWithTypeArgs)
+	  	| (returnType=TypeReferenceNoTypeArgs) )
+	)?
+	(	('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
+		&
+		('fires' firedEvents+=JvmTypeReference (',' firedEvents+=JvmTypeReference)*)?
+		&
+		('with' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)*)?
+	)
+	=> (expression=XBlockExpression | expression=RichString | ';')?
 ;
-	
-FormalParameter:
-	 name=ValidID ':' parameterType=JvmTypeReference 
-	 ('=' defaultValue=DefaultParameterValue)?
+
+Constructor returns xtend::XtendConstructor:
+	{SarlConstructor}
+	annotations+=XAnnotation*
+	modifiers+=CommonModifier*
+	'new'
+	('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?
+	(=> '(' (parameters+=Parameter (',' parameters+=Parameter)*)?
+	  ')'
+	)?
+	( ('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
+	  &
+	  ('with' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)*)?
+	)
+	expression=XBlockExpression
+;
+
+BehaviorUnit returns xtend::XtendMember:
+	{SarlBehaviorUnit}
+	annotations+=XAnnotation*
+	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')?
+	(expression=XBlockExpression | expression=RichString | ';')
+;
+
+CapacityUses returns xtend::XtendMember:
+	{SarlCapacityUses}
+	'uses' capacities+=JvmParameterizedTypeReference
+	(',' capacities+=JvmParameterizedTypeReference)* ';'?
+;
+
+RequiredCapacity returns xtend::XtendMember:
+	{SarlRequiredCapacity}
+	'requires' capacities+=JvmParameterizedTypeReference
+	(',' capacities+=JvmParameterizedTypeReference)* ';'?
+;
+
+Class returns xtend::XtendClass:
+	{SarlClass}
+	annotations+=XAnnotation*
+	modifiers+=CommonModifier*
+	'class' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
+	("extends" extends=JvmParameterizedTypeReference)? 
+   	('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?'{'
+	   (members+=Member)*
+	'}'
+;
+
+Interface returns xtend::XtendInterface:
+	{SarlInterface}
+	annotations+=XAnnotation*
+	modifiers+=CommonModifier*
+  	'interface' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
+   	('extends' extends+=JvmParameterizedTypeReference (',' extends+=JvmParameterizedTypeReference)*)?'{'
+	   (members+=Member)*
+   	'}'
+;
+
+Enum returns xtend::XtendEnum:
+	{SarlEnumeration}
+	annotations+=XAnnotation*
+	modifiers+=CommonModifier*
+  	'enum' name=ValidID '{'   
+	   (members+=XtendEnumLiteral (',' members+=XtendEnumLiteral)*)? ';'?
+   	'}'
+;
+
+AnnotationType returns xtend::XtendAnnotationType:
+	{SarlAnnotationType}
+	annotations+=XAnnotation*
+ 	modifiers+=CommonModifier*
+	'annotation' name=ValidID
+	'{' (members+=AnnotationField)* '}'
+;
+
+Event returns xtend::XtendTypeDeclaration:
+	{SarlEvent}
+	annotations+=XAnnotation*
+	modifiers+=CommonModifier*
+	'event' name=ValidID ('extends' extends=JvmParameterizedTypeReference)? 
+	('{' (members+=EventMember)* '}')?
+;
+
+EventMember returns xtend::XtendMember:
+	Field | Constructor 
+;
+
+Agent returns xtend::XtendTypeDeclaration:
+	{SarlAgent}
+	annotations+=XAnnotation*
+	modifiers+=CommonModifier*
+	'agent' name=ValidID 
+	('extends' extends=JvmParameterizedTypeReference)?
+	'{' (members+=AgentMember)* '}'
+;
+
+AgentMember returns xtend::XtendMember:
+	Member | BehaviorUnit | CapacityUses | RequiredCapacity
+;
+
+Capacity returns xtend::XtendTypeDeclaration:
+	{SarlCapacity}
+	annotations+=XAnnotation*
+	modifiers+=CommonModifier*
+	'capacity' name=ValidID
+	('extends' extends+=JvmParameterizedTypeReference
+		( ',' extends+=JvmParameterizedTypeReference )* )? 
+	'{' (members+=CapacityMember)* '}'
+;
+
+CapacityMember returns xtend::XtendMember:
+	Action
+;
+
+Behavior returns xtend::XtendTypeDeclaration:
+	{SarlBehavior}
+	annotations+=XAnnotation*
+	modifiers+=CommonModifier*
+	'behavior' name=ValidID ('extends' extends=JvmParameterizedTypeReference)?
+	'{' (members+=BehaviorMember)* '}'
+;
+
+BehaviorMember returns xtend::XtendMember:
+	Member | BehaviorUnit | CapacityUses | RequiredCapacity
+;
+
+Skill returns xtend::XtendTypeDeclaration:
+	{SarlSkill}
+	annotations+=XAnnotation*
+	modifiers+=CommonModifier*
+	'skill' name=ValidID 
+	(	('extends' extends=JvmParameterizedTypeReference)?
+		&
+		(	'implements' 
+				(	implements+=JvmParameterizedTypeReference
+					(',' implements+=JvmParameterizedTypeReference)*
+				)
+		)?
+	)
+	'{' (members+=SkillMember)* '}'
+;
+
+SkillMember returns xtend::XtendMember:
+	Member | BehaviorUnit | CapacityUses | RequiredCapacity
+;
+
+Parameter returns xtend::XtendParameter:
+	{SarlFormalParameter}
+	annotations+=XAnnotation*
+	(extension?='extension' annotations+=XAnnotation*)?
+	name=InnerVarID ':' parameterType=JvmTypeReference 
+	(   (varArg?=VarArgToken)
+	  | ('=' defaultValue=DefaultParameterValue))?
 ;
 
 DefaultParameterValue returns xbase::XExpression:
@@ -228,52 +266,48 @@ DefaultParameterValue returns xbase::XExpression:
 ;
 
 //-----------------------------------------------
-// BELOW THIS POINT, THE RULES FROM XTEND ARE COPIED/PASTED
-
-JvmSuperTypeReference returns jvm::JvmTypeReference:
-	JvmParameterizedTypeReference | XFunctionSuperTypeRef
-;
-
-XFunctionSuperTypeRef returns xtype::XFunctionTypeRef:
-  (instanceContext?='(' (paramTypes+=JvmTypeReference 
-  	(',' paramTypes+=JvmTypeReference)*
-  )? ')')? '=>' returnType=JvmTypeReference
-;
-
-//-----------------------------------------------
 // BELOW THIS POINT, THE RULES FROM XBASE ARE OVERLOADED
 
 // Variable declaration according to the SARL syntax (not the Xtext/Xtend)
 XVariableDeclaration returns xbase::XExpression:
-	{xbase::XVariableDeclaration}
-	(writeable?='var'|'val')
-	(=>(name=ValidID ':' type=JvmTypeReference) | name=ValidID)
+	=>({xtend::XtendVariableDeclaration}
+	extension?='extension'?
+	(writeable?='var'|'val') )
+	(=>name=InnerVarID)
+	(':' type=JvmTypeReference)?
 	('=' right=XExpression)?
 ;
 
 // Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
-JvmFormalParameter returns jvm::JvmFormalParameter:
-	{jvm::JvmFormalParameter}
-	name=ValidID (=>':' parameterType=JvmTypeReference)? 
+JvmFormalParameter returns xtend::XtendFormalParameter:
+	extension?='extension'? name=InnerVarID (=> ':' (parameterType=JvmTypeReference))?
 ;
 	
 // Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
-FullJvmFormalParameter returns jvm::JvmFormalParameter:
-	{jvm::JvmFormalParameter}
-	name=ValidID ':' parameterType=JvmTypeReference
-;
-
-// The following rule is not provided by Xbase, but we use it
-// in the overloaded version of XForLoopExpression
-XXLoopFormalParameter returns jvm::JvmFormalParameter:
-	{jvm::JvmFormalParameter}
-	name=ValidID
-	( 'as' parameterType=JvmTypeReference )?
+FullJvmFormalParameter returns xtend::XtendFormalParameter:
+	extension?='extension'? name=InnerVarID ':' parameterType=JvmTypeReference
 ;
 
 // The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)
 XForLoopExpression returns xbase::XExpression:
 	=>({xbase::XForLoopExpression}
-	'for' '(' declaredParam=XXLoopFormalParameter ':') forExpression=XExpression ')'
-	eachExpression=XExpression
+	'for' '(' declaredParam=SarlXLoopFormalParameter ':') forExpression=XExpression ')'
+	( eachExpression=XExpression | ';' )
+;
+// The following rule is not provided by Xbase, but we use it
+// in the overloaded version of XForLoopExpression
+SarlXLoopFormalParameter returns xtend::XtendFormalParameter:
+	{xtend::XtendFormalParameter}
+	(extension?='extension'?) name=ValidID
+	( 'as' parameterType=JvmTypeReference )?
+;
+
+// The type of the switch's variable is following the SARL syntax (not the Xtext/Xtend)
+XSwitchExpression returns xbase::XExpression:
+	{xbase::XSwitchExpression}
+	'switch' (=>('(' declaredParam=JvmFormalParameter '=') switch=XExpression ')'
+		| =>(declaredParam=JvmFormalParameter '=')? switch=XExpressionOrSimpleConstructorCall) '{'
+	(cases+=XCasePart)*
+	('default' ':' default=XExpression )?
+	'}'
 ;

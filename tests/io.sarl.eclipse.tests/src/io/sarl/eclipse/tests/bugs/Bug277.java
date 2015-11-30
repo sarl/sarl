@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +17,32 @@ package io.sarl.eclipse.tests.bugs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import io.sarl.eclipse.util.Jdt2Ecore;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.bugfixes.SARLContextPDAProvider;
-import io.sarl.lang.genmodel.GeneratedCode;
-import io.sarl.lang.genmodel.SARLCodeGenerator;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.Skill;
-import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.TestClasspath;
+import static org.mockito.Mockito.spy;
 
 import java.util.Arrays;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.xtext.serializer.ISerializer;
-import org.junit.Test;
-
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.xtext.serializer.ISerializer;
+import org.junit.Before;
+import org.junit.Test;
+
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.bugfixes.bug277.Bug277SARLContextPDAProvider;
+import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
+import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.tests.api.AbstractSarlUiTest;
+import io.sarl.tests.api.TestClasspath;
 
 /**
  * @author $Author: sgalland$
@@ -49,15 +53,31 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class Bug277 extends AbstractSarlUiTest {
 
+	@NonNullByDefault
+	private SARLEclipsePlugin plugin;
+	
 	@Inject
-	private SARLContextPDAProvider pdaProvider;
+	private Bug277SARLContextPDAProvider pdaProvider;
 
 	@Inject
 	private ISerializer serializer;
 
 	@Inject
-	private SARLCodeGenerator sarlGenerator;
+	private ECoreGeneratorHelper sarlGenerator;
 
+	private void ensureEclipsePlugin() {
+		this.plugin = SARLEclipsePlugin.getDefault();
+		if (this.plugin == null) {
+			this.plugin = spy(new SARLEclipsePlugin());
+			SARLEclipsePlugin.setDefault(this.plugin);
+		}
+	}
+	
+	@Before
+	public void setUp() throws Exception {
+		ensureEclipsePlugin();
+	}
+	
 	@Test
 	public void testBugFixExist() {
 		assertNotNull(pdaProvider);
@@ -69,7 +89,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	 */
 	@Test
 	public void multipleCapacityImplementation_0() throws Exception {
-		SarlScript script = this.helper.createSARLScript("SARLContextPDAProviderTest0",
+		SarlScript script = helper().sarlScript("SARLContextPDAProviderTest0",
 				"package io.sarl.lang.tests.genmodel.serializer\n"
 						+"capacity C1 {}\n"
 						+"capacity C2 {}\n"
@@ -92,7 +112,7 @@ public class Bug277 extends AbstractSarlUiTest {
 	@Test
 	@TestClasspath("io.sarl.core")
 	public void multipleCapacityImplementation_1() throws Exception {
-		SarlScript script = this.helper.createSARLScript("SARLContextPDAProviderTest1",
+		SarlScript script = helper().sarlScript("SARLContextPDAProviderTest1",
 				"package io.sarl.lang.tests.genmodel.serializer\n"
 						+"import io.sarl.core.Lifecycle\n"
 						+"import io.sarl.core.Schedules\n"
@@ -111,14 +131,16 @@ public class Bug277 extends AbstractSarlUiTest {
 	@Test
 	@TestClasspath("io.sarl.core")
 	public void similarToWizardCreation() throws Exception {
-		this.helper.createSARLScript(
-				"Bug277_0", "package io.sarl.lang.tests.bug277\ncapacity MyCapacity { }");
-		this.helper.waitForAutoBuild();
+		helper().sarlScript("Bug277_0", multilineString(
+				"package io.sarl.lang.tests.bug277",
+				"capacity MyCapacity { }"));
+		helper().fullBuild();
+		helper().awaitAutoBuild();
 
-		IFile file = this.helper.createFileInSourceFolder("Bug277_1", "");
-		Resource resource = this.helper.createResource(file, "package io.sarl.lang.tests.bug277");
-		GeneratedCode code = this.sarlGenerator.createScript(resource, "io.sarl.lang.tests.bug277");
-		Skill skill = this.sarlGenerator.createSkill(code, "MyS", null,
+		IFile file = helper().createFile("Bug277_1", "package io.sarl.lang.tests.bug277");
+		Resource resource = helper().getResourceFor(file);
+		SarlEcoreCode code = this.sarlGenerator.createScript(resource, "io.sarl.lang.tests.bug277");
+		SarlSkill skill = this.sarlGenerator.createSkill(code, "MyS", null,
 				Arrays.asList("io.sarl.core.Lifecycle", "io.sarl.lang.tests.bug277.MyCapacity"));
 		this.sarlGenerator.attachComment(code, skill, "My Test");
 
@@ -126,7 +148,7 @@ public class Bug277 extends AbstractSarlUiTest {
 		Map<ActionParameterTypes, IMethod> constructors = Maps.newHashMap();
 
 		Jdt2Ecore.populateInheritanceContext(
-				Jdt2Ecore.toTypeFinder(this.helper.getJavaProject()),
+				Jdt2Ecore.toTypeFinder(helper().getJavaProject()),
 				// Discarding final operation
 				null,
 				// Discarding overridable operation
@@ -146,7 +168,7 @@ public class Bug277 extends AbstractSarlUiTest {
 
 		//
 		resource.save(null);
-		String text = this.helper.getContents(file);
+		String text = helper().getContents(file);
 		//
 		assertEquals(
 				"package io.sarl.lang.tests.bug277\n"

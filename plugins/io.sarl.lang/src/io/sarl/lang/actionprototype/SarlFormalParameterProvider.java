@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.actionprototype;
 
-import io.sarl.lang.sarl.FormalParameter;
+package io.sarl.lang.actionprototype;
 
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.xbase.XExpression;
+
+import io.sarl.lang.sarl.SarlFormalParameter;
 
 
 /** An object able to provide the name and the type of a formal parameter.
@@ -41,13 +43,13 @@ public class SarlFormalParameterProvider implements FormalParameterProvider {
 
 	private final TypeReferences references;
 
-	private final List<FormalParameter> parameters;
+	private final List<? extends XtendParameter> parameters;
 
 	/**
 	 * @param parameters the list of the formal parameters.
 	 * @param references the utility for creating type references.
 	 */
-	public SarlFormalParameterProvider(List<FormalParameter> parameters, TypeReferences references) {
+	public SarlFormalParameterProvider(List<? extends XtendParameter> parameters, TypeReferences references) {
 		this.parameters = parameters;
 		this.references = references;
 	}
@@ -78,14 +80,20 @@ public class SarlFormalParameterProvider implements FormalParameterProvider {
 
 	@Override
 	public boolean hasFormalParameterDefaultValue(int position) {
-		FormalParameter parameter = this.parameters.get(position);
-		return parameter.getDefaultValue() != null;
+		XtendParameter parameter = this.parameters.get(position);
+		if (parameter instanceof SarlFormalParameter) {
+			return ((SarlFormalParameter) parameter).getDefaultValue() != null;
+		}
+		return false;
 	}
 
 	@Override
 	public XExpression getFormalParameterDefaultValue(int position) {
-		FormalParameter parameter = this.parameters.get(position);
-		return parameter.getDefaultValue();
+		XtendParameter parameter = this.parameters.get(position);
+		if (parameter instanceof SarlFormalParameter) {
+			return ((SarlFormalParameter) parameter).getDefaultValue();
+		}
+		return null;
 	}
 
 	@Override

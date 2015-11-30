@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.navigator;
 
-import io.sarl.eclipse.SARLConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.navigator.node.SARLProjectParent;
+package io.sarl.eclipse.navigator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +29,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
+
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.navigator.node.SARLProjectParent;
 
 /**
  * SARL custom project navigator content provider.
@@ -120,7 +121,7 @@ public class ContentProvider implements ITreeContentProvider {
 		List<SARLProjectParent> list = new ArrayList<>();
 		for (int i = 0; i < projects.length; i++) {
 			try {
-				if (projects[i].getNature(SARLConfig.NATURE_ID) != null) {
+				if (projects[i].getNature(SARLEclipseConfig.NATURE_ID) != null) {
 					list.add(new SARLProjectParent(projects[i]));
 				}
 			} catch (CoreException e) {

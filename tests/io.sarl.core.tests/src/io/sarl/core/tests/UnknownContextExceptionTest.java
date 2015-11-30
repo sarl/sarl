@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@
  */
 package io.sarl.core.tests;
 
+import static org.junit.Assert.assertSame;
+
 import java.util.UUID;
 
-import io.sarl.core.UnknownContextException;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import io.sarl.core.UnknownContextException;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -39,10 +39,10 @@ import static org.junit.Assert.*;
  */
 public class UnknownContextExceptionTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private UUID id;
 
-	@Nullable
+	@NonNullByDefault
 	private UnknownContextException exception;
 
 	/**

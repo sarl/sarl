@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +18,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.m2e;
 
 import java.text.MessageFormat;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-
-import com.google.common.base.Strings;
 
 
 /**
@@ -47,7 +47,7 @@ public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
 
 	private static SARLMavenEclipsePlugin instance;
 
-	/**
+	/** Construct the plugin.
 	 */
 	public SARLMavenEclipsePlugin() {
 		setDefault(this);
@@ -55,7 +55,7 @@ public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
 
 	/** Replies the logger.
 	 *
-	 * Thus function is a non-final version of {@link #getLog()}.
+	 * <p>Thus function is a non-final version of {@link #getLog()}.
 	 *
 	 * @return the logger.
 	 */
@@ -87,14 +87,14 @@ public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
 	 */
 	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, Throwable cause) {
-		String m = cause.getLocalizedMessage();
-		if (Strings.isNullOrEmpty(m)) {
-			m = cause.getMessage();
+		String message = cause.getLocalizedMessage();
+		if (Strings.isNullOrEmpty(message)) {
+			message = cause.getMessage();
 		}
-		if (Strings.isNullOrEmpty(m)) {
-			m = cause.getClass().getSimpleName();
+		if (Strings.isNullOrEmpty(message)) {
+			message = cause.getClass().getSimpleName();
 		}
-		return new Status(severity, PLUGIN_ID, m, cause);
+		return new Status(severity, PLUGIN_ID, message, cause);
 	}
 
 	/** Create a status.
@@ -111,18 +111,18 @@ public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
 	/**
 	 * Logs an internal error with the specified throwable.
 	 *
-	 * @param e the exception to be logged
+	 * @param exception the exception to be logged
 	 */
-	public void log(Throwable e) {
-		if (e instanceof CoreException) {
+	public void log(Throwable exception) {
+		if (exception instanceof CoreException) {
 			getILog().log(new Status(IStatus.ERROR, PLUGIN_ID,
-					e.getMessage(), e.getCause()));
-		} else if (e != null) {
+					exception.getMessage(), exception.getCause()));
+		} else if (exception != null) {
 			getILog().log(new Status(IStatus.ERROR, PLUGIN_ID,
-					MessageFormat.format(Messages.SARLMavenEclipsePlugin_0, e.getMessage()), e));
+					MessageFormat.format(Messages.SARLMavenEclipsePlugin_0, exception.getMessage()), exception));
 		} else {
 			getILog().log(new Status(IStatus.ERROR, PLUGIN_ID,
-					"Internal Error", e));   //$NON-NLS-1$
+					"Internal Error", exception));   //$NON-NLS-1$
 		}
 	}
 

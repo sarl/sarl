@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,27 +32,55 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "io.sarl.lang.validation.messages"; //$NON-NLS-1$
+	public static String SARLJavaValidator_0;
+	public static String SARLJavaValidator_1;
+	public static String SARLJavaValidator_10;
+	public static String SARLJavaValidator_11;
+	public static String SARLJavaValidator_12;
+	public static String SARLJavaValidator_13;
+	public static String SARLJavaValidator_14;
+	public static String SARLJavaValidator_15;
+	public static String SARLJavaValidator_16;
+	public static String SARLJavaValidator_17;
+	public static String SARLJavaValidator_18;
+	public static String SARLJavaValidator_19;
+	public static String SARLJavaValidator_2;
+	public static String SARLJavaValidator_20;
+	public static String SARLJavaValidator_21;
+	public static String SARLJavaValidator_22;
+	public static String SARLJavaValidator_23;
+	public static String SARLJavaValidator_24;
+	public static String SARLJavaValidator_25;
+	public static String SARLJavaValidator_26;
+	public static String SARLJavaValidator_27;
+	public static String SARLJavaValidator_28;
+	public static String SARLJavaValidator_29;
+	public static String SARLJavaValidator_3;
+	public static String SARLJavaValidator_30;
+	public static String SARLJavaValidator_31;
+	public static String SARLJavaValidator_32;
+	public static String SARLJavaValidator_33;
+	public static String SARLJavaValidator_34;
+	public static String SARLJavaValidator_35;
+	public static String SARLJavaValidator_36;
+	public static String SARLJavaValidator_37;
+	public static String SARLJavaValidator_38;
+	public static String SARLJavaValidator_39;
+	public static String SARLJavaValidator_4;
+	public static String SARLJavaValidator_40;
+	public static String SARLJavaValidator_5;
+	public static String SARLJavaValidator_6;
+	public static String SARLJavaValidator_7;
+	public static String SARLJavaValidator_8;
+	public static String SARLJavaValidator_9;
 	public static String SARLValidator_0;
 	public static String SARLValidator_1;
-	public static String SARLValidator_2;
-	public static String SARLValidator_3;
-	public static String SARLValidator_4;
-	public static String SARLValidator_5;
-	public static String SARLValidator_6;
-	public static String SARLValidator_7;
-	public static String SARLValidator_8;
 	public static String SARLValidator_9;
 	public static String SARLValidator_10;
-	public static String SARLValidator_11;
-	public static String SARLValidator_12;
 	public static String SARLValidator_13;
 	public static String SARLValidator_14;
 	public static String SARLValidator_15;
-	public static String SARLValidator_16;
-	public static String SARLValidator_17;
-	public static String SARLValidator_18;
 	public static String SARLValidator_19;
-	public static String SARLValidator_20;
 	public static String SARLValidator_21;
 	public static String SARLValidator_22;
 	public static String SARLValidator_23;
@@ -70,10 +98,8 @@ public class Messages extends NLS {
 	public static String SARLValidator_35;
 	public static String SARLValidator_36;
 	public static String SARLValidator_37;
-	public static String SARLValidator_38;
 	public static String SARLValidator_39;
 	public static String SARLValidator_40;
-	public static String SARLValidator_41;
 	public static String SARLValidator_42;
 	public static String SARLValidator_43;
 	static {

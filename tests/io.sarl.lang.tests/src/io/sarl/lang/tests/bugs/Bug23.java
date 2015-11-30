@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package io.sarl.lang.tests.bugs;
 
 import static org.junit.Assert.assertEquals;
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -42,15 +43,9 @@ import com.google.inject.Inject;
 public class Bug23 extends AbstractSarlTest {
 
 	@Inject
-	private ParseHelper<SarlScript> parser;
-
-	@Inject
-	private ValidationTestHelper validator;
-
-	@Inject
 	private CompilationTestHelper compiler;
 
-	private CharSequence snippet = multilineString(
+	private String snippet = multilineString(
 			"import java.util.UUID\n",
 			"event AgentSpawned {",
 			"  var agentID : UUID",
@@ -69,17 +64,20 @@ public class Bug23 extends AbstractSarlTest {
 
 	@Test
 	public void bug23() throws Exception {
-		SarlScript mas = this.parser.parse(snippet);
-		this.validator.assertNoErrors(mas);
+		SarlScript mas = file(snippet);
+		validate(mas).assertNoErrors();
 	}
 
 	@Test
 	public void myAgentSpawnedCompile() throws Exception {
 		final String expectedMyAgentSpawned = multilineString(
-				"import io.sarl.lang.annotation.Generated;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Address;",
 				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
+				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgentSpawned extends AgentSpawned {",
 				"  public UUID titi;",
@@ -87,7 +85,7 @@ public class Bug23 extends AbstractSarlTest {
 				"  /**",
 				"   * Construct an event. The source of the event is unknown.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public MyAgentSpawned() {",
 				"    super();",
 				"  }",
@@ -96,13 +94,14 @@ public class Bug23 extends AbstractSarlTest {
 				"   * Construct an event.",
 				"   * @param source - address of the agent that is emitting this event.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public MyAgentSpawned(final Address source) {",
 				"    super(source);",
 				"  }",
 				"  ",
 				"  @Override",
-				"  @Generated",
+				"  @Pure",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public boolean equals(final Object obj) {",
 				"    if (this == obj)",
 				"      return true;",
@@ -110,19 +109,18 @@ public class Bug23 extends AbstractSarlTest {
 				"      return false;",
 				"    if (getClass() != obj.getClass())",
 				"      return false;",
-				"    if (!super.equals(obj))",
-				"      return false;",
 				"    MyAgentSpawned other = (MyAgentSpawned) obj;",
 				"    if (this.titi == null) {",
 				"      if (other.titi != null)",
 				"        return false;",
 				"    } else if (!this.titi.equals(other.titi))",
 				"      return false;",
-				"    return true;",
+				"    return super.equals(obj);",
 				"  }",
 				"  ",
 				"  @Override",
-				"  @Generated",
+				"  @Pure",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
 				"  public int hashCode() {",
 				"    final int prime = 31;",
 				"    int result = super.hashCode();",
@@ -133,15 +131,16 @@ public class Bug23 extends AbstractSarlTest {
 				"  /**",
 				"   * Returns a String representation of the MyAgentSpawned event's attributes only.",
 				"   */",
-				"  @Generated",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  @Pure",
 				"  protected String attributesToString() {",
 				"    StringBuilder result = new StringBuilder(super.attributesToString());",
 				"    result.append(\"titi  = \").append(this.titi);",
 				"    return result.toString();",
 				"  }",
 				"  ",
-				"  @Generated",
-				"  private final static long serialVersionUID = -267285920L;",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  private final static long serialVersionUID = -201217093L;",
 				"}",
 				""
 				);

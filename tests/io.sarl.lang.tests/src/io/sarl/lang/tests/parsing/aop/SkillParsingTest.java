@@ -1,0 +1,2794 @@
+/*
+ * Copyright (C) 2014-2015 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.lang.tests.parsing.aop;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.xtext.common.types.JvmTypeConstraint;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.common.types.TypesPackage;
+import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.validation.Issue;
+import org.eclipse.xtext.xbase.XNumberLiteral;
+import org.eclipse.xtext.xbase.XStringLiteral;
+import org.eclipse.xtext.xbase.XbasePackage;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.validation.IssueCodes;
+import io.sarl.tests.api.AbstractSarlTest;
+
+/**
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@RunWith(Suite.class)
+@SuiteClasses({
+	SkillParsingTest.TopElementTest.class,
+	SkillParsingTest.ActionTest.class,
+	SkillParsingTest.FieldTest.class,
+	SkillParsingTest.CapacityUsesTest.class,
+	SkillParsingTest.GenericTest.class,
+})
+@SuppressWarnings("all")
+public class SkillParsingTest {
+
+	/**
+	 * FIXME: Issue #260. Move to Xbase.
+	 */
+	public static StringBuilder getIssuesAsString(EObject model, Iterable<Issue> issues, StringBuilder result) {
+		for(Issue issue : issues) {
+			URI uri = issue.getUriToProblem();
+			result.append(issue.getSeverity());
+			result.append(" (");
+			result.append(issue.getCode());
+			result.append(") '");
+			result.append(issue.getMessage());
+			result.append("'");
+			if (uri != null) {
+				EObject eObject = model.eResource().getResourceSet().getEObject(uri, true);
+				result.append(" on ");
+				result.append(eObject.eClass().getName());
+			}
+			result.append("\n");
+		}
+		return result;
+	}
+
+	/**
+	 * FIXME: Issue #260. Move to Xbase.
+	 */
+	public static boolean isIssueMessage(Issue issue, String... messageParts) {
+		for (String messagePart : messageParts) {
+			if (!issue.getMessage().toLowerCase().contains(messagePart.toLowerCase())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * FIXME: Issue #260. Move to Xbase.
+	 */
+	public static void assertIssue(List<Issue> issues, Severity severity, EObject model,
+			EClass objectType, String code, String... messageParts) {
+		Iterator<Issue> iterator = issues.iterator();
+		while (iterator.hasNext()) {
+			Issue issue = iterator.next();
+			if (Objects.equal(issue.getCode(), code) && issue.getSeverity() == severity) {
+				EObject object = model.eResource().getResourceSet().getEObject(issue.getUriToProblem(), true);
+				if (objectType.isInstance(object)) {
+					if (isIssueMessage(issue, messageParts)) {
+						iterator.remove();
+						return;
+					}
+				}
+			}
+		}
+		StringBuilder message = new StringBuilder("Expected ");
+		message.append(severity);
+		message.append(" '");
+		message.append(code);
+		message.append("' on ");
+		message.append(objectType.getName());
+		message.append(" but got\n");
+		getIssuesAsString(model, issues, message);
+		fail(message.toString());
+	}
+
+	/**
+	 * FIXME: Issue #260. Move to Xbase.
+	 */
+	public static void assertWarning(List<Issue> issues, EObject model, EClass objectType, String code,
+			String... messageParts) {
+		assertIssue(issues, Severity.WARNING, model, objectType, code, messageParts);
+	}
+
+	/**
+	 * FIXME: Issue #260. Move to Xbase.
+	 */
+	public static void assertNoMoreIssues(List<Issue> issues, EObject model) {
+		if (!issues.isEmpty()) {
+			StringBuilder message = new StringBuilder("Expecting no issue but got\n");
+			getIssuesAsString(model, issues, message);
+			fail(message.toString());
+		}
+	}
+
+	public static class TopElementTest extends AbstractSarlTest {
+
+		@Test
+		public void capacityDirectImplementation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"import io.sarl.lang.core.Capacity",
+					"skill S1 implements Capacity {",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					IssueCodes.INVALID_IMPLEMENTED_TYPE,
+					54, 8,
+					"Invalid implemented type: 'io.sarl.lang.core.Capacity'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
+		}
+
+		@Test
+		public void redundantCapacity_fromSuperType() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {}",
+					"capacity C2 {}",
+					"skill S1 implements C1 { }",
+					"skill S2 extends S1 implements C2, C1 { }"
+					));
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
+					"The feature 'C1' is already implemented by the super-type 'S1'.");
+		}
+
+		@Test
+		public void redundantCapacity_duplicate() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {}",
+					"capacity C2 {}",
+					"capacity C3 {}",
+					"skill S1 implements C1 { }",
+					"skill S2 extends S1 implements C2, C3, C2 { }"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
+					"Duplicate implemented feature 'C2'");
+		}
+
+		@Test
+		public void redundantCapacity_fromPreviousCapacity() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {}",
+					"capacity C2 {}",
+					"capacity C3 extends C2 {}",
+					"skill S1 implements C1 { }",
+					"skill S2 extends S1 implements C3, C2 { }"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
+					"Duplicate implemented feature 'C2'");
+		}
+
+		@Test
+		public void invalidSkillExtend_0() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"}",
+					"agent A1 {",
+					"}",
+					"skill S1 extends A1 implements C1 {",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					IssueCodes.INVALID_EXTENDED_TYPE,
+					"Supertype must be of type 'io.sarl.lang.core.Skill'");
+		}
+
+		@Test
+		public void invalidSkillExtend_1() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"}",
+					"capacity C2 {",
+					"}",
+					"skill S1 extends C1 implements C2 {",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
+					49, 2,
+					"Invalid supertype. Expecting a class");
+		}
+
+		@Test
+		public void invalidSkillImplement_0() throws Exception {
+			SarlScript mas = file(multilineString(
+					"behavior B1 {",
+					"}",
+					"skill S1 implements B1 {",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					IssueCodes.INVALID_IMPLEMENTED_TYPE,
+					36, 2,
+					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
+		}
+
+		@Test
+		public void invalidSkillImplement_1() throws Exception {
+			SarlScript mas = file(multilineString(
+					"behavior B1 {",
+					"}",
+					"capacity C1 {",
+					"}",
+					"capacity C2 {",
+					"}",
+					"skill S1 implements B1, C1, C2 {",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					IssueCodes.INVALID_IMPLEMENTED_TYPE,
+					68, 2,
+					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
+		}
+
+		@Test
+		public void invalidSkillImplement_2() throws Exception {
+			SarlScript mas = file(multilineString(
+					"behavior B1 {",
+					"}",
+					"capacity C1 {",
+					"}",
+					"capacity C2 {",
+					"}",
+					"skill S1 implements C1, B1, C2 {",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					IssueCodes.INVALID_IMPLEMENTED_TYPE,
+					72, 2,
+					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
+		}
+
+		@Test
+		public void invalidSkillImplement_3() throws Exception {
+			SarlScript mas = file(multilineString(
+					"behavior B1 {",
+					"}",
+					"capacity C1 {",
+					"}",
+					"capacity C2 {",
+					"}",
+					"skill S1 implements C1, C2, B1 {",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					IssueCodes.INVALID_IMPLEMENTED_TYPE,
+					76, 2,
+					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
+		}
+
+		@Test
+		public void skillImplementCapacity() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction",
+					"}",
+					"skill S1 implements C1 {",
+					"	def myaction { }",
+					"}"
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
+			//
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
+			assertEquals("C1", capacity.getName());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(1, capacity.getMembers().size());
+			//
+			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
+			assertEquals("myaction", signature.getName());
+			assertTypeReferenceIdentifiers(signature.getFiredEvents());
+			assertTypeReferenceIdentifier(signature.getReturnType(), "void");
+			assertParameterNames(signature.getParameters());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction action = (SarlAction) skill.getMembers().get(0);
+			assertEquals("myaction", action.getName());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
+			assertParameterNames(action.getParameters());
+		}
+
+		@Test
+		public void skillExtendSkill() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction",
+					"}",
+					"skill S1 implements C1 {",
+					"	def myaction { }",
+					"}",
+					"skill S2 extends S1 {",
+					"	def myaction { }",
+					"}"
+					), true);
+			assertEquals(3, mas.getXtendTypes().size());
+			//
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
+			//
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
+			assertEquals("C1", capacity.getName());
+			assertTrue(capacity.getExtends().isEmpty());
+			assertEquals(1, capacity.getMembers().size());
+			//
+			SarlAction signature = (SarlAction) capacity.getMembers().get(0);
+			assertEquals("myaction", signature.getName());
+			assertTrue(signature.getFiredEvents().isEmpty());
+			assertTypeReferenceIdentifier(signature.getReturnType(), "void");
+			assertParameterNames(signature.getParameters());
+			//
+			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill1.getName());
+			assertTrue(capacity.getExtends().isEmpty());
+			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
+			assertEquals(1, skill1.getMembers().size());
+			//
+			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
+			assertEquals("myaction", action1.getName());
+			assertTrue(signature.getFiredEvents().isEmpty());
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters());
+			//
+			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(2);
+			assertEquals("S2", skill2.getName());
+			assertTypeReferenceIdentifier(skill2.getExtends(), "S1");
+			assertTrue(skill2.getImplements().isEmpty());
+			assertEquals(1, skill2.getMembers().size());
+			//
+			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
+			assertEquals("myaction", action2.getName());
+			assertTrue(signature.getFiredEvents().isEmpty());
+			assertTypeReferenceIdentifier(action2.getReturnType(), "void");
+			assertParameterNames(action2.getParameters());
+		}
+
+		@Test
+		public void skillExtendSkillImplementCapacity() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction",
+					"}",
+					"capacity C2 {",
+					"	def myaction2",
+					"}",
+					"skill S1 implements C1 {",
+					"	def myaction { }",
+					"}",
+					"skill S2 extends S1 implements C2 {",
+					"	def myaction { }",
+					"	def myaction2 { }",
+					"}"
+					), true);
+			assertEquals(4, mas.getXtendTypes().size());
+			//
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
+			//
+			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
+			assertEquals("C1", capacity1.getName());
+			assertTrue(capacity1.getExtends().isEmpty());
+			assertEquals(1, capacity1.getMembers().size());
+			//
+			SarlAction signature1 = (SarlAction) capacity1.getMembers().get(0);
+			assertEquals("myaction", signature1.getName());
+			assertTrue(signature1.getFiredEvents().isEmpty());
+			assertTypeReferenceIdentifier(signature1.getReturnType(), "void");
+			assertParameterNames(signature1.getParameters());
+			//
+			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
+			assertEquals("C2", capacity2.getName());
+			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertEquals(1, capacity2.getMembers().size());
+			//
+			SarlAction signature2 = (SarlAction) capacity2.getMembers().get(0);
+			assertEquals("myaction2", signature2.getName());
+			assertTypeReferenceIdentifiers(signature2.getFiredEvents());
+			assertTypeReferenceIdentifier(signature2.getReturnType(), "void");
+			assertParameterNames(signature2.getParameters());
+			//
+			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(2);
+			assertEquals("S1", skill1.getName());
+			assertNull(skill1.getExtends());
+			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
+			assertEquals(1, skill1.getMembers().size());
+			//
+			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
+			assertEquals("myaction", action1.getName());
+			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters());
+			//
+			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(3);
+			assertEquals("S2", skill2.getName());
+			assertTypeReferenceIdentifier(skill2.getExtends(), "S1");
+			assertTypeReferenceIdentifiers(skill2.getImplements(), "C2");
+			assertEquals(2, skill2.getMembers().size());
+			//
+			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
+			assertEquals("myaction", action2.getName());
+			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertTypeReferenceIdentifier(action2.getReturnType(), "void");
+			assertParameterNames(action2.getParameters());
+			//
+			SarlAction action3 = (SarlAction) skill2.getMembers().get(1);
+			assertEquals("myaction2", action3.getName());
+			assertTypeReferenceIdentifiers(action3.getFiredEvents());
+			assertTypeReferenceIdentifier(action3.getReturnType(), "void");
+			assertParameterNames(action3.getParameters());
+		}
+
+		@Test
+		public void skillNoExtendSkillNoImplementCapacity() throws Exception {
+			SarlScript mas = file(multilineString(
+					"skill S1 {",
+					"	def myaction { }",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_TYPE,
+					"Missing implemented type 'io.sarl.lang.core.Capacity' for 'S1'");
+		}
+
+		@Test
+		public void skillmodifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"public skill S1 implements C1 {}"
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, skill.getVisibility());
+			assertEquals(0, skill.getMembers().size());
+			assertFalse(skill.isAbstract());
+			assertFalse(skill.isFinal());
+			assertFalse(skill.isStatic());
+			assertFalse(skill.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void skillmodifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"skill S1 implements C1 {}"
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, skill.getVisibility());
+			assertEquals(0, skill.getMembers().size());
+			assertFalse(skill.isAbstract());
+			assertFalse(skill.isFinal());
+			assertFalse(skill.isStatic());
+			assertFalse(skill.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void skillmodifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"private skill S1 implements C1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 7,
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+		}
+
+		@Test
+		public void skillmodifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"protected skill S1 implements C1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 9,
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+		}
+
+		@Test
+		public void skillmodifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"package skill S1 implements C1 {}"
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(JvmVisibility.DEFAULT, skill.getVisibility());
+			assertEquals(0, skill.getMembers().size());
+			assertFalse(skill.isAbstract());
+			assertFalse(skill.isFinal());
+			assertFalse(skill.isStatic());
+			assertFalse(skill.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void skillmodifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"abstract skill S1 implements C1 { }"
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, skill.getVisibility());
+			assertEquals(0, skill.getMembers().size());
+			assertTrue(skill.isAbstract());
+			assertFalse(skill.isFinal());
+			assertFalse(skill.isStatic());
+			assertFalse(skill.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void skillmodifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"static skill S1 implements C1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 6,
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+		}
+
+		@Test
+		public void skillmodifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"dispatch skill S1 implements C1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+		}
+
+		@Test
+		public void skillmodifier_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"final skill S1 implements C1 {}"
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, skill.getVisibility());
+			assertEquals(0, skill.getMembers().size());
+			assertFalse(skill.isAbstract());
+			assertTrue(skill.isFinal());
+			assertFalse(skill.isStatic());
+			assertFalse(skill.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void skillmodifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"strictfp skill S1 implements C1 {}"
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(JvmVisibility.PUBLIC, skill.getVisibility());
+			assertEquals(0, skill.getMembers().size());
+			assertFalse(skill.isAbstract());
+			assertFalse(skill.isFinal());
+			assertFalse(skill.isStatic());
+			assertTrue(skill.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void skillmodifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"native skill S1 implements C1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 6,
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+		}
+
+		@Test
+		public void skillmodifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"volatile skill S1 implements C1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8,
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+		}
+
+		@Test
+		public void skillmodifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"synchronized skill S1 implements C1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 12,
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+		}
+
+		@Test
+		public void skillmodifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"transient skill S1 implements C1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 9,
+					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+		}
+
+		@Test
+		public void skillmodifier_public_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 {}",
+					"public package skill S1 implements C1 {}"
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					54, 7,
+					"The skill S1 can only set one of public / package / protected / private");
+		}
+
+	}
+
+	public static class ActionTest extends AbstractSarlTest {
+
+		@Test
+		public void modifier_override_recommended() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { def fakefct() }",
+					"abstract skill S1 implements C1 {",
+					"   override fakefct() { }",
+					"	abstract def name",
+					"}",
+					"skill S2 extends S1 {",
+					"	def name { }",
+					"}"), false);
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
+					170, 4,
+					"The method name() of type S2 must use override keyword since it actually overrides a supertype method");
+		}
+
+		@Test
+		public void modifier_override_invalid() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { def fakefct() }",
+					"skill S1 implements C1 {",
+					"  override fakefct() { }",
+					"}",
+					"skill S2 extends S1 {",
+					"	override name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE,
+					137, 8,
+					"The method name() of type S2 must override a superclass method");
+		}
+
+		@Test
+		public void modifier_override_valid() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { def fakefct() }",
+					"abstract skill S1 implements C1 {",
+					"   override fakefct() { }",
+					"	abstract def name()",
+					"}",
+					"skill S2 extends S1 {",
+					"   override fakefct() { }",
+					"	override name() { }",
+					"}"), false);
+			validate(mas).assertNoIssues();
+		}
+
+		@Test
+		public void modifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	public def name { }",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	private def name { }",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PRIVATE, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	protected def name { }",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	package def name { }",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.DEFAULT, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def name { }",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"abstract skill S1 implements C1 {",
+					"	abstract def name",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertTrue(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_no_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"abstract skill S1 implements C1 {",
+					"	def name",
+					"}"), true);
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
+					87, 4,
+					"The method name in type S1 should be declared abstract");
+			//
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertTrue(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	static def name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 6,
+					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+		}
+
+		@Test
+		public void modifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	dispatch def name { }",
+					"}"), false);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertTrue(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_final_var() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	final def name { }",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertTrue(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	strictfp def name { }",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertTrue(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	native def name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 6,
+					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+		}
+
+		@Test
+		public void modifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	volatile def name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 8,
+					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+		}
+
+		@Test
+		public void modifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	synchronized def name { }",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertFalse(act1.isDispatch());
+			assertFalse(act1.isFinal());
+			assertTrue(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void modifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	transient def name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 9,
+					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+		}
+
+		@Test
+		public void modifier_protected_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	protected private def name { }",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					84, 7,
+					"The definition of name in S1 can only set one of public / package / protected / private");
+		}
+
+		@Test
+		public void modifier_dispatch_final() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	dispatch final def name(a : Integer) { }",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("name", act1.getName());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
+			assertFalse(act1.isAbstract());
+			assertFalse(act1.isStatic());
+			assertTrue(act1.isDispatch());
+			assertTrue(act1.isFinal());
+			assertFalse(act1.isSynchonized());
+			assertFalse(act1.isStrictFloatingPoint());
+		}
+
+		@Test
+		public void multipleActionDefinitionInCapacity() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction(a : int, b : int)",
+					"	def myaction(a : int)",
+					"	def myaction(a : int)",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
+					74, 8,
+					"Duplicate method myaction(int) in type C1");
+		}
+
+		@Test
+		public void multipleActionDefinitionInSkill() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def myaction(a : int, b : int) { }",
+					"	def myaction(a : int) { }",
+					"	def myaction(a : int) { }",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
+					109, 8,
+					"Duplicate method myaction(int) in type S1");
+		}
+
+		@Test
+		public void invalidActionNameInCapacity() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction",
+					"	def _handle_myaction",
+					"	def myaction2",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
+					"Invalid action name '_handle_myaction'.");
+		}
+
+		@Test
+		public void invalidActionNameInSkill() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def myaction {",
+					"		System.out.println(\"ok\")",
+					"	}",
+					"	def _handle_myaction {",
+					"		System.out.println(\"ko\")",
+					"	}",
+					"	def myaction2 {",
+					"		System.out.println(\"ok\")",
+					"	}",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
+					"Invalid action name '_handle_myaction'.");
+		}
+
+		@Test
+		public void missedActionImplementation_0() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction1(a : int)",
+					"}",
+					"capacity C2 {",
+					"	def myaction2(b : float, c : boolean)",
+					"}",
+					"skill S1 implements C1, C2 {",
+					"	def myaction1(x : int) { }",
+					"	def myaction2(y : float, z : boolean) { }",
+					"}"
+					), true);
+			assertEquals(3, mas.getXtendTypes().size());
+			//
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
+			//
+			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
+			assertEquals("C1", capacity1.getName());
+			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertEquals(1, capacity1.getMembers().size());
+			//
+			SarlAction signature1 = (SarlAction) capacity1.getMembers().get(0);
+			assertEquals("myaction1", signature1.getName());
+			assertTypeReferenceIdentifiers(signature1.getFiredEvents());
+			assertTypeReferenceIdentifier(signature1.getReturnType(), "void");
+			assertParameterNames(signature1.getParameters(), "a");
+			assertParameterTypes(signature1.getParameters(), "int");
+			assertParameterDefaultValues(signature1.getParameters(), (Object) null);
+			//
+			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
+			assertEquals("C2", capacity2.getName());
+			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertEquals(1, capacity2.getMembers().size());
+			//
+			SarlAction signature2 = (SarlAction) capacity2.getMembers().get(0);
+			assertEquals("myaction2", signature2.getName());
+			assertTypeReferenceIdentifiers(signature2.getFiredEvents());
+			assertTypeReferenceIdentifier(signature2.getReturnType(), "void");
+			assertParameterNames(signature2.getParameters(), "b", "c");
+			assertParameterTypes(signature2.getParameters(), "float", "boolean");
+			assertParameterDefaultValues(signature2.getParameters(), null, null);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(2);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1", "C2");
+			assertEquals(2, skill.getMembers().size());
+			//
+			SarlAction action1 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("myaction1", action1.getName());
+			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertTypeReferenceIdentifier(action1.getReturnType(), "void");
+			assertParameterNames(action1.getParameters(), "x");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
+			//
+			SarlAction action2 = (SarlAction) skill.getMembers().get(1);
+			assertEquals("myaction2", action2.getName());
+			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertTypeReferenceIdentifier(action2.getReturnType(), "void");
+			assertParameterNames(action2.getParameters(), "y", "z");
+			assertParameterTypes(action2.getParameters(), "float", "boolean");
+			assertParameterDefaultValues(action2.getParameters(), null, null);
+		}
+
+		@Test
+		public void missedActionImplementation_1() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction1(a : int)",
+					"}",
+					"capacity C2 {",
+					"	def myaction2(b : float, c : boolean)",
+					"}",
+					"skill S1 implements C1, C2 {",
+					"	def myaction2(b : float, c : boolean) { }",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
+					101, 2,
+					"The class S1 must be defined abstract because it does not implement myaction1(int)");
+		}
+
+		@Test
+		public void missedActionImplementation_2() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction1(a : int)",
+					"}",
+					"capacity C2 {",
+					"	def myaction2(b : float, c : boolean)",
+					"}",
+					"skill S1 implements C1, C2 {",
+					"	def myaction1(x : float) { }",
+					"	def myaction2(y : float, z : boolean) { }",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
+					101, 2,
+					"The class S1 must be defined abstract because it does not implement myaction1(int)");
+		}
+
+		@Test
+		public void incompatibleReturnType_0() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"capacity C2 { }",
+					"skill S1 implements C1 {",
+					"	def myaction(a : int) : int {",
+					"		return 0",
+					"	}",
+					"}",
+					"skill S2 extends S1 implements C2 {",
+					"	def myaction(a : int) : float {",
+					"		return 0f",
+					"	}",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
+					165, 5,
+					"The return type is incompatible with myaction(int)");
+		}
+
+		@Test
+		public void incompatibleReturnType_1() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"capacity C2 { }",
+					"skill S1 implements C1 {",
+					"	def myaction(a : int) {",
+					"		// void",
+					"	}",
+					"}",
+					"skill S2 extends S1 implements C2 {",
+					"	def myaction(a : int) : int {",
+					"		return 0",
+					"	}",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
+					158, 3,
+					"The return type is incompatible with myaction(int)");
+		}
+
+		@Test
+		public void incompatibleReturnType_2() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"capacity C2 { }",
+					"skill S1 implements C1 {",
+					"	def myaction(a : int) : int {",
+					"		return 0",
+					"	}",
+					"}",
+					"skill S2 extends S1 implements C2 {",
+					"	def myaction(a : int) : void{",
+					"		// void",
+					"	}",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
+					165, 4,
+					"The return type is incompatible with myaction(int)");
+		}
+
+		@Test
+		public void incompatibleReturnType_3() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"capacity C2 { }",
+					"skill S1 implements C1 {",
+					"	def myaction(a : int) : int {",
+					"		return 0",
+					"	}",
+					"}",
+					"skill S2 extends S1 implements C2 {",
+					"	def myaction(a : int) {",
+					"		// int is inferred",
+					"	}",
+					"}"
+					));
+			validate(mas).assertError(
+					XbasePackage.eINSTANCE.getXBlockExpression(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
+					"Type mismatch: cannot convert from null to int");
+		}
+
+		@Test
+		public void incompatibleReturnType_4() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction(a : int) : int",
+					"}",
+					"skill S2 implements C1 {",
+					"	def myaction(a : int) : float {",
+					"		return 0f",
+					"	}",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
+					95, 5,
+					"The return type is incompatible with myaction(int)");
+		}
+
+		@Test
+		public void incompatibleReturnType_5() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction(a : int) // void",
+					"}",
+					"skill S2 implements C1 {",
+					"	def myaction(a : int) : int {",
+					"		return 0",
+					"	}",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
+					97, 3,
+					"The return type is incompatible with myaction(int)");
+		}
+
+		@Test
+		public void incompatibleReturnType_6() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction(a : int) : int",
+					"}",
+					"skill S2 implements C1 {",
+					"	def myaction(a : int) : void {",
+					"		// void",
+					"	}",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
+					"The return type is incompatible with myaction(int)");
+		}
+
+		@Test
+		public void incompatibleReturnType_7() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction(a : int) : int",
+					"}",
+					"skill S2 implements C1 {",
+					"	def myaction(a : int) {",
+					"		// int is inferred",
+					"	}",
+					"}"
+					));
+			validate(mas).assertError(
+					XbasePackage.eINSTANCE.getXBlockExpression(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
+					93, 25,
+					"Type mismatch: cannot convert from null to int");
+		}
+
+		@Test
+		public void expectingReturnType_0() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"capacity C2 { }",
+					"skill S1 implements C1 {",
+					"	def myaction(a : int) : int {",
+					"		return 0",
+					"	}",
+					"}",
+					"skill S2 extends S1 implements C2 {",
+					"	def myaction(a : int) {",
+					"		1",
+					"	}",
+					"}"
+					));
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
+					141, 30,
+					"Expecting the return type int. It is recommended to write the return type, even if it is inferred from the overridden function");
+		}
+
+		@Test
+		public void compatibleReturnType_0() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"capacity C2 { }",
+					"skill S1 implements C1 {",
+					"	def myaction(a : int) : Number {",
+					"		return 0.0",
+					"	}",
+					"}",
+					"skill S2 extends S1 implements C2 {",
+					"	def myaction(a : int) : Double {",
+					"		return 0.0",
+					"	}",
+					"}"
+					), true);
+			assertEquals(4, mas.getXtendTypes().size());
+			//
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
+			//
+			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
+			assertEquals("C1", capacity1.getName());
+			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertEquals(0, capacity1.getMembers().size());
+			//
+			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
+			assertEquals("C2", capacity2.getName());
+			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertEquals(0, capacity2.getMembers().size());
+			//
+			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(2);
+			assertEquals("S1", skill1.getName());
+			assertNull(skill1.getExtends());
+			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
+			assertEquals(1, skill1.getMembers().size());
+			//
+			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
+			assertEquals("myaction", action1.getName());
+			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertTypeReferenceIdentifier(action1.getReturnType(), "java.lang.Number");
+			assertParameterNames(action1.getParameters(), "a");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
+			//
+			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(3);
+			assertEquals("S2", skill2.getName());
+			assertTypeReferenceIdentifier(skill2.getExtends(), "S1");
+			assertTypeReferenceIdentifiers(skill2.getImplements(), "C2");
+			assertEquals(1, skill2.getMembers().size());
+			//
+			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
+			assertEquals("myaction", action2.getName());
+			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertTypeReferenceIdentifier(action2.getReturnType(), "java.lang.Double");
+			assertParameterNames(action2.getParameters(), "a");
+			assertParameterTypes(action2.getParameters(), "int");
+			assertParameterDefaultValues(action2.getParameters(), (Object) null);
+		}
+
+		@Test
+		public void compatibleReturnType_1() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"capacity C2 { }",
+					"skill S1 implements C1 {",
+					"	def myaction(a : int) : float {",
+					"		return 0f",
+					"	}",
+					"}",
+					"skill S2 extends S1 implements C2 {",
+					"	def myaction(a : int) : float {",
+					"		return 0f",
+					"	}",
+					"}"
+					), true);
+			assertEquals(4, mas.getXtendTypes().size());
+			//
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
+			//
+			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
+			assertEquals("C1", capacity1.getName());
+			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertEquals(0, capacity1.getMembers().size());
+			//
+			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
+			assertEquals("C2", capacity2.getName());
+			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertEquals(0, capacity2.getMembers().size());
+			//
+			SarlSkill skill1 = (SarlSkill) mas.getXtendTypes().get(2);
+			assertEquals("S1", skill1.getName());
+			assertNull(skill1.getExtends());
+			assertTypeReferenceIdentifiers(skill1.getImplements(), "C1");
+			assertEquals(1, skill1.getMembers().size());
+			//
+			SarlAction action1 = (SarlAction) skill1.getMembers().get(0);
+			assertEquals("myaction", action1.getName());
+			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertTypeReferenceIdentifier(action1.getReturnType(), "float");
+			assertParameterNames(action1.getParameters(), "a");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
+			//
+			SarlSkill skill2 = (SarlSkill) mas.getXtendTypes().get(3);
+			assertEquals("S2", skill2.getName());
+			assertTypeReferenceIdentifier(skill2.getExtends(), "S1");
+			assertTypeReferenceIdentifiers(skill2.getImplements(), "C2");
+			assertEquals(1, skill2.getMembers().size());
+			//
+			SarlAction action2 = (SarlAction) skill2.getMembers().get(0);
+			assertEquals("myaction", action2.getName());
+			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertTypeReferenceIdentifier(action2.getReturnType(), "float");
+			assertParameterNames(action2.getParameters(), "a");
+			assertParameterTypes(action2.getParameters(), "int");
+			assertParameterDefaultValues(action2.getParameters(), (Object) null);
+		}
+
+		@Test
+		public void compatibleReturnType_2() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction(a : int) : Number",
+					"}",
+					"skill S2 implements C1 {",
+					"	def myaction(a : int) : Double {",
+					"		return 0.0",
+					"	}",
+					"}"
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
+			//
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
+			assertEquals("C1", capacity.getName());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(1, capacity.getMembers().size());
+			//
+			SarlAction action1 = (SarlAction) capacity.getMembers().get(0);
+			assertEquals("myaction", action1.getName());
+			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertTypeReferenceIdentifier(action1.getReturnType(), "java.lang.Number");
+			assertParameterNames(action1.getParameters(), "a");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S2", skill.getName());
+			assertNull(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction action2 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("myaction", action2.getName());
+			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertTypeReferenceIdentifier(action2.getReturnType(), "java.lang.Double");
+			assertParameterNames(action2.getParameters(), "a");
+			assertParameterTypes(action2.getParameters(), "int");
+			assertParameterDefaultValues(action2.getParameters(), (Object) null);
+		}
+
+		@Test
+		public void compatibleReturnType_3() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction(a : int) : float",
+					"}",
+					"skill S2 implements C1 {",
+					"	def myaction(a : int) : float {",
+					"		return 0f",
+					"	}",
+					"}"
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
+			//
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
+			assertEquals("C1", capacity.getName());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(1, capacity.getMembers().size());
+			//
+			SarlAction action1 = (SarlAction) capacity.getMembers().get(0);
+			assertEquals("myaction", action1.getName());
+			assertTypeReferenceIdentifiers(action1.getFiredEvents());
+			assertTypeReferenceIdentifier(action1.getReturnType(), "float");
+			assertParameterNames(action1.getParameters(), "a");
+			assertParameterTypes(action1.getParameters(), "int");
+			assertParameterDefaultValues(action1.getParameters(), (Object) null);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S2", skill.getName());
+			assertNull(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction action2 = (SarlAction) skill.getMembers().get(0);
+			assertEquals("myaction", action2.getName());
+			assertTypeReferenceIdentifiers(action2.getFiredEvents());
+			assertTypeReferenceIdentifier(action2.getReturnType(), "float");
+			assertParameterNames(action2.getParameters(), "a");
+			assertParameterTypes(action2.getParameters(), "int");
+			assertParameterDefaultValues(action2.getParameters(), (Object) null);
+		}
+
+	}
+
+	public static class FieldTest extends AbstractSarlTest {
+
+		@Test
+		public void modifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	public var field : int",
+					"}"), false);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PUBLIC, attr1.getVisibility());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
+			assertFalse(attr1.isExtension());
+		}
+
+		@Test
+		public void modifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	private var field : int",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
+			assertFalse(attr1.isExtension());
+		}
+
+		@Test
+		public void modifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	protected var field : int",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
+			assertFalse(attr1.isExtension());
+		}
+
+		@Test
+		public void modifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	package var field : int",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.DEFAULT, attr1.getVisibility());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
+			assertFalse(attr1.isExtension());
+		}
+
+		@Test
+		public void modifier_none() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	var field : int",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
+			assertFalse(attr1.isExtension());
+		}
+
+		@Test
+		public void modifier_abstract() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	abstract var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 8,
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void modifier_static() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	static var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 6,
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void modifier_dispatch() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	dispatch var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 8,
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void modifier_final_var() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	final var field : int = 5",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					80, 3,
+					"The definition of field in S1 can either be var or val / final, not both");
+		}
+
+		@Test
+		public void modifier_strictfp() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	strictfp var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 8,
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void modifier_native() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	native var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 6,
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void modifier_volatile() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	volatile var field : int",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertTrue(attr1.isVolatile());
+			assertFalse(attr1.isExtension());
+		}
+
+		@Test
+		public void modifier_synchronized() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	synchronized var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 12,
+					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+		}
+
+		@Test
+		public void modifier_transient() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	transient var field : int",
+					"}"), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertTrue(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
+			assertFalse(attr1.isExtension());
+		}
+
+		@Test
+		public void modifier_protected_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	protected private var field : int",
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					84, 7,
+					"The definition of field in S1 can only set one of public / package / protected / private");
+		}
+
+		@Test
+		public void multipleVariableDefinitionInSkill() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	var myfield : int",
+					"	var myfield1 : String",
+					"	var myfield : double",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
+					88, 7,
+					"Duplicate field myfield");
+		}
+
+		@Test
+		public void multipleValueDefinitionInSkill() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	val myfield : int = 4",
+					"	val myfield1 : String = \"\"",
+					"	val myfield : double = 5",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
+					97, 7,
+					"Duplicate field myfield");
+		}
+
+		@Test
+		public void missedFinalFieldInitialization() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	val field1 : int = 5",
+					"	val field2 : String",
+					"}"
+					));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED,
+					16, 69,
+					"The blank final field field2 may not have been initialized");
+		}
+
+		@Test
+		public void completeFinalFieldInitialization() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	val field1 : int = 5",
+					"	val field2 : String = \"\"",
+					"}"
+					), true);
+			assertEquals(2, mas.getXtendTypes().size());
+			//
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
+			//
+			SarlCapacity capacity = (SarlCapacity) mas.getXtendTypes().get(0);
+			assertEquals("C1", capacity.getName());
+			assertTypeReferenceIdentifiers(capacity.getExtends());
+			assertEquals(0, capacity.getMembers().size());
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertEquals("S1", skill.getName());
+			assertNull(skill.getExtends());
+			assertTypeReferenceIdentifiers(skill.getImplements(), "C1");
+			assertEquals(2, skill.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals("field1", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertXExpression(attr1.getInitialValue(), XNumberLiteral.class, "5");
+			//
+			SarlField attr2 = (SarlField) skill.getMembers().get(1);
+			assertEquals("field2", attr2.getName());
+			assertTypeReferenceIdentifier(attr2.getType(), "java.lang.String");
+			assertXExpression(attr2.getInitialValue(), XStringLiteral.class, "");
+		}
+
+		@Test
+		public void fieldNameShadowingInSkill() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"capacity C2 { }",
+					"skill S1 implements C1 {",
+					"	val field1 : int = 5",
+					"	def myaction(a : int) { }",
+					"}",
+					"skill S2 extends S1 implements C2 {",
+					"	val field1 : int = 5",
+					"	def myaction(a : int) { }",
+					"}"
+					));
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
+					"The field 'field1' in 'S2' is hidding the inherited field 'S1.field1'.");
+		}
+
+		@Test
+		public void variableModifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"public var name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertNoErrors();
+		}
+
+		@Test
+		public void variableModifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"protected var name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+		}
+
+		@Test
+		public void variableModifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"package var name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertNoErrors();
+		}
+
+		@Test
+		public void variableModifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"private var name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+		}
+
+		@Test
+		public void variableModifier_default() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"var name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+		}
+
+		@Test
+		public void valueModifier_public() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"public val name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertNoErrors();
+		}
+
+		@Test
+		public void valueModifier_protected() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"protected val name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+		}
+
+		@Test
+		public void valueModifier_package() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"package val name : String = \"Hello\"",
+					"}"
+					), false);
+			//
+			validate(mas).assertNoErrors();
+		}
+
+		@Test
+		public void valueModifier_private() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"private val name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
+		}
+
+		@Test
+		public void valueModifier_default() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"val name : String = \"Hello\"",
+					"}"
+					), true);
+			//
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			SarlField attr1 = (SarlField) skill.getMembers().get(0);
+			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+		}
+
+	}
+
+	public static class CapacityUsesTest extends AbstractSarlTest {
+
+		@Test
+		public void invalidCapacityTypeForUses() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction(a : int) : float",
+					"}",
+					"event E1 {",
+					"	var abc : int",
+					"}",
+					"behavior B1 {",
+					"	uses C1, E1",
+					"}"
+					));
+			validate(mas).assertError(
+					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+					IssueCodes.INVALID_CAPACITY_TYPE,
+					"Invalid type: 'E1'. Only capacities can be used after the keyword 'uses'");
+		}
+
+		@Test
+		public void invalidCapacityTypeForRequires() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myaction(a : int) : float",
+					"}",
+					"event E1 {",
+					"	var abc : int",
+					"}",
+					"behavior B1 {",
+					"	requires C1, E1",
+					"}"
+					));
+			validate(mas).assertError(
+					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+					IssueCodes.INVALID_CAPACITY_TYPE,
+					"Invalid type: 'E1'. Only capacities can be used after the keyword 'requires'");
+		}
+
+		@Test
+		public void agentUnsuedCapacity_0() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myfct",
+					"}",
+					"capacity C2 {",
+					"	def myfct2",
+					"}",
+					"agent A1 {",
+					"	uses C2, C1",
+					"	def myaction {",
+					"		myfct2",
+					"	}",
+					"}"
+					));
+			List<Issue> issues = issues(mas);
+			assertWarning(
+					issues,
+					mas,
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
+					IssueCodes.UNUSED_AGENT_CAPACITY,
+					"The capacity 'C1' is not used");
+			assertNoMoreIssues(issues, mas);
+		}
+
+		@Test
+		public void agentUnsuedCapacity_1() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myfct",
+					"}",
+					"capacity C2 {",
+					"	def myfct2",
+					"}",
+					"agent A1 {",
+					"	uses C2, C1",
+					"	def myaction {",
+					"	}",
+					"}"
+					));
+			List<Issue> issues = issues(mas);
+			assertWarning(
+					issues,
+					mas,
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
+					IssueCodes.UNUSED_AGENT_CAPACITY,
+					"The capacity 'C1' is not used");
+			assertWarning(
+					issues,
+					mas,
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
+					IssueCodes.UNUSED_AGENT_CAPACITY,
+					"The capacity 'C2' is not used");
+			assertNoMoreIssues(issues, mas);
+		}
+
+		@Test
+		public void agentUnsuedCapacity_2() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myfct",
+					"}",
+					"capacity C2 {",
+					"	def myfct2",
+					"}",
+					"agent A1 {",
+					"	uses C2, C1",
+					"	def myaction {",
+					"		myfct",
+					"		myfct2",
+					"	}",
+					"}"
+					), true);
+			assertEquals(3, mas.getXtendTypes().size());
+			//
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
+			//
+			SarlCapacity capacity1 = (SarlCapacity) mas.getXtendTypes().get(0);
+			assertEquals("C1", capacity1.getName());
+			assertTypeReferenceIdentifiers(capacity1.getExtends());
+			assertEquals(1, capacity1.getMembers().size());
+			//
+			SarlAction signature1 = (SarlAction) capacity1.getMembers().get(0);
+			assertEquals("myfct", signature1.getName());
+			assertTypeReferenceIdentifiers(signature1.getFiredEvents());
+			assertTypeReferenceIdentifier(signature1.getReturnType(), "void");
+			assertParameterNames(signature1.getParameters());
+			//
+			SarlCapacity capacity2 = (SarlCapacity) mas.getXtendTypes().get(1);
+			assertEquals("C2", capacity2.getName());
+			assertTypeReferenceIdentifiers(capacity2.getExtends());
+			assertEquals(1, capacity2.getMembers().size());
+			//
+			SarlAction signature2 = (SarlAction) capacity2.getMembers().get(0);
+			assertEquals("myfct2", signature2.getName());
+			assertTypeReferenceIdentifiers(signature2.getFiredEvents());
+			assertTypeReferenceIdentifier(signature2.getReturnType(), "void");
+			assertParameterNames(signature2.getParameters());
+			//
+			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(2);
+			assertEquals("A1", agent.getName());
+			assertNull(agent.getExtends());
+			assertEquals(2, agent.getMembers().size());
+			//
+			SarlCapacityUses uses = (SarlCapacityUses) agent.getMembers().get(0);
+			assertTypeReferenceIdentifiers(uses.getCapacities(), "C2", "C1");
+			//
+			SarlAction action = (SarlAction) agent.getMembers().get(1);
+			assertEquals("myaction", action.getName());
+			assertTypeReferenceIdentifiers(action.getFiredEvents());
+			assertTypeReferenceIdentifier(action.getReturnType(), "void");
+			assertParameterNames(action.getParameters());
+		}
+
+		@Test
+		public void multipleCapacityUses_0() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {}",
+					"capacity C2 {}",
+					"capacity C3 { def testFct }",
+					"skill S1 implements C3 {",
+					"	uses C1, C2, C1",
+					"	def testFct { }",
+					"}"
+					));
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
+					IssueCodes.REDUNDANT_CAPACITY_USE,
+					"Redundant use of the capacity 'C1'");
+		}
+
+		@Test
+		public void multipleCapacityUses_1() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {}",
+					"capacity C2 {}",
+					"capacity C3 { def testFct }",
+					"skill S1 implements C3 {",
+					"	uses C2",
+					"	def testFct { }",
+					"	uses C2, C1",
+					"}"
+					));
+			validate(mas).assertWarning(
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
+					IssueCodes.REDUNDANT_CAPACITY_USE,
+					"Redundant use of the capacity 'C2'");
+		}
+
+	}
+
+	public static class GenericTest extends AbstractSarlTest {
+
+		@Test
+		public void functionGeneric_X_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def setX(param : X) : void with X { var xxx : X }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertNotNull(skill);
+			//
+			assertEquals("S1", skill.getName());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction action = (SarlAction) skill.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertNullOrEmpty(parameter.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_X_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def <X> setX(param : X) : void { var xxx : X }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertNotNull(skill);
+			//
+			assertEquals("S1", skill.getName());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction action = (SarlAction) skill.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertNullOrEmpty(parameter.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def setX(param : X) : void with X extends Number { var xxx : X }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertNotNull(skill);
+			//
+			assertEquals("S1", skill.getName());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction action = (SarlAction) skill.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertEquals(1, parameter.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter.getConstraints().get(0);
+			assertEquals("java.lang.Number", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def <X extends Number> setX(param : X) : void { var xxx : X }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertNotNull(skill);
+			//
+			assertEquals("S1", skill.getName());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction action = (SarlAction) skill.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(1, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter = action.getTypeParameters().get(0);
+			assertEquals("X", parameter.getName());
+			assertEquals(1, parameter.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter.getConstraints().get(0);
+			assertEquals("java.lang.Number", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		public void functionGeneric_XY_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def setX(param : X) : void with X, Y { var xxx : X; var yyy : Y }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertNotNull(skill);
+			//
+			assertEquals("S1", skill.getName());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction action = (SarlAction) skill.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertNullOrEmpty(parameter2.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_XY_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def <X, Y> setX(param : X) : void { var xxx : X; var yyy : Y }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertNotNull(skill);
+			//
+			assertEquals("S1", skill.getName());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction action = (SarlAction) skill.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertNullOrEmpty(parameter2.getConstraints());
+		}
+
+		@Test
+		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def setX(param : X) : void with X, Y extends X { var xxx : X; var yyy : Y }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertNotNull(skill);
+			//
+			assertEquals("S1", skill.getName());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction action = (SarlAction) skill.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertEquals(1, parameter2.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter2.getConstraints().get(0);
+			assertEquals("X", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+		@Test
+		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.lang.tests.test",
+					"capacity C1 { }",
+					"skill S1 implements C1 {",
+					"	def <X, Y extends X> setX(param : X) : void { var xxx : X; var yyy : Y }",
+					"}"), true);
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
+			assertNotNull(skill);
+			//
+			assertEquals("S1", skill.getName());
+			assertEquals(1, skill.getMembers().size());
+			//
+			SarlAction action = (SarlAction) skill.getMembers().get(0);
+			assertEquals("setX", action.getName());
+			assertEquals(2, action.getTypeParameters().size());
+			//
+			JvmTypeParameter parameter1 = action.getTypeParameters().get(0);
+			assertEquals("X", parameter1.getName());
+			assertNullOrEmpty(parameter1.getConstraints());
+			//
+			JvmTypeParameter parameter2 = action.getTypeParameters().get(1);
+			assertEquals("Y", parameter2.getName());
+			assertEquals(1, parameter2.getConstraints().size());
+			//
+			JvmTypeConstraint constraint = parameter2.getConstraints().get(0);
+			assertEquals("X", constraint.getTypeReference().getIdentifier());
+			assertTrue(constraint.getIdentifier().startsWith("extends"));
+		}
+
+	}
+
+}

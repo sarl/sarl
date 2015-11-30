@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="%product.name" uid="io.sarl.lang.product" id="io.sarl.eclipse.io_sarl_lang_product" application="org.eclipse.ui.ide.workbench" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="%product.name" uid="io.sarl.lang.product" id="io.sarl.eclipse.io_sarl_lang_product" application="org.eclipse.ui.ide.workbench" version="0.3.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/io.sarl.eclipse/icons/eclipse-about-banner.png"/>
@@ -14,12 +14,13 @@
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-XX:MaxPermSize=256m
--Xms40m
+      <vmArgs>-Xms40m
 -Xmx512m
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
+      <vmArgsWin>-Dfile.encoding=UTF-8
+      </vmArgsWin>
    </launcherArgs>
 
    <windowImages i16="/io.sarl.eclipse/icons/sarl_16.png" i32="/io.sarl.eclipse/icons/sarl_32.png" i48="/io.sarl.eclipse/icons/sarl_48.png" i64="/io.sarl.eclipse/icons/sarl_64.png" i128="/io.sarl.eclipse/icons/sarl_128.png" i256="/io.sarl.eclipse/icons/sarl_256.png"/>
@@ -27,16 +28,20 @@
    <splash
       location="io.sarl.eclipse" />
    <launcher name="eclipse-sarl">
-      <linux icon="../../../icons/sarl.xpm"/>
-      <macosx icon="../../../icons/sarl.icns"/>
+      <linux icon="icons/sarl.xpm"/>
+      <macosx icon="icons/sarl.icns"/>
       <solaris/>
       <win useIco="true">
-         <ico path="../../../icons/sarl.ico"/>
+         <ico path="icons/sarl.ico"/>
          <bmp/>
       </win>
    </launcher>
 
    <vm>
+      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
+      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</macos>
+      <solaris include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</solaris>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
    </vm>
 
    <license>
@@ -250,32 +255,35 @@
    </plugins>
 
    <features>
-      <feature id="io.sarl.lang.sdk" version="1.0.0.qualifier"/>
-      <feature id="io.sarl.sdk" version="1.0.0.qualifier"/>
-      <feature id="org.eclipse.xtend.sdk" version="2.8.1.v201503230617"/>
-      <feature id="org.eclipse.xtext.redist" version="2.8.1.v201503230617"/>
-      <feature id="org.eclipse.platform" version="4.4.2.v20150204-1700"/>
-      <feature id="org.eclipse.m2e.feature" version="1.5.1.20150109-1820"/>
-      <feature id="org.eclipse.jgit" version="3.4.2.201412180340-r"/>
-      <feature id="org.jboss.tools.m2e.jdt.feature" version="1.0.1.201209200903"/>
+      <feature id="io.sarl.compiler" version="0.3.0.qualifier"/>
+      <feature id="io.sarl.ide" version="0.3.0.qualifier"/>
+      <feature id="io.sarl.lib" version="0.3.0.qualifier"/>
+      <feature id="org.eclipse.egit" version="4.0.3.201509231615-r"/>
+      <feature id="org.eclipse.epp.mpc" version="1.4.1.v20150916-1928"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
-      <feature id="org.eclipse.equinox.p2.core.feature"/>
-      <feature id="org.eclipse.ecf.core.ssl.feature"/>
       <feature id="org.eclipse.help"/>
-      <feature id="org.eclipse.emf.ecore"/>
-      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
-      <feature id="org.eclipse.equinox.p2.user.ui"/>
+      <feature id="org.jboss.tools.m2e.jdt.feature"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
+      <feature id="org.eclipse.jdt"/>
+      <feature id="org.eclipse.emf.common"/>
+      <feature id="org.eclipse.equinox.p2.core.feature"/>
+      <feature id="org.eclipse.xtend.sdk"/>
+      <feature id="org.eclipse.ecf.core.ssl.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.feature"/>
-      <feature id="org.eclipse.xtext.ui"/>
+      <feature id="org.eclipse.xtext.runtime"/>
+      <feature id="org.eclipse.emf.ecore"/>
+      <feature id="org.eclipse.equinox.p2.user.ui"/>
+      <feature id="org.eclipse.equinox.p2.extras.feature"/>
+      <feature id="org.eclipse.m2e.feature"/>
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.ecf.core.feature"/>
-      <feature id="org.eclipse.jdt"/>
+      <feature id="org.eclipse.jgit"/>
+      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
+      <feature id="org.eclipse.equinox.p2.discovery.feature"/>
+      <feature id="org.eclipse.ecf.filetransfer.feature"/>
+      <feature id="org.eclipse.xtext.ui"/>
+      <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.e4.rcp"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
-      <feature id="org.eclipse.emf.common"/>
-      <feature id="org.eclipse.xtext.runtime"/>
-      <feature id="org.eclipse.equinox.p2.extras.feature"/>
    </features>
 
    <configurations>
@@ -283,13 +291,21 @@
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
    </configurations>
 
    <repositories>
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="true" />
+      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
       <repository location="http://updates.sarl.io/composite/releases/" enabled="false" />
    </repositories>
+
+   <preferencesInfo>
+      <sourcefile path="/home/sgalland/sarl.epf"/>
+      <targetfile overwrite="false" path="/io.sarl.eclipse/plugin_customization.ini"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
 
 </product>

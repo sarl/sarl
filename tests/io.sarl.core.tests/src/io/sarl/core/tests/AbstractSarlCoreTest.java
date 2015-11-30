@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @param <T> - the type of the expected loaded class.
@@ -42,33 +44,33 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 
 	/** Name of the loaded class.
 	 */
-	@Nullable
+	@NonNullByDefault
 	protected String classname;
 
 	/** Loaded type.
 	 */
-	@Nullable
+	@NonNullByDefault
 	protected Class<? extends T> type;
 
 	/** Load the given class, generated from the SARL code.
 	 *
-	 * @param classname - the name of the class.
+	 * @param iclassname - the name of the class.
 	 * @param expectedType - the type of the expected loaded class.
 	 */
-	protected void loadSARL(String classname, Class<T> expectedType) {
-		assertNotNull(classname);
+	protected void loadSARL(String iclassname, Class<T> expectedType) {
+		assertNotNull(iclassname);
 		assertNotNull(expectedType);
 		assertNull(this.classname);
-		this.classname = classname;
-		Class<?> type;
+		this.classname = iclassname;
+		Class<?> itype;
 		try {
-			type = Class.forName(classname);
+			itype = Class.forName(iclassname);
 		} catch (ClassNotFoundException e) {
 			throw new Error(e);
 		}
-		assertNotNull(type);
-		assertTrue(expectedType.isAssignableFrom(type));
-		this.type = type.asSubclass(expectedType);
+		assertNotNull(itype);
+		assertTrue(expectedType.isAssignableFrom(itype));
+		this.type = itype.asSubclass(expectedType);
 		assertNotNull(this.classname);
 		assertNotNull(this.type);
 	}

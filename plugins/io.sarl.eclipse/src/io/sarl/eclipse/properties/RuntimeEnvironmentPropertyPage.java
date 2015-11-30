@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.properties;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.runtime.SREConfigurationBlock;
-
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
@@ -32,8 +30,10 @@ import org.eclipse.jdt.internal.ui.preferences.PropertyAndPreferencePage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Strings;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.SREConfigurationBlock;
 
 /** Property page for selecting the SARL runtime environment
  * associated to this page.
@@ -171,7 +171,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	public boolean performOk() {
 		IProject prj = getProject();
 		if (prj == null || !super.performOk()
-			|| !saveProjectSpecificOptions(getProject(), useProjectSettings())) {
+				|| !saveProjectSpecificOptions(getProject(), useProjectSettings())) {
 			return false;
 		}
 		ISREInstall projectSRE = this.sreBlock.getSelectedSRE();

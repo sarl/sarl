@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching.dialog;
 
-import io.sarl.eclipse.SARLConfig;
+package io.sarl.eclipse.launching.dialog;
 
 import java.text.MessageFormat;
 
@@ -49,6 +48,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.xtext.util.Strings;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+
 /**
  * Class for the configuration tab for the SARL arguments.
  *
@@ -60,6 +61,7 @@ import org.eclipse.xtext.util.Strings;
 public class SARLArgumentsTab extends JavaArgumentsTab {
 
 	private static final int HEIGHT_HINT = 40;
+
 	private static final int WIDTH_HINT = 100;
 
 
@@ -67,7 +69,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 	 */
 	protected Text sreArgumentsText;
 
-	/**
+	/** Construct a configuration tab for the SARL arguments.
 	 */
 	public SARLArgumentsTab() {
 		//
@@ -84,7 +86,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 
 		// Change the label for the program arguments
 		Group group = (Group) this.fPrgmArgumentsText.getParent();
-		String newLabel = io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_0;
+		String newLabel = Messages.SARLArgumentsTab_0;
 		group.setText(newLabel);
 		ControlAccessibleListener.addListener(this.fPrgmArgumentsText, group.getText());
 
@@ -109,7 +111,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		// Move the SRE argument block before the JVM argument block
 		group.moveAbove(this.fVMArgumentsBlock.getControl());
 
-		String controlName = io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_1;
+		String controlName = Messages.SARLArgumentsTab_1;
 		group.setText(controlName);
 
 		createSREArgsText(group, font);
@@ -120,21 +122,21 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		this.sreArgumentsText = new Text(group, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 		this.sreArgumentsText.addTraverseListener(new TraverseListener() {
 			@Override
-			public void keyTraversed(TraverseEvent e) {
-				switch (e.detail) {
+			public void keyTraversed(TraverseEvent event) {
+				switch (event.detail) {
 				case SWT.TRAVERSE_ESCAPE:
 				case SWT.TRAVERSE_PAGE_NEXT:
 				case SWT.TRAVERSE_PAGE_PREVIOUS:
-					e.doit = true;
+					event.doit = true;
 					break;
 				case SWT.TRAVERSE_RETURN:
 				case SWT.TRAVERSE_TAB_NEXT:
 				case SWT.TRAVERSE_TAB_PREVIOUS:
 					if ((SARLArgumentsTab.this.sreArgumentsText.getStyle() & SWT.SINGLE) != 0) {
-						e.doit = true;
+						event.doit = true;
 					} else {
-						if (!SARLArgumentsTab.this.sreArgumentsText.isEnabled() || (e.stateMask & SWT.MODIFIER_MASK) != 0) {
-							e.doit = true;
+						if (!SARLArgumentsTab.this.sreArgumentsText.isEnabled() || (event.stateMask & SWT.MODIFIER_MASK) != 0) {
+							event.doit = true;
 						}
 					}
 					break;
@@ -164,7 +166,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		sreArgVariableButton.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(getShell());
 				dialog.open();
 				String variable = dialog.getVariableExpression();
@@ -189,17 +191,15 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 	 */
 	private static class JVMArgsBlock extends VMArgumentsBlock {
 
-		public JVMArgsBlock() {
+		JVMArgsBlock() {
 			//
 		}
 
 		@Override
 		public String getName() {
-			return io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_2;
+			return Messages.SARLArgumentsTab_2;
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public void createControl(Composite parent) {
 			super.createControl(parent);
@@ -209,7 +209,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 
 			// Change the label for the program arguments
 			group = (Group) this.fVMArgumentsText.getParent();
-			newLabel = io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_3;
+			newLabel = Messages.SARLArgumentsTab_3;
 			group.setText(newLabel);
 			ControlAccessibleListener.addListener(this.fVMArgumentsText, group.getText());
 		}
@@ -219,7 +219,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		super.setDefaults(config);
-		config.setAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, (String) null);
+		config.setAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, (String) null);
 	}
 
 	@Override
@@ -227,10 +227,10 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		super.initializeFrom(configuration);
 		try {
 			this.sreArgumentsText.setText(configuration.getAttribute(
-					SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, Strings.emptyIfNull(null)));
+					SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, Strings.emptyIfNull(null)));
 		} catch (CoreException e) {
 			setErrorMessage(MessageFormat.format(
-					io.sarl.eclipse.launching.dialog.LauncherMessages.SARLArgumentsTab_4,
+					Messages.SARLArgumentsTab_4,
 					e.getStatus().getMessage()));
 			JDIDebugUIPlugin.log(e);
 		}
@@ -238,7 +238,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
+		configuration.setAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
 				getAttributeValueFrom(this.sreArgumentsText));
 		super.performApply(configuration);
 	}

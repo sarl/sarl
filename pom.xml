@@ -5,10 +5,10 @@
 
 	<groupId>io.sarl</groupId>
 	<artifactId>io.sarl</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>0.3.0-SNAPSHOT</version>
 
 	<name>SARL Agent Oriented Programming Language</name>
-	<url>${sarl.url}</url>
+	<url>${sarlUrl}</url>
 	<inceptionYear>2014</inceptionYear>
 
 	<packaging>pom</packaging>
@@ -27,31 +27,40 @@
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<buildId>${maven.build.timestamp}</buildId>
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.8.1</xtext.version>
-		<xtext.versionRange>[2.8.1,2.8.2)</xtext.versionRange>
+		<xtext.version>2.8.4</xtext.version>
+		<xtext.versionRange>[2.8.4,2.8.5)</xtext.versionRange><!-- For generating 
+			a correct version range you need to create a range integrating ONLY the current 
+			version and excluding all other possible versions especially the greater 
+			ones -->
 		<!-- Version of the Jnario PI -->
 		<jnario.version>1.0.0</jnario.version>
 		<jnario.report.version>1.0.1</jnario.report.version>
 		<!-- Version of the OSGi module that provides the NLS -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
-		<!-- Year of the release of SARL (used in Eclipse about, license management and documentation) -->
+		<!-- Year of the release of SARL (used in Eclipse about, license management 
+			and documentation) -->
 		<year>2015</year>
 		<!-- URL of the SARL project (use in POM, Eclipse about and documentation) -->
-		<sarl.url>http://www.sarl.io</sarl.url>
+		<sarlUrl>http://www.sarl.io</sarlUrl>
 		<!-- Default encoding of the source files -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- JRE Configuration -->
-		<compiler.level>1.7</compiler.level>
-		<!-- Path to the root directory  -->
-		<main.basedir>${project.basedir}</main.basedir>
-		<!-- String to put after the copyright sign  -->
-		<copyrighters>Sebastian RODRIGUEZ, Nicolas GAUD, Stephane GALLAND</copyrighters>
+		<!-- Java Configuration -->
+		<compiler.level>1.8</compiler.level>
+		<jre.environment>JavaSE-1.8</jre.environment>
+		<!-- String to put after the copyright sign -->
+		<copyrighters>the original authors or authors</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
 		<!-- Local path to the Maven repository -->
 		<local.maven.repository.path>file:///var/www/sarl-maven-repository/</local.maven.repository.path>
 		<!-- Local path to the P2 repository -->
 		<local.p2.repository.path>file:///var/www/sarl-p2-repository/</local.p2.repository.path>
+		<!-- Version of the Arakhne Foundation classes -->
+		<afc.version>12.0</afc.version>
+		<!-- Version of the Guava API -->
+		<guava.version>18.0</guava.version>
+		<!-- Version of the javax.inject module -->
+		<javaxinject.version>1</javaxinject.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -60,7 +69,7 @@
 
 	<organization>
 		<name>SARL Consortium</name>
-		<url>${sarl.url}</url>
+		<url>${sarlUrl}</url>
 	</organization>
 
 	<licenses>
@@ -87,10 +96,8 @@
 
 	<build>
 		<pluginManagement>
-			<!-- The other plugin configurations are inside the submodules
-			     for avoiding to propagate the information outside a
-			     specific module -->
-
+			<!-- The other plugin configurations are inside the submodules for avoiding 
+				to propagate the information outside a specific module -->
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -99,14 +106,12 @@
 					<configuration>
 						<source>${compiler.level}</source>
 						<target>${compiler.level}</target>
+						<testSource>${compiler.level}</testSource>
+						<testTarget>${compiler.level}</testTarget>
 						<encoding>${project.build.sourceEncoding}</encoding>
+						<showDeprecation>false</showDeprecation>
+						<showWarnings>false</showWarnings>
 					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.2</version>
 				</plugin>
 
 				<plugin>
@@ -118,7 +123,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.6.1</version>
+					<version>3.0.0</version>
 				</plugin>
 
 				<plugin>
@@ -146,9 +151,9 @@
 				</plugin>
 
 				<plugin>
-					<groupId>org.codehaus.gmaven</groupId>
-					<artifactId>groovy-maven-plugin</artifactId>
-					<version>2.0</version>
+					<groupId>org.codehaus.gmavenplus</groupId>
+					<artifactId>gmavenplus-plugin</artifactId>
+					<version>1.5</version>
 				</plugin>
 
 				<plugin>
@@ -158,9 +163,15 @@
 				</plugin>
 
 				<plugin>
+					<groupId>org.arakhne.afc.maven</groupId>
+					<artifactId>tag-replacer</artifactId>
+					<version>${afc.version}</version>
+				</plugin>
+
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.18.1</version>
+					<version>2.19</version>
 				</plugin>
 
 				<plugin>
@@ -172,7 +183,19 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.15</version>
+					<version>2.17</version>
+					<dependencies>
+						<dependency>
+							<groupId>io.sarl</groupId>
+							<artifactId>io.sarl.checkstyle</artifactId>
+							<version>${project.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>6.12</version>
+						</dependency>
+					</dependencies>
 					<executions>
 						<execution>
 							<phase>process-classes</phase>
@@ -182,9 +205,8 @@
 						</execution>
 					</executions>
 					<configuration>
-						<configLocation>${main.basedir}/checkstyle/checkstyle.xml</configLocation>
-						<suppressionsLocation>${main.basedir}/checkstyle/suppressions.xml</suppressionsLocation>
-						<headerLocation>${main.basedir}/checkstyle/ClassHeader.txt</headerLocation>
+						<configLocation>io/sarl/checkstyle/checks.xml</configLocation>
+						<headerLocation>io/sarl/checkstyle/class_header.txt</headerLocation>
 						<enableRSS>true</enableRSS>
 						<linkXRef>true</linkXRef>
 						<consoleOutput>true</consoleOutput>
@@ -194,7 +216,8 @@
 						<includeTestSourceDirectory>false</includeTestSourceDirectory>
 						<includeTestResources>false</includeTestResources>
 						<enableRulesSummary>true</enableRulesSummary>
-						<propertyExpansion>main.basedir=${main.basedir}</propertyExpansion>
+						<propertyExpansion>mainbasedir=${mainbasedir}</propertyExpansion>
+						<propertyExpansion>checkstyleheaderdir=${mainbasedir}/checkstyle/src/main/resources/io/sarl/checkstyle</propertyExpansion>
 					</configuration>
 				</plugin>
 
@@ -227,8 +250,77 @@
 					<version>${xtext.version}</version>
 				</plugin>
 
-				<!-- This plugin's configuration is used to store Eclipse m2e settings only.
-				     It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.3</version>
+					<configuration>
+						<docencoding>${project.build.sourceEncoding}</docencoding>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<charset>${project.build.sourceEncoding}</charset>
+						<show>protected</show>
+						<detectLinks>true</detectLinks>
+						<detectJavaApiLink>true</detectJavaApiLink>
+						<links>
+							<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.8/</link>
+						</links>
+						<docfilessubdirs>true</docfilessubdirs>
+						<excludePackageNames></excludePackageNames>
+						<breakiterator>true</breakiterator>
+						<version>true</version>
+						<author>true</author>
+						<keywords>true</keywords>
+						<useStandardDocletOptions>true</useStandardDocletOptions>
+						<excludePackageNames></excludePackageNames>
+						<bottom>&lt;small&gt;Copyright &amp;copy; ${year}
+							${copyrighters}.
+						</bottom>
+						<groups>
+							<group>
+								<title>SARL Metamodel</title>
+								<packages>io.sarl.lang.core:io.sarl.lang.annotation:io.sarl.lang.util</packages>
+							</group>
+							<group>
+								<title>Standard Development Kit</title>
+								<packages>io.sarl.lang.scoping.batch:io.sarl.core:io.sarl.util</packages>
+							</group>
+						</groups>
+						<tags>
+							<tag>
+								<name>mavengroupid</name>
+								<placement>pt</placement>
+								<head>Maven Group Id:</head>
+							</tag>
+							<tag>
+								<name>mavenartifactid</name>
+								<placement>pt</placement>
+								<head>Maven Artifact Id:</head>
+							</tag>
+							<tag>
+								<name>fires</name>
+								<placement>mc</placement>
+								<head>Fired Events:</head>
+							</tag>
+							<tag>
+								<name>generated</name>
+								<placement>a</placement>
+								<head>Generated element</head>
+							</tag>
+							<tag>
+								<name>model</name>
+								<placement>a</placement>
+								<head>Model element</head>
+							</tag>
+							<tag>
+								<name>optionalparam</name>
+								<placement>X</placement>
+							</tag>
+						</tags>
+					</configuration>
+				</plugin>
+
+				<!-- This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -251,9 +343,9 @@
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>org.codehaus.gmaven</groupId>
-										<artifactId>groovy-maven-plugin</artifactId>
-										<versionRange>[2.0,)</versionRange>
+										<groupId>org.codehaus.gmavenplus</groupId>
+										<artifactId>gmavenplus-plugin</artifactId>
+										<versionRange>[1.5,)</versionRange>
 										<goals>
 											<goal>execute</goal>
 										</goals>
@@ -283,6 +375,104 @@
 		</pluginManagement>
 
 		<plugins>
+			<!-- Compute additional version numbers for the SARL (specification, release, 
+				buildId) -->
+			<plugin>
+				<groupId>org.codehaus.gmavenplus</groupId>
+				<artifactId>gmavenplus-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compute-sarl-properties</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<scripts>
+						<script><![CDATA[
+							def now = session.getStartTime();
+							//************************
+							// Detect root directory
+							//
+							def currentDirectory = project.basedir;
+							def previousDirectory = null;
+				            def fileObj = new File(currentDirectory, "pom.xml");
+							while (fileObj.isFile()) {
+								previousDirectory = currentDirectory;
+								currentDirectory = fileObj.getParent();
+								currentDirectory = new File(currentDirectory).getParent();
+					            fileObj = new File(currentDirectory, "pom.xml");
+						    }
+						    if (previousDirectory == null || !(new File(previousDirectory, "pom.xml").isFile())) {
+						    	throw new Exception("Unable to detect root directory");
+						    }
+						    project.properties.mainbasedir = previousDirectory;
+						    println("\tset mainbasedir to: " + project.properties.mainbasedir);
+							//************************
+							// Bug in Jenkins/Hudson
+							//
+							// The buildId property is not correctly set since
+							// "maven.build.timestamp" is skipped by Jenkins/Hudson.
+							//
+							if (project.properties.buildId == "\${maven.build.timestamp}"
+							    || project.properties.buildId == "\$maven.build.timestamp") {
+								project.properties.buildId = (new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now);
+								println("\tset buildId to: " + project.properties.buildId + " (reset for Jenkins/Hudson)");
+							} else {
+								println("\tset buildId to: " + project.properties.buildId);
+							}
+							//************************
+							// Compute version and snapshot tag
+							//
+							def snapshotTag = "-SNAPSHOT";
+							def version;
+							def releaseStatus;
+							def isSnapshot;
+							def endOfVersion;
+							if (project.version.endsWith(snapshotTag)) {
+								def len = project.version.size() - snapshotTag.size();
+								version = project.version.substring(0, len);
+								releaseStatus = "Draft Release";
+								isSnapshot = true;
+								endOfVersion = snapshotTag;
+							} else {
+								version = project.version;
+								releaseStatus = "Stable Release";
+								isSnapshot = false;
+								endOfVersion = "";
+							}
+							versionFields = version.split("\\.");
+							//************************
+							// Set SARL properties
+							//
+							project.properties.sarlspecificationreleaseversion = versionFields[0] + "." + versionFields[1];
+							project.properties.sarlreleaseversion = project.properties.sarlspecificationreleaseversion + "." + versionFields[2];
+							project.properties.sarlspecificationreleasedate = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
+							project.properties.sarlspecificationreleasestatus = releaseStatus;
+							project.properties.sarlisstableversion = Boolean.toString(!isSnapshot);
+							project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+".0"+endOfVersion;
+
+							println("\tset sarlspecificationreleaseversion to: " + project.properties.sarlspecificationreleaseversion);
+							println("\tset sarlreleaseversion to: " + project.properties.sarlreleaseversion);
+							println("\tset sarlspecificationreleasedate to: " + project.properties.sarlspecificationreleasedate);
+							println("\tset sarlspecificationreleasestatus to: " + project.properties.sarlspecificationreleasestatus);
+							println("\tset sarlisstableversion to: " + project.properties.sarlisstableversion);
+							println("\tset janusversion to: " + project.properties.janusversion);
+						]]></script>
+					</scripts>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-all-minimal</artifactId>
+						<version>1.5.8</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+
 			<!-- Automatic creation of the Jar archive with the source code inside. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -320,13 +510,6 @@
 										<include>NOTICE</include>
 									</includes>
 								</resource>
-<!-- 								<resource> -->
-<!-- 									<directory>${main.basedir}/licenses</directory> -->
-<!-- 									<filtering>false</filtering> -->
-<!-- 									<includes> -->
-<!-- 										<include>LICENSE</include> -->
-<!-- 									</includes> -->
-<!-- 								</resource> -->
 							</resources>
 						</configuration>
 					</execution>
@@ -345,10 +528,10 @@
 						</goals>
 						<configuration>
 							<generateChildNotices>true</generateChildNotices>
-							<noticeTemplate>${main.basedir}/licenses/NOTICE.template</noticeTemplate>
+							<noticeTemplate>${mainbasedir}/licenses/NOTICE.template</noticeTemplate>
 							<licenseMapping>
-								<param>${main.basedir}/licenses/license-mappings-sarl.xml</param>
-								<param>${main.basedir}/licenses/license-mappings.xml</param>
+								<param>${mainbasedir}/licenses/license-mappings-sarl.xml</param>
+								<param>${mainbasedir}/licenses/license-mappings.xml</param>
 							</licenseMapping>
 						</configuration>
 					</execution>
@@ -377,52 +560,6 @@
 				</executions>
 			</plugin>
 
-			<!-- Compute additional version numbers for the SARL (specification, release, buildId) -->
-			<plugin>
-				<groupId>org.codehaus.gmaven</groupId>
-				<artifactId>groovy-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>compute-sarl-version-properties</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-						<configuration>
-							<source>
-								now = session.getStartTime()
-
-								// Bug in Jenkins/Hudson: the buildId property is not correctly set
-								// since maven.build.timestamp is skipped by Jenkins/Hudson.
-								if (project.properties.buildId == "\${maven.build.timestamp}") {
-									project.properties.buildId =
-										(new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now)
-									println("\tbuildId: "+ project.properties.buildId + " (reset for Hudson)")
-								} else {
-									println("\tbuildId: "+ project.properties.buildId)
-								}
-
-								snapshotTag = ""
-								if (project.version.endsWith(snapshotTag)) {
-									len = project.version.size() - snapshotTag.size()
-									version = project.version.substring(0,len)
-								}
-								else {
-									version = project.version
-								}
-								versionFields = version.split("\\.")
-								project.properties.sarlspecificationreleaseversion = versionFields[0]+"."+versionFields[1]
-								println("\tsarlspecificationreleaseversion: "+ project.properties.sarlspecificationreleaseversion)
-								project.properties.sarlreleaseversion = project.properties.sarlspecificationreleaseversion+"."+versionFields[2]
-								println("\tsarlreleaseversion: "+ project.properties.sarlreleaseversion)
-								project.properties.sarlspecificationreleasedate =
-									(new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now)
-								println("\tsarlspecificationreleasedate: "+ project.properties.sarlspecificationreleasedate)
-							</source>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -437,27 +574,30 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
+				<!-- Check-style configuration -->
+				<module>checkstyle</module>
 				<!-- Parent configuration for tycho modules -->
 				<module>tycho-parent</module>
 				<!-- Eclipse features for SARL (SDK and IDE contributions) -->
 				<module>features</module>
 				<!-- Eclipse plugins -->
 				<module>plugins</module>
-				<!-- Testing suite -->
-				<module>tests</module>
-				<!-- Definition of the Eclipse platform, the products and the update sites -->
-				<module>releng</module>
 				<!-- Maven plugins and artifacts dedicated to SARL -->
 				<module>maven</module>
+				<!-- Testing suite -->
+				<module>tests</module>
+				<!-- Definition of the Eclipse platform, the products and the update 
+					sites -->
+				<module>releng</module>
 				<!-- Documentation of SARL -->
 				<module>docs</module>
 			</modules>
 		</profile>
 		<profile>
-			<id>release-tasks</id>
+			<id>public-sarl-api-module-set</id>
 			<activation>
 				<property>
-					<name>performRelease</name>
+					<name>publicSarlApiModuleSet</name>
 					<value>true</value>
 				</property>
 			</activation>
@@ -469,74 +609,21 @@
 				<!-- Maven plugins and artifacts dedicated to SARL -->
 				<module>maven</module>
 			</modules>
+		</profile>
+		<profile>
+			<id>release-tasks</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<sourcepath>${project.basedir}/src/;${project.basedir}/src-gen;${project.basedir}/xtend-gen;</sourcepath>
-							<docencoding>${project.build.sourceEncoding}</docencoding>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<charset>${project.build.sourceEncoding}</charset>
-							<show>protected</show>
-							<detectLinks>true</detectLinks>
-							<detectJavaApiLink>true</detectJavaApiLink>
-							<links>
-								<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.7.0/</link>
-							</links>
-							<docfilessubdirs>true</docfilessubdirs>
-							<excludePackageNames></excludePackageNames>
-							<breakiterator>true</breakiterator>
-							<version>true</version>
-							<author>true</author>
-							<keywords>true</keywords>
-							<useStandardDocletOptions>true</useStandardDocletOptions>
-							<excludePackageNames></excludePackageNames>
-							<bottom>&lt;small&gt;Copyright &amp;copy; ${year}
-								${copyrighters}.
-							</bottom>
-							<tags>
-								<tag>
-									<name>mavengroupid</name>
-									<placement>pt</placement>
-									<head>Maven Group Id:</head>
-								</tag>
-								<tag>
-									<name>mavenartifactid</name>
-									<placement>pt</placement>
-									<head>Maven Artifact Id:</head>
-								</tag>
-								<tag>
-									<name>fires</name>
-									<placement>mc</placement>
-									<head>Fired Events:</head>
-								</tag>
-								<tag>
-									<name>generated</name>
-									<placement>a</placement>
-									<head>Generated element</head>
-								</tag>
-								<tag>
-									<name>model</name>
-									<placement>a</placement>
-									<head>Model element</head>
-								</tag>
-							</tags>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.5</version>
+						<version>1.6</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -548,9 +635,20 @@
 						</executions>
 					</plugin>
 					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
 						<groupId>org.arakhne.afc.maven</groupId>
 						<artifactId>tag-replacer</artifactId>
-						<version>11.0</version>
 						<executions>
 							<execution>
 								<id>update-source-tags</id>
@@ -574,7 +672,7 @@
 		<developer>
 			<id>srodriguez</id>
 			<name>Sebastian Rodriguez</name>
-			<email>srodriguez@citat.org.ar</email>
+			<email>sebastian.rodriguez@gitia.org</email>
 			<url>http://gitia.org/members/sebastian-rodriguez/</url>
 			<organization>
 				Grupo de Investigaci&amp;oacute;n en Tecnolog&amp;iacute;as Inform&amp;aacute;ticas Avanzadas de Tucum&amp;aacute;n
@@ -592,10 +690,8 @@
 			<email>nicolas.gaud@utbm.fr</email>
 			<url>http://www.multiagent.fr/People:Gaud_nicolas</url>
 			<organization>
-				IRTES-SET -
-				Universit&amp;eacute; de
-				Technologie de
-				Belfort-Montba&amp;eacute;liard
+				Universit&amp;eacute; de Bourgogne Franche-Comt&amp;eacute;.
+				Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
 			</organization>
 			<organizationUrl>http://www.multiagent.fr</organizationUrl>
 			<roles>
@@ -610,10 +706,8 @@
 			<email>stephane.galland@utbm.fr</email>
 			<url>http://www.multiagent.fr/People:Galland_stephane</url>
 			<organization>
-				IRTES-SET -
-				Universit&amp;eacute; de
-				Technologie de
-				Belfort-Montba&amp;eacute;liard
+				Universit&amp;eacute; de Bourgogne Franche-Comt&amp;eacute;.
+				Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
 			</organization>
 			<organizationUrl>http://www.multiagent.fr</organizationUrl>
 			<roles>
@@ -623,6 +717,17 @@
 			</roles>
 		</developer>
 	</developers>
+
+	<contributors>
+		<contributor>
+			<name>J&amp;eacute;r&amp;eacute;mie Jost</name>
+			<email>jeremiejost@gmail.com</email>
+			<url>https://github.com/jjst</url>
+			<roles>
+				<role>Documentation Contributor</role>
+			</roles>
+		</contributor>
+	</contributors>
 
 	<!-- =================== -->
 	<!-- ==== Deployment === -->

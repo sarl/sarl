@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.docs.utils;
 
-
-import io.sarl.lang.SARLInjectorProvider;
-
+import com.google.inject.Injector;
 import org.eclipse.xtext.junit4.IInjectorProvider;
 import org.eclipse.xtext.junit4.IRegistryConfigurator;
 import org.jnario.lib.AbstractSpecCreator;
 
-import com.google.inject.Injector;
+import io.sarl.lang.SARLInjectorProvider;
 
 /** Creator of specification model dedicated to SARL.
  *
@@ -41,7 +40,7 @@ public class SARLSpecCreator extends AbstractSpecCreator {
 
 	private Injector injector;
 
-	private final SARLInjectorProvider injectorProvider = new SARLInjectorProvider();
+	private final IInjectorProvider injectorProvider = new SARLInjectorProvider();
 
 	@Override
 	protected <T> T create(Class<T> klass) {

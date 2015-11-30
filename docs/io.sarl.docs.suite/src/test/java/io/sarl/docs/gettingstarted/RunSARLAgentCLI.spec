@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,14 +23,14 @@ package io.sarl.docs.gettingstarted
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.lang.sarl.Agent
+import io.sarl.lang.sarl.SarlAgent
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 
 /* @outline
  * 
- * For running an agent, you must launch this agent on the runtime 
+ * <p>For running an agent, you must launch this agent on the runtime 
  * environment.
  * This document explains how to launch an agent on
  * the [Janus platform](http://www.janusproject.io) from the command line.
@@ -44,12 +44,12 @@ describe "Run SARL Agent from the Command Line" {
 	 * For launching the platform, you must execute this
 	 * boot class in a Java Virtual Machine.
 	 * 
-	 * The typical command line is:
+	 * <p>The typical command line is:
 	 * 
 	 *     java -cp app.jar io.janusproject.Boot
 	 * 
 	 * 
-	 * The option `-cp` specifies the Jar file that contains
+	 * <p>The option `-cp` specifies the Jar file that contains
 	 * the compiled classes. The given `app.jar`
 	 * file is a Jar file that is containing the Janus
 	 * platform, the SARL libraries, and the application classes.
@@ -134,14 +134,14 @@ describe "Run SARL Agent from the Command Line" {
 				it should haveNbElements 1
 			]
 
-			model.elements.get(0) => [
+			model.xtendTypes.get(0) => [
 				it should beAgent "MyAgent"
 				it should extend _
 				it should haveNbElements 2
-				(it as Agent).features.get(0) => [
+				(it as SarlAgent).members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
-				(it as Agent).features.get(1) => [
+				(it as SarlAgent).members.get(1) => [
 					it should beBehaviorUnit "io.sarl.core.Initialize"
 					it should beGuardedWith _
 				]
@@ -166,7 +166,7 @@ describe "Run SARL Agent from the Command Line" {
 	 * In the next section, we will learn how to launch your SARL project from
 	 * a Java program.
 	 * 
-	 * [Next>](RunSARLAgentFromAJavaProgramSpec.html)
+	 * <p>[Next>](RunSARLAgentFromAJavaProgramSpec.html)
 	 * 
 	 * @filter(.*)
 	 */

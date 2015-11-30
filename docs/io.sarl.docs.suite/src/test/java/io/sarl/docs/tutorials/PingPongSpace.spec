@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,15 +28,15 @@ import org.jnario.runner.CreateWith
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.*
 
-/* <!-- OUTPUT OUTLINE -->
+/* @outline
  * 
- * This document describes how to create a simple
+ * <p>This document describes how to create a simple
  * agent-based application in which agents are
  * exchanging basic messages inside a sub-space.
  * Before reading this document, it is recommended reading
  * the [General Syntax Reference](../reference/GeneralSyntaxReferenceSpec.html).
  * 
- * <div class="bt-download">
+ * <p><div class="bt-download">
  * <a href="%sarlmavenrepository%/last-demos-release.jar"><img alt="Download the Binary JAR file" src="%website%/images/download-icon.png"/></a>
  * </div>
  * The elements that are explained in this tutorial are:
@@ -48,7 +48,7 @@ import static extension org.junit.Assume.*
  *  * the receiving of event occurrences; and
  *  * the definition of a _proactive_ behavior: waiting for partners.
  *
- * The source code related to this tutorial may be found
+ * <p>The source code related to this tutorial may be found
  * in the [SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/pingpongspace).
  */
 @CreateWith(SARLSpecCreator)
@@ -66,10 +66,10 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 		 *  * The `Ping` agent is receiving a `Pong` message and 
 		 *    replies to the sender of the `Pong` with a new `Ping` message.
 		 *  
-		 * These messages contain an integer number that
+		 * <p>These messages contain an integer number that
 		 * indicates the number of the event.
 		 * 
-		 * ![Ping-Pong Example](./pingpongspace.png)
+		 * <p>![Ping-Pong Example](./pingpongspace.png)
 		 *
 		 * @filter(.*)
 		 */
@@ -95,10 +95,10 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * at which position the event is located in
 			 * the sequence of sent `Ping` event.
 			 * 
-			 * The `index` attribute is a _value_, for making
+			 * <p>The `index` attribute is a _value_, for making
 			 * it unmodifiable after its initialization.
 			 * 
-			 * For setting the value of the `index` value,
+			 * <p>For setting the value of the `index` value,
 			 * it is mandatory to define a constructor. 
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -119,7 +119,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * index of the `Ping` event for which the
 			 * `Pong` event is created.
 			 * 
-			 * The `index` attribute is also a _value_, and
+			 * <p>The `index` attribute is also a _value_, and
 			 * it must be set in a constructor. 
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -165,7 +165,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			/* Because the agents are interacting into a sub-space,
 			 * they must join this sub-space at start-up.
 			 * 
-			 * The sub-space is located in the default context.
+			 * <p>The sub-space is located in the default context.
 			 * For creating or joining it, we must use the
 			 * `getOrCreateSpaceWithSpec` function.
 			 * This function searches for a space, which was
@@ -173,7 +173,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * is no space, the space identifier is used
 			 * for creating a new space.
 			 * 
-			 * After retrieving the instance of the space,
+			 * <p>After retrieving the instance of the space,
 			 * it is mandatory to register the agent for
 			 * receiving the events. The spaces of
 			 * type `OpenEventSpaceSpecification` provides
@@ -263,25 +263,25 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			/* Now, it is time to define how the pong agent
 			 * is replying with a `Pong` message.
 			 * 
-			 * First, sending an event in the default space
+			 * <p>First, sending an event in the default space
 			 * must be done with a built-in capacity:
 			 * `DefaultContextInteractions`. This capacity
 			 * provides a collection of functions that 
 			 * enable the agent to interact with the 
 			 * default context, and its default space.
 			 * 
-			 * For using the capacity, it is recommended
+			 * <p>For using the capacity, it is recommended
 			 * declaring it with the `uses` keyword.
 			 * This keyword permits the agent to directly
 			 * call the functions of the capacity as if
 			 * they were defined as actions in the agent.
 			 * 
-			 * The `DefaultContextInteractions` capacity
+			 * <p>The `DefaultContextInteractions` capacity
 			 * provides the function `emit(Event)` for
 			 * sending an event in the default space of the
 			 * default context.
 			 * 
-			 * The `Pong` event must be built with
+			 * <p>The `Pong` event must be built with
 			 * an index value as argument. This argument
 			 * is the index stored in the `Ping` event.
 			 * For accessing the occurrence of the
@@ -350,7 +350,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * to all the agents belonging to the default
 			 * space, including the pong agent.
 			 * 
-			 * For restricting the receiver of the
+			 * <p>For restricting the receiver of the
 			 * `Pong` event to the initial sender of the
 			 * `Ping` event, you must define a scope for
 			 * the `Pong` event.
@@ -358,7 +358,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * provides the function `emit(Event, Scope<Address>)`
 			 * for sending an event with a specific scope.
 			 * 
-			 * The SARL SDK contains the class `AddressScope`.
+			 * <p>The SARL SDK contains the class `AddressScope`.
 			 * It is an implementation of a `Scope` on addresses
 			 * (an address is the identifier
 			 * of an agent in the default space). The creation
@@ -367,7 +367,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * which is getting a collection of addresses for building
 			 * the matching predicate in the scope.
 			 * 
-			 * In the following code, the scope permits to
+			 * <p>In the following code, the scope permits to
 			 * restrict to the initial sender of the `Ping` event. 
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -509,7 +509,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * This new `Ping` event has an index greater
 			 * than the one of the `Pong` event.
 			 * 
-			 * The receiving of the `Ping` event is
+			 * <p>The receiving of the `Ping` event is
 			 * restricted to the sender of the
 			 * `Pong` event.
 			 * 
@@ -569,7 +569,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * it is mandatory to send a first occurrence
 			 * of the `Ping` event.
 			 * 
-			 * This emit is done when the ping agent
+			 * <p>This emit is done when the ping agent
 			 * is started, i.e. when the agent is
 			 * receiving the `Initialize` event.
 			 * 
@@ -635,17 +635,17 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * will reach a deadlock, even if
 			 * the pong agent is launched later.
 			 * 
-			 * For solving this problem, the ping
+			 * <p>For solving this problem, the ping
 			 * agent must wait for sending the initial
 			 * `Ping` event until the pong agent
 			 * is belonging to the default space.
 			 * 
-			 * The concrete implementation is based on
+			 * <p>The concrete implementation is based on
 			 * the `Schedules` capacity, which provides
 			 * a collection of functions for creating
 			 * and launching asynchronous tasks.
 			 * 
-			 * In the following code, a task is created with
+			 * <p>In the following code, a task is created with
 			 * the name `waiting_for_partner`.
 			 * This task is executed every second with
 			 * the `every` function (given by the `Schedules`
@@ -653,7 +653,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * the brackets contains the statements
 			 * that will be periodically executed.
 			 * 
-			 * In this periodically executed code,
+			 * <p>In this periodically executed code,
 			 * the agent is testing if it is the only
 			 * one agent belonging to the default space.
 			 * If not, the agent is sending the initial
@@ -730,7 +730,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 		 * for running the agents.
 		 *
 		 *
-		 * The Janus platform is designed to launch a single agent at start-up.
+		 * <p>The Janus platform is designed to launch a single agent at start-up.
 		 * Then, this launched agent must spawn the other agents in the system.
 		 * 
 		 * <importantnote> In this section,
@@ -745,11 +745,11 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 			 * the compiled files of the tutorial, the Janus platform,
 			 * and all the needed libraries by SARL and Janus.
 			 *
-			 * You could directly download this file by clicking on
+			 * <p>You could directly download this file by clicking on
 			 * the download icon at the top of this page; or by compiling
 			 * the source code yourself.
 			 *  
-			 * If you download the source code of the
+			 * <p>If you download the source code of the
 			 * [SARL demos](https://github.com/sarl/sarl-demos), and
 			 * compile them with [Maven](http://maven.apache.org),
 			 * you will obtain a JAR file with all the mandatory elements
@@ -781,12 +781,12 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 				 *     java -jar sarl-demos-0.1.0-with-dependencies.jar
 				 *          io.sarl.docs.tutorials.pingpongspace.PongAgent
 				 * 
-				 * and:
+				 * <p>and:
 				 * 
 				 *     java -jar sarl-demos-0.1.0-with-dependencies.jar
 				 *          io.sarl.docs.tutorials.pingpongspace.PingAgent
 				 *
-				 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
+				 * <p>The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
 				 * The third arguments are the qualified names of the agents to launch.
 				 *  
 				 * @filter(.*)
@@ -804,13 +804,13 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 				 *          io.janusproject.Boot
 				 *          io.sarl.docs.tutorials.pingpongspace.PongAgent
 				 *
-				 * and:
+				 * <p>and:
 				 * 
 				 *     java -cp sarl-demos-0.1.0-with-dependencies.jar
 				 *          io.janusproject.Boot
 				 *          io.sarl.docs.tutorials.pingpongspace.PingAgent
 				 *   
-				 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
+				 * <p>The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
 				 * The string `io.janusproject.Boot` specifies the Java class to launch: the Janus bootstrap.
 				 * The first arguments after the bootstraps are the qualified name 
 				 * of the agents to launch.
@@ -876,7 +876,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 				 *     java -jar sarl-demos-0.1.0-with-dependencies.jar
 				 *          io.sarl.docs.tutorials.pingpongspace.BootAgent
 				 * 
-				 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
+				 * <p>The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
 				 * The third argument is the qualified name of the agent to launch.
 				 *  
 				 * @filter(.*)
@@ -894,7 +894,7 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 				 *          io.janusproject.Boot
 				 *          io.sarl.docs.tutorials.pingpongspace.BootAgent
 				 *   
-				 * The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
+				 * <p>The file `sarl-demos-0.1.0-with-dependencies.jar` is explained above.
 				 * The string `io.janusproject.Boot` specifies the Java class to launch: the Janus bootstrap.
 				 * The first argument after the bootstrap is the qualified name of the agent to launch.
 				 *  

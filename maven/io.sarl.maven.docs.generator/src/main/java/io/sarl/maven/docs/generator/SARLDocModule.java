@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,14 @@
 
 package io.sarl.maven.docs.generator;
 
-import org.jnario.doc.AbstractDocGenerator;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import org.jnario.doc.AbstractDocGenerator;
+import org.jnario.doc.HtmlAssets;
 
 /** Injection module that permits to inject the documentation generator
  * for the SARL project.
@@ -36,17 +40,32 @@ import com.google.inject.Module;
  */
 class SARLDocModule implements Module {
 
-	/**
+	/** Construct a module.
 	 */
-	public SARLDocModule() {
+	SARLDocModule() {
 		//
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void configure(Binder binder) {
 		binder.bind(AbstractDocGenerator.class).to(SARLDocGenerator.class);
+
+		try {
+			HtmlAssets assets = new HtmlAssets();
+			List<String> clone = new ArrayList<>(assets.getJsFiles());
+			clone.add("js/lang-sarl.js"); //$NON-NLS-1$
+			Field field = HtmlAssets.class.getDeclaredField("_jsFiles"); //$NON-NLS-1$
+			boolean accessible = field.isAccessible();
+			try {
+				field.setAccessible(true);
+				field.set(assets, clone);
+			} finally {
+				field.setAccessible(accessible);
+			}
+			binder.bind(HtmlAssets.class).toInstance(assets);
+		} catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 
 }

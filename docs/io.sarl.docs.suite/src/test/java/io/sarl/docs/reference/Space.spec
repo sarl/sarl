@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors and authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,12 +34,12 @@ import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  *
- * This document describes the features related to the definition of a space in SARL.
+ * <p>This document describes the features related to the definition of a space in SARL.
  * Before reading this document, it is recommended reading
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
  * and the [Agent Reference](AgentReferenceSpec.html).
  * 
- * One of the key elements that characterize and differentiate the main 
+ * <p>One of the key elements that characterize and differentiate the main 
  * multi-agent approaches is how interactions between agents are described.
  * Some researchers focus on agent-to-agent interactions and corresponding 
  * protocols. Within organizational approaches, some consider the 
@@ -47,7 +47,7 @@ import static extension org.junit.Assume.assumeFalse
  * groups through the roles they play. Others focus on dynamic 
  * organizations and normative aspects. 
  * 
- * Another essential aspect of the interaction is the interaction 
+ * <p>Another essential aspect of the interaction is the interaction 
  * Agent-Environment, especially in agent-based simulations.
  * Each of these trends of multi-agent systems has led to numerous 
  * fruitful and innovative contributions.
@@ -55,17 +55,17 @@ import static extension org.junit.Assume.assumeFalse
  * describing the interaction among agents, but rather attempt to 
  * provide means to implement each of these approaches.
  * 
- * It is in this perspective that the concepts of `Space`
+ * <p>It is in this perspective that the concepts of `Space`
  * and `SpaceSpecification` were defined.
  * 
- * __A Space is the support of the interaction between agents respecting 
+ * <p>__A Space is the support of the interaction between agents respecting 
  * the rules defined in a Space Specification.__
  * 
- * __A Space Specification defines the rules (including action and
+ * <p>__A Space Specification defines the rules (including action and
  * perception) for interacting within a given set of spaces respecting 
  * this specification.__
  * 
- * SARL natively defines a particular type of `Space` called
+ * <p>SARL natively defines a particular type of `Space` called
  * *Event Space* to provide a support to event-driven interactions.
  * Within an event space, agents communicate using events, the 
  * [built-in capacity `DefaultContextInteractions`](BuiltInCapacityReferenceSpec.html)
@@ -74,7 +74,7 @@ import static extension org.junit.Assume.assumeFalse
  * in behavior definition.
  * A __Default Space__ is precisely an event space.
  * 
- * Within an event space, the notion of `Scope` enables to 
+ * <p>Within an event space, the notion of `Scope` enables to 
  * precisely control/filter the potential recipients of an event.
  * __A Scope is a predicate used to filter the potentially called 
  * listeners for a given event.__
@@ -93,13 +93,13 @@ describe "Space Reference" {
 			/* SARL provides a Java interface that is representing all
 			 * the spaces:
 			 * 
-			 *      public interface Space {
-			 * 		    public SpaceID getID();
-			 * 		    public SynchronizedSet<UUID> getParticipants();
+			 *      interface Space {
+			 * 		    def getID : SpaceID
+			 * 		    def getParticipants : SynchronizedSet<UUID>
 			 *      }
 			 *
 			 * 
-			 * The `getID` function replies the identifier of the space.
+			 * <p>The `getID` function replies the identifier of the space.
 			 * The `getParticipants` function replies the identifiers
 			 * of the agents belonging to the space.
 			 *  
@@ -122,14 +122,13 @@ describe "Space Reference" {
 			/* Spaces that are based on event propagation mechanism are defined
 			 * as:
 			 * 
-			 *      public interface EventSpace extends Space {
-			 * 		    public Address getAddress(UUID id);
-			 * 		    public void emit(Event event, Scope<Address> scope);
-			 * 		    public void emit(Event event);
+			 *      interface EventSpace extends Space {
+			 * 		    def getAddress(id : UUID) : Address
+			 * 		    def emit(event : Event, scope : Scope<Address> = null)
 			 *      }
 			 *
 			 * 
-			 * The `getAddress` function replies the address in the space
+			 * <p>The `getAddress` function replies the address in the space
 			 * of the agent that has the given identifier.
 			 * The `emit` functions permits fire of an event in
 			 * the space.
@@ -149,13 +148,13 @@ describe "Space Reference" {
 			/* Event spaces that are allowing the agents to be register 
 			 * and unregister are "open event spaces":
 			 * 
-			 *      public interface OpenEventSpace extends EventSpace {
-			 * 		    public Address register(EventListener entity);
-			 * 		    public Address unregister(EventListener entity);
+			 *      interface OpenEventSpace extends EventSpace {
+			 * 		    def register(entity : EventListener) : Address
+			 * 		    def unregister(entity : EventListener) : Address
 			 *      }
 			 *
 			 * 
-			 * The functions `register` and `unregister`
+			 * <p>The functions `register` and `unregister`
 			 * permits an agent to be involved or not.
 			 *  
 			 * @filter(.*) 
@@ -172,14 +171,14 @@ describe "Space Reference" {
 			/* When an event space needs to control the registration access,
 			 * it should be a "restricted access event space":
 			 * 
-			 *      public interface RestrictedAccessEventSpace extends EventSpace {
-			 * 		    public Address register(EventListener entity, Principal requester);
-			 * 		    public <P extends EventListener & Principal> Address register(P entity);
-			 * 		    public Address unregister(EventListener entity);
+			 *      interface RestrictedAccessEventSpace extends EventSpace {
+			 * 		    def register(entity : EventListener, requester : Principal) : Address
+			 * 		    def register(entity : P) : Address with P extends EventListener & Principal
+			 * 		    def unregister(entity : EventListener) : Address
 			 *      }
 			 *
 			 * 
-			 * The functions given by this type of space permits implementing
+			 * <p>The functions given by this type of space permits implementing
 			 * a space with restricted access, based on the standard Java API.
 			 *  
 			 * @filter(.*) 
@@ -202,13 +201,13 @@ describe "Space Reference" {
 		 * It is an object-oriented language with a syntax close to the
 		 * one of SARL.
 		 * 
-		 * For defining a space, three steps must be followed:
+		 * <p>For defining a space, three steps must be followed:
 		 * 
 		 *  * Definition of the interface of the space;
 		 *  * Implementation of the space on a specific runtime environment;
 		 *  * Definition of the space specification.
 		 * 
-		 * In the rest of this section, we use the example of the definition
+		 * <p>In the rest of this section, we use the example of the definition
 		 * of a physic space: a space in which objects are located. 
 		 */
 		describe "Defining a Space" {
@@ -217,17 +216,17 @@ describe "Space Reference" {
 			 * the specification of the Java interface that is describing
 			 * the functions provided by the space.
 			 * 
-			 * The new space type must extend one of the predefined types.
+			 * <p>The new space type must extend one of the predefined types.
 			 * In the following example, the new space is related to
 			 * the physic environment in which the agents may evolve.
 			 * 
 			 *      interface PhysicSpace extends Space {
-			 * 		    def moveObject(UUID identifier, float x, float y, float z)
-			 * 		    def bindBody(EventListener agent)
-			 * 		    def unbindBody(EventListener agent)
+			 * 		    def moveObject(identifier : UUID, x : float, y : float, z : float)
+			 * 		    def bindBody(agent : EventListener)
+			 * 		    def unbindBody(agent : EventListener)
 			 *      }
 			 *
-			 * This space permits to move an object (including the physical
+			 * <p>This space permits to move an object (including the physical
 			 * representation of the agent, its body).
 			 * Additionally, the space gives to the agent the ability to be binded
 			 * to its body, and to release the control of its body.
@@ -252,36 +251,36 @@ describe "Space Reference" {
 			 * that you will be notified about any major changes on this part of
 			 * the API.</caution>
 			 * 
-			 * Below, the implementation
+			 * <p>Below, the implementation
 			 * extends one of the abstract classes provided by the
 			 * [Janus Platform](http://www.janusproject.io).
 			 * 
 			 *      class PhysicSpaceImpl extends AbstractSpace implements PhysicSpace {
-			 * 		    val Map<UUID,PhysicObject> entities = newTreeMap
-			 * 		    new(UUID id) {
+			 * 		    val entities = <UUID, PhysicObject>newTreeMap
+			 * 		    new(id : UUID) {
 			 * 			    super(id)
 			 * 		    }
-			 * 		    def moveObject(UUID identifier, float x, float y, float z) {
+			 * 		    def moveObject(identifier : UUID, x : float, y : float, z : float) {
 			 * 			    synchronized (this.entities) {
-			 *					PhysicObject o = this.entities.get(identifier)
+			 *					var o = this.entities.get(identifier)
 			 * 			    	if (o !== null) {
 			 * 				    	o.move(x, y, z)
 			 * 			    	}
 			 * 				}
 			 * 		    }
-			 * 			def bindBody(EventListener listener) {
+			 * 			def bindBody(listener : EventListener) {
 			 * 				synchronized (this.entities) {
 			 *					entities.put(listener.ID, new PhysicObject)
 			 * 				}
 			 * 			}
-			 * 			def unbindBody(EventListener listener) {
+			 * 			def unbindBody(listener : EventListener) {
 			 * 				synchronized (this.entities) {
 			 *					entities.remove(listener.ID)
 			 * 				}
 			 * 			}
 			 *      }
 			 * 
-			 * The physic space contains a collection of objects, namely `entities`.
+			 * <p>The physic space contains a collection of objects, namely `entities`.
 			 * Each object is identified by an UUID.
 			 * It is assumed that the `PhysicObject` class provides a method for moving it:
 			 * `move(float, float, float)`.
@@ -310,31 +309,31 @@ describe "Space Reference" {
 			 * that you will be notified about any major changes on this part of
 			 * the API.</caution>
 			 * 
-			 * Below, the implementation
+			 * <p>Below, the implementation
 			 * extends one of the abstract classes provided by the
 			 * [Janus Platform](http://www.janusproject.io).
 			 * 
 			 *      class NetworkPhysicSpaceImpl extends AbstractEventSpace implements PhysicSpace {
-			 * 			val Map<UUID,PhysicObject> entities;
-			 *			public new(SpaceID id, DistributedDataStructureService factory) {
+			 * 			val entities : Map<UUID,PhysicObject>
+			 *			public new(id : SpaceID, factory : DistributedDataStructureService) {
 			 *				super(id, factory)
 			 * 				this.entities = factory.getMap(id.toString + "-physicObjects")
 			 *			}
-			 *			def bindBody(EventListener entity) {
+			 *			def bindBody(entity : EventListener) {
 			 * 				this.entities.put(entity.ID, new PhysicObject)
-			 *				Address a = new Address(ID, entity.ID)
+			 *				var a = new Address(ID, entity.ID)
 			 *				synchronized (this.participants) {
 			 *					return this.participants.registerParticipant(a, entity)
 			 *				}
 			 *			}
-			 *			def unbindBody(EventListener entity) {
+			 *			def unbindBody(entity : EventListener) {
 			 *				synchronized (this.participants) {
 			 *					return this.participants.unregisterParticipant(entity)
 			 *				}
 			 * 				this.entities.remove(entity.ID)
 			 *			}
-			 * 		    def moveObject(UUID identifier, float x, float y, float z) {
-			 * 			    PhysicObject o = this.entities.remove(identifier)
+			 * 		    def moveObject(identifier : UUID, x : float, y : float, z : float) {
+			 * 			    var o = this.entities.remove(identifier)
 			 * 			    if (o !== null) {
 			 * 				    o.move(x, y, z)
 			 * 					this.entities.put(identifier, o)
@@ -361,24 +360,24 @@ describe "Space Reference" {
 			 * provide information and rules to the spaces.
 			 * 
 			 *     class PhysicSpaceSpecification implements SpaceSpecification<PhysicSpace> {
-			 *         def PhysicSpace create(SpaceID id, Object... params) {
+			 *         def create(id : SpaceID, params : Object*) : PhysicSpace {
 			 * 	           return new PhysicSpaceImpl(id)
 			 * 	       }
 			 *     }
 			 * 
-			 * The example above is the specification related to the first implementation
+			 * <p>The example above is the specification related to the first implementation
 			 * of the PhysicSpace.
 			 *
 			 *     class NetworkPhysicSpaceSpecification implements SpaceSpecification<PhysicSpace> {
 			 * 	       @Inject
-			 * 		   var DistributedDataStructureService factory;
+			 * 		   var factory : DistributedDataStructureService
 			 * 
-			 *         def PhysicSpace create(SpaceID id, Object... params) {
+			 *         def create(id : SpaceID, params : Object*) : PhysicSpace {
 			 * 	           return new NetworkPhysicSpaceImpl(id, factory)
 			 * 	       }
 			 *     }
 			 * 
-			 * The example above is the specification that permits to create a physic space
+			 * <p>The example above is the specification that permits to create a physic space
 			 * with networking. It retrieves by injection the factory of distributed data structures
 			 * provided by the Janus platform.
 			 * 
@@ -396,9 +395,9 @@ describe "Space Reference" {
 	 * Release: %sarlspecreleasedate%
 	 * 
 	 * 
-	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
 	 * 
-	 * Licensed under the Apache License, Version 2.0;
+	 * <p>Licensed under the Apache License, Version 2.0;
 	 * you may not use this file except in compliance with the License.
 	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *

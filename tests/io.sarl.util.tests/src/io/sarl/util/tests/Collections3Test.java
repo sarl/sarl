@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import io.sarl.lang.util.SynchronizedCollection;
-import io.sarl.lang.util.SynchronizedSet;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-import io.sarl.util.Collections3;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,12 +34,20 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
+
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+import io.sarl.lang.util.SynchronizedCollection;
+import io.sarl.lang.util.SynchronizedSet;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.util.Collections3;
 
 /**
  * @author $Author: srodriguez$
@@ -69,11 +72,13 @@ public class Collections3Test {
 
 		public static class CollectionTest extends AbstractSarlTest {
 
-			@Nullable
+			@NonNullByDefault
 			private Object mutex;
-			@Nullable
+
+			@NonNullByDefault
 			private List<String> original;
-			@Nullable
+
+			@NonNullByDefault
 			private SynchronizedCollection<String> collection;
 
 			@Before
@@ -194,13 +199,13 @@ public class Collections3Test {
 
 		public static class SyncTest extends AbstractSarlTest {
 
-			@Nullable
+			@NonNullByDefault
 			private ExecutorService executors;
-			@Nullable
+			@NonNullByDefault
 			private Object mutex;
-			@Nullable
+			@NonNullByDefault
 			private List<String> original;
-			@Nullable
+			@NonNullByDefault
 			private Collection<String> collection;
 
 			@Before
@@ -259,11 +264,11 @@ public class Collections3Test {
 
 		public static class CollectionTest extends AbstractSarlTest {
 
-			@Nullable
+			@NonNullByDefault
 			private Object mutex;
-			@Nullable
+			@NonNullByDefault
 			private TreeSet<String> original;
-			@Nullable
+			@NonNullByDefault
 			private SynchronizedSet<String> collection;
 
 			@Before
@@ -405,13 +410,16 @@ public class Collections3Test {
 				return it.next();
 			}
 
-			@Nullable
+			@NonNullByDefault
 			private ExecutorService executors;
-			@Nullable
+
+			@NonNullByDefault
 			private Object mutex;
-			@Nullable
+
+			@NonNullByDefault
 			private TreeSet<String> original;
-			@Nullable
+
+			@NonNullByDefault
 			private Set<String> collection;
 
 			@Before

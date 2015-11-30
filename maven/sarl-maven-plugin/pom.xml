@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.sarl.maven</groupId>
 		<artifactId>io.sarl.maven</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.3.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>sarl-maven-plugin</artifactId>
@@ -13,14 +13,28 @@
 	<packaging>maven-plugin</packaging>
 
 	<properties>
-		<!-- needed for checkstyle/findbugs and other plugins -->
-		<main.basedir>${project.basedir}/../..</main.basedir>
 		<!-- Needed for replacements in config.properties -->
+		<dependency.sarl-sdk.groupId>io.sarl.lang</dependency.sarl-sdk.groupId>
+		<dependency.sarl-sdk.artifactId>io.sarl.lang.core</dependency.sarl-sdk.artifactId>
 		<dependency.xtext-compiler.groupId>org.eclipse.xtext</dependency.xtext-compiler.groupId>
 		<dependency.xtext-compiler.artifactId>xtext-maven-plugin</dependency.xtext-compiler.artifactId>
 		<dependency.xtext-compiler.mojo>generate</dependency.xtext-compiler.mojo>
+		<!-- The following dependencies are required by the Xtext compiler.
+		     They must appear as Maven dependencies for ensuring the Jar files are available.
+			BUNDLE						=	MAVEN ARTIFACT
+			=======================================================================
+			javax.inject				=	javax.inject:javax.inject
+			com.google.inject			=	com.google.inject:guice
+			org.eclipse.osgi			=	org.eclipse:osgi
+			org.eclipse.xtext.xbase.lib	=	org.eclipse.xtext:org.eclipse.xtext.xbase.lib
+			org.eclipse.xtend.lib		=	org.eclipse.xtend:org.eclipse.xtend.lib
+			io.sarl.lang				=	io.sarl.lang:io.sarl.lang
+			io.sarl.lang.core			=	io.sarl.lang:io.sarl.lang.core
+		-->
 		<dependency.xtext-compiler.dependencies>
-			io.sarl.lang:io.sarl.lang|io.sarl.lang:io.sarl.lang.core|org.eclipse:osgi
+					io.sarl.lang:io.sarl.lang; \
+					io.sarl.lang:io.sarl.lang.core; \
+					org.eclipse.xtend:org.eclipse.xtend.core
 		</dependency.xtext-compiler.dependencies>
 		<dependency.java-compiler.groupId>org.apache.maven.plugins</dependency.java-compiler.groupId>
 		<dependency.java-compiler.artifactId>maven-compiler-plugin</dependency.java-compiler.artifactId>
@@ -30,22 +44,38 @@
 		<dependency.cleaner.mojo>clean</dependency.cleaner.mojo>
 	</properties>
 
+	<!-- The dependencies contains the ones required for compiling and running this plugin,
+	     AND the plugins that are required for running the SARL compiler. -->
 	<dependencies>
+		<!-- The following dependencies are required for compiling this maven plugin -->
+		<dependency>
+			<groupId>org.apache.maven.plugin-tools</groupId>
+			<artifactId>maven-plugin-annotations</artifactId>
+			<version>3.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-core</artifactId>
+			<version>3.3.3</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>vmutils</artifactId>
+			<version>${afc.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<!-- The following dependencies are required for compiling SARL code with this maven plugin -->
 		<dependency>
-			<groupId>io.sarl.lang</groupId>
-			<artifactId>io.sarl.lang.core</artifactId>
-			<version>${project.version}</version>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-clean-plugin</artifactId>
+			<version>3.0.0</version>
 		</dependency>
- 		<dependency> 
- 			<groupId>org.eclipse</groupId> 
- 			<artifactId>osgi</artifactId> 
-			<version>${osgi.nls.version}</version>
- 		</dependency> 
 		<dependency>
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>xtext-maven-plugin</artifactId>
@@ -57,9 +87,14 @@
 			<version>3.3</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-clean-plugin</artifactId>
-			<version>2.6.1</version>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>io.sarl.lang.core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtend</groupId>
+			<artifactId>org.eclipse.xtend.core</artifactId>
+			<version>${xtext.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -88,5 +123,42 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<!-- ======================================= -->
+	<!-- ==== Release Management === -->
+	<!-- ======================================= -->
+	<profiles>
+		<profile>
+			<id>maven-release-of-util-plugin</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.arakhne.afc.maven</groupId>
+							<artifactId>tag-replacer</artifactId>
+							<configuration>
+								<sources>
+									<source>${project.basedir}/src/main/java</source>
+								</sources>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<configuration>
+								<sourcepath>${project.build.directory}/generated-sources/java</sourcepath>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

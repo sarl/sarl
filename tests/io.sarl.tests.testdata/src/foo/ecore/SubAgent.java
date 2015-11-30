@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ package foo.ecore;
 import java.util.UUID;
 
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.BuiltinCapacitiesProvider;
 
 
 /**
@@ -35,12 +36,8 @@ import io.sarl.lang.core.Agent;
 @SuppressWarnings("all")
 public class SubAgent extends Agent {
 
-	public SubAgent(UUID parentID) {
-		super(parentID);
-	}
-
-	public SubAgent(UUID parentID, UUID agentID) {
-		super(parentID, agentID);
+	public SubAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
+		super(provider, parentID, agentID);
 	}
 
 }

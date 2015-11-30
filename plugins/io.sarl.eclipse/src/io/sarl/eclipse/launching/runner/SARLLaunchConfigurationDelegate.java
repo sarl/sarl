@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching.runner;
 
-import io.sarl.eclipse.SARLConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
-import io.sarl.eclipse.launching.dialog.RootContextIdentifierType;
-import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.ProjectSREProvider;
-import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
-import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.runtime.SREConstants;
+package io.sarl.eclipse.launching.runner;
 
 import java.io.File;
 import java.lang.ref.SoftReference;
@@ -40,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -68,10 +59,22 @@ import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.xtext.xbase.lib.Pair;
 
-import com.google.common.base.Strings;
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
+import io.sarl.eclipse.launching.dialog.RootContextIdentifierType;
+import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ProjectSREProvider;
+import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.SREConstants;
 
 /**
  * Implementation of an eclipse LauncConfigurationDelegate to launch SARL.
+ *
+ * <p>This delegate is in charge of running a SARL application with the specific
+ * SRE.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -81,9 +84,10 @@ import com.google.common.base.Strings;
 public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
 	private SoftReference<IRuntimeClasspathEntry[]> unresolvedClasspathEntries;
+
 	private SoftReference<String[]> classpathEntries;
 
-	/**
+	/** Construct a delegate for running a SARL application.
 	 */
 	public SARLLaunchConfigurationDelegate() {
 		//
@@ -103,8 +107,8 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			SubMonitor progressMonitor = SubMonitor.convert(
 					monitor,
 					MessageFormat.format(Messages.SARLLaunchConfigurationDelegate_1,
-							configuration.getName()),
-							process.getStepNumber());
+					configuration.getName()),
+					process.getStepNumber());
 			while (process.prepare(progressMonitor.newChild(1))) {
 				if (progressMonitor.isCanceled()) {
 					return;
@@ -135,7 +139,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	@SuppressWarnings("static-method")
 	protected String getAgentName(ILaunchConfiguration configuration) throws CoreException {
 		String agentName = configuration.getAttribute(
-				SARLConfig.ATTR_AGENT_NAME,
+				SARLEclipseConfig.ATTR_AGENT_NAME,
 				(String) null);
 		if (agentName == null) {
 			return null;
@@ -150,7 +154,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 *
 	 * @param configuration - launch configuration
 	 * @throws CoreException if unable to retrieve the attribute or the attribute is
-	 * unspecified
+	 *     unspecified
 	 */
 	protected void verifyAgentName(ILaunchConfiguration configuration) throws CoreException {
 		String name = getAgentName(configuration);
@@ -158,7 +162,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			abort(
 					io.sarl.eclipse.launching.dialog.Messages.MainLaunchConfigurationTab_2,
 					null,
-					SARLConfig.ERR_UNSPECIFIED_AGENT_NAME);
+					SARLEclipseConfig.ERR_UNSPECIFIED_AGENT_NAME);
 		}
 	}
 
@@ -181,7 +185,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		IRuntimeClasspathEntry[] entries = computeUnresolvedSARLRuntimeClasspath(configuration);
 		entries = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
 
-		boolean isMavenProject = getJavaProject(configuration).getProject().hasNature(SARLConfig.MAVEN_NATURE_ID);
+		boolean isMavenProject = getJavaProject(configuration).getProject().hasNature(SARLEclipseConfig.MAVEN_NATURE_ID);
 		boolean needSREEntry = isMavenProject;
 
 		// Store in a list for preserving the order of the entries.
@@ -221,8 +225,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		return userEntries;
 	}
 
-	private static Pair<IRuntimeClasspathEntry, Integer>
-	getJreEntry(IRuntimeClasspathEntry[] entries,
+	private static Pair<IRuntimeClasspathEntry, Integer> getJreEntry(IRuntimeClasspathEntry[] entries,
 			List<IRuntimeClasspathEntry> bootEntriesPrepend) {
 		int index = 0;
 		IRuntimeClasspathEntry jreEntry = null;
@@ -240,6 +243,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		return Pair.of(jreEntry, index);
 	}
 
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	private void getBootpathExtForJRE(ILaunchConfiguration configuration,
 			IRuntimeClasspathEntry[] entries, IRuntimeClasspathEntry jreEntry, int idx,
 			String[] entriesPrep, IRuntimeClasspathEntry[] bootEntriesPrep, String[][] bootpathInfo)
@@ -319,7 +323,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		int index;
 		Pair<IRuntimeClasspathEntry, Integer> pair = getJreEntry(entries, bootEntriesPrepend);
 		jreEntry = pair.getKey();
-		index = pair.getValue();
+		index = pair.getValue().intValue();
 		IRuntimeClasspathEntry[] bootEntriesPrep = JavaRuntime
 				.resolveRuntimeClasspath(
 						bootEntriesPrepend
@@ -386,7 +390,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	private static ISREInstall getSREFromExtension(IProject project, boolean verify) {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 				SARLEclipsePlugin.PLUGIN_ID,
-				SARLConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
+				SARLEclipseConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
 		if (extensionPoint != null) {
 			for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {
 				try {
@@ -415,7 +419,9 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	/** Replies the project SRE from the given configuration.
 	 *
 	 * @param configuration - the configuration to read.
+	 * @param verify  - if true verify the SRE validity, do nothing otherwise
 	 * @return the project SRE or <code>null</code>.
+	 * @throws CoreException Some error occurs when accessing to the ecore elements.
 	 */
 	private ISREInstall getProjectSpecificSRE(ILaunchConfiguration configuration, boolean verify) throws CoreException {
 		IJavaProject jprj = getJavaProject(configuration);
@@ -454,10 +460,10 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 */
 	private ISREInstall getSREInstallFor(ILaunchConfiguration configuration) throws CoreException {
 		String useSystemSRE = configuration.getAttribute(
-				SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
+				SARLEclipseConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.TRUE.toString());
 		String useProjectSRE = configuration.getAttribute(
-				SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+				SARLEclipseConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.FALSE.toString());
 		ISREInstall sre = null;
 		if (Boolean.parseBoolean(useSystemSRE)) {
@@ -466,7 +472,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		} else if (Boolean.parseBoolean(useProjectSRE)) {
 			sre = getProjectSpecificSRE(configuration, true);
 		} else  {
-			String runtime = configuration.getAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
+			String runtime = configuration.getAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
 			sre = SARLRuntime.getSREFromId(runtime);
 			verifySREValidity(sre, runtime, true);
 		}
@@ -586,6 +592,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * {@inheritDoc}
 	 */
 	@Override
+	@SuppressWarnings("checkstyle:variabledeclarationusagedistance")
 	public String getProgramArguments(ILaunchConfiguration configuration) throws CoreException {
 		// The following line get the boot agent arguments
 		String bootAgentArgs = super.getProgramArguments(configuration);
@@ -601,8 +608,8 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 		// Retreive the SRE arguments from the launch configuration
 		String sreArgs2 = substitutor.performStringSubstitution(configuration.getAttribute(
-						SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
-						Strings.nullToEmpty(null)));
+				SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
+				Strings.nullToEmpty(null)));
 
 		// Retreive the classname of the boot agent.
 		String bootAgent = getAgentName(configuration);
@@ -612,28 +619,28 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		assert (cliOptions != null);
 		String options = null;
 
-		if (configuration.getAttribute(SARLConfig.ATTR_SHOW_LOGO_OPTION, false)) {
+		if (configuration.getAttribute(SARLEclipseConfig.ATTR_SHOW_LOGO_OPTION, false)) {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SHOW_LOGO));
 		} else {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_HIDE_LOGO));
 		}
 
-		if (configuration.getAttribute(SARLConfig.ATTR_SHOW_LOG_INFO, true)) {
+		if (configuration.getAttribute(SARLEclipseConfig.ATTR_SHOW_LOG_INFO, true)) {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SHOW_INFO));
 		} else {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_HIDE_INFO));
 		}
 
-		if (configuration.getAttribute(SARLConfig.ATTR_SRE_OFFLINE, true)) {
+		if (configuration.getAttribute(SARLEclipseConfig.ATTR_SRE_OFFLINE, true)) {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SRE_OFFLINE));
 		}
 
 		RootContextIdentifierType type = RootContextIdentifierType.DEFAULT_CONTEXT_ID;
-		String typeName = configuration.getAttribute(SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
+		String typeName = configuration.getAttribute(SARLEclipseConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
 		if (!Strings.isNullOrEmpty(typeName)) {
 			try {
 				type = RootContextIdentifierType.valueOf(typeName);
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				//
 			}
 		}
@@ -671,16 +678,16 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	}
 
 	private static String join(String... values) {
-		StringBuilder b = new StringBuilder();
+		StringBuilder buffer = new StringBuilder();
 		for (String value : values) {
 			if (!Strings.isNullOrEmpty(value)) {
-				if (b.length() > 0) {
-					b.append(" "); //$NON-NLS-1$
+				if (buffer.length() > 0) {
+					buffer.append(" "); //$NON-NLS-1$
 				}
-				b.append(value);
+				buffer.append(value);
 			}
 		}
-		return b.toString();
+		return buffer.toString();
 	}
 
 	/** Definition of the launching process splitted in separated steps for
@@ -694,19 +701,29 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	private class LaunchProcess {
 
 		private final ILaunchConfiguration configuration;
+
 		private final String mode;
+
 		private final ILaunch launch;
 
 		private PreparationProcessState preparationState = PreparationProcessState.STEP_0;
+
 		private RunProcessState runState = RunProcessState.STEP_0;
 
 		private String mainTypeName;
+
 		private IVMRunner runner;
+
 		private String workingDirName;
+
 		private String[] envp;
+
 		private ExecutionArguments execArgs;
+
 		private Map<String, Object> vmAttributesMap;
+
 		private String[] classpath;
+
 		private VMRunnerConfiguration runConfig;
 
 		/**
@@ -714,7 +731,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		 * @param mode - the launching mode.
 		 * @param launch - the launching
 		 */
-		public LaunchProcess(ILaunchConfiguration configuration, String mode, ILaunch launch) {
+		LaunchProcess(ILaunchConfiguration configuration, String mode, ILaunch launch) {
 			this.configuration = configuration;
 			this.mode = mode;
 			this.launch = launch;
@@ -877,7 +894,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static enum PreparationProcessState {
+	private enum PreparationProcessState {
 		STEP_0, STEP_1, STEP_2, STEP_3, STEP_4, STEP_5;
 
 		public PreparationProcessState next() {
@@ -898,7 +915,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static enum RunProcessState {
+	private enum RunProcessState {
 		STEP_0, STEP_1;
 
 		public RunProcessState next() {

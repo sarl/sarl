@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.SARLConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.ui.preferences.SARLPreferences;
+package io.sarl.eclipse.wizards.newproject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -74,6 +72,11 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
 import org.eclipse.xtext.xbase.lib.Pair;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.lang.SARLConfig;
+import io.sarl.lang.ui.preferences.SARLPreferences;
+
 /**
  * The second page of the SARL new project wizard.
  * Most part of the code of this class is copy/paste from {@link NewJavaProjectWizardPageTwo}.
@@ -87,8 +90,11 @@ import org.eclipse.xtext.xbase.lib.Pair;
 public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	private static final String FILENAME_PROJECT = ".project"; //$NON-NLS-1$
+
 	private static final String FILENAME_CLASSPATH = ".classpath"; //$NON-NLS-1$
+
 	private static final int FILE_COPY_BLOCK_SIZE = 8192;
+
 	private static final int UPDATE_PROJECT_MONITORED_STEPS = 7;
 
 	private final MainProjectWizardPage fFirstPage;
@@ -97,14 +103,18 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	 * It is <code>null</code> if the location is a platform location.
 	 */
 	private URI fCurrProjectLocation;
+
 	private IProject fCurrProject;
 
 	private boolean fKeepContent;
 
 	private File fDotProjectBackup;
+
 	private File fDotClasspathBackup;
+
 	private Boolean fIsAutobuild;
-	private HashSet<IFileStore> fOrginalFolders;
+
+	private Set<IFileStore> fOrginalFolders;
 
 	/**
 	 * Constructor for the {@link NewJavaProjectWizardPageTwo}.
@@ -126,7 +136,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		setTitle(Messages.SARLProjectNewWizard_3);
 		setDescription(Messages.SARLProjectNewWizard_2);
 		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
-				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+				SARLEclipseConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 	}
 
 	@Override
@@ -177,10 +187,10 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	/** Update the status of this page according to the given exception.
 	 *
-	 * @param e - the exception.
+	 * @param event - the exception.
 	 */
-	private void updateStatus(Throwable e) {
-		Throwable cause = e;
+	private void updateStatus(Throwable event) {
+		Throwable cause = event;
 		while (cause != null
 				&& (!(cause instanceof CoreException))
 				&& cause.getCause() != null
@@ -194,7 +204,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 			if (cause != null) {
 				message = cause.getLocalizedMessage();
 			} else {
-				message = e.getLocalizedMessage();
+				message = event.getLocalizedMessage();
 			}
 			IStatus status = new StatusInfo(IStatus.ERROR, message);
 			updateStatus(status);
@@ -218,6 +228,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		return theLocation;
 	}
 
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	private IStatus updateProject(IProgressMonitor monitor) throws CoreException, InterruptedException {
 		IProgressMonitor theMonitor = monitor;
 		IStatus result = StatusInfo.OK_STATUS;
@@ -419,7 +430,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private void restoreExistingFolders(URI projectLocation) {
-		HashSet<IFileStore> foldersToKeep = new HashSet<>(this.fOrginalFolders);
+		Set<IFileStore> foldersToKeep = new HashSet<>(this.fOrginalFolders);
 		// workaround for bug 319054: Eclipse deletes all files when I cancel
 		// a project creation (symlink in project location path)
 		for (IFileStore originalFileStore : this.fOrginalFolders) {
@@ -523,9 +534,9 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 					JavaUI.ID_PLUGIN,
 					IStatus.ERROR,
 					MessageFormat.format(
-							NewWizardMessages.NewJavaProjectWizardPageTwo_problem_backup,
-							name),
-							e);
+					NewWizardMessages.NewJavaProjectWizardPageTwo_problem_backup,
+					name),
+					e);
 			throw new CoreException(status);
 		}
 	}
@@ -558,17 +569,17 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	private IPath findGenerationSourcePath() {
 		IPath projectPath = this.fCurrProject.getFullPath();
-		IPath p;
+		IPath path;
 		IPath generatedSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED);
 		IPath deprecatedGeneratedSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED_XTEXT);
 		for (IClasspathEntry entry : getRawClassPath()) {
-			p = entry.getPath();
-			p = p.removeFirstSegments(p.matchingFirstSegments(projectPath));
-			if (p.equals(generatedSourceFolder)) {
-				return p;
+			path = entry.getPath();
+			path = path.removeFirstSegments(path.matchingFirstSegments(projectPath));
+			if (path.equals(generatedSourceFolder)) {
+				return path;
 			}
-			if (p.equals(deprecatedGeneratedSourceFolder)) {
-				return p;
+			if (path.equals(deprecatedGeneratedSourceFolder)) {
+				return path;
 			}
 		}
 		return null;
@@ -592,13 +603,16 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 			configureJavaProject(newProjectCompliance, new SubProgressMonitor(monitor, 1));
 
 			IPath generationFolder = findGenerationSourcePath();
-			if (generationFolder != null) {
-				SARLPreferences.setSpecificSARLConfigurationFor(
-						getJavaProject().getProject(), generationFolder);
-			} else {
-				SARLPreferences.setSystemSARLConfigurationFor(
-						getJavaProject().getProject());
+			if (generationFolder == null) {
+				IStatus status = SARLEclipsePlugin.getDefault().createStatus(
+						IStatus.ERROR,
+						MessageFormat.format(
+						Messages.BuildSettingWizardPage_0,
+						SARLConfig.FOLDER_SOURCE_GENERATED));
+				throw new CoreException(status);
 			}
+			SARLPreferences.setSpecificSARLConfigurationFor(
+					getJavaProject().getProject(), generationFolder);
 		} catch (Throwable e) {
 			if (this.fCurrProject != null) {
 				removeProvisonalProject();
@@ -709,7 +723,8 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		}
 	}
 
-	/**
+	/** Task for updating the project.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -718,7 +733,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	private class UpdateRunnable implements IRunnableWithProgress {
 		private IStatus infoStatus = Status.OK_STATUS;
 
-		public UpdateRunnable() {
+		UpdateRunnable() {
 			//
 		}
 

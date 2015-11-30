@@ -36,7 +36,7 @@
 				name="%wizard.name.newAgent">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
 					<parameter name="javatype" value="true" />
-					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.newagent.NewSarlAgentWizard" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.aop.newagent.NewSarlAgentWizard" />
 				</class>
 				<description>%wizard.description.newAgent"</description>
       	  </wizard>
@@ -47,7 +47,7 @@
 				name="%wizard.name.newBehavior">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
 					<parameter name="javatype" value="true" />
-					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.newbehavior.NewSarlBehaviorWizard" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.aop.newbehavior.NewSarlBehaviorWizard" />
 				</class>
 				<description>%wizard.description.newBehavior"</description>
       	  </wizard>
@@ -58,7 +58,7 @@
 				name="%wizard.name.newCapacity">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
 					<parameter name="javatype" value="true" />
-					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.newcapacity.NewSarlCapacityWizard" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.aop.newcapacity.NewSarlCapacityWizard" />
 				</class>
 				<description>%wizard.description.newCapacity"</description>
       	  </wizard>
@@ -69,7 +69,7 @@
 				name="%wizard.name.newEvent">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
 					<parameter name="javatype" value="true" />
-					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.newevent.NewSarlEventWizard" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.aop.newevent.NewSarlEventWizard" />
 				</class>
 				<description>%wizard.description.newEvent"</description>
       	  </wizard>
@@ -80,7 +80,7 @@
 				name="%wizard.name.newSkill">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
 					<parameter name="javatype" value="true" />
-					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.newskill.NewSarlSkillWizard" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.aop.newskill.NewSarlSkillWizard" />
 				</class>
 				<description>%wizard.description.newSkill"</description>
       	  </wizard>
@@ -246,8 +246,13 @@
                 value="%product.name">
           </property>
           <property
+	            name="cssTheme"
+	            value="org.eclipse.e4.ui.css.theme.e4_classic">
+	      </property>
+          <property
                 name="preferenceCustomization"
-                value="plugin_customization.ini"/>
+                value="platform:/plugin/io.sarl.eclipse/plugin_customization.ini">
+          </property>
        </product>
     </extension>
 

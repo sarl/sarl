@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 import java.util.UUID;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Thrown when an {@link Agent} tries to access a skill associated to a Capacity
@@ -37,6 +40,7 @@ public class UnimplementedCapacityException extends RuntimeException {
 	private static final long serialVersionUID = -6286153666879425064L;
 
 	private final Class<? extends Capacity> unimplementedCapacity;
+
 	private final UUID callingAgent;
 
 	/**
@@ -56,6 +60,7 @@ public class UnimplementedCapacityException extends RuntimeException {
 	 *
 	 * @return the calling agent.
 	 */
+	@Pure
 	public UUID getCallingAgent() {
 		return this.callingAgent;
 	}
@@ -65,6 +70,7 @@ public class UnimplementedCapacityException extends RuntimeException {
 	 *
 	 * @return the unimplemented capacity.
 	 */
+	@Pure
 	public Class<? extends Capacity> getUnimplementedCapacity() {
 		return this.unimplementedCapacity;
 	}

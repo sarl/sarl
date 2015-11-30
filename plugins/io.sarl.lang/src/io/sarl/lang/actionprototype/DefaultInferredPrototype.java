@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.actionprototype;
 
 import java.util.Iterator;
@@ -38,9 +39,13 @@ import com.google.common.base.Strings;
 public class DefaultInferredPrototype implements InferredPrototype {
 
 	private final List<InferredStandardParameter> originalParameters;
+
 	private final Map<ActionParameterTypes, List<InferredStandardParameter>> inferredParameters;
+
 	private final FormalParameterProvider parameters;
+
 	private final ActionParameterTypes parameterKey;
+
 	private final QualifiedActionName key;
 
 	/**
@@ -105,22 +110,22 @@ public class DefaultInferredPrototype implements InferredPrototype {
 		};
 	}
 
-	private void toParameterString(StringBuilder b, int param, boolean isVarArg) {
+	private void toParameterString(StringBuilder buffer, int param, boolean isVarArg) {
 		String name = this.parameters.getFormalParameterName(param);
-		b.append((!Strings.isNullOrEmpty(name)) ? name : null);
-		b.append(" : "); //$NON-NLS-1$
+		buffer.append((!Strings.isNullOrEmpty(name)) ? name : null);
+		buffer.append(" : "); //$NON-NLS-1$
 		String type = this.parameters.getFormalParameterType(param, isVarArg);
-		b.append((!Strings.isNullOrEmpty(type)) ? type : null);
+		buffer.append((!Strings.isNullOrEmpty(type)) ? type : null);
 	}
 
-	private void toParameterString(StringBuilder b) {
+	private void toParameterString(StringBuilder buffer) {
 		if (this.parameters.getFormalParameterCount() > 0) {
 			int lastParamIndex = this.parameters.getFormalParameterCount() - 1;
 			for (int i = 0; i < lastParamIndex; ++i) {
-				toParameterString(b, i, false);
-				b.append(", "); //$NON-NLS-1$
+				toParameterString(buffer, i, false);
+				buffer.append(", "); //$NON-NLS-1$
 			}
-			toParameterString(b, lastParamIndex, isVarargs());
+			toParameterString(buffer, lastParamIndex, isVarargs());
 		}
 	}
 
@@ -143,7 +148,8 @@ public class DefaultInferredPrototype implements InferredPrototype {
 		return b.toString();
 	}
 
-	/**
+	/** Iterator of the types of the action parameters.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -152,9 +158,10 @@ public class DefaultInferredPrototype implements InferredPrototype {
 	private static class SignatureKeyIterator implements Iterator<ActionParameterTypes> {
 
 		private ActionParameterTypes first;
+
 		private final Iterator<ActionParameterTypes> it;
 
-		public SignatureKeyIterator(ActionParameterTypes first, Iterator<ActionParameterTypes> it) {
+		SignatureKeyIterator(ActionParameterTypes first, Iterator<ActionParameterTypes> it) {
 			this.first = first;
 			this.it = it;
 		}
@@ -167,9 +174,9 @@ public class DefaultInferredPrototype implements InferredPrototype {
 		@Override
 		public ActionParameterTypes next() {
 			if (this.first != null) {
-				ActionParameterTypes n = this.first;
+				ActionParameterTypes first = this.first;
 				this.first = null;
-				return n;
+				return first;
 			}
 			return this.it.next();
 		}

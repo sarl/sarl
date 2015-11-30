@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.m2e;
 
 import java.io.File;
@@ -32,17 +33,24 @@ import java.io.File;
 class SARLConfiguration {
 
 	private File input;
+
 	private File output;
+
 	private File testInput;
+
 	private File testOutput;
+
 	private String inputCompliance;
+
 	private String outputCompliance;
+
 	private String encoding;
 
 	/** Set the uninitialized field with given configuration.
 	 *
 	 * @param config - the configured values.
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void setFrom(SARLConfiguration config) {
 		if (this.input == null) {
 			this.input = config.getInput();
@@ -67,106 +75,118 @@ class SARLConfiguration {
 		}
 	}
 
-	/**
+	/** Replies the input file.
+	 *
 	 * @return the input
 	 */
 	public File getInput() {
 		return this.input;
 	}
 
-	/**
+	/** Set the input file.
+	 *
 	 * @param input the input to set
 	 */
 	public void setInput(File input) {
 		this.input = input;
 	}
 
-	/**
+	/** Replies the output file.
+	 *
 	 * @return the output
 	 */
 	public File getOutput() {
 		return this.output;
 	}
 
-	/**
+	/** Set the output file.
+	 *
 	 * @param output the output to set
 	 */
 	public void setOutput(File output) {
 		this.output = output;
 	}
 
-	/**
+	/** Replies the input file for tests.
+	 *
 	 * @return the testInput
 	 */
 	public File getTestInput() {
 		return this.testInput;
 	}
 
-	/**
+	/** Set the input file for tests.
+	 *
 	 * @param testInput the testInput to set
 	 */
 	public void setTestInput(File testInput) {
 		this.testInput = testInput;
 	}
 
-	/**
+	/** Replies the output file for tests.
+	 *
 	 * @return the testOutput
 	 */
 	public File getTestOutput() {
 		return this.testOutput;
 	}
 
-	/**
+	/** Set the output file for tests.
+	 *
 	 * @param testOutput the testOutput to set
 	 */
 	public void setTestOutput(File testOutput) {
 		this.testOutput = testOutput;
 	}
 
-	/**
+	/** Replies the input's Java compliance.
+	 *
 	 * @return the inputCompliance
 	 */
 	public String getInputCompliance() {
 		return this.inputCompliance;
 	}
 
-	/**
+	/** Change the input's Java compliance.
+	 *
 	 * @param inputCompliance the inputCompliance to set
 	 */
 	public void setInputCompliance(String inputCompliance) {
 		this.inputCompliance = inputCompliance;
 	}
 
-	/**
+	/** Replies the output's Java compliance.
+	 *
 	 * @return the outputCompliance
 	 */
 	public String getOutputCompliance() {
 		return this.outputCompliance;
 	}
 
-	/**
+	/** Change the output's Java compliance.
+	 *
 	 * @param outputCompliance the outputCompliance to set
 	 */
 	public void setOutputCompliance(String outputCompliance) {
 		this.outputCompliance = outputCompliance;
 	}
 
-	/**
+	/** Replies the encoding of the files.
+	 *
 	 * @return the encoding
 	 */
 	public String getEncoding() {
 		return this.encoding;
 	}
 
-	/**
+	/** Change the encoding of the files.
+	 *
 	 * @param encoding the encoding to set
 	 */
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		return "input = " + this.input //$NON-NLS-1$

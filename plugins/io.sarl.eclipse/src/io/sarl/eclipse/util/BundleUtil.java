@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.util;
 
 import java.io.IOException;
@@ -57,19 +58,17 @@ public final class BundleUtil {
 
 	private static final String JAVADOC_SUFIX = ".javadoc"; //$NON-NLS-1$
 
-	/**
-	 */
 	private BundleUtil() {
 		//
 	}
 
 	/** Replies the source location for the given bundle.
 	 *
-	 * We can't use P2Utils and we can't use SimpleConfiguratorManipulator because of
+	 * <p>We can't use P2Utils and we can't use SimpleConfiguratorManipulator because of
 	 * API breakage between 3.5 and 4.2.
 	 * So we do a bit EDV (Computer data processing) ;-)
 	 *
-	 * FIXME: Use P2Utils or SimpleConfiguratorManipulator.
+	 * <p>FIXME: Use P2Utils or SimpleConfiguratorManipulator.
 	 *
 	 * @param bundle - the bundle for which the source location must be computed.
 	 * @param bundleLocation - the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.
@@ -152,11 +151,11 @@ public final class BundleUtil {
 
 	/** Replies the javadoc location for the given bundle.
 	 *
-	 * We can't use P2Utils and we can't use SimpleConfiguratorManipulator because of
+	 * <p>We can't use P2Utils and we can't use SimpleConfiguratorManipulator because of
 	 * API breakage between 3.5 and 4.2.
 	 * So we do a bit EDV (Computer data processing) ;-)
 	 *
-	 * FIXME: Use P2Utils or SimpleConfiguratorManipulator.
+	 * <p>FIXME: Use P2Utils or SimpleConfiguratorManipulator.
 	 *
 	 * @param bundle - the bundle for which the javadoc location must be computed.
 	 * @param bundleLocation - the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.

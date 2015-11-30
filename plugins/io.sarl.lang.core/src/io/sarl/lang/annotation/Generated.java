@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.annotation;
 
 import java.lang.annotation.ElementType;
@@ -34,15 +35,19 @@ import java.lang.annotation.Target;
  * @mavenartifactid $ArtifactId$
  * @see DefaultValueSource
  * @see DefaultValue
+ * @deprecated Use the @Generated from the JRE.
  */
+@Deprecated
 @Target({ ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Generated {
 
 	/** Replies the SARL code that is the cause of the generation.
 	 *
-	 * The value may be an empty string if the SARL code is unknown or too long to
+	 * <p>The value may be an empty string if the SARL code is unknown or too long to
 	 * be stored in the annotation.
+	 *
+	 * @return the SARL code at the source of the generated code.
 	 */
 	String value() default "";
 

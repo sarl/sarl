@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 /**
@@ -35,8 +36,8 @@ public abstract class Skill extends AgentTrait {
 
 	/**
 	 * Creates a new Skill.
-	 * <p>
-	 * This constructor is provided for built-in skills, mainly.
+	 *
+	 * <p>This constructor is provided for built-in skills, mainly.
 	 *
 	 * @param agent - the agent that is owning the skill.
 	 * @see #Skill() for the standard constructor.
@@ -47,8 +48,8 @@ public abstract class Skill extends AgentTrait {
 
 	/**
 	 * Creates a new Skill.
-	 * <p>
-	 * This constructor is provided for skills written in SARL, mainly.
+	 *
+	 * <p>This constructor is provided for skills written in SARL, mainly.
 	 *
 	 * @see #Skill(Agent) for the built-in skill's constructor.
 	 */

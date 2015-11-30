@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,24 +22,17 @@ package io.sarl.m2e.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.*;
-import io.sarl.m2e.M2EUtilities;
-import io.sarl.m2e.SARLMavenEclipsePlugin;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
+import static org.mockito.Mockito.spy;
 
-import org.eclipse.core.runtime.ILog;
-import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-import org.mockito.ArgumentCaptor;
 import org.osgi.framework.Version;
+
+import io.sarl.m2e.M2EUtilities;
+import io.sarl.m2e.SARLMavenEclipsePlugin;
+import io.sarl.tests.api.AbstractSarlTest;
 
 
 /**
@@ -51,9 +44,10 @@ import org.osgi.framework.Version;
 @SuppressWarnings("all")
 public final class M2EUtilitiesTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private SARLMavenEclipsePlugin plugin;
-	@Nullable
+
+	@NonNullByDefault
 	private SARLMavenEclipsePlugin spy;
 
 	@Before
@@ -69,12 +63,213 @@ public final class M2EUtilitiesTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void parseMavenVersion() {
+	public void parseMavenVersion_null() {
+		Version version = M2EUtilities.parseMavenVersion(null);
+		assertNotNull(version);
+		assertEquals(0, version.getMajor());
+		assertEquals(0, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_empty() {
+		Version version = M2EUtilities.parseMavenVersion("");
+		assertNotNull(version);
+		assertEquals(0, version.getMajor());
+		assertEquals(0, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_str() {
+		Version version = M2EUtilities.parseMavenVersion("this is a string");
+		assertNotNull(version);
+		assertEquals(0, version.getMajor());
+		assertEquals(0, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_1234_standard() {
+		Version version = M2EUtilities.parseMavenVersion("1.2.3.4");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(2, version.getMinor());
+		assertEquals(3, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_1234_snapshot() {
+		Version version = M2EUtilities.parseMavenVersion("1.2.3.4-SNAPSHOT");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(2, version.getMinor());
+		assertEquals(3, version.getMicro());
+		assertEquals("qualifier", version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_123_standard() {
 		Version version = M2EUtilities.parseMavenVersion("1.2.3");
 		assertNotNull(version);
 		assertEquals(1, version.getMajor());
 		assertEquals(2, version.getMinor());
 		assertEquals(3, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_123_snapshot() {
+		Version version = M2EUtilities.parseMavenVersion("1.2.3-SNAPSHOT");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(2, version.getMinor());
+		assertEquals(3, version.getMicro());
+		assertEquals("qualifier", version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_12_standard() {
+		Version version = M2EUtilities.parseMavenVersion("1.2");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(2, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_12_snapshot() {
+		Version version = M2EUtilities.parseMavenVersion("1.2-SNAPSHOT");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(2, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertEquals("qualifier", version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_1_standard() {
+		Version version = M2EUtilities.parseMavenVersion("1");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(0, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_1_snapshot() {
+		Version version = M2EUtilities.parseMavenVersion("1-SNAPSHOT");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(0, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertEquals("qualifier", version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_1234x_standard() {
+		Version version = M2EUtilities.parseMavenVersion("1.2.3.4.x");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(2, version.getMinor());
+		assertEquals(3, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_1234x_snapshot() {
+		Version version = M2EUtilities.parseMavenVersion("1.2.3.4.x-SNAPSHOT");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(2, version.getMinor());
+		assertEquals(3, version.getMicro());
+		assertEquals("qualifier", version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_123x_standard() {
+		Version version = M2EUtilities.parseMavenVersion("1.2.3.x");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(2, version.getMinor());
+		assertEquals(3, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_123x_snapshot() {
+		Version version = M2EUtilities.parseMavenVersion("1.2.3.x-SNAPSHOT");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(2, version.getMinor());
+		assertEquals(3, version.getMicro());
+		assertEquals("qualifier", version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_12x_standard() {
+		Version version = M2EUtilities.parseMavenVersion("1.2.x");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(2, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_12x_snapshot() {
+		Version version = M2EUtilities.parseMavenVersion("1.2.x-SNAPSHOT");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(2, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertEquals("qualifier", version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_1x_standard() {
+		Version version = M2EUtilities.parseMavenVersion("1.x");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(0, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_1x_snapshot() {
+		Version version = M2EUtilities.parseMavenVersion("1.x-SNAPSHOT");
+		assertNotNull(version);
+		assertEquals(1, version.getMajor());
+		assertEquals(0, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertEquals("qualifier", version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_x_standard() {
+		Version version = M2EUtilities.parseMavenVersion("x");
+		assertNotNull(version);
+		assertEquals(0, version.getMajor());
+		assertEquals(0, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertNullOrEmpty(version.getQualifier());
+	}
+
+	@Test
+	public void parseMavenVersion_x_snapshot() {
+		Version version = M2EUtilities.parseMavenVersion("x-SNAPSHOT");
+		assertNotNull(version);
+		assertEquals(0, version.getMajor());
+		assertEquals(0, version.getMinor());
+		assertEquals(0, version.getMicro());
+		assertEquals("qualifier", version.getQualifier());
 	}
 
 }

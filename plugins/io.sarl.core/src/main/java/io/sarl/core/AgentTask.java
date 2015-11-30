@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.core;
 
-import io.sarl.lang.core.Agent;
-
-import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Procedures;
+
+import io.sarl.lang.core.Agent;
 
 /**
  * Description of a task an agent has schedule to be performed at a later time.
@@ -37,10 +37,12 @@ import org.eclipse.xtext.xbase.lib.Procedures;
 public class AgentTask {
 
 	private String name;
-	private Functions.Function1<Agent, Boolean> guard;
+
+	private Function1<Agent, Boolean> guard;
+
 	private Procedures.Procedure1<? super Agent> procedure;
 
-	/**
+	/** Construct an AgentTask.
 	 */
 	public AgentTask() {
 		//
@@ -66,17 +68,17 @@ public class AgentTask {
 	 *
 	 * @return the guard.
 	 */
-	public Functions.Function1<Agent, Boolean> getGuard() {
+	public Function1<Agent, Boolean> getGuard() {
 		return this.guard;
 	}
 
 	/** Change the guard of this task.
 	 *
 	 * @param guard - the code of the function that is the predicate associated to the guard.
-	 * @see #unless(Function1)
-	 * @see #ifTrue(Function1)
+	 * @see #unless
+	 * @see #ifTrue
 	 */
-	public void setGuard(Functions.Function1<Agent, Boolean> guard) {
+	public void setGuard(Function1<Agent, Boolean> guard) {
 		this.guard = guard;
 	}
 
@@ -100,9 +102,9 @@ public class AgentTask {
 	 *
 	 * @param predicate - the code of the function that is the predicate to test.
 	 * @return <code>this</code>.
-	 * @see #setGuard(Function1)
+	 * @see #setGuard
 	 */
-	public AgentTask unless(Functions.Function1<Agent, Boolean> predicate) {
+	public AgentTask unless(Function1<Agent, Boolean> predicate) {
 		this.guard = new NegateFunction(predicate);
 		return this;
 	}
@@ -111,9 +113,9 @@ public class AgentTask {
 	 *
 	 * @param predicate - the code of the function that is the predicate to test.
 	 * @return <code>this</code>.
-	 * @see #setGuard(Function1)
+	 * @see #setGuard
 	 */
-	public AgentTask ifTrue(Functions.Function1<Agent, Boolean> predicate) {
+	public AgentTask ifTrue(Function1<Agent, Boolean> predicate) {
 		this.guard = predicate;
 		return this;
 	}
@@ -134,13 +136,13 @@ public class AgentTask {
 
 		private Function1<Agent, Boolean> unlessPredicate;
 
-		public NegateFunction(Function1<Agent, Boolean> predicate) {
+		NegateFunction(Function1<Agent, Boolean> predicate) {
 			this.unlessPredicate = predicate;
 		}
 
 		@Override
-		public Boolean apply(Agent p) {
-			return !this.unlessPredicate.apply(p);
+		public Boolean apply(Agent agent) {
+			return !this.unlessPredicate.apply(agent);
 		}
 
 	}

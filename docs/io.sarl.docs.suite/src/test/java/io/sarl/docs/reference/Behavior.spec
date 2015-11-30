@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors and authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,24 +23,23 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
+import io.sarl.lang.sarl.SarlAction
+import io.sarl.lang.sarl.SarlAgent
+import io.sarl.lang.sarl.SarlBehavior
+import io.sarl.lang.sarl.SarlCapacity
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
 
-import io.sarl.lang.sarl.Behavior
-import io.sarl.lang.sarl.Action
-import io.sarl.lang.sarl.Agent
-import io.sarl.lang.sarl.Capacity
-
 /* @outline
  *
- * This document describes the features related to the definition of a behavior in SARL.
+ * <p>This document describes the features related to the definition of a behavior in SARL.
  * Before reading this document, it is recommended reading
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
  * and the [Agent Reference](AgentReferenceSpec.html).
  * 
- * A `Behavior` is the specification of a collection of behavior units.
+ * <p>A `Behavior` is the specification of a collection of behavior units.
  * This `Behavior` may be used by an agent for building its global
  * behavior.
  */
@@ -58,7 +57,7 @@ describe "Behavior Reference" {
 			/* The following code illustrates the definition of a behavior
 			 * named `MyBehavior`, and that is empty.
 			 * 
-			 * Basically, this behavior does nothing, and does not react
+			 * <p>Basically, this behavior does nothing, and does not react
 			 * on events. 
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -83,7 +82,7 @@ describe "Behavior Reference" {
 					it should haveNbElements 1
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 0
@@ -96,7 +95,7 @@ describe "Behavior Reference" {
 			 * Most of the time, it is implemented as a
 			 * collection of attributes.
 			 * 
-			 * According to the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
+			 * <p>According to the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
 			 * the attributes may be modifiable (when declared with the `var`
 			 * keyword), or unmodifiable (when declared with the `val`
 			 * keyword).
@@ -125,19 +124,19 @@ describe "Behavior Reference" {
 					it should haveNbElements 1
 				]
 				
-				var b = (model.elements.get(0) => [
+				var b = (model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 2
-				]) as Behavior
+				]) as SarlBehavior
 				
-				b.features.get(0) => [
+				b.members.get(0) => [
 					it should beVariable "mentalStateElement1"
 					it should haveType "java.lang.String"
 					it should haveInitialValue _
 				]
 
-				b.features.get(1) => [
+				b.members.get(1) => [
 					it should beValue "mentalStateElement2"
 					it should haveType "boolean"
 					it should haveInitialValue "true"
@@ -148,7 +147,7 @@ describe "Behavior Reference" {
 			 * The syntax described in the [General Syntax Reference](GeneralSyntaxReferenceSpec.html)
 			 * is used.
 			 * 
-			 * The example below illustrates the creation of type actions.
+			 * <p>The example below illustrates the creation of type actions.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
@@ -181,29 +180,29 @@ describe "Behavior Reference" {
 					it should haveNbElements 1
 				]
 				
-				var b = (model.elements.get(0) => [
+				var b = (model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 3
-				]) as Behavior
+				]) as SarlBehavior
 				
-				b.features.get(0) => [
+				b.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
 				]
 
-				b.features.get(1) => [
+				b.members.get(1) => [
 					it should beAction "myAction1"
 					it should reply _
 					it should haveNbParameters 0
 					it should beVariadic false
 				]
 
-				b.features.get(2) => [
+				b.members.get(2) => [
 					it should beAction "myAction2"
 					it should reply _
 					it should haveNbParameters 1
 					it should beVariadic true
-					(it as Action).params.get(0) => [
+					(it as SarlAction).parameters.get(0) => [
 						it should beParameter "param"
 						it should haveType "int"
 						it should haveDefaultValue _
@@ -216,7 +215,7 @@ describe "Behavior Reference" {
 			 * feature of SARL, which has the same semantic as the inheritance
 			 * mechanism as the Java object-oriented language.
 			 * 
-			 * The extended behavior is specified just after the `extends`
+			 * <p>The extended behavior is specified just after the `extends`
 			 * keyword.
 			 * 
 			 * <veryimportantnote> A behavior type
@@ -224,7 +223,7 @@ describe "Behavior Reference" {
 			 * to the constraint on the extension of classes in the Java
 			 * language.</veryimportantnote>
 			 * 
-			 * In the following code, a first behavior is defined with the name
+			 * <p>In the following code, a first behavior is defined with the name
 			 * `MyBehavior` and an attribute named `attr`.
 			 * A second behavior `MySubBehavior` is defined as the extension
 			 * of the first behavior. It contains a function named
@@ -257,25 +256,25 @@ describe "Behavior Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 1
-					(it as Behavior).features.get(0) => [
+					(it as SarlBehavior).members.get(0) => [
 						it should beVariable "attr"
 						it should haveType "java.lang.String"
 						it should haveInitialValue _
 					]
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beBehavior "MySubBehavior"
 					it should extend "io.sarl.docs.reference.br.MyBehavior"
 					it should haveNbElements 2
-					(it as Behavior).features.get(0) => [
+					(it as SarlBehavior).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Behavior).features.get(1) => [
+					(it as SarlBehavior).members.get(1) => [
 						it should beAction "action"
 						it should reply _
 						it should haveNbParameters 0
@@ -288,7 +287,7 @@ describe "Behavior Reference" {
 			 * Consequently, it is mandatory to pass the agent as parameter
 			 * of the behavior's constructor.
 			 * 
-			 * In the following example, a behavior of type `MyBehavior` is
+			 * <p>In the following example, a behavior of type `MyBehavior` is
 			 * instanced (with the agent as the owner/parameter).
 			 * This new behavior is then registered into the agent for enabling 
 			 * the reception of the events in the behavior.
@@ -325,22 +324,149 @@ describe "Behavior Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 0
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2
-					(it as Agent).features.get(0) should beCapacityUse #["io.sarl.core.Behaviors"]
-					(it as Agent).features.get(1) => [
+					(it as SarlAgent).members.get(0) should beCapacityUse #["io.sarl.core.Behaviors"]
+					(it as SarlAgent).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.core.Initialize"
 						it should beGuardedWith _
 					]
 				]
+			}
+
+			/** Modifiers are used to modify declarations of types and type members.
+			 * This section introduces the modifiers for the behavior.
+			 * The modifiers are usually written before the keyword for defining the behavior.
+			 * 
+			 * <p>The complete description of the modifiers' semantic is available in
+			 * <a href="./BasicObjectOrientedProgrammingSupportModifiersSpec.html">this section</a>.
+			 */
+			describe "Modifiers" {
+				
+				/** A behavior may be declared with one or more modifiers, which affect its runtime behavior: <ul>
+				 * <li>Access modifiers: <ul>
+				 *     <li>`public`:  the behavior is accessible from any other type;</li>
+				 *     <li>`package`: the behavior is accessible from only the types in the same package.</li>
+				 *     </ul></li>
+				 * <li>`abstract`: the behavior is abstract and cannot be instanced.</li>
+				 * <li>`final`: avoid to be derived.</li>
+			 	 * <li>`strictfp`: avoid the methods of the behavior to use intermediate floating number formats.</li>
+				 * </ul>
+				 *
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
+				 */
+				fact "Behavior Modifiers" {
+					'''
+						public behavior Example1 {
+						}
+						package behavior Example2 {
+						}
+						abstract behavior Example3 {
+						}
+						final behavior Example4 {
+						}
+						strictfp behavior Example5 {
+						}
+					'''.parseSuccessfully(
+						"package io.sarl.docs.reference.br",
+						// TEXT
+						""
+					)
+					// Test URL in the enclosing section text.
+					"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
+				}
+	
+				/** The modifiers for the fields in a behavior are: <ul>
+				 * <li>Access modifiers: <ul>
+				 *     <li>`protected`:  the field is accessible within the same package, and derived agents;</li>
+				 *     <li>`package`: the field is accessible only within the same package of its agent;</li>
+				 *     <li>`private`: the field is accessible only within its agent.</li>
+				 *     </ul></li>
+				 * <li>`transient`: the field is never serialized.</li>
+				 * <li>`volatile`: the field is modified by different threads. It is never cached thread-locally, and synchronized.</li>
+				 * </ul>
+				 *
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
+				 */
+				fact "Field Modifiers" {
+					'''
+						protected var example1 : Object;
+						package var example2 : Object;
+						private var example3 : Object;
+						transient var example4 : Object;
+						volatile var example5 : Object;
+					'''.parseSuccessfully(
+						"package io.sarl.docs.reference.br
+						public behavior Behavior1 {",
+						// TEXT
+						"}"
+					)
+				}
+	
+				/** The modifiers for the methods in a behavior are: <ul>
+				 * <li>Access modifiers: <ul>
+				 *     <li>`protected`:  the method is accessible within the same package, and derived classes;</li>
+				 *     <li>`package`: the method is accessible only within the same package as its class;</li>
+				 *     <li>`private`: the method is accessible only within its class.</li>
+				 *     </ul></li>
+				 * <li>`abstract`: the method has no implementation in the class.</li>
+				 * <li>`dispatch`: the method provides an implementation for the dispatch method mechanism.</li>
+				 * <li>`final`: the method cannot be overridden in derived classes.</li>
+				 * <li>`strictfp`: avoid the method to use intermediate floating number formats.</li>
+				 * <li>`synchronized`: the method is synchronized on the class instance.</li>
+				 * </ul>
+				 *
+				 * @filter(.* = '''|'''|.parseSuccessfully.*)
+				 */
+				fact "Method Modifiers" {
+					'''
+						// Protected access function
+						protected def example1 { }
+						// Package access function
+						package def example2 { }
+						// Private access function
+						private def example3 { }
+						// Abstract function
+						abstract def example4
+						// Not-overridable function
+						final def example5 { }
+						// Function with strict floating point management
+						strictfp def example6 { }
+						// Synchronized function
+						synchronized def example7 { }
+						// Dispatch functions
+						dispatch def example8(p : Integer) { }
+						dispatch def example8(p : Float) { }
+					'''.parseSuccessfully(
+						"package io.sarl.docs.reference.br
+						abstract behavior Behavior1 {",
+						// TEXT
+						"}"
+					)
+				}
+	
+				/** All the <a href="./BasicObjectOrientedProgrammingSupportSpec.html">modifiers for the
+				 * nested types</a> are allowed <strong>except</strong> `public`. 
+				 *
+				 * @filter(.*)
+				 */
+				fact "Restriction on the Nested Type Modifiers" {
+					'''
+						package io.sarl.docs.reference.br
+						behavior Behavior1 {
+							public class NedtedClass1 { }
+						}
+					'''.parseWithError
+				}
+	
 			}
 
 		}
@@ -348,7 +474,7 @@ describe "Behavior Reference" {
 		/* The behaviors of an agent correspond to the units that are
 		 * executed by the agent for exhibiting its general behavior.
 		 * 
-		 * The `Behavior` statement permits specifying a
+		 * <p>The `Behavior` statement permits specifying a
 		 * subset of the agent's behavior inside a single syntactic entity.
 		 * Two types of behaviors are considered:
 		 * 
@@ -356,7 +482,7 @@ describe "Behavior Reference" {
 		 *  * pro-active: the agent executes by itself one of its behaviors.
 		 * 
 		 * 
-		 * The definition of the reactive behaviors is based on the event handling
+		 * <p>The definition of the reactive behaviors is based on the event handling
 		 * mechanism of SARL. Events may be emitted in [spaces](SpaceReferenceSpec.html),
 		 * and received by the agents, and their behaviors, belonging to these spaces.
 		 * A behavior may indicate that it is interesting for receiving an event by specifying
@@ -367,13 +493,13 @@ describe "Behavior Reference" {
 		 *     }
 		 *
 		 * 
-		 * `<EventName>` is the name of event to wait for.
+		 * <p>`<EventName>` is the name of event to wait for.
 		 * `<Guard>` is the optional specification of a predicate
 		 * that may be true for executing the `<Statements>`.
 		 * The statements are executed only if an event with the given name is
 		 * received, *and* if the guard is true.
 		 * 
-		 * In the guard and the statements, it is possible to use the instance
+		 * <p>In the guard and the statements, it is possible to use the instance
 		 * of the received event: the occurrence. This instance is represented
 		 * by the `occurrence` keyword. It is an implicit
 		 * variable as the keywords `this` and `it`.
@@ -385,10 +511,10 @@ describe "Behavior Reference" {
 			 * is to execute a part of the behavior when something has happening
 			 * in the behavior, the agent or in its environment.
 			 * 
-			 * In the following example, the behavior is reacting to the reception
+			 * <p>In the following example, the behavior is reacting to the reception
 			 * of the `SomethingChanged` event.
 			 * 
-			 * As for all the event handlers, it could be guarded by a predicate.
+			 * <p>As for all the event handlers, it could be guarded by a predicate.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
@@ -418,20 +544,20 @@ describe "Behavior Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomethingChanged"
 					it should extend _
 					it should haveNbElements 0
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 2
-					(it as Behavior).features.get(0) => [
+					(it as SarlBehavior).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Behavior).features.get(1) => [
+					(it as SarlBehavior).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -441,7 +567,7 @@ describe "Behavior Reference" {
 			/* When an event is received and the guard of the corresponding
 			 * handler is true, the event handler is said to be triggered.
 			 * 
-			 * When multiple event handlers are triggered at the same time,
+			 * <p>When multiple event handlers are triggered at the same time,
 			 * they are all executed in parallel.
 			 * In the following example, the two handlers for the
 			 * `SomethingChanged` event are executed in parallel.
@@ -474,24 +600,24 @@ describe "Behavior Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "SomethingChanged"
 					it should extend _
 					it should haveNbElements 0
 				]
 				
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 3
-					(it as Behavior).features.get(0) => [
+					(it as SarlBehavior).members.get(0) => [
 						it should beCapacityUse "io.sarl.core.Logging"
 					]
-					(it as Behavior).features.get(1) => [
+					(it as SarlBehavior).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
 						it should beGuardedWith _
 					]
-					(it as Behavior).features.get(2) => [
+					(it as SarlBehavior).members.get(2) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomethingChanged"
 						it should beGuardedWith _
 					]
@@ -504,7 +630,7 @@ describe "Behavior Reference" {
 			 * the code external to this behavior. In opposite, the initiator
 			 * of the execution of a proactive behavior is the agent itself.
 			 * 
-			 * In SARL, a proactive behavior is a behavior that is scheduled
+			 * <p>In SARL, a proactive behavior is a behavior that is scheduled
 			 * by the agent or one of its behaviors. The schedule mechanism is provided by the 
 			 * [`Schedules` built-in capacity](BuiltInCapacityReferenceSpec.html).
 			 * In the following example, the agent execute its proactive behavior
@@ -542,12 +668,12 @@ describe "Behavior Reference" {
 					it should haveNbElements 1
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 2
-					(it as Behavior).features.get(0) should beCapacityUse #["io.sarl.core.Schedules", "io.sarl.core.Logging"]
-					(it as Behavior).features.get(1) => [
+					(it as SarlBehavior).members.get(0) should beCapacityUse #["io.sarl.core.Schedules", "io.sarl.core.Logging"]
+					(it as SarlBehavior).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.core.Initialize"
 						it should beGuardedWith _
 					]
@@ -562,7 +688,7 @@ describe "Behavior Reference" {
 		 * commonly accepted competencies of agents, such autonomy, reactivity, pro-activity
 		 * and social capacities. 
 		 * 
-		 * Consequently, a behavior associated to an agent is able to use the skills of this
+		 * <p>Consequently, a behavior associated to an agent is able to use the skills of this
 		 * agent.
 		 */		
 		describe "Capacities and Skills" {
@@ -572,7 +698,7 @@ describe "Behavior Reference" {
 			 * the [Capacity Reference](CapacityReferenceSpec.html), and
 			 * the [Skill Reference](SkillReferenceSpec.html).
 			 * 
-			 * In the rest of this section, it is assumed that the following
+			 * <p>In the rest of this section, it is assumed that the following
 			 * capacity and skill are defined:
 			 * 
 			 *     capacity Cap {
@@ -596,7 +722,7 @@ describe "Behavior Reference" {
 			/* When a behavior must use a capacity,
 			 * its agent must own an implementation of this capacity: a skill.
 			 * 
-			 * It is not possible for a behavior to assign a skill to the agent.
+			 * <p>It is not possible for a behavior to assign a skill to the agent.
 			 * 
 			 * @filter(.*) 
 			 */
@@ -665,11 +791,11 @@ describe "Behavior Reference" {
 					it should haveNbElements 3
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Cap"
 					it should extend _
 					it should haveNbElements 1
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "action"
 						it should reply _
 						it should haveNbParameters 0
@@ -677,17 +803,17 @@ describe "Behavior Reference" {
 					]
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(2) => [
+				model.xtendTypes.get(2) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 1
-					(it as Behavior).features.get(0) => [
+					(it as SarlBehavior).members.get(0) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomeEvent"
 						it should beGuardedWith _
 					]
@@ -700,12 +826,12 @@ describe "Behavior Reference" {
 			 * describes the "extension method" mechanism, it is possible
 			 * to use it for invoking the capacities.
 			 * 
-			 * But, instead of using an `import` directive,
+			 * <p>But, instead of using an `import` directive,
 			 * the `uses` keyword is provided for importing the
 			 * capacities into the agent. In the following example,
 			 * the `Cap` capacity is imported.
 			 * 
-			 * After a capacity was "imported", it is possible to
+			 * <p>After a capacity was "imported", it is possible to
 			 * directly call the functions of the capacity
 			 * (according to the extension method syntax).
 			 * In the following example, the action
@@ -742,11 +868,11 @@ describe "Behavior Reference" {
 					it should haveNbElements 3
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beCapacity "Cap"
 					it should extend _
 					it should haveNbElements 1
-					(it as Capacity).features.get(0) => [
+					(it as SarlCapacity).members.get(0) => [
 						it should beActionSignature "action"
 						it should reply _
 						it should haveNbParameters 0
@@ -754,18 +880,18 @@ describe "Behavior Reference" {
 					]
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beEvent "SomeEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(2) => [
+				model.xtendTypes.get(2) => [
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 2
-					(it as Behavior).features.get(0) should beCapacityUse #["io.sarl.docs.reference.br.Cap"]
-					(it as Behavior).features.get(1) => [
+					(it as SarlBehavior).members.get(0) should beCapacityUse #["io.sarl.docs.reference.br.Cap"]
+					(it as SarlBehavior).members.get(1) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.br.SomeEvent"
 						it should beGuardedWith _
 					]
@@ -780,9 +906,9 @@ describe "Behavior Reference" {
 	 * Release: %sarlspecreleasedate%
 	 * 
 	 * 
-	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
 	 * 
-	 * Licensed under the Apache License, Version 2.0;
+	 * <p>Licensed under the Apache License, Version 2.0;
 	 * you may not use this file except in compliance with the License.
 	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *

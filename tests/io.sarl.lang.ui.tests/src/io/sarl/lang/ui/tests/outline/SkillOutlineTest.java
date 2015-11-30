@@ -4,7 +4,7 @@
  * SARL is an general-purpose skill programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -154,7 +154,7 @@ public class SkillOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		OutlineAsserts a;
 		a = asserts.child(0, "S1"); //$NON-NLS-1$
 		a.numChildren(1);
-		a.leaf(0, "S1(boolean)"); //$NON-NLS-1$
+		a.leaf(0, "new(boolean)"); //$NON-NLS-1$
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class SkillOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		OutlineAsserts a;
 		a = asserts.child(0, "S1"); //$NON-NLS-1$
 		a.numChildren(1);
-		a.leaf(0, "S1()"); //$NON-NLS-1$
+		a.leaf(0, "new()"); //$NON-NLS-1$
 	}
 
 	/**
@@ -182,8 +182,8 @@ public class SkillOutlineTest extends AbstractSARLOutlineTreeProviderTest {
 		OutlineAsserts a;
 		a = asserts.child(0, "S1"); //$NON-NLS-1$
 		a.numChildren(2);
-		a.leaf(0, "S1(char)"); //$NON-NLS-1$
-		a.leaf(1, "S1(float)"); //$NON-NLS-1$
+		a.leaf(0, "new(char)"); //$NON-NLS-1$
+		a.leaf(1, "new(float)"); //$NON-NLS-1$
 	}
 
 	/**

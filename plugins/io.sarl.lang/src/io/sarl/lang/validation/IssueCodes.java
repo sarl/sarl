@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.validation;
 
 /**
@@ -27,83 +28,13 @@ package io.sarl.lang.validation;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see org.eclipse.xtend.core.validation.IssueCodes
  */
 public final class IssueCodes {
 
 	/** Prefix related to SARL for the issue codes.
 	 */
-	protected static final String ISSUE_CODE_PREFIX = "io.sarl.lang.validation.IssueCodes."; //$NON-NLS-1$
-
-	/**
-	 * A valid JDK version is not found on the classpath.
-	 */
-	public static final String JDK_NOT_ON_CLASSPATH =
-			ISSUE_CODE_PREFIX + "jdk.not.on.classpath"; //$NON-NLS-1$
-
-	/**
-	 * A valid Xtext version is not found on the classpath.
-	 */
-	public static final String XBASE_LIB_NOT_ON_CLASSPATH =
-			ISSUE_CODE_PREFIX + "xbase.lib.not.on.classpath"; //$NON-NLS-1$
-
-	/**
-	 * A variadic function cannot have a default value for its variadic parameter.
-	 * <p>
-	 * The following code is avoid:<pre><code>
-	 * def myaction(a : int = 45...) {}
-	 * </code></pre>
-	 */
-	public static final String INVALID_USE_OF_VAR_ARG =
-			ISSUE_CODE_PREFIX + "invalid_use_of_varArg"; //$NON-NLS-1$
-
-	/**
-	 * The definitions of two actions are conflicting.
-	 * <p>
-	 * The following code is avoid:<pre><code>
-	 * {
-	 *    def myaction(a : int, b : int, c : int)
-	 *    def myaction(a : int, b : int, c : int)
-	 * }
-	 * </code></pre>
-	 */
-	public static final String DUPLICATE_METHOD =
-			ISSUE_CODE_PREFIX + "duplicate_method"; //$NON-NLS-1$
-
-	/**
-	 * The definitions of two fields are conflicting.
-	 * <p>
-	 * The following code is avoid:<pre><code>
-	 * {
-	 *    val myfield
-	 *    val myfield
-	 * }
-	 * </code></pre>
-	 */
-	public static final String DUPLICATE_FIELD =
-			ISSUE_CODE_PREFIX + "duplicate_field"; //$NON-NLS-1$
-
-	/**
-	 * Some names for actions are prohibited, eg. the action names starting with
-	 * "_handle_" are restricted to the event handlers that are generated.
-	 * <p>
-	 * The following code is avoid:<pre><code>
-	 * behavior B1 {
-	 *    def _handle_myaction(a : int, b : int=4, c : int)
-	 * }
-	 * </code></pre>
-	 * <p>
-	 * Some names for attributes are prohibited, eg. the attribute names starting with
-	 * "___FORMAL_PARAMETER_DEFAULT_VALUE_" are restricted to the default values for
-	 * the formal parameters of the actions.
-	 * <p>
-	 * The following code is avoid:<pre><code>
-	 * behavior B1 {
-	 *    var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = 3
-	 * }
-	 * </code></pre>
-	 */
-	public static final String INVALID_MEMBER_NAME =
-			ISSUE_CODE_PREFIX + "invalid_member_name"; //$NON-NLS-1$
+	public static final String ISSUE_CODE_PREFIX = "io.sarl.lang.validation.IssueCodes."; //$NON-NLS-1$
 
 	/**
 	 * An interface is implemented, but it is already implemented by the super type,
@@ -113,35 +44,9 @@ public final class IssueCodes {
 			ISSUE_CODE_PREFIX + "redundant_interface_implementation"; //$NON-NLS-1$
 
 	/**
-	 * An action must be implemented.
-	 * <p>
-	 * The following code causes a warning:<pre><code>
-	 * capacity C1 {
-	 *    def myaction
-	 * }
-	 * skill S2 implements C1 {
-	 * }
-	 * </code></pre>
-	 */
-	public static final String MISSING_METHOD_IMPLEMENTATION =
-			ISSUE_CODE_PREFIX + "missing_method_implementation"; //$NON-NLS-1$
-
-	/**
-	 * It is not allowed to override a final type.
-	 */
-	public static final String OVERRIDDEN_FINAL_TYPE =
-			ISSUE_CODE_PREFIX + "overridden_final_type"; //$NON-NLS-1$
-
-	/**
-	 * It is not allowed to override an inherited final operation.
-	 */
-	public static final String OVERRIDDEN_FINAL_OPERATION =
-			ISSUE_CODE_PREFIX + "operation"; //$NON-NLS-1$
-
-	/**
 	 * It is discouraged to have a true/false constant as conditions in guards, if...
-	 * <p>
-	 * The following code causes a warning:<pre><code>
+	 *
+	 * <p>The following code causes a warning:<pre><code>
 	 * event E1
 	 * agent A1 {
 	 *    on E1 [true] { }
@@ -151,28 +56,16 @@ public final class IssueCodes {
 	public static final String DISCOURAGED_BOOLEAN_EXPRESSION =
 			ISSUE_CODE_PREFIX + "discouraged_boolean_expression"; //$NON-NLS-1$
 
-	/**
-	 * The name of the package should corresponds the real directory where
-	 * the file is stored.
-	 */
-	public static final String WRONG_PACKAGE =
-			ISSUE_CODE_PREFIX + "wrong_package"; //$NON-NLS-1$
-
-	/** It is not allowed to duplicate the types.
-	 */
-	public static final String DUPLICATE_TYPE_NAME =
-			ISSUE_CODE_PREFIX + "duplicate_class"; //$NON-NLS-1$
-
-	/** The type hierarchy is inconsistent.
-	 */
-	public static final String INCONSISTENT_TYPE_HIERARCHY =
-			ISSUE_CODE_PREFIX + "inconsistent_type_hierarchy"; //$NON-NLS-1$
-
 	/** A capacity was defined in a way that is discouraged.
 	 * The message associated to this issue code explains the details.
 	 */
 	public static final String DISCOURAGED_CAPACITY_DEFINITION =
 			ISSUE_CODE_PREFIX + "discouraged_capacity_definition"; //$NON-NLS-1$
+
+	/** A function was defined with a name that is discouraged.
+	 */
+	public static final String DISCOURAGED_FUNCTION_NAME =
+			ISSUE_CODE_PREFIX + "discouraged_function_name"; //$NON-NLS-1$
 
 	/** A behavior unit will be never executed due to its guard.
 	 */
@@ -194,17 +87,6 @@ public final class IssueCodes {
 	public static final String INVALID_IMPLEMENTED_TYPE =
 			ISSUE_CODE_PREFIX + "invalid_implemented_type"; //$NON-NLS-1$
 
-	/** A type is invalid after the "extends" keyword.
-	 */
-	public static final String INVALID_EXTENDED_TYPE =
-			ISSUE_CODE_PREFIX + "invalid_extended_type"; //$NON-NLS-1$
-
-	/** A constructor must be defined because there is default constructor
-	 * in the sype-type.
-	 */
-	public static final String MISSING_CONSTRUCTOR =
-			ISSUE_CODE_PREFIX + "missing_constructor"; //$NON-NLS-1$
-
 	/** A capacity was not used in the local context.
 	 */
 	public static final String UNUSED_AGENT_CAPACITY =
@@ -215,6 +97,36 @@ public final class IssueCodes {
 	 */
 	public static final String REDUNDANT_CAPACITY_USE =
 			ISSUE_CODE_PREFIX + "redundant_capacity_use"; //$NON-NLS-1$
+
+	/**
+	 * A supertype is not a subtype of the expected type.
+	 */
+	public static final String INVALID_EXTENDED_TYPE =
+			ISSUE_CODE_PREFIX + "invalid_extended_type"; //$NON-NLS-1$
+
+	/**
+	 * An element cannot be defined as a nested element.
+	 */
+	public static final String INVALID_NESTED_DEFINITION =
+			ISSUE_CODE_PREFIX + "invalid_nested_definition"; //$NON-NLS-1$
+
+	/**
+	 * The specification of the return type is recommended.
+	 */
+	public static final String RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED =
+			ISSUE_CODE_PREFIX + "return_type_specification_is_recommended"; //$NON-NLS-1$
+
+	/**
+	 * The SARL library is not on the classpath.
+	 */
+	public static final String SARL_LIB_NOT_ON_CLASSPATH =
+			ISSUE_CODE_PREFIX + "sarl_lib_not_on_classpath"; //$NON-NLS-1$
+
+	/**
+	 * The SARL library found on the classpath is not compatible with the compiler's version.
+	 */
+	public static final String INVALID_SARL_LIB_ON_CLASSPATH =
+			ISSUE_CODE_PREFIX + "invalid_sarl_lib_on_classpath"; //$NON-NLS-1$
 
 	private IssueCodes() {
 		//

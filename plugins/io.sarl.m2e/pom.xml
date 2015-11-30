@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.plugins</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.3.0-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>io.sarl.m2e</groupId>
@@ -13,12 +13,14 @@
 	<packaging>eclipse-plugin</packaging>
 	<name>Maven Integration for Eclipse</name>
 	
-	<properties>
-		<!-- needed for checkstyle/findbugs and other plugins -->
-		<main.basedir>${project.basedir}/../..</main.basedir>
-	</properties>
-
 	<build>
+		<resources>
+			<resource>
+				<directory>OSGI-INF/l10n</directory>
+				<filtering>true</filtering>
+				<targetPath>OSGI-INF/l10n</targetPath>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

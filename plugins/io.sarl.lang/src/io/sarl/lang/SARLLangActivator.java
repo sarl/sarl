@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang;
 
 import java.util.ResourceBundle;
@@ -28,7 +29,7 @@ import org.osgi.framework.BundleContext;
 
 
 /**
- * Set of SARL keywords that are added to the xtext/xbase ones.
+ * Bundle activator for the SARL language module.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -40,9 +41,10 @@ public class SARLLangActivator implements BundleActivator {
 	private static SARLLangActivator singleton;
 
 	private String minimalJdkVersion;
+
 	private String minimalXtextVersion;
 
-	/**
+	/** Constructor the the activator.
 	 */
 	public SARLLangActivator() {
 		//
@@ -71,7 +73,7 @@ public class SARLLangActivator implements BundleActivator {
 
 	/** Returns the minimal JDK version required by SARL.
 	 *
-	 * The version is read from the bundle's properties.
+	 * <p>The version is read from the bundle's properties.
 	 *
 	 * @return the minimal JDK version required by SARL.
 	 */
@@ -81,7 +83,7 @@ public class SARLLangActivator implements BundleActivator {
 
 	/** Returns the minimal Xbase version required by SARL.
 	 *
-	 * The version is read from the bundle's properties.
+	 * <p>The version is read from the bundle's properties.
 	 *
 	 * @return the minimal Xbase version required by SARL.
 	 */

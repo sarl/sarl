@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.dialog;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.core.Agent;
-
+import com.google.common.annotations.Beta;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -36,7 +35,8 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Shell;
 
-import com.google.common.annotations.Beta;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.lang.core.Agent;
 
 /** Dialog box for selecting an agent type.
  *

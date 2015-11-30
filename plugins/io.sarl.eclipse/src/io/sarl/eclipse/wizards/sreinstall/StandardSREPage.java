@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.wizards.sreinstall;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.runtime.SREException;
-import io.sarl.eclipse.runtime.StandardSREInstall;
-import io.sarl.eclipse.util.Utilities;
+package io.sarl.eclipse.wizards.sreinstall;
 
 import java.io.File;
 import java.text.MessageFormat;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -50,7 +45,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Text;
 
-import com.google.common.base.Strings;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.SREException;
+import io.sarl.eclipse.runtime.StandardSREInstall;
+import io.sarl.eclipse.util.Utilities;
 
 /**
  * Standard implementation of a page for the SRE installation wizard.
@@ -63,14 +62,18 @@ import com.google.common.base.Strings;
 public class StandardSREPage extends AbstractSREInstallPage {
 
 	private Text sreLibraryTextField;
+
 	private Text sreNameTextField;
+
 	private Text sreMainClassTextField;
+
 	private Text sreIdTextField;
 
 	private StandardSREInstall originalSRE;
+
 	private StandardSREInstall workingCopy;
 
-	/**
+	/** Construct a configuration page for the SREs.
 	 */
 	public StandardSREPage() {
 		super(Utilities.EMPTY_STRING);
@@ -82,9 +85,9 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	}
 
 	@Override
-	public void createControl(Composite p) {
+	public void createControl(Composite parent) {
 		// create a composite with standard margins and spacing
-		Composite composite = new Composite(p, SWT.NONE);
+		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 3;
 		composite.setLayout(layout);
@@ -112,7 +115,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		this.sreNameTextField.addModifyListener(new ModifyListener() {
 			@SuppressWarnings("synthetic-access")
 			@Override
-			public void modifyText(ModifyEvent e) {
+			public void modifyText(ModifyEvent event) {
 				StandardSREPage.this.workingCopy.setName(
 						StandardSREPage.this.sreNameTextField.getText());
 				setPageStatus(validate());
@@ -122,7 +125,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		this.sreMainClassTextField.addModifyListener(new ModifyListener() {
 			@SuppressWarnings("synthetic-access")
 			@Override
-			public void modifyText(ModifyEvent e) {
+			public void modifyText(ModifyEvent event) {
 				StandardSREPage.this.workingCopy.setMainClass(
 						StandardSREPage.this.sreMainClassTextField.getText());
 				setPageStatus(validate());
@@ -131,7 +134,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		});
 		folders.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				selectSRE();
 			}
 		});
@@ -163,23 +166,19 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		}
 		String selectedFile = dialog.open();
 		if (selectedFile != null) {
-			SARLEclipsePlugin.getDefault().logDebugMessage("Selected SRE file (String): " //$NON-NLS-1$
-					+ Strings.nullToEmpty(selectedFile));
 			IPath path = Path.fromOSString(selectedFile);
-			SARLEclipsePlugin.getDefault().logDebugMessage("Associated Eclipse Path (Path): " + path); //$NON-NLS-1$
-//			IWorkspace workspace = ResourcesPlugin.getWorkspace();
-//			IPath workspaceLocation = workspace.getRoot().getLocation();
-//			SARLEclipsePlugin.logDebugMessage("Workspace (Path): " + workspaceLocation); //$NON-NLS-1$
-//			if (workspaceLocation.isPrefixOf(path)) {
-//				SARLEclipsePlugin.logDebugMessage("Make relative path"); //$NON-NLS-1$
-//				path = workspaceLocation.makeRelativeTo(workspaceLocation);
-//			}
-//			SARLEclipsePlugin.logDebugMessage("Resolved Path (Path): " + path); //$NON-NLS-1$
+			//			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			//			IPath workspaceLocation = workspace.getRoot().getLocation();
+			//			SARLEclipsePlugin.logDebugMessage("Workspace (Path): " + workspaceLocation); //$NON-NLS-1$
+			//			if (workspaceLocation.isPrefixOf(path)) {
+			//				SARLEclipsePlugin.logDebugMessage("Make relative path"); //$NON-NLS-1$
+			//				path = workspaceLocation.makeRelativeTo(workspaceLocation);
+			//			}
+			//			SARLEclipsePlugin.logDebugMessage("Resolved Path (Path): " + path); //$NON-NLS-1$
 			//
 			createWorkingCopy();
 			this.workingCopy.setJarFile(path);
 			IStatus status = validate();
-			SARLEclipsePlugin.getDefault().logDebugMessage("SRE status: " + status); //$NON-NLS-1$
 			//
 			initializeFields();
 			setPageStatus(status);
@@ -251,11 +250,11 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	}
 
 	private IStatus validate() {
-		IStatus s = this.workingCopy.revalidate();
-		if (s.isOK()) {
-			s = validateNameAgainstOtherSREs(this.workingCopy.getName());
+		IStatus status = this.workingCopy.revalidate();
+		if (status.isOK()) {
+			status = validateNameAgainstOtherSREs(this.workingCopy.getName());
 		}
-		return s;
+		return status;
 	}
 
 }

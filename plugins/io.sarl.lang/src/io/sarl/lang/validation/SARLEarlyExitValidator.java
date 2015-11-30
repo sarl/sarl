@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,23 +21,22 @@
 
 package io.sarl.lang.validation;
 
-import io.sarl.lang.controlflow.SARLEarlyExitComputerUtil;
-
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend.core.validation.XtendEarlyExitValidator;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
-import org.eclipse.xtext.xbase.validation.EarlyExitValidator;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import io.sarl.lang.controlflow.SARLEarlyExitComputerUtil;
 
 /** Validation of the early-exit control flow.
  *
@@ -47,7 +46,7 @@ import com.google.inject.Singleton;
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-public class SARLEarlyExitValidator extends EarlyExitValidator {
+public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 
 	@Inject
 	private IEarlyExitComputer earlyExitComputer;

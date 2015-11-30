@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.wizards.elements;
 
 import org.eclipse.core.resources.IFile;
@@ -38,7 +39,7 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
 /** Utilities for field initialization in the wizards.
  *
- * This class is copied from the Xtend library.
+ * <p>This class is copied from the Xtend library.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -56,10 +57,10 @@ public class FieldInitializerUtil {
 	public IJavaElement getSelectedResource(IStructuredSelection selection) {
 		IJavaElement elem = null;
 		if (selection != null && !selection.isEmpty()) {
-			Object o = selection.getFirstElement();
-			if (o instanceof IAdaptable) {
-				IAdaptable adaptable = (IAdaptable) o;
-				elem = (IJavaElement) adaptable.getAdapter(IJavaElement.class);
+			Object object = selection.getFirstElement();
+			if (object instanceof IAdaptable) {
+				IAdaptable adaptable = (IAdaptable) object;
+				elem = adaptable.getAdapter(IJavaElement.class);
 				if (elem == null) {
 					elem = getPackage(adaptable);
 				}
@@ -92,11 +93,11 @@ public class FieldInitializerUtil {
 
 	private static IJavaElement getPackage(IAdaptable adaptable) {
 		IJavaElement elem = null;
-		IResource resource = (IResource) adaptable.getAdapter(IResource.class);
+		IResource resource = adaptable.getAdapter(IResource.class);
 		if (resource != null && resource.getType() != IResource.ROOT) {
 			while (elem == null && resource.getType() != IResource.PROJECT) {
 				resource = resource.getParent();
-				elem = (IJavaElement) resource.getAdapter(IJavaElement.class);
+				elem = resource.getAdapter(IJavaElement.class);
 			}
 		}
 		if (elem == null) {

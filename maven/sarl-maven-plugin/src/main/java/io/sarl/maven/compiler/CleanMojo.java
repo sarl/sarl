@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.maven.compiler;
 
 import java.text.MessageFormat;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /** Cleaning mojo for compiling SARL.
  *
@@ -31,25 +35,22 @@ import org.apache.maven.plugin.MojoFailureException;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @goal clean
- * @phase clean
- * @requiresDependencyResolution compile
  */
+@Mojo(name = "clean", defaultPhase = LifecyclePhase.CLEAN, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class CleanMojo extends AbstractSarlMojo {
 
 	@Override
-	public void executeMojo() throws MojoExecutionException, MojoFailureException {
-		String cleanerGroupId = MavenHelper.getConfig("cleaner.groupId"); //$NON-NLS-1$
-		String cleanerArtifactId = MavenHelper.getConfig("cleaner.artifactId"); //$NON-NLS-1$
-		String cleanerVersion = this.mavenHelper.getPluginDependencyVersion(
-				cleanerGroupId, cleanerArtifactId, "clean"); //$NON-NLS-1$
-		String cleanerMojo = MavenHelper.getConfig("cleaner.mojo"); //$NON-NLS-1$
+	protected void executeMojo() throws MojoExecutionException, MojoFailureException {
+		String cleanerGroupId = this.mavenHelper.getConfig("cleaner.groupId"); //$NON-NLS-1$
+		String cleanerArtifactId = this.mavenHelper.getConfig("cleaner.artifactId"); //$NON-NLS-1$
+		String cleanerVersion = this.mavenHelper.getPluginDependencyVersion(cleanerGroupId, cleanerArtifactId);
+		String cleanerMojo = this.mavenHelper.getConfig("cleaner.mojo"); //$NON-NLS-1$
 		executeMojo(
 				cleanerGroupId, cleanerArtifactId, cleanerVersion, cleanerMojo,
 				MessageFormat.format(
-						MavenHelper.getConfig("cleaner.configuration"), //$NON-NLS-1$
-						getOutput().getAbsolutePath(),
-						getTestOutput().getAbsolutePath()));
+				this.mavenHelper.getConfig("cleaner.configuration"), //$NON-NLS-1$
+				getOutput().getAbsolutePath(),
+				getTestOutput().getAbsolutePath()));
 	}
 
 }

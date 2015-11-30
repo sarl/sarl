@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,13 @@
 
 package io.sarl.maven.docs.generator;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.util.Modules;
 import org.eclipse.emf.ecore.EPackage;
 import org.jnario.spec.SpecRuntimeModule;
 import org.jnario.spec.SpecStandaloneSetupGenerated;
 import org.jnario.spec.spec.SpecPackage;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.util.Modules;
 
 /** Class for setting up the injection mechanism in the Maven plugin.
  *
@@ -41,14 +40,12 @@ class SARLSpecStandaloneSetup extends SpecStandaloneSetupGenerated {
 
 	private static Injector injector;
 
-	/**
+	/** Construct a setup configuration.
 	 */
-	public SARLSpecStandaloneSetup() {
+	SARLSpecStandaloneSetup() {
 		//
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public Injector createInjectorAndDoEMFRegistration() {
 		if (injector != null) {

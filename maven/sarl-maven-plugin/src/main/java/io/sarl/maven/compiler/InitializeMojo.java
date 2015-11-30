@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.maven.compiler;
 
 import java.io.File;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Initialization mojo for compiling SARL.
  *
@@ -31,22 +36,20 @@ import org.apache.maven.plugin.MojoFailureException;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @goal initialize
- * @phase initialize
- * @requiresDependencyResolution compile
  */
+@Mojo(name = "initialize", defaultPhase = LifecyclePhase.INITIALIZE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class InitializeMojo extends AbstractSarlMojo {
 
 	@Override
-	public void executeMojo() throws MojoExecutionException, MojoFailureException {
+	protected void executeMojo() throws MojoExecutionException, MojoFailureException {
 		for (File f : new File[] {getInput(), getOutput()}) {
 			String absPath = f.getAbsolutePath();
-			getLog().debug("*** SARL *** Adding SARL source folders: " + absPath); //$NON-NLS-1$
+			getLog().debug(Locale.getString(InitializeMojo.class, "ADD_SOURCE_FOLDERS", absPath)); //$NON-NLS-1$
 			this.mavenHelper.getSession().getCurrentProject().addCompileSourceRoot(absPath);
 		}
 		for (File f : new File[] {getTestInput(), getTestOutput()}) {
 			String absPath = f.getAbsolutePath();
-			getLog().debug("*** SARL *** Adding SARL test source folders: " + absPath); //$NON-NLS-1$
+			getLog().debug(Locale.getString(InitializeMojo.class, "ADD_TEST_SOURCE_FOLDERS", absPath)); //$NON-NLS-1$
 			this.mavenHelper.getSession().getCurrentProject().addTestCompileSourceRoot(absPath);
 		}
 	}

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,15 +29,13 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
 
 import java.io.PrintStream;
 
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.internal.debug.Debug;
 import org.junit.After;
 import org.junit.Before;
@@ -46,6 +44,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.mockito.ArgumentCaptor;
+
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -69,11 +70,13 @@ public final class SARLEclipsePluginTest {
 	 */
 	public static class LogTests extends AbstractSarlTest {
 
-		@Nullable
+		@NonNullByDefault
 		private PrintStream old;
-		@Nullable
+
+		@NonNullByDefault
 		private ILog logger;
-		@Nullable
+
+		@NonNullByDefault
 		private SARLEclipsePlugin plugin;
 
 		@Before
@@ -200,7 +203,7 @@ public final class SARLEclipsePluginTest {
 	 */
 	public static class StatusTests extends AbstractSarlTest {
 
-		@Nullable
+		@NonNullByDefault
 		private SARLEclipsePlugin plugin;
 
 		@Before

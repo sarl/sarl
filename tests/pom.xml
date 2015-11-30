@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.tycho-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.3.0-SNAPSHOT</version>
 		<relativePath>../tycho-parent</relativePath>
 	</parent>
 
@@ -26,6 +26,7 @@
 		<module>io.sarl.core.tests</module>
 		<module>io.sarl.eclipse.tests</module>
 		<module>io.sarl.m2e.tests</module>
+		<module>sarl-maven-plugin.tests</module>
 	</modules>
 
 	<!-- ======================================= -->
@@ -61,7 +62,13 @@
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-surefire-plugin</artifactId>
+					<version>${tycho.version}</version>
 					<configuration>
+						<useUIHarness>true</useUIHarness>
+						<useUIThread>true</useUIThread>
+						<runOrder>alphabetical</runOrder>
+						<product>io.sarl.eclipse.io_sarl_lang_product</product>
+						<application>org.eclipse.ui.ide.workbench</application>
 						<argLine>-ea ${tycho-surefire-plugin-os-jvm-flags}</argLine>
 					</configuration>
 				</plugin>

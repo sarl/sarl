@@ -62,3 +62,5 @@ workspace
 
 #Others
 .DS_Store
+run_dbg.bash
+dbg.log

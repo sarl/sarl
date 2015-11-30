@@ -28,6 +28,10 @@ A.3) Do manual tests.
 
 A.5) If a manual test is failing: fix the problem, and go to step A.2.
 
+A.6) Test the generation of the  bundles for Maven Central:
+
+     $> ./scripts/prepare-bundles-for-central
+
 B) PHASE 2: RELEASE VERSION
 
 B.1) Remove "-SNAPSHOT" in all the poms.

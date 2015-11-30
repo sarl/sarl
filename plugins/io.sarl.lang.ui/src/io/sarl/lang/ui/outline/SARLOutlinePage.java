@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.ui.outline;
 
-import java.util.List;
-
-import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
-import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
-import org.eclipse.xtext.ui.editor.outline.impl.OutlinePage;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtend.ide.outline.XtendOutlinePage;
 
 /**
  * Customize the outline page.
@@ -36,20 +32,6 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLOutlinePage extends OutlinePage {
-
-	@Override
-	protected List<IOutlineNode> getInitiallyExpandedNodes() {
-		IOutlineNode rootNode = getTreeProvider().createRoot(getXtextDocument());
-		List<IOutlineNode> result = CollectionLiterals.newArrayList(rootNode);
-
-		for (IOutlineNode firstLevelNode: rootNode.getChildren()) {
-			if (firstLevelNode instanceof EStructuralFeatureNode) {
-				result.add(firstLevelNode);
-			}
-		}
-
-		return result;
-	}
-
+public class SARLOutlinePage extends XtendOutlinePage {
+	//
 }

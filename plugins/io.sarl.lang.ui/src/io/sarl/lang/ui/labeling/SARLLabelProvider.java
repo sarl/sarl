@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,55 +18,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.ui.labeling;
 
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.Behavior;
-import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.Capacity;
-import io.sarl.lang.sarl.CapacityUses;
-import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.RequiredCapacity;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.Skill;
-import io.sarl.lang.ui.images.SARLImages;
+package io.sarl.lang.ui.labeling;
 
 import java.util.Collections;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.eclipse.emf.ecore.EObject;
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
+import org.eclipse.xtend.ide.labeling.XtendLabelProvider;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmExecutable;
-import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.util.Exceptions;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
 import org.eclipse.xtext.util.PolymorphicDispatcher.ErrorHandler;
-import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
-import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
-import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
-import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
-import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
-import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider;
+import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
 import org.eclipse.xtext.xbase.validation.UIStrings;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.ui.images.SARLImages;
 
 /**
  * Provides labels for a EObjects.
@@ -77,7 +71,7 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  * @see "http://www.eclipse.org/Xtext/documentation.html#labelProvider"
  */
-public class SARLLabelProvider extends XbaseLabelProvider {
+public class SARLLabelProvider extends XtendLabelProvider {
 
 	/** Max length of the text for the behavior units.
 	 */
@@ -90,18 +84,16 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	private OperatorMapping operatorMapping;
 
 	@Inject
-	private JvmModelAssociator jvmModelAssociator;
-
-	@Inject
-	private IBatchTypeResolver typeResolver;
-
-	@Inject
-	private ILogicalContainerProvider logicalContainerProvider;
+	private IXtendJvmAssociations jvmModelAssociations;
 
 	@Inject
 	private SARLImages images;
 
+	@Inject
+	private XbaseImageAdornments adornments;
+
 	private final PolymorphicDispatcher<ImageDescriptor> imageDescriptorDispatcher;
+
 	private final ReentrantLock imageDescriptorLock = new ReentrantLock();
 
 	/**
@@ -116,8 +108,8 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 				Collections.singletonList(this),
 				new ErrorHandler<ImageDescriptor>() {
 					@Override
-					public ImageDescriptor handle(Object[] params, Throwable e) {
-						return handleImageDescriptorError(params, e);
+					public ImageDescriptor handle(Object[] params, Throwable exception) {
+						return handleImageDescriptorError(params, exception);
 					}
 				});
 	}
@@ -134,21 +126,21 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	/** Invoked when an image descriptor cannot be found.
 	 *
 	 * @param params - the parameters given to the method polymorphic dispatcher.
-	 * @param e - the cause of the error.
+	 * @param exception - the cause of the error.
 	 * @return the image descriptor for the error.
 	 */
-	protected ImageDescriptor handleImageDescriptorError(Object[] params, Throwable e) {
-		if (e instanceof NullPointerException) {
-			Object o = getDefaultImage();
-			if (o instanceof ImageDescriptor) {
-				return (ImageDescriptor) o;
+	protected ImageDescriptor handleImageDescriptorError(Object[] params, Throwable exception) {
+		if (exception instanceof NullPointerException) {
+			Object defaultImage = getDefaultImage();
+			if (defaultImage instanceof ImageDescriptor) {
+				return (ImageDescriptor) defaultImage;
 			}
-			if (o instanceof Image) {
-				return ImageDescriptor.createFromImage((Image) o);
+			if (defaultImage instanceof Image) {
+				return ImageDescriptor.createFromImage((Image) defaultImage);
 			}
 			return super.imageDescriptor(params[0]);
 		}
-		return Exceptions.throwUncheckedException(e);
+		return Exceptions.throwUncheckedException(exception);
 	}
 
 	/** Create a string representation of a signature without the return type.
@@ -199,22 +191,6 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 		return convertToStyledString(name);
 	}
 
-	/** Replies the JVM element of the given type associated to the given SARL element.
-	 *
-	 * @param <T> - the type of the JVM element to search for.
-	 * @param element - the SARL element.
-	 * @param type - the type of the JVM element to search for.
-	 * @return the JVM element, or <code>null</code> if not found.
-	 */
-	protected <T> T getJvmElement(EObject element, Class<T> type) {
-		for (EObject obj : this.jvmModelAssociator.getJvmElements(element)) {
-			if (type.isInstance(obj)) {
-				return type.cast(obj);
-			}
-		}
-		return null;
-	}
-
 	// Descriptors
 
 	@Override
@@ -232,7 +208,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -245,7 +221,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
@@ -257,145 +233,155 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Agent element) {
-		return this.images.forAgent();
+	protected ImageDescriptor imageDescriptor(SarlAgent element) {
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		return this.images.forAgent(
+				element.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Event element) {
-		return this.images.forEvent();
+	protected ImageDescriptor imageDescriptor(SarlEvent element) {
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		return this.images.forEvent(
+				element.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Capacity element) {
-		return this.images.forCapacity();
+	protected ImageDescriptor imageDescriptor(SarlCapacity element) {
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		return this.images.forCapacity(
+				element.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Skill element) {
-		return this.images.forSkill();
+	protected ImageDescriptor imageDescriptor(SarlSkill element) {
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		return this.images.forSkill(
+				element.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Behavior element) {
-		return this.images.forBehavior();
+	protected ImageDescriptor imageDescriptor(SarlBehavior element) {
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		return this.images.forBehavior(
+				element.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Attribute element) {
-		return this.images.forAttribute(element.isWriteable());
+	protected ImageDescriptor imageDescriptor(SarlField element) {
+		return this.images.forField(
+				element.getVisibility(),
+				this.adornments.get(this.jvmModelAssociations.getJvmField(element)));
 	}
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Constructor element) {
-		return this.images.forConstructor(JvmVisibility.PUBLIC, 0);
+	protected ImageDescriptor imageDescriptor(SarlConstructor element) {
+		return this.images.forConstructor(
+				element.getVisibility(),
+				this.adornments.get(this.jvmModelAssociations.getInferredConstructor(element)));
 	}
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(Action element) {
-		return this.images.forAction();
+	protected ImageDescriptor imageDescriptor(SarlAction element) {
+		JvmOperation jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(element);
+		return this.images.forOperation(
+				element.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(ActionSignature element) {
-		return this.images.forActionSignature();
-	}
-
-	/** Replies the image for the given element.
-	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
-	 *
-	 * @param element - the element.
-	 * @return the image descriptor.
-	 * @see #imageDescriptor(Object)
-	 */
-	protected ImageDescriptor imageDescriptor(CapacityUses element) {
+	protected ImageDescriptor imageDescriptor(SarlCapacityUses element) {
 		return this.images.forCapacityUses();
 	}
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(RequiredCapacity element) {
+	protected ImageDescriptor imageDescriptor(SarlRequiredCapacity element) {
 		return this.images.forCapacityRequirements();
 	}
 
 	/** Replies the image for the given element.
 	 *
-	 * This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
+	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
 	 * @param element - the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
-	protected ImageDescriptor imageDescriptor(BehaviorUnit element) {
+	protected ImageDescriptor imageDescriptor(SarlBehaviorUnit element) {
 		return this.images.forBehaviorUnit();
 	}
 
@@ -415,16 +401,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(SarlScript element) {
-		return convertToStyledString(element.eResource().getURI().trimFileExtension().lastSegment());
-	}
-
-	/** Replies the text for the given element.
-	 *
-	 * @param element - the element.
-	 * @return the text.
-	 */
-	protected StyledString text(Agent element) {
+	protected StyledString text(SarlAgent element) {
 		return convertToStyledString(element.getName());
 	}
 
@@ -433,7 +410,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(Event element) {
+	protected StyledString text(SarlEvent element) {
 		return convertToStyledString(element.getName());
 	}
 
@@ -442,7 +419,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(Capacity element) {
+	protected StyledString text(SarlCapacity element) {
 		return convertToStyledString(element.getName());
 	}
 
@@ -451,7 +428,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(Skill element) {
+	protected StyledString text(SarlSkill element) {
 		return convertToStyledString(element.getName());
 	}
 
@@ -460,7 +437,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(Behavior element) {
+	protected StyledString text(SarlBehavior element) {
 		return convertToStyledString(element.getName());
 	}
 
@@ -469,96 +446,19 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(Attribute element) {
-		StyledString label = convertToStyledString(element.getName());
-		JvmTypeReference theType = null;
-		if (element.getType() != null) {
-			theType = element.getType();
-		} else {
-			JvmField jvmElement = getJvmElement(element, JvmField.class);
-			if (jvmElement != null) {
-				theType = jvmElement.getType();
-			}
-		}
-		StyledString typeLabel = null;
-		if (theType != null) {
-			typeLabel = getHumanReadableName(theType);
-		} else {
-			XExpression expr = element.getInitialValue();
-			if (expr != null) {
-				IResolvedTypes types = this.typeResolver.resolveTypes(expr);
-				LightweightTypeReference lwRef = types.getExpectedType(expr);
-				if (lwRef == null) {
-					lwRef = types.getActualType(expr);
-				}
-				if (lwRef != null) {
-					typeLabel = convertToStyledString(lwRef.getHumanReadableName());
-				}
-			}
-		}
-		if (typeLabel == null || typeLabel.length() == 0) {
-			typeLabel = getHumanReadableName(null);
-		}
-		label.append(" : " + typeLabel, StyledString.COUNTER_STYLER); //$NON-NLS-1$
-		return label;
-	}
-
-	/** Replies the text for the given element.
-	 *
-	 * @param element - the element.
-	 * @return the text.
-	 */
-	protected StyledString text(Constructor element) {
-		JvmIdentifiableElement container = this.logicalContainerProvider.getNearestLogicalContainer(element);
-		StyledString name;
-		if (container != null) {
-			name = convertToStyledString(container.getSimpleName());
-		} else {
-			name = new StyledString("new", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$
-		}
-		JvmExecutable jvmElement = getJvmElement(element, JvmExecutable.class);
-		if (jvmElement != null) {
-			return signatureWithoutReturnType(name, jvmElement);
-		}
-		return signatureWithoutReturnType(name, jvmElement);
-	}
-
-	/** Replies the text for the given element.
-	 *
-	 * @param element - the element.
-	 * @return the text.
-	 */
-	protected StyledString text(Action element) {
+	protected StyledString text(SarlAction element) {
+		JvmIdentifiableElement jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(element);
 		String simpleName = element.getName();
 		if (simpleName != null) {
 			QualifiedName qnName = QualifiedName.create(simpleName);
 			QualifiedName operator = this.operatorMapping.getOperator(qnName);
 			if (operator != null) {
-				StyledString result = signature(operator.getFirstSegment(), getJvmElement(element, JvmExecutable.class));
+				StyledString result = signature(operator.getFirstSegment(), jvmElement);
 				result.append(" (" + simpleName + ")", StyledString.COUNTER_STYLER); //$NON-NLS-1$//$NON-NLS-2$
 				return result;
 			}
 		}
-		return signature(element.getName(), getJvmElement(element, JvmExecutable.class));
-	}
-
-	/** Replies the text for the given element.
-	 *
-	 * @param element - the element.
-	 * @return the text.
-	 */
-	protected StyledString text(ActionSignature element) {
-		String simpleName = element.getName();
-		if (simpleName != null) {
-			QualifiedName qnName = QualifiedName.create(simpleName);
-			QualifiedName operator = this.operatorMapping.getOperator(qnName);
-			if (operator != null) {
-				StyledString result = signature(operator.getFirstSegment(), getJvmElement(element, JvmExecutable.class));
-				result.append(" (" + simpleName + ")", StyledString.COUNTER_STYLER); //$NON-NLS-1$//$NON-NLS-2$
-				return result;
-			}
-		}
-		return signature(element.getName(), getJvmElement(element, JvmExecutable.class));
+		return signature(element.getName(), jvmElement);
 	}
 
 	/** Replies the text for the given element.
@@ -567,7 +467,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the text.
 	 */
 	@SuppressWarnings("static-method")
-	protected StyledString text(CapacityUses element) {
+	protected StyledString text(SarlCapacityUses element) {
 		return new StyledString(Messages.SARLLabelProvider_0, StyledString.QUALIFIER_STYLER);
 	}
 
@@ -577,7 +477,7 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @return the text.
 	 */
 	@SuppressWarnings("static-method")
-	protected StyledString text(RequiredCapacity element) {
+	protected StyledString text(SarlRequiredCapacity element) {
 		return new StyledString(Messages.SARLLabelProvider_1, StyledString.QUALIFIER_STYLER);
 	}
 
@@ -586,9 +486,9 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 	 * @param element - the element.
 	 * @return the text.
 	 */
-	protected StyledString text(BehaviorUnit element) {
-		StyledString s = new StyledString("on ", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$
-		s.append(getHumanReadableName(element.getName()));
+	protected StyledString text(SarlBehaviorUnit element) {
+		StyledString text = new StyledString("on ", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$
+		text.append(getHumanReadableName(element.getName()));
 		if (element.getGuard() != null) {
 			String txt = null;
 			ICompositeNode node = NodeModelUtils.getNode(element.getGuard());
@@ -606,10 +506,10 @@ public class SARLLabelProvider extends XbaseLabelProvider {
 					txt = "[" + txt + "]"; //$NON-NLS-1$//$NON-NLS-2$
 				}
 			}
-			s.append(" "); //$NON-NLS-1$
-			s.append(txt, StyledString.DECORATIONS_STYLER);
+			text.append(" "); //$NON-NLS-1$
+			text.append(txt, StyledString.DECORATIONS_STYLER);
 		}
-		return s;
+		return text;
 	}
 
 }

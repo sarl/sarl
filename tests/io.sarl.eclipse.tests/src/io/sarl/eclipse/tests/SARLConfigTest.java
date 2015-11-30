@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@
 package io.sarl.eclipse.tests;
 
 import static org.junit.Assert.assertEquals;
-import io.sarl.eclipse.SARLConfig;
+import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.WorkspaceTestHelper;
+import io.sarl.tests.api.WorkbenchTestHelper;
 
 import org.eclipse.xtext.ui.XtextProjectHelper;
 import org.junit.Test;
@@ -39,12 +39,12 @@ public final class SARLConfigTest extends AbstractSarlUiTest {
 
 	@Test
 	public void sarlNature() {
-		assertEquals(WorkspaceTestHelper.SARL_NATURE, SARLConfig.NATURE_ID);
+		assertEquals(WorkbenchTestHelper.NATURE_ID, SARLEclipseConfig.NATURE_ID);
 	}
 
 	@Test
 	public void xtextNature() {
-		assertEquals(XtextProjectHelper.NATURE_ID, SARLConfig.XTEXT_NATURE_ID);
+		assertEquals(XtextProjectHelper.NATURE_ID, SARLEclipseConfig.XTEXT_NATURE_ID);
 	}
 
 }

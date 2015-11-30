@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.runtime;
 
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Utilities;
+package io.sarl.eclipse.runtime;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -29,6 +27,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.launching.LibraryLocation;
@@ -36,13 +36,13 @@ import org.eclipse.jdt.launching.PropertyChangeEvent;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Strings;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Utilities;
 
 /**
  * Abstract implementation of a SRE install.
- * <p>
- * Clients implementing SRE installs must subclass this class.
+ *
+ * <p>Clients implementing SRE installs must subclass this class.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -52,15 +52,25 @@ import com.google.common.base.Strings;
 public abstract class AbstractSREInstall implements ISREInstall {
 
 	private String id;
+
 	private String name;
+
 	private String minimalSarlVersion;
+
 	private String maximalSarlVersion;
+
 	private String mainClass;
+
 	private boolean isStandalone;
+
 	private LibraryLocation[] libraryLocations;
+
 	private Map<String, String> attributeMap;
+
 	private boolean dirty = true;
-	// whether change events should be fired
+
+	/** Whether change events should be fired.
+	 */
 	private boolean notify = true;
 
 	/** Construct a SRE installation.
@@ -104,8 +114,6 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		return false;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public int hashCode() {
 		return getId().hashCode();
@@ -175,7 +183,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		if (isDirty()) {
 			return revalidate(ignoreCauses);
 		}
-		IStatus s = null;
+		IStatus status = null;
 		try {
 			if (!isStandalone() && (ignoreCauses & CODE_STANDALONE_SRE) == 0) {
 				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_STANDALONE_SRE,
@@ -191,17 +199,17 @@ public abstract class AbstractSREInstall implements ISREInstall {
 				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_NAME,
 						Messages.AbstractSREInstall_3);
 			}
-			s = getLibraryLocationValidity(ignoreCauses);
-			if (s == null) {
-				s = getSARLVersionValidity(ignoreCauses);
+			status = getLibraryLocationValidity(ignoreCauses);
+			if (status == null) {
+				status = getSARLVersionValidity(ignoreCauses);
 			}
 		} catch (Throwable e) {
 			//
 		}
-		if (s == null) {
-			s = SARLEclipsePlugin.getDefault().createOkStatus();
+		if (status == null) {
+			status = SARLEclipsePlugin.getDefault().createOkStatus();
 		}
-		return s;
+		return status;
 	}
 
 	private IStatus getLibraryLocationValidity(int ignoreCauses) {
@@ -317,11 +325,11 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		String n = Strings.nullToEmpty(name);
+		String normalizedName = Strings.nullToEmpty(name);
 		if (!name.equals(Strings.nullToEmpty(this.name))) {
 			PropertyChangeEvent event = new PropertyChangeEvent(
-					this, ISREInstallChangedListener.PROPERTY_NAME, this.name, n);
-			this.name = n;
+					this, ISREInstallChangedListener.PROPERTY_NAME, this.name, normalizedName);
+			this.name = normalizedName;
 			if (this.notify) {
 				SARLRuntime.fireSREChanged(event);
 			}
@@ -332,7 +340,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	 * Change the library locations of this ISREInstall.
 	 *
 	 * @param libraries - The library locations of this ISREInstall.
-	 * Must not be <code>null</code>.
+	 *     Must not be <code>null</code>.
 	 */
 	@Override
 	public void setLibraryLocations(LibraryLocation... libraries) {
@@ -365,7 +373,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			// Check version number
 			try {
 				Version.parseVersion(newVersion);
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				return;
 			}
 		}
@@ -391,7 +399,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			// Check version number
 			try {
 				Version.parseVersion(newVersion);
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				return;
 			}
 		}
@@ -413,21 +421,21 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			resolveDirtyFields(true);
 		}
 		if (!Objects.equal(attributes, this.attributeMap)) {
-			Map<String , String> o;
-			Map<String , String> n;
+			Map<String, String> oldValues;
+			Map<String, String> newValues;
 			if (attributes == null) {
-				n = Collections.emptyMap();
+				newValues = Collections.emptyMap();
 			} else {
-				n = attributes;
+				newValues = attributes;
 			}
 			if (this.attributeMap == null) {
-				o = Collections.emptyMap();
+				oldValues = Collections.emptyMap();
 			} else {
-				o = this.attributeMap;
+				oldValues = this.attributeMap;
 			}
 			PropertyChangeEvent event = new PropertyChangeEvent(
 					this, ISREInstallChangedListener.PROPERTY_VM_ATTRIBUTES,
-					o, n);
+					oldValues, newValues);
 			this.attributeMap = attributes;
 			if (this.notify) {
 				SARLRuntime.fireSREChanged(event);
@@ -441,19 +449,17 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		String n = Strings.nullToEmpty(mainClass);
-		if (!n.equals(Strings.nullToEmpty(this.mainClass))) {
+		String normalizedName = Strings.nullToEmpty(mainClass);
+		if (!normalizedName.equals(Strings.nullToEmpty(this.mainClass))) {
 			PropertyChangeEvent event = new PropertyChangeEvent(
-					this, ISREInstallChangedListener.PROPERTY_NAME, this.mainClass, n);
-			this.mainClass = n;
+					this, ISREInstallChangedListener.PROPERTY_NAME, this.mainClass, normalizedName);
+			this.mainClass = normalizedName;
 			if (this.notify) {
 				SARLRuntime.fireSREChanged(event);
 			}
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void setStandalone(boolean isStandalone) {
 		if (isDirty()) {
@@ -470,8 +476,6 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean isStandalone() {
 		if (isDirty()) {

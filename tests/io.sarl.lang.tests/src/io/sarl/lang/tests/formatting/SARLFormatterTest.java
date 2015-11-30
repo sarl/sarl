@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@
  */
 package io.sarl.lang.tests.formatting;
 
-import com.google.inject.Inject;
-
+import static org.junit.Assert.assertEquals;
 import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.tests.compilation.CapacityCompilerTest;
+import io.sarl.tests.api.AbstractSarlTest;
 
 import org.eclipse.xtext.formatting.INodeModelFormatter;
 import org.eclipse.xtext.junit4.InjectWith;
@@ -32,8 +31,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import static org.junit.Assert.*;
-import io.sarl.tests.api.AbstractSarlTest;
+import com.google.inject.Inject;
 
 /**
  * @author $Author: srodriguez$
@@ -419,7 +417,7 @@ public class SARLFormatterTest {
 					"",
 					"	on Initialize {",
 					"		if(!dir.exists) {",
-					"			throw new IllegalArgumentException(\"Path [\" + myPath + \"] is not a Directory\")",
+					"			throw new IllegalArgumentException ( \"Path [\" + myPath + \"] is not a Directory\" )",
 					"		}",
 					"",
 					"		for ( f : dir.listFiles() ) {",
@@ -515,29 +513,13 @@ public class SARLFormatterTest {
 			String expected = multilineString(
 					"agent A {",
 					"",
-					"	def asInteger(s : String) : Integer {",
-					"		var res : Integer = null",
-					"",
-					"		try",
-					"		{",
-					"			res = Integer.parseInt(s)",
-					"		}",
-					"		catch(NumberFormatException nfe)",
-					"		{",
-					"		}",
-					"",
-					"		return res",
-					"	}",
-					"",
-					"}"
+					"	def asInteger(s : String) : Integer { var res : Integer = null try { res = Integer . parseInt ( s ) } catch ( NumberFormatException nfe ) { } return res } }"
 					);
 			assertFormat(this.parser, this.formatter, source, expected);
 		}
 
 	}
 
-	@RunWith(XtextRunner.class)
-	@InjectWith(SARLInjectorProvider.class)
 	public static class EventTest extends AbstractSarlTest {
 
 		@Inject
@@ -684,7 +666,7 @@ public class SARLFormatterTest {
 					"/**",
 					"   * Replies all contexts this agent is a member of, including the default context",
 					"   */",
-					"	def getAllContexts : Collection <AgentContext>",
+					"	def getAllContexts : Collection < AgentContext >",
 					"",
 					"	/**",
 					" * Replies the AgentContext for the given ID.",
@@ -712,6 +694,7 @@ public class SARLFormatterTest {
 					" * @fires MemberLeft in its parent Context default Space ",
 					" */",
 					"	def leave(contextID : UUID) fires ContextLeft, MemberLeft",
+					"",
 					"}"
 					);
 			assertFormat(this.parser, this.formatter, source, expected);

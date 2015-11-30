@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,21 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching.dialog;
 
-import io.sarl.eclipse.SARLConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProviderFactory;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.ProjectProvider;
-import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
-import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.runtime.SREConfigurationBlock;
+package io.sarl.eclipse.launching.dialog;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -43,6 +36,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaJRETab;
+import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstall2;
@@ -52,10 +46,17 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Version;
 
-import com.google.common.base.Strings;
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProviderFactory;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ProjectProvider;
+import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.SREConfigurationBlock;
 
 /**
- * Class for the configuration tab for the JRE and the SARL runtime environment.
+ * Configuration tab for the JRE and the SARL runtime environment.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -65,9 +66,10 @@ import com.google.common.base.Strings;
 public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 
 	private SREConfigurationBlock sreBlock;
+
 	private IPropertyChangeListener listener;
 
-	/**
+	/** Construct the tab for configuration the SRE.
 	 */
 	public SARLRuntimeEnvironmentTab() {
 		//
@@ -86,7 +88,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	private static List<ProjectSREProviderFactory> getProviderFromExtension() {
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 				SARLEclipsePlugin.PLUGIN_ID,
-				SARLConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
+				SARLEclipseConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
 		if (extensionPoint != null) {
 			List<ProjectSREProviderFactory> providers = new ArrayList<>();
 			for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {
@@ -110,8 +112,6 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		Composite oldComp = (Composite) getControl();
-		Control[] children = oldComp.getChildren();
 
 		ProjectProvider projectProvider = new ProjectAdapter();
 		List<ProjectSREProviderFactory> sreProviderFactories = getProviderFromExtension();
@@ -119,6 +119,8 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 
 		this.sreBlock = new SREConfigurationBlock(true, projectProvider, sreProviderFactories);
 		this.sreBlock.createControl(parent);
+		Composite oldComp = (Composite) getControl();
+		Control[] children = oldComp.getChildren();
 		for (Control ctl : children) {
 			ctl.setParent(this.sreBlock.getControl());
 		}
@@ -155,7 +157,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 		String sreId = null;
 		try {
 			sreId = config.getAttribute(
-					SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
+					SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
 					(String) null);
 		} catch (CoreException ce) {
 			SARLEclipsePlugin.getDefault().log(ce);
@@ -169,7 +171,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 
 			try {
 				String useWideConfig = config.getAttribute(
-						SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
+						SARLEclipseConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 						Boolean.TRUE.toString());
 				if (Boolean.parseBoolean(useWideConfig)) {
 					changed = this.sreBlock.selectSystemWideSRE();
@@ -180,7 +182,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 
 			try {
 				String useProjectConfig = config.getAttribute(
-						SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+						SARLEclipseConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 						Boolean.TRUE.toString());
 				if (Boolean.parseBoolean(useProjectConfig)) {
 					changed = this.sreBlock.selectProjectSRE();
@@ -222,7 +224,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 		IStatus status;
 		try {
 			String id = config.getAttribute(
-					SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
+					SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
 					(String) null);
 			ISREInstall sre = SARLRuntime.getSREFromId(id);
 			if (sre == null) {
@@ -245,6 +247,10 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 			return super.isValid(config) && isValidJREVersion(config);
 		}
 		setErrorMessage(status.getMessage());
+		Throwable throwable = status.getException();
+		if (throwable != null) {
+			JDIDebugUIPlugin.log(throwable);
+		}
 		return false;
 	}
 
@@ -264,13 +270,13 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 				return false;
 			}
 			Version jreVersion = Version.parseVersion(version);
-			Version minVersion = Version.parseVersion(SARLConfig.MINIMAL_JRE_VERSION);
+			Version minVersion = Version.parseVersion(SARLEclipseConfig.MINIMAL_JRE_VERSION);
 			if (jreVersion.compareTo(minVersion) < 0) {
 				setErrorMessage(MessageFormat.format(
 						Messages.RuntimeEnvironmentTab_4,
 						install.getName(),
 						version,
-						SARLConfig.MINIMAL_JRE_VERSION));
+						SARLEclipseConfig.MINIMAL_JRE_VERSION));
 				return false;
 			}
 		}
@@ -284,7 +290,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 		ISREInstall sre = this.sreBlock.getSelectedSRE();
 		if (sre != null) {
 			configuration.setAttribute(
-					SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
+					SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
 					sre.getId());
 			String mainClass = sre.getMainClass();
 			if (Strings.isNullOrEmpty(mainClass)) {
@@ -295,15 +301,15 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 						mainClass);
 			}
 		} else {
-			configuration.removeAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT);
+			configuration.removeAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT);
 			configuration.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
 		}
 		// Save the boolean configuration flags
 		configuration.setAttribute(
-				SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
+				SARLEclipseConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.toString(this.sreBlock.isSystemWideDefaultSRE()));
 		configuration.setAttribute(
-				SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+				SARLEclipseConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.toString(this.sreBlock.isProjectSRE()));
 	}
 
@@ -312,7 +318,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 		super.setDefaults(config);
 		ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
 		if (defaultSRE != null) {
-			config.setAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
+			config.setAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
 					defaultSRE.getId());
 			String mainClass = defaultSRE.getMainClass();
 			if (Strings.isNullOrEmpty(mainClass)) {
@@ -323,16 +329,18 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 						mainClass);
 			}
 		} else {
-			config.removeAttribute(SARLConfig.ATTR_SARL_RUNTIME_ENVIRONMENT);
+			config.removeAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT);
 			config.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
 		}
-		config.setAttribute(SARLConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
+		config.setAttribute(SARLEclipseConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.TRUE.toString());
-		config.setAttribute(SARLConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+		config.setAttribute(SARLEclipseConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.FALSE.toString());
 	}
 
-	/**
+	/** Adapter that permits to provide a reference on a SARL project to the configuration
+	 * tab that is using it.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -340,9 +348,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	 */
 	private class ProjectAdapter implements ProjectProvider {
 
-		/**
-		 */
-		public ProjectAdapter() {
+		ProjectAdapter() {
 			//
 		}
 

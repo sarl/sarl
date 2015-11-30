@@ -1,0 +1,13 @@
+package io.sarl.maven.compiler.tests
+
+import java.util.Random
+
+agent MyAgent {
+
+	val random = new Random
+
+	def myFct {
+		random.nextInt
+	}
+
+}

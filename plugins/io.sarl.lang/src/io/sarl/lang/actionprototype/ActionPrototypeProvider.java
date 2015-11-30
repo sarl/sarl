@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.actionprototype;
 
-import io.sarl.lang.sarl.FormalParameter;
+package io.sarl.lang.actionprototype;
 
 import java.util.List;
 
+import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+
+import io.sarl.lang.sarl.SarlFormalParameter;
 
 /**
  * Provides additional function signatures according the semantic
@@ -65,7 +67,7 @@ public interface ActionPrototypeProvider {
 	 * @param parameters - the list of the formal parameter to put in the signature key.
 	 * @return the list of the parameters' types.
 	 */
-	ActionParameterTypes createParameterTypesFromSarlModel(boolean isVarargs, List<FormalParameter> parameters);
+	ActionParameterTypes createParameterTypesFromSarlModel(boolean isVarargs, List<? extends SarlFormalParameter> parameters);
 
 	/** Build an identifier with the given parameters.
 	 *
@@ -84,8 +86,8 @@ public interface ActionPrototypeProvider {
 	ActionParameterTypes createParameterTypes(boolean isVarargs, FormalParameterProvider provider);
 
 	/** Build an identifier with the given parameters.
-	 * <p>
-	 * The given parameter must following the format of the value given
+	 *
+	 * <p>The given parameter must following the format of the value given
 	 * by {@link ActionParameterTypes#toString()}.
 	 *
 	 * @param parameters - the string representation of the parameters.
@@ -120,7 +122,8 @@ public interface ActionPrototypeProvider {
 	 * @param parameters - list of the formal parameters of the function.
 	 * @return the signature or <code>null</code> if none.
 	 */
-	InferredPrototype createPrototypeFromSarlModel(QualifiedActionName id, boolean isVarargs, List<FormalParameter> parameters);
+	InferredPrototype createPrototypeFromSarlModel(QualifiedActionName id, boolean isVarargs,
+			List<? extends XtendParameter> parameters);
 
 	/** Build and replies the inferred action signature for the element with
 	 * the given ID. This function creates the different signatures according

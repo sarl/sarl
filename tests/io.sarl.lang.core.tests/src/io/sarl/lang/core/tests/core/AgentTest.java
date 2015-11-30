@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,21 +26,23 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.security.InvalidParameterException;
+import java.util.UUID;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.UnimplementedCapacityException;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
-import java.security.InvalidParameterException;
-import java.util.UUID;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
  * @author $Author: sgalland$
@@ -50,9 +52,10 @@ import org.mockito.Mockito;
  */
 public class AgentTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private UUID id;
-	@Nullable
+
+	@NonNullByDefault
 	private AgentMock agent;
 
 	private static Address mockAddress(UUID agentID) {
@@ -72,7 +75,7 @@ public class AgentTest extends AbstractSarlTest {
 		try {
 			this.agent.getSkill(c);
 			fail("Expecting the exception UnimplementedCapacityException, but got no exception."); //$NON-NLS-1$
-		} catch (UnimplementedCapacityException _) {
+		} catch (UnimplementedCapacityException exception) {
 			//
 		}
 	}
@@ -134,7 +137,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.setSkill(Capacity1.class, new Skill2());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -142,7 +145,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.setSkill(Capacity1.class, new Skill3());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -158,7 +161,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.setSkill(Capacity2.class, new Skill1());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -166,7 +169,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.setSkill(Capacity2.class, new Skill3());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 	}
@@ -259,7 +262,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.operator_mappedTo(Capacity1.class, new Skill2());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -267,7 +270,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.operator_mappedTo(Capacity1.class, new Skill3());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -282,7 +285,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.operator_mappedTo(Capacity2.class, new Skill1());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 
@@ -290,7 +293,7 @@ public class AgentTest extends AbstractSarlTest {
 			this.agent.operator_mappedTo(Capacity2.class, new Skill3());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
-		catch(InvalidParameterException _) {
+		catch(InvalidParameterException exception) {
 			//
 		}
 	}
@@ -349,7 +352,7 @@ public class AgentTest extends AbstractSarlTest {
 		 * @param parentID
 		 */
 		public AgentMock(UUID parentID) {
-			super(parentID);
+			super(Mockito.mock(BuiltinCapacitiesProvider.class), parentID, null);
 		}
 
 		/** {@inheritDoc}
@@ -369,7 +372,7 @@ public class AgentTest extends AbstractSarlTest {
 		/** {@inheritDoc}
 		 */
 		@Override
-		public <S extends Skill & Capacity> S clearSkill(Class<? extends Capacity> capacity) {
+		public <S extends Capacity> S clearSkill(Class<S> capacity) {
 			return super.clearSkill(capacity);
 		}
 

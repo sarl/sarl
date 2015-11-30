@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,21 +28,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import io.sarl.eclipse.util.Jdt2Ecore;
-import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
-import io.sarl.lang.actionprototype.FormalParameterProvider;
-import io.sarl.lang.genmodel.GeneratedCode;
-import io.sarl.lang.genmodel.SARLCodeGenerator;
-import io.sarl.lang.sarl.ParameterizedFeature;
-import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.CleanWorkspaceAfter;
-import io.sarl.tests.api.Nullable;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -50,8 +39,16 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.annotation.Generated;
+
+import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.google.inject.Inject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IField;
@@ -63,6 +60,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,11 +71,17 @@ import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.inject.Inject;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Jdt2Ecore;
+import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.FormalParameterProvider;
+import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
+import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
+import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 /**
  * @author $Author: sgalland$
@@ -288,7 +292,7 @@ public class Jdt2EcoreTest {
 		@Test
 		public void isGeneratedOperation_generatedAnnotation() throws JavaModelException {
 			IAnnotation annot = mock(IAnnotation.class);
-			when(annot.getElementName()).thenReturn("io.sarl.lang.annotation.Generated");
+			when(annot.getElementName()).thenReturn("javax.annotation.Generated");
 			IMethod m = mock(IMethod.class);
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 					annot
@@ -299,7 +303,7 @@ public class Jdt2EcoreTest {
 		@Test
 		public void isGeneratedOperation_otherAnnotation() throws JavaModelException {
 			IAnnotation annot = mock(IAnnotation.class);
-			when(annot.getElementName()).thenReturn("javax.annotation.Generated");
+			when(annot.getElementName()).thenReturn("io.sarl.lang.annotation.Generated");
 			IMethod m = mock(IMethod.class);
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 					annot
@@ -322,31 +326,31 @@ public class Jdt2EcoreTest {
 			IMethod m = mock(IMethod.class);
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 			});
-			assertNull(Jdt2Ecore.getAnnotation(m, "io.sarl.lang.annotation.Generated"));
+			assertNull(Jdt2Ecore.getAnnotation(m, Generated.class.getName()));
 		}
 
 		@Test
 		public void getAnnotation_generatedAnnotation() throws JavaModelException {
+			IAnnotation annot = mock(IAnnotation.class);
+			when(annot.getElementName()).thenReturn(Generated.class.getName());
+			IMethod m = mock(IMethod.class);
+			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
+					annot
+			});
+			IAnnotation a = Jdt2Ecore.getAnnotation(m, Generated.class.getName());
+			assertNotNull(a);
+			assertEquals(Generated.class.getName(), a.getElementName());
+		}
+
+		@Test
+		public void getAnnotation_otherAnnotation() throws JavaModelException {
 			IAnnotation annot = mock(IAnnotation.class);
 			when(annot.getElementName()).thenReturn("io.sarl.lang.annotation.Generated");
 			IMethod m = mock(IMethod.class);
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 					annot
 			});
-			IAnnotation a = Jdt2Ecore.getAnnotation(m, "io.sarl.lang.annotation.Generated");
-			assertNotNull(a);
-			assertEquals("io.sarl.lang.annotation.Generated", a.getElementName());
-		}
-
-		@Test
-		public void getAnnotation_otherAnnotation() throws JavaModelException {
-			IAnnotation annot = mock(IAnnotation.class);
-			when(annot.getElementName()).thenReturn("javax.annotation.Generated");
-			IMethod m = mock(IMethod.class);
-			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
-					annot
-			});
-			assertNull(Jdt2Ecore.getAnnotation(m, "io.sarl.lang.annotation.Generated"));
+			assertNull(Jdt2Ecore.getAnnotation(m, Generated.class.getName()));
 		}
 
 	}
@@ -359,7 +363,7 @@ public class Jdt2EcoreTest {
 	 */
 	public static class FindType extends AbstractSarlUiTest {
 
-		@Nullable
+		@NonNullByDefault
 		private IJavaProject project;
 
 		@Before
@@ -403,7 +407,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class DefaultpackageDefaultpackageNosubtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -469,7 +473,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class DefaultpackageDefaultpackageSubtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -535,7 +539,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class DefaultpackagePackage1Nosubtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -601,7 +605,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class DefaultpackagePackage1Subtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -667,7 +671,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class Package1Package1Nosubtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -733,7 +737,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class Package1Package1Subtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -799,7 +803,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class Package1Package2Nosubtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -865,7 +869,7 @@ public class Jdt2EcoreTest {
 		 */
 		public static class Package1Package2Subtype extends AbstractSarlUiTest {
 
-			@Nullable
+			@NonNullByDefault
 			private IJavaProject project;
 
 			@Before
@@ -993,8 +997,8 @@ public class Jdt2EcoreTest {
 		@Test
 		public void createFormalParameters_noDefault_noVarargs() throws JavaModelException, IllegalArgumentException {
 			ResourceSet resourceSet = mock(ResourceSet.class);
-			SARLCodeGenerator generator = mock(SARLCodeGenerator.class);
-			GeneratedCode code = mock(GeneratedCode.class);
+			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
+			SarlEcoreCode code = mock(SarlEcoreCode.class);
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
@@ -1003,12 +1007,12 @@ public class Jdt2EcoreTest {
 					new String[] { "param1", "param2", "param3" },
 					new String[] { "Ljava.lang.String;", "I", "[Z" },
 					0);
-			ParameterizedFeature container = mock(ParameterizedFeature.class);
+			XtendExecutable container = mock(XtendExecutable.class);
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
-			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
-			ArgumentCaptor<ParameterizedFeature> arg1 = ArgumentCaptor.forClass(ParameterizedFeature.class);
+			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
+			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);
@@ -1031,8 +1035,20 @@ public class Jdt2EcoreTest {
 		@Test
 		public void createFormalParameters_noDefault_varargs() throws JavaModelException, IllegalArgumentException {
 			ResourceSet resourceSet = mock(ResourceSet.class);
-			SARLCodeGenerator generator = mock(SARLCodeGenerator.class);
-			GeneratedCode code = mock(GeneratedCode.class);
+			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
+			when(generator.createFormalParameter(
+					Matchers.any(SarlEcoreCode.class),
+					Matchers.any(XtendExecutable.class),
+					Matchers.anyString(),
+					Matchers.anyString(),
+					Matchers.anyString(),
+					Matchers.any(ResourceSet.class))).thenAnswer(new Answer<SarlFormalParameter>() {
+						@Override
+						public SarlFormalParameter answer(InvocationOnMock invocation) throws Throwable {
+							return mock(SarlFormalParameter.class);
+						}
+					});
+			SarlEcoreCode code = mock(SarlEcoreCode.class);
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
@@ -1041,12 +1057,12 @@ public class Jdt2EcoreTest {
 					new String[] { "param1", "param2", "param3" },
 					new String[] { "Ljava.lang.String;", "I", "[Z" },
 					Flags.AccVarargs);
-			ParameterizedFeature container = mock(ParameterizedFeature.class);
+			XtendExecutable container = mock(XtendExecutable.class);
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
-			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
-			ArgumentCaptor<ParameterizedFeature> arg1 = ArgumentCaptor.forClass(ParameterizedFeature.class);
+			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
+			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);
@@ -1069,8 +1085,8 @@ public class Jdt2EcoreTest {
 		@Test
 		public void createFormalParameters_default_noVarargs() throws JavaModelException, IllegalArgumentException {
 			ResourceSet resourceSet = mock(ResourceSet.class);
-			SARLCodeGenerator generator = mock(SARLCodeGenerator.class);
-			GeneratedCode code = mock(GeneratedCode.class);
+			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
+			SarlEcoreCode code = mock(SarlEcoreCode.class);
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
@@ -1079,7 +1095,7 @@ public class Jdt2EcoreTest {
 				public IField answer(InvocationOnMock invocation) throws Throwable {
 					String fieldName = (String) invocation.getArguments()[0];
 					IAnnotation annotation = mock(IAnnotation.class);
-					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.Generated");
+					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.SarlSourceCode");
 					IMemberValuePair pair = mock(IMemberValuePair.class);
 					when(pair.getValue()).thenReturn("1+2");
 					when(annotation.getMemberValuePairs()).thenReturn(new IMemberValuePair[] { pair });
@@ -1103,12 +1119,12 @@ public class Jdt2EcoreTest {
 					new IAnnotation[] { null, annotation1, null },
 					new IAnnotation[] { annotation2 },
 					0);
-			ParameterizedFeature container = mock(ParameterizedFeature.class);
+			XtendExecutable container = mock(XtendExecutable.class);
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
-			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
-			ArgumentCaptor<ParameterizedFeature> arg1 = ArgumentCaptor.forClass(ParameterizedFeature.class);
+			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
+			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);
@@ -1131,8 +1147,20 @@ public class Jdt2EcoreTest {
 		@Test
 		public void createFormalParameters_default_varargs() throws JavaModelException, IllegalArgumentException {
 			ResourceSet resourceSet = mock(ResourceSet.class);
-			SARLCodeGenerator generator = mock(SARLCodeGenerator.class);
-			GeneratedCode code = mock(GeneratedCode.class);
+			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
+			when(generator.createFormalParameter(
+					Matchers.any(SarlEcoreCode.class),
+					Matchers.any(XtendExecutable.class),
+					Matchers.anyString(),
+					Matchers.anyString(),
+					Matchers.anyString(),
+					Matchers.any(ResourceSet.class))).thenAnswer(new Answer<SarlFormalParameter>() {
+						@Override
+						public SarlFormalParameter answer(InvocationOnMock invocation) throws Throwable {
+							return mock(SarlFormalParameter.class);
+						}
+					});
+			SarlEcoreCode code = mock(SarlEcoreCode.class);
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
@@ -1141,7 +1169,7 @@ public class Jdt2EcoreTest {
 				public IField answer(InvocationOnMock invocation) throws Throwable {
 					String fieldName = (String) invocation.getArguments()[0];
 					IAnnotation annotation = mock(IAnnotation.class);
-					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.Generated");
+					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.SarlSourceCode");
 					IMemberValuePair pair = mock(IMemberValuePair.class);
 					when(pair.getValue()).thenReturn("1+2");
 					when(annotation.getMemberValuePairs()).thenReturn(new IMemberValuePair[] { pair });
@@ -1165,12 +1193,12 @@ public class Jdt2EcoreTest {
 					new IAnnotation[] { null, annotation1, null },
 					new IAnnotation[] { annotation2 },
 					Flags.AccVarargs);
-			ParameterizedFeature container = mock(ParameterizedFeature.class);
+			XtendExecutable container = mock(XtendExecutable.class);
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
-			ArgumentCaptor<GeneratedCode> arg0 = ArgumentCaptor.forClass(GeneratedCode.class);
-			ArgumentCaptor<ParameterizedFeature> arg1 = ArgumentCaptor.forClass(ParameterizedFeature.class);
+			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
+			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
 			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
 			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);
@@ -1200,24 +1228,35 @@ public class Jdt2EcoreTest {
 	 */
 	public static class PopulateInheritanceContext extends AbstractSarlUiTest {
 
+		@NonNullByDefault
+		private SARLEclipsePlugin plugin;
+		
 		@Inject
 		private ActionPrototypeProvider sarlSignatureProvider;
 
-		@Nullable
+		@NonNullByDefault
 		private Map<ActionPrototype, IMethod> finalOperations;
 
-		@Nullable
+		@NonNullByDefault
 		private Map<ActionPrototype, IMethod> overridableOperations;
 
-		@Nullable
+		@NonNullByDefault
 		private Map<String, IField> inheritedFields;
 
-		@Nullable
+		@NonNullByDefault
 		private Map<ActionPrototype, IMethod> operationsToImplement;
 
-		@Nullable
+		@NonNullByDefault
 		private Map<ActionParameterTypes, IMethod> superConstructors;
 
+		private void ensureEclipsePlugin() {
+			this.plugin = SARLEclipsePlugin.getDefault();
+			if (this.plugin == null) {
+				this.plugin = spy(new SARLEclipsePlugin());
+				SARLEclipsePlugin.setDefault(this.plugin);
+			}
+		}
+		
 		@Before
 		public void setUp() throws Exception {
 			this.finalOperations = Maps.newHashMap();
@@ -1225,24 +1264,40 @@ public class Jdt2EcoreTest {
 			this.inheritedFields = Maps.newHashMap();
 			this.operationsToImplement = Maps.newHashMap();
 			this.superConstructors = Maps.newHashMap();
-		}
-
-		private void loadSARLCode(int codeIndex) throws Exception {
-			this.helper.createSARLScript(
-					this.helper.getProject(),
-					"PopulateInherithanceContextTest" + codeIndex,
-					getResourceText("unit_test_code" + codeIndex));
-			this.helper.waitForAutoBuild();
+			ensureEclipsePlugin();
 		}
 
 		@Test
-		@CleanWorkspaceAfter
 		public void populateInheritanceContext_0() throws Exception {
 			// Create the SARL scripts
-			loadSARLCode(0);
+			helper().sarlScript("populateInheritanceContext0.sarl", multilineString(
+						"package io.sarl.eclipse.tests.p0",
+						"capacity Capacity1 {",
+						"    def myFct1 : boolean",
+						"}",
+						"capacity Capacity2 extends Capacity1 {",
+						"    def myFct2 : boolean",
+						"}",
+						"capacity Capacity3 {",
+						"    def myFct3",
+						"}",
+						"skill Skill1 implements Capacity1 {",
+						"	protected var attr1 : int",
+						"	new(attr : int) {",
+						"		this.attr1 = attr",
+						"	}",
+						"	def myFct1 : boolean {",
+						"		return true",
+						"	}",
+						"	def skilFct(a : char) {",
+						"		System.out.println(a)",
+						"	}",
+						"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.helper.getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1266,10 +1321,85 @@ public class Jdt2EcoreTest {
 		@Test
 		public void populateInheritanceContext_1() throws Exception {
 			// Create the SARL scripts
-			loadSARLCode(1);
+			helper().sarlScript("populateInheritanceContext0.sarl", multilineString(
+						"package io.sarl.eclipse.tests.p0",
+						"capacity Capacity1 {",
+						"    def myFct1 : boolean",
+						"}",
+						"capacity Capacity2 extends Capacity1 {",
+						"    def myFct2 : boolean",
+						"}",
+						"capacity Capacity3 {",
+						"    def myFct3",
+						"}",
+						"skill Skill1 implements Capacity1 {",
+						"	var attr1 : int",
+						"	new(attr : int) {",
+						"		this.attr1 = attr",
+						"	}",
+						"	def myFct1 : boolean {",
+						"		return true",
+						"	}",
+						"	def skilFct(a : char) {",
+						"		System.out.println(a)",
+						"	}",
+						"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.helper.getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject()),
+					finalOperations,
+					overridableOperations,
+					inheritedFields,
+					operationsToImplement,
+					superConstructors,
+					this.sarlSignatureProvider,
+					"io.sarl.eclipse.tests.p0.Skill1",
+					Arrays.asList("io.sarl.eclipse.tests.p0.Capacity3", "io.sarl.eclipse.tests.p0.Capacity2"));
+			//
+			assertNotNull(s);
+			assertTrue(s.toString(), s.isOK());
+			//
+			assertTrue(this.finalOperations.isEmpty());
+			assertActionKeys(this.overridableOperations.keySet(),
+					"skilFct(char)", "myFct1()");
+			assertContains(this.inheritedFields.keySet(), "attr1");
+			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
+			assertSignatureKeys(this.superConstructors.keySet(), "int");
+		}
+
+		@Test
+		public void populateInheritanceContext_2() throws Exception {
+			// Create the SARL scripts
+			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
+				"package io.sarl.eclipse.tests.p1",
+				"capacity Capacity1 {",
+				"    def myFct1(a : int = 4) : boolean",
+				"}",
+				"capacity Capacity2 extends Capacity1 {",
+				"    def myFct2 : boolean",
+				"}",
+				"capacity Capacity3 {",
+				"    def myFct3",
+				"}",
+				"skill Skill1 implements Capacity1 {",
+				"	protected var attr1 : int",
+				"	new(attr : int) {",
+				"		this.attr1 = attr",
+				"	}",
+				"	def myFct1(a : int = 4) : boolean {",
+				"		return true",
+				"	}",
+				"	def skilFct(a : char) {",
+				"		System.out.println(a)",
+				"	}",
+				"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
+			//
+			IStatus s = Jdt2Ecore.populateInheritanceContext(
+					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1292,12 +1422,88 @@ public class Jdt2EcoreTest {
 		}
 
 		@Test
-		public void populateInheritanceContext_2() throws Exception {
+		public void populateInheritanceContext_3() throws Exception {
 			// Create the SARL scripts
-			loadSARLCode(2);
+			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
+				"package io.sarl.eclipse.tests.p1",
+				"capacity Capacity1 {",
+				"    def myFct1(a : int = 4) : boolean",
+				"}",
+				"capacity Capacity2 extends Capacity1 {",
+				"    def myFct2 : boolean",
+				"}",
+				"capacity Capacity3 {",
+				"    def myFct3",
+				"}",
+				"skill Skill1 implements Capacity1 {",
+				"	var attr1 : int",
+				"	new(attr : int) {",
+				"		this.attr1 = attr",
+				"	}",
+				"	def myFct1(a : int = 4) : boolean {",
+				"		return true",
+				"	}",
+				"	def skilFct(a : char) {",
+				"		System.out.println(a)",
+				"	}",
+				"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.helper.getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject()),
+					finalOperations,
+					overridableOperations,
+					inheritedFields,
+					operationsToImplement,
+					superConstructors,
+					this.sarlSignatureProvider,
+					"io.sarl.eclipse.tests.p1.Skill1",
+					Arrays.asList("io.sarl.eclipse.tests.p1.Capacity3", "io.sarl.eclipse.tests.p1.Capacity2"));
+			//
+			assertNotNull(s);
+			assertTrue(s.toString(), s.isOK());
+			//
+			assertActionKeys(this.finalOperations.keySet(),
+					"myFct1()");
+			assertActionKeys(this.overridableOperations.keySet(),
+					"skilFct(char)", "myFct1(int)");
+			assertContains(this.inheritedFields.keySet(), "attr1");
+			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
+			assertSignatureKeys(this.superConstructors.keySet(), "int");
+		}
+
+		@Test
+		public void populateInheritanceContext_4() throws Exception {
+			// Create the SARL scripts
+			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
+					"package io.sarl.eclipse.tests.p2",
+					"capacity Capacity1 {",
+					"    def myFct1(a : int*) : boolean",
+					"}",
+					"capacity Capacity2 extends Capacity1 {",
+					"    def myFct2 : boolean",
+					"}",
+					"capacity Capacity3 {",
+					"    def myFct3",
+					"}",
+					"skill Skill1 implements Capacity1 {",
+					"	protected var attr1 : int",
+					"	new(attr : int) {",
+					"		this.attr1 = attr",
+					"	}",
+					"	def myFct1(a : int*) : boolean {",
+					"		return true",
+					"	}",
+					"	def skilFct(a : char) {",
+					"		System.out.println(a)",
+					"	}",
+					"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
+			//
+			IStatus s = Jdt2Ecore.populateInheritanceContext(
+					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1319,12 +1525,75 @@ public class Jdt2EcoreTest {
 		}
 
 		@Test
-		public void populateInheritanceContext_3() throws Exception {
+		public void populateInheritanceContext_5() throws Exception {
 			// Create the SARL scripts
-			loadSARLCode(3);
+			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
+					"package io.sarl.eclipse.tests.p2",
+					"capacity Capacity1 {",
+					"    def myFct1(a : int*) : boolean",
+					"}",
+					"capacity Capacity2 extends Capacity1 {",
+					"    def myFct2 : boolean",
+					"}",
+					"capacity Capacity3 {",
+					"    def myFct3",
+					"}",
+					"skill Skill1 implements Capacity1 {",
+					"	var attr1 : int",
+					"	new(attr : int) {",
+					"		this.attr1 = attr",
+					"	}",
+					"	def myFct1(a : int*) : boolean {",
+					"		return true",
+					"	}",
+					"	def skilFct(a : char) {",
+					"		System.out.println(a)",
+					"	}",
+					"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
 			//
 			IStatus s = Jdt2Ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(this.helper.getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject()),
+					finalOperations,
+					overridableOperations,
+					inheritedFields,
+					operationsToImplement,
+					superConstructors,
+					this.sarlSignatureProvider,
+					"io.sarl.eclipse.tests.p2.Skill1",
+					Arrays.asList("io.sarl.eclipse.tests.p2.Capacity3", "io.sarl.eclipse.tests.p2.Capacity2"));
+			//
+			assertNotNull(s);
+			assertTrue(s.toString(), s.isOK());
+			//
+			assertTrue(this.finalOperations.isEmpty());
+			assertActionKeys(this.overridableOperations.keySet(),
+					"skilFct(char)", "myFct1(int*)");
+			assertContains(this.inheritedFields.keySet(), "attr1");
+			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
+			assertSignatureKeys(this.superConstructors.keySet(), "int");
+		}
+
+		@Test
+		public void populateInheritanceContext_6() throws Exception {
+			// Create the SARL scripts
+			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
+					"package io.sarl.eclipse.tests.p3",
+					"capacity Capacity1 {",
+					"    def myFct1(a : int*) : boolean",
+					"}",
+					"capacity Capacity2 extends Capacity1 {",
+					"    def myFct2 : boolean",
+					"}",
+					"capacity Capacity3 {",
+					"    def myFct3",
+					"}"));
+			helper().fullBuild();
+			helper().awaitAutoBuild();
+			//
+			IStatus s = Jdt2Ecore.populateInheritanceContext(
+					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,

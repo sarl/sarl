@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
-import io.sarl.lang.util.SynchronizedSet;
-
 import java.util.UUID;
+
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import io.sarl.lang.util.SynchronizedSet;
 
 /**
  * Agents in SARL can interact only via Interaction Spaces.
@@ -41,6 +44,7 @@ public interface Space {
 	 *
 	 * @return the space's id
 	 */
+	@Pure
 	SpaceID getID();
 
 	/**
@@ -49,6 +53,7 @@ public interface Space {
 	 *
 	 * @return participants IDs
 	 */
+	@Pure
 	SynchronizedSet<UUID> getParticipants();
 
 }

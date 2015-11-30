@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.tycho-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.3.0-SNAPSHOT</version>
 		<relativePath>../tycho-parent</relativePath>
 	</parent>
 
@@ -14,11 +14,12 @@
 	<name>Eclipse Plugins Parent</name>
 
 	<modules>
-		<module>io.sarl.lang</module>
 		<module>io.sarl.lang.core</module>
+		<module>io.sarl.lang.mwe2</module>
+		<module>io.sarl.lang</module>
 		<module>io.sarl.lang.ui</module>
-		<module>io.sarl.core</module>
 		<module>io.sarl.util</module>
+		<module>io.sarl.core</module>
 		<module>io.sarl.eclipse</module>
 		<module>io.sarl.m2e</module>
 	</modules>

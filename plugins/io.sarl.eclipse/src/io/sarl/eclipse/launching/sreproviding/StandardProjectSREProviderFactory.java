@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.launching.sreproviding;
+
+import org.eclipse.core.resources.IProject;
 
 import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
-
-import org.eclipse.core.resources.IProject;
 
 /** Factory of the default implementation of a project SRE provider.
  * This provider is reading the properties associated to the project and
@@ -37,7 +38,7 @@ import org.eclipse.core.resources.IProject;
  */
 public class StandardProjectSREProviderFactory implements ProjectSREProviderFactory {
 
-	/**
+	/** Construct a factory of SRE provider.
 	 */
 	public StandardProjectSREProviderFactory() {
 		//

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +18,16 @@ package io.sarl.lang.ui.tests.quickfix;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
-import io.sarl.tests.api.AbstractSarlUiTest;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import org.eclipse.core.resources.IFile;
+import com.google.inject.Inject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -46,11 +44,15 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocumentContentObserver;
 import org.eclipse.xtext.ui.editor.model.IXtextModelListener;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolution;
+import org.eclipse.xtext.util.Arrays;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.eclipse.xtext.validation.Issue;
+import org.junit.ComparisonFailure;
 
-import com.google.inject.Inject;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 /** Abstract implementation for the quick fix tests.
  *
@@ -64,21 +66,6 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	@Inject
 	private SARLQuickfixProvider quickfixProvider;
 
-	/** Create the filename for the given basename.
-	 *
-	 * @param issueCode - the code of the issue.
-	 * @return the name of the file.
-	 */
-	private static String filename(String issueCode) {
-		String fileName = issueCode.replaceAll("[^a-zA-Z0-9]+", "_"); //$NON-NLS-1$//$NON-NLS-2$
-		String packageName = issueCode.replaceAll("[^a-zA-Z0-9_]+", ""); //$NON-NLS-1$//$NON-NLS-2$
-		return pathStr(
-				"io", "sarl", //$NON-NLS-1$//$NON-NLS-2$
-				"lang", "ui", //$NON-NLS-1$//$NON-NLS-2$
-				"tests", "quickfix", //$NON-NLS-1$//$NON-NLS-2$
-				packageName, "fixing_" + fileName); //$NON-NLS-1$
-	}
-
 	/** Create an object that permits to test the details of a quick fix.
 	 *
 	 * @param issueCode - the code of the issue to test.
@@ -88,30 +75,40 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	protected QuickFixAsserts getQuickFixAsserts(
 			String issueCode,
 			String invalidCode) {
-		try {
-			int filenameCounter = 0;
-			String oFilename = filename(issueCode);
-			String filename = oFilename;
-			boolean foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
-			while (foundFile) {
-				++filenameCounter;
-				filename = oFilename + Integer.toString(filenameCounter);
-				foundFile = this.helper.isFileInSourceFolder(filename + ".sarl"); //$NON-NLS-1$
-			}
-			IFile file = this.helper.createFileInSourceFolder(filename, invalidCode);
-			Resource scriptResource = this.helper.createSARLScriptResource(file, invalidCode);
-			SarlScript script = (SarlScript) scriptResource.getContents().get(0);
-			assertNotNull(script);
+		return getQuickFixAsserts(issueCode, invalidCode, true);
+	}
 
-			List<Issue> issues = this.helper.getValidator().validate(script);
+	/** Create an object that permits to test the details of a quick fix.
+	 *
+	 * @param issueCode - the code of the issue to test.
+	 * @param invalidCode - the code that is generating the issue.
+	 * @param failOnErrorInCode - indicates if this function fails on error in the code.
+	 * @return the quick fixes for assertions.
+	 */
+	protected QuickFixAsserts getQuickFixAsserts(
+			String issueCode,
+			String invalidCode,
+			boolean failOnErrorInCode) {
+		try {
+			String baseName = issueCode.replaceAll("[^a-zA-Z0-9]+", "_"); //$NON-NLS-1$//$NON-NLS-2$
+			String packageName = baseName.toLowerCase(); 
+			baseName = baseName.substring(0, 1).toUpperCase() + baseName.substring(1);
+			String filename = helper().generateFilename(
+					"io", "sarl", "tests", "quickfix", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+					packageName, baseName);
+			SarlScript script = helper().sarlScript(filename, invalidCode, failOnErrorInCode);
+			assertNotNull(script);
+			Resource scriptResource = script.eResource();
+
+			List<Issue> issues = issues(script);
 			StringBuilder issueLabels = new StringBuilder();
 			Iterator<Issue> issueIterator = issues.iterator();
-			List<IssueResolution> resolutions = null;
+			List<IssueResolution> resolutions = new ArrayList<>();
 			Issue issue = null;
-			while ((resolutions == null || resolutions.isEmpty()) && issueIterator.hasNext()) {
+			while (issueIterator.hasNext()) {
 				Issue nextIssue = issueIterator.next();
 				if (issueLabels.length() > 0) {
-					issueLabels.append(", "); //$NON-NLS-1$
+					issueLabels.append(",\n"); //$NON-NLS-1$
 				}
 				issueLabels.append(nextIssue.getCode());
 				issueLabels.append(" - \""); //$NON-NLS-1$
@@ -119,15 +116,18 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 				issueLabels.append("\""); //$NON-NLS-1$
 				if (issueCode.equals(nextIssue.getCode())) {
 					issue = nextIssue;
-					resolutions = this.quickfixProvider.getResolutions(issue);
+					resolutions.addAll(this.quickfixProvider.getResolutions(issue));
 				}
+			}
+			if (issueLabels.length() > 0) {
+				issueLabels.append(".\n"); //$NON-NLS-1$
 			}
 			if (issue == null) {
 				fail("The issue '" + issueCode //$NON-NLS-1$
 					+ "' was not found.\nAvailable issues are: " //$NON-NLS-1$
 					+ issueLabels.toString());
 			}
-			if (resolutions == null || resolutions.isEmpty()) {
+			if (resolutions.isEmpty()) {
 				fail("No resolution found for the issue '" + issueCode //$NON-NLS-1$
 					+ "'."); //$NON-NLS-1$
 			}
@@ -149,18 +149,21 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	 * @param issueCode - the code of the issue to test.
 	 * @param invalidCode - the code that is generating the issue.
 	 * @param expectedLabel - the expected label for the quick fix.
-	 * @param expectedDescription - the expected description for the quick fix.
 	 * @param expectedResolution - the expected code after fixing.
+	 * @param expectedResolution2 - the expected code after fixing.
+	 * @return the matching resolved text.
 	 */
-	protected void assertQuickFix(
+	protected String assertQuickFix(
 			String issueCode,
 			String invalidCode,
 			String expectedLabel,
-			String expectedDescription,
-			String expectedResolution) {
+			String expectedResolution,
+			String... expectedResolution2) {
 		QuickFixAsserts asserts = getQuickFixAsserts(issueCode, invalidCode);
-		asserts.assertQuickFix(expectedLabel, expectedDescription, expectedResolution);
-		asserts.assertNoQuickFix();
+		String[] expected = new String[expectedResolution2.length + 1];
+		expected[0] = expectedResolution;
+		System.arraycopy(expectedResolution2, 0, expected, 1, expectedResolution2.length);
+		return asserts.assertQuickFix(expectedLabel, expected);
 	}
 
 	/**
@@ -193,18 +196,37 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			this.resolutions.addAll(resolutions);
 		}
 
-		private IssueResolution findResolution(String label) {
+		/** Replies the resolution that corresponds to the given label.
+		 *
+		 * @param label - the label of the resolution to search for.
+		 * @param failIfNotFound - fails if no resolution found.
+		 * @param removeWhenFound - indicates if the resolution must be removed for the list of the resolutions
+		 * when it was found.
+		 * @return the resolution or <code>null</code>.
+		 */
+		public IssueResolution findResolution(String label, boolean failIfNotFound, boolean removeWhenFound) {
 			Iterator<IssueResolution> iterator = this.resolutions.iterator();
+			String close = null;
+			int distance = Integer.MAX_VALUE;
 			while (iterator.hasNext()) {
 				IssueResolution resolution = iterator.next();
 				String resolutionLabel = resolution.getLabel();
-				if (resolutionLabel.equals(label)) {
-					iterator.remove();
+				int d = levenshteinDistance(resolutionLabel, label);
+				if (d == 0) {
+					if (removeWhenFound) {
+						iterator.remove();
+					}
 					return resolution;
+				} else if (close == null || d < distance) {
+					distance = d;
+					close = resolutionLabel;
 				}
 			}
-			fail("Quick fix not found for the issue '" + this.issueCode //$NON-NLS-1$
-					+ "'.\nAvailable quick fix resolutions: " + toString() ); //$NON-NLS-1$
+			if (failIfNotFound) {
+				throw new ComparisonFailure(
+						"Quick fix not found for the issue '" + this.issueCode + "'.", //$NON-NLS-1$//$NON-NLS-2$
+						label, close);
+			}
 			return null;
 		}
 
@@ -221,22 +243,30 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			}
 			return "[ " + buffer.toString() + " ]"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
+		
+		/** Replies the number of resolutions.
+		 *
+		 * @return the number of resolutions.
+		 */
+		public int getResolutionCount() {
+			return this.resolutions.size();
+		}
 
 		/** Test the existence of a valid quick fix.
 		 *
 		 * @param expectedLabel - the expected label for the quick fix.
-		 * @param expectedDescription - the expected description for the quick fix.
-		 * @param expectedResolution - the expected code after fixing.
+		 * @param expectedResolutions - the expected codes after fixing.
+		 * @return the matching resolved text.
 		 */
-		public void assertQuickFix(
+		public String assertQuickFix(
 				String expectedLabel,
-				String expectedDescription,
-				String expectedResolution) {
+				String... expectedResolutions) {
 			try {
-				IssueResolution resolution = findResolution(expectedLabel);
+				assert (expectedResolutions.length > 0);
+				
+				IssueResolution resolution = findResolution(expectedLabel, true, true);
 
 				assertEquals(expectedLabel, resolution.getLabel());
-				assertEquals(expectedDescription, resolution.getDescription());
 
 				XtextResource xtextResource = new XtextResource(this.scriptResource.getURI());
 				xtextResource.setFragmentProvider(new TestFragmentProvider(this.scriptResource));
@@ -250,10 +280,25 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 					this.scriptResource.save(os, null);
 					content = os.toString();
 				}
-				if (!expectedResolution.equals(content)) {
+				if (!Arrays.contains(expectedResolutions, content)) {
 					content = document.toString();
 				}
-				assertEquals("Invalid quick fix.", expectedResolution, content); //$NON-NLS-1$
+				String closeResolution = null;
+				int distance = Integer.MAX_VALUE;
+				for (String expectedResolution : expectedResolutions) {
+					int d = levenshteinDistance(expectedResolution, content);
+					if (d == 0) {
+						return content;
+					}
+					if (closeResolution == null || d < distance) {
+						distance = d;
+						closeResolution = expectedResolution;
+					}
+				}
+				throw new ComparisonFailure(
+						"Invalid quick fix", //$NON-NLS-1$
+						closeResolution,
+						content);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -550,6 +595,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@SuppressWarnings("null")
 	private static class TestXtextDocument extends Document implements IXtextDocument {
 
 		private final XtextResource resource;

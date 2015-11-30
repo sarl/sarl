@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.util;
 
-import io.sarl.lang.sarl.Constructor;
-
 import java.util.Comparator;
+
+import io.sarl.lang.sarl.SarlConstructor;
 
 /**
  * Comparator of Constructors.
@@ -32,18 +33,12 @@ import java.util.Comparator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class ConstructorComparator implements Comparator<Constructor> {
+public class ConstructorComparator implements Comparator<SarlConstructor> {
 
 	private final FormalParameterListComparator comparator = new FormalParameterListComparator();
 
-	/**
-	 */
-	public ConstructorComparator() {
-		//
-	}
-
 	@Override
-	public int compare(Constructor o1, Constructor o2) {
+	public int compare(SarlConstructor o1, SarlConstructor o2) {
 		if (o1 == o2) {
 			return 0;
 		}
@@ -53,7 +48,7 @@ public class ConstructorComparator implements Comparator<Constructor> {
 		if (o2 == null) {
 			return Integer.MAX_VALUE;
 		}
-		return this.comparator.compare(o1.getParams(), o2.getParams());
+		return this.comparator.compare(o1.getParameters(), o2.getParameters());
 	}
 
 }

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.util;
 
 /**
@@ -27,13 +28,19 @@ package io.sarl.util;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see SARLTimeExtensions
  */
+@Deprecated
 public final class TimeExtensions {
 
 	private static final long MILLIS_IN_SECOND = 1000;
+
 	private static final long MILLIS_IN_MINUTE = 60 * MILLIS_IN_SECOND;
+
 	private static final long MILLIS_IN_HOUR = 60 * MILLIS_IN_MINUTE;
+
 	private static final long MILLIS_IN_DAY = 24 * MILLIS_IN_HOUR;
+
 	private static final long MILLIS_IN_WEEK = 7 * MILLIS_IN_DAY;
 
 	private TimeExtensions() {

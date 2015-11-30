@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,19 +48,19 @@ public class SARLHighlightingCalculatorTest extends AbstractSARLHighlightingCalc
 	/**
 	 */
 	@Test
-	public void testOccurrence_0() {
+	public void occurrence_0() {
 		highlight(
-				"agent A1 { on io.sarl.lang.core.Event { println(occurrence) } }") //$NON-NLS-1$
-			.keyword(48,10);
+				"agent A1 { on foo.ecore.SubEvent { println(occurrence) } }") //$NON-NLS-1$
+			.keyword(43,10);
 	}
 
 	/**
 	 */
 	@Test
-	public void testOccurrence_1() {
+	public void occurrence_1() {
 		highlight(
-				"agent A1 { on io.sarl.lang.core.Event [occurrence.fromMe] { } }") //$NON-NLS-1$
-			.keyword(39,10);
+				"agent A1 { on foo.ecore.SubEvent [occurrence.fromMe] { } }") //$NON-NLS-1$
+			.keyword(34,10);
 	}
 
 }

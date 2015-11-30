@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,20 +18,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.preferences;
 
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.ISREInstallChangedListener;
-import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.util.Utilities;
-import io.sarl.eclipse.wizards.sreinstall.AddSREInstallWizard;
-import io.sarl.eclipse.wizards.sreinstall.EditSREInstallWizard;
+package io.sarl.eclipse.preferences;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -88,7 +83,12 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
-import com.google.common.base.Strings;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ISREInstallChangedListener;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.util.Utilities;
+import io.sarl.eclipse.wizards.sreinstall.AddSREInstallWizard;
+import io.sarl.eclipse.wizards.sreinstall.EditSREInstallWizard;
 
 /** Preference page for the SARL runtime environments.
  *
@@ -97,6 +97,8 @@ import com.google.common.base.Strings;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:classdataabstractioncoupling",
+		"checkstyle:methodcount"})
 public class SREsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage, ISelectionProvider {
 
 	/**
@@ -104,7 +106,16 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 */
 	public static final String ID = "io.sarl.eclipse.preferences.SREsPreferencePage"; //$NON-NLS-1$
 
+	private static final int WRAP_WIDTH = 300;
+
+	private static final int WIDTH_HINT = 350;
+
+	private static final int HEIGHT_HINT = 250;
+
+	private static final int DEFAULT_WIDTH = 117;
+
 	private Table sreTable;
+
 	private CheckboxTableViewer sresList;
 
 	private final InstallListener installListener = new InstallListener();
@@ -126,9 +137,13 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 	// Action buttons
 	private Button addButton;
+
 	private Button removeButton;
+
 	private Button editButton;
+
 	private Button copyButton;
+
 	private Button resetButton;
 
 	private Column sortColumn = Column.NAME;
@@ -166,18 +181,18 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 	/** Set the error message from the given exception.
 	 *
-	 * @param e - the exception to log.
+	 * @param exception - the exception to log.
 	 */
-	public void setErrorMessage(Throwable e) {
-		if (e != null) {
-			String m = e.getLocalizedMessage();
-			if (Strings.isNullOrEmpty(m)) {
-				m = e.getMessage();
+	public void setErrorMessage(Throwable exception) {
+		if (exception != null) {
+			String message = exception.getLocalizedMessage();
+			if (Strings.isNullOrEmpty(message)) {
+				message = exception.getMessage();
 			}
-			if (Strings.isNullOrEmpty(m)) {
-				m = MessageFormat.format(Messages.SREsPreferencePage_9, e.getClass().getName());
+			if (Strings.isNullOrEmpty(message)) {
+				message = MessageFormat.format(Messages.SREsPreferencePage_9, exception.getClass().getName());
 			}
-			setErrorMessage(m);
+			setErrorMessage(message);
 		}
 	}
 
@@ -192,8 +207,6 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		noDefaultAndApplyButton();
 
-		Font font = parent.getFont();
-
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
 		layout.marginHeight = 2;
@@ -202,19 +215,20 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		SWTFactory.createWrapLabel(parent,
 				Messages.SREsPreferencePage_0,
-				1, 300);
+				1, WRAP_WIDTH);
 		SWTFactory.createVerticalSpacer(parent, 1);
 
 		SWTFactory.createWrapLabel(parent,
 				Messages.SREsPreferencePage_1,
-				1, 300);
+				1, WRAP_WIDTH);
+		Font font = parent.getFont();
 		Composite listComposite = SWTFactory.createComposite(parent, font, 2, 1, GridData.FILL_BOTH);
 
 		this.sreTable = new Table(listComposite,
 				SWT.CHECK | SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
 		GridData gd = new GridData(GridData.FILL_BOTH);
-		gd.heightHint = 250;
-		gd.widthHint = 350;
+		gd.heightHint = HEIGHT_HINT;
+		gd.widthHint = WIDTH_HINT;
 		this.sreTable.setLayoutData(gd);
 		this.sreTable.setFont(font);
 		this.sreTable.setHeaderVisible(true);
@@ -225,25 +239,24 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		column.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				sortByName();
 				SREsPreferencePage.this.sresList.refresh(true);
 			}
 		});
-		int defaultwidth = 350 / 3 + 1;
-		column.setWidth(defaultwidth);
+		column.setWidth(DEFAULT_WIDTH);
 
 		column = new TableColumn(this.sreTable, SWT.NULL);
 		column.setText(Messages.SREsPreferencePage_3);
 		column.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				sortByLocation();
 				SREsPreferencePage.this.sresList.refresh(true);
 			}
 		});
-		column.setWidth(defaultwidth);
+		column.setWidth(DEFAULT_WIDTH);
 
 		this.sresList = new CheckboxTableViewer(this.sreTable);
 		this.sresList.setLabelProvider(new SRELabelProvider());
@@ -272,7 +285,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		this.sresList.addDoubleClickListener(new IDoubleClickListener() {
 			@SuppressWarnings("synthetic-access")
 			@Override
-			public void doubleClick(DoubleClickEvent e) {
+			public void doubleClick(DoubleClickEvent event) {
 				if (!SREsPreferencePage.this.sresList.getSelection().isEmpty()) {
 					editSRE();
 				}
@@ -378,9 +391,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	}
 
 	private boolean isDuplicateName(String name) {
-		String n = Strings.nullToEmpty(name);
+		String sreName = Strings.nullToEmpty(name);
 		for (ISREInstall sre : this.sreArray) {
-			if (n.equals(sre.getName())) {
+			if (sreName.equals(sre.getName())) {
 				return true;
 			}
 		}
@@ -388,9 +401,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	}
 
 	private boolean isDuplicateId(String id) {
-		String i = Strings.nullToEmpty(id);
+		String normalizedId = Strings.nullToEmpty(id);
 		for (ISREInstall sre : this.sreArray) {
-			if (i.equals(sre.getId())) {
+			if (normalizedId.equals(sre.getId())) {
 				return true;
 			}
 		}
@@ -529,6 +542,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 *
 	 * @param sres - the SREs to remove.
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void removeSREs(ISREInstall... sres) {
 		ISREInstall defaultSRE = getDefaultSRE();
 		String defaultId = defaultSRE == null ? null : defaultSRE.getId();
@@ -689,7 +703,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			int width = -1;
 			try {
 				width = settings.getInt(ID + ".columnWidth" + i); //$NON-NLS-1$
-			} catch (NumberFormatException _) {
+			} catch (NumberFormatException exception) {
 				//
 			}
 
@@ -719,7 +733,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 					this.sortColumn = Column.NAME;
 				}
 			}
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			//
 		}
 		switch (this.sortColumn) {
@@ -895,11 +909,11 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 * @mavenartifactid $ArtifactId$
 	 */
 	private class SRELabelProvider extends BaseLabelProvider
-	implements ITableLabelProvider, ITableColorProvider, ITableFontProvider {
+			implements ITableLabelProvider, ITableColorProvider, ITableFontProvider {
 
-		/**
+		/** Construct the provider of labels.
 		 */
-		public SRELabelProvider() {
+		SRELabelProvider() {
 			//
 		}
 
@@ -930,8 +944,6 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			return getControl().getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public Image getColumnImage(Object element, int columnIndex) {
 			if (columnIndex == 0) {
@@ -940,8 +952,6 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			return null;
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public String getColumnText(Object element, int columnIndex) {
 			if (element instanceof ISREInstall) {
@@ -962,7 +972,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			return element == null ? "" : element.toString(); //$NON-NLS-1$
 		}
 
-	} // class SRELabelProvider
+	}
 
 	/**
 	 * Content provider to show a list of JREs.
@@ -974,9 +984,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 */
 	private class SREsContentProvider implements IStructuredContentProvider {
 
-		/**
+		/** Construct a provider of JREs' list.
 		 */
-		public SREsContentProvider() {
+		SREsContentProvider() {
 			//
 		}
 
@@ -998,7 +1008,10 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 	} // class SREsContentProvider
 
-	/**
+	/** Listener of changes in the components that display the installed SREs.
+	 *
+	 * <p>This listener refresh the preference page according to the change in the table.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -1006,9 +1019,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 */
 	private class InstallListener implements ISREInstallChangedListener {
 
-		/**
+		/** Construct the listener.
 		 */
-		public InstallListener() {
+		InstallListener() {
 			//
 		}
 
@@ -1030,8 +1043,6 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			}
 		}
 
-		/** {@inheritDoc}
-		 */
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void sreChanged(PropertyChangeEvent event) {
@@ -1043,22 +1054,21 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 			}
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public void defaultSREInstallChanged(ISREInstall previous, ISREInstall current) {
 			setDefaultSRE(current);
 		}
 
-	} // class InstallListener
+	}
 
-	/**
+	/** Definition of the columns in the table of the installed SREs.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static enum Column {
+	private enum Column {
 
 		/** Name column.
 		 */
@@ -1068,7 +1078,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 		 */
 		LOCATION;
 
-	} // enum Column
+	}
 
 }
 

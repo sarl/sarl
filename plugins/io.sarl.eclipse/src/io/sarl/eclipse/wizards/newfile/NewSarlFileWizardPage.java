@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.wizards.newfile;
 
-import io.sarl.eclipse.SARLConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.services.SARLGrammarAccess;
-
 import java.io.InputStream;
+
+import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -36,7 +35,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.xtext.util.StringInputStream;
 
-import com.google.inject.Inject;
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.lang.services.SARLGrammarAccess;
 
 /**
  * First page of the SARL new file wizard.
@@ -60,7 +61,7 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 		setTitle(Messages.NewSarlFileWizardPage_1);
 		setDescription(Messages.NewSarlFileWizardPage_2);
 		setFileExtension(fileExtension);
-		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLConfig.NEW_FILE_WIZARD_DIALOG_IMAGE));
+		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLEclipseConfig.NEW_FILE_WIZARD_DIALOG_IMAGE));
 	}
 
 	private static IPath determinePackageName(IPath path) {
@@ -91,7 +92,7 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 		IPath packagePath = determinePackageName(folderInWorkspace);
 
 		if (packagePath != null && packagePath.segmentCount() > 0) {
-			content.append(this.grammarAccess.getSarlScriptAccess().getPackageKeyword_0_0() + " "); //$NON-NLS-1$
+			content.append(this.grammarAccess.getSarlScriptAccess().getPackageKeyword_1_0() + " "); //$NON-NLS-1$
 			content.append(packagePath.segment(0));
 			for (int i = 1; i < packagePath.segmentCount(); ++i) {
 				content.append('.');

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.wizards.newfile;
 
 import javax.inject.Inject;
@@ -44,7 +45,9 @@ import org.eclipse.xtext.Constants;
 public class NewSarlFileWizard extends Wizard implements INewWizard {
 
 	private IWorkbench workbench;
+
 	private IStructuredSelection selection;
+
 	private NewSarlFileWizardPage pageOne;
 
 	private final String fileExtension;

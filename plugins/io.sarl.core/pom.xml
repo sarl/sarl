@@ -4,16 +4,11 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.plugins</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.3.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>io.sarl.core</artifactId>
 	<packaging>eclipse-plugin</packaging>
 	<name>SDK Core Library</name>
-
-	<properties>
-		<!-- needed for checkstyle/findbugs and other plugins -->
-		<main.basedir>${project.basedir}/../..</main.basedir>
-	</properties>
 
 	<build>
 		<resources>
@@ -22,6 +17,11 @@
 				<includes>
 					<include>**/*.sarl</include>
 				</includes>
+			</resource>
+			<resource>
+				<directory>OSGI-INF/l10n</directory>
+				<filtering>true</filtering>
+				<targetPath>OSGI-INF/l10n</targetPath>
 			</resource>
 		</resources>
 		<plugins>
@@ -36,8 +36,8 @@
 						<configuration>
 							<sources>
 								<source>src/main/sarl</source>
-								<source>src/main/generated-sources/xtend/</source>
-								<source>src/test/generated-sources/xtend/</source>
+								<source>src/main/generated-sources/sarl/</source>
+								<source>src/test/generated-sources/sarl/</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -56,7 +56,13 @@
 						<configuration>
 							<filesets>
 								<fileset>
+									<directory>src/main/generated-sources/sarl</directory>
+								</fileset>
+								<fileset>
 									<directory>src/main/generated-sources/xtend</directory>
+								</fileset>
+								<fileset>
+									<directory>src/test/generated-sources/sarl</directory>
 								</fileset>
 								<fileset>
 									<directory>src/test/generated-sources/xtend</directory>
@@ -78,7 +84,6 @@
 					</execution>
 				</executions>
 				<configuration>
-					<outputDirectory>xtend-gen</outputDirectory>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<compilerSourceLevel>${compiler.level}</compilerSourceLevel>
 					<compilerTargetLevel>${compiler.level}</compilerTargetLevel>
@@ -88,7 +93,7 @@
 							<setup>io.sarl.lang.SARLStandaloneSetup</setup>
 							<outputConfigurations>
 								<outputConfiguration>
-									<outputDirectory>src/main/generated-sources/xtend/</outputDirectory>
+									<outputDirectory>src/main/generated-sources/sarl/</outputDirectory>
 								</outputConfiguration>
 							</outputConfigurations>
 						</language>
@@ -110,6 +115,11 @@
 						<artifactId>osgi</artifactId>
 						<version>${osgi.nls.version}</version>
 					</dependency>
+					<dependency>
+						<groupId>org.eclipse.xtend</groupId>
+						<artifactId>org.eclipse.xtend.core</artifactId>
+						<version>${xtext.version}</version>
+					</dependency>
 				</dependencies>
 			</plugin>
 
@@ -122,5 +132,43 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<!-- ======================================= -->
+	<!-- ==== Release Management === -->
+	<!-- ======================================= -->
+	<profiles>
+		<profile>
+			<id>maven-release-of-core-plugin</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.arakhne.afc.maven</groupId>
+							<artifactId>tag-replacer</artifactId>
+							<configuration>
+								<sources>
+									<source>${project.basedir}/src/main/generated-sources/sarl</source>
+									<source>${project.basedir}/src/main/java</source>
+								</sources>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<configuration>
+								<sourcepath>${project.build.directory}/generated-sources/java</sourcepath>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

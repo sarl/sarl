@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors and authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ package io.sarl.docs.reference
 import com.google.inject.Inject
 import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
-import io.sarl.lang.sarl.FeatureContainer
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
@@ -32,20 +31,20 @@ import static extension org.junit.Assume.assumeFalse
 /**
  * @outline
  *
- * This document describes the built-in capacities in SARL.
+ * <p>This document describes the built-in capacities in SARL.
  * Before reading this document, it is recommended reading
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
  * the [Capacity Reference](CapacityReferenceSpec.html),
  * and the [Skill Reference](SkillReferenceSpec.html).
  * 
- * A *Capacity* is the specification of a collection of actions. This specification 
+ * <p>A *Capacity* is the specification of a collection of actions. This specification 
  * makes no assumptions about its implementation. It could be used to specify 
  * what an agent can do, what a behavior requires for its execution.
  * 
- * A *Skill* is a possible implementation of a capacity fulfilling all the 
+ * <p>A *Skill* is a possible implementation of a capacity fulfilling all the 
  * constraints of this specification.
  * 
- * In SARL, every agent has a set of *built-in capacities* considered essential 
+ * <p>In SARL, every agent has a set of *built-in capacities* considered essential 
  * to respect the commonly accepted competencies of agents.
  * These capacities are considered the main building blocks on top of which other 
  * higher level capacities and skills can be constructed.
@@ -56,7 +55,7 @@ import static extension org.junit.Assume.assumeFalse
  * Therefore, when the agent receives the `Initialize` event they are
  * already available.
  * 
- * The following figure presents the different contexts associated to an agent `A`.
+ * <p>The following figure presents the different contexts associated to an agent `A`.
  * Several built-in capacities permit accessing and manage these contexts.
  * The agents are represented by stylized humans, the contexts by the blue boxes,
  * and the spaces by the small color boxes in the contexts.
@@ -80,7 +79,7 @@ describe "Built-in Capacity Reference" {
 			 *     def warning(message : Object, exception : Throwable = null)
 			 *
 			 * 
-			 * The `message` parameter is converted to a string for obtaining the
+			 * <p>The `message` parameter is converted to a string for obtaining the
 			 * message to output.
 			 * The `exception` parameter may be given for printing an exception that
 			 * is the cause of the logging action.
@@ -115,7 +114,7 @@ describe "Built-in Capacity Reference" {
 			 *     def println(message : Object)
 			 *
 			 * 
-			 * The `message` parameter is converted to a string for obtaining the
+			 * <p>The `message` parameter is converted to a string for obtaining the
 			 * message to output.
 			 * There is no difference between these two functions.
 			 * The function `println` is provided for backward compatibility, and
@@ -141,7 +140,7 @@ describe "Built-in Capacity Reference" {
 			 *     def debug(message : Object)
 			 *
 			 * 
-			 * The `message` parameter is converted to a string for obtaining the
+			 * <p>The `message` parameter is converted to a string for obtaining the
 			 * message to output.
 			 *  
 			 * @filter(.*) 
@@ -161,15 +160,15 @@ describe "Built-in Capacity Reference" {
 			 * If a message is given to the logging system, and the current output level is lower
 			 * than the message's level, then the message is not output.
 			 * 
-			 * For retrieving the current logging level, the following function is provided:
+			 * <p>For retrieving the current logging level, the following function is provided:
 			 * 
 			 *     def getLogLevel : int
 			 *
 			 * 
-			 * The replied value is 0 when no message is printed, 1 if only error messages
+			 * <p>The replied value is 0 when no message is printed, 1 if only error messages
 			 * are printed, 2 for error and warning messages, etc.
 			 * 
-			 * For changing the current logging level, the following function is provided:
+			 * <p>For changing the current logging level, the following function is provided:
 			 * 
 			 *     def setLogLevel(level : int)
 			 *  
@@ -203,11 +202,11 @@ describe "Built-in Capacity Reference" {
 					import io.sarl.core.Logging
 					agent A {
 						uses Logging
-						def myaction {
-							isErrorLogEnabled
-							isWarningLogEnabled
-							isInfoLogEnabled
-							isDebugLogEnabled
+						def myaction : boolean {
+							   isErrorLogEnabled
+							|| isWarningLogEnabled
+							|| isInfoLogEnabled
+							|| isDebugLogEnabled
 						}
 					}".parseSuccessfully
 			}
@@ -215,7 +214,7 @@ describe "Built-in Capacity Reference" {
 			/* By default, the logging message contains the identifier of the agent
 			 * associated to the `Logging` capacity.
 			 * 
-			 * Sometimes, it is helpful to change the printed name of the agent.
+			 * <p>Sometimes, it is helpful to change the printed name of the agent.
 			 * The following function gives the opportunity to change this name.
 			 * 
 			 *     def setLoggingName(name : String)
@@ -239,18 +238,18 @@ describe "Built-in Capacity Reference" {
 		 * [context](SpaceReferenceSpec.html) that the agent is a part of, and actions
 		 * required to join new [contexts](SpaceReferenceSpec.html), and leave them.
 		 * 
-		 * The context supported by this built-in capacity is the "external context,"
+		 * <p>The context supported by this built-in capacity is the "external context,"
 		 * illustrated by the top-right context in the figure above.
 		 */
 		describe "ExternalContextAccess" {
 			
-			/*  For retrieving the context with a particular ID,
+			/* For retrieving the context with a particular ID,
 			 * this built-in capacity provides the following function:
 			 * 
 			 *     def getContext(contextID : UUID) : AgentContext
 			 *
 			 * 
-			 * The agent must have joined (see below) the context before calling this 
+			 * <p>The agent must have joined (see below) the context before calling this 
 			 * action. Or, the agent may use its `parentContextID` for accessing the
 			 * context in which it is located (the default context).
 			 *  
@@ -278,7 +277,7 @@ describe "Built-in Capacity Reference" {
 			 *     def getAllContexts : SynchronizedCollection<AgentContext>
 			 *
 			 * 
-			 * The default context is included in the replied collection.
+			 * <p>The default context is included in the replied collection.
 			 *  
 			 * @filter(.*) 
 			 */
@@ -302,9 +301,9 @@ describe "Built-in Capacity Reference" {
 			 *     def join(contextID : UUID, expectedDefaultSpaceID : UUID)
 			 *
 			 * 
-			 * This action registers the agent in the default space of the context.
+			 * <p>This action registers the agent in the default space of the context.
 			 * 
-			 * The agent will be involved in the context with the ID given by `contextID`.
+			 * <p>The agent will be involved in the context with the ID given by `contextID`.
 			 * The parameter `expectedDefaultSpaceID` is only used to check if
 			 * the caller of this function knows the ID of the default space in the context to
 			 * be involved in. 
@@ -316,7 +315,7 @@ describe "Built-in Capacity Reference" {
 			 * exist, and the default space inside this context must have the same ID 
 			 * as `expectedDefaultSpaceID`.</importantnote>
 			 * 
-			 * This action fires two events:
+			 * <p>This action fires two events:
 			 * 
 			 *  * `ContextJoined` in the inner context's default space.
 			 *  * `MemberJoined` in the parent context's default space.
@@ -344,7 +343,7 @@ describe "Built-in Capacity Reference" {
 			 *     def leave(contextID : UUID)
 			 *
 			 * 
-			 * This action fires two events:
+			 * <p>This action fires two events:
 			 * 
 			 *  * `ContextLeft` in the inner context's default space.
 			 *  * `MemberLeft` in the parent context's default space.
@@ -380,7 +379,7 @@ describe "Built-in Capacity Reference" {
 			 * </tbody>
 			 * </table>
 			 * 
-			 * The following example illustrates the use of the `isInSpace` function in the guard
+			 * <p>The following example illustrates the use of the `isInSpace` function in the guard
 			 * of an behavior unit. In this example, the behavior unit is run only if the event
 			 * of type `AnEvent` was emitted in the space `myspace` (declared as attribute in
 			 * the container).
@@ -418,30 +417,30 @@ describe "Built-in Capacity Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "AnEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 4
 					
-					(it as FeatureContainer).features.get(0) => [
+					it.members.get(0) => [
 						it should beCapacityUse "io.sarl.core.ExternalContextAccess"
 					]
 
-					(it as FeatureContainer).features.get(1) => [
+					it.members.get(1) => [
 						it should beVariable "myspace"
 					]
 
-					(it as FeatureContainer).features.get(2) => [
+					it.members.get(2) => [
 						it should beAction "testOtherFunctions"
 					]
 
-					(it as FeatureContainer).features.get(3) => [
+					it.members.get(3) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.bic.AnEvent"
 						it should beGuardedWith "isInSpace(occurrence, myspace)"
 					]
@@ -484,19 +483,19 @@ describe "Built-in Capacity Reference" {
 			 * calling agent, and is a member of at least
 			 * one space of the inner context.
 			 * 
-			 * The first function replies if the calling agent has other agents
+			 * <p>The first function replies if the calling agent has other agents
 			 * as members of its inner context:
 			 * 
 			 *     def hasMemberAgent : boolean
 			 *
 			 * 
-			 * The second function replies the number of agents that are members
+			 * <p>The second function replies the number of agents that are members
 			 * of the inner context of the calling agent:
 			 * 
 			 *     def getMemberAgentCount : int
 			 *
 			 *
-			 * The third function replies all the member agents in the inner
+			 * <p>The third function replies all the member agents in the inner
 			 * context:
 			 * 
 			 *     def getMemberAgents : SynchronizedSet<UUID>
@@ -539,7 +538,7 @@ describe "Built-in Capacity Reference" {
 			 * </tbody>
 			 * </table>
 			 * 
-			 * The following example illustrates the use of the `isInInnerDefaultSpace` function in the guard
+			 * <p>The following example illustrates the use of the `isInInnerDefaultSpace` function in the guard
 			 * of an behavior unit. In this example, the behavior unit is run only if the event
 			 * of type `AnEvent` was emitted in the default space of the inner context.
 			 * 
@@ -578,26 +577,26 @@ describe "Built-in Capacity Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "AnEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
 					
-					(it as FeatureContainer).features.get(0) => [
+					it.members.get(0) => [
 						it should beCapacityUse "io.sarl.core.InnerContextAccess"
 					]
 
-					(it as FeatureContainer).features.get(1) => [
+					it.members.get(1) => [
 						it should beAction "testOtherFunctions"
 					]
 
-					(it as FeatureContainer).features.get(2) => [
+					it.members.get(2) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.bic.AnEvent"
 						it should beGuardedWith "occurrence.inInnerDefaultSpace"
 					]
@@ -612,12 +611,12 @@ describe "Built-in Capacity Reference" {
 		 * These context and space
 		 * are illustrated by the top-left context in the figure above. 
 		 * 
-		 * For instance, the `emit` action is a shortcut for:
+		 * <p>For instance, the `emit` action is a shortcut for:
 		 * 
 		 *     defaultContext.defaultSpace.emit(...)
 		 *
 		 * 
-		 * Therefore, it is actually created on top of the other built-in capacities.
+		 * <p>Therefore, it is actually created on top of the other built-in capacities.
 		 */
 		describe "DefaultContextInteractions" {
 			
@@ -627,13 +626,13 @@ describe "Built-in Capacity Reference" {
 			 *     def getDefaultContext : AgentContext
 			 *
 			 * 
-			 * For retrieving the default space in the default context of an agent,
+			 * <p>For retrieving the default space in the default context of an agent,
 			 * this built-in capacity provides the following function:
 			 * 
 			 *     def getDefaultSpace : EventSpace
 			 *
 			 * 
-			 * For obtaining the address of the agent in the default space,
+			 * <p>For obtaining the address of the agent in the default space,
 			 * the following function is provided:
 			 * 
 			 *     def getDefaultAddress : Address
@@ -667,11 +666,11 @@ describe "Built-in Capacity Reference" {
 			 *     def spawn(agentType : Class<? extends Agent>, params : Object[]) : UUID
 			 *
 			 *
-			 * This action creates an instance of the given agent type, and launches the agent
+			 * <p>This action creates an instance of the given agent type, and launches the agent
 			 * into the default context. The parameters are passed to the spawned agent inside
 			 * the `Initialize` event: the `parameters` field.
 			 * 
-			 * This action fires two events:
+			 * <p>This action fires two events:
 			 * 
 			 *  * `AgentSpawned` in the default space of the default context. The source of the event is this spawner.
 			 *  * `Initialize` in spawned agent.
@@ -706,10 +705,10 @@ describe "Built-in Capacity Reference" {
 			 *     def emit(e : Event)
 			 *
 			 *  
-			 * This function emits the given event with no scope (i.e., all registered agent will
+			 * <p>This function emits the given event with no scope (i.e., all registered agent will
 			 * receive the event) in the default space of the default context.
 			 * 
-			 * It is equivalent to:
+			 * <p>It is equivalent to:
 			 * 
 			 *     defaultContext.defaultSpace.emit(e)
 			 *
@@ -740,15 +739,15 @@ describe "Built-in Capacity Reference" {
 			 *     def emit(e : Event, scope : Scope<Address>)
 			 * 
 			 * 
-			 * A scope is a predicates that is evaluated against the
+			 * <p>A scope is a predicates that is evaluated against the
 			 * addresses of the receivers. It is defined as (in Java):
 			 *
-			 *     public interface Scope<T> extends Serializable {
-			 *         public boolean matches(T element);
+			 *     interface Scope<T> extends Serializable {
+			 *         def matches(element : T) : boolean
 			 *     }
 			 *
 			 * 
-			 * It is recommended using the SARL utility functions for creating scopes.
+			 * <p>It is recommended using the SARL utility functions for creating scopes.
 			 * They are defined in the class `io.sarl.util.Scopes`.
 			 * The following example is equivalent to the feature call of
 			 * `emit` without the scoping parameter:
@@ -756,7 +755,7 @@ describe "Built-in Capacity Reference" {
 			 *     emit(new Event, Scopes::allParticipants)
 			 *
 			 * 
-			 * A default implementation of a scope using addresses is
+			 * <p>A default implementation of a scope using addresses is
 			 * implemented in the Java class `io.sarl.util.AddressScope`.
 			 * The utility class `Scopes` provides the `addresses` function for
 			 * creating an instance of `AddressScope`.
@@ -765,7 +764,7 @@ describe "Built-in Capacity Reference" {
 			 * 
 			 * 
 			 * 
-			 * You are free to create new implementation of `Scope`
+			 * <p>You are free to create new implementation of `Scope`
 			 * in order to filter the receivers of an event according to your
 			 * own criteria.
 			 *  
@@ -810,7 +809,7 @@ describe "Built-in Capacity Reference" {
 			 * </tbody>
 			 * </table>
 			 * 
-			 * The following example illustrates the use of the `isInDefaultSpace` function in the guard
+			 * <p>The following example illustrates the use of the `isInDefaultSpace` function in the guard
 			 * of an behavior unit. In this example, the behavior unit is run only if the event
 			 * of type `AnEvent` was emitted in the default space.
 			 * 
@@ -849,26 +848,26 @@ describe "Built-in Capacity Reference" {
 					it should haveNbElements 2
 				]
 				
-				model.elements.get(0) => [
+				model.xtendTypes.get(0) => [
 					it should beEvent "AnEvent"
 					it should extend _
 					it should haveNbElements 0
 				]
 
-				model.elements.get(1) => [
+				model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 3
 					
-					(it as FeatureContainer).features.get(0) => [
+					it.members.get(0) => [
 						it should beCapacityUse "io.sarl.core.DefaultContextInteractions"
 					]
 
-					(it as FeatureContainer).features.get(1) => [
+					it.members.get(1) => [
 						it should beAction "testOtherFunctions"
 					]
 
-					(it as FeatureContainer).features.get(2) => [
+					it.members.get(2) => [
 						it should beBehaviorUnit "io.sarl.docs.reference.bic.AnEvent"
 						it should beGuardedWith "occurrence.inDefaultSpace"
 					]
@@ -889,13 +888,13 @@ describe "Built-in Capacity Reference" {
 			 * stop an agent from another agent: the agent to stop must
 			 * be able to accept or reject this query.
 			 * 
-			 * The `Lifecycle` capacity provides the following function
+			 * <p>The `Lifecycle` capacity provides the following function
 			 * for committing a suicide:
 			 *
 			 *     def killMe
 			 * 
 			 *
-			 * This action automatically unregisters the calling agent from 
+			 * <p>This action automatically unregisters the calling agent from 
 			 * the default context, and therefore all its spaces including 
 			 * the default space.
 			 * 
@@ -904,7 +903,7 @@ describe "Built-in Capacity Reference" {
 			 * calling this action, otherwise a `RuntimeException` is thrown.
 			 * </veryimportantnote>
 			 * 
-			 * This action fires two events:
+			 * <p>This action fires two events:
 			 *
 			 *  * `AgentKilled` in the default space of all contexts to which the calling agent belongs.
 			 *  * `Destroy` inside the killed agent agent.
@@ -931,11 +930,11 @@ describe "Built-in Capacity Reference" {
 			 *                        params : Object[]) : UUID
 			 * 
 			 *
-			 * This action creates an instance of the given agent type, and launches the agent
+			 * <p>This action creates an instance of the given agent type, and launches the agent
 			 * into the given context. The parameters are passed to the spawned agent inside
 			 * the `Initialize` event: the `parameters` field.
 			 * 
-			 * This action fires two events:
+			 * <p>This action fires two events:
 			 *
 			 *  * `AgentSpawned` in the default space of the context. The source of the event is the calling agent.
 			 *  * `Initialize` in spawned agent.
@@ -974,13 +973,13 @@ describe "Built-in Capacity Reference" {
 			 *                              params : Object[]) : UUID
 			 * 
 			 *
-			 * This action creates an instance of the given agent type, with
+			 * <p>This action creates an instance of the given agent type, with
 			 * the given identifier, and launches the agent
 			 * into the given context.
 			 * The parameters are passed to the spawned agent inside
 			 * the `Initialize` event: the `parameters` field.
 			 * 
-			 * This action fires two events:
+			 * <p>This action fires two events:
 			 *
 			 *  * `AgentSpawned` in the default space of the context. The source of the event is the calling agent.
 			 *  * `Initialize` in spawned agent.
@@ -1020,7 +1019,7 @@ describe "Built-in Capacity Reference" {
 			 * 
 			 *     def task(name : String) : AgentTask
 			 * 
-			 * The replied task may be used for future execution, or
+			 * <p>The replied task may be used for future execution, or
 			 * controlling the execution.
 			 * 
 			 * @filter(.*) 
@@ -1050,13 +1049,13 @@ describe "Built-in Capacity Reference" {
 			 *            procedure : (Agent) => void) : AgentTask
 			 * 
 			 * 
-			 * The first function submits the given procedure (a lambda expression as defined in
+			 * <p>The first function submits the given procedure (a lambda expression as defined in
 			 * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html)) to
 			 * an executor provided by the runtime platform. The execution of the procedure
 			 * will be delayed during the given number of milliseconds.
 			 * This function replies the agent task for controlling its execution.
 			 * 
-			 * The second function behaves in a similar way as the first, except that it
+			 * <p>The second function behaves in a similar way as the first, except that it
 			 * accepts an agent task as parameter. This task will attach to the given
 			 * procedure. The replied task is the same as the task given as parameter.
 			 * 
@@ -1095,24 +1094,24 @@ describe "Built-in Capacity Reference" {
 			 *               procedure : (Agent) => void) : AgentTask
 			 * 
 			 * 
-			 * The first function submits the given procedure (a lambda expression as defined in
+			 * <p>The first function submits the given procedure (a lambda expression as defined in
 			 * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html)) to
 			 * an executor provided by the runtime platform. The execution of the procedure
 			 * will be launched periodically with a period of the given number of milliseconds.
 			 * This function replies the agent task for controlling its execution.
 			 * 
-			 * The second function behaves in a similar way as the first, except that it
+			 * <p>The second function behaves in a similar way as the first, except that it
 			 * accepts an agent task as parameter. This task will attach to the given
 			 * procedure. The replied task is the same as the task given as parameter.
 			 * 
-			 * If the duration of the task is greater to the given period length, then
+			 * <p>If the duration of the task is greater to the given period length, then
 			 * multiple task's instances will be run in parallel.
 			 * For example, consider the following code:
 			 *
 			 *     every(500) [ sleep(2000) ]
 			 *
 			 *
-			 * At a given time, four instances of the task are
+			 * <p>At a given time, four instances of the task are
 			 * run in parallel (A, B, C, D for example):
 			 *
 			 * <table>
@@ -1164,7 +1163,7 @@ describe "Built-in Capacity Reference" {
 			 *                mayInterruptIfRunning : boolean) : boolean
 			 *
 			 * 
-			 * These functions will reply `false` if the task has already completed, has 
+			 * <p>These functions will reply `false` if the task has already completed, has 
 			 * already been cancelled, or could not be cancelled for some other reason
 			 * (a failure means replying false). 
 			 * If successful, and this task has not started when `cancel` is
@@ -1173,7 +1172,7 @@ describe "Built-in Capacity Reference" {
 			 * whether the thread executing this task should be interrupted in
 			 * an attempt to stop the task.
 			 * 
-			 * The first function interrupts ongoing tasks. So, it is equivalent to 
+			 * <p>The first function interrupts ongoing tasks. So, it is equivalent to 
 			 * passing `true` as the value for the parameter 
 			 * <tt>mayInterruptIfRunning</tt> to the function
 			 * `cancel(AgentTask, boolean)`.
@@ -1202,10 +1201,10 @@ describe "Built-in Capacity Reference" {
 		/* The built-in capacity `Behaviors` provides the tools to the agents 
 		 * for dynamically registering and unregistering sub-behaviors.
 		 * 
-		 * This capacity is closely related to the `InnerContextAccess` for 
+		 * <p>This capacity is closely related to the `InnerContextAccess` for 
 		 * enabling a high-level abstraction for holonic multi-agent system development.
 		 * 
-		 * The definition of a behavior is not detailed in this reference document.
+		 * <p>The definition of a behavior is not detailed in this reference document.
 		 * Please read the [Behavior Reference](BehaviorReferenceSpec.html) for details.
 		 */
 		describe "Behaviors" {
@@ -1216,7 +1215,7 @@ describe "Built-in Capacity Reference" {
 			 *     def registerBehavior(attitude : Behavior) : Behavior
 			 *
 			 * 
-			 * This function takes the behavior to be registered, and replies the
+			 * <p>This function takes the behavior to be registered, and replies the
 			 * same behavior.
 			 * When a behavior is registered, it is receiving the events
 			 * in the default space of the inner context of the agent, or
@@ -1250,7 +1249,7 @@ describe "Built-in Capacity Reference" {
 			 *     def unregisterBehavior(attitude : Behavior) : Behavior
 			 *
 			 * 
-			 * This function takes the behavior to be unregistered, and replies the
+			 * <p>This function takes the behavior to be unregistered, and replies the
 			 * same behavior.
 			 * When a behavior is unregistering, it is no more receiving the events
 			 * in the default space of the inner context of the agent, and
@@ -1283,7 +1282,7 @@ describe "Built-in Capacity Reference" {
 			 *     def wake(evt : Event)
 			 *
 			 * 
-			 * This function emits the given event into the inner context
+			 * <p>This function emits the given event into the inner context
 			 * of the agent (in the default space).
 			 * 
 			 * <importantnote> It is not
@@ -1315,7 +1314,7 @@ describe "Built-in Capacity Reference" {
 			 *     def asEventListener : EventListener
 			 * 
 			 * 
-			 * The listener replied by this function is the one used by the
+			 * <p>The listener replied by this function is the one used by the
 			 * agent (and its behaviors) for listening events related to
 			 * all the contexts (default, external, and inner).
 			 * 
@@ -1355,9 +1354,9 @@ describe "Built-in Capacity Reference" {
 	 * Release: %sarlspecreleasedate%
 	 * 
 	 * 
-	 * Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
 	 * 
-	 * Licensed under the Apache License, Version 2.0;
+	 * <p>Licensed under the Apache License, Version 2.0;
 	 * you may not use this file except in compliance with the License.
 	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
 	 *

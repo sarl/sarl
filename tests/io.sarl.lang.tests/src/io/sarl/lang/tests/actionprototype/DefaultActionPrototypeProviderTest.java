@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,47 @@
  */
 package io.sarl.lang.tests.actionprototype;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import com.google.inject.Inject;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.ECollections;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.xtend.core.xtend.XtendParameter;
+import org.eclipse.xtext.common.types.JvmAnnotationReference;
+import org.eclipse.xtext.common.types.JvmAnnotationType;
+import org.eclipse.xtext.common.types.JvmFormalParameter;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.xbase.XExpression;
+import org.junit.Before;
+import org.junit.ComparisonFailure;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
@@ -34,42 +70,11 @@ import io.sarl.lang.actionprototype.InferredStandardParameter;
 import io.sarl.lang.actionprototype.InferredValuedParameter;
 import io.sarl.lang.actionprototype.QualifiedActionName;
 import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.FormalParameter;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.ECollections;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.common.types.JvmAnnotationReference;
-import org.eclipse.xtext.common.types.JvmAnnotationType;
-import org.eclipse.xtext.common.types.JvmFormalParameter;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
-import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.xbase.XExpression;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import com.google.inject.Inject;
 
 /**
  * @author $Author: sgalland$
@@ -97,14 +102,18 @@ public class DefaultActionPrototypeProviderTest {
 		return container;
 	}
 
-	static void assertSameFormalParameters(List<? extends FormalParameter> expected, FormalParameterProvider actual) {
+	static void assertSameFormalParameters(List<? extends XtendParameter> expected, FormalParameterProvider actual) {
 		assertEquals(expected.size(), actual.getFormalParameterCount());
 		for (int i = 0; i < expected.size(); ++i) {
 			assertEquals(expected.get(i).getName(), actual.getFormalParameterName(i));
 			assertEquals(expected.get(i).getParameterType().getQualifiedName(),
 					actual.getFormalParameterType(i, false));
-			assertSame(expected.get(i).getDefaultValue(),
-					actual.getFormalParameterDefaultValue(i));
+			if (expected.get(i) instanceof SarlFormalParameter) {
+				assertSame(((SarlFormalParameter)  expected.get(i)).getDefaultValue(),
+						actual.getFormalParameterDefaultValue(i));
+			} else {
+				assertNull(actual.getFormalParameterDefaultValue(i));
+			}
 		}
 	}
 
@@ -154,7 +163,8 @@ public class DefaultActionPrototypeProviderTest {
 				return;
 			}
 		}
-		fail("Expecting the elements:\n" + parameters + "\n\nBut is:\n\n" + toString(originalExpected) + "\n\n");
+		throw new ComparisonFailure("Not same parameter prototype.",
+				parameters.toString(), toString(originalExpected));
 	}
 
 	private static String toString(Object[][] array) {
@@ -199,9 +209,10 @@ public class DefaultActionPrototypeProviderTest {
 		for (List<InferredStandardParameter> parameters : elements.values()) {
 			assertPrototypes(parameters, expectedElements, expected);
 		}
-		assertTrue("Expected elements: " + expectedElements
-				+ "; but is: " + elements,
-				expectedElements.isEmpty());
+		if (!expectedElements.isEmpty()) {
+			throw new ComparisonFailure(
+					"Not same prototypes", expectedElements.toString(), elements.toString());
+		}
 	}
 
 	static void assertPrototypes(
@@ -224,22 +235,14 @@ public class DefaultActionPrototypeProviderTest {
 		@Inject
 		private DefaultActionPrototypeProvider provider;
 
-		@Inject
-		private ParseHelper<SarlScript> parser;
-
-		@Nullable
+		@NonNullByDefault
 		private FormalParameterProvider parameterProvider;
 
-		@Nullable
-		private EList<FormalParameter> sarlParameters;
+		@NonNullByDefault
+		private EList<SarlFormalParameter> sarlParameters;
 
-		@Nullable
+		@NonNullByDefault
 		private EList<JvmFormalParameter> jvmParameters;
-
-		private JvmTypeReference getType(String name) throws Exception {
-			SarlScript s = this.parser.parse("agent TMPAGENT { var attr : " + name + " }");
-			return ((Attribute) ((Agent) s.getElements().get(0)).getFeatures().get(0)).getType();
-		}
 
 		@Before
 		public void setUp() throws Exception {
@@ -275,19 +278,19 @@ public class DefaultActionPrototypeProviderTest {
 				}
 			});
 			//
-			FormalParameter p;
+			SarlFormalParameter p;
 			this.sarlParameters = new BasicEList<>();
-			p = mock(FormalParameter.class);
+			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("firstarg");
 			JvmTypeReference ref = getType("java.lang.String");
 			when(p.getParameterType()).thenReturn(ref);
 			this.sarlParameters.add(p);
-			p = mock(FormalParameter.class);
+			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("secondarg");
 			ref = getType("float");
 			when(p.getParameterType()).thenReturn(ref);
 			this.sarlParameters.add(p);
-			p = mock(FormalParameter.class);
+			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("thirdarg");
 			ref = getType("java.lang.Object");
 			when(p.getParameterType()).thenReturn(ref);
@@ -317,8 +320,9 @@ public class DefaultActionPrototypeProviderTest {
 
 		@Test
 		public void validateTypeOfVarArgInSarl() throws Exception {
-			SarlScript s = this.parser.parse("agent TMPAGENT { def myfct(a : float, b : Object*) {} }");
-			FormalParameter param = ((Action) ((Agent) s.getElements().get(0)).getFeatures().get(0)).getParams().get(1);
+			SarlScript s = file("agent Foo { def fooFct(a : float, b : Object*) {} }");
+			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) ((SarlAgent) s.getXtendTypes().get(0))
+					.getMembers().get(0)).getParameters().get(1);
 			assertNotNull(param);
 			assertEquals("java.lang.Object", param.getParameterType().getIdentifier());
 		}
@@ -519,7 +523,8 @@ public class DefaultActionPrototypeProviderTest {
 
 		@Test
 		public void createParameterTypesFromSarlModell_void() {
-			ActionParameterTypes key = this.provider.createParameterTypesFromSarlModel(false, new BasicEList<FormalParameter>());
+			ActionParameterTypes key = this.provider.createParameterTypesFromSarlModel(false,
+					new BasicEList<SarlFormalParameter>());
 			assertNotNull(key);
 			assertFalse(key.isVarArg());
 			assertTrue(key.isVoid());
@@ -618,7 +623,7 @@ public class DefaultActionPrototypeProviderTest {
 		public void createPrototypeFromSarlModel_void() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
-			EList<FormalParameter> params = new BasicEList<FormalParameter>();
+			EList<SarlFormalParameter> params = new BasicEList<>();
 			//
 			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, false, params);
 			assertNotNull(prototype);
@@ -838,22 +843,14 @@ public class DefaultActionPrototypeProviderTest {
 		@Inject
 		private DefaultActionPrototypeProvider provider;
 
-		@Inject
-		private ParseHelper<SarlScript> parser;
-
-		@Nullable
+		@NonNullByDefault
 		private FormalParameterProvider parameterProvider;
 
-		@Nullable
-		private EList<FormalParameter> sarlParameters;
+		@NonNullByDefault
+		private EList<SarlFormalParameter> sarlParameters;
 
-		@Nullable
+		@NonNullByDefault
 		private EList<JvmFormalParameter> jvmParameters;
-
-		private JvmTypeReference getType(String name) throws Exception {
-			SarlScript s = this.parser.parse("agent TMPAGENT { var attr : " + name + " }");
-			return ((Attribute) ((Agent) s.getElements().get(0)).getFeatures().get(0)).getType();
-		}
 
 		@Before
 		public void setUp() throws Exception {
@@ -904,30 +901,30 @@ public class DefaultActionPrototypeProviderTest {
 				}
 			});
 			//
-			FormalParameter p;
+			SarlFormalParameter p;
 			this.sarlParameters = new BasicEList<>();
 
-			p = mock(FormalParameter.class);
+			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("firstarg");
 			JvmTypeReference ref = getType("java.lang.String");
 			when(p.getParameterType()).thenReturn(ref);
 			when(p.getDefaultValue()).thenReturn(mock(XExpression.class));
 			this.sarlParameters.add(p);
 
-			p = mock(FormalParameter.class);
+			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("secondarg");
 			ref = getType("int");
 			when(p.getParameterType()).thenReturn(ref);
 			this.sarlParameters.add(p);
 
-			p = mock(FormalParameter.class);
+			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("thirdarg");
 			ref = getType("float");
 			when(p.getParameterType()).thenReturn(ref);
 			when(p.getDefaultValue()).thenReturn(mock(XExpression.class));
 			this.sarlParameters.add(p);
 
-			p = mock(FormalParameter.class);
+			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("fourtharg");
 			ref = getType("java.lang.Object");
 			when(p.getParameterType()).thenReturn(ref);
@@ -975,8 +972,9 @@ public class DefaultActionPrototypeProviderTest {
 
 		@Test
 		public void validateTypeOfVarArgInSarl() throws Exception {
-			SarlScript s = this.parser.parse("agent TMPAGENT { def myfct(a : float, b : Object*) {} }");
-			FormalParameter param = ((Action) ((Agent) s.getElements().get(0)).getFeatures().get(0)).getParams().get(1);
+			SarlScript s = file("agent Foo { def fooFct(a : float, b : Object*) {} }");
+			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) ((SarlAgent) s.getXtendTypes().get(0))
+					.getMembers().get(0)).getParameters().get(1);
 			assertNotNull(param);
 			assertEquals("java.lang.Object", param.getParameterType().getIdentifier());
 		}
@@ -1179,7 +1177,8 @@ public class DefaultActionPrototypeProviderTest {
 
 		@Test
 		public void createParameterTypesFromSarlModell_void() {
-			ActionParameterTypes key = this.provider.createParameterTypesFromSarlModel(false, new BasicEList<FormalParameter>());
+			ActionParameterTypes key = this.provider.createParameterTypesFromSarlModel(false,
+					new BasicEList<SarlFormalParameter>());
 			assertNotNull(key);
 			assertFalse(key.isVarArg());
 			assertTrue(key.isVoid());
@@ -1282,7 +1281,7 @@ public class DefaultActionPrototypeProviderTest {
 		public void createPrototypeFromSarlModel_void() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
-			EList<FormalParameter> params = new BasicEList<FormalParameter>();
+			EList<SarlFormalParameter> params = new BasicEList<>();
 			//
 			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, false, params);
 			assertNotNull(prototype);
@@ -1328,51 +1327,51 @@ public class DefaultActionPrototypeProviderTest {
 				"fourtharg");
 			assertPrototypes(prototype.getInferredParameterTypes(),
 					new Object[] {
-				InferredStandardParameter.class,
-				"java.lang.String",
-				"firstarg",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredValuedParameter.class,
-				"float",
-				"thirdarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_2",
-				InferredStandardParameter.class,
-				"java.lang.Object",
-				"fourtharg",
-			},
-			new Object[] {
-				InferredValuedParameter.class,
-				"java.lang.String",
-				"firstarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_0",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredStandardParameter.class,
-				"float",
-				"thirdarg",
-				InferredStandardParameter.class,
-				"java.lang.Object",
-				"fourtharg",
-			},
-			new Object[] {
-				InferredValuedParameter.class,
-				"java.lang.String",
-				"firstarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_0",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredValuedParameter.class,
-				"float",
-				"thirdarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_2",
-				InferredStandardParameter.class,
-				"java.lang.Object",
-				"fourtharg",
-			});
+						InferredStandardParameter.class,
+						"java.lang.String",
+						"firstarg",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredValuedParameter.class,
+						"float",
+						"thirdarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_1",
+						InferredStandardParameter.class,
+						"java.lang.Object",
+						"fourtharg",
+					},
+					new Object[] {
+						InferredValuedParameter.class,
+						"java.lang.String",
+						"firstarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_0",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredStandardParameter.class,
+						"float",
+						"thirdarg",
+						InferredStandardParameter.class,
+						"java.lang.Object",
+						"fourtharg",
+					},
+					new Object[] {
+						InferredValuedParameter.class,
+						"java.lang.String",
+						"firstarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_0",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredValuedParameter.class,
+						"float",
+						"thirdarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_1",
+						InferredStandardParameter.class,
+						"java.lang.Object",
+						"fourtharg",
+					});
 		}
 
 		@Test
@@ -1406,51 +1405,51 @@ public class DefaultActionPrototypeProviderTest {
 					"fourtharg");
 			assertPrototypes(prototype.getInferredParameterTypes(),
 					new Object[] {
-				InferredStandardParameter.class,
-				"java.lang.String",
-				"firstarg",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredValuedParameter.class,
-				"float",
-				"thirdarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_2",
-				InferredStandardParameter.class,
-				"java.lang.Object[]",
-				"fourtharg",
-			},
-			new Object[] {
-				InferredValuedParameter.class,
-				"java.lang.String",
-				"firstarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_0",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredStandardParameter.class,
-				"float",
-				"thirdarg",
-				InferredStandardParameter.class,
-				"java.lang.Object[]",
-				"fourtharg",
-			},
-			new Object[] {
-				InferredValuedParameter.class,
-				"java.lang.String",
-				"firstarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_0",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredValuedParameter.class,
-				"float",
-				"thirdarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_2",
-				InferredStandardParameter.class,
-				"java.lang.Object[]",
-				"fourtharg",
-			});
+						InferredStandardParameter.class,
+						"java.lang.String",
+						"firstarg",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredValuedParameter.class,
+						"float",
+						"thirdarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_1",
+						InferredStandardParameter.class,
+						"java.lang.Object[]",
+						"fourtharg",
+					},
+					new Object[] {
+						InferredValuedParameter.class,
+						"java.lang.String",
+						"firstarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_0",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredStandardParameter.class,
+						"float",
+						"thirdarg",
+						InferredStandardParameter.class,
+						"java.lang.Object[]",
+						"fourtharg",
+					},
+					new Object[] {
+						InferredValuedParameter.class,
+						"java.lang.String",
+						"firstarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_0",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredValuedParameter.class,
+						"float",
+						"thirdarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_1",
+						InferredStandardParameter.class,
+						"java.lang.Object[]",
+						"fourtharg",
+					});
 		}
 
 		@Test
@@ -1503,51 +1502,51 @@ public class DefaultActionPrototypeProviderTest {
 					"fourtharg");
 			assertPrototypes(prototype.getInferredParameterTypes(),
 					new Object[] {
-				InferredStandardParameter.class,
-				"java.lang.String",
-				"firstarg",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredValuedParameter.class,
-				"float",
-				"thirdarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_2",
-				InferredStandardParameter.class,
-				"java.lang.Object[]",
-				"fourtharg",
-			},
-			new Object[] {
-				InferredValuedParameter.class,
-				"java.lang.String",
-				"firstarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_0",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredStandardParameter.class,
-				"float",
-				"thirdarg",
-				InferredStandardParameter.class,
-				"java.lang.Object[]",
-				"fourtharg",
-			},
-			new Object[] {
-				InferredValuedParameter.class,
-				"java.lang.String",
-				"firstarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_0",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredValuedParameter.class,
-				"float",
-				"thirdarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_2",
-				InferredStandardParameter.class,
-				"java.lang.Object[]",
-				"fourtharg",
-			});
+						InferredStandardParameter.class,
+						"java.lang.String",
+						"firstarg",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredValuedParameter.class,
+						"float",
+						"thirdarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_1",
+						InferredStandardParameter.class,
+						"java.lang.Object[]",
+						"fourtharg",
+					},
+					new Object[] {
+						InferredValuedParameter.class,
+						"java.lang.String",
+						"firstarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_0",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredStandardParameter.class,
+						"float",
+						"thirdarg",
+						InferredStandardParameter.class,
+						"java.lang.Object[]",
+						"fourtharg",
+					},
+					new Object[] {
+						InferredValuedParameter.class,
+						"java.lang.String",
+						"firstarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_0",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredValuedParameter.class,
+						"float",
+						"thirdarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_1",
+						InferredStandardParameter.class,
+						"java.lang.Object[]",
+						"fourtharg",
+					});
 		}
 
 		@Test
@@ -1583,51 +1582,51 @@ public class DefaultActionPrototypeProviderTest {
 					"fourtharg");
 			assertPrototypes(prototype.getInferredParameterTypes(),
 					new Object[] {
-				InferredStandardParameter.class,
-				"java.lang.String",
-				"firstarg",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredValuedParameter.class,
-				"float",
-				"thirdarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_2",
-				InferredStandardParameter.class,
-				"java.lang.Object[]",
-				"fourtharg",
-			},
-			new Object[] {
-				InferredValuedParameter.class,
-				"java.lang.String",
-				"firstarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_0",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredStandardParameter.class,
-				"float",
-				"thirdarg",
-				InferredStandardParameter.class,
-				"java.lang.Object[]",
-				"fourtharg",
-			},
-			new Object[] {
-				InferredValuedParameter.class,
-				"java.lang.String",
-				"firstarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_0",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredValuedParameter.class,
-				"float",
-				"thirdarg",
-				"io.sarl.tests.Stub" + index + "#MYFCT_2",
-				InferredStandardParameter.class,
-				"java.lang.Object[]",
-				"fourtharg",
-			});
+						InferredStandardParameter.class,
+						"java.lang.String",
+						"firstarg",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredValuedParameter.class,
+						"float",
+						"thirdarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_1",
+						InferredStandardParameter.class,
+						"java.lang.Object[]",
+						"fourtharg",
+					},
+					new Object[] {
+						InferredValuedParameter.class,
+						"java.lang.String",
+						"firstarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_0",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredStandardParameter.class,
+						"float",
+						"thirdarg",
+						InferredStandardParameter.class,
+						"java.lang.Object[]",
+						"fourtharg",
+					},
+					new Object[] {
+						InferredValuedParameter.class,
+						"java.lang.String",
+						"firstarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_0",
+						InferredStandardParameter.class,
+						"int",
+						"secondarg",
+						InferredValuedParameter.class,
+						"float",
+						"thirdarg",
+						"io.sarl.tests.Stub" + index + "#MYFCT_1",
+						InferredStandardParameter.class,
+						"java.lang.Object[]",
+						"fourtharg",
+					});
 		}
 
 		@Test

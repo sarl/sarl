@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,8 +44,8 @@ capacity ExternalContextAccess {
 	/**
 	 * Replies the AgentContext for the given ID.
 	 * The agent must have joined the context before calling this action or use its parentContextID
-	 * @see{Agent#getParentID}
-	 * @see{#join}
+	 * @see io.sarl.lang.core.Agent#getParentID
+	 * @see #join
 	 * 
 	 * @throws UnknownContextException if the context specified context is not known by the agent.
 	 * @param contextID the ID of the context to get.
@@ -488,7 +488,7 @@ capacity Logging {
 	 *
 	 * @param name - the name used for logging.
 	 */
-	def setLoggingName(message : String)
+	def setLoggingName(name : String)
 
 	/** Print the given message at information logging level.
 	 * <p>
@@ -498,6 +498,7 @@ capacity Logging {
 	 * @param message - the elements to display.
 	 * @deprecated Use {@link #info(Object)}.
 	 */
+	@Deprecated
 	def println(message : Object)
 	
 	/** Print the given message at error logging level.

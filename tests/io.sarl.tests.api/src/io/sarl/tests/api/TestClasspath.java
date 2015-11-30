@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 
-/** Add elements into the project's classpath.
+/** Annotation for specifying additional bundles in the classpath of the project.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -36,13 +36,24 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.TYPE })
+@Target({ ElementType.METHOD })
 public @interface TestClasspath {
 
-	/** List of the bundles to add in the classpath.
+	/** The test is valid for a run in Tycho.
 	 *
-	 * @return bundles
+	 * @return <code>true</code> if the unit test could be run in Tycho.
 	 */
-	String[] value();
+	String[] value() default {};
+	
+	/** Indicates if the default bundles of the SARL library must be included on
+	 * the classpath.
+	 *
+	 * <p>If the default bundles are not included, the classpath will contains only
+	 * the bundles given by {@link #value()}.
+	 *
+	 * @return <code>true</code> if the bundles are included; <code>false</code> if
+	 * the classpath will contains only the values given by {@link #value()}
+	 */
+	boolean includeDefaultBundles() default true;
 
 }

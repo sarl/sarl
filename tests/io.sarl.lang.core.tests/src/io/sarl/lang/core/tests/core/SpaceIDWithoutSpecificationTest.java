@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,14 +26,15 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import io.sarl.lang.core.SpaceID;
-import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
 
 import java.util.UUID;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
+
+import io.sarl.lang.core.SpaceID;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -43,11 +44,13 @@ import org.junit.Test;
  */
 public class SpaceIDWithoutSpecificationTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private UUID contextID;
-	@Nullable
+
+	@NonNullByDefault
 	private UUID id;
-	@Nullable
+
+	@NonNullByDefault
 	private SpaceID spaceID;
 
 	private int cmp(UUID a, UUID b) {

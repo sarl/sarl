@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendMember;
@@ -37,14 +39,12 @@ import org.jnario.doc.AbstractDocGenerator;
 import org.jnario.doc.Filter;
 import org.jnario.doc.FilterExtractor;
 import org.jnario.doc.FilteringResult;
+import org.jnario.doc.HtmlAssets;
 import org.jnario.doc.HtmlFile;
 import org.jnario.spec.naming.ExampleNameProvider;
 import org.jnario.spec.spec.Example;
 import org.jnario.spec.spec.ExampleGroup;
 import org.jnario.util.Strings;
-
-import com.google.common.collect.Lists;
-import com.google.inject.Inject;
 
 /** Generator of the HTML files for the SARL documentation.
  * Copied from SpecDocGenerator (version 1.0.0).
@@ -64,7 +64,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 */
 	protected static final String[] OUTLINE_MARKERS = new String[] {
 		Matcher.quoteReplacement("<!--") //$NON-NLS-1$
-			+ "\\s*" //$NON-NLS-1$
+		+ "\\s*" //$NON-NLS-1$
 			+ Matcher.quoteReplacement("OUTPUT") //$NON-NLS-1$
 			+ "\\s+" //$NON-NLS-1$
 			+ Matcher.quoteReplacement("OUTLINE") //$NON-NLS-1$
@@ -83,31 +83,33 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	@Inject
 	private FilterExtractor filterExtractor;
 
-	/**
+	@Inject
+	private HtmlAssets htmlAsserts;
+
+	/** Construct the documentation generator.
 	 */
-	public SARLDocGenerator() {
+	SARLDocGenerator() {
 		//
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public HtmlFile createHtmlFile(final XtendClass xtendClass) {
-        	if (!(xtendClass instanceof ExampleGroup)) {
-            		return HtmlFile.EMPTY_FILE;
-	    	}
-        	final ExampleGroup exampleGroup = (ExampleGroup) xtendClass;
-	   	return HtmlFile.newHtmlFile(new Procedure1<HtmlFile>() {
+		if (!(xtendClass instanceof ExampleGroup)) {
+			return HtmlFile.EMPTY_FILE;
+		}
+		final ExampleGroup exampleGroup = (ExampleGroup) xtendClass;
+		return HtmlFile.newHtmlFile(new Procedure1<HtmlFile>() {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void apply(HtmlFile it) {
-	            it.setName(SARLDocGenerator.this.nameProvider.toJavaClassName(exampleGroup));
-	            it.setTitle(asTitle(exampleGroup));
-	            it.setContent(generateRootContent(exampleGroup));
-	            it.setRootFolder(root(exampleGroup));
-	            it.setSourceCode(pre(xtendClass.eContainer(), "lang-spec")); //$NON-NLS-1$
-	            it.setFileName(fileName(xtendClass));
-	            it.setExecutionStatus(executionStateClass(exampleGroup));
+				it.setAssets(SARLDocGenerator.this.htmlAsserts);
+				it.setName(SARLDocGenerator.this.nameProvider.toJavaClassName(exampleGroup));
+				it.setTitle(asTitle(exampleGroup));
+				it.setContent(generateRootContent(exampleGroup));
+				it.setRootFolder(root(exampleGroup));
+				it.setSourceCode(pre(xtendClass.eContainer(), "lang-spec")); //$NON-NLS-1$
+				it.setFileName(fileName(xtendClass));
+				it.setExecutionStatus(executionStateClass(exampleGroup));
 			}
 		});
 	}
@@ -128,13 +130,16 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 * @return the HTML code.
 	 */
 	protected String toCodeBlock(Example example, List<Filter> filters) {
-		String prefix = "<pre class=\"prettyprint lang-spec linenums\">"; //$NON-NLS-1$
-        	prefix = apply(filters, prefix);
-        	String code = serialize(example.getExpression(), filters);
-        	if (code == null || code.isEmpty()) {
-        		return ""; //$NON-NLS-1$
-        	}
-       		return prefix + code + "</pre>\n"; //$NON-NLS-1$
+		String code = serialize(example.getExpression(), filters);
+		if (code == null || code.isEmpty()) {
+			return ""; //$NON-NLS-1$
+		}
+		String prefix = "<pre class=\"prettyprint lang-sarl linenums\">"; //$NON-NLS-1$
+		prefix = apply(filters, prefix);
+		if (prefix == null || prefix.isEmpty()) {
+			return code;
+		}
+		return prefix + code + "</pre>\n"; //$NON-NLS-1$
 	}
 
 	/** Replies the HTML tag that corresponds to a title at the given level
@@ -168,9 +173,9 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 */
 	protected static String protectID(String id) {
 		if (id != null) {
-			String p = id.replaceAll("\\W+", ID_SEPARATOR); //$NON-NLS-1$
-			if (p != null) {
-				return Strings.trim(p, ID_SEPARATOR.charAt(0));
+			String protectedId = id.replaceAll("\\W+", ID_SEPARATOR); //$NON-NLS-1$
+			if (protectedId != null) {
+				return Strings.trim(protectedId, ID_SEPARATOR.charAt(0));
 			}
 		}
 		return ""; //$NON-NLS-1$
@@ -271,7 +276,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 * @return the HTML representation of the table.
 	 */
 	protected final StringConcatenation generateMembers(ExampleGroup group, SectionNumber sectionNumber) {
-        	return generateMembers(group, sectionNumber, null);
+		return generateMembers(group, sectionNumber, null);
 	}
 
 	/** Generate the HTML code for the members of an example group..
@@ -281,18 +286,19 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 * @param outline - the list of the entries for the outline.
 	 * @return the HTML representation of the table.
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	private StringConcatenation generateMembers(ExampleGroup group, SectionNumber sectionNumber, List<String> outline) {
 		StringConcatenation result = new StringConcatenation();
-    		String content;
-    		String hrefLabel;
-    		SectionNumber childNumber;
-    		boolean isRoot = sectionNumber.isRoot();
-    		boolean isFlatSections = sectionNumber.isMaxDepthReferencing();
+		String content;
+		String hrefLabel;
+		SectionNumber childNumber;
+		boolean isRoot = sectionNumber.isRoot();
+		boolean isFlatSections = sectionNumber.isMaxDepthReferencing();
 		if (isFlatSections) {
 			result.append("<ul>"); //$NON-NLS-1$
 		}
 		int position = 0;
-        	for (XtendMember member : group.getMembers()) {
+		for (XtendMember member : group.getMembers()) {
 			if (member instanceof Example) {
 				Example example = (Example) member;
 				childNumber = sectionNumber.getChild(position);
@@ -319,19 +325,19 @@ class SARLDocGenerator extends AbstractDocGenerator {
 				if (isFlatSections) {
 					result.append("<li>"); //$NON-NLS-1$
 				}
-	    			result.append(content);
+				result.append(content);
 				if (isFlatSections) {
 					result.append("</li>"); //$NON-NLS-1$
 				} else if (isRoot && outline != null
-			    		&& hrefLabel != null && !hrefLabel.isEmpty()) {
-			    		outline.add(hrefLabel);
-			    	}
-        		}
-        	}
+						&& hrefLabel != null && !hrefLabel.isEmpty()) {
+					outline.add(hrefLabel);
+				}
+			}
+		}
 		if (isFlatSections) {
 			result.append("</ul>"); //$NON-NLS-1$
 		}
-        	return result;
+		return result;
 	}
 
 	/** Generate the HTML code for the given example.
@@ -389,7 +395,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 				+ toTitle(this.nameProvider.toFieldName(table))
 				+ "</strong></p>" //$NON-NLS-1$
 				+ generateDoc(table)
-		        + super.generate(table);
+				+ super.generate(table);
 	}
 
 	/** A section number.
@@ -402,7 +408,9 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	protected final class SectionNumber {
 
 		private final SectionNumber parent;
+
 		private final int position;
+
 		private final int depth;
 
 		/** Create the first root section.
@@ -498,7 +506,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	protected static enum NoteTag {
+	protected enum NoteTag {
 		/** A note.
 		 */
 		NOTE("note", "label-info", "Note"),  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
@@ -519,7 +527,12 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		private final String htmlLabel;
 		private final String text;
 
-		private NoteTag(String htmlTag, String htmlLabel, String text) {
+		/**
+		 * @param htmlTag - the HTML tag.
+		 * @param htmlLabel - the HTML label.
+		 * @param text - the text.
+		 */
+		NoteTag(String htmlTag, String htmlLabel, String text) {
 			this.htmlTag = htmlTag;
 			this.htmlLabel = htmlLabel;
 			this.text = text;
@@ -538,11 +551,11 @@ class SARLDocGenerator extends AbstractDocGenerator {
 					+ "(.*?)" //$NON-NLS-1$
 					+ "</" + this.htmlTag + "\\s*>", //$NON-NLS-1$//$NON-NLS-2$
 					Pattern.DOTALL);
-			Matcher m = pattern.matcher(text);
+			Matcher matcher = pattern.matcher(text);
 			StringBuffer b = new StringBuffer();
-			while (m.find()) {
-				String label = m.group(1);
-				String htmlText = m.group(2).trim();
+			while (matcher.find()) {
+				String label = matcher.group(1);
+				String htmlText = matcher.group(2).trim();
 				if (label == null) {
 					label = this.text;
 				} else {
@@ -552,9 +565,9 @@ class SARLDocGenerator extends AbstractDocGenerator {
 						"<p><span class=\"label " + this.htmlLabel //$NON-NLS-1$
 						+ "\">" + label + "</span> " //$NON-NLS-1$//$NON-NLS-2$
 						+ htmlText + "</p>"; //$NON-NLS-1$
-				m.appendReplacement(b, replacement);
+				matcher.appendReplacement(b, replacement);
 			}
-			m.appendTail(b);
+			matcher.appendTail(b);
 			return b.toString();
 		}
 

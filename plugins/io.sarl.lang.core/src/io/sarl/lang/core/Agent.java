@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 import java.security.InvalidParameterException;
@@ -25,7 +26,10 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.inject.Inject;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import io.sarl.lang.SARLVersion;
+import io.sarl.lang.annotation.SarlSpecification;
 
 /**
  * The definition of the notion of Agent in SARL.
@@ -33,37 +37,40 @@ import javax.inject.Inject;
  * the capacities it exhibits. An agent defines a context.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 public class Agent implements Identifiable {
 
 	private final UUID id;
 
-	private Map<Class<? extends Capacity>, Skill> capacities = new ConcurrentHashMap<>();
+	private final Map<Class<? extends Capacity>, Skill> capacities = new ConcurrentHashMap<>();
 
 	private final UUID parentID;
 
 	/**
 	 * Creates a new agent by parent <code>parentID</code>.
 	 *
-	 * @param parentID - the agent's spawner.
-	 */
-	public Agent(UUID parentID) {
-		this(parentID, null);
-	}
-
-	/**
-	 * Creates a new agent by parent <code>parentID</code>.
-	 *
+	 * @param provider - the provider of built-in capacities for this agent.
 	 * @param parentID - the agent's spawner.
 	 * @param agentID - the identifier of the agent, or
 	 *                  <code>null</code> for computing it randomly.
 	 */
-	public Agent(UUID parentID, UUID agentID) {
+	public Agent(
+			BuiltinCapacitiesProvider provider,
+			UUID parentID,
+			UUID agentID) {
 		this.parentID = parentID;
-		this.id = ((agentID == null) ? UUID.randomUUID() : agentID);
+		this.id = (agentID == null) ? UUID.randomUUID() : agentID;
+		if (provider != null) {
+			Map<Class<? extends Capacity>, Skill> builtinCapacities = provider.getBuiltinCapacities(this);
+			if (builtinCapacities != null && !builtinCapacities.isEmpty()) {
+				this.capacities.putAll(builtinCapacities);
+			}
+		}
 	}
 
 	/**
@@ -81,6 +88,7 @@ public class Agent implements Identifiable {
 	}
 
 	@Override
+	@Pure
 	public String toString() {
 		return getClass().getSimpleName()
 				+ " [" + attributesToString() //$NON-NLS-1$
@@ -92,11 +100,13 @@ public class Agent implements Identifiable {
 	 *
 	 * @return the identifier of the agent's spawner.
 	 */
+	@Pure
 	public UUID getParentID() {
 		return this.parentID;
 	}
 
 	@Override
+	@Pure
 	public UUID getID() {
 		return this.id;
 	}
@@ -140,25 +150,24 @@ public class Agent implements Identifiable {
 	/**
 	 * Clears the Skill associated with the capacity.
 	 *
-	 * @param <S> - the type of the skill.
+	 * @param <S> - the type of the capacity.
 	 * @param capacity - the capacity for which the skill must be cleared.
 	 * @return the skill that was removed
 	 */
-	@SuppressWarnings("unchecked")
-	protected <S extends Skill & Capacity> S clearSkill(Class<? extends Capacity> capacity) {
+	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		assert capacity != null;
-		Skill s = this.capacities.remove(capacity);
-		if (s != null) {
-			s.uninstall();
+		Skill skill = this.capacities.remove(capacity);
+		if (skill != null) {
+			skill.uninstall();
 		}
-		return (S) s;
+		return capacity.cast(skill);
 	}
 
 	/**
 	 * Replies with the skill associated to the {@link Capacity}
 	 * <code>capacity</code>.
 	 *
-	 * The return may never be <code>null</code>. If not capacity
+	 * <p>The return may never be <code>null</code>. If not capacity
 	 * was set, the exception {@link UnimplementedCapacityException}
 	 * is thrown.
 	 *
@@ -167,6 +176,7 @@ public class Agent implements Identifiable {
 	 * @return the skill, never <code>null</code>
 	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
 	 */
+	@Pure
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
 		S skill = capacity.cast(this.capacities.get(capacity));
@@ -184,18 +194,10 @@ public class Agent implements Identifiable {
 	 * @return <code>true</code> if it has a skill associate to this capacity,
 	 * <code>false</code> otherwise
 	 */
+	@Pure
 	protected boolean hasSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
 		return this.capacities.containsKey(capacity);
-	}
-
-	/** Set the provider of the built-in capacities.
-	 *
-	 * @param provider - the provider of built-in capacities for this agent.
-	 */
-	@Inject
-	void setBuiltinCapacitiesProvider(BuiltinCapacitiesProvider provider) {
-		this.capacities.putAll(provider.getBuiltinCapacities(this));
 	}
 
 	/** Replies if the given address is one of the addresses of this agent.
@@ -203,23 +205,25 @@ public class Agent implements Identifiable {
 	 *
 	 * @param address - the address to test.
 	 * @return <code>true</code> if the given address is one of this agent,
-	 * otherwise <code>false</code>.
+	 *     otherwise <code>false</code>.
 	 */
+	@Pure
 	protected boolean isMe(Address address) {
 		return (address != null) && (this.id.equals(address.getUUID()));
 	}
 
 	/** Replies if the given identifier corresponds to the identifier
 	 * of this agent.
-	 * <p>
-	 * This function is equivalent to:<pre><code>
+	 *
+	 * <p>This function is equivalent to:<pre><code>
 	 * id.equals( agent.getID() )
 	 * </code></pre>
 	 *
 	 * @param id - the identifier to test.
 	 * @return <code>true</code> if the given identifier is the one of this agent,
-	 * otherwise <code>false</code>.
+	 *     otherwise <code>false</code>.
 	 */
+	@Pure
 	protected boolean isMe(UUID id) {
 		return (id != null) && (this.id.equals(id));
 	}
@@ -228,8 +232,9 @@ public class Agent implements Identifiable {
 	 *
 	 * @param event - the event to test.
 	 * @return <code>true</code> if the given event was emitted by
-	 * this agent; otherwise <code>false</code>.
+	 *     this agent; otherwise <code>false</code>.
 	 */
+	@Pure
 	protected boolean isFromMe(Event event) {
 		return (event != null) && isMe(event.getSource());
 	}

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.wizards.newproject;
 
-import io.sarl.eclipse.SARLConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.util.Utilities;
-import io.sarl.lang.ui.preferences.SARLPreferences;
+package io.sarl.eclipse.wizards.newproject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
@@ -63,6 +57,14 @@ import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.util.Utilities;
+import io.sarl.lang.SARLConfig;
+import io.sarl.lang.ui.preferences.SARLPreferences;
+
 /**
  * SARL new project wizard.
  * Most part of the code of this class comes from {@link JavaProjectWizard}.
@@ -76,6 +78,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 public class NewSarlProjectWizard extends NewElementWizard implements IExecutableExtension {
 
 	private MainProjectWizardPage fFirstPage;
+
 	private BuildSettingWizardPage fSecondPage;
 
 	private IConfigurationElement fConfigElement;
@@ -94,7 +97,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 */
 	public NewSarlProjectWizard(MainProjectWizardPage pageOne, BuildSettingWizardPage pageTwo) {
 		setDefaultPageImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
-				SARLConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+				SARLEclipseConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
 		setWindowTitle(Messages.SARLProjectNewWizard_0);
 
@@ -127,7 +130,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 						return true;
 					}
 				}
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				//
 			}
 		}
@@ -144,7 +147,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 					sourceFolders.append("\n"); //$NON-NLS-1$
 				}
 			}
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			//
 		}
 		return sourceFolders.toString();
@@ -165,35 +168,23 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	protected boolean validateSARLSpecificElements(IJavaElement element) {
 		IJavaProject javaProject = (IJavaProject) element;
 		// Check if the "SARL" generation directory is a source folder.
-		IPath outputPath;
-		IPath generalPreferencePath;
-		IPath projectSpecificPath = SARLPreferences.getSARLOutputPathFor(javaProject.getProject());
+		IPath outputPath = SARLPreferences.getSARLOutputPathFor(javaProject.getProject());
 
-		generalPreferencePath = SARLPreferences.getGlobalSARLOutputPath();
-
-		if (projectSpecificPath != null) {
-			outputPath = projectSpecificPath;
-			generalPreferencePath = null;
-		} else {
-			generalPreferencePath = SARLPreferences.getGlobalSARLOutputPath();
-			outputPath = generalPreferencePath;
+		if (outputPath == null) {
+			String message = MessageFormat.format(
+					Messages.BuildSettingWizardPage_0,
+					SARLConfig.FOLDER_SOURCE_GENERATED);
+			IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
+			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
+			return false;
 		}
-		assert (outputPath != null);
 		if (!hasSourcePath(javaProject, outputPath)) {
-			if (generalPreferencePath == null) {
-				generalPreferencePath = SARLPreferences.getGlobalSARLOutputPath();
-			}
-			assert (generalPreferencePath != null);
 			String message = MessageFormat.format(
 					Messages.SARLProjectCreationWizard_0,
 					toOSString(outputPath),
-					toOSString(projectSpecificPath),
-					toOSString(generalPreferencePath),
 					buildInvalidOutputPathMessageFragment(javaProject));
 			IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
-
 			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
-
 			return false;
 		}
 		return true;
@@ -260,10 +251,10 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	}
 
 	@Override
-	protected void handleFinishException(Shell shell, InvocationTargetException e) {
+	protected void handleFinishException(Shell shell, InvocationTargetException exception) {
 		String title = NewWizardMessages.JavaProjectWizard_op_error_title;
 		String message = NewWizardMessages.JavaProjectWizard_op_error_create_message;
-		ExceptionHandler.handle(e, getShell(), title, message);
+		ExceptionHandler.handle(exception, getShell(), title, message);
 	}
 
 	@Override
@@ -310,8 +301,8 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	private static void addNatures(IProject project) throws CoreException {
 		final IProjectDescription description = project.getDescription();
 		final List<String> natures = new ArrayList<>(Arrays.asList(description.getNatureIds()));
-		natures.add(0, SARLConfig.NATURE_ID);
-		natures.add(1, SARLConfig.XTEXT_NATURE_ID);
+		natures.add(0, SARLEclipseConfig.NATURE_ID);
+		natures.add(1, SARLEclipseConfig.XTEXT_NATURE_ID);
 		// natures.add(2, JavaCore.NATURE_ID); not necessary since the project is already a java project
 
 		final String[] newNatures = natures.toArray(new String[natures.size()]);

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
 import java.io.Serializable;
 import java.util.UUID;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class describes all the addresses used by the kernel to identify its
@@ -56,10 +59,8 @@ public class Address implements Serializable, Comparable<Address> {
 		this.spaceId = spaceId;
 	}
 
-
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public String toString() {
 		return "Address [agentId=" + this.agentId //$NON-NLS-1$
 				+ ", spaceId=" + this.spaceId //$NON-NLS-1$
@@ -71,11 +72,13 @@ public class Address implements Serializable, Comparable<Address> {
 	 *
 	 * @return the identifier associated to this address.
 	 */
+	@Pure
 	public UUID getUUID() {
 		return this.agentId;
 	}
 
 	@Override
+	@Pure
 	public int hashCode() {
 		int result = 1;
 		result = 31 * result + ((this.agentId == null) ? 0 : this.agentId.hashCode());
@@ -83,8 +86,8 @@ public class Address implements Serializable, Comparable<Address> {
 		return result;
 	}
 
-
 	@Override
+	@Pure
 	public boolean equals(Object obj) {
 		if (obj instanceof Address) {
 			return equals((Address) obj);
@@ -99,6 +102,7 @@ public class Address implements Serializable, Comparable<Address> {
 	 * @return <code>true</code> if this address and the given one are equal,
 	 *         otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean equals(Address address) {
 		return address != null && this.spaceId.equals(address.getSpaceId())
 				&& this.agentId.equals(address.getUUID());
@@ -108,28 +112,28 @@ public class Address implements Serializable, Comparable<Address> {
 	 * Compares this object with the specified object for order. Returns a
 	 * negative integer, zero, or a positive integer as this object is less
 	 * than, equal to, or greater than the specified object.
-	 * <p>
-	 * The implementor must ensure <code>sgn(x.compareTo(y)) ==
+	 *
+	 * <p>The implementor must ensure <code>sgn(x.compareTo(y)) ==
 	 * -sgn(y.compareTo(x))</code> for all <code>x</code> and <code>y</code>. (This
 	 * implies that <code>x.compareTo(y)</code> must throw an exception iff
 	 * <code>y.compareTo(x)</code> throws an exception.)
-	 * <p>
-	 * The implementor must also ensure that the relation is transitive:
+	 *
+	 * <p>The implementor must also ensure that the relation is transitive:
 	 * <code>(x.compareTo(y)&gt;0 &amp;&amp; y.compareTo(z)&gt;0)</code> implies
 	 * <code>x.compareTo(z)&gt;0</code>.
-	 * <p>
-	 * Finally, the implementor must ensure that <code>x.compareTo(y)==0</code>
+	 *
+	 * <p>Finally, the implementor must ensure that <code>x.compareTo(y)==0</code>
 	 * implies that <code>sgn(x.compareTo(z)) == sgn(y.compareTo(z))</code>, for all
 	 * <code>z</code>.
-	 * <p>
-	 * It is strongly recommended, but <i>not</i> strictly required that
+	 *
+	 * <p>It is strongly recommended, but <i>not</i> strictly required that
 	 * <code>(x.compareTo(y)==0) == (x.equals(y))</code>. Generally speaking, any
 	 * class that implements the <code>Comparable</code> interface and violates this
 	 * condition should clearly indicate this fact. The recommended language is
 	 * "Note: this class has a natural ordering that is inconsistent with
 	 * equals."
-	 * <p>
-	 * In the foregoing description, the notation <code>sgn(</code><i>expression</i>
+	 *
+	 * <p>In the foregoing description, the notation <code>sgn(</code><i>expression</i>
 	 * <code>)</code> designates the mathematical <i>signum</i> function, which is
 	 * defined to return one of <code>-1</code>, <code>0</code>, or <code>1</code> according
 	 * to whether the value of <i>expression</i> is negative, zero or positive.
@@ -139,6 +143,7 @@ public class Address implements Serializable, Comparable<Address> {
 	 *         less than, equal to, or greater than the specified object.
 	 */
 	@Override
+	@Pure
 	public int compareTo(Address address) {
 		if (address == null) {
 			return 1;
@@ -150,6 +155,7 @@ public class Address implements Serializable, Comparable<Address> {
 	 *
 	 * @return the space ID.
 	 */
+	@Pure
 	public SpaceID getSpaceId() {
 		return this.spaceId;
 	}

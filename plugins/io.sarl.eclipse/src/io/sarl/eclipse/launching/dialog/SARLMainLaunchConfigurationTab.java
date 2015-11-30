@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.eclipse.launching.dialog;
 
-import io.sarl.eclipse.SARLConfig;
-import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Utilities;
+package io.sarl.eclipse.launching.dialog;
 
 import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -43,6 +41,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
 import org.eclipse.jdt.internal.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.jdt.internal.debug.ui.launcher.AbstractJavaMainTab;
 import org.eclipse.jdt.internal.debug.ui.launcher.DebugTypeSelectionDialog;
@@ -61,10 +60,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
-import com.google.common.base.Strings;
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.util.Utilities;
 
 /**
- * Class for the main launch configuration tab.
+ * The main launch configuration tab.
+ *
+ * <p>This configuration tab enables to enter the name of the agent to launch,
+ * the launching parameters, and the SRE.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -74,19 +78,28 @@ import com.google.common.base.Strings;
 public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 	private volatile SoftReference<Image> image;
+
 	private volatile String lastAgentNameError;
+
 	private Text agentNameTextField;
+
 	private Button agentNameSearchButton;
+
 	private Button showLogoOptionButton;
+
 	private Button showLogInfoButton;
+
 	private Button offlineButton;
+
 	private Button defaultContextIdentifierButton;
+
 	private Button randomContextIdentifierButton;
+
 	private Button bootContextIdentifierButton;
 
 	private final WidgetListener defaultListener = new WidgetListener();
 
-	/**
+	/** Construct a main configuration tab for SARL project.
 	 */
 	public SARLMainLaunchConfigurationTab() {
 		//
@@ -96,7 +109,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	public Image getImage() {
 		Image img = (this.image == null) ? null : this.image.get();
 		if (img == null) {
-			img = SARLEclipsePlugin.getDefault().getImage(SARLConfig.SARL_LOGO_IMAGE);
+			img = SARLEclipsePlugin.getDefault().getImage(SARLEclipseConfig.SARL_LOGO_IMAGE);
 			this.image = new SoftReference<>(img);
 		}
 		return img;
@@ -138,7 +151,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		this.agentNameTextField.addModifyListener(new ModifyListener() {
 			@SuppressWarnings("synthetic-access")
 			@Override
-			public void modifyText(ModifyEvent e) {
+			public void modifyText(ModifyEvent event) {
 				SARLMainLaunchConfigurationTab.this.lastAgentNameError = null;
 				updateLaunchConfigurationDialog();
 			}
@@ -147,11 +160,12 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		this.agentNameSearchButton = createPushButton(group, Messages.MainLaunchConfigurationTab_1, null);
 		this.agentNameSearchButton.addSelectionListener(new SelectionListener() {
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
+			public void widgetDefaultSelected(SelectionEvent event) {
 				//
 			}
+
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				handleAgentNameSearchButtonSelected();
 			}
 		});
@@ -219,7 +233,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	protected void updateContextIdentifierTypeFromConfig(ILaunchConfiguration config) {
 		RootContextIdentifierType type = RootContextIdentifierType.DEFAULT_CONTEXT_ID;
 		try {
-			String typeName = config.getAttribute(SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
+			String typeName = config.getAttribute(SARLEclipseConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
 			if (!Strings.isNullOrEmpty(typeName)) {
 				type = RootContextIdentifierType.valueOf(typeName);
 			}
@@ -249,19 +263,19 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	protected void updateLaunchOptionsFromConfig(ILaunchConfiguration config) {
 		boolean showLogo = false;
 		try {
-			showLogo = config.getAttribute(SARLConfig.ATTR_SHOW_LOGO_OPTION, false);
+			showLogo = config.getAttribute(SARLEclipseConfig.ATTR_SHOW_LOGO_OPTION, false);
 		} catch (CoreException ce) {
 			SARLEclipsePlugin.getDefault().log(ce);
 		}
 		boolean showLogInfo = true;
 		try {
-			showLogInfo = config.getAttribute(SARLConfig.ATTR_SHOW_LOG_INFO, false);
+			showLogInfo = config.getAttribute(SARLEclipseConfig.ATTR_SHOW_LOG_INFO, false);
 		} catch (CoreException ce) {
 			SARLEclipsePlugin.getDefault().log(ce);
 		}
 		boolean offline = true;
 		try {
-			offline = config.getAttribute(SARLConfig.ATTR_SRE_OFFLINE, true);
+			offline = config.getAttribute(SARLEclipseConfig.ATTR_SRE_OFFLINE, true);
 		} catch (CoreException ce) {
 			SARLEclipsePlugin.getDefault().log(ce);
 		}
@@ -279,7 +293,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		String agentName = null;
 		try {
 			agentName = config.getAttribute(
-					SARLConfig.ATTR_AGENT_NAME,
+					SARLEclipseConfig.ATTR_AGENT_NAME,
 					(String) null);
 		} catch (CoreException ce) {
 			SARLEclipsePlugin.getDefault().log(ce);
@@ -341,8 +355,8 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	}
 
 	/** Replies if the project name is valid.
-	 * <p>
-	 * Copied from JDT.
+	 *
+	 * <p>Copied from JDT.
 	 *
 	 * @return the validity state.
 	 */
@@ -380,19 +394,19 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 				IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 				Strings.emptyToNull(this.fProjText.getText().trim()));
 		config.setAttribute(
-				SARLConfig.ATTR_AGENT_NAME,
+				SARLEclipseConfig.ATTR_AGENT_NAME,
 				Strings.emptyToNull(this.agentNameTextField.getText().trim()));
 		config.setAttribute(
-				SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE,
+				SARLEclipseConfig.ATTR_ROOT_CONTEXT_ID_TYPE,
 				getSelectedContextIdentifierType().name());
 		config.setAttribute(
-				SARLConfig.ATTR_SHOW_LOGO_OPTION,
+				SARLEclipseConfig.ATTR_SHOW_LOGO_OPTION,
 				this.showLogoOptionButton.getSelection());
 		config.setAttribute(
-				SARLConfig.ATTR_SHOW_LOG_INFO,
+				SARLEclipseConfig.ATTR_SHOW_LOG_INFO,
 				this.showLogInfoButton.getSelection());
 		config.setAttribute(
-				SARLConfig.ATTR_SRE_OFFLINE,
+				SARLEclipseConfig.ATTR_SRE_OFFLINE,
 				this.offlineButton.getSelection());
 		mapResources(config);
 	}
@@ -417,7 +431,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 */
 	@SuppressWarnings("static-method")
 	protected void initializeContextIdentifierType(ILaunchConfigurationWorkingCopy config) {
-		config.setAttribute(SARLConfig.ATTR_ROOT_CONTEXT_ID_TYPE, RootContextIdentifierType.DEFAULT_CONTEXT_ID.name());
+		config.setAttribute(SARLEclipseConfig.ATTR_ROOT_CONTEXT_ID_TYPE, RootContextIdentifierType.DEFAULT_CONTEXT_ID.name());
 	}
 
 	/**
@@ -427,35 +441,40 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 */
 	@SuppressWarnings("static-method")
 	protected void initializeLaunchOptions(ILaunchConfigurationWorkingCopy config) {
-		config.setAttribute(SARLConfig.ATTR_SHOW_LOGO_OPTION, false);
-		config.setAttribute(SARLConfig.ATTR_SHOW_LOG_INFO, true);
-		config.setAttribute(SARLConfig.ATTR_SRE_OFFLINE, true);
+		config.setAttribute(SARLEclipseConfig.ATTR_SHOW_LOGO_OPTION, false);
+		config.setAttribute(SARLEclipseConfig.ATTR_SHOW_LOG_INFO, true);
+		config.setAttribute(SARLEclipseConfig.ATTR_SRE_OFFLINE, true);
 	}
 
 	private String extractNameFromJavaElement(final IJavaElement javaElement) {
-		final String[] name = new String[1];
-		try {
-			getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void run(IProgressMonitor pm) throws InvocationTargetException {
-					try {
-						IJavaProject javaProject = javaElement.getJavaProject();
-						IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
-						IType[] types = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
-						if (types != null && types.length > 0) {
-							name[0] = types[0].getFullyQualifiedName();
+		String name = null;
+		if (javaElement != null) {
+			final String[] nameRef = new String[1];
+			try {
+				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
+					@SuppressWarnings("synthetic-access")
+					@Override
+					public void run(IProgressMonitor pm) throws InvocationTargetException {
+						try {
+							IJavaProject javaProject = javaElement.getJavaProject();
+							IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
+							IType[] types = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
+							if (types != null && types.length > 0) {
+								nameRef[0] = types[0].getFullyQualifiedName();
+							}
+						} catch (JavaModelException e) {
+							setErrorMessage(e.getLocalizedMessage());
+							JDIDebugUIPlugin.log(e);
 						}
-					} catch (JavaModelException e) {
-						setErrorMessage(e.getLocalizedMessage());
 					}
-				}
-			});
-		} catch (Exception e) {
-			setErrorMessage(e.getLocalizedMessage());
+				});
+			} catch (Exception e) {
+				setErrorMessage(e.getLocalizedMessage());
+				JDIDebugUIPlugin.log(e);
+			}
+			name = nameRef[0];
 		}
-
-		return Strings.nullToEmpty(name[0]);
+		return Strings.nullToEmpty(name);
 	}
 
 	/**
@@ -469,7 +488,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		String name = extractNameFromJavaElement(javaElement);
 
 		// Set the attribute
-		config.setAttribute(SARLConfig.ATTR_AGENT_NAME, name);
+		config.setAttribute(SARLEclipseConfig.ATTR_AGENT_NAME, name);
 
 		// Rename the launch configuration
 		if (name.length() > 0) {
@@ -500,11 +519,13 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 							res[0] = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
 						} catch (JavaModelException e) {
 							setErrorMessage(e.getLocalizedMessage());
+							JDIDebugUIPlugin.log(e);
 						}
 					}
 				});
 			} catch (Exception e) {
 				setErrorMessage(e.getLocalizedMessage());
+				JDIDebugUIPlugin.log(e);
 			}
 		}
 		return res[0];
@@ -532,11 +553,12 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 							}
 						} catch (JavaModelException e) {
 							setErrorMessage(e.getLocalizedMessage());
+							JDIDebugUIPlugin.log(e);
 						}
 					}
 				});
 				return res[0];
-			} catch (Exception _) {
+			} catch (Exception exception) {
 				//
 			}
 		}
@@ -560,7 +582,8 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		}
 	}
 
-	/**
+	/** Listener of events in internal components for refreshing the tab.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -568,20 +591,18 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 */
 	private class WidgetListener implements SelectionListener {
 
-		/**
-		 */
-		public WidgetListener() {
+		WidgetListener() {
 			//
 		}
 
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
+		public void widgetDefaultSelected(SelectionEvent event) {
 			//
 		}
 
 		@SuppressWarnings("synthetic-access")
 		@Override
-		public void widgetSelected(SelectionEvent e) {
+		public void widgetSelected(SelectionEvent event) {
 			updateLaunchConfigurationDialog();
 		}
 

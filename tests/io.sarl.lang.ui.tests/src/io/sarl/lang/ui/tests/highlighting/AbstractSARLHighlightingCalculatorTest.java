@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightedPositionAcceptor;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
 import org.eclipse.xtext.util.TextRegion;
 import org.eclipse.xtext.xbase.ui.highlighting.XbaseHighlightingConfiguration;
-import org.junit.Before;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -56,14 +55,6 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 	 */
 	protected abstract ISemanticHighlightingCalculator getCalculator();
 
-	/**
-	 * @throws Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		this.helper.waitForAutoBuild();
-	}
-
 	/** Highlight the given text.
 	 *
 	 * @param code - the SARL script.
@@ -73,7 +64,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 	protected HighlightingAsserts highlight(String code) {
 		try {
 			HighlightingAsserts asserts = new HighlightingAsserts();
-			SarlScript script = this.helper.createSARLScript(generateFilename(), code);
+			SarlScript script = file(code);
 			getCalculator().provideHighlightingFor((XtextResource) script.eResource(), asserts);
 			return asserts;
 		} catch(Exception e) {

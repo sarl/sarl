@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,16 +23,16 @@ package io.sarl.eclipse.tests.launching;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.junit.Before;
+import org.junit.Test;
+
 import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
 import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.Nullable;
-
-import org.eclipse.core.resources.IProject;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author $Author: sgalland$
@@ -43,7 +43,7 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class StandardProjectSREProviderFactoryTest extends AbstractSarlTest {
 
-	@Nullable
+	@NonNullByDefault
 	private StandardProjectSREProviderFactory factory;
 
 	@Before

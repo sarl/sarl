@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.m2e;
 
-import io.sarl.eclipse.SARLConfig;
-import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.ProjectSREProvider;
-import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
-import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.runtime.StandardSREInstall;
+package io.sarl.m2e;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -37,6 +31,13 @@ import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.internal.MavenPluginActivator;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 
+import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ProjectSREProvider;
+import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
+import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.runtime.StandardSREInstall;
+
 /** Factory of project SRE provider for the Maven projects.
  *
  * @author $Author: sgalland$
@@ -46,7 +47,7 @@ import org.eclipse.m2e.core.project.IMavenProjectFacade;
  */
 public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory {
 
-	/**
+	/** Construct the factory.
 	 */
 	public MavenProjectSREProviderFactory() {
 		//
@@ -57,7 +58,7 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 		try {
 			if (project.hasNature(IMavenConstants.NATURE_ID)
 					&& project.hasNature(JavaCore.NATURE_ID)
-					&& project.hasNature(SARLConfig.NATURE_ID)) {
+					&& project.hasNature(SARLEclipseConfig.NATURE_ID)) {
 				IMavenProjectFacade facade = MavenPluginActivator.getDefault()
 						.getMavenProjectManager().getProject(project);
 				if (facade == null) {
@@ -84,7 +85,8 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 		return null;
 	}
 
-	/**
+	/** Provider of SRE from a maven project.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -93,13 +95,14 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 	private static class MavenProjectSREProvider implements ProjectSREProvider {
 
 		private final String id;
+
 		private final IPath artifactFile;
 
 		/**
 		 * @param id - the identifier of the SRE.
 		 * @param artifactFile - the file of the artifact.
 		 */
-		public MavenProjectSREProvider(String id, IPath artifactFile) {
+		MavenProjectSREProvider(String id, IPath artifactFile) {
 			this.id = id;
 			this.artifactFile = artifactFile;
 		}

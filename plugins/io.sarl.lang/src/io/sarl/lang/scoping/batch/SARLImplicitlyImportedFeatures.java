@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ package io.sarl.lang.scoping.batch;
 
 import java.util.List;
 
-import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
-
 import com.google.inject.Singleton;
+import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 
 
 /** Provider of the implicitly imported features in the SARL language.
@@ -38,7 +37,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 
-	/**
+	/** Construct the provider.
 	 */
 	public SARLImplicitlyImportedFeatures() {
 		super();
@@ -49,6 +48,7 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 		List<Class<?>> xtextList = super.getExtensionClasses();
 		// Insert at the beginning for ensuring the SARL extension is selected before any Xtext extension.
 		xtextList.add(0, SARLMapExtensions.class);
+		xtextList.add(0, SARLTimeExtensions.class);
 		return xtextList;
 	}
 

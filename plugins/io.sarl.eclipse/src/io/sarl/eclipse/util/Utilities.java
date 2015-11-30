@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.eclipse.util;
 
-import org.osgi.framework.Version;
-
 import com.google.common.base.Strings;
+import org.osgi.framework.Version;
 
 
 /** Utilities.
@@ -38,8 +38,6 @@ public final class Utilities {
 	 */
 	public static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
-	/**
-	 */
 	private Utilities() {
 		//
 	}
@@ -53,7 +51,7 @@ public final class Utilities {
 		if (!Strings.isNullOrEmpty(version)) {
 			try {
 				return Version.parseVersion(version);
-			} catch (Throwable _) {
+			} catch (Throwable exception) {
 				//
 			}
 		}
@@ -62,15 +60,15 @@ public final class Utilities {
 
 	/** Null-safe compare a version number to a range of version numbers.
 	 *
-	 * The minVersion must be strictly lower to the maxVersion. Otherwise
+	 * <p>The minVersion must be strictly lower to the maxVersion. Otherwise
 	 * the behavior is not predictible.
 	 *
 	 * @param version - the version to compare to the range; must not be <code>null</code>.
 	 * @param minVersion - the minimal version in the range (inclusive); could be <code>null</code>.
 	 * @param maxVersion - the maximal version in the range (exclusive); could be <code>null</code>.
 	 * @return a negative number if the version in lower than the minVersion.
-	 * A positive number if the version is greater than or equal to the maxVersion.
-	 * <code>0</code> if the version is between minVersion and maxVersion.
+	 *     A positive number if the version is greater than or equal to the maxVersion.
+	 *     <code>0</code> if the version is between minVersion and maxVersion.
 	 */
 	public static int compareVersionToRange(Version version, Version minVersion, Version maxVersion) {
 		assert (minVersion == null || maxVersion == null || minVersion.compareTo(maxVersion) < 0);
@@ -86,45 +84,45 @@ public final class Utilities {
 		return 0;
 	}
 
-	private static int compareVersionsNoQualifier(Version a, Version b) {
-		if (a == b) {
+	private static int compareVersionsNoQualifier(Version firstVersion, Version secondVersion) {
+		if (firstVersion == secondVersion) {
 			return 0;
 		}
 
-		int result = a.getMajor() - b.getMajor();
+		int result = firstVersion.getMajor() - secondVersion.getMajor();
 		if (result != 0) {
 			return result;
 		}
 
-		result = a.getMinor() - b.getMinor();
+		result = firstVersion.getMinor() - secondVersion.getMinor();
 		if (result != 0) {
 			return result;
 		}
 
-		return a.getMicro() - b.getMicro();
+		return firstVersion.getMicro() - secondVersion.getMicro();
 	}
 
 	/** Null-safe comparison.
 	 *
 	 * @param <T> - type of the comparable element.
-	 * @param a - the first object.
-	 * @param b - the second object.
+	 * @param object1 - the first object.
+	 * @param object2 - the second object.
 	 * @return Negative number if a lower than b.
-	 * Positive number if a greater than b.
+	 *     Positive number if a greater than b.
 	 * <code>0</code> if a is equal to b.
 	 */
-	public static <T> int compareTo(Comparable<T> a, T b) {
-		if (a == b) {
+	public static <T> int compareTo(Comparable<T> object1, T object2) {
+		if (object1 == object2) {
 			return 0;
 		}
-		if (a == null) {
+		if (object1 == null) {
 			return Integer.MIN_VALUE;
 		}
-		if (b == null) {
+		if (object2 == null) {
 			return Integer.MAX_VALUE;
 		}
-		assert (a != null && b != null);
-		return a.compareTo(b);
+		assert (object1 != null && object2 != null);
+		return object1.compareTo(object2);
 	}
 
 }

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,6 +58,11 @@ public class Messages extends NLS {
 	public static String RuntimeEnvironmentTab_5;
 	public static String RuntimeEnvironmentTab_6;
 	public static String RuntimeEnvironmentTab_7;
+	public static String SARLArgumentsTab_0;
+	public static String SARLArgumentsTab_1;
+	public static String SARLArgumentsTab_2;
+	public static String SARLArgumentsTab_3;
+	public static String SARLArgumentsTab_4;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.core;
 
-import io.sarl.lang.util.SynchronizedCollection;
-
 import java.util.UUID;
+
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import io.sarl.lang.util.SynchronizedCollection;
 
 /**
  * An AgentContext defines the boundary of a sub-system, and gathers a collection of Spaces.
@@ -39,6 +42,7 @@ public interface AgentContext {
 	 *
 	 * @return the identifier of the context.
 	 */
+	@Pure
 	UUID getID();
 
 	/** Replies the default space of the context.
@@ -46,13 +50,25 @@ public interface AgentContext {
 	 *
 	 * @return the default space.
 	 */
+	@Pure
 	EventSpace getDefaultSpace();
 
 	/** Replies all the spaces defined in this context.
 	 *
 	 * @return the spaces.
 	 */
+	@Pure
 	SynchronizedCollection<? extends Space> getSpaces();
+
+	/** Replies all the spaces that are implementing the given specification.
+	 *
+	 * @param <S> - type of the replied space.
+	 * @param spec - specification of the space to retreive.
+	 * @return the spaces associated to the given space specification.
+	 */
+	@Pure
+	<S extends Space> SynchronizedCollection<S> getSpaces(Class<? extends SpaceSpecification<S>> spec);
+
 
 	/** Create an instance of space following the given specification.
 	 * This function always creates a new instance of space.
@@ -72,21 +88,13 @@ public interface AgentContext {
 	<S extends Space> S createSpace(Class<? extends SpaceSpecification<S>> spec,
 			UUID spaceUUID, Object... creationParams);
 
-	/** Replies all the spaces that are implementing the given specification.
-	 *
-	 * @param <S> - type of the replied space.
-	 * @param spec - specification of the space to retreive.
-	 * @return the spaces associated to the given space specification.
-	 */
-	<S extends Space> SynchronizedCollection<S> getSpaces(Class<? extends SpaceSpecification<S>> spec);
-
 	/** Retreive or create an instance of space which was created with the given specification.
-	 * <p>
-	 * This function tries to find a space that was created with the given specification.
+	 *
+	 * <p>This function tries to find a space that was created with the given specification.
 	 * If none was found, this function creates a new space with the given space
 	 * identifier and creation parameters.
-	 * <p>
-	 * <strong>Caution:</strong> The <code>spaceUUID</code> parameter is used only
+	 *
+	 * <p><strong>Caution:</strong> The <code>spaceUUID</code> parameter is used only
 	 * if no existing space created with the given specification was found.
 	 *
 	 * @param <S> - type of the replied space.
@@ -104,12 +112,12 @@ public interface AgentContext {
 			UUID spaceUUID, Object... creationParams);
 
 	/** Retreive or create an instance of space which was created with the given specification.
-	 * <p>
-	 * This function tries to find a space that was created with the given specification.
+	 *
+	 * <p>This function tries to find a space that was created with the given specification.
 	 * If none was found, this function creates a new space with the given space
 	 * identifier and creation parameters.
-	 * <p>
-	 * <strong>Caution:</strong> The <code>spaceUUID</code> parameter is used only
+	 *
+	 * <p><strong>Caution:</strong> The <code>spaceUUID</code> parameter is used only
 	 * if no existing space created with the given specification was found.
 	 *
 	 * @param <S> - type of the replied space.
@@ -125,12 +133,12 @@ public interface AgentContext {
 			UUID spaceUUID, Object... creationParams);
 
 	/** Retreive or create an instance of space with the given identifier.
-	 * <p>
-	 * This function tries to find a space with the given identifier.
+	 *
+	 * <p>This function tries to find a space with the given identifier.
 	 * If none was found, this function creates a new space with the given
 	 * specification and creation parameters.
-	 * <p>
-	 * <strong>Caution:</strong> The <code>spaceUUID</code> parameter is given to
+	 *
+	 * <p><strong>Caution:</strong> The <code>spaceUUID</code> parameter is given to
 	 * the specification when creating the space.
 	 *
 	 * @param <S> - type of the replied space.
@@ -155,6 +163,7 @@ public interface AgentContext {
 	 * @see #createSpace(Class, UUID, Object...)
 	 * @see #getOrCreateSpace(Class, UUID, Object...)
 	 */
+	@Pure
 	<S extends Space> S getSpace(UUID spaceUUID);
 
 }

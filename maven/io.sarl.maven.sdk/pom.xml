@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>io.sarl.maven</groupId>
 		<artifactId>io.sarl.maven</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.3.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>io.sarl.maven.sdk</artifactId>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<name>SDK for Maven</name>
 	<description>Provides all necessary dependencies to develop a MAS using SARL.</description>
 
@@ -51,16 +51,60 @@
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
 			<version>${xtext.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
- 		<dependency> 
- 			<groupId>org.eclipse</groupId> 
- 			<artifactId>osgi</artifactId> 
-			<version>${osgi.nls.version}</version>
- 		</dependency> 
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>${javaxinject.version}</version>
+		</dependency>
  		<dependency> 
  			<groupId>com.google.guava</groupId> 
  			<artifactId>guava</artifactId> 
-			<version>18.0</version>
+			<version>${guava.version}</version>
  		</dependency> 
 	</dependencies>
+
+	<!-- ======================================= -->
+	<!-- ==== Release Management === -->
+	<!-- ======================================= -->
+	<profiles>
+		<profile>
+			<id>maven-release-of-util-plugin</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.arakhne.afc.maven</groupId>
+							<artifactId>tag-replacer</artifactId>
+							<configuration>
+								<sources>
+									<source>${project.basedir}/src/main/java</source>
+								</sources>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<configuration>
+								<sourcepath>${project.build.directory}/generated-sources/java</sourcepath>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

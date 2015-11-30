@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,32 +18,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.lang.ui.labeling;
 
-import io.sarl.lang.sarl.Action;
-import io.sarl.lang.sarl.ActionSignature;
-import io.sarl.lang.sarl.Agent;
-import io.sarl.lang.sarl.Attribute;
-import io.sarl.lang.sarl.Behavior;
-import io.sarl.lang.sarl.BehaviorUnit;
-import io.sarl.lang.sarl.Capacity;
-import io.sarl.lang.sarl.CapacityUses;
-import io.sarl.lang.sarl.Constructor;
-import io.sarl.lang.sarl.Event;
-import io.sarl.lang.sarl.RequiredCapacity;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.Skill;
-import io.sarl.lang.ui.images.SARLImages;
-
+import com.google.inject.Inject;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
+import org.eclipse.xtend.ide.labeling.XtendDescriptionLabelProvider;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.resource.IEObjectDescription;
-import org.eclipse.xtext.xbase.ui.labeling.XbaseDescriptionLabelProvider;
+import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 
-import com.google.inject.Inject;
-
-//import org.eclipse.xtext.resource.IEObjectDescription
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.ui.images.SARLImages;
 
 /**
  * Provides labels for a IEObjectDescriptions and IResourceDescriptions.
@@ -54,12 +54,16 @@ import com.google.inject.Inject;
  * @mavenartifactid $ArtifactId$
  * @see "http://www.eclipse.org/Xtext/documentation.html#labelProvider"
  */
-public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider {
+public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider {
 
-	/** Provider of images.
-	 */
 	@Inject
-	protected SARLImages images;
+	private IXtendJvmAssociations jvmModelAssociations;
+
+	@Inject
+	private SARLImages images;
+
+	@Inject
+	private XbaseImageAdornments adornments;
 
 	/** Replies the image for a SARL script.
 	 *
@@ -84,8 +88,11 @@ public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider 
 	 * @param agent - describes the agent.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(Agent agent) {
-		return this.images.forAgent();
+	public ImageDescriptor image(SarlAgent agent) {
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(agent);
+		return this.images.forAgent(
+				agent.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for a behavior.
@@ -93,8 +100,11 @@ public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider 
 	 * @param behavior - describes the behavior.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(Behavior behavior) {
-		return this.images.forBehavior();
+	public ImageDescriptor image(SarlBehavior behavior) {
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(behavior);
+		return this.images.forBehavior(
+				behavior.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for a capacity.
@@ -102,8 +112,11 @@ public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider 
 	 * @param capacity - describes the capacity.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(Capacity capacity) {
-		return this.images.forCapacity();
+	public ImageDescriptor image(SarlCapacity capacity) {
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(capacity);
+		return this.images.forCapacity(
+				capacity.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for a skill.
@@ -111,8 +124,11 @@ public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider 
 	 * @param skill - describes the skill.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(Skill skill) {
-		return this.images.forSkill();
+	public ImageDescriptor image(SarlSkill skill) {
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(skill);
+		return this.images.forSkill(
+				skill.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for an event.
@@ -120,8 +136,11 @@ public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider 
 	 * @param event - describes the event.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(Event event) {
-		return this.images.forEvent();
+	public ImageDescriptor image(SarlEvent event) {
+		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(event);
+		return this.images.forEvent(
+				event.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for an action.
@@ -129,17 +148,11 @@ public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider 
 	 * @param action - describes the action.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(Action action) {
-		return this.images.forAction();
-	}
-
-	/** Replies the image for an action signature.
-	 *
-	 * @param signature - describes the action signature.
-	 * @return the image descriptor.
-	 */
-	public ImageDescriptor image(ActionSignature signature) {
-		return this.images.forActionSignature();
+	public ImageDescriptor image(SarlAction action) {
+		JvmOperation jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(action);
+		return this.images.forOperation(
+				action.getVisibility(),
+				this.adornments.get(jvmElement));
 	}
 
 	/** Replies the image for a capacity use.
@@ -147,7 +160,7 @@ public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider 
 	 * @param uses - describes the capacity use.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(CapacityUses uses) {
+	public ImageDescriptor image(SarlCapacityUses uses) {
 		return this.images.forCapacityUses();
 	}
 
@@ -156,7 +169,7 @@ public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider 
 	 * @param capacity - describes the required capacity.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(RequiredCapacity capacity) {
+	public ImageDescriptor image(SarlRequiredCapacity capacity) {
 		return this.images.forCapacityRequirements();
 	}
 
@@ -165,7 +178,7 @@ public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider 
 	 * @param unit - describes the behavior unit.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(BehaviorUnit unit) {
+	public ImageDescriptor image(SarlBehaviorUnit unit) {
 		return this.images.forBehaviorUnit();
 	}
 
@@ -174,10 +187,10 @@ public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider 
 	 * @param attribute - describes the attribute.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(Attribute attribute) {
-		return this.images.forAttribute(
-				(attribute == null)
-				|| (attribute.isWriteable()));
+	public ImageDescriptor image(SarlField attribute) {
+		return this.images.forField(
+				attribute.getVisibility(),
+				this.adornments.get(this.jvmModelAssociations.getJvmField(attribute)));
 	}
 
 	/** Replies the image for a constructor.
@@ -185,8 +198,10 @@ public class SARLDescriptionLabelProvider extends XbaseDescriptionLabelProvider 
 	 * @param constructor - describes the constructor.
 	 * @return the image descriptor.
 	 */
-	public ImageDescriptor image(Constructor constructor) {
-		return this.images.forConstructor(JvmVisibility.PUBLIC, 0);
+	public ImageDescriptor image(SarlConstructor constructor) {
+		return this.images.forConstructor(
+				constructor.getVisibility(),
+				this.adornments.get(this.jvmModelAssociations.getInferredConstructor(constructor)));
 	}
 
 	@Override
