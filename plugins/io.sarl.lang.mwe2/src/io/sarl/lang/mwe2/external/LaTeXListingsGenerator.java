@@ -104,7 +104,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 	/** Default definition for the overridable TeX requirements.
 	 */
 	public static final String[] DEFAULT_REQUIREMENTS = new String[] {
-			"relsize", //$NON-NLS-1$
+		"relsize", //$NON-NLS-1$
 	};
 
 	private String outputName;
@@ -122,14 +122,14 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 	private String inlineBasicStyle;
 
 	private boolean useColors = true;
-	
+
 	private boolean showLines = true;
 
 	private int lineStep = 2;
 
 	private int tabSize = 2;
 
-	private boolean showSpecialCharacters = false;
+	private boolean showSpecialCharacters;
 
 	private Collection<String> requirements;
 
