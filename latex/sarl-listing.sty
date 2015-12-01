@@ -2,6 +2,7 @@
 \ProvidesPackage{sarl-listing}[2015/12/01]
 \RequirePackage{algpseudocode}
 \RequirePackage{listings}
+\RequirePackage{xspace}
 \RequirePackage{relsize}
 \lstdefinelanguage{SARL}{%
    morecomment=[s]{/*}{*/},
@@ -35,4 +36,5 @@
    frameround=fttt, % If framed, use this rounded corner style
 }
 \newcommand{\code}[1]{{\lstinline[basicstyle=\normalcolor]{#1}}}
+\newcommand{\sarl}{\mbox{SARL}\xspace}
 \endinput

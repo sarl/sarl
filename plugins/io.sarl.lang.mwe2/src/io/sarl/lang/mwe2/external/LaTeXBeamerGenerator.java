@@ -37,6 +37,7 @@ public class LaTeXBeamerGenerator extends LaTeXListingsGenerator {
 	/** Constructs a generator for LaTeX Beamer.
 	 */
 	public LaTeXBeamerGenerator() {
+		clearRequirements();
 		setFloatBasicStyle("\\usebeamertemplate{code basic style}"); //$NON-NLS-1$
 		setInlineBasicStyle("\\usebeamertemplate{code inline style}"); //$NON-NLS-1$
 		setIdentifierStyle("\\usebeamertemplate{code identifier style}"); //$NON-NLS-1$

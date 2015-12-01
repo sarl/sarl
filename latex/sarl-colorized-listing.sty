@@ -2,6 +2,7 @@
 \ProvidesPackage{sarl-colorized-listing}[2015/12/01]
 \RequirePackage{algpseudocode}
 \RequirePackage{listings}
+\RequirePackage{xspace}
 \RequirePackage{relsize}
 \RequirePackage{xcolor}
 \definecolor{SARLblue}{RGB}{43,88,121}
@@ -48,4 +49,5 @@
    frameround=fttt, % If framed, use this rounded corner style
 }
 \newcommand{\code}[1]{{\lstinline[basicstyle=\normalcolor]{#1}}}
+\newcommand{\sarl}{\mbox{SARL}\xspace}
 \endinput

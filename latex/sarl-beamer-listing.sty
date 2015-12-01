@@ -2,7 +2,7 @@
 \ProvidesPackage{sarl-beamer-listing}[2015/12/01]
 \RequirePackage{algpseudocode}
 \RequirePackage{listings}
-\RequirePackage{relsize}
+\RequirePackage{xspace}
 \RequirePackage{xcolor}
 \definecolor{SARLblue}{RGB}{43,88,121}
 \definecolor{SARLlightblue}{RGB}{0,123,191}
@@ -48,4 +48,5 @@
    frameround=fttt, % If framed, use this rounded corner style
 }
 \newcommand{\code}[1]{{\lstinline[basicstyle=\usebeamertemplate{code inline style}]{#1}}}
+\newcommand{\sarl}{\mbox{SARL}\xspace}
 \endinput
