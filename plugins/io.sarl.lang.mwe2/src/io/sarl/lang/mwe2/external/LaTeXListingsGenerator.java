@@ -49,7 +49,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 
 	/** Default definition for the basic style for floating algorithms (without colors).
 	 */
-	public static final String DEFAULT_FLOAT_BASIC_STYLE = "\\normalcolor\\scriptsize"; //$NON-NLS-1$
+	public static final String DEFAULT_FLOAT_BASIC_STYLE = "\\normalcolor\\smaller\\smaller"; //$NON-NLS-1$
 
 	/** Default definition for the basic style for floating algorithms (with colors).
 	 */
@@ -57,7 +57,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 
 	/** Default definition for the basic style for inline code (without color).
 	 */
-	public static final String DEFAULT_INLINE_BASIC_STYLE = "\\normalcolor\\normalsize"; //$NON-NLS-1$
+	public static final String DEFAULT_INLINE_BASIC_STYLE = "\\normalcolor"; //$NON-NLS-1$
 
 	/** Default definition for the basic style for inline code (with colors).
 	 */
@@ -74,7 +74,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 
 	/** Default definition for the comment style (without color).
 	 */
-	public static final String DEFAULT_COMMENT_STYLE = "\\tiny\\bfseries"; //$NON-NLS-1$
+	public static final String DEFAULT_COMMENT_STYLE = "\\smaller\\bfseries"; //$NON-NLS-1$
 
 	/** Default definition for the identifier style (with color).
 	 */
@@ -232,6 +232,7 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 
 		append(sty, "\\RequirePackage'{'algpseudocode'}'"); //$NON-NLS-1$
 		append(sty, "\\RequirePackage'{'listings'}'"); //$NON-NLS-1$
+		append(sty, "\\RequirePackage'{'relsize'}'"); //$NON-NLS-1$
 		if (this.useColors) {
 			append(sty, "\\RequirePackage'{'xcolor'}'"); //$NON-NLS-1$
 		}
@@ -312,6 +313,9 @@ public class LaTeXListingsGenerator extends ExternalLanguageSpecificationGenerat
 				+ "underscores; it overrides ''showstringspaces''"); //$NON-NLS-1$
 		append(sty, "   showstringspaces=false, % underline spaces within strings only"); //$NON-NLS-1$
 		append(sty, "   showtabs=false, % show tabs within strings adding particular underscores"); //$NON-NLS-1$
+		append(sty, "   numbers=left,% Numbers on left"); //$NON-NLS-1$
+		append(sty, "   firstnumber=1, % First line number"); //$NON-NLS-1$
+		append(sty, "   numberfirstline=false, %Start numbers at first line"); //$NON-NLS-1$
 		append(sty, "   stepnumber=2, % the step between two line-numbers. If it''s 1, each line will be numbered"); //$NON-NLS-1$
 		append(sty, "   tabsize=2, % sets default tabsize to 2 spaces"); //$NON-NLS-1$
 		append(sty, "   title=\\lstname, % show the filename of files included with " //$NON-NLS-1$
