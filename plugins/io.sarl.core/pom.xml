@@ -59,13 +59,7 @@
 									<directory>src/main/generated-sources/sarl</directory>
 								</fileset>
 								<fileset>
-									<directory>src/main/generated-sources/xtend</directory>
-								</fileset>
-								<fileset>
 									<directory>src/test/generated-sources/sarl</directory>
-								</fileset>
-								<fileset>
-									<directory>src/test/generated-sources/xtend</directory>
 								</fileset>
 							</filesets>
 						</configuration>

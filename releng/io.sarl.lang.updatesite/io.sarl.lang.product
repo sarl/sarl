@@ -264,6 +264,7 @@
       <feature id="org.eclipse.help"/>
       <feature id="org.jboss.tools.m2e.jdt.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
+      <feature id="org.eclipse.xtext.xbase.lib"/>
       <feature id="org.eclipse.jdt"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
@@ -275,6 +276,7 @@
       <feature id="org.eclipse.equinox.p2.user.ui"/>
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
       <feature id="org.eclipse.m2e.feature"/>
+      <feature id="org.eclipse.xtext.xbase.lib.source"/>
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.ecf.core.feature"/>
       <feature id="org.eclipse.jgit"/>

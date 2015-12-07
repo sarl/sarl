@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="56">
+<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="59">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.powermock.mockito-junit.feature.feature.group" version="1.5.6.0"/>
@@ -11,10 +11,14 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.egit.feature.group" version="4.0.3.201509231615-r"/>
-<unit id="org.eclipse.xtend.sdk.feature.group" version="2.8.4.v201508050135"/>
 <unit id="org.eclipse.m2e.feature.feature.group" version="1.6.2.20150902-0002"/>
 <unit id="org.eclipse.epp.mpc.feature.group" version="1.4.1.v20150916-1928"/>
 <repository location="http://download.eclipse.org/releases/mars"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.emf.mwe2.launcher.feature.group" version="2.8.2.v201511170842"/>
+<unit id="org.eclipse.xtend.sdk.feature.group" version="2.9.0.v201512010527"/>
+<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
 </location>
 </locations>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>

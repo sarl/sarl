@@ -16,7 +16,7 @@
         <compiler.level>1.8</compiler.level>
         <sarl.version>0.3.0</sarl.version>
         <janus.version>2.0.4.0-SNAPSHOT</janus.version>
-        <xtext.version>2.8.4</xtext.version>
+        <xtext.version>2.9.0</xtext.version>
     </properties>
 
     <organization>
