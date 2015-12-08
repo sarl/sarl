@@ -30,7 +30,12 @@ A.5) If a manual test is failing: fix the problem, and go to step A.2.
 
 A.6) Test the generation of the  bundles for Maven Central:
 
-     $> ./scripts/prepare-bundles-for-central
+     $> ./scripts/prepare-bundles-for-central.sh
+
+A.7) Test the generation of the Javadoc for the plublic API
+     (the real generation will be done by the Rake script of the website):
+
+     $> ./scripts/generate-aggregate-javadoc.sh
 
 B) PHASE 2: RELEASE VERSION
 
@@ -64,7 +69,7 @@ B.5) Compiling locally without error.
 
 B.6) Prepare the bundles for Maven Central:
 
-     $> ./scripts/prepare-bundles-for-central
+     $> ./scripts/prepare-bundles-for-central.sh
 
      Copy the bundles inside a safe folder for the Phase 3.
 

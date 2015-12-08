@@ -87,7 +87,7 @@
 			<id>maven-release-of-lang-core-plugin</id>
 			<activation>
 				<property>
-					<name>performRelease</name>
+					<name>publicSarlApiModuleSet</name>
 					<value>true</value>
 				</property>
 			</activation>
@@ -100,6 +100,7 @@
 							<configuration>
 								<sources>
 									<source>${project.basedir}/src</source>
+									<source>${project.basedir}/src-gen</source>
 								</sources>
 							</configuration>
 						</plugin>

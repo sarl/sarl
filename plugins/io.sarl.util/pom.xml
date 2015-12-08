@@ -39,7 +39,7 @@
 			<id>maven-release-of-util-plugin</id>
 			<activation>
 				<property>
-					<name>performRelease</name>
+					<name>publicSarlApiModuleSet</name>
 					<value>true</value>
 				</property>
 			</activation>

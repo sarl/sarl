@@ -277,12 +277,12 @@
 						</bottom>
 						<groups>
 							<group>
-								<title>SARL Metamodel</title>
-								<packages>io.sarl.lang.core:io.sarl.lang.annotation:io.sarl.lang.util</packages>
+								<title>SARL Language</title>
+								<packages>io.sarl.lang:io.sarl.lang.core:io.sarl.lang.annotation:io.sarl.lang.scoping.batch:io.sarl.lang.util</packages>
 							</group>
 							<group>
 								<title>Standard Development Kit</title>
-								<packages>io.sarl.lang.scoping.batch:io.sarl.core:io.sarl.util</packages>
+								<packages>io.sarl.core:io.sarl.util</packages>
 							</group>
 						</groups>
 						<tags>

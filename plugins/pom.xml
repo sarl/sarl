@@ -13,16 +13,39 @@
 	<packaging>pom</packaging>
 	<name>Eclipse Plugins Parent</name>
 
-	<modules>
-		<module>io.sarl.lang.core</module>
-		<module>io.sarl.lang.mwe2</module>
-		<module>io.sarl.lang</module>
-		<module>io.sarl.lang.ui</module>
-		<module>io.sarl.util</module>
-		<module>io.sarl.core</module>
-		<module>io.sarl.eclipse</module>
-		<module>io.sarl.m2e</module>
-	</modules>
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>io.sarl.lang.core</module>
+				<module>io.sarl.lang.mwe2</module>
+				<module>io.sarl.lang</module>
+				<module>io.sarl.lang.ui</module>
+				<module>io.sarl.util</module>
+				<module>io.sarl.core</module>
+				<module>io.sarl.eclipse</module>
+				<module>io.sarl.m2e</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>public-sarl-api-module-set</id>
+			<activation>
+				<property>
+					<name>publicSarlApiModuleSet</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<modules>
+				<module>io.sarl.lang.core</module>
+				<module>io.sarl.lang</module>
+				<module>io.sarl.core</module>
+				<module>io.sarl.util</module>
+			</modules>
+		</profile>
+	</profiles>
 
 	<!-- ======================================= -->
 	<!-- ==== Plugins Dependency Management === -->
