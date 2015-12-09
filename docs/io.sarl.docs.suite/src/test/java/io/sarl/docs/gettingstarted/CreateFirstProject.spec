@@ -32,8 +32,15 @@ import io.sarl.lang.SARLConfig
 /* @outline
  *
  * <p>For developing with SARL, you should create a project.
- * This document describes two ways for created SARL projects
- * in Eclipse.
+ * This document describes two ways for created SARL projects.
+ *
+ * <p>Two ways are available for creating a SARL project:
+ * <ol>
+ * <li>creating a SARL project inside Eclipse without Maven, or</li>
+ * <li>creating a SARL project with Maven (inside or outside Eclipse).</li>
+ * </ol>
+ *
+ * <p>These two ways are explained below.
  */
 @CreateWith(SARLSpecCreator)
 describe "Create First Project" {
@@ -49,7 +56,7 @@ describe "Create First Project" {
 	 *
 	 * <p>After clicking on **Next**, the wizard is displaying the first page for creating a SARL project.
 	 */
-	describe "Create a SARL Project" {
+	describe "Create a SARL Project without Maven" {
 		
 		/* You must enter the name of your project. You could change the standard SARL and Java environment
 		 * configurations as well.
@@ -109,7 +116,7 @@ describe "Create First Project" {
 	 * 
 	 * <p>Follow the steps of the project creation wizard, and finally click on the **Finish** button.
 	 */
-	describe "Create a Project with the Maven and SARL Natures" {
+	describe "Create a SARL Project with Maven" {
 		
 		/* Open the file `pom.xml`, and edit it for obtaining a content similar to the
 		 * configuration below.
