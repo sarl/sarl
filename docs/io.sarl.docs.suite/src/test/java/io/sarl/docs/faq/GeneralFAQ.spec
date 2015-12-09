@@ -150,6 +150,21 @@ describe "General FAQ on SARL" {
 				typeof(Integer) should not be null
 			}
 
+			/* __No__.
+			 * You are able to create a SARL project inside the Eclipse environment
+			 * without Maven.
+			 * Indeed, the SARL Eclipse product provides you the feature for creating
+			 * a specific type of project for SARL.
+			 *
+			 * However, the SARL developers are recommending Maven for making easier the
+			 * management of your project dependency to the SARL libraries.
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Must I use Maven for creating a SARL project?" {
+				true
+			}
+
 			/* SRE stands for "SARL Runtime Environment".
 			 * The SRE is an implementation of an agent platform, which is able to
 			 * run a SARL program.
