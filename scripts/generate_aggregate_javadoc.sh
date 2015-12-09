@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 MODULES=(io.sarl.lang.core io.sarl.lang io.sarl.core io.sarl.util)
 
