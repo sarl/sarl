@@ -18,25 +18,25 @@ import org.eclipse.xtend.core.xtend.impl.XtendFieldImplCustom;
  */
 public class SarlFieldImpl extends XtendFieldImplCustom implements SarlField
 {
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  protected SarlFieldImpl()
-  {
-    super();
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected SarlFieldImpl()
+	{
+		super();
+	}
 
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  protected EClass eStaticClass()
-  {
-    return SarlPackage.Literals.SARL_FIELD;
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return SarlPackage.Literals.SARL_FIELD;
+	}
 
 } //SarlFieldImpl

@@ -27,7 +27,7 @@ package io.sarl.lang.ui.contentassist;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "http://www.eclipse.org/Xtext/documentation.html#contentAssist"
+ * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist"
  */
 public class SARLProposalProvider extends AbstractSARLProposalProvider {
 

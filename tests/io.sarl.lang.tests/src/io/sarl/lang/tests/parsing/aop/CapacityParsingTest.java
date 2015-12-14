@@ -15,50 +15,39 @@
  */
 package io.sarl.lang.tests.parsing.aop;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Iterator;
+import java.util.List;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
-import com.google.inject.Inject;
-
-import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
-import io.sarl.lang.sarl.SarlCapacity;
-import io.sarl.lang.sarl.SarlCapacityUses;
-import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlField;
-import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.validation.IssueCodes;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.common.types.JvmTypeConstraint;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Severity;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.validation.Issue;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XStringLiteral;
-import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.xtext.common.types.JvmTypeConstraint;
-import org.eclipse.xtext.common.types.JvmTypeParameter;
-
-import static org.junit.Assert.*;
-
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**

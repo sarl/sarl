@@ -16,21 +16,8 @@
 package io.sarl.lang.tests.compilation.oop;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
-import io.sarl.lang.SARLVersion;
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlClass;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.tests.api.AbstractSarlTest;
-
-import java.util.Map;
-
-import org.eclipse.xtext.common.types.JvmTypeConstraint;
-import org.eclipse.xtext.common.types.JvmTypeParameter;
-import org.eclipse.xtext.common.types.TypesPackage;
-
+import com.google.inject.Inject;
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
@@ -38,7 +25,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-import com.google.inject.Inject;
+
+import io.sarl.lang.SARLVersion;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$

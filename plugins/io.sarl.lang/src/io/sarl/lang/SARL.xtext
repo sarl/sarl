@@ -105,7 +105,7 @@ Action returns xtend::XtendFunction:
 		&
 		('with' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)*)?
 	)
-	=> (expression=XBlockExpression | expression=RichString | ';')?
+	=> (expression=XBlockExpression | ';')?
 ;
 
 Constructor returns xtend::XtendConstructor:
@@ -128,7 +128,7 @@ BehaviorUnit returns xtend::XtendMember:
 	{SarlBehaviorUnit}
 	annotations+=XAnnotation*
 	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')?
-	(expression=XBlockExpression | expression=RichString | ';')
+	(expression=XBlockExpression | ';')
 ;
 
 CapacityUses returns xtend::XtendMember:

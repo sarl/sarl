@@ -53,7 +53,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.xtext.junit4.ui.util.JavaProjectSetupUtil;
 import org.eclipse.xtext.ui.XtextProjectHelper;
 import org.eclipse.xtext.ui.util.PluginProjectFactory;
-import org.eclipse.xtext.xbase.compiler.JavaVersion;
+import org.eclipse.xtext.util.JavaVersion;
 import org.junit.Assume;
 import org.junit.ComparisonFailure;
 

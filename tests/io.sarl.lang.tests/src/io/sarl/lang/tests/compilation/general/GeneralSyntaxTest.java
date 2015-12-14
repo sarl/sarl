@@ -15,24 +15,11 @@
  */
 package io.sarl.lang.tests.compilation.general;
 
-import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.XtextPackage;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
-import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
-import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.eclipse.xtext.xtype.XtypePackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-
 import com.google.inject.Inject;
+import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
+import org.junit.Test;
+
+import io.sarl.tests.api.AbstractSarlTest;
 
 
 /**

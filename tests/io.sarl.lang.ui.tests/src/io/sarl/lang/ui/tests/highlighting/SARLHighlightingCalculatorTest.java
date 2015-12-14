@@ -20,12 +20,11 @@
  */
 package io.sarl.lang.ui.tests.highlighting;
 
-import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
-
-import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
+import com.google.inject.Inject;
+import org.eclipse.xtext.ide.editor.syntaxcoloring.ISemanticHighlightingCalculator;
 import org.junit.Test;
 
-import com.google.inject.Inject;
+import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 
 /**
  * @author $Author: sgalland$

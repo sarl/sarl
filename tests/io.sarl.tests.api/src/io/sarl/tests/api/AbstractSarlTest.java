@@ -78,7 +78,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import io.sarl.lang.SARLInjectorProvider;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -95,6 +94,7 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.tests.SARLInjectorProvider;
 
 /** Abstract class that is providing useful tools for unit tests.
  *

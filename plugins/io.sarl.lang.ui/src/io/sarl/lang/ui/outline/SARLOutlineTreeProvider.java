@@ -55,7 +55,7 @@ import io.sarl.lang.sarl.SarlScript;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "http://www.eclipse.org/Xtext/documentation.html#outline"
+ * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#outline"
  */
 public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProvider {
 

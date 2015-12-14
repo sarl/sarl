@@ -23,7 +23,7 @@ package io.sarl.lang.ui.highlighting;
 
 import java.util.Map;
 
-import org.eclipse.xtend.ide.highlighting.XtendHighlightingCalculator;
+import org.eclipse.xtend.ide.common.highlighting.XtendHighlightingCalculator;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration;
 
 import io.sarl.lang.SARLKeywords;

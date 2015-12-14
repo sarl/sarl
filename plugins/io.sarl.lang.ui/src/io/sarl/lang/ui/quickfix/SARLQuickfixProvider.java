@@ -86,7 +86,7 @@ import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "http://www.eclipse.org/Xtext/documentation.html#quickfixes"
+ * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#quick-fixes"
  */
 @SuppressWarnings({"static-method", "checkstyle:methodcount"})
 public class SARLQuickfixProvider extends XtendQuickfixProvider {

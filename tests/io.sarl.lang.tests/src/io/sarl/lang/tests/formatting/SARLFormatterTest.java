@@ -16,13 +16,9 @@
 package io.sarl.lang.tests.formatting;
 
 import static org.junit.Assert.assertEquals;
-import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.tests.api.AbstractSarlTest;
 
+import com.google.inject.Inject;
 import org.eclipse.xtext.formatting.INodeModelFormatter;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.resource.XtextResource;
@@ -31,7 +27,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.google.inject.Inject;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: srodriguez$

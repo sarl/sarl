@@ -27,62 +27,62 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  */
 public interface SarlSkill extends XtendTypeDeclaration
 {
-  /**
-   * Returns the value of the '<em><b>Extends</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Extends</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Extends</em>' containment reference.
-   * @see #setExtends(JvmParameterizedTypeReference)
-   * @see io.sarl.lang.sarl.SarlPackage#getSarlSkill_Extends()
-   * @model containment="true"
-   * @generated
-   */
-  JvmParameterizedTypeReference getExtends();
+	/**
+	 * Returns the value of the '<em><b>Extends</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Extends</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Extends</em>' containment reference.
+	 * @see #setExtends(JvmParameterizedTypeReference)
+	 * @see io.sarl.lang.sarl.SarlPackage#getSarlSkill_Extends()
+	 * @model containment="true"
+	 * @generated
+	 */
+	JvmParameterizedTypeReference getExtends();
 
-  /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.SarlSkill#getExtends <em>Extends</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Extends</em>' containment reference.
-   * @see #getExtends()
-   * @generated
-   */
-  void setExtends(JvmParameterizedTypeReference value);
+	/**
+	 * Sets the value of the '{@link io.sarl.lang.sarl.SarlSkill#getExtends <em>Extends</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Extends</em>' containment reference.
+	 * @see #getExtends()
+	 * @generated
+	 */
+	void setExtends(JvmParameterizedTypeReference value);
 
-  /**
-   * Returns the value of the '<em><b>Implements</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.xtext.common.types.JvmParameterizedTypeReference}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Implements</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Implements</em>' containment reference list.
-   * @see io.sarl.lang.sarl.SarlPackage#getSarlSkill_Implements()
-   * @model containment="true"
-   * @generated
-   */
-  EList<JvmParameterizedTypeReference> getImplements();
+	/**
+	 * Returns the value of the '<em><b>Implements</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.xtext.common.types.JvmParameterizedTypeReference}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Implements</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Implements</em>' containment reference list.
+	 * @see io.sarl.lang.sarl.SarlPackage#getSarlSkill_Implements()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<JvmParameterizedTypeReference> getImplements();
 
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @model kind="operation"
-   * @generated
-   */
-  boolean isAbstract();
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	boolean isAbstract();
 
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @model kind="operation"
-   * @generated
-   */
-  boolean isStrictFloatingPoint();
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	boolean isStrictFloatingPoint();
 
 } // SarlSkill

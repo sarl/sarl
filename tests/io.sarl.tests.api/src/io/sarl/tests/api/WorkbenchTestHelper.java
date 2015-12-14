@@ -88,8 +88,8 @@ import org.eclipse.xtext.ui.editor.XtextEditorInfo;
 import org.eclipse.xtext.ui.editor.utils.EditorUtils;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.util.PluginProjectFactory;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.StringInputStream;
-import org.eclipse.xtext.xbase.compiler.JavaVersion;
 import org.eclipse.xtext.xbase.lib.Functions;
 import org.osgi.framework.Bundle;
 

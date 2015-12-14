@@ -25,7 +25,7 @@ import com.google.inject.Injector;
 import org.eclipse.xtext.ui.guice.AbstractGuiceAwareExecutableExtensionFactory;
 import org.osgi.framework.Bundle;
 
-import io.sarl.lang.ui.internal.SARLActivator;
+import io.sarl.lang.ui.internal.LangActivator;
 
 /** Factory for injecting SARL instances.
  *
@@ -43,7 +43,7 @@ public class SARLEclipseExecutableExtensionFactory extends AbstractGuiceAwareExe
 
 	@Override
 	protected Injector getInjector() {
-		return SARLActivator.getInstance().getInjector(SARLActivator.IO_SARL_LANG_SARL);
+		return LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
 	}
 
 }

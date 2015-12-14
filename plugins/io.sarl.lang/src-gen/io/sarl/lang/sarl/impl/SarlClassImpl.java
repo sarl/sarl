@@ -18,25 +18,25 @@ import org.eclipse.xtend.core.xtend.impl.XtendClassImplCustom;
  */
 public class SarlClassImpl extends XtendClassImplCustom implements SarlClass
 {
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  protected SarlClassImpl()
-  {
-    super();
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected SarlClassImpl()
+	{
+		super();
+	}
 
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  protected EClass eStaticClass()
-  {
-    return SarlPackage.Literals.SARL_CLASS;
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return SarlPackage.Literals.SARL_CLASS;
+	}
 
 } //SarlClassImpl
