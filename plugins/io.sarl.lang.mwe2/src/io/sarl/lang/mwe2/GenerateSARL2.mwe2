@@ -57,7 +57,6 @@ var sublimeToolPath = "${rootRootPath}/external_tools/sublimetext"
 var webjsPath = "${rootRootPath}/maven/io.sarl.maven.docs.generator/src/main/resources/org/jnario/doc/js"
 
 var file.extensions = "sarl"
-var debug = true
 var fileEncoding = "UTF-8"
 var lineDelimiter = "\n"
 var fileHeader = "/*
@@ -220,7 +219,7 @@ Workflow {
 			}
 
 			fragment = serializer.SerializerFragment2 auto-inject {
-				generateDebugData = debug
+				generateDebugData = false // If true, generates plenty of ".dot" files for analyzing the grammar.
 				generateStub = false
 			}
 
