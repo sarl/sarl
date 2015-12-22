@@ -243,7 +243,7 @@ Workflow {
 			}
 
 			fragment = formatting.Formatter2Fragment2 auto-inject {
-				generateStub = false
+				generateStub = true
 			}
 
 			fragment = generator.GeneratorFragment2 auto-inject {
@@ -295,7 +295,7 @@ Workflow {
 			fragment = ui.templates.CodetemplatesGeneratorFragment2 auto-inject {
 			}
 
-			fragment = Junit4Fragment2 auto-inject {
+			fragment = junit.Junit4Fragment2 auto-inject {
 				generateStub = false
 			}
 
@@ -359,6 +359,10 @@ Workflow {
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.validation.FeatureNameValidator"
     				to = "io.sarl.lang.validation.SARLFeatureNameValidator"
+    			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.formatting2.FormatterPreferenceKeys"
+    				to = "io.sarl.lang.formatting2.SARLFormatterPreferenceKeys"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer"
@@ -474,6 +478,10 @@ Workflow {
     			comment = "Bindings required by extended Xtend API"
 
     			runtime = {
+    				bind = "org.eclipse.xtend.core.macro.AbstractFileSystemSupport"
+    				to = "org.eclipse.xtend.core.macro.JavaIOFileSystemSupport"
+    			}
+    			runtime = {
     				bind = "org.eclipse.xtext.xbase.scoping.batch.ConstructorScopes"
     				to = "org.eclipse.xtend.core.scoping.AnonymousClassConstructorScopes"
     			}
@@ -539,21 +547,17 @@ Workflow {
     			runtime = {
     				bind = "org.eclipse.xtext.parser.antlr.IPartialParsingHelper"
     				to = "org.eclipse.xtend.core.parser.XtendPartialParsingHelper"
-   				}
-    			runtime = {
-    				bind = "org.eclipse.xtext.preferences.IPreferenceValuesProvider"
-    				annotatedWith = "org.eclipse.xtext.formatting2.FormatterPreferences"
-    				to = "org.eclipse.xtext.formatting2.FormatterPreferenceValuesProvider"
+    				functionName = "bindIPartialParserHelper"
    				}
     			runtime = {
     				bind = "org.eclipse.xtext.naming.IQualifiedNameProvider"
     				to = "org.eclipse.xtend.core.naming.XtendQualifiedNameProvider"
     				override = true
    				}
-//    			runtime = {
-//    				bind = "org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry"
-//    				to = "org.eclipse.xtend.core.macro.declaration.NopResourceChangeRegistry"
-// 				}
+    			runtime = {
+    				bind = "org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry"
+    				to = "org.eclipse.xtend.core.macro.declaration.NopResourceChangeRegistry"
+ 				}
     			runtime = {
     				bind = "org.eclipse.xtext.resource.IResourceDescriptions"
     				to = "org.eclipse.xtext.resource.impl.EagerResourceSetBasedResourceDescriptions"
@@ -573,6 +577,7 @@ Workflow {
     				bind = "org.eclipse.xtext.scoping.IScopeProvider"
     				annotatedWith = "org.eclipse.xtext.serializer.tokens.SerializerScopeProviderBinding"
     				to = "org.eclipse.xtend.core.serializer.XtendSerializerScopeProvider"
+    				functionName = "configureSerializerIScopeProvider"
    				}
     			runtime = {
     				bind = "org.eclipse.xtext.generator.IShouldGenerate"
@@ -640,6 +645,10 @@ Workflow {
     				to = "io.sarl.lang.ui.builder.ProjectRelativeFileSystemAccess"
    				}
     			ui = {
+    				bind = "org.eclipse.xtend.core.macro.AbstractFileSystemSupport"
+    				to = "org.eclipse.xtend.ide.macro.EclipseFileSystemSupportImpl"
+    			}
+    			ui = {
     				bind = "org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher$CamelCase"
     				to = "org.eclipse.xtend.ide.contentassist.EscapeSequenceAwarePrefixMatcher"
    				}
@@ -687,6 +696,10 @@ Workflow {
     				override = true
    				}
     			ui = {
+    				bind = "org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry"
+    				to = "org.eclipse.xtend.ide.builder.UIResourceChangeRegistry"
+ 				}
+    			ui = {
     				bind = "org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
     				to = "org.eclipse.xtend.ide.XtendResourceUiServiceProvider"
    				}
@@ -713,6 +726,10 @@ Workflow {
    				}
     		}
 
+	    	// Injection recommender
+    		fragment = InjectionRecommender2 auto-inject {
+    			enable = false
+    		}
 		}
  	}
  

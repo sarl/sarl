@@ -21,6 +21,9 @@
 
 package io.sarl.lang.mwe2.binding;
 
+import java.text.MessageFormat;
+import java.util.Objects;
+
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -33,6 +36,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  */
 public class BindingElement {
+	
+	private static final int HASH_VALUE = 31;
 
 	private String functionName;
 
@@ -52,6 +57,36 @@ public class BindingElement {
 	
 	private boolean overridePreviousDefinition;
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof BindingElement) {
+			return Objects.equals(getBind(), ((BindingElement) obj).getBind())
+					&& Objects.equals(getAnnotatedWith(), ((BindingElement) obj).getAnnotatedWith())
+					&& Objects.equals(getAnnotatedWithName(), ((BindingElement) obj).getAnnotatedWithName());
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		int h = 1;
+		h = h * HASH_VALUE + (getBind() != null ? getBind().hashCode() : 0);
+		h = h * HASH_VALUE + (getAnnotatedWith() != null ? getAnnotatedWith().hashCode() : 0);
+		h = h * HASH_VALUE + (getAnnotatedWithName() != null ? getAnnotatedWithName().hashCode() : 0);
+		return h;
+	}
+	
+	@Override
+	public String toString() {
+		if (!Strings.isEmpty(getAnnotatedWith())) {
+			return MessageFormat.format("@{2} {0} => {1}", getBind(), getTo(), getAnnotatedWith()); //$NON-NLS-1$
+		}
+		if (!Strings.isEmpty(getAnnotatedWithName())) {
+			return MessageFormat.format("@Named({2}) {0} => {1}", getBind(), getTo(), getAnnotatedWithName()); //$NON-NLS-1$
+		}
+		return MessageFormat.format("{0} => {1}", getBind(), getTo()); //$NON-NLS-1$
+	}
+	
 	/** Set the element could override a previously defined element.
 	 *
 	 * @param override <code>true</code> for overriding.
