@@ -34,10 +34,6 @@ SarlScript returns xtend::XtendFile:
 	xtendTypes+=Type*
 ;
 
-VarArgToken:
-	'*'
-;
-
 Type returns xtend::XtendTypeDeclaration:
 	Event | Capacity | Agent | Behavior | Skill | Class | Interface | Enum | AnnotationType 
 ;
@@ -114,21 +110,21 @@ Constructor returns xtend::XtendConstructor:
 	modifiers+=CommonModifier*
 	'new'
 	('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?
-	(=> '(' (parameters+=Parameter (',' parameters+=Parameter)*)?
+	('(' (parameters+=Parameter (=> ',' parameters+=Parameter)*)?
 	  ')'
 	)?
 	( ('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
 	  &
 	  ('with' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)*)?
 	)
-	expression=XBlockExpression
+	=> expression=XBlockExpression
 ;
 
 BehaviorUnit returns xtend::XtendMember:
 	{SarlBehaviorUnit}
 	annotations+=XAnnotation*
 	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')?
-	(expression=XBlockExpression | ';')
+	expression=XBlockExpression
 ;
 
 CapacityUses returns xtend::XtendMember:
@@ -257,7 +253,7 @@ Parameter returns xtend::XtendParameter:
 	annotations+=XAnnotation*
 	(extension?='extension' annotations+=XAnnotation*)?
 	name=InnerVarID ':' parameterType=JvmTypeReference 
-	(   (varArg?=VarArgToken)
+	(   (varArg?='*')
 	  | ('=' defaultValue=DefaultParameterValue))?
 ;
 

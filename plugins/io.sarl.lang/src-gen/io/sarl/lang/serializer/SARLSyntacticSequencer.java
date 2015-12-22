@@ -89,8 +89,6 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 			return getArrayBracketsToken(semanticObject, ruleCall, node);
 		else if (ruleCall.getRule() == grammarAccess.getOpSingleAssignRule())
 			return getOpSingleAssignToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getVarArgTokenRule())
-			return getVarArgTokenToken(semanticObject, ruleCall, node);
 		return "";
 	}
 	
@@ -114,17 +112,6 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 		if (node != null)
 			return getTokenText(node);
 		return "=";
-	}
-	
-	/**
-	 * VarArgToken:
-	 * 	'*'
-	 * ;
-	 */
-	protected String getVarArgTokenToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return "*";
 	}
 	
 	@Override

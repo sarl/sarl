@@ -33,6 +33,8 @@ import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.ecoregenerator.helper.SARLHiddenTokenSequencer;
 import io.sarl.lang.findreferences.SARLReferenceFinder;
+import io.sarl.lang.formatting2.SARLFormatter;
+import io.sarl.lang.formatting2.SARLFormatterPreferenceKeys;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.parser.antlr.SARLAntlrTokenFileProvider;
@@ -67,7 +69,10 @@ import org.eclipse.xtend.core.imports.XtendImportsConfiguration;
 import org.eclipse.xtend.core.imports.XtendTypeUsageCollector;
 import org.eclipse.xtend.core.linking.RuntimeLinker;
 import org.eclipse.xtend.core.linking.XtendEObjectAtOffsetHelper;
+import org.eclipse.xtend.core.macro.AbstractFileSystemSupport;
 import org.eclipse.xtend.core.macro.JavaIOFileSystemSupport;
+import org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry;
+import org.eclipse.xtend.core.macro.declaration.NopResourceChangeRegistry;
 import org.eclipse.xtend.core.naming.XtendQualifiedNameProvider;
 import org.eclipse.xtend.core.parser.XtendPartialParsingHelper;
 import org.eclipse.xtend.core.resource.XtendLocationInFileProvider;
@@ -93,8 +98,10 @@ import org.eclipse.xtext.documentation.IEObjectDocumentationProvider;
 import org.eclipse.xtext.documentation.IFileHeaderProvider;
 import org.eclipse.xtext.findReferences.ReferenceFinder;
 import org.eclipse.xtext.findReferences.TargetURICollector;
+import org.eclipse.xtext.formatting2.FormatterPreferenceKeys;
 import org.eclipse.xtext.formatting2.FormatterPreferenceValuesProvider;
 import org.eclipse.xtext.formatting2.FormatterPreferences;
+import org.eclipse.xtext.formatting2.IFormatter2;
 import org.eclipse.xtext.generator.IContextualOutputConfigurationProvider;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.generator.IShouldGenerate;
@@ -263,6 +270,16 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 		return SARLValidator.class;
 	}
 	
+	// contributed by org.eclipse.xtext.xtext.generator.formatting.Formatter2Fragment2
+	public Class<? extends IFormatter2> bindIFormatter2() {
+		return SARLFormatter.class;
+	}
+	
+	// contributed by org.eclipse.xtext.xtext.generator.formatting.Formatter2Fragment2
+	public void configureFormatterPreferences(Binder binder) {
+		binder.bind(IPreferenceValuesProvider.class).annotatedWith(FormatterPreferences.class).to(FormatterPreferenceValuesProvider.class);
+	}
+	
 	// contributed by org.eclipse.xtext.xtext.generator.scoping.ImportNamespacesScopingFragment2
 	public Class<? extends IScopeProvider> bindIScopeProvider() {
 		return SARLScopeProvider.class;
@@ -322,6 +339,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends EarlyExitValidator> bindEarlyExitValidator() {
 		return SARLEarlyExitValidator.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends FormatterPreferenceKeys> bindFormatterPreferenceKeys() {
+		return SARLFormatterPreferenceKeys.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -395,11 +417,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public Class<? extends IPartialParsingHelper> bindIPartialParsingHelper() {
-		return XtendPartialParsingHelper.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends ILinker> bindILinker() {
 		return RuntimeLinker.class;
 	}
@@ -407,6 +424,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends XbaseValueConverterService.IntUnderscoreValueConverter> bindXbaseValueConverterService$IntUnderscoreValueConverter() {
 		return IntUnderscoreValueConverter.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends AbstractFileSystemSupport> bindAbstractFileSystemSupport() {
+		return JavaIOFileSystemSupport.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
@@ -461,6 +483,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public void configureSerializerIScopeProvider(Binder binder) {
+		binder.bind(IScopeProvider.class).annotatedWith(SerializerScopeProviderBinding.class).to(XtendSerializerScopeProvider.class);
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends IImportsConfiguration> bindIImportsConfiguration() {
 		return XtendImportsConfiguration.class;
 	}
@@ -502,11 +529,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public void configureIScopeProvider(Binder binder) {
-		binder.bind(IScopeProvider.class).annotatedWith(SerializerScopeProviderBinding.class).to(XtendSerializerScopeProvider.class);
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends ConstructorScopes> bindConstructorScopes() {
 		return AnonymousClassConstructorScopes.class;
 	}
@@ -537,8 +559,8 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public void configureIPreferenceValuesProvider(Binder binder) {
-		binder.bind(IPreferenceValuesProvider.class).annotatedWith(FormatterPreferences.class).to(FormatterPreferenceValuesProvider.class);
+	public Class<? extends IResourceChangeRegistry> bindIResourceChangeRegistry() {
+		return NopResourceChangeRegistry.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
@@ -559,6 +581,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends HumanReadableTypeNames> bindHumanReadableTypeNames() {
 		return LocalClassAwareTypeNames.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends IPartialParsingHelper> bindIPartialParserHelper() {
+		return XtendPartialParsingHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

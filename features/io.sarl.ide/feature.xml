@@ -329,8 +329,8 @@
       <import feature="org.eclipse.equinox.p2.extras.feature" version="1.2.100.v20150601-1708"/>
       <import feature="org.eclipse.equinox.p2.rcp.feature" version="1.2.101.v20150826-1318"/>
       <import feature="org.eclipse.equinox.p2.user.ui" version="2.2.101.v20150826-1318"/>
-      <import plugin="org.eclipse.xtend.core" version="2.9.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui" version="2.9.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.core" version="2.9.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui" version="2.9.1" match="greaterOrEqual"/>
    </requires>
 
    <plugin

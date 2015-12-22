@@ -185,28 +185,6 @@ ruleSarlScript returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleVarArgToken
-entryRuleVarArgToken returns [String current=null]:
-	{ newCompositeNode(grammarAccess.getVarArgTokenRule()); }
-	iv_ruleVarArgToken=ruleVarArgToken
-	{ $current=$iv_ruleVarArgToken.current.getText(); }
-	EOF;
-
-// Rule VarArgToken
-ruleVarArgToken returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	kw='*'
-	{
-		$current.merge(kw);
-		newLeafNode(kw, grammarAccess.getVarArgTokenAccess().getAsteriskKeyword());
-	}
-;
-
 // Entry rule entryRuleType
 entryRuleType returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getTypeRule()); }
@@ -1665,13 +1643,10 @@ ruleConstructor returns [EObject current=null]
 			}
 		)?
 		(
-			(
-				('(')=>
-				otherlv_9='('
-				{
-					newLeafNode(otherlv_9, grammarAccess.getConstructorAccess().getLeftParenthesisKeyword_5_0());
-				}
-			)
+			otherlv_9='('
+			{
+				newLeafNode(otherlv_9, grammarAccess.getConstructorAccess().getLeftParenthesisKeyword_5_0());
+			}
 			(
 				(
 					(
@@ -1693,10 +1668,13 @@ ruleConstructor returns [EObject current=null]
 					)
 				)
 				(
-					otherlv_11=','
-					{
-						newLeafNode(otherlv_11, grammarAccess.getConstructorAccess().getCommaKeyword_5_1_1_0());
-					}
+					(
+						(',')=>
+						otherlv_11=','
+						{
+							newLeafNode(otherlv_11, grammarAccess.getConstructorAccess().getCommaKeyword_5_1_1_0());
+						}
+					)
 					(
 						(
 							{
@@ -1856,6 +1834,10 @@ ruleConstructor returns [EObject current=null]
 				}
 		)
 		(
+			((
+				ruleXBlockExpression
+			)
+			)=>
 			(
 				{
 					newCompositeNode(grammarAccess.getConstructorAccess().getExpressionXBlockExpressionParserRuleCall_7_0());
@@ -1982,29 +1964,22 @@ ruleBehaviorUnit returns [EObject current=null]
 		)?
 		(
 			(
-				(
-					{
-						newCompositeNode(grammarAccess.getBehaviorUnitAccess().getExpressionXBlockExpressionParserRuleCall_5_0_0());
+				{
+					newCompositeNode(grammarAccess.getBehaviorUnitAccess().getExpressionXBlockExpressionParserRuleCall_5_0());
+				}
+				lv_expression_7_0=ruleXBlockExpression
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getBehaviorUnitRule());
 					}
-					lv_expression_7_0=ruleXBlockExpression
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getBehaviorUnitRule());
-						}
-						set(
-							$current,
-							"expression",
-							lv_expression_7_0,
-							"org.eclipse.xtext.xbase.Xbase.XBlockExpression");
-						afterParserOrEnumRuleCall();
-					}
-				)
+					set(
+						$current,
+						"expression",
+						lv_expression_7_0,
+						"org.eclipse.xtext.xbase.Xbase.XBlockExpression");
+					afterParserOrEnumRuleCall();
+				}
 			)
-			    |
-			otherlv_8=';'
-			{
-				newLeafNode(otherlv_8, grammarAccess.getBehaviorUnitAccess().getSemicolonKeyword_5_1());
-			}
 		)
 	)
 ;
@@ -4136,20 +4111,15 @@ ruleParameter returns [EObject current=null]
 		(
 			(
 				(
+					lv_varArg_7_0='*'
 					{
-						newCompositeNode(grammarAccess.getParameterAccess().getVarArgVarArgTokenParserRuleCall_6_0_0());
+						newLeafNode(lv_varArg_7_0, grammarAccess.getParameterAccess().getVarArgAsteriskKeyword_6_0_0());
 					}
-					lv_varArg_7_0=ruleVarArgToken
 					{
 						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getParameterRule());
+							$current = createModelElement(grammarAccess.getParameterRule());
 						}
-						set(
-							$current,
-							"varArg",
-							true,
-							"io.sarl.lang.SARL.VarArgToken");
-						afterParserOrEnumRuleCall();
+						setWithLastConsumed($current, "varArg", true, "*");
 					}
 				)
 			)

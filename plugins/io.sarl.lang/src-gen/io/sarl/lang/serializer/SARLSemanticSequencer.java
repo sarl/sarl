@@ -741,7 +741,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     SkillMember returns SarlBehaviorUnit
 	 *
 	 * Constraint:
-	 *     (annotations+=XAnnotation* name=JvmParameterizedTypeReference guard=XExpression? expression=XBlockExpression?)
+	 *     (annotations+=XAnnotation* name=JvmParameterizedTypeReference guard=XExpression? expression=XBlockExpression)
 	 */
 	protected void sequence_BehaviorUnit(ISerializationContext context, SarlBehaviorUnit semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -960,7 +960,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         (extension?='extension' annotations+=XAnnotation*)? 
 	 *         name=InnerVarID 
 	 *         parameterType=JvmTypeReference 
-	 *         (varArg?=VarArgToken | defaultValue=DefaultParameterValue)?
+	 *         (varArg?='*' | defaultValue=DefaultParameterValue)?
 	 *     )
 	 */
 	protected void sequence_Parameter(ISerializationContext context, SarlFormalParameter semanticObject) {

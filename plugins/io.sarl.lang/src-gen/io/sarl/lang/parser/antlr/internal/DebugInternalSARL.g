@@ -36,11 +36,6 @@ ruleSarlScript:
 	*
 ;
 
-// Rule VarArgToken
-ruleVarArgToken:
-	'*'
-;
-
 // Rule Type
 ruleType:
 	(
@@ -263,14 +258,14 @@ ruleConstructor:
 		'>'
 	)?
 	(
-		(
-			('(')=>
-			'('
-		)
+		'('
 		(
 			ruleParameter
 			(
-				','
+				(
+					(',')=>
+					','
+				)
 				ruleParameter
 			)*
 		)?
@@ -294,7 +289,11 @@ ruleConstructor:
 		)*
 	)?
 	)*
-	ruleXBlockExpression
+	(
+		(ruleXBlockExpression
+		)=>
+		ruleXBlockExpression
+	)
 ;
 
 // Rule BehaviorUnit
@@ -311,11 +310,7 @@ ruleBehaviorUnit:
 		ruleXExpression
 		']'
 	)?
-	(
-		ruleXBlockExpression
-		    |
-		';'
-	)
+	ruleXBlockExpression
 ;
 
 // Rule CapacityUses
@@ -612,7 +607,7 @@ ruleParameter:
 	':'
 	ruleJvmTypeReference
 	(
-		ruleVarArgToken
+		'*'
 		    |
 		'='
 		ruleDefaultParameterValue

@@ -100,17 +100,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//Type
 		public RuleCall getXtendTypesTypeParserRuleCall_3_0() { return cXtendTypesTypeParserRuleCall_3_0; }
 	}
-	public class VarArgTokenElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.VarArgToken");
-		private final Keyword cAsteriskKeyword = (Keyword)rule.eContents().get(1);
-		
-		//VarArgToken:
-		//	'*';
-		@Override public ParserRule getRule() { return rule; }
-		
-		//'*'
-		public Keyword getAsteriskKeyword() { return cAsteriskKeyword; }
-	}
 	public class TypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.Type");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -847,16 +836,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//Constructor xtend::XtendConstructor:
 		//	{SarlConstructor} annotations+=XAnnotation*
 		//	modifiers+=CommonModifier*
-		//	'new' ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')? (=> '('
-		//	(parameters+=Parameter (',' parameters+=Parameter)*)?
+		//	'new' ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')? ('(' (parameters+=Parameter
+		//	(=> ',' parameters+=Parameter)*)?
 		//	')')? (('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
-		//	& ('with' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)*)?) expression=XBlockExpression
+		//	& ('with' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)*)?)
+		//	=> expression=XBlockExpression
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{SarlConstructor} annotations+=XAnnotation* modifiers+=CommonModifier* 'new' ('<' typeParameters+=JvmTypeParameter (','
-		//typeParameters+=JvmTypeParameter)* '>')? (=> '(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')')? (('throws'
+		//typeParameters+=JvmTypeParameter)* '>')? ('(' (parameters+=Parameter (=> ',' parameters+=Parameter)*)? ')')? (('throws'
 		//exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)? & ('with' typeParameters+=JvmTypeParameter (','
-		//typeParameters+=JvmTypeParameter)*)?) expression=XBlockExpression
+		//typeParameters+=JvmTypeParameter)*)?) => expression=XBlockExpression
 		public Group getGroup() { return cGroup; }
 		
 		//{SarlConstructor}
@@ -904,13 +894,13 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//'>'
 		public Keyword getGreaterThanSignKeyword_4_3() { return cGreaterThanSignKeyword_4_3; }
 		
-		//(=> '(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')')?
+		//('(' (parameters+=Parameter (=> ',' parameters+=Parameter)*)? ')')?
 		public Group getGroup_5() { return cGroup_5; }
 		
-		//=> '('
+		//'('
 		public Keyword getLeftParenthesisKeyword_5_0() { return cLeftParenthesisKeyword_5_0; }
 		
-		//(parameters+=Parameter (',' parameters+=Parameter)*)?
+		//(parameters+=Parameter (=> ',' parameters+=Parameter)*)?
 		public Group getGroup_5_1() { return cGroup_5_1; }
 		
 		//parameters+=Parameter
@@ -919,10 +909,10 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//Parameter
 		public RuleCall getParametersParameterParserRuleCall_5_1_0_0() { return cParametersParameterParserRuleCall_5_1_0_0; }
 		
-		//(',' parameters+=Parameter)*
+		//(=> ',' parameters+=Parameter)*
 		public Group getGroup_5_1_1() { return cGroup_5_1_1; }
 		
-		//','
+		//=> ','
 		public Keyword getCommaKeyword_5_1_1_0() { return cCommaKeyword_5_1_1_0; }
 		
 		//parameters+=Parameter
@@ -986,7 +976,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//JvmTypeParameter
 		public RuleCall getTypeParametersJvmTypeParameterParserRuleCall_6_1_2_1_0() { return cTypeParametersJvmTypeParameterParserRuleCall_6_1_2_1_0; }
 		
-		//expression=XBlockExpression
+		//=> expression=XBlockExpression
 		public Assignment getExpressionAssignment_7() { return cExpressionAssignment_7; }
 		
 		//XBlockExpression
@@ -1006,18 +996,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cGuardAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
 		private final RuleCall cGuardXExpressionParserRuleCall_4_1_0 = (RuleCall)cGuardAssignment_4_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_4_2 = (Keyword)cGroup_4.eContents().get(2);
-		private final Alternatives cAlternatives_5 = (Alternatives)cGroup.eContents().get(5);
-		private final Assignment cExpressionAssignment_5_0 = (Assignment)cAlternatives_5.eContents().get(0);
-		private final RuleCall cExpressionXBlockExpressionParserRuleCall_5_0_0 = (RuleCall)cExpressionAssignment_5_0.eContents().get(0);
-		private final Keyword cSemicolonKeyword_5_1 = (Keyword)cAlternatives_5.eContents().get(1);
+		private final Assignment cExpressionAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cExpressionXBlockExpressionParserRuleCall_5_0 = (RuleCall)cExpressionAssignment_5.eContents().get(0);
 		
 		//BehaviorUnit xtend::XtendMember:
 		//	{SarlBehaviorUnit} annotations+=XAnnotation*
-		//	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')? (expression=XBlockExpression | ';')
+		//	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')?
+		//	expression=XBlockExpression
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{SarlBehaviorUnit} annotations+=XAnnotation* 'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')?
-		//(expression=XBlockExpression | ';')
+		//expression=XBlockExpression
 		public Group getGroup() { return cGroup; }
 		
 		//{SarlBehaviorUnit}
@@ -1053,17 +1042,11 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//']'
 		public Keyword getRightSquareBracketKeyword_4_2() { return cRightSquareBracketKeyword_4_2; }
 		
-		//(expression=XBlockExpression | ';')
-		public Alternatives getAlternatives_5() { return cAlternatives_5; }
-		
 		//expression=XBlockExpression
-		public Assignment getExpressionAssignment_5_0() { return cExpressionAssignment_5_0; }
+		public Assignment getExpressionAssignment_5() { return cExpressionAssignment_5; }
 		
 		//XBlockExpression
-		public RuleCall getExpressionXBlockExpressionParserRuleCall_5_0_0() { return cExpressionXBlockExpressionParserRuleCall_5_0_0; }
-		
-		//';'
-		public Keyword getSemicolonKeyword_5_1() { return cSemicolonKeyword_5_1; }
+		public RuleCall getExpressionXBlockExpressionParserRuleCall_5_0() { return cExpressionXBlockExpressionParserRuleCall_5_0; }
 	}
 	public class CapacityUsesElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.CapacityUses");
@@ -2186,7 +2169,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_5_0 = (RuleCall)cParameterTypeAssignment_5.eContents().get(0);
 		private final Alternatives cAlternatives_6 = (Alternatives)cGroup.eContents().get(6);
 		private final Assignment cVarArgAssignment_6_0 = (Assignment)cAlternatives_6.eContents().get(0);
-		private final RuleCall cVarArgVarArgTokenParserRuleCall_6_0_0 = (RuleCall)cVarArgAssignment_6_0.eContents().get(0);
+		private final Keyword cVarArgAsteriskKeyword_6_0_0 = (Keyword)cVarArgAssignment_6_0.eContents().get(0);
 		private final Group cGroup_6_1 = (Group)cAlternatives_6.eContents().get(1);
 		private final Keyword cEqualsSignKeyword_6_1_0 = (Keyword)cGroup_6_1.eContents().get(0);
 		private final Assignment cDefaultValueAssignment_6_1_1 = (Assignment)cGroup_6_1.eContents().get(1);
@@ -2194,11 +2177,11 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Parameter xtend::XtendParameter:
 		//	{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)?
-		//	name=InnerVarID ':' parameterType=JvmTypeReference (varArg?=VarArgToken | '=' defaultValue=DefaultParameterValue)?
+		//	name=InnerVarID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=DefaultParameterValue)?
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)? name=InnerVarID ':'
-		//parameterType=JvmTypeReference (varArg?=VarArgToken | '=' defaultValue=DefaultParameterValue)?
+		//parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=DefaultParameterValue)?
 		public Group getGroup() { return cGroup; }
 		
 		//{SarlFormalParameter}
@@ -2240,14 +2223,14 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//JvmTypeReference
 		public RuleCall getParameterTypeJvmTypeReferenceParserRuleCall_5_0() { return cParameterTypeJvmTypeReferenceParserRuleCall_5_0; }
 		
-		//(varArg?=VarArgToken | '=' defaultValue=DefaultParameterValue)?
+		//(varArg?='*' | '=' defaultValue=DefaultParameterValue)?
 		public Alternatives getAlternatives_6() { return cAlternatives_6; }
 		
-		//varArg?=VarArgToken
+		//varArg?='*'
 		public Assignment getVarArgAssignment_6_0() { return cVarArgAssignment_6_0; }
 		
-		//VarArgToken
-		public RuleCall getVarArgVarArgTokenParserRuleCall_6_0_0() { return cVarArgVarArgTokenParserRuleCall_6_0_0; }
+		//'*'
+		public Keyword getVarArgAsteriskKeyword_6_0_0() { return cVarArgAsteriskKeyword_6_0_0; }
 		
 		//'=' defaultValue=DefaultParameterValue
 		public Group getGroup_6_1() { return cGroup_6_1; }
@@ -2713,7 +2696,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	
 	private final SarlScriptElements pSarlScript;
-	private final VarArgTokenElements pVarArgToken;
 	private final TypeElements pType;
 	private final MemberElements pMember;
 	private final FieldElements pField;
@@ -2768,7 +2750,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		this.gaXbase = gaXbase;
 		this.gaXtype = gaXtype;
 		this.pSarlScript = new SarlScriptElements();
-		this.pVarArgToken = new VarArgTokenElements();
 		this.pType = new TypeElements();
 		this.pMember = new MemberElements();
 		this.pField = new FieldElements();
@@ -2853,16 +2834,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getSarlScriptAccess().getRule();
 	}
 	
-	//VarArgToken:
-	//	'*';
-	public VarArgTokenElements getVarArgTokenAccess() {
-		return pVarArgToken;
-	}
-	
-	public ParserRule getVarArgTokenRule() {
-		return getVarArgTokenAccess().getRule();
-	}
-	
 	//Type xtend::XtendTypeDeclaration:
 	//	Event | Capacity | Agent | Behavior | Skill | Class | Interface | Enum | AnnotationType
 	public TypeElements getTypeAccess() {
@@ -2940,10 +2911,11 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//Constructor xtend::XtendConstructor:
 	//	{SarlConstructor} annotations+=XAnnotation*
 	//	modifiers+=CommonModifier*
-	//	'new' ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')? (=> '('
-	//	(parameters+=Parameter (',' parameters+=Parameter)*)?
+	//	'new' ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')? ('(' (parameters+=Parameter
+	//	(=> ',' parameters+=Parameter)*)?
 	//	')')? (('throws' exceptions+=JvmTypeReference (',' exceptions+=JvmTypeReference)*)?
-	//	& ('with' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)*)?) expression=XBlockExpression
+	//	& ('with' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)*)?)
+	//	=> expression=XBlockExpression
 	public ConstructorElements getConstructorAccess() {
 		return pConstructor;
 	}
@@ -2954,7 +2926,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//BehaviorUnit xtend::XtendMember:
 	//	{SarlBehaviorUnit} annotations+=XAnnotation*
-	//	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')? (expression=XBlockExpression | ';')
+	//	'on' name=JvmParameterizedTypeReference (=> '[' guard=XExpression ']')?
+	//	expression=XBlockExpression
 	public BehaviorUnitElements getBehaviorUnitAccess() {
 		return pBehaviorUnit;
 	}
@@ -3160,7 +3133,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//Parameter xtend::XtendParameter:
 	//	{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)?
-	//	name=InnerVarID ':' parameterType=JvmTypeReference (varArg?=VarArgToken | '=' defaultValue=DefaultParameterValue)?
+	//	name=InnerVarID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=DefaultParameterValue)?
 	public ParameterElements getParameterAccess() {
 		return pParameter;
 	}

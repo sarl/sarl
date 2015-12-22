@@ -10,6 +10,6 @@ Export-Package: io.sarl.lang,
  io.sarl.lang.core,
  io.sarl.lang.scoping.batch,
  io.sarl.lang.util
-Require-Bundle: org.eclipse.xtext.xbase.lib;bundle-version="2.9.0";visibility:=reexport,
+Require-Bundle: org.eclipse.xtext.xbase.lib;bundle-version="2.9.1";visibility:=reexport,
  javax.inject;bundle-version="1.0.0";visibility:=reexport
 

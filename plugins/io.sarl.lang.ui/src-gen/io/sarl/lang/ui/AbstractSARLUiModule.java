@@ -54,8 +54,11 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.eclipse.xtend.core.macro.AbstractFileSystemSupport;
+import org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry;
 import org.eclipse.xtend.ide.XtendResourceUiServiceProvider;
 import org.eclipse.xtend.ide.autoedit.AutoEditStrategyProvider;
+import org.eclipse.xtend.ide.builder.UIResourceChangeRegistry;
 import org.eclipse.xtend.ide.common.editor.bracketmatching.XtendBracePairProvider;
 import org.eclipse.xtend.ide.contentassist.EscapeSequenceAwarePrefixMatcher;
 import org.eclipse.xtend.ide.editor.OccurrenceComputer;
@@ -132,6 +135,8 @@ import org.eclipse.xtext.ui.editor.contentassist.antlr.DelegatingContentAssistCo
 import org.eclipse.xtext.ui.editor.doubleClicking.DoubleClickStrategyProvider;
 import org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler;
 import org.eclipse.xtext.ui.editor.findrefs.ReferenceQueryExecutor;
+import org.eclipse.xtext.ui.editor.formatting.IContentFormatterFactory;
+import org.eclipse.xtext.ui.editor.formatting2.ContentFormatterFactory;
 import org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider;
 import org.eclipse.xtext.ui.editor.hyperlinking.HyperlinkLabelProvider;
 import org.eclipse.xtext.ui.editor.hyperlinking.IHyperlinkHelper;
@@ -256,6 +261,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by org.eclipse.xtext.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment2
 	public Class<? extends ContentAssistContextFactory> bindContentAssistContextFactory() {
 		return PartialContentAssistContextFactory.class;
+	}
+	
+	// contributed by org.eclipse.xtext.xtext.generator.formatting.Formatter2Fragment2
+	public Class<? extends IContentFormatterFactory> bindIContentFormatterFactory() {
+		return ContentFormatterFactory.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.generator.GeneratorFragment2
@@ -526,6 +536,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends AbstractFileSystemSupport> bindAbstractFileSystemSupport() {
+		return EclipseFileSystemSupportImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends DoubleClickStrategyProvider> bindDoubleClickStrategyProvider() {
 		return XtendDoubleClickStrategyProvider.class;
 	}
@@ -569,6 +584,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends IOccurrenceComputer> bindIOccurrenceComputer() {
 		return OccurrenceComputer.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends IResourceChangeRegistry> bindIResourceChangeRegistry() {
+		return UIResourceChangeRegistry.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

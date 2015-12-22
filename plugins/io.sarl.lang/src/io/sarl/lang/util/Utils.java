@@ -841,7 +841,7 @@ public final class Utils {
 		signature.append(' ');
 		signature.append(getSignatureType(parameter.getParameterType().getType(), importManager));
 		if (parameter.isVarArg()) {
-			signature.append(grammarAccess.getVarArgTokenAccess().getAsteriskKeyword().getValue());
+			signature.append(grammarAccess.getParameterAccess().getVarArgAsteriskKeyword_6_0_0().getValue());
 		} else if (parameter instanceof SarlFormalParameter) {
 			SarlFormalParameter sarlParameter = (SarlFormalParameter) parameter;
 			if (sarlParameter.getDefaultValue() != null) {

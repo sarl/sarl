@@ -244,8 +244,8 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 							if (operation.isVarArgs() && i == operation.getParameters().size() - 1) {
 								paramType = paramType.getComponentType();
 								appendable.append(paramType);
-								appendable.append(tools.getGrammarAccess().getVarArgTokenAccess()
-										.getAsteriskKeyword().getValue());
+								appendable.append(tools.getGrammarAccess().getParameterAccess()
+										.getVarArgAsteriskKeyword_6_0_0().getValue());
 							} else {
 								appendable.append(paramType);
 							}

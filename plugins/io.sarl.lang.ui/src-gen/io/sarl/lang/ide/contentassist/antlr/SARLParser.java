@@ -62,7 +62,6 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 					put(grammarAccess.getAnnotationFieldAccess().getAlternatives(), "rule__AnnotationField__Alternatives");
 					put(grammarAccess.getActionAccess().getAlternatives_8_1(), "rule__Action__Alternatives_8_1");
 					put(grammarAccess.getActionAccess().getAlternatives_10_0(), "rule__Action__Alternatives_10_0");
-					put(grammarAccess.getBehaviorUnitAccess().getAlternatives_5(), "rule__BehaviorUnit__Alternatives_5");
 					put(grammarAccess.getEventMemberAccess().getAlternatives(), "rule__EventMember__Alternatives");
 					put(grammarAccess.getAgentMemberAccess().getAlternatives(), "rule__AgentMember__Alternatives");
 					put(grammarAccess.getBehaviorMemberAccess().getAlternatives(), "rule__BehaviorMember__Alternatives");
@@ -503,7 +502,7 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 					put(grammarAccess.getBehaviorUnitAccess().getAnnotationsAssignment_1(), "rule__BehaviorUnit__AnnotationsAssignment_1");
 					put(grammarAccess.getBehaviorUnitAccess().getNameAssignment_3(), "rule__BehaviorUnit__NameAssignment_3");
 					put(grammarAccess.getBehaviorUnitAccess().getGuardAssignment_4_1(), "rule__BehaviorUnit__GuardAssignment_4_1");
-					put(grammarAccess.getBehaviorUnitAccess().getExpressionAssignment_5_0(), "rule__BehaviorUnit__ExpressionAssignment_5_0");
+					put(grammarAccess.getBehaviorUnitAccess().getExpressionAssignment_5(), "rule__BehaviorUnit__ExpressionAssignment_5");
 					put(grammarAccess.getCapacityUsesAccess().getCapacitiesAssignment_2(), "rule__CapacityUses__CapacitiesAssignment_2");
 					put(grammarAccess.getCapacityUsesAccess().getCapacitiesAssignment_3_1(), "rule__CapacityUses__CapacitiesAssignment_3_1");
 					put(grammarAccess.getRequiredCapacityAccess().getCapacitiesAssignment_2(), "rule__RequiredCapacity__CapacitiesAssignment_2");
