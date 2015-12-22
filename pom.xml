@@ -27,8 +27,8 @@
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<buildId>${maven.build.timestamp}</buildId>
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.9.0</xtext.version>
-		<xtext.versionRange>[2.9.0,2.9.1)</xtext.versionRange><!-- For generating 
+		<xtext.version>2.9.1</xtext.version>
+		<xtext.versionRange>[2.9.1,2.9.2)</xtext.versionRange><!-- For generating 
 			a correct version range you need to create a range integrating ONLY the current 
 			version and excluding all other possible versions especially the greater 
 			ones -->
