@@ -66,6 +66,6 @@
    title=\lstname, % show the filename of files included with \lstinputlisting; also try caption instead of title
    frameround=fttt, % If framed, use this rounded corner style
 }
-\newcommand{\code}[1]{{\lstinline[basicstyle=\usebeamertemplate{code inline style}]{#1}}}
+\newcommand{\code}[1]{\ifmmode\text{\lstinline[basicstyle=\usebeamertemplate{code inline style}]{#1}}\else\lstinline[basicstyle=\usebeamertemplate{code inline style}]{#1}\fi}
 \newcommand{\sarl}{\mbox{SARL}\xspace}
 \endinput

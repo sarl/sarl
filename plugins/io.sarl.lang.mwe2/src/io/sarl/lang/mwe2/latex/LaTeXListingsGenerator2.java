@@ -390,7 +390,10 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 			inlineBasicStyle = (getEnableColors()) ? DEFAULT_COLORIZED_INLINE_BASIC_STYLE : DEFAULT_INLINE_BASIC_STYLE;
 		}
 		inlineBasicStyle = Strings.emptyIfNull(inlineBasicStyle);
-		append(sty, "\\newcommand'{'\\code'}'[1]'{{'\\lstinline[basicstyle={0}]'{'#1'}}}'", inlineBasicStyle); //$NON-NLS-1$
+		append(sty, "\\newcommand'{'\\code'}'[1]'{'" //$NON-NLS-1$
+				+ "\\ifmmode\\text'{'\\lstinline[basicstyle={0}]'{'#1'}}'" //$NON-NLS-1$
+				+ "\\else\\lstinline[basicstyle={0}]'{'#1'}'" //$NON-NLS-1$
+				+ "\\fi'}'", inlineBasicStyle); //$NON-NLS-1$
 		append(sty, "\\newcommand'{'\\sarl'}{'\\mbox'{'SARL'}'\\xspace'}'"); //$NON-NLS-1$
 
 		append(sty, "\\endinput"); //$NON-NLS-1$
