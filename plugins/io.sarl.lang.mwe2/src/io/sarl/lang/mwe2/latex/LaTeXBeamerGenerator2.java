@@ -45,6 +45,7 @@ public class LaTeXBeamerGenerator2 extends LaTeXListingsGenerator2 {
 	public void initialize(Injector injector) {
 		super.initialize(injector);
 		clearRequirements();
+		setLineNumbers(false);
 		setFloatBasicStyle("\\usebeamertemplate{code basic style}"); //$NON-NLS-1$
 		setInlineBasicStyle("\\usebeamertemplate{code inline style}"); //$NON-NLS-1$
 		setIdentifierStyle("\\usebeamertemplate{code identifier style}"); //$NON-NLS-1$
