@@ -25,6 +25,7 @@ import com.google.inject.Binder;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.DefaultGeneratorModule;
 
+import io.sarl.lang.mwe2.codebuilder.CodeBuilderConfig;
 import io.sarl.lang.mwe2.externalLang.ExternalHighlightingConfig;
 
 /**
@@ -38,6 +39,8 @@ import io.sarl.lang.mwe2.externalLang.ExternalHighlightingConfig;
 public class SarlGeneratorModule extends DefaultGeneratorModule {
 
 	private ExternalHighlightingConfig highlighting = new ExternalHighlightingConfig();
+
+	private CodeBuilderConfig codeBuilderConfig = new CodeBuilderConfig();
 
 	/** Configure the injection of the highlighting configuration.
 	 *
@@ -64,6 +67,33 @@ public class SarlGeneratorModule extends DefaultGeneratorModule {
 	@Pure
 	public ExternalHighlightingConfig getHighlighting() {
 		return this.highlighting;
+	}
+
+	/** Configure the injection of the Ecore type creator.
+	 *
+	 * @param binder the injection binder.
+	 */
+	public void configureCodeBuilder(Binder binder) {
+		binder.bind(CodeBuilderConfig.class).toInstance(this.codeBuilderConfig);
+	}
+
+	/** Set the configuration for the Ecore type creator.
+	 *
+	 * @param config the configuration.
+	 */
+	public void setCodeBuilder(CodeBuilderConfig config) {
+		if (config != null) {
+			this.codeBuilderConfig = config;
+		}
+	}
+
+	/** Replies the configuration for the Ecore type creator.
+	 *
+	 * @return the configuration.
+	 */
+	@Pure
+	public CodeBuilderConfig getCodeBuilder() {
+		return this.codeBuilderConfig;
 	}
 
 }

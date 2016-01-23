@@ -7,7 +7,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright 2015 the original authors and authors.
+ * Copyright 2014-2016 the original authors and authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,15 +26,58 @@ package io.sarl.lang;
 import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
-import io.sarl.lang.compiler.SarlOutputConfigurationProvider;
+import io.sarl.lang.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.codebuilder.CodeBuilderFactory;
+import io.sarl.lang.codebuilder.builders.ActionBuilderImpl;
+import io.sarl.lang.codebuilder.builders.AgentBuilderImpl;
+import io.sarl.lang.codebuilder.builders.AnnotationFieldBuilderImpl;
+import io.sarl.lang.codebuilder.builders.AnnotationTypeBuilderImpl;
+import io.sarl.lang.codebuilder.builders.BehaviorBuilderImpl;
+import io.sarl.lang.codebuilder.builders.BehaviorUnitBuilderImpl;
+import io.sarl.lang.codebuilder.builders.BlockExpressionBuilderImpl;
+import io.sarl.lang.codebuilder.builders.CapacityBuilderImpl;
+import io.sarl.lang.codebuilder.builders.ClassBuilderImpl;
+import io.sarl.lang.codebuilder.builders.ConstructorBuilderImpl;
+import io.sarl.lang.codebuilder.builders.EnumBuilderImpl;
+import io.sarl.lang.codebuilder.builders.EventBuilderImpl;
+import io.sarl.lang.codebuilder.builders.ExpressionBuilderImpl;
+import io.sarl.lang.codebuilder.builders.FieldBuilderImpl;
+import io.sarl.lang.codebuilder.builders.FormalParameterBuilderImpl;
+import io.sarl.lang.codebuilder.builders.IActionBuilder;
+import io.sarl.lang.codebuilder.builders.IAgentBuilder;
+import io.sarl.lang.codebuilder.builders.IAnnotationFieldBuilder;
+import io.sarl.lang.codebuilder.builders.IAnnotationTypeBuilder;
+import io.sarl.lang.codebuilder.builders.IBehaviorBuilder;
+import io.sarl.lang.codebuilder.builders.IBehaviorUnitBuilder;
+import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
+import io.sarl.lang.codebuilder.builders.ICapacityBuilder;
+import io.sarl.lang.codebuilder.builders.IClassBuilder;
+import io.sarl.lang.codebuilder.builders.IConstructorBuilder;
+import io.sarl.lang.codebuilder.builders.IEnumBuilder;
+import io.sarl.lang.codebuilder.builders.IEventBuilder;
+import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
+import io.sarl.lang.codebuilder.builders.IFieldBuilder;
+import io.sarl.lang.codebuilder.builders.IFormalParameterBuilder;
+import io.sarl.lang.codebuilder.builders.IInterfaceBuilder;
+import io.sarl.lang.codebuilder.builders.IScriptBuilder;
+import io.sarl.lang.codebuilder.builders.ISkillBuilder;
+import io.sarl.lang.codebuilder.builders.IXtendEnumLiteralBuilder;
+import io.sarl.lang.codebuilder.builders.InterfaceBuilderImpl;
+import io.sarl.lang.codebuilder.builders.ScriptBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SkillBuilderImpl;
+import io.sarl.lang.codebuilder.builders.XtendEnumLiteralBuilderImpl;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
-import io.sarl.lang.ecoregenerator.helper.SARLHiddenTokenSequencer;
+import io.sarl.lang.documentation.DocumentationBuilder;
+import io.sarl.lang.documentation.DocumentationFormatter;
+import io.sarl.lang.documentation.IDocumentationBuilder;
+import io.sarl.lang.documentation.IDocumentationFormatter;
+import io.sarl.lang.documentation.SarlDocumentationProvider;
 import io.sarl.lang.findreferences.SARLReferenceFinder;
 import io.sarl.lang.formatting2.SARLFormatter;
 import io.sarl.lang.formatting2.SARLFormatterPreferenceKeys;
+import io.sarl.lang.generator.SarlOutputConfigurationProvider;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.parser.antlr.SARLAntlrTokenFileProvider;
@@ -44,10 +87,9 @@ import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.scoping.SARLScopeProvider;
 import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
 import io.sarl.lang.serializer.SARLSemanticSequencer;
-import io.sarl.lang.serializer.SARLSyntacticSequencer;
+import io.sarl.lang.serializer.SARLSyntacticSequencerCustom;
 import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.typing.ExtendedXExpressionHelper;
-import io.sarl.lang.typing.SARLXExpressionHelper;
+import io.sarl.lang.typing.SARLExpressionHelper;
 import io.sarl.lang.validation.DefaultFeatureCallValidator;
 import io.sarl.lang.validation.FeatureCallValidator;
 import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
@@ -62,7 +104,6 @@ import org.eclipse.xtend.core.conversion.IntUnderscoreValueConverter;
 import org.eclipse.xtend.core.conversion.JavaIDValueConverter;
 import org.eclipse.xtend.core.conversion.StringValueConverter;
 import org.eclipse.xtend.core.conversion.XtendValueConverterService;
-import org.eclipse.xtend.core.documentation.XtendDocumentationProvider;
 import org.eclipse.xtend.core.documentation.XtendFileHeaderProvider;
 import org.eclipse.xtend.core.imports.XtendImportedTypesUsageCollector;
 import org.eclipse.xtend.core.imports.XtendImportsConfiguration;
@@ -95,6 +136,7 @@ import org.eclipse.xtext.conversion.IValueConverterService;
 import org.eclipse.xtext.conversion.impl.IDValueConverter;
 import org.eclipse.xtext.conversion.impl.STRINGValueConverter;
 import org.eclipse.xtext.documentation.IEObjectDocumentationProvider;
+import org.eclipse.xtext.documentation.IEObjectDocumentationProviderExtension;
 import org.eclipse.xtext.documentation.IFileHeaderProvider;
 import org.eclipse.xtext.findReferences.ReferenceFinder;
 import org.eclipse.xtext.findReferences.TargetURICollector;
@@ -138,9 +180,7 @@ import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.scoping.IgnoreCaseLinking;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 import org.eclipse.xtext.serializer.ISerializer;
-import org.eclipse.xtext.serializer.acceptor.ISyntacticSequenceAcceptor;
 import org.eclipse.xtext.serializer.impl.Serializer;
-import org.eclipse.xtext.serializer.sequencer.IHiddenTokenSequencer;
 import org.eclipse.xtext.serializer.sequencer.ISemanticSequencer;
 import org.eclipse.xtext.serializer.sequencer.ISyntacticSequencer;
 import org.eclipse.xtext.serializer.tokens.SerializerScopeProviderBinding;
@@ -210,11 +250,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2
 	public Class<? extends ISemanticSequencer> bindISemanticSequencer() {
 		return SARLSemanticSequencer.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2
-	public Class<? extends ISyntacticSequencer> bindISyntacticSequencer() {
-		return SARLSyntacticSequencer.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2
@@ -315,14 +350,137 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 		return TypesAwareDefaultGlobalScopeProvider.class;
 	}
 	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends CodeBuilderFactory> bindCodeBuilderFactory() {
+		return CodeBuilderFactory.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IDocumentationFormatter> bindIDocumentationFormatter() {
+		return DocumentationFormatter.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	@SingletonBinding
+	public Class<? extends IDocumentationBuilder> bindIDocumentationBuilder() {
+		return DocumentationBuilder.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	@SingletonBinding
+	public Class<? extends IEObjectDocumentationProvider> bindIEObjectDocumentationProvider() {
+		return SarlDocumentationProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	@SingletonBinding
+	public Class<? extends IEObjectDocumentationProviderExtension> bindIEObjectDocumentationProviderExtension() {
+		return SarlDocumentationProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IExpressionBuilder> bindIExpressionBuilder() {
+		return ExpressionBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IBlockExpressionBuilder> bindIBlockExpressionBuilder() {
+		return BlockExpressionBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IFormalParameterBuilder> bindIFormalParameterBuilder() {
+		return FormalParameterBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IConstructorBuilder> bindIConstructorBuilder() {
+		return ConstructorBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IFieldBuilder> bindIFieldBuilder() {
+		return FieldBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IActionBuilder> bindIActionBuilder() {
+		return ActionBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IAnnotationFieldBuilder> bindIAnnotationFieldBuilder() {
+		return AnnotationFieldBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IBehaviorUnitBuilder> bindIBehaviorUnitBuilder() {
+		return BehaviorUnitBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IXtendEnumLiteralBuilder> bindIXtendEnumLiteralBuilder() {
+		return XtendEnumLiteralBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IEventBuilder> bindIEventBuilder() {
+		return EventBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends ICapacityBuilder> bindICapacityBuilder() {
+		return CapacityBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IAgentBuilder> bindIAgentBuilder() {
+		return AgentBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IBehaviorBuilder> bindIBehaviorBuilder() {
+		return BehaviorBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends ISkillBuilder> bindISkillBuilder() {
+		return SkillBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IClassBuilder> bindIClassBuilder() {
+		return ClassBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IInterfaceBuilder> bindIInterfaceBuilder() {
+		return InterfaceBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IEnumBuilder> bindIEnumBuilder() {
+		return EnumBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IAnnotationTypeBuilder> bindIAnnotationTypeBuilder() {
+		return AnnotationTypeBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends IScriptBuilder> bindIScriptBuilder() {
+		return ScriptBuilderImpl.class;
+	}
+	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IEarlyExitComputer> bindIEarlyExitComputer() {
 		return SARLEarlyExitComputer.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends ReferenceFinder> bindReferenceFinder() {
-		return SARLReferenceFinder.class;
+	public Class<? extends ISyntacticSequencer> bindISyntacticSequencer() {
+		return SARLSyntacticSequencerCustom.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -332,8 +490,8 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends IHiddenTokenSequencer> bindIHiddenTokenSequencer() {
-		return SARLHiddenTokenSequencer.class;
+	public Class<? extends ReferenceFinder> bindReferenceFinder() {
+		return SARLReferenceFinder.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -367,7 +525,7 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends ActionPrototypeProvider> bindActionPrototypeProvider() {
+	public Class<? extends IActionPrototypeProvider> bindIActionPrototypeProvider() {
 		return DefaultActionPrototypeProvider.class;
 	}
 	
@@ -377,13 +535,13 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends ISyntacticSequenceAcceptor> bindISyntacticSequenceAcceptor() {
-		return SARLHiddenTokenSequencer.class;
+	public Class<? extends SARLExpressionHelper> bindSARLExpressionHelper() {
+		return SARLExpressionHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends XExpressionHelper> bindXExpressionHelper() {
-		return SARLXExpressionHelper.class;
+		return SARLExpressionHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -394,11 +552,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IOutputConfigurationProvider> bindIOutputConfigurationProvider() {
 		return SarlOutputConfigurationProvider.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends ExtendedXExpressionHelper> bindExtendedXExpressionHelper() {
-		return ExtendedXExpressionHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -429,11 +582,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends AbstractFileSystemSupport> bindAbstractFileSystemSupport() {
 		return JavaIOFileSystemSupport.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public Class<? extends IEObjectDocumentationProvider> bindIEObjectDocumentationProvider() {
-		return XtendDocumentationProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

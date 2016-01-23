@@ -7,7 +7,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright 2015 the original authors and authors.
+ * Copyright 2014-2016 the original authors and authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ package io.sarl.lang.ui;
 import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
-import io.sarl.lang.compiler.SarlOutputConfigurationProvider;
+import io.sarl.lang.generator.SarlOutputConfigurationProvider;
 import io.sarl.lang.ide.contentassist.antlr.PartialSARLContentAssistParser;
 import io.sarl.lang.ide.contentassist.antlr.SARLParser;
 import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;

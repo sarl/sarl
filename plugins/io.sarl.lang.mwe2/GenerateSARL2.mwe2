@@ -34,7 +34,7 @@ import io.sarl.lang.mwe2.externalLang.*
 import io.sarl.lang.mwe2.prettify.* 
 import io.sarl.lang.mwe2.latex.* 
 import io.sarl.lang.mwe2.gtk.* 
-import io.sarl.lang.mwe2.junit.* 
+import io.sarl.lang.mwe2.codebuilder.* 
 
 var rootRootPath = "../.."
 var rootPath = ".."
@@ -68,7 +68,7 @@ var fileHeader = "/*
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright \${year} the original authors and authors.
+ * Copyright 2014-\${year} the original authors and authors.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
@@ -141,6 +141,49 @@ Workflow {
 				encoding = fileEncoding
 				fileHeader = fileHeader
 				preferXtendStubs = false
+			}
+			codeBuilder = auto-inject {
+				scriptRuleName = "SarlScript"
+				topElementRuleName = "Type"
+				formalParameterRuleName = "Parameter"
+				formalParameterContainerType = "org.eclipse.xtend.core.xtend.XtendExecutable"
+				constructorFreeRuleName = "Capacity"
+				constructorFreeRuleName = "Interface"
+				constructorFreeRuleName = "Enum"
+				constructorFreeRuleName = "AnnotationType"
+				defaultSuper = {
+					type = "SarlAgent"
+					super = "io.sarl.lang.core.Agent"
+				}
+				defaultSuper = {
+					type = "SarlBehavior"
+					super = "io.sarl.lang.core.Behavior"
+				}
+				defaultSuper = {
+					type = "SarlCapacity"
+					super = "io.sarl.lang.core.Capacity"
+				}
+				defaultSuper = {
+					type = "SarlEvent"
+					super = "io.sarl.lang.core.Event"
+				}
+				defaultSuper = {
+					type = "SarlSkill"
+					super = "io.sarl.lang.core.Skill"
+				}
+				noActionBodyType = "SarlCapacity"
+				noActionBodyType = "SarlEvent"
+				noActionBodyType = "SarlAnnotationType"
+				noActionBodyType = "SarlInterface"
+				modifier = {
+					type = "SarlAction"
+					modifier = "def"
+				}
+				modifier = {
+					type = "SarlField"
+					modifier = "var"
+					modifier = "val"
+				}
 			}
 			highlighting = auto-inject {
     			// Shared configuration between the generators
@@ -298,6 +341,11 @@ Workflow {
 			fragment = junit.Junit4Fragment2 auto-inject {
 				generateStub = false
 			}
+			
+			// Generate an helpful creator of Ecore elements.
+			fragment = CodeBuilderFragment2 auto-inject {
+				generateStub = false
+			}
 
 			// generate the Google Prettify style
     		fragment = GooglePrettifyGenerator2 auto-inject {
@@ -333,7 +381,7 @@ Workflow {
     			overrideAll = true
     			
     			runtime = {
-    				bind = "io.sarl.lang.actionprototype.ActionPrototypeProvider"
+    				bind = "io.sarl.lang.actionprototype.IActionPrototypeProvider"
     				to = "io.sarl.lang.actionprototype.DefaultActionPrototypeProvider"
     			}
     			runtime = {
@@ -349,8 +397,8 @@ Workflow {
     				to = "io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer"
     			}
     			runtime = {
-    				bind = "io.sarl.lang.typing.ExtendedXExpressionHelper"
-    				to = "io.sarl.lang.typing.ExtendedXExpressionHelper"
+    				bind = "io.sarl.lang.typing.SARLExpressionHelper"
+    				to = "io.sarl.lang.typing.SARLExpressionHelper"
     			}
     			runtime = {
     				bind = "io.sarl.lang.validation.FeatureCallValidator"
@@ -369,10 +417,6 @@ Workflow {
     				to = "io.sarl.lang.controlflow.SARLEarlyExitComputer"
     			}
     			runtime = {
-    				bind = "org.eclipse.xtext.serializer.sequencer.IHiddenTokenSequencer"
-    				to = "io.sarl.lang.ecoregenerator.helper.SARLHiddenTokenSequencer"
-    			}
-    			runtime = {
     				bind = "org.eclipse.xtext.xbase.jvmmodel.IJvmModelInferrer"
     				to = "io.sarl.lang.jvmmodel.SARLJvmModelInferrer"
     			}
@@ -382,19 +426,11 @@ Workflow {
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.generator.IOutputConfigurationProvider"
-    				to = "io.sarl.lang.compiler.SarlOutputConfigurationProvider"
-    			}
-    			runtime = {
-    				bind = "org.eclipse.xtext.serializer.acceptor.ISyntacticSequenceAcceptor"
-    				to = "io.sarl.lang.ecoregenerator.helper.SARLHiddenTokenSequencer"
+    				to = "io.sarl.lang.generator.SarlOutputConfigurationProvider"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator"
     				to = "io.sarl.lang.jvmmodel.SarlJvmModelAssociations$Impl"
-    			}
-    			runtime = {
-    				bind = "org.eclipse.xtext.findReferences.ReferenceFinder"
-    				to = "io.sarl.lang.findreferences.SARLReferenceFinder"
     			}
     			runtime = {
     				bind = "io.sarl.lang.sarl.SarlFactory"
@@ -403,8 +439,17 @@ Workflow {
     				instance = true
     			}
     			runtime = {
+    				bind = "org.eclipse.xtext.findReferences.ReferenceFinder"
+    				to = "io.sarl.lang.findreferences.SARLReferenceFinder"
+    			}
+    			runtime = {
     				bind = "org.eclipse.xtext.xbase.util.XExpressionHelper"
-    				to = "io.sarl.lang.typing.SARLXExpressionHelper"
+    				to = "io.sarl.lang.typing.SARLExpressionHelper"
+    			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.serializer.sequencer.ISyntacticSequencer"
+    				to = "io.sarl.lang.serializer.SARLSyntacticSequencerCustom"
+    				override = true
     			}
     			
     			ui = {
@@ -469,7 +514,7 @@ Workflow {
 
     			both = {
     				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"
-    				to = "io.sarl.lang.compiler.SarlOutputConfigurationProvider"
+    				to = "io.sarl.lang.generator.SarlOutputConfigurationProvider"
     			}
     		}
 
@@ -510,10 +555,6 @@ Workflow {
     			runtime = {
     				bind = "org.eclipse.xtext.conversion.impl.IDValueConverter"
     				to = "org.eclipse.xtend.core.conversion.JavaIDValueConverter"
-   				}
-    			runtime = {
-    				bind = "org.eclipse.xtext.documentation.IEObjectDocumentationProvider"
-    				to = "org.eclipse.xtend.core.documentation.XtendDocumentationProvider"
    				}
     			runtime = {
     				bind = "org.eclipse.xtext.documentation.IFileHeaderProvider"
