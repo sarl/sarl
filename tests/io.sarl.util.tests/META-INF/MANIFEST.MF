@@ -7,3 +7,4 @@ Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.sarl.util;bundle-version="0.4.0",
  io.sarl.tests.api;bundle-version="0.4.0"
+
