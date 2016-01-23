@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.plugins</artifactId>
-		<version>0.3.0</version>
+		<version>0.3.1</version>
 	</parent>
 
 	<groupId>io.sarl.lang</groupId>
@@ -38,7 +38,7 @@
 	<!-- ======================================= -->
 	<profiles>
 		<profile>
-			<id>avoid-maven-release-of-lang-plugin</id>
+			<id>>maven-release-of-lang-plugin</id>
 			<activation>
 				<property>
 					<name>performRelease</name>
@@ -48,24 +48,20 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<configuration>
-							<skip>true</skip>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<configuration>
-							<skip>true</skip>
-						</configuration>
-					</plugin>
-					<plugin>
 						<groupId>org.arakhne.afc.maven</groupId>
 						<artifactId>tag-replacer</artifactId>
 						<configuration>
-							<skip>true</skip>
+							<sources>
+								<source>${project.basedir}/src</source>
+							</sources>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<sourcepath>${project.build.directory}/generated-sources/java</sourcepath>
+							<excludePackageNames>io.sarl.lang</excludePackageNames>
 						</configuration>
 					</plugin>
 				</plugins>

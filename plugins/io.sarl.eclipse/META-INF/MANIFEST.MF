@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
-Bundle-Version: 0.3.0
+Bundle-Version: 0.3.1
 Bundle-SymbolicName: io.sarl.eclipse;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Require-Bundle: io.sarl.lang.ui;bundle-version="0.3.0";visibility:=reexport,
+Require-Bundle: io.sarl.lang.ui;bundle-version="0.3.1";visibility:=reexport,
  org.eclipse.xtend.core;bundle-version="2.8.4",
  org.eclipse.xtext.ui;bundle-version="2.8.4",
  org.eclipse.ui.ide;bundle-version="3.11.0",

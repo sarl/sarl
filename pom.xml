@@ -5,7 +5,7 @@
 
 	<groupId>io.sarl</groupId>
 	<artifactId>io.sarl</artifactId>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 
 	<name>SARL Agent Oriented Programming Language</name>
 	<url>${sarlUrl}</url>
@@ -456,7 +456,7 @@
 							project.properties.sarlspecificationreleasestatus = releaseStatus;
 							project.properties.sarlisstableversion = Boolean.toString(!isSnapshot);
 							project.properties.p2UploadToDir = p2UploadToDir;
-							project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+".0"+endOfVersion;
+							project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+".1"+endOfVersion;
 
 							println("\tset sarlspecificationreleaseversion to: " + project.properties.sarlspecificationreleaseversion);
 							println("\tset sarlreleaseversion to: " + project.properties.sarlreleaseversion);

@@ -6,7 +6,7 @@
 
 	<groupId>io.sarl.maven.compiler.tests</groupId>
 	<artifactId>this-is-for-test-only</artifactId>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 	<name>This is for Test ONLY</name>
 	
 	<dependencies>

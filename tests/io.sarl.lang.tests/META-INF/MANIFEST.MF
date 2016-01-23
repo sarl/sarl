@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
-Bundle-Version: 0.3.0
+Bundle-Version: 0.3.1
 Bundle-SymbolicName: io.sarl.lang.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: io.sarl.tests.api;bundle-version="0.3.0",
- io.sarl.tests.testdata;bundle-version="0.3.0",
- io.sarl.core;bundle-version="0.3.0",
+Require-Bundle: io.sarl.tests.api;bundle-version="0.3.1",
+ io.sarl.tests.testdata;bundle-version="0.3.1",
+ io.sarl.core;bundle-version="0.3.1",
  org.eclipse.jdt.core;bundle-version="3.11.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

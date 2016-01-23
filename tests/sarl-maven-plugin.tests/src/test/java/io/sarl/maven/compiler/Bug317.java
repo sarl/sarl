@@ -45,7 +45,7 @@ public class Bug317 extends AbstractMojoTest {
 	@Before
 	public void setUp() throws Exception {
 		// The test can be run only of Janus is available.
-		URL url = new URL("http://maven.janusproject.io/io.janusproject/io.janusproject.kernel/0.3.0-SNAPSHOT");
+		URL url = new URL("http://maven.janusproject.io/io.janusproject/io.janusproject.kernel/0.3.1-SNAPSHOT");
 		try {
 			InputStream inputStream = url.openStream();
 			inputStream.close();
