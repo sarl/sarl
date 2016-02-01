@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MODULES=(io.sarl.lang.core io.sarl.lang io.sarl.core io.sarl.util)
+MODULES=(io.sarl.lang.core io.sarl.core io.sarl.util)
 
 SOURCE_PATH=""
 for module in "${MODULES[@]}"
@@ -14,4 +14,4 @@ do
 	fi
 done
 
-exec mvn -Dmaven.test.skip=true -Dcheckstyle.skip=true -DpublicSarlApiModuleSet=true -Dsourcepath=${SOURCE_PATH} clean org.arakhne.afc.maven:tag-replacer:generatereplacesrc javadoc:aggregate
+mvn -Dmaven.test.skip=true -Dcheckstyle.skip=true -DpublicSarlApiModuleSet=true -Dsourcepath=${SOURCE_PATH} clean generate-sources org.arakhne.afc.maven:tag-replacer:generatereplacesrc compile javadoc:aggregate
