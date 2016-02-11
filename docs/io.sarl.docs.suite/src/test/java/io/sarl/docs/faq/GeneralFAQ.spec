@@ -301,6 +301,28 @@ describe "General FAQ on SARL" {
 				true
 			}
 
+			/* This is due to a problem in your configuration. Indeed, SARL tools need the Eclipse
+			 * framework to be run with a Java Development Kit %compilerlevel% or higher.
+			 * You are currently running the SARL product with a lower version of the JDK.
+			 *
+			 * <p>You must run the SARL product with a valid version of the JDK.
+			 * Two ways are available for solving this issue:<ol>
+			 * <li>installing the JDK %compilerlevel%, and configuring your operating system for using it by default; or</li>
+			 * <li>forcing the SARL product to use the JDK %compilerlevel% by editing the <code>eclipse-sarl.ini</code> file. Add the following parameter on a new line: <code>-vm &lt;path&gt;</code>, where <code>&lt;path&gt;</code> is the path to the binary file <code>javaw[.exe]</code> or <code>java[.exe]</code> of the JDK %compilerlevel%.</li>
+			 * </ol>
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "The SARL product is launched but it does not contains any feature related to SARL." {
+				// The checks are valid only if the macro replacements were done.
+				// The replacements are done by Maven.
+				// So, Eclipse Junit tools do not make the replacements.
+				System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+				//
+				"%compilerlevel%" should beMavenVersion false
+				"%compilerlevel%" should beJavaRange _
+			}
+
 		}
 
 		/*  
