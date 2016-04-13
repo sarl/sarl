@@ -42,6 +42,8 @@ import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsFactory;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
@@ -233,10 +235,16 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		final AtomicBoolean hasThrows = new AtomicBoolean(false);
 		final AtomicBoolean hasFires = new AtomicBoolean(false);
 		final AtomicBoolean hasBlock = new AtomicBoolean(false);
+		final AtomicBoolean isAnnotated = new AtomicBoolean(false);
+		final AtomicBoolean hasModifiers = new AtomicBoolean(false);
 		final List<String> expressions = new ArrayList<>();
 		AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), description.getRuleName());
 		for (Assignment assignment : GrammarUtil.containedAssignments(rule)) {
-			if (Objects.equals(getCodeBuilderConfig().getMemberNameExtensionGrammarName(), assignment.getFeature())) {
+			if (Objects.equals(getCodeBuilderConfig().getModifierListGrammarName(), assignment.getFeature())) {
+				hasModifiers.set(true);
+			} else if (Objects.equals(getCodeBuilderConfig().getAnnotationListGrammarName(), assignment.getFeature())) {
+				isAnnotated.set(true);
+			} else if (Objects.equals(getCodeBuilderConfig().getMemberNameExtensionGrammarName(), assignment.getFeature())) {
 				hasName.set(true);
 				if (nameMatches(assignment.getTerminal(), getCodeBuilderConfig().getTypeReferenceGrammarPattern())) {
 					hasTypeName.set(true);
@@ -803,6 +811,88 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 							it.append("(expr);"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\treturn block;"); //$NON-NLS-1$
+						}
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+				if (isAnnotated.get()) {
+					it.append("\t/** Add an annotation."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param type the qualified name of the annotation"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append("void addAnnotation(String type)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						if (forAppender) {
+							it.append("\t\tthis.builder.addAnnotation(type);"); //$NON-NLS-1$
+						} else {
+							it.append("\t\tif (!"); //$NON-NLS-1$
+							it.append(Strings.class);
+							it.append(".isEmpty(type)) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t"); //$NON-NLS-1$
+							it.append(XAnnotation.class);
+							it.append(" annotation = "); //$NON-NLS-1$
+							it.append(XAnnotationsFactory.class);
+							it.append(".eINSTANCE.createXAnnotation();"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\tannotation.setAnnotationType(newTypeRef("); //$NON-NLS-1$
+							it.append(generatedFieldAccessor);
+							it.append(", type).getType());"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t"); //$NON-NLS-1$
+							it.append(generatedFieldAccessor);
+							it.append(".getAnnotations().add(annotation);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t}"); //$NON-NLS-1$
+						}
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+				if (hasModifiers.get()) {
+					it.append("\t/** Add a modifier."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param modifier - the modifier to add."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append("void addModifier(String modifier)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						if (forAppender) {
+							it.append("\t\tthis.builder.addModifier(modifier);"); //$NON-NLS-1$
+						} else {
+							it.append("\t\tif (!"); //$NON-NLS-1$
+							it.append(Strings.class);
+							it.append(".isEmpty(modifier)) {"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t\t"); //$NON-NLS-1$
+							it.append(generatedFieldAccessor);
+							it.append(".getModifiers().add(modifier);"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\t}"); //$NON-NLS-1$
 						}
 						it.newLine();
 						it.append("\t}"); //$NON-NLS-1$

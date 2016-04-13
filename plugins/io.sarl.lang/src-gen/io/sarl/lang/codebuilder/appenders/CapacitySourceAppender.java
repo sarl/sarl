@@ -85,6 +85,20 @@ public class CapacitySourceAppender extends AbstractSourceAppender implements IC
 	public void addExtends(String superType) {
 		this.builder.addExtends(superType);	}
 
+	/** Add an annotation.
+	 * @param type - the qualified name of the annotation.
+	 */
+	public void addAnnotation(String type) {
+		this.builder.addAnnotation(type);
+	}
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	public void addModifier(String modifier) {
+		this.builder.addModifier(modifier);
+	}
+
 	/** Create an Action.
 	 * @param name - the name of the Action.
 	 * @return the builder.

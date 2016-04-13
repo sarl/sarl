@@ -23,6 +23,7 @@ package io.sarl.lang.findreferences;
 
 import java.util.Set;
 
+import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -40,6 +41,7 @@ import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmMember;
+import org.eclipse.xtext.findReferences.IReferenceFinder;
 import org.eclipse.xtext.findReferences.ReferenceFinder;
 import org.eclipse.xtext.findReferences.TargetURIs;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -47,137 +49,187 @@ import org.eclipse.xtext.resource.IResourceDescription;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XConstructorCall;
+import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.imports.StaticallyImportedMemberProvider;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.Functions;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XtypePackage;
 
 
 /** Finds cross-references to elements specified by their URIs.
  *
- * <p>This class is copied from the Xtend private API.
+ * <p>This class is adapted from the Xtend private API.
+ * FIXME: Remove when https://bugs.eclipse.org/bugs/show_bug.cgi?id=484877 is fixed.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class SARLReferenceFinder extends ReferenceFinder {
+	@Inject
+	@Extension
+	private StaticallyImportedMemberProvider _staticallyImportedMemberProvider;
 
 	@Inject
 	@Extension
-	private StaticallyImportedMemberProvider memberProvider;
-
-	@Inject
-	@Extension
-	private AnonymousClassUtil anonymousClassUtil;
+	private AnonymousClassUtil _anonymousClassUtil;
 
 	@Inject
 	private Declarators declarators;
 
 	@Override
-	public void findReferences(
-			final TargetURIs targetURIs,
-			final IResourceDescription resourceDescription,
-			IResourceAccess resourceAccess,
-			final Acceptor acceptor,
-			final IProgressMonitor monitor) {
-		Set<QualifiedName> names = this.declarators.getDeclaratorData(targetURIs, resourceAccess).getDeclaratorNames();
-		if (monitor.isCanceled()) {
+	public void findReferencesInDescription(final TargetURIs targetURIs, final IResourceDescription resourceDescription, final IReferenceFinder.IResourceAccess resourceAccess, final IReferenceFinder.Acceptor acceptor, final IProgressMonitor monitor) {
+		if ((resourceAccess == null)) {
+			return;
+		}
+		Declarators.DeclaratorsData _declaratorData = this.declarators.getDeclaratorData(targetURIs, resourceAccess);
+		final Set<QualifiedName> names = _declaratorData.getDeclaratorNames();
+		boolean _isCanceled = monitor.isCanceled();
+		if (_isCanceled) {
 			throw new OperationCanceledException();
 		}
-		final Set<QualifiedName> importedNames = IterableExtensions.toSet(resourceDescription.getImportedNames());
-		if (IterableExtensions.exists(names, new Functions.Function1<QualifiedName, Boolean>() {
+		Iterable<QualifiedName> _importedNames = resourceDescription.getImportedNames();
+		final Set<QualifiedName> importedNames = IterableExtensions.<QualifiedName>toSet(_importedNames);
+		final Function1<QualifiedName, Boolean> _function = new Function1<QualifiedName, Boolean>() {
 			@Override
-			public Boolean apply(QualifiedName it) {
-				return importedNames.contains(it);
+			public Boolean apply(final QualifiedName it) {
+				return Boolean.valueOf(importedNames.contains(it));
 			}
-		})) {
-			resourceAccess.readOnly(resourceDescription.getURI(), new IUnitOfWork<Object, ResourceSet>() {
+		};
+		boolean _exists = IterableExtensions.<QualifiedName>exists(names, _function);
+		if (_exists) {
+			URI _uRI = resourceDescription.getURI();
+			final IUnitOfWork<Object, ResourceSet> _function_1 = new IUnitOfWork<Object, ResourceSet>() {
 				@Override
-				public Object exec(ResourceSet state) throws Exception {
-					findReferences(targetURIs, state.getResource(resourceDescription.getURI(), true), acceptor, monitor);
+				public Object exec(final ResourceSet it) throws Exception {
+					URI _uRI = resourceDescription.getURI();
+					Resource _resource = it.getResource(_uRI, true);
+					SARLReferenceFinder.this.findReferences(targetURIs, _resource, acceptor, monitor);
 					return null;
 				}
-
-			});
+			};
+			resourceAccess.<Object>readOnly(_uRI, _function_1);
 		}
 	}
 
 	@Override
-	protected void findLocalReferencesFromElement(TargetURIs targetURIs,
-			EObject sourceCandidate, Resource localResource, Acceptor acceptor) {
-		// ignore type references in package fragments
-		if (sourceCandidate instanceof XAbstractFeatureCall
-				&& ((XAbstractFeatureCall) sourceCandidate).isPackageFragment()) {
-			return;
+	protected void findLocalReferencesFromElement(final TargetURIs targetURIs, final EObject sourceCandidate, final Resource localResource, final IReferenceFinder.Acceptor acceptor) {
+		boolean _matched = false;
+		if (!_matched) {
+			if (sourceCandidate instanceof XAbstractFeatureCall) {
+				boolean _isPackageFragment = ((XAbstractFeatureCall)sourceCandidate).isPackageFragment();
+				if (_isPackageFragment) {
+					_matched=true;
+					return;
+				}
+			}
 		}
-
 		super.findLocalReferencesFromElement(targetURIs, sourceCandidate, localResource, acceptor);
-
-		if (sourceCandidate instanceof XImportDeclaration) {
-			XImportDeclaration importDeclaration = (XImportDeclaration) sourceCandidate;
-			if (importDeclaration.isStatic() && !importDeclaration.isWildcard()) {
-				addReferenceToFeatureFromStaticImport(importDeclaration, targetURIs, acceptor);
+		boolean _matched_1 = false;
+		if (!_matched_1) {
+			if (sourceCandidate instanceof XImportDeclaration) {
+				boolean _and = false;
+				boolean _isStatic = ((XImportDeclaration)sourceCandidate).isStatic();
+				if (!_isStatic) {
+					_and = false;
+				} else {
+					boolean _isWildcard = ((XImportDeclaration)sourceCandidate).isWildcard();
+					boolean _not = (!_isWildcard);
+					_and = _not;
+				}
+				if (_and) {
+					_matched_1=true;
+					this.addReferenceToFeatureFromStaticImport(((XImportDeclaration)sourceCandidate), targetURIs, acceptor);
+				}
 			}
-		} else if (sourceCandidate instanceof XFeatureCall) {
-			XFeatureCall featureCall = (XFeatureCall) sourceCandidate;
-			if (featureCall.getActualReceiver() == null && featureCall.isStatic()) {
-				addReferenceToTypeFromStaticImport(featureCall, targetURIs, acceptor);
+		}
+		if (!_matched_1) {
+			if (sourceCandidate instanceof XFeatureCall) {
+				boolean _and = false;
+				XExpression _actualReceiver = ((XFeatureCall)sourceCandidate).getActualReceiver();
+				boolean _equals = Objects.equal(_actualReceiver, null);
+				if (!_equals) {
+					_and = false;
+				} else {
+					boolean _isStatic = ((XFeatureCall)sourceCandidate).isStatic();
+					_and = _isStatic;
+				}
+				if (_and) {
+					_matched_1=true;
+					this.addReferenceToTypeFromStaticImport(((XAbstractFeatureCall)sourceCandidate), targetURIs, acceptor);
+				}
 			}
-		} else if (sourceCandidate instanceof XMemberFeatureCall) {
-			XMemberFeatureCall featureCall = (XMemberFeatureCall) sourceCandidate;
-			if (featureCall.isStatic() && !featureCall.isStaticWithDeclaringType()) {
-				addReferenceToTypeFromStaticImport(featureCall, targetURIs, acceptor);
+		}
+		if (!_matched_1) {
+			if (sourceCandidate instanceof XMemberFeatureCall) {
+				_matched_1=true;
+				boolean _and = false;
+				boolean _isStatic = ((XMemberFeatureCall)sourceCandidate).isStatic();
+				if (!_isStatic) {
+					_and = false;
+				} else {
+					boolean _isStaticWithDeclaringType = ((XMemberFeatureCall)sourceCandidate).isStaticWithDeclaringType();
+					boolean _not = (!_isStaticWithDeclaringType);
+					_and = _not;
+				}
+				if (_and) {
+					this.addReferenceToTypeFromStaticImport(((XAbstractFeatureCall)sourceCandidate), targetURIs, acceptor);
+				}
 			}
-		} else if (sourceCandidate instanceof AnonymousClass) {
-			addReferencesToSuper((AnonymousClass) sourceCandidate, targetURIs, acceptor);
+		}
+		if (!_matched_1) {
+			if (sourceCandidate instanceof AnonymousClass) {
+				_matched_1=true;
+				this.addReferencesToSuper(((AnonymousClass)sourceCandidate), targetURIs, acceptor);
+			}
 		}
 	}
 
-	private static void addReferenceIfTarget(EObject candidate, TargetURIs targetURISet,
-			EObject sourceElement, EReference reference, Acceptor acceptor) {
-		URI candidateURI = EcoreUtil2.getPlatformResourceOrNormalizedURI(candidate);
-		if (targetURISet.contains(candidateURI)) {
-			URI sourceURI = EcoreUtil2.getPlatformResourceOrNormalizedURI(sourceElement);
-			acceptor.accept(sourceElement, sourceURI, reference, -1, candidate, candidateURI);
+	protected void addReferencesToSuper(final AnonymousClass anonymousClass, final TargetURIs targetURISet, final IReferenceFinder.Acceptor acceptor) {
+		final XConstructorCall constructorCall = anonymousClass.getConstructorCall();
+		final JvmGenericType superType = this._anonymousClassUtil.getSuperType(anonymousClass);
+		if (superType!=null) {
+			this.addReferenceIfTarget(superType, targetURISet, constructorCall, XbasePackage.Literals.XCONSTRUCTOR_CALL__CONSTRUCTOR, acceptor);
+		}
+		final JvmConstructor superConstructor = this._anonymousClassUtil.getSuperTypeConstructor(anonymousClass);
+		if (superConstructor!=null) {
+			this.addReferenceIfTarget(superConstructor, targetURISet, constructorCall, XbasePackage.Literals.XCONSTRUCTOR_CALL__CONSTRUCTOR, acceptor);
 		}
 	}
 
-	private void addReferenceToFeatureFromStaticImport(
-			XImportDeclaration importDeclaration, TargetURIs targetURISet, Acceptor acceptor) {
-		for (JvmFeature feature : this.memberProvider.getAllFeatures(importDeclaration)) {
-			addReferenceIfTarget(feature, targetURISet, importDeclaration,
-					XtypePackage.Literals.XIMPORT_DECLARATION__IMPORTED_TYPE, acceptor);
+	protected void addReferenceToFeatureFromStaticImport(final XImportDeclaration importDeclaration, final TargetURIs targetURISet, final IReferenceFinder.Acceptor acceptor) {
+		Iterable<JvmFeature> _allFeatures = this._staticallyImportedMemberProvider.getAllFeatures(importDeclaration);
+		final Procedure1<JvmFeature> _function = new Procedure1<JvmFeature>() {
+			@Override
+			public void apply(final JvmFeature it) {
+				SARLReferenceFinder.this.addReferenceIfTarget(it, targetURISet, importDeclaration, XtypePackage.Literals.XIMPORT_DECLARATION__IMPORTED_TYPE, acceptor);
+			}
+		};
+		IterableExtensions.<JvmFeature>forEach(_allFeatures, _function);
+	}
+
+	protected void addReferenceToTypeFromStaticImport(final XAbstractFeatureCall sourceCandidate, final TargetURIs targetURISet, final IReferenceFinder.Acceptor acceptor) {
+		final JvmIdentifiableElement feature = sourceCandidate.getFeature();
+		if ((feature instanceof JvmMember)) {
+			final JvmDeclaredType type = ((JvmMember)feature).getDeclaringType();
+			this.addReferenceIfTarget(type, targetURISet, sourceCandidate, XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE, acceptor);
 		}
 	}
 
-	private static void addReferenceToTypeFromStaticImport(XAbstractFeatureCall sourceCandidate,
-			TargetURIs targetURISet, Acceptor acceptor) {
-		JvmIdentifiableElement feature = sourceCandidate.getFeature();
-		if (feature instanceof JvmMember) {
-			JvmDeclaredType type = ((JvmMember) feature).getDeclaringType();
-			addReferenceIfTarget(type, targetURISet, sourceCandidate,
-					XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE, acceptor);
-		}
-	}
-
-	private void addReferencesToSuper(AnonymousClass anonymousClass, TargetURIs targetURISet, Acceptor acceptor) {
-		XConstructorCall constructorCall = anonymousClass.getConstructorCall();
-		JvmGenericType superType = this.anonymousClassUtil.getSuperType(anonymousClass);
-		if (superType != null) {
-			addReferenceIfTarget(superType, targetURISet, constructorCall,
-					XbasePackage.Literals.XCONSTRUCTOR_CALL__CONSTRUCTOR, acceptor);
-		}
-		JvmConstructor superConstructor = this.anonymousClassUtil.getSuperTypeConstructor(anonymousClass);
-		if (superConstructor != null) {
-			addReferenceIfTarget(superConstructor, targetURISet, constructorCall,
-					XbasePackage.Literals.XCONSTRUCTOR_CALL__CONSTRUCTOR, acceptor);
+	protected void addReferenceIfTarget(final EObject candidate, final TargetURIs targetURISet, final EObject sourceElement, final EReference reference, final IReferenceFinder.Acceptor acceptor) {
+		final URI candidateURI = EcoreUtil2.getPlatformResourceOrNormalizedURI(candidate);
+		boolean _contains = targetURISet.contains(candidateURI);
+		if (_contains) {
+			final URI sourceURI = EcoreUtil2.getPlatformResourceOrNormalizedURI(sourceElement);
+			acceptor.accept(sourceElement, sourceURI, reference, (-1), candidate, candidateURI);
 		}
 	}
 

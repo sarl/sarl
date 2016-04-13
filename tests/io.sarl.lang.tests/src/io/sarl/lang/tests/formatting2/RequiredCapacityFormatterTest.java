@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 import org.junit.runners.model.InitializationError;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -41,48 +42,172 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@RunWith(Suite.class)
+@SuiteClasses({
+	RequiredCapacityFormatterTest.FormatterAPITest.class,
+})
 @SuppressWarnings("all")
-public class RequiredCapacityFormatterTest extends AbstractMemberFormatterTest {
+public class RequiredCapacityFormatterTest {
 
-	@Test
-	public void one() throws Exception {
-		String source = unformattedCode("requires    Capacity1");
-		String expected = formattedCode("	requires Capacity1");
-		assertFormatted(source, expected);
-	}
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class FormatterAPITest extends AbstractMemberFormatterTest {
 
-	@Test
-	public void two() throws Exception {
-		String source = unformattedCode("requires Capacity1,Capacity2");
-		String expected = formattedCode("	requires Capacity1, Capacity2");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void one() throws Exception {
+			String source = unformattedCode("requires    Capacity1");
+			String expected = formattedCode("	requires Capacity1");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void three() throws Exception {
-		String source = unformattedCode("requires Capacity1,Capacity2,    Capacity3");
-		String expected = formattedCode("	requires Capacity1, Capacity2, Capacity3");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void two() throws Exception {
+			String source = unformattedCode("requires Capacity1,Capacity2");
+			String expected = formattedCode("	requires Capacity1, Capacity2");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void twoStatements_two() throws Exception {
-		String source = unformattedCode("requires Capacity1 requires Capacity2");
-		String expected = formattedCode(
-				"	requires Capacity1",
-				"",
-				"	requires Capacity2");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void three() throws Exception {
+			String source = unformattedCode("requires Capacity1,Capacity2,    Capacity3");
+			String expected = formattedCode("	requires Capacity1, Capacity2, Capacity3");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void twoStatements_three() throws Exception {
-		String source = unformattedCode("requires Capacity1 requires Capacity2,    Capacity3");
-		String expected = formattedCode(
-				"	requires Capacity1",
-				"",
-				"	requires Capacity2, Capacity3");
-		assertFormatted(source, expected);
+		@Test
+		public void twoStatements_two() throws Exception {
+			String source = unformattedCode("requires Capacity1 requires Capacity2");
+			String expected = formattedCode(
+					"	requires Capacity1",
+					"",
+					"	requires Capacity2");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void twoStatements_three() throws Exception {
+			String source = unformattedCode("requires Capacity1 requires Capacity2,    Capacity3");
+			String expected = formattedCode(
+					"	requires Capacity1",
+					"",
+					"	requires Capacity2, Capacity3");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void mlStandardComment1() throws Exception {
+			String source = unformattedCode("/*Hello world.\n* That's the second line.\n*/requires Capacity1");
+			String expected = formattedCode(
+					"\t/* Hello world.",
+					"\t * That's the second line.",
+					"\t */",
+					"\trequires Capacity1");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void mlStandardComment2() throws Exception {
+			String source = unformattedCode("/*Hello world.\nThat's the second line.*/requires Capacity1");
+			String expected = formattedCode(
+					"\t/* Hello world.",
+					"\t * That's the second line.",
+					"\t */",
+					"\trequires Capacity1");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void mlStandardComment3() throws Exception {
+			String source = unformattedCode(
+					"/*Hello world.\nThat's the second line.*/requires Capacity1 /*Second comment.*/requires Capacity2");
+			String expected = formattedCode(
+					"\t/* Hello world.",
+					"\t * That's the second line.",
+					"\t */",
+					"\trequires Capacity1",
+					"\t/* Second comment.",
+					"\t */",
+					"\trequires Capacity2");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void mlStandardComment4() throws Exception {
+			String source = unformattedCode("/*Hello world.\nThat's the second line.*/requires Capacity1/*Second comment.*/");
+			String expected = formattedCode(
+					"\t/* Hello world.",
+					"\t * That's the second line.",
+					"\t */",
+					"\trequires Capacity1",
+					"\t/* Second comment.",
+					"\t */");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void mlJavaComment() throws Exception {
+			String source = unformattedCode("/**Hello world.\nThat's the second line.*/requires Capacity1");
+			String expected = formattedCode(
+					"\t/** Hello world.",
+					"\t * That's the second line.",
+					"\t */",
+					"\trequires Capacity1");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void slComment1() throws Exception {
+			String source = unformattedCode("\n//Hello world.\nrequires Capacity1");
+			String expected = formattedCode(
+					"\t// Hello world.",
+					"\trequires Capacity1");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void slComment2() throws Exception {
+			String source = unformattedCode("\n//      Hello world.\nrequires Capacity1");
+			String expected = formattedCode(
+					"\t// Hello world.",
+					"\trequires Capacity1");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void slComment3() throws Exception {
+			String source = unformattedCode("\n// Hello world.\nrequires Capacity1");
+			String expected = formattedCode(
+					"\t// Hello world.",
+					"\trequires Capacity1");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void slComment4() throws Exception {
+			String source = unformattedCode("\n// Hello world.\nrequires Capacity1\n//Second comment\n");
+			String expected = formattedCode(
+					"\t// Hello world.",
+					"\trequires Capacity1",
+					"\t// Second comment");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void slComment5() throws Exception {
+			String source = unformattedCode("\n// Hello world.\nrequires Capacity1\n//Second comment\nrequires Capacity2");
+			String expected = formattedCode(
+					"\t// Hello world.",
+					"\trequires Capacity1",
+					"",
+					"\t// Second comment",
+					"\trequires Capacity2");
+			assertFormatted(source, expected);
+		}
+
 	}
 
 }

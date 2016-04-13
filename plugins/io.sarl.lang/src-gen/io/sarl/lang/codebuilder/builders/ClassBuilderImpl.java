@@ -34,6 +34,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -112,6 +114,26 @@ public class ClassBuilderImpl extends AbstractBuilder implements IClassBuilder {
 	public void addImplements(String type) {
 		if (!Strings.isEmpty(type)) {
 			this.sarlClass.getImplements().add(newTypeRef(sarlClass, type));
+		}
+	}
+
+	/** Add an annotation.
+	 * @param type - the qualified name of the annotation.
+	 */
+	public void addAnnotation(String type) {
+		if (!Strings.isEmpty(type)) {
+			XAnnotation annotation = XAnnotationsFactory.eINSTANCE.createXAnnotation();
+			annotation.setAnnotationType(newTypeRef(sarlClass, type).getType());
+			this.sarlClass.getAnnotations().add(annotation);
+		}
+	}
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	public void addModifier(String modifier) {
+		if (!Strings.isEmpty(modifier)) {
+			this.sarlClass.getModifiers().add(modifier);
 		}
 	}
 

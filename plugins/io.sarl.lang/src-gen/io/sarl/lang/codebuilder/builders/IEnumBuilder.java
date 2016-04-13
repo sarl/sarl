@@ -55,6 +55,16 @@ public interface IEnumBuilder {
 	 */
 	void setDocumentation(String doc);
 
+	/** Add an annotation.
+	 * @param type - the qualified name of the annotation.
+	 */
+	void addAnnotation(String type);
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	void addModifier(String modifier);
+
 	/** Create a XtendEnumLiteral.
 	 * @param name - the name of the XtendEnumLiteral.
 	 * @return the builder.

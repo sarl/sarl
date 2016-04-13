@@ -21,24 +21,38 @@
 
 package io.sarl.lang.formatting2;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
+import com.google.inject.Injector;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.formatting2.XtendFormatter;
+import org.eclipse.xtend.core.formatting2.XtendFormatterPreferenceKeys;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendEnumLiteral;
+import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendParameter;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.formatting2.IFormattableDocument;
 import org.eclipse.xtext.formatting2.IHiddenRegionFormatter;
+import org.eclipse.xtext.formatting2.ITextReplacer;
+import org.eclipse.xtext.formatting2.internal.CommentReplacer;
+import org.eclipse.xtext.formatting2.regionaccess.IComment;
 import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegion;
 import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegionFinder;
 import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegionsFinder;
+import org.eclipse.xtext.grammaranalysis.impl.GrammarElementTitleSwitch;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XForLoopExpression;
@@ -61,14 +75,25 @@ import io.sarl.lang.sarl.SarlSkill;
 /**
  * This class contains custom formatting description.
  *
- * <p>Developers: for avoiding formatting conflicts between two keywords, try to avoid "surounding" and use only "prepend". 
+ * <p>Developers: for avoiding formatting conflicts between two keywords, try to avoid "surounding" and use only "prepend".
+ *
+ * <p>The {@link FormatterFacade} provides a convinient API for formatting strings.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see FormatterFacade
  */
 public class SARLFormatter extends XtendFormatter {
+
+	/** Name to use for injected comments.
+	 */
+	public static final String COMMENT_NAME = "io.sarl.lang.formatting2.COMMENT_TO_FORMAT"; //$NON-NLS-1$
+
+	/** Name to use for injected comment prefix.
+	 */
+	public static final String COMMENT_PREFIX_NAME = "io.sarl.lang.formatting2.COMMENT_PREFIX"; //$NON-NLS-1$
 
 	private static final Procedure1<IHiddenRegionFormatter> ONE_SPACE = new Procedure1<IHiddenRegionFormatter>() {
 		@Override
@@ -90,6 +115,38 @@ public class SARLFormatter extends XtendFormatter {
 			it.newLine();
 		}
 	};
+
+	private static final Procedure1<IHiddenRegionFormatter> INDENT = new Procedure1<IHiddenRegionFormatter>() {
+		@Override
+		public void apply(IHiddenRegionFormatter it) {
+			it.indent();
+		}
+	};
+
+	@Inject
+	private Injector injector;
+
+	@Override
+	public ITextReplacer createCommentReplacer(IComment comment) {
+		EObject grammarElement = comment.getGrammarElement();
+		if (grammarElement instanceof AbstractRule) {
+			String ruleName = ((AbstractRule) grammarElement).getName();
+			CommentReplacer replacer = null;
+			if (ruleName.startsWith("ML")) { //$NON-NLS-1$
+				replacer = new SARLMultilineCommentReplacer(comment);
+			} else if (ruleName.startsWith("SL")) { //$NON-NLS-1$
+				replacer = new SARLSinglelineCommentReplacer(comment);
+			}
+			if (replacer != null) {
+				this.injector.injectMembers(replacer);
+				return replacer;
+			}
+		}
+		String elementName = new GrammarElementTitleSwitch().showQualified().showRule().doSwitch(grammarElement);
+		throw new IllegalStateException(
+				MessageFormat.format(Messages.SARLFormatter_0,
+						ITextReplacer.class.getSimpleName(), elementName));
+	}
 
 	@Override
 	public void format(Object sarlComponent, IFormattableDocument document) {
@@ -160,6 +217,7 @@ public class SARLFormatter extends XtendFormatter {
 		formatModifiers(capacity, document);
 
 		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(capacity);
+
 		document.append(regionFor.keyword("capacity"), ONE_SPACE); //$NON-NLS-1$
 
 		document.surround(regionFor.keyword("extends"), ONE_SPACE); //$NON-NLS-1$
@@ -239,7 +297,6 @@ public class SARLFormatter extends XtendFormatter {
 		document.append(equalKw, ONE_SPACE);
 		ISemanticRegion semicolumn = regionFor.keyword(";"); //$NON-NLS-1$
 		document.prepend(semicolumn, NO_SPACE);
-		document.append(semicolumn, NEW_LINE);
 
 		JvmTypeReference type = field.getType();
 		document.format(type);
@@ -293,7 +350,6 @@ public class SARLFormatter extends XtendFormatter {
 		} else {
 			ISemanticRegion column = regionFor.keyword(";"); //$NON-NLS-1$
 			document.prepend(column, NO_SPACE);
-			document.append(column, NEW_LINE);
 		}
 
 		EList<XtendParameter> parameters = function.getParameters();
@@ -531,6 +587,71 @@ public class SARLFormatter extends XtendFormatter {
 			document.prepend(keyword, NO_SPACE);
 			document.append(keyword, ONE_SPACE);
 		}
+	}
+
+	@Override
+	protected ISemanticRegion formatBody(XtendTypeDeclaration type, IFormattableDocument document) {
+		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(type);
+
+		ISemanticRegion open = regionFor.keyword("{"); //$NON-NLS-1$
+		ISemanticRegion close = regionFor.keyword("}"); //$NON-NLS-1$
+		document.prepend(open, XbaseFormatterPreferenceKeys.bracesInNewLine);
+		document.interior(open, close, INDENT);
+		
+		EList<XtendMember> members = type.getMembers();
+		if (!members.isEmpty()) {
+			XtendMember previous = null;
+			for (XtendMember current : members) {
+				document.format(current);
+				if (previous == null) {
+					document.prepend(current, XtendFormatterPreferenceKeys.blankLinesBeforeFirstMember);
+				} else if (previous instanceof XtendField) {
+					if (current instanceof XtendField) {
+						document.append(previous, XtendFormatterPreferenceKeys.blankLinesBetweenFields);
+					} else {
+						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+					}
+				} else if (previous instanceof XtendExecutable) {
+					if (current instanceof XtendExecutable) {
+						document.append(previous, XtendFormatterPreferenceKeys.blankLinesBetweenMethods);
+					} else {
+						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+					}
+				} else if (previous instanceof XtendTypeDeclaration) {
+					if (current instanceof XtendTypeDeclaration) {
+						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenInnerTypes);
+					} else {
+						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+					}
+				} else if (previous instanceof XtendEnumLiteral) {
+					if (current instanceof XtendEnumLiteral) {
+						document.append(previous, XtendFormatterPreferenceKeys.blankLinesBetweenEnumLiterals);
+					} else {
+						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+					}
+				} else if (previous instanceof SarlCapacityUses) {
+					if (current instanceof SarlCapacityUses) {
+						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenCapacityUses);
+					} else {
+						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+					}
+				} else if (previous instanceof SarlRequiredCapacity) {
+					if (current instanceof SarlCapacityUses) {
+						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenCapacityRequiements);
+					} else {
+						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+					}
+				} else {
+					document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+				}
+				previous = current;
+			}
+			if (previous != null) {
+				document.append(previous, XtendFormatterPreferenceKeys.blankLinesAfterLastMember);
+			}
+			return null;
+		}
+		return document.append(open, NEW_LINE);
 	}
 
 }

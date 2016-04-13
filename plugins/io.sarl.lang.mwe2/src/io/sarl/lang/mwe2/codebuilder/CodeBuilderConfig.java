@@ -22,6 +22,7 @@
 package io.sarl.lang.mwe2.codebuilder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +52,14 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	/** Default name of the assignment in the grammar that is used for representing a type implementation.
 	 */
 	public static final String TYPE_IMPLEMENTATION_GRAMMAR_NAME = "implements"; //$NON-NLS-1$
+
+	/** Default name of the assignment in the grammar that is used for representing an annotation assignment.
+	 */
+	public static final String ANNOTATION_LIST_GRAMMAR_NAME = "annotations"; //$NON-NLS-1$
+
+	/** Default name of the assignment in the grammar that is used for representing a modifier assignment.
+	 */
+	public static final String MODIFIER_LIST_GRAMMAR_NAME = "modifiers"; //$NON-NLS-1$
 
 	/** Default name of the assignment in the grammar that is used for representing a collection of members.
 	 */
@@ -137,9 +146,15 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	private String formalParameterContainerType;
 
+	private final Set<String> multilineCommentedTypes = new HashSet<>();
+
 	private String typeExtensionGrammarName = TYPE_EXTENSION_GRAMMAR_NAME;
 
 	private String typeImplementationGrammarName = TYPE_IMPLEMENTATION_GRAMMAR_NAME;
+
+	private String annotationListGrammarName = ANNOTATION_LIST_GRAMMAR_NAME;
+
+	private String modifierListGrammarName = MODIFIER_LIST_GRAMMAR_NAME;
 
 	private String memberCollectionGrammarName = MEMBER_COLLECTION_GRAMMAR_NAME;
 
@@ -190,6 +205,25 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	private final BooleanGeneratorOption enableISourceAppendable = new BooleanGeneratorOption(true); 
 
 	private final BooleanGeneratorOption generateUnitTests = new BooleanGeneratorOption(true); 
+
+	/** Add a type that should be commented with multiline comments.
+	 *
+	 * @param type the qualified name of the type.
+	 */
+	public void addMultilineCommentedType(String type) {
+		if (!Strings.isEmpty(type)) {
+			this.multilineCommentedTypes.add(type);
+		}
+	}
+
+	/** Replies the types that should be commented with multiline comments.
+	 *
+	 * @return the qualified names of the types.
+	 */
+	@Pure
+	public Set<String> getMultilineCommentedTypes() {
+		return this.multilineCommentedTypes;
+	}
 
 	/** Set the file extension for the resources that handle simple XExpressions.
 	 *
@@ -681,6 +715,44 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 		}
 	}
 	
+	/** Replies the name that is used for representing annotations in the grammar's assignments.
+	 *
+	 * @return the name of the assignment for annotations.
+	 */
+	@Pure
+	public String getAnnotationListGrammarName() {
+		return this.annotationListGrammarName;
+	}
+
+	/** Set the name that is used for representing annotations in the grammar's assignments.
+	 *
+	 * @param name the name of the assignment for annotations.
+	 */
+	public void setAnnotationListGrammarName(String name) {
+		if (!Strings.isEmpty(name)) {
+			this.annotationListGrammarName = name;
+		}
+	}
+
+	/** Replies the name that is used for representing modifiers in the grammar's assignments.
+	 *
+	 * @return the name of the assignment for modifiers.
+	 */
+	@Pure
+	public String getModifierListGrammarName() {
+		return this.modifierListGrammarName;
+	}
+
+	/** Set the name that is used for representing modifiers in the grammar's assignments.
+	 *
+	 * @param name the name of the assignment for modifiers.
+	 */
+	public void setModifierListGrammarName(String name) {
+		if (!Strings.isEmpty(name)) {
+			this.modifierListGrammarName = name;
+		}
+	}
+
 	/** Replies the name that is used for representing type implementations in the grammar's assignments.
 	 *
 	 * @return the name of the assignment for type implementations.

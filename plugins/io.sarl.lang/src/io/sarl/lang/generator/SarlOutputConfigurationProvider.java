@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.compiler;
+package io.sarl.lang.generator;
 
 import static com.google.common.collect.Sets.newHashSet;
 

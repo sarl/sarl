@@ -79,6 +79,20 @@ public class EnumSourceAppender extends AbstractSourceAppender implements IEnumB
 		this.builder.setDocumentation(doc);
 	}
 
+	/** Add an annotation.
+	 * @param type - the qualified name of the annotation.
+	 */
+	public void addAnnotation(String type) {
+		this.builder.addAnnotation(type);
+	}
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	public void addModifier(String modifier) {
+		this.builder.addModifier(modifier);
+	}
+
 	/** Create a XtendEnumLiteral.
 	 * @param name - the name of the XtendEnumLiteral.
 	 * @return the builder.

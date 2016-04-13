@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 import org.junit.runners.model.InitializationError;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -41,8 +42,20 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@RunWith(Suite.class)
+@SuiteClasses({
+	ConstructorFormatterTest.FormatterAPITest.class,
+})
 @SuppressWarnings("all")
-public class ConstructorFormatterTest extends AbstractMemberFormatterTest {
+public class ConstructorFormatterTest {
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class FormatterAPITest extends AbstractMemberFormatterTest {
 
 	@Test
 	public void noParam() throws Exception {
@@ -224,4 +237,139 @@ public class ConstructorFormatterTest extends AbstractMemberFormatterTest {
 		assertFormatted(source, expected);
 	}
 
+	@Test
+	public void mlStandardComment1() throws Exception {
+		String source = unformattedCode("/*Hello world.\n* That's the second line.\n*/new{System.out.println(a)}");
+		String expected = formattedCode(
+				"\t/* Hello world.",
+				"\t * That's the second line.",
+				"\t */",
+				"\tnew {",
+				"\t\tSystem.out.println(a)",
+				"\t}");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void mlStandardComment2() throws Exception {
+		String source = unformattedCode("/*Hello world.\nThat's the second line.*/new{System.out.println(a)}");
+		String expected = formattedCode(
+				"\t/* Hello world.",
+				"\t * That's the second line.",
+				"\t */",
+				"\tnew {",
+				"\t\tSystem.out.println(a)",
+				"\t}");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void mlStandardComment3() throws Exception {
+		String source = unformattedCode("/*Hello world.\nThat's the second line.*/new{System.out.println(a)}/*Second comment.*/new(a:int){System.out.println(a)}");
+		String expected = formattedCode(
+				"\t/* Hello world.",
+				"\t * That's the second line.",
+				"\t */",
+				"\tnew {",
+				"\t\tSystem.out.println(a)",
+				"\t}",
+				"\t/* Second comment.",
+				"\t */",
+				"\tnew(a : int) {",
+				"\t\tSystem.out.println(a)",
+				"\t}");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void mlStandardComment4() throws Exception {
+		String source = unformattedCode("/*Hello world.\nThat's the second line.*/new{System.out.println(a)}/*Second comment.*/");
+		String expected = formattedCode(
+				"\t/* Hello world.",
+				"\t * That's the second line.",
+				"\t */",
+				"\tnew {",
+				"\t\tSystem.out.println(a)",
+				"\t}",
+				"\t/* Second comment.",
+				"\t */");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void mlJavaComment() throws Exception {
+		String source = unformattedCode("/**Hello world.\nThat's the second line.*/new{System.out.println(a)}");
+		String expected = formattedCode(
+				"\t/** Hello world.",
+				"\t * That's the second line.",
+				"\t */",
+				"\tnew {",
+				"\t\tSystem.out.println(a)",
+				"\t}");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void slComment1() throws Exception {
+		String source = unformattedCode("\n//Hello world.\nnew{System.out.println(a)}");
+		String expected = formattedCode(
+				"\t// Hello world.",
+				"\tnew {",
+				"\t\tSystem.out.println(a)",
+				"\t}");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void slComment2() throws Exception {
+		String source = unformattedCode("\n//      Hello world.\nnew{System.out.println(a)}");
+		String expected = formattedCode(
+				"\t// Hello world.",
+				"\tnew {",
+				"\t\tSystem.out.println(a)",
+				"\t}");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void slComment3() throws Exception {
+		String source = unformattedCode("\n// Hello world.\nnew{System.out.println(a)}");
+		String expected = formattedCode(
+				"\t// Hello world.",
+				"\tnew {",
+				"\t\tSystem.out.println(a)",
+				"\t}");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void slComment4() throws Exception {
+		String source = unformattedCode("\n// Hello world.\nnew{System.out.println(a)}\n//Second comment\n");
+		String expected = formattedCode(
+				"\t// Hello world.",
+				"\tnew {",
+				"\t\tSystem.out.println(a)",
+				"\t}",
+				"\t// Second comment");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void slComment5() throws Exception {
+		String source = unformattedCode("\n// Hello world.\nnew{System.out.println(a)}\n//Second comment\nnew(a:int){System.out.println(a)}");
+		String expected = formattedCode(
+				"\t// Hello world.",
+				"\tnew {",
+				"\t\tSystem.out.println(a)",
+				"\t}",
+				"",
+				"\t// Second comment",
+				"\tnew(a : int) {",
+				"\t\tSystem.out.println(a)",
+				"\t}");
+		assertFormatted(source, expected);
+	}
+
+}
+	
 }

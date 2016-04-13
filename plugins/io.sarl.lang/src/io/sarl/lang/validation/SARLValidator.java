@@ -152,7 +152,7 @@ import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 import io.sarl.lang.SARLLangActivator;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
@@ -316,7 +316,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private FeatureNameValidator featureNames;
 
 	@Inject
-	private ActionPrototypeProvider sarlActionSignatures;
+	private IActionPrototypeProvider sarlActionSignatures;
 
 	@Inject
 	private FeatureCallValidator featureCallValidator;
@@ -344,6 +344,21 @@ public class SARLValidator extends AbstractSARLValidator {
 			return ((JvmIdentifiableElement) jvmElement).getQualifiedName();
 		}
 		return null;
+	}
+
+	/** Emit a warning when the "fires" keyword is used.
+	 *
+	 * @param action - the action to check.
+	 */
+	@Check
+	public void checkFiresKeywordUse(SarlAction action) {
+		if (!action.getFiredEvents().isEmpty()) {
+			warning(MessageFormat.format(
+					Messages.SARLValidator_2,
+					this.grammarAccess.getActionAccess().getFiresKeyword_9_1_0().getValue()),
+					action,
+					null);
+		}
 	}
 
 	/** Emit a warning when the "requires" keyword is used.

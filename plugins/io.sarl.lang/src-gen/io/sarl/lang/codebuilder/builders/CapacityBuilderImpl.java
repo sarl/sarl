@@ -36,6 +36,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -107,6 +109,26 @@ public class CapacityBuilderImpl extends AbstractBuilder implements ICapacityBui
 			if (isSubTypeOf(this.sarlCapacity, superTypeRef, baseTypeRef)) {
 				this.sarlCapacity.getExtends().add(superTypeRef);
 			}
+		}
+	}
+
+	/** Add an annotation.
+	 * @param type - the qualified name of the annotation.
+	 */
+	public void addAnnotation(String type) {
+		if (!Strings.isEmpty(type)) {
+			XAnnotation annotation = XAnnotationsFactory.eINSTANCE.createXAnnotation();
+			annotation.setAnnotationType(newTypeRef(sarlCapacity, type).getType());
+			this.sarlCapacity.getAnnotations().add(annotation);
+		}
+	}
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	public void addModifier(String modifier) {
+		if (!Strings.isEmpty(modifier)) {
+			this.sarlCapacity.getModifiers().add(modifier);
 		}
 	}
 

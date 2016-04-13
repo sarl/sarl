@@ -87,6 +87,20 @@ public class EventSourceAppender extends AbstractSourceAppender implements IEven
 	public void setExtends(String superType) {
 		this.builder.setExtends(superType);	}
 
+	/** Add an annotation.
+	 * @param type - the qualified name of the annotation.
+	 */
+	public void addAnnotation(String type) {
+		this.builder.addAnnotation(type);
+	}
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	public void addModifier(String modifier) {
+		this.builder.addModifier(modifier);
+	}
+
 	/** Create a Constructor.
 	 * @return the builder.
 	 */

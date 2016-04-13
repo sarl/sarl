@@ -147,6 +147,7 @@ Workflow {
 				topElementRuleName = "Type"
 				formalParameterRuleName = "Parameter"
 				formalParameterContainerType = "org.eclipse.xtend.core.xtend.XtendExecutable"
+				multilineCommentedType = "org.eclipse.xtend.core.xtend.XtendMember"
 				constructorFreeRuleName = "Capacity"
 				constructorFreeRuleName = "Interface"
 				constructorFreeRuleName = "Enum"
@@ -445,11 +446,6 @@ Workflow {
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.util.XExpressionHelper"
     				to = "io.sarl.lang.typing.SARLExpressionHelper"
-    			}
-    			runtime = {
-    				bind = "org.eclipse.xtext.serializer.sequencer.ISyntacticSequencer"
-    				to = "io.sarl.lang.serializer.SARLSyntacticSequencerCustom"
-    				override = true
     			}
     			
     			ui = {

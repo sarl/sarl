@@ -25,6 +25,7 @@ package io.sarl.lang.documentation;
 
 import io.sarl.lang.services.SARLGrammarAccess;
 import javax.inject.Inject;
+import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.AbstractElement;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Group;
@@ -35,28 +36,37 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Build a documentation string.
  */
-public class DocumentationBuilder implements IDocumentationBuilder {
+public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 
 	private AbstractRule mlRule;
 
 	private AbstractRule slRule;
 
-	private String startTag;
+	private String mlStartSymbols;
 
-	private String endTag;
+	private String mlEndTagSymbols;
+
+	private String slStartSymbols;
 
 	@Inject
-	private IDocumentationFormatter docFormatter;
+	private IDocumentationFormatter documentationFormatter;
 
 	@Inject
 	public void setGrammarAccess(SARLGrammarAccess access) {
 		this.mlRule = access.getML_COMMENTRule();
 		this.slRule = access.getSL_COMMENTRule();
 		for (AbstractElement element : ((Group) this.mlRule.getAlternatives()).getElements()) {
-			if (element instanceof Keyword && Strings.isEmpty(this.startTag)) {
-				this.startTag = ((Keyword) element).getValue();
-			} else if (element instanceof UntilToken && Strings.isEmpty(this.endTag)) {
-				this.endTag = ((Keyword) ((UntilToken) element).getTerminal()).getValue();
+			if (element instanceof Keyword && Strings.isEmpty(this.mlStartSymbols)) {
+				this.mlStartSymbols = ((Keyword) element).getValue();
+			} else if (element instanceof UntilToken && Strings.isEmpty(this.mlEndTagSymbols)) {
+				this.mlEndTagSymbols = ((Keyword) ((UntilToken) element).getTerminal()).getValue();
+			}
+		}
+		AbstractRule slRule = access.getSL_COMMENTRule();
+		for (AbstractElement element : ((Group) slRule.getAlternatives()).getElements()) {
+			if (element instanceof Keyword) {
+				this.slStartSymbols = ((Keyword) element).getValue().trim();
+				break;
 			}
 		}
 	}
@@ -73,18 +83,33 @@ public class DocumentationBuilder implements IDocumentationBuilder {
 
 	@Pure
 	public IDocumentationFormatter getDocumentationFormatter() {
-		return this.docFormatter;
+		return this.documentationFormatter;
+	}
+
+	protected boolean isMultilineCommentFor(Class<?> type) {
+		return XtendMember.class.isAssignableFrom(type);
 	}
 
 	@Pure
-	public String build(String doc) {
-		StringBuilder formattedDoc = new StringBuilder();
-		if (!Strings.isEmpty(doc)) {
-			formattedDoc.append(this.startTag).append(" ");
-			formattedDoc.append(getDocumentationFormatter().format(doc));
-			formattedDoc.append(" ").append(this.endTag).append(Strings.newLine());
+	public String build(String doc, Class<?> objectType) {
+		String givenDocumentation = Strings.emptyIfNull(doc).trim();
+		StringBuilder documentation = new StringBuilder();
+		IDocumentationFormatter formatter = getDocumentationFormatter();
+		if (isMultilineCommentFor(objectType)) {
+			if (!doc.startsWith(this.mlStartSymbols)) {
+				documentation.append(this.mlStartSymbols);
+			}
+			documentation.append(givenDocumentation);
+			if (!doc.endsWith(this.mlEndTagSymbols)) {
+				documentation.append(this.mlEndTagSymbols);
+			}
+			return formatter.formatMultilineComment(documentation.toString());
 		}
-		return formattedDoc.toString();
+		if (!doc.startsWith(this.slStartSymbols)) {
+			documentation.append(this.slStartSymbols);
+		}
+		documentation.append(givenDocumentation);
+		return formatter.formatSinglelineComment(documentation.toString());
 	}
 
 }

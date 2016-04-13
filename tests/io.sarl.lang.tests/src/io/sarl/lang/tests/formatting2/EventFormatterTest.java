@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 import org.junit.runners.model.InitializationError;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -41,89 +42,174 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@RunWith(Suite.class)
+@SuiteClasses({
+	EventFormatterTest.FormatterAPITest.class,
+})
 @SuppressWarnings("all")
-public class EventFormatterTest extends AbstractFormatterTest {
-	
-	@Test
-	public void empty() throws Exception {
-		String source = "event  EntityX{}";
-		String expected = multilineString(
-				"event EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
+public class EventFormatterTest {
 
-	@Test
-	public void modifiers() throws Exception {
-		String source = "public    static    event EntityX{}";
-		String expected = multilineString(
-				"public static event EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class FormatterAPITest extends AbstractFormatterTest {
 
-	@Test
-	public void twoAnnotations() throws Exception {
-		String source = "@Pure@Beta    event EntityX{}";
-		String expected = multilineString(
-				"@Pure @Beta event EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void empty() throws Exception {
+			String source = "event  EntityX{}";
+			String expected = multilineString(
+					"event EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void threeAnnotations() throws Exception {
-		String source = "@Pure@Beta\n@Hello    event EntityX{}";
-		String expected = multilineString(
-				"@Pure @Beta",
-				"@Hello event EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void modifiers() throws Exception {
+			String source = "public    static    event EntityX{}";
+			String expected = multilineString(
+					"public static event EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void annotationValue() throws Exception {
-		String source = "@SuppressWarnings(        value= \"name\"   )event EntityX{}";
-		String expected = multilineString(
-				"@SuppressWarnings(value = \"name\") event EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void twoAnnotations() throws Exception {
+			String source = "@Pure@Beta    event EntityX{}";
+			String expected = multilineString(
+					"@Pure @Beta event EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void annotationImplicitValue() throws Exception {
-		String source = "@SuppressWarnings(   \"name\"   )event EntityX{}";
-		String expected = multilineString(
-				"@SuppressWarnings(\"name\") event EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void threeAnnotations() throws Exception {
+			String source = "@Pure@Beta\n@Hello    event EntityX{}";
+			String expected = multilineString(
+					"@Pure @Beta",
+					"@Hello event EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void extend() throws Exception {
-		String source = "event EntityX    extends    EntityY {}";
-		String expected = multilineString(
-				"event EntityX extends EntityY {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void annotationValue() throws Exception {
+			String source = "@SuppressWarnings(        value= \"name\"   )event EntityX{}";
+			String expected = multilineString(
+					"@SuppressWarnings(value = \"name\") event EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void memberIndent() throws Exception {
-		String source = "event EntityX{var x:int}";
-		String expected = multilineString(
-				"event EntityX {",
-				"	var x : int",
-				"}",
-				"");
-		assertFormatted(source, expected);
+		@Test
+		public void annotationImplicitValue() throws Exception {
+			String source = "@SuppressWarnings(   \"name\"   )event EntityX{}";
+			String expected = multilineString(
+					"@SuppressWarnings(\"name\") event EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void extend() throws Exception {
+			String source = "event EntityX    extends    EntityY {}";
+			String expected = multilineString(
+					"event EntityX extends EntityY {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void memberIndent() throws Exception {
+			String source = "event EntityX{var x:int}";
+			String expected = multilineString(
+					"event EntityX {",
+					"	var x : int",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void mlStandardComment1() throws Exception {
+			String source = "/*Hello world.\n* That's the second line.\n*/event A";
+			String expected = multilineString(
+					"/* Hello world.",
+					" * That's the second line.",
+					" */",
+					"event A",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void mlStandardComment2() throws Exception {
+			String source = "/*Hello world.\nThat's the second line.*/event A";
+			String expected = multilineString(
+					"/* Hello world.",
+					" * That's the second line.",
+					" */",
+					"event A",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void mlStandardComment3() throws Exception {
+			String source = "/*     Hello world.     */event A";
+			String expected = multilineString(
+					"/* Hello world.",
+					" */",
+					"event A",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void mlStandardComment4() throws Exception {
+			String source = "/*     Hello world.     */event A{/*Second comment*/}";
+			String expected = multilineString(
+					"/* Hello world.",
+					" */",
+					"event A {",
+					"\t/* Second comment",
+					"\t */",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void mlJavaComment() throws Exception {
+			String source = "/**Hello world.\nThat's the second line.*/event A";
+			String expected = multilineString(
+					"/** Hello world.",
+					" * That's the second line.",
+					" */",
+					"event A",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void slComment() throws Exception {
+			String source = "\n//Hello world.\nevent A";
+			String expected = multilineString(
+					"// Hello world.",
+					"event A",
+					"");
+			assertFormatted(source, expected);
+		}
+
 	}
 
 }

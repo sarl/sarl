@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
@@ -42,7 +43,6 @@ import org.eclipse.xtext.nodemodel.ILeafNode;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.tasks.ITaskTagProvider;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.Fix;
@@ -55,7 +55,7 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -92,6 +92,9 @@ import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
 public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject
+	private Injector injector;
+
+	@Inject
 	private ReplacingAppendable.Factory appendableFactory;
 
 	@Inject
@@ -104,14 +107,19 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	private CommonTypeComputationServices services;
 
 	@Inject
-	private ITaskTagProvider taskTagProvider;
-
-	@Inject
-	private ActionPrototypeProvider prototypeProvider;
+	private IActionPrototypeProvider prototypeProvider;
 
 	@Inject
 	private IQualifiedNameProvider qualifiedNameProvider;
 
+	/** Replies the injector used by this object.
+	 *
+	 * @return the injector.
+	 */
+	public Injector getInjector() {
+		return this.injector;
+	}
+	
 	/** Replies a provider of qualified name.
 	 *
 	 * @return the provider of qualified name.
@@ -129,16 +137,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 *
 	 * @return the action prototype provider.
 	 */
-	public ActionPrototypeProvider getActionPrototypeProvider() {
+	public IActionPrototypeProvider getActionPrototypeProvider() {
 		return this.prototypeProvider;
-	}
-
-	/** Replies the provider of the task tags.
-	 *
-	 * @return the provider of the task tags.
-	 */
-	public ITaskTagProvider getTaskTagProvider() {
-		return this.taskTagProvider;
 	}
 
 	/** Replies the factory for appendable.

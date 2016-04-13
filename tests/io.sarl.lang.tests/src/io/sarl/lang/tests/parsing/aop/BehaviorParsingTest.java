@@ -422,8 +422,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					51, 4,
-					"The abstract method name in type B1 can only be defined by an abstract class");
+					51, 4);
 		}
 
 		@Test
@@ -437,8 +436,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					60, 4,
-					"The abstract method name in type B1 can only be defined by an abstract class");
+					60, 4);
 		}
 		
 		@Test
@@ -452,8 +450,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					60, 4,
-					"The method name in type B1 should be declared abstract");
+					60, 4);
 			//
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -523,8 +520,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-					106, 4,
-					"The method name() of type B2 must use override keyword since it actually overrides a supertype method");
+					106, 4);
 		}
 
 		@Test
@@ -610,8 +606,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-				111, 5,
-				"The return type is incompatible with myaction(int)");
+				111, 5);
 		}
 
 		@Test
@@ -631,8 +626,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-				104, 3,
-				"The return type is incompatible with myaction(int)");
+				104, 3);
 		}
 
 		@Test
@@ -652,7 +646,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-				"The return type is incompatible with myaction(int)");
+				111, 4);
 		}
 
 		@Test
@@ -979,8 +973,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6,
-					"Illegal modifier for the definition of name in B1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					47, 6);
 		}
 
 		@Test
@@ -1074,8 +1067,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6,
-					"Illegal modifier for the definition of name in B1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					47, 6);
 		}
 
 		@Test
@@ -1088,8 +1080,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of name in B1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -1129,8 +1120,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 9,
-					"Illegal modifier for the definition of name in B1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					47, 9);
 		}
 
 		@Test
@@ -1144,7 +1134,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					57, 7,
-					"The definition of name in B1 can only set one of public / package / protected / private");
+					"public / package / protected / private");
 		}
 
 		@Test
@@ -1361,8 +1351,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					47, 6);
 		}
 
 		@Test
@@ -1487,8 +1476,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -1501,8 +1489,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					47, 6);
 		}
 
 		@Test
@@ -1515,8 +1502,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -1530,7 +1516,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					53, 3,
-					"The definition of field in B1 can either be var or val / final, not both");
+					"var or val / final, not both");
 		}
 
 		@Test
@@ -1543,8 +1529,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -1557,8 +1542,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					47, 6);
 		}
 
 		@Test
@@ -1599,8 +1583,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 12,
-					"Illegal modifier for the definition of field in B1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					47, 12);
 		}
 
 		@Test
@@ -1642,7 +1625,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					57, 7,
-					"The definition of field in B1 can only set one of public / package / protected / private");
+					"public / package / protected / private");
 		}
 
 	}
@@ -1884,8 +1867,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -1898,8 +1880,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6,
-					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+					47, 6);
 		}
 
 		@Test
@@ -1912,8 +1893,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -1926,8 +1906,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 5,
-					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+					47, 5);
 		}
 
 		@Test
@@ -1940,8 +1919,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -1954,8 +1932,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6,
-					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+					47, 6);
 		}
 
 		@Test
@@ -1968,8 +1945,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -1982,8 +1958,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 12,
-					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+					47, 12);
 		}
 
 		@Test
@@ -1996,8 +1971,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 9,
-					"Illegal modifier for the definition of B1; only public, private, protected & package are permitted");
+					47, 9);
 		}
 
 		@Test
@@ -2011,7 +1985,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					57, 7,
-					"The definition of B1 can only set one of public / package / protected / private");
+					"public / package / protected / private");
 		}
 
 	}

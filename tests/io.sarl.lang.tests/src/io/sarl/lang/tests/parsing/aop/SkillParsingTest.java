@@ -554,8 +554,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 7,
-					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+					47, 7);
 		}
 
 		@Test
@@ -568,8 +567,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 9,
-					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+					47, 9);
 		}
 
 		@Test
@@ -626,8 +624,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6,
-					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+					47, 6);
 		}
 
 		@Test
@@ -640,8 +637,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -698,8 +694,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6,
-					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+					47, 6);
 		}
 
 		@Test
@@ -712,8 +707,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -726,8 +720,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 12,
-					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+					47, 12);
 		}
 
 		@Test
@@ -740,8 +733,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 9,
-					"Illegal modifier for the skill S1; only public, package, abstract, final & strictfp are permitted");
+					47, 9);
 		}
 
 		@Test
@@ -755,7 +747,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					54, 7,
-					"The skill S1 can only set one of public / package / protected / private");
+					"public / package / protected / private");
 		}
 
 	}
@@ -777,8 +769,7 @@ public class SkillParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-					170, 4,
-					"The method name() of type S2 must use override keyword since it actually overrides a supertype method");
+					170, 4);
 		}
 
 		@Test
@@ -994,8 +985,7 @@ public class SkillParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					87, 4,
-					"The method name in type S1 should be declared abstract");
+					87, 4);
 			//
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1028,8 +1018,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 6,
-					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					74, 6);
 		}
 
 		@Test
@@ -1127,8 +1116,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 6,
-					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					74, 6);
 		}
 
 		@Test
@@ -1142,8 +1130,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8,
-					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					74, 8);
 		}
 
 		@Test
@@ -1185,8 +1172,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 9,
-					"Illegal modifier for the definition of name in S1; only public, package, protected, private, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					74, 9);
 		}
 
 		@Test
@@ -1200,8 +1186,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					84, 7,
-					"The definition of name in S1 can only set one of public / package / protected / private");
+					84, 7);
 		}
 
 		@Test
@@ -1429,8 +1414,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					165, 5,
-					"The return type is incompatible with myaction(int)");
+					165, 5);
 		}
 
 		@Test
@@ -1452,8 +1436,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					158, 3,
-					"The return type is incompatible with myaction(int)");
+					158, 3);
 		}
 
 		@Test
@@ -1475,8 +1458,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					165, 4,
-					"The return type is incompatible with myaction(int)");
+					165, 4);
 		}
 
 		@Test
@@ -1516,8 +1498,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					95, 5,
-					"The return type is incompatible with myaction(int)");
+					95, 5);
 		}
 
 		@Test
@@ -1535,8 +1516,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					97, 3,
-					"The return type is incompatible with myaction(int)");
+					97, 3);
 		}
 
 		@Test
@@ -1554,7 +1534,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					"The return type is incompatible with myaction(int)");
+					95, 4);
 		}
 
 		@Test
@@ -1596,7 +1576,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
 					141, 30,
-					"Expecting the return type int. It is recommended to write the return type, even if it is inferred from the overridden function");
+					"int");
 		}
 
 		@Test
@@ -1965,8 +1945,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8,
-					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+					74, 8);
 		}
 
 		@Test
@@ -1980,8 +1959,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 6,
-					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+					74, 6);
 		}
 
 		@Test
@@ -1995,8 +1973,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8,
-					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+					74, 8);
 		}
 
 		@Test
@@ -2010,8 +1987,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					80, 3,
-					"The definition of field in S1 can either be var or val / final, not both");
+					80, 3);
 		}
 
 		@Test
@@ -2025,8 +2001,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8,
-					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+					74, 8);
 		}
 
 		@Test
@@ -2040,8 +2015,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 6,
-					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+					74, 6);
 		}
 
 		@Test
@@ -2084,8 +2058,7 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 12,
-					"Illegal modifier for the definition of field in S1; only public, package, protected, private, final, val, var, volatile & transient are permitted");
+					74, 12);
 		}
 
 		@Test
@@ -2129,7 +2102,7 @@ public class SkillParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					84, 7,
-					"The definition of field in S1 can only set one of public / package / protected / private");
+					"public / package / protected / private");
 		}
 
 		@Test

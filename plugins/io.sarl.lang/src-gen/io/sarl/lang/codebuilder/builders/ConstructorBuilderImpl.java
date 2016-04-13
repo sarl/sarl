@@ -35,6 +35,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -127,6 +129,26 @@ public class ConstructorBuilderImpl extends AbstractBuilder implements IConstruc
 		XBlockExpression expr = block.getXBlockExpression();
 		this.sarlConstructor.setExpression(expr);
 		return block;
+	}
+
+	/** Add an annotation.
+	 * @param type the qualified name of the annotation
+	 */
+	public void addAnnotation(String type) {
+		if (!Strings.isEmpty(type)) {
+			XAnnotation annotation = XAnnotationsFactory.eINSTANCE.createXAnnotation();
+			annotation.setAnnotationType(newTypeRef(getSarlConstructor(), type).getType());
+			getSarlConstructor().getAnnotations().add(annotation);
+		}
+	}
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	public void addModifier(String modifier) {
+		if (!Strings.isEmpty(modifier)) {
+			getSarlConstructor().getModifiers().add(modifier);
+		}
 	}
 
 }

@@ -68,5 +68,15 @@ public interface IFieldBuilder {
 	@Pure
 	IExpressionBuilder getInitialValue();
 
+	/** Add an annotation.
+	 * @param type the qualified name of the annotation
+	 */
+	void addAnnotation(String type);
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	void addModifier(String modifier);
+
 }
 

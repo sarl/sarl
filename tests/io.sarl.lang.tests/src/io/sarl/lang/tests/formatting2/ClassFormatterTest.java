@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 import org.junit.runners.model.InitializationError;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -41,8 +42,20 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@RunWith(Suite.class)
+@SuiteClasses({
+	ClassFormatterTest.FormatterAPITest.class,
+})
 @SuppressWarnings("all")
-public class ClassFormatterTest extends AbstractFormatterTest {
+public class ClassFormatterTest {
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class FormatterAPITest extends AbstractFormatterTest {
 	
 	@Test
 	public void empty() throws Exception {
@@ -206,4 +219,82 @@ public class ClassFormatterTest extends AbstractFormatterTest {
 		assertFormatted(source, expected);
 	}
 
+	@Test
+	public void mlStandardComment1() throws Exception {
+		String source = "/*Hello world.\n* That's the second line.\n*/class A{}";
+		String expected = multilineString(
+				"/* Hello world.",
+				" * That's the second line.",
+				" */",
+				"class A {",
+				"}",
+				"");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void mlStandardComment2() throws Exception {
+		String source = "/*Hello world.\nThat's the second line.*/class A{}";
+		String expected = multilineString(
+				"/* Hello world.",
+				" * That's the second line.",
+				" */",
+				"class A {",
+				"}",
+				"");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void mlStandardComment3() throws Exception {
+		String source = "/*     Hello world.     */class A{}";
+		String expected = multilineString(
+				"/* Hello world.",
+				" */",
+				"class A {",
+				"}",
+				"");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void mlStandardComment4() throws Exception {
+		String source = "/*     Hello world.     */class A{/*Second comment*/}";
+		String expected = multilineString(
+				"/* Hello world.",
+				" */",
+				"class A {",
+				"\t/* Second comment",
+				"\t */",
+				"}",
+				"");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void mlJavaComment() throws Exception {
+		String source = "/**Hello world.\nThat's the second line.*/class A{}";
+		String expected = multilineString(
+				"/** Hello world.",
+				" * That's the second line.",
+				" */",
+				"class A {",
+				"}",
+				"");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void slComment() throws Exception {
+		String source = "\n//Hello world.\nclass A{}";
+		String expected = multilineString(
+				"// Hello world.",
+				"class A {",
+				"}",
+				"");
+		assertFormatted(source, expected);
+	}
+
+}
+	
 }

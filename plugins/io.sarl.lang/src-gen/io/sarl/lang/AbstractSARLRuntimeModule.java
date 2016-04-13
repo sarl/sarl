@@ -69,10 +69,10 @@ import io.sarl.lang.codebuilder.builders.SkillBuilderImpl;
 import io.sarl.lang.codebuilder.builders.XtendEnumLiteralBuilderImpl;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
-import io.sarl.lang.documentation.DocumentationBuilder;
 import io.sarl.lang.documentation.DocumentationFormatter;
-import io.sarl.lang.documentation.IDocumentationBuilder;
+import io.sarl.lang.documentation.EcoreDocumentationBuilder;
 import io.sarl.lang.documentation.IDocumentationFormatter;
+import io.sarl.lang.documentation.IEcoreDocumentationBuilder;
 import io.sarl.lang.documentation.SarlDocumentationProvider;
 import io.sarl.lang.findreferences.SARLReferenceFinder;
 import io.sarl.lang.formatting2.SARLFormatter;
@@ -86,8 +86,8 @@ import io.sarl.lang.parser.antlr.internal.InternalSARLLexer;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.scoping.SARLScopeProvider;
 import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
+import io.sarl.lang.serializer.SARLEcoreDocumentationSyntacticSequencer;
 import io.sarl.lang.serializer.SARLSemanticSequencer;
-import io.sarl.lang.serializer.SARLSyntacticSequencerCustom;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.typing.SARLExpressionHelper;
 import io.sarl.lang.validation.DefaultFeatureCallValidator;
@@ -362,8 +362,8 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
 	@SingletonBinding
-	public Class<? extends IDocumentationBuilder> bindIDocumentationBuilder() {
-		return DocumentationBuilder.class;
+	public Class<? extends IEcoreDocumentationBuilder> bindIEcoreDocumentationBuilder() {
+		return EcoreDocumentationBuilder.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
@@ -376,6 +376,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	@SingletonBinding
 	public Class<? extends IEObjectDocumentationProviderExtension> bindIEObjectDocumentationProviderExtension() {
 		return SarlDocumentationProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends ISyntacticSequencer> bindISyntacticSequencer() {
+		return SARLEcoreDocumentationSyntacticSequencer.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
@@ -476,11 +481,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IEarlyExitComputer> bindIEarlyExitComputer() {
 		return SARLEarlyExitComputer.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends ISyntacticSequencer> bindISyntacticSequencer() {
-		return SARLSyntacticSequencerCustom.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

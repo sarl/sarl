@@ -19,19 +19,22 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ecoregenerator.helper;
+package io.sarl.lang.formatting2;
 
 import org.eclipse.osgi.util.NLS;
 
 /** Localized Messages.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.lang.ecoregenerator.helper.messages"; //$NON-NLS-1$
+public final class Messages extends NLS {
+
+	private static final String BUNDLE_NAME = "io.sarl.lang.formatting2.messages";
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
@@ -40,5 +43,5 @@ public class Messages extends NLS {
 	private Messages() {
 	}
 
-	public static String SARLCodeGenerator_0;
+	public static String SARLFormatter_0;
 }

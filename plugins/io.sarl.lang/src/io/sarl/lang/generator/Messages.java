@@ -19,44 +19,29 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ecoregenerator.helper;
+package io.sarl.lang.generator;
 
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
+import org.eclipse.osgi.util.NLS;
 
-/** Postfix documentation for an Ecore element.
- *
- * <p>The prefix document is supported by {@link DocumentationAdapter}.
+/** Localized Messages.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see DocumentationAdapter
  */
-public class PostDocumentationAdapter extends AdapterImpl {
+@SuppressWarnings("all")
+public final class Messages extends NLS {
 
-	private String documentation;
+	private static final String BUNDLE_NAME = "io.sarl.lang.generator.messages";
 
-	/** Replies the documentation.
-	 *
-	 * @return the documentation.
-	 */
-	public String getDocumentation() {
-		return this.documentation;
+	public static String SarlOutputConfigurationProvider_0;
+
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
-	/** Change the documentation.
-	 *
-	 * @param documentation - the comment.
-	 */
-	public void setDocumentation(String documentation) {
-		this.documentation = documentation;
+	private Messages() {
 	}
-
-	@Override
-	public boolean isAdapterForType(Object type) {
-		return type == PostDocumentationAdapter.class;
-	}
-
 }

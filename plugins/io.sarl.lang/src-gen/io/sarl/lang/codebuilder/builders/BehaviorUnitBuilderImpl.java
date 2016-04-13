@@ -36,6 +36,8 @@ import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -129,6 +131,17 @@ public class BehaviorUnitBuilderImpl extends AbstractBuilder implements IBehavio
 		XBlockExpression expr = block.getXBlockExpression();
 		this.sarlBehaviorUnit.setExpression(expr);
 		return block;
+	}
+
+	/** Add an annotation.
+	 * @param type the qualified name of the annotation
+	 */
+	public void addAnnotation(String type) {
+		if (!Strings.isEmpty(type)) {
+			XAnnotation annotation = XAnnotationsFactory.eINSTANCE.createXAnnotation();
+			annotation.setAnnotationType(newTypeRef(getSarlBehaviorUnit(), type).getType());
+			getSarlBehaviorUnit().getAnnotations().add(annotation);
+		}
 	}
 
 }

@@ -23,34 +23,57 @@ package io.sarl.lang.typing;
 
 import java.util.regex.Pattern;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.eclipse.xtend.core.typing.XtendExpressionHelper;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
 /**
- * Extended helper on expressions.
+ * Helper on expressions.
+ *
+ * <p>This implementation extends the Xtend expression helper by assuming that any function
+ * with a name starting with "get", "is", "has" is a pure function.
+ * It also assumes that "equals", "hashCode", "clone" and "toString" are also pure functions.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see SARLXExpressionHelper
+ * @see "http://www.eclipse.org/Xtext/documentation.html#validation"
  */
 @Singleton
-public class ExtendedXExpressionHelper {
+public class SARLExpressionHelper extends XtendExpressionHelper {
 
-	@Inject
-	private XExpressionHelper expressionHelper;
+	/** Regular expression pattern that matches the names of functions usually
+	 * considered as pure.
+	 */
+	public static final String SPECIAL_PURE_FUNCTION_NAME_PATTERN =
+			"^(((is)|(get)|(has))[A-Z].*)|(equals)|(hashCode)|(clone)|(toString)$"; //$NON-NLS-1$;
 
 	private final Pattern pattern;
 
 	/** Construct the helper.
 	 */
-	public ExtendedXExpressionHelper() {
-		this.pattern = Pattern.compile(XExpressionConstants.SPECIAL_PURE_FUNCTION_NAME_PATTERN);
+	public SARLExpressionHelper() {
+		this.pattern = Pattern.compile(SPECIAL_PURE_FUNCTION_NAME_PATTERN);
+	}
+
+	@Override
+	public boolean hasSideEffects(XAbstractFeatureCall featureCall, boolean inspectContents) {
+		if (super.hasSideEffects(featureCall, inspectContents)) {
+			JvmIdentifiableElement feature = featureCall.getFeature();
+			if ((feature != null) && (!feature.eIsProxy()) && (feature instanceof JvmOperation)) {
+				String name = ((JvmOperation) feature).getSimpleName();
+				if (name != null && this.pattern.matcher(name).find()) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 	/** Check if the given operation could be annoted with "@Pure".
@@ -61,12 +84,12 @@ public class ExtendedXExpressionHelper {
 	 *     otherwise <code>false</code>.
 	 * @see Pure
 	 */
-	public boolean isPureOperation(JvmOperation operation, XExpression body) {
+	public boolean isPurableOperation(JvmOperation operation, XExpression body) {
 		if (operation == null || operation.isAbstract() || body == null) {
 			return false;
 		}
 		String name = operation.getSimpleName();
-		return (name != null && this.pattern.matcher(name).find()) || !this.expressionHelper.hasSideEffects(body);
+		return (name != null && this.pattern.matcher(name).find()) || !hasSideEffects(body);
 	}
 
 }

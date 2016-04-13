@@ -23,6 +23,7 @@ package io.sarl.lang.formatting2;
 
 import org.eclipse.xtend.core.formatting2.XtendFormatterPreferenceKeys;
 import org.eclipse.xtext.preferences.BooleanKey;
+import org.eclipse.xtext.xbase.formatting2.BlankLineKey;
 
 /**
  * Preference keys for the SARL formatter. 
@@ -34,6 +35,31 @@ import org.eclipse.xtext.preferences.BooleanKey;
  */
 
 public class SARLFormatterPreferenceKeys extends XtendFormatterPreferenceKeys {
+
+	/** Blank line between inner class declarations.
+	 */
+	public final static BlankLineKey blankLinesBetweenInnerTypes = new BlankLineKey(
+			"blank.lines.between.inner.types", Integer.valueOf(1)); //$NON-NLS-1$
+
+	/** Blank line between behavior units.
+	 */
+	public final static BlankLineKey blankLinesBetweenBehaviorUnits = new BlankLineKey(
+			"blank.lines.between.behavior.units", Integer.valueOf(1)); //$NON-NLS-1$
+
+	/** Blank line between capacity uses.
+	 */
+	public final static BlankLineKey blankLinesBetweenCapacityUses = new BlankLineKey(
+			"blank.lines.between.capacity.uses", Integer.valueOf(0)); //$NON-NLS-1$
+
+	/** Blank line between capacity requirements.
+	 */
+	public final static BlankLineKey blankLinesBetweenCapacityRequiements = new BlankLineKey(
+			"blank.lines.between.capacity.requirements", Integer.valueOf(0)); //$NON-NLS-1$
+
+	/** Blank line between two types of members.
+	 */
+	public final static BlankLineKey blankLinesBetweenMemberCategories = new BlankLineKey(
+			"blank.lines.between.member.categories", Integer.valueOf(1)); //$NON-NLS-1$
 
 	/** Allow single-line expressions.
 	 */

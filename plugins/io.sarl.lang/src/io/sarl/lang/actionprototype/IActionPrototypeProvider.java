@@ -38,7 +38,7 @@ import io.sarl.lang.sarl.SarlFormalParameter;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface ActionPrototypeProvider {
+public interface IActionPrototypeProvider {
 
 	/** Build an identifier based on the function's name and a container name.
 	 *

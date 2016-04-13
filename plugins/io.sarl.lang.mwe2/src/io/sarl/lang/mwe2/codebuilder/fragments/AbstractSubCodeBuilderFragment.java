@@ -94,7 +94,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 			subFragment.initialize(injector);
 		}
 	}
-
+	
 	/** Initialize the sub generators.
 	 *
 	 * @param injector the injector.
@@ -291,8 +291,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getBuilderFactoryImpl() {
-		return new TypeReference(getBasePackage() + "." //$NON-NLS-1$
-				+ "CodeBuilderFactory"); //$NON-NLS-1$
+		return new TypeReference(getBasePackage() + ".CodeBuilderFactory"); //$NON-NLS-1$
 	}
 
 	/** Replies the interface for the builder of scripts.
@@ -484,6 +483,28 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	@Pure
 	protected TypeReference getXFactoryFor(TypeReference type) {
 		String packageName = type.getPackageName();
+		Grammar grammar = getGrammar();
+		TypeReference reference = getXFactoryFor(packageName, grammar);
+		if (reference != null) {
+			return reference;
+		}
+		for (Grammar usedGrammar : GrammarUtil.allUsedGrammars(grammar)) {
+			reference = getXFactoryFor(packageName, usedGrammar);
+			if (reference != null) {
+				return reference;
+			}
+		}
+		throw new IllegalStateException("Cannot find the XFactory for " + type); //$NON-NLS-1$
+	}
+
+	/** Replies the type for the factory for the given type.
+	 *
+	 * @param type the type of the object to create.
+	 * @return the factory.
+	 */
+	@Pure
+	protected TypeReference getXFactoryFor(Class<?> type) {
+		String packageName = type.getPackage().getName();
 		Grammar grammar = getGrammar();
 		TypeReference reference = getXFactoryFor(packageName, grammar);
 		if (reference != null) {

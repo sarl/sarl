@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Named;
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import com.google.inject.Inject;
 import junit.framework.TestSuite;
@@ -39,6 +40,7 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.junit.Assume;
 import org.junit.AssumptionViolatedException;
+import org.junit.ComparisonFailure;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
@@ -53,6 +55,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import io.sarl.lang.documentation.IDocumentationFormatter;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.TestScope;
 
@@ -74,16 +77,18 @@ public abstract class AbstractFormatterTest extends AbstractSarlTest {
 	 * @param input the input.
 	 * @param expected the expected input.
 	 */
-	protected void assertFormatted(CharSequence input, final CharSequence expected) {
+	protected void assertFormatted(String input, final String expected) {
 		this.tester.assertFormatted(new Procedures.Procedure1<FormatterTestRequest>() {
 			@Override
 			public void apply(FormatterTestRequest it) {
 				it.setToBeFormatted(input);
 				it.setExpectation(expected);
-				it.setAllowSyntaxErrors(true);
-				it.setUseSerializer(true);
+				it.setAllowSyntaxErrors(false);
+				it.setAllowUnformattedWhitespace(false);
+				it.setUseNodeModel(true);
+				it.setUseSerializer(false);
 			}
 		});
 	}
-
+	
 }

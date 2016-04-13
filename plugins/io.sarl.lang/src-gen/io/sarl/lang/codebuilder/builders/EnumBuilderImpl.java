@@ -33,6 +33,8 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -90,6 +92,26 @@ public class EnumBuilderImpl extends AbstractBuilder implements IEnumBuilder {
 				getSarlEnumeration().eAdapters().add(adapter);
 			}
 			adapter.setDocumentation(doc);
+		}
+	}
+
+	/** Add an annotation.
+	 * @param type - the qualified name of the annotation.
+	 */
+	public void addAnnotation(String type) {
+		if (!Strings.isEmpty(type)) {
+			XAnnotation annotation = XAnnotationsFactory.eINSTANCE.createXAnnotation();
+			annotation.setAnnotationType(newTypeRef(sarlEnumeration, type).getType());
+			this.sarlEnumeration.getAnnotations().add(annotation);
+		}
+	}
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	public void addModifier(String modifier) {
+		if (!Strings.isEmpty(modifier)) {
+			this.sarlEnumeration.getModifiers().add(modifier);
 		}
 	}
 

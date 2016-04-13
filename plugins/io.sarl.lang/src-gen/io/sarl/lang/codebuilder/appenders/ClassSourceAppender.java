@@ -95,6 +95,20 @@ public class ClassSourceAppender extends AbstractSourceAppender implements IClas
 		this.builder.addImplements(type);
 	}
 
+	/** Add an annotation.
+	 * @param type - the qualified name of the annotation.
+	 */
+	public void addAnnotation(String type) {
+		this.builder.addAnnotation(type);
+	}
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	public void addModifier(String modifier) {
+		this.builder.addModifier(modifier);
+	}
+
 	/** Create a Constructor.
 	 * @return the builder.
 	 */

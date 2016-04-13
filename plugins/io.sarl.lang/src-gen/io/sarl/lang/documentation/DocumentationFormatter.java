@@ -24,6 +24,10 @@
 package io.sarl.lang.documentation;
 
 import io.sarl.lang.services.SARLGrammarAccess;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.inject.Inject;
 import org.eclipse.xtext.AbstractElement;
 import org.eclipse.xtext.AbstractRule;
@@ -73,7 +77,7 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 	 * @param symbol the end comment symbols.
 	 */
 	public void setMultilineCommentEndSymbols(String symbols) {
-		this.mlEnd= symbols;
+		this.mlEnd = symbols;
 	}
 
 	@Pure
@@ -127,44 +131,57 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 	}
 
 	@Pure
-	public String format(String doc) {
-		return format(doc, (String) null);
+	public String formatMultilineComment(String doc) {
+		return formatMultilineComment(doc, (String) null);
 	}
 
 	@Pure
-	public String format(String doc, String indentation) {
+	public String formatMultilineComment(String doc, String indentation) {
 		IAppendable appendable = new StringBuilderBasedAppendable();
-		format(doc, indentation, appendable);
+		formatMultilineComment(doc, indentation, appendable);
 		return appendable.getContent();
 	}
 
 	@Pure
-	public void format(String doc, IAppendable appendable) {
-		format(doc, null, appendable);
+	public void formatMultilineComment(String doc, IAppendable appendable) {
+		formatMultilineComment(doc, null, appendable);
 	}
 
 	@Pure
-	public void format(String doc, String indentation, IAppendable appendable) {
+	public void formatMultilineComment(String doc, String indentation, IAppendable appendable) {
 		if (!Strings.isEmpty(doc)) {
-			String indent = Strings.emptyIfNull(indentation);
-			String prefix = getLinePrefix(getMultilineCommentLinePrefix(), true, false);
-			final String linePrefix = getLinePrefix(getMultilineCommentLinePrefix(), false, false);
-			final String linePostfix = getLinePostfix(Strings.newLine());
-			boolean first = true;
-			for (String line : Strings.split(doc, Strings.newLine())) {
-				if (first) {
-					first = false;
-				} else {
-					appendable.append(indent);
+			final Map<Integer, List<Replacement>> replacements = new TreeMap();
+			formatMultlineComment(
+					indentation,
+					Strings.newLine(),
+					new AppendableBackend(doc, replacements, 0, doc.length()));
+			applyReplacements(appendable, doc, replacements);
+		}
+	}
+
+	private void applyReplacements(IAppendable appendable, String documentation, Map<Integer, List<Replacement>> replacements) {
+		int offset = 0;
+		for (List<Replacement> replacementList : replacements.values()) {
+			for (Replacement replacement : replacementList) {
+				if (replacement.getOffset() < offset) {
+					throw new IllegalStateException("replacements are overlapping");
 				}
-				formatLine(appendable, line.trim(), prefix, linePostfix);
-				prefix = linePrefix;
+				if (replacement.getOffset() > offset) {
+					String notReplacedString = documentation.substring(offset, replacement.getOffset());
+					appendable.append(notReplacedString);
+					offset = replacement.getOffset();
+				}
+				appendable.append(replacement.getText());
+				offset += replacement.getLength();
 			}
+		}
+		if (offset < documentation.length()) {
+			String notReplacedString = documentation.substring(offset);
+			appendable.append(notReplacedString);
 		}
 	}
 
 	/** Replies the string that should appear at the start of each documentation line.
-	 *
 	 * @param prefix the default prefix text.
 	 * @param isFirstLine indicates if the prefix string is for the first line of the documentation,
 	 *    or the other lines.
@@ -183,7 +200,6 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 	}
 
 	/** Replies the string that should appear at the end of each documentation line.
-	 *
 	 * @param postfix the default postfix text.
 	 * @return the real postfix text.
 	 */
@@ -193,7 +209,6 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 	}
 
 	/** Format a line of comment.
-	 *
 	 * @param appendable the result of the format.
 	 * @param line the line to format.
 	 * @param prefix the expected prefix text for the line.
@@ -229,13 +244,126 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 
 	@Pure
 	public void formatMultilineComment(ITextReplacerContext context, IComment comment) {
-		final ITextRegionAccess access = comment.getTextRegionAccess();
-		final String indentationString = context.getIndentationString();
+		formatMultlineComment(
+				context.getIndentationString(),
+				context.getNewLinesString(1),
+				new RegionBackend(context, comment));
+	}
+
+	@Pure
+	public String formatSinglelineComment(String doc) {
+		return formatSinglelineComment(doc, (String) null);
+	}
+
+	@Pure
+	public String formatSinglelineComment(String doc, String indentation) {
+		StringBuilderBasedAppendable appendable = new StringBuilderBasedAppendable();
+		formatSinglelineComment(doc, indentation, appendable);
+		return appendable.getContent();
+	}
+
+	@Pure
+	public void formatSinglelineComment(String doc, IAppendable appendable) {
+		formatSinglelineComment(doc, null, appendable);
+	}
+
+	@Pure
+	public void formatSinglelineComment(String doc, String indentation, IAppendable appendable) {
+		if (!Strings.isEmpty(doc)) {
+			final Map<Integer, List<Replacement>> replacements = new TreeMap();
+			formatSinglelineComment(
+					indentation,
+					new AppendableBackend(doc, replacements,
+						Math.max(0, doc.indexOf(getSinglelineCommentPrefix())),
+						doc.length()));
+			applyReplacements(appendable, doc, replacements);
+		}
+	}
+
+	public void formatSinglelineComment(ITextReplacerContext context, IComment comment) {
+		formatSinglelineComment(
+				context.getIndentationString(),
+				new RegionBackend(context, comment));
+	}
+
+	private <T> void formatSinglelineComment(
+			String indentationString,
+			FormatterBackend<T> backend) {
+		String indent = Strings.emptyIfNull(indentationString);
+		String prefix = getSinglelineCommentPrefix();
+		T currentLine = backend.getFirstLine(backend.getCommentOffset());
+		boolean firstLine = true;
+		while (currentLine != null) {
+			int lineOffset = backend.getLineOffset(currentLine);
+			if (lineOffset >= backend.getCommentEndOffset()) {
+				// Ok, break is not the best statement, but it makes the code easier to read.
+				break;
+			}
+			String lineText = backend.getLineText(currentLine);
+			currentLine = backend.getNextLine(currentLine);
+			int symbolOffset = lineText.indexOf(prefix);
+			int textZoneOffset;
+			if (symbolOffset >= 0) {
+				if (firstLine) {
+					firstLine = false;
+				} else {
+					backend.replace(symbolOffset + lineOffset, 0, indent);
+				}
+				textZoneOffset = symbolOffset + prefix.length();
+			} else {
+				if (firstLine) {
+					firstLine = false;
+					backend.replace(lineOffset, 0, prefix);
+				} else {
+					backend.replace(lineOffset, 0, indent + prefix);
+				}
+				textZoneOffset = 0;
+			}
+			int textOffset = textZoneOffset;
+			while (textOffset < lineText.length() && isSpaceChar(lineText.charAt(textOffset))) {
+				++textOffset;
+			}
+			if ((textOffset >= lineText.length()) || Character.isWhitespace(lineText.charAt(textOffset))) {
+				// No text in the comment.
+				if (textOffset != textZoneOffset) {
+					// Remove trailing spaces
+					backend.replace(lineOffset + textZoneOffset, textOffset - textZoneOffset, "");
+				}
+			} else {
+				// Text in comment.
+				if ((textZoneOffset + 1) != textOffset) {
+					// Fixing the invalid number of spaces after the start symbols.
+					backend.replace(lineOffset + textZoneOffset, textOffset - textZoneOffset, " ");
+				}
+				// Remove trailing white spaces.
+				int endTextOffset = lineText.length() - 1;
+				while (endTextOffset > textOffset && isSpaceChar(lineText.charAt(endTextOffset))) {
+					--endTextOffset;
+				}
+				++endTextOffset;
+				if (endTextOffset != lineText.length()) {
+					backend.replace(lineOffset + endTextOffset, lineText.length() - endTextOffset, "");
+				}
+			}
+		}
+	}
+
+	private static boolean isSpaceChar(char character) {
+		return (((1 << Character.SPACE_SEPARATOR) >> Character.getType((int) character)) & 1) != 0;
+	}
+
+	private <T> void formatMultlineComment(
+			String indentationString, String newLineString,
+			FormatterBackend<T> backend) {
+		final String indent = Strings.emptyIfNull(indentationString);
 		final String postfix = getLinePostfix(null);
-		final String fullText = comment.getText();
 		final String startSymbols = getMultilineCommentStartSymbols();
+		final String fullText = backend.getCommentText();
+		final int commentOffset = backend.getCommentOffset();
+		final int endCommentOffset = backend.getCommentEndOffset();
 		int startOffset = fullText.indexOf(startSymbols);
 		if (startOffset < 0) {
+			backend.replace(0, 0, startSymbols);
 			startOffset = 0;
 		} else {
 			startOffset += startSymbols.length();
@@ -246,17 +374,20 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 			endOffset = fullText.length();
 		}
 		final String startLineSymbols = getMultilineCommentLinePrefix();
-		final int commentOffset = comment.getOffset();
-		ILineRegion currentLine = access.regionForLineAtOffset(startOffset + commentOffset);
+		T currentLine = backend.getFirstLine(startOffset + commentOffset);
 		boolean firstLine = true;
 		while (currentLine != null) {
+			int lineOffset = backend.getLineOffset(currentLine);
+			if (lineOffset >= endCommentOffset) {
+				// Ok, break is not the best statement, but it makes the code easier to read.
+				break;
+			}
 			int textStartOffset;
-			int lineOffset = currentLine.getOffset();
 			String referenceText = fullText.substring(
 					Math.max(lineOffset - commentOffset, startOffset),
-					Math.min(currentLine.getEndOffset() - commentOffset, endOffset));
+					Math.min(backend.getLineEndOffset(currentLine) - commentOffset, endOffset));
 			// Move to next line
-			currentLine = currentLine.getNextLine();
+			currentLine = backend.getNextLine(currentLine);
 			if (!Strings.isEmpty(referenceText) || currentLine != null) {
 				String prefix;
 				if (firstLine) {
@@ -264,7 +395,7 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 					textStartOffset = 0;
 					// Skip prefix symbols (for Javadoc-like comments).
 					while ((textStartOffset < referenceText.length())
-							&& referenceText.regionMatches(textStartOffset, startLineSymbols, 0, startLineSymbols.length())) {
+								&& referenceText.regionMatches(textStartOffset, startLineSymbols, 0, startLineSymbols.length())) {
 						textStartOffset += startLineSymbols.length();
 					}
 					referenceText = referenceText.substring(textStartOffset);
@@ -272,7 +403,7 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 					textStartOffset += Math.max(lineOffset - commentOffset, startOffset);
 				} else {
 					textStartOffset = Math.max(lineOffset - commentOffset, startOffset);
-					prefix = indentationString + getLinePrefix(startLineSymbols, false, false);
+					prefix = indent + getLinePrefix(startLineSymbols, false, false);
 				}
 				// Format the line
 				StringBuilderBasedAppendable appendable = new StringBuilderBasedAppendable();
@@ -280,13 +411,14 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 				String newText = appendable.getContent();
 				// Change the text
 				if (!Strings.equal(referenceText, newText)) {
-					ITextSegment target = access.regionForOffset(textStartOffset + commentOffset, referenceText.length());
-					context.addReplacement(target.replaceWith(newText));
+					backend.replace(
+							textStartOffset + commentOffset,
+							referenceText.length(),
+							newText);
 				}
 			}
 		}
 		// Format the closing symbols.
-		final String newLineString = context.getNewLinesString(1);
 		int textEndOffset = endOffset - 1;
 		while (textEndOffset > startOffset
 				&& isSpaceChar(fullText.charAt(textEndOffset))) {
@@ -303,58 +435,198 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 			++textEndOffset;
 			referenceText = fullText.substring(textEndOffset, endOffset) + endSymbols;
 		}
-		String prefix = indentationString + getLinePrefix(endSymbols, false, true);
+		String prefix = indent + getLinePrefix(endSymbols, false, true);
 		formatLine(appendable, "", prefix, null);
 		String newText = appendable.getContent();
 		if (!Strings.equal(referenceText, newText)) {
-			ITextSegment target = access.regionForOffset(textEndOffset + commentOffset, referenceText.length());
-			context.addReplacement(target.replaceWith(newText));
+			backend.replace(
+					textEndOffset + commentOffset,
+					referenceText.length(),
+					newText);
 		}
 	}
 
-	/** Replies if the given character is a Unicode space.
-	 * <p>This function does not match the new-line and other whitespace characters.
-	 */
-	protected static boolean isSpaceChar(char character) {
-		return (((1 << Character.SPACE_SEPARATOR) >> Character.getType((int) character)) & 1) != 0;
+	private interface FormatterBackend<T> {
+		T getFirstLine(int offset);
+		T getNextLine(T currentLine);
+		int getLineOffset(T currentLine);
+		int getLineEndOffset(T currentLine);
+		void replace(int offset, int length, String newText);
+		String getCommentText();
+		String getLineText(T line);
+		int getCommentOffset();
+		int getCommentEndOffset();
 	}
 
-	@Pure
-	public void formatSinglelineComment(ITextReplacerContext context, IComment comment) {
-		String text = comment.getText();
-		String prefix = getSinglelineCommentPrefix();
-		ITextRegionAccess access = comment.getTextRegionAccess();
-		int commentOffset = comment.getOffset();
-		int symbolOffset = text.indexOf(prefix);
-		int textZoneOffset;
-		if (symbolOffset >= 0) {
-			textZoneOffset = symbolOffset + prefix.length();
-		} else {
-			textZoneOffset = 0;
-		}
-		int textOffset = textZoneOffset;
-		while (textOffset < text.length() && isSpaceChar(text.charAt(textOffset))) {
-			++textOffset;
-		}
-		boolean isEndOfLine = (textOffset < text.length()) && Character.isWhitespace(text.charAt(textOffset));
-		if (isEndOfLine) {
-			// No text in the comment.
-			if (textOffset != textZoneOffset) {
-				// Remove trailing spaces
-				ITextSegment prefixRegion = access.regionForOffset(
-						commentOffset + textZoneOffset, textOffset - textZoneOffset);
-				String t0 = access.textForOffset(0, commentOffset + textZoneOffset);
-				String t1 = access.textForOffset(commentOffset + textZoneOffset, textOffset - textZoneOffset);
-				context.addReplacement(prefixRegion.replaceWith(""));
+	private static class Line {
+		private final int startOffset;
+		private final int endOffset;
+		public Line(String text, int offset) {
+			// Search for the begining of the line.
+			int soffset = offset;
+			while (soffset >= 0 && !isNewLine(text.charAt(soffset))) {
+				--soffset;
 			}
-		} else if ((textZoneOffset + 1) != textOffset) {
-			// Text in the comment AND invalid number of spaces.
-			ITextSegment prefixRegion = access.regionForOffset(
-					commentOffset + textZoneOffset, textOffset - textZoneOffset);
-			String t0 = access.textForOffset(0, commentOffset + textZoneOffset);
-			String t1 = access.textForOffset(commentOffset + textZoneOffset, textOffset - textZoneOffset);
-			context.addReplacement(prefixRegion.replaceWith(" "));
+			this.startOffset = soffset + 1;
+			// Search for the end of the line.
+			int eoffset = offset;
+			while (eoffset < text.length() && !isNewLine(text.charAt(eoffset))) {
+				++eoffset;
+			}
+			this.endOffset = eoffset;
 		}
+		public int getStartOffset() {
+			return this.startOffset;
+		}
+		public int getEndOffset() {
+			return this.endOffset;
+		}
+		private static boolean isNewLine(char character) {
+			if (character == '\n' || character == '\r' || character == '\f') {
+				return true;
+			}
+			return ((((1 << Character.LINE_SEPARATOR)
+					| (1 << Character.PARAGRAPH_SEPARATOR)) >> Character.getType((int) character)) & 1) != 0;
+		}
+	}
+
+	private static class Replacement {
+		private final int offset;
+		private final int length;
+		private final String text;
+		public Replacement(int offset, int length, String text) {
+			this.offset = offset;
+			this.length = length;
+			this.text = text;
+		}
+		public int getOffset() {
+			return this.offset;
+		}
+		public int getLength() {
+			return this.length;
+		}
+		public String getText() {
+			return this.text;
+		}
+	}
+
+	private static class RegionBackend implements FormatterBackend<ILineRegion> {
+
+		private final ITextReplacerContext context;
+
+		private final ITextRegionAccess access;
+
+		private final IComment comment;
+
+		public RegionBackend(ITextReplacerContext context, IComment comment) {
+			this.context = context;
+			this.comment = comment;
+			this.access = comment.getTextRegionAccess();
+		}
+
+		public String getCommentText() {
+			return this.comment.getText();
+		}
+
+		public String getLineText(ILineRegion line) {
+			ITextSegment segment = this.access.regionForOffset(line.getOffset(), line.getLength());
+			return segment.getText();
+		}
+
+		public int getCommentOffset() {
+			return this.comment.getOffset();
+		}
+
+		public int getCommentEndOffset() {
+			return this.comment.getEndOffset();
+		}
+
+		public ILineRegion getFirstLine(int offset) {
+			return this.access.regionForLineAtOffset(offset);
+		}
+
+		public ILineRegion getNextLine(ILineRegion currentLine) {
+			return currentLine.getNextLine();
+		}
+
+		public int getLineOffset(ILineRegion currentLine) {
+			return currentLine.getOffset();
+		}
+
+		public int getLineEndOffset(ILineRegion currentLine) {
+			return currentLine.getEndOffset();
+		}
+
+		public void replace(int offset, int length, String newText) {
+			ITextSegment target = this.access.regionForOffset(offset, length);
+			this.context.addReplacement(target.replaceWith(newText));
+		}
+
+	}
+
+	private static class AppendableBackend implements FormatterBackend<Line> {
+
+		private final String documentation;
+
+		private final Map<Integer, List<Replacement>> replacements;
+
+		private final int commentOffset;
+
+		private final int commentEndOffset;
+
+		public AppendableBackend(String documentation, Map<Integer, List<Replacement>> replacements,
+				int commentOffset, int commentEndOffset) {
+			this.documentation = documentation;
+			this.replacements = replacements;
+			this.commentOffset = commentOffset;
+			this.commentEndOffset = commentEndOffset;
+		}
+
+		public String getCommentText() {
+			return this.documentation;
+		}
+
+		public String getLineText(Line line) {
+			return this.documentation.substring(line.getStartOffset(), line.getEndOffset());
+		}
+
+		public int getCommentOffset() {
+			return this.commentOffset;
+		}
+
+		public int getCommentEndOffset() {
+			return this.commentEndOffset;
+		}
+
+		public Line getFirstLine(int offset) {
+			return new Line(this.documentation, offset);
+		}
+
+		public Line getNextLine(Line currentLine) {
+			try {
+				return new Line(this.documentation, currentLine.getEndOffset() + 1);
+			} catch (Throwable exception) {
+				return null;
+			}
+		}
+
+		public int getLineOffset(Line currentLine) {
+			return currentLine.getStartOffset();
+		}
+
+		public int getLineEndOffset(Line currentLine) {
+			return currentLine.getEndOffset();
+		}
+
+		public void replace(int offset, int length, String newText) {
+			List<Replacement> list = this.replacements.get(offset);
+			if (list == null) {
+				list = new ArrayList<>();
+				this.replacements.put(offset, list);
+			}
+			list.add(new Replacement(offset, length, newText));
+		}
+
 	}
 
 }

@@ -95,5 +95,12 @@ public class BehaviorUnitSourceAppender extends AbstractSourceAppender implement
 		return this.builder.getExpression();
 	}
 
+	/** Add an annotation.
+	 * @param type the qualified name of the annotation
+	 */
+	public void addAnnotation(String type) {
+		this.builder.addAnnotation(type);
+	}
+
 }
 

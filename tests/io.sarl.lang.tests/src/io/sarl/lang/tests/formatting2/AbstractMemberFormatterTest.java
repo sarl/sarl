@@ -80,8 +80,9 @@ public abstract class AbstractMemberFormatterTest extends AbstractSarlTest {
 			public void apply(FormatterTestRequest it) {
 				it.setToBeFormatted(input);
 				it.setExpectation(expected);
-				it.setAllowSyntaxErrors(true);
-				it.setUseSerializer(true);
+				it.setAllowSyntaxErrors(false);
+				it.setUseNodeModel(true);
+				it.setUseSerializer(false);
 			}
 		});
 	}

@@ -34,6 +34,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsFactory;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -114,6 +116,26 @@ public class AnnotationFieldBuilderImpl extends AbstractBuilder implements IAnno
 	 */
 	public void setType(String type) {
 		this.sarlField.setType(newTypeRef(this.container, type));
+	}
+
+	/** Add an annotation.
+	 * @param type the qualified name of the annotation
+	 */
+	public void addAnnotation(String type) {
+		if (!Strings.isEmpty(type)) {
+			XAnnotation annotation = XAnnotationsFactory.eINSTANCE.createXAnnotation();
+			annotation.setAnnotationType(newTypeRef(getSarlField(), type).getType());
+			getSarlField().getAnnotations().add(annotation);
+		}
+	}
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	public void addModifier(String modifier) {
+		if (!Strings.isEmpty(modifier)) {
+			getSarlField().getModifiers().add(modifier);
+		}
 	}
 
 }

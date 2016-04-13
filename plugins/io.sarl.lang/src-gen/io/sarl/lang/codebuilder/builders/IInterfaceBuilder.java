@@ -60,6 +60,16 @@ public interface IInterfaceBuilder {
 	 */
 	void addExtends(String superType);
 
+	/** Add an annotation.
+	 * @param type - the qualified name of the annotation.
+	 */
+	void addAnnotation(String type);
+
+	/** Add a modifier.
+	 * @param modifier - the modifier to add.
+	 */
+	void addModifier(String modifier);
+
 	/** Create an Action.
 	 * @param name - the name of the Action.
 	 * @return the builder.

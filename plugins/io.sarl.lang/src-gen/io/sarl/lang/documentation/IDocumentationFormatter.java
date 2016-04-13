@@ -61,7 +61,7 @@ public interface IDocumentationFormatter {
 	 * @return the formatted comment.
 	 */
 	@Pure
-	String format(String doc);
+	String formatMultilineComment(String doc);
 
 	/** Replies the formatted string that corresponds to the given documentation.
 	 * @param doc the documentation text. It may be on multiple lines.
@@ -69,14 +69,14 @@ public interface IDocumentationFormatter {
 	 * @return the formatted comment.
 	 */
 	@Pure
-	String format(String doc, String indentation);
+	String formatMultilineComment(String doc, String indentation);
 
 	/** Replies the formatted string that corresponds to the given documentation.
 	 * @param doc the documentation text. It may be on multiple lines.
 	 * @param appendable the receiver of the formatted string.
 	 */
 	@Pure
-	void format(String doc, IAppendable appendable);
+	void formatMultilineComment(String doc, IAppendable appendable);
 
 	/** Replies the formatted string that corresponds to the given documentation.
 	 * @param doc the documentation text. It may be on multiple lines.
@@ -84,7 +84,7 @@ public interface IDocumentationFormatter {
 	 * @param appendable the receiver of the formatted string.
 	 */
 	@Pure
-	void format(String doc, String indentation, IAppendable appendable);
+	void formatMultilineComment(String doc, String indentation, IAppendable appendable);
 
 	/** Format the given multiline documentation.
 	 *
@@ -94,13 +94,43 @@ public interface IDocumentationFormatter {
 	@Pure
 	public void formatMultilineComment(ITextReplacerContext context, IComment comment);
 
+	/** Replies the formatted string that corresponds to the given documentation.
+	 * @param doc the documentation text. It may be on multiple lines.
+	 * @return the formatted comment.
+	 */
+	@Pure
+	String formatSinglelineComment(String doc);
+
+	/** Replies the formatted string that corresponds to the given documentation.
+	 * @param doc the documentation text. It may be on multiple lines.
+	 * @param indentation the string to put for indenting the comment.
+	 * @return the formatted comment.
+	 */
+	@Pure
+	String formatSinglelineComment(String doc, String indentation);
+
+	/** Replies the formatted string that corresponds to the given documentation.
+	 * @param doc the documentation text. It may be on multiple lines.
+	 * @param appendable the receiver of the formatted string.
+	 */
+	@Pure
+	void formatSinglelineComment(String doc, IAppendable appendable);
+
+	/** Replies the formatted string that corresponds to the given documentation.
+	 * @param doc the documentation text. It may be on multiple lines.
+	 * @param indentation the string to put for indenting the comment.
+	 * @param appendable the receiver of the formatted string.
+	 */
+	@Pure
+	void formatSinglelineComment(String doc, String indentation, IAppendable appendable);
+
 	/** Format the given singleline documentation.
 	 *
 	 * @param context the formatting context.
 	 * @param comment the comment to format out.
 	 */
 	@Pure
-	public void formatSinglelineComment(ITextReplacerContext context, IComment comment);
+	void formatSinglelineComment(ITextReplacerContext context, IComment comment);
 
 }
 

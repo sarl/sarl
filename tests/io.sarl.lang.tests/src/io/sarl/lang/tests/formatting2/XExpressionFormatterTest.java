@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 import org.junit.runners.model.InitializationError;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -41,133 +42,147 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@RunWith(Suite.class)
+@SuiteClasses({
+	XExpressionFormatterTest.FormatterAPITest.class,
+})
 @SuppressWarnings("all")
-public class XExpressionFormatterTest extends AbstractMemberFormatterTest {
+public class XExpressionFormatterTest {
 
-	@Test
-	public void localVariableType() throws Exception {
-		String source = unformattedCode("def test{var x:int}");
-		String expected = formattedCode(
-				"	def test {",
-				"		var x : int",
-				"	}");
-		assertFormatted(source, expected);
-	}
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class FormatterAPITest extends AbstractMemberFormatterTest {
 
-	@Test
-	public void localVariableInitialValue() throws Exception {
-		String source = unformattedCode("def test{var x=5}");
-		String expected = formattedCode(
-				"	def test {",
-				"		var x = 5",
-				"	}");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void localVariableType() throws Exception {
+			String source = unformattedCode("def test{var x:int}");
+			String expected = formattedCode(
+					"	def test {",
+					"		var x : int",
+					"	}");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void localVariableModifier() throws Exception {
-		String source = unformattedCode("def test{extension     var    x:int}");
-		String expected = formattedCode(
-				"	def test {",
-				"		extension var x : int",
-				"	}");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void localVariableInitialValue() throws Exception {
+			String source = unformattedCode("def test{var x=5}");
+			String expected = formattedCode(
+					"	def test {",
+					"		var x = 5",
+					"	}");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void localValueType() throws Exception {
-		String source = unformattedCode("def test{val x:int}");
-		String expected = formattedCode(
-				"	def test {",
-				"		val x : int",
-				"	}");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void localVariableModifier() throws Exception {
+			String source = unformattedCode("def test{extension     var    x:int}");
+			String expected = formattedCode(
+					"	def test {",
+					"		extension var x : int",
+					"	}");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void localValueInitialValue() throws Exception {
-		String source = unformattedCode("def test{val x=5}");
-		String expected = formattedCode(
-				"	def test {",
-				"		val x = 5",
-				"	}");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void localValueType() throws Exception {
+			String source = unformattedCode("def test{val x:int}");
+			String expected = formattedCode(
+					"	def test {",
+					"		val x : int",
+					"	}");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void localValueModifier() throws Exception {
-		String source = unformattedCode("def test{extension     val    x:int}");
-		String expected = formattedCode(
-				"	def test {",
-				"		extension val x : int",
-				"	}");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void localValueInitialValue() throws Exception {
+			String source = unformattedCode("def test{val x=5}");
+			String expected = formattedCode(
+					"	def test {",
+					"		val x = 5",
+					"	}");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void jvmFormalParameter_inClosure() throws Exception {
-		String source = unformattedCode("def test{var proc = [x:int,y:boolean|x]}");
-		String expected = formattedCode(
-				"	def test {",
-				"		var proc = [x : int, y : boolean|x]",
-				"	}");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void localValueModifier() throws Exception {
+			String source = unformattedCode("def test{extension     val    x:int}");
+			String expected = formattedCode(
+					"	def test {",
+					"		extension val x : int",
+					"	}");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void fullJvmFormalParameter_inCatch() throws Exception {
-		String source = unformattedCode("def test{try{}catch(zz:Exception){}}");
-		String expected = formattedCode(
-				"	def test {",
-				"		try {",
-				"		} catch (zz : Exception) {",
-				"		}",
-				"	}");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void jvmFormalParameter_inClosure() throws Exception {
+			String source = unformattedCode("def test{var proc = [x:int,y:boolean|x]}");
+			String expected = formattedCode(
+					"	def test {",
+					"		var proc = [x : int, y : boolean|x]",
+					"	}");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void forLoop_inferred() throws Exception {
-		String source = unformattedCode("def test{for(x:1..3){}}");
-		String expected = formattedCode(
-				"	def test {",
-				"		for (x : 1 .. 3) {",
-				"		}",
-				"	}");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void fullJvmFormalParameter_inCatch() throws Exception {
+			String source = unformattedCode("def test{try{}catch(zz:Exception){}}");
+			String expected = formattedCode(
+					"	def test {",
+					"		try {",
+					"		} catch (zz : Exception) {",
+					"		}",
+					"	}");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void forLoop_inferred_extension() throws Exception {
-		String source = unformattedCode("def test{for(extension    x:1..3){}}");
-		String expected = formattedCode(
-				"	def test {",
-				"		for (extension x : 1 .. 3) {",
-				"		}",
-				"	}");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void forLoop_inferred() throws Exception {
+			String source = unformattedCode("def test{for(x:1..3){}}");
+			String expected = formattedCode(
+					"	def test {",
+					"		for (x : 1 .. 3) {",
+					"		}",
+					"	}");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void forLoop_explicit() throws Exception {
-		String source = unformattedCode("def test{for(x    as   int:1..3){}}");
-		String expected = formattedCode(
-				"	def test {",
-				"		for (x as int : 1 .. 3) {",
-				"		}",
-				"	}");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void forLoop_inferred_extension() throws Exception {
+			String source = unformattedCode("def test{for(extension    x:1..3){}}");
+			String expected = formattedCode(
+					"	def test {",
+					"		for (extension x : 1 .. 3) {",
+					"		}",
+					"	}");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void forLoop_explicit_extension() throws Exception {
-		String source = unformattedCode("def test{for(extension    x    as    int:1..3){}}");
-		String expected = formattedCode(
-				"	def test {",
-				"		for (extension x as int : 1 .. 3) {",
-				"		}",
-				"	}");
-		assertFormatted(source, expected);
+		@Test
+		public void forLoop_explicit() throws Exception {
+			String source = unformattedCode("def test{for(x    as   int:1..3){}}");
+			String expected = formattedCode(
+					"	def test {",
+					"		for (x as int : 1 .. 3) {",
+					"		}",
+					"	}");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void forLoop_explicit_extension() throws Exception {
+			String source = unformattedCode("def test{for(extension    x    as    int:1..3){}}");
+			String expected = formattedCode(
+					"	def test {",
+					"		for (extension x as int : 1 .. 3) {",
+					"		}",
+					"	}");
+			assertFormatted(source, expected);
+		}
+
 	}
 
 }

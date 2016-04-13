@@ -31,6 +31,7 @@ import com.google.inject.Provider;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.formatting2.FormatterPreferences;
 import org.eclipse.xtext.formatting2.FormatterRequest;
@@ -46,8 +47,6 @@ import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.xbase.lib.Exceptions;
-import org.eclipse.xtext.xbase.lib.ObjectExtensions;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 /**
  * Provide a facade for the SARL formatter.
@@ -81,32 +80,41 @@ public class FormatterFacade {
 	 * @return the code to format.
 	 */
 	public String format(String sarlCode) {
+		return format(sarlCode, new XtextResourceSet());
+	}
+	
+	/** Format the given code.
+	 *
+	 * @param sarlCode the code to format.
+	 * @param resourceSet the resource set that sohuld contains the code. This resource set may be
+	 *    used for resolving types by the underlying code.
+	 * @return the code to format.
+	 */
+	public String format(String sarlCode, ResourceSet resourceSet) {
 		try {
-			XtextResourceSet resourceSet = new XtextResourceSet();
 			URI createURI = URI.createURI("synthetic://to-be-formatted." + this.fileExtension); //$NON-NLS-1$
-			XtextResource resource = (XtextResource) this.resourceFactory.createResource(createURI);
-			EList<Resource> resources = resourceSet.getResources();
-			resources.add(resource);
-			try (StringInputStream stringInputStream = new StringInputStream(sarlCode)) {
-				resource.load(stringInputStream, Collections.emptyMap());
-				ITextRegionAccess regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
-				FormatterRequest formatterRequest = new FormatterRequest();
-				final Procedure1<FormatterRequest> function = new Procedure1<FormatterRequest>() {
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void apply(final FormatterRequest it) {
-						it.setAllowIdentityEdits(false);
-						it.setTextRegionAccess(regionAccess);
-						IPreferenceValues preferenceValues = FormatterFacade.this.configurationProvider.getPreferenceValues(resource);
-						it.setPreferences(TypedPreferenceValues.castOrWrap(preferenceValues));
-					}
-				};
-				FormatterRequest request = ObjectExtensions.operator_doubleArrow(formatterRequest, function);
-				List<ITextReplacement> replacements = this.formatter.format(request);
-				return regionAccess.getRewriter().renderToString(replacements);
+			Resource res = this.resourceFactory.createResource(createURI);
+			if (res instanceof XtextResource) {
+				XtextResource resource = (XtextResource) res;
+				EList<Resource> resources = resourceSet.getResources();
+				resources.add(resource);
+				try (StringInputStream stringInputStream = new StringInputStream(sarlCode)) {
+					resource.load(stringInputStream, Collections.emptyMap());
+					ITextRegionAccess regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
+					FormatterRequest formatterRequest = new FormatterRequest();
+					formatterRequest.setAllowIdentityEdits(false);
+					formatterRequest.setTextRegionAccess(regionAccess);
+					IPreferenceValues preferenceValues = FormatterFacade.this.configurationProvider.getPreferenceValues(resource);
+					formatterRequest.setPreferences(TypedPreferenceValues.castOrWrap(preferenceValues));
+					List<ITextReplacement> replacements = this.formatter.format(formatterRequest);
+					return regionAccess.getRewriter().renderToString(replacements);
+				} finally {
+					resources.remove(resource);
+				}
 			}
-		} catch (Throwable _e) {
-			throw Exceptions.sneakyThrow(_e);
+			return sarlCode;
+		} catch (Throwable exception) {
+			throw Exceptions.sneakyThrow(exception);
 		}
 	}
 }

@@ -26,9 +26,9 @@ package io.sarl.lang.documentation;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Build a documentation string.
+/** Build a documentation string for specific objects.
  */
-public interface IDocumentationBuilder {
+public interface IEcoreDocumentationBuilder {
 
 	/** Replies the grammar rule that corresponds to multiline comments.
 	 * @return the ML grammar rule.
@@ -50,10 +50,11 @@ public interface IDocumentationBuilder {
 
 	/** Replies the formatted string that corresponds to the given documentation.
 	 * @param doc the documentation text. It may be on multiple lines.
+	 * @param objectType the type of the object for which the document must be built.
 	 * @return the formatted comment.
 	 */
 	@Pure
-	String build(String doc);
+	String build(String doc, Class<?> objectType);
 
 }
 

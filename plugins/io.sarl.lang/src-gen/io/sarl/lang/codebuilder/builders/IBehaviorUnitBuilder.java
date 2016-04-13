@@ -68,5 +68,10 @@ public interface IBehaviorUnitBuilder {
 	 */
 	IBlockExpressionBuilder getExpression();
 
+	/** Add an annotation.
+	 * @param type the qualified name of the annotation
+	 */
+	void addAnnotation(String type);
+
 }
 
