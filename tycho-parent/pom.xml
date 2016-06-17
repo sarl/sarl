@@ -150,11 +150,6 @@
 			<layout>p2</layout>
 			<url>http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/</url>
 		</repository>
-		<repository>
-			<id>com.googlecode.powermock-osgi</id>
-			<layout>p2</layout>
-			<url>http://powermock-osgi.googlecode.com/svn/updateSite/1.5.6.0/</url>
-		</repository>
 	</repositories>
 
 </project>

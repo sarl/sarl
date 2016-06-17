@@ -129,7 +129,6 @@ import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
-import io.sarl.lang.core.Percept;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -1361,7 +1360,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			translateAnnotationsTo(source.getAnnotations(), operation);
 
 			// Annotation for the event bus
-			operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Percept.class));
+
+			//FIXME below the original code that must be updated to manage the new annotation PerceptGuardEvaluator
+			//operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Percept.class));
 
 			// Behavior unit parameters
 			JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
