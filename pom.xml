@@ -9,7 +9,7 @@
 
 	<name>SARL Agent Oriented Programming Language</name>
 	<url>${sarlUrl}</url>
-	<inceptionYear>2014</inceptionYear>
+	<inceptionYear>2016</inceptionYear>
 
 	<packaging>pom</packaging>
 
@@ -39,7 +39,7 @@
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Year of the release of SARL (used in Eclipse about, license management 
 			and documentation) -->
-		<year>2015</year>
+		<year>2016</year>
 		<!-- URL of the SARL project (use in POM, Eclipse about and documentation) -->
 		<sarlUrl>http://www.sarl.io</sarlUrl>
 		<!-- Default encoding of the source files -->
