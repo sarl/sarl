@@ -886,11 +886,11 @@ public class ECoreGeneratorHelper {
 
 	private String findDefaultValue(JvmDeclaredType container, String name) {
 		if (!Strings.isNullOrEmpty(name)) {
-			String dfName = Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + name;
+			String dfName = Utils.createNameForHiddenDefaultValueAttribute(name);
 			int index = name.indexOf('#');
 			if (index >= 0) {
 				String typeName = name.substring(0, index);
-				dfName = Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + name.substring(index + 1);
+				dfName = Utils.createNameForHiddenDefaultValueAttribute(name.substring(index + 1));
 				String defaultValue = findDefaultValue(container, typeName, dfName);
 				if (defaultValue != null) {
 					return defaultValue;

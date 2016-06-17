@@ -180,7 +180,6 @@
 		<!-- Check parameter names. -->
 		<module name="LocalVariableName">
 			<property name="format" value="^(_+)|([a-z][a-zA-Z0-9]*)$" />
-			<property name="tokens" value="PARAMETER_DEF" />
 		</module>
 
 		<!-- Check variable names. -->

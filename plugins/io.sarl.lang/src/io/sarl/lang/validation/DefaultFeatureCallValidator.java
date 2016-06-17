@@ -66,8 +66,7 @@ public class DefaultFeatureCallValidator implements FeatureCallValidator {
 					if (id.startsWith("org.eclipse.xtext.xbase.lib.InputOutput")) { //$NON-NLS-1$
 						return true;
 					}
-					if (Utils.isHiddenAction(call.getFeature().getSimpleName())
-							|| Utils.isHiddenAttribute(call.getFeature().getSimpleName())) {
+					if (Utils.isHiddenMember(call.getFeature().getSimpleName())) {
 						return true;
 					}
 				}

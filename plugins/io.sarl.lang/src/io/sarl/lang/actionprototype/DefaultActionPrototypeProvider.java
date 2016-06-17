@@ -367,9 +367,9 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 	public String createFieldNameForDefaultValueID(String id) {
 		int index = id.indexOf('#');
 		if (index > 0) {
-			return Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + id.substring(index + 1);
+			return Utils.createNameForHiddenDefaultValueAttribute(id.substring(index + 1));
 		}
-		return Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + id;
+		return Utils.createNameForHiddenDefaultValueAttribute(id);
 	}
 
 	@Override
@@ -391,11 +391,9 @@ public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
 				b.append(qn);
 				b.append("."); //$NON-NLS-1$
 			}
-			b.append(Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE);
-			b.append(id.substring(index + 1));
+			b.append(Utils.createNameForHiddenDefaultValueAttribute(id.substring(index + 1)));
 		} else {
-			b.append(Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE);
-			b.append(id);
+			b.append(Utils.createNameForHiddenDefaultValueAttribute(id));
 		}
 		return b.toString();
 	}

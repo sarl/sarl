@@ -1,6 +1,6 @@
 
-PATH A SARL RELEASE
-===================
+PATCH A SARL RELEASE
+====================
 
 Let consider version x.y.z of SARL contains a bug that cannot wait the
 next release version for being fixed.

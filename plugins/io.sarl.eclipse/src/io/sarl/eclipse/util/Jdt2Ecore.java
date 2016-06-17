@@ -240,7 +240,7 @@ public final class Jdt2Ecore {
 							&& !operation.isLambdaMethod()
 							&& isVisible(typeFinder, type, operation)) {
 						if (!operation.isConstructor()
-								&& !Utils.isHiddenAction(operation.getElementName())) {
+								&& !Utils.isHiddenMember(operation.getElementName())) {
 							ActionParameterTypes sig = sarlSignatureProvider.createParameterTypes(
 									Flags.isVarargs(operation.getFlags()), getFormalParameterProvider(operation));
 							ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
@@ -276,7 +276,7 @@ public final class Jdt2Ecore {
 				if (inheritedFields != null) {
 					for (IField field : type.getFields()) {
 						if (!Flags.isStatic(field.getFlags())
-								&& !Utils.isHiddenAttribute(field.getElementName())
+								&& !Utils.isHiddenMember(field.getElementName())
 								&& isVisible(typeFinder, type, field)) {
 							inheritedFields.put(field.getElementName(), field);
 						}
@@ -372,7 +372,7 @@ public final class Jdt2Ecore {
 		Object value = annotation.getMemberValuePairs()[0].getValue();
 		String fieldId = (value == null) ? null : value.toString();
 		if (!Strings.isNullOrEmpty(fieldId)) {
-			String fieldName = Utils.PREFIX_ATTRIBUTE_DEFAULT_VALUE + fieldId;
+			String fieldName = Utils.createNameForHiddenDefaultValueAttribute(fieldId);
 			IField field = operation.getDeclaringType().getField(fieldName);
 			if (field != null) {
 				annotation = Jdt2Ecore.getAnnotation(field, SarlSourceCode.class.getName());

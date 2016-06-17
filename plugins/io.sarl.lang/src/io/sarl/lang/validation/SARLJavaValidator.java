@@ -952,8 +952,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 		JvmOperation inferredType = this.associations.getDirectlyInferredOperation(action);
 		QualifiedName name = QualifiedName.create(inferredType.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
 		if (this.featureNames.isDisallowedName(name)) {
-			String validName1 = Utils.fixHiddenAction(action.getName());
-			String validName2 = Utils.removeHiddenAction(action.getName());
+			String validName = Utils.fixHiddenMember(action.getName());
 			error(MessageFormat.format(
 					Messages.SARLValidator_9,
 					action.getName()),
@@ -961,7 +960,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 					XTEND_FUNCTION__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					INVALID_MEMBER_NAME,
-					validName1, validName2);
+					validName);
 		} else if (!isIgnored(DISCOURAGED_FUNCTION_NAME)
 				&& this.featureNames.isDiscouragedName(name)) {
 			warning(MessageFormat.format(
@@ -984,7 +983,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 		JvmField inferredType = this.associations.getJvmField(field);
 		QualifiedName name = Utils.getQualifiedName(inferredType);
 		if (this.featureNames.isDisallowedName(name)) {
-			String validName = Utils.fixHiddenAttribute(field.getName());
+			String validName = Utils.fixHiddenMember(field.getName());
 			error(MessageFormat.format(
 					Messages.SARLValidator_10,
 					field.getName()),
@@ -1003,7 +1002,7 @@ public class SARLJavaValidator extends AbstractSARLJavaValidator {
 	@Check
 	public void checkFieldNameShadowing(SarlField field) {
 		if (!isIgnored(VARIABLE_NAME_SHADOWING)
-				&& !Utils.isHiddenAttribute(field.getName())) {
+				&& !Utils.isHiddenMember(field.getName())) {
 			JvmField inferredField = this.associations.getJvmField(field);
 			Map<String, JvmField> inheritedFields = new TreeMap<>();
 			Utils.populateInheritanceContext(

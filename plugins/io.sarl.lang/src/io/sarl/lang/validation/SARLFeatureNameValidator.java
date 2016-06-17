@@ -43,8 +43,7 @@ public class SARLFeatureNameValidator extends LogicalContainerAwareFeatureNameVa
 
 	@Override
 	public boolean isDisallowedName(QualifiedName name) {
-		if (Utils.isHiddenAction(name.getLastSegment())
-				|| Utils.isHiddenAttribute(name.getLastSegment())) {
+		if (Utils.isHiddenMember(name.getLastSegment())) {
 			return true;
 		}
 		return super.isDisallowedName(name);
