@@ -6,5 +6,6 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.sarl.core;bundle-version="0.4.0",
- io.sarl.tests.api;bundle-version="0.4.0"
+ io.sarl.tests.api;bundle-version="0.4.0",
+ org.mockito;bundle-version="1.9.5"
 
