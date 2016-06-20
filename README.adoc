@@ -1,7 +1,4 @@
-
-SARL
-==============
-
+= SARL Agent Programming Language
 
 SARL is a general-purpose agent-oriented language.
 
@@ -13,10 +10,16 @@ Considering the variety of existing approaches and meta-models in the field of a
 
 However, we provide a first set of tools to support its execution based on the new version 2.0 of the Janus (see http://www.janusproject.io) platform, but it can be linked with other existing agent platforms and frameworks. 
 
+image:https://img.shields.io/badge/requires-Java%208-red.svg?style=flat-square[link=https://www.java.com]
+image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
 
-License
-=======
-    Copyright 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+image:https://img.shields.io/github/license/sarl/sarl.svg?style=flat-square[link=https://opensource.org/licenses/Apache-2.0]
+image:https://cla-assistant.io/readme/badge/sarl/sarl[link=https://cla-assistant.io/sarl/sarl]
+
+
+= License
+
+    Copyright 2014-2016 the original authors or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
