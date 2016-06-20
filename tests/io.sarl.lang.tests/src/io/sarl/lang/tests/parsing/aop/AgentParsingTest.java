@@ -771,27 +771,6 @@ public class AgentParsingTest {
 			validate(mas).assertNoIssues();
 		}
 
-		@Test
-		public void notRecommendedSuperHandlerCall() throws Exception {
-			SarlScript mas = file(multilineString(
-					"event E1",
-					"agent A1 {",
-					"	on E1 { }",
-					"}",
-					"agent A2 extends A1 {",
-					"	on E1 {",
-					"		super._handle_E1_0(occurrence)",
-					"	}",
-					"}"
-					));
-
-			validate(mas).assertWarning(
-					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE,
-					66, 30,
-					"Discouraged feature call: _handle_E1_0");
-		}
-
 	}
 
 	public static class FieldTest extends AbstractSarlTest {
@@ -894,14 +873,14 @@ public class AgentParsingTest {
 			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"var myfield1 = 4.5",
-					"var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
+					"var $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"var myfield2 = true",
 					"}"
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
+					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test
@@ -909,14 +888,14 @@ public class AgentParsingTest {
 			SarlScript mas = file(multilineString(
 					"agent A1 {",
 					"val myfield1 = 4.5",
-					"val ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
+					"val $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"val myfield2 = true",
 					"}"
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
+					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test
@@ -1445,7 +1424,7 @@ public class AgentParsingTest {
 					"def myaction {",
 					"System.out.println(\"ok\")",
 					"}",
-					"def _handle_myaction {",
+					"def $handle_myaction {",
 					"System.out.println(\"ko\")",
 					"}",
 					"def myaction2 {",
@@ -1456,7 +1435,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
-					"Invalid action name '_handle_myaction'.");
+					"Invalid action name '$handle_myaction'.");
 		}
 
 		@Test

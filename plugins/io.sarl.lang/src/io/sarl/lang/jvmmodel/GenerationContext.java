@@ -31,8 +31,10 @@ import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pair;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
@@ -87,7 +89,7 @@ abstract class GenerationContext {
 	 * evaluating guards and returning the event handler runnables.
 	 */
 	@SuppressWarnings("unchecked")
-	private final Map<JvmTypeReference, Pair<SarlBehaviorUnit, Collection<String>>> guardEvaluators
+	private final Map<JvmTypeReference, Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>> guardEvaluators
 			= CollectionLiterals.newHashMap();
 
 	/** Construct a information about the generation.
@@ -100,7 +102,8 @@ abstract class GenerationContext {
 	 *
 	 * @return the guard evaluators.
 	 */
-	public Collection<Entry<JvmTypeReference, Pair<SarlBehaviorUnit, Collection<String>>>> getGuardEvalationCodes() {
+	public Collection<Entry<JvmTypeReference, Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>>>
+			getGuardEvaluationCodes() {
 		return this.guardEvaluators.entrySet();
 	}
 
@@ -109,11 +112,11 @@ abstract class GenerationContext {
 	 * @param source the source of the guard evaluation.
 	 * @return the guard evaluators.
 	 */
-	public Collection<String> getGuardEvalationCodeFor(SarlBehaviorUnit source) {
+	public Collection<Procedure1<ITreeAppendable>> getGuardEvalationCodeFor(SarlBehaviorUnit source) {
 		assert (source != null);
 		final JvmTypeReference id = source.getName();
-		Collection<String> evaluators;
-		Pair<SarlBehaviorUnit, Collection<String>> pair = this.guardEvaluators.get(id);
+		Collection<Procedure1<ITreeAppendable>> evaluators;
+		Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>> pair = this.guardEvaluators.get(id);
 		if (pair == null) {
 			evaluators = new ArrayList<>();
 			this.guardEvaluators.put(id, new Pair<>(source, evaluators));

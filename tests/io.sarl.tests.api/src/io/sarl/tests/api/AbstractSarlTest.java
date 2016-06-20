@@ -76,9 +76,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.model.Statement;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -131,6 +133,44 @@ public abstract class AbstractSarlTest {
 	@Inject
 	private SarlJvmModelAssociations associations;
 	
+	/** Temporary fixing a bug in the class loading of Mockito 2.
+	 * 
+	 * @param type the type to mock.
+	 * @return the mocked instance.
+	 * @see http://stackoverflow.com/questions/37702952/classnotfoundexception-with-mockito-2-in-osgi
+	 */
+	public static <T> T mock(Class<T> type) {
+		if (type == null) {
+			return null;
+		}
+		final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(Mockito.class.getClassLoader());
+		try {
+		  return Mockito.mock(type);
+		} finally {
+			Thread.currentThread().setContextClassLoader(loader);
+		}
+	}
+	
+	/** Temporary fixing a bug in the class loading of Mockito 2.
+	 * 
+	 * @param instance the instance to spy.
+	 * @return the spied instance.
+	 * @see http://stackoverflow.com/questions/37702952/classnotfoundexception-with-mockito-2-in-osgi
+	 */
+	public static <T> T spy(T instance) {
+		if (instance == null) {
+			return null;
+		}
+		final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(Mockito.class.getClassLoader());
+		try {
+		  return Mockito.spy(instance);
+		} finally {
+			Thread.currentThread().setContextClassLoader(loader);
+		}
+	}
+
 	/** This rule permits to clean automatically the fields
 	 * at the end of the test.
 	 */

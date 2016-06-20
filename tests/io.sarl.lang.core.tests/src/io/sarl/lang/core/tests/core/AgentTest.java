@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
 
 import java.security.InvalidParameterException;
 import java.util.UUID;
@@ -33,7 +34,6 @@ import java.util.UUID;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
@@ -59,15 +59,15 @@ public class AgentTest extends AbstractSarlTest {
 	private AgentMock agent;
 
 	private static Address mockAddress(UUID agentID) {
-		Address adr = Mockito.mock(Address.class);
-		Mockito.doReturn(agentID).when(adr).getUUID();
+		Address adr = mock(Address.class);
+		doReturn(agentID).when(adr).getUUID();
 		return adr;
 	}
 
 	private static Event mockEvent(UUID agentID) {
 		Address adr = mockAddress(agentID);
-		Event evt = Mockito.mock(Event.class);
-		Mockito.doReturn(adr).when(evt).getSource();
+		Event evt = mock(Event.class);
+		doReturn(adr).when(evt).getSource();
 		return evt;
 	}
 
@@ -95,7 +95,7 @@ public class AgentTest extends AbstractSarlTest {
 	@Before
 	public void setUp() {
 		this.id = UUID.randomUUID();
-		this.agent = Mockito.spy(new AgentMock(this.id));
+		this.agent = spy(new AgentMock(this.id));
 	}
 
 	/**
@@ -352,7 +352,7 @@ public class AgentTest extends AbstractSarlTest {
 		 * @param parentID
 		 */
 		public AgentMock(UUID parentID) {
-			super(Mockito.mock(BuiltinCapacitiesProvider.class), parentID, null);
+			super(mock(BuiltinCapacitiesProvider.class), parentID, null);
 		}
 
 		/** {@inheritDoc}

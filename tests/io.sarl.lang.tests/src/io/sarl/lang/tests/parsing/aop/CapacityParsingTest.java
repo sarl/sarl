@@ -782,14 +782,14 @@ public class CapacityParsingTest {
 			SarlScript mas = file(multilineString(
 					"capacity C1 {",
 					"	def myaction",
-					"	def _handle_myaction",
+					"	def $handle_myaction",
 					"	def myaction2",
 					"}"
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
-					"Invalid action name '_handle_myaction'.");
+					"Invalid action name '$handle_myaction'.");
 		}
 
 		@Test

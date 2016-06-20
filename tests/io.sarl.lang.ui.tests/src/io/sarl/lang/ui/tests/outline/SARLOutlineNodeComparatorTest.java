@@ -16,7 +16,6 @@
 package io.sarl.lang.ui.tests.outline;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -30,6 +29,7 @@ import org.junit.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
+import io.sarl.tests.api.AbstractSarlTest;
 
 
 /**
@@ -38,7 +38,7 @@ import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLOutlineNodeComparatorTest {
+public class SARLOutlineNodeComparatorTest extends AbstractSarlTest {
 
 	@NonNullByDefault
 	private SARLOutlineNodeComparator comparator;

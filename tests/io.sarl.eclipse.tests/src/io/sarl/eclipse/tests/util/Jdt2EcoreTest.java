@@ -27,11 +27,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.*;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -67,7 +66,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -81,6 +79,7 @@ import io.sarl.lang.actionprototype.FormalParameterProvider;
 import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
 import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
 /**
@@ -99,7 +98,7 @@ import io.sarl.tests.api.AbstractSarlUiTest;
 	Jdt2EcoreTest.PopulateInheritanceContext.class,
 })
 @SuppressWarnings("all")
-public class Jdt2EcoreTest {
+public class Jdt2EcoreTest extends AbstractSarlTest {
 
 	protected static String getResourceText(String id) {
 		ResourceBundle bundle = ResourceBundle.getBundle(Jdt2EcoreTest.class.getName().replace(".", "/"));
@@ -204,18 +203,14 @@ public class Jdt2EcoreTest {
 	 */
 	protected static IJavaProject createIJavaProjectMock() throws JavaModelException {
 		final IJavaProject project = mock(IJavaProject.class);
-		when(project.findType(Matchers.anyString())).thenAnswer(new Answer<IType>() {
-			@Override
-			public IType answer(InvocationOnMock invocation)
-					throws Throwable {
+		when(project.findType(anyString())).thenAnswer((invocation) -> {
 				String fqn = (String) invocation.getArguments()[0];
 				IType type = mock(IType.class);
 				when(type.getJavaProject()).thenReturn(project);
 				when(type.getFullyQualifiedName()).thenReturn(fqn);
 				when(type.getElementName()).thenReturn(fqn);
 				return type;
-			}
-		});
+			});
 		return project;
 	}
 
@@ -999,8 +994,6 @@ public class Jdt2EcoreTest {
 			ResourceSet resourceSet = mock(ResourceSet.class);
 			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
 			SarlEcoreCode code = mock(SarlEcoreCode.class);
-			when(code.getCodeGenerator()).thenReturn(generator);
-			when(code.getResourceSet()).thenReturn(resourceSet);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
 			IMethod method = createIMethodMock(
 					declaringType, "myFct", null,
@@ -1008,6 +1001,12 @@ public class Jdt2EcoreTest {
 					new String[] { "Ljava.lang.String;", "I", "[Z" },
 					0);
 			XtendExecutable container = mock(XtendExecutable.class);
+			when(code.getCodeGenerator()).thenReturn(generator);
+			when(code.getResourceSet()).thenReturn(resourceSet);
+			when(generator.createFormalParameter(
+					any(), any(), anyString(), any(), any(), any())).then((invocation) -> {
+						return mock(SarlFormalParameter.class);
+					});
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
@@ -1035,29 +1034,21 @@ public class Jdt2EcoreTest {
 		@Test
 		public void createFormalParameters_noDefault_varargs() throws JavaModelException, IllegalArgumentException {
 			ResourceSet resourceSet = mock(ResourceSet.class);
-			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
-			when(generator.createFormalParameter(
-					Matchers.any(SarlEcoreCode.class),
-					Matchers.any(XtendExecutable.class),
-					Matchers.anyString(),
-					Matchers.anyString(),
-					Matchers.anyString(),
-					Matchers.any(ResourceSet.class))).thenAnswer(new Answer<SarlFormalParameter>() {
-						@Override
-						public SarlFormalParameter answer(InvocationOnMock invocation) throws Throwable {
-							return mock(SarlFormalParameter.class);
-						}
-					});
 			SarlEcoreCode code = mock(SarlEcoreCode.class);
-			when(code.getCodeGenerator()).thenReturn(generator);
-			when(code.getResourceSet()).thenReturn(resourceSet);
+			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
+			XtendExecutable container = mock(XtendExecutable.class);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
 			IMethod method = createIMethodMock(
 					declaringType, "myFct", null,
 					new String[] { "param1", "param2", "param3" },
 					new String[] { "Ljava.lang.String;", "I", "[Z" },
 					Flags.AccVarargs);
-			XtendExecutable container = mock(XtendExecutable.class);
+			when(code.getCodeGenerator()).thenReturn(generator);
+			when(code.getResourceSet()).thenReturn(resourceSet);
+			when(generator.createFormalParameter(
+					any(), any(), anyString(), any(), any(), any())).then((invocation) -> {
+						return mock(SarlFormalParameter.class);
+					});
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
@@ -1090,9 +1081,7 @@ public class Jdt2EcoreTest {
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
-			when(declaringType.getField(Matchers.anyString())).thenAnswer(new Answer<IField>() {
-				@Override
-				public IField answer(InvocationOnMock invocation) throws Throwable {
+			when(declaringType.getField(anyString())).thenAnswer((invocation) -> {
 					String fieldName = (String) invocation.getArguments()[0];
 					IAnnotation annotation = mock(IAnnotation.class);
 					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.SarlSourceCode");
@@ -1103,8 +1092,7 @@ public class Jdt2EcoreTest {
 					when(field.getElementName()).thenReturn(fieldName);
 					when(field.getAnnotations()).thenReturn(new IAnnotation[] { annotation });
 					return field;
-				}
-			});
+				});
 			IMemberValuePair pair = mock(IMemberValuePair.class);
 			when(pair.getValue()).thenReturn("0_1");
 			IAnnotation annotation1 = mock(IAnnotation.class);
@@ -1120,6 +1108,10 @@ public class Jdt2EcoreTest {
 					new IAnnotation[] { annotation2 },
 					0);
 			XtendExecutable container = mock(XtendExecutable.class);
+			when(generator.createFormalParameter(
+					any(), any(), anyString(), any(), any(), any())).then((invocation) -> {
+						return mock(SarlFormalParameter.class);
+					});
 			//
 			Jdt2Ecore.createFormalParameters(code, method, container);
 			//
@@ -1149,24 +1141,14 @@ public class Jdt2EcoreTest {
 			ResourceSet resourceSet = mock(ResourceSet.class);
 			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
 			when(generator.createFormalParameter(
-					Matchers.any(SarlEcoreCode.class),
-					Matchers.any(XtendExecutable.class),
-					Matchers.anyString(),
-					Matchers.anyString(),
-					Matchers.anyString(),
-					Matchers.any(ResourceSet.class))).thenAnswer(new Answer<SarlFormalParameter>() {
-						@Override
-						public SarlFormalParameter answer(InvocationOnMock invocation) throws Throwable {
-							return mock(SarlFormalParameter.class);
-						}
+					any(), any(), anyString(), any(), any(), any())).then((invocation) -> {
+						return mock(SarlFormalParameter.class);
 					});
 			SarlEcoreCode code = mock(SarlEcoreCode.class);
 			when(code.getCodeGenerator()).thenReturn(generator);
 			when(code.getResourceSet()).thenReturn(resourceSet);
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
-			when(declaringType.getField(Matchers.anyString())).thenAnswer(new Answer<IField>() {
-				@Override
-				public IField answer(InvocationOnMock invocation) throws Throwable {
+			when(declaringType.getField(anyString())).thenAnswer((invocation) -> {
 					String fieldName = (String) invocation.getArguments()[0];
 					IAnnotation annotation = mock(IAnnotation.class);
 					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.SarlSourceCode");
@@ -1177,8 +1159,7 @@ public class Jdt2EcoreTest {
 					when(field.getElementName()).thenReturn(fieldName);
 					when(field.getAnnotations()).thenReturn(new IAnnotation[] { annotation });
 					return field;
-				}
-			});
+				});
 			IMemberValuePair pair = mock(IMemberValuePair.class);
 			when(pair.getValue()).thenReturn("0_1");
 			IAnnotation annotation1 = mock(IAnnotation.class);

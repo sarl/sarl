@@ -26,6 +26,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 
 import java.util.UUID;
 
@@ -33,7 +35,6 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
-import org.mockito.Mockito;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Event;
@@ -66,14 +67,14 @@ public class EventTest extends AbstractSarlTest {
 
 	private static Address mockAddress(UUID contextId, UUID spaceId, UUID agentID) {
 		SpaceID sid = new SpaceID(contextId, spaceId, null);
-		Address adr = new Address(Mockito.spy(sid), agentID);
-		return Mockito.spy(adr);
+		Address adr = new Address(spy(sid), agentID);
+		return spy(adr);
 	}
 
 	@Test
 	public void getSource() {
 		assertNull(this.event.getSource());
-		Address adr = Mockito.mock(Address.class);
+		Address adr = mock(Address.class);
 		this.event.setSource(adr);
 		assertSame(adr, this.event.getSource());
 	}
@@ -81,7 +82,7 @@ public class EventTest extends AbstractSarlTest {
 	@Test
 	public void setSource() {
 		assertNull(this.event.getSource());
-		Address adr = Mockito.mock(Address.class);
+		Address adr = mock(Address.class);
 		this.event.setSource(adr);
 		assertSame(adr, this.event.getSource());
 	}
@@ -89,12 +90,12 @@ public class EventTest extends AbstractSarlTest {
 	@Test
 	public void equals() {
 		Event e;
-		Address adr1 = Mockito.mock(Address.class);
-		Address adr2 = Mockito.mock(Address.class);
-		Mockito.doReturn(Boolean.TRUE).when(adr1).equals(Matchers.eq(adr1));
-		Mockito.doReturn(Boolean.FALSE).when(adr1).equals(Matchers.eq(adr2));
-		Mockito.doReturn(Boolean.FALSE).when(adr2).equals(Matchers.eq(adr1));
-		Mockito.doReturn(Boolean.TRUE).when(adr2).equals(Matchers.eq(adr2));
+		Address adr1 = mock(Address.class);
+		Address adr2 = mock(Address.class);
+		doReturn(Boolean.TRUE).when(adr1).equals(Matchers.eq(adr1));
+		doReturn(Boolean.FALSE).when(adr1).equals(Matchers.eq(adr2));
+		doReturn(Boolean.FALSE).when(adr2).equals(Matchers.eq(adr1));
+		doReturn(Boolean.TRUE).when(adr2).equals(Matchers.eq(adr2));
 		this.event.setSource(adr1);
 		//
 		assertTrue(this.event.equals(this.event));
@@ -111,8 +112,8 @@ public class EventTest extends AbstractSarlTest {
 	@Test
 	public void testHashCode() {
 		Event e;
-		Address adr1 = Mockito.mock(Address.class);
-		Address adr2 = Mockito.mock(Address.class);
+		Address adr1 = mock(Address.class);
+		Address adr2 = mock(Address.class);
 		this.event.setSource(adr1);
 		//
 		assertEquals(this.event.hashCode(), this.event.hashCode());
@@ -131,8 +132,8 @@ public class EventTest extends AbstractSarlTest {
 		Address adr = mockAddress(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID());
 		this.event.setSource(adr);
 
-		Address adr0 = Mockito.mock(Address.class);
-		Address adr1 = Mockito.mock(Address.class);
+		Address adr0 = mock(Address.class);
+		Address adr1 = mock(Address.class);
 
 		assertFalse(this.event.isFrom((Address) null));
 		assertTrue(this.event.isFrom(adr));

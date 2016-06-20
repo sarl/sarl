@@ -8,7 +8,8 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: io.sarl.tests.api;bundle-version="0.4.0",
  io.sarl.tests.testdata;bundle-version="0.4.0",
  io.sarl.core;bundle-version="0.4.0",
- org.eclipse.jdt.core;bundle-version="3.11.1"
+ org.eclipse.jdt.core;bundle-version="3.11.1",
+ org.mockito.mockito-core;bundle-version="2.0.64"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: io.sarl.lang.tests.actionprototype,
  io.sarl.lang.tests.bugs,

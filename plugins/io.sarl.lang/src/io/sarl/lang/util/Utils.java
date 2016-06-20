@@ -98,6 +98,20 @@ public final class Utils {
 
 	private static final String HIDDEN_MEMBER_CHARACTER = "$"; //$NON-NLS-1$
 
+	private static final String PREFIX_DEFAULT_VALUE = HIDDEN_MEMBER_CHARACTER + "DEFAULT_VALUE" //$NON-NLS-1$
+			+ HIDDEN_MEMBER_CHARACTER;
+
+	private static final String PREFIX_GUARD_EVALUATOR = HIDDEN_MEMBER_CHARACTER + "guardEvaluator" //$NON-NLS-1$
+			+ HIDDEN_MEMBER_CHARACTER;
+
+	private static final String PREFIX_GUARD = HIDDEN_MEMBER_CHARACTER + "behaviorUnitGuard" //$NON-NLS-1$
+			+ HIDDEN_MEMBER_CHARACTER;
+
+	private static final String PREFIX_EVENT_HANDLER = HIDDEN_MEMBER_CHARACTER + "behaviorUnit" //$NON-NLS-1$
+			+ HIDDEN_MEMBER_CHARACTER;
+
+	private static final String PREFIX_LOCAL_VARIABLE = "___SARLlocal_"; //$NON-NLS-1$
+
 	private static final String HIDDEN_MEMBER_REPLACEMENT_CHARACTER = "_"; //$NON-NLS-1$
 
 	private Utils() {
@@ -287,7 +301,16 @@ public final class Utils {
 	 * @return the method name.
 	 */
 	public static String createNameForHiddenDefaultValueAttribute(String id) {
-		return HIDDEN_MEMBER_CHARACTER + id + HIDDEN_MEMBER_CHARACTER + "DEFAULTVALUE"; //$NON-NLS-1$
+		return PREFIX_DEFAULT_VALUE + fixHiddenMember(id);
+	}
+
+	/** Create the name of the hidden local variable.
+	 *
+	 * @param id the name of the local variable.
+	 * @return the variable name.
+	 */
+	public static String createNameForHiddenLocalVariable(String id) {
+		return PREFIX_LOCAL_VARIABLE + fixHiddenMember(id);
 	}
 
 	/** Create the name of the hidden method that is containing the evaluation of all the guards for a given event.
@@ -296,7 +319,7 @@ public final class Utils {
 	 * @return the method name.
 	 */
 	public static String createNameForHiddenGuardGeneralEvaluatorMethod(String eventId) {
-		return HIDDEN_MEMBER_CHARACTER + eventId + HIDDEN_MEMBER_CHARACTER + "guardEvaluator"; //$NON-NLS-1$
+		return PREFIX_GUARD_EVALUATOR + fixHiddenMember(eventId);
 	}
 
 	/** Create the name of the hidden method that is containing the event guard evaluation.
@@ -306,7 +329,7 @@ public final class Utils {
 	 * @return the method name.
 	 */
 	public static String createNameForHiddenGuardEvaluatorMethod(String eventId, int handlerIndex) {
-		return HIDDEN_MEMBER_CHARACTER + eventId + HIDDEN_MEMBER_CHARACTER + "guardEvaluator" //$NON-NLS-1$
+		return PREFIX_GUARD + fixHiddenMember(eventId)
 				+ HIDDEN_MEMBER_CHARACTER + handlerIndex;
 	}
 
@@ -317,8 +340,7 @@ public final class Utils {
 	 * @return the attribute name.
 	 */
 	public static String createNameForHiddenEventHandlerMethod(String eventId, int handlerIndex) {
-		return HIDDEN_MEMBER_CHARACTER + eventId + HIDDEN_MEMBER_CHARACTER + "eventHandler" //$NON-NLS-1$
-				+ HIDDEN_MEMBER_CHARACTER + handlerIndex;
+		return PREFIX_EVENT_HANDLER + fixHiddenMember(eventId) + HIDDEN_MEMBER_CHARACTER + handlerIndex;
 	}
 
 	/** Replies if the given reference is pointing to a class type.

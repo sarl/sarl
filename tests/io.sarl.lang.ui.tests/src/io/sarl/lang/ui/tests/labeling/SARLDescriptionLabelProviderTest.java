@@ -15,21 +15,9 @@
  */
 package io.sarl.lang.ui.tests.labeling;
 
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
-import io.sarl.lang.sarl.SarlBehaviorUnit;
-import io.sarl.lang.sarl.SarlCapacity;
-import io.sarl.lang.sarl.SarlCapacityUses;
-import io.sarl.lang.sarl.SarlConstructor;
-import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlField;
-import io.sarl.lang.sarl.SarlRequiredCapacity;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.ui.labeling.SARLDescriptionLabelProvider;
-import io.sarl.tests.api.AbstractSarlUiTest;
+import static org.mockito.Mockito.when;
 
+import com.google.inject.Inject;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -45,9 +33,21 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator;
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.junit.Test;
-import org.mockito.Mockito;
 
-import com.google.inject.Inject;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.ui.labeling.SARLDescriptionLabelProvider;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 /**
  * @author $Author: sgalland$
@@ -69,7 +69,7 @@ public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 	public void imageSarlScript() {
 		assertBundleImage(
 				"sarl-file.png", //$NON-NLS-1$
-				this.provider.image(Mockito.mock(SarlScript.class)));
+				this.provider.image(mock(SarlScript.class)));
 	}
 	
 	private <T extends XtendMember> T mockMember(Class<T> type, JvmVisibility visibility) {
@@ -77,32 +77,32 @@ public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 	}
 
 	private <T extends XtendMember> T mockMember(Class<T> type, JvmVisibility visibility, JvmMember member) {
-		T m = Mockito.mock(type);
-		Mockito.when(m.getVisibility()).thenReturn(visibility);
+		T m = mock(type);
+		when(m.getVisibility()).thenReturn(visibility);
 		if (member != null) {
 			EList<Adapter> adapters = new BasicEList<>();
 			adapters.add(new JvmModelAssociator.Adapter());
-			XtextResource r = Mockito.mock(XtextResource.class);
-			Mockito.when(r.getLanguageName()).thenReturn("io.sarl.lang.SARL"); //$NON-NLS-1$
-			Mockito.when(r.eAdapters()).thenReturn(adapters);
-			Mockito.when(member.eResource()).thenReturn(r);
-			Mockito.when(m.eResource()).thenReturn(r);
+			XtextResource r = mock(XtextResource.class);
+			when(r.getLanguageName()).thenReturn("io.sarl.lang.SARL"); //$NON-NLS-1$
+			when(r.eAdapters()).thenReturn(adapters);
+			when(member.eResource()).thenReturn(r);
+			when(m.eResource()).thenReturn(r);
 			this.jvmModelAssociator.associate(m, member);
 		}
 		return m;
 	}
 	
 	private static JvmOperation mockJvmOperation(String name, boolean isAbstract) {
-		JvmOperation operation = Mockito.mock(JvmOperation.class);
-		Mockito.when(operation.isAbstract()).thenReturn(isAbstract);
-		Mockito.when(operation.isStatic()).thenReturn(false);
-		Mockito.when(operation.isDefault()).thenReturn(false);
-		Mockito.when(operation.isDeprecated()).thenReturn(false);
-		Mockito.when(operation.isFinal()).thenReturn(false);
-		Mockito.when(operation.isSynchronized()).thenReturn(false);
-		Mockito.when(operation.isNative()).thenReturn(false);
-		Mockito.when(operation.getSimpleName()).thenReturn(name);
-		Mockito.when(operation.getAnnotations()).thenReturn(new BasicEList<JvmAnnotationReference>());
+		JvmOperation operation = mock(JvmOperation.class);
+		when(operation.isAbstract()).thenReturn(isAbstract);
+		when(operation.isStatic()).thenReturn(false);
+		when(operation.isDefault()).thenReturn(false);
+		when(operation.isDeprecated()).thenReturn(false);
+		when(operation.isFinal()).thenReturn(false);
+		when(operation.isSynchronized()).thenReturn(false);
+		when(operation.isNative()).thenReturn(false);
+		when(operation.getSimpleName()).thenReturn(name);
+		when(operation.getAnnotations()).thenReturn(new BasicEList<JvmAnnotationReference>());
 		return operation;
 	}
 
@@ -177,8 +177,8 @@ public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 	@Test
 	public void imageAction() throws Exception {
 		SarlAction action = mockMember(SarlAction.class, JvmVisibility.PROTECTED, mockJvmOperation("fct", false)); //$NON-NLS-1$
-		Mockito.when(action.getName()).thenReturn("fct"); //$NON-NLS-1$
-		Mockito.when(action.getExpression()).thenReturn(Mockito.mock(XExpression.class));
+		when(action.getName()).thenReturn("fct"); //$NON-NLS-1$
+		when(action.getExpression()).thenReturn(mock(XExpression.class));
 		assertJdtImage(
 				JavaPluginImages.DESC_MISC_PROTECTED, 0,
 				this.provider.image(action));
@@ -190,8 +190,8 @@ public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 	@Test
 	public void imageActionSignature() throws Exception {
 		SarlAction action = mockMember(SarlAction.class, JvmVisibility.PUBLIC, mockJvmOperation("fct", true)); //$NON-NLS-1$
-		Mockito.when(action.getName()).thenReturn("fct"); //$NON-NLS-1$
-		Mockito.when(action.getExpression()).thenReturn(null);
+		when(action.getName()).thenReturn("fct"); //$NON-NLS-1$
+		when(action.getExpression()).thenReturn(null);
 		//
 		assertJdtImage(
 				JavaPluginImages.DESC_MISC_PUBLIC, JavaElementImageDescriptor.ABSTRACT,
@@ -205,7 +205,7 @@ public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 	public void imageCapacityUses() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_OBJS_IMPCONT, 0,
-				this.provider.image(Mockito.mock(SarlCapacityUses.class)));
+				this.provider.image(mock(SarlCapacityUses.class)));
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 	public void imageRequiredCapacity() throws Exception {
 		assertJdtImage(
 				JavaPluginImages.DESC_OBJS_IMPCONT, 0,
-				this.provider.image(Mockito.mock(SarlRequiredCapacity.class)));
+				this.provider.image(mock(SarlRequiredCapacity.class)));
 	}
 
 	/**
@@ -224,7 +224,7 @@ public class SARLDescriptionLabelProviderTest extends AbstractSarlUiTest {
 	public void imageBehaviorUnit() {
 		assertBundleImage(
 				"sarl-behavior-unit.png",  //$NON-NLS-1$
-				this.provider.image(Mockito.mock(SarlBehaviorUnit.class)));
+				this.provider.image(mock(SarlBehaviorUnit.class)));
 	}
 
 }

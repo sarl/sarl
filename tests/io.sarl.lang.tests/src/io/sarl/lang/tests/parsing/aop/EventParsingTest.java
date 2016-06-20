@@ -642,15 +642,15 @@ public class EventParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"var myfield1 = 4.5",
-					"var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
+					"var $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"var myfield2 = true",
 					"}"
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-					34, 41,
-					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
+					34, 39,
+					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test
@@ -658,15 +658,15 @@ public class EventParsingTest extends AbstractSarlTest {
 			SarlScript mas = file(multilineString(
 					"event E1 {",
 					"val myfield1 = 4.5",
-					"val ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
+					"val $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"val myfield2 = true",
 					"}"
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-					34, 41,
-					"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
+					34, 39,
+					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test

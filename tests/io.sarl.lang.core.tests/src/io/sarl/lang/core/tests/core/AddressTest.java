@@ -19,13 +19,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.SpaceID;
@@ -49,9 +49,9 @@ public class AddressTest extends AbstractSarlTest {
 	private Address adr;
 
 	private static SpaceID mockSpaceID(final UUID agentUID, final UUID spaceUID) {
-		SpaceID spaceID = Mockito.mock(SpaceID.class);
-		Mockito.when(spaceID.getContextID()).thenReturn(agentUID);
-		Mockito.when(spaceID.getID()).thenReturn(spaceUID);
+		SpaceID spaceID = mock(SpaceID.class);
+		when(spaceID.getContextID()).thenReturn(agentUID);
+		when(spaceID.getID()).thenReturn(spaceUID);
 		return spaceID;
 	}
 

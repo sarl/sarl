@@ -217,20 +217,20 @@ public class SARLQuickfixProviderTest {
 					//
 					multilineString(
 							"agent A1 {",
-							"	var ___FORMAL_PARAMETER_DEFAULT_VALUE_myattr1 : boolean",
+							"	var $DEFAULT_VALUE$myattr1 : boolean",
 							"	var myattr2 : float",
 							"}"));
 			asserts.assertQuickFix(
 					//
 					// Label and description:
 					//
-					"Rename to myattr1",
+					"Rename to _DEFAULT_VALUE_myattr1",
 					//
 					// Expected fixed code:
 					//
 					multilineString(
 							"agent A1 {",
-							"	var myattr1 : boolean",
+							"	var _DEFAULT_VALUE_myattr1 : boolean",
 							"	var myattr2 : float",
 							"}"));
 			asserts.assertQuickFix(
@@ -286,41 +286,24 @@ public class SARLQuickfixProviderTest {
 					//
 					multilineString(
 							"agent A1 {",
+							"	def $handle_method1(a : int) : boolean {",
+							"		true",
+							"	}",
+							"	def method2(a : int) : float {",
+							"		1.0f",
+							"	}",
+							"}"));
+			asserts.assertQuickFix(
+					//
+					// Label and description:
+					//
+					"Rename to _handle_method1",
+					//
+					// Expected fixed code:
+					//
+					multilineString(
+							"agent A1 {",
 							"	def _handle_method1(a : int) : boolean {",
-							"		true",
-							"	}",
-							"	def method2(a : int) : float {",
-							"		1.0f",
-							"	}",
-							"}"));
-			asserts.assertQuickFix(
-					//
-					// Label and description:
-					//
-					"Rename to handleMethod1",
-					//
-					// Expected fixed code:
-					//
-					multilineString(
-							"agent A1 {",
-							"	def handleMethod1(a : int) : boolean {",
-							"		true",
-							"	}",
-							"	def method2(a : int) : float {",
-							"		1.0f",
-							"	}",
-							"}"));
-			asserts.assertQuickFix(
-					//
-					// Label and description:
-					//
-					"Rename to method1",
-					//
-					// Expected fixed code:
-					//
-					multilineString(
-							"agent A1 {",
-							"	def method1(a : int) : boolean {",
 							"		true",
 							"	}",
 							"	def method2(a : int) : float {",
@@ -355,41 +338,24 @@ public class SARLQuickfixProviderTest {
 					//
 					multilineString(
 							"agent A1 {",
+							"	def $eventhandler_guard_method1(a : int) : boolean {",
+							"		true",
+							"	}",
+							"	def method2(a : int) : float {",
+							"		1.0f",
+							"	}",
+							"}"));
+			asserts.assertQuickFix(
+					//
+					// Label and description:
+					//
+					"Rename to _eventhandler_guard_method1",
+					//
+					// Expected fixed code:
+					//
+					multilineString(
+							"agent A1 {",
 							"	def _eventhandler_guard_method1(a : int) : boolean {",
-							"		true",
-							"	}",
-							"	def method2(a : int) : float {",
-							"		1.0f",
-							"	}",
-							"}"));
-			asserts.assertQuickFix(
-					//
-					// Label and description:
-					//
-					"Rename to guardMethod1",
-					//
-					// Expected fixed code:
-					//
-					multilineString(
-							"agent A1 {",
-							"	def guardMethod1(a : int) : boolean {",
-							"		true",
-							"	}",
-							"	def method2(a : int) : float {",
-							"		1.0f",
-							"	}",
-							"}"));
-			asserts.assertQuickFix(
-					//
-					// Label and description:
-					//
-					"Rename to method1",
-					//
-					// Expected fixed code:
-					//
-					multilineString(
-							"agent A1 {",
-							"	def method1(a : int) : boolean {",
 							"		true",
 							"	}",
 							"	def method2(a : int) : float {",
@@ -424,41 +390,24 @@ public class SARLQuickfixProviderTest {
 					//
 					multilineString(
 							"agent A1 {",
+							"	def $eventhandler_body_method1(a : int) : boolean {",
+							"		true",
+							"	}",
+							"	def method2(a : int) : float {",
+							"		1.0f",
+							"	}",
+							"}"));
+			asserts.assertQuickFix(
+					//
+					// Label and description:
+					//
+					"Rename to _eventhandler_body_method1",
+					//
+					// Expected fixed code:
+					//
+					multilineString(
+							"agent A1 {",
 							"	def _eventhandler_body_method1(a : int) : boolean {",
-							"		true",
-							"	}",
-							"	def method2(a : int) : float {",
-							"		1.0f",
-							"	}",
-							"}"));
-			asserts.assertQuickFix(
-					//
-					// Label and description:
-					//
-					"Rename to handlebodyMethod1",
-					//
-					// Expected fixed code:
-					//
-					multilineString(
-							"agent A1 {",
-							"	def handlebodyMethod1(a : int) : boolean {",
-							"		true",
-							"	}",
-							"	def method2(a : int) : float {",
-							"		1.0f",
-							"	}",
-							"}"));
-			asserts.assertQuickFix(
-					//
-					// Label and description:
-					//
-					"Rename to method1",
-					//
-					// Expected fixed code:
-					//
-					multilineString(
-							"agent A1 {",
-							"	def method1(a : int) : boolean {",
 							"		true",
 							"	}",
 							"	def method2(a : int) : float {",

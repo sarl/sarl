@@ -579,7 +579,7 @@ public class BehaviorParsingTest {
 				"	def myaction {",
 				"		System.out.println(\"ok\")",
 				"	}",
-				"	def _handle_myaction {",
+				"	def $handle_myaction {",
 				"		System.out.println(\"ko\")",
 				"	}",
 				"	def myaction2 {",
@@ -590,7 +590,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
-				"Invalid action name '_handle_myaction'.");
+				"Invalid action name '$handle_myaction'.");
 		}
 
 		@Test
@@ -1215,15 +1215,15 @@ public class BehaviorParsingTest {
 			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	var myfield1 = 4.5",
-				"	var ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
+				"	var $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 				"	var myfield2 = true",
 				"}"
 			));
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-				39, 41,
-				"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
+				39, 39,
+				"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test
@@ -1231,15 +1231,15 @@ public class BehaviorParsingTest {
 			SarlScript mas = file(multilineString(
 				"behavior B1 {",
 				"	val myfield1 = 4.5",
-				"	val ___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
+				"	val $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 				"	val myfield2 = true",
 				"}"
 			));
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-				39, 41,
-				"Invalid attribute name '___FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'. You must not give to an attribute a name that is starting with '___FORMAL_PARAMETER_DEFAULT_VALUE_'. This prefix is reserved by the SARL compiler.");
+				39, 39,
+				"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test

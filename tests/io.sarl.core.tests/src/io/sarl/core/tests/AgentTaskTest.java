@@ -26,6 +26,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import static org.mockito.Mockito.*;
+
 import java.util.UUID;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -34,7 +36,6 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
-import org.mockito.Mockito;
 
 import io.sarl.core.AgentTask;
 import io.sarl.lang.core.Agent;
@@ -64,7 +65,7 @@ public class AgentTaskTest extends AbstractSarlTest {
 	@Test
 	public void getProcedure() {
 		assertNull(this.task.getProcedure());
-		Procedure1 proc = Mockito.mock(Procedure1.class);
+		Procedure1 proc = mock(Procedure1.class);
 		this.task.setProcedure(proc);
 		assertSame(proc, this.task.getProcedure());
 	}
@@ -73,7 +74,7 @@ public class AgentTaskTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void setProcedure() {
-		Procedure1 proc = Mockito.mock(Procedure1.class);
+		Procedure1 proc = mock(Procedure1.class);
 		this.task.setProcedure(proc);
 		assertSame(proc, this.task.getProcedure());
 		this.task.setProcedure(null);
@@ -85,7 +86,7 @@ public class AgentTaskTest extends AbstractSarlTest {
 	@Test
 	public void getGuard() {
 		assertNull(this.task.getGuard());
-		Function1 func = Mockito.mock(Function1.class);
+		Function1 func = mock(Function1.class);
 		this.task.setGuard(func);
 		assertSame(func, this.task.getGuard());
 	}
@@ -94,7 +95,7 @@ public class AgentTaskTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void setGuard() {
-		Function1 func = Mockito.mock(Function1.class);
+		Function1 func = mock(Function1.class);
 		this.task.setGuard(func);
 		assertSame(func, this.task.getGuard());
 		this.task.setGuard(null);
@@ -126,8 +127,8 @@ public class AgentTaskTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void unless_positive() {
-		Function1<Agent,Boolean> guard = Mockito.mock(Function1.class);
-		Mockito.doReturn(Boolean.TRUE).when(guard).apply(Matchers.any(Agent.class));
+		Function1<Agent,Boolean> guard = mock(Function1.class);
+		doReturn(Boolean.TRUE).when(guard).apply(Matchers.any(Agent.class));
 
 		assertSame(this.task, this.task.unless(guard));
 
@@ -140,8 +141,8 @@ public class AgentTaskTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void unless_negative() {
-		Function1<Agent,Boolean> guard = Mockito.mock(Function1.class);
-		Mockito.doReturn(Boolean.FALSE).when(guard).apply(Matchers.any(Agent.class));
+		Function1<Agent,Boolean> guard = mock(Function1.class);
+		doReturn(Boolean.FALSE).when(guard).apply(Matchers.any(Agent.class));
 
 		assertSame(this.task, this.task.unless(guard));
 
@@ -154,8 +155,8 @@ public class AgentTaskTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void ifTrue() {
-		Function1<Agent,Boolean> guard = Mockito.mock(Function1.class);
-		Mockito.doReturn(Boolean.TRUE).when(guard).apply(Matchers.any(Agent.class));
+		Function1<Agent,Boolean> guard = mock(Function1.class);
+		doReturn(Boolean.TRUE).when(guard).apply(Matchers.any(Agent.class));
 
 		assertSame(this.task, this.task.ifTrue(guard));
 

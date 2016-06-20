@@ -29,7 +29,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -88,7 +87,7 @@ import io.sarl.tests.api.AbstractSarlTest;
 	DefaultActionPrototypeProviderTest.DefaultValues.class,
 })
 @SuppressWarnings("all")
-public class DefaultActionPrototypeProviderTest {
+public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 	static int index;
 

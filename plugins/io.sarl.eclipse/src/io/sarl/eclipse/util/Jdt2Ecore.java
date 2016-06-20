@@ -70,6 +70,7 @@ import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.actionprototype.FormalParameterProvider;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.SarlSourceCode;
+import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
 import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlConstructor;
@@ -404,11 +405,13 @@ public final class Jdt2Ecore {
 			if (isVarargs && i == parameters.length - 1 && type.endsWith("[]")) { //$NON-NLS-1$
 				type = type.substring(0, type.length() - 2);
 			}
-			SarlFormalParameter sarlParameter = code.getCodeGenerator().createFormalParameter(code, container,
+			ECoreGeneratorHelper generatorHelper = code.getCodeGenerator();
+			SarlFormalParameter sarlParameter = generatorHelper.createFormalParameter(code, container,
 					parameter.getElementName(),
 					type,
 					defaultValue,
 					code.getResourceSet());
+			assert sarlParameter != null;
 			if (isVarargs && i == parameters.length - 1) {
 				sarlParameter.setVarArg(isVarargs);
 			}
