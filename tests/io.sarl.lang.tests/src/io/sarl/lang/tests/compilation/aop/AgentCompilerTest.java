@@ -383,575 +383,575 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	@Test
 	public void valueVisibility_0() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				" val myval = 1",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  protected final int myval = 1;",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						" val myval = 1",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected final int myval = 1;",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void variableVisibility_0() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				" var myval = 1",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  protected int myval = 1;",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						" var myval = 1",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected int myval = 1;",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void actionVisibility_0() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				" def myfct { }",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  protected void myfct() {",
-				"  }",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						" def myfct { }",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected void myfct() {",
+						"  }",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void valueVisibility_1() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				" private val myval = 1",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  private final int myval = 1;",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						" private val myval = 1",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  private final int myval = 1;",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void variableVisibility_1() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				" private var myval = 1",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  private int myval = 1;",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						" private var myval = 1",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  private int myval = 1;",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void actionVisibility_1() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				" private def myfct { }",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  private void myfct() {",
-				"  }",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						" private def myfct { }",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  private void myfct() {",
+						"  }",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void agentmodifier_none() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 { }"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 { }"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void agentmodifier_public() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"public agent A1 { }"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"public agent A1 { }"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void agentmodifier_package() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"package agent A1 { }"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"class A1 extends Agent {",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"package agent A1 { }"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"class A1 extends Agent {",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void agentmodifier_abstract() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"abstract agent A1 { }"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public abstract class A1 extends Agent {",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"abstract agent A1 { }"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public abstract class A1 extends Agent {",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void agentmodifier_abstract_member() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	def fct",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public abstract class A1 extends Agent {",
-				"  protected abstract void fct();",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	def fct",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public abstract class A1 extends Agent {",
+						"  protected abstract void fct();",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void agentmodifier_final() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"final agent A1 { }"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public final class A1 extends Agent {",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"final agent A1 { }"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public final class A1 extends Agent {",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void fieldmodifier_none() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	var field : int",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  protected int field;",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	var field : int",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected int field;",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void fieldmodifier_package() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	package var field : int",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  int field;",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	package var field : int",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  int field;",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void fieldmodifier_protected() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	protected var field : int",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  protected int field;",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	protected var field : int",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected int field;",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void fieldmodifier_private() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	private var field : int",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  private int field;",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	private var field : int",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  private int field;",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
@@ -963,7 +963,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"agent A2 extends A1 {",
 				"	override name {}",
 				"}"
-			);
+				);
 		final String expectedA1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
@@ -990,7 +990,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""
-			);
+				);
 		final String expectedA2 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
@@ -1018,7 +1018,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""
-			);
+				);
 		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 			@Override
 			public void accept(Result r) {
@@ -1031,374 +1031,431 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	@Test
 	public void actionmodifier_none() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	def name {}",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  protected void name() {",
-				"  }",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	def name {}",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected void name() {",
+						"  }",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void actionmodifier_private() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	private def name {}",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  private void name() {",
-				"  }",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	private def name {}",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  private void name() {",
+						"  }",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void actionmodifier_package() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	package def name {}",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  void name() {",
-				"  }",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	package def name {}",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  void name() {",
+						"  }",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void actionmodifier_protected() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	protected def name {}",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  protected void name() {",
-				"  }",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	protected def name {}",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected void name() {",
+						"  }",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void actionmodifier_abstract() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	def name",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public abstract class A1 extends Agent {",
-				"  protected abstract void name();",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	def name",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public abstract class A1 extends Agent {",
+						"  protected abstract void name();",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void actionmodifier_static() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	static def name {}",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  protected static void name() {",
-				"  }",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	static def name {}",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected static void name() {",
+						"  }",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void actionmodifier_dispatch() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	dispatch def name(a : Integer) {}",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  protected void _name(final Integer a) {",
-				"  }",
-				"  ",
-				"  protected void name(final Integer a) {",
-				"    _name(a);",
-				"    return;",
-				"  }",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	dispatch def name(a : Integer) {}",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected void _name(final Integer a) {",
+						"  }",
+						"  ",
+						"  protected void name(final Integer a) {",
+						"    _name(a);",
+						"    return;",
+						"  }",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void actionmodifier_dispatch_final() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	dispatch final def name(a : Integer) {}",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  protected final void _name(final Integer a) {",
-				"  }",
-				"  ",
-				"  protected void name(final Integer a) {",
-				"    _name(a);",
-				"    return;",
-				"  }",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	dispatch final def name(a : Integer) {}",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected final void _name(final Integer a) {",
+						"  }",
+						"  ",
+						"  protected void name(final Integer a) {",
+						"    _name(a);",
+						"    return;",
+						"  }",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void actionmodifier_final() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	final def name {}",
-				"}"
-			),
-			multilineString(
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.core.Agent;",
-				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import java.util.UUID;",
-				"import javax.annotation.Generated;",
-				"import javax.inject.Inject;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SuppressWarnings(\"all\")",
-				"public class A1 extends Agent {",
-				"  protected final void name() {",
-				"  }",
-				"  ",
-				"  /**",
-				"   * Construct an agent.",
-				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
-				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
-				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
-				"   */",
-				"  @Inject",
-				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
-				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"}",
-				""
-			));
+				multilineString(
+						"agent A1 {",
+						"	final def name {}",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected final void name() {",
+						"  }",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
 	}
 
 	@Test
 	public void actionmodifier_synchronized() throws Exception {
 		this.compiler.assertCompilesTo(
-			multilineString(
-				"agent A1 {",
-				"	synchronized def name {}",
-				"}"
-			),
-			multilineString(
+				multilineString(
+						"agent A1 {",
+						"	synchronized def name {}",
+						"}"
+						),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.core.Agent;",
+						"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+						"import java.util.UUID;",
+						"import javax.annotation.Generated;",
+						"import javax.inject.Inject;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SuppressWarnings(\"all\")",
+						"public class A1 extends Agent {",
+						"  protected synchronized void name() {",
+						"  }",
+						"  ",
+						"  /**",
+						"   * Construct an agent.",
+						"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+						"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+						"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+						"   */",
+						"  @Inject",
+						"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+						"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+						"    super(builtinCapacityProvider, parentID, agentID);",
+						"  }",
+						"}",
+						""
+						));
+	}
+
+	@Test
+	public void inlinedCapacityFunctionCall_nativeParameter() throws Exception {
+		String source = "capacity C1 { def myfunction(v : double) } agent A1 { uses C1 def caller { myfunction(5) } }";
+		final String expectedC1 = multilineString(
+				"import io.sarl.lang.core.Capacity;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public interface C1 extends Capacity {",
+				"  public abstract void myfunction(final double v);",
+				"}",
+				""
+				);
+		final String expectedA1 = multilineString(
+				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
 				"import javax.inject.Inject;",
+				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlSpecification(\"0.4\")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
-				"  protected synchronized void name() {",
+				"  protected void caller() {",
+				"    this.getSkill(C1.class).myfunction(5);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * See the capacity {@link C1#myfunction(double)}.",
+				"   * ",
+				"   * @see C1#myfunction(double)",
+				"   */",
+				"  @Inline(value = \"getSkill(C1.class).myfunction($1)\", imported = C1.class)",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  @ImportedCapacityFeature(C1.class)",
+				"  private void myfunction(final double v) {",
+				"    getSkill(C1.class).myfunction(v);",
 				"  }",
 				"  ",
 				"  /**",
@@ -1414,7 +1471,133 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""
-			));
+				);
+		this.compiler.compile(source, (r) -> {
+			assertEquals(expectedC1,r.getGeneratedCode("C1"));
+			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+		});
+	}
+
+	@Test
+	public void inlinedCapacityFunctionCall_classParameter_baseName() throws Exception {
+		String source = "capacity C1 { def myfunction(v : Class<?>) } agent A1 { uses C1 def caller { myfunction(Integer) } }";
+		final String expectedC1 = multilineString(
+				"import io.sarl.lang.core.Capacity;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public interface C1 extends Capacity {",
+				"  public abstract void myfunction(final Class<?> v);",
+				"}",
+				""
+				);
+		final String expectedA1 = multilineString(
+				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.Agent;",
+				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
+				"import javax.inject.Inject;",
+				"import org.eclipse.xtext.xbase.lib.Inline;",
+				"",
+				"@SarlSpecification(\"0.4\")",
+				"@SuppressWarnings(\"all\")",
+				"public class A1 extends Agent {",
+				"  protected void caller() {",
+				"    this.getSkill(C1.class).myfunction(Integer.class);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * See the capacity {@link C1#myfunction(java.lang.Class<? extends java.lang.Object>)}.",
+				"   * ",
+				"   * @see C1#myfunction(java.lang.Class<? extends java.lang.Object>)",
+				"   */",
+				"  @Inline(value = \"getSkill(C1.class).myfunction($1)\", imported = C1.class)",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  @ImportedCapacityFeature(C1.class)",
+				"  private void myfunction(final Class<?> v) {",
+				"    getSkill(C1.class).myfunction(v);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Inject",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+				"    super(builtinCapacityProvider, parentID, agentID);",
+				"  }",
+				"}",
+				""
+				);
+		this.compiler.compile(source, (r) -> {
+			assertEquals(expectedC1,r.getGeneratedCode("C1"));
+			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+		});
+	}
+
+	@Test
+	public void inlinedCapacityFunctionCall_classParameter_typeof() throws Exception {
+		String source = "capacity C1 { def myfunction(v : Class<?>) } agent A1 { uses C1 def caller { myfunction(typeof(Integer)) } }";
+		final String expectedC1 = multilineString(
+				"import io.sarl.lang.core.Capacity;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public interface C1 extends Capacity {",
+				"  public abstract void myfunction(final Class<?> v);",
+				"}",
+				""
+				);
+		final String expectedA1 = multilineString(
+				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.Agent;",
+				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
+				"import javax.inject.Inject;",
+				"import org.eclipse.xtext.xbase.lib.Inline;",
+				"",
+				"@SarlSpecification(\"0.4\")",
+				"@SuppressWarnings(\"all\")",
+				"public class A1 extends Agent {",
+				"  protected void caller() {",
+				"    this.getSkill(C1.class).myfunction(Integer.class);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * See the capacity {@link C1#myfunction(java.lang.Class<? extends java.lang.Object>)}.",
+				"   * ",
+				"   * @see C1#myfunction(java.lang.Class<? extends java.lang.Object>)",
+				"   */",
+				"  @Inline(value = \"getSkill(C1.class).myfunction($1)\", imported = C1.class)",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  @ImportedCapacityFeature(C1.class)",
+				"  private void myfunction(final Class<?> v) {",
+				"    getSkill(C1.class).myfunction(v);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Inject",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+				"    super(builtinCapacityProvider, parentID, agentID);",
+				"  }",
+				"}",
+				""
+				);
+		this.compiler.compile(source, (r) -> {
+			assertEquals(expectedC1,r.getGeneratedCode("C1"));
+			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+		});
 	}
 
 }
