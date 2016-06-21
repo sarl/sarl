@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>vmutils</artifactId>
-			<version>12.0</version>
+			<version>13.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -277,6 +277,8 @@
 						<include>**/*Test.java</include>
 						<include>**/*TestCase.java</include>
 					</includes>
+					<enableAssertions>true</enableAssertions>
+					<argLine>-Xms256M -Xmx768M -XX:+CMSClassUnloadingEnabled</argLine>
 				</configuration>
 			</plugin>
 
