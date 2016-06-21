@@ -25,12 +25,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pair;
@@ -89,7 +87,7 @@ abstract class GenerationContext {
 	 * evaluating guards and returning the event handler runnables.
 	 */
 	@SuppressWarnings("unchecked")
-	private final Map<JvmTypeReference, Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>> guardEvaluators
+	private final Map<String, Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>> guardEvaluators
 			= CollectionLiterals.newHashMap();
 
 	/** Construct a information about the generation.
@@ -102,9 +100,9 @@ abstract class GenerationContext {
 	 *
 	 * @return the guard evaluators.
 	 */
-	public Collection<Entry<JvmTypeReference, Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>>>
+	public Collection<Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>>
 			getGuardEvaluationCodes() {
-		return this.guardEvaluators.entrySet();
+		return this.guardEvaluators.values();
 	}
 
 	/** Replies the guard evaluation code for the given event.
@@ -114,7 +112,7 @@ abstract class GenerationContext {
 	 */
 	public Collection<Procedure1<ITreeAppendable>> getGuardEvalationCodeFor(SarlBehaviorUnit source) {
 		assert (source != null);
-		final JvmTypeReference id = source.getName();
+		final String id = source.getName().getIdentifier();
 		Collection<Procedure1<ITreeAppendable>> evaluators;
 		Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>> pair = this.guardEvaluators.get(id);
 		if (pair == null) {

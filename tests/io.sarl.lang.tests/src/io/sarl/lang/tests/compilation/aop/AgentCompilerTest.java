@@ -156,9 +156,9 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		this.compiler.compile(source, (r) -> {
-				assertEquals(expectedE1,r.getGeneratedCode("E1"));
-				assertEquals(expectedA1,r.getGeneratedCode("A1"));
-			});
+			assertEquals(expectedE1,r.getGeneratedCode("E1"));
+			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+		});
 	}
 
 	@Test
@@ -228,9 +228,9 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		this.compiler.compile(source, (r) -> {
-				assertEquals(expectedE1, r.getGeneratedCode("E1"));
-				assertEquals(expectedA1, r.getGeneratedCode("A1"));
-			});
+			assertEquals(expectedE1, r.getGeneratedCode("E1"));
+			assertEquals(expectedA1, r.getGeneratedCode("A1"));
+		});
 	}
 
 	@Test
@@ -337,9 +337,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"    assert occurrence != null;",
 				"    assert ___SARLlocal_runnableCollection != null;",
 				"    if ($behaviorUnitGuard$E1$0(occurrence, occurrence)) {",
-				"      ___SARLlocal_runnableCollection.add(() -> {",
-				"        $behaviorUnit$E1$0(occurrence);",
-				"      });",
+				"      ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$E1$0(occurrence));",
 				"    }",
 				"  }",
 				"  ",
@@ -366,9 +364,9 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		this.compiler.compile(source, (r) -> {
-				assertEquals(expectedE1,r.getGeneratedCode("E1"));
-				assertEquals(expectedA1,r.getGeneratedCode("A1"));
-			});
+			assertEquals(expectedE1,r.getGeneratedCode("E1"));
+			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+		});
 	}
 
 	@Test
@@ -1011,9 +1009,9 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		this.compiler.compile(source, (r) -> {
-				assertEquals(expectedA1, r.getGeneratedCode("A1"));
-				assertEquals(expectedA2, r.getGeneratedCode("A2"));
-			});
+			assertEquals(expectedA1, r.getGeneratedCode("A1"));
+			assertEquals(expectedA2, r.getGeneratedCode("A2"));
+		});
 	}
 
 	@Test
@@ -1586,6 +1584,92 @@ public class AgentCompilerTest extends AbstractSarlTest {
 			assertEquals(expectedC1,r.getGeneratedCode("C1"));
 			assertEquals(expectedA1,r.getGeneratedCode("A1"));
 		});
+	}
+
+	@Test
+	public void duplicateEventHandler() throws Exception {
+		final String source = multilineString(
+				"event Initialize {",
+				"  val parameters = newArrayList",
+				"}",
+				"agent MyAgent {",
+				"	on Initialize [ occurrence.parameters.empty ] {",
+				"		println(\"Initialization without parameters\")",
+				"	}",
+				"	on Initialize [ ! occurrence.parameters.empty ] {",
+				"		println(\"Initialization with parameters: \"",
+				"			+ occurrence.parameters )",
+				"	}",
+				"}");
+		final String expectedMyAgent = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.Agent;",
+				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+				"import io.sarl.lang.core.PerceptGuardEvaluator;",
+				"import java.util.Collection;",
+				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
+				"import javax.inject.Inject;",
+				"import org.eclipse.xtext.xbase.lib.InputOutput;",
+				"import org.eclipse.xtext.xbase.lib.Pure;",
+				"",
+				"@SarlSpecification(\"0.4\")",
+				"@SuppressWarnings(\"all\")",
+				"public class MyAgent extends Agent {",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {",
+				"    InputOutput.<String>println(\"Initialization without parameters\");",
+				"  }",
+				"  ",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  @Pure",
+				"  private boolean $behaviorUnitGuard$Initialize$0(final Initialize it, final Initialize occurrence) {",
+				"    boolean _isEmpty = occurrence.parameters.isEmpty();",
+				"    return _isEmpty;",
+				"  }",
+				"  ",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  private void $behaviorUnit$Initialize$1(final Initialize occurrence) {",
+				"    InputOutput.<String>println(",
+				"      (\"Initialization with parameters: \" + occurrence.parameters));",
+				"  }",
+				"  ",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  @Pure",
+				"  private boolean $behaviorUnitGuard$Initialize$1(final Initialize it, final Initialize occurrence) {",
+				"    boolean _isEmpty = occurrence.parameters.isEmpty();",
+				"    boolean _not = (!_isEmpty);",
+				"    return _not;",
+				"  }",
+				"  ",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  @PerceptGuardEvaluator",
+				"  private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {",
+				"    assert occurrence != null;",
+				"    assert ___SARLlocal_runnableCollection != null;",
+				"    if ($behaviorUnitGuard$Initialize$0(occurrence, occurrence)) {",
+				"      ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));",
+				"    }",
+				"    if ($behaviorUnitGuard$Initialize$1(occurrence, occurrence)) {",
+				"      ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$1(occurrence));",
+				"    }",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Inject",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  public MyAgent(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+				"    super(builtinCapacityProvider, parentID, agentID);",
+				"  }",
+				"}",
+				""
+				);
+		this.compiler.compile(source, (r) -> assertEquals(expectedMyAgent, r.getGeneratedCode("MyAgent")));
 	}
 
 }
