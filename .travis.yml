@@ -8,6 +8,9 @@ matrix:
   include:
     - os: linux
       before_install:
+      - ./scripts/travis-download-maven.sh
+      - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
+      - export PATH=$M2_HOME/bin:$PATH
       - "export DISPLAY=:99.0"
       - "sh -e /etc/init.d/xvfb start"
       - sleep 3 # give xvfb some time to start
@@ -21,4 +24,5 @@ script: mvn -B -P!generateproduct install
 cache:
   directories:
   - $HOME/.m2
+  - $HOME/.binaries
 
