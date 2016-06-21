@@ -140,13 +140,10 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				);
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
+		this.compiler.compile(source, (r) -> {
 				assertEquals(expectedE1,r.getGeneratedCode("E1"));
 				assertEquals(expectedB1,r.getGeneratedCode("B1"));
-			}
-		});
+			});
 	}
 
 	@Test
@@ -208,13 +205,10 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				);
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
+		this.compiler.compile(source, (r) -> {
 				assertEquals(expectedE1, r.getGeneratedCode("E1"));
 				assertEquals(expectedB1, r.getGeneratedCode("B1"));
-			}
-		});
+			});
 	}
 
 	@Test
@@ -342,13 +336,10 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				);
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
+		this.compiler.compile(source, (r) -> {
 				assertEquals(expectedE1,r.getGeneratedCode("E1"));
 				assertEquals(expectedB1,r.getGeneratedCode("B1"));
-			}
-		});
+			});
 	}
 
 	@Test
@@ -864,13 +855,10 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}",
 				""
 			);
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
+		this.compiler.compile(source, (r) -> {
 				assertEquals(expectedB1, r.getGeneratedCode("B1"));
 				assertEquals(expectedB2, r.getGeneratedCode("B2"));
-			}
-		});
+			});
 	}
 
 	@Test

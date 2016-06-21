@@ -145,12 +145,8 @@ public class Bug383 {
 					"}",
 					"");
 
-			this.compiler.compile(snippet, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expected, r.getGeneratedCode("A1"));
-				}
-			});
+			this.compiler.compile(snippet, 
+					(r) -> assertEquals(expected, r.getGeneratedCode("A1")));
 		}
 
 	}

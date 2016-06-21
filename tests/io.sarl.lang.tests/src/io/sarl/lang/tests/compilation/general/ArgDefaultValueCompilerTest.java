@@ -2304,13 +2304,10 @@ public class ArgDefaultValueCompilerTest {
 					"  def myaction(arg0 : int, arg1 : int, arg2 : int*) {}",
 					"}"
 					);
-			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>(){
-				@Override
-				public void accept(Result r) {
+			this.compiler.compile(source, (r) -> {
 					assertEquals(expectedC1,r.getGeneratedCode("C1"));
 					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-				}
-			});
+				});
 		}
 
 		@Test
@@ -2436,14 +2433,11 @@ public class ArgDefaultValueCompilerTest {
 					"  }",
 					"}"
 					);
-			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
+			this.compiler.compile(source, (r) -> {
 					assertEquals(expectedC1,r.getGeneratedCode("C1"));
 					assertEquals(expectedC2,r.getGeneratedCode("C2"));
 					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-				}
-			});
+				});
 		}
 
 	}

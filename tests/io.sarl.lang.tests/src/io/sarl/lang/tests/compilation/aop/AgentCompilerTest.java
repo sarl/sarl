@@ -155,13 +155,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				);
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
+		this.compiler.compile(source, (r) -> {
 				assertEquals(expectedE1,r.getGeneratedCode("E1"));
 				assertEquals(expectedA1,r.getGeneratedCode("A1"));
-			}
-		});
+			});
 	}
 
 	@Test
@@ -230,13 +227,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				);
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
+		this.compiler.compile(source, (r) -> {
 				assertEquals(expectedE1, r.getGeneratedCode("E1"));
 				assertEquals(expectedA1, r.getGeneratedCode("A1"));
-			}
-		});
+			});
 	}
 
 	@Test
@@ -371,13 +365,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				);
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
+		this.compiler.compile(source, (r) -> {
 				assertEquals(expectedE1,r.getGeneratedCode("E1"));
 				assertEquals(expectedA1,r.getGeneratedCode("A1"));
-			}
-		});
+			});
 	}
 
 	@Test
@@ -1019,13 +1010,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
+		this.compiler.compile(source, (r) -> {
 				assertEquals(expectedA1, r.getGeneratedCode("A1"));
 				assertEquals(expectedA2, r.getGeneratedCode("A2"));
-			}
-		});
+			});
 	}
 
 	@Test

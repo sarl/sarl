@@ -456,27 +456,4 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
 	}
 
-	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private static class ListBasedMarkerAcceptor implements IAcceptor<Issue> {
-
-		private final List<Issue> result;
-
-		ListBasedMarkerAcceptor(List<Issue> result) {
-			this.result = result;
-		}
-
-		@Override
-		public void accept(Issue issue) {
-			if (issue != null) {
-				result.add(issue);
-			}
-		}
-
-	}
-
 }

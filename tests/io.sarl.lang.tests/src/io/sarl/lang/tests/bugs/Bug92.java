@@ -356,14 +356,11 @@ public class Bug92 extends AbstractSarlTest {
 				"}",
 				"");
 
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
+		this.compiler.compile(source, (r) -> {
 				assertEquals(expected1,r.getGeneratedCode("ComputeEnergyCapacity"));
 				assertEquals(expected2,r.getGeneratedCode("DeviceAgent"));
 				assertEquals(expected3,r.getGeneratedCode("EntityAgent"));
-			}
-		});
+			});
 	}
 
 	@Test
@@ -470,14 +467,11 @@ public class Bug92 extends AbstractSarlTest {
 				"}",
 				"");
 
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
+		this.compiler.compile(source, (r) -> {
 				assertEquals(expected1,r.getGeneratedCode("ComputeEnergyCapacity"));
 				assertEquals(expected2,r.getGeneratedCode("DeviceAgent"));
 				assertEquals(expected3,r.getGeneratedCode("EntityAgent"));
-			}
-		});
+			});
 	}
 
 }

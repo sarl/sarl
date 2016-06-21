@@ -241,12 +241,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
-				assertEquals(expectedE2,r.getGeneratedCode("E2"));
-			}
-		});
+		this.compiler.compile(source, (r) -> assertEquals(expectedE2,r.getGeneratedCode("E2")));
 	}
 
 	@Test

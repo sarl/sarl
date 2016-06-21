@@ -145,12 +145,7 @@ public class Bug23 extends AbstractSarlTest {
 				""
 				);
 
-		this.compiler.compile(snippet, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
-				assertEquals(expectedMyAgentSpawned,r.getGeneratedCode("MyAgentSpawned"));
-			}
-		});
+		this.compiler.compile(snippet, (r) -> assertEquals(expectedMyAgentSpawned,r.getGeneratedCode("MyAgentSpawned")));
 	}
 
 }

@@ -232,13 +232,10 @@ public class ClassCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.compile(source, new IAcceptor<Result>() {
-				@Override
-				public void accept(Result r) {
+			this.compiler.compile(source, (r) -> {
 					assertEquals(expectedPerson, r.getGeneratedCode("io.sarl.docs.reference.oop.Person"));
 					assertEquals(expectedPersonEx, r.getGeneratedCode("io.sarl.docs.reference.oop.PersonEx"));
-				}
-			});
+				});
 		}
 		
 		public void methodOverriding_inferredReturnType() throws Exception {

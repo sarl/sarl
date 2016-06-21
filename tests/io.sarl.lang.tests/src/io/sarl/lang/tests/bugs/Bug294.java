@@ -255,13 +255,10 @@ public class Bug294 {
 					"}",
 					"");
 
-			this.compiler.compile(multilineString(capacityCode, skillCode), new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
+			this.compiler.compile(multilineString(capacityCode, skillCode), (r) -> {
 					assertEquals(expectedPhysicEnvironment, r.getGeneratedCode("PhysicEnvironment"));
 					assertEquals(expectedStandardPhysicEnvironment, r.getGeneratedCode("StandardPhysicEnvironment"));
-				}
-			});
+				});
 		}
 
 	}

@@ -428,13 +428,10 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.compile(source, new IAcceptor<Result>() {
-				@Override
-				public void accept(Result r) {
+			this.compiler.compile(source, (r) -> {
 					assertEquals(expectedC1,r.getGeneratedCode("C1"));
 					assertEquals(expectedS1,r.getGeneratedCode("S1"));
-				}
-			});
+				});
 		}
 
 		@Test

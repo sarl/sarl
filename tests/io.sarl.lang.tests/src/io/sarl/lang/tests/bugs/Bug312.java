@@ -108,12 +108,7 @@ public class Bug312 {
 					"  public abstract void move(final Vector2i direction2);",
 					"}",
 					"");
-			this.compiler.compile(this.snippet, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expected, r.getGeneratedCode("C1"));
-				}
-			});
+			this.compiler.compile(this.snippet, (r) -> assertEquals(expected, r.getGeneratedCode("C1")));
 		}
 
 	}

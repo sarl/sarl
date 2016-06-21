@@ -142,13 +142,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"}",
 				""
 			);
-		this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
-			@Override
-			public void accept(Result r) {
+		this.compiler.compile(source, (r) -> {
 				assertEquals(expectedC1, r.getGeneratedCode("C1"));
 				assertEquals(expectedC2, r.getGeneratedCode("C2"));
-			}
-		});
+			});
 	}
 
 	@Test

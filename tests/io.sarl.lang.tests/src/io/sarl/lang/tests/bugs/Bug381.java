@@ -194,12 +194,8 @@ public class Bug381 {
 					"}",
 					"");
 
-			this.compiler.compile(snippetWithSarlSyntaxWithLocalType, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expected, r.getGeneratedCode("A1"));
-				}
-			});
+			this.compiler.compile(snippetWithSarlSyntaxWithLocalType,
+					(r) -> assertEquals(expected, r.getGeneratedCode("A1")));
 		}
 
 		@Test
@@ -243,12 +239,8 @@ public class Bug381 {
 					"}",
 					"");
 
-			this.compiler.compile(snippetWithJavaSyntaxWithLocalType, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expected, r.getGeneratedCode("A1"));
-				}
-			});
+			this.compiler.compile(snippetWithJavaSyntaxWithLocalType,
+					(r) -> assertEquals(expected, r.getGeneratedCode("A1")));
 		}
 
 		@Test
@@ -341,12 +333,8 @@ public class Bug381 {
 					"}",
 					"");
 
-			this.compiler.compile(snippetWithJavaSyntaxWithJREType, new IAcceptor<CompilationTestHelper.Result>() {
-				@Override
-				public void accept(Result r) {
-					assertEquals(expected, r.getGeneratedCode("A1"));
-				}
-			});
+			this.compiler.compile(snippetWithJavaSyntaxWithJREType,
+					(r) -> assertEquals(expected, r.getGeneratedCode("A1")));
 		}
 
 		@Test
