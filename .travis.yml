@@ -15,7 +15,7 @@ matrix:
 
 install: true
 
-script: sh ./travis.sh
+script: mvn -B -P!generateproduct install
 
 cache:
   directories:

@@ -46,7 +46,9 @@
 		<profile>
 			<id>tycho-surefire-plugin-macosx-jvm-flags</id>
 			<activation>
-				<os><family>mac</family></os>
+				<os>
+					<family>mac</family>
+				</os>
 			</activation>
 			<properties>
 				<tycho-surefire-plugin-os-jvm-flags>-XstartOnFirstThread</tycho-surefire-plugin-os-jvm-flags>
