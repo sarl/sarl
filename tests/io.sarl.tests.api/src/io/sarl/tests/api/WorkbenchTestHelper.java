@@ -73,6 +73,7 @@ import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
@@ -174,8 +175,16 @@ public class WorkbenchTestHelper {
 	 */
 	public void tearDown() throws Exception {
 		this.lastProjectName = null;
-		if (this.workbench.getActiveWorkbenchWindow() != null) {
-			this.workbench.getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
+		// Close the editors safely.
+		if (this.workbench != null) {
+			try {
+				final IWorkbenchWindow window = this.workbench.getActiveWorkbenchWindow();
+				if (window != null) {
+					window.getActivePage().closeAllEditors(false);
+				}
+			} catch (Throwable e) {
+				//
+			}
 		}
 		new WorkspaceModifyOperation() {
 
