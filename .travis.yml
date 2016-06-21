@@ -4,9 +4,11 @@ language: java
 
 sudo: false
 
-env:
-  global:
-    - DISPLAY=:99.0
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+
+env: DISPLAY=:99.0
 
 matrix:
   include:
@@ -15,7 +17,7 @@ matrix:
 
 install: true
 
-script: mvn -B -Dtycho.disableP2Mirrors=true -P!generateproduct install
+script: mvn -B -Dtycho.disableP2Mirrors=true -P!generateproduct integration-test
 
 cache:
   directories:
