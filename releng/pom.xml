@@ -10,13 +10,24 @@
 
 	<artifactId>io.sarl.releng</artifactId>
 	<packaging>pom</packaging>
-	
+
 	<name>Release Engineering for SARL</name>
 
 	<modules>
 		<module>io.sarl.lang.targetplatform</module>
-		<module>io.sarl.lang.updatesite</module>
 	</modules>
+
+	<profiles>
+		<profile>
+			<id>generateproduct</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>io.sarl.lang.updatesite</module>
+			</modules>
+		</profile>
+	</profiles>
 
 	<!-- ======================================= -->
 	<!-- ==== Plugins Dependency Management === -->
@@ -32,9 +43,8 @@
 	<!-- ======================================= -->
 
 	<build>
-		<!-- The build configurations are inside the submodules
-		     for avoiding to propagate the information outside a
-		     specific module -->
+		<!-- The build configurations are inside the submodules for avoiding to 
+			propagate the information outside a specific module -->
 	</build>
 
 </project>
