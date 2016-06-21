@@ -12,14 +12,18 @@ matrix:
       - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
       - export PATH=$M2_HOME/bin:$PATH
       - "export DISPLAY=:99.0"
+      - mvn -Xmx32m --version
       - "sh -e /etc/init.d/xvfb start"
       - sleep 3 # give xvfb some time to start
+      - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx2g\"" > $HOME/.mavenrc
       env: DISPLAY=:99.0
       jdk: oraclejdk8
 
 install: true
 
-script: mvn -B -P!generateproduct install
+script: mvn -B -e '-P!generateproduct' clean install
+
+after_failure: "sh -e ./scripts/print-surefire-reports.sh"
 
 cache:
   directories:
