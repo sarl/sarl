@@ -1,5 +1,7 @@
 = SARL Agent Programming Language
 
+image:http://www.sarl.io/images/SARL-logo.svg[]
+
 SARL is a general-purpose agent-oriented language.
 
 SARL aims at providing the fundamental abstractions for dealing with concurrency, distribution, interaction, decentralization, reactivity, autonomy and dynamic reconfiguration. 
@@ -9,6 +11,8 @@ We are convinced that the agent-oriented paradigm holds the keys to effectively 
 Considering the variety of existing approaches and meta-models in the field of agent-oriented engineering and more generally multi-agent systems, our approach remains as generic as possible and highly extensible to easily integrate new concepts and features. The language is platform- and architecture-independent. 
 
 However, we provide a first set of tools to support its execution based on the new version 2.0 of the Janus (see http://www.janusproject.io) platform, but it can be linked with other existing agent platforms and frameworks. 
+
+image:http://www.sarl.io/images/compilation-process.png[]
 
 image:https://img.shields.io/badge/requires-Java%208-red.svg?style=flat-square[link=https://www.java.com]
 image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
