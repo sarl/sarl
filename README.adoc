@@ -16,7 +16,7 @@ image:http://www.sarl.io/images/compilation-process.png[]
 
 image:https://img.shields.io/badge/requires-Java%208-red.svg?style=flat-square[link=https://www.java.com]
 image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
-image:https://ci.appveyor.com/api/projects/status/github/sarl/sarl?branch=master&svg=true[link=https://ci.appveyor.com/project/sarl/sarl]
+image:https://ci.appveyor.com/api/projects/status/github/gallandarakhneorg/sarl?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/sarl]
 
 image:https://img.shields.io/badge/compliant-Maven-yellowgreen.svg?style=flat-square[link=http://maven.apache.com]
 image:https://img.shields.io/badge/compliant-Java-yellowgreen.svg?style=flat-square[link=https://www.java.com]

@@ -5,20 +5,15 @@ language: java
 sudo: false
 
 matrix:
+  fast_finish: true
   include:
+
     - os: linux
-      before_install:
-      - ./scripts/travis-download-maven.sh
-      - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
-      - export PATH=$M2_HOME/bin:$PATH
-      - "export DISPLAY=:99.0"
-      - mvn -Xmx32m --version
-      - "sh -e /etc/init.d/xvfb start"
-      - sleep 3 # give xvfb some time to start
-      - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx2g\"" > $HOME/.mavenrc
-      env: DISPLAY=:99.0
       jdk: oraclejdk8
-    - os: osx
+      addons:
+        apt:
+          packages:
+          - xvfb
       before_install:
       - ./scripts/travis-download-maven.sh
       - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
@@ -29,7 +24,14 @@ matrix:
       - sleep 3 # give xvfb some time to start
       - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx2g\"" > $HOME/.mavenrc
       env: DISPLAY=:99.0
+
+    - os: osx
       osx_image: xcode8
+      before_install:
+      - ./scripts/travis-download-maven.sh
+      - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
+      - export PATH=$M2_HOME/bin:$PATH
+      - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx2g\"" > $HOME/.mavenrc
 
 install: true
 
