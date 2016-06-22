@@ -108,7 +108,15 @@ public abstract class AbstractSREInstall implements ISREInstall {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof ISREInstall) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null) {
+			return false;
+		}
+
+		if (this.getClass() == obj.getClass()) {
 			return getId().equals(((ISREInstall) obj).getId());
 		}
 		return false;
