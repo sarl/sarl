@@ -1,33 +1,37 @@
-# Xtend generated files
-plugins/io.sarl.core/xtend-gen
-plugins/io.sarl.core/src/main/xtend-gen
-plugins/io.sarl.core/src/main/generated-sources
-plugins/io.sarl.core/src/test/xtend-gen
-plugins/io.sarl.core/src/test/generated-sources
-plugins/io.sarl.lang.ui/xtend-gen
-plugins/io.sarl.lang.ui/src/main/xtend-gen
-plugins/io.sarl.lang.ui/src/main/generated-sources
-plugins/io.sarl.lang.ui/src/test/xtend-gen
-plugins/io.sarl.lang.ui/src/test/generated-sources
-plugins/io.sarl.lang/xtend-gen
-plugins/io.sarl.lang/src/main/xtend-gen
-plugins/io.sarl.lang/src/main/generated-sources
-plugins/io.sarl.lang/src/test/xtend-gen
-plugins/io.sarl.lang/src/test/generated-sources
-plugins/io.sarl.lang/model/generated
-docs/io.sarl.docs.suite/xtend-gen
-docs/io.sarl.docs.suite/src/main/xtend-gen
-docs/io.sarl.docs.suite/src/main/generated-sources
-docs/io.sarl.docs.suite/src/test/xtend-gen
-docs/io.sarl.docs.suite/src/test/generated-sources
-tests/io.sarl.lang.tests/xtend-gen
-tests/io.sarl.lang.tests/src/main/xtend-gen
-tests/io.sarl.lang.tests/src/main/generated-sources
-tests/io.sarl.lang.tests/src/test/xtend-gen
-tests/io.sarl.lang.tests/src/test/generated-sources
+# Xtext generated files
+plugins/io.sarl.core/xtend-gen/
+plugins/io.sarl.core/src/main/xtend-gen/
+plugins/io.sarl.core/src/main/generated-sources/
+plugins/io.sarl.core/src/test/xtend-gen/
+plugins/io.sarl.core/src/test/generated-sources/
+plugins/io.sarl.lang.ui/xtend-gen/
+plugins/io.sarl.lang.ui/src/main/xtend-gen/
+plugins/io.sarl.lang.ui/src/main/generated-sources/
+plugins/io.sarl.lang.ui/src/test/xtend-gen/
+plugins/io.sarl.lang.ui/src/test/generated-sources/
+plugins/io.sarl.lang/xtend-gen/
+plugins/io.sarl.lang/src/main/xtend-gen/
+plugins/io.sarl.lang/src/main/generated-sources/
+plugins/io.sarl.lang/src/test/xtend-gen/
+plugins/io.sarl.lang/src/test/generated-sources/
+plugins/io.sarl.lang/model/generated/
+docs/io.sarl.docs.suite/xtend-gen/
+docs/io.sarl.docs.suite/src/main/xtend-gen/
+docs/io.sarl.docs.suite/src/main/generated-sources/
+docs/io.sarl.docs.suite/src/test/xtend-gen/
+docs/io.sarl.docs.suite/src/test/generated-sources/
+tests/io.sarl.lang.tests/xtend-gen/
+tests/io.sarl.lang.tests/src/main/xtend-gen/
+tests/io.sarl.lang.tests/src/main/generated-sources/
+tests/io.sarl.lang.tests/src/test/xtend-gen/
+tests/io.sarl.lang.tests/src/test/generated-sources/
+
+# Xtext templates
+*.xml_gen
+*.java_gen
 
 # NetBean / Eclipse
-bin
+bin/
 *.java._trace
 *.java_trace
 *.smap
@@ -37,11 +41,11 @@ bin
 .metadata
 
 # Subversion and CVS
-.svn
-.cvs
+.svn/
+.cvs/
 
 # Maven
-target
+target/
 
 # Checkstyle
 .checkstyle
@@ -54,7 +58,7 @@ target
 # Temp files
 *.bak
 *~
-workspace
+workspace/
 
 #Others
 .DS_Store
