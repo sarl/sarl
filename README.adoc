@@ -26,7 +26,7 @@ image:https://img.shields.io/badge/compliant-Java-yellowgreen.svg?style=flat-squ
 image:https://img.shields.io/badge/compliant-Xtext-yellowgreen.svg?style=flat-square[link=https://eclipse.org/Xtext]
 
 image:https://img.shields.io/github/license/sarl/sarl.svg?style=flat-square[link=https://opensource.org/licenses/Apache-2.0]
-image:https://cla-assistant.io/readme/badge/sarl/sarl[link=https://cla-assistant.io/sarl/sarl]
+image:https://cla-assistant.io/readme/badge/sarl/sarl?style=flat-square[link=https://cla-assistant.io/sarl/sarl]
 
 toc::[]
 
