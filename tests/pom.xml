@@ -73,6 +73,8 @@
 						<product>io.sarl.eclipse.io_sarl_lang_product</product>
 						<application>org.eclipse.ui.ide.workbench</application>
 						<argLine>-Xms256M -Xmx${tycho-surefire-plugin-max-memory} -XX:+CMSClassUnloadingEnabled -ea ${tycho-surefire-plugin-os-jvm-flags}</argLine>
+						<redirectTestOutputToFile>true</redirectTestOutputToFile>
+						<showEclipseLog>false</showEclipseLog>
 					</configuration>
 				</plugin>
 			</plugins>
