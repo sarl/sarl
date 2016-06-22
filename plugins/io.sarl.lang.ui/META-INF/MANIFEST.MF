@@ -6,21 +6,21 @@ Bundle-Version: 0.4.0.qualifier
 Bundle-SymbolicName: io.sarl.lang.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.sarl.lang;bundle-version="0.4.0";visibility:=reexport,
- org.eclipse.xtext.ui;bundle-version="2.8.4",
- org.eclipse.xtext.ui.shared;bundle-version="2.8.4",
- org.eclipse.xtext.ui.codetemplates.ui;bundle-version="2.8.4",
- org.eclipse.xtext.xbase.ui;bundle-version="2.8.4",
- org.eclipse.xtext.builder;bundle-version="2.8.4",
- org.eclipse.xtend.ide;bundle-version="2.8.4",
- org.eclipse.xtend.core;bundle-version="2.8.4",
- org.eclipse.xtext.common.types.ui;bundle-version="2.8.4",
+ org.eclipse.xtext.ui;bundle-version="2.10.0",
+ org.eclipse.xtext.ui.shared;bundle-version="2.10.0",
+ org.eclipse.xtext.ui.codetemplates.ui;bundle-version="2.10.0",
+ org.eclipse.xtext.xbase.ui;bundle-version="2.10.0",
+ org.eclipse.xtext.builder;bundle-version="2.10.0",
+ org.eclipse.xtend.ide;bundle-version="2.10.0",
+ org.eclipse.xtend.core;bundle-version="2.10.0",
+ org.eclipse.xtext.common.types.ui;bundle-version="2.10.0",
  org.apache.log4j;bundle-version="1.2.15",
- org.eclipse.jdt.core;bundle-version="3.11.1",
- org.eclipse.jdt.ui;bundle-version="3.11.1",
+ org.eclipse.jdt.core;bundle-version="3.11.2",
+ org.eclipse.jdt.ui;bundle-version="3.11.2",
  org.eclipse.compare;bundle-version="3.5.600",
- org.eclipse.ui.editors,
- org.eclipse.ui,
- org.eclipse.jdt.debug.ui
+ org.eclipse.ui.editors;bundle-version="3.9.0",
+ org.eclipse.ui;bundle-version="3.107.0",
+ org.eclipse.jdt.debug.ui;bundle-version="3.7.101"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Activator: io.sarl.lang.ui.internal.SARLActivator
 Export-Package: io.sarl.lang.ui;x-friends:="io.sarl.lang.ui.tests",

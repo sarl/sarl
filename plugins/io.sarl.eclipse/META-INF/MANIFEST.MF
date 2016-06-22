@@ -7,18 +7,18 @@ Bundle-SymbolicName: io.sarl.eclipse;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.sarl.lang.ui;bundle-version="0.4.0";visibility:=reexport,
- org.eclipse.xtend.core;bundle-version="2.8.4",
- org.eclipse.xtext.ui;bundle-version="2.8.4",
+ org.eclipse.xtend.core;bundle-version="2.10.0",
+ org.eclipse.xtext.ui;bundle-version="2.10.0",
  org.eclipse.ui.ide;bundle-version="3.11.0",
  org.eclipse.core.filesystem;bundle-version="1.5.0",
  org.eclipse.equinox.bidi;bundle-version="0.10.0",
  org.eclipse.core.variables;bundle-version="3.2.800",
- org.eclipse.debug.ui;bundle-version="3.11.100",
+ org.eclipse.debug.ui;bundle-version="3.11.101",
  org.eclipse.ui.navigator;bundle-version="3.6.0",
- org.eclipse.jdt.core;bundle-version="3.11.1",
- org.eclipse.jdt.ui;bundle-version="3.11.1",
+ org.eclipse.jdt.core;bundle-version="3.11.2",
+ org.eclipse.jdt.ui;bundle-version="3.11.2",
  org.eclipse.jdt.launching;bundle-version="3.8.0",
- org.eclipse.jdt.debug.ui;bundle-version="3.7.0"
+ org.eclipse.jdt.debug.ui;bundle-version="3.7.101"
 Bundle-Activator: io.sarl.eclipse.SARLEclipsePlugin
 Export-Package: io.sarl.eclipse,
  io.sarl.eclipse.buildpath,
