@@ -32,7 +32,7 @@ matrix:
       - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
       - export PATH=$M2_HOME/bin:$PATH
       - mvn -Xmx32m --version
-      - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx2g\"" > $HOME/.mavenrc
+      - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx2g -Dmaven.test.skip=true -Dcheckstyle.skip=true\"" > $HOME/.mavenrc
 
 install: true
 
