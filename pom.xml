@@ -725,6 +725,14 @@
 
 	<contributors>
 		<contributor>
+			<name>Mohamed Ezzat</name>
+			<email>mohamed.ezzat@devfactory.com</email>
+			<url>https://github.com/m-ezzat</url>
+			<roles>
+				<role>Code cleaning and optimization</role>
+			</roles>
+		</contributor>
+		<contributor>
 			<name>J&amp;eacute;r&amp;eacute;mie Jost</name>
 			<email>jeremiejost@gmail.com</email>
 			<url>https://github.com/jjst</url>

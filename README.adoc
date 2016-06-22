@@ -149,8 +149,9 @@ If one point is failing, please follows the steps:
 * Push the changes on the same PR with `git push -f`, i.e. the same Git repository as the one used for the PR. *Do not create a new PR for the fix.*
 * The GitHub platform will relaunch the CI process automatically.
 
-== 7. Authors
+== 7. Authors and Contributors
 
+* Mohamed Ezzat, code cleaning and optimization.
 * link:http://www.multiagent.fr/People:Galland_stephane[Stéphane GALLAND], founder, original and active author.
 * link:http://www.multiagent.fr/People:Gaud_nicolas[Nicolas GAUD], founder, original and active author.
 * Jeremie JOST, documentation contributor.
