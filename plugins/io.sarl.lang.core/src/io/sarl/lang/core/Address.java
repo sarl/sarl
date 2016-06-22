@@ -89,7 +89,15 @@ public class Address implements Serializable, Comparable<Address> {
 	@Override
 	@Pure
 	public boolean equals(Object obj) {
-		if (obj instanceof Address) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null) {
+			return false;
+		}
+
+		if (this.getClass() == obj.getClass()) {
 			return equals((Address) obj);
 		}
 		return false;

@@ -81,7 +81,12 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 		if (obj == this) {
 			return true;
 		}
-		if (obj instanceof ActionPrototype) {
+
+		if (obj == null) {
+			return false;
+		}
+
+		if (this.getClass() == obj.getClass()) {
 			ActionPrototype k = (ActionPrototype) obj;
 			return this.function.equals(k.function)
 					&& this.signature.equals(k.signature);
