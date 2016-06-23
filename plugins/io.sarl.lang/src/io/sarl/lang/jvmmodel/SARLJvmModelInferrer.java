@@ -1590,7 +1590,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							// The Xtext inline evaluator is considering the function arguments, not the
 							// function formal parameters. Consequently, inline cannot be used for functions
 							// with variadic parameters.
-							if (!isVarArgs && !Utils.hasAnnotation(operation, Inline.class)) {
+							if (!Utils.hasAnnotation(operation, Inline.class)) {
 								JvmDeclaredType declaringType = entry.getValue().getDeclaringType();
 								StringBuilder it = new StringBuilder();
 								it.append("getSkill("); //$NON-NLS-1$
@@ -1954,11 +1954,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	protected void appendEventGuardEvaluators(JvmGenericType container) {
 		final GenerationContext context = getContext(container);
 		if (context != null) {
-			Collection<Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>> allEvaluators = context.getGuardEvaluationCodes();
+			Collection<Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>> allEvaluators
+					= context.getGuardEvaluationCodes();
 			if (allEvaluators == null || allEvaluators.isEmpty()) {
 				return;
 			}
-			
+
 			final JvmTypeReference voidType = this._typeReferenceBuilder.typeRef(Void.TYPE);
 			final JvmTypeReference runnableType = this._typeReferenceBuilder.typeRef(Runnable.class);
 			final JvmTypeReference collectionType = this._typeReferenceBuilder.typeRef(Collection.class, runnableType);

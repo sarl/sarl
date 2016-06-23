@@ -25,7 +25,6 @@ import com.google.inject.Binder;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import org.eclipse.xtend.core.compiler.UnicodeAwarePostProcessor;
-import org.eclipse.xtend.core.compiler.XtendCompiler;
 import org.eclipse.xtend.core.compiler.XtendGenerator;
 import org.eclipse.xtend.core.conversion.IntUnderscoreValueConverter;
 import org.eclipse.xtend.core.conversion.JavaIDValueConverter;
@@ -115,6 +114,7 @@ import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
 import io.sarl.lang.bugfixes.bug277.Bug277SARLContextPDAProvider;
 import io.sarl.lang.bugfixes.bug335.Bug335TypeDeclarationAwareBatchTypeResolver;
 import io.sarl.lang.bugfixes.bug356.Bug356ImportedNamespaceScopeProvider;
+import io.sarl.lang.compiler.SarlCompiler;
 import io.sarl.lang.compiler.SarlOutputConfigurationProvider;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
@@ -207,7 +207,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	 * @return the type of the Xbase compiler.
 	 */
 	public Class<? extends XbaseCompiler> bindXbaseCompiler() {
-		return XtendCompiler.class;
+		return SarlCompiler.class;
 	}
 
 	/** Replies the type of the provider of SARL action signatures.
