@@ -53,7 +53,6 @@ var testProjectPath = "${rootRootPath}/tests/${testProjectName}"
 var prettifyToolPath = "${rootRootPath}/external_tools/prettify"
 var latexToolPath = "${rootRootPath}/external_tools/latex"
 var gtkToolPath = "${rootRootPath}/external_tools/gtk"
-var sublimeToolPath = "${rootRootPath}/external_tools/sublimetext"
 var webjsPath = "${rootRootPath}/maven/io.sarl.maven.docs.generator/src/main/resources/org/jnario/doc/js"
 
 var file.extensions = "sarl"
@@ -104,9 +103,6 @@ Workflow {
 	}
    	component = DirectoryCleaner {
 		directory = "${gtkToolPath}"
-	}
-   	component = DirectoryCleaner {
-		directory = "${sublimeToolPath}"
 	}
 
  	component = XtextGenerator auto-inject {

@@ -67,7 +67,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 			HighlightingAsserts asserts = new HighlightingAsserts();
 			SarlScript script = file(code);
 			getCalculator().provideHighlightingFor(
-					(XtextResource) script,
+					(XtextResource) script.eResource(),
 					asserts,
 					CancelIndicator.NullImpl);
 			return asserts;

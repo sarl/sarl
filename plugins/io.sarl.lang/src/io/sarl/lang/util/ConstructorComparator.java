@@ -21,6 +21,7 @@
 
 package io.sarl.lang.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import io.sarl.lang.sarl.SarlConstructor;
@@ -33,7 +34,8 @@ import io.sarl.lang.sarl.SarlConstructor;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class ConstructorComparator implements Comparator<SarlConstructor> {
+public class ConstructorComparator implements Comparator<SarlConstructor>, Serializable {
+	private static final long serialVersionUID = 1517387787287634067L;
 
 	private final FormalParameterListComparator comparator = new FormalParameterListComparator();
 

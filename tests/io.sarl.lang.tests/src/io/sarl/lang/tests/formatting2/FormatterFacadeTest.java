@@ -38,7 +38,7 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 	private FormatterFacade facade;
 
 	@Test
-	public void test() {
+	public void test0() {
 		String source = "event E1 { var i : int }"
 				+ "agent A1 {"
 				+ "private var myval=1 "
@@ -64,4 +64,53 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 		assertEquals(expected, actual);
 	}
 
+	@Test
+	public void test1() {
+		String source = "/*Top comment*/agent Myagent {}";
+		String expected = multilineString(
+				"/* Top comment",
+				" */",
+				"agent MyAgent {",
+				"}",
+				"");
+		String actual = this.facade.format(source);
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test2() {
+		String source = "/*Top comment.\nSecond line.\n    Third line.*/agent Myagent {}";
+		String expected = multilineString(
+				"/* Top comment.",
+				"   Second line.",
+				"   Third line.",
+				" */",
+				"agent MyAgent {",
+				"}",
+				"");
+		String actual = this.facade.format(source);
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void test3() {
+		String source = multilineString(
+				"/* Top comment.",
+				" * Second line.",
+				" * Third line.",
+				" */agent Myagent {",
+				"}");
+		String expected = multilineString(
+				"/* Top comment.",
+				"   Second line.",
+				"   Third line.",
+				" */",
+				"agent Myagent {",
+				"}",
+				"");
+		String actual = this.facade.format(source);
+		assertEquals(expected, actual);
+	}
+
+	 
 }

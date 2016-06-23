@@ -21,6 +21,7 @@
 
 package io.sarl.lang.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -36,7 +37,8 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class FormalParameterListComparator implements Comparator<EList<? extends XtendParameter>> {
+public class FormalParameterListComparator implements Comparator<EList<? extends XtendParameter>>, Serializable {
+	private static final long serialVersionUID = 1565477564314061872L;
 
 	@Override
 	public int compare(EList<? extends XtendParameter> left, EList<? extends XtendParameter> right) {

@@ -21,6 +21,7 @@
 
 package io.sarl.lang.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.eclipse.xtext.common.types.JvmVisibility;
@@ -33,7 +34,8 @@ import org.eclipse.xtext.common.types.JvmVisibility;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class JvmVisibilityComparator implements Comparator<JvmVisibility> {
+public class JvmVisibilityComparator implements Comparator<JvmVisibility>, Serializable {
+	private static final long serialVersionUID = 2651322953936550928L;
 
 	private static int getVisibilityLevel(JvmVisibility visibility) {
 		switch (visibility) {
