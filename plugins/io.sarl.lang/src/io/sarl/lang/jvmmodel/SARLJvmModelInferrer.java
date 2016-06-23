@@ -1955,69 +1955,69 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	protected void appendEventGuardEvaluators(JvmGenericType container) {
 		final GenerationContext context = getContext(container);
 		if (context != null) {
+			Collection<Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>> allEvaluators = context.getGuardEvaluationCodes();
+			if (allEvaluators == null || allEvaluators.isEmpty()) {
+				return;
+			}
+			
 			final JvmTypeReference voidType = this._typeReferenceBuilder.typeRef(Void.TYPE);
 			final JvmTypeReference runnableType = this._typeReferenceBuilder.typeRef(Runnable.class);
 			final JvmTypeReference collectionType = this._typeReferenceBuilder.typeRef(Collection.class, runnableType);
-			Collection<Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>> evaluators
-					= context.getGuardEvaluationCodes();
-			if (evaluators == null || evaluators.isEmpty()) {
-				return;
-			}
-			final SarlBehaviorUnit source = evaluators.iterator().next().getKey();
-			// Determine the name of the operation for the behavior output
-			final String behName = Utils.createNameForHiddenGuardGeneralEvaluatorMethod(source.getName().getSimpleName());
+			for (Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>> evaluators : allEvaluators) {
+				final SarlBehaviorUnit source = evaluators.getKey();
+				// Determine the name of the operation for the behavior output
+				final String behName = Utils.createNameForHiddenGuardGeneralEvaluatorMethod(source.getName().getSimpleName());
 
-			// Create the main function
-			JvmOperation operation = this.typesFactory.createJvmOperation();
+				// Create the main function
+				JvmOperation operation = this.typesFactory.createJvmOperation();
 
-			// Annotation for the event bus
+				// Annotation for the event bus
 
-			appendGeneratedAnnotation(operation);
-			operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(PerceptGuardEvaluator.class));
+				appendGeneratedAnnotation(operation);
+				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(PerceptGuardEvaluator.class));
 
-			// Guard evaluator unit parameters
-			// - Event occurrence
-			JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
-			jvmParam.setName(SARLKeywords.OCCURRENCE);
-			jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(source.getName()));
-			this.associator.associate(source, jvmParam);
-			operation.getParameters().add(jvmParam);
-			// - List of runnables
-			jvmParam = this.typesFactory.createJvmFormalParameter();
-			jvmParam.setName(RUNNABLE_COLLECTION);
-			jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(collectionType));
-			operation.getParameters().add(jvmParam);
+				// Guard evaluator unit parameters
+				// - Event occurrence
+				JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
+				jvmParam.setName(SARLKeywords.OCCURRENCE);
+				jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(source.getName()));
+				this.associator.associate(source, jvmParam);
+				operation.getParameters().add(jvmParam);
+				// - List of runnables
+				jvmParam = this.typesFactory.createJvmFormalParameter();
+				jvmParam.setName(RUNNABLE_COLLECTION);
+				jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(collectionType));
+				operation.getParameters().add(jvmParam);
 
-			operation.setAbstract(false);
-			operation.setNative(false);
-			operation.setSynchronized(false);
-			operation.setStrictFloatingPoint(false);
-			operation.setFinal(false);
-			operation.setVisibility(JvmVisibility.PRIVATE);
-			operation.setStatic(false);
-			operation.setSimpleName(behName);
-			operation.setReturnType(voidType);
-			container.getMembers().add(operation);
+				operation.setAbstract(false);
+				operation.setNative(false);
+				operation.setSynchronized(false);
+				operation.setStrictFloatingPoint(false);
+				operation.setFinal(false);
+				operation.setVisibility(JvmVisibility.PRIVATE);
+				operation.setStatic(false);
+				operation.setSimpleName(behName);
+				operation.setReturnType(this.typeBuilder.cloneWithProxies(voidType));
+				container.getMembers().add(operation);
 
-			this.typeBuilder.setBody(operation, (it) -> {
-				it.append("assert "); //$NON-NLS-1$
-				it.append(SARLKeywords.OCCURRENCE);
-				it.append(" != null;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("assert "); //$NON-NLS-1$
-				it.append(RUNNABLE_COLLECTION);
-				it.append(" != null;"); //$NON-NLS-1$
-				for (Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>> pair : evaluators) {
-					for (Procedure1<ITreeAppendable> code : pair.getValue()) {
+				this.typeBuilder.setBody(operation, (it) -> {
+					it.append("assert "); //$NON-NLS-1$
+					it.append(SARLKeywords.OCCURRENCE);
+					it.append(" != null;"); //$NON-NLS-1$
+					it.newLine();
+					it.append("assert "); //$NON-NLS-1$
+					it.append(RUNNABLE_COLLECTION);
+					it.append(" != null;"); //$NON-NLS-1$
+					for (Procedure1<ITreeAppendable> code : evaluators.getValue()) {
 						it.newLine();
 						code.apply(it);
 					}
-				}
-			});
+				});
 
-			this.associator.associatePrimary(source, operation);
-			this.typeBuilder.copyDocumentationTo(source, operation);
-			this.typeExtensions.setSynthetic(operation, true);
+				this.associator.associatePrimary(source, operation);
+				this.typeBuilder.copyDocumentationTo(source, operation);
+				this.typeExtensions.setSynthetic(operation, true);
+			}
 		}
 	}
 

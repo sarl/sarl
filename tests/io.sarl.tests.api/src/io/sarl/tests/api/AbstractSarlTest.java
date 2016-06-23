@@ -307,6 +307,30 @@ public abstract class AbstractSarlTest {
 		throw new NoSuchFieldError(fieldName);
 	}
 
+	/** Test if the objects are equal.
+	 *
+	 * @param message - the message.
+	 * @param actual - the collection to test.
+	 * @param expected - the expected objects.
+	 */
+	public static void assertEquals(String message, Object expected, Object actual) {
+		if (!Objects.equal(expected, actual)) {
+			String s1 = java.util.Objects.toString(expected);
+			String s2 = java.util.Objects.toString(actual);
+			throw new ComparisonFailure(message, s1, s2);
+		}
+	}
+
+	/** Test if the objects are equal.
+	 *
+	 * @param message - the message.
+	 * @param actual - the collection to test.
+	 * @param expected - the expected objects.
+	 */
+	public static void assertEquals(Object expected, Object actual) {
+		assertEquals(null, expected, actual);
+	}
+
 	/** Check if the given value is <code>null</code> or empty.
 	 *
 	 * @param actual
