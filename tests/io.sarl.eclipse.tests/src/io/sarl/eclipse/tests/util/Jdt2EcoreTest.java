@@ -34,6 +34,7 @@ import static org.mockito.Matchers.*;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -74,10 +75,8 @@ import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
 import io.sarl.lang.actionprototype.FormalParameterProvider;
-import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
-import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
+import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
@@ -276,12 +275,15 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 	 */
 	public static class IsGeneratedOperation extends AbstractSarlUiTest {
 
+		@Inject
+		private Jdt2Ecore jdt2ecore;
+		
 		@Test
 		public void isGeneratedOperation_noAnnotation() throws JavaModelException {
 			IMethod m = mock(IMethod.class);
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 			});
-			assertFalse(Jdt2Ecore.isGeneratedOperation(m));
+			assertFalse(this.jdt2ecore.isGeneratedOperation(m));
 		}
 
 		@Test
@@ -292,7 +294,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 					annot
 			});
-			assertTrue(Jdt2Ecore.isGeneratedOperation(m));
+			assertTrue(this.jdt2ecore.isGeneratedOperation(m));
 		}
 
 		@Test
@@ -303,7 +305,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 					annot
 			});
-			assertFalse(Jdt2Ecore.isGeneratedOperation(m));
+			assertFalse(this.jdt2ecore.isGeneratedOperation(m));
 		}
 
 	}
@@ -316,12 +318,15 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 	 */
 	public static class GetAnnotation extends AbstractSarlUiTest {
 
+		@Inject
+		private Jdt2Ecore jdt2ecore;
+		
 		@Test
 		public void getAnnotation_noAnnotation() throws JavaModelException {
 			IMethod m = mock(IMethod.class);
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 			});
-			assertNull(Jdt2Ecore.getAnnotation(m, Generated.class.getName()));
+			assertNull(this.jdt2ecore.getAnnotation(m, Generated.class.getName()));
 		}
 
 		@Test
@@ -332,7 +337,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 					annot
 			});
-			IAnnotation a = Jdt2Ecore.getAnnotation(m, Generated.class.getName());
+			IAnnotation a = this.jdt2ecore.getAnnotation(m, Generated.class.getName());
 			assertNotNull(a);
 			assertEquals(Generated.class.getName(), a.getElementName());
 		}
@@ -345,7 +350,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			when(m.getAnnotations()).thenReturn(new IAnnotation[] {
 					annot
 			});
-			assertNull(Jdt2Ecore.getAnnotation(m, Generated.class.getName()));
+			assertNull(this.jdt2ecore.getAnnotation(m, Generated.class.getName()));
 		}
 
 	}
@@ -405,6 +410,9 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			@NonNullByDefault
 			private IJavaProject project;
 
+			@Inject
+			private Jdt2Ecore jdt2ecore;
+
 			@Before
 			public void setUp() throws JavaModelException {
 				this.project = createIJavaProjectMock();
@@ -419,7 +427,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("Type2", null);
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -431,7 +439,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("Type2", null);
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -443,7 +451,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("Type2", null);
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -455,7 +463,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("Type2", null);
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 		}
@@ -471,6 +479,9 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			@NonNullByDefault
 			private IJavaProject project;
 
+			@Inject
+			private Jdt2Ecore jdt2ecore;
+
 			@Before
 			public void setUp() throws JavaModelException {
 				this.project = createIJavaProjectMock();
@@ -485,7 +496,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("Type2", "Type1");
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -497,7 +508,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("Type2", "Type1");
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -509,7 +520,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("Type2", "Type1");
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -521,7 +532,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("Type2", "Type1");
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 		}
@@ -537,6 +548,9 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			@NonNullByDefault
 			private IJavaProject project;
 
+			@Inject
+			private Jdt2Ecore jdt2ecore;
+
 			@Before
 			public void setUp() throws JavaModelException {
 				this.project = createIJavaProjectMock();
@@ -551,7 +565,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -563,7 +577,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -575,7 +589,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -587,7 +601,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 		}
@@ -603,6 +617,9 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			@NonNullByDefault
 			private IJavaProject project;
 
+			@Inject
+			private Jdt2Ecore jdt2ecore;
+
 			@Before
 			public void setUp() throws JavaModelException {
 				this.project = createIJavaProjectMock();
@@ -617,7 +634,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "Type1");
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -629,7 +646,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "Type1");
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -641,7 +658,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "Type1");
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -653,7 +670,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "Type1");
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 		}
@@ -669,6 +686,9 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			@NonNullByDefault
 			private IJavaProject project;
 
+			@Inject
+			private Jdt2Ecore jdt2ecore;
+
 			@Before
 			public void setUp() throws JavaModelException {
 				this.project = createIJavaProjectMock();
@@ -683,7 +703,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -695,7 +715,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -707,7 +727,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -719,7 +739,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 		}
@@ -735,6 +755,9 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			@NonNullByDefault
 			private IJavaProject project;
 
+			@Inject
+			private Jdt2Ecore jdt2ecore;
+
 			@Before
 			public void setUp() throws JavaModelException {
 				this.project = createIJavaProjectMock();
@@ -749,7 +772,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -761,7 +784,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -773,7 +796,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -785,7 +808,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 		}
@@ -801,6 +824,9 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			@NonNullByDefault
 			private IJavaProject project;
 
+			@Inject
+			private Jdt2Ecore jdt2ecore;
+
 			@Before
 			public void setUp() throws JavaModelException {
 				this.project = createIJavaProjectMock();
@@ -815,7 +841,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", null);
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -827,7 +853,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", null);
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -839,7 +865,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", null);
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -851,7 +877,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", null);
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 		}
@@ -867,6 +893,9 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			@NonNullByDefault
 			private IJavaProject project;
 
+			@Inject
+			private Jdt2Ecore jdt2ecore;
+
 			@Before
 			public void setUp() throws JavaModelException {
 				this.project = createIJavaProjectMock();
@@ -881,7 +910,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -893,7 +922,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
-				assertTrue(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -905,7 +934,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
@@ -917,7 +946,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
-				assertFalse(Jdt2Ecore.isVisible(Jdt2Ecore.toTypeFinder(this.project), type, method));
+				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 		}
@@ -932,6 +961,9 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 	 */
 	public static class FormalParameter extends AbstractSarlUiTest {
 
+		@Inject
+		private Jdt2Ecore jdt2ecore;
+
 		@Test
 		public void getFormalParameterProvider_noVarargs() throws JavaModelException {
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
@@ -940,7 +972,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 					new String[] { "param1", "param2", "param3" },
 					new String[] { "Ljava.lang.String;", "I", "Z" },
 					0);
-			FormalParameterProvider provider = Jdt2Ecore.getFormalParameterProvider(method);
+			FormalParameterProvider provider = this.jdt2ecore.getFormalParameterProvider(method);
 			assertNotNull(provider);
 			assertEquals(3, provider.getFormalParameterCount());
 			assertEquals("param1", provider.getFormalParameterName(0));
@@ -959,7 +991,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 					new String[] { "param1", "param2", "param3" },
 					new String[] { "Ljava.lang.String;", "I", "[Z" },
 					0);
-			FormalParameterProvider provider = Jdt2Ecore.getFormalParameterProvider(method);
+			FormalParameterProvider provider = this.jdt2ecore.getFormalParameterProvider(method);
 			assertNotNull(provider);
 			assertEquals(3, provider.getFormalParameterCount());
 			assertEquals("param1", provider.getFormalParameterName(0));
@@ -978,7 +1010,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 					new String[] { "param1", "param2", "param3" },
 					new String[] { "Ljava.lang.String;", "I", "[Z" },
 					0);
-			FormalParameterProvider provider = Jdt2Ecore.getFormalParameterProvider(method);
+			FormalParameterProvider provider = this.jdt2ecore.getFormalParameterProvider(method);
 			assertNotNull(provider);
 			assertEquals(3, provider.getFormalParameterCount());
 			assertEquals("param1", provider.getFormalParameterName(0));
@@ -987,216 +1019,6 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			assertEquals("int", provider.getFormalParameterType(1, false));
 			assertEquals("param3", provider.getFormalParameterName(2));
 			assertEquals("boolean[]", provider.getFormalParameterType(2, true));
-		}
-
-		@Test
-		public void createFormalParameters_noDefault_noVarargs() throws JavaModelException, IllegalArgumentException {
-			ResourceSet resourceSet = mock(ResourceSet.class);
-			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
-			SarlEcoreCode code = mock(SarlEcoreCode.class);
-			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
-			IMethod method = createIMethodMock(
-					declaringType, "myFct", null,
-					new String[] { "param1", "param2", "param3" },
-					new String[] { "Ljava.lang.String;", "I", "[Z" },
-					0);
-			XtendExecutable container = mock(XtendExecutable.class);
-			when(code.getCodeGenerator()).thenReturn(generator);
-			when(code.getResourceSet()).thenReturn(resourceSet);
-			when(generator.createFormalParameter(
-					any(), any(), anyString(), any(), any(), any())).then((invocation) -> {
-						return mock(SarlFormalParameter.class);
-					});
-			//
-			Jdt2Ecore.createFormalParameters(code, method, container);
-			//
-			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
-			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
-			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<ResourceSet> arg5 = ArgumentCaptor.forClass(ResourceSet.class);
-			verify(generator, times(3)).createFormalParameter(
-					arg0.capture(),
-					arg1.capture(),
-					arg2.capture(),
-					arg3.capture(),
-					arg4.capture(),
-					arg5.capture());
-			assertContains(arg0.getAllValues(), code, code, code);
-			assertContains(arg1.getAllValues(), container, container, container);
-			assertContains(arg2.getAllValues(), "param1", "param2", "param3");
-			assertContains(arg3.getAllValues(), "java.lang.String", "int", "boolean[]");
-			assertContains(arg4.getAllValues(), null, null, null);
-			assertContains(arg5.getAllValues(), resourceSet, resourceSet, resourceSet);
-		}
-
-		@Test
-		public void createFormalParameters_noDefault_varargs() throws JavaModelException, IllegalArgumentException {
-			ResourceSet resourceSet = mock(ResourceSet.class);
-			SarlEcoreCode code = mock(SarlEcoreCode.class);
-			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
-			XtendExecutable container = mock(XtendExecutable.class);
-			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
-			IMethod method = createIMethodMock(
-					declaringType, "myFct", null,
-					new String[] { "param1", "param2", "param3" },
-					new String[] { "Ljava.lang.String;", "I", "[Z" },
-					Flags.AccVarargs);
-			when(code.getCodeGenerator()).thenReturn(generator);
-			when(code.getResourceSet()).thenReturn(resourceSet);
-			when(generator.createFormalParameter(
-					any(), any(), anyString(), any(), any(), any())).then((invocation) -> {
-						return mock(SarlFormalParameter.class);
-					});
-			//
-			Jdt2Ecore.createFormalParameters(code, method, container);
-			//
-			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
-			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
-			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<ResourceSet> arg5 = ArgumentCaptor.forClass(ResourceSet.class);
-			verify(generator, times(3)).createFormalParameter(
-					arg0.capture(),
-					arg1.capture(),
-					arg2.capture(),
-					arg3.capture(),
-					arg4.capture(),
-					arg5.capture());
-			assertContains(arg0.getAllValues(), code, code, code);
-			assertContains(arg1.getAllValues(), container, container, container);
-			assertContains(arg2.getAllValues(), "param1", "param2", "param3");
-			assertContains(arg3.getAllValues(), "java.lang.String", "int", "boolean");
-			assertContains(arg4.getAllValues(), null, null, null);
-			assertContains(arg5.getAllValues(), resourceSet, resourceSet, resourceSet);
-		}
-
-		@Test
-		public void createFormalParameters_default_noVarargs() throws JavaModelException, IllegalArgumentException {
-			ResourceSet resourceSet = mock(ResourceSet.class);
-			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
-			SarlEcoreCode code = mock(SarlEcoreCode.class);
-			when(code.getCodeGenerator()).thenReturn(generator);
-			when(code.getResourceSet()).thenReturn(resourceSet);
-			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
-			when(declaringType.getField(anyString())).thenAnswer((invocation) -> {
-					String fieldName = (String) invocation.getArguments()[0];
-					IAnnotation annotation = mock(IAnnotation.class);
-					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.SarlSourceCode");
-					IMemberValuePair pair = mock(IMemberValuePair.class);
-					when(pair.getValue()).thenReturn("1+2");
-					when(annotation.getMemberValuePairs()).thenReturn(new IMemberValuePair[] { pair });
-					IField field = mock(IField.class);
-					when(field.getElementName()).thenReturn(fieldName);
-					when(field.getAnnotations()).thenReturn(new IAnnotation[] { annotation });
-					return field;
-				});
-			IMemberValuePair pair = mock(IMemberValuePair.class);
-			when(pair.getValue()).thenReturn("0_1");
-			IAnnotation annotation1 = mock(IAnnotation.class);
-			when(annotation1.getElementName()).thenReturn("io.sarl.lang.annotation.DefaultValue");
-			when(annotation1.getMemberValuePairs()).thenReturn(new IMemberValuePair[] { pair });
-			IAnnotation annotation2 = mock(IAnnotation.class);
-			when(annotation2.getElementName()).thenReturn("");
-			IMethod method = createIMethodMock(
-					declaringType, "myFct", null,
-					new String[] { "param1", "param2", "param3" },
-					new String[] { "Ljava.lang.String;", "I", "[Z" },
-					new IAnnotation[] { null, annotation1, null },
-					new IAnnotation[] { annotation2 },
-					0);
-			XtendExecutable container = mock(XtendExecutable.class);
-			when(generator.createFormalParameter(
-					any(), any(), anyString(), any(), any(), any())).then((invocation) -> {
-						return mock(SarlFormalParameter.class);
-					});
-			//
-			Jdt2Ecore.createFormalParameters(code, method, container);
-			//
-			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
-			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
-			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<ResourceSet> arg5 = ArgumentCaptor.forClass(ResourceSet.class);
-			verify(generator, times(3)).createFormalParameter(
-					arg0.capture(),
-					arg1.capture(),
-					arg2.capture(),
-					arg3.capture(),
-					arg4.capture(),
-					arg5.capture());
-			assertContains(arg0.getAllValues(), code, code, code);
-			assertContains(arg1.getAllValues(), container, container, container);
-			assertContains(arg2.getAllValues(), "param1", "param2", "param3");
-			assertContains(arg3.getAllValues(), "java.lang.String", "int", "boolean[]");
-			assertContains(arg4.getAllValues(), null, "1+2", null);
-			assertContains(arg5.getAllValues(), resourceSet, resourceSet, resourceSet);
-		}
-
-		@Test
-		public void createFormalParameters_default_varargs() throws JavaModelException, IllegalArgumentException {
-			ResourceSet resourceSet = mock(ResourceSet.class);
-			ECoreGeneratorHelper generator = mock(ECoreGeneratorHelper.class);
-			when(generator.createFormalParameter(
-					any(), any(), anyString(), any(), any(), any())).then((invocation) -> {
-						return mock(SarlFormalParameter.class);
-					});
-			SarlEcoreCode code = mock(SarlEcoreCode.class);
-			when(code.getCodeGenerator()).thenReturn(generator);
-			when(code.getResourceSet()).thenReturn(resourceSet);
-			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
-			when(declaringType.getField(anyString())).thenAnswer((invocation) -> {
-					String fieldName = (String) invocation.getArguments()[0];
-					IAnnotation annotation = mock(IAnnotation.class);
-					when(annotation.getElementName()).thenReturn("io.sarl.lang.annotation.SarlSourceCode");
-					IMemberValuePair pair = mock(IMemberValuePair.class);
-					when(pair.getValue()).thenReturn("1+2");
-					when(annotation.getMemberValuePairs()).thenReturn(new IMemberValuePair[] { pair });
-					IField field = mock(IField.class);
-					when(field.getElementName()).thenReturn(fieldName);
-					when(field.getAnnotations()).thenReturn(new IAnnotation[] { annotation });
-					return field;
-				});
-			IMemberValuePair pair = mock(IMemberValuePair.class);
-			when(pair.getValue()).thenReturn("0_1");
-			IAnnotation annotation1 = mock(IAnnotation.class);
-			when(annotation1.getElementName()).thenReturn("io.sarl.lang.annotation.DefaultValue");
-			when(annotation1.getMemberValuePairs()).thenReturn(new IMemberValuePair[] { pair });
-			IAnnotation annotation2 = mock(IAnnotation.class);
-			when(annotation2.getElementName()).thenReturn("");
-			IMethod method = createIMethodMock(
-					declaringType, "myFct", null,
-					new String[] { "param1", "param2", "param3" },
-					new String[] { "Ljava.lang.String;", "I", "[Z" },
-					new IAnnotation[] { null, annotation1, null },
-					new IAnnotation[] { annotation2 },
-					Flags.AccVarargs);
-			XtendExecutable container = mock(XtendExecutable.class);
-			//
-			Jdt2Ecore.createFormalParameters(code, method, container);
-			//
-			ArgumentCaptor<SarlEcoreCode> arg0 = ArgumentCaptor.forClass(SarlEcoreCode.class);
-			ArgumentCaptor<XtendExecutable> arg1 = ArgumentCaptor.forClass(XtendExecutable.class);
-			ArgumentCaptor<String> arg2 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<String> arg3 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<String> arg4 = ArgumentCaptor.forClass(String.class);
-			ArgumentCaptor<ResourceSet> arg5 = ArgumentCaptor.forClass(ResourceSet.class);
-			verify(generator, times(3)).createFormalParameter(
-					arg0.capture(),
-					arg1.capture(),
-					arg2.capture(),
-					arg3.capture(),
-					arg4.capture(),
-					arg5.capture());
-			assertContains(arg0.getAllValues(), code, code, code);
-			assertContains(arg1.getAllValues(), container, container, container);
-			assertContains(arg2.getAllValues(), "param1", "param2", "param3");
-			assertContains(arg3.getAllValues(), "java.lang.String", "int", "boolean");
-			assertContains(arg4.getAllValues(), null, "1+2", null);
-			assertContains(arg5.getAllValues(), resourceSet, resourceSet, resourceSet);
 		}
 
 	}
@@ -1213,7 +1035,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		private SARLEclipsePlugin plugin;
 		
 		@Inject
-		private ActionPrototypeProvider sarlSignatureProvider;
+		private Jdt2Ecore jdt2ecore;
 
 		@NonNullByDefault
 		private Map<ActionPrototype, IMethod> finalOperations;
@@ -1277,14 +1099,23 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().fullBuild();
 			helper().awaitAutoBuild();
 			//
-			IStatus s = Jdt2Ecore.populateInheritanceContext(
+			/*
+			TypeFinder typeFinder,
+			Map<ActionPrototype, IMethod> finalOperations,
+			Map<ActionPrototype, IMethod> overridableOperations,
+			Map<String, IField> inheritedFields,
+			Map<ActionPrototype, IMethod> operationsToImplement,
+			Map<ActionParameterTypes, IMethod> superConstructors,
+			String superClass,
+			List<String> superInterfaces
+			 */
+			IStatus s = this.jdt2ecore.populateInheritanceContext(
 					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
 					operationsToImplement,
 					superConstructors,
-					this.sarlSignatureProvider,
 					"io.sarl.eclipse.tests.p0.Skill1",
 					Arrays.asList("io.sarl.eclipse.tests.p0.Capacity3", "io.sarl.eclipse.tests.p0.Capacity2"));
 			//
@@ -1328,14 +1159,13 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().fullBuild();
 			helper().awaitAutoBuild();
 			//
-			IStatus s = Jdt2Ecore.populateInheritanceContext(
+			IStatus s = this.jdt2ecore.populateInheritanceContext(
 					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
 					operationsToImplement,
 					superConstructors,
-					this.sarlSignatureProvider,
 					"io.sarl.eclipse.tests.p0.Skill1",
 					Arrays.asList("io.sarl.eclipse.tests.p0.Capacity3", "io.sarl.eclipse.tests.p0.Capacity2"));
 			//
@@ -1379,14 +1209,13 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().fullBuild();
 			helper().awaitAutoBuild();
 			//
-			IStatus s = Jdt2Ecore.populateInheritanceContext(
+			IStatus s = this.jdt2ecore.populateInheritanceContext(
 					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
 					operationsToImplement,
 					superConstructors,
-					this.sarlSignatureProvider,
 					"io.sarl.eclipse.tests.p1.Skill1",
 					Arrays.asList("io.sarl.eclipse.tests.p1.Capacity3", "io.sarl.eclipse.tests.p1.Capacity2"));
 			//
@@ -1431,14 +1260,13 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().fullBuild();
 			helper().awaitAutoBuild();
 			//
-			IStatus s = Jdt2Ecore.populateInheritanceContext(
+			IStatus s = this.jdt2ecore.populateInheritanceContext(
 					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
 					operationsToImplement,
 					superConstructors,
-					this.sarlSignatureProvider,
 					"io.sarl.eclipse.tests.p1.Skill1",
 					Arrays.asList("io.sarl.eclipse.tests.p1.Capacity3", "io.sarl.eclipse.tests.p1.Capacity2"));
 			//
@@ -1483,14 +1311,13 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().fullBuild();
 			helper().awaitAutoBuild();
 			//
-			IStatus s = Jdt2Ecore.populateInheritanceContext(
+			IStatus s = this.jdt2ecore.populateInheritanceContext(
 					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
 					operationsToImplement,
 					superConstructors,
-					this.sarlSignatureProvider,
 					"io.sarl.eclipse.tests.p2.Skill1",
 					Arrays.asList("io.sarl.eclipse.tests.p2.Capacity3", "io.sarl.eclipse.tests.p2.Capacity2"));
 			//
@@ -1534,14 +1361,13 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().fullBuild();
 			helper().awaitAutoBuild();
 			//
-			IStatus s = Jdt2Ecore.populateInheritanceContext(
+			IStatus s = this.jdt2ecore.populateInheritanceContext(
 					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
 					operationsToImplement,
 					superConstructors,
-					this.sarlSignatureProvider,
 					"io.sarl.eclipse.tests.p2.Skill1",
 					Arrays.asList("io.sarl.eclipse.tests.p2.Capacity3", "io.sarl.eclipse.tests.p2.Capacity2"));
 			//
@@ -1573,14 +1399,13 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().fullBuild();
 			helper().awaitAutoBuild();
 			//
-			IStatus s = Jdt2Ecore.populateInheritanceContext(
+			IStatus s = this.jdt2ecore.populateInheritanceContext(
 					new UnitTestTypeFinder(helper().getJavaProject()),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
 					operationsToImplement,
 					superConstructors,
-					this.sarlSignatureProvider,
 					"io.sarl.eclipse.tests.p3.Skill1",
 					Arrays.asList("io.sarl.eclipse.tests.p3.Capacity3", "io.sarl.eclipse.tests.p3.Capacity2"));
 			//

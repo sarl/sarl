@@ -112,7 +112,7 @@ import io.sarl.lang.SARLKeywords;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.actionprototype.InferredPrototype;
 import io.sarl.lang.actionprototype.InferredStandardParameter;
 import io.sarl.lang.actionprototype.InferredValuedParameter;
@@ -146,7 +146,7 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.typing.ExtendedXExpressionHelper;
+import io.sarl.lang.typing.SARLExpressionHelper;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
 
@@ -186,7 +186,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	/** Manager of SARL action signatures.
 	 */
 	@Inject
-	private ActionPrototypeProvider sarlSignatureProvider;
+	private IActionPrototypeProvider sarlSignatureProvider;
 
 	/** Tracker of field initialization.
 	 */
@@ -201,7 +201,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	/** Extended helper for using XExpressions.
 	 */
 	@Inject
-	private ExtendedXExpressionHelper extendedExpressionHelper;
+	private SARLExpressionHelper expressionHelper;
 
 	/** JVM type services.
 	 */
@@ -1139,7 +1139,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					&& this.typeReferences.findDeclaredType(Override.class, source) != null) {
 				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
 			}
-			if ((this.extendedExpressionHelper.isPureOperation(operation, expression))
+			if ((this.expressionHelper.isPurableOperation(operation, expression))
 					&& (!Utils.hasAnnotation(operation, Pure.class))
 					&& (this.typeReferences.findDeclaredType(Pure.class, source) != null)) {
 				// The function is pure
@@ -2210,7 +2210,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param params - the parameters.
 	 * @param isForInterface - indicates if the formal parameters are for an interface (<code>true</code>)
 	 * 							or a class (<code>false</code>).
-	 * @param paramSpec - the specification of the parameter as computed by a {@link ActionPrototypeProvider}.
+	 * @param paramSpec - the specification of the parameter as computed by a {@link IActionPrototypeProvider}.
 	 */
 	protected void translateSarlFormalParameters(
 			GenerationContext context,

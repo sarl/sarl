@@ -21,8 +21,6 @@
 
 package io.sarl.eclipse.wizards.elements.aop.newbehavior;
 
-import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
@@ -39,13 +37,12 @@ import org.eclipse.swt.widgets.Composite;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.codebuilder.builders.IBehaviorBuilder;
+import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import io.sarl.lang.core.Behavior;
-import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
-import io.sarl.lang.sarl.SarlBehavior;
 
 /**
  * Wizard page for creating a new SARL behavior.
@@ -86,9 +83,11 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		SarlEcoreCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
-		SarlBehavior behavior = this.sarlGenerator.createBehavior(code, getTypeName(), getSuperClass());
-		this.sarlGenerator.attachComment(code, behavior, typeComment);
+		IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
+				getPackageFragment().getElementName(), ecoreResource);
+		IBehaviorBuilder behavior = scriptBuilder.addBehavior(getTypeName());
+		behavior.setExtends(getSuperClass());
+		behavior.setDocumentation(typeComment);
 
 		Map<ActionPrototype, IMethod> operationsToImplement;
 		Map<ActionParameterTypes, IMethod> constructors;
@@ -106,8 +105,8 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 			operationsToImplement = null;
 		}
 
-		populateInheritanceContext(
-				Jdt2Ecore.toTypeFinder(getJavaProject()),
+		this.jdt2sarl.populateInheritanceContext(
+				this.jdt2sarl.toTypeFinder(getJavaProject()),
 				// Discarding final operation.
 				null,
 				// Discarding overridable operation.
@@ -116,19 +115,18 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 				null,
 				operationsToImplement,
 				constructors,
-				code.getCodeGenerator().getActionSignatureProvider(),
 				getSuperClass(),
 				Collections.<String>emptyList());
 
 		if (constructors != null) {
-			Jdt2Ecore.createStandardConstructors(code, constructors.values(), behavior);
+			this.jdt2sarl.createStandardConstructors(behavior, constructors.values(), behavior.getSarlBehavior());
 		}
 
 		if (operationsToImplement != null) {
-			Jdt2Ecore.createActions(code, operationsToImplement.values(), behavior);
+			this.jdt2sarl.createActions(behavior, operationsToImplement.values());
 		}
 
-		code.finalizeScript();
+		scriptBuilder.finalizeScript();
 	}
 
 	@Override

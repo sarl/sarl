@@ -15,34 +15,15 @@
  */
 package io.sarl.lang.tests.parsing.general;
 
-import static io.sarl.lang.scoping.batch.SARLTimeExtensions.days;
-import static io.sarl.lang.scoping.batch.SARLTimeExtensions.hours;
-import static io.sarl.lang.scoping.batch.SARLTimeExtensions.milliseconds;
-import static io.sarl.lang.scoping.batch.SARLTimeExtensions.minutes;
-import static io.sarl.lang.scoping.batch.SARLTimeExtensions.seconds;
-import static io.sarl.lang.scoping.batch.SARLTimeExtensions.weeks;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import io.sarl.lang.SARLInjectorProvider;
+import org.junit.Test;
+
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.diagnostics.Diagnostic;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XStringLiteral;
-import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import com.google.inject.Inject;
 
 /**
  * @author $Author: srodriguez$

@@ -18,25 +18,25 @@ import org.eclipse.xtend.core.xtend.impl.XtendFileImpl;
  */
 public class SarlScriptImpl extends XtendFileImpl implements SarlScript
 {
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  protected SarlScriptImpl()
-  {
-    super();
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected SarlScriptImpl()
+	{
+		super();
+	}
 
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  protected EClass eStaticClass()
-  {
-    return SarlPackage.Literals.SARL_SCRIPT;
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return SarlPackage.Literals.SARL_SCRIPT;
+	}
 
 } //SarlScriptImpl

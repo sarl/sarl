@@ -15,24 +15,12 @@
  */
 package io.sarl.lang.tests.bugs;
 
-import static org.junit.Assert.assertEquals;
-import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
-import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.google.inject.Inject;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$

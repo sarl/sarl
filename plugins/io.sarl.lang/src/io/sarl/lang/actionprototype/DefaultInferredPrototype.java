@@ -49,7 +49,7 @@ public class DefaultInferredPrototype implements InferredPrototype {
 	private final QualifiedActionName key;
 
 	/**
-	 * @param key - key used to store this signature into a {@link ActionPrototypeProvider}.
+	 * @param key - key used to store this signature into a {@link IActionPrototypeProvider}.
 	 * @param parameters - list of formal parameters.
 	 * @param parameterKey - key for the formal parameters.
 	 * @param originalParameters - original parameters.

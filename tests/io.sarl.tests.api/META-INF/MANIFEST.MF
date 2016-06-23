@@ -22,11 +22,13 @@ Require-Bundle: io.sarl.lang.ui;bundle-version="0.4.0";visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.ui.workbench;resolution:=optional,
  org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
-Export-Package: io.sarl.lang,
- io.sarl.tests.api
 Import-Package: org.junit.runner;version="4.5.0",
  org.junit.runner.manipulation;version="4.5.0",
  org.junit.runner.notification;version="4.5.0",
  org.junit.runners;version="4.5.0",
  org.junit.runners.model;version="4.5.0",
- org.hamcrest.core
+ org.hamcrest.core,
+ org.junit;version="4.5.0"
+Export-Package: io.sarl.lang.tests,
+ io.sarl.lang.ui.tests,
+ io.sarl.tests.api

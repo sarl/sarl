@@ -18,25 +18,25 @@ import org.eclipse.xtend.core.xtend.impl.XtendConstructorImpl;
  */
 public class SarlConstructorImpl extends XtendConstructorImpl implements SarlConstructor
 {
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  protected SarlConstructorImpl()
-  {
-    super();
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected SarlConstructorImpl()
+	{
+		super();
+	}
 
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  protected EClass eStaticClass()
-  {
-    return SarlPackage.Literals.SARL_CONSTRUCTOR;
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return SarlPackage.Literals.SARL_CONSTRUCTOR;
+	}
 
 } //SarlConstructorImpl

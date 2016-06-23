@@ -34,7 +34,6 @@ import java.util.SortedSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Strings;
 import com.ibm.icu.util.VersionInfo;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.xtend.core.xtend.XtendFunction;
@@ -78,7 +77,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.services.SARLGrammarAccess;
@@ -130,7 +129,7 @@ public final class Utils {
 			JvmGenericType jvmElement,
 			Map<ActionPrototype, JvmOperation> operations,
 			Map<String, JvmField> fields,
-			ActionPrototypeProvider sarlSignatureProvider) {
+			IActionPrototypeProvider sarlSignatureProvider) {
 		for (JvmFeature feature : jvmElement.getAllFeatures()) {
 			if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName())) { //$NON-NLS-1$
 				if (operations != null && feature instanceof JvmOperation) {
@@ -169,7 +168,7 @@ public final class Utils {
 			Map<String, JvmField> inheritedFields,
 			Map<ActionPrototype, JvmOperation> operationsToImplement,
 			Map<ActionParameterTypes, JvmConstructor> superConstructors,
-			ActionPrototypeProvider sarlSignatureProvider) {
+			IActionPrototypeProvider sarlSignatureProvider) {
 		// Get the operations that must be implemented
 		if (operationsToImplement != null) {
 			for (JvmTypeReference interfaceReference : jvmElement.getExtendedInterfaces()) {
@@ -595,59 +594,6 @@ public final class Utils {
 		return vi1.compareTo(vi2);
 	}
 
-	/** Replies the default value for the given type.
-	 *
-	 * @param type - the type for which the default value should be determined.
-	 * @return the default value.
-	 */
-	public static String getDefaultValueForType(LightweightTypeReference type) {
-		if (type != null) {
-			return getDefaultValueForType(type.getIdentifier());
-		}
-		return ""; //$NON-NLS-1$
-	}
-
-	/** Replies the default value for the given type.
-	 *
-	 * @param type - the type for which the default value should be determined.
-	 * @return the default value.
-	 */
-	public static String getDefaultValueForType(String type) {
-		//TODO: Check if a similar function exists in the Xbase library.
-		String defaultValue = ""; //$NON-NLS-1$
-		if (!Strings.isNullOrEmpty(type) && !"void".equals(type)) { //$NON-NLS-1$
-			switch (type) {
-			case "boolean":  //$NON-NLS-1$
-				defaultValue = "true"; //$NON-NLS-1$
-				break;
-			case "double":  //$NON-NLS-1$
-				defaultValue = "0.0"; //$NON-NLS-1$
-				break;
-			case "float":  //$NON-NLS-1$
-				defaultValue = "0.0f"; //$NON-NLS-1$
-				break;
-			case "int":  //$NON-NLS-1$
-				defaultValue = "0"; //$NON-NLS-1$
-				break;
-			case "long":  //$NON-NLS-1$
-				defaultValue = "0"; //$NON-NLS-1$
-				break;
-			case "byte": //$NON-NLS-1$
-				defaultValue = "(0 as byte)"; //$NON-NLS-1$
-				break;
-			case "short":  //$NON-NLS-1$
-				defaultValue = "(0 as short)"; //$NON-NLS-1$
-				break;
-			case "char":  //$NON-NLS-1$
-				defaultValue = "(0 as char)"; //$NON-NLS-1$
-				break;
-			default:
-				defaultValue = "null"; //$NON-NLS-1$
-			}
-		}
-		return defaultValue;
-	}
-
 	private static void addAnnotationToSignature(StringBuilder textRepresentation, SARLGrammarAccess elements,
 			ISerializer serializer, ImportManager importManager, XAnnotation annotation) {
 		XAnnotationElements annotationElements = elements.getXAnnotationAccess();
@@ -789,7 +735,7 @@ public final class Utils {
 		signature.append(' ');
 		signature.append(getSignatureType(parameter.getParameterType().getType(), importManager));
 		if (parameter.isVarArg()) {
-			signature.append(grammarAccess.getVarArgTokenAccess().getAsteriskKeyword().getValue());
+			signature.append(grammarAccess.getParameterAccess().getVarArgAsteriskKeyword_6_0_0().getValue());
 		} else if (parameter instanceof SarlFormalParameter) {
 			SarlFormalParameter sarlParameter = (SarlFormalParameter) parameter;
 			if (sarlParameter.getDefaultValue() != null) {

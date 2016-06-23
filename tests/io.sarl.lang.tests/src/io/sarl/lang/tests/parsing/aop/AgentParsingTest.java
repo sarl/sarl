@@ -467,8 +467,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					48, 4,
-					"The abstract method name in type A1 can only be defined by an abstract class");
+					48, 4);
 		}
 
 		@Test
@@ -481,8 +480,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					57, 4,
-					"The abstract method name in type A1 can only be defined by an abstract class");
+					57, 4);
 		}
 
 		@Test
@@ -517,8 +515,7 @@ public class AgentParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					57, 4,
-					"The method name in type A1 should be declared abstract");
+					57, 4);
 			//
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1026,8 +1023,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 6,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					44, 6);
 		}
 
 		@Test
@@ -1152,8 +1148,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					44, 8);
 		}
 
 		@Test
@@ -1166,8 +1161,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 6,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					44, 6);
 		}
 
 		@Test
@@ -1180,8 +1174,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					44, 8);
 		}
 
 		@Test
@@ -1195,7 +1188,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					50, 3,
-					"The definition of field in A1 can either be var or val / final, not both");
+					"var or val / final, not both");
 		}
 
 		@Test
@@ -1208,8 +1201,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					44, 8);
 		}
 
 		@Test
@@ -1222,8 +1214,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 6,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					44, 6);
 		}
 
 		@Test
@@ -1264,8 +1255,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 12,
-					"Illegal modifier for the definition of field in A1; only package, protected, private, final, val, var, transient & volatile are permitted");
+					44, 12);
 		}
 
 		@Test
@@ -1307,7 +1297,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					54, 7,
-					"The definition of field in A1 can only set one of public / package / protected / private");
+					"public / package / protected / private");
 		}
 
 	}
@@ -1455,8 +1445,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					100, 5,
-					"The return type is incompatible with myaction(int)");
+					100, 5);
 		}
 
 		@Test
@@ -1476,8 +1465,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					93, 3,
-					"The return type is incompatible with myaction(int)");
+					93, 3);
 		}
 
 		@Test
@@ -1497,8 +1485,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					100, 4,
-					"The return type is incompatible with myaction(int)");
+					100, 4);
 		}
 
 		@Test
@@ -1635,8 +1622,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 6,
-					"Illegal modifier for the definition of name in A1; only package, protected, private, static, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					44, 6);
 		}
 
 		@Test
@@ -1733,8 +1719,7 @@ public class AgentParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-					100, 4,
-					"The method name() of type A2 must use override keyword since it actually overrides a supertype method");
+					100, 4);
 		}
 
 		@Test
@@ -1830,8 +1815,7 @@ public class AgentParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					57, 4,
-					"The method name in type A1 should be declared abstract");
+					57, 4);
 			//
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1971,8 +1955,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 6,
-					"Illegal modifier for the definition of name in A1; only package, protected, private, static, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					44, 6);
 		}
 
 		@Test
@@ -1985,8 +1968,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8,
-					"Illegal modifier for the definition of name in A1; only package, protected, private, static, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					44, 8);
 		}
 
 		@Test
@@ -2026,8 +2008,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 9,
-					"Illegal modifier for the definition of name in A1; only package, protected, private, static, abstract, dispatch, final, def, override, synchronized & strictfp are permitted");
+					44, 9);
 		}
 
 		@Test
@@ -2041,7 +2022,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					54, 7,
-					"The definition of name in A1 can only set one of public / package / protected / private");
+					"public / package / protected / private");
 		}
 
 		@Test

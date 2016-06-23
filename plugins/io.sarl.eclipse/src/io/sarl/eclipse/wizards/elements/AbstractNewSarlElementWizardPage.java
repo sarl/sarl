@@ -77,7 +77,8 @@ import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.ecoregenerator.helper.ECoreGeneratorHelper;
+import io.sarl.eclipse.util.Jdt2Ecore;
+import io.sarl.lang.codebuilder.CodeBuilderFactory;
 
 /**
  * Abstract implementation of a wizard page for creating new SARL elements.
@@ -103,10 +104,15 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	private static final String SETTINGS_CREATEUNIMPLEMENTED = "create_unimplemented"; //$NON-NLS-1$
 
-	/** The generator for the SALR language.
+	/** Creator of SARL elements.
 	 */
 	@Inject
-	protected ECoreGeneratorHelper sarlGenerator;
+	protected CodeBuilderFactory codeBuilderFactory;
+	
+	/** The trnaslator from JDT to SARL Ecore.
+	 */
+	@Inject
+	protected Jdt2Ecore jdt2sarl;
 
 	@Inject
 	private FieldInitializerUtil fieldInitializer;

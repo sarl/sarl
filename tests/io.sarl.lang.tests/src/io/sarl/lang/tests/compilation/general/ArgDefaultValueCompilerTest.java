@@ -16,12 +16,8 @@
 package io.sarl.lang.tests.compilation.general;
 
 import static org.junit.Assert.assertEquals;
-import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.SARLVersion;
-import io.sarl.tests.api.AbstractSarlTest;
 
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
+import com.google.inject.Inject;
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
@@ -30,7 +26,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.google.inject.Inject;
+import io.sarl.lang.SARLVersion;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$

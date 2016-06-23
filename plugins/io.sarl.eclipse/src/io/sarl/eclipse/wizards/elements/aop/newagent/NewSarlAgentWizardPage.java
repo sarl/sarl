@@ -21,8 +21,6 @@
 
 package io.sarl.eclipse.wizards.elements.aop.newagent;
 
-import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
@@ -38,12 +36,11 @@ import org.eclipse.swt.widgets.Composite;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.codebuilder.builders.IAgentBuilder;
+import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
-import io.sarl.lang.sarl.SarlAgent;
 
 /**
  * Wizard page for creating a new SARL agent.
@@ -84,9 +81,10 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		SarlEcoreCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
-		SarlAgent agent = this.sarlGenerator.createAgent(code, getTypeName(), getSuperClass());
-		this.sarlGenerator.attachComment(code, agent, typeComment);
+		IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(getPackageFragment().getElementName(), ecoreResource);
+		IAgentBuilder agent = scriptBuilder.addAgent(getTypeName());
+		agent.setExtends(getSuperClass());
+		agent.setDocumentation(typeComment.trim());
 
 		Map<ActionPrototype, IMethod> operationsToImplement;
 
@@ -96,8 +94,8 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 			operationsToImplement = null;
 		}
 
-		populateInheritanceContext(
-				Jdt2Ecore.toTypeFinder(getJavaProject()),
+		this.jdt2sarl.populateInheritanceContext(
+				this.jdt2sarl.toTypeFinder(getJavaProject()),
 				// Discarding final operation.
 				null,
 				// Discarding overridable operation.
@@ -107,15 +105,14 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 				operationsToImplement,
 				// Discarding super constructors,
 				null,
-				code.getCodeGenerator().getActionSignatureProvider(),
 				getSuperClass(),
 				Collections.<String>emptyList());
 
 		if (operationsToImplement != null) {
-			Jdt2Ecore.createActions(code, operationsToImplement.values(), agent);
+			this.jdt2sarl.createActions(agent, operationsToImplement.values());
 		}
 
-		code.finalizeScript();
+		scriptBuilder.finalizeScript();
 	}
 
 	@Override

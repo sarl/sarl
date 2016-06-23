@@ -53,7 +53,7 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-public class DefaultActionPrototypeProvider implements ActionPrototypeProvider {
+public class DefaultActionPrototypeProvider implements IActionPrototypeProvider {
 
 	@Inject
 	private TypeReferences references;

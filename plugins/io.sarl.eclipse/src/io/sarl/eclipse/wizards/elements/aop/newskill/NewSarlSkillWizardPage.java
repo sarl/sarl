@@ -21,8 +21,6 @@
 
 package io.sarl.eclipse.wizards.elements.aop.newskill;
 
-import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
-
 import java.util.Comparator;
 import java.util.Map;
 
@@ -38,14 +36,13 @@ import org.eclipse.swt.widgets.Composite;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.codebuilder.builders.IScriptBuilder;
+import io.sarl.lang.codebuilder.builders.ISkillBuilder;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
-import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
-import io.sarl.lang.sarl.SarlSkill;
 
 
 /**
@@ -89,10 +86,14 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		SarlEcoreCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
-		SarlSkill skill = this.sarlGenerator.createSkill(code, getTypeName(),
-				getSuperClass(), getSuperInterfaces());
-		this.sarlGenerator.attachComment(code, skill, typeComment);
+		IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
+				getPackageFragment().getElementName(), ecoreResource);
+		ISkillBuilder skill = scriptBuilder.addSkill(getTypeName());
+		skill.setExtends(getSuperClass());
+		for (String implementedType : getSuperInterfaces()) {
+			skill.addImplements(implementedType);
+		}
+		skill.setDocumentation(typeComment.trim());
 
 		Map<ActionPrototype, IMethod> operationsToImplement;
 		Map<ActionParameterTypes, IMethod> constructors;
@@ -110,8 +111,8 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 			operationsToImplement = null;
 		}
 
-		populateInheritanceContext(
-				Jdt2Ecore.toTypeFinder(getJavaProject()),
+		this.jdt2sarl.populateInheritanceContext(
+				this.jdt2sarl.toTypeFinder(getJavaProject()),
 				// Discarding final operation
 				null,
 				// Discarding overridable operation
@@ -120,19 +121,18 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 				null,
 				operationsToImplement,
 				constructors,
-				code.getCodeGenerator().getActionSignatureProvider(),
 				getSuperClass(),
 				getSuperInterfaces());
 
 		if (constructors != null) {
-			Jdt2Ecore.createStandardConstructors(code, constructors.values(), skill);
+			this.jdt2sarl.createStandardConstructors(skill, constructors.values(), skill.getSarlSkill());
 		}
 
 		if (operationsToImplement != null) {
-			Jdt2Ecore.createActions(code, operationsToImplement.values(), skill);
+			this.jdt2sarl.createActions(skill, operationsToImplement.values());
 		}
 
-		code.finalizeScript();
+		scriptBuilder.finalizeScript();
 	}
 
 	@Override

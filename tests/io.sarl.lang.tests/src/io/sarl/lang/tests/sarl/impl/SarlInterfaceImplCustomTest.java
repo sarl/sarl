@@ -16,21 +16,16 @@
 package io.sarl.lang.tests.sarl.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
 import com.google.inject.Inject;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.junit.Test;
-import org.mockito.Mockito;
 
-import io.sarl.lang.sarl.impl.SarlActionImplCustom;
+import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.impl.SarlAgentImplCustom;
-import io.sarl.lang.sarl.impl.SarlAnnotationTypeImplCustom;
 import io.sarl.lang.sarl.impl.SarlBehaviorImplCustom;
 import io.sarl.lang.sarl.impl.SarlCapacityImpl;
 import io.sarl.lang.sarl.impl.SarlClassImplCustom;
-import io.sarl.lang.sarl.impl.SarlEnumerationImplCustom;
-import io.sarl.lang.sarl.impl.SarlFactoryImplCustom;
 import io.sarl.lang.sarl.impl.SarlInterfaceImplCustom;
 import io.sarl.lang.sarl.impl.SarlSkillImplCustom;
 import io.sarl.tests.api.AbstractSarlTest;
@@ -45,7 +40,7 @@ import io.sarl.tests.api.AbstractSarlTest;
 public class SarlInterfaceImplCustomTest extends AbstractSarlTest {
 
 	@Inject
-	private SarlFactoryImplCustom factory;
+	private SarlFactory factory;
 	
 	@Inject
 	private SarlInterfaceImplCustom interfaceType;

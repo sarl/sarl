@@ -15,10 +15,17 @@
  */
 package io.sarl.lang.tests.parsing.general;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import io.sarl.lang.SARLInjectorProvider;
+import com.google.common.base.Strings;
+import org.eclipse.xtend.core.validation.IssueCodes;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -28,19 +35,6 @@ import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
-
-import org.eclipse.xtend.core.validation.IssueCodes;
-import org.eclipse.xtext.diagnostics.Diagnostic;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-
-import static org.junit.Assert.*;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
