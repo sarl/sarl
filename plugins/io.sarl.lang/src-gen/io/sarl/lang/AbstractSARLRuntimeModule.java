@@ -67,6 +67,7 @@ import io.sarl.lang.codebuilder.builders.InterfaceBuilderImpl;
 import io.sarl.lang.codebuilder.builders.ScriptBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SkillBuilderImpl;
 import io.sarl.lang.codebuilder.builders.XtendEnumLiteralBuilderImpl;
+import io.sarl.lang.compiler.SarlCompiler;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.documentation.DocumentationFormatter;
@@ -97,7 +98,6 @@ import io.sarl.lang.validation.SARLFeatureNameValidator;
 import io.sarl.lang.validation.SARLValidator;
 import java.util.Properties;
 import org.eclipse.xtend.core.compiler.UnicodeAwarePostProcessor;
-import org.eclipse.xtend.core.compiler.XtendCompiler;
 import org.eclipse.xtend.core.compiler.XtendGenerator;
 import org.eclipse.xtend.core.conversion.IntUnderscoreValueConverter;
 import org.eclipse.xtend.core.conversion.JavaIDValueConverter;
@@ -489,6 +489,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends XbaseCompiler> bindXbaseCompiler() {
+		return SarlCompiler.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends EarlyExitValidator> bindEarlyExitValidator() {
 		return SARLEarlyExitValidator.class;
 	}
@@ -642,11 +647,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends IDValueConverter> bindIDValueConverter() {
 		return JavaIDValueConverter.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public Class<? extends XbaseCompiler> bindXbaseCompiler() {
-		return XtendCompiler.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

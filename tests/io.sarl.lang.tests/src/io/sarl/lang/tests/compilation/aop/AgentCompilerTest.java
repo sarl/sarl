@@ -1579,6 +1579,75 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
+	public void inlinedCapacityFunctionCall_variadicParameter() throws Exception {
+		String source = "capacity C1 { def myfunction(v1 : Class<?>, v2 : int*) } agent A1 { uses C1 def caller { "
+				+ "myfunction(typeof(Integer))"
+				+ "myfunction(typeof(Float), 1)"
+				+ "myfunction(typeof(String), 2, 3)"
+				+ "myfunction(typeof(String), #[])"
+				+ " } }";
+		final String expectedC1 = multilineString(
+				"import io.sarl.lang.core.Capacity;",
+				"",
+				"@SuppressWarnings(\"all\")",
+				"public interface C1 extends Capacity {",
+				"  public abstract void myfunction(final Class<?> v1, final int... v2);",
+				"}",
+				""
+				);
+		final String expectedA1 = multilineString(
+				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.Agent;",
+				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
+				"import javax.inject.Inject;",
+				"import org.eclipse.xtext.xbase.lib.Inline;",
+				"",
+				"@SarlSpecification(\"0.4\")",
+				"@SuppressWarnings(\"all\")",
+				"public class A1 extends Agent {",
+				"  protected void caller() {",
+				"    this.getSkill(C1.class).myfunction(Integer.class, (int[])null);",
+				"    this.getSkill(C1.class).myfunction(Float.class, 1);",
+				"    this.getSkill(C1.class).myfunction(String.class, 2, 3);",
+				"    this.getSkill(C1.class).myfunction(String.class, new int[] {});",
+				"  }",
+				"  ",
+				"  /**",
+				"   * See the capacity {@link C1#myfunction(java.lang.Class<? extends java.lang.Object>,int[])}.",
+				"   * ",
+				"   * @see C1#myfunction(java.lang.Class<? extends java.lang.Object>,int[])",
+				"   */",
+				"  @Inline(value = \"getSkill(C1.class).myfunction($1, $2)\", imported = C1.class)",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  @ImportedCapacityFeature(C1.class)",
+				"  private void myfunction(final Class<?> v1, final int... v2) {",
+				"    getSkill(C1.class).myfunction(v1, v2);",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Inject",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+				"    super(builtinCapacityProvider, parentID, agentID);",
+				"  }",
+				"}",
+				""
+				);
+		this.compiler.compile(source, (r) -> {
+			assertEquals(expectedC1,r.getGeneratedCode("C1"));
+			assertEquals(expectedA1,r.getGeneratedCode("A1"));
+		});
+	}
+
+	@Test
 	public void duplicateEventHandler() throws Exception {
 		final String source = multilineString(
 				"event Initialize {",

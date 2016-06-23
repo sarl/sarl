@@ -50,6 +50,7 @@ public class SarlOutputConfigurationProvider extends OutputConfigurationProvider
 		defaultOutput.setOutputDirectory(SARLConfig.FOLDER_SOURCE_GENERATED);
 		defaultOutput.setOverrideExistingResources(true);
 		defaultOutput.setCreateOutputDirectory(true);
+		defaultOutput.setCanClearOutputDirectory(false);
 		defaultOutput.setCleanUpDerivedResources(true);
 		defaultOutput.setSetDerivedProperty(true);
 		defaultOutput.setKeepLocalHistory(false);

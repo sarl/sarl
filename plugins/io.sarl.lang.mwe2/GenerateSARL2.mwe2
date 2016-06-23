@@ -439,6 +439,10 @@ Workflow {
     				bind = "org.eclipse.xtext.xbase.util.XExpressionHelper"
     				to = "io.sarl.lang.typing.SARLExpressionHelper"
     			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.xbase.compiler.XbaseCompiler"
+    				to = "io.sarl.lang.compiler.SarlCompiler"
+   				}
     			
     			ui = {
     				bind = "org.eclipse.xtext.ui.validation.AbstractValidatorConfigurationBlock"
@@ -647,10 +651,6 @@ Workflow {
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.imports.TypeUsageCollector"
     				to = "org.eclipse.xtend.core.imports.XtendTypeUsageCollector"
-   				}
-    			runtime = {
-    				bind = "org.eclipse.xtext.xbase.compiler.XbaseCompiler"
-    				to = "org.eclipse.xtend.core.compiler.XtendCompiler"
    				}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.XbaseFactory"
