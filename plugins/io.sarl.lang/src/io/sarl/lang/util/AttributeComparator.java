@@ -21,6 +21,7 @@
 
 package io.sarl.lang.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import io.sarl.lang.sarl.SarlField;
@@ -33,7 +34,8 @@ import io.sarl.lang.sarl.SarlField;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AttributeComparator implements Comparator<SarlField> {
+public class AttributeComparator implements Comparator<SarlField>, Serializable {
+	private static final long serialVersionUID = 4577741984021468692L;
 
 	@Override
 	public int compare(SarlField o1, SarlField o2) {

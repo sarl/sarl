@@ -21,6 +21,7 @@
 
 package io.sarl.lang.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.eclipse.xtext.xbase.XExpression;
@@ -35,7 +36,8 @@ import io.sarl.lang.sarl.SarlBehaviorUnit;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class BehaviorUnitComparator implements Comparator<SarlBehaviorUnit> {
+public class BehaviorUnitComparator implements Comparator<SarlBehaviorUnit>, Serializable {
+	private static final long serialVersionUID = 5331105342444861433L;
 
 	@Override
 	public int compare(SarlBehaviorUnit o1, SarlBehaviorUnit o2) {
