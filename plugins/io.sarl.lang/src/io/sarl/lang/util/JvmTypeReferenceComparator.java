@@ -21,6 +21,7 @@
 
 package io.sarl.lang.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.eclipse.xtext.common.types.JvmTypeReference;
@@ -33,7 +34,8 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class JvmTypeReferenceComparator implements Comparator<JvmTypeReference> {
+public class JvmTypeReferenceComparator implements Comparator<JvmTypeReference>, Serializable {
+	private static final long serialVersionUID = 4883341549153024937L;
 
 	@Override
 	public int compare(JvmTypeReference o1, JvmTypeReference o2) {
