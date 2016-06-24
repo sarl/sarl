@@ -147,7 +147,6 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
 import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
-import org.eclipse.xtext.xbase.util.XExpressionHelper;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 
 import io.sarl.lang.SARLLangActivator;
@@ -176,6 +175,7 @@ import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.typing.SARLExpressionHelper;
 import io.sarl.lang.util.Utils;
 
 /**
@@ -332,7 +332,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private LocalClassAwareTypeNames localClassAwareTypeNames;
 
 	@Inject
-	private XExpressionHelper expressionHelper;
+	private SARLExpressionHelper expressionHelper;
 
 	/** Replies the canonical name of the given object.
 	 *
@@ -1244,7 +1244,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkBehaviorUnitGuardType(SarlBehaviorUnit behaviorUnit) {
 		XExpression guard = behaviorUnit.getGuard();
 		if (guard != null) {
-			if (this.expressionHelper.hasSideEffects(guard)) {
+			if (this.expressionHelper.hasDeepSideEffects(guard)) {
 				error(Messages.SARLJavaValidator_18,
 						guard,
 						null,

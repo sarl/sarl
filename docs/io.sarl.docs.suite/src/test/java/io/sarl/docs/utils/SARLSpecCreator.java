@@ -26,7 +26,7 @@ import org.eclipse.xtext.junit4.IInjectorProvider;
 import org.eclipse.xtext.junit4.IRegistryConfigurator;
 import org.jnario.lib.AbstractSpecCreator;
 
-import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.tests.SARLInjectorProvider;
 
 /** Creator of specification model dedicated to SARL.
  *

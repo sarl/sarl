@@ -30,7 +30,9 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XBlockExpression;
+import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XInstanceOfExpression;
 import org.eclipse.xtext.xbase.XSynchronizedExpression;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -79,24 +81,42 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 		return false;
 	}
 	
-	@Override
-	public boolean hasSideEffects(XExpression expr) {
+	/** Replies if the given expression has a side effect in the context of a guard.
+	 *
+	 * <p>This function differs from {@link #hasSideEffects(XExpression)} because it explore the
+	 * syntax tree for determining if one action has a side effect. 
+	 *
+	 * @param expr the expression to test.
+	 * @return <code>true</code> if a side effect was detected.
+	 */
+	public boolean hasDeepSideEffects(XExpression expr) {
 		XExpression rawExpr = expr;
 		boolean changed;
 		do {
 			changed = false;
+			if (rawExpr instanceof XInstanceOfExpression) {
+				return false;
+			}
 			if (rawExpr instanceof XSynchronizedExpression) {
 				rawExpr = ((XSynchronizedExpression) rawExpr).getExpression();
+				changed = true;
+			} else if (rawExpr instanceof XCastedExpression) {
+				final XCastedExpression castedExpression = (XCastedExpression) rawExpr;
+				rawExpr = castedExpression.getTarget();
 				changed = true;
 			} else if (rawExpr instanceof XBlockExpression) {
 				final List<XExpression> list = ((XBlockExpression) rawExpr).getExpressions();
 				if (list != null && !list.isEmpty()) {
-					rawExpr = list.get(list.size() - 1);
-					changed = true;
+					for (XExpression subExpr : list) {
+						if (hasDeepSideEffects(subExpr)) {
+							return true;
+						}
+					}
 				}
+				return false;
 			}
 		} while (changed);
-		return super.hasSideEffects(rawExpr);
+		return hasSideEffects(rawExpr);
 	}
 
 	/** Check if the given operation could be annoted with "@Pure".

@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
 import java.text.DateFormat;
@@ -48,8 +49,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.io.Files;
-import com.ibm.icu.math.BigDecimal;
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
@@ -67,6 +66,8 @@ import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.osgi.framework.Version;
+
+import com.google.common.io.Files;
 
 
 /** Helper for tests.

@@ -750,7 +750,24 @@ public class AgentParsingTest {
 		}
 
 		@Test
-		public void invalidBehaviorUnit_SideEffect2() throws Exception {
+		public void castGuard_invalid() throws Exception {
+			SarlScript mas = file(multilineString(
+					"import java.util.List",
+					"event E1 { var parameters : List<Object> }",
+					"agent A1 {",
+					"	on E1 [ ((t += 5) > 0) as boolean ] {",
+					"	}",
+					"}"
+					));
+			validate(mas).assertError(
+					XbasePackage.eINSTANCE.getXCastedExpression(),
+					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
+					85, 25,
+					"Expression with side effect is not allowed in guards");
+		}
+
+		@Test
+		public void validBehaviorUnit_noSideEffect() throws Exception {
 			SarlScript mas = file(multilineString(
 					"import java.util.List",
 					"event E1 { var parameters : List<Object> }",
