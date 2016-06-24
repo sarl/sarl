@@ -22,7 +22,6 @@
 package io.sarl.tests.api;
 
 import static org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil.reallyWaitForAutoBuild;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -41,6 +40,7 @@ import com.google.inject.Module;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -53,10 +53,8 @@ import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.ui.util.JavaProjectSetupUtil;
 import org.eclipse.xtext.ui.XtextProjectHelper;
 import org.eclipse.xtext.ui.util.PluginProjectFactory;
-import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.validation.Issue;
 import org.junit.ComparisonFailure;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
@@ -352,7 +350,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 *
 	 * @return the helper.
 	 */
-	protected synchronized WorkbenchTestHelper helper() {
+	protected synchronized @NonNull WorkbenchTestHelper helper() {
 		if (this.workbenchHelper == null) {
 			this.workbenchHelper = getInjector().getInstance(WorkbenchTestHelper.class);
 		}
