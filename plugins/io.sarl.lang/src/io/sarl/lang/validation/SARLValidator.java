@@ -147,6 +147,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
 import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
+import org.eclipse.xtext.xbase.util.XExpressionHelper;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 
 import io.sarl.lang.SARLLangActivator;
@@ -329,6 +330,9 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private LocalClassAwareTypeNames localClassAwareTypeNames;
+
+	@Inject
+	private XExpressionHelper expressionHelper;
 
 	/** Replies the canonical name of the given object.
 	 *
@@ -1231,7 +1235,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				xtendInterface.getExtends(),
 				Collections.<JvmTypeReference>emptyList());
 	}
-
+	
 	/** Check the type of the behavior unit's guard.
 	 *
 	 * @param behaviorUnit - the behavior unit.
@@ -1240,15 +1244,14 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkBehaviorUnitGuardType(SarlBehaviorUnit behaviorUnit) {
 		XExpression guard = behaviorUnit.getGuard();
 		if (guard != null) {
-			// FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=481864
-			/*if (this.expressionHelper.hasSideEffects(guard)) {
-				error(Messages.SARLValidator_18,
+			if (this.expressionHelper.hasSideEffects(guard)) {
+				error(Messages.SARLJavaValidator_18,
 						guard,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						INVALID_INNER_EXPRESSION);
+						org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION);
 				return;
-			}*/
+			}
 			if (guard instanceof XBooleanLiteral) {
 				XBooleanLiteral booleanLiteral = (XBooleanLiteral) guard;
 				if (booleanLiteral.isIsTrue()) {

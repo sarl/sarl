@@ -576,7 +576,6 @@ public class AgentParsingTest {
 		}
 
 		@Test
-		@Ignore("https://bugs.eclipse.org/bugs/show_bug.cgi?id=481864")
 		public void synchronizedGuard() throws Exception {
 			SarlScript mas = file(multilineString(
 					"event E {}",
@@ -586,11 +585,7 @@ public class AgentParsingTest {
 					"  }",
 					"}"
 					), false);
-			validate(mas).assertError(
-					XbasePackage.eINSTANCE.getXExpression(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
-					58, 57,
-					"Expression with side effect is not allowed in guards");
+			validate(mas).assertNoErrors();
 		}
 
 		@Test
@@ -721,30 +716,30 @@ public class AgentParsingTest {
 		}
 
 		@Test
-		@Ignore("https://bugs.eclipse.org/bugs/show_bug.cgi?id=481864")
 		public void invalidBehaviorUnit_SideEffect0() throws Exception {
 			SarlScript mas = file(multilineString(
 					"event E1",
 					"agent A1 {",
 					"var t = 5",
 					"on E1 [t += 5] {",
+					"}",
 					"}"
 					));
 			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXBinaryOperation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 					37, 6,
-					"Expression with side effect is not allowed in guards");
+					"cannot convert from int to boolean");
 		}
 
 		@Test
-		@Ignore("https://bugs.eclipse.org/bugs/show_bug.cgi?id=481864")
 		public void invalidBehaviorUnit_SideEffect1() throws Exception {
 			SarlScript mas = file(multilineString(
 					"event E1",
 					"agent A1 {",
 					"var t = 5",
 					"on E1 [(t += 5) > 0] {",
+					"}",
 					"}"
 					));
 			validate(mas).assertError(

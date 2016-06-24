@@ -21,6 +21,7 @@
 
 package io.sarl.lang.typing;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import com.google.inject.Singleton;
@@ -28,7 +29,9 @@ import org.eclipse.xtend.core.typing.XtendExpressionHelper;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XSynchronizedExpression;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -74,6 +77,26 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean hasSideEffects(XExpression expr) {
+		XExpression rawExpr = expr;
+		boolean changed;
+		do {
+			changed = false;
+			if (rawExpr instanceof XSynchronizedExpression) {
+				rawExpr = ((XSynchronizedExpression) rawExpr).getExpression();
+				changed = true;
+			} else if (rawExpr instanceof XBlockExpression) {
+				final List<XExpression> list = ((XBlockExpression) rawExpr).getExpressions();
+				if (list != null && !list.isEmpty()) {
+					rawExpr = list.get(list.size() - 1);
+					changed = true;
+				}
+			}
+		} while (changed);
+		return super.hasSideEffects(rawExpr);
 	}
 
 	/** Check if the given operation could be annoted with "@Pure".
