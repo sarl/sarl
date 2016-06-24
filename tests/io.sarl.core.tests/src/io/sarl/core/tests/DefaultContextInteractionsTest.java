@@ -20,7 +20,11 @@
  */
 package io.sarl.core.tests;
 
-import static org.junit.Assert.assertEquals;
+import java.util.UUID;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Capacity;
@@ -29,11 +33,6 @@ import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
-
-import java.util.UUID;
-
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author $Author: sgalland$

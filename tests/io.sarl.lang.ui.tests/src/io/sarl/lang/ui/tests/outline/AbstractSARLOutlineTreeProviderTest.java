@@ -21,15 +21,14 @@
 package io.sarl.lang.ui.tests.outline;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.ui.outline.SARLOutlineTreeProvider;
-import io.sarl.tests.api.AbstractSarlUiTest;
 
+import com.google.common.base.Joiner;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.xtext.resource.XtextResource;
@@ -40,9 +39,9 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
-import com.google.common.base.Joiner;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.ui.outline.SARLOutlineTreeProvider;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 /** Abstract implementation for the outline tests.
  *

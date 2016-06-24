@@ -20,12 +20,11 @@
  */
 package io.sarl.core.tests;
 
-import static org.junit.Assert.assertEquals;
-import io.sarl.lang.core.Address;
-import io.sarl.lang.core.Event;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import io.sarl.lang.core.Address;
+import io.sarl.lang.core.Event;
 
 /**
  * @author $Author: sgalland$

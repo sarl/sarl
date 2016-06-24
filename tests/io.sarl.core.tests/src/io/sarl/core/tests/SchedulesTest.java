@@ -20,13 +20,12 @@
  */
 package io.sarl.core.tests;
 
-import static org.junit.Assert.assertEquals;
-import io.sarl.core.AgentTask;
-import io.sarl.lang.core.Capacity;
-
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.junit.Before;
 import org.junit.Test;
+
+import io.sarl.core.AgentTask;
+import io.sarl.lang.core.Capacity;
 
 /**
  * @author $Author: sgalland$

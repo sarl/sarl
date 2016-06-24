@@ -15,7 +15,6 @@
  */
 package io.sarl.lang.ui.tests.quickfix;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
@@ -595,7 +594,6 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	@SuppressWarnings("null")
 	private static class TestXtextDocument extends Document implements IXtextDocument {
 
 		private final XtextResource resource;

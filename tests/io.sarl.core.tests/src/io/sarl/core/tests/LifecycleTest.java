@@ -20,14 +20,13 @@
  */
 package io.sarl.core.tests;
 
-import static org.junit.Assert.assertEquals;
-import io.sarl.lang.core.AgentContext;
-import io.sarl.lang.core.Capacity;
-
 import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import io.sarl.lang.core.AgentContext;
+import io.sarl.lang.core.Capacity;
 
 /**
  * @author $Author: sgalland$
