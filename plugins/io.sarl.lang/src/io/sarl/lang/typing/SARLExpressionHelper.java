@@ -24,10 +24,14 @@ package io.sarl.lang.typing;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 import com.google.inject.Singleton;
 import org.eclipse.xtend.core.typing.XtendExpressionHelper;
+import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XCastedExpression;
@@ -35,6 +39,9 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XInstanceOfExpression;
 import org.eclipse.xtext.xbase.XSynchronizedExpression;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
+
+import io.sarl.lang.util.Utils;
 
 /**
  * Helper on expressions.
@@ -60,6 +67,9 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 
 	private final Pattern pattern;
 
+	@Inject
+	private CommonTypeComputationServices services;
+
 	/** Construct the helper.
 	 */
 	public SARLExpressionHelper() {
@@ -71,14 +81,26 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 		if (super.hasSideEffects(featureCall, inspectContents)) {
 			JvmIdentifiableElement feature = featureCall.getFeature();
 			if ((feature != null) && (!feature.eIsProxy()) && (feature instanceof JvmOperation)) {
-				String name = ((JvmOperation) feature).getSimpleName();
-				if (name != null && this.pattern.matcher(name).find()) {
+				final JvmOperation op = (JvmOperation) feature;
+				final String name = op.getSimpleName();
+				if (name != null && this.pattern.matcher(name).find()
+						&& hasPrimitiveParameters(op)) {
 					return false;
 				}
 			}
 			return true;
 		}
 		return false;
+	}
+
+	private boolean hasPrimitiveParameters(JvmOperation op) {
+		for (final JvmFormalParameter parameter : op.getParameters()) {
+			JvmTypeReference type = parameter.getParameterType();
+			if (type == null || !Utils.toLightweightTypeReference(type, this.services).isPrimitive()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/** Replies if the given expression has a side effect in the context of a guard.
