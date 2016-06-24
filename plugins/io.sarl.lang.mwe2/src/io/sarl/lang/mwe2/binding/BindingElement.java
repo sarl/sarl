@@ -36,25 +36,25 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  */
 public class BindingElement {
-	
+
 	private static final int HASH_VALUE = 31;
 
 	private String functionName;
 
 	private boolean singleton;
-	
+
 	private boolean eagerSingleton;
 
 	private boolean instance;
 
 	private String injectedType;
-	
+
 	private String concreteType;
-	
+
 	private String annotatedWith;
 
 	private String annotatedWithName;
-	
+
 	private boolean overridePreviousDefinition;
 
 	@Override
@@ -66,16 +66,16 @@ public class BindingElement {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		int h = 1;
-		h = h * HASH_VALUE + (getBind() != null ? getBind().hashCode() : 0);
-		h = h * HASH_VALUE + (getAnnotatedWith() != null ? getAnnotatedWith().hashCode() : 0);
-		h = h * HASH_VALUE + (getAnnotatedWithName() != null ? getAnnotatedWithName().hashCode() : 0);
-		return h;
+		int bits = 1;
+		bits = bits * HASH_VALUE + Objects.hashCode(getBind());
+		bits = bits * HASH_VALUE + Objects.hashCode(getAnnotatedWith());
+		bits = bits * HASH_VALUE + Objects.hashCode(getAnnotatedWithName());
+		return bits ^ (bits >> 31);
 	}
-	
+
 	@Override
 	public String toString() {
 		if (!Strings.isEmpty(getAnnotatedWith())) {
@@ -86,7 +86,7 @@ public class BindingElement {
 		}
 		return MessageFormat.format("{0} => {1}", getBind(), getTo()); //$NON-NLS-1$
 	}
-	
+
 	/** Set the element could override a previously defined element.
 	 *
 	 * @param override <code>true</code> for overriding.
@@ -94,7 +94,7 @@ public class BindingElement {
 	public void setOverride(boolean override) {
 		this.overridePreviousDefinition = override;
 	}
-	
+
 	/** Replies if the element could override a previously defined element.
 	 *
 	 * @return <code>true</code> for overriding.
@@ -113,7 +113,7 @@ public class BindingElement {
 			this.functionName = name;
 		}
 	}
-	
+
 	/** Replies the function name.
 	 *
 	 * @return the name of the binding function, or <code>null</code>.
@@ -132,7 +132,7 @@ public class BindingElement {
 			this.annotatedWith = annotation;
 		}
 	}
-	
+
 	/** Replies the annotation.
 	 *
 	 * @return the annotation.
@@ -151,7 +151,7 @@ public class BindingElement {
 			this.annotatedWithName = name;
 		}
 	}
-	
+
 	/** Replies the <code>@</code><code>Named</code> property..
 	 *
 	 * @return the name.
@@ -168,7 +168,7 @@ public class BindingElement {
 	public void setSingleton(boolean singleton) {
 		this.singleton = singleton;
 	}
-	
+
 	/** Replies if it is a singleton binding.
 	 *
 	 * @return <code>true</code> for singleton binding.
@@ -185,7 +185,7 @@ public class BindingElement {
 	public void setEager(boolean eager) {
 		this.eagerSingleton = eager;
 	}
-	
+
 	/** Replies if it is an eager singleton binding.
 	 *
 	 * @return <code>true</code> for eager singleton binding.
@@ -202,7 +202,7 @@ public class BindingElement {
 	public void setInstance(boolean instance) {
 		this.instance = instance;
 	}
-	
+
 	/** Replies if it is an instance binding.
 	 *
 	 * @return <code>true</code> for instance binding.
@@ -221,7 +221,7 @@ public class BindingElement {
 			this.injectedType = injectedType;
 		}
 	}
-	
+
 	/** Replies the binded type.
 	 *
 	 * @return the binded type.
@@ -240,7 +240,7 @@ public class BindingElement {
 			this.concreteType = concreteType;
 		}
 	}
-	
+
 	/** Replies the concrete type.
 	 *
 	 * @return the concrete type.

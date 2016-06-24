@@ -34,7 +34,7 @@ import io.sarl.lang.bugfixes.bug356.Bug356ImportedNamespaceScopeProvider;
  * Equinox extension registry.
  *
  * <p>DOT NOT ADD BINDINGS IN THIS CLASS. PREFER TO UPDATE THE MWE2 SCRIPT.
- * 
+ *
  * @author $Author: sgalland$
  * @author $Author: srodriguez$
  * @version $FullVersion$

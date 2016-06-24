@@ -87,7 +87,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 	private CodeBuilderFactory codeBuilderFactory;
 
 	private final String[] operationUris;
-	
+
 	private MissedMethodAddModification(String[] operationUris) {
 		this.operationUris = operationUris;
 	}

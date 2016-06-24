@@ -36,14 +36,14 @@ import io.sarl.lang.tests.SARLInjectorProvider;
  */
 public class SARLSpecCreator extends AbstractSpecCreator {
 
-	private final static SARLInjectorProvider injectorProvider = new SARLInjectorProvider();
-	
+	private static final SARLInjectorProvider INJECTOR_PROVIDER = new SARLInjectorProvider();
+
 	static {
-		injectorProvider.setupRegistry();
+		INJECTOR_PROVIDER.setupRegistry();
 	}
-	
+
 	private Injector injector;
-	
+
 	@Override
 	protected <T> T create(Class<T> klass) {
 		return this.injector.getInstance(klass);
@@ -51,7 +51,7 @@ public class SARLSpecCreator extends AbstractSpecCreator {
 
 	@Override
 	public void beforeSpecRun() {
-		this.injector = injectorProvider.getInjector();
+		this.injector = INJECTOR_PROVIDER.getInjector();
 	}
 
 	@Override

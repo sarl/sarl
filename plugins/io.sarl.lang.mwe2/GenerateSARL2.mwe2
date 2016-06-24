@@ -30,7 +30,7 @@ import org.eclipse.xtext.resource.XtextResourceSet
 
 import io.sarl.lang.mwe2.* 
 import io.sarl.lang.mwe2.binding.* 
-import io.sarl.lang.mwe2.externalLang.* 
+import io.sarl.lang.mwe2.externalspec.* 
 import io.sarl.lang.mwe2.prettify.* 
 import io.sarl.lang.mwe2.latex.* 
 import io.sarl.lang.mwe2.gtk.* 

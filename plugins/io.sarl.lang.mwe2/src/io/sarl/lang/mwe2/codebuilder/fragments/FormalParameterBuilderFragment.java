@@ -45,14 +45,14 @@ import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /** Generator of the builder for formal parameters.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragment {
-	
+
 	@Inject
 	private BuilderFactoryContributions builderFactoryContributions;
 
@@ -84,12 +84,12 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 		generateBuilderFactoryContributions();
 		super.generate();
 	}
-	
+
 	@Override
 	public void generateBindings(BindingFactory factory) {
 		super.generateBindings(factory);
 		IFileSystemAccess2 fileSystem = getSrc();
-		
+
 		final TypeReference builderInterface = getFormalParameterBuilderInterface();
 		final TypeReference builderImpl = getFormalParameterBuilderImpl();
 		final TypeReference builderImplCustom = getFormalParameterBuilderImplCustom();
@@ -132,7 +132,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
-	
+
 	/** Generate the formal parameter builder implementation.
 	 */
 	protected void generateFormalParameterBuilderImpl() {
@@ -213,6 +213,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @param forAppender <code>true</code> if the code must be generated for an appender.
 	 * @return the code.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
 		final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getFormalParameterRuleName());
 		EClassifier classifier = getGeneratedTypeFor(rule);

@@ -44,19 +44,19 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /** Generator of the builder for constructors.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
-	
+
 	@Inject
 	private BuilderFactoryContributions builderFactoryContributions;
 
 	private MemberDescription constructor;
-	
+
 	@Override
 	protected Iterable<MemberDescription> getMembers() {
 		if (this.constructor == null) {
@@ -69,11 +69,11 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 			TypeReference generatedType = newTypeReference(classifier);
 			this.constructor = new MemberDescription(
 					rule.getName(), simpleName, builderInterface, builderImpl,
-					builderImplCustom, generatedType, null);		
+					builderImplCustom, generatedType, null);
 		}
 		return Collections.singletonList(this.constructor);
 	}
-	
+
 	/** Get the constructor rule from the grammar.
 	 *
 	 * @return the top elements.
@@ -89,7 +89,7 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 		}
 		throw new IllegalStateException("Constructor rule not found"); //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void generate() {
 		super.generate();
@@ -128,7 +128,7 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 		}
 		return null;
 	}
-	
+
 	/** Generate the contributions for the BuildFactory.
 	 */
 	protected void generateBuilderFactoryContributions() {
@@ -219,7 +219,8 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
-					it.append("\t/** Create the appender for a " + getLanguageName() + " constructor."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append("\t/** Create the appender for a " + getLanguageName() //$NON-NLS-1$
+							+ " constructor."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param resourceSet the set of the resources that must be used for"); //$NON-NLS-1$
 					it.newLine();
@@ -249,7 +250,8 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
-					it.append("\t/** Create the appender for a " + getLanguageName() + " constructor."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append("\t/** Create the appender for a " + getLanguageName() //$NON-NLS-1$
+							+ " constructor."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param resource the resource that must be used for"); //$NON-NLS-1$
 					it.newLine();

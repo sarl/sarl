@@ -51,7 +51,7 @@ import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.Binding;
  */
 @Beta
 public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
-	
+
 	/** Logger.
 	 */
 	protected static final Logger LOG = Logger.getLogger(InjectionRecommender2.class);
@@ -59,16 +59,16 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 	private static final String CONFIGURE_PREFIX = "configure"; //$NON-NLS-1$
 
 	private static final String BIND_PREFIX = "bind"; //$NON-NLS-1$
-	
+
 	@Inject
 	private BindingFactory bindingFactory;
 
 	private String name = getClass().getName();
 
 	private String comment;
-	
+
 	private boolean enable = true;
-	
+
 	/** Enable or disable the recommendations.
 	 *
 	 * @param enable <code>true</code> if enable.
@@ -76,7 +76,7 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 	public void setEnable(boolean enable) {
 		this.enable = enable;
 	}
-	
+
 	/** Replies if the recommendations were enabled.
 	 *
 	 * @return <code>true</code> if enable.
@@ -122,13 +122,13 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 		}
 		return type.getName();
 	}
-	
+
 	private static void fillFrom(Set<BindingElement> bindings, Class<?> type) {
 		for (Method declaredMethod : type.getDeclaredMethods()) {
 			String methodName = declaredMethod.getName();
-			if (!Strings.isEmpty(methodName) 
-				&& ((methodName.length() > CONFIGURE_PREFIX.length() && methodName.startsWith(CONFIGURE_PREFIX))
-				||(methodName.length() > BIND_PREFIX.length() && methodName.startsWith(BIND_PREFIX)))) {
+			if (!Strings.isEmpty(methodName)
+					&& ((methodName.length() > CONFIGURE_PREFIX.length() && methodName.startsWith(CONFIGURE_PREFIX))
+					|| (methodName.length() > BIND_PREFIX.length() && methodName.startsWith(BIND_PREFIX)))) {
 				if (declaredMethod.getReturnType() != null && !Void.TYPE.equals(declaredMethod.getReturnType())) {
 					// Binding function
 					Class<?> returnType = declaredMethod.getReturnType();
@@ -151,7 +151,7 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 						}
 						bindings.add(element);
 					}
-				} else if (methodName.startsWith(CONFIGURE_PREFIX)){
+				} else if (methodName.startsWith(CONFIGURE_PREFIX)) {
 					String typeName = methodName.substring(CONFIGURE_PREFIX.length());
 					if (!Strings.isEmpty(typeName)) {
 						BindingElement element = new BindingElement();
@@ -164,7 +164,7 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 			}
 		}
 	}
-	
+
 	/** Provide the recommendations.
 	 *
 	 * @param label the source of the recommendation.
@@ -181,26 +181,26 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 			}
 		}
 	}
-	
+
 	@Override
 	public void generate() {
 		if (isEnable()) {
 			Set<BindingElement> xtendRtBindings = new LinkedHashSet<>();
 			fillFrom(xtendRtBindings, XtendRuntimeModule.class.getSuperclass());
 			fillFrom(xtendRtBindings, XtendRuntimeModule.class);
-			
+
 			Set<Binding> currentRtBindings = getLanguage().getRuntimeGenModule().getBindings();
-			
+
 			recommendFrom("XtendRuntimeModule", xtendRtBindings, currentRtBindings); //$NON-NLS-1$
 
 			Set<BindingElement> xtendUiBindings = new LinkedHashSet<>();
 			fillFrom(xtendUiBindings, XtendUiModule.class.getSuperclass());
 			fillFrom(xtendUiBindings, XtendUiModule.class);
-			
+
 			Set<Binding> currentUiBindings = getLanguage().getRuntimeGenModule().getBindings();
-			
+
 			recommendFrom("XtendUiModule", xtendUiBindings, currentUiBindings); //$NON-NLS-1$
 		}
 	}
-	
+
 }

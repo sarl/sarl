@@ -108,7 +108,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	@Inject
 	protected CodeBuilderFactory codeBuilderFactory;
-	
+
 	/** The trnaslator from JDT to SARL Ecore.
 	 */
 	@Inject

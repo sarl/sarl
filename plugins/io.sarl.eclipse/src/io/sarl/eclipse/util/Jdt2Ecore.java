@@ -96,7 +96,7 @@ public class Jdt2Ecore {
 
 	@Inject
 	private TypeReferences typeReferences;
-	
+
 	@Inject
 	private IActionPrototypeProvider actionPrototypeProvider;
 
@@ -386,7 +386,7 @@ public class Jdt2Ecore {
 		}
 		return null;
 	}
-	
+
 	/** Create the formal parameters for the given operation.
 	 *
 	 * @param parameterBuilder the code builder.
@@ -427,7 +427,7 @@ public class Jdt2Ecore {
 			IBehaviorBuilder codeBuilder,
 			Collection<IMethod> superClassConstructors,
 			XtendTypeDeclaration context) throws JavaModelException {
-		createStandardConstructorsWith(() -> { return codeBuilder.addConstructor(); },
+		createStandardConstructorsWith(() -> codeBuilder.addConstructor(),
 				superClassConstructors, context);
 	}
 
@@ -442,7 +442,7 @@ public class Jdt2Ecore {
 			IEventBuilder codeBuilder,
 			Collection<IMethod> superClassConstructors,
 			XtendTypeDeclaration context) throws JavaModelException {
-		createStandardConstructorsWith(() -> { return codeBuilder.addConstructor(); },
+		createStandardConstructorsWith(() -> codeBuilder.addConstructor(),
 				superClassConstructors, context);
 	}
 
@@ -457,7 +457,7 @@ public class Jdt2Ecore {
 			ISkillBuilder codeBuilder,
 			Collection<IMethod> superClassConstructors,
 			XtendTypeDeclaration context) throws JavaModelException {
-		createStandardConstructorsWith(() -> { return codeBuilder.addConstructor(); },
+		createStandardConstructorsWith(() -> codeBuilder.addConstructor(),
 				superClassConstructors, context);
 	}
 
@@ -488,7 +488,7 @@ public class Jdt2Ecore {
 					//
 					IConstructorBuilder cons = codeBuilder.addConstructor();
 					cons.getExpression().addExpression().setXExpression(call);
-					createFormalParametersWith((name) -> { return cons.addParameter(name); }, constructor);
+					createFormalParametersWith((name) -> cons.addParameter(name), constructor);
 				}
 			}
 		}
@@ -504,9 +504,9 @@ public class Jdt2Ecore {
 	public void createActions(
 			IAgentBuilder codeBuilder,
 			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
-		createActionsWith( (name) -> { return codeBuilder.addAction(name); }, methods);
+		createActionsWith((name) -> codeBuilder.addAction(name), methods);
 	}
-	
+
 	/** Create the operations into the SARL feature container.
 	 *
 	 * @param codeBuilder - the builder of the script.
@@ -517,7 +517,7 @@ public class Jdt2Ecore {
 	public void createActions(
 			IBehaviorBuilder codeBuilder,
 			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
-		createActionsWith( (name) -> { return codeBuilder.addAction(name); }, methods);
+		createActionsWith((name) -> codeBuilder.addAction(name), methods);
 	}
 
 	/** Create the operations into the SARL feature container.
@@ -530,7 +530,7 @@ public class Jdt2Ecore {
 	public void createActions(
 			ISkillBuilder codeBuilder,
 			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
-		createActionsWith( (name) -> { return codeBuilder.addAction(name); }, methods);
+		createActionsWith((name) -> codeBuilder.addAction(name), methods);
 	}
 
 	/** Create the operations into the SARL feature container.
@@ -548,7 +548,7 @@ public class Jdt2Ecore {
 				if (!isGeneratedOperation(operation)) {
 					final IActionBuilder action = codeBuilder.addAction(operation.getElementName());
 					action.setReturnType(operation.getReturnType());
-					createFormalParametersWith( (name) -> { return action.addParameter(name); }, operation);
+					createFormalParametersWith((name) -> action.addParameter(name), operation);
 				}
 			}
 		}
@@ -740,6 +740,7 @@ public class Jdt2Ecore {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@FunctionalInterface
 	public interface TypeFinder {
 
 		/** Find the definition of a type.
@@ -753,32 +754,38 @@ public class Jdt2Ecore {
 
 	}
 
-	/**
+	/** Parameter builder.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@FunctionalInterface
 	private interface ParameterBuilder {
 		IFormalParameterBuilder addParameter(String name);
 	}
 
-	/**
+	/** Action builder.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@FunctionalInterface
 	private interface ActionBuilder {
 		IActionBuilder addAction(String name);
 	}
 
-	/**
+	/** Constructor builder.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@FunctionalInterface
 	private interface ConstructorBuilder {
 		IConstructorBuilder addConstructor();
 	}

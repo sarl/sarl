@@ -51,12 +51,12 @@ public class InjectionFragment2 extends AbstractXtextGeneratorFragment {
 	protected static final Logger LOG = Logger.getLogger(InjectionFragment2.class);
 
 	@Inject
-	private Injector injector; 
-	
+	private Injector injector;
+
 	private String name = getClass().getName();
-	
+
 	private String comment;
-	
+
 	private boolean overrideAll;
 
 	private final List<BindingElement> rtBindingElements = new ArrayList<>();
@@ -71,7 +71,7 @@ public class InjectionFragment2 extends AbstractXtextGeneratorFragment {
 	public void setOverrideAll(boolean override) {
 		this.overrideAll = override;
 	}
-	
+
 	/** Replies if all the injection definitions are assumed to accept overriding of
 	 * previously defined elements.
 	 *
@@ -160,7 +160,7 @@ public class InjectionFragment2 extends AbstractXtextGeneratorFragment {
 			this.uiBindingElements.add(element);
 		}
 	}
-		
+
 	private void bind(GuiceModuleAccess module, List<BindingElement> bindings) {
 		BindingFactory bindingFactory = this.injector.getInstance(BindingFactory.class);
 		bindingFactory.setName(this.name);
@@ -171,18 +171,18 @@ public class InjectionFragment2 extends AbstractXtextGeneratorFragment {
 		}
 		bindingFactory.contributeToModule();
 	}
-	
+
 	@Override
 	public void generate() {
 		List<BindingElement> elements;
-		
+
 		elements = getRuntimeBindings();
 		if (!elements.isEmpty()) {
 			LOG.info(MessageFormat.format("Generating the user-defined bindings for runtime module: {0}", //$NON-NLS-1$
 					Strings.emptyIfNull(getComment())));
 			bind(getLanguage().getRuntimeGenModule(), elements);
 		}
-		
+
 		elements = getUiBindings();
 		if (!elements.isEmpty()) {
 			LOG.info(MessageFormat.format("Generating the user-defined bindings for ui module: {0}", //$NON-NLS-1$
@@ -190,5 +190,5 @@ public class InjectionFragment2 extends AbstractXtextGeneratorFragment {
 			bind(getLanguage().getEclipsePluginGenModule(), elements);
 		}
 	}
-	
+
 }

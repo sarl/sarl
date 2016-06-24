@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.mwe2.externalLang;
+package io.sarl.lang.mwe2.externalspec;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,8 +58,8 @@ import org.eclipse.xtext.xtext.generator.CodeConfig;
  */
 public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtextGeneratorFragment {
 
-	private final static Logger LOG = Logger.getLogger(AbstractExternalHighlightingFragment2.class);
-	
+	private static final Logger LOG = Logger.getLogger(AbstractExternalHighlightingFragment2.class);
+
 	private static final Pattern KEYWORD_PATTERN = Pattern.compile("^[a-zA-Z]{2,}$"); //$NON-NLS-1$
 
 	@SuppressWarnings("checkstyle:linelength")
@@ -78,7 +78,7 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	private String basenameTemplate = "{0}.txt"; //$NON-NLS-1$
 
 	private boolean enableColors = true;
-	
+
 	/** Change the basename of the file to generate.
 	 *
 	 * @param basename the basename.
@@ -97,6 +97,19 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	@Pure
 	public String getBasename() {
 		return getBasename(null);
+	}
+
+	/** Replies the basename of the XML file to generate.
+	 *
+	 * @param defaultName the name to reply if the basename was not set.
+	 * @return the basename.
+	 */
+	@Pure
+	public String getBasename(String defaultName) {
+		if (Strings.isEmpty(this.basename)) {
+			return defaultName;
+		}
+		return this.basename;
 	}
 
 	/** Change the template for basename of the file to generate.
@@ -118,19 +131,6 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	@Pure
 	public String getBasenameTemplate() {
 		return this.basenameTemplate;
-	}
-
-	/** Replies the basename of the XML file to generate.
-	 *
-	 * @param defaultName the name to reply if the basename was not set.
-	 * @return the basename.
-	 */
-	@Pure
-	public String getBasename(String defaultName) {
-		if (Strings.isEmpty(this.basename)) {
-			return defaultName;
-		}
-		return this.basename;
 	}
 
 	/** Change if the colors could be output.
@@ -168,7 +168,7 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	public Set<String> getOutputs() {
 		return this.outputDirectories;
 	}
-	
+
 	/** Replies the code configuration.
 	 *
 	 * @return the code configuration.
@@ -186,7 +186,7 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	protected ExternalHighlightingConfig getHighlightingConfig() {
 		return this.highlightingConfig;
 	}
-	
+
 	/** Explore the grammar for extracting the key elements.
 	 *
 	 * @param grammar the grammar to explore.
@@ -230,14 +230,14 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 		if (grammar == null) {
 			throw new RuntimeException("No grammar defined"); //$NON-NLS-1$
 		}
-		
+
 		LOG.info(MessageFormat.format("Generating highlighting configuration for {0}", toString())); //$NON-NLS-1$
 
 		Set<String> literals = new TreeSet<>();
 		Set<String> keywords = new TreeSet<>();
 
 		ExternalHighlightingConfig hconfig = getHighlightingConfig();
-		
+
 		literals.addAll(hconfig.getLiterals());
 
 		for (String keyword : hconfig.getKeywords()) {
@@ -287,7 +287,7 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	 * @param ignored - the ignored literals (mostly for information).
 	 */
 	protected abstract void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored);
-	
+
 	/** Write the given lines into the file.
 	 *
 	 * @param basename the basename of the file.
@@ -317,7 +317,7 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 			}
 		}
 	}
-	
+
 	/** Replies the simple name of the language.
 	 *
 	 * @return the name.
@@ -330,5 +330,5 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 		}
 		return name;
 	}
-	
+
 }

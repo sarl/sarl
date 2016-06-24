@@ -48,7 +48,7 @@ import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /** Generator of the builder for XBlockExpression.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -115,7 +115,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-				+ " XBlockExpression."); //$NON-NLS-1$
+						+ " XBlockExpression."); //$NON-NLS-1$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -145,7 +145,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-				+ " XBlockExpression."); //$NON-NLS-1$
+						+ " XBlockExpression."); //$NON-NLS-1$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -179,7 +179,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Appender of a " + getLanguageName() //$NON-NLS-1$
-				+ " XBlockExpression."); //$NON-NLS-1$
+						+ " XBlockExpression."); //$NON-NLS-1$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -212,6 +212,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @param forAppender <code>true</code> if the code must be generated for an appender.
 	 * @return the code.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
 		final TypeReference adapter = getInnerBlockDocumentationAdapter();
 		return new StringConcatenationClient() {
@@ -586,7 +587,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("\t/** Create the factory for a " + getLanguageName() //$NON-NLS-1$
-				+ " block expression."); //$NON-NLS-1$
+						+ " block expression."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param resourceSet the set of the resources that must be used for"); //$NON-NLS-1$
 				it.newLine();
@@ -617,7 +618,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t/** Create the factory for a " + getLanguageName() //$NON-NLS-1$
-				+ " block expression."); //$NON-NLS-1$
+						+ " block expression."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param resource the resource that must be used for"); //$NON-NLS-1$
 				it.newLine();
@@ -656,7 +657,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("\t/** Create the appender for a " + getLanguageName() //$NON-NLS-1$
-					+ " block expression."); //$NON-NLS-1$
+							+ " block expression."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param resourceSet the set of the resources that must be used for"); //$NON-NLS-1$
 					it.newLine();
@@ -687,7 +688,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLineIfNotEmpty();
 					it.newLine();
 					it.append("\t/** Create the appender for a " + getLanguageName() //$NON-NLS-1$
-					+ " block expression."); //$NON-NLS-1$
+							+ " block expression."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param resource the resource that must be used for"); //$NON-NLS-1$
 					it.newLine();

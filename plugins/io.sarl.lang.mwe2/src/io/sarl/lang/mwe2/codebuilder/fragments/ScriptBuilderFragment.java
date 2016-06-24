@@ -56,7 +56,7 @@ import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypeFactory;
 
 /** Generator of the script builder types.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -248,6 +248,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @param forInterface indicates if the generated code is for interfaces.
 	 * @return the top element.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateTopElement(AbstractRule rule, boolean forInterface) {
 		final String topElementName = Strings.toFirstUpper(rule.getName());
 		final TypeReference builderType = getElementBuilderInterface(topElementName);
@@ -269,7 +270,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 				}
 				it.append("\t/** Create " + getAorAnArticle(topElementName) //$NON-NLS-1$
-				+ " "+ topElementName + " builder.");  //$NON-NLS-1$//$NON-NLS-2$
+						+ " "+ topElementName + " builder.");  //$NON-NLS-1$//$NON-NLS-2$
 				it.newLine();
 				it.append("\t * @param name - the name of the " + topElementName + "."); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine();
@@ -409,6 +410,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @param forInterface indicates if the generated code is for interfaces.
 	 * @return the fields and methods.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateFieldsAndMethods(boolean forInterface) {
 		TypeReference scriptInterface = getLanguageScriptInterface();
 		return new StringConcatenationClient() {

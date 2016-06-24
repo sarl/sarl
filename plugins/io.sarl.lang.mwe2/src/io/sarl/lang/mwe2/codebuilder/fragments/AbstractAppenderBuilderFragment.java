@@ -54,6 +54,7 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 
 	/** Generate the abstract appender.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected void generateAbstractAppender() {
 		final TypeReference abstractAppender = getAbstractAppenderImpl();
 		StringConcatenationClient content = new StringConcatenationClient() {

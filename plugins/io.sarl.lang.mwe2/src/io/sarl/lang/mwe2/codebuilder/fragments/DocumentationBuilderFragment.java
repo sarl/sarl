@@ -72,7 +72,7 @@ import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /** Generate the documentation adapters and related types.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -274,6 +274,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 
 	/** Generate the interface for the documentation formatter.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected void generateIDocumentationFormatter() {
 		final TypeReference formatter = getIDocumentationFormatter();
 		StringConcatenationClient content = new StringConcatenationClient() {
@@ -600,6 +601,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 
 	/** Generate the implementation for the documentation formatter.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected void generateDocumentationFormatterImpl() {
 		final TypeReference formatter = getDocumentationFormatterImpl();
 		StringConcatenationClient content = new StringConcatenationClient() {
@@ -1496,7 +1498,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
-				it.newLine();					
+				it.newLine();
 				it.append("\tprivate interface FormatterBackend<T> {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tT getFirstLine(int offset);"); //$NON-NLS-1$
@@ -1708,7 +1710,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
-				it.newLine();					
+				it.newLine();
 				it.append("\t\tpublic int getLineOffset("); //$NON-NLS-1$
 				it.append(ILineRegion.class);
 				it.append(" currentLine) {"); //$NON-NLS-1$
@@ -1717,7 +1719,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
-				it.newLine();					
+				it.newLine();
 				it.append("\t\tpublic int getLineEndOffset("); //$NON-NLS-1$
 				it.append(ILineRegion.class);
 				it.append(" currentLine) {"); //$NON-NLS-1$
@@ -1726,7 +1728,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
-				it.newLine();					
+				it.newLine();
 				it.append("\t\tpublic void replace(int offset, int length, String newText) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t"); //$NON-NLS-1$
@@ -1778,35 +1780,35 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
-				it.newLine();			
+				it.newLine();
 				it.append("\t\tpublic String getCommentText() {"); //$NON-NLS-1$
-				it.newLine();			
+				it.newLine();
 				it.append("\t\t\treturn this.documentation;"); //$NON-NLS-1$
-				it.newLine();			
+				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
-				it.newLine();			
+				it.newLine();
 				it.append("\t\tpublic String getLineText(Line line) {"); //$NON-NLS-1$
-				it.newLine();			
+				it.newLine();
 				it.append("\t\t\treturn this.documentation.substring(line.getStartOffset(), line.getEndOffset());"); //$NON-NLS-1$
-				it.newLine();			
+				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
-				it.newLine();			
+				it.newLine();
 				it.append("\t\tpublic int getCommentOffset() {"); //$NON-NLS-1$
-				it.newLine();			
+				it.newLine();
 				it.append("\t\t\treturn this.commentOffset;"); //$NON-NLS-1$
-				it.newLine();			
+				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
-				it.newLine();			
+				it.newLine();
 				it.append("\t\tpublic int getCommentEndOffset() {"); //$NON-NLS-1$
-				it.newLine();			
+				it.newLine();
 				it.append("\t\t\treturn this.commentEndOffset;"); //$NON-NLS-1$
-				it.newLine();			
+				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
-				it.newLine();			
+				it.newLine();
 				it.append("\t\tpublic Line getFirstLine(int offset) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn new Line(this.documentation, offset);"); //$NON-NLS-1$
@@ -1879,6 +1881,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 
 	/** Generate the implementation for the documentation builder.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected void generateEcoreDocumentationBuilderImpl() {
 		final TypeReference builder = getEcoreDocumentationBuilderImpl();
 		StringConcatenationClient content = new StringConcatenationClient() {
@@ -2129,7 +2132,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				etype = new TypeReference(providerClassname);
 			} catch (Throwable exception) {
 				//
-			}			
+			}
 		}
 		if (etype == null) {
 			etype = new TypeReference(MultiLineCommentDocumentationProvider.class);
@@ -2216,6 +2219,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 
 	/** Generate the syntactic sequencer that supports Ecore documentation.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected void generateEcoreDocumentationSyntacticSequencer() {
 		final TypeReference sequencer = getSyntacticSequencer();
 		final TypeReference customSequencer = getEcoreDocumentationSyntacticSequencer();

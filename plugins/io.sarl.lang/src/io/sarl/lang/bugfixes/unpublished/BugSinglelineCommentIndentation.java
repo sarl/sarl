@@ -52,33 +52,42 @@ public class BugSinglelineCommentIndentation {
 	 */
 	@SuppressWarnings("static-method")
 	public ITextReplacerContext fix(final ITextReplacerContext context, IComment comment) {
-		IHiddenRegion hiddenRegion = comment.getHiddenRegion();
-		boolean needBugFix = false;
-		if (hiddenRegion != null) {
-			ISemanticRegion semanticRegion = hiddenRegion.getNextSemanticRegion();
-			if (semanticRegion != null) {
-				EObject element = semanticRegion.getGrammarElement();
-				if (element instanceof Keyword
-						&& Strings.equal(((Keyword) element).getValue(), "}")) { //$NON-NLS-1$
-					needBugFix = true;
-					semanticRegion = hiddenRegion.getPreviousSemanticRegion();
-					if (semanticRegion != null) {
-						element = semanticRegion.getGrammarElement();
-						if (element instanceof Keyword
-								&& Strings.equal(((Keyword) element).getValue(), "{")) { //$NON-NLS-1$
-							needBugFix = false;
-						}
-					}
-				}
-			}
-		}
-		if (needBugFix) {			
+		final IHiddenRegion hiddenRegion = comment.getHiddenRegion();
+		if (detectBugSituation(hiddenRegion)
+				&& fixBug(hiddenRegion)) {
 			// Indentation of the first comment line
-			ITextRegionAccess access = comment.getTextRegionAccess();
-			ITextSegment target = access.regionForOffset(comment.getOffset(), 0);
+			final ITextRegionAccess access = comment.getTextRegionAccess();
+			final ITextSegment target = access.regionForOffset(comment.getOffset(), 0);
 			context.addReplacement(target.replaceWith(context.getIndentationString(1)));
 		}
 		return context;
+	}
+
+	private static boolean detectBugSituation(IHiddenRegion hiddenRegion) {
+		if (hiddenRegion != null) {
+			final ISemanticRegion semanticRegion = hiddenRegion.getNextSemanticRegion();
+			if (semanticRegion != null) {
+				final EObject element = semanticRegion.getGrammarElement();
+				if (element instanceof Keyword
+						&& Strings.equal(((Keyword) element).getValue(), "}")) { //$NON-NLS-1$
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private static boolean fixBug(IHiddenRegion hiddenRegion) {
+		boolean needBugFix = true;
+		final ISemanticRegion semanticRegion = hiddenRegion.getPreviousSemanticRegion();
+		if (semanticRegion != null) {
+			final EObject element = semanticRegion.getGrammarElement();
+			if (element instanceof Keyword
+					&& Strings.equal(((Keyword) element).getValue(), "{")) { //$NON-NLS-1$
+				needBugFix = false;
+			}
+		}
+		return needBugFix;
 	}
 
 }

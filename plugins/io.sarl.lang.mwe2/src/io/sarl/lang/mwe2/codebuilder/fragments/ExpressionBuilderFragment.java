@@ -55,7 +55,7 @@ import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /** Generator of the builder for XExpressions.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -122,7 +122,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-				+ " XExpression."); //$NON-NLS-1$
+						+ " XExpression."); //$NON-NLS-1$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -152,7 +152,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-				+ " XExpression."); //$NON-NLS-1$
+						+ " XExpression."); //$NON-NLS-1$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -186,7 +186,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-				+ " XExpression."); //$NON-NLS-1$
+						+ " XExpression."); //$NON-NLS-1$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -219,6 +219,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @param forAppender <code>true</code> if the code must be generated for an appender.
 	 * @return the code.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
 		Pair<AbstractRule, AbstractRule> expressionContext = extractExpressionContext();
 		TypeReference scriptType = getLanguageScriptInterface();
@@ -788,7 +789,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("\t/** Create the factory for a " + getLanguageName() //$NON-NLS-1$
-				+ " XExpression."); //$NON-NLS-1$
+						+ " XExpression."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param resourceSet the set of the resources that must be used for"); //$NON-NLS-1$
 				it.newLine();
@@ -813,7 +814,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t/** Create the factory for a " + getLanguageName() //$NON-NLS-1$
-				+ " XExpression."); //$NON-NLS-1$
+						+ " XExpression."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param resource the resource that must be used for"); //$NON-NLS-1$
 				it.newLine();
@@ -852,7 +853,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("\t/** Create the appender for a " + getLanguageName() //$NON-NLS-1$
-					+ " XExpression."); //$NON-NLS-1$
+							+ " XExpression."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param resourceSet the set of the resources that must be used for"); //$NON-NLS-1$
 					it.newLine();
@@ -880,7 +881,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLineIfNotEmpty();
 					it.newLine();
 					it.append("\t/** Create the appender for a " + getLanguageName() //$NON-NLS-1$
-					+ " XExpression."); //$NON-NLS-1$
+							+ " XExpression."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @param resource the resource that must be used for"); //$NON-NLS-1$
 					it.newLine();
@@ -912,6 +913,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 		}
 	}
 
+	@SuppressWarnings("checkstyle:all")
 	private Pair<AbstractRule, AbstractRule> extractExpressionContext() {
 		AbstractRule topElementRule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getTopElementRuleName());
 		for (RuleCall ruleCall : GrammarUtil.containedRuleCalls(topElementRule)) {

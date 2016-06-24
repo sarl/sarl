@@ -80,11 +80,11 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 		}
 		return false;
 	}
-	
+
 	/** Replies if the given expression has a side effect in the context of a guard.
 	 *
 	 * <p>This function differs from {@link #hasSideEffects(XExpression)} because it explore the
-	 * syntax tree for determining if one action has a side effect. 
+	 * syntax tree for determining if one action has a side effect.
 	 *
 	 * @param expr the expression to test.
 	 * @return <code>true</code> if a side effect was detected.

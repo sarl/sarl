@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.mwe2.externalLang;
+package io.sarl.lang.mwe2.externalspec;
 
 import java.util.Map;
 import java.util.Set;
@@ -44,7 +44,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 	/** Add the native types by default.
 	 */
 	public static final boolean DEFAULT_ADD_NATIVE_TYPES = false;
-	
+
 	private final Set<String> additionalLiterals = new TreeSet<>();
 
 	private final Set<String> additionalKeywords = new TreeSet<>();
@@ -184,9 +184,13 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 	 * @mavenartifactid $ArtifactId$
 	 */
 	public static class Color {
-		
+
+		private static final int MIN_COLOR = 0;
+
+		private static final int MAX_COLOR = 255;
+
 		private String name = "SARLdefault"; //$NON-NLS-1$
-		
+
 		private int red;
 
 		private int green;
@@ -200,7 +204,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 		public void setName(String name) {
 			this.name = name;
 		}
-		
+
 		/** Replies the name of the color.
 		 *
 		 * @return the name of the color.
@@ -218,29 +222,32 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 		 */
 		public void setRgb(String rgb) {
 			String[] components = rgb.split("[^0-9]+"); //$NON-NLS-1$
-			this.red = 0;
+			this.red = MIN_COLOR;
 			if (components.length > 0) {
 				this.red = Integer.valueOf(components[0]);
-				if (this.red < 0 || this.red > 255) {
-					throw new NumberFormatException("red is not between 0 and 255"); //$NON-NLS-1$
+				if (this.red < MIN_COLOR || this.red > MAX_COLOR) {
+					throw new NumberFormatException("red is not between " //$NON-NLS-1$
+							+ MAX_COLOR + " and " + MAX_COLOR); //$NON-NLS-1$
 				}
 			}
-			this.green = 0;
+			this.green = MIN_COLOR;
 			if (components.length > 1) {
 				this.green = Integer.valueOf(components[1]);
-				if (this.green < 0 || this.green > 255) {
-					throw new NumberFormatException("green is not between 0 and 255"); //$NON-NLS-1$
+				if (this.green < MIN_COLOR || this.green > MAX_COLOR) {
+					throw new NumberFormatException("green is not between " //$NON-NLS-1$
+							+ MIN_COLOR + " and " + MAX_COLOR); //$NON-NLS-1$
 				}
 			}
-			this.blue = 0;
+			this.blue = MIN_COLOR;
 			if (components.length > 1) {
 				this.blue = Integer.valueOf(components[2]);
-				if (this.blue < 0 || this.blue > 255) {
-					throw new NumberFormatException("blue is not between 0 and 255"); //$NON-NLS-1$
+				if (this.blue < MIN_COLOR || this.blue > MAX_COLOR) {
+					throw new NumberFormatException("blue is not between " //$NON-NLS-1$
+							+ MIN_COLOR + " and " + MAX_COLOR); //$NON-NLS-1$
 				}
 			}
 		}
-		
+
 		/** Replies the red component.
 		 *
 		 * @return the red.
@@ -267,7 +274,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 
 	}
 
-		/**
+	/**
 	 * Color configuration for LaTeX.
 	 *
 	 * @author $Author: sgalland$
@@ -278,11 +285,11 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 	public static class ColorConfig {
 
 		private static final String DEFAULT_COLOR = "black"; //$NON-NLS-1$
-		
+
 		private final Map<String, Color> colors = new TreeMap<>();
-		
+
 		private String commentColor;
-		
+
 		private String stringColor;
 
 		private String keywordColor;
@@ -298,7 +305,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 				this.colors.put(color.getName(), color);
 			}
 		}
-		
+
 		/** Replies the colors.
 		 *
 		 * @return the colors.
@@ -306,7 +313,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 		public Map<String, Color> getColors() {
 			return this.colors;
 		}
-		
+
 		/** Set the color of the comments.
 		 *
 		 * @param name the name of the color to use.

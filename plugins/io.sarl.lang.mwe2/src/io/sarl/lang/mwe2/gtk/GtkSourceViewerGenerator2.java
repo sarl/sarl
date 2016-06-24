@@ -34,7 +34,7 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.web.RegexpExtensions;
 
-import io.sarl.lang.mwe2.externalLang.AbstractXmlHighlightingFragment2;
+import io.sarl.lang.mwe2.externalspec.AbstractXmlHighlightingFragment2;
 
 /**
  * A {@link IGeneratorFragment} that create the language specification for
@@ -59,13 +59,13 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 	public String toString() {
 		return "GtkSourceView"; //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public void initialize(Injector injector) {
 		super.initialize(injector);
 		setBasenameTemplate(BASENAME_PATTERN);
 	}
-	
+
 	/** Add a mime type for the SARL source code.
 	 *
 	 * @param mimeType the mime type of SARL.
@@ -316,10 +316,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 			buffer.append("("); //$NON-NLS-1$
 			buffer.append(RegexpExtensions.toRegexpString(operator, false));
 			buffer.append(")"); //$NON-NLS-1$
-			operator.chars().forEach(
-					c -> {
-						characters.add((char) c);
-					});
+			operator.chars().forEach(c -> characters.add((char) c));
 		}
 		valuedTag("match", buffer.toString()); //$NON-NLS-1$
 		close();
@@ -374,7 +371,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 		close();
 
 		close();
-		
+
 		return getBasename(MessageFormat.format(getBasenameTemplate(), getLanguageSimpleName().toLowerCase()));
 	}
 

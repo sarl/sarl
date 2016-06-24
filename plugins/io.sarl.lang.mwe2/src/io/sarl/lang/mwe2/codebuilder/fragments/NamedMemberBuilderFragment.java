@@ -45,20 +45,21 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /** Generator of the builder for named members.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
-	
+
 	@Inject
 	private BuilderFactoryContributions builderFactoryContributions;
 
-	private Map<String, MemberDescription> members = null;
-	
+	private Map<String, MemberDescription> members;
+
 	@Override
+	@SuppressWarnings("checkstyle:all")
 	protected Iterable<MemberDescription> getMembers() {
 		if (this.members == null) {
 			this.members = new HashMap<>();
@@ -121,7 +122,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 		}
 		return this.members.values();
 	}
-		
+
 	@Override
 	public void generate() {
 		super.generate();
@@ -130,7 +131,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 			generateBuilderFactoryContributions(description);
 		}
 	}
-	
+
 	/** Generate the contributions for the BuildFactory.
 	 *
 	 * @param description the description of the member.
@@ -149,7 +150,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 			final String createFunctionName = "create" //$NON-NLS-1$
 					+ Strings.toFirstUpper(modifier)
 					+ Strings.toFirstUpper(description.getSimpleName());
-			
+
 			String container = null;
 			if (!description.getStandardContainers().isEmpty()) {
 				container = description.getStandardContainers().iterator().next();

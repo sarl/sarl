@@ -37,9 +37,9 @@ import com.ibm.icu.text.SimpleDateFormat;
 import org.eclipse.xtext.generator.IGeneratorFragment;
 import org.eclipse.xtext.util.Strings;
 
-import io.sarl.lang.mwe2.externalLang.AbstractExternalHighlightingFragment2;
-import io.sarl.lang.mwe2.externalLang.ExternalHighlightingConfig.Color;
-import io.sarl.lang.mwe2.externalLang.ExternalHighlightingConfig.ColorConfig;
+import io.sarl.lang.mwe2.externalspec.AbstractExternalHighlightingFragment2;
+import io.sarl.lang.mwe2.externalspec.ExternalHighlightingConfig.Color;
+import io.sarl.lang.mwe2.externalspec.ExternalHighlightingConfig.ColorConfig;
 
 /**
  * A {@link IGeneratorFragment} that create the language specification for
@@ -264,7 +264,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored) {
 		ColorConfig colors = getHighlightingConfig().getColors();
-		
+
 		Set<String> texKeywords = new TreeSet<>(keywords);
 		texKeywords.addAll(literals);
 
@@ -400,6 +400,6 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 		writeFile(basename, sty);
 	}
-	
+
 }
 

@@ -66,13 +66,14 @@ import org.eclipse.xtext.xtext.generator.util.GenModelUtil2;
 
 import io.sarl.lang.mwe2.codebuilder.CodeBuilderConfig;
 
-/** Abstract sub generator of code builder. 
- * 
+/** Abstract sub generator of code builder.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("checkstyle:methodcount")
 public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGeneratingFragment {
 
 	@Inject
@@ -94,7 +95,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 			subFragment.initialize(injector);
 		}
 	}
-	
+
 	/** Initialize the sub generators.
 	 *
 	 * @param injector the injector.
@@ -132,7 +133,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 			}
 		}
 	}
-	
+
 	/** Fill the given set with the exported packages for this fragment.
 	 *
 	 * @param exportedPackages the set to fill in.
@@ -171,8 +172,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	}
 
 	/** Generates the bindings.
-	 * 
-	 * @param factory the factory for creating the bindings. 
+	 *
+	 * @param factory the factory for creating the bindings.
 	 */
 	public void generateBindings(BindingFactory factory) {
 		for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
@@ -209,7 +210,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	/** Replies the generated source folder for the builder.
 	 *
-	 * @return the generated source folder for the builder. 
+	 * @return the generated source folder for the builder.
 	 */
 	@Pure
 	protected IFileSystemAccess2 getSrcGen() {
@@ -218,7 +219,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	/** Replies the not-generated source folder for the builder.
 	 *
-	 * @return the not-generated source folder for the builder. 
+	 * @return the not-generated source folder for the builder.
 	 */
 	@Pure
 	protected IFileSystemAccess2 getSrc() {
@@ -227,7 +228,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	/** Replies the base package for the code builder.
 	 *
-	 * @return the base package for the code builder. 
+	 * @return the base package for the code builder.
 	 */
 	@Pure
 	protected String getBasePackage() {
@@ -238,7 +239,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	/** Replies the base package for the builders.
 	 *
-	 * @return the base package for the builders. 
+	 * @return the base package for the builders.
 	 */
 	@Pure
 	protected String getBuilderPackage() {
@@ -247,7 +248,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	/** Replies the base package for the builders.
 	 *
-	 * @return the base package for the builders. 
+	 * @return the base package for the builders.
 	 */
 	@Pure
 	protected String getAppenderPackage() {
@@ -256,7 +257,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	/** Replies the base package for the documentation tools.
 	 *
-	 * @return the base package for the documentation tools. 
+	 * @return the base package for the documentation tools.
 	 */
 	@Pure
 	protected String getDocumentationPackage() {
@@ -267,7 +268,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	/** Replies the base package for the serialization tools.
 	 *
-	 * @return the base package for the serialization tools. 
+	 * @return the base package for the serialization tools.
 	 */
 	@Pure
 	protected String getSerializerPackage() {
@@ -429,13 +430,13 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	@Pure
 	protected TypeReference getLanguageScriptInterface() {
 		AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getScriptRuleName());
-		EClassifier type = getGeneratedTypeFor(rule); 
+		EClassifier type = getGeneratedTypeFor(rule);
 		return newTypeReference(type);
 	}
 
 	/** Replies the base package for the ecore elements of the grammar.
 	 *
-	 * @return the base package for the ecore elements. 
+	 * @return the base package for the ecore elements.
 	 */
 	@Pure
 	protected String getLanguageBasePackage() {
@@ -457,7 +458,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		for (Assignment assignment : GrammarUtil.containedAssignments(scriptRule)) {
 			if ((assignment.getTerminal() instanceof RuleCall)
 					&& Objects.equals(((RuleCall) assignment.getTerminal()).getRule().getName(),
-							getCodeBuilderConfig().getTopElementRuleName())) {
+					getCodeBuilderConfig().getTopElementRuleName())) {
 				return "get" + Strings.toFirstUpper(assignment.getFeature()); //$NON-NLS-1$
 			}
 		}
@@ -741,7 +742,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	/** Replies the "an" or "a" article according to the given word.
 	 *
 	 * <p>This function does not follow the real English grammatical rule, but it is
-	 * an acceptable approximation. 
+	 * an acceptable approximation.
 	 *
 	 * @param word the word that follows the article.
 	 * @return the article.
@@ -756,7 +757,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	/** Replies the singular version of the word.
 	 *
 	 * <p>This function does not follow the real English grammatical rule, but it is
-	 * an acceptable approximation. 
+	 * an acceptable approximation.
 	 *
 	 * @param word the word.
 	 * @return the singular word.
@@ -800,32 +801,23 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	protected static Assignment findAssignmentFromFeatureName(AbstractRule rule, String name) {
 		return IterableExtensions.findFirst(GrammarUtil.containedAssignments(rule),
-				new Functions.Function1<Assignment, Boolean>() {
-			@Override
-			public Boolean apply(Assignment p) {
-				return name.equals(p.getFeature());
-			}
-		});
+				(assignment) -> name.equals(assignment.getFeature()));
 	}
 
 	/** Replies the first assignement with the given name in the given rule.
 	 *
 	 * @param rule the rule.
-	 * @param pattern pattern for the name of the terminal. 
+	 * @param pattern pattern for the name of the terminal.
 	 * @return the assignment or <code>null</code>.
 	 */
 	protected static Assignment findAssignmentFromTerminalPattern(AbstractRule rule, String pattern) {
 		return IterableExtensions.findFirst(GrammarUtil.containedAssignments(rule),
-				new Functions.Function1<Assignment, Boolean>() {
-			@Override
-			public Boolean apply(Assignment p) {
-				return nameMatches(p.getTerminal(), pattern);
-			}
-		});
+				(assignment) -> nameMatches(assignment.getTerminal(), pattern));
 	}
 
 	/** Extract type members from the given rule.
-	 * 
+	 *
+	 * @param <T> type of the value to extract.
 	 * @param containerRule the member's container rule.
 	 * @param memberRule the member's rule.
 	 * @param treatedRules the set of rules' names that must be ignored as members.
@@ -833,6 +825,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @param namedMemberCallback the function to call on each discovered named member.
 	 * @return the extract value, or <code>null</code>.
 	 */
+	@SuppressWarnings("checkstyle:")
 	protected <T> T visitMemberElements(
 			AbstractRule containerRule,
 			AbstractRule memberRule, Set<String> treatedRules,
@@ -845,12 +838,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 			AbstractRule rule = rules.removeFirst();
 			Assignment assignment = IterableExtensions.findFirst(
 					GrammarUtil.containedAssignments(rule),
-					new Functions.Function1<Assignment, Boolean>(){
-						@Override
-						public Boolean apply(Assignment p) {
-							return getCodeBuilderConfig().getMemberNameExtensionGrammarName().equals(p.getFeature());
-						}
-					});
+					(passignment) -> getCodeBuilderConfig()
+					.getMemberNameExtensionGrammarName().equals(passignment.getFeature()));
 			if (assignment != null) {
 				if (namedMemberCallback != null) {
 					T retVal = namedMemberCallback.apply(containerRule, rule, assignment.getFeature());
@@ -859,37 +848,43 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 					}
 				}
 			} else {
-				for (RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
-					if (treatedRules.contains(ruleCall.getRule().getName())) {
-						continue;
-					}
-					// Is a constructor rule?
-					Pattern constructorPattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
-					Matcher constructorMatcher = constructorPattern.matcher(ruleCall.getRule().getName());
-					if (constructorMatcher.find()) {
-						if (!getCodeBuilderConfig().getConstructorFreeRuleNames().contains(containerRule.getName())) {
-							Pattern blockPattern = Pattern.compile(getCodeBuilderConfig().getBlockExpressionGrammarPattern());
-							RuleCall block = IterableExtensions.findFirst(
-									GrammarUtil.containedRuleCalls(ruleCall.getRule()),
-									new Functions.Function1<RuleCall, Boolean>(){
-										@Override
-										public Boolean apply(RuleCall p) {
-											Matcher matcher = blockPattern.matcher(p.getRule().getName());
-											return matcher.find();
-										}
-									});
-							if (block != null && constructorCallback != null) {
-								T retVal = constructorCallback.apply(containerRule, ruleCall.getRule());
-								if (retVal != null) {
-									return retVal;
-								}
-							}
+				T retVal = searchConstructorRule(containerRule, rule, treatedRules, constructorCallback, rules);
+				if (retVal != null) {
+					return retVal;
+				}
+			}
+		}
+		return null;
+	}
+
+	private <T> T searchConstructorRule(AbstractRule containerRule, AbstractRule rule, Set<String> treatedRules,
+			Functions.Function2<AbstractRule, AbstractRule, T> constructorCallback,
+			List<AbstractRule> rules) {
+		for (RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
+			if (treatedRules.contains(ruleCall.getRule().getName())) {
+				continue;
+			}
+			// Is a constructor rule?
+			Pattern constructorPattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
+			Matcher constructorMatcher = constructorPattern.matcher(ruleCall.getRule().getName());
+			if (constructorMatcher.find()) {
+				if (!getCodeBuilderConfig().getConstructorFreeRuleNames().contains(containerRule.getName())) {
+					Pattern blockPattern = Pattern.compile(getCodeBuilderConfig().getBlockExpressionGrammarPattern());
+					RuleCall block = IterableExtensions.findFirst(
+							GrammarUtil.containedRuleCalls(ruleCall.getRule()), (rcall) -> {
+							Matcher matcher = blockPattern.matcher(rcall.getRule().getName());
+							return matcher.find();
+						});
+					if (block != null && constructorCallback != null) {
+						T retVal = constructorCallback.apply(containerRule, ruleCall.getRule());
+						if (retVal != null) {
+							return retVal;
 						}
-					} else {
-						treatedRules.add(ruleCall.getRule().getName());
-						rules.add(ruleCall.getRule());
 					}
 				}
+			} else {
+				treatedRules.add(ruleCall.getRule().getName());
+				rules.add(ruleCall.getRule());
 			}
 		}
 		return null;

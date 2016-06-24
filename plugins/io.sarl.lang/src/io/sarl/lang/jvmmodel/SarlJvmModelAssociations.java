@@ -117,7 +117,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@Singleton
-	public class Impl extends IXtendJvmAssociations.Impl implements SarlJvmModelAssociations {
+	class Impl extends IXtendJvmAssociations.Impl implements SarlJvmModelAssociations {
 
 		@Override
 		public SarlEvent getSarlEvent(JvmGenericType jvmType) {

@@ -31,7 +31,7 @@ import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
  * Use this class to register components to be used within the IDE.
  *
  * <p>DOT NOT ADD BINDINGS IN THIS CLASS. PREFER TO UPDATE THE MWE2 SCRIPT.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

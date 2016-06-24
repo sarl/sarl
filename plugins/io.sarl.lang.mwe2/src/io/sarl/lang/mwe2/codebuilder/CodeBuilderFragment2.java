@@ -21,7 +21,6 @@
 
 package io.sarl.lang.mwe2.codebuilder;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -59,10 +58,10 @@ import io.sarl.lang.mwe2.codebuilder.fragments.ScriptBuilderFragment;
  */
 public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 
-	private final static Logger LOG = Logger.getLogger(CodeBuilderFragment2.class);
-	
+	private static final Logger LOG = Logger.getLogger(CodeBuilderFragment2.class);
+
 	private Collection<AbstractSubCodeBuilderFragment> subFragments;
-	
+
 	/** Replies the language name.
 	 *
 	 * @return the language name.
@@ -80,7 +79,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 			subFragment.initialize(injector);
 		}
 	}
-	
+
 	/** Initialize the sub generators.
 	 *
 	 * @param injector the injector.
@@ -96,7 +95,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 		fragments.add(injector.getInstance(ScriptBuilderFragment.class));
 		return fragments;
 	}
-	
+
 	@Override
 	public void checkConfiguration(Issues issues) {
 		super.checkConfiguration(issues);
@@ -107,9 +106,10 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 				subFragment.checkConfiguration(issues);
 			}
 		}
-	}	
+	}
 
 	@Override
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void generate() {
 		LOG.info("Generating the code builder for " + getLanguageName()); //$NON-NLS-1$
 		IXtextProjectConfig generalProjectConfig = getProjectConfig();
@@ -118,7 +118,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 			LOG.debug("Generic IDE project is disabled. Skipping the generation of the code builder."); //$NON-NLS-1$
 			return;
 		}
-		
+
 		BuilderFactoryFragment fragment = null;
 		for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
 			if (subFragment instanceof BuilderFactoryFragment) {
@@ -130,7 +130,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 		if (fragment != null) {
 			fragment.generate();
 		}
-	
+
 		if (isGenerateStub()) {
 			if (isGenerateXtendStub()) {
 				for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
@@ -143,13 +143,13 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 			}
 		}
 		createBindings().contributeTo(getLanguage().getRuntimeGenModule());
-	
+
 		Set<String> exportedPackages = getProjectConfig().getRuntime().getManifest().getExportedPackages();
 		for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
 			subFragment.getExportedPackages(exportedPackages);
 		}
 	}
-	
+
 	/** Create the bindings for the builders.
 	 *
 	 * <p>This function is invoked for the Eclipse UI and the IDEA UI.
@@ -163,5 +163,5 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 		}
 		return factory;
 	}
-	
+
 }

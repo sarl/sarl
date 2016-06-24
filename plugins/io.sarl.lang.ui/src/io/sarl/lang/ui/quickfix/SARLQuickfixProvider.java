@@ -119,7 +119,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	public Injector getInjector() {
 		return this.injector;
 	}
-	
+
 	/** Replies a provider of qualified name.
 	 *
 	 * @return the provider of qualified name.

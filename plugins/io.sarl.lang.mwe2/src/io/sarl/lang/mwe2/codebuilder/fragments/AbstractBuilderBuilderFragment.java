@@ -61,6 +61,7 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 
 	/** Generate the abstract builder.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected void generateAbstractBuilder() {
 		final TypeReference abstractBuilder = getAbstractBuilderImpl();
 		StringConcatenationClient content = new StringConcatenationClient() {

@@ -47,7 +47,7 @@ public class Modifier {
 	 */
 	public void setType(String name) {
 		if (!Strings.isEmpty(name)) {
-			this.type = name; 
+			this.type = name;
 		}
 	}
 
@@ -57,7 +57,7 @@ public class Modifier {
 	 */
 	@Pure
 	public String getType() {
-		return this.type; 
+		return this.type;
 	}
 
 	/** Change the modifier.
@@ -66,7 +66,7 @@ public class Modifier {
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
-			this.modifier.add(modifier); 
+			this.modifier.add(modifier);
 		}
 	}
 
@@ -76,7 +76,7 @@ public class Modifier {
 	 */
 	@Pure
 	public List<String> getModifiers() {
-		return this.modifier; 
+		return this.modifier;
 	}
 
 }

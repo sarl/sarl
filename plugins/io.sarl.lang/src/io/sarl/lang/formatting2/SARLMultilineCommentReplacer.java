@@ -44,7 +44,7 @@ public class SARLMultilineCommentReplacer extends CommentReplacer {
 
 	@Inject
 	private IDocumentationFormatter formatter;
-	
+
 	@Inject
 	private BugMultilineCommentIndentation bugfix;
 

@@ -44,7 +44,7 @@ public class SuperTypeMapping {
 	 */
 	public void setType(String name) {
 		if (!Strings.isEmpty(name)) {
-			this.type = name; 
+			this.type = name;
 		}
 	}
 
@@ -54,7 +54,7 @@ public class SuperTypeMapping {
 	 */
 	@Pure
 	public String getType() {
-		return this.type; 
+		return this.type;
 	}
 
 	/** Change the name of the super type.
@@ -63,7 +63,7 @@ public class SuperTypeMapping {
 	 */
 	public void setSuper(String name) {
 		if (!Strings.isEmpty(name)) {
-			this.superType = name; 
+			this.superType = name;
 		}
 	}
 
@@ -73,7 +73,7 @@ public class SuperTypeMapping {
 	 */
 	@Pure
 	public String getSuper() {
-		return this.superType; 
+		return this.superType;
 	}
 
 }

@@ -70,7 +70,7 @@ public class FormatterFacade {
 
 	@Inject
 	private Provider<TextRegionAccessBuilder> regionAccessBuilder;
-	
+
 	@Named(Constants.FILE_EXTENSIONS)
 	private String fileExtension;
 
@@ -82,12 +82,12 @@ public class FormatterFacade {
 	public String format(String sarlCode) {
 		return format(sarlCode, new XtextResourceSet());
 	}
-	
+
 	/** Format the given code.
 	 *
 	 * @param sarlCode the code to format.
 	 * @param resourceSet the resource set that sohuld contains the code. This resource set may be
-	 *    used for resolving types by the underlying code.
+	 *     used for resolving types by the underlying code.
 	 * @return the code to format.
 	 */
 	public String format(String sarlCode, ResourceSet resourceSet) {

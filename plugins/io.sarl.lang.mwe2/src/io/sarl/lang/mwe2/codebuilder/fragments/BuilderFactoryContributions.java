@@ -41,7 +41,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class BuilderFactoryContributions {
 
 	private final List<StringConcatenationClient> contributions = new ArrayList<>();
-	
+
 	/** Add a contribution.
 	 *
 	 * @param contribution the contribution.
@@ -51,7 +51,7 @@ public class BuilderFactoryContributions {
 			this.contributions.add(contribution);
 		}
 	}
-	
+
 	/** Replies the contributions.
 	 *
 	 * @return the contributions.

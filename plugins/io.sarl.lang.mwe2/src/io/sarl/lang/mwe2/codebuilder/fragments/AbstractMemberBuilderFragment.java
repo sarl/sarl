@@ -51,20 +51,20 @@ import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /** Generator of the builder for members.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuilderFragment {
-	
+
 	/** Replies the members to generate.
 	 *
 	 * @return the members.
 	 */
 	protected abstract Iterable<MemberDescription> getMembers();
-	
+
 	@Override
 	public void generate() {
 		Iterable<MemberDescription> members = getMembers();
@@ -86,7 +86,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		super.generateBindings(factory);
 		IFileSystemAccess2 fileSystem = getSrc();
 		TypeReference type;
-	
+
 		for (MemberDescription description : getMembers()) {
 			if ((fileSystem.isFile(description.getBuilderCustomImplementation().getJavaPath()))
 					|| (fileSystem.isFile(description.getBuilderCustomImplementation().getXtendPath()))) {
@@ -140,7 +140,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-					+ " " + description.getSimpleName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
+						+ " " + description.getSimpleName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -176,7 +176,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Source appender of a " + getLanguageName() //$NON-NLS-1$
-					+ " " + description.getSimpleName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
+						+ " " + description.getSimpleName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -202,7 +202,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
 		javaFile.writeTo(getSrcGen());
 	}
-	
+
 	/** Replies the name of the accessor that replies the generated member.
 	 *
 	 * @param description the description of the member to generate.
@@ -221,6 +221,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	 * @param forAppender <code>true</code> if the code must be generated for an appender.
 	 * @return the code.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateMembers(MemberDescription description, boolean forInterface,
 			boolean forAppender) {
 		final TypeReference generatedType = description.getGeneratedType();
@@ -273,7 +274,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				expressions.add(assignment.getFeature());
 			}
 		}
-		
+
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -596,7 +597,8 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						it.newLine();
 						if (forAppender) {
 							it.append("\t\tthis.builder.add"); //$NON-NLS-1$
-							it.append(toSingular(Strings.toFirstUpper(getCodeBuilderConfig().getMemberThrowsExtensionGrammarName())));
+							it.append(toSingular(Strings.toFirstUpper(getCodeBuilderConfig()
+									.getMemberThrowsExtensionGrammarName())));
 							it.append("(type);"); //$NON-NLS-1$
 						} else {
 							it.append("\t\tthis."); //$NON-NLS-1$
@@ -632,7 +634,8 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						it.newLine();
 						if (forAppender) {
 							it.append("\t\tthis.builder.add"); //$NON-NLS-1$
-							it.append(toSingular(Strings.toFirstUpper(getCodeBuilderConfig().getMemberFiresExtensionGrammarName())));
+							it.append(toSingular(Strings.toFirstUpper(getCodeBuilderConfig()
+									.getMemberFiresExtensionGrammarName())));
 							it.append("(type);"); //$NON-NLS-1$
 						} else {
 							it.append("\t\tthis."); //$NON-NLS-1$
@@ -782,7 +785,8 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					}
 					it.append(getBlockExpressionBuilderInterface());
 					it.append(" get"); //$NON-NLS-1$
-					it.append(Strings.toFirstUpper(getCodeBuilderConfig().getMemberBlockExpressionExtensionGrammarName()));
+					it.append(Strings.toFirstUpper(getCodeBuilderConfig()
+							.getMemberBlockExpressionExtensionGrammarName()));
 					it.append("()"); //$NON-NLS-1$
 					if (forInterface) {
 						it.append(";"); //$NON-NLS-1$
@@ -791,7 +795,8 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						it.newLine();
 						if (forAppender) {
 							it.append("\t\treturn this.builder.get"); //$NON-NLS-1$
-							it.append(Strings.toFirstUpper(getCodeBuilderConfig().getMemberBlockExpressionExtensionGrammarName()));
+							it.append(Strings.toFirstUpper(getCodeBuilderConfig()
+									.getMemberBlockExpressionExtensionGrammarName()));
 							it.append("();"); //$NON-NLS-1$
 						} else {
 							it.append("\t\t"); //$NON-NLS-1$
@@ -807,7 +812,8 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 							it.append("\t\tthis."); //$NON-NLS-1$
 							it.append(generatedFieldName);
 							it.append(".set"); //$NON-NLS-1$
-							it.append(Strings.toFirstUpper(getCodeBuilderConfig().getMemberBlockExpressionExtensionGrammarName()));
+							it.append(Strings.toFirstUpper(getCodeBuilderConfig()
+									.getMemberBlockExpressionExtensionGrammarName()));
 							it.append("(expr);"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\treturn block;"); //$NON-NLS-1$
@@ -905,7 +911,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	}
 
 	/** Description of a member.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -926,13 +932,13 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		private final TypeReference generatedType;
 
 		private final List<String> modifiers;
-		
+
 		private final Set<String> containers = new HashSet<>();
 
 		private final Set<String> noBodyContainers = new HashSet<>();
 
 		/** Constructor.
-		 * 
+		 *
 		 * @param ruleName the name of the rule.
 		 * @param simpleName the simple name.
 		 * @param interfaceType the type of the builder interface.
@@ -953,7 +959,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 			this.generatedType = generatedType;
 			this.modifiers = modifiers;
 		}
-		
+
 		@Override
 		public boolean equals(Object obj) {
 			if (obj instanceof MemberDescription) {
@@ -967,19 +973,19 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 			}
 			return false;
 		}
-		
+
 		@Override
 		public int hashCode() {
-			int h = 1;
-			h = h * 31 + Strings.emptyIfNull(this.ruleName).hashCode();
-			h = h * 31 + Strings.emptyIfNull(this.simpleName).hashCode();
-			h = h * 31 + ((this.interfaceType == null) ? 0 : this.interfaceType.hashCode());
-			h = h * 31 + ((this.implementationType == null) ? 0 : this.implementationType.hashCode());
-			h = h * 31 + ((this.customImplementationType == null) ? 0 : this.customImplementationType.hashCode());
-			h = h * 31 + ((this.generatedType == null) ? 0 : this.generatedType.hashCode());
-			return h;
+			int bits = 1;
+			bits = bits * 31 + Objects.hashCode(this.ruleName);
+			bits = bits * 31 + Objects.hashCode(this.simpleName);
+			bits = bits * 31 + Objects.hashCode(this.interfaceType);
+			bits = bits * 31 + Objects.hashCode(this.implementationType);
+			bits = bits * 31 + Objects.hashCode(this.customImplementationType);
+			bits = bits * 31 + Objects.hashCode(this.generatedType);
+			return bits ^ (bits >> 31);
 		}
-		
+
 		@Override
 		public String toString() {
 			return this.simpleName;

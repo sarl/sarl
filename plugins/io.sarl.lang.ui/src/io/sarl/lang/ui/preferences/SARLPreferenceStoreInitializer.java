@@ -50,10 +50,10 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 	@Override
 	public void initialize(IPreferenceStoreAccess preferenceStoreAccess) {
 		this.preferenceStoreAccess = preferenceStoreAccess;
-		
+
 		// Initialize the default visibilities for the optional issue codes.
 		setupIssueCodesDefaults(preferenceStoreAccess);
-		
+
 		IPreferenceStore preferenceStore = org.eclipse.jdt.ui.PreferenceConstants.getPreferenceStore();
 		preferenceStore.addPropertyChangeListener(this);
 

@@ -20,7 +20,7 @@ Export-Package: io.sarl.lang.mwe2,
  io.sarl.lang.mwe2.binding,
  io.sarl.lang.mwe2.codebuilder,
  io.sarl.lang.mwe2.codebuilder.fragments,
- io.sarl.lang.mwe2.externalLang,
+ io.sarl.lang.mwe2.externalspec,
  io.sarl.lang.mwe2.gtk,
  io.sarl.lang.mwe2.latex,
  io.sarl.lang.mwe2.prettify

@@ -32,7 +32,7 @@ import com.google.inject.Injector;
 import org.eclipse.xtext.generator.IGeneratorFragment;
 import org.eclipse.xtext.util.Strings;
 
-import io.sarl.lang.mwe2.externalLang.AbstractExternalHighlightingFragment2;
+import io.sarl.lang.mwe2.externalspec.AbstractExternalHighlightingFragment2;
 
 /**
  * A {@link IGeneratorFragment} that create the language specification for
@@ -65,13 +65,13 @@ public class GooglePrettifyGenerator2 extends AbstractExternalHighlightingFragme
 	private String plainTextPattern = "^[$a-zA-Z_][\\w$]*"; //$NON-NLS-1$
 
 	private String commentPattern = "^\\/(?:\\/.*|\\*(?:\\/|\\**[^*/])*(?:\\*+\\/?)?)"; //$NON-NLS-1$
-	
+
 	@Override
 	public void initialize(Injector injector) {
 		super.initialize(injector);
 		setBasenameTemplate(BASENAME_PATTERN);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Google Prettify"; //$NON-NLS-1$
@@ -215,10 +215,10 @@ public class GooglePrettifyGenerator2 extends AbstractExternalHighlightingFragme
 		}
 
 		List<String> css = new ArrayList<>();
-		
+
 		String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
 		css.addAll(Arrays.asList(header));
-		
+
 		append(css, "PR[''registerLangHandler'']("); //$NON-NLS-1$
 		append(css, "   PR[''createSimpleLexer'']("); //$NON-NLS-1$
 		append(css, "      ["); //$NON-NLS-1$

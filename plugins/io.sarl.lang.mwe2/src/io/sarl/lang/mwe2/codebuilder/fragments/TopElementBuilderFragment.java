@@ -57,7 +57,7 @@ import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 /** Generator of the builder for top element types.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -80,7 +80,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				+ Strings.toFirstUpper(generatedType.getSimpleName())
 				+ "()"; //$NON-NLS-1$
 	}
-	
+
 	@Override
 	protected Collection<AbstractSubCodeBuilderFragment> initializeSubGenerators(Injector injector) {
 		return Arrays.asList(
@@ -279,7 +279,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-					+ " " + element.getGeneratedType().getSimpleName() + "."); //$NON-NLS-1$//$NON-NLS-2$
+							+ " " + element.getGeneratedType().getSimpleName() + "."); //$NON-NLS-1$//$NON-NLS-2$
 					it.newLine();
 					it.append(" */"); //$NON-NLS-1$
 					it.newLine();
@@ -317,7 +317,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("/** Source adapter of a " + getLanguageName() //$NON-NLS-1$
-					+ " " + element.getGeneratedType().getSimpleName() + "."); //$NON-NLS-1$//$NON-NLS-2$
+							+ " " + element.getGeneratedType().getSimpleName() + "."); //$NON-NLS-1$//$NON-NLS-2$
 					it.newLine();
 					it.append(" */"); //$NON-NLS-1$
 					it.newLine();
@@ -360,7 +360,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-					+ " " + element.getGeneratedType().getSimpleName() + "."); //$NON-NLS-1$//$NON-NLS-2$
+							+ " " + element.getGeneratedType().getSimpleName() + "."); //$NON-NLS-1$//$NON-NLS-2$
 					it.newLine();
 					it.append(" */"); //$NON-NLS-1$
 					it.newLine();
@@ -393,7 +393,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	}
 
 	/** Generate the creators of members.
-	 * 
+	 *
 	 * @param rules the rules from which the members' definitions could be retreived.
 	 * @param description the description of the top element.
 	 * @param forInterface <code>true</code> if the generation is for an interface.
@@ -418,6 +418,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @param forAppender <code>true</code> if the generation is for the ISourceAppender.
 	 * @return the member functions.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected List<StringConcatenationClient> generateMember(AbstractRule rule, TopElementDescription description,
 			boolean forInterface, boolean forAppender) {
 		final String memberName = Strings.toFirstUpper(rule.getName());
@@ -655,6 +656,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @param forAppender <code>true</code> if the generation is for the ISourceAppender.
 	 * @param description the description of the top element.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected void generateTopElement(AbstractRule rule, boolean forInterface,
 			boolean forAppender, TopElementDescription description) {
 		final AtomicBoolean isExtendKeywordFound = new AtomicBoolean(false);
@@ -1111,7 +1113,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	}
 
 	/** Description of a top element.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -1136,7 +1138,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 		private StringConcatenationClient content;
 
 		/** Constructor.
-		 * 
+		 *
 		 * @param ruleName the name of the rule.
 		 * @param simpleName the simple name.
 		 * @param interfaceType the type of the builder interface.
@@ -1152,7 +1154,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 			this.implementationType = implementationType;
 			this.generatedType = generatedType;
 		}
-		
+
 		@Override
 		public String toString() {
 			return this.simpleName;

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.mwe2.externalLang;
+package io.sarl.lang.mwe2.externalspec;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -39,9 +39,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalHighlightingFragment2 {
-	
+
 	private final List<String> lines = new ArrayList<>();
-	
+
 	private final List<String> openedContexts = new ArrayList<>();
 
 	private String indent() {
@@ -73,7 +73,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 		this.openedContexts.add(tag);
 		this.lines.add(line.toString());
 	}
-	
+
 	/** Close a tag.
 	 *
 	 * @see #open(String, String...)
@@ -156,7 +156,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 		this.lines.clear();
 		this.lines.add(MessageFormat.format("<?xml version=\"1.0\" encoding=\"{0}\"?>", //$NON-NLS-1$
 				getCodeConfig().getEncoding()));
-		
+
 		String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
 		this.lines.add("<!--"); //$NON-NLS-1$
 		for (String headerLine : header) {
@@ -164,18 +164,18 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 			this.lines.add(headerLine);
 		}
 		this.lines.add("-->"); //$NON-NLS-1$
-		
+
 		String basename = generateXml(literals, keywords, punctuation, ignored);
 
 		// Save
 		writeFile(basename, this.lines);
 	}
-	
+
 	/** Generate the XML content.
 	 *
 	 * @param literals the literals of the language.
 	 * @param keywords the keywords of the language.
-	 * @param punctuation the punctuation symbols. 
+	 * @param punctuation the punctuation symbols.
 	 * @param ignored the tokens that were ignored in the MWE2 configuration.
 	 * @return the basename of the file to create.
 	 */

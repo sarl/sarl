@@ -26,7 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.DefaultGeneratorModule;
 
 import io.sarl.lang.mwe2.codebuilder.CodeBuilderConfig;
-import io.sarl.lang.mwe2.externalLang.ExternalHighlightingConfig;
+import io.sarl.lang.mwe2.externalspec.ExternalHighlightingConfig;
 
 /**
  * The generation module for SARL.

@@ -49,6 +49,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.io.Files;
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
@@ -66,8 +67,6 @@ import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.osgi.framework.Version;
-
-import com.google.common.io.Files;
 
 
 /** Helper for tests.

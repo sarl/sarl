@@ -47,7 +47,7 @@ import org.eclipse.xtext.xtext.generator.model.TypeReference;
 import org.eclipse.xtext.xtext.generator.model.XtendFileAccess;
 
 /** Generator of the script builder types.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -70,13 +70,14 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 
 	/** Replies the contributions.
 	 *
-	 * @return the contributions. 
+	 * @return the contributions.
 	 */
 	protected BuilderFactoryContributions getContributions() {
 		return this.contributions;
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:all")
 	public void generate() {
 		super.generate();
 		final TypeReference runtimeModule = getNaming().getRuntimeModule(getGrammar());
@@ -364,7 +365,8 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 		StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
-				it.append("/** User-defined builder factory of the " + getLanguageName() + " scripts."); //$NON-NLS-1$//$NON-NLS-2$
+				it.append("/** User-defined builder factory of the " + getLanguageName() //$NON-NLS-1$
+						+ " scripts."); //$NON-NLS-1$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -388,6 +390,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:all")
 	public void generateJavaStubs() {
 		super.generateJavaStubs();
 		final TypeReference stub = getBuilderFactoryImplCustom();

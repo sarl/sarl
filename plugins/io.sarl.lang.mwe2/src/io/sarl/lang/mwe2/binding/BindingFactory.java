@@ -49,7 +49,7 @@ import org.eclipse.xtext.xtext.generator.model.TypeReference;
  * @mavenartifactid $ArtifactId$
  */
 public class BindingFactory {
-	
+
 	private static final String CONFIGURE_PREFIX = "configure"; //$NON-NLS-1$
 
 	private static final String BIND_PREFIX = "bind"; //$NON-NLS-1$
@@ -179,7 +179,7 @@ public class BindingFactory {
 	    BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
 	    return new Binding(key, statements, true, this.name);
 	}
-	
+
 	/** Bind a type annotated with a name of the given value.
 	 *
 	 * @param bind the type to bind.
@@ -299,7 +299,7 @@ public class BindingFactory {
 		}
 		return new Binding(type, value, true, this.name);
 	}
-	
+
 	private static Binding findBinding(Set<Binding> bindings, Binding binding) {
 		for (Binding bnd : bindings) {
 			if (Objects.equals(bnd, binding)) {
@@ -389,7 +389,7 @@ public class BindingFactory {
 	public Binding toBinding(BindingElement element) {
 		TypeReference typeReference = typeRef(element.getBind());
 		String annotatedWith = element.getAnnotatedWith();
-		String annotatedWithName = element.getAnnotatedWithName();	
+		String annotatedWithName = element.getAnnotatedWithName();
 		if (!Strings.isEmpty(annotatedWith)) {
 			TypeReference annotationType = typeRef(annotatedWith);
 			if (element.isInstance()) {
@@ -425,5 +425,5 @@ public class BindingFactory {
 					element.isSingleton(),
 					element.isEager());
 	}
-	
+
 }

@@ -85,6 +85,7 @@ import io.sarl.lang.sarl.SarlSkill;
  * @mavenartifactid $ArtifactId$
  * @see FormatterFacade
  */
+@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SARLFormatter extends XtendFormatter {
 
 	/** Name to use for injected comments.
@@ -173,7 +174,7 @@ public class SARLFormatter extends XtendFormatter {
 
 	@Override
 	protected void _format(XBlockExpression expr, IFormattableDocument document) {
-		if (getPreferences().getPreference(SARLFormatterPreferenceKeys.enableSinglelineExpression).booleanValue()) {
+		if (getPreferences().getPreference(SARLFormatterPreferenceKeys.ENABLE_SINGLELINE_EXPRESSION).booleanValue()) {
 			super._format(expr, document);
 		} else {
 			// Avoid to format the block expression on a single line.
@@ -305,6 +306,7 @@ public class SARLFormatter extends XtendFormatter {
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	protected void _format(XtendFunction function, IFormattableDocument document) {
 		formatAnnotations(function, document, XbaseFormatterPreferenceKeys.newLineAfterMethodAnnotations);
 		formatModifiers(function, document);
@@ -436,10 +438,12 @@ public class SARLFormatter extends XtendFormatter {
 		document.append(regionFor.keyword("on"), ONE_SPACE); //$NON-NLS-1$
 
 		if (behaviorUnit.getGuard() != null) {
-			ISemanticRegion keyword = this.textRegionExtensions.immediatelyPreceding(behaviorUnit.getGuard()).keyword("["); //$NON-NLS-1$
+			ISemanticRegion keyword = this.textRegionExtensions.immediatelyPreceding(
+					behaviorUnit.getGuard()).keyword("["); //$NON-NLS-1$
 			document.prepend(keyword, ONE_SPACE);
 			document.append(keyword, NO_SPACE);
-			keyword = this.textRegionExtensions.immediatelyFollowing(behaviorUnit.getGuard()).keyword("]"); //$NON-NLS-1$
+			keyword = this.textRegionExtensions.immediatelyFollowing(
+					behaviorUnit.getGuard()).keyword("]"); //$NON-NLS-1$
 			document.prepend(keyword, NO_SPACE);
 		}
 
@@ -590,6 +594,7 @@ public class SARLFormatter extends XtendFormatter {
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	protected ISemanticRegion formatBody(XtendTypeDeclaration type, IFormattableDocument document) {
 		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(type);
 
@@ -597,7 +602,7 @@ public class SARLFormatter extends XtendFormatter {
 		ISemanticRegion close = regionFor.keyword("}"); //$NON-NLS-1$
 		document.prepend(open, XbaseFormatterPreferenceKeys.bracesInNewLine);
 		document.interior(open, close, INDENT);
-		
+
 		EList<XtendMember> members = type.getMembers();
 		if (!members.isEmpty()) {
 			XtendMember previous = null;
@@ -609,40 +614,40 @@ public class SARLFormatter extends XtendFormatter {
 					if (current instanceof XtendField) {
 						document.append(previous, XtendFormatterPreferenceKeys.blankLinesBetweenFields);
 					} else {
-						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+						document.append(previous, SARLFormatterPreferenceKeys.BLANK_LINES_BETWEEN_MEMBER_CATEGORIES);
 					}
 				} else if (previous instanceof XtendExecutable) {
 					if (current instanceof XtendExecutable) {
 						document.append(previous, XtendFormatterPreferenceKeys.blankLinesBetweenMethods);
 					} else {
-						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+						document.append(previous, SARLFormatterPreferenceKeys.BLANK_LINES_BETWEEN_MEMBER_CATEGORIES);
 					}
 				} else if (previous instanceof XtendTypeDeclaration) {
 					if (current instanceof XtendTypeDeclaration) {
-						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenInnerTypes);
+						document.append(previous, SARLFormatterPreferenceKeys.BLANK_LINES_BETWEEN_INNER_TYPES);
 					} else {
-						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+						document.append(previous, SARLFormatterPreferenceKeys.BLANK_LINES_BETWEEN_MEMBER_CATEGORIES);
 					}
 				} else if (previous instanceof XtendEnumLiteral) {
 					if (current instanceof XtendEnumLiteral) {
 						document.append(previous, XtendFormatterPreferenceKeys.blankLinesBetweenEnumLiterals);
 					} else {
-						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+						document.append(previous, SARLFormatterPreferenceKeys.BLANK_LINES_BETWEEN_MEMBER_CATEGORIES);
 					}
 				} else if (previous instanceof SarlCapacityUses) {
 					if (current instanceof SarlCapacityUses) {
-						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenCapacityUses);
+						document.append(previous, SARLFormatterPreferenceKeys.BLANK_LINES_BETWEEN_CAPACITY_USES);
 					} else {
-						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+						document.append(previous, SARLFormatterPreferenceKeys.BLANK_LINES_BETWEEN_MEMBER_CATEGORIES);
 					}
 				} else if (previous instanceof SarlRequiredCapacity) {
 					if (current instanceof SarlCapacityUses) {
-						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenCapacityRequiements);
+						document.append(previous, SARLFormatterPreferenceKeys.BLANK_LINES_BETWEEN_CAPACITY_REQUIREMENTS);
 					} else {
-						document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+						document.append(previous, SARLFormatterPreferenceKeys.BLANK_LINES_BETWEEN_MEMBER_CATEGORIES);
 					}
 				} else {
-					document.append(previous, SARLFormatterPreferenceKeys.blankLinesBetweenMemberCategories);
+					document.append(previous, SARLFormatterPreferenceKeys.BLANK_LINES_BETWEEN_MEMBER_CATEGORIES);
 				}
 				previous = current;
 			}
