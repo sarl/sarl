@@ -103,9 +103,11 @@ public class SarlCompiler extends XtendCompiler {
 		if (calledFeature instanceof JvmExecutable) {
 			JvmExecutable jvmexec = (JvmExecutable) calledFeature;
 			numberFormalParameters = jvmexec.getParameters().size();
-			formalVariadicParameter = jvmexec.getParameters().get(numberFormalParameters - 1);
-			if (jvmexec.isVarArgs()) {
-				numberVariadicParameter = 1;
+			if (numberFormalParameters > 0) {
+				formalVariadicParameter = jvmexec.getParameters().get(numberFormalParameters - 1);
+				if (jvmexec.isVarArgs()) {
+					numberVariadicParameter = 1;
+				}
 			}
 		} else {
 			numberFormalParameters = arguments.size();
