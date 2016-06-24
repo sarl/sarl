@@ -173,7 +173,7 @@
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<basedir>${project.basedir}/src/test/generated-sources/xtend</basedir>
+							<basedir>${project.basedir}/src/test/xtend-gen</basedir>
 							<includes>
 								<include>**/*Spec.java</include>
 								<include>**/*Feature.java</include>
