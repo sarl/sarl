@@ -22,8 +22,6 @@
 package io.sarl.docs.utils;
 
 import com.google.inject.Injector;
-import org.eclipse.xtext.junit4.IInjectorProvider;
-import org.eclipse.xtext.junit4.IRegistryConfigurator;
 import org.jnario.lib.AbstractSpecCreator;
 
 import io.sarl.lang.tests.SARLInjectorProvider;
@@ -38,39 +36,27 @@ import io.sarl.lang.tests.SARLInjectorProvider;
  */
 public class SARLSpecCreator extends AbstractSpecCreator {
 
+	private final static SARLInjectorProvider injectorProvider = new SARLInjectorProvider();
+	
+	static {
+		injectorProvider.setupRegistry();
+	}
+	
 	private Injector injector;
-
-	private final IInjectorProvider injectorProvider = new SARLInjectorProvider();
-
+	
 	@Override
 	protected <T> T create(Class<T> klass) {
-		if (this.injector == null) {
-			beforeSpecRun();
-		}
 		return this.injector.getInstance(klass);
 	}
 
 	@Override
 	public void beforeSpecRun() {
-		this.injector = getInjectorProvider().getInjector();
-		if (getInjectorProvider() instanceof IRegistryConfigurator) {
-			((IRegistryConfigurator) getInjectorProvider()).setupRegistry();
-		}
+		this.injector = injectorProvider.getInjector();
 	}
 
 	@Override
 	public void afterSpecRun() {
-		if (getInjectorProvider() instanceof IRegistryConfigurator) {
-			((IRegistryConfigurator) getInjectorProvider()).restoreRegistry();
-		}
-	}
-
-	/** Replies the injector provider.
-	 *
-	 * @return the injector provider.
-	 */
-	protected IInjectorProvider getInjectorProvider() {
-		return this.injectorProvider;
+		this.injector = null;
 	}
 
 }
