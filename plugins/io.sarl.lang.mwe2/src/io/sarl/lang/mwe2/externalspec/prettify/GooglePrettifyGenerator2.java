@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.mwe2.prettify;
+package io.sarl.lang.mwe2.externalspec.prettify;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;

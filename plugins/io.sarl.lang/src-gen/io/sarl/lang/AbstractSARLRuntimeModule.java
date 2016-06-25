@@ -246,16 +246,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 		return SARLGrammarAccess.class;
 	}
 	
-	// contributed by org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2
-	public Class<? extends ISemanticSequencer> bindISemanticSequencer() {
-		return SARLSemanticSequencer.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2
-	public Class<? extends ISerializer> bindISerializer() {
-		return Serializer.class;
-	}
-	
 	// contributed by org.eclipse.xtext.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment2
 	public Class<? extends IParser> bindIParser() {
 		return SARLParser.class;
@@ -302,6 +292,16 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	@SingletonBinding(eager=true)
 	public Class<? extends SARLValidator> bindSARLValidator() {
 		return SARLValidator.class;
+	}
+	
+	// contributed by org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2
+	public Class<? extends ISemanticSequencer> bindISemanticSequencer() {
+		return SARLSemanticSequencer.class;
+	}
+	
+	// contributed by org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2
+	public Class<? extends ISerializer> bindISerializer() {
+		return Serializer.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.formatting.Formatter2Fragment2

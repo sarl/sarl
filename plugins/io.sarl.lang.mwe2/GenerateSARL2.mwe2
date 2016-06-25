@@ -31,9 +31,10 @@ import org.eclipse.xtext.resource.XtextResourceSet
 import io.sarl.lang.mwe2.* 
 import io.sarl.lang.mwe2.binding.* 
 import io.sarl.lang.mwe2.externalspec.* 
-import io.sarl.lang.mwe2.prettify.* 
-import io.sarl.lang.mwe2.latex.* 
-import io.sarl.lang.mwe2.gtk.* 
+import io.sarl.lang.mwe2.externalspec.prettify.* 
+import io.sarl.lang.mwe2.externalspec.latex.* 
+import io.sarl.lang.mwe2.externalspec.gtk.* 
+import io.sarl.lang.mwe2.externalspec.gnusrchighlite.* 
 import io.sarl.lang.mwe2.codebuilder.* 
 
 var rootRootPath = "../.."
@@ -50,10 +51,13 @@ var uiProjectPath = "${rootPath}/${uiProjectName}"
 var testProjectName = "io.sarl.tests.api"
 var testProjectPath = "${rootRootPath}/tests/${testProjectName}"
 
-var prettifyToolPath = "${rootRootPath}/external_tools/prettify"
-var latexToolPath = "${rootRootPath}/external_tools/latex"
-var gtkToolPath = "${rootRootPath}/external_tools/gtk"
+var externalToolPath = "${rootRootPath}/external_tools"
+
+var prettifyToolPath = "${externalToolPath}/prettify"
+var latexToolPath = "${externalToolPath}/latex"
+var gtkToolPath = "${externalToolPath}/gtk"
 var webjsPath = "${rootRootPath}/maven/io.sarl.maven.docs.generator/src/main/resources/org/jnario/doc/js"
+var srchighliteToolPath  = "${externalToolPath}/gnusrchighlite"
 
 var file.extensions = "sarl"
 var fileEncoding = "UTF-8"
@@ -104,9 +108,14 @@ Workflow {
    	component = DirectoryCleaner {
 		directory = "${gtkToolPath}"
 	}
+   	component = DirectoryCleaner {
+		directory = "${srchighliteToolPath}"
+	}
 
  	component = XtextGenerator auto-inject {
+		// Generation and configuration module for SARL
  		configuration = SarlGeneratorModule {
+			// Project configuration
 			project = StandardProjectConfig auto-inject {
 				runtime = auto-inject {
 					enabled = true
@@ -132,12 +141,14 @@ Workflow {
 				createEclipseMetaData = true
 				
 			}
+			// Code configuration
 			code = auto-inject {
 				lineDelimiter = lineDelimiter
 				encoding = fileEncoding
 				fileHeader = fileHeader
 				preferXtendStubs = false
 			}
+			// EMF Builder configuration
 			codeBuilder = auto-inject {
 				scriptRuleName = "SarlScript"
 				topElementRuleName = "Type"
@@ -182,8 +193,8 @@ Workflow {
 					modifier = "val"
 				}
 			}
+   			// Shared configuration between the generators of syntax highlighting formats
 			highlighting = auto-inject {
-    			// Shared configuration between the generators
     			addNativeTypes = true
 
     			literal = "true"
@@ -245,27 +256,32 @@ Workflow {
 			}
 		}
 		
+		// Generator for SARL
 		language = auto-inject {
+			// Set of resources
 			resourceSet = XtextResourceSet : resourceSet {}
+			// SARL depends on the Xtend model
 			referencedResource = "platform:/resource/org.eclipse.xtend.core/model/Xtend.genmodel"
+			// ID for SARL
 			name = "io.sarl.lang.SARL"
+			// Pointer to the SARL grammar
 			grammarUri = "platform:/resource/${runtimeProjectName}/src/io/sarl/lang/SARL.xtext"
+			// Definition of the file extensions for SARL
 			fileExtensions = file.extensions
+			// Specification of the injection that is used by MWE2 (not by the SARL compiler)
 			guiceModule = SarlLanguageGeneratorModule {}
+			// Do not generates the Xtend stubs
 			generateXtendStubs = false
 			
 			// Java API to access grammar elements (required by several other fragments)
 			fragment = grammarAccess.GrammarAccessFragment2 auto-inject {
 			}
 
-			fragment = serializer.SerializerFragment2 auto-inject {
-				generateDebugData = false // If true, generates plenty of ".dot" files for analyzing the grammar.
-				generateStub = false
-			}
-
+			// Resource factory
 			fragment = resourceFactory.ResourceFactoryFragment2 auto-inject {
 			}
 
+			// Lexer
 			fragment = parser.antlr.XtextAntlrGeneratorFragment2 auto-inject {
 				removeBacktrackingGuards = true
 				lookaheadThreshold = '5'
@@ -276,65 +292,84 @@ Workflow {
 				}
 			}
 
+			// SARL Validator
 			fragment = validation.ValidatorFragment2 auto-inject {
 				generateStub = true
 				inheritImplementation = true
     			composedCheck = "org.eclipse.xtend.core.validation.AnnotationValidation"
 			}
 
+			// SARL serializer
+			fragment = serializer.SerializerFragment2 auto-inject {
+				generateDebugData = false // If true, generates plenty of ".dot" files for analyzing the grammar.
+				generateStub = false
+			}
+
+			// SARL Formatter
 			fragment = formatting.Formatter2Fragment2 auto-inject {
 				generateStub = true
 			}
 
+			// Compiler 
 			fragment = generator.GeneratorFragment2 auto-inject {
 			}
 
+			// Scoping
 			fragment = scoping.ImportNamespacesScopingFragment2 auto-inject {
 				generateStub = true
 			}
 
+			// SARL compiler as an Eclipse builder.
 			fragment = builder.BuilderIntegrationFragment2 auto-inject {
 			}
 
+			// Quick fixes
 			fragment = ui.quickfix.QuickfixProviderFragment2 auto-inject {
 				generateStub = true
 				inheritImplementation = true
 			}
 
+			// Label and icon providers
 			fragment = ui.labeling.LabelProviderFragment2 auto-inject {
 				generateStub = true
 			}
 
+			// Outline view
 			fragment = ui.outline.OutlineTreeProviderFragment2 auto-inject {
 				generateStub = true
 			}
-
 			fragment = ui.outline.QuickOutlineFragment2 auto-inject {
 			}
 
+			// Code comparator
 			fragment = ui.compare.CompareFragment2 auto-inject {
 			}
 
+			// Content assist
 			fragment = ui.contentAssist.ContentAssistFragment2 auto-inject {
 				generateStub = true
 				inheritImplementation = false
 			}
 
+			// Refactoring
 			fragment = ui.refactoring.RefactorElementNameFragment2 auto-inject {
 				useJdtRefactoring = true
 			}
 
+			// Type resolver
 			fragment = types.TypesGeneratorFragment2 auto-inject {
 			}
 
-    		// generates the required bindings only if the grammar inherits from Xbase
+    		// Generates the required bindings only if the grammar inherits from Xbase
 			fragment = xbase.XbaseGeneratorFragment2 auto-inject {
 				generateXtendInferrer = false
 			}
 
+    		// Code templates
 			fragment = ui.templates.CodetemplatesGeneratorFragment2 auto-inject {
 			}
 
+    		// Testing infrastructure
 			fragment = junit.Junit4Fragment2 auto-inject {
 				generateStub = false
 			}
@@ -344,25 +379,25 @@ Workflow {
 				generateStub = false
 			}
 
-			// generate the Google Prettify style
+			// Generate the Google Prettify style
     		fragment = GooglePrettifyGenerator2 auto-inject {
 				output = prettifyToolPath
 				output = webjsPath
     		}
 
-			// generate the LaTeX Beamer style
+			// Generate the LaTeX Beamer style
     		fragment = LaTeXBeamerGenerator2 auto-inject {
 				output = latexToolPath
     		}
 
-			// generate the LaTeX algorithmic style with colors
+			// Generate the LaTeX algorithmic style with colors
     		fragment = LaTeXListingsGenerator2 auto-inject {
 				output = latexToolPath
     			basename = "sarl-colorized-listing.sty"
     		}
 
-			// generate the LaTeX algorithmic style without colors
-    		fragment = io.sarl.lang.mwe2.latex.LaTeXListingsGenerator2 auto-inject {
+			// Generate the LaTeX algorithmic style without colors
+    		fragment = LaTeXListingsGenerator2 auto-inject {
 				output = latexToolPath
     			enableColors = false
     		}
@@ -372,6 +407,11 @@ Workflow {
 				output = gtkToolPath
     		}
     		
+			// Generate the GNU src-hightlite style
+    		fragment = GnuSrcHighliteGenerator2 auto-inject {
+				output = srchighliteToolPath
+    		}
+
     		// SARL specific bindings
     		fragment = InjectionFragment2 auto-inject {
     			comment = "Bindings provided by SARL API"
@@ -755,13 +795,14 @@ Workflow {
    				}
     		}
 
-	    	// Injection recommender
+	    	// Injection recommender for recommending missed injections in the SARL module
     		fragment = InjectionRecommender2 auto-inject {
     			enable = false
     		}
 		}
  	}
  
+ 	// SARL Ecore generator
 	component = org.eclipse.emf.mwe2.ecore.EcoreGenerator auto-inject {
 		resourceSet = resourceSet
 		genModel = "platform:/resource/${runtimeProjectName}/model/SARL.genmodel"

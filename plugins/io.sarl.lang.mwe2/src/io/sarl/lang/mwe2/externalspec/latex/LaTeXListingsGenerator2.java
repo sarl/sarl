@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.mwe2.latex;
+package io.sarl.lang.mwe2.externalspec.latex;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;

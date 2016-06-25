@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.mwe2.gtk;
+package io.sarl.lang.mwe2.externalspec.gtk;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;

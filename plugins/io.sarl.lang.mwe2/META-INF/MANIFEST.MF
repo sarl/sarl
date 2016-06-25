@@ -21,6 +21,6 @@ Export-Package: io.sarl.lang.mwe2,
  io.sarl.lang.mwe2.codebuilder,
  io.sarl.lang.mwe2.codebuilder.fragments,
  io.sarl.lang.mwe2.externalspec,
- io.sarl.lang.mwe2.gtk,
- io.sarl.lang.mwe2.latex,
- io.sarl.lang.mwe2.prettify
+ io.sarl.lang.mwe2.externalspec.gtk,
+ io.sarl.lang.mwe2.externalspec.latex,
+ io.sarl.lang.mwe2.externalspec.prettify

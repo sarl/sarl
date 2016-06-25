@@ -94,6 +94,17 @@ For using this version, you must add the Maven Repository Server of SARL in your
 	...
 ```
 
+=== 3.4 Syntax highlighting with other tools
+
+Several style specifications are provided for syntax highlighting in third party tools.
+Style specifications are provided for:
+
+* link:./external_tools/prettify/lang-sarl.js[Google Prettify]
+* link:./external_tools/gtk/sarl.lang[Gtk source view] (including gedit)
+* link:./external_tools/gnusrchighlite/sarl.lang[GNU src-highlite]
+* link:./external_tools/latex/sarl-beamer-listing.sty[LaTeX Beamer]
+* LaTeX listing: link:./external_tools/latex/sarl-listing.sty[monochrom], link:./external_tools/latex/sarl-colorized-listing.sty[color]
+
 == 4. P2 Repository
 
 A P2 repository is set up and accesible at the address: `http://updates.sarl.io`.
