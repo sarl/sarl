@@ -27,8 +27,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse</groupId> 
- 			<artifactId>osgi</artifactId> 
+			<groupId>org.eclipse</groupId>
+			<artifactId>osgi</artifactId>
 			<version>${osgi.nls.version}</version>
 		</dependency>
 		<dependency>
@@ -173,7 +173,7 @@
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<basedir>${project.basedir}/src/test/xtend-gen</basedir>
+							<basedir>${project.basedir}/src/test/generated-sources/xtend</basedir>
 							<includes>
 								<include>**/*Spec.java</include>
 								<include>**/*Feature.java</include>
@@ -265,6 +265,10 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<testOutputDirectory>${project.basedir}/src/test/generated-sources/xtend</testOutputDirectory>
+					<writeTraceFiles>false</writeTraceFiles>
+				</configuration>
 			</plugin>
 
 			<plugin>
