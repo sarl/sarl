@@ -258,12 +258,11 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 										containerQualifiedName,
 										key);
 								int idx = argument.lastIndexOf('.');
-								JvmType type = null;
 								String fieldName;
+								String typeName = argument.substring(0, idx);
+								JvmType type = tools.getTypeServices().getTypeReferences().findDeclaredType(
+										typeName, container);
 								if (idx > 0) {
-									String typeName = argument.substring(0, idx);
-									type = tools.getTypeServices().getTypeReferences().findDeclaredType(
-											typeName, container);
 									if (type == null) {
 										QualifiedName qn0 = tools.getQualifiedNameConverter().toQualifiedName(typeName);
 										Iterator<XtendTypeDeclaration> iterator = script.getXtendTypes().iterator();

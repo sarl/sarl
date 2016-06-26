@@ -885,9 +885,8 @@ public class MainProjectWizardPage extends WizardPage {
 
 		private void fillInstalledJREs(ComboDialogField comboField) {
 			String selectedItem = getLastSelectedJRE();
-			int selectionIndex = -1;
+			int selectionIndex = comboField.getSelectionIndex();
 			if (this.fUseProjectJRE.isSelected()) {
-				selectionIndex = comboField.getSelectionIndex();
 				if (selectionIndex != -1) {
 					// paranoia
 					selectedItem = comboField.getItems()[selectionIndex];
@@ -938,9 +937,8 @@ public class MainProjectWizardPage extends WizardPage {
 
 		private void fillExecutionEnvironments(ComboDialogField comboField) {
 			String selectedItem = getLastSelectedEE();
-			int selectionIndex = -1;
+			int selectionIndex = comboField.getSelectionIndex();
 			if (this.fUseEEJRE.isSelected()) {
-				selectionIndex = comboField.getSelectionIndex();
 				if (selectionIndex != -1) {
 					// paranoia
 					selectedItem = comboField.getItems()[selectionIndex];

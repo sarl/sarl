@@ -440,7 +440,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
 	public void removeExecutableFeature(EObject element, IModificationContext context) throws BadLocationException {
-		ICompositeNode node = null;
+		ICompositeNode node;
 		SarlAction action = EcoreUtil2.getContainerOfType(element, SarlAction.class);
 		if (action == null) {
 			XtendMember feature = EcoreUtil2.getContainerOfType(element, XtendMember.class);

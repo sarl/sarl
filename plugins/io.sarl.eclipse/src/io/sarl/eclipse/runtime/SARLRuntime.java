@@ -813,7 +813,7 @@ public final class SARLRuntime {
 	 * @return a unique identifier.
 	 */
 	public static String createUniqueIdentifier() {
-		String id = null;
+		String id;
 		do {
 			id = UUID.randomUUID().toString();
 		} while (getSREFromId(id) != null);

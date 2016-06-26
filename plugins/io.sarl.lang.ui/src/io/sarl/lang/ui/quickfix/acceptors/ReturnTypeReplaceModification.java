@@ -57,9 +57,8 @@ public final class ReturnTypeReplaceModification extends SARLSemanticModificatio
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
 		String[] data = issue.getData();
-		String expectedType = null;
 		if (data != null && data.length > 0) {
-			expectedType = data[0];
+			final String expectedType = data[0];
 			ReturnTypeReplaceModification modification = new ReturnTypeReplaceModification(expectedType);
 			modification.setIssue(issue);
 			modification.setTools(provider);

@@ -2220,7 +2220,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			List<? extends XtendParameter> params,
 			final boolean isForInterface,
 			List<InferredStandardParameter> paramSpec) {
-		JvmFormalParameter lastParam = null;
 		boolean hasDefaultValue = false;
 		for (int i = 0; i < params.size(); ++i) {
 			final XtendParameter param = params.get(i);
@@ -2231,8 +2230,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (!Strings.isNullOrEmpty(paramName) && paramType != null) {
 				// "Standard" (Xtend) translation of the parameter
 				translateParameter(owner, param);
-				lastParam = owner.getParameters().get(owner.getParameters().size() - 1);
-
+				final JvmFormalParameter lastParam = owner.getParameters().get(owner.getParameters().size() - 1);
 				// Treat the default value
 				if (param instanceof SarlFormalParameter && ((SarlFormalParameter) param).getDefaultValue() != null) {
 					final XExpression defaultValue = ((SarlFormalParameter) param).getDefaultValue();
@@ -2283,7 +2281,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected List<String> translateSarlFormalParametersForSyntheticOperation(JvmExecutable owner, JvmGenericType actionContainer,
 			boolean varargs, List<InferredStandardParameter> signature) {
-		JvmFormalParameter lastParam = null;
 		List<String> arguments = CollectionLiterals.newArrayList();
 		for (InferredStandardParameter parameterSpec : signature) {
 			if (parameterSpec instanceof InferredValuedParameter) {
@@ -2296,7 +2293,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				String paramName = parameterSpec.getName();
 				JvmTypeReference paramType = parameterSpec.getType();
 				if (!Strings.isNullOrEmpty(paramName) && paramType != null) {
-					lastParam = this.typesFactory.createJvmFormalParameter();
+					final JvmFormalParameter lastParam = this.typesFactory.createJvmFormalParameter();
 					owner.getParameters().add(lastParam);
 					lastParam.setName(paramName);
 					lastParam.setParameterType(this.typeBuilder.cloneWithProxies(paramType));
