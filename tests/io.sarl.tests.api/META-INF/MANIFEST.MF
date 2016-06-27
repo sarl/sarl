@@ -9,7 +9,7 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: io.sarl.lang;bundle-version="0.4.0",
  io.sarl.lang.ui;bundle-version="0.4.0";visibility:=reexport,
  org.junit;bundle-version="4.12.0";visibility:=reexport,
- org.mockito.mockito-core;bundle-version="2.0.71",
+ org.mockito.mockito-core;bundle-version="2.0.73",
  org.eclipse.xtext.junit4;bundle-version="2.10.0";visibility:=reexport,
  org.eclipse.xtext.xbase.junit;bundle-version="2.10.0";visibility:=reexport,
  org.eclipse.xtext.xbase.lib;bundle-version="2.10.0",
