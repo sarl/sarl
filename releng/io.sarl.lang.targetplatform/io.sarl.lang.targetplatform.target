@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="75">
+<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="76">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.objenesis" version="2.4.0"/>
-<unit id="org.mockito.mockito-core" version="2.0.64.beta"/>
+<unit id="org.mockito.mockito-core" version="2.0.71.beta"/>
 <unit id="net.bytebuddy.byte-buddy" version="1.4.3"/>
 <repository location="http://download.tuxfamily.org/arakhne/p2/"/>
 </location>
