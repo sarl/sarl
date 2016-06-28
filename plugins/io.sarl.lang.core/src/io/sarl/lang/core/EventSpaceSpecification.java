@@ -30,6 +30,7 @@ package io.sarl.lang.core;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@FunctionalInterface
 public interface EventSpaceSpecification extends SpaceSpecification<EventSpace> {
 	//
 }

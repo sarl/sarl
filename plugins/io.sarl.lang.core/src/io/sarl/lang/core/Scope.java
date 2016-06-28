@@ -38,6 +38,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@FunctionalInterface
 public interface Scope<T> extends Serializable {
 
 	/**

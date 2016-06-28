@@ -36,6 +36,7 @@ package io.sarl.lang.core;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@FunctionalInterface
 public interface SpaceSpecification<S extends Space> {
 
 	/**
