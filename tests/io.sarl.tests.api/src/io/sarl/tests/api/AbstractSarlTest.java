@@ -1195,7 +1195,9 @@ public abstract class AbstractSarlTest {
 	 * @param s1 second string.
 	 * @return the Levenshstein distance.
 	 * @see https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance
+	 * @deprecated see the function is AFC "text" module
 	 */
+	@Deprecated
 	public static int levenshteinDistance (String firstString, String secondString) {
 		String s0 = Strings.nullToEmpty(firstString);
 		String s1 = Strings.nullToEmpty(secondString);

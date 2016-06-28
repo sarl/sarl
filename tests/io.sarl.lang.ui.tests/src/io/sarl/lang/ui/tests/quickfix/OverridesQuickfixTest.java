@@ -22,7 +22,6 @@ import org.junit.Test;
 public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 
 	@Test
-	@Ignore("temporary")
 	public void fixOverriddenFinaMethod() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL,
@@ -52,7 +51,6 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore("temporary")
 	public void fixOverriddenFinalType() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL,
@@ -75,7 +73,6 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore("temporary")
 	public void fixMissedClassicPrototype_0() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -106,15 +103,15 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"skill S1 implements C1 {",
 						"",
 						"	override fct1 {",
-						"		// TODO Auto-generated action.",
+						"		// TODO Auto-generated code.",
 						"	}",
 						"	",
 						"	override fct2(a : int) {",
-						"		// TODO Auto-generated action.",
+						"		// TODO Auto-generated code.",
 						"	}",
 						"	",
 						"	override fct3 : boolean {",
-						"		// TODO Auto-generated action.",
+						"		// TODO Auto-generated code.",
 						"		true",
 						"	}",
 						"	",
@@ -122,7 +119,6 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore("temporary")
 	public void fixVariadicParameter_0() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -148,14 +144,13 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"skill S1 implements C1 {",
 						"",
 						"	override fct(a : int*) {",
-						"		// TODO Auto-generated action.",
+						"		// TODO Auto-generated code.",
 						"	}",
 						"	",
 						"}"));
 	}
 
 	@Test
-	@Ignore("temporary")
 	public void fixVariadicParameter_1() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -184,52 +179,19 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"skill S1 implements C1 {",
 						"",
 						"	override fct1(a : int*) {",
-						"		// TODO Auto-generated action.",
+						"		// TODO Auto-generated code.",
 						"	}",
 						"	",
 						"	override fct2(b : String, c : double*) {",
-						"		// TODO Auto-generated action.",
+						"		// TODO Auto-generated code.",
 						"	}",
 						"	",
 						"}"));
 	}
 
 	@Test
-	@Ignore("temporary")
+	@Ignore
 	public void fixParameterDefaultValue_0() {
-		assertQuickFix(
-				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
-				//
-				// Code to fix:
-				//
-				multilineString(
-						"capacity C1 {",
-						"	def fct(a : int=4)",
-						"}",
-						"skill S1 implements C1 { }"),
-				//
-				// Label and description:
-				//
-				"Add unimplemented methods",
-				//
-				// Expected fixed code:
-				//
-				multilineString(
-						"capacity C1 {",
-						"	def fct(a : int=4)",
-						"}",
-						"skill S1 implements C1 {",
-						"",
-						"	override fct(a : int = 4) {",
-						"		// TODO Auto-generated action.",
-						"	}",
-						"	",
-						"}"));
-	}
-
-	@Test
-	@Ignore("temporary")
-	public void fixParameterDefaultValue_1() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
 				//
@@ -255,7 +217,6 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore("temporary")
 	public void fixParameterDefaultValue_2() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -281,14 +242,13 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"skill S1 implements C1 {",
 						"",
 						"	override fct(a : int = 4, b : String) {",
-						"		// TODO Auto-generated action.",
+						"		// TODO Auto-generated code.",
 						"	}",
 						"	",
 						"}"));
 	}
 
 	@Test
-	@Ignore("temporary")
 	public void fixParameterDefaultValue_3() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -315,7 +275,6 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore("temporary")
 	public void fixParameterDefaultValueAndVariadicParameter() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -341,7 +300,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"skill S1 implements C1 {",
 						"",
 						"	override fct(a : int = 4, b : String, c : int*) {",
-						"		// TODO Auto-generated action.",
+						"		// TODO Auto-generated code.",
 						"	}",
 						"	",
 						"}"));

@@ -48,6 +48,10 @@ public class SARLBehaviorUnitOutlineFilter extends AbstractFilterOutlineContribu
 	 */
 	public static final String PREFERENCE_KEY = "io.sarl.lang.ui.outline.filterBehaviorUnits"; //$NON-NLS-1$
 
+	/** Basename of the icon of the action.
+	 */
+	public static final String ICON_BASENAME = "hide_behavior_units.png"; //$NON-NLS-1$
+
 	@Inject private IImageDescriptorHelper imageHelper;
 
 	/** Replies if the given type is a behavior unit.
@@ -75,7 +79,7 @@ public class SARLBehaviorUnitOutlineFilter extends AbstractFilterOutlineContribu
 		action.setText(Messages.SARLBehaviorUnitOutlineFilter_0);
 		action.setDescription(Messages.SARLBehaviorUnitOutlineFilter_0);
 		action.setToolTipText(Messages.SARLBehaviorUnitOutlineFilter_0);
-		action.setImageDescriptor(this.imageHelper.getImageDescriptor("hide_behavior_units.png")); //$NON-NLS-1$
+		action.setImageDescriptor(this.imageHelper.getImageDescriptor(ICON_BASENAME));
 	}
 
 	@Override

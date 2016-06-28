@@ -21,6 +21,7 @@
 
 package io.sarl.lang.util;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -59,6 +60,7 @@ import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.serializer.ISerializer;
@@ -78,6 +80,7 @@ import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.services.SARLGrammarAccess;
@@ -112,6 +115,19 @@ public final class Utils {
 	private static final String PREFIX_LOCAL_VARIABLE = "___SARLlocal_"; //$NON-NLS-1$
 
 	private static final String HIDDEN_MEMBER_REPLACEMENT_CHARACTER = "_"; //$NON-NLS-1$
+
+	private static final String SARL_PACKAGE_PREFIX;
+
+	static {
+		final StringBuilder name = new StringBuilder();
+		final String[] components = EarlyExit.class.getPackage().getName().split("\\."); //$NON-NLS-1$
+		final int len = Math.min(3, components.length);
+		for (int i = 0; i < len; ++i) {
+			name.append(components[i]);
+			name.append("."); //$NON-NLS-1$
+		}
+		SARL_PACKAGE_PREFIX = name.toString();
+	}
 
 	private Utils() {
 		//
@@ -987,6 +1003,47 @@ public final class Utils {
 			//
 		}
 		return null;
+	}
+
+	/** Replies if the given annotation is an annotation from the SARL core library.
+	 *
+	 * @param type the type of the annotation
+	 * @return <code>true</code> if the given type is a SARL annotation.
+	 */
+	public static boolean isSARLAnnotation(Class<?> type) {
+		return (type != null && Annotation.class.isAssignableFrom(type))
+				&& isSARLAnnotation(type.getPackage().getName());
+	}
+
+	/** Replies if the given annotation is an annotation from the SARL core library.
+	 *
+	 * @param qualifiedName the qualified name of the annotation type.
+	 * @return <code>true</code> if the given type is a SARL annotation.
+	 */
+	public static boolean isSARLAnnotation(String qualifiedName) {
+		return qualifiedName != null && qualifiedName.startsWith(SARL_PACKAGE_PREFIX);
+	}
+
+	/** Replies if the given type is a primitive "void".
+	 *
+	 * <p>If the given parametr is <code>null</code>, this function returns <code>true</code>.
+	 *
+	 * @param type the type to test.
+	 * @return <code>true</code> if the type is void or <code>null</code>.
+	 */
+	public static boolean isPrimitiveVoid(JvmType type) {
+		// TODO: Is a utility class from Xbase providing this feature that is different from LightweightTypeReference.
+		return type == null || (type.eClass() == TypesPackage.Literals.JVM_VOID && !type.eIsProxy());
+	}
+
+	/** Replies if the given type is a primitive type.
+	 *
+	 * @param type the type to test.
+	 * @return <code>true</code> if the type is primitive.
+	 */
+	public static boolean isPrimitive(JvmType type) {
+		// TODO: Is a utility class from Xbase providing this feature that is different from LightweightTypeReference.
+		return type != null && type.eClass() == TypesPackage.Literals.JVM_PRIMITIVE_TYPE;
 	}
 
 }

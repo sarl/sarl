@@ -31,7 +31,7 @@ public class BehaviorUnitQuickfixTest extends AbstractSARLQuickfixTest {
 				multilineString(
 						"event E1",
 						"agent A1 {",
-						"	on E1 [true] { [ false ] }",
+						"	on E1 [true] { println(\"a\") }",
 						"}"),
 				//
 				// Label and description:
@@ -43,7 +43,7 @@ public class BehaviorUnitQuickfixTest extends AbstractSARLQuickfixTest {
 				multilineString(
 						"event E1",
 						"agent A1 {",
-						"	on E1 { [ false ] }",
+						"	on E1 { println(\"a\") }",
 						"}"));
 	}
 
@@ -59,7 +59,7 @@ public class BehaviorUnitQuickfixTest extends AbstractSARLQuickfixTest {
 				multilineString(
 						"event E1",
 						"agent A1 {",
-						"	on E1 [false] { [ false ] }",
+						"	on E1 [false] { println(\"a\") }",
 						"}"),
 				//
 				// Label and description:

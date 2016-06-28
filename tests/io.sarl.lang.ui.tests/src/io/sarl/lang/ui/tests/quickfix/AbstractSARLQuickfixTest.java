@@ -24,6 +24,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 
 import com.google.inject.Inject;
@@ -37,13 +40,14 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextStore;
 import org.eclipse.jface.text.Region;
 import org.eclipse.xtext.resource.IFragmentProvider;
+import org.eclipse.xtext.resource.SaveOptions;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.IXtextDocumentContentObserver;
 import org.eclipse.xtext.ui.editor.model.IXtextModelListener;
+import org.eclipse.xtext.ui.editor.model.edit.IModification;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolution;
-import org.eclipse.xtext.util.Arrays;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.eclipse.xtext.validation.Issue;
@@ -272,22 +276,38 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 				TestXtextDocument document = new TestXtextDocument(xtextResource, this.invalidCode);
 				TestModificationContext modificationContext = new TestModificationContext(document);
 
-				resolution.getModification().apply(modificationContext);
+				String oldContent = Objects.toString(document.toString());
 
-				String content;
-				try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-					this.scriptResource.save(os, null);
-					content = os.toString();
+				final IModification modification = resolution.getModification();
+				
+				modification.apply(modificationContext);
+
+				String newContent = document.toString();
+				newContent = Objects.toString(newContent).trim();
+				if (Objects.equals(newContent, oldContent)) {
+					// Save the resource for ensuring EMF changes are comitted.
+					try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+						SaveOptions.Builder options = SaveOptions.newBuilder();
+						options.noValidation();
+						this.scriptResource.save(baos, options.getOptions().toOptionsMap());
+						baos.flush();
+						newContent = baos.toString();
+					}
+					newContent = Objects.toString(newContent).trim();
 				}
-				if (!Arrays.contains(expectedResolutions, content)) {
-					content = document.toString();
+				
+				final Set<String> expected = new TreeSet<>();
+				for (final String expectedResolution : expectedResolutions) {
+					final String ex = Strings.notNull(expectedResolution).trim();
+					expected.add(ex);
 				}
+				
 				String closeResolution = null;
 				int distance = Integer.MAX_VALUE;
-				for (String expectedResolution : expectedResolutions) {
-					int d = levenshteinDistance(expectedResolution, content);
+				for (String expectedResolution : expected) {
+					int d = levenshteinDistance(expectedResolution, newContent);
 					if (d == 0) {
-						return content;
+						return newContent;
 					}
 					if (closeResolution == null || d < distance) {
 						distance = d;
@@ -297,7 +317,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 				throw new ComparisonFailure(
 						"Invalid quick fix", //$NON-NLS-1$
 						closeResolution,
-						content);
+						newContent);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

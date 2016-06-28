@@ -22,7 +22,6 @@ import org.junit.Test;
 public class PackageDeclarationQuickfixTest extends AbstractSARLQuickfixTest {
 
 	@Test
-	@Ignore("temporary")
 	public void fixPackageName() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.WRONG_PACKAGE,
