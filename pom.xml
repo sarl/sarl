@@ -23,20 +23,32 @@
 	<!-- ======================================= -->
 
 	<properties>
-		<!-- Build ID Format (used in Eclipse about dialog) -->
-		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-		<buildId>${maven.build.timestamp}</buildId>
+
+		<!-- Version of the Xtext API -->
+		<sarlversion>0.4.0-SNAPSHOT</sarlversion>
 		<!-- Version of the Xtext API -->
 		<xtext.version>2.10.0</xtext.version>
 		<xtext.versionRange>[2.10.0,2.10.1)</xtext.versionRange><!-- For generating 
 			a correct version range you need to create a range integrating ONLY the current 
 			version and excluding all other possible versions especially the greater 
 			ones -->
-		<!-- Version of the Jnario PI -->
+		<!-- Version of the Jnario API -->
 		<jnario.version>1.0.0</jnario.version>
 		<jnario.report.version>1.0.1</jnario.report.version>
 		<!-- Version of the OSGi module that provides the NLS -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
+		<!-- Version of the Arakhne Foundation classes -->
+		<afc.version>13.0</afc.version>
+		<!-- Version of the Guava API -->
+		<guava.version>18.0</guava.version>
+		<!-- Version of the javax.inject module -->
+		<javaxinject.version>1</javaxinject.version>
+		<!-- Version of the Tycho module -->
+		<tycho.version>0.25.0</tycho.version>
+
+		<!-- Build ID Format (used in Eclipse about dialog) -->
+		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+		<buildId>${maven.build.timestamp}</buildId>
 		<!-- Year of the release of SARL (used in Eclipse about, license management 
 			and documentation) -->
 		<year>2016</year>
@@ -55,12 +67,6 @@
 		<local.maven.repository.path>file:///var/www/sarl-maven-repository/</local.maven.repository.path>
 		<!-- Local path to the P2 repository -->
 		<local.p2.repository.path>file:///var/www/sarl-p2-repository/</local.p2.repository.path>
-		<!-- Version of the Arakhne Foundation classes -->
-		<afc.version>13.0</afc.version>
-		<!-- Version of the Guava API -->
-		<guava.version>18.0</guava.version>
-		<!-- Version of the javax.inject module -->
-		<javaxinject.version>1</javaxinject.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -80,14 +86,221 @@
 		</license>
 	</licenses>
 
+	<!-- ======================================= -->
+	<!-- ==== Organization Information === -->
+	<!-- ======================================= -->
+
+	<developers>
+		<developer>
+			<id>srodriguez</id>
+			<name>Sebastian Rodriguez</name>
+			<email>sebastian.rodriguez@gitia.org</email>
+			<url>http://gitia.org/members/sebastian-rodriguez/</url>
+			<organization>
+				Grupo de Investigaci&amp;oacute;n en Tecnolog&amp;iacute;as Inform&amp;aacute;ticas Avanzadas de Tucum&amp;aacute;n
+			</organization>
+			<organizationUrl>http://gitia.org/</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>ngaud</id>
+			<name>Nicolas Gaud</name>
+			<email>nicolas.gaud@utbm.fr</email>
+			<url>http://www.multiagent.fr/People:Gaud_nicolas</url>
+			<organization>
+				Universit&amp;eacute; de Bourgogne Franche-Comt&amp;eacute;.
+				Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
+			</organization>
+			<organizationUrl>http://www.multiagent.fr</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>sgalland</id>
+			<name>St&amp;eacute;phane Galland</name>
+			<email>stephane.galland@utbm.fr</email>
+			<url>http://www.multiagent.fr/People:Galland_stephane</url>
+			<organization>
+				Universit&amp;eacute; de Bourgogne Franche-Comt&amp;eacute;.
+				Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
+			</organization>
+			<organizationUrl>http://www.multiagent.fr</organizationUrl>
+			<roles>
+				<role>Co-founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<contributors>
+		<contributor>
+			<name>Mohamed Ezzat</name>
+			<email>mohamed.ezzat@devfactory.com</email>
+			<url>https://github.com/m-ezzat</url>
+			<roles>
+				<role>Code cleaning and optimization</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>J&amp;eacute;r&amp;eacute;mie Jost</name>
+			<email>jeremiejost@gmail.com</email>
+			<url>https://github.com/jjst</url>
+			<roles>
+				<role>Documentation Contributor</role>
+			</roles>
+		</contributor>
+	</contributors>
+
+	<!-- =================== -->
+	<!-- ==== Deployment === -->
+	<!-- =================== -->
+
+	<distributionManagement>
+		<repository>
+			<id>local-release-repository</id>
+			<url>${local.maven.repository.path}</url>
+		</repository>
+		<snapshotRepository>
+			<id>local-repository</id>
+			<url>${local.maven.repository.path}</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<!-- ==================== -->
+	<!-- ==== Development === -->
+	<!-- ==================== -->
+	<scm>
+		<connection>scm:git:git@github.com:sarl/sarl.git</connection>
+		<developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
+		<url>git@github.com:sarl/sarl.git</url>
+	</scm>
 
 	<!-- ======================================= -->
 	<!-- ==== Dependency Management === -->
 	<!-- ======================================= -->
 
 	<dependencyManagement>
-		<!-- The dependencies are inside the submodules for avoiding to propagate 
-			the dependency information outside a specific module -->
+		<dependencies>
+			<dependency>
+				<groupId>io.sarl.lang</groupId>
+				<artifactId>io.sarl.lang.core</artifactId>
+				<version>${sarlversion}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.lang</groupId>
+				<artifactId>io.sarl.lang</artifactId>
+				<version>${sarlversion}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.core</artifactId>
+				<version>${sarlversion}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.util</artifactId>
+				<version>${sarlversion}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.maven</groupId>
+				<artifactId>io.sarl.maven.sdk</artifactId>
+				<version>${sarlversion}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.tests.api</artifactId>
+				<version>${sarlversion}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.lang</groupId>
+				<artifactId>io.sarl.lang.tests</artifactId>
+				<version>${sarlversion}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.eclipse</artifactId>
+				<version>${sarlversion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+				<version>${xtext.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>org.eclipse.xtend.core</artifactId>
+				<version>${xtext.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>xtext-maven-plugin</artifactId>
+				<version>${xtext.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>${javaxinject.version}</version>
+			</dependency>
+	 		<dependency> 
+	 			<groupId>com.google.guava</groupId> 
+	 			<artifactId>guava</artifactId> 
+				<version>${guava.version}</version>
+	 		</dependency> 
+			<dependency>
+				<groupId>org.jnario</groupId>
+				<artifactId>report</artifactId>
+				<version>${jnario.report.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jnario</groupId>
+				<artifactId>org.jnario.standalone</artifactId>
+				<version>${jnario.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.core</groupId>
+				<artifactId>vmutils</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.plugin-tools</groupId>
+				<artifactId>maven-plugin-annotations</artifactId>
+				<version>3.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-core</artifactId>
+				<version>3.3.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse</groupId>
+				<artifactId>osgi</artifactId>
+				<version>${osgi.nls.version}</version>
+			</dependency>
+		</dependencies>
 	</dependencyManagement>
 
 	<!-- ======================================= -->
@@ -96,8 +309,6 @@
 
 	<build>
 		<pluginManagement>
-			<!-- The other plugin configurations are inside the submodules for avoiding 
-				to propagate the information outside a specific module -->
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -182,20 +393,22 @@
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-plugin-plugin</artifactId>
+					<version>3.4</version>
+					<executions>
+						<execution>
+							<id>generated-helpmojo</id>
+							<goals>
+								<goal>helpmojo</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
 					<version>2.17</version>
-					<dependencies>
-						<dependency>
-							<groupId>io.sarl</groupId>
-							<artifactId>io.sarl.checkstyle</artifactId>
-							<version>${project.version}</version>
-						</dependency>
-						<dependency>
-							<groupId>com.puppycrawl.tools</groupId>
-							<artifactId>checkstyle</artifactId>
-							<version>6.12</version>
-						</dependency>
-					</dependencies>
 					<executions>
 						<execution>
 							<phase>process-classes</phase>
@@ -205,20 +418,30 @@
 						</execution>
 					</executions>
 					<configuration>
-						<configLocation>io/sarl/checkstyle/checks.xml</configLocation>
-						<headerLocation>io/sarl/checkstyle/class_header.txt</headerLocation>
-						<enableRSS>true</enableRSS>
-						<linkXRef>true</linkXRef>
+					    <!-- config is inside one of the dependencies -->
+						<configLocation>/checkstyle/checkstyle.xml</configLocation>
+						<!-- force absolute path of the config file -->
+						<propertyExpansion>${checkstyle.config_loc}</propertyExpansion>
 						<consoleOutput>true</consoleOutput>
+						<detail>true</detail>
 						<failsOnError>true</failsOnError>
 						<failOnViolation>true</failOnViolation>
 						<includeResources>false</includeResources>
 						<includeTestSourceDirectory>false</includeTestSourceDirectory>
 						<includeTestResources>false</includeTestResources>
-						<enableRulesSummary>true</enableRulesSummary>
-						<propertyExpansion>mainbasedir=${mainbasedir}</propertyExpansion>
-						<propertyExpansion>checkstyleheaderdir=${mainbasedir}/checkstyle/src/main/resources/io/sarl/checkstyle</propertyExpansion>
 					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>io.sarl</groupId>
+							<artifactId>build-tools</artifactId>
+							<version>${sarlversion}</version>
+						</dependency>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>6.19</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 
 				<plugin>
@@ -367,6 +590,20 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-plugin-plugin</artifactId>
+										<versionRange>[3.3,)</versionRange>
+										<goals>
+											<goal>descriptor</goal>
+											<goal>helpmojo</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute></execute>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -409,7 +646,7 @@
 						    	throw new Exception("Unable to detect root directory");
 						    }
 						    project.properties.mainbasedir = previousDirectory;
-						    println("\tset mainbasedir to: " + project.properties.mainbasedir);
+						    log.info("set mainbasedir to: " + project.properties.mainbasedir);
 							//************************
 							// Bug in Jenkins/Hudson
 							//
@@ -419,9 +656,9 @@
 							if (project.properties.buildId == "\${maven.build.timestamp}"
 							    || project.properties.buildId == "\$maven.build.timestamp") {
 								project.properties.buildId = (new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now);
-								println("\tset buildId to: " + project.properties.buildId + " (reset for Jenkins/Hudson)");
+								log.info("set buildId to: " + project.properties.buildId + " (reset for Jenkins/Hudson)");
 							} else {
-								println("\tset buildId to: " + project.properties.buildId);
+								log.info("set buildId to: " + project.properties.buildId);
 							}
 							//************************
 							// Compute version and snapshot tag
@@ -432,15 +669,16 @@
 							def isSnapshot;
 							def endOfVersion;
 							def p2UploadToDir;
-							if (project.version.endsWith(snapshotTag)) {
-								def len = project.version.size() - snapshotTag.size();
-								version = project.version.substring(0, len);
+							def projectVersion = project.properties.sarlversion
+							if (projectVersion.endsWith(snapshotTag)) {
+								def len = projectVersion.size() - snapshotTag.size();
+								version = projectVersion.substring(0, len);
 								releaseStatus = "Draft Release";
 								isSnapshot = true;
 								endOfVersion = snapshotTag;
 								p2UploadToDir = "/snapshots/"+version+"/R"+project.properties.buildId
 							} else {
-								version = project.version;
+								version = projectVersion;
 								releaseStatus = "Stable Release";
 								isSnapshot = false;
 								endOfVersion = "";
@@ -456,15 +694,24 @@
 							project.properties.sarlspecificationreleasestatus = releaseStatus;
 							project.properties.sarlisstableversion = Boolean.toString(!isSnapshot);
 							project.properties.p2UploadToDir = p2UploadToDir;
-							project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+".0"+endOfVersion;
+							project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2]+endOfVersion;
 
-							println("\tset sarlspecificationreleaseversion to: " + project.properties.sarlspecificationreleaseversion);
-							println("\tset sarlreleaseversion to: " + project.properties.sarlreleaseversion);
-							println("\tset sarlspecificationreleasedate to: " + project.properties.sarlspecificationreleasedate);
-							println("\tset sarlspecificationreleasestatus to: " + project.properties.sarlspecificationreleasestatus);
-							println("\tset sarlisstableversion to: " + project.properties.sarlisstableversion);
-							println("\tset p2UploadToDir to: " + project.properties.p2UploadToDir);
-							println("\tset janusversion to: " + project.properties.janusversion);
+							log.info("set sarlspecificationreleaseversion to: " + project.properties.sarlspecificationreleaseversion);
+							log.info("set sarlreleaseversion to: " + project.properties.sarlreleaseversion);
+							log.info("set sarlspecificationreleasedate to: " + project.properties.sarlspecificationreleasedate);
+							log.info("set sarlspecificationreleasestatus to: " + project.properties.sarlspecificationreleasestatus);
+							log.info("set sarlisstableversion to: " + project.properties.sarlisstableversion);
+							log.info("set p2UploadToDir to: " + project.properties.p2UploadToDir);
+							log.info("set janusversion to: " + project.properties.janusversion);
+							//************************
+							// Set Checkstyle properties
+							//
+						    def config_loc = project.properties.mainbasedir;
+						    ["build-tools", "src", "main", "resources", "checkstyle"].each {
+						    	config_loc = new File(config_loc, it);
+						    }
+						    project.properties["checkstyle.config_loc"] = "config_loc=" + config_loc.getAbsolutePath() + File.separator;
+						    log.info("set checkstyle.config_loc to: " + project.properties["checkstyle.config_loc"]);
 						]]></script>
 					</scripts>
 				</configuration>
@@ -533,10 +780,10 @@
 						</goals>
 						<configuration>
 							<generateChildNotices>true</generateChildNotices>
-							<noticeTemplate>${mainbasedir}/licenses/NOTICE.template</noticeTemplate>
+							<noticeTemplate>${mainbasedir}/build-tools/licenses/NOTICE.template</noticeTemplate>
 							<licenseMapping>
-								<param>${mainbasedir}/licenses/license-mappings-sarl.xml</param>
-								<param>${mainbasedir}/licenses/license-mappings.xml</param>
+								<param>${mainbasedir}/build-tools/licenses/license-mappings-sarl.xml</param>
+								<param>${mainbasedir}/build-tools/licenses/license-mappings.xml</param>
 							</licenseMapping>
 						</configuration>
 					</execution>
@@ -579,22 +826,21 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
-				<!-- Check-style configuration -->
-				<module>checkstyle</module>
-				<!-- Parent configuration for tycho modules -->
+				<!-- Tools for building the project -->
+				<module>build-tools</module>
+				<!-- The shared Rtcho configuration -->
 				<module>tycho-parent</module>
-				<!-- Eclipse features for SARL (SDK and IDE contributions) -->
-				<module>features</module>
-				<!-- Eclipse plugins -->
-				<module>plugins</module>
-				<!-- Maven plugins and artifacts dedicated to SARL -->
+				<!-- SARL tools and plugins -->
+				<module>sarl</module>
+				<!-- Maven tools -->
 				<module>maven</module>
-				<!-- Testing suite -->
-				<module>tests</module>
-				<!-- Definition of the Eclipse platform, the products and the update 
-					sites -->
-				<module>releng</module>
-				<!-- Documentation of SARL -->
+				<!-- Tools for developers -->
+				<module>dev-tools</module>
+				<!-- SREs -->
+				<module>sre</module>
+				<!-- SREs -->
+				<module>products</module>
+				<!-- Documentation -->
 				<module>docs</module>
 			</modules>
 		</profile>
@@ -607,12 +853,9 @@
 				</property>
 			</activation>
 			<modules>
-				<!-- Parent configuration for tycho modules -->
-				<module>tycho-parent</module>
-				<!-- Eclipse plugins -->
-				<module>plugins</module>
-				<!-- Maven plugins and artifacts dedicated to SARL -->
-				<module>maven</module>
+<!--				<module>tycho-parent</module>-->
+<!--				<module>plugins</module>-->
+<!--				<module>maven</module>-->
 			</modules>
 		</profile>
 		<profile>
@@ -668,102 +911,5 @@
 			</build>
 		</profile>
 	</profiles>
-
-	<!-- ======================================= -->
-	<!-- ==== Organization Information === -->
-	<!-- ======================================= -->
-
-	<developers>
-		<developer>
-			<id>srodriguez</id>
-			<name>Sebastian Rodriguez</name>
-			<email>sebastian.rodriguez@gitia.org</email>
-			<url>http://gitia.org/members/sebastian-rodriguez/</url>
-			<organization>
-				Grupo de Investigaci&amp;oacute;n en Tecnolog&amp;iacute;as Inform&amp;aacute;ticas Avanzadas de Tucum&amp;aacute;n
-			</organization>
-			<organizationUrl>http://gitia.org/</organizationUrl>
-			<roles>
-				<role>Co-founder</role>
-				<role>Architect</role>
-				<role>Developer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>ngaud</id>
-			<name>Nicolas Gaud</name>
-			<email>nicolas.gaud@utbm.fr</email>
-			<url>http://www.multiagent.fr/People:Gaud_nicolas</url>
-			<organization>
-				Universit&amp;eacute; de Bourgogne Franche-Comt&amp;eacute;.
-				Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
-			</organization>
-			<organizationUrl>http://www.multiagent.fr</organizationUrl>
-			<roles>
-				<role>Co-founder</role>
-				<role>Architect</role>
-				<role>Developer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>sgalland</id>
-			<name>St&amp;eacute;phane Galland</name>
-			<email>stephane.galland@utbm.fr</email>
-			<url>http://www.multiagent.fr/People:Galland_stephane</url>
-			<organization>
-				Universit&amp;eacute; de Bourgogne Franche-Comt&amp;eacute;.
-				Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
-			</organization>
-			<organizationUrl>http://www.multiagent.fr</organizationUrl>
-			<roles>
-				<role>Co-founder</role>
-				<role>Architect</role>
-				<role>Developer</role>
-			</roles>
-		</developer>
-	</developers>
-
-	<contributors>
-		<contributor>
-			<name>Mohamed Ezzat</name>
-			<email>mohamed.ezzat@devfactory.com</email>
-			<url>https://github.com/m-ezzat</url>
-			<roles>
-				<role>Code cleaning and optimization</role>
-			</roles>
-		</contributor>
-		<contributor>
-			<name>J&amp;eacute;r&amp;eacute;mie Jost</name>
-			<email>jeremiejost@gmail.com</email>
-			<url>https://github.com/jjst</url>
-			<roles>
-				<role>Documentation Contributor</role>
-			</roles>
-		</contributor>
-	</contributors>
-
-	<!-- =================== -->
-	<!-- ==== Deployment === -->
-	<!-- =================== -->
-
-	<distributionManagement>
-		<repository>
-			<id>local-release-repository</id>
-			<url>${local.maven.repository.path}</url>
-		</repository>
-		<snapshotRepository>
-			<id>local-repository</id>
-			<url>${local.maven.repository.path}</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<!-- ==================== -->
-	<!-- ==== Development === -->
-	<!-- ==================== -->
-	<scm>
-		<connection>scm:git:git@github.com:sarl/sarl.git</connection>
-		<developerConnection>scm:git:git@github.com:sarl/sarl.git</developerConnection>
-		<url>git@github.com:sarl/sarl.git</url>
-	</scm>
 
 </project>

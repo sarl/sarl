@@ -1,20 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<parent>
 		<groupId>io.sarl</groupId>
-		<artifactId>io.sarl</artifactId>
+		<artifactId>io.sarl.tycho-parent</artifactId>
 		<version>0.4.0-SNAPSHOT</version>
+		<relativePath>../tycho-parent</relativePath>
 	</parent>
 
-	<artifactId>io.sarl.docs</artifactId>
+	<artifactId>io.sarl.sarl</artifactId>
 	<packaging>pom</packaging>
-	<name>Documentation Parent</name>
+
+	<name>SARL Plugin and Feature Parent</name>
 
 	<modules>
-		<module>io.sarl.docs.suite</module>
+		<module>io.sarl.lang.targetplatform</module>
+		<module>features</module>
+		<module>plugins</module>
+		<module>tests</module>
 	</modules>
 
 </project>
