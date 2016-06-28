@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.core;
+package io.sarl.lang.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

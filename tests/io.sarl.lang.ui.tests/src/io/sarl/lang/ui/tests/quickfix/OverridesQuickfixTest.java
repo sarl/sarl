@@ -22,6 +22,7 @@ import org.junit.Test;
 public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 
 	@Test
+	@Ignore
 	public void fixOverriddenFinaMethod() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL,
@@ -51,6 +52,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
+	@Ignore
 	public void fixOverriddenFinalType() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL,
@@ -73,6 +75,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
+	@Ignore
 	public void fixMissedClassicPrototype_0() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -119,6 +122,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
+	@Ignore
 	public void fixVariadicParameter_0() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -151,6 +155,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
+	@Ignore
 	public void fixVariadicParameter_1() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -217,6 +222,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
+	@Ignore
 	public void fixParameterDefaultValue_2() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -249,6 +255,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
+	@Ignore
 	public void fixParameterDefaultValue_3() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -275,6 +282,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
+	@Ignore
 	public void fixParameterDefaultValueAndVariadicParameter() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,

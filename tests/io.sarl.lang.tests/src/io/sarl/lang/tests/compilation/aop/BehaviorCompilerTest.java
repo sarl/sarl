@@ -96,9 +96,9 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedB1 = multilineString(
+				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
-				"import io.sarl.lang.core.PerceptGuardEvaluator;",
 				"import java.util.Collection;",
 				"import javax.annotation.Generated;",
 				"",
@@ -281,9 +281,9 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedB1 = multilineString(
+				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
-				"import io.sarl.lang.core.PerceptGuardEvaluator;",
 				"import java.util.Collection;",
 				"import javax.annotation.Generated;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
