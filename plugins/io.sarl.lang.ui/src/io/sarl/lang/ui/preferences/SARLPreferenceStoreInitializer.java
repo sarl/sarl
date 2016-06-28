@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,10 +50,14 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 	@Override
 	public void initialize(IPreferenceStoreAccess preferenceStoreAccess) {
 		this.preferenceStoreAccess = preferenceStoreAccess;
+
+		// Initialize the default visibilities for the optional issue codes.
 		setupIssueCodesDefaults(preferenceStoreAccess);
 
 		IPreferenceStore preferenceStore = org.eclipse.jdt.ui.PreferenceConstants.getPreferenceStore();
 		preferenceStore.addPropertyChangeListener(this);
+
+		// Copy the Subword navigation from the JDT plugin.
 		preferenceStoreAccess.getWritablePreferenceStore().setDefault(
 				PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION,
 				preferenceStore.getBoolean(org.eclipse.jdt.ui.PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION));
@@ -71,6 +75,7 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 		if (this.preferenceStoreAccess == null) {
 			return;
 		}
+		// Copy the Subword navigation from the JDT plugin.
 		if (org.eclipse.jdt.ui.PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION.equalsIgnoreCase(event.getProperty())) {
 			this.preferenceStoreAccess.getWritablePreferenceStore().setValue(PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION,
 					Boolean.valueOf(event.getNewValue().toString()));

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
 
-import io.sarl.lang.ui.internal.SARLActivator;
+import io.sarl.lang.ui.internal.LangActivator;
 
 /** Utilities related to the preferences related to SARL.
  *
@@ -64,7 +64,7 @@ public final class SARLPreferences {
 	 */
 	public static IPreferenceStore getSARLPreferencesFor(IProject project) {
 		if (project != null) {
-			Injector injector = SARLActivator.getInstance().getInjector(SARLActivator.IO_SARL_LANG_SARL);
+			Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
 			IPreferenceStoreAccess preferenceStoreAccess = injector.getInstance(IPreferenceStoreAccess.class);
 			return preferenceStoreAccess.getWritablePreferenceStore(project);
 		}
@@ -77,7 +77,7 @@ public final class SARLPreferences {
 	 * @return the Xtext output configurations.
 	 */
 	public static Set<OutputConfiguration> getXtextConfigurationsFor(IProject project) {
-		Injector injector = SARLActivator.getInstance().getInjector(SARLActivator.IO_SARL_LANG_SARL);
+		Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
 		EclipseOutputConfigurationProvider configurationProvider =
 				injector.getInstance(EclipseOutputConfigurationProvider.class);
 		return configurationProvider.getOutputConfigurations(project);
@@ -186,7 +186,7 @@ public final class SARLPreferences {
 	 * @return the output path for SARL compiler in the global preferences.
 	 */
 	public static IPath getGlobalSARLOutputPath() {
-		Injector injector = SARLActivator.getInstance().getInjector(SARLActivator.IO_SARL_LANG_SARL);
+		Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
 		IOutputConfigurationProvider configurationProvider =
 				injector.getInstance(IOutputConfigurationProvider.class);
 		for (OutputConfiguration config : configurationProvider.getOutputConfigurations()) {

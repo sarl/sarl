@@ -27,8 +27,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse</groupId> 
- 			<artifactId>osgi</artifactId> 
+			<groupId>org.eclipse</groupId>
+			<artifactId>osgi</artifactId>
 			<version>${osgi.nls.version}</version>
 		</dependency>
 		<dependency>
@@ -265,6 +265,10 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<testOutputDirectory>${project.basedir}/src/test/generated-sources/xtend</testOutputDirectory>
+					<writeTraceFiles>false</writeTraceFiles>
+				</configuration>
 			</plugin>
 
 			<plugin>

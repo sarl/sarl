@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,29 +18,20 @@ package io.sarl.lang.tests.parsing.general;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.sarl.lang.SARLInjectorProvider;
+
+import com.google.common.base.Strings;
+import org.eclipse.xtext.diagnostics.Diagnostic;
+import org.eclipse.xtext.xbase.XNullLiteral;
+import org.eclipse.xtext.xbase.XNumberLiteral;
+import org.eclipse.xtext.xbase.XbasePackage;
+import org.junit.Test;
+
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtend.core.validation.IssueCodes;
-import org.eclipse.xtext.common.types.TypesPackage;
-import org.eclipse.xtext.diagnostics.Diagnostic;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
-import org.eclipse.xtext.xbase.XNullLiteral;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XbasePackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
 
 /**
  * @author $Author: sgalland$
@@ -86,19 +77,15 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas)
-			.assertError(
+		Validator validator = validate(mas);
+		validator.assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
-				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
-				"The method or field i is undefined for the type A1")
-			.assertError(
-				XbasePackage.eINSTANCE.getXAssignment(),
-				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
-				"The method or field k is undefined for the type A1")
-			.assertError(
+				Diagnostic.LINKING_DIAGNOSTIC,
+				"The method or field i is undefined");
+		validator.assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
-				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
-				"The method or field k is undefined for the type A1");
+				Diagnostic.LINKING_DIAGNOSTIC,
+				"The method or field k is undefined");
 	}
 
 	@Test
@@ -201,19 +188,15 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas)
-			.assertError(
+		Validator validator = validate(mas);
+		validator.assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
-				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
-				"The method or field i is undefined for the type A1")
-			.assertError(
-				XbasePackage.eINSTANCE.getXAssignment(),
-				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
-				"The method or field k is undefined for the type A1")
-			.assertError(
+				Diagnostic.LINKING_DIAGNOSTIC,
+				"The method or field i is undefined");
+		validator.assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
-				IssueCodes.FEATURECALL_LINKING_DIAGNOSTIC,
-				"The method or field k is undefined for the type A1");
+				Diagnostic.LINKING_DIAGNOSTIC,
+				"The method or field k is undefined");
 	}
 
 	@Test

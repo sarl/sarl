@@ -18,25 +18,25 @@ import org.eclipse.xtend.core.xtend.impl.XtendInterfaceImplCustom;
  */
 public class SarlInterfaceImpl extends XtendInterfaceImplCustom implements SarlInterface
 {
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  protected SarlInterfaceImpl()
-  {
-    super();
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected SarlInterfaceImpl()
+	{
+		super();
+	}
 
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  protected EClass eStaticClass()
-  {
-    return SarlPackage.Literals.SARL_INTERFACE;
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return SarlPackage.Literals.SARL_INTERFACE;
+	}
 
 } //SarlInterfaceImpl

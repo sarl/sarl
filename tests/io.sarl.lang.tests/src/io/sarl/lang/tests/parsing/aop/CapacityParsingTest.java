@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,50 +15,39 @@
  */
 package io.sarl.lang.tests.parsing.aop;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Iterator;
+import java.util.List;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
-import com.google.inject.Inject;
-
-import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
-import io.sarl.lang.sarl.SarlCapacity;
-import io.sarl.lang.sarl.SarlCapacityUses;
-import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlField;
-import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.validation.IssueCodes;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.common.types.JvmTypeConstraint;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Severity;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.validation.Issue;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XStringLiteral;
-import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.xtext.common.types.JvmTypeConstraint;
-import org.eclipse.xtext.common.types.JvmTypeParameter;
-
-import static org.junit.Assert.*;
-
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -711,8 +700,7 @@ public class CapacityParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-					88, 4,
-					"The method name() of type C2 must use override keyword since it actually overrides a supertype method");
+					88, 4);
 		}
 
 		@Test
@@ -828,8 +816,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 7,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 7);
 		}
 
 		@Test
@@ -842,8 +829,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 9,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 9);
 		}
 
 		@Test
@@ -856,8 +842,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 7,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 7);
 		}
 
 		@Test
@@ -896,8 +881,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -910,8 +894,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 6);
 		}
 
 		@Test
@@ -924,8 +907,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -938,8 +920,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 5,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 5);
 		}
 
 		@Test
@@ -952,8 +933,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -966,8 +946,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 6);
 		}
 
 		@Test
@@ -980,8 +959,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 8);
 		}
 
 		@Test
@@ -994,8 +972,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 12,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 12);
 		}
 
 		@Test
@@ -1008,8 +985,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 9,
-					"Illegal modifier for the definition of name in C1; only public, def & override are permitted");
+					47, 9);
 		}
 
 		@Test
@@ -1023,7 +999,7 @@ public class CapacityParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					57, 7,
-					"The definition of name in C1 can only set one of public / package / protected / private");
+					"public / package / protected / private");
 		}
 
 	}

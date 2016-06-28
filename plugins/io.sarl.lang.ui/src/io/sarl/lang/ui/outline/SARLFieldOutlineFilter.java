@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,10 @@ public class SARLFieldOutlineFilter extends AbstractFilterOutlineContribution {
 	 */
 	public static final String PREFERENCE_KEY = "io.sarl.lang.ui.outline.filterFields"; //$NON-NLS-1$
 
+	/** Basename of the action icon.
+	 */
+	public static final String ICON_BASENAME = "hide_fields.png"; //$NON-NLS-1$
+
 	@Inject
 	private IImageDescriptorHelper imageHelper;
 
@@ -76,7 +80,7 @@ public class SARLFieldOutlineFilter extends AbstractFilterOutlineContribution {
 		action.setText(Messages.SARLFieldOutlineFilter_0);
 		action.setDescription(Messages.SARLFieldOutlineFilter_0);
 		action.setToolTipText(Messages.SARLFieldOutlineFilter_0);
-		action.setImageDescriptor(this.imageHelper.getImageDescriptor("hide_fields.png")); //$NON-NLS-1$
+		action.setImageDescriptor(this.imageHelper.getImageDescriptor(ICON_BASENAME));
 	}
 
 	@Override

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public class DefaultInferredPrototype implements InferredPrototype {
 	private final QualifiedActionName key;
 
 	/**
-	 * @param key - key used to store this signature into a {@link ActionPrototypeProvider}.
+	 * @param key - key used to store this signature into a {@link IActionPrototypeProvider}.
 	 * @param parameters - list of formal parameters.
 	 * @param parameterKey - key for the formal parameters.
 	 * @param originalParameters - original parameters.

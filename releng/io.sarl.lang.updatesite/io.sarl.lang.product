@@ -258,12 +258,13 @@
       <feature id="io.sarl.compiler" version="0.4.0.qualifier"/>
       <feature id="io.sarl.ide" version="0.4.0.qualifier"/>
       <feature id="io.sarl.lib" version="0.4.0.qualifier"/>
-      <feature id="org.eclipse.egit" version="4.0.3.201509231615-r"/>
-      <feature id="org.eclipse.epp.mpc" version="1.4.1.v20150916-1928"/>
+      <feature id="org.eclipse.egit" version="4.1.1.201511131810-r"/>
+      <feature id="org.eclipse.epp.mpc" version="1.4.2.v20160210-2005"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.help"/>
       <feature id="org.jboss.tools.m2e.jdt.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
+      <feature id="org.eclipse.xtext.xbase.lib"/>
       <feature id="org.eclipse.jdt"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
@@ -275,6 +276,7 @@
       <feature id="org.eclipse.equinox.p2.user.ui"/>
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
       <feature id="org.eclipse.m2e.feature"/>
+      <feature id="org.eclipse.xtext.xbase.lib.source"/>
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.ecf.core.feature"/>
       <feature id="org.eclipse.jgit"/>

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@
  */
 
 package io.sarl.eclipse.wizards.elements.aop.newevent;
-
-import static io.sarl.eclipse.util.Jdt2Ecore.populateInheritanceContext;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,12 +37,11 @@ import org.eclipse.swt.widgets.Composite;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.codebuilder.builders.IEventBuilder;
+import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import io.sarl.lang.core.Event;
-import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
-import io.sarl.lang.sarl.SarlEvent;
 
 /**
  * Wizard page for creating a new SARL event.
@@ -85,9 +82,11 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		SarlEcoreCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
-		SarlEvent event = this.sarlGenerator.createEvent(code, getTypeName(), getSuperClass());
-		this.sarlGenerator.attachComment(code, event, typeComment);
+		IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
+				getPackageFragment().getElementName(), ecoreResource);
+		IEventBuilder event = scriptBuilder.addEvent(getTypeName());
+		event.setExtends(getSuperClass());
+		event.setDocumentation(typeComment.trim());
 
 		Map<ActionParameterTypes, IMethod> constructors;
 
@@ -98,8 +97,8 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 			constructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
 		}
 
-		populateInheritanceContext(
-				Jdt2Ecore.toTypeFinder(getJavaProject()),
+		this.jdt2sarl.populateInheritanceContext(
+				this.jdt2sarl.toTypeFinder(getJavaProject()),
 				// Discarding final operation.
 				null,
 				// Discarding overridable operation.
@@ -109,15 +108,14 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 				// Discarding the operations to implement.
 				null,
 				constructors,
-				code.getCodeGenerator().getActionSignatureProvider(),
 				getSuperClass(),
 				Collections.<String>emptyList());
 
 		if (constructors != null) {
-			Jdt2Ecore.createStandardConstructors(code, constructors.values(), event);
+			this.jdt2sarl.createStandardConstructors(event, constructors.values(), event.getSarlEvent());
 		}
 
-		code.finalizeScript();
+		scriptBuilder.finalizeScript();
 	}
 
 	@Override

@@ -7,9 +7,9 @@ Bundle-SymbolicName: io.sarl.lang.ui.tests; singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.sarl.tests.api;bundle-version="0.4.0",
  io.sarl.tests.testdata;bundle-version="0.4.0",
- org.eclipse.xtend.ide;bundle-version="2.8.4",
- org.eclipse.jdt.ui;bundle-version="3.11.0",
- org.mockito.mockito-core;bundle-version="2.0.64"
+ org.eclipse.xtend.ide;bundle-version="2.10.0",
+ org.eclipse.jdt.ui;bundle-version="3.11.2",
+ org.mockito.mockito-core;bundle-version="2.0.73"
 Export-Package: io.sarl.lang.ui.tests.highlighting,
  io.sarl.lang.ui.tests.images,
  io.sarl.lang.ui.tests.labeling,

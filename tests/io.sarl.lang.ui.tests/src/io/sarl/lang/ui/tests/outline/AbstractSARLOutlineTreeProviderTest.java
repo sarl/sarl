@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,14 @@
 package io.sarl.lang.ui.tests.outline;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.ui.outline.SARLOutlineTreeProvider;
-import io.sarl.tests.api.AbstractSarlUiTest;
 
+import com.google.common.base.Joiner;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.xtext.resource.XtextResource;
@@ -40,9 +39,9 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
-import com.google.common.base.Joiner;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.ui.outline.SARLOutlineTreeProvider;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 /** Abstract implementation for the outline tests.
  *

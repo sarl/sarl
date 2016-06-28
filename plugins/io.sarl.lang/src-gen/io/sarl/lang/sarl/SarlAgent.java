@@ -24,46 +24,46 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  */
 public interface SarlAgent extends XtendTypeDeclaration
 {
-  /**
-   * Returns the value of the '<em><b>Extends</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Extends</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Extends</em>' containment reference.
-   * @see #setExtends(JvmParameterizedTypeReference)
-   * @see io.sarl.lang.sarl.SarlPackage#getSarlAgent_Extends()
-   * @model containment="true"
-   * @generated
-   */
-  JvmParameterizedTypeReference getExtends();
+	/**
+	 * Returns the value of the '<em><b>Extends</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Extends</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Extends</em>' containment reference.
+	 * @see #setExtends(JvmParameterizedTypeReference)
+	 * @see io.sarl.lang.sarl.SarlPackage#getSarlAgent_Extends()
+	 * @model containment="true"
+	 * @generated
+	 */
+	JvmParameterizedTypeReference getExtends();
 
-  /**
-   * Sets the value of the '{@link io.sarl.lang.sarl.SarlAgent#getExtends <em>Extends</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Extends</em>' containment reference.
-   * @see #getExtends()
-   * @generated
-   */
-  void setExtends(JvmParameterizedTypeReference value);
+	/**
+	 * Sets the value of the '{@link io.sarl.lang.sarl.SarlAgent#getExtends <em>Extends</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Extends</em>' containment reference.
+	 * @see #getExtends()
+	 * @generated
+	 */
+	void setExtends(JvmParameterizedTypeReference value);
 
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @model kind="operation"
-   * @generated
-   */
-  boolean isAbstract();
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	boolean isAbstract();
 
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @model kind="operation"
-   * @generated
-   */
-  boolean isStrictFloatingPoint();
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	boolean isStrictFloatingPoint();
 
 } // SarlAgent

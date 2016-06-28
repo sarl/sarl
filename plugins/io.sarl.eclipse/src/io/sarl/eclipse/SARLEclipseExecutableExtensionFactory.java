@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import com.google.inject.Injector;
 import org.eclipse.xtext.ui.guice.AbstractGuiceAwareExecutableExtensionFactory;
 import org.osgi.framework.Bundle;
 
-import io.sarl.lang.ui.internal.SARLActivator;
+import io.sarl.lang.ui.internal.LangActivator;
 
 /** Factory for injecting SARL instances.
  *
@@ -43,7 +43,7 @@ public class SARLEclipseExecutableExtensionFactory extends AbstractGuiceAwareExe
 
 	@Override
 	protected Injector getInjector() {
-		return SARLActivator.getInstance().getInjector(SARLActivator.IO_SARL_LANG_SARL);
+		return LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
 	}
 
 }

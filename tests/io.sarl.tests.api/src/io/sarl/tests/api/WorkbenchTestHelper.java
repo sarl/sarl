@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,13 +58,13 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -89,8 +89,8 @@ import org.eclipse.xtext.ui.editor.XtextEditorInfo;
 import org.eclipse.xtext.ui.editor.utils.EditorUtils;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.util.PluginProjectFactory;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.StringInputStream;
-import org.eclipse.xtext.xbase.compiler.JavaVersion;
 import org.eclipse.xtext.xbase.lib.Functions;
 import org.osgi.framework.Bundle;
 
@@ -196,7 +196,7 @@ public class WorkbenchTestHelper {
 					try {
 						file.delete(true, null);
 					} catch (Exception exc) {
-						throw new RuntimeException(exc);
+						// Be silent because it is outside the scope of the tests
 					}
 				}
 				getFiles().clear();
@@ -206,7 +206,7 @@ public class WorkbenchTestHelper {
 						try {
 							binMember.delete(true, null);
 						} catch (Exception exc) {
-							throw new RuntimeException(exc);
+							// Be silent because it is outside the scope of the tests
 						}
 					}
 				}
@@ -453,7 +453,8 @@ public class WorkbenchTestHelper {
 	 * @return the SARL script.
 	 * @throws Exception
 	 */
-	public <T extends XtendTypeDeclaration> T sarlTypeDeclaration(
+	@SuppressWarnings("null")
+	public <T extends XtendTypeDeclaration> @NonNull T sarlTypeDeclaration(
 			String fileName, Class<T> type,
 			String content) throws Exception {
 		SarlScript script = sarlScript(fileName, content);
@@ -476,7 +477,7 @@ public class WorkbenchTestHelper {
 	 * @return the SARL script.
 	 * @throws Exception
 	 */
-	public <T extends XtendTypeDeclaration> T sarlTypeDeclaration(
+	public <T extends XtendTypeDeclaration> @NonNull T sarlTypeDeclaration(
 			Class<T> type,
 			String content) throws Exception {
 		return sarlTypeDeclaration(generateFilename(), type, content);
@@ -587,7 +588,7 @@ public class WorkbenchTestHelper {
 		IPath srcGenFolder = Path.fromPortableString(creator.getGenerationFolder());
 		projectFactory.addBuilderIds(creator.getBuilderIds());
 		projectFactory.addProjectNatures(creator.getNatures());
-		IProject result = projectFactory.createProject(new NullProgressMonitor(), null);
+		IProject result = projectFactory.createProject(null, null);
 		IJavaProject javaProject = JavaCore.create(result);
 		makeCompliantFor(javaProject, jVersion);
 		creator.addJreClasspathEntry(javaProject);

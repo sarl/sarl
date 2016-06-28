@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ capacity ExternalContextAccess {
 	/**
 	 * Replies all contexts this agent is a member of, including the default context
 	 */	 
+	@Pure
 	def getAllContexts : SynchronizedCollection<AgentContext>
 
 	/**
@@ -50,6 +51,7 @@ capacity ExternalContextAccess {
 	 * @throws UnknownContextException if the context specified context is not known by the agent.
 	 * @param contextID the ID of the context to get.
 	 */
+	@Pure
 	def getContext(contextID : UUID): AgentContext
 
     /**
@@ -87,6 +89,7 @@ capacity ExternalContextAccess {
 	 * given space. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
+	@Pure
 	def isInSpace(^event : Event, space : Space) : boolean
 
 	/** Replies if the given event was emitted in the space with
@@ -98,6 +101,7 @@ capacity ExternalContextAccess {
 	 * space with the given identifier. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
+	@Pure
 	def isInSpace(^event : Event, spaceID : SpaceID) : boolean
 
 	/** Replies if the given event was emitted in the space with
@@ -109,6 +113,7 @@ capacity ExternalContextAccess {
 	 * space with the given identifier. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
+	@Pure
 	def isInSpace(^event : Event, spaceID : UUID) : boolean
 
 }
@@ -116,6 +121,7 @@ capacity ExternalContextAccess {
 capacity InnerContextAccess {
 	/** Replies the inner context.
 	 */
+	@Pure
 	def getInnerContext : AgentContext
 	
 	/** Replies if the calling agent has other agents
@@ -124,6 +130,7 @@ capacity InnerContextAccess {
 	 * calling agent, and is a member of at least
 	 * one space of the inner context. 
 	 */
+	@Pure
 	def hasMemberAgent : boolean
 	
 	/** Replies the number of agents that are members
@@ -132,6 +139,7 @@ capacity InnerContextAccess {
 	 * calling agent, and is a member of at least
 	 * one space of the inner context. 
 	 */
+	@Pure
 	def getMemberAgentCount : int
 
 	/**
@@ -140,6 +148,7 @@ capacity InnerContextAccess {
 	 * calling agent, and is a member of at least
 	 * one space of the inner context. 
 	 */	 
+	@Pure
 	def getMemberAgents : SynchronizedSet<UUID>
 
 	/** Replies if the given space is the default space of the inner context.
@@ -149,7 +158,8 @@ capacity InnerContextAccess {
 	 * the inner context. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
-	 def isInnerDefaultSpace(space : Space) : boolean
+	@Pure
+	def isInnerDefaultSpace(space : Space) : boolean
 
 	/** Replies if the given identifier is the identifier of the
 	 * default space of the inner context.
@@ -159,7 +169,8 @@ capacity InnerContextAccess {
 	 * of the default space of the inner context. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
-	 def isInnerDefaultSpace(spaceID : SpaceID) : boolean
+	@Pure
+	def isInnerDefaultSpace(spaceID : SpaceID) : boolean
 
 	/** Replies if the given identifier is the identifier of the
 	 * default space of the inner context.
@@ -169,7 +180,8 @@ capacity InnerContextAccess {
 	 * of the default space of the inner context. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
-	 def isInnerDefaultSpace(spaceID : UUID) : boolean
+	@Pure
+	def isInnerDefaultSpace(spaceID : UUID) : boolean
 
 	/** Replies if the given event was emitted in the default space
 	 * of the inner context.
@@ -179,7 +191,8 @@ capacity InnerContextAccess {
 	 * in the default space of the inner context. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
-	 def isInInnerDefaultSpace(^event : Event) : boolean
+	@Pure
+	def isInInnerDefaultSpace(^event : Event) : boolean
 
 }
 
@@ -206,6 +219,7 @@ capacity Behaviors {
 	/**
 	 * Replies the interface to dispatch an event to agent's Behaviors
 	 */
+	@Pure
 	def asEventListener : EventListener
 }
 
@@ -367,31 +381,28 @@ capacity DefaultContextInteractions {
 	/**
 	* Returns the Default context fo the agent
 	*/
+	@Pure
 	def getDefaultContext : AgentContext
 	
 	/**
 	* Returns the Default Space of the Default Context.
 	* Equivalent to defaultContext.defaultSpace
 	*/
+	@Pure
 	def getDefaultSpace : EventSpace
 	
 	/**
 	* Return the Address of the agent in the Default Space of the Default Context.
 	* Equivalent to defaultContext.defaultSpace.address(this.id)
 	*/
+	@Pure
 	def getDefaultAddress : Address
 
 	/**
 	* Emits a given event with the provided scope in the DefaultSpace of the DefaultContext.
 	* Equivalent to defaultContext.defaultSpace.emit(e,scope)
 	*/
-	def emit(e : Event, scope : Scope<Address> )
-	
-	/**
-	* Emits a given event with no scope (all registered agent) in the DefaultSpace of the DefaultContext.
-	* Equivalent to defaultContext.defaultSpace.emit(e)
-	*/
-	def emit(e : Event)
+	def emit(e : Event, scope : Scope<Address> = null)
 	
 	/**
 	* Inverse signature of send. Useful to send events using the agent's UUID.
@@ -418,6 +429,7 @@ capacity DefaultContextInteractions {
 	 * the default context. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
+	@Pure
 	def isDefaultSpace(space : Space) : boolean
 	
 	/** Replies if the given identifier is the identifier of the default space of
@@ -428,6 +440,7 @@ capacity DefaultContextInteractions {
 	 * of the default space of the default context. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
+	@Pure
 	def isDefaultSpace(space : SpaceID) : boolean
 
 	/** Replies if the given identifier is the identifier of the default space of
@@ -438,6 +451,7 @@ capacity DefaultContextInteractions {
 	 * of the default space of the default context. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
+	@Pure
 	def isDefaultSpace(space : UUID) : boolean
 
 	/** Replies if the given event was emitted in the default space of
@@ -448,6 +462,7 @@ capacity DefaultContextInteractions {
 	 * space of the default context. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
+	@Pure
 	def isInDefaultSpace(^event : Event) : boolean
 
 	/** Replies if the given context is the default context.
@@ -457,6 +472,7 @@ capacity DefaultContextInteractions {
 	 * Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
+	@Pure
 	def isDefaultContext(context : AgentContext) : boolean
 	
 	/** Replies if the given identifier is the identifier of the default context.
@@ -466,6 +482,7 @@ capacity DefaultContextInteractions {
 	 * of the default context. Otherwise <code>false</code>.
 	 * @since 0.2
 	 */
+	@Pure
 	def isDefaultContext(contextID : UUID) : boolean
 
 	//Agent Creation
@@ -532,6 +549,7 @@ capacity Logging {
 	 * @return <code>true</code> if the errors are logged,
 	 *         <code>false</code> if not.
 	 */
+	@Pure
 	def isErrorLogEnabled : boolean
 
 	/** Replies if the logging system is displaying the warnings.
@@ -539,6 +557,7 @@ capacity Logging {
 	 * @return <code>true</code> if the warnings are logged,
 	 *         <code>false</code> if not.
 	 */
+	@Pure
 	def isWarningLogEnabled : boolean
 
 	/** Replies if the logging system is displaying the information messages.
@@ -546,6 +565,7 @@ capacity Logging {
 	 * @return <code>true</code> if the information messages are logged,
 	 *         <code>false</code> if not.
 	 */
+	@Pure
 	def isInfoLogEnabled : boolean
 
 	/** Replies if the logging system is displaying the debugging messages.
@@ -553,6 +573,7 @@ capacity Logging {
 	 * @return <code>true</code> if the debugging messages are logged,
 	 *         <code>false</code> if not.
 	 */
+	@Pure
 	def isDebugLogEnabled : boolean
 
 	/** Replies the logging level.
@@ -561,6 +582,7 @@ capacity Logging {
 	 *         <code>2</code> for warning, <code>3</code> for info,
 	 *         <code>5</code> for debug.
 	 */
+	@Pure
 	def getLogLevel : int
 
 	/** Set the logging level.

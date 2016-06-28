@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -322,7 +322,7 @@ public class ClassParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
 					56, 4,
-					"The abstract method name in type C1 can only be defined by an abstract class");
+					"Invalid implemented type", "name");
 		}
 
 		@Test
@@ -639,7 +639,7 @@ public class ClassParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
 					95, 4,
-					"The abstract method name in type C1 can only be defined by an abstract class");
+					"Invalid implemented type", "name");
 		}
 
 		@Test
@@ -675,8 +675,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlClass(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					64, 6,
-					"Illegal modifier for the class C1; only package, protected, private, static, final, abstract & strictfp are permitted");
+					64, 6);
 		}
 
 		@Test
@@ -689,8 +688,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlClass(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_STATIC_MODIFIER,
-					70, 2,
-					"Nested classes must be static");
+					70, 2);
 		}
 
 		@Test
@@ -818,8 +816,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 8,
-				"Illegal modifier for the class C1; only package, protected, private, static, final, abstract & strictfp are permitted");
+				64, 8);
 		}
 
 		@Test
@@ -878,8 +875,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 6,
-				"Illegal modifier for the class C1; only package, protected, private, static, final, abstract & strictfp are permitted");
+				64, 6);
 		}
 
 		@Test
@@ -892,8 +888,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 8,
-				"Illegal modifier for the class C1; only package, protected, private, static, final, abstract & strictfp are permitted");
+				64, 8);
 		}
 
 		@Test
@@ -906,8 +901,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 12,
-				"Illegal modifier for the class C1; only package, protected, private, static, final, abstract & strictfp are permitted");
+				64, 12);
 		}
 
 		@Test
@@ -920,8 +914,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 9,
-				"Illegal modifier for the class C1; only package, protected, private, static, final, abstract & strictfp are permitted");
+				64, 9);
 		}
 
 		@Test
@@ -935,7 +928,7 @@ public class ClassParsingTest {
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				73, 5,
-				"The class C1 can either be abstract or final, not both");
+				"can either be abstract or final, not both");
 		}
 
 		@Test
@@ -948,8 +941,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					95, 4,
-					"The abstract method name in type C1 can only be defined by an abstract class");
+					95, 4);
 		}
 
 		@Test
@@ -963,7 +955,7 @@ public class ClassParsingTest {
 				SarlPackage.eINSTANCE.getSarlClass(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				71, 7,
-				"The class C1 can only set one of public / package / protected / private");
+				"public / package / protected / private");
 		}
 
 	}
@@ -1008,8 +1000,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlClass(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_STATIC_MODIFIER,
-					76, 2,
-					"Nested classes must be static");
+					76, 2);
 		}
 
 		@Test
@@ -1267,8 +1258,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					101, 4,
-					"The abstract method name in type C1 can only be defined by an abstract class");
+					101, 4);
 		}
 
 		@Test
@@ -1329,8 +1319,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlClass(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_STATIC_MODIFIER,
-					107, 2,
-					"Nested classes must be static");
+					107, 2);
 		}
 
 		@Test
@@ -1602,8 +1591,7 @@ public class ClassParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					132, 4,
-					"The abstract method name in type C1 can only be defined by an abstract class");
+					132, 4);
 		}
 
 		@Test

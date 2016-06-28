@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,15 @@
 
 package io.sarl.lang.ui.quickfix;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.core.validation.IssueCodes;
@@ -34,6 +38,7 @@ import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -42,7 +47,6 @@ import org.eclipse.xtext.nodemodel.ILeafNode;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.tasks.ITaskTagProvider;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.Fix;
@@ -50,12 +54,12 @@ import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.util.Arrays;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.Issue;
-import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 
-import io.sarl.lang.actionprototype.ActionPrototypeProvider;
+import io.sarl.lang.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.annotation.DefaultValueUse;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -78,6 +82,7 @@ import io.sarl.lang.ui.quickfix.acceptors.MultiModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeReplaceModification;
 import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
+import io.sarl.lang.util.Utils;
 
 /**
  * Custom quickfixes.
@@ -86,10 +91,13 @@ import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "http://www.eclipse.org/Xtext/documentation.html#quickfixes"
+ * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#quick-fixes"
  */
 @SuppressWarnings({"static-method", "checkstyle:methodcount"})
 public class SARLQuickfixProvider extends XtendQuickfixProvider {
+
+	@Inject
+	private Injector injector;
 
 	@Inject
 	private ReplacingAppendable.Factory appendableFactory;
@@ -104,13 +112,42 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	private CommonTypeComputationServices services;
 
 	@Inject
-	private ITaskTagProvider taskTagProvider;
-
-	@Inject
-	private ActionPrototypeProvider prototypeProvider;
+	private IActionPrototypeProvider prototypeProvider;
 
 	@Inject
 	private IQualifiedNameProvider qualifiedNameProvider;
+
+	/** Replies the JVM operations that correspond to the given URIs.
+	 *
+	 * @param container the container of the operations.
+	 * @param operationUris the URIs.
+	 * @return the JVM operations.
+	 */
+	public List<JvmOperation> getJvmOperationsFromURIs(XtendTypeDeclaration container, String... operationUris) {
+		// Collect the JvmOperation prior to any modification for ensuring that
+		// URI are pointing the JvmOperations.
+		final List<JvmOperation> operations = new ArrayList<>();
+		final ResourceSet resourceSet = container.eResource().getResourceSet();
+		for (String operationUriAsString : operationUris) {
+			final URI operationURI = URI.createURI(operationUriAsString);
+			final EObject overridden = resourceSet.getEObject(operationURI, true);
+			if (overridden instanceof JvmOperation) {
+				final JvmOperation operation = (JvmOperation) overridden;
+				if (!Utils.hasAnnotation(operation, DefaultValueUse.class)) {
+					operations.add(operation);
+				}
+			}
+		}
+		return operations;
+	}
+
+	/** Replies the injector used by this object.
+	 *
+	 * @return the injector.
+	 */
+	public Injector getInjector() {
+		return this.injector;
+	}
 
 	/** Replies a provider of qualified name.
 	 *
@@ -129,16 +166,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 *
 	 * @return the action prototype provider.
 	 */
-	public ActionPrototypeProvider getActionPrototypeProvider() {
+	public IActionPrototypeProvider getActionPrototypeProvider() {
 		return this.prototypeProvider;
-	}
-
-	/** Replies the provider of the task tags.
-	 *
-	 * @return the provider of the task tags.
-	 */
-	public ITaskTagProvider getTaskTagProvider() {
-		return this.taskTagProvider;
 	}
 
 	/** Replies the factory for appendable.
@@ -387,12 +416,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		if (container.getMembers().isEmpty()) {
 			ICompositeNode node = NodeModelUtils.findActualNodeFor(container);
 			ILeafNode openingBraceNode = IterableExtensions.findFirst(node.getLeafNodes(),
-					new Functions.Function1<ILeafNode, Boolean>() {
-						@Override
-						public Boolean apply(ILeafNode node) {
-							return "{".equals(node.getText()); //$NON-NLS-1$
-						}
-					});
+					(lnode) -> "{".equals(lnode.getText())); //$NON-NLS-1$
 			if (openingBraceNode != null) {
 				return openingBraceNode.getOffset() + 1;
 			}
@@ -702,7 +726,6 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	protected void doOverrideMethods(Issue issue,
 			IssueResolutionAcceptor acceptor, String label,
 			String[] operationUris) {
-		// FIXME: Use the Xtend CodeBuilder API (see super function)
 		MissedMethodAddModification.accept(this, issue, acceptor, label, operationUris);
 	}
 
@@ -738,7 +761,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		ICompositeNode clazzNode = NodeModelUtils.findActualNodeFor(typeDeclaration);
 		if (clazzNode == null) {
 			throw new IllegalStateException("Cannot determine node for the type declaration" //$NON-NLS-1$
-						+ typeDeclaration.getName());
+					+ typeDeclaration.getName());
 		}
 		int offset = -1;
 		Iterator<ILeafNode> nodes = clazzNode.getLeafNodes().iterator();

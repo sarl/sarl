@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,14 @@ package io.sarl.lang.tests.compilation.aop;
 
 import static org.junit.Assert.assertEquals;
 
-import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.SARLVersion;
-import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
+import com.google.inject.Inject;
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import com.google.inject.Inject;
+
+import io.sarl.lang.SARLVersion;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -100,9 +96,9 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedB1 = multilineString(
+				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
-				"import io.sarl.lang.core.PerceptGuardEvaluator;",
 				"import java.util.Collection;",
 				"import javax.annotation.Generated;",
 				"",
@@ -285,9 +281,9 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedB1 = multilineString(
+				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
-				"import io.sarl.lang.core.PerceptGuardEvaluator;",
 				"import java.util.Collection;",
 				"import javax.annotation.Generated;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",

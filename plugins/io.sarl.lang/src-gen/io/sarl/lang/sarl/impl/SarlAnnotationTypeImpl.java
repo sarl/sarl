@@ -18,25 +18,25 @@ import org.eclipse.xtend.core.xtend.impl.XtendAnnotationTypeImplCustom;
  */
 public class SarlAnnotationTypeImpl extends XtendAnnotationTypeImplCustom implements SarlAnnotationType
 {
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  protected SarlAnnotationTypeImpl()
-  {
-    super();
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected SarlAnnotationTypeImpl()
+	{
+		super();
+	}
 
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  protected EClass eStaticClass()
-  {
-    return SarlPackage.Literals.SARL_ANNOTATION_TYPE;
-  }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return SarlPackage.Literals.SARL_ANNOTATION_TYPE;
+	}
 
 } //SarlAnnotationTypeImpl

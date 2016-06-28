@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@
 package io.sarl.tests.api;
 
 import static org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil.reallyWaitForAutoBuild;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -41,11 +40,7 @@ import com.google.inject.Module;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -54,24 +49,19 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.ui.util.JavaProjectSetupUtil;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.ui.XtextProjectHelper;
 import org.eclipse.xtext.ui.util.PluginProjectFactory;
-import org.eclipse.xtext.util.IAcceptor;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.validation.IDiagnosticConverter;
-import org.eclipse.xtext.validation.Issue;
-import org.eclipse.xtext.xbase.compiler.JavaVersion;
 import org.junit.ComparisonFailure;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
-import io.sarl.lang.SARLUiInjectorProvider;
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.ui.tests.SARLUiInjectorProvider;
 import io.sarl.tests.api.WorkbenchTestHelper.ProjectCreator;
 
 /** This class is inspired from AbstractXbaseUITestCase of Xtext.
@@ -360,7 +350,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 *
 	 * @return the helper.
 	 */
-	protected synchronized WorkbenchTestHelper helper() {
+	protected synchronized @NonNull WorkbenchTestHelper helper() {
 		if (this.workbenchHelper == null) {
 			this.workbenchHelper = getInjector().getInstance(WorkbenchTestHelper.class);
 		}

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@
  */
 package io.sarl.tests.api;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -49,6 +48,7 @@ import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
@@ -79,8 +79,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -97,6 +95,7 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.tests.SARLInjectorProvider;
 
 /** Abstract class that is providing useful tools for unit tests.
  *
@@ -139,7 +138,7 @@ public abstract class AbstractSarlTest {
 	 * @return the mocked instance.
 	 * @see http://stackoverflow.com/questions/37702952/classnotfoundexception-with-mockito-2-in-osgi
 	 */
-	public static <T> T mock(Class<T> type) {
+	public static <T> @NonNull T mock(Class<T> type) {
 		if (type == null) {
 			return null;
 		}
@@ -1196,7 +1195,9 @@ public abstract class AbstractSarlTest {
 	 * @param s1 second string.
 	 * @return the Levenshstein distance.
 	 * @see https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance
+	 * @deprecated see the function is AFC "text" module
 	 */
+	@Deprecated
 	public static int levenshteinDistance (String firstString, String secondString) {
 		String s0 = Strings.nullToEmpty(firstString);
 		String s1 = Strings.nullToEmpty(secondString);

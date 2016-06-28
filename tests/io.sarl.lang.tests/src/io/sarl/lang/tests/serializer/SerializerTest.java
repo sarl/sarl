@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1713,7 +1713,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1727,7 +1727,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct() throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct() fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1741,7 +1741,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct(a : int) throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int) fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1755,7 +1755,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct(a : int = 5) throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 5) fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1769,7 +1769,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct(a : int*) throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int*) fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1783,7 +1783,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct(a : int = 6, b : float) throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 6, b : float) fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1797,7 +1797,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct(a : int = 6, b : float*) throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 6, b : float*) fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1811,7 +1811,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1825,7 +1825,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct() : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct() : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1839,7 +1839,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct(a : int) : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int) : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1853,7 +1853,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct(a : int = 5) : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 5) : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1867,7 +1867,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct(a : int*) : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int*) : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1881,7 +1881,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct(a : int = 6, b : float) : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 6, b : float) : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1895,7 +1895,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo {",
-					"def fct(a : int = 6, b : float*) : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 6, b : float*) : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1909,7 +1909,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1923,7 +1923,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct() throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct() fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1937,7 +1937,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct(a : int) throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int) fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1951,7 +1951,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct(a : int = 5) throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 5) fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1965,7 +1965,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct(a : int*) throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int*) fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1979,7 +1979,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct(a : int = 6, b : float) throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 6, b : float) fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -1993,7 +1993,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct(a : int = 6, b : float*) throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 6, b : float*) fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -2007,7 +2007,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -2021,7 +2021,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct() : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct() : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -2035,7 +2035,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct(a : int) : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int) : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -2049,7 +2049,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct(a : int = 5) : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 5) : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -2063,7 +2063,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct(a : int*) : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int*) : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -2077,7 +2077,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct(a : int = 6, b : float) : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 6, b : float) : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);
@@ -2091,7 +2091,7 @@ public class SerializerTest {
 					"}");
 			String e = multilineString(
 					"agent Foo extends foo.ecore.SubAgent {",
-					"def fct(a : int = 6, b : float*) : float throws Exception fires foo.Event1, foo.Event2 { 1 }",
+					"def fct(a : int = 6, b : float*) : float fires foo.Event1, foo.Event2 throws Exception { 1 }",
 					"}");
 			this.object = agent(s, true);
 			assertSerialize(e);

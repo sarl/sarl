@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ import org.eclipse.swt.widgets.Composite;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
+import io.sarl.lang.codebuilder.builders.ICapacityBuilder;
+import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import io.sarl.lang.core.Capacity;
-import io.sarl.lang.ecoregenerator.helper.SarlEcoreCode;
-import io.sarl.lang.sarl.SarlCapacity;
 
 /**
  * Wizard page for creating a new SARL behavior.
@@ -72,10 +72,12 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		SarlEcoreCode code = this.sarlGenerator.createScript(ecoreResource, getPackageFragment().getElementName());
-		SarlCapacity capacity = this.sarlGenerator.createCapacity(code, getTypeName(), getSuperClass());
-		this.sarlGenerator.attachComment(code, capacity, typeComment);
-		code.finalizeScript();
+		IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
+				getPackageFragment().getElementName(), ecoreResource);
+		ICapacityBuilder capacity = scriptBuilder.addCapacity(getTypeName());
+		capacity.addExtends(getSuperClass());
+		capacity.setDocumentation(typeComment.trim());
+		scriptBuilder.finalizeScript();
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,24 +15,12 @@
  */
 package io.sarl.lang.tests.parsing.general;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import com.google.common.base.Strings;
-import com.google.inject.Inject;
-
-import io.sarl.lang.SARLInjectorProvider;
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
-import io.sarl.lang.sarl.SarlCapacity;
-import io.sarl.lang.sarl.SarlConstructor;
-import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.SarlSkill;
-
 import org.eclipse.xtext.diagnostics.Diagnostic;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
@@ -42,7 +30,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import static org.junit.Assert.*;
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,24 +20,24 @@
  */
 package io.sarl.lang.ui.tests.highlighting;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.tests.api.AbstractSarlUiTest;
 
 import java.util.Collection;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import org.eclipse.xtext.ide.editor.syntaxcoloring.IHighlightedPositionAcceptor;
+import org.eclipse.xtext.ide.editor.syntaxcoloring.ISemanticHighlightingCalculator;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration;
-import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightedPositionAcceptor;
-import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
+import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.util.TextRegion;
 import org.eclipse.xtext.xbase.ui.highlighting.XbaseHighlightingConfiguration;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.tests.api.AbstractSarlUiTest;
 
 /**
  * Unit tests for the higlighting feature dedicated to SARL.
@@ -65,7 +65,10 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 		try {
 			HighlightingAsserts asserts = new HighlightingAsserts();
 			SarlScript script = file(code);
-			getCalculator().provideHighlightingFor((XtextResource) script.eResource(), asserts);
+			getCalculator().provideHighlightingFor(
+					(XtextResource) script.eResource(),
+					asserts,
+					CancelIndicator.NullImpl);
 			return asserts;
 		} catch(Exception e) {
 			throw new RuntimeException(e);

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,9 @@
 package io.sarl.docs.utils;
 
 import com.google.inject.Injector;
-import org.eclipse.xtext.junit4.IInjectorProvider;
-import org.eclipse.xtext.junit4.IRegistryConfigurator;
 import org.jnario.lib.AbstractSpecCreator;
 
-import io.sarl.lang.SARLInjectorProvider;
+import io.sarl.lang.tests.SARLInjectorProvider;
 
 /** Creator of specification model dedicated to SARL.
  *
@@ -38,39 +36,27 @@ import io.sarl.lang.SARLInjectorProvider;
  */
 public class SARLSpecCreator extends AbstractSpecCreator {
 
-	private Injector injector;
+	private static final SARLInjectorProvider INJECTOR_PROVIDER = new SARLInjectorProvider();
 
-	private final IInjectorProvider injectorProvider = new SARLInjectorProvider();
+	static {
+		INJECTOR_PROVIDER.setupRegistry();
+	}
+
+	private Injector injector;
 
 	@Override
 	protected <T> T create(Class<T> klass) {
-		if (this.injector == null) {
-			beforeSpecRun();
-		}
 		return this.injector.getInstance(klass);
 	}
 
 	@Override
 	public void beforeSpecRun() {
-		this.injector = getInjectorProvider().getInjector();
-		if (getInjectorProvider() instanceof IRegistryConfigurator) {
-			((IRegistryConfigurator) getInjectorProvider()).setupRegistry();
-		}
+		this.injector = INJECTOR_PROVIDER.getInjector();
 	}
 
 	@Override
 	public void afterSpecRun() {
-		if (getInjectorProvider() instanceof IRegistryConfigurator) {
-			((IRegistryConfigurator) getInjectorProvider()).restoreRegistry();
-		}
-	}
-
-	/** Replies the injector provider.
-	 *
-	 * @return the injector provider.
-	 */
-	protected IInjectorProvider getInjectorProvider() {
-		return this.injectorProvider;
+		this.injector = null;
 	}
 
 }

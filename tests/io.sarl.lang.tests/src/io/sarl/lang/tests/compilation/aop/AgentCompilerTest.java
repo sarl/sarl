@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,12 @@
  */
 package io.sarl.lang.tests.compilation.aop;
 
-import io.sarl.lang.SARLInjectorProvider;
+import com.google.inject.Inject;
+import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
+import org.junit.Test;
+
 import io.sarl.lang.SARLVersion;
 import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.util.IAcceptor;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.google.inject.Inject;
 
 /**
  * @author $Author: srodriguez$
@@ -107,10 +100,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA1 = multilineString(
+				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.PerceptGuardEvaluator;",
 				"import java.util.Collection;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
@@ -306,10 +299,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA1 = multilineString(
+				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.PerceptGuardEvaluator;",
 				"import java.util.Collection;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
@@ -1739,10 +1732,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"	}",
 				"}");
 		final String expectedMyAgent = multilineString(
+				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.PerceptGuardEvaluator;",
 				"import java.util.Collection;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
@@ -1826,10 +1819,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"",
 				"import foo.test.Destroy;",
 				"import foo.test.Initialize;",
+				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.PerceptGuardEvaluator;",
 				"import java.util.Collection;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
@@ -1900,10 +1893,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"",
 				"import foo.test.Destroy;",
 				"import foo.test.Initialize;",
+				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.PerceptGuardEvaluator;",
 				"import java.util.Collection;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
@@ -1983,10 +1976,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"",
 				"import foo.test.Destroy;",
 				"import foo.test.Initialize;",
+				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.PerceptGuardEvaluator;",
 				"import java.util.Collection;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
@@ -2089,10 +2082,10 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"",
 				"import foo.test.Destroy;",
 				"import foo.test.Initialize;",
+				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.PerceptGuardEvaluator;",
 				"import java.util.Collection;",
 				"import java.util.UUID;",
 				"import javax.annotation.Generated;",
@@ -2165,6 +2158,128 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"    if ($behaviorUnitGuard$Initialize$3(occurrence, occurrence)) {",
 				"      ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$3(occurrence));",
 				"    }",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Inject",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  public MyAgent(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+				"    super(builtinCapacityProvider, parentID, agentID);",
+				"  }",
+				"}",
+				""
+				);
+		this.compiler.compile(source, (r) -> assertEquals(expectedMyAgent, r.getGeneratedCode("foo.test.MyAgent")));
+	}
+
+	@Test
+	public void usePureCapacityFunction() throws Exception {
+		final String source = multilineString(
+				"package foo.test",
+				"capacity C1 { @Pure def myfct : int }",
+				"agent MyAgent {",
+				"   uses C1",
+				"	def testFct {",
+				"      var v = myfct",
+				"	}",
+				"}");
+		final String expectedMyAgent = multilineString(
+				"package foo.test;",
+				"",
+				"import foo.test.C1;",
+				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.Agent;",
+				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
+				"import javax.inject.Inject;",
+				"import org.eclipse.xtext.xbase.lib.Inline;",
+				"import org.eclipse.xtext.xbase.lib.Pure;",
+				"",
+				"@SarlSpecification(\"0.4\")",
+				"@SuppressWarnings(\"all\")",
+				"public class MyAgent extends Agent {",
+				"  protected void testFct() {",
+				"    int v = this.getSkill(foo.test.C1.class).myfct();",
+				"  }",
+				"  ",
+				"  /**",
+				"   * See the capacity {@link foo.test.C1#myfct()}.",
+				"   * ",
+				"   * @see foo.test.C1#myfct()",
+				"   */",
+				"  @Pure",
+				"  @Inline(value = \"getSkill(foo.test.C1.class).myfct()\", imported = C1.class)",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  @ImportedCapacityFeature(C1.class)",
+				"  private int myfct() {",
+				"    return getSkill(foo.test.C1.class).myfct();",
+				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param builtinCapacityProvider - provider of the built-in capacities.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @Inject",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  public MyAgent(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
+				"    super(builtinCapacityProvider, parentID, agentID);",
+				"  }",
+				"}",
+				""
+				);
+		this.compiler.compile(source, (r) -> assertEquals(expectedMyAgent, r.getGeneratedCode("foo.test.MyAgent")));
+	}
+
+	@Test
+	public void useNotPureCapacityFunction() throws Exception {
+		final String source = multilineString(
+				"package foo.test",
+				"capacity C1 { def myfct : int }",
+				"agent MyAgent {",
+				"   uses C1",
+				"	def testFct {",
+				"      var v = myfct",
+				"	}",
+				"}");
+		final String expectedMyAgent = multilineString(
+				"package foo.test;",
+				"",
+				"import foo.test.C1;",
+				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.Agent;",
+				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+				"import java.util.UUID;",
+				"import javax.annotation.Generated;",
+				"import javax.inject.Inject;",
+				"import org.eclipse.xtext.xbase.lib.Inline;",
+				"",
+				"@SarlSpecification(\"0.4\")",
+				"@SuppressWarnings(\"all\")",
+				"public class MyAgent extends Agent {",
+				"  protected void testFct() {",
+				"    int v = this.getSkill(foo.test.C1.class).myfct();",
+				"  }",
+				"  ",
+				"  /**",
+				"   * See the capacity {@link foo.test.C1#myfct()}.",
+				"   * ",
+				"   * @see foo.test.C1#myfct()",
+				"   */",
+				"  @Inline(value = \"getSkill(foo.test.C1.class).myfct()\", imported = C1.class)",
+				"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+				"  @ImportedCapacityFeature(C1.class)",
+				"  private int myfct() {",
+				"    return getSkill(foo.test.C1.class).myfct();",
 				"  }",
 				"  ",
 				"  /**",
