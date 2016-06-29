@@ -51,50 +51,52 @@
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
-			<version>3.4</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-core</artifactId>
-			<version>3.3.3</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>vmutils</artifactId>
-			<version>${afc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang</artifactId>
-			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
 		</dependency>
 		<!-- The following dependencies are required for compiling SARL code with this maven plugin -->
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-clean-plugin</artifactId>
-			<version>3.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>xtext-maven-plugin</artifactId>
-			<version>${xtext.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<version>3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang.core</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.xtend</groupId>
 			<artifactId>org.eclipse.xtend.core</artifactId>
-			<version>${xtext.version}</version>
+		</dependency>
+		<!-- The following dependencies are required for testing this maven plugin -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-verifier</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -102,6 +104,10 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/test/resources</directory>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
