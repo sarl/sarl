@@ -259,25 +259,26 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 									containerQualifiedName,
 									key);
 							final int idx = argument.lastIndexOf('.');
-							JvmType type = null;
+							final JvmType type;
 							final String fieldName;
 							if (idx > 0) {
-								String typeName = argument.substring(0, idx);
-								type = tools.getTypeServices().getTypeReferences().findDeclaredType(
+								final String typeName = argument.substring(0, idx);
+								JvmType localtype = tools.getTypeServices().getTypeReferences().findDeclaredType(
 										typeName, container);
-								if (type == null) {
-									QualifiedName qn0 = tools.getQualifiedNameConverter().toQualifiedName(typeName);
-									Iterator<XtendTypeDeclaration> iterator = script.getXtendTypes().iterator();
-									while (type == null && iterator.hasNext()) {
-										XtendTypeDeclaration declaredType = iterator.next();
-										QualifiedName qn = tools.getQualifiedNameProvider()
+								if (localtype == null) {
+									final QualifiedName qn0 = tools.getQualifiedNameConverter().toQualifiedName(typeName);
+									final Iterator<XtendTypeDeclaration> iterator = script.getXtendTypes().iterator();
+									while (localtype == null && iterator.hasNext()) {
+										final XtendTypeDeclaration declaredType = iterator.next();
+										final QualifiedName qn = tools.getQualifiedNameProvider()
 												.getFullyQualifiedName(declaredType);
 										if (qn0.equals(qn)) {
-											type = tools.getJvmAssociations().getInferredType(declaredType);
+											localtype = tools.getJvmAssociations().getInferredType(declaredType);
 										}
 									}
 								}
-								assert (type != null) : "Type not found: " + typeName; //$NON-NLS-1$
+								assert (localtype != null) : "Type not found: " + typeName; //$NON-NLS-1$
+								type = localtype;
 								fieldName = argument.substring(idx + 1);
 							} else {
 								type = containerType;

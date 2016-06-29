@@ -50,7 +50,7 @@ public class ContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		Object[] children = null;
+		Object[] children;
 		if (SARLProjectWorkbenchRoot.class.isInstance(parentElement)) {
 			if (this.sarlProjectParents == null) {
 				this.sarlProjectParents = initializeParent();

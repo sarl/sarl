@@ -275,7 +275,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			if (!JRERuntimeClasspathEntryResolver.isSameArchives(libraryLocations,
 					install.getVMInstallType().getDefaultLibraryLocations(install.getInstallLocation()))) {
 				// resolve bootpath entries in JRE entry
-				IRuntimeClasspathEntry[] bootEntries = null;
+				IRuntimeClasspathEntry[] bootEntries;
 				if (jreEntry.getType() == IRuntimeClasspathEntry.CONTAINER) {
 					IRuntimeClasspathEntry bootEntry = JavaRuntime.newRuntimeContainerClasspathEntry(
 							jreEntry.getPath(),
@@ -465,7 +465,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		String useProjectSRE = configuration.getAttribute(
 				SARLEclipseConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 				Boolean.FALSE.toString());
-		ISREInstall sre = null;
+		ISREInstall sre;
 		if (Boolean.parseBoolean(useSystemSRE)) {
 			sre = SARLRuntime.getDefaultSREInstall();
 			verifySREValidity(sre, sre.getId(), true);
