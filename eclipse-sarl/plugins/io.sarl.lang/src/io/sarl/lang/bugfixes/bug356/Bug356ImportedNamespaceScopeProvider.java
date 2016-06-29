@@ -75,7 +75,7 @@ public class Bug356ImportedNamespaceScopeProvider extends XtendImportedNamespace
 
 	private void doGetAllDescriptions(JvmDeclaredType type, List<IEObjectDescription> descriptions) {
 		descriptions.add(EObjectDescription.create(getQualifiedNameConverter().toQualifiedName(type.getIdentifier()), type));
-		EList<JvmMember> members = null;
+		EList<JvmMember> members;
 		if (type instanceof JvmDeclaredTypeImplCustom) {
 			members = ((JvmDeclaredTypeImplCustom) type).basicGetMembers();
 		} else {
