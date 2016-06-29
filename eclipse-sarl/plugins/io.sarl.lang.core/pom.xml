@@ -46,23 +46,23 @@
 							<replacements>
 								<replacement>
 									<token>@sarlspecificationreleaseversion@</token>
-									<value>${sarlspecificationreleaseversion}</value>
+									<value>${sarl.specification.release_version}</value>
 								</replacement>
 								<replacement>
 									<token>@sarlreleaseversion@</token>
-									<value>${sarlreleaseversion}</value>
+									<value>${sarl.release_version}</value>
 								</replacement>
 								<replacement>
 									<token>@sarlspecificationreleasestatus@</token>
-									<value>${sarlspecificationreleasestatus}</value>
+									<value>${sarl.specification.release_status}</value>
 								</replacement>
 								<replacement>
 									<token>@sarlisstableversion@</token>
-									<value>${sarlisstableversion}</value>
+									<value>${sarl.is_stable_version}</value>
 								</replacement>
 								<replacement>
 									<token>@janusversion@</token>
-									<value>${janusversion}</value>
+									<value>${janus.version}</value>
 								</replacement>
 							</replacements>
 						</configuration>

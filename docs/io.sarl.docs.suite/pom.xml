@@ -182,11 +182,11 @@
 						</replacement>
 						<replacement>
 							<token>%sarlversion%</token>
-							<value>${project.version}</value>
+							<value>${sarl.version}</value>
 						</replacement>
 						<replacement>
 							<token>%janusversion%</token>
-							<value>${janusversion}</value>
+							<value>${janus.version}</value>
 						</replacement>
 						<replacement>
 							<token>%xtextversion%</token>
@@ -210,15 +210,15 @@
 						</replacement>
 						<replacement>
 							<token>%sarlspecversion%</token>
-							<value>${sarlspecificationreleaseversion}</value>
+							<value>${sarl.specification.release_version}</value>
 						</replacement>
 						<replacement>
 							<token>%sarlspecreleasestatus%</token>
-							<value>${sarlspecificationreleasestatus}</value>
+							<value>${sarl.specification.release_status}</value>
 						</replacement>
 						<replacement>
 							<token>%sarlspecreleasedate%</token>
-							<value>${sarlspecificationreleasedate}</value>
+							<value>${sarl.specification.release_date}</value>
 						</replacement>
 						<replacement>
 							<token>%copyrightdate%</token>

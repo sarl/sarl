@@ -19,7 +19,7 @@
 	<!-- Checks for Headers. -->
 	<module name="Header">
 		<property name="headerFile"
-			value="${config_loc}class_header.txt" />
+			value="${config_loc}sarl_class_header.txt" />
 		<property name="fileExtensions" value="java,sarl,suite,spec" />
 	</module>
 

@@ -25,7 +25,7 @@
 	<properties>
 
 		<!-- Version of the Xtext API -->
-		<sarlversion>0.4.0-SNAPSHOT</sarlversion>
+		<sarl.version>0.4.0-SNAPSHOT</sarl.version>
 		<!-- Version of the Xtext API -->
 		<xtext.version>2.10.0</xtext.version>
 		<xtext.versionRange>[2.10.0,2.10.1)</xtext.versionRange><!-- For generating 
@@ -40,7 +40,7 @@
 		<!-- Version of the Arakhne Foundation classes -->
 		<afc.version>13.0</afc.version>
 		<!-- Version of the Guava API -->
-		<guava.version>18.0</guava.version>
+		<guava.version>19.0</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module -->
@@ -192,42 +192,42 @@
 			<dependency>
 				<groupId>io.sarl.lang</groupId>
 				<artifactId>io.sarl.lang.core</artifactId>
-				<version>${sarlversion}</version>
+				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.sarl.lang</groupId>
 				<artifactId>io.sarl.lang</artifactId>
-				<version>${sarlversion}</version>
+				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.sarl</groupId>
 				<artifactId>io.sarl.core</artifactId>
-				<version>${sarlversion}</version>
+				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.sarl</groupId>
 				<artifactId>io.sarl.util</artifactId>
-				<version>${sarlversion}</version>
+				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>io.sarl.maven.sdk</artifactId>
-				<version>${sarlversion}</version>
+				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.sarl</groupId>
 				<artifactId>io.sarl.tests.api</artifactId>
-				<version>${sarlversion}</version>
+				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.sarl.lang</groupId>
 				<artifactId>io.sarl.lang.tests</artifactId>
-				<version>${sarlversion}</version>
+				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.sarl</groupId>
 				<artifactId>io.sarl.eclipse</artifactId>
-				<version>${sarlversion}</version>
+				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
@@ -277,7 +277,7 @@
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.3.3</version>
+				<version>3.3.9</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -287,7 +287,7 @@
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.5.1</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -299,6 +299,16 @@
 				<groupId>org.eclipse</groupId>
 				<artifactId>osgi</artifactId>
 				<version>${osgi.nls.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.shared</groupId>
+				<artifactId>maven-verifier</artifactId>
+				<version>1.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-plugin-api</artifactId>
+				<version>3.3.9</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -313,7 +323,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.3</version>
+					<version>3.5.1</version>
 					<configuration>
 						<source>${compiler.level}</source>
 						<target>${compiler.level}</target>
@@ -328,7 +338,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.9.1</version>
+					<version>1.10</version>
 				</plugin>
 
 				<plugin>
@@ -340,13 +350,13 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.7</version>
+					<version>3.0.1</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>2.4</version>
+					<version>3.0.1</version>
 				</plugin>
 
 				<plugin>
@@ -382,7 +392,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.19</version>
+					<version>2.19.1</version>
 				</plugin>
 
 				<plugin>
@@ -434,7 +444,7 @@
 						<dependency>
 							<groupId>io.sarl</groupId>
 							<artifactId>build-tools</artifactId>
-							<version>${sarlversion}</version>
+							<version>${sarl.version}</version>
 						</dependency>
 						<dependency>
 							<groupId>com.puppycrawl.tools</groupId>
@@ -476,7 +486,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.3</version>
+					<version>2.10.4</version>
 					<configuration>
 						<docencoding>${project.build.sourceEncoding}</docencoding>
 						<encoding>${project.build.sourceEncoding}</encoding>
@@ -645,20 +655,18 @@
 						    if (previousDirectory == null || !(new File(previousDirectory, "pom.xml").isFile())) {
 						    	throw new Exception("Unable to detect root directory");
 						    }
-						    project.properties.mainbasedir = previousDirectory;
-						    log.info("set mainbasedir to: " + project.properties.mainbasedir);
+						    project.properties["mainbasedir"] = previousDirectory;
+						    log.info("set mainbasedir to: " + project.properties["mainbasedir"]);
 							//************************
 							// Bug in Jenkins/Hudson
 							//
 							// The buildId property is not correctly set since
 							// "maven.build.timestamp" is skipped by Jenkins/Hudson.
 							//
-							if (project.properties.buildId == "\${maven.build.timestamp}"
-							    || project.properties.buildId == "\$maven.build.timestamp") {
-								project.properties.buildId = (new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now);
-								log.info("set buildId to: " + project.properties.buildId + " (reset for Jenkins/Hudson)");
-							} else {
-								log.info("set buildId to: " + project.properties.buildId);
+							if (project.properties["buildId"] == "\${maven.build.timestamp}"
+							    || project.properties["buildId"] == "\$maven.build.timestamp") {
+								project.properties["buildId"] = (new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now);
+								log.info("reset buildId to: " + project.properties["buildId"]);
 							}
 							//************************
 							// Compute version and snapshot tag
@@ -669,14 +677,14 @@
 							def isSnapshot;
 							def endOfVersion;
 							def p2UploadToDir;
-							def projectVersion = project.properties.sarlversion
+							def projectVersion = project.properties["sarl.version"]
 							if (projectVersion.endsWith(snapshotTag)) {
 								def len = projectVersion.size() - snapshotTag.size();
 								version = projectVersion.substring(0, len);
 								releaseStatus = "Draft Release";
 								isSnapshot = true;
 								endOfVersion = snapshotTag;
-								p2UploadToDir = "/snapshots/"+version+"/R"+project.properties.buildId
+								p2UploadToDir = "/snapshots/"+version+"/R"+project.properties["buildId"]
 							} else {
 								version = projectVersion;
 								releaseStatus = "Stable Release";
@@ -688,25 +696,28 @@
 							//************************
 							// Set SARL properties
 							//
-							project.properties.sarlspecificationreleaseversion = versionFields[0] + "." + versionFields[1];
-							project.properties.sarlreleaseversion = project.properties.sarlspecificationreleaseversion + "." + versionFields[2];
-							project.properties.sarlspecificationreleasedate = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
-							project.properties.sarlspecificationreleasestatus = releaseStatus;
-							project.properties.sarlisstableversion = Boolean.toString(!isSnapshot);
-							project.properties.p2UploadToDir = p2UploadToDir;
-							project.properties.janusversion = "2."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2]+endOfVersion;
+							project.properties["sarl.specification.release_version"] = versionFields[0] + "." + versionFields[1];
+							project.properties["sarl.release_version"] = project.properties["sarl.specification.release_version"] + "." + versionFields[2];
+							project.properties["sarl.specification.release_date"] = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
+							project.properties["sarl.specification.release_status"] = releaseStatus;
+							project.properties["sarl.is_stable_version"] = Boolean.toString(!isSnapshot);
+							project.properties["janus.version"] = "2."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2]+endOfVersion;
 
-							log.info("set sarlspecificationreleaseversion to: " + project.properties.sarlspecificationreleaseversion);
-							log.info("set sarlreleaseversion to: " + project.properties.sarlreleaseversion);
-							log.info("set sarlspecificationreleasedate to: " + project.properties.sarlspecificationreleasedate);
-							log.info("set sarlspecificationreleasestatus to: " + project.properties.sarlspecificationreleasestatus);
-							log.info("set sarlisstableversion to: " + project.properties.sarlisstableversion);
-							log.info("set p2UploadToDir to: " + project.properties.p2UploadToDir);
-							log.info("set janusversion to: " + project.properties.janusversion);
+							log.info("set sarl.specification.release_version to: " + project.properties["sarl.specification.release_version"]);
+							log.info("set sarl.release_version to: " + project.properties["sarl.release_version"]);
+							log.info("set sarl.specification.release_date to: " + project.properties["sarl.specification.release_date"]);
+							log.info("set sarl.specification.release_status to: " + project.properties["sarl.specification.release_status"]);
+							log.info("set sarl.is_stable_version to: " + project.properties["sarl.is_stable_version"]);
+							log.info("set janus.version to: " + project.properties["janus.version"]);
+							//************************
+							// P2 properties
+							//
+							project.properties["p2UploadToDir"] = p2UploadToDir;
+							log.info("set p2UploadToDir to: " + project.properties["p2UploadToDir"]);
 							//************************
 							// Set Checkstyle properties
 							//
-						    def config_loc = project.properties.mainbasedir;
+						    def config_loc = project.properties["mainbasedir"];
 						    ["build-tools", "src", "main", "resources", "checkstyle"].each {
 						    	config_loc = new File(config_loc, it);
 						    }
@@ -831,7 +842,7 @@
 				<!-- The shared Rtcho configuration -->
 				<module>tycho-parent</module>
 				<!-- SARL tools and plugins -->
-				<module>sarl</module>
+				<module>eclipse-sarl</module>
 				<!-- Maven tools -->
 				<module>maven</module>
 				<!-- Tools for developers -->
@@ -839,7 +850,7 @@
 				<!-- SREs -->
 				<module>sre</module>
 				<!-- SREs -->
-				<module>products</module>
+				<module>eclipse-products</module>
 				<!-- Documentation -->
 				<module>docs</module>
 			</modules>
@@ -853,9 +864,9 @@
 				</property>
 			</activation>
 			<modules>
-<!--				<module>tycho-parent</module>-->
-<!--				<module>plugins</module>-->
-<!--				<module>maven</module>-->
+				<module>tycho-parent</module>
+				<module>eclipse-sarl</module>
+				<module>maven</module>
 			</modules>
 		</profile>
 		<profile>
