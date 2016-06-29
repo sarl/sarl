@@ -67,12 +67,12 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 
 	@Override
 	public void generate() {
-		Iterable<MemberDescription> members = getMembers();
-		for (MemberDescription description : members) {
+		final Iterable<MemberDescription> members = getMembers();
+		for (final MemberDescription description : members) {
 			generateIMemberBuilder(description);
 		}
-		boolean enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
-		for (MemberDescription description : members) {
+		final boolean enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
+		for (final MemberDescription description : members) {
 			generateMemberBuilderImpl(description);
 			if (enableAppenders) {
 				generateMemberAppender(description);
@@ -84,10 +84,10 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	@Override
 	public void generateBindings(BindingFactory factory) {
 		super.generateBindings(factory);
-		IFileSystemAccess2 fileSystem = getSrc();
+		final IFileSystemAccess2 fileSystem = getSrc();
 		TypeReference type;
 
-		for (MemberDescription description : getMembers()) {
+		for (final MemberDescription description : getMembers()) {
 			if ((fileSystem.isFile(description.getBuilderCustomImplementation().getJavaPath()))
 					|| (fileSystem.isFile(description.getBuilderCustomImplementation().getXtendPath()))) {
 				type = description.getBuilderCustomImplementation();
@@ -103,8 +103,8 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	 * @param description the description of the member.
 	 */
 	protected void generateIMemberBuilder(MemberDescription description) {
-		TypeReference builder = description.getBuilderInterface();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final TypeReference builder = description.getBuilderInterface();
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -125,7 +125,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				it.newLine();
 			}
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -134,9 +134,9 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	 * @param description the description of the member.
 	 */
 	protected void generateMemberBuilderImpl(MemberDescription description) {
-		TypeReference builderInterface = description.getBuilderInterface();
-		TypeReference builder = description.getBuilderImplementation();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final TypeReference builderInterface = description.getBuilderInterface();
+		final TypeReference builder = description.getBuilderImplementation();
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -161,7 +161,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				it.newLine();
 			}
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -170,9 +170,9 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	 * @param description the description of the member.
 	 */
 	protected void generateMemberAppender(MemberDescription description) {
-		TypeReference appender = getElementAppenderImpl(description.getSimpleName());
+		final TypeReference appender = getElementAppenderImpl(description.getSimpleName());
 		final String generatedFieldAccessor = getGeneratedMemberAccessor(description);
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Source appender of a " + getLanguageName() //$NON-NLS-1$
@@ -199,7 +199,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				it.newLine();
 			}
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -963,7 +963,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		@Override
 		public boolean equals(Object obj) {
 			if (obj instanceof MemberDescription) {
-				MemberDescription other = (MemberDescription) obj;
+				final MemberDescription other = (MemberDescription) obj;
 				return Strings.equal(this.ruleName, other.ruleName)
 					&& Strings.equal(this.simpleName, other.simpleName)
 					&& Strings.equal(this.interfaceType.getName(), other.interfaceType.getName())

@@ -129,9 +129,9 @@ public class SARLFormatter extends XtendFormatter {
 
 	@Override
 	public ITextReplacer createCommentReplacer(IComment comment) {
-		EObject grammarElement = comment.getGrammarElement();
+		final EObject grammarElement = comment.getGrammarElement();
 		if (grammarElement instanceof AbstractRule) {
-			String ruleName = ((AbstractRule) grammarElement).getName();
+			final String ruleName = ((AbstractRule) grammarElement).getName();
 			CommentReplacer replacer = null;
 			if (ruleName.startsWith("ML")) { //$NON-NLS-1$
 				replacer = new SARLMultilineCommentReplacer(comment);
@@ -143,7 +143,7 @@ public class SARLFormatter extends XtendFormatter {
 				return replacer;
 			}
 		}
-		String elementName = new GrammarElementTitleSwitch().showQualified().showRule().doSwitch(grammarElement);
+		final String elementName = new GrammarElementTitleSwitch().showQualified().showRule().doSwitch(grammarElement);
 		throw new IllegalStateException(
 				MessageFormat.format(Messages.SARLFormatter_0,
 						ITextReplacer.class.getSimpleName(), elementName));
@@ -178,12 +178,12 @@ public class SARLFormatter extends XtendFormatter {
 			super._format(expr, document);
 		} else {
 			// Avoid to format the block expression on a single line.
-			ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
+			final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
 			if (expr.eContainer() == null) {
 				document.surround(expr, NO_SPACE);
 			}
-			ISemanticRegion open = regionFor.keyword("{"); //$NON-NLS-1$
-			ISemanticRegion close = regionFor.keyword("}"); //$NON-NLS-1$
+			final ISemanticRegion open = regionFor.keyword("{"); //$NON-NLS-1$
+			final ISemanticRegion close = regionFor.keyword("}"); //$NON-NLS-1$
 			if (open != null && close != null) {
 				formatExpressionsMultiline(expr.getExpressions(), open, close, document);
 			}
@@ -199,7 +199,7 @@ public class SARLFormatter extends XtendFormatter {
 		formatAnnotations(event, document, XbaseFormatterPreferenceKeys.newLineAfterClassAnnotations);
 		formatModifiers(event, document);
 
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(event);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(event);
 		document.append(regionFor.keyword("event"), ONE_SPACE); //$NON-NLS-1$
 
 		document.surround(regionFor.keyword("extends"), ONE_SPACE); //$NON-NLS-1$
@@ -217,7 +217,7 @@ public class SARLFormatter extends XtendFormatter {
 		formatAnnotations(capacity, document, XbaseFormatterPreferenceKeys.newLineAfterClassAnnotations);
 		formatModifiers(capacity, document);
 
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(capacity);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(capacity);
 
 		document.append(regionFor.keyword("capacity"), ONE_SPACE); //$NON-NLS-1$
 
@@ -236,7 +236,7 @@ public class SARLFormatter extends XtendFormatter {
 		formatAnnotations(agent, document, XbaseFormatterPreferenceKeys.newLineAfterClassAnnotations);
 		formatModifiers(agent, document);
 
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(agent);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(agent);
 		document.append(regionFor.keyword("agent"), ONE_SPACE); //$NON-NLS-1$
 
 		document.surround(regionFor.keyword("extends"), ONE_SPACE); //$NON-NLS-1$
@@ -254,7 +254,7 @@ public class SARLFormatter extends XtendFormatter {
 		formatAnnotations(behavior, document, XbaseFormatterPreferenceKeys.newLineAfterClassAnnotations);
 		formatModifiers(behavior, document);
 
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(behavior);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(behavior);
 		document.append(regionFor.keyword("behavior"), ONE_SPACE); //$NON-NLS-1$
 
 		document.surround(regionFor.keyword("extends"), ONE_SPACE); //$NON-NLS-1$
@@ -272,7 +272,7 @@ public class SARLFormatter extends XtendFormatter {
 		formatAnnotations(skill, document, XbaseFormatterPreferenceKeys.newLineAfterClassAnnotations);
 		formatModifiers(skill, document);
 
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(skill);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(skill);
 		document.append(regionFor.keyword("skill"), ONE_SPACE); //$NON-NLS-1$
 
 		document.surround(regionFor.keyword("extends"), ONE_SPACE); //$NON-NLS-1$
@@ -288,20 +288,20 @@ public class SARLFormatter extends XtendFormatter {
 	protected void _format(XtendField field, IFormattableDocument document) {
 		formatAnnotations(field, document, XbaseFormatterPreferenceKeys.newLineAfterFieldAnnotations);
 		formatModifiers(field, document);
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(field);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(field);
 
-		ISemanticRegion columnKw = regionFor.keyword(":"); //$NON-NLS-1$
+		final ISemanticRegion columnKw = regionFor.keyword(":"); //$NON-NLS-1$
 		document.prepend(columnKw, ONE_SPACE);
 		document.append(columnKw, ONE_SPACE);
-		ISemanticRegion equalKw = regionFor.keyword("="); //$NON-NLS-1$
+		final ISemanticRegion equalKw = regionFor.keyword("="); //$NON-NLS-1$
 		document.prepend(equalKw, ONE_SPACE);
 		document.append(equalKw, ONE_SPACE);
-		ISemanticRegion semicolumn = regionFor.keyword(";"); //$NON-NLS-1$
+		final ISemanticRegion semicolumn = regionFor.keyword(";"); //$NON-NLS-1$
 		document.prepend(semicolumn, NO_SPACE);
 
-		JvmTypeReference type = field.getType();
+		final JvmTypeReference type = field.getType();
 		document.format(type);
-		XExpression initialValue = field.getInitialValue();
+		final XExpression initialValue = field.getInitialValue();
 		document.format(initialValue);
 	}
 
@@ -311,60 +311,65 @@ public class SARLFormatter extends XtendFormatter {
 		formatAnnotations(function, document, XbaseFormatterPreferenceKeys.newLineAfterMethodAnnotations);
 		formatModifiers(function, document);
 
-		EList<JvmTypeParameter> typeParameters = function.getTypeParameters();
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(function);
+		final EList<JvmTypeParameter> typeParameters = function.getTypeParameters();
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(function);
 
 		if (!typeParameters.isEmpty()) {
-			ISemanticRegion open = regionFor.keyword("<"); //$NON-NLS-1$
+			final ISemanticRegion open = regionFor.keyword("<"); //$NON-NLS-1$
 			document.prepend(open, ONE_SPACE);
 			document.append(open, NO_SPACE);
-			ISemanticRegion close = regionFor.keyword(">"); //$NON-NLS-1$
+			final ISemanticRegion close = regionFor.keyword(">"); //$NON-NLS-1$
 			document.prepend(close, NO_SPACE);
 			document.append(close, ONE_SPACE);
 			document.surround(regionFor.keyword("with"), ONE_SPACE); //$NON-NLS-1$
 			formatCommaSeparatedList(function.getTypeParameters(), document);
 		}
 
-		ISemanticRegion nameNode = regionFor.feature(XtendPackage.Literals.XTEND_FUNCTION__NAME);
-		ISemanticRegionFinder immediatelyFollowing = null;
+		final ISemanticRegion nameNode = regionFor.feature(XtendPackage.Literals.XTEND_FUNCTION__NAME);
+		final ISemanticRegionFinder immediatelyFollowing;
 		if (nameNode != null) {
 			immediatelyFollowing = nameNode.immediatelyFollowing();
+		} else {
+			immediatelyFollowing = null;
 		}
-		ISemanticRegion open = null;
+		final ISemanticRegion open;
 		if (immediatelyFollowing != null) {
 			open = immediatelyFollowing.keyword("("); //$NON-NLS-1$
+		} else {
+			open = null;
 		}
-		ISemanticRegion close = regionFor.keyword(")"); //$NON-NLS-1$
+		final ISemanticRegion close = regionFor.keyword(")"); //$NON-NLS-1$
 
-		JvmTypeReference returnType = function.getReturnType();
+		final JvmTypeReference returnType = function.getReturnType();
 		if (returnType != null) {
-			ISemanticRegion typeColumn = this.textRegionExtensions.immediatelyPreceding(returnType).keyword(":"); //$NON-NLS-1$
+			final ISemanticRegion typeColumn = this.textRegionExtensions.immediatelyPreceding(returnType)
+					.keyword(":"); //$NON-NLS-1$
 			document.surround(typeColumn, ONE_SPACE);
 			document.format(returnType);
 		}
 
-		XExpression expression = function.getExpression();
+		final XExpression expression = function.getExpression();
 		if (expression != null) {
-			ISemanticRegionFinder finder = this.textRegionExtensions.regionFor(expression);
-			ISemanticRegion brace = finder.keyword("{"); //$NON-NLS-1$
+			final ISemanticRegionFinder finder = this.textRegionExtensions.regionFor(expression);
+			final ISemanticRegion brace = finder.keyword("{"); //$NON-NLS-1$
 			document.prepend(brace, XbaseFormatterPreferenceKeys.bracesInNewLine);
 			document.format(expression);
 		} else {
-			ISemanticRegion column = regionFor.keyword(";"); //$NON-NLS-1$
+			final ISemanticRegion column = regionFor.keyword(";"); //$NON-NLS-1$
 			document.prepend(column, NO_SPACE);
 		}
 
-		EList<XtendParameter> parameters = function.getParameters();
+		final EList<XtendParameter> parameters = function.getParameters();
 		formatCommaSeparatedList(parameters, open, close, document);
 
-		EList<JvmTypeReference> exceptions = function.getExceptions();
+		final EList<JvmTypeReference> exceptions = function.getExceptions();
 		if (!exceptions.isEmpty()) {
 			document.surround(regionFor.keyword("throws"), ONE_SPACE); //$NON-NLS-1$
 		}
 		formatCommaSeparatedList(exceptions, document);
 
 		if (function instanceof SarlAction) {
-			EList<JvmTypeReference> events = ((SarlAction) function).getFiredEvents();
+			final EList<JvmTypeReference> events = ((SarlAction) function).getFiredEvents();
 			if (!events.isEmpty()) {
 				document.surround(regionFor.keyword("fires"), ONE_SPACE); //$NON-NLS-1$
 			}
@@ -377,17 +382,17 @@ public class SARLFormatter extends XtendFormatter {
 		formatAnnotations(constructor, document, XbaseFormatterPreferenceKeys.newLineAfterConstructorAnnotations);
 		formatModifiers(constructor, document);
 
-		EList<JvmTypeParameter> typeParameters = constructor.getTypeParameters();
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(constructor);
+		final EList<JvmTypeParameter> typeParameters = constructor.getTypeParameters();
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(constructor);
 
-		ISemanticRegion nameNode = regionFor.keyword("new"); //$NON-NLS-1$
-		ISemanticRegionFinder immediatelyFollowing = null;
+		final ISemanticRegion nameNode = regionFor.keyword("new"); //$NON-NLS-1$
+		final ISemanticRegionFinder immediatelyFollowing;
 
 		if (!typeParameters.isEmpty()) {
-			ISemanticRegion open = regionFor.keyword("<"); //$NON-NLS-1$
+			final ISemanticRegion open = regionFor.keyword("<"); //$NON-NLS-1$
 			document.prepend(open, ONE_SPACE);
 			document.append(open, NO_SPACE);
-			ISemanticRegion close = regionFor.keyword(">"); //$NON-NLS-1$
+			final ISemanticRegion close = regionFor.keyword(">"); //$NON-NLS-1$
 			document.prepend(close, NO_SPACE);
 			document.append(close, ONE_SPACE);
 			document.surround(regionFor.keyword("with"), ONE_SPACE); //$NON-NLS-1$
@@ -396,29 +401,35 @@ public class SARLFormatter extends XtendFormatter {
 				immediatelyFollowing = close.immediatelyFollowing();
 			} else if (nameNode != null) {
 				immediatelyFollowing = nameNode.immediatelyFollowing();
+			} else {
+				immediatelyFollowing = null;
 			}
 		} else if (nameNode != null) {
 			immediatelyFollowing = nameNode.immediatelyFollowing();
+		} else {
+			immediatelyFollowing = null;
 		}
 
-		ISemanticRegion open = null;
+		final ISemanticRegion open;
 		if (immediatelyFollowing != null) {
 			open = immediatelyFollowing.keyword("("); //$NON-NLS-1$
+		} else {
+			open = null;
 		}
-		ISemanticRegion close = regionFor.keyword(")"); //$NON-NLS-1$
+		final ISemanticRegion close = regionFor.keyword(")"); //$NON-NLS-1$
 
-		XExpression expression = constructor.getExpression();
+		final XExpression expression = constructor.getExpression();
 		if (expression != null) {
-			ISemanticRegionFinder finder = this.textRegionExtensions.regionFor(expression);
-			ISemanticRegion brace = finder.keyword("{"); //$NON-NLS-1$
+			final ISemanticRegionFinder finder = this.textRegionExtensions.regionFor(expression);
+			final ISemanticRegion brace = finder.keyword("{"); //$NON-NLS-1$
 			document.prepend(brace, XbaseFormatterPreferenceKeys.bracesInNewLine);
 			document.format(expression);
 		}
 
-		EList<XtendParameter> parameters = constructor.getParameters();
+		final EList<XtendParameter> parameters = constructor.getParameters();
 		formatCommaSeparatedList(parameters, open, close, document);
 
-		EList<JvmTypeReference> exceptions = constructor.getExceptions();
+		final EList<JvmTypeReference> exceptions = constructor.getExceptions();
 		if (!exceptions.isEmpty()) {
 			document.surround(regionFor.keyword("throws"), ONE_SPACE); //$NON-NLS-1$
 		}
@@ -433,7 +444,7 @@ public class SARLFormatter extends XtendFormatter {
 	protected void _format(SarlBehaviorUnit behaviorUnit, IFormattableDocument document) {
 		formatAnnotations(behaviorUnit, document, XbaseFormatterPreferenceKeys.newLineAfterMethodAnnotations);
 
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(behaviorUnit);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(behaviorUnit);
 
 		document.append(regionFor.keyword("on"), ONE_SPACE); //$NON-NLS-1$
 
@@ -450,10 +461,10 @@ public class SARLFormatter extends XtendFormatter {
 		document.format(behaviorUnit.getName());
 		document.format(behaviorUnit.getGuard());
 
-		XExpression expression = behaviorUnit.getExpression();
+		final XExpression expression = behaviorUnit.getExpression();
 		if (expression != null) {
-			ISemanticRegionFinder finder = this.textRegionExtensions.regionFor(expression);
-			ISemanticRegion brace = finder.keyword("{"); //$NON-NLS-1$
+			final ISemanticRegionFinder finder = this.textRegionExtensions.regionFor(expression);
+			final ISemanticRegion brace = finder.keyword("{"); //$NON-NLS-1$
 			document.prepend(brace, XbaseFormatterPreferenceKeys.bracesInNewLine);
 			document.format(expression);
 		}
@@ -465,7 +476,7 @@ public class SARLFormatter extends XtendFormatter {
 	 * @param document the document.
 	 */
 	protected void _format(SarlCapacityUses capacityUses, IFormattableDocument document) {
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(capacityUses);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(capacityUses);
 		document.append(regionFor.keyword("uses"), ONE_SPACE); //$NON-NLS-1$
 		formatCommaSeparatedList(capacityUses.getCapacities(), document);
 		document.prepend(regionFor.keyword(";"), NO_SPACE); //$NON-NLS-1$
@@ -477,7 +488,7 @@ public class SARLFormatter extends XtendFormatter {
 	 * @param document the document.
 	 */
 	protected void _format(SarlRequiredCapacity requiredCapacity, IFormattableDocument document) {
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(requiredCapacity);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(requiredCapacity);
 		document.append(regionFor.keyword("requires"), ONE_SPACE); //$NON-NLS-1$
 		formatCommaSeparatedList(requiredCapacity.getCapacities(), document);
 		document.prepend(regionFor.keyword(";"), NO_SPACE); //$NON-NLS-1$
@@ -486,20 +497,20 @@ public class SARLFormatter extends XtendFormatter {
 	@Override
 	protected void _format(XtendParameter param, IFormattableDocument document) {
 		formatAnnotations(param, document, XbaseFormatterPreferenceKeys.newLineAfterParameterAnnotations);
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(param);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(param);
 		document.surround(regionFor.keyword(":"), ONE_SPACE); //$NON-NLS-1$
 		document.surround(regionFor.keyword("="), ONE_SPACE); //$NON-NLS-1$
-		JvmTypeReference parameterType = param.getParameterType();
+		final JvmTypeReference parameterType = param.getParameterType();
 		if (parameterType != null) {
 			document.format(parameterType);
-			ISemanticRegion varArgToken = regionFor.keyword("*"); //$NON-NLS-1$
+			final ISemanticRegion varArgToken = regionFor.keyword("*"); //$NON-NLS-1$
 			document.surround(varArgToken, NO_SPACE);
 		}
 	}
 
 	@Override
 	protected void _format(XVariableDeclaration expr, IFormattableDocument document) {
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
 		document.append(regionFor.keyword("extension"), ONE_SPACE); //$NON-NLS-1$
 		document.append(regionFor.keyword("val"), ONE_SPACE); //$NON-NLS-1$
 		document.append(regionFor.keyword("var"), ONE_SPACE); //$NON-NLS-1$
@@ -511,9 +522,9 @@ public class SARLFormatter extends XtendFormatter {
 
 	@Override
 	protected void _format(JvmFormalParameter expr, IFormattableDocument document) {
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
 		document.append(regionFor.keyword("extension"), ONE_SPACE); //$NON-NLS-1$
-		JvmTypeReference parameterType = expr.getParameterType();
+		final JvmTypeReference parameterType = expr.getParameterType();
 		if (parameterType != null) {
 			document.surround(regionFor.keyword(":"), ONE_SPACE); //$NON-NLS-1$
 			document.surround(regionFor.keyword("as"), ONE_SPACE); //$NON-NLS-1$
@@ -523,20 +534,20 @@ public class SARLFormatter extends XtendFormatter {
 
 	@Override
 	protected void _format(XForLoopExpression expr, IFormattableDocument document) {
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
 		document.append(regionFor.keyword("for"), ONE_SPACE); //$NON-NLS-1$
 
-		JvmFormalParameter declaredParam = expr.getDeclaredParam();
+		final JvmFormalParameter declaredParam = expr.getDeclaredParam();
 		document.prepend(declaredParam, NO_SPACE);
 		document.append(declaredParam, ONE_SPACE);
 		document.format(declaredParam);
 
-		XExpression forExpression = expr.getForExpression();
+		final XExpression forExpression = expr.getForExpression();
 		document.prepend(forExpression, ONE_SPACE);
 		document.append(forExpression, NO_SPACE);
 		document.format(forExpression);
 
-		XExpression eachExpression = expr.getEachExpression();
+		final XExpression eachExpression = expr.getEachExpression();
 		if (eachExpression != null) {
 			formatBody(eachExpression, true, document);
 		} else {
@@ -546,22 +557,22 @@ public class SARLFormatter extends XtendFormatter {
 
 	@Override
 	protected void _format(XAnnotation annotation, IFormattableDocument document) {
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(annotation);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(annotation);
 		document.append(regionFor.keyword("@"), NO_SPACE); //$NON-NLS-1$
 		document.surround(regionFor.keyword("("), NO_SPACE); //$NON-NLS-1$
 		XExpression value = annotation.getValue();
 		if (value != null) {
 			document.format(value);
 		} else {
-			EList<XAnnotationElementValuePair> elementValuePairs = annotation.getElementValuePairs();
+			final EList<XAnnotationElementValuePair> elementValuePairs = annotation.getElementValuePairs();
 			if (!elementValuePairs.isEmpty()) {
-				for (XAnnotationElementValuePair pair : elementValuePairs) {
-					ISemanticRegionsFinder regionForPair = this.textRegionExtensions.regionFor(pair);
+				for (final XAnnotationElementValuePair pair : elementValuePairs) {
+					final ISemanticRegionsFinder regionForPair = this.textRegionExtensions.regionFor(pair);
 					document.surround(regionForPair.keyword("="), ONE_SPACE); //$NON-NLS-1$
 					value = pair.getValue();
 					document.format(value);
-					ISemanticRegionFinder immediatelyFollowing = this.textRegionExtensions.immediatelyFollowing(pair);
-					ISemanticRegion keyword = immediatelyFollowing.keyword(","); //$NON-NLS-1$
+					final ISemanticRegionFinder immediatelyFollowing = this.textRegionExtensions.immediatelyFollowing(pair);
+					final ISemanticRegion keyword = immediatelyFollowing.keyword(","); //$NON-NLS-1$
 					document.prepend(keyword, NO_SPACE);
 					document.append(keyword, ONE_SPACE);
 				}
@@ -584,10 +595,10 @@ public class SARLFormatter extends XtendFormatter {
 	 * @param document the document.
 	 */
 	protected void formatCommaSeparatedList(Collection<? extends EObject> elements, IFormattableDocument document) {
-		for (EObject element : elements) {
+		for (final EObject element : elements) {
 			document.format(element);
-			ISemanticRegionFinder immediatelyFollowing = this.textRegionExtensions.immediatelyFollowing(element);
-			ISemanticRegion keyword = immediatelyFollowing.keyword(","); //$NON-NLS-1$
+			final ISemanticRegionFinder immediatelyFollowing = this.textRegionExtensions.immediatelyFollowing(element);
+			final ISemanticRegion keyword = immediatelyFollowing.keyword(","); //$NON-NLS-1$
 			document.prepend(keyword, NO_SPACE);
 			document.append(keyword, ONE_SPACE);
 		}
@@ -596,17 +607,17 @@ public class SARLFormatter extends XtendFormatter {
 	@Override
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	protected ISemanticRegion formatBody(XtendTypeDeclaration type, IFormattableDocument document) {
-		ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(type);
+		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(type);
 
-		ISemanticRegion open = regionFor.keyword("{"); //$NON-NLS-1$
-		ISemanticRegion close = regionFor.keyword("}"); //$NON-NLS-1$
+		final ISemanticRegion open = regionFor.keyword("{"); //$NON-NLS-1$
+		final ISemanticRegion close = regionFor.keyword("}"); //$NON-NLS-1$
 		document.prepend(open, XbaseFormatterPreferenceKeys.bracesInNewLine);
 		document.interior(open, close, INDENT);
 
-		EList<XtendMember> members = type.getMembers();
+		final EList<XtendMember> members = type.getMembers();
 		if (!members.isEmpty()) {
 			XtendMember previous = null;
-			for (XtendMember current : members) {
+			for (final XtendMember current : members) {
 				document.format(current);
 				if (previous == null) {
 					document.prepend(current, XtendFormatterPreferenceKeys.blankLinesBeforeFirstMember);

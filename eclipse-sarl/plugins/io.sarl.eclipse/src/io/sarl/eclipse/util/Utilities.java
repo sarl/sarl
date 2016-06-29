@@ -71,7 +71,7 @@ public final class Utilities {
 	 *     <code>0</code> if the version is between minVersion and maxVersion.
 	 */
 	public static int compareVersionToRange(Version version, Version minVersion, Version maxVersion) {
-		assert (minVersion == null || maxVersion == null || minVersion.compareTo(maxVersion) < 0);
+		assert minVersion == null || maxVersion == null || minVersion.compareTo(maxVersion) < 0;
 		if (version == null) {
 			return Integer.MIN_VALUE;
 		}
@@ -121,7 +121,7 @@ public final class Utilities {
 		if (object2 == null) {
 			return Integer.MAX_VALUE;
 		}
-		assert (object1 != null && object2 != null);
+		assert object1 != null && object2 != null;
 		return object1.compareTo(object2);
 	}
 

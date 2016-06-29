@@ -92,21 +92,22 @@ public class FormatterFacade {
 	 */
 	public String format(String sarlCode, ResourceSet resourceSet) {
 		try {
-			URI createURI = URI.createURI("synthetic://to-be-formatted." + this.fileExtension); //$NON-NLS-1$
-			Resource res = this.resourceFactory.createResource(createURI);
+			final URI createURI = URI.createURI("synthetic://to-be-formatted." + this.fileExtension); //$NON-NLS-1$
+			final Resource res = this.resourceFactory.createResource(createURI);
 			if (res instanceof XtextResource) {
-				XtextResource resource = (XtextResource) res;
-				EList<Resource> resources = resourceSet.getResources();
+				final XtextResource resource = (XtextResource) res;
+				final EList<Resource> resources = resourceSet.getResources();
 				resources.add(resource);
 				try (StringInputStream stringInputStream = new StringInputStream(sarlCode)) {
 					resource.load(stringInputStream, Collections.emptyMap());
-					ITextRegionAccess regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
-					FormatterRequest formatterRequest = new FormatterRequest();
+					final ITextRegionAccess regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
+					final FormatterRequest formatterRequest = new FormatterRequest();
 					formatterRequest.setAllowIdentityEdits(false);
 					formatterRequest.setTextRegionAccess(regionAccess);
-					IPreferenceValues preferenceValues = FormatterFacade.this.configurationProvider.getPreferenceValues(resource);
+					final IPreferenceValues preferenceValues = FormatterFacade.this.configurationProvider
+							.getPreferenceValues(resource);
 					formatterRequest.setPreferences(TypedPreferenceValues.castOrWrap(preferenceValues));
-					List<ITextReplacement> replacements = this.formatter.format(formatterRequest);
+					final List<ITextReplacement> replacements = this.formatter.format(formatterRequest);
 					return regionAccess.getRewriter().renderToString(replacements);
 				} finally {
 					resources.remove(resource);

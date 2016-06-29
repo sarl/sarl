@@ -171,8 +171,8 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generateXtendStubs() {
 		super.generateXtendStubs();
-		TypeReference stub = getScriptBuilderImplCustom();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final TypeReference stub = getScriptBuilderImplCustom();
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** User-defined builder of the " + getLanguageName() + " scripts."); //$NON-NLS-1$//$NON-NLS-2$
@@ -191,8 +191,8 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		XtendFileAccess xtendFile = getFileAccessFactory().createXtendFile(stub, content);
-		IFileSystemAccess2 fileSystem = getSrc();
+		final XtendFileAccess xtendFile = getFileAccessFactory().createXtendFile(stub, content);
+		final IFileSystemAccess2 fileSystem = getSrc();
 		if (!fileSystem.isFile(xtendFile.getPath())) {
 			xtendFile.writeTo(fileSystem);
 		}
@@ -202,7 +202,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	public void generateJavaStubs() {
 		super.generateJavaStubs();
 		final TypeReference stub = getScriptBuilderImplCustom();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** User-defined builder of the " + getLanguageName() + " scripts."); //$NON-NLS-1$//$NON-NLS-2$
@@ -221,8 +221,8 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(stub, content);
-		IFileSystemAccess2 fileSystem = getSrc();
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(stub, content);
+		final IFileSystemAccess2 fileSystem = getSrc();
 		if (!fileSystem.isFile(javaFile.getPath())) {
 			javaFile.writeTo(fileSystem);
 		}
@@ -231,8 +231,8 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generateBindings(BindingFactory factory) {
 		super.generateBindings(factory);
-		IFileSystemAccess2 fileSystem = getSrc();
-		TypeReference type;
+		final IFileSystemAccess2 fileSystem = getSrc();
+		final TypeReference type;
 		if ((fileSystem.isFile(getScriptBuilderImplCustom().getJavaPath()))
 				|| (fileSystem.isFile(getScriptBuilderImplCustom().getXtendPath()))) {
 			type = getScriptBuilderImplCustom();
@@ -316,12 +316,12 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @return the top elements.
 	 */
 	protected List<StringConcatenationClient> generateTopElements(boolean forInterface) {
-		Set<String> topElementNames = new TreeSet<>();
-		Grammar grammar = getGrammar();
-		List<StringConcatenationClient> topElements = new ArrayList<>();
-		AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
+		final Set<String> topElementNames = new TreeSet<>();
+		final Grammar grammar = getGrammar();
+		final List<StringConcatenationClient> topElements = new ArrayList<>();
+		final AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
 		if (rule != null) {
-			for (RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
+			for (final RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
 				topElements.add(generateTopElement(ruleCall.getRule(), forInterface));
 				topElementNames.add(ruleCall.getRule().getName());
 			}
@@ -332,9 +332,9 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate the script builder interface.
 	 */
 	protected void generateIScriptBuilder() {
-		List<StringConcatenationClient> topElements = generateTopElements(true);
+		final List<StringConcatenationClient> topElements = generateTopElements(true);
 		final TypeReference builder = getScriptBuilderInterface();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of " + getLanguageName() + " scripts."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -359,7 +359,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append(generateFieldsAndMethods(true));
-				for (StringConcatenationClient element : topElements) {
+				for (final StringConcatenationClient element : topElements) {
 					it.append(element);
 				}
 				it.append("}"); //$NON-NLS-1$
@@ -368,17 +368,17 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
 	/** Generate the script builder default implementation.
 	 */
 	protected void generateScriptBuilderImpl() {
-		List<StringConcatenationClient> topElements = generateTopElements(false);
+		final List<StringConcatenationClient> topElements = generateTopElements(false);
 		final TypeReference script = getScriptBuilderImpl();
 		final TypeReference scriptInterface = getScriptBuilderInterface();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
@@ -393,7 +393,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append(generateFieldsAndMethods(false));
-				for (StringConcatenationClient element : topElements) {
+				for (final StringConcatenationClient element : topElements) {
 					it.append(element);
 				}
 				it.append("}"); //$NON-NLS-1$
@@ -401,7 +401,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(script, content);
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(script, content);
 		javaFile.writeTo(getSrcGen());
 	}
 

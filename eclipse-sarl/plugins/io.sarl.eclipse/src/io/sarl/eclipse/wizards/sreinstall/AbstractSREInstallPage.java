@@ -123,7 +123,7 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 					ISREInstall.CODE_NAME,
 					Messages.SREInstallWizard_1);
 		} else {
-			IStatus status = ResourcesPlugin.getWorkspace().validateName(name, IResource.FILE);
+			final IStatus status = ResourcesPlugin.getWorkspace().validateName(name, IResource.FILE);
 			if (!status.isOK()) {
 				nameStatus = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 						ISREInstall.CODE_NAME,
@@ -153,8 +153,8 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 */
 	private boolean isDuplicateName(String name) {
 		if (this.existingNames != null) {
-			String newName = Strings.nullToEmpty(name);
-			for (String existingName : this.existingNames) {
+			final String newName = Strings.nullToEmpty(name);
+			for (final String existingName : this.existingNames) {
 				if (newName.equals(existingName)) {
 					return true;
 				}

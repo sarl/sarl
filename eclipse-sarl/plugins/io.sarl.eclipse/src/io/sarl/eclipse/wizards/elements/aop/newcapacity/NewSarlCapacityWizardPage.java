@@ -61,7 +61,7 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 
 	@Override
 	protected void doStatusUpdate() {
-		IStatus[] status = new IStatus[] {
+		final IStatus[] status = new IStatus[] {
 			this.fContainerStatus,
 			this.fPackageStatus,
 			this.fTypeNameStatus,
@@ -72,9 +72,9 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
+		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
 				getPackageFragment().getElementName(), ecoreResource);
-		ICapacityBuilder capacity = scriptBuilder.addCapacity(getTypeName());
+		final ICapacityBuilder capacity = scriptBuilder.addCapacity(getTypeName());
 		capacity.addExtends(getSuperClass());
 		capacity.setDocumentation(typeComment.trim());
 		scriptBuilder.finalizeScript();

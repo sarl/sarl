@@ -45,7 +45,7 @@ public class SarlOutputConfigurationProvider extends OutputConfigurationProvider
 
 	@Override
 	public Set<OutputConfiguration> getOutputConfigurations() {
-		OutputConfiguration defaultOutput = new OutputConfiguration(IFileSystemAccess.DEFAULT_OUTPUT);
+		final OutputConfiguration defaultOutput = new OutputConfiguration(IFileSystemAccess.DEFAULT_OUTPUT);
 		defaultOutput.setDescription(Messages.SarlOutputConfigurationProvider_0);
 		defaultOutput.setOutputDirectory(SARLConfig.FOLDER_SOURCE_GENERATED);
 		defaultOutput.setOverrideExistingResources(true);

@@ -99,7 +99,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor,
 			String label, String[] operationUris) {
 		if (operationUris.length > 0) {
-			MissedMethodAddModification modification = new MissedMethodAddModification(operationUris);
+			final MissedMethodAddModification modification = new MissedMethodAddModification(operationUris);
 			provider.getInjector().injectMembers(modification);
 			modification.setIssue(issue);
 			modification.setTools(provider);
@@ -114,10 +114,10 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		XtendTypeDeclaration clazz = (XtendTypeDeclaration) element;
-		SarlScript script = EcoreUtil2.getContainerOfType(element, SarlScript.class);
-		IXtextDocument document = context.getXtextDocument();
-		Set<JvmType> importableTypes = new HashSet<>();
+		final XtendTypeDeclaration clazz = (XtendTypeDeclaration) element;
+		final SarlScript script = EcoreUtil2.getContainerOfType(element, SarlScript.class);
+		final IXtextDocument document = context.getXtextDocument();
+		final Set<JvmType> importableTypes = new HashSet<>();
 		addMissedFunctions(script, clazz, document, importableTypes);
 		addMissedImports(script, document, importableTypes);
 	}
@@ -135,7 +135,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 		final String containerQualifiedName = containerType.getQualifiedName();
 		final ReplacingAppendable appendable = tools.getAppendableFactory().create(document,
 				(XtextResource) container.eResource(), insertOffset, length);
-		final boolean initialIndent = (container.getMembers().isEmpty());
+		final boolean initialIndent = container.getMembers().isEmpty();
 		appendable.newLine();
 		if (initialIndent) {
 			appendable.increaseIndentation();
@@ -151,7 +151,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 			for (final JvmOperation operation : tools.getJvmOperationsFromURIs(container, this.operationUris)) {
 				appendable.newLine();
 				// Annotations
-				for (JvmAnnotationReference annotation : operation.getAnnotations()) {
+				for (final JvmAnnotationReference annotation : operation.getAnnotations()) {
 					final JvmAnnotationType annotationType = annotation.getAnnotation();
 					if (!Utils.isSARLAnnotation(annotationType.getQualifiedName())) {
 						appendable.append("@").append(annotationType.getSimpleName()).newLine(); //$NON-NLS-1$
@@ -206,7 +206,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 					appendable.append(tools.getGrammarAccess().getActionAccess()
 							.getLessThanSignKeyword_5_0().getValue());
 					boolean addComa = false;
-					for (JvmTypeParameter typeParameter : operation.getTypeParameters()) {
+					for (final JvmTypeParameter typeParameter : operation.getTypeParameters()) {
 						if (addComa) {
 							appendable.append(tools.getGrammarAccess().getActionAccess()
 									.getCommaKeyword_5_2_0().getValue());
@@ -277,14 +277,14 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 										}
 									}
 								}
-								assert (localtype != null) : "Type not found: " + typeName; //$NON-NLS-1$
+								assert localtype != null : "Type not found: " + typeName; //$NON-NLS-1$
 								type = localtype;
 								fieldName = argument.substring(idx + 1);
 							} else {
 								type = containerType;
 								fieldName = argument;
 							}
-							assert (type instanceof JvmDeclaredType) : "Type not found"; //$NON-NLS-1$
+							assert type instanceof JvmDeclaredType : "Type not found"; //$NON-NLS-1$
 							if (type instanceof JvmDeclaredType) {
 								final Iterator<JvmField> iterator = ((JvmDeclaredType) type).getDeclaredFields().iterator();
 								while (defaultValue == null && iterator.hasNext()) {
@@ -327,7 +327,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 					appendable.append(" ").append(tools.getGrammarAccess().getActionAccess() //$NON-NLS-1$
 							.getThrowsKeyword_9_0_0().getValue()).append(" "); //$NON-NLS-1$
 					boolean addComa = false;
-					for (JvmTypeReference exceptionType : operation.getExceptions()) {
+					for (final JvmTypeReference exceptionType : operation.getExceptions()) {
 						if (addComa) {
 							appendable.append(tools.getGrammarAccess().getActionAccess()
 									.getCommaKeyword_9_0_2_0().getValue());
@@ -345,7 +345,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 					appendable.append(" ").append(tools.getGrammarAccess().getActionAccess() //$NON-NLS-1$
 							.getFiresKeyword_9_1_0().getValue()).append(" "); //$NON-NLS-1$
 					boolean addComa = false;
-					for (JvmTypeReference eventType : Utils.annotationClasses(operation, FiredEvent.class)) {
+					for (final JvmTypeReference eventType : Utils.annotationClasses(operation, FiredEvent.class)) {
 						if (addComa) {
 							appendable.append(tools.getGrammarAccess().getActionAccess()
 									.getCommaKeyword_9_1_2_0().getValue());
@@ -382,21 +382,21 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 
 	private void addMissedImports(SarlScript script,
 			IXtextDocument document, Set<JvmType> importableTypes) throws Exception {
-		SARLQuickfixProvider tools = getTools();
-		int insertOffset = tools.getImportInsertOffset(script);
-		ReplacingAppendable appendable = tools.getAppendableFactory().create(document,
+		final SARLQuickfixProvider tools = getTools();
+		final int insertOffset = tools.getImportInsertOffset(script);
+		final ReplacingAppendable appendable = tools.getAppendableFactory().create(document,
 				(XtextResource) script.eResource(), insertOffset, 0);
-		ImportManager importManager = new ImportManager();
-		XImportSection importSection = script.getImportSection();
+		final ImportManager importManager = new ImportManager();
+		final XImportSection importSection = script.getImportSection();
 		if (importSection != null) {
-			for (XImportDeclaration declaration : importSection.getImportDeclarations()) {
-				JvmDeclaredType type = declaration.getImportedType();
+			for (final XImportDeclaration declaration : importSection.getImportDeclarations()) {
+				final JvmDeclaredType type = declaration.getImportedType();
 				if (type != null) {
 					importManager.addImportFor(type);
 				}
 			}
 		}
-		for (JvmType importableType : importableTypes) {
+		for (final JvmType importableType : importableTypes) {
 			if (importManager.addImportFor(importableType)) {
 				appendable.newLine();
 				appendable.append(

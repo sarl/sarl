@@ -65,7 +65,7 @@ public abstract class Event implements Serializable {
 			return true;
 		}
 		if (obj != null && getClass().equals(obj.getClass())) {
-			Event event = (Event) obj;
+			final Event event = (Event) obj;
 			return (this.source == null && event.source == null)
 					|| (this.source != null && this.source.equals(event.source));
 		}
@@ -108,7 +108,7 @@ public abstract class Event implements Serializable {
 	 */
 	@Pure
 	protected String attributesToString() {
-		StringBuilder result = new StringBuilder();
+		final StringBuilder result = new StringBuilder();
 		result.append("source = "); //$NON-NLS-1$
 		result.append(this.source);
 		return result.toString();
@@ -143,7 +143,7 @@ public abstract class Event implements Serializable {
 	 */
 	@Pure
 	public boolean isFrom(UUID entityId) {
-		Address source = getSource();
+		final Address source = getSource();
 		return (entityId != null) && (source != null)
 				&& entityId.equals(source.getUUID());
 	}

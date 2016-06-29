@@ -46,7 +46,7 @@ public class SARLLaunchConfigurationTabGroup extends AbstractLaunchConfiguration
 
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {
+		final ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {
 			new SARLMainLaunchConfigurationTab(),
 			new SARLArgumentsTab(),
 			new SARLRuntimeEnvironmentTab(),

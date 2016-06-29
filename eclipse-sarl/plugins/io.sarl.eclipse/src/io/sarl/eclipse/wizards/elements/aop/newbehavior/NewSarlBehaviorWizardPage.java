@@ -72,7 +72,7 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 
 	@Override
 	protected void doStatusUpdate() {
-		IStatus[] status = new IStatus[] {
+		final IStatus[] status = new IStatus[] {
 			this.fContainerStatus,
 			this.fPackageStatus,
 			this.fTypeNameStatus,
@@ -83,16 +83,16 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
+		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
 				getPackageFragment().getElementName(), ecoreResource);
-		IBehaviorBuilder behavior = scriptBuilder.addBehavior(getTypeName());
+		final IBehaviorBuilder behavior = scriptBuilder.addBehavior(getTypeName());
 		behavior.setExtends(getSuperClass());
 		behavior.setDocumentation(typeComment);
 
-		Map<ActionPrototype, IMethod> operationsToImplement;
-		Map<ActionParameterTypes, IMethod> constructors;
+		final Map<ActionPrototype, IMethod> operationsToImplement;
+		final Map<ActionParameterTypes, IMethod> constructors;
 
-		String superClass = getSuperClass();
+		final String superClass = getSuperClass();
 		if (Strings.isNullOrEmpty(superClass) || !isCreateConstructors()) {
 			constructors = null;
 		} else {

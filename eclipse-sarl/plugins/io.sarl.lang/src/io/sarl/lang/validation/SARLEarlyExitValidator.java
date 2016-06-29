@@ -56,9 +56,10 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 	public void checkDeadCode(XBlockExpression block) {
 		// The XAbstractFeatureCall are skipped in the super function.
 		// We need to mark the dead code for a early XAbstractFeatureCall.
-		EList<XExpression> expressions = block.getExpressions();
-		for (int i = 0, size = expressions.size(); i < size - 1; ++i) {
-			XExpression expression = expressions.get(i);
+		final EList<XExpression> expressions = block.getExpressions();
+		final int size = expressions.size();
+		for (int i = 0; i < size - 1; ++i) {
+			final XExpression expression = expressions.get(i);
 			if (this.earlyExitComputer.isEarlyExit(expression)) {
 				if (expression instanceof XAbstractFeatureCall) {
 					if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(
@@ -79,7 +80,7 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 	protected void collectExits(EObject expr, List<XExpression> found) {
 		super.collectExits(expr, found);
 		if (expr instanceof XAbstractFeatureCall) {
-			JvmIdentifiableElement element = ((XAbstractFeatureCall) expr).getFeature();
+			final JvmIdentifiableElement element = ((XAbstractFeatureCall) expr).getFeature();
 			if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(element)) {
 				found.add((XExpression) expr);
 			}
@@ -89,8 +90,8 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 	// This code is copied from the super type
 	private boolean markAsDeadCode(XExpression expression) {
 		if (expression instanceof XBlockExpression) {
-			XBlockExpression block = (XBlockExpression) expression;
-			EList<XExpression> expressions = block.getExpressions();
+			final XBlockExpression block = (XBlockExpression) expression;
+			final EList<XExpression> expressions = block.getExpressions();
 			if (!expressions.isEmpty()) {
 				markAsDeadCode(expressions.get(0));
 				return true;

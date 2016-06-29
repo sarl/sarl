@@ -64,8 +64,8 @@ public final class SARLPreferences {
 	 */
 	public static IPreferenceStore getSARLPreferencesFor(IProject project) {
 		if (project != null) {
-			Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
-			IPreferenceStoreAccess preferenceStoreAccess = injector.getInstance(IPreferenceStoreAccess.class);
+			final Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
+			final IPreferenceStoreAccess preferenceStoreAccess = injector.getInstance(IPreferenceStoreAccess.class);
 			return preferenceStoreAccess.getWritablePreferenceStore(project);
 		}
 		return null;
@@ -77,8 +77,8 @@ public final class SARLPreferences {
 	 * @return the Xtext output configurations.
 	 */
 	public static Set<OutputConfiguration> getXtextConfigurationsFor(IProject project) {
-		Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
-		EclipseOutputConfigurationProvider configurationProvider =
+		final Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
+		final EclipseOutputConfigurationProvider configurationProvider =
 				injector.getInstance(EclipseOutputConfigurationProvider.class);
 		return configurationProvider.getOutputConfigurations(project);
 	}
@@ -89,7 +89,7 @@ public final class SARLPreferences {
 	 * @param project - the project.
 	 */
 	public static void setSystemSARLConfigurationFor(IProject project) {
-		IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
+		final IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
 		preferenceStore.setValue(IS_PROJECT_SPECIFIC, false);
 	}
 
@@ -102,13 +102,13 @@ public final class SARLPreferences {
 	public static void setSpecificSARLConfigurationFor(
 			IProject project,
 			IPath outputPath) {
-		IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
+		final IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
 		// Force to use a specific configuration for the SARL
 		preferenceStore.setValue(IS_PROJECT_SPECIFIC, true);
 
 		// Loop on the Xtext configurations embeded in the SARL compiler.
 		String key;
-		for (OutputConfiguration projectConfiguration
+		for (final OutputConfiguration projectConfiguration
 				: SARLPreferences.getXtextConfigurationsFor(project)) {
 			//
 			// OUTPUT PATH
@@ -163,16 +163,16 @@ public final class SARLPreferences {
 	 */
 	public static IPath getSARLOutputPathFor(
 			IProject project) {
-		assert (project != null);
-		IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
+		assert project != null;
+		final IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
 		if (preferenceStore.getBoolean(IS_PROJECT_SPECIFIC)) {
 			String key;
-			for (OutputConfiguration projectConfiguration
+			for (final OutputConfiguration projectConfiguration
 					: SARLPreferences.getXtextConfigurationsFor(project)) {
 				key = BuilderPreferenceAccess.getKey(
 						projectConfiguration,
 						EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);
-				String path = preferenceStore.getString(key);
+				final String path = preferenceStore.getString(key);
 				if (!Strings.isNullOrEmpty(path)) {
 					return Path.fromOSString(path);
 				}
@@ -186,13 +186,13 @@ public final class SARLPreferences {
 	 * @return the output path for SARL compiler in the global preferences.
 	 */
 	public static IPath getGlobalSARLOutputPath() {
-		Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
-		IOutputConfigurationProvider configurationProvider =
+		final Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
+		final IOutputConfigurationProvider configurationProvider =
 				injector.getInstance(IOutputConfigurationProvider.class);
-		for (OutputConfiguration config : configurationProvider.getOutputConfigurations()) {
-			String path = config.getOutputDirectory();
+		for (final OutputConfiguration config : configurationProvider.getOutputConfigurations()) {
+			final String path = config.getOutputDirectory();
 			if (!Strings.isNullOrEmpty(path)) {
-				IPath pathObject = Path.fromOSString(path);
+				final IPath pathObject = Path.fromOSString(path);
 				if (pathObject != null) {
 					return pathObject;
 				}

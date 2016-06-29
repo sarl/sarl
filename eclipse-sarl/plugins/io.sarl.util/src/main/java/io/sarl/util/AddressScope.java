@@ -48,7 +48,7 @@ public class AddressScope implements Scope<Address> {
 	 */
 	protected AddressScope(Address... addrs) {
 	    this.addresses = new TreeSet<>();
-	    for (Address adr : addrs) {
+	    for (final Address adr : addrs) {
 	        if (adr != null) {
 	        	this.addresses.add(adr);
 	        }
@@ -62,7 +62,7 @@ public class AddressScope implements Scope<Address> {
 
 	@Override
 	public boolean matches(Address address) {
-		assert (address != null);
+		assert address != null;
 		return this.addresses.contains(address);
 	}
 

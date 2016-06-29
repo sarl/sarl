@@ -45,7 +45,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 	private final List<String> openedContexts = new ArrayList<>();
 
 	private String indent() {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < this.openedContexts.size(); ++i) {
 			builder.append("\t"); //$NON-NLS-1$
 		}
@@ -59,7 +59,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 	 * @see #close()
 	 */
 	protected void open(String tag, String... nameValuePairs) {
-		StringBuilder line = new StringBuilder();
+		final StringBuilder line = new StringBuilder();
 		line.append(indent());
 		line.append("<").append(tag); //$NON-NLS-1$
 		for (int i = 0; i < nameValuePairs.length; i = i + 2) {
@@ -79,7 +79,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 	 * @see #open(String, String...)
 	 */
 	protected void close() {
-		String closable = this.openedContexts.remove(this.openedContexts.size() - 1);
+		final String closable = this.openedContexts.remove(this.openedContexts.size() - 1);
 		this.lines.add(indent() + "</" + closable + ">"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -89,7 +89,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 	 * @param nameValuePairs the parameters of the tag (name-value pairs).
 	 */
 	protected void tag(String tag, String... nameValuePairs) {
-		StringBuilder line = new StringBuilder();
+		final StringBuilder line = new StringBuilder();
 		line.append(indent());
 		line.append("<").append(tag); //$NON-NLS-1$
 		for (int i = 0; i < nameValuePairs.length; i = i + 2) {
@@ -110,7 +110,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 	 * @param nameValuePairs the parameters of the tag (name-value pairs).
 	 */
 	protected void valuedTag(String tag, String value, String... nameValuePairs) {
-		StringBuilder line = new StringBuilder();
+		final StringBuilder line = new StringBuilder();
 		line.append(indent());
 		line.append("<").append(tag); //$NON-NLS-1$
 		for (int i = 0; i < nameValuePairs.length; i = i + 2) {
@@ -121,7 +121,7 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 			line.append("\""); //$NON-NLS-1$
 		}
 		line.append(">"); //$NON-NLS-1$
-		String escapedValue = XmlEscapers.xmlContentEscaper().escape(value);
+		final String escapedValue = XmlEscapers.xmlContentEscaper().escape(value);
 		line.append(escapedValue);
 		if (escapedValue.endsWith(getCodeConfig().getLineDelimiter())) {
 			line.append(indent());
@@ -138,9 +138,9 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 	 */
 	@Pure
 	protected String lines(String prefix, String... lines) {
-		String delimiter = getCodeConfig().getLineDelimiter();
-		StringBuilder buffer = new StringBuilder();
-		for (String line : lines) {
+		final String delimiter = getCodeConfig().getLineDelimiter();
+		final StringBuilder buffer = new StringBuilder();
+		for (final String line : lines) {
 			buffer.append(indent());
 			buffer.append(prefix);
 			buffer.append(line);
@@ -157,15 +157,14 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 		this.lines.add(MessageFormat.format("<?xml version=\"1.0\" encoding=\"{0}\"?>", //$NON-NLS-1$
 				getCodeConfig().getEncoding()));
 
-		String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
+		final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
 		this.lines.add("<!--"); //$NON-NLS-1$
-		for (String headerLine : header) {
-			headerLine = headerLine.replaceFirst("^\\s*[/]?[*][/]?", "\t"); //$NON-NLS-1$//$NON-NLS-2$
-			this.lines.add(headerLine);
+		for (final String headerLine : header) {
+			this.lines.add(headerLine.replaceFirst("^\\s*[/]?[*][/]?", "\t")); //$NON-NLS-1$//$NON-NLS-2$
 		}
 		this.lines.add("-->"); //$NON-NLS-1$
 
-		String basename = generateXml(literals, keywords, punctuation, ignored);
+		final String basename = generateXml(literals, keywords, punctuation, ignored);
 
 		// Save
 		writeFile(basename, this.lines);

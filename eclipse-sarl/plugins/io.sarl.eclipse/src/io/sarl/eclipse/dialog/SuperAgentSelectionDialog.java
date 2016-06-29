@@ -71,7 +71,7 @@ public class SuperAgentSelectionDialog extends OpenTypeSelectionDialog {
 	 */
 	private static IJavaSearchScope createSearchScope(IJavaProject project) {
 		try {
-			IType agentType = project.findType(Agent.class.getName());
+			final IType agentType = project.findType(Agent.class.getName());
 			return SearchEngine.createStrictHierarchyScope(
 					project,
 					agentType,

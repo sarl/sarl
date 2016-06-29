@@ -54,7 +54,7 @@ public final class SuperTypeRemoveModification extends SARLSemanticModification 
 	 * @param acceptor - the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		SuperTypeRemoveModification modification = new SuperTypeRemoveModification();
+		final SuperTypeRemoveModification modification = new SuperTypeRemoveModification();
 		modification.setIssue(issue);
 		modification.setTools(provider);
 		acceptor.accept(issue,
@@ -66,10 +66,10 @@ public final class SuperTypeRemoveModification extends SARLSemanticModification 
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		Issue issue = getIssue();
-		SARLQuickfixProvider tools = getTools();
-		IXtextDocument document = context.getXtextDocument();
-		String sep = tools.getGrammarAccess().getCapacityAccess().getCommaKeyword_5_2_0().getValue();
+		final Issue issue = getIssue();
+		final SARLQuickfixProvider tools = getTools();
+		final IXtextDocument document = context.getXtextDocument();
+		final String sep = tools.getGrammarAccess().getCapacityAccess().getCommaKeyword_5_2_0().getValue();
 		if (!tools.removeToPreviousSeparator(issue, document, sep)) {
 			if (!tools.removeToNextSeparator(issue, document, sep)) {
 				tools.removeToPreviousKeyword(issue, document,

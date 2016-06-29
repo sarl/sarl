@@ -86,14 +86,14 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	}
 
 	private static List<ProjectSREProviderFactory> getProviderFromExtension() {
-		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+		final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 				SARLEclipsePlugin.PLUGIN_ID,
 				SARLEclipseConfig.EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY);
 		if (extensionPoint != null) {
-			List<ProjectSREProviderFactory> providers = new ArrayList<>();
-			for (IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+			final List<ProjectSREProviderFactory> providers = new ArrayList<>();
+			for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
 				try {
-					Object obj = element.createExecutableExtension("class"); //$NON-NLS-1$
+					final Object obj = element.createExecutableExtension("class"); //$NON-NLS-1$
 					if (obj instanceof ProjectSREProviderFactory) {
 						providers.add((ProjectSREProviderFactory) obj);
 					} else {
@@ -113,15 +113,15 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 
-		ProjectProvider projectProvider = new ProjectAdapter();
-		List<ProjectSREProviderFactory> sreProviderFactories = getProviderFromExtension();
+		final ProjectProvider projectProvider = new ProjectAdapter();
+		final List<ProjectSREProviderFactory> sreProviderFactories = getProviderFromExtension();
 		sreProviderFactories.add(new StandardProjectSREProviderFactory());
 
 		this.sreBlock = new SREConfigurationBlock(true, projectProvider, sreProviderFactories);
 		this.sreBlock.createControl(parent);
-		Composite oldComp = (Composite) getControl();
-		Control[] children = oldComp.getChildren();
-		for (Control ctl : children) {
+		final Composite oldComp = (Composite) getControl();
+		final Control[] children = oldComp.getChildren();
+		for (final Control ctl : children) {
 			ctl.setParent(this.sreBlock.getControl());
 		}
 		setControl(this.sreBlock.getControl());
@@ -162,15 +162,15 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 		} catch (CoreException ce) {
 			SARLEclipsePlugin.getDefault().log(ce);
 		}
-		ISREInstall sre = SARLRuntime.getSREFromId(Strings.nullToEmpty(sreId));
-		boolean notify = this.sreBlock.getNotify();
+		final ISREInstall sre = SARLRuntime.getSREFromId(Strings.nullToEmpty(sreId));
+		final boolean notify = this.sreBlock.getNotify();
 		boolean changed;
 		try {
 			this.sreBlock.setNotify(false);
 			changed = this.sreBlock.selectSpecificSRE(sre);
 
 			try {
-				String useWideConfig = config.getAttribute(
+				final String useWideConfig = config.getAttribute(
 						SARLEclipseConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
 						Boolean.TRUE.toString());
 				if (Boolean.parseBoolean(useWideConfig)) {
@@ -181,7 +181,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 			}
 
 			try {
-				String useProjectConfig = config.getAttribute(
+				final String useProjectConfig = config.getAttribute(
 						SARLEclipseConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
 						Boolean.TRUE.toString());
 				if (Boolean.parseBoolean(useProjectConfig)) {
@@ -223,7 +223,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	public boolean isValid(ILaunchConfiguration config) {
 		IStatus status;
 		try {
-			String id = config.getAttribute(
+			final String id = config.getAttribute(
 					SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
 					(String) null);
 			ISREInstall sre = SARLRuntime.getSREFromId(id);
@@ -247,7 +247,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 			return super.isValid(config) && isValidJREVersion(config);
 		}
 		setErrorMessage(status.getMessage());
-		Throwable throwable = status.getException();
+		final Throwable throwable = status.getException();
 		if (throwable != null) {
 			JDIDebugUIPlugin.log(throwable);
 		}
@@ -261,16 +261,16 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	 * @return <code>true</code> if the JRE is compatible with SARL.
 	 */
 	protected boolean isValidJREVersion(ILaunchConfiguration config) {
-		IVMInstall install = this.fJREBlock.getJRE();
+		final IVMInstall install = this.fJREBlock.getJRE();
 		if (install instanceof IVMInstall2) {
-			String version = ((IVMInstall2) install).getJavaVersion();
+			final String version = ((IVMInstall2) install).getJavaVersion();
 			if (version == null) {
 				setErrorMessage(MessageFormat.format(
 						Messages.RuntimeEnvironmentTab_3, install.getName()));
 				return false;
 			}
-			Version jreVersion = Version.parseVersion(version);
-			Version minVersion = Version.parseVersion(SARLEclipseConfig.MINIMAL_JRE_VERSION);
+			final Version jreVersion = Version.parseVersion(version);
+			final Version minVersion = Version.parseVersion(SARLEclipseConfig.MINIMAL_JRE_VERSION);
 			if (jreVersion.compareTo(minVersion) < 0) {
 				setErrorMessage(MessageFormat.format(
 						Messages.RuntimeEnvironmentTab_4,
@@ -287,12 +287,12 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		super.performApply(configuration);
 		// Save the SRE specific parameters
-		ISREInstall sre = this.sreBlock.getSelectedSRE();
+		final ISREInstall sre = this.sreBlock.getSelectedSRE();
 		if (sre != null) {
 			configuration.setAttribute(
 					SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
 					sre.getId());
-			String mainClass = sre.getMainClass();
+			final String mainClass = sre.getMainClass();
 			if (Strings.isNullOrEmpty(mainClass)) {
 				configuration.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
 			} else {
@@ -316,11 +316,11 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		super.setDefaults(config);
-		ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
+		final ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
 		if (defaultSRE != null) {
 			config.setAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT,
 					defaultSRE.getId());
-			String mainClass = defaultSRE.getMainClass();
+			final String mainClass = defaultSRE.getMainClass();
 			if (Strings.isNullOrEmpty(mainClass)) {
 				config.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
 			} else {
@@ -361,9 +361,9 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 			}
 			if (config != null) {
 				try {
-					String name = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
+					final String name = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
 					if (name != null && name.length() > 0) {
-						IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+						final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 						if (project.exists()) {
 							return project;
 						}

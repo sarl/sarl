@@ -86,15 +86,15 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 	@Override
 	public int getCategory(IOutlineNode node) {
 		if (node instanceof EStructuralFeatureNode) {
-			EStructuralFeature feature = ((EStructuralFeatureNode) node).getEStructuralFeature();
+			final EStructuralFeature feature = ((EStructuralFeatureNode) node).getEStructuralFeature();
 			if (feature == XTEND_FILE__PACKAGE) {
 				return SCRIPT_PRIORITY;
 			}
 			return TOPELEMENT_PRIORITY;
 		}
 		if (node instanceof EObjectNode) {
-			EObjectNode objectNode = (EObjectNode) node;
-			EClass objectNodeType = objectNode.getEClass();
+			final EObjectNode objectNode = (EObjectNode) node;
+			final EClass objectNodeType = objectNode.getEClass();
 			if (XIMPORT_SECTION.isSuperTypeOf(objectNodeType)) {
 				return IMPORT_PRIORITY;
 			}

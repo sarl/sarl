@@ -66,7 +66,7 @@ public class SARLProjectParent implements ISARLProjectElement {
 	}
 
 	private ISARLProjectElement[] initializeChildren() {
-		ISARLProjectElement[] ichildren = {
+		final ISARLProjectElement[] ichildren = {
 			new SARLProjectSARLNode(this),
 			new SARLProjectJAVANode(this),
 		};

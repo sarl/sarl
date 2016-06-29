@@ -307,7 +307,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			XtendTypeDeclaration declaration,
 			IJvmDeclaredTypeAcceptor acceptor, boolean preIndexingPhase,
 			XtendFile xtendFile, List<Runnable> doLater) {
-		JvmDeclaredType type = super.doInferTypeSceleton(declaration, acceptor, preIndexingPhase,
+		final JvmDeclaredType type = super.doInferTypeSceleton(declaration, acceptor, preIndexingPhase,
 				xtendFile, doLater);
 		if (type != null) {
 			return type;
@@ -383,8 +383,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Override
 	protected void initialize(XtendClass source, JvmGenericType inferredJvmType) {
 		// Issue #356: do not generate if the class has no name.
-		assert (source != null);
-		assert (inferredJvmType != null);
+		assert source != null;
+		assert inferredJvmType != null;
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
@@ -403,8 +403,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Override
 	protected void initialize(XtendAnnotationType source, JvmAnnotationType inferredJvmType) {
 		// Issue #356: do not generate if the annotation type has no name.
-		assert (source != null);
-		assert (inferredJvmType != null);
+		assert source != null;
+		assert inferredJvmType != null;
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
@@ -423,8 +423,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Override
 	protected void initialize(XtendInterface source, JvmGenericType inferredJvmType) {
 		// Issue #356: do not generate if the interface has no name.
-		assert (source != null);
-		assert (inferredJvmType != null);
+		assert source != null;
+		assert inferredJvmType != null;
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
@@ -443,8 +443,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Override
 	protected void initialize(XtendEnum source, JvmEnumerationType inferredJvmType) {
 		// Issue #356: do not generate if the enumeration has no name.
-		assert (source != null);
-		assert (inferredJvmType != null);
+		assert source != null;
+		assert inferredJvmType != null;
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
@@ -467,22 +467,22 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void initialize(SarlAgent source, JvmGenericType inferredJvmType) {
 		// Issue #356: do not generate if the agent has no name.
-		assert (source != null);
-		assert (inferredJvmType != null);
+		assert source != null;
+		assert inferredJvmType != null;
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
 		try {
 			// Create the generation context that is used by the other transformation functions.
-			GenerationContext context = new GenerationContext() {
+			final GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					return ((member instanceof SarlField)
-							|| (member instanceof SarlConstructor)
-							|| (member instanceof SarlAction)
-							|| (member instanceof SarlBehaviorUnit)
-							|| (member instanceof SarlCapacityUses)
-							|| (member instanceof SarlRequiredCapacity));
+					return member instanceof SarlField
+							|| member instanceof SarlConstructor
+							|| member instanceof SarlAction
+							|| member instanceof SarlBehaviorUnit
+							|| member instanceof SarlCapacityUses
+							|| member instanceof SarlRequiredCapacity;
 				}
 			};
 			openContext(inferredJvmType, context);
@@ -494,7 +494,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			inferredJvmType.setStatic(false);
 			inferredJvmType.setStrictFloatingPoint(false);
 			inferredJvmType.setVisibility(source.getVisibility());
-			boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
+			final boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
 			inferredJvmType.setAbstract(isAbstract);
 			inferredJvmType.setFinal(!isAbstract && source.isFinal());
 
@@ -516,7 +516,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add the default constructors for the agent, if not already added
 			if (!context.hasConstructor()) {
 				// new(builtinCapacityProvider : BuiltinCapacitiesProvider, parentID : UUID, agentID : UUID)
-				JvmConstructor constructor = this.typesFactory.createJvmConstructor();
+				final JvmConstructor constructor = this.typesFactory.createJvmConstructor();
 				inferredJvmType.getMembers().add(constructor);
 				this.associator.associate(source, constructor);
 				constructor.setSimpleName(source.getName());
@@ -542,7 +542,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				constructor.getParameters().add(jvmParam);
 				this.typeBuilder.setBody(constructor,
 						toStringConcatenation("super(builtinCapacityProvider, parentID, agentID);")); //$NON-NLS-1$
-				JvmAnnotationReference injectAnnotationRef = this._annotationTypesBuilder.annotationRef(
+				final JvmAnnotationReference injectAnnotationRef = this._annotationTypesBuilder.annotationRef(
 						javax.inject.Inject.class);
 				constructor.getAnnotations().add(injectAnnotationRef);
 				appendGeneratedAnnotation(constructor);
@@ -565,22 +565,22 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void initialize(SarlBehavior source, JvmGenericType inferredJvmType) {
 		// Issue #356: do not generate if the behavior has no name.
-		assert (source != null);
-		assert (inferredJvmType != null);
+		assert source != null;
+		assert inferredJvmType != null;
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
 		try {
 			// Create the generation context that is used by the other transformation functions.
-			GenerationContext context = new GenerationContext() {
+			final GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					return ((member instanceof SarlField)
-							|| (member instanceof SarlConstructor)
-							|| (member instanceof SarlAction)
-							|| (member instanceof SarlBehaviorUnit)
-							|| (member instanceof SarlCapacityUses)
-							|| (member instanceof SarlRequiredCapacity));
+					return member instanceof SarlField
+							|| member instanceof SarlConstructor
+							|| member instanceof SarlAction
+							|| member instanceof SarlBehaviorUnit
+							|| member instanceof SarlCapacityUses
+							|| member instanceof SarlRequiredCapacity;
 				}
 			};
 			openContext(inferredJvmType, context);
@@ -591,7 +591,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Change the modifiers on the generated type.
 			inferredJvmType.setVisibility(source.getVisibility());
 			inferredJvmType.setStatic(false);
-			boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
+			final boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
 			inferredJvmType.setAbstract(isAbstract);
 			inferredJvmType.setStrictFloatingPoint(false);
 			inferredJvmType.setFinal(!isAbstract && source.isFinal());
@@ -615,7 +615,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			if (!context.hasConstructor()) {
 				// new(owner: Agent)
-				JvmConstructor constructor = this.typesFactory.createJvmConstructor();
+				final JvmConstructor constructor = this.typesFactory.createJvmConstructor();
 				inferredJvmType.getMembers().add(constructor);
 				this.associator.associate(source, constructor);
 				constructor.setSimpleName(source.getName());
@@ -623,7 +623,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.typeExtensions.setSynthetic(constructor, true);
 				this.typeBuilder.setDocumentation(constructor, MessageFormat.format(
 						Messages.SARLJvmModelInferrer_5, "owner")); //$NON-NLS-1$
-				JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
+				final JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
 				jvmParam.setName("owner"); //$NON-NLS-1$
 				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(Agent.class));
 				this.associator.associate(source, jvmParam);
@@ -647,18 +647,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void initialize(SarlEvent source, JvmGenericType inferredJvmType) {
 		// Issue #356: do not generate if the event has no name.
-		assert (source != null);
-		assert (inferredJvmType != null);
+		assert source != null;
+		assert inferredJvmType != null;
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
 		try {
 			// Create the generation context that is used by the other transformation functions.
-			GenerationContext context = new GenerationContext() {
+			final GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					return ((member instanceof SarlField)
-							|| (member instanceof SarlConstructor));
+					return member instanceof SarlField
+							|| member instanceof SarlConstructor;
 				}
 			};
 			openContext(inferredJvmType, context);
@@ -713,7 +713,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.typeExtensions.setSynthetic(constructor, true);
 				this.typeBuilder.setDocumentation(constructor,
 						MessageFormat.format(Messages.SARLJvmModelInferrer_1, "source")); //$NON-NLS-1$
-				JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
+				final JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
 				jvmParam.setName("source"); //$NON-NLS-1$
 				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(Address.class));
 				this.associator.associate(source, jvmParam);
@@ -749,22 +749,22 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void initialize(SarlSkill source, JvmGenericType inferredJvmType) {
 		// Issue #356: do not generate if the skill has no name.
-		assert (source != null);
-		assert (inferredJvmType != null);
+		assert source != null;
+		assert inferredJvmType != null;
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
 		try {
 			// Create the generation context that is used by the other transformation functions.
-			GenerationContext context = new GenerationContext() {
+			final GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					return ((member instanceof SarlField)
-							|| (member instanceof SarlConstructor)
-							|| (member instanceof SarlAction)
-							|| (member instanceof SarlBehaviorUnit)
-							|| (member instanceof SarlCapacityUses)
-							|| (member instanceof SarlRequiredCapacity));
+					return member instanceof SarlField
+							|| member instanceof SarlConstructor
+							|| member instanceof SarlAction
+							|| member instanceof SarlBehaviorUnit
+							|| member instanceof SarlCapacityUses
+							|| member instanceof SarlRequiredCapacity;
 				}
 			};
 			openContext(inferredJvmType, context);
@@ -775,7 +775,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Change the modifiers on the generated type.
 			inferredJvmType.setVisibility(source.getVisibility());
 			inferredJvmType.setStatic(false);
-			boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
+			final boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
 			inferredJvmType.setAbstract(isAbstract);
 			inferredJvmType.setStrictFloatingPoint(false);
 			inferredJvmType.setFinal(!isAbstract && source.isFinal());
@@ -818,7 +818,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.typeExtensions.setSynthetic(constructor, true);
 				this.typeBuilder.setDocumentation(constructor,
 						MessageFormat.format(Messages.SARLJvmModelInferrer_3, "owner")); //$NON-NLS-1$
-				JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
+				final JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
 				jvmParam.setName("owner"); //$NON-NLS-1$
 				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(Agent.class));
 				this.associator.associate(source, jvmParam);
@@ -842,17 +842,17 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void initialize(SarlCapacity source, JvmGenericType inferredJvmType) {
 		// Issue #356: do not generate if the capacity has no name.
-		assert (source != null);
-		assert (inferredJvmType != null);
+		assert source != null;
+		assert inferredJvmType != null;
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
 		try {
 			// Create the generation context that is used by the other transformation functions.
-			GenerationContext context = new GenerationContext() {
+			final GenerationContext context = new GenerationContext() {
 				@Override
 				public boolean isSupportedMember(XtendMember member) {
-					return (member instanceof SarlAction);
+					return member instanceof SarlAction;
 				}
 			};
 			openContext(inferredJvmType, context);
@@ -915,7 +915,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		final boolean isVarArgs = Utils.isVarArg(source.getParameters());
 
 		// Generate the unique identifier of the constructor.
-		QualifiedActionName actionKey = this.sarlSignatureProvider.createConstructorQualifiedName(container);
+		final QualifiedActionName actionKey = this.sarlSignatureProvider.createConstructorQualifiedName(container);
 
 		// Generate all the constructor signatures related to the constructor to create.
 		final InferredPrototype constructorSignatures = this.sarlSignatureProvider.createPrototypeFromSarlModel(
@@ -927,13 +927,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		container.getMembers().add(constructor);
 		this.associator.associatePrimary(source, constructor);
 		this.typeBuilder.copyDocumentationTo(source, constructor);
-		JvmVisibility visibility = source.getVisibility();
+		final JvmVisibility visibility = source.getVisibility();
 		constructor.setSimpleName(container.getSimpleName());
 		constructor.setVisibility(visibility);
 		constructor.setVarArgs(isVarArgs);
 
 		// Generate the parameters
-		List<InferredStandardParameter> paramList = constructorSignatures.getOriginalParameterTypes();
+		final List<InferredStandardParameter> paramList = constructorSignatures.getOriginalParameterTypes();
 		translateSarlFormalParameters(
 				context,
 				constructor, container, isVarArgs,
@@ -941,7 +941,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 		// Generate additional information (type parameters, exceptions...)
 		copyAndFixTypeParameters(source.getTypeParameters(), constructor);
-		for (JvmTypeReference exception : source.getExceptions()) {
+		for (final JvmTypeReference exception : source.getExceptions()) {
 			constructor.getExceptions().add(this.typeBuilder.cloneWithProxies(exception));
 		}
 		translateAnnotationsTo(source.getAnnotations(), constructor);
@@ -950,7 +950,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		setBody(constructor, source.getExpression());
 
 		// The signature definition of the constructor.
-		ActionParameterTypes sigKey = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
+		final ActionParameterTypes sigKey = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
 				isVarArgs, constructor.getParameters());
 
 		// Update the list of generated constructors
@@ -963,21 +963,21 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			@Override
 			public void run() {
 				// Generate the Java functions that correspond to the action with the parameter default values applied.
-				for (Entry<ActionParameterTypes, List<InferredStandardParameter>> entry
+				for (final Entry<ActionParameterTypes, List<InferredStandardParameter>> entry
 						: constructorSignatures.getInferredParameterTypes().entrySet()) {
 
 					if (context == null || !context.getGeneratedConstructors().containsKey(entry.getKey())) {
 						final List<InferredStandardParameter> otherSignature = entry.getValue();
 						// Generate the additional constructor that is invoke the main constructor previously generated.
-						JvmConstructor constructor2 = SARLJvmModelInferrer.this.typesFactory.createJvmConstructor();
+						final JvmConstructor constructor2 = SARLJvmModelInferrer.this.typesFactory.createJvmConstructor();
 						container.getMembers().add(constructor2);
 						SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(source, constructor2);
-						JvmVisibility visibility = source.getVisibility();
+						final JvmVisibility visibility = source.getVisibility();
 						constructor2.setSimpleName(container.getSimpleName());
 						constructor2.setVisibility(visibility);
 						constructor2.setVarArgs(isVarArgs);
 
-						List<String> args = translateSarlFormalParametersForSyntheticOperation(
+						final List<String> args = translateSarlFormalParametersForSyntheticOperation(
 								constructor2, container, isVarArgs, otherSignature);
 
 						constructor2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
@@ -1016,13 +1016,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Override
 	protected void transform(XtendField source, JvmGenericType container) {
 		super.transform(source, container);
-		GenerationContext context = getContext(container);
+		final GenerationContext context = getContext(container);
 		if (context != null) {
-			String name = source.getName();
+			final String name = source.getName();
 			if (name != null) {
 				context.incrementSerial(name.hashCode());
 			}
-			JvmTypeReference type = source.getType();
+			final JvmTypeReference type = source.getType();
 			if (type != null) {
 				context.incrementSerial(type.getIdentifier().hashCode());
 			}
@@ -1042,9 +1042,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 		// Compute the operation name
 		// Issue #355: null or empty name is possible.
-		String originalFunctionName = source.getName();
+		final String originalFunctionName = source.getName();
 		if (!Strings.isNullOrEmpty(originalFunctionName)) {
-			StringBuilder sourceNameBuffer = new StringBuilder(originalFunctionName);
+			final StringBuilder sourceNameBuffer = new StringBuilder(originalFunctionName);
 			if (allowDispatch && source.isDispatch()) {
 				sourceNameBuffer.insert(0, "_"); //$NON-NLS-1$
 			}
@@ -1078,7 +1078,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			copyAndFixTypeParameters(source.getTypeParameters(), operation);
 
 			// Compute the identifier of the action.
-			QualifiedActionName actionKey = this.sarlSignatureProvider.createQualifiedActionName(
+			final QualifiedActionName actionKey = this.sarlSignatureProvider.createQualifiedActionName(
 					container, sourceName);
 
 			// Compute the different action prototypes associated to the action to create.
@@ -1093,7 +1093,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					actionSignatures.getFormalParameterTypes());
 
 			// Generate the parameters
-			List<InferredStandardParameter> paramList = actionSignatures.getOriginalParameterTypes();
+			final List<InferredStandardParameter> paramList = actionSignatures.getOriginalParameterTypes();
 			translateSarlFormalParameters(
 					context,
 					operation, container, isVarArgs,
@@ -1101,7 +1101,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					container.isInterface(), paramList);
 
 			// Infer the return type
-			XExpression expression = source.getExpression();
+			final XExpression expression = source.getExpression();
 
 			JvmTypeReference returnType = null;
 			if (source.getReturnType() != null) {
@@ -1139,7 +1139,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			operation.setReturnType(selectedReturnType);
 
 			// Exceptions
-			for (JvmTypeReference exception : source.getExceptions()) {
+			for (final JvmTypeReference exception : source.getExceptions()) {
 				operation.getExceptions().add(this.typeBuilder.cloneWithProxies(exception));
 			}
 
@@ -1173,7 +1173,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// If true, the Java code is annotated to be usable by the SARL validator.
 			//TODO: Generalize the detection of the EarlyExit
 			boolean isEarlyExitTmp = false;
-			Iterator<JvmTypeReference> eventIterator = firedEvents.iterator();
+			final Iterator<JvmTypeReference> eventIterator = firedEvents.iterator();
 			while (!isEarlyExitTmp && eventIterator.hasNext()) {
 				if (this.earlyExitComputer.isEarlyExitEvent(eventIterator.next())) {
 					operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(EarlyExit.class));
@@ -1192,7 +1192,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			//    action with default values for parameters.
 			// 2. Update the two collections that describes the implemented and implementable operations.
 			if (context != null) {
-				JvmOperation implementedOperation = context.getInheritedOperationsToImplement().remove(actSigKey);
+				final JvmOperation implementedOperation = context.getInheritedOperationsToImplement().remove(actSigKey);
 				// Put the annotations that were defined in the implemented operation
 				if (implementedOperation != null) {
 					if (Utils.hasAnnotation(implementedOperation, DefaultValueSource.class)
@@ -1201,13 +1201,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								DefaultValueSource.class));
 					}
 					// Reinject the @DefaultValue annotations
-					List<JvmFormalParameter> oparams = implementedOperation.getParameters();
-					List<JvmFormalParameter> cparams = operation.getParameters();
-					assert (oparams.size() == cparams.size());
+					final List<JvmFormalParameter> oparams = implementedOperation.getParameters();
+					final List<JvmFormalParameter> cparams = operation.getParameters();
+					assert oparams.size() == cparams.size();
 					for (int i = 0; i < oparams.size(); ++i) {
-						JvmFormalParameter op = oparams.get(i);
-						JvmFormalParameter cp = cparams.get(i);
-						String ovalue = Utils.annotationString(op, DefaultValue.class);
+						final JvmFormalParameter op = oparams.get(i);
+						final JvmFormalParameter cp = cparams.get(i);
+						final String ovalue = Utils.annotationString(op, DefaultValue.class);
 						if (ovalue != null
 								&& !Utils.hasAnnotation(cp, DefaultValue.class)) {
 							cp.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
@@ -1230,7 +1230,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					// Generate the Java functions that correspond to the action with the parameter default values applied.
 					for (final Entry<ActionParameterTypes, List<InferredStandardParameter>> otherSignature
 							: actionSignatures.getInferredParameterTypes().entrySet()) {
-						ActionPrototype ak = SARLJvmModelInferrer.this.sarlSignatureProvider.createActionPrototype(
+						final ActionPrototype ak = SARLJvmModelInferrer.this.sarlSignatureProvider.createActionPrototype(
 								sourceName,
 								otherSignature.getKey());
 						if (ak != null
@@ -1253,8 +1253,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							operation2.setStrictFloatingPoint(false);
 							operation2.setSynchronized(false);
 
-							for (JvmTypeReference exception : operation.getExceptions()) {
-								operation2.getExceptions().add(SARLJvmModelInferrer.this.typeBuilder.cloneWithProxies(exception));
+							for (final JvmTypeReference exception : operation.getExceptions()) {
+								operation2.getExceptions().add(SARLJvmModelInferrer.this.typeBuilder
+										.cloneWithProxies(exception));
 							}
 
 							translateAnnotationsTo(source.getAnnotations(), operation2);
@@ -1271,7 +1272,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 							if (!operation2.isAbstract()) {
 								SARLJvmModelInferrer.this.typeBuilder.setBody(operation2, (it) -> {
-									JvmTypeReference type = operation2.getReturnType();
+									final JvmTypeReference type = operation2.getReturnType();
 									if (!SARLJvmModelInferrer.this.typeReferences.is(type, void.class)) {
 										it.append("return "); //$NON-NLS-1$
 									}
@@ -1301,15 +1302,15 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							}
 
 							// Copy the other annotations from the original operations
-							for (JvmAnnotationReference annotation : operation.getAnnotations()) {
-								String id = annotation.getAnnotation().getIdentifier();
+							for (final JvmAnnotationReference annotation : operation.getAnnotations()) {
+								final String id = annotation.getAnnotation().getIdentifier();
 								if ((!DefaultValueSource.class.getName().equals(id)
 										&& (!EarlyExit.class.getName().equals(id)))
 										&& (!FiredEvent.class.getName().equals(id))
 										&& (!Generated.class.getName().equals(id))) {
-									JvmAnnotationReference clone = SARLJvmModelInferrer.this._annotationTypesBuilder
+									final JvmAnnotationReference clone = SARLJvmModelInferrer.this._annotationTypesBuilder
 											.annotationRef(id);
-									for (JvmAnnotationValue annotationValue : annotation.getExplicitValues()) {
+									for (final JvmAnnotationValue annotationValue : annotation.getExplicitValues()) {
 										clone.getExplicitValues().add(EcoreUtil.copy(annotationValue));
 									}
 									operation2.getAnnotations().add(clone);
@@ -1355,7 +1356,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (guard == null) {
 				isTrueGuard = true;
 			} else if (guard instanceof XBooleanLiteral) {
-				XBooleanLiteral literal = (XBooleanLiteral) guard;
+				final XBooleanLiteral literal = (XBooleanLiteral) guard;
 				if (literal.isIsTrue()) {
 					isTrueGuard = true;
 				} else {
@@ -1375,7 +1376,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final String bodyMethodName = Utils.createNameForHiddenEventHandlerMethod(source.getName().getSimpleName(),
 					context.getBehaviorUnitIndex());
 			// Operation
-			JvmOperation bodyOperation = this.typesFactory.createJvmOperation();
+			final JvmOperation bodyOperation = this.typesFactory.createJvmOperation();
 			bodyOperation.setAbstract(false);
 			bodyOperation.setNative(false);
 			bodyOperation.setSynchronized(false);
@@ -1412,7 +1413,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 
 			final Collection<Procedure1<ITreeAppendable>> evaluators = context.getGuardEvalationCodeFor(source);
-			assert (evaluators != null);
+			assert evaluators != null;
 
 			if (isTrueGuard) {
 				evaluators.add((it) -> {
@@ -1424,7 +1425,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					it.append("));"); //$NON-NLS-1$
 				});
 			} else {
-				assert (guard != null);
+				assert guard != null;
 
 				//----------------
 				// Guard function
@@ -1433,7 +1434,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				final String guardMethodName = Utils.createNameForHiddenGuardEvaluatorMethod(source.getName().getSimpleName(),
 						context.getBehaviorUnitIndex());
 				// Operation
-				JvmOperation guardOperation = this.typesFactory.createJvmOperation();
+				final JvmOperation guardOperation = this.typesFactory.createJvmOperation();
 				guardOperation.setAbstract(false);
 				guardOperation.setNative(false);
 				guardOperation.setSynchronized(false);
@@ -1508,10 +1509,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (context == null) {
 			return;
 		}
-		for (JvmTypeReference capacityType : source.getCapacities()) {
-			JvmType type = capacityType.getType();
+		for (final JvmTypeReference capacityType : source.getCapacities()) {
+			final JvmType type = capacityType.getType();
 			if (type instanceof JvmGenericType) {
-				LightweightTypeReference reference = Utils.toLightweightTypeReference(capacityType, this.services);
+				final LightweightTypeReference reference = Utils.toLightweightTypeReference(capacityType, this.services);
 				if (reference.isSubtypeOf(Capacity.class)) {
 					final Map<ActionPrototype, JvmOperation> capacityOperations = CollectionLiterals.newTreeMap(null);
 
@@ -1525,7 +1526,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						if (!context.getInheritedOverridableOperations().containsKey(entry.getKey())) {
 
 							// Create the main function
-							JvmOperation operation = this.typesFactory.createJvmOperation();
+							final JvmOperation operation = this.typesFactory.createJvmOperation();
 							operation.setAbstract(false);
 							operation.setNative(false);
 							operation.setSynchronized(false);
@@ -1553,10 +1554,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							// Parameters
 							final List<String> args = CollectionLiterals.newArrayList();
 							final List<String> inlineArgs = CollectionLiterals.newArrayList();
-							List<String> argTypes = CollectionLiterals.newArrayList();
+							final List<String> argTypes = CollectionLiterals.newArrayList();
 							int i = 1;
-							for (JvmFormalParameter param : implementedOperation.getParameters()) {
-								JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
+							for (final JvmFormalParameter param : implementedOperation.getParameters()) {
+								final JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
 								jvmParam.setName(param.getSimpleName());
 								jvmParam.setParameterType(cloneWithTypeParametersAndProxies(
 										implementedOperation,
@@ -1582,7 +1583,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 										hyperrefLink));
 							}
 							// Exceptions
-							for (JvmTypeReference exception : implementedOperation.getExceptions()) {
+							for (final JvmTypeReference exception : implementedOperation.getExceptions()) {
 								operation.getExceptions().add(this.typeBuilder.cloneWithProxies(exception));
 							}
 
@@ -1610,8 +1611,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							// function formal parameters. Consequently, inline cannot be used for functions
 							// with variadic parameters.
 							if (!Utils.hasAnnotation(operation, Inline.class)) {
-								JvmDeclaredType declaringType = implementedOperation.getDeclaringType();
-								StringBuilder it = new StringBuilder();
+								final JvmDeclaredType declaringType = implementedOperation.getDeclaringType();
+								final StringBuilder it = new StringBuilder();
 								it.append("getSkill("); //$NON-NLS-1$
 								it.append(declaringType.getQualifiedName());
 								it.append(".class)."); //$NON-NLS-1$
@@ -1628,7 +1629,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							}
 
 							// Copy the FiredEvent annotation from the capacity
-							List<JvmTypeReference> firedEvents = Utils.annotationClasses(implementedOperation, FiredEvent.class);
+							final List<JvmTypeReference> firedEvents = Utils.annotationClasses(implementedOperation,
+									FiredEvent.class);
 							if (!firedEvents.isEmpty()) {
 								operation.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
 							}
@@ -1681,7 +1683,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				null,
 				this.sarlSignatureProvider);
 
-		for (XtendMember feature : container.getMembers()) {
+		for (final XtendMember feature : container.getMembers()) {
 			if (context.isSupportedMember(feature)
 					&& (!(feature instanceof SarlCapacityUses))
 					&& (!(feature instanceof SarlRequiredCapacity))) {
@@ -1689,7 +1691,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 		}
 
-		for (XtendMember feature : container.getMembers()) {
+		for (final XtendMember feature : container.getMembers()) {
 			if (context.isSupportedMember(feature)
 					&& ((feature instanceof SarlCapacityUses)
 					|| (feature instanceof SarlRequiredCapacity))) {
@@ -1713,19 +1715,19 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Override
 	protected JvmOperation deriveGenericDispatchOperationSignature(
 			Iterable<JvmOperation> localOperations, JvmGenericType target) {
-		JvmOperation dispatcher = super.deriveGenericDispatchOperationSignature(localOperations, target);
+		final JvmOperation dispatcher = super.deriveGenericDispatchOperationSignature(localOperations, target);
 		//
 		// Fixing the behavior for determining the visibility of the dispatcher since
 		// it does not fit the SARL requirements.
 		// FIXME: Move to Xtend?
 		//
 		JvmVisibility higherVisibility = JvmVisibility.PRIVATE;
-		for (JvmOperation jvmOperation : localOperations) {
-			Iterable<XtendFunction> xtendFunctions = Iterables.filter(this.sarlAssociations.getSourceElements(jvmOperation),
-					XtendFunction.class);
-			for (XtendFunction func : xtendFunctions) {
-				JvmVisibility visibility = func.getVisibility();
-				assert (visibility != null);
+		for (final JvmOperation jvmOperation : localOperations) {
+			final Iterable<XtendFunction> xtendFunctions = Iterables.filter(
+					this.sarlAssociations.getSourceElements(jvmOperation), XtendFunction.class);
+			for (final XtendFunction func : xtendFunctions) {
+				final JvmVisibility visibility = func.getVisibility();
+				assert visibility != null;
 				if (this.visibilityComparator.compare(visibility, higherVisibility) > 0) {
 					higherVisibility = visibility;
 				}
@@ -1748,9 +1750,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context) {
 
 		// Generate the different operations.
-		Iterator<Runnable> differedGeneration = context.getDifferedGenerationElements().iterator();
+		final Iterator<Runnable> differedGeneration = context.getDifferedGenerationElements().iterator();
 		while (differedGeneration.hasNext()) {
-			Runnable runnable = differedGeneration.next();
+			final Runnable runnable = differedGeneration.next();
 			differedGeneration.remove();
 			runnable.run();
 		}
@@ -1759,9 +1761,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		// with default values.
 		int actIndex = context.getActionIndex();
 
-		for (Entry<ActionPrototype, JvmOperation> missedOperation : context.getInheritedOperationsToImplement().entrySet()) {
+		for (final Entry<ActionPrototype, JvmOperation> missedOperation : context.getInheritedOperationsToImplement()
+				.entrySet()) {
 
-			String originalSignature = Utils.annotationString(missedOperation.getValue(), DefaultValueUse.class);
+			final String originalSignature = Utils.annotationString(missedOperation.getValue(), DefaultValueUse.class);
 			if (!Strings.isNullOrEmpty(originalSignature)) {
 
 				// Find the definition of the operation from the inheritance context.
@@ -1770,9 +1773,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						missedOperation.getKey().getActionName(),
 						this.sarlSignatureProvider.createParameterTypesFromString(originalSignature)));
 				if (redefinedOperation != null) {
-					ActionParameterTypes parameterTypes = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
+					final ActionParameterTypes parameterTypes = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
 							redefinedOperation.isVarArgs(), redefinedOperation.getParameters());
-					QualifiedActionName qualifiedActionName = this.sarlSignatureProvider.createQualifiedActionName(
+					final QualifiedActionName qualifiedActionName = this.sarlSignatureProvider.createQualifiedActionName(
 							missedOperation.getValue().getDeclaringType(),
 							redefinedOperation.getSimpleName());
 
@@ -1788,11 +1791,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 					// Retreive the specification of the formal parameters that will be used for
 					// determining the calling arguments.
-					List<InferredStandardParameter> argumentSpec = redefinedPrototype.getInferredParameterTypes().get(
+					final List<InferredStandardParameter> argumentSpec = redefinedPrototype.getInferredParameterTypes().get(
 							missedOperation.getKey().getParametersTypes());
 
 					// Create the missed java operation.
-					JvmOperation op = this.typeBuilder.toMethod(
+					final JvmOperation op = this.typeBuilder.toMethod(
 							source,
 							missedOperation.getValue().getSimpleName(),
 							missedOperation.getValue().getReturnType(),
@@ -1803,14 +1806,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					final List<String> arguments = new ArrayList<>();
 
 					// Create the formal parameters.
-					for (InferredStandardParameter parameter : argumentSpec) {
+					for (final InferredStandardParameter parameter : argumentSpec) {
 						if (parameter instanceof InferredValuedParameter) {
-							InferredValuedParameter inferredParameter = (InferredValuedParameter) parameter;
+							final InferredValuedParameter inferredParameter = (InferredValuedParameter) parameter;
 							arguments.add(this.sarlSignatureProvider.toJavaArgument(
 									target.getIdentifier(), inferredParameter.getCallingArgument()));
 						} else {
 							arguments.add(parameter.getName());
-							JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
+							final JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
 							jvmParam.setName(parameter.getName());
 							jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(parameter.getType()));
 							this.associator.associate(source, jvmParam);
@@ -1849,7 +1852,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(StringConcatenationClient.TargetStringConcatenation builder) {
-				for (String line : javaCodeLines) {
+				for (final String line : javaCodeLines) {
 					builder.append(line);
 					builder.newLineIfNotEmpty();
 				}
@@ -1868,7 +1871,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context,
 			JvmGenericType owner, Class<?> defaultType,
 			JvmParameterizedTypeReference supertype) {
-		List<? extends JvmParameterizedTypeReference> supertypes;
+		final List<? extends JvmParameterizedTypeReference> supertypes;
 		if (supertype == null) {
 			supertypes = Collections.emptyList();
 		} else {
@@ -1888,11 +1891,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context,
 			JvmGenericType owner, Class<?> defaultType,
 			List<? extends JvmParameterizedTypeReference> supertypes) {
-		boolean isInterface = owner.isInterface();
+		final boolean isInterface = owner.isInterface();
 		boolean explicitType = false;
-		for (JvmParameterizedTypeReference superType : supertypes) {
+		for (final JvmParameterizedTypeReference superType : supertypes) {
 			if (superType.getType() instanceof JvmGenericType) {
-				LightweightTypeReference reference = Utils.toLightweightTypeReference(superType, this.services);
+				final LightweightTypeReference reference = Utils.toLightweightTypeReference(superType, this.services);
 				if (reference.isInterfaceType() == isInterface && reference.isSubtypeOf(defaultType)) {
 					owner.getSuperTypes().add(this.typeBuilder.cloneWithProxies(superType));
 					context.incrementSerial(superType.getIdentifier().hashCode());
@@ -1901,7 +1904,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 		}
 		if (!explicitType) {
-			JvmTypeReference type = this._typeReferenceBuilder.typeRef(defaultType);
+			final JvmTypeReference type = this._typeReferenceBuilder.typeRef(defaultType);
 			owner.getSuperTypes().add(type);
 			context.incrementSerial(type.getIdentifier().hashCode());
 		}
@@ -1919,9 +1922,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			JvmGenericType owner, Class<?> defaultType,
 			List<? extends JvmParameterizedTypeReference> implementedtypes) {
 		boolean explicitType = false;
-		for (JvmParameterizedTypeReference superType : implementedtypes) {
+		for (final JvmParameterizedTypeReference superType : implementedtypes) {
 			if (superType.getType() instanceof JvmGenericType) {
-				LightweightTypeReference reference = Utils.toLightweightTypeReference(superType, this.services);
+				final LightweightTypeReference reference = Utils.toLightweightTypeReference(superType, this.services);
 				if (reference.isInterfaceType() && reference.isSubtypeOf(defaultType)) {
 					owner.getSuperTypes().add(this.typeBuilder.cloneWithProxies(superType));
 					context.incrementSerial(superType.getIdentifier().hashCode());
@@ -1930,7 +1933,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 		}
 		if (!explicitType) {
-			JvmTypeReference type = this._typeReferenceBuilder.typeRef(defaultType);
+			final JvmTypeReference type = this._typeReferenceBuilder.typeRef(defaultType);
 			owner.getSuperTypes().add(type);
 			context.incrementSerial(type.getIdentifier().hashCode());
 		}
@@ -1971,7 +1974,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	protected void appendEventGuardEvaluators(JvmGenericType container) {
 		final GenerationContext context = getContext(container);
 		if (context != null) {
-			Collection<Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>> allEvaluators
+			final Collection<Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>> allEvaluators
 					= context.getGuardEvaluationCodes();
 			if (allEvaluators == null || allEvaluators.isEmpty()) {
 				return;
@@ -1980,13 +1983,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final JvmTypeReference voidType = this._typeReferenceBuilder.typeRef(Void.TYPE);
 			final JvmTypeReference runnableType = this._typeReferenceBuilder.typeRef(Runnable.class);
 			final JvmTypeReference collectionType = this._typeReferenceBuilder.typeRef(Collection.class, runnableType);
-			for (Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>> evaluators : allEvaluators) {
+			for (final Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>> evaluators : allEvaluators) {
 				final SarlBehaviorUnit source = evaluators.getKey();
 				// Determine the name of the operation for the behavior output
 				final String behName = Utils.createNameForHiddenGuardGeneralEvaluatorMethod(source.getName().getSimpleName());
 
 				// Create the main function
-				JvmOperation operation = this.typesFactory.createJvmOperation();
+				final JvmOperation operation = this.typesFactory.createJvmOperation();
 
 				// Annotation for the event bus
 
@@ -2025,7 +2028,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					it.append("assert "); //$NON-NLS-1$
 					it.append(RUNNABLE_COLLECTION);
 					it.append(" != null;"); //$NON-NLS-1$
-					for (Procedure1<ITreeAppendable> code : evaluators.getValue()) {
+					for (final Procedure1<ITreeAppendable> code : evaluators.getValue()) {
 						it.newLine();
 						code.apply(it);
 					}
@@ -2046,8 +2049,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void appendComparisonFunctions(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
 		// Create a list of the declared non-static fields.
-		List<JvmField> declaredInstanceFields = new ArrayList<>();
-		for (JvmField field : target.getDeclaredFields()) {
+		final List<JvmField> declaredInstanceFields = new ArrayList<>();
+		for (final JvmField field : target.getDeclaredFields()) {
 			if (!field.isStatic()) {
 				declaredInstanceFields.add(field);
 			}
@@ -2080,14 +2083,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final JvmGenericType target) {
 		// Create a list of the declared non-static fields.
 		final List<JvmField> declaredInstanceFields = new ArrayList<>();
-		for (JvmField field : target.getDeclaredFields()) {
+		for (final JvmField field : target.getDeclaredFields()) {
 			if (!field.isStatic()) {
 				declaredInstanceFields.add(field);
 			}
 		}
 
 		if (!declaredInstanceFields.isEmpty()) {
-			JvmOperation op = SARLJvmModelInferrer.this.typeBuilder.toMethod(
+			final JvmOperation op = SARLJvmModelInferrer.this.typeBuilder.toMethod(
 					source,
 					"attributesToString", //$NON-NLS-1$
 					SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(String.class), (it2) -> {
@@ -2098,7 +2101,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					SARLJvmModelInferrer.this.typeBuilder.setBody(it2, (it3) -> {
 						it3.append("StringBuilder result = new StringBuilder(" //$NON-NLS-1$
 								+ "super.attributesToString());").newLine(); //$NON-NLS-1$
-						for (JvmField attr : declaredInstanceFields) {
+						for (final JvmField attr : declaredInstanceFields) {
 							it3.append("result.append(\"" + attr.getSimpleName() //$NON-NLS-1$
 							+ "  = \").append(this." //$NON-NLS-1$
 							+ attr.getSimpleName() + ");").newLine(); //$NON-NLS-1$
@@ -2124,13 +2127,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param target the inferred JVM object.
 	 */
 	protected void appendSerialNumber(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
-		for (JvmField field : Iterables.filter(target.getMembers(), JvmField.class)) {
+		for (final JvmField field : Iterables.filter(target.getMembers(), JvmField.class)) {
 			if ("serialVersionUID".equals(field.getSimpleName())) { //$NON-NLS-1$
 				return;
 			}
 		}
 
-		JvmField field = this.typesFactory.createJvmField();
+		final JvmField field = this.typesFactory.createJvmField();
 		field.setSimpleName("serialVersionUID"); //$NON-NLS-1$
 		target.getMembers().add(field);
 		this.associator.associatePrimary(source, field);
@@ -2140,7 +2143,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		field.setVolatile(false);
 		field.setFinal(true);
 		field.setType(this.typeBuilder.cloneWithProxies(this._typeReferenceBuilder.typeRef(long.class)));
-		long serial = context.getSerial();
+		final long serial = context.getSerial();
 		this.typeBuilder.setInitializer(field, toStringConcatenation(serial + "L")); //$NON-NLS-1$
 		appendGeneratedAnnotation(field);
 		this.typeExtensions.setSynthetic(field, true);
@@ -2169,30 +2172,30 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param types the types to import if the inline expression is used.
 	 */
 	protected void appendInlineAnnotation(JvmOperation operation, String inlineExpression, JvmDeclaredType... types) {
-		JvmAnnotationReference annotationReference = this._annotationTypesBuilder.annotationRef(
+		final JvmAnnotationReference annotationReference = this._annotationTypesBuilder.annotationRef(
 				Inline.class);
 		JvmOperation valueOperation = null;
 		JvmOperation importOperation = null;
-		Iterator<JvmOperation> operationIterator = annotationReference.getAnnotation()
+		final Iterator<JvmOperation> operationIterator = annotationReference.getAnnotation()
 				.getDeclaredOperations().iterator();
 		while ((valueOperation == null || importOperation == null)
 				&& operationIterator.hasNext()) {
-			JvmOperation annotationOperation = operationIterator.next();
+			final JvmOperation annotationOperation = operationIterator.next();
 			if (annotationOperation.getSimpleName().equals("value")) { //$NON-NLS-1$
 				valueOperation = annotationOperation;
 			} else if (annotationOperation.getSimpleName().equals("imported")) { //$NON-NLS-1$
 				importOperation = annotationOperation;
 			}
 		}
-		assert (valueOperation != null);
-		assert (importOperation != null);
-		JvmStringAnnotationValue annotationStringValue = this.services.getTypesFactory().createJvmStringAnnotationValue();
+		assert valueOperation != null;
+		assert importOperation != null;
+		final JvmStringAnnotationValue annotationStringValue = this.services.getTypesFactory().createJvmStringAnnotationValue();
 		annotationStringValue.getValues().add(inlineExpression);
 		annotationStringValue.setOperation(valueOperation);
 		annotationReference.getExplicitValues().add(annotationStringValue);
 
-		for (JvmDeclaredType type : types) {
-			JvmTypeAnnotationValue annotationTypeValue = this.services.getTypesFactory().createJvmTypeAnnotationValue();
+		for (final JvmDeclaredType type : types) {
+			final JvmTypeAnnotationValue annotationTypeValue = this.services.getTypesFactory().createJvmTypeAnnotationValue();
 			annotationTypeValue.getValues().add(this.typeReferences.createTypeRef(type));
 			annotationTypeValue.setOperation(importOperation);
 			annotationReference.getExplicitValues().add(annotationTypeValue);
@@ -2209,9 +2212,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	private JvmAnnotationReference annotationClassRef(Class<? extends Annotation> type,
 			List<? extends JvmTypeReference> values) {
-		JvmAnnotationReference annot = this._annotationTypesBuilder.annotationRef(type);
-		JvmTypeAnnotationValue annotationValue = this.services.getTypesFactory().createJvmTypeAnnotationValue();
-		for (JvmTypeReference value : values) {
+		final JvmAnnotationReference annot = this._annotationTypesBuilder.annotationRef(type);
+		final JvmTypeAnnotationValue annotationValue = this.services.getTypesFactory().createJvmTypeAnnotationValue();
+		for (final JvmTypeReference value : values) {
 			annotationValue.getValues().add(this.typeBuilder.cloneWithProxies(value));
 		}
 		annot.getExplicitValues().add(annotationValue);
@@ -2242,7 +2245,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final XtendParameter param = params.get(i);
 			final InferredStandardParameter inferredParam = paramSpec.get(i);
 			final String paramName = param.getName();
-			JvmTypeReference paramType = param.getParameterType();
+			final JvmTypeReference paramType = param.getParameterType();
 
 			if (!Strings.isNullOrEmpty(paramName) && paramType != null) {
 				// "Standard" (Xtend) translation of the parameter
@@ -2252,10 +2255,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				if (param instanceof SarlFormalParameter && ((SarlFormalParameter) param).getDefaultValue() != null) {
 					final XExpression defaultValue = ((SarlFormalParameter) param).getDefaultValue();
 					hasDefaultValue = true;
-					String namePostPart = inferredParam.getDefaultValueAnnotationValue();
-					String name = this.sarlSignatureProvider.createFieldNameForDefaultValueID(namePostPart);
+					final String namePostPart = inferredParam.getDefaultValueAnnotationValue();
+					final String name = this.sarlSignatureProvider.createFieldNameForDefaultValueID(namePostPart);
 					// FIXME: Hide these attributes into an inner interface.
-					JvmField field = this.typeBuilder.toField(defaultValue, name, paramType, (it) -> {
+					final JvmField field = this.typeBuilder.toField(defaultValue, name, paramType, (it) -> {
 						SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it,
 								MessageFormat.format(Messages.SARLJvmModelInferrer_11, paramName));
 						it.setStatic(true);
@@ -2277,7 +2280,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					} else {
 						this.readAndWriteTracking.markInitialized(field, null);
 					}
-					JvmAnnotationReference annot = this._annotationTypesBuilder.annotationRef(DefaultValue.class, namePostPart);
+					final JvmAnnotationReference annot = this._annotationTypesBuilder.annotationRef(DefaultValue.class,
+							namePostPart);
 					lastParam.getAnnotations().add(annot);
 				}
 			}
@@ -2298,17 +2302,17 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected List<String> translateSarlFormalParametersForSyntheticOperation(JvmExecutable owner, JvmGenericType actionContainer,
 			boolean varargs, List<InferredStandardParameter> signature) {
-		List<String> arguments = CollectionLiterals.newArrayList();
-		for (InferredStandardParameter parameterSpec : signature) {
+		final List<String> arguments = CollectionLiterals.newArrayList();
+		for (final InferredStandardParameter parameterSpec : signature) {
 			if (parameterSpec instanceof InferredValuedParameter) {
 				arguments.add(
 						this.sarlSignatureProvider.toJavaArgument(
 						actionContainer.getIdentifier(),
 						((InferredValuedParameter) parameterSpec).getCallingArgument()));
 			} else {
-				EObject param = parameterSpec.getParameter();
-				String paramName = parameterSpec.getName();
-				JvmTypeReference paramType = parameterSpec.getType();
+				final EObject param = parameterSpec.getParameter();
+				final String paramName = parameterSpec.getName();
+				final JvmTypeReference paramType = parameterSpec.getType();
 				if (!Strings.isNullOrEmpty(paramName) && paramType != null) {
 					final JvmFormalParameter lastParam = this.typesFactory.createJvmFormalParameter();
 					owner.getParameters().add(lastParam);
@@ -2363,7 +2367,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (sarlElement == null || declaredType == null) {
 			return null;
 		}
-		JvmOperation result = this.typeBuilder.toMethod(sarlElement, "equals", //$NON-NLS-1$
+		final JvmOperation result = this.typeBuilder.toMethod(sarlElement, "equals", //$NON-NLS-1$
 				this._typeReferenceBuilder.typeRef(Boolean.TYPE), null);
 		if (result == null) {
 			return null;
@@ -2371,7 +2375,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		result.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
 		result.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
 
-		JvmFormalParameter param = this.typesFactory.createJvmFormalParameter();
+		final JvmFormalParameter param = this.typesFactory.createJvmFormalParameter();
 		param.setName("obj"); //$NON-NLS-1$
 		param.setParameterType(this._typeReferenceBuilder.typeRef(Object.class));
 		this.associator.associate(sarlElement, param);
@@ -2387,14 +2391,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
 				it.newLine().append(declaredType.getSimpleName() + " other = (" //$NON-NLS-1$
 						+ declaredType.getSimpleName() + ") obj;"); //$NON-NLS-1$
-				for (JvmField field : jvmFields) {
+				for (final JvmField field : jvmFields) {
 					generateToEqualForField(it, field);
 				}
 				it.newLine().append("return super.equals(obj);"); //$NON-NLS-1$
 			}
 
 			private boolean arrayContains(String element, String... array) {
-				for (String elt : array) {
+				for (final String elt : array) {
 					if (Objects.equal(elt, element)) {
 						return true;
 					}
@@ -2403,7 +2407,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 
 			private void generateToEqualForField(ITreeAppendable it, JvmField field) {
-				String typeName = field.getType().getIdentifier();
+				final String typeName = field.getType().getIdentifier();
 				if (arrayContains(typeName,
 						Boolean.TYPE.getName(),
 						Integer.TYPE.getName(),
@@ -2455,7 +2459,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (sarlElement == null) {
 			return null;
 		}
-		JvmOperation result = this.typeBuilder.toMethod(sarlElement, "hashCode", //$NON-NLS-1$
+		final JvmOperation result = this.typeBuilder.toMethod(sarlElement, "hashCode", //$NON-NLS-1$
 				this._typeReferenceBuilder.typeRef(Integer.TYPE), null);
 		if (result == null) {
 			return null;
@@ -2465,8 +2469,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		this.typeBuilder.setBody(result, (it) -> {
 			it.append("final int prime = 31;"); //$NON-NLS-1$
 			it.newLine().append("int result = super.hashCode();"); //$NON-NLS-1$
-			for (JvmField field : jvmFields) {
-				String typeName = field.getType().getIdentifier();
+			for (final JvmField field : jvmFields) {
+				final String typeName = field.getType().getIdentifier();
 				if (Objects.equal(Boolean.TYPE.getName(), typeName)) {
 					it.newLine().append("result = prime * result + (this." //$NON-NLS-1$
 							+ field.getSimpleName() + " ? 1231 : 1237);"); //$NON-NLS-1$
@@ -2522,7 +2526,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		// Use also cloneType as a flag that indicates if the type was already found in type parameters.
 		if (cloneType && type instanceof JvmParameterizedTypeReference) {
 			// Try to clone the type parameters.
-			List<JvmTypeParameter> typeParameters = forOperation.getTypeParameters();
+			final List<JvmTypeParameter> typeParameters = forOperation.getTypeParameters();
 			if (!typeParameters.isEmpty()) {
 				cloneType = false;
 				typeCandidate = cloneAndAssociate(type, typeParameters);
@@ -2530,8 +2534,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 
 		// Do the clone according to the type of the entity.
-		assert (typeCandidate != null);
-		JvmTypeReference returnType;
+		assert typeCandidate != null;
+		final JvmTypeReference returnType;
 		if (InferredTypeIndicator.isInferred(typeCandidate) || !cloneType) {
 			returnType = typeCandidate;
 		} else {
@@ -2544,7 +2548,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final JvmTypeReference type,
 			final List<JvmTypeParameter> typeParameters) {
 		final Map<String, JvmTypeParameter> typeParameterIdentifiers = new TreeMap<>();
-		for (JvmTypeParameter typeParameter : typeParameters) {
+		for (final JvmTypeParameter typeParameter : typeParameters) {
 			typeParameterIdentifiers.put(typeParameter.getIdentifier(), typeParameter);
 		}
 
@@ -2556,7 +2560,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			protected EObject createCopy(EObject eobject) {
-				EObject result = super.createCopy(eobject);
+				final EObject result = super.createCopy(eobject);
 				if (result != null && eobject != null && !eobject.eIsProxy()) {
 					if (canAssociate) {
 						SARLJvmModelInferrer.this.associator.associate(eobject, result);
@@ -2568,7 +2572,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public EObject copy(EObject eobject) {
-				String id;
+				final String id;
 				if (eobject instanceof JvmTypeReference) {
 					id = ((JvmTypeReference) eobject).getIdentifier();
 				} else if (eobject instanceof JvmIdentifiableElement) {
@@ -2577,16 +2581,16 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					id = null;
 				}
 				if (id != null) {
-					JvmTypeParameter param = typeParameterIdentifiers.get(id);
+					final JvmTypeParameter param = typeParameterIdentifiers.get(id);
 					if (param != null) {
 						return SARLJvmModelInferrer.this.typeReferences.createTypeRef(param);
 					}
 				}
-				EObject result = super.copy(eobject);
+				final EObject result = super.copy(eobject);
 				if (result instanceof JvmWildcardTypeReference) {
-					JvmWildcardTypeReference wildcardType = (JvmWildcardTypeReference) result;
+					final JvmWildcardTypeReference wildcardType = (JvmWildcardTypeReference) result;
 					boolean upperBoundSeen = false;
-					for (JvmTypeConstraint constraint : wildcardType.getConstraints()) {
+					for (final JvmTypeConstraint constraint : wildcardType.getConstraints()) {
 						if (constraint instanceof JvmUpperBound) {
 							upperBoundSeen = true;
 							break;
@@ -2594,8 +2598,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					}
 					if (!upperBoundSeen) {
 						// no upper bound found - seems to be an invalid - assume object as upper bound
-						JvmTypeReference object = SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(Object.class);
-						JvmUpperBound upperBound = SARLJvmModelInferrer.this.typesFactory.createJvmUpperBound();
+						final JvmTypeReference object = SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(Object.class);
+						final JvmUpperBound upperBound = SARLJvmModelInferrer.this.typesFactory.createJvmUpperBound();
 						upperBound.setTypeReference(object);
 						wildcardType.getConstraints().add(0, upperBound);
 					}
@@ -2608,7 +2612,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				super.copyReference(ereference, eobject, copyEObject);
 			}
 		};
-		JvmTypeReference copy = (JvmTypeReference) copier.copy(type);
+		final JvmTypeReference copy = (JvmTypeReference) copier.copy(type);
 		copier.copyReferences();
 		return copy;
 	}
@@ -2620,21 +2624,21 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @return <code>true</code> if a documentation was added.
 	 */
 	protected boolean copyAndCleanDocumentationTo(JvmOperation sourceOperation, JvmOperation targetOperation) {
-		assert (sourceOperation != null);
-		assert (targetOperation != null);
+		assert sourceOperation != null;
+		assert targetOperation != null;
 
 		String comment = SARLJvmModelInferrer.this.typeBuilder.getDocumentation(sourceOperation);
 		if (Strings.isNullOrEmpty(comment)) {
 			return false;
 		}
 
-		Set<String> targetParams = new TreeSet<>();
-		for (JvmFormalParameter param : targetOperation.getParameters()) {
+		final Set<String> targetParams = new TreeSet<>();
+		for (final JvmFormalParameter param : targetOperation.getParameters()) {
 			targetParams.add(param.getSimpleName());
 		}
 
-		for (JvmFormalParameter param : sourceOperation.getParameters()) {
-			String id = param.getSimpleName();
+		for (final JvmFormalParameter param : sourceOperation.getParameters()) {
+			final String id = param.getSimpleName();
 			if (!targetParams.contains(id)) {
 				comment = comment.replaceAll(
 						"\\Q@param\\E\\s+\\Q" + id + "\\E", //$NON-NLS-1$//$NON-NLS-2$

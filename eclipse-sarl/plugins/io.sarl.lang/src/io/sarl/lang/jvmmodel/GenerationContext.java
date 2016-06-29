@@ -111,16 +111,16 @@ abstract class GenerationContext {
 	 * @return the guard evaluators.
 	 */
 	public Collection<Procedure1<ITreeAppendable>> getGuardEvalationCodeFor(SarlBehaviorUnit source) {
-		assert (source != null);
+		assert source != null;
 		final String id = source.getName().getIdentifier();
-		Collection<Procedure1<ITreeAppendable>> evaluators;
-		Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>> pair = this.guardEvaluators.get(id);
+		final Collection<Procedure1<ITreeAppendable>> evaluators;
+		final Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>> pair = this.guardEvaluators.get(id);
 		if (pair == null) {
 			evaluators = new ArrayList<>();
 			this.guardEvaluators.put(id, new Pair<>(source, evaluators));
 		} else {
 			evaluators = pair.getValue();
-			assert (evaluators != null);
+			assert evaluators != null;
 		}
 		return evaluators;
 	}

@@ -54,7 +54,7 @@ public final class CapacityReferenceRemoveModification extends SARLSemanticModif
 	 * @param acceptor - the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		CapacityReferenceRemoveModification modification = new CapacityReferenceRemoveModification();
+		final CapacityReferenceRemoveModification modification = new CapacityReferenceRemoveModification();
 		modification.setIssue(issue);
 		modification.setTools(provider);
 		acceptor.accept(issue,
@@ -66,10 +66,10 @@ public final class CapacityReferenceRemoveModification extends SARLSemanticModif
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		Issue issue = getIssue();
-		SARLQuickfixProvider tools = getTools();
-		IXtextDocument document = context.getXtextDocument();
-		String sep = tools.getGrammarAccess().getCapacityUsesAccess().getCommaKeyword_3_0().getValue();
+		final Issue issue = getIssue();
+		final SARLQuickfixProvider tools = getTools();
+		final IXtextDocument document = context.getXtextDocument();
+		final String sep = tools.getGrammarAccess().getCapacityUsesAccess().getCommaKeyword_3_0().getValue();
 		if (!tools.removeToPreviousSeparator(issue, document, sep)) {
 			if (!tools.removeToNextSeparator(issue, document, sep)) {
 				tools.removeToPreviousKeyword(issue, document,

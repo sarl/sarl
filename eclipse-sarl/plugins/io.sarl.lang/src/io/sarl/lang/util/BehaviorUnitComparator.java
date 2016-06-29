@@ -50,9 +50,7 @@ public class BehaviorUnitComparator implements Comparator<SarlBehaviorUnit>, Ser
 		if (o2 == null) {
 			return Integer.MAX_VALUE;
 		}
-		String n1 = o1.getName().getIdentifier();
-		String n2 = o2.getName().getIdentifier();
-		int cmp = n1.compareTo(n2);
+		final int cmp = o1.getName().getIdentifier().compareTo(o2.getName().getIdentifier());
 		if (cmp != 0) {
 			return cmp;
 		}

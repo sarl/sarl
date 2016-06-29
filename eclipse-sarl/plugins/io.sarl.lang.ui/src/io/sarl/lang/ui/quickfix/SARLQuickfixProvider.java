@@ -128,7 +128,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		// URI are pointing the JvmOperations.
 		final List<JvmOperation> operations = new ArrayList<>();
 		final ResourceSet resourceSet = container.eResource().getResourceSet();
-		for (String operationUriAsString : operationUris) {
+		for (final String operationUriAsString : operationUris) {
 			final URI operationURI = URI.createURI(operationUriAsString);
 			final EObject overridden = resourceSet.getEObject(operationURI, true);
 			if (overridden instanceof JvmOperation) {
@@ -235,7 +235,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		}
 
 		// Test if it previous non-space character is the separator
-		boolean foundSeparator = (document.getChar(index) == separator.charAt(0));
+		final boolean foundSeparator = document.getChar(index) == separator.charAt(0);
 		if (foundSeparator) {
 			index--;
 			c = document.getChar(index);
@@ -245,7 +245,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				c = document.getChar(index);
 			}
 
-			int delta = offset - index - 1;
+			final int delta = offset - index - 1;
 			document.replace(index + 1, length + delta, ""); //$NON-NLS-1$
 		}
 
@@ -258,9 +258,10 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @return the insertion index.
 	 */
 	public int getImportInsertOffset(SarlScript script) {
-		ICompositeNode node = NodeModelUtils.findActualNodeFor(script.getImportSection());
+		final ICompositeNode node = NodeModelUtils.findActualNodeFor(script.getImportSection());
 		if (node == null) {
-			List<INode> children = NodeModelUtils.findNodesForFeature(script, XtendPackage.eINSTANCE.getXtendFile_Package());
+			final List<INode> children = NodeModelUtils.findNodesForFeature(script,
+					XtendPackage.eINSTANCE.getXtendFile_Package());
 			if (children.isEmpty()) {
 				return 0;
 			}
@@ -288,7 +289,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		}
 
 		// Test if it next non-space character is the separator
-		boolean foundSeparator = (document.getChar(index) == separator.charAt(0));
+		final boolean foundSeparator = document.getChar(index) == separator.charAt(0);
 		if (foundSeparator) {
 			index++;
 			c = document.getChar(index);
@@ -298,7 +299,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				c = document.getChar(index);
 			}
 
-			int newLength = index - issue.getOffset();
+			final int newLength = index - issue.getOffset();
 			document.replace(issue.getOffset(), newLength, ""); //$NON-NLS-1$
 		}
 
@@ -326,7 +327,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		}
 
 		// Skip non-spaces before the identifier
-		StringBuffer kw = new StringBuffer();
+		final StringBuffer kw = new StringBuffer();
 		while (!Character.isWhitespace(c)) {
 			kw.insert(0, c);
 			index--;
@@ -340,7 +341,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				c = document.getChar(index);
 			}
 
-			int delta = issue.getOffset() - index - 1;
+			final int delta = issue.getOffset() - index - 1;
 			document.replace(index + 1, issue.getLength() + delta, ""); //$NON-NLS-1$
 
 			return true;
@@ -373,7 +374,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		}
 
 		// Test if it previous non-space character is the separator
-		boolean foundSeparator = (document.getChar(index) == beginSeparator.charAt(0));
+		boolean foundSeparator = document.getChar(index) == beginSeparator.charAt(0);
 		if (foundSeparator) {
 			index--;
 			c = document.getChar(index);
@@ -395,7 +396,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 			}
 
 			// Test if it next non-space character is the separator
-			foundSeparator = (document.getChar(index) == endSeparator.charAt(0));
+			foundSeparator = document.getChar(index) == endSeparator.charAt(0);
 			if (foundSeparator) {
 				index++;
 
@@ -414,16 +415,16 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	public int getInsertOffset(XtendTypeDeclaration container) {
 		if (container.getMembers().isEmpty()) {
-			ICompositeNode node = NodeModelUtils.findActualNodeFor(container);
-			ILeafNode openingBraceNode = IterableExtensions.findFirst(node.getLeafNodes(),
+			final ICompositeNode node = NodeModelUtils.findActualNodeFor(container);
+			final ILeafNode openingBraceNode = IterableExtensions.findFirst(node.getLeafNodes(),
 					(lnode) -> "{".equals(lnode.getText())); //$NON-NLS-1$
 			if (openingBraceNode != null) {
 				return openingBraceNode.getOffset() + 1;
 			}
 			return node.getEndOffset();
 		}
-		EObject lastFeature = IterableExtensions.last(container.getMembers());
-		ICompositeNode node = NodeModelUtils.findActualNodeFor(lastFeature);
+		final EObject lastFeature = IterableExtensions.last(container.getMembers());
+		final ICompositeNode node = NodeModelUtils.findActualNodeFor(lastFeature);
 		return node.getEndOffset();
 	}
 
@@ -451,7 +452,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	public QualifiedName qualifiedName(String name) {
 		if (!com.google.common.base.Strings.isNullOrEmpty(name)) {
-			List<String> segments = Strings.split(name, "."); //$NON-NLS-1$
+			final List<String> segments = Strings.split(name, "."); //$NON-NLS-1$
 			return QualifiedName.create(segments);
 		}
 		return QualifiedName.create();
@@ -464,10 +465,10 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
 	public void removeExecutableFeature(EObject element, IModificationContext context) throws BadLocationException {
-		ICompositeNode node;
-		SarlAction action = EcoreUtil2.getContainerOfType(element, SarlAction.class);
+		final ICompositeNode node;
+		final SarlAction action = EcoreUtil2.getContainerOfType(element, SarlAction.class);
 		if (action == null) {
-			XtendMember feature = EcoreUtil2.getContainerOfType(element, XtendMember.class);
+			final XtendMember feature = EcoreUtil2.getContainerOfType(element, XtendMember.class);
 			node = NodeModelUtils.findActualNodeFor(feature);
 		} else {
 			node = NodeModelUtils.findActualNodeFor(action);
@@ -573,7 +574,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	@Fix(IssueCodes.OVERRIDDEN_FINAL)
 	public void fixOverriddenFinal(Issue issue, IssueResolutionAcceptor acceptor) {
-		MultiModification modifications = new MultiModification(
+		final MultiModification modifications = new MultiModification(
 				this, issue, acceptor,
 				Messages.SARLQuickfixProvider_0,
 				Messages.SARLQuickfixProvider_1);
@@ -749,7 +750,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 			keyword = getGrammarAccess().getSkillAccess().getSkillKeyword_3().getValue();
 		}
 		if (declaration != null && keyword != null) {
-			IXtextDocument document = context.getXtextDocument();
+			final IXtextDocument document = context.getXtextDocument();
 			addAbstractKeyword(declaration, document, keyword);
 		} else {
 			super.internalDoAddAbstractKeyword(container, context);
@@ -758,20 +759,20 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	private void addAbstractKeyword(XtendTypeDeclaration typeDeclaration, IXtextDocument document,
 			String declarationKeyword) throws BadLocationException {
-		ICompositeNode clazzNode = NodeModelUtils.findActualNodeFor(typeDeclaration);
+		final ICompositeNode clazzNode = NodeModelUtils.findActualNodeFor(typeDeclaration);
 		if (clazzNode == null) {
 			throw new IllegalStateException("Cannot determine node for the type declaration" //$NON-NLS-1$
 					+ typeDeclaration.getName());
 		}
 		int offset = -1;
-		Iterator<ILeafNode> nodes = clazzNode.getLeafNodes().iterator();
+		final Iterator<ILeafNode> nodes = clazzNode.getLeafNodes().iterator();
 		while (offset == -1 && nodes.hasNext()) {
-			ILeafNode leafNode  = nodes.next();
+			final ILeafNode leafNode  = nodes.next();
 			if (leafNode.getText().equals(declarationKeyword)) {
 				offset = leafNode.getOffset();
 			}
 		}
-		ReplacingAppendable appendable = this.appendableFactory.create(document,
+		final ReplacingAppendable appendable = this.appendableFactory.create(document,
 				(XtextResource) typeDeclaration.eResource(),
 				offset, 0);
 		appendable.append(getGrammarAccess()

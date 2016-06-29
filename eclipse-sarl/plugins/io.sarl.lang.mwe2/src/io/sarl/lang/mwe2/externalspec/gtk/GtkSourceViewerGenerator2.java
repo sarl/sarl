@@ -72,7 +72,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 	 */
 	public void addMimeType(String mimeType) {
 		if (!Strings.isEmpty(mimeType)) {
-			for (String mtype : mimeType.split("[:;,]")) { //$NON-NLS-1$
+			for (final String mtype : mimeType.split("[:;,]")) { //$NON-NLS-1$
 				this.mimeTypes.add(mtype);
 			}
 		}
@@ -97,8 +97,8 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 				Strings.concat(";", getMimeTypes()), //$NON-NLS-1$
 				"name", "mimetypes"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		StringBuilder buffer = new StringBuilder();
-		for (String fileExtension : getLanguage().getFileExtensions()) {
+		final StringBuilder buffer = new StringBuilder();
+		for (final String fileExtension : getLanguage().getFileExtensions()) {
 			if (buffer.length() > 0) {
 				buffer.append(";"); //$NON-NLS-1$
 			}
@@ -272,7 +272,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 		open("context", //$NON-NLS-1$
 				"id", "sarl-keywords", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "keyword"); //$NON-NLS-1$ //$NON-NLS-2$
-		for (String keyword : keywords) {
+		for (final String keyword : keywords) {
 			valuedTag("keyword", keyword); //$NON-NLS-1$
 		}
 		close();
@@ -280,7 +280,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 		open("context", //$NON-NLS-1$
 				"id", "sarl-literals", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "literal"); //$NON-NLS-1$ //$NON-NLS-2$
-		for (String literal : literals) {
+		for (final String literal : literals) {
 			valuedTag("keyword", literal); //$NON-NLS-1$
 		}
 		close();
@@ -309,7 +309,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 				"extend-parent", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 		StringBuilder buffer = new StringBuilder();
 		final Set<Character> characters = new TreeSet<>();
-		for (String operator : punctuation) {
+		for (final String operator : punctuation) {
 			if (buffer.length() > 0) {
 				buffer.append("|"); //$NON-NLS-1$
 			}
@@ -325,7 +325,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 				"id", "invalid-operators", //$NON-NLS-1$ //$NON-NLS-2$
 				"style-ref", "error"); //$NON-NLS-1$ //$NON-NLS-2$
 		buffer = new StringBuilder();
-		for (Character character : characters) {
+		for (final Character character : characters) {
 			buffer.append(RegexpExtensions.toRegexpString(character.toString(), false));
 		}
 		valuedTag("match", "[" + buffer.toString() + "]+"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

@@ -20,11 +20,6 @@
 				<filtering>true</filtering>
 				<targetPath>.</targetPath>
 			</resource>
-			<resource>
-				<directory>OSGI-INF/l10n</directory>
-				<filtering>true</filtering>
-				<targetPath>OSGI-INF/l10n</targetPath>
-			</resource>
 		</resources>
 		<plugins>
 			<plugin>
@@ -68,13 +63,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<configuration>
-					<sourceDirectory>src</sourceDirectory>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

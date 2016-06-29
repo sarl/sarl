@@ -128,7 +128,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 	@Override
 	public StandardSREInstall clone() {
-		StandardSREInstall clone = (StandardSREInstall) super.clone();
+		final StandardSREInstall clone = (StandardSREInstall) super.clone();
 		clone.jarFile = this.jarFile == null ? null
 				: Path.fromPortableString(clone.jarFile.toPortableString());
 		return clone;
@@ -153,7 +153,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	 */
 	public void setJarFile(IPath jarFile) {
 		if (!Objects.equal(jarFile, this.jarFile)) {
-			PropertyChangeEvent event = new PropertyChangeEvent(
+			final PropertyChangeEvent event = new PropertyChangeEvent(
 					this, ISREInstallChangedListener.PROPERTY_JAR_FILE,
 					this.jarFile, jarFile);
 			this.jarFile = jarFile;
@@ -166,7 +166,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 	@Override
 	public String getLocation() {
-		IPath jarFile = getJarFile();
+		final IPath jarFile = getJarFile();
 		if (jarFile == null) {
 			return getName();
 		}
@@ -177,7 +177,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	public String getName() {
 		String nam = super.getName();
 		if (Strings.isNullOrEmpty(nam)) {
-			IPath path = getJarFile();
+			final IPath path = getJarFile();
 			if (path != null) {
 				nam = path.removeFileExtension().lastSegment();
 			} else {
@@ -197,7 +197,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	protected void resolveDirtyFields(boolean forceSettings) {
 		if (this.jarFile != null) {
 			try (JarFile jFile = new JarFile(this.jarFile.toFile())) {
-				Manifest manifest = jFile.getManifest();
+				final Manifest manifest = jFile.getManifest();
 				//
 				// Main class
 				this.manifestMainClass = manifest.getMainAttributes().getValue(SREConstants.MANIFEST_MAIN_CLASS);
@@ -208,13 +208,13 @@ public class StandardSREInstall extends AbstractSREInstall {
 					setMainClass(this.manifestMainClass);
 				}
 				// Get SARL section:
-				Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
+				final Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
 				if (sarlSection == null) {
 					throw new SREException(Messages.StandardSREInstall_1);
 				}
 				//
 				// Stand-alone SRE
-				String strStandalone = sarlSection.getValue(SREConstants.MANIFEST_STANDALONE_SRE);
+				final String strStandalone = sarlSection.getValue(SREConstants.MANIFEST_STANDALONE_SRE);
 				boolean isStandalone = false;
 				if (strStandalone != null && !strStandalone.isEmpty()) {
 					isStandalone = Boolean.parseBoolean(strStandalone);
@@ -222,12 +222,12 @@ public class StandardSREInstall extends AbstractSREInstall {
 				setStandalone(isStandalone);
 				//
 				// SARL version
-				String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
+				final String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
 				String minVersion = null;
 				String maxVersion = null;
 				if (!Strings.isNullOrEmpty(sarlVersion)) {
 					try {
-						Version sarlVer = Version.parseVersion(sarlVersion);
+						final Version sarlVer = Version.parseVersion(sarlVersion);
 						if (sarlVer != null) {
 							minVersion = new Version(sarlVer.getMajor(), sarlVer.getMinor(), 0).toString();
 							maxVersion = new Version(sarlVer.getMajor(), sarlVer.getMinor() + 1, 0).toString();
@@ -250,9 +250,9 @@ public class StandardSREInstall extends AbstractSREInstall {
 				}
 				//
 				// VM arguments
-				String vmArgs = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_VM_ARGUMENTS));
+				final String vmArgs = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_VM_ARGUMENTS));
 				if (!this.vmArguments.equals(vmArgs)) {
-					PropertyChangeEvent event = new PropertyChangeEvent(
+					final PropertyChangeEvent event = new PropertyChangeEvent(
 							this, ISREInstallChangedListener.PROPERTY_VM_ARGUMENTS,
 							this.vmArguments, Strings.nullToEmpty(vmArgs));
 					this.vmArguments = vmArgs;
@@ -277,9 +277,9 @@ public class StandardSREInstall extends AbstractSREInstall {
 				this.cliNoMoreOption = sarlSection.getValue(SREConstants.MANIFEST_CLI_NO_MORE_OPTION);
 				//
 				// Program arguments
-				String programArgs = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_PROGRAM_ARGUMENTS));
+				final String programArgs = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_PROGRAM_ARGUMENTS));
 				if (!this.programArguments.equals(programArgs)) {
-					PropertyChangeEvent event = new PropertyChangeEvent(
+					final PropertyChangeEvent event = new PropertyChangeEvent(
 							this, ISREInstallChangedListener.PROPERTY_PROGRAM_ARGUMENTS,
 							this.programArguments, programArgs);
 					this.programArguments = programArgs;
@@ -290,16 +290,16 @@ public class StandardSREInstall extends AbstractSREInstall {
 				//
 				// Library Location
 				if (forceSettings || getLibraryLocations().length == 0) {
-					List<LibraryLocation> classPath = new ArrayList<>();
+					final List<LibraryLocation> classPath = new ArrayList<>();
 					classPath.add(new LibraryLocation(this.jarFile, Path.EMPTY, Path.EMPTY));
-					String classPathStr = manifest.getMainAttributes().getValue(SREConstants.MANIFEST_CLASS_PATH);
+					final String classPathStr = manifest.getMainAttributes().getValue(SREConstants.MANIFEST_CLASS_PATH);
 					if (!Strings.isNullOrEmpty(classPathStr)) {
-						for (String cpElement : classPathStr.split(Pattern.quote(":"))) { //$NON-NLS-1$
-							IPath path = Path.fromPortableString(cpElement);
+						for (final String cpElement : classPathStr.split(Pattern.quote(":"))) { //$NON-NLS-1$
+							final IPath path = Path.fromPortableString(cpElement);
 							classPath.add(new LibraryLocation(path, Path.EMPTY, Path.EMPTY));
 						}
 					}
-					LibraryLocation[] locations = classPath.toArray(new LibraryLocation[classPath.size()]);
+					final LibraryLocation[] locations = classPath.toArray(new LibraryLocation[classPath.size()]);
 					setLibraryLocations(locations);
 				}
 			} catch (SREException e) {
@@ -336,11 +336,11 @@ public class StandardSREInstall extends AbstractSREInstall {
 			return revalidate(ignoreCauses);
 		}
 		try {
-			IPath path = getJarFile();
+			final IPath path = getJarFile();
 			if (path == null && (ignoreCauses & CODE_SOURCE) == 0) {
 				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_2);
 			}
-			File file = (path == null) ? null : path.toFile();
+			final File file = (path == null) ? null : path.toFile();
 			if ((file == null || !file.canRead()) && (ignoreCauses & CODE_SOURCE) == 0) {
 				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_SOURCE, Messages.StandardSREInstall_3);
 			}
@@ -358,26 +358,26 @@ public class StandardSREInstall extends AbstractSREInstall {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		IPath path = getJarFile();
+		final IPath path = getJarFile();
 		element.setAttribute(SREConstants.XML_STANDALONE_SRE, Boolean.toString(isStandalone()));
 		element.setAttribute(SREConstants.XML_LIBRARY_PATH, path.toPortableString());
-		String name = Strings.nullToEmpty(getName());
+		final String name = Strings.nullToEmpty(getName());
 		if (!name.equals(this.manifestName)) {
 			element.setAttribute(SREConstants.XML_SRE_NAME, name);
 		}
-		String mainClass = Strings.nullToEmpty(getMainClass());
+		final String mainClass = Strings.nullToEmpty(getMainClass());
 		if (!mainClass.equals(this.manifestMainClass)) {
 			element.setAttribute(SREConstants.XML_MAIN_CLASS, mainClass);
 		}
-		LibraryLocation[] libraries = getLibraryLocations();
+		final LibraryLocation[] libraries = getLibraryLocations();
 		if (libraries.length != 1 || !libraries[0].getSystemLibraryPath().equals(this.jarFile)) {
-			for (LibraryLocation location : libraries) {
-				Element libraryNode = document.createElement(SREConstants.XML_LIBRARY_LOCATION);
+			for (final LibraryLocation location : libraries) {
+				final Element libraryNode = document.createElement(SREConstants.XML_LIBRARY_LOCATION);
 				libraryNode.setAttribute(SREConstants.XML_SYSTEM_LIBRARY_PATH,
 						location.getSystemLibraryPath().toPortableString());
 				libraryNode.setAttribute(SREConstants.XML_PACKAGE_ROOT_PATH, location.getPackageRootPath().toPortableString());
 				libraryNode.setAttribute(SREConstants.XML_SOURCE_PATH, location.getSystemLibrarySourcePath().toPortableString());
-				URL javadoc = location.getJavadocLocation();
+				final URL javadoc = location.getJavadocLocation();
 				if (javadoc != null) {
 					libraryNode.setAttribute(SREConstants.XML_JAVADOC_PATH, javadoc.toString());
 				}
@@ -388,48 +388,48 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 	@Override
 	public void setFromXML(Element element) throws IOException {
-		IPath path = parsePath(element.getAttribute(SREConstants.XML_LIBRARY_PATH), null);
+		final IPath path = parsePath(element.getAttribute(SREConstants.XML_LIBRARY_PATH), null);
 		try {
 			if (path != null) {
 				setJarFile(path);
 
-				String strStandalone = element.getAttribute(SREConstants.XML_STANDALONE_SRE);
+				final String strStandalone = element.getAttribute(SREConstants.XML_STANDALONE_SRE);
 				boolean isStandalone = false;
 				if (strStandalone != null && !strStandalone.isEmpty()) {
 					isStandalone = Boolean.parseBoolean(strStandalone);
 				}
 				setStandalone(isStandalone);
 
-				String name = element.getAttribute(SREConstants.XML_SRE_NAME);
+				final String name = element.getAttribute(SREConstants.XML_SRE_NAME);
 				if (!Strings.isNullOrEmpty(name)) {
 					setName(name);
 				}
-				String mainClass = element.getAttribute(SREConstants.XML_MAIN_CLASS);
+				final String mainClass = element.getAttribute(SREConstants.XML_MAIN_CLASS);
 				if (!Strings.isNullOrEmpty(mainClass)) {
 					setMainClass(mainClass);
 				}
 
-				List<LibraryLocation> locations = new ArrayList<>();
-				NodeList children = element.getChildNodes();
+				final List<LibraryLocation> locations = new ArrayList<>();
+				final NodeList children = element.getChildNodes();
 				for (int i = 0; i < children.getLength(); ++i) {
-					Node node = children.item(i);
+					final Node node = children.item(i);
 					if (node instanceof Element && SREConstants.XML_LIBRARY_LOCATION.equalsIgnoreCase(node.getNodeName())) {
-						Element libraryNode = (Element) node;
-						IPath systemLibraryPath = parsePath(
+						final Element libraryNode = (Element) node;
+						final IPath systemLibraryPath = parsePath(
 								libraryNode.getAttribute(SREConstants.XML_SYSTEM_LIBRARY_PATH), null);
 						if (systemLibraryPath != null) {
-							IPath packageRootPath = parsePath(
+							final IPath packageRootPath = parsePath(
 									libraryNode.getAttribute(SREConstants.XML_PACKAGE_ROOT_PATH), Path.EMPTY);
-							IPath sourcePath = parsePath(
+							final IPath sourcePath = parsePath(
 									libraryNode.getAttribute(SREConstants.XML_SOURCE_PATH), Path.EMPTY);
 							URL javadoc = null;
 							try {
-								String urlTxt = libraryNode.getAttribute(SREConstants.XML_JAVADOC_PATH);
+								final String urlTxt = libraryNode.getAttribute(SREConstants.XML_JAVADOC_PATH);
 								javadoc = new URL(urlTxt);
 							} catch (Throwable exception) {
 								//
 							}
-							LibraryLocation location = new LibraryLocation(
+							final LibraryLocation location = new LibraryLocation(
 									systemLibraryPath, sourcePath, packageRootPath,
 									javadoc);
 							locations.add(location);
@@ -441,7 +441,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 				}
 
 				if (!locations.isEmpty()) {
-					LibraryLocation[] tab = locations.toArray(new LibraryLocation[locations.size()]);
+					final LibraryLocation[] tab = locations.toArray(new LibraryLocation[locations.size()]);
 					setLibraryLocations(tab);
 				}
 
@@ -456,7 +456,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	private static IPath parsePath(String path, IPath defaultPath) {
 		if (!Strings.isNullOrEmpty(path)) {
 			try {
-				IPath pathObject = Path.fromPortableString(path);
+				final IPath pathObject = Path.fromPortableString(path);
 				if (pathObject != null) {
 					return pathObject;
 				}

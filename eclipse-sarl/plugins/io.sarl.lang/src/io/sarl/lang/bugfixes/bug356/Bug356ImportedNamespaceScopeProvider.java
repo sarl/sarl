@@ -59,11 +59,11 @@ public class Bug356ImportedNamespaceScopeProvider extends XtendImportedNamespace
 
 	@Override
 	protected ISelectable internalGetAllDescriptions(final Resource resource) {
-		List<IEObjectDescription> descriptions = Lists.newArrayList();
-		for (EObject content: resource.getContents()) {
+		final List<IEObjectDescription> descriptions = Lists.newArrayList();
+		for (final EObject content: resource.getContents()) {
 			if (content instanceof JvmDeclaredType) {
 				// Begin fixing of issue #356.
-				JvmDeclaredType type = (JvmDeclaredType) content;
+				final JvmDeclaredType type = (JvmDeclaredType) content;
 				if (!Strings.isNullOrEmpty(type.getIdentifier())) {
 					// End of fixing
 					doGetAllDescriptions(type, descriptions);
@@ -75,13 +75,13 @@ public class Bug356ImportedNamespaceScopeProvider extends XtendImportedNamespace
 
 	private void doGetAllDescriptions(JvmDeclaredType type, List<IEObjectDescription> descriptions) {
 		descriptions.add(EObjectDescription.create(getQualifiedNameConverter().toQualifiedName(type.getIdentifier()), type));
-		EList<JvmMember> members;
+		final EList<JvmMember> members;
 		if (type instanceof JvmDeclaredTypeImplCustom) {
 			members = ((JvmDeclaredTypeImplCustom) type).basicGetMembers();
 		} else {
 			members = type.getMembers();
 		}
-		for (JvmMember member: members) {
+		for (final JvmMember member: members) {
 			if (member instanceof JvmDeclaredType) {
 				// add nested types also with the dot delimiter
 				descriptions.add(EObjectDescription.create(getQualifiedNameConverter().toQualifiedName(

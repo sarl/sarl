@@ -91,7 +91,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	public void initialize(Injector injector) {
 		super.initialize(injector);
 		this.subFragments = initializeSubGenerators(injector);
-		for (IXtextGeneratorFragment subFragment : this.subFragments) {
+		for (final IXtextGeneratorFragment subFragment : this.subFragments) {
 			subFragment.initialize(injector);
 		}
 	}
@@ -117,7 +117,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	@Pure
 	public void checkConfiguration(Issues issues) {
 		super.checkConfiguration(issues);
-		CodeBuilderConfig config = getCodeBuilderConfig();
+		final CodeBuilderConfig config = getCodeBuilderConfig();
 		if (config == null) {
 			issues.addError("No code builder configuration", this); //$NON-NLS-1$
 		} else {
@@ -128,7 +128,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		if (this.subFragments == null) {
 			issues.addError("Sub generators are not created"); //$NON-NLS-1$
 		} else {
-			for (IXtextGeneratorFragment subFragment : this.subFragments) {
+			for (final IXtextGeneratorFragment subFragment : this.subFragments) {
 				subFragment.checkConfiguration(issues);
 			}
 		}
@@ -150,7 +150,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	@Override
 	public void generate() {
-		for (IXtextGeneratorFragment subFragment : this.subFragments) {
+		for (final IXtextGeneratorFragment subFragment : this.subFragments) {
 			subFragment.generate();
 		}
 	}
@@ -158,7 +158,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	/** Generates the Xtend stubs.
 	 */
 	public void generateXtendStubs() {
-		for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
 			subFragment.generateXtendStubs();
 		}
 	}
@@ -166,7 +166,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	/** Generates the Java stubs.
 	 */
 	public void generateJavaStubs() {
-		for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
 			subFragment.generateJavaStubs();
 		}
 	}
@@ -176,7 +176,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @param factory the factory for creating the bindings.
 	 */
 	public void generateBindings(BindingFactory factory) {
-		for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
 			subFragment.generateBindings(factory);
 		}
 	}
@@ -232,8 +232,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected String getBasePackage() {
-		Grammar grammar = getGrammar();
-		String basePackage = getNaming().getRuntimeBasePackage(grammar);
+		final Grammar grammar = getGrammar();
+		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
 		return basePackage + ".codebuilder"; //$NON-NLS-1$
 	}
 
@@ -261,8 +261,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected String getDocumentationPackage() {
-		Grammar grammar = getGrammar();
-		String basePackage = getNaming().getRuntimeBasePackage(grammar);
+		final Grammar grammar = getGrammar();
+		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
 		return basePackage + ".documentation"; //$NON-NLS-1$
 	}
 
@@ -272,8 +272,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected String getSerializerPackage() {
-		Grammar grammar = getGrammar();
-		String basePackage = getNaming().getRuntimeBasePackage(grammar);
+		final Grammar grammar = getGrammar();
+		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
 		return basePackage + ".serializer"; //$NON-NLS-1$
 	}
 
@@ -429,8 +429,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getLanguageScriptInterface() {
-		AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getScriptRuleName());
-		EClassifier type = getGeneratedTypeFor(rule);
+		final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getScriptRuleName());
+		final EClassifier type = getGeneratedTypeFor(rule);
 		return newTypeReference(type);
 	}
 
@@ -440,9 +440,9 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected String getLanguageBasePackage() {
-		Grammar grammar = getGrammar();
-		String basePackage = getNaming().getRuntimeBasePackage(grammar);
-		String ecorePackage = basePackage + "." //$NON-NLS-1$
+		final Grammar grammar = getGrammar();
+		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
+		final String ecorePackage = basePackage + "." //$NON-NLS-1$
 				+ GrammarUtil.getSimpleName(grammar).toLowerCase();
 		return ecorePackage;
 	}
@@ -453,9 +453,9 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected String getLanguageScriptMemberGetter() {
-		Grammar grammar = getGrammar();
-		AbstractRule scriptRule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getScriptRuleName());
-		for (Assignment assignment : GrammarUtil.containedAssignments(scriptRule)) {
+		final Grammar grammar = getGrammar();
+		final AbstractRule scriptRule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getScriptRuleName());
+		for (final Assignment assignment : GrammarUtil.containedAssignments(scriptRule)) {
 			if ((assignment.getTerminal() instanceof RuleCall)
 					&& Objects.equals(((RuleCall) assignment.getTerminal()).getRule().getName(),
 					getCodeBuilderConfig().getTopElementRuleName())) {
@@ -471,8 +471,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getLanguageTopElementType() {
-		Grammar grammar = getGrammar();
-		AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
+		final Grammar grammar = getGrammar();
+		final AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
 		return newTypeReference(rule.getType().getClassifier());
 	}
 
@@ -483,13 +483,13 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getXFactoryFor(TypeReference type) {
-		String packageName = type.getPackageName();
-		Grammar grammar = getGrammar();
+		final String packageName = type.getPackageName();
+		final Grammar grammar = getGrammar();
 		TypeReference reference = getXFactoryFor(packageName, grammar);
 		if (reference != null) {
 			return reference;
 		}
-		for (Grammar usedGrammar : GrammarUtil.allUsedGrammars(grammar)) {
+		for (final Grammar usedGrammar : GrammarUtil.allUsedGrammars(grammar)) {
 			reference = getXFactoryFor(packageName, usedGrammar);
 			if (reference != null) {
 				return reference;
@@ -505,13 +505,13 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getXFactoryFor(Class<?> type) {
-		String packageName = type.getPackage().getName();
-		Grammar grammar = getGrammar();
+		final String packageName = type.getPackage().getName();
+		final Grammar grammar = getGrammar();
 		TypeReference reference = getXFactoryFor(packageName, grammar);
 		if (reference != null) {
 			return reference;
 		}
-		for (Grammar usedGrammar : GrammarUtil.allUsedGrammars(grammar)) {
+		for (final Grammar usedGrammar : GrammarUtil.allUsedGrammars(grammar)) {
 			reference = getXFactoryFor(packageName, usedGrammar);
 			if (reference != null) {
 				return reference;
@@ -521,8 +521,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	}
 
 	private TypeReference getXFactoryFor(String packageName, Grammar grammar) {
-		String languageName = GrammarUtil.getSimpleName(grammar).toLowerCase();
-		String basePackage = getNaming().getRuntimeBasePackage(grammar) + "." + languageName; //$NON-NLS-1$
+		final String languageName = GrammarUtil.getSimpleName(grammar).toLowerCase();
+		final String basePackage = getNaming().getRuntimeBasePackage(grammar) + "." + languageName; //$NON-NLS-1$
 		if (basePackage.equals(packageName)) {
 			return new TypeReference(basePackage + "." //$NON-NLS-1$
 					+ Strings.toFirstUpper(languageName) + "Factory"); //$NON-NLS-1$
@@ -713,8 +713,8 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @return the generated type.
 	 */
 	protected static EClassifier getGeneratedTypeFor(AbstractRule rule) {
-		List<Action> actions = GrammarUtil.containedActions(rule);
-		EClassifier classifier;
+		final List<Action> actions = GrammarUtil.containedActions(rule);
+		final EClassifier classifier;
 		if (actions.isEmpty()) {
 			classifier = rule.getType().getClassifier();
 		} else {
@@ -732,7 +732,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		if (classifier == null) {
 			return new TypeReference(Object.class);
 		}
-		String name = GenModelUtil2.getJavaTypeName(classifier, classifier.eResource().getResourceSet());
+		final String name = GenModelUtil2.getJavaTypeName(classifier, classifier.eResource().getResourceSet());
 		if (Strings.isEmpty(name)) {
 			return new TypeReference(Object.class);
 		}
@@ -783,9 +783,9 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 			return nameMatches(((RuleCall) element).getRule(), pattern);
 		}
 		if (element instanceof AbstractRule) {
-			String name = ((AbstractRule) element).getName();
-			Pattern compilerPattern = Pattern.compile(pattern);
-			Matcher matcher = compilerPattern.matcher(name);
+			final String name = ((AbstractRule) element).getName();
+			final Pattern compilerPattern = Pattern.compile(pattern);
+			final Matcher matcher = compilerPattern.matcher(name);
 			if (matcher.find()) {
 				return true;
 			}
@@ -831,24 +831,24 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 			AbstractRule memberRule, Set<String> treatedRules,
 			Functions.Function2<AbstractRule, AbstractRule, T> constructorCallback,
 			Functions.Function3<AbstractRule, AbstractRule, String, T> namedMemberCallback) {
-		LinkedList<AbstractRule> rules = new LinkedList<>();
+		final LinkedList<AbstractRule> rules = new LinkedList<>();
 		treatedRules.add(memberRule.getName());
 		rules.add(memberRule);
 		while (!rules.isEmpty()) {
-			AbstractRule rule = rules.removeFirst();
-			Assignment assignment = IterableExtensions.findFirst(
+			final AbstractRule rule = rules.removeFirst();
+			final Assignment assignment = IterableExtensions.findFirst(
 					GrammarUtil.containedAssignments(rule),
 					(passignment) -> getCodeBuilderConfig()
 					.getMemberNameExtensionGrammarName().equals(passignment.getFeature()));
 			if (assignment != null) {
 				if (namedMemberCallback != null) {
-					T retVal = namedMemberCallback.apply(containerRule, rule, assignment.getFeature());
+					final T retVal = namedMemberCallback.apply(containerRule, rule, assignment.getFeature());
 					if (retVal != null) {
 						return retVal;
 					}
 				}
 			} else {
-				T retVal = searchConstructorRule(containerRule, rule, treatedRules, constructorCallback, rules);
+				final T retVal = searchConstructorRule(containerRule, rule, treatedRules, constructorCallback, rules);
 				if (retVal != null) {
 					return retVal;
 				}
@@ -860,23 +860,23 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	private <T> T searchConstructorRule(AbstractRule containerRule, AbstractRule rule, Set<String> treatedRules,
 			Functions.Function2<AbstractRule, AbstractRule, T> constructorCallback,
 			List<AbstractRule> rules) {
-		for (RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
+		for (final RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
 			if (treatedRules.contains(ruleCall.getRule().getName())) {
 				continue;
 			}
 			// Is a constructor rule?
-			Pattern constructorPattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
-			Matcher constructorMatcher = constructorPattern.matcher(ruleCall.getRule().getName());
+			final Pattern constructorPattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
+			final Matcher constructorMatcher = constructorPattern.matcher(ruleCall.getRule().getName());
 			if (constructorMatcher.find()) {
 				if (!getCodeBuilderConfig().getConstructorFreeRuleNames().contains(containerRule.getName())) {
-					Pattern blockPattern = Pattern.compile(getCodeBuilderConfig().getBlockExpressionGrammarPattern());
-					RuleCall block = IterableExtensions.findFirst(
+					final Pattern blockPattern = Pattern.compile(getCodeBuilderConfig().getBlockExpressionGrammarPattern());
+					final RuleCall block = IterableExtensions.findFirst(
 							GrammarUtil.containedRuleCalls(ruleCall.getRule()), (rcall) -> {
-							Matcher matcher = blockPattern.matcher(rcall.getRule().getName());
+							final Matcher matcher = blockPattern.matcher(rcall.getRule().getName());
 							return matcher.find();
 						});
 					if (block != null && constructorCallback != null) {
-						T retVal = constructorCallback.apply(containerRule, ruleCall.getRule());
+						final T retVal = constructorCallback.apply(containerRule, ruleCall.getRule());
 						if (retVal != null) {
 							return retVal;
 						}
@@ -895,12 +895,12 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @return the top element rules.
 	 */
 	protected Set<String> getTopElementRules() {
-		Set<String> ruleNames = new TreeSet<>();
-		Grammar grammar = getGrammar();
-		AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
+		final Set<String> ruleNames = new TreeSet<>();
+		final Grammar grammar = getGrammar();
+		final AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
 		if (rule != null) {
-			for (RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
-				String elementName = Strings.toFirstUpper(ruleCall.getRule().getName());
+			for (final RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
+				final String elementName = Strings.toFirstUpper(ruleCall.getRule().getName());
 				ruleNames.add(elementName);
 			}
 		}

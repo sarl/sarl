@@ -64,7 +64,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	@Pure
 	public TypeReference getBuilderFactoryImplCustom() {
-		String runtimeBasePackage = getBasePackage();
+		final String runtimeBasePackage = getBasePackage();
 		return new TypeReference(runtimeBasePackage + ".CodeBuilderFactoryCustom"); //$NON-NLS-1$
 	}
 
@@ -361,8 +361,8 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generateXtendStubs() {
 		super.generateXtendStubs();
-		TypeReference stub = getBuilderFactoryImplCustom();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final TypeReference stub = getBuilderFactoryImplCustom();
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** User-defined builder factory of the " + getLanguageName() //$NON-NLS-1$
@@ -382,8 +382,8 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 			}
 
 		};
-		XtendFileAccess xtendFile = getFileAccessFactory().createXtendFile(stub, content);
-		IFileSystemAccess2 fileSystem = getSrc();
+		final XtendFileAccess xtendFile = getFileAccessFactory().createXtendFile(stub, content);
+		final IFileSystemAccess2 fileSystem = getSrc();
 		if (!fileSystem.isFile(xtendFile.getPath())) {
 			xtendFile.writeTo(fileSystem);
 		}
@@ -423,8 +423,8 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generateBindings(BindingFactory factory) {
 		super.generateBindings(factory);
-		IFileSystemAccess2 fileSystem = getSrc();
-		TypeReference type;
+		final IFileSystemAccess2 fileSystem = getSrc();
+		final TypeReference type;
 		if ((fileSystem.isFile(getBuilderFactoryImplCustom().getJavaPath()))
 				|| (fileSystem.isFile(getBuilderFactoryImplCustom().getXtendPath()))) {
 			type = getBuilderFactoryImplCustom();

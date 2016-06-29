@@ -45,8 +45,8 @@ public class EditSREInstallWizard extends SREInstallWizard {
 	 */
 	public EditSREInstallWizard(ISREInstall editSRE, ISREInstall[] currentInstalls) {
 		super(editSRE, currentInstalls);
-		String name = editSRE.getName();
-		String title = MessageFormat.format(Messages.SREInstallWizard_4, name);
+		final String name = editSRE.getName();
+		final String title = MessageFormat.format(Messages.SREInstallWizard_4, name);
 		setWindowTitle(title);
 	}
 

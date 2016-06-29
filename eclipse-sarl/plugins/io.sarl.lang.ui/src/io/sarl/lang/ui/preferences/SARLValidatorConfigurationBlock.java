@@ -51,8 +51,8 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 
 	@Override
 	protected IDialogSettings getDialogSettings() {
-		IDialogSettings dialogSettings = super.getDialogSettings();
-		IDialogSettings section = dialogSettings.getSection(SECTION_NAME);
+		final IDialogSettings dialogSettings = super.getDialogSettings();
+		final IDialogSettings section = dialogSettings.getSection(SECTION_NAME);
 		if (section == null) {
 			return dialogSettings.addNewSection(SECTION_NAME);
 		}
@@ -63,17 +63,17 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 	protected void addAdditionalComponentsToSettingsPage(Composite settingsPage, int nbColumns, int defaultIndent) {
 		super.addAdditionalComponentsToSettingsPage(settingsPage, nbColumns, defaultIndent);
 		createHorizontalLine(settingsPage, nbColumns);
-		Composite composite = new Composite(settingsPage, SWT.NONE);
-		GridLayout layout = new GridLayout(nbColumns, false);
+		final Composite composite = new Composite(settingsPage, SWT.NONE);
+		final GridLayout layout = new GridLayout(nbColumns, false);
 		layout.marginHeight = 0;
 		composite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, nbColumns, 1));
 		composite.setLayout(layout);
-		String[] values = new String[] {
+		final String[] values = new String[] {
 			SeverityConverter.SEVERITY_ERROR,
 			SeverityConverter.SEVERITY_WARNING,
 			SeverityConverter.SEVERITY_IGNORE,
 		};
-		String[] valueLabels = new String[] {
+		final String[] valueLabels = new String[] {
 			Messages.SARLValidatorConfigurationBlock_6,
 			Messages.SARLValidatorConfigurationBlock_7,
 			Messages.SARLValidatorConfigurationBlock_8,
@@ -85,7 +85,7 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 	}
 
 	private static void createHorizontalLine(Composite settingsPage, int nbColumns) {
-		Label horizontalLine = new Label(settingsPage, SWT.SEPARATOR | SWT.HORIZONTAL);
+		final Label horizontalLine = new Label(settingsPage, SWT.SEPARATOR | SWT.HORIZONTAL);
 		horizontalLine.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, nbColumns, 1));
 		horizontalLine.setFont(settingsPage.getFont());
 	}

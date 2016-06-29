@@ -102,9 +102,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generateBindings(BindingFactory factory) {
 		super.generateBindings(factory);
-		IFileSystemAccess2 fileSystem = getSrc();
+		final IFileSystemAccess2 fileSystem = getSrc();
 		TypeReference type;
-		for (TopElementDescription description : generateTopElements(false, false)) {
+		for (final TopElementDescription description : generateTopElements(false, false)) {
 			type = getElementBuilderImplCustom(description.getSimpleName());
 			if ((!fileSystem.isFile(type.getJavaPath()))
 					&& (!fileSystem.isFile(type.getXtendPath()))) {
@@ -117,9 +117,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate the contributions for the BuildFactory.
 	 */
 	protected void generateBuilderFactoryContributions() {
-		List<TopElementDescription> topElements = generateTopElements(true, false);
-		boolean enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
-		for (TopElementDescription element : topElements) {
+		final List<TopElementDescription> topElements = generateTopElements(true, false);
+		final boolean enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
+		for (final TopElementDescription element : topElements) {
 			final String createFunctionName = "create" + Strings.toFirstUpper(element.getSimpleName()); //$NON-NLS-1$
 			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 				@Override
@@ -273,9 +273,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate the element builder interface.
 	 */
 	protected void generateIElementBuilder() {
-		List<TopElementDescription> topElements = generateTopElements(true, false);
-		for (TopElementDescription element : topElements) {
-			StringConcatenationClient content = new StringConcatenationClient() {
+		final List<TopElementDescription> topElements = generateTopElements(true, false);
+		for (final TopElementDescription element : topElements) {
+			final StringConcatenationClient content = new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -291,10 +291,11 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLineIfNotEmpty();
 					it.newLine();
 					it.append(element.getContent());
-					for (StringConcatenationClient cons : generateMembers(element.getConstructors(), element, true, false)) {
+					for (final StringConcatenationClient cons : generateMembers(element.getConstructors(),
+							element, true, false)) {
 						it.append(cons);
 					}
-					for (StringConcatenationClient mbr : generateMembers(element.getNamedMembers(), element, true, false)) {
+					for (final StringConcatenationClient mbr : generateMembers(element.getNamedMembers(), element, true, false)) {
 						it.append(mbr);
 					}
 					it.append("}"); //$NON-NLS-1$
@@ -302,7 +303,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 				}
 			};
-			JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(element.getBuilderInterface(), content);
+			final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(element.getBuilderInterface(), content);
 			javaFile.writeTo(getSrcGen());
 		}
 	}
@@ -310,10 +311,10 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate the element builder interface.
 	 */
 	protected void generateElementSourceAppender() {
-		List<TopElementDescription> topElements = generateTopElements(false, true);
-		for (TopElementDescription element : topElements) {
-			TypeReference appender = getElementAppenderImpl(element.getSimpleName());
-			StringConcatenationClient content = new StringConcatenationClient() {
+		final List<TopElementDescription> topElements = generateTopElements(false, true);
+		for (final TopElementDescription element : topElements) {
+			final TypeReference appender = getElementAppenderImpl(element.getSimpleName());
+			final StringConcatenationClient content = new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("/** Source adapter of a " + getLanguageName() //$NON-NLS-1$
@@ -335,10 +336,12 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append(generateAppenderMembers(appender.getSimpleName(), element.getBuilderInterface(),
 							getGeneratedTypeAccessor(element.getGeneratedType())));
 					it.append(element.getContent());
-					for (StringConcatenationClient cons : generateMembers(element.getConstructors(), element, false, true)) {
+					for (final StringConcatenationClient cons : generateMembers(element.getConstructors(), element,
+							false, true)) {
 						it.append(cons);
 					}
-					for (StringConcatenationClient mbr : generateMembers(element.getNamedMembers(), element, false, true)) {
+					for (final StringConcatenationClient mbr : generateMembers(element.getNamedMembers(), element,
+							false, true)) {
 						it.append(mbr);
 					}
 					it.append("}"); //$NON-NLS-1$
@@ -346,7 +349,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 				}
 			};
-			JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
+			final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
 			javaFile.writeTo(getSrcGen());
 		}
 	}
@@ -354,9 +357,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate the element builder implementation.
 	 */
 	protected void generateElementBuilderImplementation() {
-		List<TopElementDescription> topElements = generateTopElements(false, false);
-		for (TopElementDescription element : topElements) {
-			StringConcatenationClient content = new StringConcatenationClient() {
+		final List<TopElementDescription> topElements = generateTopElements(false, false);
+		for (final TopElementDescription element : topElements) {
+			final StringConcatenationClient content = new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -376,10 +379,12 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLineIfNotEmpty();
 					it.newLine();
 					it.append(element.getContent());
-					for (StringConcatenationClient cons : generateMembers(element.getConstructors(), element, false, false)) {
+					for (final StringConcatenationClient cons : generateMembers(element.getConstructors(), element,
+							false, false)) {
 						it.append(cons);
 					}
-					for (StringConcatenationClient mbr : generateMembers(element.getNamedMembers(), element, false, false)) {
+					for (final StringConcatenationClient mbr : generateMembers(element.getNamedMembers(), element,
+							false, false)) {
 						it.append(mbr);
 					}
 					it.append("}"); //$NON-NLS-1$
@@ -387,7 +392,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 				}
 			};
-			JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(element.getBuilderImplementation(), content);
+			final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(element.getBuilderImplementation(), content);
 			javaFile.writeTo(getSrcGen());
 		}
 	}
@@ -402,9 +407,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	protected List<StringConcatenationClient> generateMembers(Set<String> rules,
 			TopElementDescription description, boolean forInterface, boolean forAppender) {
-		List<StringConcatenationClient> clients = new ArrayList<>();
-		for (String ruleName : rules) {
-			AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), ruleName);
+		final List<StringConcatenationClient> clients = new ArrayList<>();
+		for (final String ruleName : rules) {
+			final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), ruleName);
 			clients.addAll(generateMember(rule, description, forInterface, forAppender));
 		}
 		return clients;
@@ -622,18 +627,18 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @return the top elements.
 	 */
 	protected List<TopElementDescription> generateTopElements(boolean forInterface, boolean forAppender) {
-		Set<String> topElementNames = new TreeSet<>();
-		Grammar grammar = getGrammar();
-		List<TopElementDescription> topElements = new ArrayList<>();
-		AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
+		final Set<String> topElementNames = new TreeSet<>();
+		final Grammar grammar = getGrammar();
+		final List<TopElementDescription> topElements = new ArrayList<>();
+		final AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
 		if (rule != null) {
-			for (RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
-				String elementName = Strings.toFirstUpper(ruleCall.getRule().getName());
-				TypeReference interfaceType = getElementBuilderInterface(elementName);
-				TypeReference implementationType = getElementBuilderImpl(elementName);
-				EClassifier classifier = getGeneratedTypeFor(ruleCall.getRule());
-				TypeReference generatedType = newTypeReference(classifier);
-				TopElementDescription description = new TopElementDescription(
+			for (final RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
+				final String elementName = Strings.toFirstUpper(ruleCall.getRule().getName());
+				final TypeReference interfaceType = getElementBuilderInterface(elementName);
+				final TypeReference implementationType = getElementBuilderImpl(elementName);
+				final EClassifier classifier = getGeneratedTypeFor(ruleCall.getRule());
+				final TypeReference generatedType = newTypeReference(classifier);
+				final TopElementDescription description = new TopElementDescription(
 						ruleCall.getRule().getName(),
 						elementName, interfaceType,
 						implementationType, generatedType);
@@ -643,7 +648,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 			}
 		}
 		// Remove the top elements as members.
-		for (TopElementDescription description : topElements) {
+		for (final TopElementDescription description : topElements) {
 			description.getNamedMembers().removeAll(topElementNames);
 		}
 		return topElements;

@@ -162,11 +162,11 @@ public class InjectionFragment2 extends AbstractXtextGeneratorFragment {
 	}
 
 	private void bind(GuiceModuleAccess module, List<BindingElement> bindings) {
-		BindingFactory bindingFactory = this.injector.getInstance(BindingFactory.class);
+		final BindingFactory bindingFactory = this.injector.getInstance(BindingFactory.class);
 		bindingFactory.setName(this.name);
 		bindingFactory.setGuiceModule(module);
-		for (BindingElement element : bindings) {
-			Binding guiceBinding = bindingFactory.toBinding(element);
+		for (final BindingElement element : bindings) {
+			final Binding guiceBinding = bindingFactory.toBinding(element);
 			bindingFactory.add(guiceBinding, isOverrideAll() || element.isOverride());
 		}
 		bindingFactory.contributeToModule();

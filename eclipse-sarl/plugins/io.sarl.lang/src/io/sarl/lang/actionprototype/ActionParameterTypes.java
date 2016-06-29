@@ -57,15 +57,14 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 	 * @param text - the text that contains the signature to parse.
 	 */
 	public ActionParameterTypes(String text) {
-		assert (text != null);
-		String[] elements = text.split("\\s*,\\s*"); //$NON-NLS-1$
-		this.isVarargs = (elements.length > 0
-				&& elements[elements.length - 1].endsWith("*")); //$NON-NLS-1$
+		assert text != null;
+		final String[] elements = text.split("\\s*,\\s*"); //$NON-NLS-1$
+		this.isVarargs = elements.length > 0 && elements[elements.length - 1].endsWith("*"); //$NON-NLS-1$
 		if (this.isVarargs) {
 			elements[elements.length - 1] = elements[elements.length - 1].replaceFirst(
 					"\\*$", "[]");  //$NON-NLS-1$//$NON-NLS-2$
 		}
-		for (String p : elements) {
+		for (final String p : elements) {
 			if (!Strings.isNullOrEmpty(p) && !"void".equals(p) && !"java.lang.Void".equals(p)) { //$NON-NLS-1$//$NON-NLS-2$
 				add(p);
 			}
@@ -83,7 +82,7 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 		}
 
 		if (super.equals(object) && this.getClass() == object.getClass()) {
-			ActionParameterTypes types = (ActionParameterTypes) object;
+			final ActionParameterTypes types = (ActionParameterTypes) object;
 			return this.isVarargs == types.isVarargs;
 		}
 		return false;
@@ -118,8 +117,8 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 	@Override
 	public String toString() {
 		if (!isEmpty()) {
-			StringBuilder b = new StringBuilder();
-			int size = size() - 1;
+			final StringBuilder b = new StringBuilder();
+			final int size = size() - 1;
 			for (int i = 0; i < size; ++i) {
 				if (i > 0) {
 					b.append(","); //$NON-NLS-1$
@@ -148,13 +147,11 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 		if (cmp != 0) {
 			return cmp;
 		}
-		Iterator<String> i1 = iterator();
-		Iterator<String> i2 = otherTypes.iterator();
-		String s1;
-		String s2;
+		final Iterator<String> i1 = iterator();
+		final Iterator<String> i2 = otherTypes.iterator();
 		while (i1.hasNext() && i2.hasNext()) {
-			s1 = i1.next();
-			s2 = i2.next();
+			final String s1 = i1.next();
+			final String s2 = i2.next();
 			cmp = s1.compareTo(s2);
 			if (cmp != 0) {
 				return cmp;

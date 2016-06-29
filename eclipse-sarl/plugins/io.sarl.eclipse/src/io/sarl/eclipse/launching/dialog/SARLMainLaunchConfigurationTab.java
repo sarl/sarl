@@ -127,7 +127,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite comp = SWTFactory.createComposite(parent, parent.getFont(), 1, 1, GridData.FILL_BOTH);
+		final Composite comp = SWTFactory.createComposite(parent, parent.getFont(), 1, 1, GridData.FILL_BOTH);
 		((GridLayout) comp.getLayout()).verticalSpacing = 0;
 		createProjectEditor(comp);
 		createVerticalSpacer(comp, 1);
@@ -146,7 +146,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 * @param text - the label of the group.
 	 */
 	protected void createAgentNameEditor(Composite parent, String text) {
-		Group group = SWTFactory.createGroup(parent, text, 2, 1, GridData.FILL_HORIZONTAL);
+		final Group group = SWTFactory.createGroup(parent, text, 2, 1, GridData.FILL_HORIZONTAL);
 		this.agentNameTextField = SWTFactory.createSingleText(group, 1);
 		this.agentNameTextField.addModifyListener(new ModifyListener() {
 			@SuppressWarnings("synthetic-access")
@@ -178,7 +178,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 * @param text - the label of the group.
 	 */
 	protected void createContextIdentifierTypeEditor(Composite parent, String text) {
-		Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
+		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
 		this.defaultContextIdentifierButton = createRadioButton(group, Messages.MainLaunchConfigurationTab_11);
 		this.defaultContextIdentifierButton.addSelectionListener(this.defaultListener);
 		this.randomContextIdentifierButton = createRadioButton(group, Messages.MainLaunchConfigurationTab_12);
@@ -208,7 +208,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 * @param text - the label of the group.
 	 */
 	protected void createLaunchOptionEditor(Composite parent, String text) {
-		Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
+		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
 		this.showLogoOptionButton = createCheckButton(group, Messages.MainLaunchConfigurationTab_14);
 		this.showLogoOptionButton.addSelectionListener(this.defaultListener);
 		this.showLogInfoButton = createCheckButton(group, Messages.MainLaunchConfigurationTab_15);
@@ -233,14 +233,14 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	protected void updateContextIdentifierTypeFromConfig(ILaunchConfiguration config) {
 		RootContextIdentifierType type = RootContextIdentifierType.DEFAULT_CONTEXT_ID;
 		try {
-			String typeName = config.getAttribute(SARLEclipseConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
+			final String typeName = config.getAttribute(SARLEclipseConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
 			if (!Strings.isNullOrEmpty(typeName)) {
 				type = RootContextIdentifierType.valueOf(typeName);
 			}
 		} catch (Exception ce) {
 			SARLEclipsePlugin.getDefault().log(ce);
 		}
-		assert (type != null);
+		assert type != null;
 		switch (type) {
 		case RANDOM_CONTEXT_ID:
 			this.randomContextIdentifierButton.setSelection(true);
@@ -333,13 +333,13 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 */
 	protected boolean isValidAgentName() {
 		if (this.lastAgentNameError != null) {
-			boolean isValid = Strings.isNullOrEmpty(this.lastAgentNameError);
+			final boolean isValid = Strings.isNullOrEmpty(this.lastAgentNameError);
 			if (!isValid) {
 				setErrorMessage(this.lastAgentNameError);
 			}
 			return isValid;
 		}
-		String name = this.agentNameTextField.getText();
+		final String name = this.agentNameTextField.getText();
 		if (Strings.isNullOrEmpty(name)) {
 			this.lastAgentNameError = Messages.MainLaunchConfigurationTab_2;
 			setErrorMessage(this.lastAgentNameError);
@@ -361,15 +361,15 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 * @return the validity state.
 	 */
 	protected boolean isValidProjectName() {
-		String name = this.fProjText.getText();
+		final String name = this.fProjText.getText();
 		if (Strings.isNullOrEmpty(name)) {
 			setErrorMessage(Messages.MainLaunchConfigurationTab_3);
 			return false;
 		}
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		IStatus status = workspace.validateName(name, IResource.PROJECT);
+		final IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		final IStatus status = workspace.validateName(name, IResource.PROJECT);
 		if (status.isOK()) {
-			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 			if (!project.exists()) {
 				setErrorMessage(MessageFormat.format(
 						Messages.MainLaunchConfigurationTab_4, name));
@@ -413,7 +413,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
-		IJavaElement javaElement = getContext();
+		final IJavaElement javaElement = getContext();
 		if (javaElement != null) {
 			initializeJavaProject(javaElement, config);
 		} else {
@@ -456,9 +456,9 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
-							IJavaProject javaProject = javaElement.getJavaProject();
-							IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
-							IType[] types = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
+							final IJavaProject javaProject = javaElement.getJavaProject();
+							final IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
+							final IType[] types = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
 							if (types != null && types.length > 0) {
 								nameRef[0] = types[0].getFullyQualifiedName();
 							}
@@ -492,7 +492,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 		// Rename the launch configuration
 		if (name.length() > 0) {
-			int index = name.lastIndexOf('.');
+			final int index = name.lastIndexOf('.');
 			if (index > 0) {
 				name = name.substring(index + 1);
 			}
@@ -505,7 +505,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		final IType[][] res = new IType[1][];
 		res[0] = new IType[0];
 		final String projectName = this.fProjText.getText();
-		IStatus status = ResourcesPlugin.getWorkspace().validateName(projectName, IResource.PROJECT);
+		final IStatus status = ResourcesPlugin.getWorkspace().validateName(projectName, IResource.PROJECT);
 		if (status.isOK()) {
 			try {
 				getLaunchConfigurationDialog().run(true, true, new IRunnableWithProgress() {
@@ -513,9 +513,9 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
-							IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-							IJavaProject javaProject = JavaCore.create(project);
-							IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
+							final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+							final IJavaProject javaProject = JavaCore.create(project);
+							final IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
 							res[0] = agentType.newTypeHierarchy(pm).getAllSubtypes(agentType);
 						} catch (JavaModelException e) {
 							setErrorMessage(e.getLocalizedMessage());
@@ -533,7 +533,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 	private boolean isAgentNameDefined(final String agentName) {
 		final String projectName = this.fProjText.getText();
-		IStatus status = ResourcesPlugin.getWorkspace().validateName(projectName, IResource.PROJECT);
+		final IStatus status = ResourcesPlugin.getWorkspace().validateName(projectName, IResource.PROJECT);
 		if (status.isOK()) {
 			try {
 				final boolean[] res = new boolean[1];
@@ -542,11 +542,11 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 					@Override
 					public void run(IProgressMonitor pm) throws InvocationTargetException {
 						try {
-							IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-							IJavaProject javaProject = JavaCore.create(project);
-							IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
+							final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+							final IJavaProject javaProject = JavaCore.create(project);
+							final IType agentType = javaProject.findType("io.sarl.lang.core.Agent"); //$NON-NLS-1$
 							if (agentType != null) {
-								IType type = javaProject.findType(agentName);
+								final IType type = javaProject.findType(agentName);
 								if (type != null) {
 									res[0] = type.newSupertypeHierarchy(pm).contains(agentType);
 								}
@@ -568,14 +568,14 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	/** Invoked when the search button for the agent agent was clocked.
 	 */
 	protected void handleAgentNameSearchButtonSelected() {
-		IType[] types = searchAgentNames();
+		final IType[] types = searchAgentNames();
 		// Ask to the user
-		DebugTypeSelectionDialog mmsd = new DebugTypeSelectionDialog(getShell(),
+		final DebugTypeSelectionDialog mmsd = new DebugTypeSelectionDialog(getShell(),
 				types, ""); //$NON-NLS-1$
 		if (mmsd.open() == Window.CANCEL) {
 			return;
 		}
-		IType type = (IType) mmsd.getFirstResult();
+		final IType type = (IType) mmsd.getFirstResult();
 		if (type != null) {
 			this.agentNameTextField.setText(type.getFullyQualifiedName());
 			this.fProjText.setText(type.getJavaProject().getElementName());

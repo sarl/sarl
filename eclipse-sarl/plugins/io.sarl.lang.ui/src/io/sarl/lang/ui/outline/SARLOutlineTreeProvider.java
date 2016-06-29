@@ -81,7 +81,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		if (modelElement.getImportSection() != null && !modelElement.getImportSection().getImportDeclarations().isEmpty()) {
 			createNode(parentNode, modelElement.getImportSection());
 		}
-		for (XtendTypeDeclaration topElement : modelElement.getXtendTypes()) {
+		for (final XtendTypeDeclaration topElement : modelElement.getXtendTypes()) {
 			createNode(parentNode, topElement);
 		}
 	}
@@ -92,7 +92,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 * @param modelElement - the feature container for which a node should be created.
 	 */
 	protected void _createNode(DocumentRootNode parentNode, XtendTypeDeclaration modelElement) {
-		EStructuralFeatureNode elementNode = createEStructuralFeatureNode(
+		final EStructuralFeatureNode elementNode = createEStructuralFeatureNode(
 				parentNode,
 				modelElement,
 				XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME,
@@ -103,7 +103,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 			EObjectNode capacityUseNode = null;
 			EObjectNode capacityRequirementNode = null;
 
-			for (EObject feature : modelElement.getMembers()) {
+			for (final EObject feature : modelElement.getMembers()) {
 				if (feature instanceof SarlField
 						|| feature instanceof SarlAction
 						|| feature instanceof SarlBehaviorUnit
@@ -130,7 +130,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 					this.textDispatcher.invoke(feature),
 					false);
 		}
-		for (JvmParameterizedTypeReference item : feature.getCapacities()) {
+		for (final JvmParameterizedTypeReference item : feature.getCapacities()) {
 			createEObjectNode(
 					capacityUseNode, item,
 					this.imageDispatcher.invoke(item),
@@ -150,7 +150,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 					this.textDispatcher.invoke(feature),
 					false);
 		}
-		for (JvmParameterizedTypeReference item : feature.getCapacities()) {
+		for (final JvmParameterizedTypeReference item : feature.getCapacities()) {
 			createEObjectNode(
 					capacityRequirementNode, item,
 					this.imageDispatcher.invoke(item),
@@ -185,14 +185,14 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 			IOutlineNode parentNode,
 			EObject modelElement, Image image, Object text,
 			boolean isLeaf) {
-		SARLEObjectNode objectNode = new SARLEObjectNode(modelElement, parentNode, image, text, isLeaf);
+		final SARLEObjectNode objectNode = new SARLEObjectNode(modelElement, parentNode, image, text, isLeaf);
 		configureNode(parentNode, modelElement, objectNode);
 		return objectNode;
 	}
 
 	private void configureNode(IOutlineNode parentNode, EObject modelElement, SARLEObjectNode objectNode) {
-		EObject primarySourceElement = this.associations.getPrimarySourceElement(modelElement);
-		ICompositeNode parserNode = NodeModelUtils.getNode(
+		final EObject primarySourceElement = this.associations.getPrimarySourceElement(modelElement);
+		final ICompositeNode parserNode = NodeModelUtils.getNode(
 				(primarySourceElement == null) ? modelElement : primarySourceElement);
 
 		if (parserNode != null) {

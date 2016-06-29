@@ -91,13 +91,13 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	@Override
 	public void generateBindings(BindingFactory factory) {
 		super.generateBindings(factory);
-		IFileSystemAccess2 fileSystem = getSrc();
+		final IFileSystemAccess2 fileSystem = getSrc();
 
 		final TypeReference builderInterface = getBlockExpressionBuilderInterface();
 		final TypeReference builderImpl = getBlockExpressionBuilderImpl();
 		final TypeReference builderImplCustom = getBlockExpressionBuilderImplCustom();
 
-		TypeReference type;
+		final TypeReference type;
 		if ((fileSystem.isFile(builderImplCustom.getJavaPath()))
 				|| (fileSystem.isFile(builderImplCustom.getXtendPath()))) {
 			type = builderImplCustom;
@@ -111,7 +111,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	 */
 	protected void generateIBlockExpressionBuilder() {
 		final TypeReference builder = getBlockExpressionBuilderInterface();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -132,7 +132,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -141,7 +141,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	protected void generateBlockExpressionBuilderImpl() {
 		final TypeReference builderInterface = getBlockExpressionBuilderInterface();
 		final TypeReference builder = getBlockExpressionBuilderImpl();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -166,7 +166,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -175,7 +175,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	protected void generateBlockExpressionAppender() {
 		final TypeReference builderInterface = getBlockExpressionBuilderInterface();
 		final TypeReference appender = getElementAppenderImpl("BlockExpression"); //$NON-NLS-1$
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Appender of a " + getLanguageName() //$NON-NLS-1$
@@ -202,7 +202,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -553,10 +553,10 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @return the top elements.
 	 */
 	protected AbstractRule getConstructorRule() {
-		Grammar grammar = getGrammar();
-		Pattern pattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
-		for (AbstractRule rule : GrammarUtil.allRules(grammar)) {
-			Matcher matcher = pattern.matcher(rule.getName());
+		final Grammar grammar = getGrammar();
+		final Pattern pattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
+		for (final AbstractRule rule : GrammarUtil.allRules(grammar)) {
+			final Matcher matcher = pattern.matcher(rule.getName());
 			if (matcher.find()) {
 				return rule;
 			}
@@ -568,11 +568,11 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	 */
 	protected void generateBuilderFactoryContributions() {
 		final String createFunctionName = "createXBlockExpression"; //$NON-NLS-1$
-		AbstractRule constructorRule = getConstructorRule();
+		final AbstractRule constructorRule = getConstructorRule();
 		final String containerCreationName = "create" //$NON-NLS-1$
 				+ Strings.toFirstUpper(constructorRule.getName());
 		Assignment exprAssignment = null;
-		for (Assignment assignement : GrammarUtil.containedAssignments(constructorRule)) {
+		for (final Assignment assignement : GrammarUtil.containedAssignments(constructorRule)) {
 			if (nameMatches(assignement.getTerminal(), getCodeBuilderConfig().getBlockExpressionGrammarPattern())) {
 				exprAssignment = assignement;
 				break;

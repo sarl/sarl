@@ -86,21 +86,21 @@ public class SARLClasspathContainer implements IClasspathContainer {
 	}
 
 	private void updateEntries() throws Exception {
-		List<IClasspathEntry> newEntries = new ArrayList<>();
-		for (String referenceLibrary : SARL_REFERENCE_LIBRARIES) {
+		final List<IClasspathEntry> newEntries = new ArrayList<>();
+		for (final String referenceLibrary : SARL_REFERENCE_LIBRARIES) {
 			// Retreive the bundle
-			Bundle bundle = Platform.getBundle(referenceLibrary);
+			final Bundle bundle = Platform.getBundle(referenceLibrary);
 			if (bundle == null) {
 				throw new NameNotFoundException("No bundle found for: " + referenceLibrary); //$NON-NLS-1$
 			}
 
-			IPath bundlePath = BundleUtil.getBundlePath(bundle);
-			IPath sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
+			final IPath bundlePath = BundleUtil.getBundlePath(bundle);
+			final IPath sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
 
 			IClasspathAttribute[] extraAttributes = null;
 			if (referenceLibrary.startsWith("io.sarl")) { //$NON-NLS-1$
-				IPath javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
-				IClasspathAttribute attr;
+				final IPath javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
+				final IClasspathAttribute attr;
 				if (javadocPath == null) {
 					attr = JavaCore.newClasspathAttribute(
 							IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,

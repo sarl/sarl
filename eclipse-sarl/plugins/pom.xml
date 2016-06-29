@@ -46,4 +46,25 @@
 		</profile>
 	</profiles>
 
+	<build>
+		<resources>
+			<resource>
+				<directory>OSGI-INF/l10n</directory>
+				<filtering>true</filtering>
+				<targetPath>OSGI-INF/l10n</targetPath>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<sourceDirectories>
+						<sourceDirectory>${project.basedir}/src</sourceDirectory>
+					</sourceDirectories>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

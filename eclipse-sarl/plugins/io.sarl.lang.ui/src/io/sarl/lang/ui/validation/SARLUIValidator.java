@@ -47,7 +47,7 @@ public class SARLUIValidator extends XtendUIValidator {
 
 	@Override
 	protected List<EPackage> getEPackages() {
-		List<EPackage> packages = super.getEPackages();
+		final List<EPackage> packages = super.getEPackages();
 		packages.add(SarlPackage.eINSTANCE);
 		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtend")); //$NON-NLS-1$
 		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xbase")); //$NON-NLS-1$
@@ -63,8 +63,8 @@ public class SARLUIValidator extends XtendUIValidator {
 		//
 		// The wrong package is a warning in SARL (an error in Xtend).
 		//
-		String expectedPackage = Strings.nullToEmpty(getExpectedPackageName(sarlFile));
-		String declaredPackage = Strings.nullToEmpty(sarlFile.getPackage());
+		final String expectedPackage = Strings.nullToEmpty(getExpectedPackageName(sarlFile));
+		final String declaredPackage = Strings.nullToEmpty(sarlFile.getPackage());
 		if (!Objects.equal(expectedPackage, declaredPackage)) {
 			if (expectedPackage.isEmpty()) {
 				warning(Messages.SARLUIValidator_0,

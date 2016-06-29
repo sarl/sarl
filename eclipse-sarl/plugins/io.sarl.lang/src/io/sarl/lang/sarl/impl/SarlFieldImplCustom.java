@@ -59,7 +59,7 @@ public class SarlFieldImplCustom extends SarlFieldImpl {
 
 	@Override
 	protected JvmVisibility getDefaultVisibility() {
-		XtendTypeDeclaration declaration = getDeclaringType();
+		final XtendTypeDeclaration declaration = getDeclaringType();
 		if (declaration instanceof SarlEvent) {
 			return JvmVisibility.PUBLIC;
 		}

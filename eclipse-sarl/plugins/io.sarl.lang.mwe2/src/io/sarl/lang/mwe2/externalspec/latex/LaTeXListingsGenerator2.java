@@ -263,25 +263,24 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored) {
-		ColorConfig colors = getHighlightingConfig().getColors();
+		final ColorConfig colors = getHighlightingConfig().getColors();
 
-		Set<String> texKeywords = new TreeSet<>(keywords);
+		final Set<String> texKeywords = new TreeSet<>(keywords);
 		texKeywords.addAll(literals);
 
-		List<String> sty = new ArrayList<>();
+		final List<String> sty = new ArrayList<>();
 
-		String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
-		for (String headerLine : header) {
-			headerLine = headerLine.replaceFirst("^\\s*[/]?[*][/]?", "%"); //$NON-NLS-1$//$NON-NLS-2$
-			sty.add(headerLine);
+		final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
+		for (final String headerLine : header) {
+			sty.add(headerLine.replaceFirst("^\\s*[/]?[*][/]?", "%")); //$NON-NLS-1$//$NON-NLS-2$
 		}
 
-		String basename = getBasename(
+		final String basename = getBasename(
 				MessageFormat.format(getBasenameTemplate(), getLanguageSimpleName().toLowerCase()));
-		String simpleBasename = Files.getNameWithoutExtension(basename);
+		final String simpleBasename = Files.getNameWithoutExtension(basename);
 
 		append(sty, "\\NeedsTeXFormat'{'LaTeX2e'}'[1995/12/01]"); //$NON-NLS-1$
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); //$NON-NLS-1$
+		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); //$NON-NLS-1$
 		append(sty, "\\ProvidesPackage'{'{0}'}'[{1}]", simpleBasename, dateFormat.format(new Date())); //$NON-NLS-1$
 
 		append(sty, "\\RequirePackage'{'algpseudocode'}'"); //$NON-NLS-1$
@@ -291,7 +290,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		if (requirements == null) {
 			requirements = Arrays.asList(DEFAULT_REQUIREMENTS);
 		}
-		for (String requirement : requirements) {
+		for (final String requirement : requirements) {
 			append(sty, "\\RequirePackage'{'{0}'}'", requirement); //$NON-NLS-1$
 		}
 		if (getEnableColors()) {
@@ -299,7 +298,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		}
 
 		if (getEnableColors()) {
-			for (Color color : colors.getColors().values()) {
+			for (final Color color : colors.getColors().values()) {
 				append(sty, "\\definecolor'{'{0}'}{'RGB'}{'{1},{2},{3}'}'", //$NON-NLS-1$
 						color.getName(), color.getRed(), color.getGreen(), color.getBlue());
 			}
@@ -309,7 +308,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 			append(sty, "\\colorlet'{'SARLidentifier'}{'{0}'}'", colors.getIdentifierColor()); //$NON-NLS-1$
 		}
 
-		String langName = getLanguageSimpleName().toUpperCase();
+		final String langName = getLanguageSimpleName().toUpperCase();
 		append(sty, "\\lstdefinelanguage'{'{0}'}{'%", langName); //$NON-NLS-1$
 		append(sty, "   morecomment=[s]'{'/*'}{'*/'}',"); //$NON-NLS-1$
 		append(sty, "   morestring=[b]\","); //$NON-NLS-1$

@@ -57,11 +57,11 @@ public class SARLContainerWizardPage extends NewElementWizardPage implements ICl
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
+		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout());
-		Label label = new Label(composite, SWT.NONE);
-		StringBuilder builder = new StringBuilder();
-		for (String bundleId : SARLClasspathContainer.SARL_REFERENCE_LIBRARIES) {
+		final Label label = new Label(composite, SWT.NONE);
+		final StringBuilder builder = new StringBuilder();
+		for (final String bundleId : SARLClasspathContainer.SARL_REFERENCE_LIBRARIES) {
 			builder.append("\t").append(bundleId).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		}
 		label.setText(MessageFormat.format(

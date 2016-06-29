@@ -192,9 +192,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	@Override
 	protected IStatus typeNameChanged() {
-		assert (this.sarlFileExtension != null);
-		IPackageFragment packageFragment = getPackageFragment();
-		String typeName = getTypeName();
+		assert this.sarlFileExtension != null;
+		final IPackageFragment packageFragment = getPackageFragment();
+		final String typeName = getTypeName();
 		if (packageFragment != null && !Strings.isNullOrEmpty(typeName)) {
 			if (isSarlFile(packageFragment, typeName)) {
 				String packageName = ""; //$NON-NLS-1$
@@ -221,12 +221,12 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (isFileExists(packageFragment, filename, this.sarlFileExtension)) {
 			return true;
 		}
-		IJavaProject project = getPackageFragmentRoot().getJavaProject();
+		final IJavaProject project = getPackageFragmentRoot().getJavaProject();
 		if (project != null) {
 			try {
-				String packageName = packageFragment.getElementName();
-				for (IPackageFragmentRoot root : project.getPackageFragmentRoots()) {
-					IPackageFragment fragment = root.getPackageFragment(packageName);
+				final String packageName = packageFragment.getElementName();
+				for (final IPackageFragmentRoot root : project.getPackageFragmentRoots()) {
+					final IPackageFragment fragment = root.getPackageFragment(packageName);
 					if (isFileExists(fragment, filename, JAVA_FILE_EXTENSION)) {
 						return true;
 					}
@@ -247,9 +247,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected static boolean isFileExists(IPackageFragment packageFragment, String filename, String extension) {
 		if (packageFragment != null) {
-			IResource resource = packageFragment.getResource();
+			final IResource resource = packageFragment.getResource();
 			if (resource instanceof IFolder) {
-				IFolder folder = (IFolder) resource;
+				final IFolder folder = (IFolder) resource;
 				if (folder.getFile(filename + "." + extension).exists()) { //$NON-NLS-1$
 					return true;
 				}
@@ -316,7 +316,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param selection - the current selection.
 	 */
 	protected void init(IStructuredSelection selection) {
-		IJavaElement elem = this.fieldInitializer.getSelectedResource(selection);
+		final IJavaElement elem = this.fieldInitializer.getSelectedResource(selection);
 		initContainerPage(elem);
 		initTypePage(elem);
 		//
@@ -354,19 +354,19 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	protected boolean isValidExtendedType(String className) throws JavaModelException {
 		// accept the empty field (stands for java.lang.Object)
 		if (!Strings.isNullOrEmpty(className)) {
-			IType rootType = getRootSuperType();
+			final IType rootType = getRootSuperType();
 			if (rootType == null) {
-				IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
+				final IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 						Messages.AbstractNewSarlElementWizardPage_3);
 				throw new JavaModelException(new CoreException(status));
 			}
-			IType type = getJavaProject().findType(className);
+			final IType type = getJavaProject().findType(className);
 			if (type == null) {
-				IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
+				final IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 						MessageFormat.format(Messages.AbstractNewSarlElementWizardPage_4, className));
 				throw new JavaModelException(new CoreException(status));
 			}
-			ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
+			final ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
 			if (hierarchy == null || !hierarchy.contains(rootType)) {
 				return false;
 			}
@@ -384,12 +384,12 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected boolean isValidImplementedType(String className) throws JavaModelException {
 		if (!Strings.isNullOrEmpty(className)) {
-			IType rootType = getRootSuperInterface();
-			assert (rootType != null);
-			IType type = getJavaProject().findType(className);
-			assert (type != null);
-			ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
-			assert (hierarchy != null);
+			final IType rootType = getRootSuperInterface();
+			assert rootType != null;
+			final IType type = getJavaProject().findType(className);
+			assert type != null;
+			final ITypeHierarchy hierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
+			assert hierarchy != null;
 			if (!hierarchy.contains(rootType)) {
 				return false;
 			}
@@ -398,11 +398,11 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	}
 
 	private void reinitSuperClass() {
-		String className = getSuperClass();
+		final String className = getSuperClass();
 		try {
 			if (!isValidExtendedType(className)) {
-				IType rootType = getRootSuperType();
-				assert (rootType != null);
+				final IType rootType = getRootSuperType();
+				assert rootType != null;
 				setSuperClass(rootType.getFullyQualifiedName(), true);
 			}
 		} catch (JavaModelException ex) {
@@ -411,13 +411,13 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	}
 
 	private void reinitSuperInterfaces() {
-		List<IStatus> status = new ArrayList<>();
-		Set<String> validInterfaces = new HashSet<>();
-		for (String interfaceName : getSuperInterfaces()) {
+		final List<IStatus> status = new ArrayList<>();
+		final Set<String> validInterfaces = new HashSet<>();
+		for (final String interfaceName : getSuperInterfaces()) {
 			try {
 				if (!isValidImplementedType(interfaceName)) {
-					IType rootType = getRootSuperInterface();
-					assert (rootType != null);
+					final IType rootType = getRootSuperInterface();
+					assert rootType != null;
 					validInterfaces.add(rootType.getFullyQualifiedName());
 				} else {
 					validInterfaces.add(interfaceName);
@@ -440,7 +440,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (status.isEmpty()) {
 			this.fSuperInterfacesStatus = SARLEclipsePlugin.getDefault().createOkStatus();
 		} else {
-			IStatus[] tab = new IStatus[status.size()];
+			final IStatus[] tab = new IStatus[status.size()];
 			status.toArray(tab);
 			this.fSuperInterfacesStatus = SARLEclipsePlugin.getDefault().createMultiStatus(tab);
 		}
@@ -449,9 +449,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	@Override
 	protected IStatus superClassChanged() {
 		IStatus status = super.superClassChanged();
-		assert (status != null);
+		assert status != null;
 		if (status.isOK()) {
-			String className = getSuperClass();
+			final String className = getSuperClass();
 			try {
 				if (!isValidExtendedType(className)) {
 					status = SARLEclipsePlugin.getDefault().createStatus(
@@ -469,11 +469,11 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	@Override
 	protected IStatus superInterfacesChanged() {
 		IStatus status = super.superInterfacesChanged();
-		assert (status != null);
+		assert status != null;
 		if (status.isOK()) {
-			List<IStatus> statusInfo = new ArrayList<>();
+			final List<IStatus> statusInfo = new ArrayList<>();
 			boolean hasInterface = false;
-			for (String superInterface : getSuperInterfaces()) {
+			for (final String superInterface : getSuperInterfaces()) {
 				try {
 					if (!isValidImplementedType(superInterface)) {
 						statusInfo.add(SARLEclipsePlugin.getDefault().createStatus(
@@ -498,7 +498,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				}
 			}
 			if (!statusInfo.isEmpty()) {
-				IStatus[] tab = new IStatus[statusInfo.size()];
+				final IStatus[] tab = new IStatus[statusInfo.size()];
 				statusInfo.toArray(tab);
 				status = SARLEclipsePlugin.getDefault().createMultiStatus(tab);
 			}
@@ -544,7 +544,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected Composite createCommonControls(Composite parent) {
 		initializeDialogUnits(parent);
-		Composite composite = SWTFactory.createComposite(
+		final Composite composite = SWTFactory.createComposite(
 				parent,
 				parent.getFont(),
 				COLUMNS, 1,
@@ -558,7 +558,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	@Override
 	public final void createControl(Composite parent) {
-		Composite composite = createCommonControls(parent);
+		final Composite composite = createCommonControls(parent);
 		createPageControls(composite);
 		setControl(composite);
 		readSettings();
@@ -577,10 +577,10 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected final int asyncCreateType() {
 		final int[] size = {0};
-		IRunnableWithProgress op = new WorkspaceModifyOperation() {
+		final IRunnableWithProgress op = new WorkspaceModifyOperation() {
 			@Override
-			protected void execute(IProgressMonitor monitor) throws CoreException, InvocationTargetException,
-			InterruptedException {
+			protected void execute(IProgressMonitor monitor)
+				throws CoreException, InvocationTargetException, InterruptedException {
 				size[0] = createSARLType(monitor);
 			}
 		};
@@ -590,7 +590,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			// cancelled by user
 			return 0;
 		} catch (InvocationTargetException e) {
-			Throwable realException = e.getTargetException();
+			final Throwable realException = e.getTargetException();
 			SARLEclipsePlugin.getDefault().log(realException);
 			MessageDialog.openError(getShell(), getTitle(), realException.getMessage());
 		}
@@ -610,7 +610,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @throws InterruptedException when the operation was canceled.
 	 */
 	public int createSARLType(IProgressMonitor monitor) throws CoreException, InterruptedException {
-		SubMonitor mon = SubMonitor.convert(monitor, STEPS);
+		final SubMonitor mon = SubMonitor.convert(monitor, STEPS);
 		try {
 			// Create the package if not existing
 			if (!getPackageFragment().exists()) {
@@ -622,25 +622,25 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				mon.worked(1);
 			}
 			// Create the file
-			IResource packageResource = getPackageFragment().getResource();
-			IFolder folder = (IFolder) packageResource;
-			IFile sarlFile = folder.getFile(
+			final IResource packageResource = getPackageFragment().getResource();
+			final IFolder folder = (IFolder) packageResource;
+			final IFile sarlFile = folder.getFile(
 					getTypeName() + "." //$NON-NLS-1$
 					+ AbstractNewSarlElementWizardPage.this.sarlFileExtension);
-			URI sarlUri = AbstractNewSarlElementWizardPage.this.storage2UriMapper.getUri(sarlFile);
-			ResourceSet resourceSet = AbstractNewSarlElementWizardPage.this.resourceSetFactory.get(
+			final URI sarlUri = AbstractNewSarlElementWizardPage.this.storage2UriMapper.getUri(sarlFile);
+			final ResourceSet resourceSet = AbstractNewSarlElementWizardPage.this.resourceSetFactory.get(
 					getJavaProject().getProject());
-			Resource ecoreResource = resourceSet.createResource(sarlUri);
+			final Resource ecoreResource = resourceSet.createResource(sarlUri);
 			mon.worked(1);
 
 			// Create the file content
-			ICompilationUnit compilationUnit = getCompilationUnitStub();
-			String lineSeparator = AbstractNewSarlElementWizardPage.this.whitespaceInformationProvider
+			final ICompilationUnit compilationUnit = getCompilationUnitStub();
+			final String lineSeparator = AbstractNewSarlElementWizardPage.this.whitespaceInformationProvider
 					.getLineSeparatorInformation(sarlUri).getLineSeparator();
-			String fileComment = getFileComment(compilationUnit, lineSeparator);
-			String typeComment = getTypeComment(compilationUnit, lineSeparator);
+			final String fileComment = getFileComment(compilationUnit, lineSeparator);
+			final String typeComment = getTypeComment(compilationUnit, lineSeparator);
 			getTypeContent(ecoreResource, typeComment);
-			byte[] content;
+			final byte[] content;
 			try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 				if (!Strings.isNullOrEmpty(fileComment)) {
 					baos.write(fileComment.getBytes());
@@ -671,9 +671,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	protected void readSettings() {
 		boolean createConstructors = false;
 		boolean createUnimplemented = true;
-		IDialogSettings dialogSettings = getDialogSettings();
+		final IDialogSettings dialogSettings = getDialogSettings();
 		if (dialogSettings != null) {
-			IDialogSettings section = dialogSettings.getSection(getName());
+			final IDialogSettings section = dialogSettings.getSection(getName());
 			if (section != null) {
 				createConstructors = section.getBoolean(SETTINGS_CREATECONSTR);
 				createUnimplemented = section.getBoolean(SETTINGS_CREATEUNIMPLEMENTED);
@@ -685,7 +685,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	/** Save the settings of the dialog box.
 	 */
 	protected void saveSettings() {
-		IDialogSettings dialogSettings = getDialogSettings();
+		final IDialogSettings dialogSettings = getDialogSettings();
 		if (dialogSettings != null) {
 			IDialogSettings section = dialogSettings.getSection(getName());
 			if (section == null) {
@@ -697,8 +697,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	}
 
 	private ICompilationUnit getCompilationUnitStub() {
-		String compilationUnitName = getCompilationUnitName(getTypeName());
-		return new CompilationUnit((PackageFragment) getPackageFragment(), compilationUnitName, DefaultWorkingCopyOwner.PRIMARY);
+		final String compilationUnitName = getCompilationUnitName(getTypeName());
+		return new CompilationUnit((PackageFragment) getPackageFragment(), compilationUnitName,
+				DefaultWorkingCopyOwner.PRIMARY);
 	}
 
 	/** Invoked for retreiving the definition of the new type.
@@ -720,7 +721,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			boolean enableConstructors, boolean enableInherited) {
 		this.isConstructorCreationEnabled = enableConstructors;
 		this.isInheritedCreationEnabled = enableInherited;
-		String[] buttonNames;
+		final String[] buttonNames;
 		if (enableConstructors && enableInherited) {
 			buttonNames = new String[] {
 				Messages.AbstractNewSarlElementWizardPage_0,
@@ -731,7 +732,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				Messages.AbstractNewSarlElementWizardPage_1,
 			};
 		} else {
-			assert (enableConstructors);
+			assert enableConstructors;
 			buttonNames = new String[] {
 				Messages.AbstractNewSarlElementWizardPage_0,
 			};
@@ -739,12 +740,12 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		this.methodStubsButtons = new SelectionButtonDialogFieldGroup(SWT.CHECK, buttonNames, 1);
 		this.methodStubsButtons.setLabelText(Messages.AbstractNewSarlElementWizardPage_2);
 
-		Control labelControl = this.methodStubsButtons.getLabelControl(composite);
+		final Control labelControl = this.methodStubsButtons.getLabelControl(composite);
 		LayoutUtil.setHorizontalSpan(labelControl, columns);
 
 		DialogField.createEmptySpace(composite);
 
-		Control buttonGroup = this.methodStubsButtons.getSelectionButtonsGroup(composite);
+		final Control buttonGroup = this.methodStubsButtons.getSelectionButtonsGroup(composite);
 		LayoutUtil.setHorizontalSpan(buttonGroup, columns - 1);
 	}
 

@@ -80,11 +80,11 @@ public class SarlCompiler extends XtendCompiler {
 
 		String formatString = null;
 		final List<JvmTypeReference> importedTypes = Lists.newArrayListWithCapacity(2);
-		for (JvmAnnotationValue annotationValue: inlineAnnotation.getValues()) {
+		for (final JvmAnnotationValue annotationValue: inlineAnnotation.getValues()) {
 			if (INLINE_VALUE_NAME.equals(annotationValue.getValueName())) {
 				formatString = ((JvmStringAnnotationValue) annotationValue).getValues().get(0);
 			} else if (INLINE_IMPORTED_NAME.equals(annotationValue.getValueName())) {
-				JvmTypeAnnotationValue typeAnnotationValue = (JvmTypeAnnotationValue) annotationValue;
+				final JvmTypeAnnotationValue typeAnnotationValue = (JvmTypeAnnotationValue) annotationValue;
 				importedTypes.addAll(typeAnnotationValue.getValues());
 			}
 		}
@@ -101,7 +101,7 @@ public class SarlCompiler extends XtendCompiler {
 		final int numberFormalParameters;
 		JvmFormalParameter formalVariadicParameter = null;
 		if (calledFeature instanceof JvmExecutable) {
-			JvmExecutable jvmexec = (JvmExecutable) calledFeature;
+			final JvmExecutable jvmexec = (JvmExecutable) calledFeature;
 			numberFormalParameters = jvmexec.getParameters().size();
 			if (numberFormalParameters > 0) {
 				formalVariadicParameter = jvmexec.getParameters().get(numberFormalParameters - 1);

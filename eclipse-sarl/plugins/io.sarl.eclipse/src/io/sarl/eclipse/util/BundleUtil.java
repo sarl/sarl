@@ -79,15 +79,15 @@ public final class BundleUtil {
 		IPath sourcesPath = null;
 		// Not an essential functionality, make it robust
 		try {
-			IPath srcFolderPath = getSrcFolderPath(bundle);
+			final IPath srcFolderPath = getSrcFolderPath(bundle);
 			if (srcFolderPath == null) {
 				//common case, jar file.
-				IPath bundlesParentFolder = bundleLocation.removeLastSegments(1);
-				String binaryJarName = bundleLocation.lastSegment();
-				String symbolicName = bundle.getSymbolicName();
-				String sourceJarName = binaryJarName.replace(symbolicName,
+				final IPath bundlesParentFolder = bundleLocation.removeLastSegments(1);
+				final String binaryJarName = bundleLocation.lastSegment();
+				final String symbolicName = bundle.getSymbolicName();
+				final String sourceJarName = binaryJarName.replace(symbolicName,
 						symbolicName.concat(SOURCE_SUFIX));
-				IPath potentialSourceJar = bundlesParentFolder.append(sourceJarName);
+				final IPath potentialSourceJar = bundlesParentFolder.append(sourceJarName);
 				if (potentialSourceJar.toFile().exists()) {
 					sourcesPath = potentialSourceJar;
 				}
@@ -101,11 +101,11 @@ public final class BundleUtil {
 	}
 
 	private static IPath getBinFolderPath(Bundle bundle) {
-		for (String binFolder : BIN_FOLDERS) {
-			URL binFolderURL = FileLocator.find(bundle, Path.fromPortableString(binFolder), null);
+		for (final String binFolder : BIN_FOLDERS) {
+			final URL binFolderURL = FileLocator.find(bundle, Path.fromPortableString(binFolder), null);
 			if (binFolderURL != null) {
 				try {
-					URL binFolderFileURL = FileLocator.toFileURL(binFolderURL);
+					final URL binFolderFileURL = FileLocator.toFileURL(binFolderURL);
 					return new Path(binFolderFileURL.getPath()).makeAbsolute();
 				} catch (IOException e) {
 					throw new RuntimeException(e);
@@ -116,11 +116,11 @@ public final class BundleUtil {
 	}
 
 	private static IPath getSrcFolderPath(Bundle bundle) {
-		for (String srcFolder : SRC_FOLDERS) {
-			URL srcFolderURL = FileLocator.find(bundle, Path.fromPortableString(srcFolder), null);
+		for (final String srcFolder : SRC_FOLDERS) {
+			final URL srcFolderURL = FileLocator.find(bundle, Path.fromPortableString(srcFolder), null);
 			if (srcFolderURL != null) {
 				try {
-					URL srcFolderFileURL = FileLocator.toFileURL(srcFolderURL);
+					final URL srcFolderFileURL = FileLocator.toFileURL(srcFolderURL);
 					return new Path(srcFolderFileURL.getPath()).makeAbsolute();
 				} catch (IOException e) {
 					throw new RuntimeException(e);
@@ -166,15 +166,15 @@ public final class BundleUtil {
 		IPath sourcesPath = null;
 		// Not an essential functionality, make it robust
 		try {
-			IPath srcFolderPath = getSrcFolderPath(bundle);
+			final IPath srcFolderPath = getSrcFolderPath(bundle);
 			if (srcFolderPath == null) {
 				//common case, jar file.
-				IPath bundlesParentFolder = bundleLocation.removeLastSegments(1);
-				String binaryJarName = bundleLocation.lastSegment();
-				String symbolicName = bundle.getSymbolicName();
-				String sourceJarName = binaryJarName.replace(symbolicName,
+				final IPath bundlesParentFolder = bundleLocation.removeLastSegments(1);
+				final String binaryJarName = bundleLocation.lastSegment();
+				final String symbolicName = bundle.getSymbolicName();
+				final String sourceJarName = binaryJarName.replace(symbolicName,
 						symbolicName.concat(JAVADOC_SUFIX));
-				IPath potentialSourceJar = bundlesParentFolder.append(sourceJarName);
+				final IPath potentialSourceJar = bundlesParentFolder.append(sourceJarName);
 				if (potentialSourceJar.toFile().exists()) {
 					sourcesPath = potentialSourceJar;
 				}

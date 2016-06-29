@@ -57,9 +57,9 @@ public class FieldInitializerUtil {
 	public IJavaElement getSelectedResource(IStructuredSelection selection) {
 		IJavaElement elem = null;
 		if (selection != null && !selection.isEmpty()) {
-			Object object = selection.getFirstElement();
+			final Object object = selection.getFirstElement();
 			if (object instanceof IAdaptable) {
-				IAdaptable adaptable = (IAdaptable) object;
+				final IAdaptable adaptable = (IAdaptable) object;
 				elem = adaptable.getAdapter(IJavaElement.class);
 				if (elem == null) {
 					elem = getPackage(adaptable);
@@ -67,20 +67,20 @@ public class FieldInitializerUtil {
 			}
 		}
 		if (elem == null) {
-			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 			IWorkbenchPart part = activePage.getActivePart();
 			if (part instanceof ContentOutline) {
 				part = activePage.getActiveEditor();
 			}
 			if (part instanceof XtextEditor) {
-				IXtextDocument doc = ((XtextEditor) part).getDocument();
-				IFile file = doc.getAdapter(IFile.class);
+				final IXtextDocument doc = ((XtextEditor) part).getDocument();
+				final IFile file = doc.getAdapter(IFile.class);
 				elem = getPackage(file);
 			}
 		}
 		if (elem == null || elem.getElementType() == IJavaElement.JAVA_MODEL) {
 			try {
-				IJavaProject[] projects = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProjects();
+				final IJavaProject[] projects = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProjects();
 				if (projects.length == 1) {
 					elem = projects[0];
 				}

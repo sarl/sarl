@@ -41,11 +41,11 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer {
 
 	@Override
 	protected Collection<ExitPoint> _exitPoints(XAbstractFeatureCall expression) {
-		Collection<ExitPoint> exitPoints = super._exitPoints(expression);
+		final Collection<ExitPoint> exitPoints = super._exitPoints(expression);
 		if (isNotEmpty(exitPoints)) {
 			return exitPoints;
 		}
-		JvmIdentifiableElement element = expression.getFeature();
+		final JvmIdentifiableElement element = expression.getFeature();
 		if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(element)) {
 			return Collections.<ExitPoint>singletonList(new ExitPoint(expression, true));
 		}

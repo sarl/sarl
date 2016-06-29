@@ -81,7 +81,7 @@ public class SARLProjectSARLNode implements ISARLProjectElement {
 	}
 
     private static ISARLProjectElement[] initializeChildren() {
-		ISARLProjectElement[] ichildren = new ISARLProjectElement[0];
+    	final ISARLProjectElement[] ichildren = new ISARLProjectElement[0];
 		return ichildren;
     }
 

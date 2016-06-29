@@ -57,7 +57,7 @@ abstract class AgentTrait {
 	 */
 	@Pure
 	protected String attributesToString() {
-		StringBuilder result = new StringBuilder();
+		final StringBuilder result = new StringBuilder();
 		result.append("owner = "); //$NON-NLS-1$
 		result.append(getOwner());
 		return result.toString();

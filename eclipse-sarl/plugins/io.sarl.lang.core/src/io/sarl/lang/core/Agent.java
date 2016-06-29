@@ -31,6 +31,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.SarlSpecification;
 
+
 /**
  * The definition of the notion of Agent in SARL.
  * An agent is an autonomous entity having some intrinsic skills to realize
@@ -66,7 +67,7 @@ public class Agent implements Identifiable {
 		this.parentID = parentID;
 		this.id = (agentID == null) ? UUID.randomUUID() : agentID;
 		if (provider != null) {
-			Map<Class<? extends Capacity>, Skill> builtinCapacities = provider.getBuiltinCapacities(this);
+			final Map<Class<? extends Capacity>, Skill> builtinCapacities = provider.getBuiltinCapacities(this);
 			if (builtinCapacities != null && !builtinCapacities.isEmpty()) {
 				this.capacities.putAll(builtinCapacities);
 			}
@@ -79,7 +80,7 @@ public class Agent implements Identifiable {
 	 * @return the string representation of the attributes of this Event.
 	 */
 	protected String attributesToString() {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		builder.append("id = "); //$NON-NLS-1$
 		builder.append(this.id);
 		builder.append(", parentID="); //$NON-NLS-1$
@@ -129,7 +130,7 @@ public class Agent implements Identifiable {
 					+ capacity.getName());
 		}
 		skill.setOwner(this);
-		Skill oldS = this.capacities.put(capacity, skill);
+		final Skill oldS = this.capacities.put(capacity, skill);
 		if (oldS != null) {
 			oldS.uninstall();
 		}
@@ -156,7 +157,7 @@ public class Agent implements Identifiable {
 	 */
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		assert capacity != null;
-		Skill skill = this.capacities.remove(capacity);
+		final Skill skill = this.capacities.remove(capacity);
 		if (skill != null) {
 			skill.uninstall();
 		}
@@ -179,7 +180,7 @@ public class Agent implements Identifiable {
 	@Pure
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
-		S skill = capacity.cast(this.capacities.get(capacity));
+		final S skill = capacity.cast(this.capacities.get(capacity));
 		if (skill == null) {
 			throw new UnimplementedCapacityException(capacity, this.getID());
 		}

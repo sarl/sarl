@@ -70,6 +70,7 @@ import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationElementValuePair;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
@@ -146,13 +147,13 @@ public final class Utils {
 			Map<ActionPrototype, JvmOperation> operations,
 			Map<String, JvmField> fields,
 			IActionPrototypeProvider sarlSignatureProvider) {
-		for (JvmFeature feature : jvmElement.getAllFeatures()) {
+		for (final JvmFeature feature : jvmElement.getAllFeatures()) {
 			if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName())) { //$NON-NLS-1$
 				if (operations != null && feature instanceof JvmOperation) {
-					JvmOperation operation = (JvmOperation) feature;
-					ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
+					final JvmOperation operation = (JvmOperation) feature;
+					final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 							operation.isVarArgs(), operation.getParameters());
-					ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
+					final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
 							operation.getSimpleName(), sig);
 					operations.put(actionKey, operation);
 				} else if (fields != null && feature instanceof JvmField) {
@@ -187,15 +188,15 @@ public final class Utils {
 			IActionPrototypeProvider sarlSignatureProvider) {
 		// Get the operations that must be implemented
 		if (operationsToImplement != null) {
-			for (JvmTypeReference interfaceReference : jvmElement.getExtendedInterfaces()) {
-				for (JvmFeature feature : ((JvmGenericType) interfaceReference.getType()).getAllFeatures()) {
+			for (final JvmTypeReference interfaceReference : jvmElement.getExtendedInterfaces()) {
+				for (final JvmFeature feature : ((JvmGenericType) interfaceReference.getType()).getAllFeatures()) {
 					if (!"java.lang.Object".equals(//$NON-NLS-1$
 							feature.getDeclaringType().getQualifiedName())) {
 						if (feature instanceof JvmOperation) {
-							JvmOperation operation = (JvmOperation) feature;
-							ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
+							final JvmOperation operation = (JvmOperation) feature;
+							final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 									operation.isVarArgs(), operation.getParameters());
-							ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
+							final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
 									operation.getSimpleName(), sig);
 							operationsToImplement.put(actionKey, operation);
 						}
@@ -206,17 +207,17 @@ public final class Utils {
 
 		// Check on the implemented features, inherited from the super type
 		if (jvmElement.getExtendedClass() != null) {
-			JvmGenericType parentType = (JvmGenericType) jvmElement.getExtendedClass().getType();
-			for (JvmFeature feature : parentType.getAllFeatures()) {
+			final JvmGenericType parentType = (JvmGenericType) jvmElement.getExtendedClass().getType();
+			for (final JvmFeature feature : parentType.getAllFeatures()) {
 				if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName()) //$NON-NLS-1$
 						&& isVisible(jvmElement, feature)
 						&& !isHiddenMember(feature.getSimpleName())) {
 					if (feature instanceof JvmOperation) {
 						if (!feature.isStatic()) {
-							JvmOperation operation = (JvmOperation) feature;
-							ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
+							final JvmOperation operation = (JvmOperation) feature;
+							final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 									operation.isVarArgs(), operation.getParameters());
-							ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
+							final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
 									feature.getSimpleName(), sig);
 							if (operation.isAbstract()) {
 								if (operationsToImplement != null) {
@@ -245,8 +246,8 @@ public final class Utils {
 			}
 
 			if (superConstructors != null) {
-				for (JvmConstructor cons : parentType.getDeclaredConstructors()) {
-					ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
+				for (final JvmConstructor cons : parentType.getDeclaredConstructors()) {
+					final ActionParameterTypes sig = sarlSignatureProvider.createParameterTypesFromJvmModel(
 							cons.isVarArgs(), cons.getParameters());
 					superConstructors.put(sig,  cons);
 				}
@@ -364,7 +365,7 @@ public final class Utils {
 	 * @return <code>true</code> if the pointed element is a class type.
 	 */
 	public static boolean isClass(LightweightTypeReference typeRef) {
-		JvmType t = typeRef.getType();
+		final JvmType t = typeRef.getType();
 		if (t instanceof JvmGenericType) {
 			return !((JvmGenericType) t).isInterface();
 		}
@@ -437,21 +438,21 @@ public final class Utils {
 			boolean enablePrimitiveWidening, boolean enableVoidMatchingNull,
 			boolean allowSynonyms) {
 		if (enableVoidMatchingNull) {
-			boolean fromVoid = (fromType == null) || (fromType.isPrimitiveVoid());
-			boolean toVoid = (toType == null) || (toType.isPrimitiveVoid());
+			final boolean fromVoid = fromType == null || fromType.isPrimitiveVoid();
+			final boolean toVoid = toType == null || toType.isPrimitiveVoid();
 			if (fromVoid) {
 				return toVoid;
 			}
 			if (toVoid) {
 				return fromVoid;
 			}
-			assert (fromType != null);
-			assert (toType != null);
+			assert fromType != null;
+			assert toType != null;
 		} else if ((fromType == null || toType == null)
 				|| (fromType.isPrimitiveVoid() != toType.isPrimitiveVoid())) {
 			return false;
 		}
-		TypeConformanceComputationArgument conform = new TypeConformanceComputationArgument(
+		final TypeConformanceComputationArgument conform = new TypeConformanceComputationArgument(
 				false, false, true, enablePrimitiveWidening, false, allowSynonyms);
 		if (((fromType.getType() instanceof JvmDeclaredType || fromType.isPrimitive())
 				// if one of the types is an interface and the other is a non final class
@@ -494,9 +495,10 @@ public final class Utils {
 		if (typeRef == null) {
 			return null;
 		}
-		StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(services, typeRef);
-		LightweightTypeReferenceFactory factory = new LightweightTypeReferenceFactory(owner, keepUnboundWildcardInformation);
-		LightweightTypeReference reference = factory.toLightweightReference(typeRef);
+		final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(services, typeRef);
+		final LightweightTypeReferenceFactory factory = new LightweightTypeReferenceFactory(owner,
+				keepUnboundWildcardInformation);
+		final LightweightTypeReference reference = factory.toLightweightReference(typeRef);
 		return reference;
 	}
 
@@ -508,13 +510,13 @@ public final class Utils {
 	 *     value.
 	 */
 	public static String annotationString(JvmAnnotationTarget op, Class<?> annotationType) {
-		String name = annotationType.getName();
-		for (JvmAnnotationReference aref : op.getAnnotations()) {
-			JvmAnnotationType an = aref.getAnnotation();
+		final String name = annotationType.getName();
+		for (final JvmAnnotationReference aref : op.getAnnotations()) {
+			final JvmAnnotationType an = aref.getAnnotation();
 			if (name != null && name.equals(an.getQualifiedName())) {
-				for (JvmAnnotationValue value : aref.getValues()) {
+				for (final JvmAnnotationValue value : aref.getValues()) {
 					if (value instanceof JvmStringAnnotationValue) {
-						for (String strValue : ((JvmStringAnnotationValue) value).getValues()) {
+						for (final String strValue : ((JvmStringAnnotationValue) value).getValues()) {
 							if (strValue != null) {
 								return strValue;
 							}
@@ -533,14 +535,14 @@ public final class Utils {
 	 * @return the values of the annotation, never <code>null</code>.
 	 */
 	public static List<String> annotationStrings(JvmAnnotationTarget op, Class<?> annotationType) {
-		List<String> values = new ArrayList<>();
-		String name = annotationType.getName();
-		for (JvmAnnotationReference aref : op.getAnnotations()) {
-			JvmAnnotationType an = aref.getAnnotation();
+		final List<String> values = new ArrayList<>();
+		final String name = annotationType.getName();
+		for (final JvmAnnotationReference aref : op.getAnnotations()) {
+			final JvmAnnotationType an = aref.getAnnotation();
 			if (name != null && name.equals(an.getQualifiedName())) {
-				for (JvmAnnotationValue value : aref.getValues()) {
+				for (final JvmAnnotationValue value : aref.getValues()) {
 					if (value instanceof JvmStringAnnotationValue) {
-						for (String strValue : ((JvmStringAnnotationValue) value).getValues()) {
+						for (final String strValue : ((JvmStringAnnotationValue) value).getValues()) {
 							if (strValue != null) {
 								values.add(strValue);
 							}
@@ -559,14 +561,14 @@ public final class Utils {
 	 * @return the values of the annotation, never <code>null</code>.
 	 */
 	public static List<JvmTypeReference> annotationClasses(JvmAnnotationTarget op, Class<?> annotationType) {
-		List<JvmTypeReference> values = new ArrayList<>();
-		String name = annotationType.getName();
-		for (JvmAnnotationReference aref : op.getAnnotations()) {
-			JvmAnnotationType an = aref.getAnnotation();
+		final List<JvmTypeReference> values = new ArrayList<>();
+		final String name = annotationType.getName();
+		for (final JvmAnnotationReference aref : op.getAnnotations()) {
+			final JvmAnnotationType an = aref.getAnnotation();
 			if (name != null && name.equals(an.getQualifiedName())) {
-				for (JvmAnnotationValue value : aref.getValues()) {
+				for (final JvmAnnotationValue value : aref.getValues()) {
 					if (value instanceof JvmTypeAnnotationValue) {
-						for (JvmTypeReference strValue : ((JvmTypeAnnotationValue) value).getValues()) {
+						for (final JvmTypeReference strValue : ((JvmTypeAnnotationValue) value).getValues()) {
 							if (strValue != null) {
 								values.add(strValue);
 							}
@@ -586,9 +588,9 @@ public final class Utils {
 	 *     otherwise <code>false</code>.
 	 */
 	public static boolean hasAnnotation(JvmAnnotationTarget op, Class<?> annotationType) {
-		String name = annotationType.getName();
-		for (JvmAnnotationReference aref : op.getAnnotations()) {
-			JvmAnnotationType an = aref.getAnnotation();
+		final String name = annotationType.getName();
+		for (final JvmAnnotationReference aref : op.getAnnotations()) {
+			final JvmAnnotationType an = aref.getAnnotation();
 			if (name != null && name.equals(an.getQualifiedName())) {
 				return true;
 			}
@@ -604,18 +606,18 @@ public final class Utils {
 	 *     positive integer of <code>v1</code> is greater than <code>v2</code>;
 	 *     {@code 0} if they are strictly equal.
 	 */
+	@Inline(value = "VersionInfo.getInstance($1).compareTo(VersionInfo.getInstance($2))",
+			imported = {VersionInfo.class})
 	public static int compareVersions(String v1, String v2) {
-		VersionInfo vi1 = VersionInfo.getInstance(v1);
-		VersionInfo vi2 = VersionInfo.getInstance(v2);
-		return vi1.compareTo(vi2);
+		return VersionInfo.getInstance(v1).compareTo(VersionInfo.getInstance(v2));
 	}
 
 	private static void addAnnotationToSignature(StringBuilder textRepresentation, SARLGrammarAccess elements,
 			ISerializer serializer, ImportManager importManager, XAnnotation annotation) {
-		XAnnotationElements annotationElements = elements.getXAnnotationAccess();
+		final XAnnotationElements annotationElements = elements.getXAnnotationAccess();
 		textRepresentation.append(annotationElements.getCommercialAtKeyword_1());
 		textRepresentation.append(getSignatureType(annotation.getAnnotationType(), importManager));
-		XExpression value = annotation.getValue();
+		final XExpression value = annotation.getValue();
 		if (value != null) {
 			textRepresentation.append(annotationElements.getLeftParenthesisKeyword_3_0().getValue());
 			textRepresentation.append(serializer.serialize(value).trim());
@@ -623,7 +625,7 @@ public final class Utils {
 		} else if (!annotation.getElementValuePairs().isEmpty()) {
 			textRepresentation.append(annotationElements.getLeftParenthesisKeyword_3_0().getValue());
 			boolean addComa = false;
-			for (XAnnotationElementValuePair pair : annotation.getElementValuePairs()) {
+			for (final XAnnotationElementValuePair pair : annotation.getElementValuePairs()) {
 				if (addComa) {
 					textRepresentation.append(annotationElements.getCommaKeyword_3_1_0_1_0().getValue());
 				} else {
@@ -656,14 +658,14 @@ public final class Utils {
 		} catch (Throwable exception) {
 			// No working, perhaps the context's of the signature is unknown
 		}
-		ActionElements signatureElements = grammarAccess.getActionAccess();
-		StringBuilder textRepresentation = new StringBuilder();
+		final ActionElements signatureElements = grammarAccess.getActionAccess();
+		final StringBuilder textRepresentation = new StringBuilder();
 		// Annotations
-		for (XAnnotation annotation : signature.getAnnotations()) {
+		for (final XAnnotation annotation : signature.getAnnotations()) {
 			addAnnotationToSignature(textRepresentation, grammarAccess, serializer, importManager, annotation);
 		}
 		// Modifiers
-		for (String modifier : signature.getModifiers()) {
+		for (final String modifier : signature.getModifiers()) {
 			textRepresentation.append(modifier);
 			textRepresentation.append(' ');
 		}
@@ -671,7 +673,7 @@ public final class Utils {
 		if (!signature.getTypeParameters().isEmpty()) {
 			boolean addComa = false;
 			textRepresentation.append(signatureElements.getLessThanSignKeyword_5_0().getValue());
-			for (JvmTypeParameter typeParameter : signature.getTypeParameters()) {
+			for (final JvmTypeParameter typeParameter : signature.getTypeParameters()) {
 				if (addComa) {
 					textRepresentation.append(signatureElements.getCommaKeyword_5_2_0().getValue());
 					textRepresentation.append(' ');
@@ -688,7 +690,7 @@ public final class Utils {
 		// Parameters
 		if (!signature.getParameters().isEmpty()) {
 			textRepresentation.append(signatureElements.getLeftParenthesisKeyword_7_0().getValue());
-			int idx = signature.getParameters().size() - 1;
+			final int idx = signature.getParameters().size() - 1;
 			for (int i = 0; i < idx; ++i) {
 				addParamToSignature(textRepresentation, signature.getParameters().get(i), grammarAccess,
 						importManager, serializer);
@@ -700,7 +702,7 @@ public final class Utils {
 			textRepresentation.append(signatureElements.getRightParenthesisKeyword_7_2().getValue());
 		}
 		// Return type
-		JvmTypeReference returnType = signature.getReturnType();
+		final JvmTypeReference returnType = signature.getReturnType();
 		if (returnType != null && !"void".equals(returnType.getIdentifier())) { //$NON-NLS-1$
 			textRepresentation.append(' ');
 			textRepresentation.append(signatureElements.getColonKeyword_8_0().getValue());
@@ -713,7 +715,7 @@ public final class Utils {
 			textRepresentation.append(signatureElements.getThrowsKeyword_9_0_0().getValue());
 			textRepresentation.append(' ');
 			boolean addComa = false;
-			for (JvmTypeReference eventType : signature.getExceptions()) {
+			for (final JvmTypeReference eventType : signature.getExceptions()) {
 				if (addComa) {
 					textRepresentation.append(signatureElements.getCommaKeyword_9_0_2_0().getValue());
 					textRepresentation.append(' ');
@@ -729,7 +731,7 @@ public final class Utils {
 			textRepresentation.append(signatureElements.getFiresKeyword_9_1_0().getValue());
 			textRepresentation.append(' ');
 			boolean addComa = false;
-			for (JvmTypeReference eventType : signature.getFiredEvents()) {
+			for (final JvmTypeReference eventType : signature.getFiredEvents()) {
 				if (addComa) {
 					textRepresentation.append(signatureElements.getCommaKeyword_9_1_2_0().getValue());
 					textRepresentation.append(' ');
@@ -744,7 +746,7 @@ public final class Utils {
 
 	private static void addParamToSignature(StringBuilder signature, XtendParameter parameter,
 			SARLGrammarAccess grammarAccess, ImportManager importManager, ISerializer serializer) {
-		ParameterElements elements = grammarAccess.getParameterAccess();
+		final ParameterElements elements = grammarAccess.getParameterAccess();
 		signature.append(parameter.getName());
 		signature.append(' ');
 		signature.append(elements.getColonKeyword_4().getValue());
@@ -753,7 +755,7 @@ public final class Utils {
 		if (parameter.isVarArg()) {
 			signature.append(grammarAccess.getParameterAccess().getVarArgAsteriskKeyword_6_0_0().getValue());
 		} else if (parameter instanceof SarlFormalParameter) {
-			SarlFormalParameter sarlParameter = (SarlFormalParameter) parameter;
+			final SarlFormalParameter sarlParameter = (SarlFormalParameter) parameter;
 			if (sarlParameter.getDefaultValue() != null) {
 				signature.append(' ');
 				signature.append(elements.getEqualsSignKeyword_6_1_0().getValue());
@@ -783,7 +785,7 @@ public final class Utils {
 			"checkstyle:magicnumber",
 			"checkstyle:booleanexpressioncomplexity"})
 	public static long computeSerialVersionUID(JvmGenericType jvm) {
-		StringBuilder serialVersionUIDBuffer = new StringBuilder();
+		final StringBuilder serialVersionUIDBuffer = new StringBuilder();
 
 		serialVersionUIDBuffer.append(jvm.getQualifiedName());
 
@@ -800,37 +802,37 @@ public final class Utils {
 		}
 		serialVersionUIDBuffer.append(bitset.toByteArray());
 
-		SortedSet<JvmTypeReference> superTypes = CollectionLiterals.newTreeSet(new JvmTypeReferenceComparator());
+		final SortedSet<JvmTypeReference> superTypes = CollectionLiterals.newTreeSet(new JvmTypeReferenceComparator());
 		superTypes.addAll(jvm.getSuperTypes());
 
-		SortedSet<JvmField> fields = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
-		SortedSet<JvmConstructor> constructors = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
-		SortedSet<JvmOperation> operations = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
-		for (JvmMember member : jvm.getMembers()) {
+		final SortedSet<JvmField> fields = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
+		final SortedSet<JvmConstructor> constructors = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
+		final SortedSet<JvmOperation> operations = CollectionLiterals.newTreeSet(new JvmIdentifiableComparator());
+		for (final JvmMember member : jvm.getMembers()) {
 			if (member instanceof JvmField) {
-				JvmField field = (JvmField) member;
+				final JvmField field = (JvmField) member;
 				if ((field.getVisibility() != JvmVisibility.PRIVATE)
 						|| (!field.isStatic() && !field.isTransient())) {
 					fields.add(field);
 				}
 			} else if (member instanceof JvmConstructor) {
-				JvmConstructor constructor = (JvmConstructor) member;
+				final JvmConstructor constructor = (JvmConstructor) member;
 				if (constructor.getVisibility() != JvmVisibility.PRIVATE) {
 					constructors.add(constructor);
 				}
 			} else if (member instanceof JvmOperation) {
-				JvmOperation operation = (JvmOperation) member;
+				final JvmOperation operation = (JvmOperation) member;
 				if (operation.getVisibility() != JvmVisibility.PRIVATE) {
 					operations.add(operation);
 				}
 			}
 		}
 
-		for (JvmTypeReference superType : superTypes) {
+		for (final JvmTypeReference superType : superTypes) {
 			serialVersionUIDBuffer.append(superType.getQualifiedName());
 		}
 
-		for (JvmField field : fields) {
+		for (final JvmField field : fields) {
 			serialVersionUIDBuffer.append(field.getSimpleName());
 			bitset = new BitSet(32);
 			bitset.set(field.getVisibility().getValue());
@@ -850,7 +852,7 @@ public final class Utils {
 			serialVersionUIDBuffer.append(field.getType().getIdentifier());
 		}
 
-		for (JvmConstructor constructor : constructors) {
+		for (final JvmConstructor constructor : constructors) {
 			bitset = new BitSet(32);
 			bitset.set(constructor.getVisibility().getValue());
 			if (constructor.isStatic()) {
@@ -860,12 +862,12 @@ public final class Utils {
 				bitset.set(5);
 			}
 			serialVersionUIDBuffer.append(bitset.toByteArray());
-			for (JvmFormalParameter parameter : constructor.getParameters()) {
+			for (final JvmFormalParameter parameter : constructor.getParameters()) {
 				serialVersionUIDBuffer.append(parameter.getParameterType().getIdentifier());
 			}
 		}
 
-		for (JvmOperation operation : operations) {
+		for (final JvmOperation operation : operations) {
 			bitset = new BitSet(32);
 			bitset.set(operation.getVisibility().getValue());
 			if (operation.isStatic()) {
@@ -890,15 +892,15 @@ public final class Utils {
 				bitset.set(10);
 			}
 			serialVersionUIDBuffer.append(bitset.toByteArray());
-			for (JvmFormalParameter parameter : operation.getParameters()) {
+			for (final JvmFormalParameter parameter : operation.getParameters()) {
 				serialVersionUIDBuffer.append(parameter.getParameterType().getIdentifier());
 			}
 		}
 
 		long key = 1L;
 		try {
-			byte[] uniqueKey = serialVersionUIDBuffer.toString().getBytes();
-			byte[] sha = MessageDigest.getInstance("SHA").digest(uniqueKey); //$NON-NLS-1$
+			final byte[] uniqueKey = serialVersionUIDBuffer.toString().getBytes();
+			final byte[] sha = MessageDigest.getInstance("SHA").digest(uniqueKey); //$NON-NLS-1$
 			key = ((sha[0] >>> 24) & 0xFF)
 					| ((sha[0] >>> 16) & 0xFF) << 8
 					| ((sha[0] >>> 8) & 0xFF) << 16
@@ -944,7 +946,7 @@ public final class Utils {
 	 */
 	public static boolean hasAbstractMember(XtendTypeDeclaration declaration) {
 		if (declaration != null) {
-			for (XtendMember member : declaration.getMembers()) {
+			for (final XtendMember member : declaration.getMembers()) {
 				if (member instanceof XtendFunction) {
 					if (((XtendFunction) member).isAbstract()) {
 						return true;
@@ -985,12 +987,12 @@ public final class Utils {
 	 */
 	public static String getSARLLibraryVersionOnClasspath(TypeReferences typeReferences, Notifier context) {
 		try {
-			JvmType type = typeReferences.findDeclaredType(SARLVersion.class.getName(), context);
+			final JvmType type = typeReferences.findDeclaredType(SARLVersion.class.getName(), context);
 			if (type instanceof JvmDeclaredType) {
 				JvmField versionField = null;
-				Iterator<JvmField> iterator = ((JvmDeclaredType) type).getDeclaredFields().iterator();
+				final Iterator<JvmField> iterator = ((JvmDeclaredType) type).getDeclaredFields().iterator();
 				while (versionField == null && iterator.hasNext()) {
-					JvmField field = iterator.next();
+					final JvmField field = iterator.next();
 					if ("SPECIFICATION_RELEASE_VERSION_STRING".equals(field.getSimpleName())) { //$NON-NLS-1$
 						versionField = field;
 					}

@@ -75,13 +75,13 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 	 * @param type - the type of the modification.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor, RemovalType type) {
-		String[] data = issue.getData();
+		final String[] data = issue.getData();
 		RemovalType removalType = type;
 		String redundantName = null;
 		if (data != null && data.length >= 1) {
 			redundantName = data[0];
 			if (removalType == null && data.length >= 2) {
-				String mode = data[1];
+				final String mode = data[1];
 				if (!Strings.isNullOrEmpty(mode)) {
 					try {
 						removalType = RemovalType.valueOf(mode.toUpperCase());
@@ -94,14 +94,14 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 		if (removalType == null) {
 			removalType = RemovalType.OTHER;
 		}
-		String msg;
+		final String msg;
 		if (Strings.isNullOrEmpty(redundantName)) {
 			msg = Messages.SARLQuickfixProvider_0;
 		} else {
 			msg = MessageFormat.format(Messages.SARLQuickfixProvider_6, redundantName);
 		}
 
-		ImplementedTypeRemoveModification modification = new ImplementedTypeRemoveModification(removalType);
+		final ImplementedTypeRemoveModification modification = new ImplementedTypeRemoveModification(removalType);
 		modification.setIssue(issue);
 		modification.setTools(provider);
 		acceptor.accept(issue,
@@ -113,10 +113,10 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		IXtextDocument document = context.getXtextDocument();
-		SARLQuickfixProvider tools = getTools();
-		Issue issue = getIssue();
-		String sep = tools.getGrammarAccess().getCapacityAccess().getCommaKeyword_5_2_0().getValue();
+		final IXtextDocument document = context.getXtextDocument();
+		final SARLQuickfixProvider tools = getTools();
+		final Issue issue = getIssue();
+		final String sep = tools.getGrammarAccess().getCapacityAccess().getCommaKeyword_5_2_0().getValue();
 		switch (this.type) {
 		case PRE:
 			tools.removeToPreviousSeparator(issue, document, sep);

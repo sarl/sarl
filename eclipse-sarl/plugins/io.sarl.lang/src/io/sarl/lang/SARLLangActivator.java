@@ -61,7 +61,7 @@ public class SARLLangActivator implements BundleActivator {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		singleton = this;
-		ResourceBundle bundle = ResourceBundle.getBundle("OSGI-INF/l10n/bundle"); //$NON-NLS-1$
+		final ResourceBundle bundle = ResourceBundle.getBundle("OSGI-INF/l10n/bundle"); //$NON-NLS-1$
 		this.minimalJdkVersion = bundle.getString("min.jdk.version"); //$NON-NLS-1$
 		this.minimalXtextVersion = bundle.getString("min.xtext.version"); //$NON-NLS-1$
 	}

@@ -60,13 +60,13 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 	@Override
 	protected Iterable<MemberDescription> getMembers() {
 		if (this.constructor == null) {
-			AbstractRule rule = getConstructorRule();
-			String simpleName = Strings.toFirstUpper(rule.getName());
-			TypeReference builderInterface = getElementBuilderInterface(simpleName);
-			TypeReference builderImpl = getElementBuilderImpl(simpleName);
-			TypeReference builderImplCustom = getElementBuilderImplCustom(simpleName);
-			EClassifier classifier = getGeneratedTypeFor(rule);
-			TypeReference generatedType = newTypeReference(classifier);
+			final AbstractRule rule = getConstructorRule();
+			final String simpleName = Strings.toFirstUpper(rule.getName());
+			final TypeReference builderInterface = getElementBuilderInterface(simpleName);
+			final TypeReference builderImpl = getElementBuilderImpl(simpleName);
+			final TypeReference builderImplCustom = getElementBuilderImplCustom(simpleName);
+			final EClassifier classifier = getGeneratedTypeFor(rule);
+			final TypeReference generatedType = newTypeReference(classifier);
 			this.constructor = new MemberDescription(
 					rule.getName(), simpleName, builderInterface, builderImpl,
 					builderImplCustom, generatedType, null);
@@ -79,10 +79,10 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 	 * @return the top elements.
 	 */
 	protected AbstractRule getConstructorRule() {
-		Grammar grammar = getGrammar();
-		Pattern pattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
-		for (AbstractRule rule : GrammarUtil.allRules(grammar)) {
-			Matcher matcher = pattern.matcher(rule.getName());
+		final Grammar grammar = getGrammar();
+		final Pattern pattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
+		for (final AbstractRule rule : GrammarUtil.allRules(grammar)) {
+			final Matcher matcher = pattern.matcher(rule.getName());
 			if (matcher.find()) {
 				return rule;
 			}
@@ -101,10 +101,11 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 	 * @return the rule for a constructor's container.
 	 */
 	private AbstractRule getConstructorContainerRule() {
-		AbstractRule topElementRule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getTopElementRuleName());
-		for (RuleCall ruleCall : GrammarUtil.containedRuleCalls(topElementRule)) {
+		final AbstractRule topElementRule = GrammarUtil.findRuleForName(getGrammar(),
+				getCodeBuilderConfig().getTopElementRuleName());
+		for (final RuleCall ruleCall : GrammarUtil.containedRuleCalls(topElementRule)) {
 			AbstractRule memberRule = null;
-			for (Assignment assignment : GrammarUtil.containedAssignments(ruleCall.getRule())) {
+			for (final Assignment assignment : GrammarUtil.containedAssignments(ruleCall.getRule())) {
 				if (Objects.equals(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName(), assignment.getFeature())) {
 					if (assignment.getTerminal() instanceof RuleCall) {
 						memberRule = ((RuleCall) assignment.getTerminal()).getRule();
@@ -113,8 +114,8 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 				}
 			}
 			if (memberRule != null) {
-				Set<String> treatedRules = getTopElementRules();
-				AbstractRule foundRule = visitMemberElements(ruleCall.getRule(), memberRule, treatedRules,
+				final Set<String> treatedRules = getTopElementRules();
+				final AbstractRule foundRule = visitMemberElements(ruleCall.getRule(), memberRule, treatedRules,
 						new Functions.Function2<AbstractRule, AbstractRule, AbstractRule>() {
 							@Override
 							public AbstractRule apply(AbstractRule containerRule, AbstractRule constructorRule) {
@@ -133,7 +134,7 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 	 */
 	protected void generateBuilderFactoryContributions() {
 		// Get a container
-		AbstractRule containerRule = getConstructorContainerRule();
+		final AbstractRule containerRule = getConstructorContainerRule();
 		final String createFunctionName = "create" //$NON-NLS-1$
 				+ Strings.toFirstUpper(this.constructor.getSimpleName());
 		final String createContainerFunctionName = "add" //$NON-NLS-1$

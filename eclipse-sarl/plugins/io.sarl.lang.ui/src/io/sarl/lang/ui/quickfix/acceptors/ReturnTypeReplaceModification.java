@@ -56,10 +56,10 @@ public final class ReturnTypeReplaceModification extends SARLSemanticModificatio
 	 * @param acceptor - the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
-		String[] data = issue.getData();
+		final String[] data = issue.getData();
 		if (data != null && data.length > 0) {
 			final String expectedType = data[0];
-			ReturnTypeReplaceModification modification = new ReturnTypeReplaceModification(expectedType);
+			final ReturnTypeReplaceModification modification = new ReturnTypeReplaceModification(expectedType);
 			modification.setIssue(issue);
 			modification.setTools(provider);
 			acceptor.accept(issue,
@@ -72,7 +72,7 @@ public final class ReturnTypeReplaceModification extends SARLSemanticModificatio
 
 	@Override
 	public void apply(EObject element, IModificationContext context) throws Exception {
-		IXtextDocument document = context.getXtextDocument();
+		final IXtextDocument document = context.getXtextDocument();
 		document.replace(getIssue().getOffset(), getIssue().getLength(), this.expectedType);
 	}
 

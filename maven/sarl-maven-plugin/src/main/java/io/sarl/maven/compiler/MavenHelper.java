@@ -99,7 +99,7 @@ class MavenHelper {
 		Method method;
 
 		method = null;
-		for (Method m : this.session.getClass().getDeclaredMethods()) {
+		for (final Method m : this.session.getClass().getDeclaredMethods()) {
 			if ("getRepositorySession".equals(m.getName())) { //$NON-NLS-1$
 				method = m;
 				break;
@@ -112,7 +112,7 @@ class MavenHelper {
 		this.getRepositorySessionMethod = method;
 
 		method = null;
-		for (Method m : this.buildPluginManager.getClass().getDeclaredMethods()) {
+		for (final Method m : this.buildPluginManager.getClass().getDeclaredMethods()) {
 			if ("loadPlugin".equals(m.getName())) { //$NON-NLS-1$
 				method = m;
 				break;
@@ -175,7 +175,7 @@ class MavenHelper {
 	public PluginDescriptor loadPlugin(Plugin plugin)
 			throws MojoExecutionException {
 		try {
-			Object repositorySessionObject = this.getRepositorySessionMethod.invoke(this.session);
+			final Object repositorySessionObject = this.getRepositorySessionMethod.invoke(this.session);
 			return (PluginDescriptor) this.loadPluginMethod.invoke(
 					this.buildPluginManager,
 					plugin,
@@ -209,7 +209,7 @@ class MavenHelper {
 	 */
 	@SuppressWarnings("static-method")
 	public Dependency toDependency(Artifact artifact) {
-		Dependency result = new Dependency();
+		final Dependency result = new Dependency();
 		result.setArtifactId(artifact.getArtifactId());
 		result.setClassifier(artifact.getClassifier());
 		result.setGroupId(artifact.getGroupId());
@@ -227,16 +227,16 @@ class MavenHelper {
 	 */
 	public synchronized Map<String, Dependency> getPluginDependencies() throws MojoExecutionException {
 		if (this.pluginDependencies == null) {
-			String groupId = getConfig("plugin.groupId"); //$NON-NLS-1$
-			String artifactId = getConfig("plugin.artifactId"); //$NON-NLS-1$
-			String pluginArtifactKey = ArtifactUtils.versionlessKey(groupId, artifactId);
+			final String groupId = getConfig("plugin.groupId"); //$NON-NLS-1$
+			final String artifactId = getConfig("plugin.artifactId"); //$NON-NLS-1$
+			final String pluginArtifactKey = ArtifactUtils.versionlessKey(groupId, artifactId);
 
-			Set<Artifact> dependencies = resolveDependencies(pluginArtifactKey);
+			final Set<Artifact> dependencies = resolveDependencies(pluginArtifactKey);
 
-			Map<String, Dependency> deps = new TreeMap<>();
+			final Map<String, Dependency> deps = new TreeMap<>();
 
-			for (Artifact artifact : dependencies) {
-				Dependency dep = toDependency(artifact);
+			for (final Artifact artifact : dependencies) {
+				final Dependency dep = toDependency(artifact);
 				deps.put(ArtifactUtils.versionlessKey(artifact), dep);
 			}
 
@@ -252,9 +252,9 @@ class MavenHelper {
 	 * @throws MojoExecutionException if the resolution cannot be done.
 	 */
 	public Set<Artifact> resolveDependencies(String artifactId) throws MojoExecutionException {
-		Artifact pluginArtifact = getSession().getCurrentProject().getPluginArtifactMap().get(artifactId);
+		final Artifact pluginArtifact = getSession().getCurrentProject().getPluginArtifactMap().get(artifactId);
 
-		ArtifactResolutionRequest request = new ArtifactResolutionRequest();
+		final ArtifactResolutionRequest request = new ArtifactResolutionRequest();
 		request.setResolveRoot(false);
 		request.setResolveTransitively(true);
 		request.setLocalRepository(getSession().getLocalRepository());
@@ -265,12 +265,12 @@ class MavenHelper {
 		request.setProxies(getSession().getRequest().getProxies());
 		request.setArtifact(pluginArtifact);
 
-		ArtifactResolutionResult result = this.repositorySystem.resolve(request);
+		final ArtifactResolutionResult result = this.repositorySystem.resolve(request);
 
 		try {
 			this.resolutionErrorHandler.throwErrors(request, result);
 		} catch (MultipleArtifactsNotFoundException e) {
-			Collection<Artifact> missing = new HashSet<>(e.getMissingArtifacts());
+			final Collection<Artifact> missing = new HashSet<>(e.getMissingArtifacts());
 			if (!missing.isEmpty()) {
 				throw new MojoExecutionException(e.getLocalizedMessage(), e);
 			}
@@ -290,13 +290,13 @@ class MavenHelper {
 	 * @throws MojoExecutionException if the plugin was not found.
 	 */
 	public String getPluginDependencyVersion(String groupId, String artifactId) throws MojoExecutionException {
-		Map<String, Dependency> deps = getPluginDependencies();
-		String key = ArtifactUtils.versionlessKey(groupId, artifactId);
+		final Map<String, Dependency> deps = getPluginDependencies();
+		final String key = ArtifactUtils.versionlessKey(groupId, artifactId);
 		this.log.debug("COMPONENT DEPENDENCIES(getPluginVersionFromDependencies):"); //$NON-NLS-1$
 		this.log.debug(deps.toString());
-		Dependency dep = deps.get(key);
+		final Dependency dep = deps.get(key);
 		if (dep != null) {
-			String version = dep.getVersion();
+			final String version = dep.getVersion();
 			if (version != null && !version.isEmpty()) {
 				return version;
 			}

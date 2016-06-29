@@ -124,14 +124,14 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 	}
 
 	private static void fillFrom(Set<BindingElement> bindings, Class<?> type) {
-		for (Method declaredMethod : type.getDeclaredMethods()) {
-			String methodName = declaredMethod.getName();
+		for (final Method declaredMethod : type.getDeclaredMethods()) {
+			final String methodName = declaredMethod.getName();
 			if (!Strings.isEmpty(methodName)
 					&& ((methodName.length() > CONFIGURE_PREFIX.length() && methodName.startsWith(CONFIGURE_PREFIX))
 					|| (methodName.length() > BIND_PREFIX.length() && methodName.startsWith(BIND_PREFIX)))) {
 				if (declaredMethod.getReturnType() != null && !Void.TYPE.equals(declaredMethod.getReturnType())) {
 					// Binding function
-					Class<?> returnType = declaredMethod.getReturnType();
+					final Class<?> returnType = declaredMethod.getReturnType();
 					String typeName;
 					if (returnType.equals(Class.class)) {
 						typeName = declaredMethod.getGenericReturnType().getTypeName();
@@ -141,10 +141,10 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 						typeName = getTypeName(returnType);
 					}
 					if (!Strings.isEmpty(typeName)) {
-						BindingElement element = new BindingElement();
+						final BindingElement element = new BindingElement();
 						element.setBind(typeName);
 						element.setTo(typeName);
-						SingletonBinding singleton = declaredMethod.getAnnotation(SingletonBinding.class);
+						final SingletonBinding singleton = declaredMethod.getAnnotation(SingletonBinding.class);
 						if (singleton != null) {
 							element.setSingleton(true);
 							element.setEager(singleton.eager());
@@ -152,9 +152,9 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 						bindings.add(element);
 					}
 				} else if (methodName.startsWith(CONFIGURE_PREFIX)) {
-					String typeName = methodName.substring(CONFIGURE_PREFIX.length());
+					final String typeName = methodName.substring(CONFIGURE_PREFIX.length());
 					if (!Strings.isEmpty(typeName)) {
-						BindingElement element = new BindingElement();
+						final BindingElement element = new BindingElement();
 						element.setBind(typeName);
 						element.setTo(typeName);
 						element.setFunctionName(methodName);
@@ -173,8 +173,8 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 	 */
 	protected void recommendFrom(String label, Set<BindingElement> source, Set<Binding> current) {
 		this.bindingFactory.setName(getName());
-		for (BindingElement sourceElement : source) {
-			Binding wrapElement = this.bindingFactory.toBinding(sourceElement);
+		for (final BindingElement sourceElement : source) {
+			final Binding wrapElement = this.bindingFactory.toBinding(sourceElement);
 			if (!current.contains(wrapElement)) {
 				LOG.info(MessageFormat.format("Recommended injection from {0}: {1}", //$NON-NLS-1$
 						label, sourceElement.toString()));
@@ -185,19 +185,19 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 	@Override
 	public void generate() {
 		if (isEnable()) {
-			Set<BindingElement> xtendRtBindings = new LinkedHashSet<>();
+			final Set<BindingElement> xtendRtBindings = new LinkedHashSet<>();
 			fillFrom(xtendRtBindings, XtendRuntimeModule.class.getSuperclass());
 			fillFrom(xtendRtBindings, XtendRuntimeModule.class);
 
-			Set<Binding> currentRtBindings = getLanguage().getRuntimeGenModule().getBindings();
+			final Set<Binding> currentRtBindings = getLanguage().getRuntimeGenModule().getBindings();
 
 			recommendFrom("XtendRuntimeModule", xtendRtBindings, currentRtBindings); //$NON-NLS-1$
 
-			Set<BindingElement> xtendUiBindings = new LinkedHashSet<>();
+			final Set<BindingElement> xtendUiBindings = new LinkedHashSet<>();
 			fillFrom(xtendUiBindings, XtendUiModule.class.getSuperclass());
 			fillFrom(xtendUiBindings, XtendUiModule.class);
 
-			Set<Binding> currentUiBindings = getLanguage().getRuntimeGenModule().getBindings();
+			final Set<Binding> currentUiBindings = getLanguage().getRuntimeGenModule().getBindings();
 
 			recommendFrom("XtendUiModule", xtendUiBindings, currentUiBindings); //$NON-NLS-1$
 		}

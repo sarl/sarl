@@ -157,7 +157,7 @@ public final class SARLMapExtensions {
 	 * @param keysToRemove - the keys of the pairs to remove.
 	 */
 	public static <K, V> void operator_remove(Map<K, V> map, Iterable<? super K> keysToRemove) {
-		for (Object key : keysToRemove) {
+		for (final Object key : keysToRemove) {
 			map.remove(key);
 		}
 	}
@@ -357,8 +357,8 @@ public final class SARLMapExtensions {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		public Set<Entry<K, V>> entrySet() {
-			Set ks1 = this.right.entrySet();
-			Set ks2 = this.filteredLeft.entrySet();
+			final Set ks1 = this.right.entrySet();
+			final Set ks2 = this.filteredLeft.entrySet();
 			return Sets.union(ks1, ks2);
 		}
 
@@ -401,8 +401,8 @@ public final class SARLMapExtensions {
 
 			@Override
 			public Object[] toArray() {
-				Object[] tab = new Object[MergingMap.this.size()];
-				Iterator<?> iterator = iterator();
+				final Object[] tab = new Object[MergingMap.this.size()];
+				final Iterator<?> iterator = iterator();
 				for (int i = 0; i < tab.length; ++i) {
 					tab[i] = iterator.next();
 				}
@@ -413,11 +413,11 @@ public final class SARLMapExtensions {
 			@Override
 			public <T> T[] toArray(T[] output) {
 				T[] tab = output;
-				int size = MergingMap.this.size();
+				final int size = MergingMap.this.size();
 				if (tab == null || tab.length < size) {
 					tab = (T[]) Array.newInstance(Object.class, size);
 				}
-				Iterator<?> iterator = iterator();
+				final Iterator<?> iterator = iterator();
 				for (int i = 0; i < tab.length; ++i) {
 					tab[i] = (T) iterator.next();
 				}
@@ -426,7 +426,7 @@ public final class SARLMapExtensions {
 
 			@Override
 			public boolean containsAll(Collection<?> collection) {
-				for (Object o : collection) {
+				for (final Object o : collection) {
 					if (!MergingMap.this.containsValue(o)) {
 						return false;
 					}

@@ -53,8 +53,8 @@ public class FormalParameterListComparator implements Comparator<EList<? extends
 		}
 		int cmp = Integer.compare(left.size(), right.size());
 		if (cmp == 0) {
-			Iterator<? extends XtendParameter> i1 = left.iterator();
-			Iterator<? extends XtendParameter> i2 = right.iterator();
+			final Iterator<? extends XtendParameter> i1 = left.iterator();
+			final Iterator<? extends XtendParameter> i2 = right.iterator();
 			while (cmp == 0 && i1.hasNext() && i2.hasNext()) {
 				cmp = compare(i1.next(), i2.next());
 			}
@@ -79,10 +79,10 @@ public class FormalParameterListComparator implements Comparator<EList<? extends
 			if (p2 == null) {
 				return Integer.MAX_VALUE;
 			}
-			JvmTypeReference t1 = p1.getParameterType();
-			JvmTypeReference t2 = p2.getParameterType();
+			final JvmTypeReference t1 = p1.getParameterType();
+			final JvmTypeReference t2 = p2.getParameterType();
 			if (t1 != t2) {
-				int cmp;
+				final int cmp;
 				if (t1 == null) {
 					cmp = Integer.MIN_VALUE;
 				} else if (t2 == null) {

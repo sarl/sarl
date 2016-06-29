@@ -78,7 +78,7 @@ public final class MultiModification extends SARLSemanticModification {
 		Class<? extends SARLSemanticModification> selected = null;
 		Class<?> deeperType = null;
 
-		for (Entry<Class<?>, Class<? extends SARLSemanticModification>> entry : this.modificationTypes.entrySet()) {
+		for (final Entry<Class<?>, Class<? extends SARLSemanticModification>> entry : this.modificationTypes.entrySet()) {
 			if (entry.getKey().isInstance(element)) {
 				if (deeperType == null
 						|| deeperType.isAssignableFrom(entry.getKey())) {
@@ -89,7 +89,7 @@ public final class MultiModification extends SARLSemanticModification {
 		}
 
 		if (selected != null) {
-			SARLSemanticModification modification = selected.newInstance();
+			final SARLSemanticModification modification = selected.newInstance();
 			modification.setIssue(getIssue());
 			modification.setTools(getTools());
 			modification.apply(element, context);

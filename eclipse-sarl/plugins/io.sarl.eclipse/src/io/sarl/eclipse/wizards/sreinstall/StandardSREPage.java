@@ -87,8 +87,8 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	@Override
 	public void createControl(Composite parent) {
 		// create a composite with standard margins and spacing
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
+		final Composite composite = new Composite(parent, SWT.NONE);
+		final GridLayout layout = new GridLayout();
 		layout.numColumns = 3;
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -97,8 +97,8 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		SWTFactory.createLabel(composite, Messages.StandardSREPage_0, 1);
 		this.sreLibraryTextField = SWTFactory.createSingleText(composite, 1);
 		this.sreLibraryTextField.setEditable(false);
-		Button folders = SWTFactory.createPushButton(composite, Messages.StandardSREPage_1, null);
-		GridData data = (GridData) folders.getLayoutData();
+		final Button folders = SWTFactory.createPushButton(composite, Messages.StandardSREPage_1, null);
+		final GridData data = (GridData) folders.getLayoutData();
 		data.horizontalAlignment = GridData.END;
 		//SRE name
 		SWTFactory.createLabel(composite, Messages.StandardSREPage_2, 1);
@@ -151,22 +151,22 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	/** Ask to the user to selected the SRE.
 	 */
 	protected void selectSRE() {
-		File file;
+		final File file;
 		if (StandardSREPage.this.workingCopy.getJarFile() != null) {
 			file = StandardSREPage.this.workingCopy.getJarFile().toFile();
 		} else {
 			file = null;
 		}
 
-		FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
+		final FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
 		dialog.setText(Messages.StandardSREPage_4);
 		dialog.setFilterExtensions(new String[] {"*.jar"}); //$NON-NLS-1$
 		if (file != null && file.exists()) {
 			dialog.setFileName(file.getAbsolutePath());
 		}
-		String selectedFile = dialog.open();
+		final String selectedFile = dialog.open();
 		if (selectedFile != null) {
-			IPath path = Path.fromOSString(selectedFile);
+			final IPath path = Path.fromOSString(selectedFile);
 			//			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			//			IPath workspaceLocation = workspace.getRoot().getLocation();
 			//			SARLEclipsePlugin.logDebugMessage("Workspace (Path): " + workspaceLocation); //$NON-NLS-1$
@@ -178,7 +178,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 			//
 			createWorkingCopy();
 			this.workingCopy.setJarFile(path);
-			IStatus status = validate();
+			final IStatus status = validate();
 			//
 			initializeFields();
 			setPageStatus(status);
@@ -189,7 +189,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	@Override
 	public boolean performFinish() {
 		try {
-			String xml = SARLRuntime.getSREAsXML(this.workingCopy);
+			final String xml = SARLRuntime.getSREAsXML(this.workingCopy);
 			SARLRuntime.setSREFromXML(this.originalSRE, xml);
 			return true;
 		} catch (CoreException e) {
@@ -217,7 +217,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 
 	@Override
 	public ISREInstall createSelection(String id) {
-		StandardSREInstall sre = new StandardSREInstall(id);
+		final StandardSREInstall sre = new StandardSREInstall(id);
 		sre.revalidate();
 		initialize(sre);
 		return sre;
@@ -227,12 +227,12 @@ public class StandardSREPage extends AbstractSREInstallPage {
 	 * Initialize the dialogs fields.
 	 */
 	private void initializeFields() {
-		IPath path = this.workingCopy.getJarFile();
+		final IPath path = this.workingCopy.getJarFile();
 		String tooltip = null;
 		String basename = null;
 		if (path != null) {
 			tooltip = path.toOSString();
-			IPath tmpPath = path.removeTrailingSeparator();
+			final IPath tmpPath = path.removeTrailingSeparator();
 			if (tmpPath != null) {
 				basename = tmpPath.lastSegment();
 			}
@@ -240,10 +240,10 @@ public class StandardSREPage extends AbstractSREInstallPage {
 		this.sreLibraryTextField.setText(Strings.nullToEmpty(basename));
 		this.sreLibraryTextField.setToolTipText(Strings.nullToEmpty(tooltip));
 		//
-		String name = this.workingCopy.getNameNoDefault();
+		final String name = this.workingCopy.getNameNoDefault();
 		this.sreNameTextField.setText(Strings.nullToEmpty(name));
 		//
-		String mainClass = this.workingCopy.getMainClass();
+		final String mainClass = this.workingCopy.getMainClass();
 		this.sreMainClassTextField.setText(Strings.nullToEmpty(mainClass));
 		//
 		this.sreIdTextField.setText(this.workingCopy.getId());

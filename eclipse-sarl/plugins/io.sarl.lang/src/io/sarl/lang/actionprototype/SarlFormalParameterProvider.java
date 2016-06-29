@@ -80,7 +80,7 @@ public class SarlFormalParameterProvider implements FormalParameterProvider {
 
 	@Override
 	public boolean hasFormalParameterDefaultValue(int position) {
-		XtendParameter parameter = this.parameters.get(position);
+		final XtendParameter parameter = this.parameters.get(position);
 		if (parameter instanceof SarlFormalParameter) {
 			return ((SarlFormalParameter) parameter).getDefaultValue() != null;
 		}
@@ -89,7 +89,7 @@ public class SarlFormalParameterProvider implements FormalParameterProvider {
 
 	@Override
 	public XExpression getFormalParameterDefaultValue(int position) {
-		XtendParameter parameter = this.parameters.get(position);
+		final XtendParameter parameter = this.parameters.get(position);
 		if (parameter instanceof SarlFormalParameter) {
 			return ((SarlFormalParameter) parameter).getDefaultValue();
 		}

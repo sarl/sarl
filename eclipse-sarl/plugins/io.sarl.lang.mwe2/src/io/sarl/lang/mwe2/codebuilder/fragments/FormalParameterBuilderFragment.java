@@ -88,13 +88,13 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	@Override
 	public void generateBindings(BindingFactory factory) {
 		super.generateBindings(factory);
-		IFileSystemAccess2 fileSystem = getSrc();
+		final IFileSystemAccess2 fileSystem = getSrc();
 
 		final TypeReference builderInterface = getFormalParameterBuilderInterface();
 		final TypeReference builderImpl = getFormalParameterBuilderImpl();
 		final TypeReference builderImplCustom = getFormalParameterBuilderImplCustom();
 
-		TypeReference type;
+		final TypeReference type;
 		if ((fileSystem.isFile(builderImplCustom.getJavaPath()))
 				|| (fileSystem.isFile(builderImplCustom.getXtendPath()))) {
 			type = builderImplCustom;
@@ -108,7 +108,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	 */
 	protected void generateIFormalParameterBuilder() {
 		final TypeReference builder = getFormalParameterBuilderInterface();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -129,7 +129,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -138,7 +138,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	protected void generateFormalParameterBuilderImpl() {
 		final TypeReference builderInterface = getFormalParameterBuilderInterface();
 		final TypeReference builder = getFormalParameterBuilderImpl();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
@@ -163,7 +163,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(builder, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -171,13 +171,13 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	 */
 	protected void generateFormalParameterAppender() {
 		final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getFormalParameterRuleName());
-		EClassifier classifier = getGeneratedTypeFor(rule);
+		final EClassifier classifier = getGeneratedTypeFor(rule);
 		final TypeReference parameterType = newTypeReference(classifier);
 		final TypeReference builderInterface = getFormalParameterBuilderInterface();
 		final TypeReference appender = getElementAppenderImpl("FormalParameter"); //$NON-NLS-1$
 		final String accessor = "get" //$NON-NLS-1$
 				+ Strings.toFirstUpper(parameterType.getSimpleName()) + "()"; //$NON-NLS-1$
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Appender of a " + getLanguageName() //$NON-NLS-1$
@@ -203,7 +203,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 			}
 		};
-		JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
 		javaFile.writeTo(getSrcGen());
 	}
 
@@ -515,10 +515,10 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	 * @return the top elements.
 	 */
 	protected AbstractRule getConstructorRule() {
-		Grammar grammar = getGrammar();
-		Pattern pattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
-		for (AbstractRule rule : GrammarUtil.allRules(grammar)) {
-			Matcher matcher = pattern.matcher(rule.getName());
+		final Grammar grammar = getGrammar();
+		final Pattern pattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
+		for (final AbstractRule rule : GrammarUtil.allRules(grammar)) {
+			final Matcher matcher = pattern.matcher(rule.getName());
 			if (matcher.find()) {
 				return rule;
 			}

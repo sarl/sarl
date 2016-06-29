@@ -74,7 +74,7 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected void doStatusUpdate() {
-		IStatus[] status = new IStatus[] {
+		final IStatus[] status = new IStatus[] {
 			this.fContainerStatus,
 			this.fPackageStatus,
 			this.fTypeNameStatus,
@@ -86,19 +86,19 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
+		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
 				getPackageFragment().getElementName(), ecoreResource);
-		ISkillBuilder skill = scriptBuilder.addSkill(getTypeName());
+		final ISkillBuilder skill = scriptBuilder.addSkill(getTypeName());
 		skill.setExtends(getSuperClass());
-		for (String implementedType : getSuperInterfaces()) {
+		for (final String implementedType : getSuperInterfaces()) {
 			skill.addImplements(implementedType);
 		}
 		skill.setDocumentation(typeComment.trim());
 
-		Map<ActionPrototype, IMethod> operationsToImplement;
-		Map<ActionParameterTypes, IMethod> constructors;
+		final Map<ActionPrototype, IMethod> operationsToImplement;
+		final Map<ActionParameterTypes, IMethod> constructors;
 
-		String superClass = getSuperClass();
+		final String superClass = getSuperClass();
 		if (Strings.isNullOrEmpty(superClass) || !isCreateConstructors()) {
 			constructors = null;
 		} else {

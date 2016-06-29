@@ -75,8 +75,8 @@ public class GnuSrcHighliteGenerator2 extends AbstractExternalHighlightingFragme
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored) {
-		StringBuilder punctuationPattern = new StringBuilder();
-		for (String punct : punctuation) {
+		final StringBuilder punctuationPattern = new StringBuilder();
+		for (final String punct : punctuation) {
 			if (punctuationPattern.length() > 0) {
 				punctuationPattern.append("|"); //$NON-NLS-1$
 			}
@@ -85,28 +85,27 @@ public class GnuSrcHighliteGenerator2 extends AbstractExternalHighlightingFragme
 					.replaceAll(Pattern.quote("|"), Matcher.quoteReplacement("\\|"))); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
-		StringBuilder keywordPattern = new StringBuilder();
-		for (String keyword : keywords) {
+		final StringBuilder keywordPattern = new StringBuilder();
+		for (final String keyword : keywords) {
 			if (keywordPattern.length() > 0) {
 				keywordPattern.append("|"); //$NON-NLS-1$
 			}
 			keywordPattern.append(keyword);
 		}
 
-		StringBuilder literalPattern = new StringBuilder();
-		for (String literal : literals) {
+		final StringBuilder literalPattern = new StringBuilder();
+		for (final String literal : literals) {
 			if (literalPattern.length() > 0) {
 				literalPattern.append("|"); //$NON-NLS-1$
 			}
 			literalPattern.append(literal);
 		}
 
-		List<String> css = new ArrayList<>();
+		final List<String> css = new ArrayList<>();
 
-		String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
-		for (String headerLine : header) {
-			headerLine = headerLine.replaceFirst("^\\s*[/]?[*][/]?", "#"); //$NON-NLS-1$//$NON-NLS-2$
-			css.add(headerLine);
+		final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
+		for (final String headerLine : header) {
+			css.add(headerLine.replaceFirst("^\\s*[/]?[*][/]?", "#")); //$NON-NLS-1$//$NON-NLS-2$
 		}
 
 		append(css, "include \"c_comment.lang\""); //$NON-NLS-1$
@@ -128,9 +127,8 @@ public class GnuSrcHighliteGenerator2 extends AbstractExternalHighlightingFragme
 		nl(css);
 		append(css, "cbracket = \"{|}\""); //$NON-NLS-1$
 
-		String language = getLanguageSimpleName().toLowerCase();
-		String basename = getBasename(
-				MessageFormat.format(getBasenameTemplate(), language));
+		final String language = getLanguageSimpleName().toLowerCase();
+		final String basename = getBasename(MessageFormat.format(getBasenameTemplate(), language));
 		writeFile(basename, css);
 	}
 

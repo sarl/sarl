@@ -197,7 +197,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 		factory.addfinalTypeToType(getIDocumentationFormatter(), getDocumentationFormatterImpl());
 		factory.addfinalTypeToTypeSingleton(getIEcoreDocumentationBuilder(), getEcoreDocumentationBuilderImpl());
 
-		IFileSystemAccess2 fileSystem = getSrc();
+		final IFileSystemAccess2 fileSystem = getSrc();
 		TypeReference type;
 		if ((fileSystem.isFile(getDocumentationProviderImplCustom().getJavaPath()))
 				|| (fileSystem.isFile(getDocumentationProviderImplCustom().getXtendPath()))) {
@@ -221,7 +221,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	protected void generateInnerDocumentationAdapter() {
 		final TypeReference adapter = getInnerBlockDocumentationAdapter();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("public class "); //$NON-NLS-1$
@@ -268,7 +268,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			}
 
 		};
-		JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(adapter, content);
+		final JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(adapter, content);
 		createJavaFile.writeTo(getSrcGen());
 	}
 
@@ -519,7 +519,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	protected void generateIEcoreDocumentationBuilder() {
 		final TypeReference builder = getIEcoreDocumentationBuilder();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Build a documentation string for specific objects."); //$NON-NLS-1$
@@ -595,7 +595,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			}
 
 		};
-		JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(builder, content);
+		final JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(builder, content);
 		createJavaFile.writeTo(getSrcGen());
 	}
 
@@ -2119,13 +2119,13 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	protected void generateDocumentationProviderImpl() {
 		TypeReference etype = null;
-		LinkedList<Grammar> grammars = new LinkedList<>();
+		final LinkedList<Grammar> grammars = new LinkedList<>();
 		grammars.addAll(getGrammar().getUsedGrammars());
 		while (etype == null && !grammars.isEmpty()) {
-			Grammar grammar = grammars.removeFirst();
+			final Grammar grammar = grammars.removeFirst();
 			grammars.addAll(grammar.getUsedGrammars());
-			String gbase = getNaming().getRuntimeBasePackage(grammar);
-			String providerClassname = gbase + ".documentation." //$NON-NLS-1$
+			final String gbase = getNaming().getRuntimeBasePackage(grammar);
+			final String providerClassname = gbase + ".documentation." //$NON-NLS-1$
 					+ GrammarUtil.getSimpleName(grammar) + "DocumentationProvider"; //$NON-NLS-1$
 			try {
 				getClass().getClassLoader().loadClass(providerClassname);
@@ -2139,7 +2139,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 		}
 		final TypeReference extendType = etype;
 		final TypeReference provider = getDocumentationProviderImpl();
-		StringConcatenationClient content = new StringConcatenationClient() {
+		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Provider a documentation string."); //$NON-NLS-1$
@@ -2213,7 +2213,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 			}
 
 		};
-		JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(provider, content);
+		final JavaFileAccess createJavaFile = getFileAccessFactory().createJavaFile(provider, content);
 		createJavaFile.writeTo(getSrcGen());
 	}
 

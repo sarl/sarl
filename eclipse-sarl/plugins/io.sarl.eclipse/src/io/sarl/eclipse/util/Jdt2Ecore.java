@@ -139,12 +139,12 @@ public class Jdt2Ecore {
 	 * @see #toTypeFinder(IJavaProject)
 	 */
 	public boolean isVisible(TypeFinder typeFinder, IType fromType, IMember target) throws JavaModelException {
-		int flags = target.getFlags();
+		final int flags = target.getFlags();
 		if (Flags.isPublic(flags)) {
 			return true;
 		}
-		String fromTypeName = fromType.getFullyQualifiedName();
-		String memberType = target.getDeclaringType().getFullyQualifiedName();
+		final String fromTypeName = fromType.getFullyQualifiedName();
+		final String memberType = target.getDeclaringType().getFullyQualifiedName();
 		if (Flags.isPrivate(flags)) {
 			return target.getDeclaringType().equals(fromTypeName);
 		}
@@ -154,7 +154,7 @@ public class Jdt2Ecore {
 				if (memberType.equals(t.getFullyQualifiedName())) {
 					return true;
 				}
-				String typeName = t.getSuperclassName();
+				final String typeName = t.getSuperclassName();
 				if (Strings.isNullOrEmpty(typeName)) {
 					t = null;
 				} else {
@@ -162,8 +162,8 @@ public class Jdt2Ecore {
 				}
 			}
 		}
-		IPackageFragment f1 = target.getDeclaringType().getPackageFragment();
-		IPackageFragment f2 = fromType.getPackageFragment();
+		final IPackageFragment f1 = target.getDeclaringType().getPackageFragment();
+		final IPackageFragment f2 = fromType.getPackageFragment();
 		if (f1.isDefaultPackage()) {
 			return f2.isDefaultPackage();
 		}
@@ -208,21 +208,21 @@ public class Jdt2Ecore {
 			Map<ActionParameterTypes, IMethod> superConstructors,
 			String superClass,
 			List<String> superInterfaces) throws JavaModelException {
-		SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
-		List<IStatus> statuses = new ArrayList<>();
+		final SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
+		final List<IStatus> statuses = new ArrayList<>();
 		// Get the operations that must be implemented
 		if (operationsToImplement != null) {
-			SuperTypeIterator typeIterator = new SuperTypeIterator(typeFinder, true, superInterfaces);
+			final SuperTypeIterator typeIterator = new SuperTypeIterator(typeFinder, true, superInterfaces);
 			while (typeIterator.hasNext()) {
-				IType type = typeIterator.next();
-				for (IMethod operation : type.getMethods()) {
+				final IType type = typeIterator.next();
+				for (final IMethod operation : type.getMethods()) {
 					if (!Flags.isStatic(operation.getFlags())
 							&& !Flags.isFinal(operation.getFlags())
 							&& !operation.isLambdaMethod()
 							&& !operation.isConstructor()) {
-						ActionParameterTypes sig = this.actionPrototypeProvider.createParameterTypes(
+						final ActionParameterTypes sig = this.actionPrototypeProvider.createParameterTypes(
 								Flags.isVarargs(operation.getFlags()), getFormalParameterProvider(operation));
-						ActionPrototype actionKey = this.actionPrototypeProvider.createActionPrototype(
+						final ActionPrototype actionKey = this.actionPrototypeProvider.createActionPrototype(
 								operation.getElementName(),
 								sig);
 						if (!operationsToImplement.containsKey(actionKey)) {
@@ -236,21 +236,22 @@ public class Jdt2Ecore {
 
 		// Check on the implemented features, inherited from the super type
 		if (isValidSuperType(superClass)) {
-			SuperTypeIterator typeIterator = new SuperTypeIterator(typeFinder, false, superClass);
+			final SuperTypeIterator typeIterator = new SuperTypeIterator(typeFinder, false, superClass);
 			while (typeIterator.hasNext()) {
-				IType type = typeIterator.next();
-				boolean checkForConstructors = (superConstructors != null && type.getFullyQualifiedName().equals(superClass));
-				for (IMethod operation : type.getMethods()) {
+				final IType type = typeIterator.next();
+				final boolean checkForConstructors = superConstructors != null
+						&& type.getFullyQualifiedName().equals(superClass);
+				for (final IMethod operation : type.getMethods()) {
 					if (!Flags.isStatic(operation.getFlags())
 							&& !operation.isLambdaMethod()
 							&& isVisible(typeFinder, type, operation)) {
 						if (!operation.isConstructor()
 								&& !Utils.isHiddenMember(operation.getElementName())) {
-							ActionParameterTypes sig = this.actionPrototypeProvider.createParameterTypes(
+							final ActionParameterTypes sig = this.actionPrototypeProvider.createParameterTypes(
 									Flags.isVarargs(operation.getFlags()), getFormalParameterProvider(operation));
-							ActionPrototype actionKey = this.actionPrototypeProvider.createActionPrototype(
+							final ActionPrototype actionKey = this.actionPrototypeProvider.createActionPrototype(
 									operation.getElementName(), sig);
-							int flags = operation.getFlags();
+							final int flags = operation.getFlags();
 							if (Flags.isAbstract(flags)) {
 								if (operationsToImplement != null) {
 									operationsToImplement.put(actionKey, operation);
@@ -271,7 +272,7 @@ public class Jdt2Ecore {
 								}
 							}
 						} else if (checkForConstructors && operation.isConstructor() && superConstructors != null) {
-							ActionParameterTypes sig = this.actionPrototypeProvider.createParameterTypes(
+							final ActionParameterTypes sig = this.actionPrototypeProvider.createParameterTypes(
 									Flags.isVarargs(operation.getFlags()), getFormalParameterProvider(operation));
 							superConstructors.put(sig,  operation);
 						}
@@ -279,7 +280,7 @@ public class Jdt2Ecore {
 				}
 
 				if (inheritedFields != null) {
-					for (IField field : type.getFields()) {
+					for (final IField field : type.getFields()) {
 						if (!Flags.isStatic(field.getFlags())
 								&& !Utils.isHiddenMember(field.getElementName())
 								&& isVisible(typeFinder, type, field)) {
@@ -318,15 +319,15 @@ public class Jdt2Ecore {
 	public IAnnotation getAnnotation(IAnnotatable element, String qualifiedName) {
 		if (element != null) {
 			try {
-				int separator = qualifiedName.lastIndexOf('.');
-				String simpleName;
+				final int separator = qualifiedName.lastIndexOf('.');
+				final String simpleName;
 				if (separator >= 0 && separator < (qualifiedName.length() - 1)) {
 					simpleName = qualifiedName.substring(separator + 1, qualifiedName.length());
 				} else {
 					simpleName = qualifiedName;
 				}
-				for (IAnnotation annotation : element.getAnnotations()) {
-					String name = annotation.getElementName();
+				for (final IAnnotation annotation : element.getAnnotations()) {
+					final String name = annotation.getElementName();
 					if (name.equals(simpleName) || name.equals(qualifiedName)) {
 						return annotation;
 					}
@@ -348,16 +349,16 @@ public class Jdt2Ecore {
 	public JvmConstructor getJvmConstructor(IMethod constructor, XtendTypeDeclaration context)
 			throws JavaModelException {
 		if (constructor.isConstructor()) {
-			JvmType type = this.typeReferences.findDeclaredType(
+			final JvmType type = this.typeReferences.findDeclaredType(
 					constructor.getDeclaringType().getFullyQualifiedName(),
 					context);
 			if (type instanceof JvmDeclaredType) {
-				JvmDeclaredType declaredType = (JvmDeclaredType) type;
-				ActionParameterTypes jdtSignature = this.actionPrototypeProvider.createParameterTypes(
+				final JvmDeclaredType declaredType = (JvmDeclaredType) type;
+				final ActionParameterTypes jdtSignature = this.actionPrototypeProvider.createParameterTypes(
 						Flags.isVarargs(constructor.getFlags()),
 						getFormalParameterProvider(constructor));
-				for (JvmConstructor jvmConstructor : declaredType.getDeclaredConstructors()) {
-					ActionParameterTypes jvmSignature = this.actionPrototypeProvider.createParameterTypesFromJvmModel(
+				for (final JvmConstructor jvmConstructor : declaredType.getDeclaredConstructors()) {
+					final ActionParameterTypes jvmSignature = this.actionPrototypeProvider.createParameterTypesFromJvmModel(
 							jvmConstructor.isVarArgs(),
 							jvmConstructor.getParameters());
 					if (jvmSignature.equals(jdtSignature)) {
@@ -372,11 +373,11 @@ public class Jdt2Ecore {
 	private String extractDefaultValue(IMethod operation, IAnnotation annot)
 			throws JavaModelException, IllegalArgumentException {
 		IAnnotation annotation = annot;
-		Object value = annotation.getMemberValuePairs()[0].getValue();
-		String fieldId = (value == null) ? null : value.toString();
+		final Object value = annotation.getMemberValuePairs()[0].getValue();
+		final String fieldId = (value == null) ? null : value.toString();
 		if (!Strings.isNullOrEmpty(fieldId)) {
-			String fieldName = Utils.createNameForHiddenDefaultValueAttribute(fieldId);
-			IField field = operation.getDeclaringType().getField(fieldName);
+			final String fieldName = Utils.createNameForHiddenDefaultValueAttribute(fieldId);
+			final IField field = operation.getDeclaringType().getField(fieldName);
 			if (field != null) {
 				annotation = getAnnotation(field, SarlSourceCode.class.getName());
 				if (annotation != null) {
@@ -397,17 +398,17 @@ public class Jdt2Ecore {
 	protected void createFormalParametersWith(
 			ParameterBuilder parameterBuilder,
 			IMethod operation) throws JavaModelException, IllegalArgumentException {
-		boolean isVarargs = Flags.isVarargs(operation.getFlags());
-		ILocalVariable[] parameters = operation.getParameters();
+		final boolean isVarargs = Flags.isVarargs(operation.getFlags());
+		final ILocalVariable[] parameters = operation.getParameters();
 		for (int i = 0; i < parameters.length; ++i) {
-			ILocalVariable parameter = parameters[i];
-			IAnnotation annotation = getAnnotation(parameter, DefaultValue.class.getName());
-			String defaultValue = (annotation != null) ? extractDefaultValue(operation, annotation) : null;
+			final ILocalVariable parameter = parameters[i];
+			final IAnnotation annotation = getAnnotation(parameter, DefaultValue.class.getName());
+			final String defaultValue = (annotation != null) ? extractDefaultValue(operation, annotation) : null;
 			String type = Signature.toString(parameter.getTypeSignature());
 			if (isVarargs && i == parameters.length - 1 && type.endsWith("[]")) { //$NON-NLS-1$
 				type = type.substring(0, type.length() - 2);
 			}
-			IFormalParameterBuilder sarlParameter = parameterBuilder.addParameter(parameter.getElementName());
+			final IFormalParameterBuilder sarlParameter = parameterBuilder.addParameter(parameter.getElementName());
 			sarlParameter.setParameterType(type);
 			sarlParameter.getDefaultValue().setExpression(defaultValue);
 			if (isVarargs && i == parameters.length - 1) {
@@ -473,20 +474,20 @@ public class Jdt2Ecore {
 			Collection<IMethod> superClassConstructors,
 			XtendTypeDeclaration context) throws JavaModelException {
 		if (superClassConstructors != null) {
-			for (IMethod constructor : superClassConstructors) {
+			for (final IMethod constructor : superClassConstructors) {
 				if (!isGeneratedOperation(constructor)) {
-					JvmConstructor jvmConstructor = getJvmConstructor(constructor, context);
-					XFeatureCall call = XbaseFactory.eINSTANCE.createXFeatureCall();
+					final JvmConstructor jvmConstructor = getJvmConstructor(constructor, context);
+					final XFeatureCall call = XbaseFactory.eINSTANCE.createXFeatureCall();
 					call.setFeature(jvmConstructor);
 					call.setExplicitOperationCall(true);
-					EList<XExpression> arguments = call.getFeatureCallArguments();
-					for (JvmFormalParameter param : jvmConstructor.getParameters()) {
-						XFeatureCall paramRef = XbaseFactory.eINSTANCE.createXFeatureCall();
+					final EList<XExpression> arguments = call.getFeatureCallArguments();
+					for (final JvmFormalParameter param : jvmConstructor.getParameters()) {
+						final XFeatureCall paramRef = XbaseFactory.eINSTANCE.createXFeatureCall();
 						paramRef.setFeature(param);
 						arguments.add(paramRef);
 					}
 					//
-					IConstructorBuilder cons = codeBuilder.addConstructor();
+					final IConstructorBuilder cons = codeBuilder.addConstructor();
 					cons.getExpression().addExpression().setXExpression(call);
 					createFormalParametersWith((name) -> cons.addParameter(name), constructor);
 				}
@@ -544,7 +545,7 @@ public class Jdt2Ecore {
 			ActionBuilder codeBuilder,
 			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
 		if (methods != null) {
-			for (IMethod operation : methods) {
+			for (final IMethod operation : methods) {
 				if (!isGeneratedOperation(operation)) {
 					final IActionBuilder action = codeBuilder.addAction(operation.getElementName());
 					action.setReturnType(operation.getReturnType());
@@ -607,7 +608,7 @@ public class Jdt2Ecore {
 		private void updateCurrent() {
 			this.current = null;
 			while (this.current == null && !this.queue.isEmpty()) {
-				String typeName = this.queue.removeFirst();
+				final String typeName = this.queue.removeFirst();
 				if (isValidSuperType(typeName) && !this.encountered.contains(typeName)) {
 					try {
 						this.current = this.typeFinder.findType(typeName);
@@ -634,20 +635,20 @@ public class Jdt2Ecore {
 			if (this.current == null) {
 				throw new NoSuchElementException();
 			}
-			IType c = this.current;
-			String name = c.getFullyQualifiedName();
+			final IType c = this.current;
+			final String name = c.getFullyQualifiedName();
 			this.encountered.add(name);
 			try {
-				String[] superTypes;
+				final String[] superTypes;
 				if (this.isInterface) {
 					superTypes = c.getSuperInterfaceTypeSignatures();
 				} else {
 					superTypes = new String[] {c.getSuperclassTypeSignature()};
 				}
-				for (String signature : superTypes) {
-					signature = resolveType(c, signature);
-					if (!Strings.isNullOrEmpty(signature)) {
-						this.queue.add(signature);
+				for (final String signature : superTypes) {
+					final String resolvedSignature = resolveType(c, signature);
+					if (!Strings.isNullOrEmpty(resolvedSignature)) {
+						this.queue.add(resolvedSignature);
 					}
 				}
 			} catch (JavaModelException exception) {
@@ -658,9 +659,9 @@ public class Jdt2Ecore {
 		}
 
 		private String resolveType(IType type, String signature) throws JavaModelException {
-			String[][] resolved = type.resolveType(Signature.toString(signature));
+			final String[][] resolved = type.resolveType(Signature.toString(signature));
 			if (resolved != null) {
-				for (String[] entry : resolved) {
+				for (final String[] entry : resolved) {
 					if (Strings.isNullOrEmpty(entry[0])) {
 						return entry[1];
 					}

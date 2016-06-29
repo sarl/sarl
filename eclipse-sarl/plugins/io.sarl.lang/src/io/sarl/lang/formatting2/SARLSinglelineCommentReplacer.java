@@ -61,7 +61,7 @@ public class SARLSinglelineCommentReplacer extends CommentReplacer {
 
 	@Override
 	public ITextReplacerContext createReplacements(ITextReplacerContext context) {
-		IComment comment = getComment();
+		final IComment comment = getComment();
 		if (context != null && comment != null) {
 			this.formatter.formatSinglelineComment(this.bugfix.fix(context, comment), comment);
 		}

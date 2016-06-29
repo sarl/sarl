@@ -59,7 +59,7 @@ public class SarlActionImplCustom extends SarlActionImpl {
 
 	@Override
 	protected JvmVisibility getDefaultVisibility() {
-		XtendTypeDeclaration declaration = getDeclaringType();
+		final XtendTypeDeclaration declaration = getDeclaringType();
 		if (declaration instanceof SarlBehavior || declaration instanceof SarlAgent) {
 			return JvmVisibility.PROTECTED;
 		}

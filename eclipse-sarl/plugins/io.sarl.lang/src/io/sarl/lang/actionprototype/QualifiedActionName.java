@@ -100,7 +100,7 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 		}
 
 		if (this.getClass() == obj.getClass()) {
-			QualifiedActionName k = (QualifiedActionName) obj;
+			final QualifiedActionName k = (QualifiedActionName) obj;
 			return Objects.equal(this.resourceID, k.resourceID)
 					&& Objects.equal(
 							this.declaringType.getQualifiedName(),

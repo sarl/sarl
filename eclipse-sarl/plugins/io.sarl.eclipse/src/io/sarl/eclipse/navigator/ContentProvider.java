@@ -50,7 +50,7 @@ public class ContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		Object[] children;
+		final Object[] children;
 		if (SARLProjectWorkbenchRoot.class.isInstance(parentElement)) {
 			if (this.sarlProjectParents == null) {
 				this.sarlProjectParents = initializeParent();
@@ -116,9 +116,9 @@ public class ContentProvider implements ITreeContentProvider {
 	}
 
 	private static ISARLProjectElement[] initializeParent() {
-		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		final IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 
-		List<SARLProjectParent> list = new ArrayList<>();
+		final List<SARLProjectParent> list = new ArrayList<>();
 		for (int i = 0; i < projects.length; i++) {
 			try {
 				if (projects[i].getNature(SARLEclipseConfig.NATURE_ID) != null) {
@@ -129,7 +129,7 @@ public class ContentProvider implements ITreeContentProvider {
 			}
 		}
 
-		SARLProjectParent[] result = new SARLProjectParent[list.size()];
+		final SARLProjectParent[] result = new SARLProjectParent[list.size()];
 		list.toArray(result);
 
 		return result;

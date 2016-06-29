@@ -42,13 +42,13 @@ public class InitializeMojo extends AbstractSarlMojo {
 
 	@Override
 	protected void executeMojo() throws MojoExecutionException, MojoFailureException {
-		for (File f : new File[] {getInput(), getOutput()}) {
-			String absPath = f.getAbsolutePath();
+		for (final File f : new File[] {getInput(), getOutput()}) {
+			final String absPath = f.getAbsolutePath();
 			getLog().debug(Locale.getString(InitializeMojo.class, "ADD_SOURCE_FOLDERS", absPath)); //$NON-NLS-1$
 			this.mavenHelper.getSession().getCurrentProject().addCompileSourceRoot(absPath);
 		}
-		for (File f : new File[] {getTestInput(), getTestOutput()}) {
-			String absPath = f.getAbsolutePath();
+		for (final File f : new File[] {getTestInput(), getTestOutput()}) {
+			final String absPath = f.getAbsolutePath();
 			getLog().debug(Locale.getString(InitializeMojo.class, "ADD_TEST_SOURCE_FOLDERS", absPath)); //$NON-NLS-1$
 			this.mavenHelper.getSession().getCurrentProject().addTestCompileSourceRoot(absPath);
 		}

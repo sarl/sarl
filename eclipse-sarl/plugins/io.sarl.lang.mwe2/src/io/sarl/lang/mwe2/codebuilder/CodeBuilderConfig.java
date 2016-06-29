@@ -402,7 +402,7 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	 */
 	public void addModifier(Modifier modifier) {
 		if (modifier != null) {
-			String ruleName = modifier.getType();
+			final String ruleName = modifier.getType();
 			if (!Strings.isEmpty(ruleName)) {
 				List<String> modifiers = this.modifiers.get(ruleName);
 				if (modifiers == null) {

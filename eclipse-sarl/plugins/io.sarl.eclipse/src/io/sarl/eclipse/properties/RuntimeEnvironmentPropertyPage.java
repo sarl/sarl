@@ -100,15 +100,15 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	@Override
 	protected Control createPreferenceContent(Composite composite) {
 		this.sreBlock = new SREConfigurationBlock(true, null, null);
-		Control ctrl = this.sreBlock.createControl(composite);
+		final Control ctrl = this.sreBlock.createControl(composite);
 		this.sreBlock.initialize();
 		try {
-			String useSystemWide = getProject().getPersistentProperty(
+			final String useSystemWide = getProject().getPersistentProperty(
 					qualify(PROPERTY_NAME_USE_SYSTEM_WIDE_SRE));
-			String sreInstallId = getProject().getPersistentProperty(
+			final String sreInstallId = getProject().getPersistentProperty(
 					qualify(PROPERTY_NAME_SRE_INSTALL_ID));
-			ISREInstall sre = SARLRuntime.getSREFromId(sreInstallId);
-			boolean notify = this.sreBlock.getNotify();
+			final ISREInstall sre = SARLRuntime.getSREFromId(sreInstallId);
+			final boolean notify = this.sreBlock.getNotify();
 			try {
 				this.sreBlock.setNotify(false);
 				this.sreBlock.selectSpecificSRE(sre);
@@ -130,7 +130,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	@Override
 	protected boolean hasProjectSpecificOptions(IProject project) {
 		try {
-			String value = project.getPersistentProperty(
+			final String value = project.getPersistentProperty(
 					qualify(PROPERTY_NAME_HAS_PROJECT_SPECIFIC));
 			return Boolean.parseBoolean(value);
 		} catch (CoreException e) {
@@ -169,14 +169,14 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 
 	@Override
 	public boolean performOk() {
-		IProject prj = getProject();
+		final IProject prj = getProject();
 		if (prj == null || !super.performOk()
 				|| !saveProjectSpecificOptions(getProject(), useProjectSettings())) {
 			return false;
 		}
-		ISREInstall projectSRE = this.sreBlock.getSelectedSRE();
-		boolean isSystemWide = this.sreBlock.isSystemWideDefaultSRE();
-		String id = (projectSRE == null) ? null : projectSRE.getId();
+		final ISREInstall projectSRE = this.sreBlock.getSelectedSRE();
+		final boolean isSystemWide = this.sreBlock.isSystemWideDefaultSRE();
+		final String id = (projectSRE == null) ? null : projectSRE.getId();
 		try {
 			prj.setPersistentProperty(
 					qualify(PROPERTY_NAME_USE_SYSTEM_WIDE_SRE),

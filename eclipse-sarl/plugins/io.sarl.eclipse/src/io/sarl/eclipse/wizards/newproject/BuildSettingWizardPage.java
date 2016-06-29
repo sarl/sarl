@@ -97,24 +97,24 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	private static final int UPDATE_PROJECT_MONITORED_STEPS = 7;
 
-	private final MainProjectWizardPage fFirstPage;
+	private final MainProjectWizardPage firstPage;
 
 	/** Location of the current project.
 	 * It is <code>null</code> if the location is a platform location.
 	 */
-	private URI fCurrProjectLocation;
+	private URI currProjectLocation;
 
-	private IProject fCurrProject;
+	private IProject currProject;
 
-	private boolean fKeepContent;
+	private boolean keepContent;
 
-	private File fDotProjectBackup;
+	private File dotProjectBackup;
 
-	private File fDotClasspathBackup;
+	private File dotClasspathBackup;
 
-	private Boolean fIsAutobuild;
+	private Boolean isAutobuild;
 
-	private Set<IFileStore> fOrginalFolders;
+	private Set<IFileStore> orginalFolders;
 
 	/**
 	 * Constructor for the {@link NewJavaProjectWizardPageTwo}.
@@ -124,14 +124,14 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	public BuildSettingWizardPage(MainProjectWizardPage mainPage) {
 		setPageComplete(false);
 
-		this.fFirstPage = mainPage;
-		this.fCurrProjectLocation = null;
-		this.fCurrProject = null;
-		this.fKeepContent = false;
+		this.firstPage = mainPage;
+		this.currProjectLocation = null;
+		this.currProject = null;
+		this.keepContent = false;
 
-		this.fDotProjectBackup = null;
-		this.fDotClasspathBackup = null;
-		this.fIsAutobuild = null;
+		this.dotProjectBackup = null;
+		this.dotClasspathBackup = null;
+		this.isAutobuild = null;
 
 		setTitle(Messages.SARLProjectNewWizard_3);
 		setDescription(Messages.SARLProjectNewWizard_2);
@@ -146,7 +146,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	@Override
 	public void setVisible(boolean visible) {
-		boolean isShownFirstTime = visible && this.fCurrProject == null;
+		final boolean isShownFirstTime = visible && this.currProject == null;
 		if (visible) {
 			// Entering from the first page
 			if (isShownFirstTime) {
@@ -154,7 +154,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 			}
 		} else {
 			// Leaving back to the first page
-			if (getContainer().getCurrentPage() == this.fFirstPage) {
+			if (getContainer().getCurrentPage() == this.firstPage) {
 				removeProvisonalProject();
 			}
 		}
@@ -165,12 +165,12 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private static boolean hasExistingContent(URI realLocation) throws CoreException {
-		IFileStore file = EFS.getStore(realLocation);
+		final IFileStore file = EFS.getStore(realLocation);
 		return file.fetchInfo().exists();
 	}
 
 	private IStatus changeToNewProject() {
-		UpdateRunnable op = new UpdateRunnable();
+		final UpdateRunnable op = new UpdateRunnable();
 		try {
 			getContainer().run(true, false, new WorkspaceModifyDelegatingOperation(op));
 			return op.getInfoStatus();
@@ -200,13 +200,13 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		if (cause instanceof CoreException) {
 			updateStatus(((CoreException) cause).getStatus());
 		} else {
-			String message;
+			final String message;
 			if (cause != null) {
 				message = cause.getLocalizedMessage();
 			} else {
 				message = event.getLocalizedMessage();
 			}
-			IStatus status = new StatusInfo(IStatus.ERROR, message);
+			final IStatus status = new StatusInfo(IStatus.ERROR, message);
 			updateStatus(status);
 		}
 	}
@@ -216,7 +216,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		// Test if the project is inside workspace
 		if (theLocation == null) {
 			try {
-				URI rootLocation = ResourcesPlugin.getWorkspace().getRoot().getLocationURI();
+				final URI rootLocation = ResourcesPlugin.getWorkspace().getRoot().getLocationURI();
 				theLocation = new URI(rootLocation.getScheme(), null,
 						Path.fromPortableString(
 								rootLocation.getPath()).append(projectName).toString(),
@@ -243,19 +243,19 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 				throw new OperationCanceledException();
 			}
 
-			String projectName = this.fFirstPage.getProjectName();
+			final String projectName = this.firstPage.getProjectName();
 
-			this.fCurrProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-			this.fCurrProjectLocation = this.fFirstPage.getProjectLocationURI();
+			this.currProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+			this.currProjectLocation = this.firstPage.getProjectLocationURI();
 
-			URI realLocation = getRealLocation(projectName, this.fCurrProjectLocation);
-			this.fKeepContent = hasExistingContent(realLocation);
+			final URI realLocation = getRealLocation(projectName, this.currProjectLocation);
+			this.keepContent = hasExistingContent(realLocation);
 
 			if (theMonitor.isCanceled()) {
 				throw new OperationCanceledException();
 			}
 
-			if (this.fKeepContent) {
+			if (this.keepContent) {
 				rememberExistingFiles(realLocation);
 				rememberExisitingFolders(realLocation);
 			}
@@ -265,7 +265,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 			}
 
 			try {
-				createProject(this.fCurrProject, this.fCurrProjectLocation,
+				createProject(this.currProject, this.currProjectLocation,
 						new SubProgressMonitor(theMonitor, 2));
 			} catch (CoreException e) {
 				if (e.getStatus().getCode() == IResourceStatus.FAILED_READ_METADATA) {
@@ -275,11 +275,11 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 									e.getLocalizedMessage()));
 
 					deleteProjectFile(realLocation);
-					if (this.fCurrProject.exists()) {
-						this.fCurrProject.delete(true, null);
+					if (this.currProject.exists()) {
+						this.currProject.delete(true, null);
 					}
 
-					createProject(this.fCurrProject, this.fCurrProjectLocation, null);
+					createProject(this.currProject, this.currProjectLocation, null);
 				} else {
 					throw e;
 				}
@@ -289,7 +289,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 				throw new OperationCanceledException();
 			}
 
-			initializeBuildPath(JavaCore.create(this.fCurrProject), new SubProgressMonitor(theMonitor, 2));
+			initializeBuildPath(JavaCore.create(this.currProject), new SubProgressMonitor(theMonitor, 2));
 			// Create the Java project to allow the use of the new source folder page
 			configureJavaProject(new SubProgressMonitor(theMonitor, 3));
 		} finally {
@@ -304,7 +304,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		IPath outputLocation = null;
 		if (!project.getFile(FILENAME_CLASSPATH).exists()) {
 			final ClassPathDetector detector = new ClassPathDetector(
-					this.fCurrProject, new SubProgressMonitor(monitor, 2));
+					this.currProject, new SubProgressMonitor(monitor, 2));
 			entries = detector.getClasspath();
 			outputLocation = detector.getOutputLocation();
 			if (entries.length == 0) {
@@ -317,13 +317,13 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private Pair<IClasspathEntry[], IPath> buildNewBuildPath(IProject project, IProgressMonitor monitor) throws CoreException {
-		List<IClasspathEntry> cpEntries = new ArrayList<>();
-		IWorkspaceRoot root = project.getWorkspace().getRoot();
+		final List<IClasspathEntry> cpEntries = new ArrayList<>();
+		final IWorkspaceRoot root = project.getWorkspace().getRoot();
 
-		for (IClasspathEntry sourceClasspathEntry : this.fFirstPage.getSourceClasspathEntries()) {
-			IPath path = sourceClasspathEntry.getPath();
+		for (final IClasspathEntry sourceClasspathEntry : this.firstPage.getSourceClasspathEntries()) {
+			final IPath path = sourceClasspathEntry.getPath();
 			if (path.segmentCount() > 1) {
-				IFolder folder = root.getFolder(path);
+				final IFolder folder = root.getFolder(path);
 				CoreUtility.createFolder(
 						folder,
 						true, true,
@@ -332,13 +332,13 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 			cpEntries.add(sourceClasspathEntry);
 		}
 
-		this.fFirstPage.putDefaultClasspathEntriesIn(cpEntries);
+		this.firstPage.putDefaultClasspathEntriesIn(cpEntries);
 
-		IClasspathEntry[] entries = cpEntries.toArray(new IClasspathEntry[cpEntries.size()]);
+		final IClasspathEntry[] entries = cpEntries.toArray(new IClasspathEntry[cpEntries.size()]);
 
-		IPath outputLocation = this.fFirstPage.getOutputLocation();
+		final IPath outputLocation = this.firstPage.getOutputLocation();
 		if (outputLocation.segmentCount() > 1) {
-			IFolder folder = root.getFolder(outputLocation);
+			final IFolder folder = root.getFolder(outputLocation);
 			CoreUtility.createDerivedFolder(
 					folder,
 					true, true,
@@ -368,14 +368,14 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		try {
 			IClasspathEntry[] entries = null;
 			IPath outputLocation = null;
-			IProject project = javaProject.getProject();
+			final IProject project = javaProject.getProject();
 
-			if (this.fKeepContent) {
-				Pair<IClasspathEntry[], IPath> pair = keepExistingBuildPath(project, theMonitor);
+			if (this.keepContent) {
+				final Pair<IClasspathEntry[], IPath> pair = keepExistingBuildPath(project, theMonitor);
 				entries = pair.getKey();
 				outputLocation = pair.getValue();
 			} else {
-				Pair<IClasspathEntry[], IPath> pair = buildNewBuildPath(project, theMonitor);
+				final Pair<IClasspathEntry[], IPath> pair = buildNewBuildPath(project, theMonitor);
 				entries = pair.getKey();
 				outputLocation = pair.getValue();
 			}
@@ -390,7 +390,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 			if (e.getCause() instanceof CoreException) {
 				throw (CoreException) e.getCause();
 			}
-			Throwable ee;
+			final Throwable ee;
 			if (e.getCause() != null && e.getCause() != e) {
 				ee = e.getCause();
 			} else {
@@ -403,9 +403,9 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private static void deleteProjectFile(URI projectLocation) throws CoreException {
-		IFileStore file = EFS.getStore(projectLocation);
+		final IFileStore file = EFS.getStore(projectLocation);
 		if (file.fetchInfo().exists()) {
-			IFileStore projectFile = file.getChild(FILENAME_PROJECT);
+			final IFileStore projectFile = file.getChild(FILENAME_PROJECT);
 			if (projectFile.fetchInfo().exists()) {
 				projectFile.delete(EFS.NONE, null);
 			}
@@ -413,15 +413,15 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private void rememberExisitingFolders(URI projectLocation) {
-		this.fOrginalFolders = new HashSet<>();
+		this.orginalFolders = new HashSet<>();
 
 		try {
-			IFileStore[] children = EFS.getStore(projectLocation).childStores(EFS.NONE, null);
+			final IFileStore[] children = EFS.getStore(projectLocation).childStores(EFS.NONE, null);
 			for (int i = 0; i < children.length; i++) {
-				IFileStore child = children[i];
-				IFileInfo info = child.fetchInfo();
-				if (info.isDirectory() && info.exists() && !this.fOrginalFolders.contains(child.getName())) {
-					this.fOrginalFolders.add(child);
+				final IFileStore child = children[i];
+				final IFileInfo info = child.fetchInfo();
+				if (info.isDirectory() && info.exists() && !this.orginalFolders.contains(child.getName())) {
+					this.orginalFolders.add(child);
 				}
 			}
 		} catch (CoreException e) {
@@ -430,15 +430,15 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private void restoreExistingFolders(URI projectLocation) {
-		Set<IFileStore> foldersToKeep = new HashSet<>(this.fOrginalFolders);
+		final Set<IFileStore> foldersToKeep = new HashSet<>(this.orginalFolders);
 		// workaround for bug 319054: Eclipse deletes all files when I cancel
 		// a project creation (symlink in project location path)
-		for (IFileStore originalFileStore : this.fOrginalFolders) {
+		for (final IFileStore originalFileStore : this.orginalFolders) {
 			try {
-				File localFile = originalFileStore.toLocalFile(EFS.NONE, null);
+				final File localFile = originalFileStore.toLocalFile(EFS.NONE, null);
 				if (localFile != null) {
-					File canonicalFile = localFile.getCanonicalFile();
-					IFileStore canonicalFileStore =
+					final File canonicalFile = localFile.getCanonicalFile();
+					final IFileStore canonicalFileStore =
 							originalFileStore.getFileSystem().fromLocalFile(canonicalFile);
 					if (!originalFileStore.equals(canonicalFileStore)) {
 						foldersToKeep.add(canonicalFileStore);
@@ -452,18 +452,18 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		}
 
 		try {
-			IFileStore[] children = EFS.getStore(projectLocation).childStores(EFS.NONE, null);
+			final IFileStore[] children = EFS.getStore(projectLocation).childStores(EFS.NONE, null);
 			for (int i = 0; i < children.length; i++) {
-				IFileStore child = children[i];
-				IFileInfo info = child.fetchInfo();
+				final IFileStore child = children[i];
+				final IFileInfo info = child.fetchInfo();
 				if (info.isDirectory() && info.exists() && !foldersToKeep.contains(child)) {
 					child.delete(EFS.NONE, null);
-					this.fOrginalFolders.remove(child);
+					this.orginalFolders.remove(child);
 				}
 			}
 
-			for (Iterator<IFileStore> iterator = this.fOrginalFolders.iterator(); iterator.hasNext();) {
-				IFileStore deleted = iterator.next();
+			for (Iterator<IFileStore> iterator = this.orginalFolders.iterator(); iterator.hasNext();) {
+				final IFileStore deleted = iterator.next();
 				deleted.mkdir(EFS.NONE, null);
 			}
 		} catch (CoreException e) {
@@ -472,33 +472,33 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private void rememberExistingFiles(URI projectLocation) throws CoreException {
-		this.fDotProjectBackup = null;
-		this.fDotClasspathBackup = null;
+		this.dotProjectBackup = null;
+		this.dotClasspathBackup = null;
 
-		IFileStore file = EFS.getStore(projectLocation);
+		final IFileStore file = EFS.getStore(projectLocation);
 		if (file.fetchInfo().exists()) {
-			IFileStore projectFile = file.getChild(FILENAME_PROJECT);
+			final IFileStore projectFile = file.getChild(FILENAME_PROJECT);
 			if (projectFile.fetchInfo().exists()) {
-				this.fDotProjectBackup = createBackup(projectFile, "project-desc"); //$NON-NLS-1$
+				this.dotProjectBackup = createBackup(projectFile, "project-desc"); //$NON-NLS-1$
 			}
-			IFileStore classpathFile = file.getChild(FILENAME_CLASSPATH);
+			final IFileStore classpathFile = file.getChild(FILENAME_CLASSPATH);
 			if (classpathFile.fetchInfo().exists()) {
-				this.fDotClasspathBackup = createBackup(classpathFile, "classpath-desc"); //$NON-NLS-1$
+				this.dotClasspathBackup = createBackup(classpathFile, "classpath-desc"); //$NON-NLS-1$
 			}
 		}
 	}
 
 	private void restoreExistingFiles(URI projectLocation, IProgressMonitor monitor) throws CoreException {
-		int ticks = ((this.fDotProjectBackup != null ? 1 : 0) + (this.fDotClasspathBackup != null ? 1 : 0)) * 2;
+		final int ticks = ((this.dotProjectBackup != null ? 1 : 0) + (this.dotClasspathBackup != null ? 1 : 0)) * 2;
 		monitor.beginTask("", ticks); //$NON-NLS-1$
 		try {
-			IFileStore projectFile = EFS.getStore(projectLocation).getChild(FILENAME_PROJECT);
+			final IFileStore projectFile = EFS.getStore(projectLocation).getChild(FILENAME_PROJECT);
 			projectFile.delete(EFS.NONE, new SubProgressMonitor(monitor, 1));
-			if (this.fDotProjectBackup != null) {
-				copyFile(this.fDotProjectBackup, projectFile, new SubProgressMonitor(monitor, 1));
+			if (this.dotProjectBackup != null) {
+				copyFile(this.dotProjectBackup, projectFile, new SubProgressMonitor(monitor, 1));
 			}
 		} catch (IOException e) {
-			IStatus status = new Status(
+			final IStatus status = new Status(
 					IStatus.ERROR,
 					JavaUI.ID_PLUGIN,
 					IStatus.ERROR,
@@ -507,13 +507,13 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 			throw new CoreException(status);
 		}
 		try {
-			IFileStore classpathFile = EFS.getStore(projectLocation).getChild(FILENAME_CLASSPATH);
+			final IFileStore classpathFile = EFS.getStore(projectLocation).getChild(FILENAME_CLASSPATH);
 			classpathFile.delete(EFS.NONE, new SubProgressMonitor(monitor, 1));
-			if (this.fDotClasspathBackup != null) {
-				copyFile(this.fDotClasspathBackup, classpathFile, new SubProgressMonitor(monitor, 1));
+			if (this.dotClasspathBackup != null) {
+				copyFile(this.dotClasspathBackup, classpathFile, new SubProgressMonitor(monitor, 1));
 			}
 		} catch (IOException e) {
-			IStatus status = new Status(
+			final IStatus status = new Status(
 					IStatus.ERROR,
 					JavaUI.ID_PLUGIN,
 					IStatus.ERROR,
@@ -525,11 +525,11 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	private static File createBackup(IFileStore source, String name) throws CoreException {
 		try {
-			File bak = File.createTempFile("eclipse-" + name, ".bak"); //$NON-NLS-1$//$NON-NLS-2$
+			final File bak = File.createTempFile("eclipse-" + name, ".bak"); //$NON-NLS-1$//$NON-NLS-2$
 			copyFile(source, bak);
 			return bak;
 		} catch (IOException e) {
-			IStatus status = new Status(
+			final IStatus status = new Status(
 					IStatus.ERROR,
 					JavaUI.ID_PLUGIN,
 					IStatus.ERROR,
@@ -558,7 +558,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private static void unsecureCopyFile(InputStream is, OutputStream os) throws IOException {
-		byte[] buffer = new byte[FILE_COPY_BLOCK_SIZE];
+		final byte[] buffer = new byte[FILE_COPY_BLOCK_SIZE];
 		int bytesRead = is.read(buffer);
 		while (bytesRead > 0) {
 			os.write(buffer, 0, bytesRead);
@@ -568,11 +568,11 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private IPath findGenerationSourcePath() {
-		IPath projectPath = this.fCurrProject.getFullPath();
+		final IPath projectPath = this.currProject.getFullPath();
 		IPath path;
-		IPath generatedSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED);
-		IPath deprecatedGeneratedSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED_XTEXT);
-		for (IClasspathEntry entry : getRawClassPath()) {
+		final IPath generatedSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED);
+		final IPath deprecatedGeneratedSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED_XTEXT);
+		for (final IClasspathEntry entry : getRawClassPath()) {
 			path = entry.getPath();
 			path = path.removeFirstSegments(path.matchingFirstSegments(projectPath));
 			if (path.equals(generatedSourceFolder)) {
@@ -595,16 +595,16 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	public void performFinish(IProgressMonitor monitor) throws CoreException, InterruptedException {
 		try {
 			monitor.beginTask(NewWizardMessages.NewJavaProjectWizardPageTwo_operation_create, 3);
-			if (this.fCurrProject == null) {
+			if (this.currProject == null) {
 				updateProject(new SubProgressMonitor(monitor, 1));
 			}
 
-			String newProjectCompliance = this.fKeepContent ? null : this.fFirstPage.getCompilerCompliance();
+			final String newProjectCompliance = this.keepContent ? null : this.firstPage.getCompilerCompliance();
 			configureJavaProject(newProjectCompliance, new SubProgressMonitor(monitor, 1));
 
-			IPath generationFolder = findGenerationSourcePath();
+			final IPath generationFolder = findGenerationSourcePath();
 			if (generationFolder == null) {
-				IStatus status = SARLEclipsePlugin.getDefault().createStatus(
+				final IStatus status = SARLEclipsePlugin.getDefault().createStatus(
 						IStatus.ERROR,
 						MessageFormat.format(
 						Messages.BuildSettingWizardPage_0,
@@ -614,16 +614,16 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 			SARLPreferences.setSpecificSARLConfigurationFor(
 					getJavaProject().getProject(), generationFolder);
 		} catch (Throwable e) {
-			if (this.fCurrProject != null) {
+			if (this.currProject != null) {
 				removeProvisonalProject();
 			}
 			throw e;
 		} finally {
 			monitor.done();
-			this.fCurrProject = null;
-			if (this.fIsAutobuild != null) {
-				CoreUtility.setAutoBuilding(this.fIsAutobuild.booleanValue());
-				this.fIsAutobuild = null;
+			this.currProject = null;
+			if (this.isAutobuild != null) {
+				CoreUtility.setAutoBuilding(this.isAutobuild.booleanValue());
+				this.isAutobuild = null;
 			}
 		}
 	}
@@ -637,7 +637,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	 * @return the provisional project
 	 */
 	protected IProject createProvisonalProject() {
-		IStatus status = changeToNewProject();
+		final IStatus status = changeToNewProject();
 		if (status != null) {
 			updateStatus(status);
 			if (!status.isOK()) {
@@ -648,7 +648,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 						status);
 			}
 		}
-		return this.fCurrProject;
+		return this.currProject;
 	}
 
 	/**
@@ -656,12 +656,12 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	 * removed when the user cancels the wizard or goes back to the first page.
 	 */
 	protected void removeProvisonalProject() {
-		if (!this.fCurrProject.exists()) {
-			this.fCurrProject = null;
+		if (!this.currProject.exists()) {
+			this.currProject = null;
 			return;
 		}
 
-		IRunnableWithProgress op = new IRunnableWithProgress() {
+		final IRunnableWithProgress op = new IRunnableWithProgress() {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -672,8 +672,8 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		try {
 			getContainer().run(true, true, new WorkspaceModifyDelegatingOperation(op));
 		} catch (InvocationTargetException e) {
-			String title = NewWizardMessages.NewJavaProjectWizardPageTwo_error_remove_title;
-			String message = NewWizardMessages.NewJavaProjectWizardPageTwo_error_remove_message;
+			final String title = NewWizardMessages.NewJavaProjectWizardPageTwo_error_remove_title;
+			final String message = NewWizardMessages.NewJavaProjectWizardPageTwo_error_remove_message;
 			ExceptionHandler.handle(e, getShell(), title, message);
 		} catch (InterruptedException e) {
 			// cancel pressed
@@ -683,34 +683,34 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	private void doRemoveProject(IProgressMonitor monitor) throws InvocationTargetException {
 		IProgressMonitor theMonitor = monitor;
 		// Test if the project is inside the workspace
-		final boolean noProgressMonitor = (this.fCurrProjectLocation == null);
+		final boolean noProgressMonitor = this.currProjectLocation == null;
 		if (theMonitor == null || noProgressMonitor) {
 			theMonitor = new NullProgressMonitor();
 		}
 		theMonitor.beginTask(NewWizardMessages.NewJavaProjectWizardPageTwo_operation_remove, 3);
 		try {
 			try {
-				URI projLoc = this.fCurrProject.getLocationURI();
+				final URI projLoc = this.currProject.getLocationURI();
 
-				boolean removeContent = !this.fKeepContent
-						&& this.fCurrProject.isSynchronized(IResource.DEPTH_INFINITE);
+				final boolean removeContent = !this.keepContent
+						&& this.currProject.isSynchronized(IResource.DEPTH_INFINITE);
 				if (!removeContent) {
 					restoreExistingFolders(projLoc);
 				}
-				this.fCurrProject.delete(removeContent, false, new SubProgressMonitor(theMonitor, 2));
+				this.currProject.delete(removeContent, false, new SubProgressMonitor(theMonitor, 2));
 
 				restoreExistingFiles(projLoc, new SubProgressMonitor(theMonitor, 1));
 			} finally {
 				// fIsAutobuild must be set
-				CoreUtility.setAutoBuilding(this.fIsAutobuild.booleanValue());
-				this.fIsAutobuild = null;
+				CoreUtility.setAutoBuilding(this.isAutobuild.booleanValue());
+				this.isAutobuild = null;
 			}
 		} catch (CoreException e) {
 			throw new InvocationTargetException(e);
 		} finally {
 			theMonitor.done();
-			this.fCurrProject = null;
-			this.fKeepContent = false;
+			this.currProject = null;
+			this.keepContent = false;
 		}
 	}
 
@@ -718,7 +718,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	 * Called from the wizard on cancel.
 	 */
 	public void performCancel() {
-		if (this.fCurrProject != null) {
+		if (this.currProject != null) {
 			removeProvisonalProject();
 		}
 	}
@@ -745,8 +745,8 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		@Override
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 			try {
-				if (BuildSettingWizardPage.this.fIsAutobuild == null) {
-					BuildSettingWizardPage.this.fIsAutobuild =
+				if (BuildSettingWizardPage.this.isAutobuild == null) {
+					BuildSettingWizardPage.this.isAutobuild =
 							Boolean.valueOf(CoreUtility.setAutoBuilding(false));
 				}
 				this.infoStatus = updateProject(monitor);

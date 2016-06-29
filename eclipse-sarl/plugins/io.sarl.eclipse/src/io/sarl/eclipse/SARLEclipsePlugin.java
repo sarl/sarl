@@ -79,7 +79,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @return the section of the given name
 	 */
 	public IDialogSettings getDialogSettingsSection(String name) {
-		IDialogSettings dialogSettings = getDialogSettings();
+		final IDialogSettings dialogSettings = getDialogSettings();
 		IDialogSettings section = dialogSettings.getSection(name);
 		if (section == null) {
 			section = dialogSettings.addNewSection(name);
@@ -109,7 +109,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @return the image.
 	 */
 	public Image getImage(String imagePath) {
-		ImageDescriptor descriptor = getImageDescriptor(imagePath);
+		final ImageDescriptor descriptor = getImageDescriptor(imagePath);
 		if (descriptor == null) {
 			return null;
 		}
@@ -237,14 +237,14 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 */
 	@SuppressWarnings("static-method")
 	public IStatus createMultiStatus(Iterable<? extends IStatus> status) {
-		IStatus max = findMax(status);
-		MultiStatus multiStatus;
+		final IStatus max = findMax(status);
+		final MultiStatus multiStatus;
 		if (max == null) {
 			multiStatus = new MultiStatus(PLUGIN_ID, 0, null, null);
 		} else {
 			multiStatus = new MultiStatus(PLUGIN_ID, 0, max.getMessage(), max.getException());
 		}
-		for (IStatus s : status) {
+		for (final IStatus s : status) {
 			multiStatus.add(s);
 		}
 		return multiStatus;
@@ -252,7 +252,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	private static IStatus findMax(Iterable<? extends IStatus> status) {
 		IStatus max = null;
-		for (IStatus s : status) {
+		for (final IStatus s : status) {
 			if (max == null || max.getSeverity() > s.getSeverity()) {
 				max = s;
 			}
@@ -335,7 +335,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * Saves the preferences for the plug-in.
 	 */
 	public void savePreferences() {
-		IEclipsePreferences prefs = getPreferences();
+		final IEclipsePreferences prefs = getPreferences();
 		try {
 			prefs.flush();
 		} catch (BackingStoreException e) {

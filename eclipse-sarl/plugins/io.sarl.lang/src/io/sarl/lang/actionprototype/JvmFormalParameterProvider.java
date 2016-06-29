@@ -72,7 +72,7 @@ public class JvmFormalParameterProvider implements FormalParameterProvider {
 
 	@Override
 	public boolean hasFormalParameterDefaultValue(int position) {
-		JvmFormalParameter parameter = this.parameters.get(position);
+		final JvmFormalParameter parameter = this.parameters.get(position);
 		return Utils.hasAnnotation(parameter, DefaultValue.class);
 	}
 

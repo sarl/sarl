@@ -130,7 +130,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 * @return the HTML code.
 	 */
 	protected String toCodeBlock(Example example, List<Filter> filters) {
-		String code = serialize(example.getExpression(), filters);
+		final String code = serialize(example.getExpression(), filters);
 		if (code == null || code.isEmpty()) {
 			return ""; //$NON-NLS-1$
 		}
@@ -150,9 +150,9 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 * @return the HTML tag for the title.
 	 */
 	protected String makeTitleTag(EObject object, SectionNumber sectionNumber) {
-		int depth = sectionNumber.getDepth();
+		final int depth = sectionNumber.getDepth();
 		if (depth < MAX_DEPTH_REFERENCING) {
-			String depthLevel = Integer.toString(depth + 1);
+			final String depthLevel = Integer.toString(depth + 1);
 			return "<h" + depthLevel //$NON-NLS-1$
 					+ id(this.nameProvider.describe(object))
 					+ ">" + sectionNumber.toHTML() //$NON-NLS-1$
@@ -173,7 +173,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 */
 	protected static String protectID(String id) {
 		if (id != null) {
-			String protectedId = id.replaceAll("\\W+", ID_SEPARATOR); //$NON-NLS-1$
+			final String protectedId = id.replaceAll("\\W+", ID_SEPARATOR); //$NON-NLS-1$
 			if (protectedId != null) {
 				return Strings.trim(protectedId, ID_SEPARATOR.charAt(0));
 			}
@@ -202,9 +202,9 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 */
 	@SuppressWarnings("synthetic-access")
 	private String generateRootContent(ExampleGroup group) {
-		List<String> outline = Lists.newArrayList();
-		StringConcatenation content = generateMembers(group, new SectionNumber(), outline);
-		String topDoc = postProcess(generateDoc(group), outline);
+		final List<String> outline = Lists.newArrayList();
+		final StringConcatenation content = generateMembers(group, new SectionNumber(), outline);
+		final String topDoc = postProcess(generateDoc(group), outline);
 		return topDoc + content;
 	}
 
@@ -216,11 +216,11 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 */
 	@SuppressWarnings("static-method")
 	protected String postProcess(String text, List<String> outline) {
-		String outlineText;
+		final String outlineText;
 		if (outline != null && !outline.isEmpty()) {
-			StringBuilder b = new StringBuilder();
+			final StringBuilder b = new StringBuilder();
 			b.append("<ul class=\"page_outline\" id=\"page_outline\">"); //$NON-NLS-1$
-			for (String line : outline) {
+			for (final String line : outline) {
 				if (line != null && !line.isEmpty()) {
 					b.append("<li>"); //$NON-NLS-1$
 					b.append(line);
@@ -233,7 +233,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 			outlineText = ""; //$NON-NLS-1$
 		}
 		String refactoredText = text;
-		for (String pattern : OUTLINE_MARKERS) {
+		for (final String pattern : OUTLINE_MARKERS) {
 			refactoredText = refactoredText.replaceAll(pattern, outlineText);
 		}
 		return refactoredText;
@@ -247,7 +247,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	@SuppressWarnings("static-method")
 	protected String postProcess(String text) {
 		String refactoredText = text;
-		for (NoteTag tag : NoteTag.values()) {
+		for (final NoteTag tag : NoteTag.values()) {
 			refactoredText = tag.apply(refactoredText);
 		}
 		refactoredText = refactoredText.replaceAll("(<p>){2,}", "<p>"); //$NON-NLS-1$//$NON-NLS-2$
@@ -262,7 +262,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 * @return the HTML representation of the table.
 	 */
 	protected final String generateDoc(EObject object) {
-		String doc = documentation(object);
+		final String doc = documentation(object);
 		if (doc != null && !doc.isEmpty()) {
 			return postProcess(markdown2Html(doc));
 		}
@@ -288,31 +288,31 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	private StringConcatenation generateMembers(ExampleGroup group, SectionNumber sectionNumber, List<String> outline) {
-		StringConcatenation result = new StringConcatenation();
+		final StringConcatenation result = new StringConcatenation();
 		String content;
 		String hrefLabel;
 		SectionNumber childNumber;
-		boolean isRoot = sectionNumber.isRoot();
-		boolean isFlatSections = sectionNumber.isMaxDepthReferencing();
+		final boolean isRoot = sectionNumber.isRoot();
+		final boolean isFlatSections = sectionNumber.isMaxDepthReferencing();
 		if (isFlatSections) {
 			result.append("<ul>"); //$NON-NLS-1$
 		}
 		int position = 0;
-		for (XtendMember member : group.getMembers()) {
+		for (final XtendMember member : group.getMembers()) {
 			if (member instanceof Example) {
-				Example example = (Example) member;
+				final Example example = (Example) member;
 				childNumber = sectionNumber.getChild(position);
 				hrefLabel = makeTitleHref(example, childNumber, asTitle(example));
 				content = generate(example, childNumber);
 				++position;
 			} else if (member instanceof ExampleGroup) {
-				ExampleGroup sgroup = (ExampleGroup) member;
+				final ExampleGroup sgroup = (ExampleGroup) member;
 				childNumber = sectionNumber.getChild(position);
 				hrefLabel = makeTitleHref(sgroup, childNumber, asTitle(sgroup));
 				content = generate(sgroup, childNumber);
 				++position;
 			} else if (member instanceof ExampleTable) {
-				ExampleTable table = (ExampleTable) member;
+				final ExampleTable table = (ExampleTable) member;
 				childNumber = sectionNumber.getChild(position);
 				hrefLabel = makeTitleHref(table, childNumber, asTitle(table));
 				content = generate(table, childNumber);
@@ -348,17 +348,17 @@ class SARLDocGenerator extends AbstractDocGenerator {
 	 */
 	protected String generate(Example example, SectionNumber sectionNumber) {
 		String documentation = documentation(example);
-		List<Filter> filters;
+		final List<Filter> filters;
 		if (documentation != null && !documentation.isEmpty()) {
-			FilteringResult result = this.filterExtractor.apply(documentation);
+			final FilteringResult result = this.filterExtractor.apply(documentation);
 			filters = result.getFilters();
 			documentation  = result.getString();
 			documentation = postProcess(markdown2Html(documentation));
 		} else {
 			filters = Collections.emptyList();
 		}
-		String exampleName = example.getName();
-		StringBuilder result = new StringBuilder();
+		final String exampleName = example.getName();
+		final StringBuilder result = new StringBuilder();
 		if (exampleName != null && !exampleName.isEmpty()) {
 			result.append(makeTitleTag(example, sectionNumber));
 		}
@@ -448,7 +448,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		 */
 		public String toHTML() {
 			if (MavenConfig.isSectionNumbering() && this.position > 0) {
-				String txt = toString();
+				final String txt = toString();
 				if (txt != null && !txt.isEmpty()) {
 					return txt + "&nbsp;"; //$NON-NLS-1$
 				}
@@ -460,7 +460,7 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		@Override
 		public String toString() {
 			if (MavenConfig.isSectionNumbering() && this.position > 0) {
-				StringBuilder b = new StringBuilder();
+				final StringBuilder b = new StringBuilder();
 				if (this.parent != null) {
 					b.append(this.parent.toString());
 				}
@@ -544,24 +544,24 @@ class SARLDocGenerator extends AbstractDocGenerator {
 		 * @return the formated string.
 		 */
 		public String apply(String text) {
-			Pattern pattern = Pattern.compile(
+			final Pattern pattern = Pattern.compile(
 					"<" + this.htmlTag //$NON-NLS-1$
 					+ "(?:\\s+label\\s*=\\s*\"(.*?)\")?" //$NON-NLS-1$
 					+ "\\s*>" //$NON-NLS-1$
 					+ "(.*?)" //$NON-NLS-1$
 					+ "</" + this.htmlTag + "\\s*>", //$NON-NLS-1$//$NON-NLS-2$
 					Pattern.DOTALL);
-			Matcher matcher = pattern.matcher(text);
-			StringBuffer b = new StringBuffer();
+			final Matcher matcher = pattern.matcher(text);
+			final StringBuffer b = new StringBuffer();
 			while (matcher.find()) {
 				String label = matcher.group(1);
-				String htmlText = matcher.group(2).trim();
+				final String htmlText = matcher.group(2).trim();
 				if (label == null) {
 					label = this.text;
 				} else {
 					label = label.trim();
 				}
-				String replacement =
+				final String replacement =
 						"<p><span class=\"label " + this.htmlLabel //$NON-NLS-1$
 						+ "\">" + label + "</span> " //$NON-NLS-1$//$NON-NLS-2$
 						+ htmlText + "</p>"; //$NON-NLS-1$

@@ -58,7 +58,7 @@ public abstract class AbstractNewSarlElementWizard extends NewElementWizard {
 	 */
 	public AbstractNewSarlElementWizard(IImageDescriptorHelper imgHelper, AbstractNewSarlElementWizardPage page, String title) {
 		this.page = page;
-		ImageDescriptor image = imgHelper.getImageDescriptor("sarl_64.png"); //$NON-NLS-1$
+		final ImageDescriptor image = imgHelper.getImageDescriptor("sarl_64.png"); //$NON-NLS-1$
 		setDefaultPageImageDescriptor(image);
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
 		setWindowTitle(title);
@@ -91,13 +91,13 @@ public abstract class AbstractNewSarlElementWizard extends NewElementWizard {
 			display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					IEditorPart editor;
+					final IEditorPart editor;
 					try {
 						editor = IDE.openEditor(JavaPlugin.getActivePage(), (IFile) resource);
 						if (editor instanceof ITextEditor) {
 							final ITextEditor textEditor = (ITextEditor) editor;
-							ISelectionProvider selectionProvider = textEditor.getSelectionProvider();
-							ISelection selection = new TextSelection(size - 2, 0);
+							final ISelectionProvider selectionProvider = textEditor.getSelectionProvider();
+							final ISelection selection = new TextSelection(size - 2, 0);
 							selectionProvider.setSelection(selection);
 						}
 					} catch (PartInitException e) {

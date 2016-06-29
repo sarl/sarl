@@ -85,15 +85,11 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		super.createControl(parent);
 
 		// Change the label for the program arguments
-		Group group = (Group) this.fPrgmArgumentsText.getParent();
-		String newLabel = Messages.SARLArgumentsTab_0;
-		group.setText(newLabel);
+		final Group group = (Group) this.fPrgmArgumentsText.getParent();
+		group.setText(Messages.SARLArgumentsTab_0);
 		ControlAccessibleListener.addListener(this.fPrgmArgumentsText, group.getText());
 
-		Font font = parent.getFont();
-		Composite comp = group.getParent();
-
-		createSREArgsBlock(comp, font);
+		createSREArgsBlock(group.getParent(), parent.getFont());
 	}
 
 	/** Create the block for the SRE arguments.
@@ -103,16 +99,15 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 	 */
 	protected void createSREArgsBlock(Composite parent, Font font) {
 		// Create the block for the SRE
-		Group group = new Group(parent, SWT.NONE);
+		final Group group = new Group(parent, SWT.NONE);
 		group.setFont(font);
-		GridLayout layout = new GridLayout();
+		final GridLayout layout = new GridLayout();
 		group.setLayout(layout);
 		group.setLayoutData(new GridData(GridData.FILL_BOTH));
 		// Move the SRE argument block before the JVM argument block
 		group.moveAbove(this.fVMArgumentsBlock.getControl());
 
-		String controlName = Messages.SARLArgumentsTab_1;
-		group.setText(controlName);
+		group.setText(Messages.SARLArgumentsTab_1);
 
 		createSREArgsText(group, font);
 		createSREArgsVariableButton(group);
@@ -144,7 +139,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 				}
 			}
 		});
-		GridData gd = new GridData(GridData.FILL_BOTH);
+		final GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = HEIGHT_HINT;
 		gd.widthHint = WIDTH_HINT;
 		this.sreArgumentsText.setLayoutData(gd);
@@ -160,16 +155,15 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 	}
 
 	private void createSREArgsVariableButton(Group group) {
-		String buttonLabel = LauncherMessages.JavaArgumentsTab_5;
-		Button sreArgVariableButton = createPushButton(group, buttonLabel, null);
+		final Button sreArgVariableButton = createPushButton(group, LauncherMessages.JavaArgumentsTab_5, null);
 		sreArgVariableButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 		sreArgVariableButton.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(getShell());
+				final StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(getShell());
 				dialog.open();
-				String variable = dialog.getVariableExpression();
+				final String variable = dialog.getVariableExpression();
 				if (variable != null) {
 					SARLArgumentsTab.this.sreArgumentsText.insert(variable);
 				}
@@ -204,13 +198,9 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		public void createControl(Composite parent) {
 			super.createControl(parent);
 
-			Group group;
-			String newLabel;
-
 			// Change the label for the program arguments
-			group = (Group) this.fVMArgumentsText.getParent();
-			newLabel = Messages.SARLArgumentsTab_3;
-			group.setText(newLabel);
+			final Group group = (Group) this.fVMArgumentsText.getParent();
+			group.setText(Messages.SARLArgumentsTab_3);
 			ControlAccessibleListener.addListener(this.fVMArgumentsText, group.getText());
 		}
 

@@ -64,8 +64,8 @@ public final class SARLEarlyExitComputerUtil {
 	 *     annotation, otherwise <code>false</code>.
 	 */
 	public static boolean isEarlyExitAnnotatedElement(Object element) {
-		return ((element instanceof JvmAnnotationTarget)
-				&& (Utils.hasAnnotation((JvmAnnotationTarget) element, EarlyExit.class)));
+		return (element instanceof JvmAnnotationTarget)
+				&& (Utils.hasAnnotation((JvmAnnotationTarget) element, EarlyExit.class));
 	}
 
 }

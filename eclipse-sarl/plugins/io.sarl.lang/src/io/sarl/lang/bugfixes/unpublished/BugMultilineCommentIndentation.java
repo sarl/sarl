@@ -61,8 +61,8 @@ public class BugMultilineCommentIndentation {
 		final IHiddenRegion hiddenRegion = comment.getHiddenRegion();
 		if (detectBugSituation(hiddenRegion) && fixBug(hiddenRegion)) {
 			// Indentation of the first comment line
-			ITextRegionAccess access = comment.getTextRegionAccess();
-			ITextSegment target = access.regionForOffset(comment.getOffset(), 0);
+			final ITextRegionAccess access = comment.getTextRegionAccess();
+			final ITextSegment target = access.regionForOffset(comment.getOffset(), 0);
 			context.addReplacement(target.replaceWith(context.getIndentationString(1)));
 			// Indentation of the comment's lines
 			return new FixedReplacementContext(context);

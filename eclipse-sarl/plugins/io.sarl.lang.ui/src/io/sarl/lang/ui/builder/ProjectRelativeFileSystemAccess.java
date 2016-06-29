@@ -43,7 +43,7 @@ public class ProjectRelativeFileSystemAccess extends JDTAwareEclipseResourceFile
 	protected boolean ensureOutputConfigurationDirectoryExists(OutputConfiguration outputConfig) {
 		try {
 			if (super.ensureOutputConfigurationDirectoryExists(outputConfig)) {
-				IContainer container = getContainer(outputConfig);
+				final IContainer container = getContainer(outputConfig);
 				addToSourceFolders(container);
 				return true;
 			}

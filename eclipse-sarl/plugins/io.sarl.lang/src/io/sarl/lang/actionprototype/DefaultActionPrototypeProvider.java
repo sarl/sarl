@@ -78,49 +78,49 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 			FormalParameterProvider params,
 			Map<ActionParameterTypes, List<InferredStandardParameter>> signatures,
 			ActionParameterTypes fillSignatureKeyOutputParameter) {
-		boolean isOptional = (params.hasFormalParameterDefaultValue(parameterIndex)
+		final boolean isOptional = params.hasFormalParameterDefaultValue(parameterIndex)
 				&& ((parameterIndex < lastParameterIndex)
-				|| (!fillSignatureKeyOutputParameter.isVarArg())));
-		boolean isVarArg = (parameterIndex >= lastParameterIndex && fillSignatureKeyOutputParameter.isVarArg());
-		String name = params.getFormalParameterName(parameterIndex);
-		JvmTypeReference type = params.getFormalParameterTypeReference(parameterIndex, isVarArg);
+				|| (!fillSignatureKeyOutputParameter.isVarArg()));
+		final boolean isVarArg = parameterIndex >= lastParameterIndex && fillSignatureKeyOutputParameter.isVarArg();
+		final String name = params.getFormalParameterName(parameterIndex);
+		final JvmTypeReference type = params.getFormalParameterTypeReference(parameterIndex, isVarArg);
 		fillSignatureKeyOutputParameter.add(type.getIdentifier());
-		Map<ActionParameterTypes, List<InferredStandardParameter>> tmpSignatures = new TreeMap<>();
+		final Map<ActionParameterTypes, List<InferredStandardParameter>> tmpSignatures = new TreeMap<>();
 		if (signatures.isEmpty()) {
 			// First parameter
 			if (isOptional) {
-				ActionParameterTypes key = new ActionParameterTypes(isVarArg, 0);
-				List<InferredStandardParameter> value = new ArrayList<>();
+				final ActionParameterTypes key = new ActionParameterTypes(isVarArg, 0);
+				final List<InferredStandardParameter> value = new ArrayList<>();
 				value.add(new InferredValuedParameter(
 						params.getFormalParameter(parameterIndex),
 						name, type,
 						argumentValue));
 				tmpSignatures.put(key, value);
 			}
-			ActionParameterTypes key = new ActionParameterTypes(isVarArg, 1);
+			final ActionParameterTypes key = new ActionParameterTypes(isVarArg, 1);
 			key.add(type.getIdentifier());
-			List<InferredStandardParameter> value = new ArrayList<>();
+			final List<InferredStandardParameter> value = new ArrayList<>();
 			value.add(new InferredStandardParameter(
 					params.getFormalParameter(parameterIndex),
 					name, type));
 			tmpSignatures.put(key, value);
 		} else {
 			// Other parameters
-			for (Entry<ActionParameterTypes, List<InferredStandardParameter>> entry : signatures.entrySet()) {
+			for (final Entry<ActionParameterTypes, List<InferredStandardParameter>> entry : signatures.entrySet()) {
 				if (isOptional) {
-					ActionParameterTypes key = new ActionParameterTypes(isVarArg, entry.getKey().size());
+					final ActionParameterTypes key = new ActionParameterTypes(isVarArg, entry.getKey().size());
 					key.addAll(entry.getKey());
-					List<InferredStandardParameter> value = new ArrayList<>(entry.getValue());
+					final List<InferredStandardParameter> value = new ArrayList<>(entry.getValue());
 					value.add(new InferredValuedParameter(
 							params.getFormalParameter(parameterIndex),
 							name, type,
 							argumentValue));
 					tmpSignatures.put(key, value);
 				}
-				ActionParameterTypes key = new ActionParameterTypes(isVarArg, entry.getKey().size() + 1);
+				final ActionParameterTypes key = new ActionParameterTypes(isVarArg, entry.getKey().size() + 1);
 				key.addAll(entry.getKey());
 				key.add(type.getIdentifier());
-				List<InferredStandardParameter> paramList = entry.getValue();
+				final List<InferredStandardParameter> paramList = entry.getValue();
 				paramList.add(new InferredStandardParameter(
 						params.getFormalParameter(parameterIndex),
 						name, type));
@@ -138,13 +138,13 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 		if (params.getFormalParameterCount() > 0) {
 			final int lastParamIndex = params.getFormalParameterCount() - 1;
 
-			String containerFullyQualifiedName = createQualifiedActionName(container, null).getContainerID();
+			final String containerFullyQualifiedName = createQualifiedActionName(container, null).getContainerID();
 			Map<String, Integer> indexes = this.defaultValueIDPrefixes.get(containerFullyQualifiedName);
 			if (indexes == null) {
 				indexes = new TreeMap<>();
 				this.defaultValueIDPrefixes.put(containerFullyQualifiedName, indexes);
 			}
-			Integer lastIndex = indexes.get(actionId);
+			final Integer lastIndex = indexes.get(actionId);
 			int defaultValueIndex;
 			if (lastIndex == null) {
 				defaultValueIndex = 0;
@@ -152,11 +152,11 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 				defaultValueIndex = lastIndex.intValue();
 			}
 
-			String[] annotationValues = new String[params.getFormalParameterCount()];
-			String prefix = container.getQualifiedName() + "#" //$NON-NLS-1$
+			final String[] annotationValues = new String[params.getFormalParameterCount()];
+			final String prefix = container.getQualifiedName() + "#" //$NON-NLS-1$
 					+ actionId.toUpperCase() + "_"; //$NON-NLS-1$
 			for (int i = 0; i <= lastParamIndex; ++i) {
-				Pair<Map<ActionParameterTypes, List<InferredStandardParameter>>, Boolean> pair = buildParameter(
+				final Pair<Map<ActionParameterTypes, List<InferredStandardParameter>>, Boolean> pair = buildParameter(
 						i,
 						lastParamIndex,
 						prefix + defaultValueIndex,
@@ -172,7 +172,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 			indexes.put(actionId, defaultValueIndex);
 
-			List<InferredStandardParameter> parameters = signatures.get(fillSignatureKeyOutputParameter);
+			final List<InferredStandardParameter> parameters = signatures.get(fillSignatureKeyOutputParameter);
 			if (parameters != null) {
 				for (int i = 0; i < parameters.size(); ++i) {
 					if (!Strings.isNullOrEmpty(annotationValues[i])) {
@@ -186,9 +186,9 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public Iterable<InferredPrototype> getPrototypes(QualifiedActionName id) {
-		Map<String, Map<ActionParameterTypes, InferredPrototype>> c = this.prototypes.get(id.getContainerID());
+		final Map<String, Map<ActionParameterTypes, InferredPrototype>> c = this.prototypes.get(id.getContainerID());
 		if (c != null) {
-			Map<ActionParameterTypes, InferredPrototype> list = c.get(id.getActionName());
+			final Map<ActionParameterTypes, InferredPrototype> list = c.get(id.getActionName());
 			if (list != null) {
 				return list.values();
 			}
@@ -198,9 +198,9 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public InferredPrototype getPrototypes(QualifiedActionName actionID, ActionParameterTypes signatureID) {
-		Map<String, Map<ActionParameterTypes, InferredPrototype>> c = this.prototypes.get(actionID.getContainerID());
+		final Map<String, Map<ActionParameterTypes, InferredPrototype>> c = this.prototypes.get(actionID.getContainerID());
 		if (c != null) {
-			Map<ActionParameterTypes, InferredPrototype> list = c.get(actionID.getActionName());
+			final Map<ActionParameterTypes, InferredPrototype> list = c.get(actionID.getActionName());
 			if (list != null) {
 				return list.get(signatureID);
 			}
@@ -219,20 +219,20 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	 */
 	protected InferredPrototype createPrototype(QualifiedActionName id,
 			boolean isVarargs, FormalParameterProvider parameters) {
-		assert (parameters != null);
-		ActionParameterTypes key = new ActionParameterTypes(isVarargs, parameters.getFormalParameterCount());
-		Map<ActionParameterTypes, List<InferredStandardParameter>> ip = buildSignaturesForArgDefaultValues(
+		assert parameters != null;
+		final ActionParameterTypes key = new ActionParameterTypes(isVarargs, parameters.getFormalParameterCount());
+		final Map<ActionParameterTypes, List<InferredStandardParameter>> ip = buildSignaturesForArgDefaultValues(
 				id.getDeclaringType(),
 				key.toActionPrototype(id.getActionName()).toActionId(),
 				parameters, key);
-		List<InferredStandardParameter> op = ip.remove(key);
-		InferredPrototype proto = new DefaultInferredPrototype(
+		final List<InferredStandardParameter> op = ip.remove(key);
+		final InferredPrototype proto = new DefaultInferredPrototype(
 				id,
 				parameters,
 				key,
 				op,
 				ip);
-		String containerID = id.getContainerID();
+		final String containerID = id.getContainerID();
 		Map<String, Map<ActionParameterTypes, InferredPrototype>> c = this.prototypes.get(containerID);
 		if (c == null) {
 			c = new TreeMap<>();
@@ -280,16 +280,16 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	@Override
 	public ActionParameterTypes createParameterTypesFromSarlModel(boolean isVarargs,
 			List<? extends SarlFormalParameter> parameters) {
-		ActionParameterTypes sig = new ActionParameterTypes(isVarargs, parameters.size());
+		final ActionParameterTypes sig = new ActionParameterTypes(isVarargs, parameters.size());
 		if (!parameters.isEmpty()) {
-			int lastIndex = parameters.size() - 1;
+			final int lastIndex = parameters.size() - 1;
 			for (int i = 0; i < lastIndex; ++i) {
-				SarlFormalParameter param = parameters.get(i);
+				final SarlFormalParameter param = parameters.get(i);
 				if (param.getParameterType() != null) {
 					sig.add(param.getParameterType().getIdentifier());
 				}
 			}
-			SarlFormalParameter param = parameters.get(lastIndex);
+			final SarlFormalParameter param = parameters.get(lastIndex);
 			if (param.getParameterType() != null) {
 				JvmTypeReference type = param.getParameterType();
 				if (isVarargs) {
@@ -308,9 +308,9 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public ActionParameterTypes createParameterTypesFromJvmModel(boolean isVarargs, List<JvmFormalParameter> parameters) {
-		ActionParameterTypes sig = new ActionParameterTypes(isVarargs, parameters.size());
-		for (JvmFormalParameter p : parameters) {
-			JvmTypeReference paramType = p.getParameterType();
+		final ActionParameterTypes sig = new ActionParameterTypes(isVarargs, parameters.size());
+		for (final JvmFormalParameter p : parameters) {
+			final JvmTypeReference paramType = p.getParameterType();
 			if (paramType != null) {
 				sig.add(paramType.getIdentifier());
 			}
@@ -322,7 +322,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	public ActionParameterTypes createParameterTypes(boolean isVarargs,
 			FormalParameterProvider provider) {
 		int count = provider.getFormalParameterCount();
-		ActionParameterTypes sig = new ActionParameterTypes(isVarargs, count);
+		final ActionParameterTypes sig = new ActionParameterTypes(isVarargs, count);
 		if (count > 0) {
 			if (isVarargs) {
 				--count;
@@ -351,8 +351,8 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public void clear(JvmIdentifiableElement container) {
-		QualifiedActionName qn = createQualifiedActionName(container, null);
-		String fqn = qn.getContainerID();
+		final QualifiedActionName qn = createQualifiedActionName(container, null);
+		final String fqn = qn.getContainerID();
 		this.prototypes.remove(fqn);
 		this.defaultValueIDPrefixes.remove(fqn);
 	}
@@ -365,7 +365,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public String createFieldNameForDefaultValueID(String id) {
-		int index = id.indexOf('#');
+		final int index = id.indexOf('#');
 		if (index > 0) {
 			return Utils.createNameForHiddenDefaultValueAttribute(id.substring(index + 1));
 		}
@@ -374,7 +374,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public String qualifyDefaultValueID(String containerQualifiedName, String id) {
-		int index = id.indexOf('#');
+		final int index = id.indexOf('#');
 		if (index > 0) {
 			return id;
 		}
@@ -383,10 +383,10 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public String toJavaArgument(String callerQualifiedName, String id) {
-		StringBuilder b = new StringBuilder();
-		int index = id.indexOf('#');
+		final StringBuilder b = new StringBuilder();
+		final int index = id.indexOf('#');
 		if (index > 0) {
-			String qn = id.substring(0, index);
+			final String qn = id.substring(0, index);
 			if (!Objects.equal(qn, callerQualifiedName)) {
 				b.append(qn);
 				b.append("."); //$NON-NLS-1$

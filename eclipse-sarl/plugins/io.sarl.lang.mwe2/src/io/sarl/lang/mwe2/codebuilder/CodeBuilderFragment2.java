@@ -75,7 +75,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 	public void initialize(Injector injector) {
 		super.initialize(injector);
 		this.subFragments = initializeSubGenerators(injector);
-		for (IXtextGeneratorFragment subFragment : this.subFragments) {
+		for (final IXtextGeneratorFragment subFragment : this.subFragments) {
 			subFragment.initialize(injector);
 		}
 	}
@@ -87,7 +87,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 	 */
 	@SuppressWarnings("static-method")
 	protected Collection<AbstractSubCodeBuilderFragment> initializeSubGenerators(Injector injector) {
-		Collection<AbstractSubCodeBuilderFragment> fragments = new ArrayList<>();
+		final Collection<AbstractSubCodeBuilderFragment> fragments = new ArrayList<>();
 		fragments.add(injector.getInstance(BuilderFactoryFragment.class));
 		fragments.add(injector.getInstance(DocumentationBuilderFragment.class));
 		fragments.add(injector.getInstance(AbstractBuilderBuilderFragment.class));
@@ -102,7 +102,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 		if (this.subFragments == null) {
 			issues.addError("Sub generators are not created"); //$NON-NLS-1$
 		} else {
-			for (IXtextGeneratorFragment subFragment : this.subFragments) {
+			for (final IXtextGeneratorFragment subFragment : this.subFragments) {
 				subFragment.checkConfiguration(issues);
 			}
 		}
@@ -112,15 +112,15 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void generate() {
 		LOG.info("Generating the code builder for " + getLanguageName()); //$NON-NLS-1$
-		IXtextProjectConfig generalProjectConfig = getProjectConfig();
-		IBundleProjectConfig ideProjectConfig = generalProjectConfig.getGenericIde();
+		final IXtextProjectConfig generalProjectConfig = getProjectConfig();
+		final IBundleProjectConfig ideProjectConfig = generalProjectConfig.getGenericIde();
 		if (!ideProjectConfig.isEnabled()) {
 			LOG.debug("Generic IDE project is disabled. Skipping the generation of the code builder."); //$NON-NLS-1$
 			return;
 		}
 
 		BuilderFactoryFragment fragment = null;
-		for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
 			if (subFragment instanceof BuilderFactoryFragment) {
 				fragment = (BuilderFactoryFragment) subFragment;
 			} else {
@@ -133,19 +133,19 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 
 		if (isGenerateStub()) {
 			if (isGenerateXtendStub()) {
-				for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+				for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
 					subFragment.generateXtendStubs();
 				}
 			} else {
-				for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+				for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
 					subFragment.generateJavaStubs();
 				}
 			}
 		}
 		createBindings().contributeTo(getLanguage().getRuntimeGenModule());
 
-		Set<String> exportedPackages = getProjectConfig().getRuntime().getManifest().getExportedPackages();
-		for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		final Set<String> exportedPackages = getProjectConfig().getRuntime().getManifest().getExportedPackages();
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
 			subFragment.getExportedPackages(exportedPackages);
 		}
 	}
@@ -157,8 +157,8 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 	 * @return the bindings.
 	 */
 	protected BindingFactory createBindings() {
-		BindingFactory factory = new BindingFactory(getClass().getName());
-		for (AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+		final BindingFactory factory = new BindingFactory(getClass().getName());
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
 			subFragment.generateBindings(factory);
 		}
 		return factory;

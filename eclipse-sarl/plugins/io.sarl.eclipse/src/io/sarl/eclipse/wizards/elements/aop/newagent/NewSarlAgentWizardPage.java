@@ -70,7 +70,7 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected void doStatusUpdate() {
-		IStatus[] status = new IStatus[] {
+		final IStatus[] status = new IStatus[] {
 			this.fContainerStatus,
 			this.fPackageStatus,
 			this.fTypeNameStatus,
@@ -81,12 +81,13 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(getPackageFragment().getElementName(), ecoreResource);
-		IAgentBuilder agent = scriptBuilder.addAgent(getTypeName());
+		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
+				getPackageFragment().getElementName(), ecoreResource);
+		final IAgentBuilder agent = scriptBuilder.addAgent(getTypeName());
 		agent.setExtends(getSuperClass());
 		agent.setDocumentation(typeComment.trim());
 
-		Map<ActionPrototype, IMethod> operationsToImplement;
+		final Map<ActionPrototype, IMethod> operationsToImplement;
 
 		if (isCreateInherited()) {
 			operationsToImplement = Maps.newTreeMap((Comparator<ActionPrototype>) null);

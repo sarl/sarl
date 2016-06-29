@@ -90,7 +90,7 @@ public class BindingFactory {
 	 */
 	protected Binding bindAnnotatedWith(TypeReference bind, TypeReference annotatedWith, TypeReference to,
 			String functionName) {
-		StringConcatenationClient client = new StringConcatenationClient() {
+		final StringConcatenationClient client = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation builder) {
 				builder.append("binder.bind("); //$NON-NLS-1$
@@ -106,8 +106,8 @@ public class BindingFactory {
 		if (Strings.isEmpty(fctname)) {
 			fctname = bind.getSimpleName();
 		}
-		BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
-	    BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
+		final BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
+		final  BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
 	    return new Binding(key, statements, true, this.name);
 	}
 
@@ -121,7 +121,7 @@ public class BindingFactory {
 	 */
 	protected Binding bindAnnotatedWithToInstance(TypeReference bind, TypeReference annotatedWith, String to,
 			String functionName) {
-		StringConcatenationClient client = new StringConcatenationClient() {
+		final StringConcatenationClient client = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation builder) {
 				builder.append("binder.bind("); //$NON-NLS-1$
@@ -137,8 +137,8 @@ public class BindingFactory {
 		if (Strings.isEmpty(fctname)) {
 			fctname = bind.getSimpleName();
 		}
-		BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
-	    BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
+		final BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
+		final  BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
 	    return new Binding(key, statements, true, this.name);
 	}
 
@@ -159,7 +159,7 @@ public class BindingFactory {
 			tmpName = "\"" + tmpName + "\""; //$NON-NLS-1$//$NON-NLS-2$
 		}
 		final String unferencedName = tmpName;
-		StringConcatenationClient client = new StringConcatenationClient() {
+		final StringConcatenationClient client = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation builder) {
 				builder.append("binder.bind("); //$NON-NLS-1$
@@ -175,8 +175,8 @@ public class BindingFactory {
 		if (Strings.isEmpty(fctname)) {
 			fctname = name;
 		}
-		BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
-	    BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
+		final BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
+		final BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
 	    return new Binding(key, statements, true, this.name);
 	}
 
@@ -197,7 +197,7 @@ public class BindingFactory {
 			tmpName = "\"" + tmpName + "\""; //$NON-NLS-1$//$NON-NLS-2$
 		}
 		final String unferencedName = tmpName;
-		StringConcatenationClient client = new StringConcatenationClient() {
+		final StringConcatenationClient client = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation builder) {
 				builder.append("binder.bind("); //$NON-NLS-1$
@@ -213,8 +213,8 @@ public class BindingFactory {
 		if (Strings.isEmpty(fctname)) {
 			fctname = name;
 		}
-		BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
-	    BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
+		final BindKey key = new GuiceModuleAccess.BindKey(formatFunctionName(fctname), null, false, false);
+		final BindValue statements = new BindValue(null, null, false, Collections.singletonList(client));
 	    return new Binding(key, statements, true, this.name);
 	}
 
@@ -229,12 +229,12 @@ public class BindingFactory {
 	 */
 	protected Binding bindToInstance(TypeReference bind, String functionName, String instanceExpression,
 			boolean isSingleton, boolean isEager) {
-		BindKey type;
-		BindValue value;
+		final BindKey type;
+		final BindValue value;
 		if (!Strings.isEmpty(functionName) && functionName.startsWith(CONFIGURE_PREFIX)) {
-			String fname = functionName.substring(CONFIGURE_PREFIX.length());
+			final String fname = functionName.substring(CONFIGURE_PREFIX.length());
 			type = new BindKey(Strings.toFirstUpper(fname), null, isSingleton, isEager);
-			StringConcatenationClient client = new StringConcatenationClient() {
+			final StringConcatenationClient client = new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation builder) {
 					builder.append("binder.bind("); //$NON-NLS-1$
@@ -251,7 +251,7 @@ public class BindingFactory {
 				fname = fname.substring(BIND_PREFIX.length());
 			}
 			type = new BindKey(Strings.toFirstUpper(fname), bind, isSingleton, isEager);
-			StringConcatenationClient client = new StringConcatenationClient() {
+			final StringConcatenationClient client = new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation builder) {
 					builder.append(instanceExpression);
@@ -273,12 +273,12 @@ public class BindingFactory {
 	 */
 	protected Binding bindToType(TypeReference bind, String functionName, TypeReference to,
 			boolean isSingleton, boolean isEager) {
-		BindKey type;
-		BindValue value;
+		final BindKey type;
+		final BindValue value;
 		if (!Strings.isEmpty(functionName) && functionName.startsWith(CONFIGURE_PREFIX)) {
-			String fname = functionName.substring(CONFIGURE_PREFIX.length());
+			final String fname = functionName.substring(CONFIGURE_PREFIX.length());
 			type = new GuiceModuleAccess.BindKey(Strings.toFirstUpper(fname), null, false, false);
-			StringConcatenationClient client = new StringConcatenationClient() {
+			final StringConcatenationClient client = new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation builder) {
 					builder.append("binder.bind("); //$NON-NLS-1$
@@ -301,7 +301,7 @@ public class BindingFactory {
 	}
 
 	private static Binding findBinding(Set<Binding> bindings, Binding binding) {
-		for (Binding bnd : bindings) {
+		for (final Binding bnd : bindings) {
 			if (Objects.equals(bnd, binding)) {
 				return bnd;
 			}
@@ -325,8 +325,8 @@ public class BindingFactory {
 	 * @param override indicates if the binding could override an existing element.
 	 */
 	public void add(Binding binding, boolean override) {
-		Set<Binding> moduleBindings = this.module.get().getBindings();
-		Binding otherBinding = findBinding(moduleBindings, binding);
+		final Set<Binding> moduleBindings = this.module.get().getBindings();
+		final Binding otherBinding = findBinding(moduleBindings, binding);
 		if (!override) {
 			if (otherBinding != null) {
 				throw new IllegalArgumentException(MessageFormat.format(
@@ -345,16 +345,16 @@ public class BindingFactory {
 	/** Put the bindings to the associated module.
 	 */
 	public void contributeToModule() {
-		GuiceModuleAccess module = this.module.get();
+		final GuiceModuleAccess module = this.module.get();
 		if (!this.removableBindings.isEmpty()) {
 			// Ok, we are broking the Java secutiry manager.
 			// But it's for having something working!
 			try {
-				Field field = module.getClass().getDeclaredField("bindings"); //$NON-NLS-1$
-				boolean accessible = field.isAccessible();
+				final Field field = module.getClass().getDeclaredField("bindings"); //$NON-NLS-1$
+				final boolean accessible = field.isAccessible();
 				try {
 					field.setAccessible(true);
-					Collection<?> hiddenBindings = (Collection<?>) field.get(module);
+					final Collection<?> hiddenBindings = (Collection<?>) field.get(module);
 					hiddenBindings.removeAll(this.removableBindings);
 				} finally {
 					field.setAccessible(accessible);
@@ -370,10 +370,10 @@ public class BindingFactory {
 		int index = qualifiedName.indexOf('$');
 		if (index > 0) {
 			String classname = qualifiedName.substring(0, index);
-			String innerClasses = qualifiedName.substring(index + 1);
+			final String innerClasses = qualifiedName.substring(index + 1);
 			index = classname.lastIndexOf('.');
 			if (index >= 0) {
-				String packageName = classname.substring(0, index);
+				final String packageName = classname.substring(0, index);
 				classname = classname.substring(index + 1) + '.' + innerClasses;
 				return new TypeReference(packageName, classname);
 			}
@@ -387,16 +387,16 @@ public class BindingFactory {
 	 * @return the Guice binding.
 	 */
 	public Binding toBinding(BindingElement element) {
-		TypeReference typeReference = typeRef(element.getBind());
-		String annotatedWith = element.getAnnotatedWith();
-		String annotatedWithName = element.getAnnotatedWithName();
+		final TypeReference typeReference = typeRef(element.getBind());
+		final String annotatedWith = element.getAnnotatedWith();
+		final String annotatedWithName = element.getAnnotatedWithName();
 		if (!Strings.isEmpty(annotatedWith)) {
-			TypeReference annotationType = typeRef(annotatedWith);
+			final TypeReference annotationType = typeRef(annotatedWith);
 			if (element.isInstance()) {
 				return bindAnnotatedWithToInstance(typeReference, annotationType, element.getTo(),
 						element.getFunctionName());
 			}
-			TypeReference typeReference2 = typeRef(element.getTo());
+			final TypeReference typeReference2 = typeRef(element.getTo());
 			return bindAnnotatedWith(typeReference, annotationType, typeReference2,
 						element.getFunctionName());
 		}
@@ -406,7 +406,7 @@ public class BindingFactory {
 						element.getTo(),
 						element.getFunctionName());
 			}
-			TypeReference typeReference2 = typeRef(element.getTo());
+			final TypeReference typeReference2 = typeRef(element.getTo());
 			return bindAnnotatedWithName(typeReference, annotatedWithName, typeReference2,
 						element.getFunctionName());
 		}
@@ -417,7 +417,7 @@ public class BindingFactory {
 					element.isSingleton(),
 					element.isEager());
 		}
-		TypeReference typeReference2 = typeRef(element.getTo());
+		final TypeReference typeReference2 = typeRef(element.getTo());
 		return bindToType(
 					typeReference,
 					element.getFunctionName(),

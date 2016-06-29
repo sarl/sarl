@@ -241,11 +241,11 @@
 			<property name="processJavadoc" value="true" />
 		</module>
 
-		<!-- Specify a custom order for AFC imports. -->
+		<!-- Specify a custom order for SARL imports. -->
 		<module name="CustomImportOrder">
 			<property name="customImportOrderRules"
 				value="STATIC###STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE###SPECIAL_IMPORTS" />
-			<property name="specialImportsRegExp" value="^org\.arakhne\." />
+			<property name="specialImportsRegExp" value="^io\.sarl\." />
 			<property name="sortImportsInGroupAlphabetically" value="true" />
 		</module>
 

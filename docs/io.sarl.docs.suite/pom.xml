@@ -273,7 +273,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
-					<sourceDirectory>src/test/java</sourceDirectory>
+					<sourceDirectories>
+						<sourceDirectory>${project.basedir}/src/test/java</sourceDirectory>
+					</sourceDirectories>
 				</configuration>
 			</plugin>
 		</plugins>

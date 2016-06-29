@@ -53,7 +53,7 @@ public class SarlEventImplCustom extends SarlEventImpl {
 
 	@Override
 	public boolean isAbstract() {
-		for (String modifier: getModifiers()) {
+		for (final String modifier: getModifiers()) {
 			if (Strings.equal(modifier, "abstract")) {  //$NON-NLS-1$
 				return true;
 			}

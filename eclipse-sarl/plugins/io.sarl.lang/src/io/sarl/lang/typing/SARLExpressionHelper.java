@@ -79,7 +79,7 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 	@Override
 	public boolean hasSideEffects(XAbstractFeatureCall featureCall, boolean inspectContents) {
 		if (super.hasSideEffects(featureCall, inspectContents)) {
-			JvmIdentifiableElement feature = featureCall.getFeature();
+			final JvmIdentifiableElement feature = featureCall.getFeature();
 			if ((feature != null) && (!feature.eIsProxy()) && (feature instanceof JvmOperation)) {
 				final JvmOperation op = (JvmOperation) feature;
 				final String name = op.getSimpleName();
@@ -95,7 +95,7 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 
 	private boolean hasPrimitiveParameters(JvmOperation op) {
 		for (final JvmFormalParameter parameter : op.getParameters()) {
-			JvmTypeReference type = parameter.getParameterType();
+			final JvmTypeReference type = parameter.getParameterType();
 			if (type == null || !Utils.toLightweightTypeReference(type, this.services).isPrimitive()) {
 				return false;
 			}
@@ -129,7 +129,7 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 			} else if (rawExpr instanceof XBlockExpression) {
 				final List<XExpression> list = ((XBlockExpression) rawExpr).getExpressions();
 				if (list != null && !list.isEmpty()) {
-					for (XExpression subExpr : list) {
+					for (final XExpression subExpr : list) {
 						if (hasDeepSideEffects(subExpr)) {
 							return true;
 						}
@@ -153,7 +153,7 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 		if (operation == null || operation.isAbstract() || body == null) {
 			return false;
 		}
-		String name = operation.getSimpleName();
+		final String name = operation.getSimpleName();
 		return (name != null && this.pattern.matcher(name).find()) || !hasSideEffects(body);
 	}
 

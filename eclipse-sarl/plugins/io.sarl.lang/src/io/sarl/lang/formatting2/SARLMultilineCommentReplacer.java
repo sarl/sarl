@@ -59,14 +59,14 @@ public class SARLMultilineCommentReplacer extends CommentReplacer {
 	@Override
 	public void configureWhitespace(WhitespaceReplacer leading, WhitespaceReplacer trailing) {
 		if (leading.getRegion().getOffset() > 0) {
-			IHiddenRegionFormatting formatting = leading.getFormatting();
+			final IHiddenRegionFormatting formatting = leading.getFormatting();
 			formatting.setNewLinesDefault(1);
 			formatting.setNewLinesMin(1);
 			formatting.setNewLinesMax(1);
 			formatting.setNoIndentation(false);
 		}
 		if (trailing.getRegion().getOffset() > 0) {
-			IHiddenRegionFormatting formatting = trailing.getFormatting();
+			final IHiddenRegionFormatting formatting = trailing.getFormatting();
 			formatting.setNewLinesDefault(1);
 			formatting.setNewLinesMin(1);
 			formatting.setNewLinesMax(1);
@@ -76,7 +76,7 @@ public class SARLMultilineCommentReplacer extends CommentReplacer {
 
 	@Override
 	public ITextReplacerContext createReplacements(ITextReplacerContext context) {
-		IComment comment = getComment();
+		final IComment comment = getComment();
 		if (context != null && comment != null) {
 			this.formatter.formatMultilineComment(this.bugfix.fix(context, comment), comment);
 		}

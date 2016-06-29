@@ -66,11 +66,11 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 
 	private static IPath determinePackageName(IPath path) {
 		if (path != null) {
-			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(path.segment(0));
+			final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(path.segment(0));
 			try {
 				if (project != null && project.hasNature(JavaCore.NATURE_ID)) {
-					IJavaProject javaProject = JavaCore.create(project);
-					for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+					final IJavaProject javaProject = JavaCore.create(project);
+					for (final IClasspathEntry entry : javaProject.getRawClasspath()) {
 						if (entry.getPath().isPrefixOf(path)) {
 							return path.removeFirstSegments(entry.getPath().segmentCount());
 						}
@@ -85,11 +85,11 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 
 	@Override
 	protected InputStream getInitialContents() {
-		StringBuilder content = new StringBuilder();
+		final StringBuilder content = new StringBuilder();
 
-		IPath folderInWorkspace = getContainerFullPath();
+		final IPath folderInWorkspace = getContainerFullPath();
 
-		IPath packagePath = determinePackageName(folderInWorkspace);
+		final IPath packagePath = determinePackageName(folderInWorkspace);
 
 		if (packagePath != null && packagePath.segmentCount() > 0) {
 			content.append(this.grammarAccess.getSarlScriptAccess().getPackageKeyword_1_0() + " "); //$NON-NLS-1$

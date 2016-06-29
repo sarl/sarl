@@ -52,8 +52,8 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 	 * 	   (could be <code>null</code>).
 	 */
 	public SpaceID(UUID contextID, UUID id, Class<? extends SpaceSpecification<?>> spaceSpec) {
-		assert (contextID != null);
-		assert (id != null);
+		assert contextID != null;
+		assert id != null;
 		this.id = id;
 		this.contextID = contextID;
 		this.spaceSpec = spaceSpec;
@@ -111,7 +111,7 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 			return false;
 		}
 
-		SpaceID other = (SpaceID) obj;
+		final SpaceID other = (SpaceID) obj;
 
 		if (!equalsContext(other)) {
 			return false;
@@ -154,7 +154,7 @@ public class SpaceID implements Serializable, Comparable<SpaceID> {
 	@Override
 	@Pure
 	public int compareTo(SpaceID otherID) {
-		int cmp = this.contextID.compareTo(otherID.contextID);
+		final int cmp = this.contextID.compareTo(otherID.contextID);
 		if (cmp != 0) {
 			return cmp;
 		}

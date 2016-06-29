@@ -131,7 +131,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 */
 	protected ImageDescriptor handleImageDescriptorError(Object[] params, Throwable exception) {
 		if (exception instanceof NullPointerException) {
-			Object defaultImage = getDefaultImage();
+			final Object defaultImage = getDefaultImage();
 			if (defaultImage instanceof ImageDescriptor) {
 				return (ImageDescriptor) defaultImage;
 			}
@@ -165,15 +165,15 @@ public class SARLLabelProvider extends XtendLabelProvider {
 		String name = this.uiStrings.referenceToString(reference, "Object"); //$NON-NLS-1$
 		//
 		// FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=443131
-		JvmType type = reference.getType();
+		final JvmType type = reference.getType();
 		if (type != null && type.eIsProxy() && reference.eResource() != null) {
 			// This case occurs when the reference is unknown:
 			// the found "name" is the fully qualified name of the type.
 			// So we should extract the simple name
 			int index = name.length() - 1;
-			char dot = '.';
-			char doll = '$';
-			char dies = '#';
+			final char dot = '.';
+			final char doll = '$';
+			final char dies = '#';
 			char ch;
 			while (index >= 0) {
 				ch = name.charAt(index);
@@ -240,7 +240,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlAgent element) {
-		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
 		return this.images.forAgent(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -255,7 +255,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlEvent element) {
-		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
 		return this.images.forEvent(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -270,7 +270,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlCapacity element) {
-		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
 		return this.images.forCapacity(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -285,7 +285,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlSkill element) {
-		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
 		return this.images.forSkill(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -300,7 +300,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlBehavior element) {
-		JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
+		final JvmDeclaredType jvmElement = this.jvmModelAssociations.getInferredType(element);
 		return this.images.forBehavior(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -343,7 +343,7 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlAction element) {
-		JvmOperation jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(element);
+		final JvmOperation jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(element);
 		return this.images.forOperation(
 				element.getVisibility(),
 				this.adornments.get(jvmElement));
@@ -447,13 +447,13 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @return the text.
 	 */
 	protected StyledString text(SarlAction element) {
-		JvmIdentifiableElement jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(element);
-		String simpleName = element.getName();
+		final JvmIdentifiableElement jvmElement = this.jvmModelAssociations.getDirectlyInferredOperation(element);
+		final String simpleName = element.getName();
 		if (simpleName != null) {
-			QualifiedName qnName = QualifiedName.create(simpleName);
-			QualifiedName operator = this.operatorMapping.getOperator(qnName);
+			final QualifiedName qnName = QualifiedName.create(simpleName);
+			final QualifiedName operator = this.operatorMapping.getOperator(qnName);
 			if (operator != null) {
-				StyledString result = signature(operator.getFirstSegment(), jvmElement);
+				final StyledString result = signature(operator.getFirstSegment(), jvmElement);
 				result.append(" (" + simpleName + ")", StyledString.COUNTER_STYLER); //$NON-NLS-1$//$NON-NLS-2$
 				return result;
 			}
@@ -487,19 +487,19 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	 * @return the text.
 	 */
 	protected StyledString text(SarlBehaviorUnit element) {
-		StyledString text = new StyledString("on ", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$
+		final StyledString text = new StyledString("on ", StyledString.DECORATIONS_STYLER); //$NON-NLS-1$
 		text.append(getHumanReadableName(element.getName()));
 		if (element.getGuard() != null) {
 			String txt = null;
-			ICompositeNode node = NodeModelUtils.getNode(element.getGuard());
+			final ICompositeNode node = NodeModelUtils.getNode(element.getGuard());
 			if (node != null) {
 				txt = node.getText().trim();
 			}
 			if (Strings.isNullOrEmpty(txt)) {
 				txt = "[" + Messages.SARLLabelProvider_2 + "]"; //$NON-NLS-1$//$NON-NLS-2$
 			} else {
-				assert (txt != null);
-				String dots = "..."; //$NON-NLS-1$
+				assert txt != null;
+				final String dots = "..."; //$NON-NLS-1$
 				if (txt.length() > BEHAVIOR_UNIT_TEXT_LENGTH + dots.length()) {
 					txt = "[" + txt.substring(0, BEHAVIOR_UNIT_TEXT_LENGTH) + dots + "]"; //$NON-NLS-1$//$NON-NLS-2$
 				} else {

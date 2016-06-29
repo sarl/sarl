@@ -121,7 +121,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public SarlEvent getSarlEvent(JvmGenericType jvmType) {
-			EObject primarySourceElement = getPrimarySourceElement(jvmType);
+			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
 			if (primarySourceElement instanceof SarlEvent) {
 				return (SarlEvent) primarySourceElement;
 			}
@@ -130,7 +130,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public SarlAgent getSarlAgent(JvmGenericType jvmType) {
-			EObject primarySourceElement = getPrimarySourceElement(jvmType);
+			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
 			if (primarySourceElement instanceof SarlAgent) {
 				return (SarlAgent) primarySourceElement;
 			}
@@ -139,7 +139,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public SarlBehavior getSarlBehavior(JvmGenericType jvmType) {
-			EObject primarySourceElement = getPrimarySourceElement(jvmType);
+			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
 			if (primarySourceElement instanceof SarlBehavior) {
 				return (SarlBehavior) primarySourceElement;
 			}
@@ -148,7 +148,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public SarlCapacity getSarlCapacity(JvmGenericType jvmType) {
-			EObject primarySourceElement = getPrimarySourceElement(jvmType);
+			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
 			if (primarySourceElement instanceof SarlCapacity) {
 				return (SarlCapacity) primarySourceElement;
 			}
@@ -188,7 +188,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public SarlSkill getSarlSkill(JvmGenericType jvmType) {
-			EObject primarySourceElement = getPrimarySourceElement(jvmType);
+			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
 			if (primarySourceElement instanceof SarlSkill) {
 				return (SarlSkill) primarySourceElement;
 			}

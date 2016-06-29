@@ -58,7 +58,7 @@ public class SarlEnumerationImplCustom extends SarlEnumerationImpl {
 
 	@Override
 	protected JvmVisibility getDefaultVisibility() {
-		XtendTypeDeclaration declaration = getDeclaringType();
+		final XtendTypeDeclaration declaration = getDeclaringType();
 		if (declaration instanceof SarlSkill
 				|| declaration instanceof SarlBehavior
 				|| declaration instanceof SarlAgent) {

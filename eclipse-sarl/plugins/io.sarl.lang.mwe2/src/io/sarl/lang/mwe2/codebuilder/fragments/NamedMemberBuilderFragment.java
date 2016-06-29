@@ -126,8 +126,8 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 	@Override
 	public void generate() {
 		super.generate();
-		Iterable<MemberDescription> members = getMembers();
-		for (MemberDescription description : members) {
+		final Iterable<MemberDescription> members = getMembers();
+		for (final MemberDescription description : members) {
 			generateBuilderFactoryContributions(description);
 		}
 	}
@@ -145,8 +145,8 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 			// No need to create a function with the modifier's label in the name.
 			modifiers = Collections.singletonList(""); //$NON-NLS-1$
 		}
-		boolean enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
-		for (String modifier : modifiers) {
+		final boolean enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
+		for (final String modifier : modifiers) {
 			final String createFunctionName = "create" //$NON-NLS-1$
 					+ Strings.toFirstUpper(modifier)
 					+ Strings.toFirstUpper(description.getSimpleName());

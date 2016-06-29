@@ -67,10 +67,9 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 	@Override
 	public ActionPrototype clone() {
 		try {
-			ActionPrototype k;
-			k = (ActionPrototype) super.clone();
-			k.signature = this.signature.clone();
-			return k;
+			final ActionPrototype prototype = (ActionPrototype) super.clone();
+			prototype.signature = this.signature.clone();
+			return prototype;
 		} catch (CloneNotSupportedException e) {
 			throw new Error(e);
 		}
@@ -87,9 +86,9 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 		}
 
 		if (this.getClass() == obj.getClass()) {
-			ActionPrototype k = (ActionPrototype) obj;
-			return this.function.equals(k.function)
-					&& this.signature.equals(k.signature);
+			final ActionPrototype prototype = (ActionPrototype) obj;
+			return this.function.equals(prototype.function)
+					&& this.signature.equals(prototype.signature);
 		}
 		return false;
 	}
@@ -112,7 +111,7 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 		if (otherProto == null) {
 			return Integer.MAX_VALUE;
 		}
-		int cmp = this.function.compareTo(otherProto.function);
+		final int cmp = this.function.compareTo(otherProto.function);
 		if (cmp != 0) {
 			return cmp;
 		}
@@ -124,11 +123,11 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 	 * @return the identifier.
 	 */
 	public String toActionId() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append(getActionName());
-		for (String type : this.signature) {
+		for (final String type : this.signature) {
 			b.append("_"); //$NON-NLS-1$
-			for (char c : type.replaceAll("(\\[\\])|\\*", "Array").toCharArray()) { //$NON-NLS-1$//$NON-NLS-2$
+			for (final char c : type.replaceAll("(\\[\\])|\\*", "Array").toCharArray()) { //$NON-NLS-1$//$NON-NLS-2$
 				if (Character.isJavaIdentifierPart(c)) {
 					b.append(c);
 				}

@@ -43,8 +43,8 @@ public class DefaultFeatureCallValidator implements FeatureCallValidator {
 	@Override
 	public boolean isDisallowedCall(XAbstractFeatureCall call) {
 		if (call != null && call.getFeature() != null) {
-			String id = call.getFeature().getQualifiedName();
-			return ("java.lang.System.exit".equals(id)); //$NON-NLS-1$
+			final String id = call.getFeature().getQualifiedName();
+			return "java.lang.System.exit".equals(id); //$NON-NLS-1$
 		}
 		return false;
 	}
@@ -52,7 +52,7 @@ public class DefaultFeatureCallValidator implements FeatureCallValidator {
 	@Override
 	public boolean isDiscouragedCall(XAbstractFeatureCall call) {
 		if (call != null && call.getFeature() != null) {
-			String id = call.getFeature().getQualifiedName();
+			final String id = call.getFeature().getQualifiedName();
 			if (id != null) {
 				switch (id) {
 				case "java.lang.System.err": //$NON-NLS-1$

@@ -164,13 +164,13 @@ public class GooglePrettifyGenerator2 extends AbstractExternalHighlightingFragme
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored) {
-		Set<Character> characters = new TreeSet<>();
-		for (String punct : punctuation) {
+		final Set<Character> characters = new TreeSet<>();
+		for (final String punct : punctuation) {
 			punct.chars().forEach((int candidate) -> characters.add(Character.valueOf((char) candidate)));
 		}
-		StringBuilder punctuationCharacters1 = new StringBuilder();
-		StringBuilder punctuationCharacters2 = new StringBuilder();
-		for (Character candidate : characters) {
+		final StringBuilder punctuationCharacters1 = new StringBuilder();
+		final StringBuilder punctuationCharacters2 = new StringBuilder();
+		for (final Character candidate : characters) {
 			switch (candidate) {
 			case '-':
 			case '\\':
@@ -198,25 +198,25 @@ public class GooglePrettifyGenerator2 extends AbstractExternalHighlightingFragme
 			}
 		}
 
-		StringBuilder keywordPattern = new StringBuilder();
-		for (String keyword : keywords) {
+		final StringBuilder keywordPattern = new StringBuilder();
+		for (final String keyword : keywords) {
 			if (keywordPattern.length() > 0) {
 				keywordPattern.append("|"); //$NON-NLS-1$
 			}
 			keywordPattern.append(keyword);
 		}
 
-		StringBuilder literalPattern = new StringBuilder();
-		for (String literal : literals) {
+		final StringBuilder literalPattern = new StringBuilder();
+		for (final String literal : literals) {
 			if (literalPattern.length() > 0) {
 				literalPattern.append("|"); //$NON-NLS-1$
 			}
 			literalPattern.append(literal);
 		}
 
-		List<String> css = new ArrayList<>();
+		final List<String> css = new ArrayList<>();
 
-		String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
+		final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
 		css.addAll(Arrays.asList(header));
 
 		append(css, "PR[''registerLangHandler'']("); //$NON-NLS-1$
@@ -238,10 +238,10 @@ public class GooglePrettifyGenerator2 extends AbstractExternalHighlightingFragme
 		append(css, "         [PR[''PR_COMMENT''], /{0}/],", this.commentPattern); //$NON-NLS-1$
 		append(css, "         [PR[''PR_PUNCTUATION''], /^(?:\\.+|\\/)/]"); //$NON-NLS-1$
 		append(css, "      ]),"); //$NON-NLS-1$
-		String language = getLanguageSimpleName().toLowerCase();
+		final String language = getLanguageSimpleName().toLowerCase();
 		append(css, "   [''{0}'']);", language); //$NON-NLS-1$
 
-		String basename = getBasename(
+		final String basename = getBasename(
 				MessageFormat.format(getBasenameTemplate(), language));
 		writeFile(basename, css);
 	}

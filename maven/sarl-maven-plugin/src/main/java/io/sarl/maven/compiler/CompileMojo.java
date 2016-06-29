@@ -37,6 +37,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Mojo for compiling SARL.
@@ -76,7 +77,7 @@ public class CompileMojo extends AbstractSarlMojo {
 	protected void ensureDefaultParameterValues() {
 		super.ensureDefaultParameterValues();
 		if (Strings.isNullOrEmpty(this.encoding)) {
-			Properties properties = this.mavenHelper.getSession().getCurrentProject().getProperties();
+			final Properties properties = this.mavenHelper.getSession().getCurrentProject().getProperties();
 			this.encoding = properties.getProperty("project.build.sourceEncoding", null); //$NON-NLS-1$
 			if (Strings.isNullOrEmpty(this.encoding)) {
 				this.encoding = Charset.defaultCharset().name();
@@ -100,31 +101,31 @@ public class CompileMojo extends AbstractSarlMojo {
 	}
 
 	private void ensureSARLVersions() throws MojoExecutionException, MojoFailureException {
-		String compilerVersionString = this.mavenHelper.getConfig("plugin.version"); //$NON-NLS-1$
+		final String compilerVersionString = this.mavenHelper.getConfig("plugin.version"); //$NON-NLS-1$
 		getLog().info(Locale.getString(CompileMojo.class, "CHECK_SARL_SDK", compilerVersionString)); //$NON-NLS-1$
-		ArtifactVersion compilerVersion = new DefaultArtifactVersion(compilerVersionString);
-		ArtifactVersion maxCompilerVersion = new DefaultArtifactVersion(
+		final ArtifactVersion compilerVersion = new DefaultArtifactVersion(compilerVersionString);
+		final ArtifactVersion maxCompilerVersion = new DefaultArtifactVersion(
 				compilerVersion.getMajorVersion() + "." //$NON-NLS-1$
 				+ (compilerVersion.getMinorVersion() + 1)
 				+ "-" + Artifact.SNAPSHOT_VERSION); //$NON-NLS-1$
-		String sarlSdkGroupId = this.mavenHelper.getConfig("sarl-sdk.groupId"); //$NON-NLS-1$
-		String sarlSdkArtifactId = this.mavenHelper.getConfig("sarl-sdk.artifactId"); //$NON-NLS-1$
+		final String sarlSdkGroupId = this.mavenHelper.getConfig("sarl-sdk.groupId"); //$NON-NLS-1$
+		final String sarlSdkArtifactId = this.mavenHelper.getConfig("sarl-sdk.artifactId"); //$NON-NLS-1$
 		boolean found = false;
-		StringBuilder classpath = new StringBuilder();
-		for (Artifact dep : this.mavenHelper.getSession().getCurrentProject().getArtifacts()) {
+		final StringBuilder classpath = new StringBuilder();
+		for (final Artifact dep : this.mavenHelper.getSession().getCurrentProject().getArtifacts()) {
 			if (classpath.length() > 0) {
 				classpath.append(":"); //$NON-NLS-1$
 			}
 			classpath.append(ArtifactUtils.versionlessKey(dep));
 			if (sarlSdkGroupId.equals(dep.getGroupId()) && sarlSdkArtifactId.equals(dep.getArtifactId())) {
 				found = true;
-				ArtifactVersion dependencyVersion = new DefaultArtifactVersion(dep.getVersion());
+				final ArtifactVersion dependencyVersion = new DefaultArtifactVersion(dep.getVersion());
 				if (!containsVersion(dependencyVersion, compilerVersion, maxCompilerVersion)) {
-					String shortMessage = Locale.getString(CompileMojo.class,
+					final String shortMessage = Locale.getString(CompileMojo.class,
 							"INCOMPATIBLE_VERSION_SHORT", //$NON-NLS-1$
 							sarlSdkGroupId, sarlSdkArtifactId, dependencyVersion.toString(),
 							compilerVersion.toString(), maxCompilerVersion.toString());
-					String longMessage = Locale.getString(CompileMojo.class,
+					final String longMessage = Locale.getString(CompileMojo.class,
 							"INCOMPATIBLE_VERSION_LONG", //$NON-NLS-1$
 							sarlSdkGroupId, sarlSdkArtifactId, dependencyVersion.toString(),
 							compilerVersion.toString(), maxCompilerVersion.toString());
@@ -142,12 +143,12 @@ public class CompileMojo extends AbstractSarlMojo {
 	private void compileSARL() throws MojoExecutionException, MojoFailureException {
 		getLog().info(Locale.getString(CompileMojo.class, "COMPILING_SARL")); //$NON-NLS-1$
 		// Get the Maven plugin that is embedding the Xtext compiler
-		String xtextGroupId = this.mavenHelper.getConfig("xtext-compiler.groupId"); //$NON-NLS-1$
-		String xtextArtifactId = this.mavenHelper.getConfig("xtext-compiler.artifactId"); //$NON-NLS-1$
-		String xtextVersion = this.mavenHelper.getPluginDependencyVersion(xtextGroupId, xtextArtifactId);
-		String xtextMojo = this.mavenHelper.getConfig("xtext-compiler.mojo"); //$NON-NLS-1$
+		final String xtextGroupId = this.mavenHelper.getConfig("xtext-compiler.groupId"); //$NON-NLS-1$
+		final String xtextArtifactId = this.mavenHelper.getConfig("xtext-compiler.artifactId"); //$NON-NLS-1$
+		final String xtextVersion = this.mavenHelper.getPluginDependencyVersion(xtextGroupId, xtextArtifactId);
+		final String xtextMojo = this.mavenHelper.getConfig("xtext-compiler.mojo"); //$NON-NLS-1$
 		// Get the dependencies to load for running the plugin.
-		Dependency[] dependencies = getDependenciesFor("xtext-compiler"); //$NON-NLS-1$
+		final Dependency[] dependencies = getDependenciesFor("xtext-compiler"); //$NON-NLS-1$
 		executeMojo(
 				xtextGroupId, xtextArtifactId, xtextVersion, xtextMojo,
 				MessageFormat.format(
@@ -161,10 +162,10 @@ public class CompileMojo extends AbstractSarlMojo {
 
 	private void compileJava() throws MojoExecutionException, MojoFailureException {
 		getLog().info(Locale.getString(CompileMojo.class, "COMPILING_JAVA")); //$NON-NLS-1$
-		String javaGroupId = this.mavenHelper.getConfig("java-compiler.groupId"); //$NON-NLS-1$
-		String javaArtifactId = this.mavenHelper.getConfig("java-compiler.artifactId"); //$NON-NLS-1$
-		String javaVersion = this.mavenHelper.getPluginDependencyVersion(javaGroupId, javaArtifactId);
-		String javaMojo = this.mavenHelper.getConfig("java-compiler.mojo"); //$NON-NLS-1$
+		final String javaGroupId = this.mavenHelper.getConfig("java-compiler.groupId"); //$NON-NLS-1$
+		final String javaArtifactId = this.mavenHelper.getConfig("java-compiler.artifactId"); //$NON-NLS-1$
+		final String javaVersion = this.mavenHelper.getPluginDependencyVersion(javaGroupId, javaArtifactId);
+		final String javaMojo = this.mavenHelper.getConfig("java-compiler.mojo"); //$NON-NLS-1$
 		executeMojo(
 				javaGroupId, javaArtifactId, javaVersion, javaMojo,
 				MessageFormat.format(

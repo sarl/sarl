@@ -344,7 +344,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		if (object instanceof JvmIdentifiableElement) {
 			return ((JvmIdentifiableElement) object).getQualifiedName();
 		}
-		EObject jvmElement = this.associations.getPrimaryJvmElement(object);
+		final EObject jvmElement = this.associations.getPrimaryJvmElement(object);
 		if (jvmElement instanceof JvmIdentifiableElement) {
 			return ((JvmIdentifiableElement) jvmElement).getQualifiedName();
 		}
@@ -389,13 +389,13 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check(CheckType.NORMAL)
 	@Override
 	public void checkClassPath(XtendFile sarlScript) {
-		TypeReferences typeReferences = getServices().getTypeReferences();
+		final TypeReferences typeReferences = getServices().getTypeReferences();
 
-		String version = System.getProperty("java.specification.version"); //$NON-NLS-1$
+		final String version = System.getProperty("java.specification.version"); //$NON-NLS-1$
 
-		SARLLangActivator sarlLangBundle = SARLLangActivator.getActivator();
-		String minJdkVersion = sarlLangBundle.getMinimalJdkVersion();
-		String minXtextVersion = sarlLangBundle.getMinimalXtextVersion();
+		final SARLLangActivator sarlLangBundle = SARLLangActivator.getActivator();
+		final String minJdkVersion = sarlLangBundle.getMinimalJdkVersion();
+		final String minXtextVersion = sarlLangBundle.getMinimalXtextVersion();
 
 		if (version == null || version.isEmpty() || Utils.compareVersions(version, minJdkVersion) < 0) {
 			error(
@@ -414,7 +414,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					XBASE_LIB_NOT_ON_CLASSPATH);
 		}
 
-		String sarlOnClasspath = Utils.getSARLLibraryVersionOnClasspath(typeReferences, sarlScript);
+		final String sarlOnClasspath = Utils.getSARLLibraryVersionOnClasspath(typeReferences, sarlScript);
 		if (Strings.isNullOrEmpty(sarlOnClasspath)) {
 			error(
 					Messages.SARLValidator_39,
@@ -434,13 +434,13 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	@Override
 	protected void checkModifiers(XtendConstructor constructor) {
-		XtendTypeDeclaration declaringType = constructor.getDeclaringType();
+		final XtendTypeDeclaration declaringType = constructor.getDeclaringType();
 		if (declaringType != null) {
 			if (declaringType instanceof SarlEvent
 					|| declaringType instanceof SarlAgent
 					|| declaringType instanceof SarlSkill
 					|| declaringType instanceof SarlBehavior) {
-				String typeName = ((XtendTypeDeclaration) constructor.eContainer()).getName();
+				final String typeName = ((XtendTypeDeclaration) constructor.eContainer()).getName();
 				this.constructorModifierValidator.checkModifiers(constructor,
 						MessageFormat.format(Messages.SARLValidator_26, typeName));
 			} else {
@@ -452,22 +452,22 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	@Override
 	protected void checkModifiers(XtendFunction function) {
-		XtendTypeDeclaration declaringType = function.getDeclaringType();
+		final XtendTypeDeclaration declaringType = function.getDeclaringType();
 		if (declaringType != null) {
 			if (declaringType instanceof SarlAgent) {
-				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
+				final String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
 				this.methodInAgentModifierValidator.checkModifiers(function,
 						MessageFormat.format(Messages.SARLValidator_0, function.getName(), typeName));
 			} else if (declaringType instanceof SarlCapacity) {
-				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
+				final String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
 				this.methodInCapacityModifierValidator.checkModifiers(function,
 						MessageFormat.format(Messages.SARLValidator_0, function.getName(), typeName));
 			} else if (declaringType instanceof SarlSkill) {
-				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
+				final String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
 				this.methodInSkillModifierValidator.checkModifiers(function,
 						MessageFormat.format(Messages.SARLValidator_0, function.getName(), typeName));
 			} else if (declaringType instanceof SarlBehavior) {
-				String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
+				final String typeName = ((XtendTypeDeclaration) function.eContainer()).getName();
 				this.methodInBehaviorModifierValidator.checkModifiers(function,
 						MessageFormat.format(Messages.SARLValidator_0, function.getName(), typeName));
 			} else {
@@ -479,22 +479,22 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	@Override
 	protected void checkModifiers(XtendField field) {
-		XtendTypeDeclaration declaringType = field.getDeclaringType();
+		final XtendTypeDeclaration declaringType = field.getDeclaringType();
 		if (declaringType != null) {
 			if (declaringType instanceof SarlEvent) {
-				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
+				final String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInEventModifierValidator.checkModifiers(field,
 						MessageFormat.format(Messages.SARLValidator_0, field.getName(), typeName));
 			} else if (declaringType instanceof SarlAgent) {
-				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
+				final String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInAgentModifierValidator.checkModifiers(field,
 						MessageFormat.format(Messages.SARLValidator_0, field.getName(), typeName));
 			} else if (declaringType instanceof SarlSkill) {
-				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
+				final String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInSkillModifierValidator.checkModifiers(field,
 						MessageFormat.format(Messages.SARLValidator_0, field.getName(), typeName));
 			} else if (declaringType instanceof SarlBehavior) {
-				String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
+				final String typeName = ((XtendTypeDeclaration) field.eContainer()).getName();
 				this.fieldInBehaviorModifierValidator.checkModifiers(field,
 						MessageFormat.format(Messages.SARLValidator_0, field.getName(), typeName));
 			} else {
@@ -556,7 +556,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	@Override
 	protected void checkModifiers(XtendInterface oopInterface) {
-		EObject econtainer = oopInterface.eContainer();
+		final EObject econtainer = oopInterface.eContainer();
 		if (econtainer instanceof SarlAgent) {
 			this.nestedInterfaceInAgentModifierValidator.checkModifiers(oopInterface,
 					MessageFormat.format(Messages.SARLValidator_28, oopInterface.getName()));
@@ -568,7 +568,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	@Override
 	protected void checkModifiers(XtendClass oopClass) {
-		EObject econtainer = oopClass.eContainer();
+		final EObject econtainer = oopClass.eContainer();
 		if (econtainer instanceof SarlAgent) {
 			this.nestedClassInAgentModifierValidator.checkModifiers(oopClass,
 					MessageFormat.format(Messages.SARLValidator_27, oopClass.getName()));
@@ -587,7 +587,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	@Override
 	protected void checkModifiers(XtendEnum oopEnum) {
-		EObject econtainer = oopEnum.eContainer();
+		final EObject econtainer = oopEnum.eContainer();
 		if (econtainer instanceof SarlAgent) {
 			this.nestedEnumerationInAgentModifierValidator.checkModifiers(oopEnum,
 					MessageFormat.format(Messages.SARLValidator_29, oopEnum.getName()));
@@ -599,7 +599,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	@Override
 	protected void checkModifiers(XtendAnnotationType oopAnnotationType) {
-		EObject econtainer = oopAnnotationType.eContainer();
+		final EObject econtainer = oopAnnotationType.eContainer();
 		if (econtainer instanceof SarlAgent) {
 			this.nestedAnnotationTypeInAgentModifierValidator.checkModifiers(oopAnnotationType,
 					MessageFormat.format(Messages.SARLValidator_30, oopAnnotationType.getName()));
@@ -614,10 +614,10 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkContainerType(SarlAgent agent) {
-		XtendTypeDeclaration declaringType = agent.getDeclaringType();
+		final XtendTypeDeclaration declaringType = agent.getDeclaringType();
 		if (declaringType != null) {
-			String name = canonicalName(declaringType);
-			assert (name != null);
+			final String name = canonicalName(declaringType);
+			assert name != null;
 			error(MessageFormat.format(Messages.SARLJavaValidator_4, name),
 					agent,
 					null,
@@ -631,10 +631,10 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkContainerType(SarlBehavior behavior) {
-		XtendTypeDeclaration declaringType = behavior.getDeclaringType();
+		final XtendTypeDeclaration declaringType = behavior.getDeclaringType();
 		if (declaringType != null) {
-			String name = canonicalName(declaringType);
-			assert (name != null);
+			final String name = canonicalName(declaringType);
+			assert name != null;
 			error(MessageFormat.format(Messages.SARLJavaValidator_6, name),
 					behavior,
 					null,
@@ -648,10 +648,10 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkContainerType(SarlCapacity capacity) {
-		XtendTypeDeclaration declaringType = capacity.getDeclaringType();
+		final XtendTypeDeclaration declaringType = capacity.getDeclaringType();
 		if (declaringType != null) {
-			String name = canonicalName(declaringType);
-			assert (name != null);
+			final String name = canonicalName(declaringType);
+			assert name != null;
 			error(MessageFormat.format(Messages.SARLJavaValidator_8, name),
 					capacity,
 					null,
@@ -665,7 +665,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkContainerType(SarlSkill skill) {
-		XtendTypeDeclaration declaringType = skill.getDeclaringType();
+		final XtendTypeDeclaration declaringType = skill.getDeclaringType();
 		if (declaringType != null) {
 			error(Messages.SARLValidator_10,
 					skill,
@@ -680,7 +680,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkContainerType(SarlEvent event) {
-		XtendTypeDeclaration declaringType = event.getDeclaringType();
+		final XtendTypeDeclaration declaringType = event.getDeclaringType();
 		if (declaringType != null) {
 			error(Messages.SARLJavaValidator_2,
 					event,
@@ -695,7 +695,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkFinalFieldInitialization(SarlEvent event) {
-		JvmGenericType inferredType = this.associations.getInferredType(event);
+		final JvmGenericType inferredType = this.associations.getInferredType(event);
 		if (inferredType != null) {
 			super.checkFinalFieldInitialization(inferredType);
 		}
@@ -707,7 +707,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkFinalFieldInitialization(SarlBehavior behavior) {
-		JvmGenericType inferredType = this.associations.getInferredType(behavior);
+		final JvmGenericType inferredType = this.associations.getInferredType(behavior);
 		if (inferredType != null) {
 			super.checkFinalFieldInitialization(inferredType);
 		}
@@ -719,7 +719,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkFinalFieldInitialization(SarlSkill skill) {
-		JvmGenericType inferredType = this.associations.getInferredType(skill);
+		final JvmGenericType inferredType = this.associations.getInferredType(skill);
 		if (inferredType != null) {
 			super.checkFinalFieldInitialization(inferredType);
 		}
@@ -731,7 +731,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkFinalFieldInitialization(SarlAgent agent) {
-		JvmGenericType inferredType = this.associations.getInferredType(agent);
+		final JvmGenericType inferredType = this.associations.getInferredType(agent);
 		if (inferredType != null) {
 			super.checkFinalFieldInitialization(inferredType);
 		}
@@ -749,34 +749,34 @@ public class SARLValidator extends AbstractSARLValidator {
 			XtendTypeDeclaration container,
 			EStructuralFeature feature,
 			Collection<ActionParameterTypes> defaultSignatures) {
-		JvmDeclaredType jvmElement = this.associations.getInferredType(container);
+		final JvmDeclaredType jvmElement = this.associations.getInferredType(container);
 		if (jvmElement != null) {
-			Map<ActionParameterTypes, JvmConstructor> superConstructors =
+			final Map<ActionParameterTypes, JvmConstructor> superConstructors =
 					CollectionLiterals.newTreeMap((Comparator<ActionParameterTypes>) null);
-			JvmTypeReference typeRef = jvmElement.getExtendedClass();
-			JvmType supertype = (typeRef == null) ? null : typeRef.getType();
+			final JvmTypeReference typeRef = jvmElement.getExtendedClass();
+			final JvmType supertype = (typeRef == null) ? null : typeRef.getType();
 			if (supertype instanceof JvmGenericType) {
-				JvmGenericType jvmSuperElement = (JvmGenericType) supertype;
-				for (JvmConstructor superConstructor : jvmSuperElement.getDeclaredConstructors()) {
-					ActionParameterTypes sig = this.sarlActionSignatures.createParameterTypesFromJvmModel(
+				final JvmGenericType jvmSuperElement = (JvmGenericType) supertype;
+				for (final JvmConstructor superConstructor : jvmSuperElement.getDeclaredConstructors()) {
+					final ActionParameterTypes sig = this.sarlActionSignatures.createParameterTypesFromJvmModel(
 							superConstructor.isVarArgs(), superConstructor.getParameters());
 					superConstructors.put(sig, superConstructor);
 				}
 			}
 
-			ActionParameterTypes voidKey = this.sarlActionSignatures.createParameterTypesForVoid();
+			final ActionParameterTypes voidKey = this.sarlActionSignatures.createParameterTypesForVoid();
 			boolean hasDeclaredConstructor = false;
 
-			for (XtendMember member : container.getMembers()) {
+			for (final XtendMember member : container.getMembers()) {
 				if (member instanceof SarlConstructor) {
-					SarlConstructor constructor = (SarlConstructor) member;
+					final SarlConstructor constructor = (SarlConstructor) member;
 					hasDeclaredConstructor = true;
 					boolean invokeDefaultConstructor = true;
-					XExpression body = constructor.getExpression();
+					final XExpression body = constructor.getExpression();
 					if (body instanceof XBlockExpression) {
-						XBlockExpression block = (XBlockExpression) body;
+						final XBlockExpression block = (XBlockExpression) body;
 						if (!block.getExpressions().isEmpty()) {
-							XExpression firstStatement = block.getExpressions().get(0);
+							final XExpression firstStatement = block.getExpressions().get(0);
 							if (firstStatement instanceof XConstructorCall || isDelegateConstructorCall(firstStatement)) {
 								invokeDefaultConstructor = false;
 							}
@@ -785,8 +785,8 @@ public class SARLValidator extends AbstractSARLValidator {
 						invokeDefaultConstructor = false;
 					}
 					if (invokeDefaultConstructor && !superConstructors.containsKey(voidKey)) {
-						List<String> issueData = newArrayList();
-						for (ActionParameterTypes defaultSignature : defaultSignatures) {
+						final List<String> issueData = newArrayList();
+						for (final ActionParameterTypes defaultSignature : defaultSignatures) {
 							issueData.add(defaultSignature.toString());
 						}
 						error(Messages.SARLValidator_19,
@@ -800,10 +800,10 @@ public class SARLValidator extends AbstractSARLValidator {
 			}
 
 			if (!hasDeclaredConstructor) {
-				for (ActionParameterTypes defaultSignature : defaultSignatures) {
+				for (final ActionParameterTypes defaultSignature : defaultSignatures) {
 					if (!superConstructors.containsKey(defaultSignature)) {
-						List<String> issueData = newArrayList();
-						for (JvmConstructor superConstructor : superConstructors.values()) {
+						final List<String> issueData = newArrayList();
+						for (final JvmConstructor superConstructor : superConstructors.values()) {
 							issueData.add(EcoreUtil.getURI(superConstructor).toString());
 							issueData.add(doGetReadableSignature(container.getName(), superConstructor.getParameters()));
 						}
@@ -864,13 +864,13 @@ public class SARLValidator extends AbstractSARLValidator {
 	}
 
 	private Collection<ActionParameterTypes> doGetConstructorParameterTypes(Class<?> type, Notifier context) {
-		Collection<ActionParameterTypes> parameters = new ArrayList<>();
-		JvmTypeReference typeReference = this.typeReferences.getTypeForName(type, context);
-		JvmType jvmType = typeReference.getType();
+		final Collection<ActionParameterTypes> parameters = new ArrayList<>();
+		final JvmTypeReference typeReference = this.typeReferences.getTypeForName(type, context);
+		final JvmType jvmType = typeReference.getType();
 		if (jvmType instanceof JvmDeclaredType) {
-			JvmDeclaredType declaredType = (JvmDeclaredType) jvmType;
-			for (JvmConstructor constructor : declaredType.getDeclaredConstructors()) {
-				ActionParameterTypes types = this.sarlActionSignatures.createParameterTypesFromJvmModel(
+			final JvmDeclaredType declaredType = (JvmDeclaredType) jvmType;
+			for (final JvmConstructor constructor : declaredType.getDeclaredConstructors()) {
+				final ActionParameterTypes types = this.sarlActionSignatures.createParameterTypesFromJvmModel(
 						constructor.isVarArgs(), constructor.getParameters());
 				if (types != null) {
 					parameters.add(types);
@@ -940,10 +940,10 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	public void checkDefaultValueTypeCompatibleWithParameterType(SarlFormalParameter param) {
 		if (param.getDefaultValue() != null) {
-			JvmTypeReference rawType = param.getParameterType();
-			assert (rawType != null);
-			LightweightTypeReference toType = toLightweightTypeReference(rawType, true);
-			LightweightTypeReference fromType = getActualType(param.getDefaultValue());
+			final JvmTypeReference rawType = param.getParameterType();
+			assert rawType != null;
+			final LightweightTypeReference toType = toLightweightTypeReference(rawType, true);
+			final LightweightTypeReference fromType = getActualType(param.getDefaultValue());
 			if (!Utils.canCast(fromType, toType, true, false, true)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_19,
@@ -965,10 +965,10 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkActionName(SarlAction action) {
-		JvmOperation inferredType = this.associations.getDirectlyInferredOperation(action);
-		QualifiedName name = QualifiedName.create(inferredType.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
+		final JvmOperation inferredType = this.associations.getDirectlyInferredOperation(action);
+		final QualifiedName name = QualifiedName.create(inferredType.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
 		if (this.featureNames.isDisallowedName(name)) {
-			String validName = Utils.fixHiddenMember(action.getName());
+			final String validName = Utils.fixHiddenMember(action.getName());
 			error(MessageFormat.format(
 					Messages.SARLValidator_9,
 					action.getName()),
@@ -996,10 +996,10 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkFieldName(SarlField field) {
-		JvmField inferredType = this.associations.getJvmField(field);
-		QualifiedName name = Utils.getQualifiedName(inferredType);
+		final JvmField inferredType = this.associations.getJvmField(field);
+		final QualifiedName name = Utils.getQualifiedName(inferredType);
 		if (this.featureNames.isDisallowedName(name)) {
-			String validName = Utils.fixHiddenMember(field.getName());
+			final String validName = Utils.fixHiddenMember(field.getName());
 			error(MessageFormat.format(
 					Messages.SARLValidator_10,
 					field.getName()),
@@ -1019,8 +1019,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkFieldNameShadowing(SarlField field) {
 		if (!isIgnored(VARIABLE_NAME_SHADOWING)
 				&& !Utils.isHiddenMember(field.getName())) {
-			JvmField inferredField = this.associations.getJvmField(field);
-			Map<String, JvmField> inheritedFields = new TreeMap<>();
+			final JvmField inferredField = this.associations.getJvmField(field);
+			final Map<String, JvmField> inheritedFields = new TreeMap<>();
 			Utils.populateInheritanceContext(
 					(JvmGenericType) inferredField.getDeclaringType(),
 					null, null,
@@ -1028,7 +1028,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					null, null,
 					this.sarlActionSignatures);
 
-			JvmField inheritedField = inheritedFields.get(field.getName());
+			final JvmField inheritedField = inheritedFields.get(field.getName());
 			if (inheritedField != null) {
 				int nameIndex = 0;
 				String newName = field.getName() + nameIndex;
@@ -1061,10 +1061,10 @@ public class SARLValidator extends AbstractSARLValidator {
 			List<IResolvedOperation> allInherited) {
 		boolean overrideProblems = false;
 		List<IResolvedOperation> exceptionMismatch = null;
-		for (IResolvedOperation inherited: allInherited) {
+		for (final IResolvedOperation inherited: allInherited) {
 			if (inherited.getOverrideCheckResult().hasProblems()) {
 				overrideProblems = true;
-				EnumSet<OverrideCheckDetails> details = inherited.getOverrideCheckResult().getDetails();
+				final EnumSet<OverrideCheckDetails> details = inherited.getOverrideCheckResult().getDetails();
 				if (details.contains(OverrideCheckDetails.IS_FINAL)) {
 					error(MessageFormat.format(Messages.SARLJavaValidator_11, inherited.getSimpleSignature()),
 							sourceElement,
@@ -1087,7 +1087,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				}
 			} else if (!isIgnored(RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED)
 					&& sourceElement instanceof SarlAction) {
-				SarlAction function = (SarlAction) sourceElement;
+				final SarlAction function = (SarlAction) sourceElement;
 				if (function.getReturnType() == null && !inherited.getResolvedReturnType().isPrimitiveVoid()) {
 					warning(MessageFormat.format(Messages.SARLValidator_14,
 							resolved.getResolvedReturnType().getHumanReadableName()),
@@ -1101,7 +1101,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			createExceptionMismatchError(resolved, sourceElement, exceptionMismatch);
 		}
 		if (sourceElement instanceof SarlAction) {
-			SarlAction function = (SarlAction) sourceElement;
+			final SarlAction function = (SarlAction) sourceElement;
 			if (!overrideProblems && !function.isOverride() && !function.isStatic()
 					&& !isIgnored(MISSING_OVERRIDE)) {
 				warning(MessageFormat.format(Messages.SARLValidator_15,
@@ -1111,7 +1111,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						XTEND_FUNCTION__NAME, MISSING_OVERRIDE);
 			}
 			if (!overrideProblems && function.isOverride() && function.isStatic()) {
-				for (IResolvedOperation inherited: allInherited) {
+				for (final IResolvedOperation inherited: allInherited) {
 					error(MessageFormat.format(Messages.SARLJavaValidator_16,
 							resolved.getSimpleSignature(),
 							getDeclaratorName(resolved),
@@ -1131,7 +1131,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			LightweightTypeReference lightweightInterfaceReference,
 			List<LightweightTypeReference> knownInterfaces) {
 		int index = 0;
-		for (LightweightTypeReference previousInterface : knownInterfaces) {
+		for (final LightweightTypeReference previousInterface : knownInterfaces) {
 			if (memberOfTypeHierarchy(previousInterface, lightweightInterfaceReference)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_13,
@@ -1165,9 +1165,9 @@ public class SARLValidator extends AbstractSARLValidator {
 			EReference structuralElement,
 			Iterable<? extends JvmTypeReference> interfaces,
 			Iterable<? extends JvmTypeReference> superTypes) {
-		List<LightweightTypeReference> knownInterfaces = CollectionLiterals.newArrayList();
-		for (JvmTypeReference interfaceRef : interfaces) {
-			LightweightTypeReference lightweightInterfaceReference = toLightweightTypeReference(interfaceRef);
+		final List<LightweightTypeReference> knownInterfaces = CollectionLiterals.newArrayList();
+		for (final JvmTypeReference interfaceRef : interfaces) {
+			final LightweightTypeReference lightweightInterfaceReference = toLightweightTypeReference(interfaceRef);
 			// Check the interface against the other interfaces
 			if (!checkRedundantInterface(
 					element, structuralElement,
@@ -1175,8 +1175,8 @@ public class SARLValidator extends AbstractSARLValidator {
 					knownInterfaces)) {
 				// Check the interface against the super-types
 				if (superTypes != null && !isIgnored(REDUNDANT_INTERFACE_IMPLEMENTATION)) {
-					for (JvmTypeReference superType : superTypes) {
-						LightweightTypeReference lightweightSuperType = toLightweightTypeReference(superType);
+					for (final JvmTypeReference superType : superTypes) {
+						final LightweightTypeReference lightweightSuperType = toLightweightTypeReference(superType);
 						if (memberOfTypeHierarchy(lightweightSuperType, lightweightInterfaceReference)) {
 							addIssue(MessageFormat.format(
 									Messages.SARLValidator_14,
@@ -1243,7 +1243,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkBehaviorUnitGuardType(SarlBehaviorUnit behaviorUnit) {
-		XExpression guard = behaviorUnit.getGuard();
+		final XExpression guard = behaviorUnit.getGuard();
 		if (guard != null) {
 			if (this.expressionHelper.hasDeepSideEffects(guard)) {
 				error(Messages.SARLJavaValidator_18,
@@ -1254,7 +1254,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				return;
 			}
 			if (guard instanceof XBooleanLiteral) {
-				XBooleanLiteral booleanLiteral = (XBooleanLiteral) guard;
+				final XBooleanLiteral booleanLiteral = (XBooleanLiteral) guard;
 				if (booleanLiteral.isIsTrue()) {
 					if (!isIgnored(DISCOURAGED_BOOLEAN_EXPRESSION)) {
 						addIssue(Messages.SARLValidator_21,
@@ -1274,7 +1274,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				return;
 			}
 
-			LightweightTypeReference fromType = getActualType(guard);
+			final LightweightTypeReference fromType = getActualType(guard);
 			if (!fromType.isAssignableFrom(Boolean.TYPE)) {
 				error(MessageFormat.format(Messages.SARLValidator_23,
 						getNameOfTypes(fromType), boolean.class.getName()),
@@ -1292,8 +1292,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkCapacityTypeForUses(SarlCapacityUses uses) {
-		for (JvmParameterizedTypeReference usedType : uses.getCapacities()) {
-			LightweightTypeReference ref = toLightweightTypeReference(usedType);
+		for (final JvmParameterizedTypeReference usedType : uses.getCapacities()) {
+			final LightweightTypeReference ref = toLightweightTypeReference(usedType);
 			if (ref != null && !ref.isSubtypeOf(Capacity.class)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_24,
@@ -1315,8 +1315,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkCapacityTypeForRequires(SarlRequiredCapacity requires) {
-		for (JvmParameterizedTypeReference requiredType : requires.getCapacities()) {
-			LightweightTypeReference ref = toLightweightTypeReference(requiredType);
+		for (final JvmParameterizedTypeReference requiredType : requires.getCapacities()) {
+			final LightweightTypeReference ref = toLightweightTypeReference(requiredType);
 			if (ref != null && !ref.isSubtypeOf(Capacity.class)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_24,
@@ -1338,8 +1338,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkActionFires(SarlAction action) {
-		for (JvmTypeReference event : action.getFiredEvents()) {
-			LightweightTypeReference ref = toLightweightTypeReference(event);
+		for (final JvmTypeReference event : action.getFiredEvents()) {
+			final LightweightTypeReference ref = toLightweightTypeReference(event);
 			if (ref != null && !ref.isSubtypeOf(Event.class)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_24,
@@ -1373,19 +1373,19 @@ public class SARLValidator extends AbstractSARLValidator {
 			Class<?> expectedType,
 			boolean onlySubTypes) {
 		int nbSuperTypes = 0;
-		JvmDeclaredType inferredType = this.associations.getInferredType(element);
+		final JvmDeclaredType inferredType = this.associations.getInferredType(element);
 		if (inferredType instanceof JvmGenericType) {
-			LinkedList<JvmTypeReference> inferredSuperTypes = CollectionLiterals.newLinkedList();
+			final LinkedList<JvmTypeReference> inferredSuperTypes = CollectionLiterals.newLinkedList();
 			inferredSuperTypes.addAll(inferredType.getSuperTypes());
-			boolean isExpectingInterface = expectedType.isInterface();
+			final boolean isExpectingInterface = expectedType.isInterface();
 			int superTypeIndex = 0;
-			for (JvmTypeReference superType : superTypes) {
+			for (final JvmTypeReference superType : superTypes) {
 				boolean success = true;
-				JvmType jvmSuperType = (superType == null) ? null : superType.getType();
+				final JvmType jvmSuperType = (superType == null) ? null : superType.getType();
 				if (jvmSuperType != null) {
 					final JvmTypeReference inferredSuperType =
 							(inferredSuperTypes.isEmpty()) ? null : inferredSuperTypes.removeFirst();
-					LightweightTypeReference lighweightSuperType = toLightweightTypeReference(superType);
+					final LightweightTypeReference lighweightSuperType = toLightweightTypeReference(superType);
 					if (!(jvmSuperType instanceof JvmGenericType)
 							|| (isExpectingInterface != ((JvmGenericType) jvmSuperType).isInterface())) {
 						if (isExpectingInterface) {
@@ -1413,7 +1413,7 @@ public class SARLValidator extends AbstractSARLValidator {
 								jvmSuperType.getIdentifier());
 						success = false;
 					} else if (!lighweightSuperType.isSubtypeOf(expectedType)
-							|| ((onlySubTypes) && (lighweightSuperType.isType(expectedType)))) {
+							|| (onlySubTypes && lighweightSuperType.isType(expectedType))) {
 						if (onlySubTypes) {
 							error(MessageFormat.format(Messages.SARLValidator_31, expectedType.getName()),
 									feature,
@@ -1479,7 +1479,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkSuperType(SarlSkill skill) {
-		int nbSuperTypes = checkSuperTypes(
+		final int nbSuperTypes = checkSuperTypes(
 				skill,
 				SARL_SKILL__EXTENDS,
 				Utils.singletonList(skill.getExtends()),
@@ -1490,7 +1490,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				SARL_SKILL__IMPLEMENTS,
 				skill.getImplements(),
 				Capacity.class,
-				((nbSuperTypes > 0) ? 0 : 1),
+				nbSuperTypes > 0 ? 0 : 1,
 				true);
 	}
 
@@ -1557,12 +1557,12 @@ public class SARLValidator extends AbstractSARLValidator {
 		boolean success = true;
 		int nb = 0;
 		int index = 0;
-		for (JvmTypeReference superType : implementedTypes) {
-			LightweightTypeReference  ref = toLightweightTypeReference(superType);
+		for (final JvmTypeReference superType : implementedTypes) {
+			final LightweightTypeReference  ref = toLightweightTypeReference(superType);
 			if (ref != null
 					&& (!ref.isInterfaceType() || !ref.isSubtypeOf(expectedType)
 					|| (onlySubTypes && ref.isType(expectedType)))) {
-				String msg;
+				final String msg;
 				if (onlySubTypes) {
 					msg = Messages.SARLValidator_34;
 				} else {
@@ -1604,8 +1604,8 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkBehaviorUnitEventType(SarlBehaviorUnit behaviorUnit) {
-		JvmTypeReference event = behaviorUnit.getName();
-		LightweightTypeReference ref = toLightweightTypeReference(event);
+		final JvmTypeReference event = behaviorUnit.getName();
+		final LightweightTypeReference ref = toLightweightTypeReference(event);
 		if (ref == null || ref.isInterfaceType() || !ref.isSubtypeOf(Event.class)) {
 			error(MessageFormat.format(
 					Messages.SARLValidator_24,
@@ -1649,10 +1649,10 @@ public class SARLValidator extends AbstractSARLValidator {
 	}
 
 	private boolean doGetLocalUsage(Collection<JvmOperation> operations, EObject container) {
-		Iterator<JvmOperation> iterator = operations.iterator();
+		final Iterator<JvmOperation> iterator = operations.iterator();
 		boolean found = false;
 		while (!found && iterator.hasNext()) {
-			JvmOperation operation = iterator.next();
+			final JvmOperation operation = iterator.next();
 			if (isLocallyUsed(operation, container)) {
 				found = true;
 			}
@@ -1668,11 +1668,11 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check(CheckType.NORMAL)
 	public void checkUnusedCapacities(SarlCapacityUses uses) {
 		if (!isIgnored(UNUSED_AGENT_CAPACITY)) {
-			EObject container = uses.getDeclaringType();
-			EObject jvmContainer = this.associations.getPrimaryJvmElement(container);
+			final EObject container = uses.getDeclaringType();
+			final EObject jvmContainer = this.associations.getPrimaryJvmElement(container);
 
 			final String annotationId = ImportedCapacityFeature.class.getName();
-			Multimap<String, JvmOperation> importedFeatures = Multimaps.newMultimap(
+			final Multimap<String, JvmOperation> importedFeatures = Multimaps.newMultimap(
 					CollectionLiterals.<String, Collection<JvmOperation>>newHashMap(),
 					new Supplier<Collection<JvmOperation>>() {
 						@Override
@@ -1680,13 +1680,13 @@ public class SARLValidator extends AbstractSARLValidator {
 							return CollectionLiterals.<JvmOperation>newArrayList();
 						}
 					});
-			Iterable<EObject> fitleredObjects = IterableExtensions.filter(jvmContainer.eContents(),
+			final Iterable<EObject> fitleredObjects = IterableExtensions.filter(jvmContainer.eContents(),
 					new Functions.Function1<EObject, Boolean>() {
 						@SuppressWarnings("synthetic-access")
 						@Override
 						public Boolean apply(EObject it) {
 							if (it instanceof JvmOperation) {
-								JvmOperation operation = (JvmOperation) it;
+								final JvmOperation operation = (JvmOperation) it;
 								if (doGetFirstAnnotation(operation, annotationId) != null) {
 									return Boolean.TRUE;
 								}
@@ -1695,17 +1695,17 @@ public class SARLValidator extends AbstractSARLValidator {
 						}
 
 					});
-			for (EObject method : fitleredObjects) {
-				JvmOperation operation = (JvmOperation) method;
-				EList<JvmAnnotationValue> annotationValues = doGetFirstAnnotation(operation, annotationId).getValues();
-				JvmTypeAnnotationValue annotationType = (JvmTypeAnnotationValue) annotationValues.get(0);
-				JvmTypeReference capacityType = annotationType.getValues().get(0);
+			for (final EObject method : fitleredObjects) {
+				final JvmOperation operation = (JvmOperation) method;
+				final EList<JvmAnnotationValue> annotationValues = doGetFirstAnnotation(operation, annotationId).getValues();
+				final JvmTypeAnnotationValue annotationType = (JvmTypeAnnotationValue) annotationValues.get(0);
+				final JvmTypeReference capacityType = annotationType.getValues().get(0);
 				importedFeatures.put(capacityType.getIdentifier(), operation);
 			}
 
 			int index = 0;
-			for (JvmTypeReference capacity : uses.getCapacities()) {
-				Collection<JvmOperation> operations = importedFeatures.get(capacity.getIdentifier());
+			for (final JvmTypeReference capacity : uses.getCapacities()) {
+				final Collection<JvmOperation> operations = importedFeatures.get(capacity.getIdentifier());
 				if (!operations.isEmpty()) {
 					if (!doGetLocalUsage(operations, container)) {
 						addIssue(MessageFormat.format(
@@ -1724,15 +1724,15 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	private static Set<String> doGetPreviousCapacities(SarlCapacityUses uses, Iterator<XtendMember> iterator) {
 		boolean continueToFill = true;
-		Set<String> capacityUses = CollectionLiterals.newTreeSet((Comparator<String>) null);
+		final Set<String> capacityUses = CollectionLiterals.newTreeSet((Comparator<String>) null);
 		while (continueToFill && iterator.hasNext()) {
-			XtendMember elt = iterator.next();
+			final XtendMember elt = iterator.next();
 			if (elt instanceof SarlCapacityUses) {
-				SarlCapacityUses usesElt = (SarlCapacityUses) elt;
+				final SarlCapacityUses usesElt = (SarlCapacityUses) elt;
 				if (usesElt == uses) {
 					continueToFill = false;
 				} else {
-					for (JvmTypeReference use : usesElt.getCapacities()) {
+					for (final JvmTypeReference use : usesElt.getCapacities()) {
 						capacityUses.add(use.getIdentifier());
 					}
 				}
@@ -1748,11 +1748,12 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check(CheckType.NORMAL)
 	public void checkMultipleCapacityUses(SarlCapacityUses uses) {
 		if (!isIgnored(REDUNDANT_CAPACITY_USE)) {
-			XtendTypeDeclaration declaringType = uses.getDeclaringType();
+			final XtendTypeDeclaration declaringType = uses.getDeclaringType();
 			if (declaringType != null) {
-				Set<String> previousCapacityUses = doGetPreviousCapacities(uses, declaringType.getMembers().iterator());
+				final Set<String> previousCapacityUses = doGetPreviousCapacities(uses,
+						declaringType.getMembers().iterator());
 				int index = 0;
-				for (JvmTypeReference capacity : uses.getCapacities()) {
+				for (final JvmTypeReference capacity : uses.getCapacities()) {
 					if (previousCapacityUses.contains(capacity.getIdentifier())) {
 						addIssue(MessageFormat.format(
 								Messages.SARLValidator_43,
@@ -1784,7 +1785,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Override
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public void checkAbstract(XtendFunction function) {
-		XtendTypeDeclaration declarator = function.getDeclaringType();
+		final XtendTypeDeclaration declarator = function.getDeclaringType();
 		if (function.getExpression() == null || function.isAbstract()) {
 			if (declarator instanceof XtendClass || declarator.isAnonymous()
 					|| declarator instanceof SarlAgent || declarator instanceof SarlBehavior
@@ -1809,7 +1810,7 @@ public class SARLValidator extends AbstractSARLValidator {
 							function.getName(), this.localClassAwareTypeNames.getReadableName(declarator)),
 							XTEND_FUNCTION__NAME, -1, MISSING_ABSTRACT_IN_ANONYMOUS);
 				} else {
-					boolean isAbstract;
+					final boolean isAbstract;
 					if (declarator instanceof XtendClass) {
 						isAbstract = ((XtendClass) declarator).isAbstract();
 					} else if (declarator instanceof SarlAgent) {

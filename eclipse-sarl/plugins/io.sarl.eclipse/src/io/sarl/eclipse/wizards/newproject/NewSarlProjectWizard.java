@@ -77,9 +77,9 @@ import io.sarl.lang.ui.preferences.SARLPreferences;
  */
 public class NewSarlProjectWizard extends NewElementWizard implements IExecutableExtension {
 
-	private MainProjectWizardPage fFirstPage;
+	private MainProjectWizardPage firstPage;
 
-	private BuildSettingWizardPage fSecondPage;
+	private BuildSettingWizardPage secondPage;
 
 	private IConfigurationElement fConfigElement;
 
@@ -101,30 +101,30 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
 		setWindowTitle(Messages.SARLProjectNewWizard_0);
 
-		this.fFirstPage = pageOne;
-		this.fSecondPage = pageTwo;
+		this.firstPage = pageOne;
+		this.secondPage = pageTwo;
 	}
 
 	@Override
 	public void addPages() {
-		if (this.fFirstPage == null) {
-			this.fFirstPage = new MainProjectWizardPage();
+		if (this.firstPage == null) {
+			this.firstPage = new MainProjectWizardPage();
 		}
-		addPage(this.fFirstPage);
+		addPage(this.firstPage);
 
-		if (this.fSecondPage == null) {
-			this.fSecondPage = new BuildSettingWizardPage(this.fFirstPage);
+		if (this.secondPage == null) {
+			this.secondPage = new BuildSettingWizardPage(this.firstPage);
 		}
-		addPage(this.fSecondPage);
+		addPage(this.secondPage);
 
-		this.fFirstPage.init(getSelection(), getActivePart());
+		this.firstPage.init(getSelection(), getActivePart());
 	}
 
 	private static boolean hasSourcePath(IJavaProject javaProject, IPath path) {
 		if (path != null) {
-			IPath pathInProject = javaProject.getProject().getFullPath().append(path);
+			final IPath pathInProject = javaProject.getProject().getFullPath().append(path);
 			try {
-				for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+				for (final IClasspathEntry entry : javaProject.getRawClasspath()) {
 					if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE
 							&& pathInProject.equals(entry.getPath())) {
 						return true;
@@ -138,9 +138,9 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	}
 
 	private static String buildInvalidOutputPathMessageFragment(IJavaProject javaProject) {
-		StringBuilder sourceFolders = new StringBuilder();
+		final StringBuilder sourceFolders = new StringBuilder();
 		try {
-			for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+			for (final IClasspathEntry entry : javaProject.getRawClasspath()) {
 				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
 					sourceFolders.append("\t"); //$NON-NLS-1$
 					sourceFolders.append(entry.getPath().toOSString());
@@ -166,24 +166,24 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 * @return validity
 	 */
 	protected boolean validateSARLSpecificElements(IJavaElement element) {
-		IJavaProject javaProject = (IJavaProject) element;
+		final IJavaProject javaProject = (IJavaProject) element;
 		// Check if the "SARL" generation directory is a source folder.
-		IPath outputPath = SARLPreferences.getSARLOutputPathFor(javaProject.getProject());
+		final IPath outputPath = SARLPreferences.getSARLOutputPathFor(javaProject.getProject());
 
 		if (outputPath == null) {
-			String message = MessageFormat.format(
+			final String message = MessageFormat.format(
 					Messages.BuildSettingWizardPage_0,
 					SARLConfig.FOLDER_SOURCE_GENERATED);
-			IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
+			final IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
 			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
 			return false;
 		}
 		if (!hasSourcePath(javaProject, outputPath)) {
-			String message = MessageFormat.format(
+			final String message = MessageFormat.format(
 					Messages.SARLProjectCreationWizard_0,
 					toOSString(outputPath),
 					buildInvalidOutputPathMessageFragment(javaProject));
-			IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
+			final IStatus status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, message);
 			handleFinishException(getShell(), new InvocationTargetException(new CoreException(status)));
 			return false;
 		}
@@ -193,12 +193,12 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	@Override
 	protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
 		// use the full progress monitor
-		this.fSecondPage.performFinish(monitor);
+		this.secondPage.performFinish(monitor);
 	}
 
 	@Override
 	public boolean performFinish() {
-		boolean res = super.performFinish();
+		final boolean res = super.performFinish();
 		if (res) {
 			final IJavaElement newElement;
 			try {
@@ -213,20 +213,20 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 				return false;
 			}
 
-			IWorkingSet[] workingSets = this.fFirstPage.getWorkingSets();
+			final IWorkingSet[] workingSets = this.firstPage.getWorkingSets();
 			if (workingSets.length > 0) {
 				PlatformUI.getWorkbench().getWorkingSetManager().addToWorkingSets(newElement, workingSets);
 			}
 
 			BasicNewProjectResourceWizard.updatePerspective(this.fConfigElement);
-			selectAndReveal(this.fSecondPage.getJavaProject().getProject());
+			selectAndReveal(this.secondPage.getJavaProject().getProject());
 
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					IWorkbenchPart activePart = getActivePart();
+					final IWorkbenchPart activePart = getActivePart();
 					if (activePart instanceof IPackagesViewPart) {
-						PackageExplorerPart view = PackageExplorerPart.openInActivePerspective();
+						final PackageExplorerPart view = PackageExplorerPart.openInActivePerspective();
 						view.tryToReveal(newElement);
 					}
 				}
@@ -240,9 +240,9 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 * @return the active part.
 	 */
 	IWorkbenchPart getActivePart() {
-		IWorkbenchWindow activeWindow = getWorkbench().getActiveWorkbenchWindow();
+		final IWorkbenchWindow activeWindow = getWorkbench().getActiveWorkbenchWindow();
 		if (activeWindow != null) {
-			IWorkbenchPage activePage = activeWindow.getActivePage();
+			final IWorkbenchPage activePage = activeWindow.getActivePage();
 			if (activePage != null) {
 				return activePage.getActivePart();
 			}
@@ -252,8 +252,8 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 
 	@Override
 	protected void handleFinishException(Shell shell, InvocationTargetException exception) {
-		String title = NewWizardMessages.JavaProjectWizard_op_error_title;
-		String message = NewWizardMessages.JavaProjectWizard_op_error_create_message;
+		final String title = NewWizardMessages.JavaProjectWizard_op_error_title;
+		final String message = NewWizardMessages.JavaProjectWizard_op_error_create_message;
 		ExceptionHandler.handle(exception, getShell(), title, message);
 	}
 
@@ -264,26 +264,26 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 
 	@Override
 	public boolean performCancel() {
-		this.fSecondPage.performCancel();
+		this.secondPage.performCancel();
 		return super.performCancel();
 	}
 
 	@Override
 	public IJavaElement getCreatedElement() {
-		IJavaProject javaProject = this.fSecondPage.getJavaProject();
+		final IJavaProject javaProject = this.secondPage.getJavaProject();
 
 		try {
 			addNatures(javaProject.getProject());
 
 			// Set the SRE configuration
-			IProject project = javaProject.getProject();
-			ISREInstall sre = this.fFirstPage.getSRE();
-			boolean useDefaultSRE = (sre == null || this.fFirstPage.isSystemDefaultSRE());
+			final IProject project = javaProject.getProject();
+			final ISREInstall sre = this.firstPage.getSRE();
+			final boolean useDefaultSRE = sre == null || this.firstPage.isSystemDefaultSRE();
 			QualifiedName qn = RuntimeEnvironmentPropertyPage.qualify(
 					RuntimeEnvironmentPropertyPage.PROPERTY_NAME_HAS_PROJECT_SPECIFIC);
 			project.setPersistentProperty(qn, Boolean.toString(!useDefaultSRE));
 			if (!useDefaultSRE) {
-				assert (sre != null);
+				assert sre != null;
 				qn = RuntimeEnvironmentPropertyPage.qualify(
 						RuntimeEnvironmentPropertyPage.PROPERTY_NAME_USE_SYSTEM_WIDE_SRE);
 				project.setPersistentProperty(qn, Boolean.FALSE.toString());
@@ -311,7 +311,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 		// check the status and decide what to do
 		if (status.getCode() == IStatus.OK) {
 			description.setNatureIds(newNatures);
-			IProgressMonitor monitor = new NullProgressMonitor();
+			final IProgressMonitor monitor = new NullProgressMonitor();
 			project.setDescription(description, monitor);
 		} else {
 			JavaPlugin.logErrorStatus(

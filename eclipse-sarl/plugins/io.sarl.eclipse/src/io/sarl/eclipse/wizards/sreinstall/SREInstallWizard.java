@@ -60,11 +60,11 @@ public abstract class SREInstallWizard extends Wizard {
 	 */
 	public SREInstallWizard(ISREInstall editSRE, ISREInstall[] currentInstalls) {
 		this.sre = editSRE;
-		List<String> names = new ArrayList<>(currentInstalls.length);
+		final List<String> names = new ArrayList<>(currentInstalls.length);
 		for (int i = 0; i < currentInstalls.length; i++) {
-			ISREInstall install = currentInstalls[i];
+			final ISREInstall install = currentInstalls[i];
 			if (this.sre == null || !install.getId().equals(this.sre.getId())) {
-				String name = install.getNameNoDefault();
+				final String name = install.getNameNoDefault();
 				if (!Strings.isNullOrEmpty(name) && !name.equals(install.getId())) {
 					names.add(name);
 				}
@@ -94,16 +94,16 @@ public abstract class SREInstallWizard extends Wizard {
 	 * @return the wizard page.
 	 */
 	public AbstractSREInstallPage getPage(ISREInstall sre) {
-		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+		final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
 				SARLEclipsePlugin.PLUGIN_ID,
 				SARLEclipseConfig.EXTENSION_POINT_SRE_INSTALL_PAGES);
 		if (sre != null && extensionPoint != null) {
 			IConfigurationElement firstTypeMatching = null;
-			for (IConfigurationElement info : extensionPoint.getConfigurationElements()) {
-				String id = info.getAttribute("sreInstallId"); //$NON-NLS-1$
+			for (final IConfigurationElement info : extensionPoint.getConfigurationElements()) {
+				final String id = info.getAttribute("sreInstallId"); //$NON-NLS-1$
 				if (sre.getId().equals(Strings.nullToEmpty(id))) {
 					try {
-						AbstractSREInstallPage page = (AbstractSREInstallPage)
+						final AbstractSREInstallPage page = (AbstractSREInstallPage)
 								info.createExecutableExtension("class"); //$NON-NLS-1$
 						page.setExistingNames(this.names);
 						return page;
@@ -118,7 +118,7 @@ public abstract class SREInstallWizard extends Wizard {
 
 			if (firstTypeMatching != null) {
 				try {
-					AbstractSREInstallPage page = (AbstractSREInstallPage)
+					final AbstractSREInstallPage page = (AbstractSREInstallPage)
 							firstTypeMatching.createExecutableExtension("class"); //$NON-NLS-1$
 					page.setExistingNames(this.names);
 					return page;
@@ -129,7 +129,7 @@ public abstract class SREInstallWizard extends Wizard {
 		}
 
 		if (sre == null || sre instanceof StandardSREInstall) {
-			StandardSREPage standardVMPage = new StandardSREPage();
+			final StandardSREPage standardVMPage = new StandardSREPage();
 			standardVMPage.setExistingNames(this.names);
 			return standardVMPage;
 		}
@@ -141,7 +141,7 @@ public abstract class SREInstallWizard extends Wizard {
 	private static boolean isInstance(String classname, ISREInstall sre) {
 		if (!Strings.isNullOrEmpty(classname)) {
 			try {
-				Class<?> type = Class.forName(classname);
+				final Class<?> type = Class.forName(classname);
 				return type.isInstance(sre);
 			} catch (Throwable e) {
 				SARLEclipsePlugin.getDefault().log(e);

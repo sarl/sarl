@@ -429,7 +429,7 @@
 					</executions>
 					<configuration>
 					    <!-- config is inside one of the dependencies -->
-						<configLocation>/checkstyle/checkstyle.xml</configLocation>
+						<configLocation>/checkstyle/sarl/checkstyle.xml</configLocation>
 						<!-- force absolute path of the config file -->
 						<propertyExpansion>${checkstyle.config_loc}</propertyExpansion>
 						<consoleOutput>true</consoleOutput>
@@ -590,19 +590,6 @@
 								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-checkstyle-plugin</artifactId>
-										<versionRange>[2.12.1,)</versionRange>
-										<goals>
-											<goal>check</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
 										<artifactId>maven-plugin-plugin</artifactId>
 										<versionRange>[3.3,)</versionRange>
 										<goals>
@@ -718,7 +705,7 @@
 							// Set Checkstyle properties
 							//
 						    def config_loc = project.properties["mainbasedir"];
-						    ["build-tools", "src", "main", "resources", "checkstyle"].each {
+						    ["build-tools", "src", "main", "resources", "checkstyle", "sarl"].each {
 						    	config_loc = new File(config_loc, it);
 						    }
 						    project.properties["checkstyle.config_loc"] = "config_loc=" + config_loc.getAbsolutePath() + File.separator;
@@ -849,7 +836,7 @@
 				<module>dev-tools</module>
 				<!-- SREs -->
 				<module>sre</module>
-				<!-- SREs -->
+				<!-- Products aand update site -->
 				<module>eclipse-products</module>
 				<!-- Documentation -->
 				<module>docs</module>

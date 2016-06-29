@@ -199,13 +199,13 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	@SuppressWarnings("checkstyle:nestedifdepth")
 	private static void exploreGrammar(Grammar grammar, Set<String> keywords, Set<String> punctuation,
 			Set<String> literals, Set<String> excludedKeywords, Set<String> ignored) {
-		for (AbstractRule rule : grammar.getRules()) {
-			TreeIterator<EObject> iterator = rule.eAllContents();
+		for (final AbstractRule rule : grammar.getRules()) {
+			final TreeIterator<EObject> iterator = rule.eAllContents();
 			while (iterator.hasNext()) {
-				EObject object = iterator.next();
+				final EObject object = iterator.next();
 				if (object instanceof Keyword) {
-					Keyword xkeyword = (Keyword) object;
-					String value = xkeyword.getValue();
+					final Keyword xkeyword = (Keyword) object;
+					final String value = xkeyword.getValue();
 					if (!Strings.isEmpty(value)) {
 						if (KEYWORD_PATTERN.matcher(value).matches()) {
 							if (!literals.contains(value)) {
@@ -226,49 +226,49 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 
 	@Override
 	public final void generate() {
-		Grammar grammar = getGrammar();
+		final Grammar grammar = getGrammar();
 		if (grammar == null) {
 			throw new RuntimeException("No grammar defined"); //$NON-NLS-1$
 		}
 
 		LOG.info(MessageFormat.format("Generating highlighting configuration for {0}", toString())); //$NON-NLS-1$
 
-		Set<String> literals = new TreeSet<>();
-		Set<String> keywords = new TreeSet<>();
+		final Set<String> literals = new TreeSet<>();
+		final Set<String> keywords = new TreeSet<>();
 
-		ExternalHighlightingConfig hconfig = getHighlightingConfig();
+		final ExternalHighlightingConfig hconfig = getHighlightingConfig();
 
 		literals.addAll(hconfig.getLiterals());
 
-		for (String keyword : hconfig.getKeywords()) {
+		for (final String keyword : hconfig.getKeywords()) {
 			if (!literals.contains(keyword)) {
 				keywords.add(keyword);
 			}
 		}
 
 		if (hconfig.getAddNativeTypes()) {
-			for (Class<?> type : Primitives.ALL_PRIMITIVE_TYPES) {
+			for (final Class<?> type : Primitives.ALL_PRIMITIVE_TYPES) {
 				keywords.add(type.getSimpleName());
 			}
 		}
 
-		Set<String> punctuation = new TreeSet<>();
+		final Set<String> punctuation = new TreeSet<>();
 		punctuation.addAll(hconfig.getPunctuation());
 
-		Queue<Grammar> grammars = new ArrayDeque<>();
+		final Queue<Grammar> grammars = new ArrayDeque<>();
 		grammars.add(grammar);
 
-		Set<String> excluded = hconfig.getIgnoredKeywords();
+		final Set<String> excluded = hconfig.getIgnoredKeywords();
 
-		Set<String> ignored = new TreeSet<>();
+		final Set<String> ignored = new TreeSet<>();
 
 		while (!grammars.isEmpty()) {
-			Grammar grammarToTreat = grammars.poll();
+			final Grammar grammarToTreat = grammars.poll();
 			grammars.addAll(grammarToTreat.getUsedGrammars());
 			exploreGrammar(grammarToTreat, keywords, punctuation, literals, excluded, ignored);
 		}
 
-		Set<String> tmp = new TreeSet<>(excluded);
+		final Set<String> tmp = new TreeSet<>(excluded);
 		tmp.removeAll(ignored);
 		if (!tmp.isEmpty()) {
 			throw new RuntimeException(MessageFormat.format(
@@ -295,21 +295,21 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	 */
 	protected void writeFile(String basename, Collection<String> lines) {
 		// Create the file.
-		String lineDelimiter = getCodeConfig().getLineDelimiter();
-		StringBuilder content = new StringBuilder();
-		for (String line : lines) {
+		final String lineDelimiter = getCodeConfig().getLineDelimiter();
+		final StringBuilder content = new StringBuilder();
+		for (final String line : lines) {
 			content.append(line);
 			content.append(lineDelimiter);
 		}
 
 		// Encode
-		byte[] bytes = content.toString().getBytes(Charset.forName(getCodeConfig().getEncoding()));
+		final byte[] bytes = content.toString().getBytes(Charset.forName(getCodeConfig().getEncoding()));
 
-		for (String output : getOutputs()) {
-			File directory = new File(output).getAbsoluteFile();
+		for (final String output : getOutputs()) {
+			final File directory = new File(output).getAbsoluteFile();
 			try {
 				directory.mkdirs();
-				File outputFile = new File(directory, basename);
+				final File outputFile = new File(directory, basename);
 
 				Files.write(Paths.get(outputFile.getAbsolutePath()), bytes);
 			} catch (IOException e) {
@@ -323,8 +323,8 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	 * @return the name.
 	 */
 	protected String getLanguageSimpleName() {
-		String name = getGrammar().getName();
-		int index = name.lastIndexOf('.');
+		final String name = getGrammar().getName();
+		final int index = name.lastIndexOf('.');
 		if (index > 0) {
 			return name.substring(index + 1);
 		}

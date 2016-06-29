@@ -65,8 +65,8 @@ public final class M2EUtilities {
 		}
 
 		// Detect the snapshot
-		boolean isSnapshot;
-		String coreVersion;
+		final boolean isSnapshot;
+		final String coreVersion;
 		Matcher matcher = Artifact.VERSION_FILE_PATTERN.matcher(version);
 		if (matcher.matches()) {
 			coreVersion = matcher.group(1);
@@ -83,12 +83,13 @@ public final class M2EUtilities {
 		}
 
 		// Parse the numbers
-		String[] parts = coreVersion.split("[.]"); //$NON-NLS-1$
-		int[] numbers = new int[] {0, 0, 0};
-		for (int i = 0; i < numbers.length && i < parts.length; ++i) {
+		final String[] parts = coreVersion.split("[.]"); //$NON-NLS-1$
+		final int[] numbers = new int[] {0, 0, 0};
+		int i = 0;
+		while (i < numbers.length && i < parts.length) {
 			try {
-				int value = Integer.parseInt(parts[i]);
-				numbers[i] = value;
+				numbers[i] = Integer.parseInt(parts[i]);
+				++i;
 			} catch (Exception exception) {
 				// Force the exit of the loop since a number cannot be find.
 				i = numbers.length;

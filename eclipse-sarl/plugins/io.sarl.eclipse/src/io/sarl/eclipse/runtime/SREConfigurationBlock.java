@@ -167,12 +167,12 @@ public class SREConfigurationBlock {
 
 	private void firePropertyChange() {
 		if (this.notify) {
-			PropertyChangeEvent event = new PropertyChangeEvent(this,
+			final PropertyChangeEvent event = new PropertyChangeEvent(this,
 					PROPERTY_SRE_CONFIGURATION, null,
 					getSelectedSRE());
-			Object[] listeners = this.listeners.getListeners();
+			final Object[] listeners = this.listeners.getListeners();
 			for (int i = 0; i < listeners.length; i++) {
-				IPropertyChangeListener listener = (IPropertyChangeListener) listeners[i];
+				final IPropertyChangeListener listener = (IPropertyChangeListener) listeners[i];
 				listener.propertyChange(event);
 			}
 		}
@@ -183,13 +183,13 @@ public class SREConfigurationBlock {
 			return null;
 		}
 		if (this.projectProvider == null) {
-			IProject project = this.project.getProject();
+			final IProject project = this.project.getProject();
 			if (project == null) {
 				return null;
 			}
-			Iterator<ProjectSREProviderFactory> iterator = this.projectProviderFactories.iterator();
+			final Iterator<ProjectSREProviderFactory> iterator = this.projectProviderFactories.iterator();
 			while (this.projectProvider == null && iterator.hasNext()) {
-				ProjectSREProviderFactory factory = iterator.next();
+				final ProjectSREProviderFactory factory = iterator.next();
 				this.projectProvider = factory.getProjectSREProvider(project);
 			}
 			if (this.projectProvider == null) {
@@ -240,8 +240,8 @@ public class SREConfigurationBlock {
 
 	private void createSystemWideSelector(Group parent) {
 		if (this.enableSystemWideSelector) {
-			ISREInstall wideSystemSRE = SARLRuntime.getDefaultSREInstall();
-			String wideSystemSRELabel;
+			final ISREInstall wideSystemSRE = SARLRuntime.getDefaultSREInstall();
+			final String wideSystemSRELabel;
 			if (wideSystemSRE == null) {
 				wideSystemSRELabel = Messages.SREConfigurationBlock_0;
 			} else {
@@ -315,8 +315,8 @@ public class SREConfigurationBlock {
 		this.control = SWTFactory.createComposite(
 				parent, parent.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
 
-		int nbColumns = this.enableSystemWideSelector ? 3 : 2;
-		Group group = SWTFactory.createGroup(this.control,
+		final int nbColumns = this.enableSystemWideSelector ? 3 : 2;
+		final Group group = SWTFactory.createGroup(this.control,
 				Objects.firstNonNull(this.title, Messages.SREConfigurationBlock_7),
 				nbColumns, 1, GridData.FILL_HORIZONTAL);
 
@@ -349,8 +349,8 @@ public class SREConfigurationBlock {
 	 */
 	public void updateExternalSREButtonLabels() {
 		if (this.enableSystemWideSelector) {
-			ISREInstall wideSystemSRE = SARLRuntime.getDefaultSREInstall();
-			String wideSystemSRELabel;
+			final ISREInstall wideSystemSRE = SARLRuntime.getDefaultSREInstall();
+			final String wideSystemSRELabel;
 			if (wideSystemSRE == null) {
 				wideSystemSRELabel = Messages.SREConfigurationBlock_0;
 			} else {
@@ -360,8 +360,8 @@ public class SREConfigurationBlock {
 					Messages.SREConfigurationBlock_1, wideSystemSRELabel));
 		}
 		if (!this.projectProviderFactories.isEmpty()) {
-			ISREInstall projectSRE = retreiveProjectSRE();
-			String projectSRELabel;
+			final ISREInstall projectSRE = retreiveProjectSRE();
+			final String projectSRELabel;
 			if (projectSRE == null) {
 				projectSRELabel = Messages.SREConfigurationBlock_0;
 			} else {
@@ -452,16 +452,16 @@ public class SREConfigurationBlock {
 		}
 		if (theSRE != null) {
 			boolean changed = false;
-			boolean oldNotify = this.notify;
+			final boolean oldNotify = this.notify;
 			try {
 				this.notify = false;
 				if (isSystemWideDefaultSRE()) {
 					doSpecificSREButtonClick();
 					changed = true;
 				}
-				ISREInstall oldSRE = getSelectedSRE();
+				final ISREInstall oldSRE = getSelectedSRE();
 				if (oldSRE != theSRE) {
-					int index = indexOf(theSRE);
+					final int index = indexOf(theSRE);
 					if (index >= 0) {
 						this.runtimeEnvironmentCombo.select(index);
 						changed = true;
@@ -489,9 +489,9 @@ public class SREConfigurationBlock {
 
 	private int indexOf(ISREInstall sre) {
 		if (sre != null) {
-			Iterator<ISREInstall> iterator = this.runtimeEnvironments.iterator();
+			final Iterator<ISREInstall> iterator = this.runtimeEnvironments.iterator();
 			for (int i = 0; iterator.hasNext(); ++i) {
-				ISREInstall knownSRE = iterator.next();
+				final ISREInstall knownSRE = iterator.next();
 				if  (knownSRE.getId().equals(sre.getId())) {
 					return i;
 				}
@@ -501,7 +501,7 @@ public class SREConfigurationBlock {
 	}
 
 	private String[] getSRELabels() {
-		String[] labels = new String[this.runtimeEnvironments.size()];
+		final String[] labels = new String[this.runtimeEnvironments.size()];
 		for (int i = 0; i < this.runtimeEnvironments.size(); ++i) {
 			labels[i] = this.runtimeEnvironments.get(i).getName();
 		}
@@ -550,7 +550,7 @@ public class SREConfigurationBlock {
 	 * @see #isSystemWideDefaultSRE()
 	 */
 	public ISREInstall getSpecificSRE() {
-		int index = this.runtimeEnvironmentCombo.getSelectionIndex();
+		final int index = this.runtimeEnvironmentCombo.getSelectionIndex();
 		if (index >= 0 && index < this.runtimeEnvironments.size()) {
 			return this.runtimeEnvironments.get(index);
 		}
@@ -577,14 +577,14 @@ public class SREConfigurationBlock {
 	public void initialize() {
 		// Initialize the SRE list
 		this.runtimeEnvironments.clear();
-		ISREInstall[] sres = SARLRuntime.getSREInstalls();
+		final ISREInstall[] sres = SARLRuntime.getSREInstalls();
 		Arrays.sort(sres, new Comparator<ISREInstall>() {
 			@Override
 			public int compare(ISREInstall o1, ISREInstall o2) {
 				return o1.getName().compareTo(o2.getName());
 			}
 		});
-		List<String> labels = new ArrayList<>(sres.length);
+		final List<String> labels = new ArrayList<>(sres.length);
 		for (int i = 0; i < sres.length; ++i) {
 			if (sres[i].getValidity().isOK()) {
 				this.runtimeEnvironments.add(sres[i]);
@@ -664,7 +664,7 @@ public class SREConfigurationBlock {
 	 * @return the state of the validation, never <code>null</code>.
 	 */
 	public IStatus validate(ISREInstall sre) {
-		IStatus status;
+		final IStatus status;
 		if (this.enableSystemWideSelector && this.systemSREButton.getSelection()) {
 			if (SARLRuntime.getDefaultSREInstall() == null) {
 				status = SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, Messages.SREConfigurationBlock_5);
@@ -722,7 +722,7 @@ public class SREConfigurationBlock {
 			if (!PROPERTY_NAME.equals(event.getProperty())) {
 				return;
 			}
-			ISREInstall sre = (ISREInstall) event.getSource();
+			final ISREInstall sre = (ISREInstall) event.getSource();
 			if (indexOf(sre) >= 0) {
 				SREConfigurationBlock.this.runtimeEnvironmentCombo.setItems(getSRELabels());
 				// Update the selection
@@ -745,7 +745,7 @@ public class SREConfigurationBlock {
 		@Override
 		public void sreAdded(ISREInstall sre) {
 			if (sre.getValidity().isOK()) {
-				ISREInstall current = getSpecificSRE();
+				final ISREInstall current = getSpecificSRE();
 				SREConfigurationBlock.this.runtimeEnvironments.add(sre);
 				SREConfigurationBlock.this.runtimeEnvironmentCombo.setItems(getSRELabels());
 				updateEnableState();
