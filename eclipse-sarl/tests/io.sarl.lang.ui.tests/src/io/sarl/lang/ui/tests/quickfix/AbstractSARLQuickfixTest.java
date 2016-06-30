@@ -29,7 +29,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -100,8 +101,10 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 					"io", "sarl", "tests", "quickfix", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
 					packageName, baseName);
 			SarlScript script = helper().sarlScript(filename, invalidCode, failOnErrorInCode);
+			Thread.yield();
 			assertNotNull(script);
 			Resource scriptResource = script.eResource();
+			Thread.yield();
 
 			List<Issue> issues = issues(script);
 			StringBuilder issueLabels = new StringBuilder();
@@ -127,12 +130,14 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			}
 			if (issue == null) {
 				fail("The issue '" + issueCode //$NON-NLS-1$
-					+ "' was not found.\nAvailable issues are: " //$NON-NLS-1$
-					+ issueLabels.toString());
+						+ "' was not found.\nAvailable issues are: " //$NON-NLS-1$
+						+ issueLabels.toString());
+				return null;
 			}
 			if (resolutions.isEmpty()) {
 				fail("No resolution found for the issue '" + issueCode //$NON-NLS-1$
 					+ "'."); //$NON-NLS-1$
+				return null;
 			}
 
 			QuickFixAsserts asserts = new QuickFixAsserts(

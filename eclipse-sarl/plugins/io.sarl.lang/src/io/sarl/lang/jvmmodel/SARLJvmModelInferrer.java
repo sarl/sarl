@@ -90,6 +90,7 @@ import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.serializer.ISerializer;
+import org.eclipse.xtext.serializer.sequencer.IContextFinder;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XExpression;
@@ -254,6 +255,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Inject
 	private LanguageInfo languageInfo;
+
+	@Inject
+	private IContextFinder contextFinder;
 
 	/** Generation contexts.
 	 */
@@ -1120,12 +1124,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				if (returnType == null
 						&& expression != null
 						&& ((!(expression instanceof XBlockExpression))
-						|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
+								|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
 					returnType = this.typeBuilder.inferredType(expression);
 				}
 			} else if (expression != null
 					&& ((!(expression instanceof XBlockExpression))
-					|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
+							|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
 				returnType = this.typeBuilder.inferredType(expression);
 			}
 			final JvmTypeReference selectedReturnType;
@@ -1213,8 +1217,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							cp.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
 									DefaultValue.class,
 									this.sarlSignatureProvider.qualifyDefaultValueID(
-									implementedOperation.getDeclaringType().getIdentifier(),
-									ovalue)));
+											implementedOperation.getDeclaringType().getIdentifier(),
+											ovalue)));
 						}
 					}
 				}
@@ -1236,7 +1240,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						if (ak != null
 								&& (context == null
 								|| (!context.getInheritedFinalOperations().containsKey(ak)
-								&& !context.getInheritedOverridableOperations().containsKey(ak)))) {
+										&& !context.getInheritedOverridableOperations().containsKey(ak)))) {
 
 							// Generate the additional constructor that is invoke the main constructor previously generated.
 							final JvmOperation operation2 = SARLJvmModelInferrer.this.typesFactory.createJvmOperation();
@@ -1262,7 +1266,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							if (source.isOverride()
 									&& !Utils.hasAnnotation(operation, Override.class)
 									&& SARLJvmModelInferrer.this.typeReferences.findDeclaredType(
-									Override.class, source) != null) {
+											Override.class, source) != null) {
 								operation.getAnnotations().add(
 										SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Override.class));
 							}
@@ -1579,8 +1583,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 										+ IterableExtensions.join(argTypes, ",") + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 								this.typeBuilder.setDocumentation(operation,
 										MessageFormat.format(
-										Messages.SARLJvmModelInferrer_13,
-										hyperrefLink));
+												Messages.SARLJvmModelInferrer_13,
+												hyperrefLink));
 							}
 							// Exceptions
 							for (final JvmTypeReference exception : implementedOperation.getExceptions()) {
@@ -1694,7 +1698,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		for (final XtendMember feature : container.getMembers()) {
 			if (context.isSupportedMember(feature)
 					&& ((feature instanceof SarlCapacityUses)
-					|| (feature instanceof SarlRequiredCapacity))) {
+							|| (feature instanceof SarlRequiredCapacity))) {
 				transform(feature, featureContainerType, false);
 			}
 		}
@@ -1770,8 +1774,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Find the definition of the operation from the inheritance context.
 				final JvmOperation redefinedOperation = context.getInheritedOverridableOperations().get(
 						this.sarlSignatureProvider.createActionPrototype(
-						missedOperation.getKey().getActionName(),
-						this.sarlSignatureProvider.createParameterTypesFromString(originalSignature)));
+								missedOperation.getKey().getActionName(),
+								this.sarlSignatureProvider.createParameterTypesFromString(originalSignature)));
 				if (redefinedOperation != null) {
 					final ActionParameterTypes parameterTypes = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
 							redefinedOperation.isVarArgs(), redefinedOperation.getParameters());
@@ -2097,14 +2101,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					it2.setVisibility(JvmVisibility.PROTECTED);
 					SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it2,
 							MessageFormat.format(Messages.SARLJvmModelInferrer_2,
-							target.getSimpleName()));
+									target.getSimpleName()));
 					SARLJvmModelInferrer.this.typeBuilder.setBody(it2, (it3) -> {
 						it3.append("StringBuilder result = new StringBuilder(" //$NON-NLS-1$
 								+ "super.attributesToString());").newLine(); //$NON-NLS-1$
 						for (final JvmField attr : declaredInstanceFields) {
 							it3.append("result.append(\"" + attr.getSimpleName() //$NON-NLS-1$
-							+ "  = \").append(this." //$NON-NLS-1$
-							+ attr.getSimpleName() + ");").newLine(); //$NON-NLS-1$
+								+ "  = \").append(this." //$NON-NLS-1$
+								+ attr.getSimpleName() + ");").newLine(); //$NON-NLS-1$
 						}
 						it3.append("return result.toString();"); //$NON-NLS-1$
 					});
@@ -2254,6 +2258,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Treat the default value
 				if (param instanceof SarlFormalParameter && ((SarlFormalParameter) param).getDefaultValue() != null) {
 					final XExpression defaultValue = ((SarlFormalParameter) param).getDefaultValue();
+					assert defaultValue != null;
 					hasDefaultValue = true;
 					final String namePostPart = inferredParam.getDefaultValueAnnotationValue();
 					final String name = this.sarlSignatureProvider.createFieldNameForDefaultValueID(namePostPart);
@@ -2269,10 +2274,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							it.setVisibility(JvmVisibility.PRIVATE);
 						}
 						SARLJvmModelInferrer.this.typeBuilder.setInitializer(it, defaultValue);
-						if (defaultValue != null) {
-							appendGeneratedAnnotation(it,
-									SARLJvmModelInferrer.this.sarlSerializer.serialize(defaultValue));
-						}
 					});
 					actionContainer.getMembers().add(field);
 					if (owner instanceof JvmConstructor) {
@@ -2283,6 +2284,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					final JvmAnnotationReference annot = this._annotationTypesBuilder.annotationRef(DefaultValue.class,
 							namePostPart);
 					lastParam.getAnnotations().add(annot);
+
+					final String rawCode = reentrantSerialize(defaultValue);
+					appendGeneratedAnnotation(field, rawCode);
 				}
 			}
 		}
@@ -2307,8 +2311,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (parameterSpec instanceof InferredValuedParameter) {
 				arguments.add(
 						this.sarlSignatureProvider.toJavaArgument(
-						actionContainer.getIdentifier(),
-						((InferredValuedParameter) parameterSpec).getCallingArgument()));
+								actionContainer.getIdentifier(),
+								((InferredValuedParameter) parameterSpec).getCallingArgument()));
 			} else {
 				final EObject param = parameterSpec.getParameter();
 				final String paramName = parameterSpec.getName();
@@ -2648,6 +2652,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 		SARLJvmModelInferrer.this.typeBuilder.setDocumentation(targetOperation, comment);
 		return true;
+	}
+
+	private String reentrantSerialize(EObject object) {
+		Set<?> contexts = this.contextFinder.findByContentsAndContainer(object, null);
+		// This is a bug fix for a bug that I cannot explain.
+		// I some cases, the context of the given expression cannot be retreive directly.
+		// A second call to the finding function solves the problem.
+		while (contexts == null || contexts.isEmpty()) {
+			Thread.yield();
+			contexts = this.contextFinder.findByContentsAndContainer(object, null);
+		}
+		return this.sarlSerializer.serialize(object);
 	}
 
 }

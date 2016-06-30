@@ -15,14 +15,19 @@
  */
 package io.sarl.lang.ui.tests.quickfix;
 
+import javax.inject.Inject;
+
+import org.eclipse.xtext.serializer.ISerializer;
 import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
 public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 
+	@Inject
+	private ISerializer serializer;
+	
 	@Test
-	@Ignore
 	public void fixOverriddenFinaMethod() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL,
@@ -52,7 +57,6 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore
 	public void fixOverriddenFinalType() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL,
@@ -75,7 +79,6 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore
 	public void fixMissedClassicPrototype_0() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -122,7 +125,6 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore
 	public void fixVariadicParameter_0() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -155,7 +157,6 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore
 	public void fixVariadicParameter_1() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -195,7 +196,6 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore
 	public void fixParameterDefaultValue_0() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
@@ -204,26 +204,31 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 				//
 				multilineString(
 						"capacity C1 {",
-						"	def fct(a : int=4)",
+						"	def fct(a : int = 4)",
 						"}",
 						"skill S1 implements C1 { }"),
 				//
 				// Label and description:
 				//
-				"Make class abstract",
+				"Add unimplemented methods",
 				//
 				// Expected fixed code:
 				//
 				multilineString(
 						"capacity C1 {",
-						"	def fct(a : int=4)",
+						"	def fct(a : int = 4)",
 						"}",
-						"abstract skill S1 implements C1 { }"));
+						"skill S1 implements C1 {",
+						"",
+						"	override fct(a : int = 4) {",
+						"		// TODO Auto-generated code.",
+						"	}",
+						"	",
+						"}"));
 	}
 
 	@Test
-	@Ignore
-	public void fixParameterDefaultValue_2() {
+	public void fixParameterDefaultValue_1() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
 				//
@@ -255,8 +260,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore
-	public void fixParameterDefaultValue_3() {
+	public void fixParameterDefaultValue_2() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
 				//
@@ -282,7 +286,6 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	@Ignore
 	public void fixParameterDefaultValueAndVariadicParameter() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
