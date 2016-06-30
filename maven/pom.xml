@@ -20,6 +20,7 @@
 		<module>io.sarl.maven.sdk</module>
 		<module>sarl-maven-plugin</module>
 		<module>io.sarl.maven.docs.generator</module>
+		<module>io.sarl.maven.sre</module>
 	</modules>
 
 </project>

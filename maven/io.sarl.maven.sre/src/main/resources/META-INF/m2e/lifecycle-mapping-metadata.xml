@@ -1,0 +1,15 @@
+<lifecycleMappingMetadata>
+	<pluginExecutions>
+		<pluginExecution>
+			<pluginExecutionFilter>
+				<goals>
+					<goal>createmanifest</goal>
+					<goal>updatemanifest</goal>
+				</goals>
+			</pluginExecutionFilter>
+			<action>
+				<ignore></ignore>
+			</action>
+		</pluginExecution>
+	</pluginExecutions>
+</lifecycleMappingMetadata>
