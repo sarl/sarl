@@ -137,7 +137,7 @@
 	<!-- ======================================= -->
 	<profiles>
 		<profile>
-			<id>maven-release-of-util-plugin</id>
+			<id>maven-release-of-sarl-maven-plugin</id>
 			<activation>
 				<property>
 					<name>performRelease</name>

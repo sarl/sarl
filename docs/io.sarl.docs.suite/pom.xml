@@ -51,7 +51,6 @@
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.eclipse</artifactId>
-			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

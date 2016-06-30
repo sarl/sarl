@@ -37,7 +37,8 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@Mojo(name = "initialize", defaultPhase = LifecyclePhase.INITIALIZE, requiresDependencyResolution = ResolutionScope.COMPILE)
+@Mojo(name = "initialize", defaultPhase = LifecyclePhase.INITIALIZE,
+		requiresDependencyResolution = ResolutionScope.COMPILE)
 public class InitializeMojo extends AbstractSarlMojo {
 
 	@Override

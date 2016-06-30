@@ -36,7 +36,8 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@Mojo(name = "clean", defaultPhase = LifecyclePhase.CLEAN, requiresDependencyResolution = ResolutionScope.COMPILE)
+@Mojo(name = "clean", defaultPhase = LifecyclePhase.CLEAN,
+		requiresDependencyResolution = ResolutionScope.COMPILE)
 public class CleanMojo extends AbstractSarlMojo {
 
 	@Override

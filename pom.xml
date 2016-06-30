@@ -249,11 +249,11 @@
 				<artifactId>javax.inject</artifactId>
 				<version>${javaxinject.version}</version>
 			</dependency>
-	 		<dependency> 
-	 			<groupId>com.google.guava</groupId> 
-	 			<artifactId>guava</artifactId> 
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
-	 		</dependency> 
+			</dependency>
 			<dependency>
 				<groupId>org.jnario</groupId>
 				<artifactId>report</artifactId>
@@ -288,6 +288,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -339,6 +344,12 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
 					<version>1.10</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.0.2</version>
 				</plugin>
 
 				<plugin>
@@ -428,7 +439,7 @@
 						</execution>
 					</executions>
 					<configuration>
-					    <!-- config is inside one of the dependencies -->
+						<!-- config is inside one of the dependencies -->
 						<configLocation>/checkstyle/sarl/checkstyle.xml</configLocation>
 						<!-- force absolute path of the config file -->
 						<propertyExpansion>${checkstyle.config_loc}</propertyExpansion>

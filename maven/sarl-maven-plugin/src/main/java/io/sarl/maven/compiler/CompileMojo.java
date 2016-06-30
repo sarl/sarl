@@ -47,7 +47,8 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@Mojo(name = "compile", defaultPhase = LifecyclePhase.COMPILE, requiresDependencyResolution = ResolutionScope.COMPILE)
+@Mojo(name = "compile", defaultPhase = LifecyclePhase.COMPILE,
+		requiresDependencyResolution = ResolutionScope.COMPILE)
 public class CompileMojo extends AbstractSarlMojo {
 
 	/** Version of the Java specification used for the source files.
