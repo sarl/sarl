@@ -10,6 +10,6 @@
 
 	<artifactId>io.sarl.ide</artifactId>
 	<packaging>eclipse-feature</packaging>
-	<name>Tools for the Eclipse IDE</name>
+	<name>SARL Development Environment</name>
 
 </project>

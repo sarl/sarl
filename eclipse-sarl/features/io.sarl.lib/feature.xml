@@ -6,11 +6,11 @@
       plugin="io.sarl.lang.core">
 
    <description url="http://www.sarl.io/about/">
-      Provide the libraries for runnnig a SARL program.
+      Provide the libraries for runnning a SARL program.
    </description>
 
    <copyright url="http://www.sarl.io/about/">
-      Copyright 2014-2015 the original authors and authors.
+      Copyright (c) 2014-2016 the original authors and authors.
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -222,40 +222,42 @@
    </url>
 
    <requires>
+      <import plugin="io.sarl.lang.core" version="0.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="com.google.guava" version="14.0.0"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.10.0.v201605250459"/>
    </requires>
 
    <plugin
          id="io.sarl.core"
          download-size="0"
          install-size="0"
-         version="0.4.0.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="io.sarl.lang.core"
-         download-size="0"
-         install-size="0"
-         version="0.4.0.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="io.sarl.util"
          download-size="0"
          install-size="0"
-         version="0.4.0.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.xtext.xbase.lib"
+         id="io.sarl.lang.core"
          download-size="0"
          install-size="0"
-         version="2.10.0.v201605250459"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="com.google.guava"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.inject"
          download-size="0"
          install-size="0"
          version="0.0.0"

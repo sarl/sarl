@@ -255,22 +255,22 @@
    </plugins>
 
    <features>
-      <feature id="io.sarl.compiler" version="0.4.0.qualifier"/>
       <feature id="io.sarl.ide" version="0.4.0.qualifier"/>
-      <feature id="io.sarl.lib" version="0.4.0.qualifier"/>
-      <feature id="org.eclipse.egit" version="4.1.1.201511131810-r"/>
-      <feature id="org.eclipse.epp.mpc" version="1.4.2.v20160210-2005"/>
+      <feature id="io.sarl.baseplatform" version="0.4.0.qualifier"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
-      <feature id="org.eclipse.help"/>
       <feature id="org.jboss.tools.m2e.jdt.feature"/>
+      <feature id="org.eclipse.help"/>
+      <feature id="io.sarl.lib"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
       <feature id="org.eclipse.xtext.xbase.lib"/>
       <feature id="org.eclipse.jdt"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
+      <feature id="org.eclipse.egit"/>
       <feature id="org.eclipse.xtend.sdk"/>
       <feature id="org.eclipse.ecf.core.ssl.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
+      <feature id="io.sarl.compiler"/>
       <feature id="org.eclipse.xtext.runtime"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.equinox.p2.user.ui"/>
@@ -280,12 +280,17 @@
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.ecf.core.feature"/>
       <feature id="org.eclipse.jgit"/>
-      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
       <feature id="org.eclipse.equinox.p2.discovery.feature"/>
+      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.feature"/>
       <feature id="org.eclipse.xtext.ui"/>
+      <feature id="org.eclipse.epp.mpc"/>
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.e4.rcp"/>
+      <feature id="org.eclipse.wst.xml_core.feature"/>
+      <feature id="org.eclipse.wst.common_core.feature"/>
+      <feature id="org.eclipse.xsd"/>
+      <feature id="org.eclipse.wst.common_ui.feature"/>
    </features>
 
    <configurations>

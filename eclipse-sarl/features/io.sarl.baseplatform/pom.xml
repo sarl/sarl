@@ -8,9 +8,9 @@
 		<version>0.4.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>io.sarl.lang</groupId>
-	<artifactId>io.sarl.lib</artifactId>
+	<artifactId>io.sarl.baseplatform</artifactId>
 	<packaging>eclipse-feature</packaging>
-	<name>SARL Application-Library Feature</name>
+	<name>SARL Base Platform Feature</name>
+	<description>Contains the Eclipse plugins that constritute to the base platform for a SARL product</description>
 
 </project>

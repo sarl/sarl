@@ -134,9 +134,9 @@
 
 	<repositories>
 		<repository>
-			<id>org.eclipse.ide.mars</id>
+			<id>org.eclipse.ide.neon</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/mars/</url>
+			<url>http://download.eclipse.org/releases/neon/</url>
 		</repository>
 		<repository>
 			<id>org.jboss.m2e-jdt-compiler.update.lastest</id>
