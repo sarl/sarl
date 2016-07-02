@@ -19,7 +19,7 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
 					<sourceDirectories>
-						<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+						<sourceDirectory>${project.basedir}/src</sourceDirectory>
 					</sourceDirectories>
 				</configuration>
 			</plugin>
@@ -46,7 +46,7 @@
 							<artifactId>tag-replacer</artifactId>
 							<configuration>
 								<sources>
-									<source>${project.basedir}/src/main/java</source>
+									<source>${project.basedir}/src</source>
 								</sources>
 							</configuration>
 						</plugin>

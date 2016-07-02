@@ -13,32 +13,13 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>src/main/sarl</directory>
+				<directory>src</directory>
 				<includes>
 					<include>**/*.sarl</include>
 				</includes>
 			</resource>
 		</resources>
 		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>src/main/sarl</source>
-								<source>src/main/generated-sources/sarl/</source>
-								<source>src/test/generated-sources/sarl/</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
@@ -51,10 +32,7 @@
 						<configuration>
 							<filesets>
 								<fileset>
-									<directory>src/main/generated-sources/sarl</directory>
-								</fileset>
-								<fileset>
-									<directory>src/test/generated-sources/sarl</directory>
+									<directory>src-gen</directory>
 								</fileset>
 							</filesets>
 						</configuration>
@@ -82,7 +60,7 @@
 							<setup>io.sarl.lang.SARLStandaloneSetup</setup>
 							<outputConfigurations>
 								<outputConfiguration>
-									<outputDirectory>src/main/generated-sources/sarl/</outputDirectory>
+									<outputDirectory>src-gen/</outputDirectory>
 								</outputConfiguration>
 							</outputConfigurations>
 						</language>
@@ -117,7 +95,7 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
 					<sourceDirectories>
-						<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+						<sourceDirectory>${project.basedir}/src</sourceDirectory>
 					</sourceDirectories>
 				</configuration>
 			</plugin>
@@ -144,8 +122,8 @@
 							<artifactId>tag-replacer</artifactId>
 							<configuration>
 								<sources>
-									<source>${project.basedir}/src/main/generated-sources/sarl</source>
-									<source>${project.basedir}/src/main/java</source>
+									<source>${project.basedir}/src-gen</source>
+									<source>${project.basedir}/src</source>
 								</sources>
 							</configuration>
 						</plugin>
