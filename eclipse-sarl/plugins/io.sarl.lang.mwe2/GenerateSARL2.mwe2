@@ -37,7 +37,8 @@ import io.sarl.lang.mwe2.externalspec.gtk.*
 import io.sarl.lang.mwe2.externalspec.gnusrchighlite.* 
 import io.sarl.lang.mwe2.codebuilder.* 
 
-var rootRootPath = "../.."
+var overallRootPath = "../../.."
+var eclipseRootPath = "../.."
 var rootPath = ".."
 
 var baseName = "io.sarl.lang"
@@ -49,15 +50,15 @@ var uiProjectName = "${baseName}.ui"
 var uiProjectPath = "${rootPath}/${uiProjectName}"
 
 var testProjectName = "io.sarl.tests.api"
-var testProjectPath = "${rootRootPath}/tests/${testProjectName}"
+var testProjectPath = "${eclipseRootPath}/tests/${testProjectName}"
 
-var externalToolPath = "${rootRootPath}/external_tools"
+var externalToolPath = "${overallRootPath}/formatting-styles"
 
 var prettifyToolPath = "${externalToolPath}/prettify"
 var latexToolPath = "${externalToolPath}/latex"
 var gtkToolPath = "${externalToolPath}/gtk"
-var webjsPath = "${rootRootPath}/maven/io.sarl.maven.docs.generator/src/main/resources/org/jnario/doc/js"
 var srchighliteToolPath  = "${externalToolPath}/gnusrchighlite"
+var webjsPath = "${overallRootPath}/maven/io.sarl.maven.docs.generator/src/main/resources/org/jnario/doc/js"
 
 var file.extensions = "sarl"
 var fileEncoding = "UTF-8"

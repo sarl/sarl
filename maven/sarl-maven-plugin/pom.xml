@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>sarl-maven-plugin</artifactId>
-	<name>SARL Compiler Plugin</name>
+	<name>SARL Compiler Maven Plugin</name>
 	<description>Maven compiler for SARL</description>
 	<packaging>maven-plugin</packaging>
 

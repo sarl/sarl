@@ -15,14 +15,6 @@
 	<packaging>pom</packaging>
 
 	<!-- ======================================= -->
-	<!-- ==== Dependency Management === -->
-	<!-- ======================================= -->
-
-	<dependencyManagement>
-		<!-- SHOULD BE EMPTY -->
-	</dependencyManagement>
-
-	<!-- ======================================= -->
 	<!-- ==== Plugins Dependency Management === -->
 	<!-- ======================================= -->
 
@@ -41,7 +33,6 @@
 				<version>${tycho.version}</version>
 				<configuration>
 					<resolver>p2</resolver>
-					<pomDependencies>consider</pomDependencies>
 					<executionEnvironment>${jre.environment}</executionEnvironment>
 					<environments>
 						<environment>
