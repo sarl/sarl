@@ -15,14 +15,6 @@
 	<packaging>pom</packaging>
 
 	<!-- ======================================= -->
-	<!-- ==== Dependency Management === -->
-	<!-- ======================================= -->
-
-	<dependencyManagement>
-		<!-- SHOULD BE EMPTY -->
-	</dependencyManagement>
-
-	<!-- ======================================= -->
 	<!-- ==== Plugins Dependency Management === -->
 	<!-- ======================================= -->
 
