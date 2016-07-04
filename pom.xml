@@ -850,6 +850,8 @@
 				<module>maven</module>
 				<!-- Tools for developers -->
 				<module>dev-tools</module>
+				<!-- External Tests -->
+				<module>tests</module>
 				<!-- SREs -->
 				<module>sre</module>
 				<!-- Products aand update site -->
