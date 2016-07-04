@@ -1,6 +1,7 @@
 # Xtext generated files
 eclipse-sarl/plugins/io.sarl.core/xtend-gen/
 eclipse-sarl/plugins/io.sarl.core/src-gen/
+eclipse-sarl/plugins/io.sarl.core/src/main/generated-sources/
 eclipse-sarl/plugins/io.sarl.lang.ui/xtend-gen/
 eclipse-sarl/plugins/io.sarl.lang.ui/src/main/xtend-gen/
 eclipse-sarl/plugins/io.sarl.lang.ui/src/main/generated-sources/
