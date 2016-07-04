@@ -13,7 +13,7 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>src/main/sarl</directory>
+				<directory>src</directory>
 				<includes>
 					<include>**/*.sarl</include>
 				</includes>
@@ -30,14 +30,8 @@
 						</goals>
 						<configuration>
 							<sources>
-<<<<<<< HEAD
 								<source>src/</source>
 								<source>src-gen/</source>
-=======
-								<source>src/main/java/</source>
-								<source>src/main/sarl/</source>
-								<source>src/main/generated-sources/sarl/</source>
->>>>>>> 12160a7c2b4327f75f568fcfa1151a56ffe76a75
 							</sources>
 						</configuration>
 					</execution>
@@ -56,7 +50,7 @@
 						<configuration>
 							<filesets>
 								<fileset>
-									<directory>src/main/generated-sources</directory>
+									<directory>src-gen</directory>
 								</fileset>
 							</filesets>
 						</configuration>
@@ -85,11 +79,7 @@
 							<outputConfigurations>
 								<outputConfiguration>
 									<createOutputDirectory>true</createOutputDirectory>
-<<<<<<< HEAD
 									<outputDirectory>src-gen/</outputDirectory>
-=======
-									<outputDirectory>src/main/generated-sources/sarl/</outputDirectory>
->>>>>>> 12160a7c2b4327f75f568fcfa1151a56ffe76a75
 								</outputConfiguration>
 							</outputConfigurations>
 						</language>
@@ -161,8 +151,8 @@
 							<artifactId>tag-replacer</artifactId>
 							<configuration>
 								<sources>
-									<source>${project.basedir}/src/main/generated-sources/sarl</source>
-									<source>${project.basedir}/src/main/java</source>
+									<source>${project.basedir}/src-gen</source>
+									<source>${project.basedir}/src</source>
 								</sources>
 							</configuration>
 						</plugin>
