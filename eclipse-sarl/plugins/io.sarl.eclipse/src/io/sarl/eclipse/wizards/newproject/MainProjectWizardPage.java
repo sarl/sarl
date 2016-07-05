@@ -402,7 +402,7 @@ public class MainProjectWizardPage extends WizardPage {
 	 *
 	 * @return returns the source class path entries for the new project
 	 */
-	public Iterable<IClasspathEntry> getSourceClasspathEntries() {
+	public Collection<IClasspathEntry> getSourceClasspathEntries() {
 		final IPath sourceFolderPath = new Path(getProjectName()).makeAbsolute();
 
 		final IPath srcJava = sourceFolderPath.append(

@@ -74,7 +74,7 @@ public class SREConfigurationBlock {
 	/**
 	 * SRE change listeners.
 	 */
-	private final ListenerList listeners = new ListenerList();
+	private final ListenerList<IPropertyChangeListener> listeners = new ListenerList<>();
 
 	private final String title;
 

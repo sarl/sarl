@@ -107,7 +107,7 @@ public final class SARLRuntime {
 	/**
 	 * SRE change listeners.
 	 */
-	private static final ListenerList SRE_LISTENERS = new ListenerList();
+	private static final ListenerList<ISREInstallChangedListener> SRE_LISTENERS = new ListenerList<>();
 
 	private static final Map<String, ISREInstall> ALL_SRE_INSTALLS = new HashMap<>();
 

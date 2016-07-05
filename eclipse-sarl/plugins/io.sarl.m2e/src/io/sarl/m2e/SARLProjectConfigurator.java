@@ -41,7 +41,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -175,7 +175,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		final String encoding = config.getEncoding();
 
-		final SubProgressMonitor subMonitor = new SubProgressMonitor(monitor, 4);
+		final SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 
 		// Add the source folders
 		final IPath inputPath = makeFullPath(facade, config.getInput());

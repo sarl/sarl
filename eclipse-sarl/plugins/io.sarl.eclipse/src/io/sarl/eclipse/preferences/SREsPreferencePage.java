@@ -128,7 +128,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	/**
 	 * Selection listeners (default SRE changes).
 	 */
-	private final ListenerList selectionListeners = new ListenerList();
+	private final ListenerList<ISelectionChangedListener> selectionListeners = new ListenerList<>();
 
 	/**
 	 * Previous selection.

@@ -751,7 +751,6 @@ public class WorkbenchTestHelper {
 	 * @param javaVersion the Java version.
 	 */
 	public static void makeCompliantFor(IJavaProject javaProject, JavaVersion javaVersion) {
-		@SuppressWarnings("unchecked")
 		Map<String, String> options = javaProject.getOptions(false);
 		String jreLevel;
 		switch (javaVersion) {
