@@ -36,6 +36,7 @@ import io.sarl.lang.mwe2.externalspec.latex.*
 import io.sarl.lang.mwe2.externalspec.gtk.* 
 import io.sarl.lang.mwe2.externalspec.gnusrchighlite.* 
 import io.sarl.lang.mwe2.codebuilder.* 
+import io.sarl.lang.mwe2.bugfixes.* 
 
 var overallRootPath = "../../.."
 var eclipseRootPath = "../.."
@@ -346,10 +347,8 @@ Workflow {
 			fragment = ui.compare.CompareFragment2 auto-inject {
 			}
 
-			// Content assist
-			fragment = ui.contentAssist.ContentAssistFragment2 auto-inject {
-				generateStub = true
-				inheritImplementation = false
+			// Content assist - Bug fixed
+			fragment = ContentAssistFragment2 auto-inject {
 			}
 
 			// Refactoring
