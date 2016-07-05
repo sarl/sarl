@@ -2,18 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>io.sarl</groupId>
-		<artifactId>io.sarl.products</artifactId>
+		<groupId>io.sarl.examples</groupId>
+		<artifactId>io.sarl.examples</artifactId>
 		<version>0.4.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>io.sarl.products.contribs</artifactId>
-	<packaging>pom</packaging>
-
-	<name>Contributions to SARL</name>
-
-	<modules>
-		<module>io.sarl.examples</module>
-	</modules>
+	<artifactId>io.sarl.examples.feature</artifactId>
+	<packaging>eclipse-feature</packaging>
+	<name>SARL Examples Feature</name>
 
 </project>
