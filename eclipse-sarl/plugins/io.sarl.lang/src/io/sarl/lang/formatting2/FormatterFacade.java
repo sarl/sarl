@@ -100,22 +100,52 @@ public class FormatterFacade {
 				resources.add(resource);
 				try (StringInputStream stringInputStream = new StringInputStream(sarlCode)) {
 					resource.load(stringInputStream, Collections.emptyMap());
-					final ITextRegionAccess regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
-					final FormatterRequest formatterRequest = new FormatterRequest();
-					formatterRequest.setAllowIdentityEdits(false);
-					formatterRequest.setTextRegionAccess(regionAccess);
-					final IPreferenceValues preferenceValues = FormatterFacade.this.configurationProvider
-							.getPreferenceValues(resource);
-					formatterRequest.setPreferences(TypedPreferenceValues.castOrWrap(preferenceValues));
-					final List<ITextReplacement> replacements = this.formatter.format(formatterRequest);
-					return regionAccess.getRewriter().renderToString(replacements);
+					return formatResource(resource);
 				} finally {
 					resources.remove(resource);
 				}
 			}
 			return sarlCode;
-		} catch (Throwable exception) {
+		} catch (Exception exception) {
 			throw Exceptions.sneakyThrow(exception);
 		}
 	}
+
+	/** Format the code in the given resource.
+	 *
+	 * @param resource the resource of the code to format.
+	 */
+	public void format(XtextResource resource) {
+		assert resource != null;
+		final String result = formatResource(resource);
+		// Write back to the resource
+		try (StringInputStream stringInputStream = new StringInputStream(result)) {
+			resource.load(stringInputStream, Collections.emptyMap());
+		} catch (Exception exception) {
+			throw Exceptions.sneakyThrow(exception);
+		}
+	}
+
+	/** Format the code in the given resource.
+	 *
+	 * @param resource the resource of the code to format.
+	 * @return the result of the formatting.
+	 */
+	protected String formatResource(final XtextResource resource) {
+		assert resource != null;
+		try {
+			final ITextRegionAccess regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
+			final FormatterRequest formatterRequest = new FormatterRequest();
+			formatterRequest.setAllowIdentityEdits(false);
+			formatterRequest.setTextRegionAccess(regionAccess);
+			final IPreferenceValues preferenceValues = FormatterFacade.this.configurationProvider
+					.getPreferenceValues(resource);
+			formatterRequest.setPreferences(TypedPreferenceValues.castOrWrap(preferenceValues));
+			final List<ITextReplacement> replacements = this.formatter.format(formatterRequest);
+			return regionAccess.getRewriter().renderToString(replacements);
+		} catch (Exception exception) {
+			throw Exceptions.sneakyThrow(exception);
+		}
+	}
+
 }

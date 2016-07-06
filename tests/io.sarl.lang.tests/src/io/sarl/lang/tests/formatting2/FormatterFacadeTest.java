@@ -15,14 +15,22 @@
  */
 package io.sarl.lang.tests.formatting2;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collections;
+
 import javax.inject.Inject;
 
-import static org.junit.Assert.*;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtext.resource.IResourceFactory;
+import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.util.StringInputStream;
 import org.junit.Test;
 
 import io.sarl.lang.formatting2.FormatterFacade;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.TestScope;
 
 /** Test of a SARL formatter facade.
  *
@@ -36,9 +44,12 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 
 	@Inject
 	private FormatterFacade facade;
+	
+	@Inject
+	private IResourceFactory resourceFactory;
 
 	@Test
-	public void test0() {
+	public void formatString0() {
 		String source = "event E1 { var i : int }"
 				+ "agent A1 {"
 				+ "private var myval=1 "
@@ -65,7 +76,7 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void test1() {
+	public void formatString1() {
 		String source = "/*Top comment*/agent Myagent {}";
 		String expected = multilineString(
 				"/* Top comment",
@@ -78,7 +89,7 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void test2() {
+	public void formatString2() {
 		String source = "/*Top comment.\nSecond line.\n    Third line.*/agent Myagent {}";
 		String expected = multilineString(
 				"/* Top comment.",
@@ -93,7 +104,7 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void test3() {
+	public void formatString3() {
 		String source = multilineString(
 				"/* Top comment.",
 				" * Second line.",
@@ -112,5 +123,48 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 		assertEquals(expected, actual);
 	}
 
+	private void assertResourceContentFormat(String source, String expected) throws IOException {
+		final ResourceSet resourceSet = new XtextResourceSet();
+		final URI createURI = URI.createURI("synthetic://to-be-formatted.sarl"); //$NON-NLS-1$
+		final XtextResource resource = (XtextResource) this.resourceFactory.createResource(createURI);
+		resourceSet.getResources().add(resource);
+		try (StringInputStream stringInputStream = new StringInputStream(source)) {
+			resource.load(stringInputStream, Collections.emptyMap());
+		}
+		this.facade.format(resource);
+		final String actual; 
+		try (ByteArrayOutputStream stringOutputStream = new ByteArrayOutputStream()) {
+			resource.save(stringOutputStream, Collections.emptyMap());
+			stringOutputStream.flush();
+			actual = stringOutputStream.toString();
+		}
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void formatResource0() throws IOException {
+		String source = "event E1 { var i : int }"
+				+ "agent A1 {"
+				+ "private var myval=1 "
+				+ "on E1 [ occurrence.i===1 ] {"
+				+ "System.out.println(occurrence)"
+				+ "}"
+				+ "private def myfct{}"
+				+ "}";
+		String expected = multilineString(
+				"event E1 {",
+				"	var i : int",
+				"}",
+				"agent A1 {",
+				"	private var myval = 1 ",
+				"	on E1 [occurrence.i === 1] {",
+				"		System.out.println(occurrence)",
+				"	}",
+				"	private def myfct {",
+				"	}",
+				"}",
+				"");
+		assertResourceContentFormat(source, expected);
+	}
 	 
 }
