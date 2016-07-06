@@ -543,6 +543,22 @@ Workflow {
     				singleton = true
     				eager = true
     			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.contentassist.IContentAssistantFactory"
+    				to = "io.sarl.lang.ui.contentassist.SARLContentAssistFactory"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider"
+    				to = "io.sarl.lang.ui.contentassist.SARLImportingTypesProposalProvider"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.templates.XtextTemplateContextType"
+    				to = "io.sarl.lang.ui.contentassist.SARLTemplateContextType"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.contentassist.ITemplateProposalProvider"
+    				to = "io.sarl.lang.ui.contentassist.SARLTemplateProposalProvider"
+    			}
 
     			both = {
     				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"
@@ -792,6 +808,11 @@ Workflow {
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.toggleComments.ToggleSLCommentAction$Factory"
     				to = "org.eclipse.xtend.ide.editor.RichStringAwareToggleCommentAction$Factory"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.contentassist.IProposalConflictHelper"
+    				to = "org.eclipse.xtend.ide.contentassist.antlr.FlexProposalConflictHelper"
+    				override = true
    				}
     		}
 

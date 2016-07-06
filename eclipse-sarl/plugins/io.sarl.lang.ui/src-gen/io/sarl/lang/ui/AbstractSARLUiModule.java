@@ -31,7 +31,11 @@ import io.sarl.lang.ide.contentassist.antlr.PartialSARLContentAssistParser;
 import io.sarl.lang.ide.contentassist.antlr.SARLParser;
 import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;
 import io.sarl.lang.ui.builder.ProjectRelativeFileSystemAccess;
+import io.sarl.lang.ui.contentassist.SARLContentAssistFactory;
+import io.sarl.lang.ui.contentassist.SARLImportingTypesProposalProvider;
 import io.sarl.lang.ui.contentassist.SARLProposalProvider;
+import io.sarl.lang.ui.contentassist.SARLTemplateContextType;
+import io.sarl.lang.ui.contentassist.SARLTemplateProposalProvider;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.labeling.SARLDescriptionLabelProvider;
 import io.sarl.lang.ui.labeling.SARLLabelProvider;
@@ -61,6 +65,7 @@ import org.eclipse.xtend.ide.autoedit.AutoEditStrategyProvider;
 import org.eclipse.xtend.ide.builder.UIResourceChangeRegistry;
 import org.eclipse.xtend.ide.common.editor.bracketmatching.XtendBracePairProvider;
 import org.eclipse.xtend.ide.contentassist.EscapeSequenceAwarePrefixMatcher;
+import org.eclipse.xtend.ide.contentassist.antlr.FlexProposalConflictHelper;
 import org.eclipse.xtend.ide.editor.OccurrenceComputer;
 import org.eclipse.xtend.ide.editor.OverrideIndicatorModelListener;
 import org.eclipse.xtend.ide.editor.OverrideIndicatorRulerAction;
@@ -127,10 +132,11 @@ import org.eclipse.xtext.ui.editor.actions.IActionContributor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategyProvider;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.FQNPrefixMatcher;
+import org.eclipse.xtext.ui.editor.contentassist.IContentAssistantFactory;
 import org.eclipse.xtext.ui.editor.contentassist.IContentProposalProvider;
 import org.eclipse.xtext.ui.editor.contentassist.IProposalConflictHelper;
+import org.eclipse.xtext.ui.editor.contentassist.ITemplateProposalProvider;
 import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher;
-import org.eclipse.xtext.ui.editor.contentassist.antlr.AntlrProposalConflictHelper;
 import org.eclipse.xtext.ui.editor.contentassist.antlr.DelegatingContentAssistContextFactory;
 import org.eclipse.xtext.ui.editor.doubleClicking.DoubleClickStrategyProvider;
 import org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler;
@@ -170,7 +176,6 @@ import org.eclipse.xtext.ui.shared.Access;
 import org.eclipse.xtext.ui.validation.AbstractValidatorConfigurationBlock;
 import org.eclipse.xtext.xbase.annotations.ui.DefaultXbaseWithAnnotationsUiModule;
 import org.eclipse.xtext.xbase.imports.IUnresolvedTypeResolver;
-import org.eclipse.xtext.xbase.ui.contentassist.ImportingTypesProposalProvider;
 import org.eclipse.xtext.xbase.ui.editor.XbaseDocumentProvider;
 import org.eclipse.xtext.xbase.ui.editor.XbaseEditor;
 import org.eclipse.xtext.xbase.ui.generator.trace.XbaseOpenGeneratedFileHandler;
@@ -184,7 +189,6 @@ import org.eclipse.xtext.xbase.ui.jvmmodel.refactoring.JvmModelJdtRenameParticip
 import org.eclipse.xtext.xbase.ui.jvmmodel.refactoring.jdt.CombinedJvmJdtRenameContextFactory;
 import org.eclipse.xtext.xbase.ui.jvmmodel.refactoring.jdt.CombinedJvmJdtRenameRefactoringProvider;
 import org.eclipse.xtext.xbase.ui.refactoring.XbaseReferenceUpdater;
-import org.eclipse.xtext.xbase.ui.templates.XbaseTemplateContextType;
 import org.eclipse.xtext.xbase.ui.validation.XbaseUIValidator;
 
 /**
@@ -215,11 +219,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by org.eclipse.xtext.xtext.generator.ImplicitFragment
 	public Class<? extends OpenGeneratedFileHandler> bindOpenGeneratedFileHandler() {
 		return XbaseOpenGeneratedFileHandler.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment2
-	public Class<? extends IProposalConflictHelper> bindIProposalConflictHelper() {
-		return AntlrProposalConflictHelper.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment2
@@ -423,16 +422,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 		return InteractiveUnresolvedTypeResolver.class;
 	}
 	
-	// contributed by org.eclipse.xtext.xtext.generator.xbase.XbaseGeneratorFragment2
-	public Class<? extends ITypesProposalProvider> bindITypesProposalProvider() {
-		return ImportingTypesProposalProvider.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.xbase.XbaseGeneratorFragment2
-	public Class<? extends XtextTemplateContextType> bindXtextTemplateContextType() {
-		return XbaseTemplateContextType.class;
-	}
-	
 	// contributed by org.eclipse.xtext.xtext.generator.ui.templates.CodetemplatesGeneratorFragment2
 	public Provider<TemplatesLanguageConfiguration> provideTemplatesLanguageConfiguration() {
 		return AccessibleCodetemplatesActivator.getTemplatesLanguageConfigurationProvider();
@@ -490,6 +479,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ITypesProposalProvider> bindITypesProposalProvider() {
+		return SARLImportingTypesProposalProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public void configureSARLOperationOutlineFilter(Binder binder) {
 		binder.bind(IOutlineContribution.class).annotatedWith(Names.named("SARLOperationOutlineFilter")).to(SARLOperationOutlineFilter.class);
 	}
@@ -511,6 +505,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ITemplateProposalProvider> bindITemplateProposalProvider() {
+		return SARLTemplateProposalProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public void configureIPreferenceStoreInitializer(Binder binder) {
 		binder.bind(IPreferenceStoreInitializer.class).annotatedWith(Names.named("RefactoringPreferences")).to(SARLPreferenceStoreInitializer.class);
 	}
@@ -526,8 +525,18 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IContentAssistantFactory> bindIContentAssistantFactory() {
+		return SARLContentAssistFactory.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IContextualOutputConfigurationProvider> bindIContextualOutputConfigurationProvider() {
 		return SarlOutputConfigurationProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends XtextTemplateContextType> bindXtextTemplateContextType() {
+		return SARLTemplateContextType.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
@@ -554,6 +563,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	@SingletonBinding
 	public Class<? extends IBracePairProvider> bindIBracePairProvider() {
 		return XtendBracePairProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends IProposalConflictHelper> bindIProposalConflictHelper() {
+		return FlexProposalConflictHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
