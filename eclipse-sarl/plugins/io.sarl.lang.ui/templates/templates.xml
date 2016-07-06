@@ -108,6 +108,15 @@
 		${line_selection}${cursor}
 	}</template>
 	<template
+	    name="fortype"
+	    description="typed for loop over an Iterable"
+	    id="iterable_typed_for"
+	    context="org.eclipse.xtext.xbase.Xbase.XExpression"
+	    enabled="true"
+	    autoinsert="false">for (${element} as ${type} : ${iterable}) {
+		${line_selection}${cursor}
+	}</template>
+	<template
 	    name="while"
 	    description="while loop with condition"
 	    id="while"
@@ -187,4 +196,53 @@
 	    context="org.eclipse.xtext.xbase.Xbase.XExpression"
 	    enabled="true"
 	    autoinsert="false">var ${name} = ${cursor}</template>
+	<template
+	    name="agent"
+	    description="basic agent implementation"
+	    id="basic_agent"
+	    context="io.sarl.lang.SARL.Type"
+	    enabled="true"
+	    autoinsert="false">agent ${name} {
+	on Initialize {
+		${cursor}
+	}
+}</template>
+	<template
+	    name="behavior"
+	    description="basic behavior implementation"
+	    id="basic_behavior"
+	    context="io.sarl.lang.SARL.Type"
+	    enabled="true"
+	    autoinsert="false">behavior ${name} {
+	on Initialize {
+		${line_selection}${cursor}
+	}
+}</template>
+	<template
+	    name="capacity"
+	    description="basic capacity implementation"
+	    id="basic_capacity"
+	    context="io.sarl.lang.SARL.Type"
+	    enabled="true"
+	    autoinsert="false">capacity ${cursor}${name} {
+	def ${function}
+}</template>
+	<template
+	    name="skill"
+	    description="basic skill implementation"
+	    id="basic_skill"
+	    context="io.sarl.lang.SARL.Type"
+	    enabled="true"
+	    autoinsert="false">skill ${name} implements ${cursor}${capacity} {
+}</template>
+	<template
+	    name="event"
+	    description="basic event implementation"
+	    id="basic_event"
+	    context="io.sarl.lang.SARL.Type"
+	    enabled="true"
+	    autoinsert="false">event ${name} {
+	var ${variable} : ${type}
+	${line_selection}${cursor}
+}</template>
 </templates>
