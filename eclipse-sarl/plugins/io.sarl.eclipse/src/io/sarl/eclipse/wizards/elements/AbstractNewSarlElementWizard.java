@@ -88,21 +88,18 @@ public abstract class AbstractNewSarlElementWizard extends NewElementWizard {
 		if (resource != null) {
 			selectAndReveal(resource);
 			final Display display = getShell().getDisplay();
-			display.asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					final IEditorPart editor;
-					try {
-						editor = IDE.openEditor(JavaPlugin.getActivePage(), (IFile) resource);
-						if (editor instanceof ITextEditor) {
-							final ITextEditor textEditor = (ITextEditor) editor;
-							final ISelectionProvider selectionProvider = textEditor.getSelectionProvider();
-							final ISelection selection = new TextSelection(size - 2, 0);
-							selectionProvider.setSelection(selection);
-						}
-					} catch (PartInitException e) {
-						throw new RuntimeException(e);
+			display.asyncExec(() -> {
+				final IEditorPart editor;
+				try {
+					editor = IDE.openEditor(JavaPlugin.getActivePage(), (IFile) resource);
+					if (editor instanceof ITextEditor) {
+						final ITextEditor textEditor = (ITextEditor) editor;
+						final ISelectionProvider selectionProvider = textEditor.getSelectionProvider();
+						final ISelection selection = new TextSelection(size - 2, 0);
+						selectionProvider.setSelection(selection);
 					}
+				} catch (PartInitException e) {
+					throw new RuntimeException(e);
 				}
 			});
 			return true;

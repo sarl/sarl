@@ -21,7 +21,6 @@
 
 package io.sarl.eclipse.wizards.elements;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
@@ -75,10 +74,12 @@ import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.formatting.IWhitespaceInformationProvider;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
+import org.eclipse.xtext.util.StringInputStream;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.lang.codebuilder.CodeBuilderFactory;
+import io.sarl.lang.formatting2.FormatterFacade;
 
 /**
  * Abstract implementation of a wizard page for creating new SARL elements.
@@ -88,6 +89,7 @@ import io.sarl.lang.codebuilder.CodeBuilderFactory;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage {
 
 	/** filename extension for the Java code.
@@ -98,7 +100,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected static final int COLUMNS = 4;
 
-	private static final int STEPS = 4;
+	private static final int STEPS = 5;
 
 	private static final String SETTINGS_CREATECONSTR = "create_constructor"; //$NON-NLS-1$
 
@@ -135,6 +137,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	private boolean isConstructorCreationEnabled;
 
 	private boolean isInheritedCreationEnabled;
+
+	@Inject
+	private FormatterFacade formatterFacade;
 
 	/**
 	 * @param typeKind - Signals the kind of the type to be created. Valid kinds are
@@ -640,23 +645,28 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			final String fileComment = getFileComment(compilationUnit, lineSeparator);
 			final String typeComment = getTypeComment(compilationUnit, lineSeparator);
 			getTypeContent(ecoreResource, typeComment);
-			final byte[] content;
+			String content;
 			try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 				if (!Strings.isNullOrEmpty(fileComment)) {
 					baos.write(fileComment.getBytes());
 					baos.write(lineSeparator.getBytes());
 				}
 				ecoreResource.save(baos, null);
-				content = baos.toByteArray();
+				content = baos.toString();
 			}
 			mon.worked(1);
 
-			sarlFile.create(new ByteArrayInputStream(content), true, mon.newChild(1));
+			content = this.formatterFacade.format(content);
+			mon.worked(1);
+
+			try (StringInputStream stringInputStream = new StringInputStream(content)) {
+				sarlFile.create(stringInputStream, true, mon.newChild(1));
+			}
 			setResource(sarlFile);
 
 			saveSettings();
 
-			return content.length;
+			return content.length();
 		} catch (OperationCanceledException e) {
 			throw new InterruptedException();
 		} catch (CoreException e) {
