@@ -51,11 +51,11 @@ class SARLDocModule implements Module {
 		binder.bind(AbstractDocGenerator.class).to(SARLDocGenerator.class);
 
 		try {
-			HtmlAssets assets = new HtmlAssets();
-			List<String> clone = new ArrayList<>(assets.getJsFiles());
+			final HtmlAssets assets = new HtmlAssets();
+			final List<String> clone = new ArrayList<>(assets.getJsFiles());
 			clone.add("js/lang-sarl.js"); //$NON-NLS-1$
-			Field field = HtmlAssets.class.getDeclaredField("_jsFiles"); //$NON-NLS-1$
-			boolean accessible = field.isAccessible();
+			final Field field = HtmlAssets.class.getDeclaredField("_jsFiles"); //$NON-NLS-1$
+			final boolean accessible = field.isAccessible();
 			try {
 				field.setAccessible(true);
 				field.set(assets, clone);

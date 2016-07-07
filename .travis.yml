@@ -15,7 +15,7 @@ matrix:
           packages:
           - xvfb
       before_install:
-      - ./scripts/travis-download-maven.sh
+      - "sh -e ./build-tools/scripts/travis-download-maven.sh"
       - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
       - export PATH=$M2_HOME/bin:$PATH
       - mvn -Xmx32m --version
@@ -28,7 +28,7 @@ matrix:
     - os: osx
       osx_image: xcode8
       before_install:
-      - ./scripts/travis-download-maven.sh
+      - "sh -e ./build-tools/scripts/travis-download-maven.sh"
       - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
       - export PATH=$M2_HOME/bin:$PATH
       - mvn -Xmx32m --version
@@ -38,7 +38,7 @@ install: true
 
 script: "mvn -B -e -P!generateproduct clean install"
 
-after_failure: "sh -e ./scripts/print-surefire-reports.sh"
+after_failure: "sh -e ./build-tools/scripts/print-surefire-reports.sh"
 
 cache:
   directories:

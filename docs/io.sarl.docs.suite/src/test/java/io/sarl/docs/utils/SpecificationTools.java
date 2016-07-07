@@ -99,7 +99,7 @@ public final class SpecificationTools {
 	public static void printDebug(Object... message) {
 		if (Boolean.getBoolean("jnario.debug") //$NON-NLS-1$
 				|| Boolean.parseBoolean(System.getenv("JNARIO_DEBUG"))) { //$NON-NLS-1$
-			for (Object m : message) {
+			for (final Object m : message) {
 				if (m != null) {
 					System.err.print(m.toString());
 				}
@@ -150,7 +150,7 @@ public final class SpecificationTools {
 		if (packagename == null || path == null) {
 			return null;
 		}
-		StringBuilder buffer = new StringBuilder();
+		final StringBuilder buffer = new StringBuilder();
 		buffer.append(packagename.getName().replaceAll(
 				Pattern.quote("."), //$NON-NLS-1$
 				java.util.regex.Matcher.quoteReplacement("/"))); //$NON-NLS-1$
@@ -177,8 +177,8 @@ public final class SpecificationTools {
 			resourcePath = path.substring(1);
 		}
 
-		ClassLoader loader = (classLoader == null) ? SpecificationTools.class.getClassLoader() : classLoader;
-		assert (loader != null);
+		final ClassLoader loader = (classLoader == null) ? SpecificationTools.class.getClassLoader() : classLoader;
+		assert loader != null;
 
 		URL url = loader.getResource(resourcePath);
 
@@ -203,7 +203,7 @@ public final class SpecificationTools {
 			}
 			if ("file".equalsIgnoreCase(fileURL.getProtocol())) { //$NON-NLS-1$
 				// Get local resource
-				URL u = getResource(
+				final URL u = getResource(
 						SpecificationTools.class.getClassLoader(),
 						source.getClass().getPackage(),
 						fileURL.getPath());
@@ -231,13 +231,13 @@ public final class SpecificationTools {
 
 			String[] fragments = null;
 			if (ref.contains(".html#")) { //$NON-NLS-1$
-				String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
+				final String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
 				assertEquals(
 						String.format("Invalid link format: %s", ref), //$NON-NLS-1$
 						new Integer(2), new Integer(parts.length));
 				fragments = parts[1].split(java.util.regex.Matcher.quoteReplacement("_") + "+"); //$NON-NLS-1$ //$NON-NLS-2$
-				StringBuilder b = new StringBuilder();
-				for (String s : fragments) {
+				final StringBuilder b = new StringBuilder();
+				for (final String s : fragments) {
 					if (s.length() > 1) {
 						b.append(s.substring(0, 1).toUpperCase() + s.substring(1));
 					} else {
@@ -256,15 +256,15 @@ public final class SpecificationTools {
 
 				// The specification could be a function of the Java class.
 				if (fragments != null) {
-					StringBuilder operationName = new StringBuilder();
-					for (String fragment : fragments) {
+					final StringBuilder operationName = new StringBuilder();
+					for (final String fragment : fragments) {
 						if (operationName.length() > 0) {
 							operationName.append(fragment.substring(0, 1).toUpperCase() + fragment.substring(1).toLowerCase());
 						} else {
 							operationName.append(fragment.toLowerCase());
 						}
 					}
-					String operationNameStr = "_" + operationName.toString(); //$NON-NLS-1$
+					final String operationNameStr = "_" + operationName.toString(); //$NON-NLS-1$
 					try {
 						source.getClass().getMethod(operationNameStr);
 						return true;
@@ -291,9 +291,9 @@ public final class SpecificationTools {
 				url.endsWith(".html")); //$NON-NLS-1$
 		//
 		url = url.substring(0, url.length() - 5);
-		File caller = new File(callingSpecification.getName().replaceAll(
+		final File caller = new File(callingSpecification.getName().replaceAll(
 				"\\.", File.separator)).getParentFile(); //$NON-NLS-1$
-		File resolved = new File(caller, url.replaceAll("\\/", File.separator)); //$NON-NLS-1$
+		final File resolved = new File(caller, url.replaceAll("\\/", File.separator)); //$NON-NLS-1$
 		String resolvedPath = Files.simplifyPath(resolved.getPath());
 		resolvedPath = resolvedPath.replaceAll(java.util.regex.Matcher.quoteReplacement(File.separator), "."); //$NON-NLS-1$
 		try {
@@ -324,7 +324,7 @@ public final class SpecificationTools {
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static boolean should_iterate(Iterator<?> actual, Object expected, boolean significantOrder) {
 		Object obj;
-		Iterator<?> it;
+		final Iterator<?> it;
 		if (expected instanceof Iterable<?>) {
 			it = ((Iterable<?>) expected).iterator();
 		} else if (expected instanceof Array) {
@@ -357,17 +357,17 @@ public final class SpecificationTools {
 		}
 
 		// Unsignificant order
-		List<Object> expectedElements = new LinkedList<>();
+		final List<Object> expectedElements = new LinkedList<>();
 		while (it.hasNext()) {
 			expectedElements.add(it.next());
 		}
 		boolean found;
 		while (actual.hasNext()) {
 			obj = actual.next();
-			Iterator<Object> i = expectedElements.iterator();
+			final Iterator<Object> i = expectedElements.iterator();
 			found = false;
 			while (!found && i.hasNext()) {
-				Object eObj = i.next();
+				final Object eObj = i.next();
 				if (obj instanceof XExpression) {
 					if (should_beLiteral((XExpression) obj, eObj)) {
 						i.remove();
@@ -406,7 +406,7 @@ public final class SpecificationTools {
 			return false;
 		}
 		try {
-			DateFormat format;
+			final DateFormat format;
 			if (dateFormat == null || dateFormat.isEmpty()) {
 				format = DateFormat.getDateInstance();
 			} else {
@@ -422,7 +422,7 @@ public final class SpecificationTools {
 	private static boolean isValidURL(URL url, String requiredSchemes) {
 		if (requiredSchemes != null && !requiredSchemes.isEmpty()) {
 			boolean mustHaveScheme = false;
-			for (String s : requiredSchemes.trim().split("\\s*,\\s*")) { //$NON-NLS-1$
+			for (final String s : requiredSchemes.trim().split("\\s*,\\s*")) { //$NON-NLS-1$
 				if (!s.isEmpty()) {
 					if (s.startsWith("!")) { //$NON-NLS-1$
 						if (s.substring(1).equalsIgnoreCase(url.getProtocol())) {
@@ -455,7 +455,7 @@ public final class SpecificationTools {
 			return false;
 		}
 		try {
-			URL u = FileSystem.convertStringToURL(actual, true);
+			final URL u = FileSystem.convertStringToURL(actual, true);
 			if (u == null) {
 				return false;
 			}
@@ -487,7 +487,7 @@ public final class SpecificationTools {
 			return false;
 		}
 		try {
-			NumberFormat format;
+			final NumberFormat format;
 			if (numberFormat == null || numberFormat.isEmpty()) {
 				format = NumberFormat.getNumberInstance();
 			} else {
@@ -532,7 +532,7 @@ public final class SpecificationTools {
 		if (actual == null) {
 			return false;
 		}
-		String string = (expected == null) ? null : expected.toString();
+		final String string = (expected == null) ? null : expected.toString();
 		return Objects.equals(string, actual.getValue());
 	}
 
@@ -546,7 +546,7 @@ public final class SpecificationTools {
 		if (actual == null) {
 			return false;
 		}
-		Boolean b;
+		final Boolean b;
 		if (expected instanceof Boolean) {
 			b = (Boolean) expected;
 		} else {
@@ -569,7 +569,7 @@ public final class SpecificationTools {
 		if (actual == null) {
 			return false;
 		}
-		Number number;
+		final Number number;
 		if (expected instanceof Number) {
 			number = (Number) expected;
 		} else {
@@ -579,7 +579,7 @@ public final class SpecificationTools {
 				return false;
 			}
 		}
-		Number anumber = cleanNumber(actual.getValue());
+		final Number anumber = cleanNumber(actual.getValue());
 		return number.doubleValue() == anumber.doubleValue();
 	}
 
@@ -593,7 +593,7 @@ public final class SpecificationTools {
 		if (actual == null) {
 			return false;
 		}
-		String fqn;
+		final String fqn;
 		if (expected instanceof Class) {
 			fqn = ((Class<?>) expected).getName();
 		} else {
@@ -646,10 +646,10 @@ public final class SpecificationTools {
 			return _should_be((XCollectionLiteral) actual, expected);
 		}
 		if (actual instanceof XBinaryOperation) {
-			XBinaryOperation op = (XBinaryOperation) actual;
+			final XBinaryOperation op = (XBinaryOperation) actual;
 			if ("operator_mappedTo".equals(op.getFeature().getSimpleName())) { //$NON-NLS-1$
-				Object key;
-				Object value;
+				final Object key;
+				final Object value;
 				if (expected instanceof Pair<?, ?>) {
 					key = ((Pair<?, ?>) expected).getKey();
 					value = ((Pair<?, ?>) expected).getValue();
@@ -681,12 +681,12 @@ public final class SpecificationTools {
 	@SuppressWarnings("rawtypes")
 	public static boolean should_haveMethod(Class<?> type, String name) {
 		try {
-			Pattern pattern = Pattern.compile(
+			final Pattern pattern = Pattern.compile(
 					"^([_a-zA-Z0-9]+)\\s*" //$NON-NLS-1$
 					+ "(?:\\(\\s*([_a-zA-Z0-9.]+\\s*" //$NON-NLS-1$
 					+ "(?:,\\s*[_a-zA-Z0-9.]+\\s*)*)\\))?" //$NON-NLS-1$
 					+ "(?:\\s*:\\s*([_a-zA-Z0-9.]+))?$"); //$NON-NLS-1$
-			Matcher matcher = pattern.matcher(name);
+			final Matcher matcher = pattern.matcher(name);
 			if (matcher.matches()) {
 				String paramText;
 				try {
@@ -700,18 +700,18 @@ public final class SpecificationTools {
 				} catch (Throwable exception) {
 					returnText = ""; //$NON-NLS-1$
 				}
-				String[] params;
+				final String[] params;
 				if (paramText.isEmpty()) {
 					params = new String[0];
 				} else {
 					params = paramText.split("\\s*,\\s*"); //$NON-NLS-1$
 				}
-				Class[] types = new Class[params.length];
+				final Class[] types = new Class[params.length];
 				for (int i = 0; i < params.length; ++i) {
 					types[i] = ReflectionUtil.forName(params[i]);
 				}
-				String fctName = matcher.group(1);
-				Method method = type.getDeclaredMethod(fctName, types);
+				final String fctName = matcher.group(1);
+				final Method method = type.getDeclaredMethod(fctName, types);
 				if (method == null) {
 					return false;
 				}
@@ -719,7 +719,7 @@ public final class SpecificationTools {
 					return void.class.equals(method.getReturnType())
 							|| Void.class.equals(method.getReturnType());
 				}
-				Class<?> rtype = ReflectionUtil.forName(returnText);
+				final Class<?> rtype = ReflectionUtil.forName(returnText);
 				return rtype.equals(method.getReturnType());
 			}
 		} catch (Throwable e) {
@@ -740,24 +740,24 @@ public final class SpecificationTools {
 	 */
 	public static boolean should_haveField(Class<?> type, String name) {
 		try {
-			Pattern pattern = Pattern.compile(
+			final Pattern pattern = Pattern.compile(
 					"^([_a-zA-Z0-9]+)\\s*" //$NON-NLS-1$
 					+ "(?:\\s*:\\s*([_a-zA-Z0-9.]+))?$"); //$NON-NLS-1$
-			Matcher matcher = pattern.matcher(name);
+			final Matcher matcher = pattern.matcher(name);
 			if (matcher.matches()) {
-				String fieldName = matcher.group(1);
+				final String fieldName = matcher.group(1);
 				String fieldType;
 				try {
 					fieldType = matcher.group(2).trim();
 				} catch (Throwable exception) {
 					fieldType = ""; //$NON-NLS-1$
 				}
-				Field field = type.getDeclaredField(fieldName);
+				final Field field = type.getDeclaredField(fieldName);
 				if (field == null) {
 					return false;
 				}
 				if (fieldType != null && !fieldType.isEmpty()) {
-					Class<?> rtype = ReflectionUtil.forName(fieldType);
+					final Class<?> rtype = ReflectionUtil.forName(fieldType);
 					return rtype.equals(field.getType());
 				}
 				return true;
@@ -779,8 +779,8 @@ public final class SpecificationTools {
 			return false;
 		}
 		try {
-			Class<?> st = type.getSuperclass();
-			List<Class<?>> types = new LinkedList<>();
+			final Class<?> st = type.getSuperclass();
+			final List<Class<?>> types = new LinkedList<>();
 			if (st == null || Object.class.equals(st)) {
 				if (type.isInterface()) {
 					types.addAll(Arrays.asList(type.getInterfaces()));
@@ -792,8 +792,8 @@ public final class SpecificationTools {
 			if (expectedTypes == null || expectedTypes.isEmpty()) {
 				return types.isEmpty();
 			}
-			for (String expectedType : expectedTypes.split("\\s*,\\s*")) { //$NON-NLS-1$
-				Class<?> et = ReflectionUtil.forName(expectedType);
+			for (final String expectedType : expectedTypes.split("\\s*,\\s*")) { //$NON-NLS-1$
+				final Class<?> et = ReflectionUtil.forName(expectedType);
 				if (!types.remove(et)) {
 					return false;
 				}
@@ -816,7 +816,7 @@ public final class SpecificationTools {
 		if (actual == null) {
 			return false;
 		}
-		StringBuilder pattern = new StringBuilder("^"); //$NON-NLS-1$
+		final StringBuilder pattern = new StringBuilder("^"); //$NON-NLS-1$
 		pattern.append("[0-9a-zA-Z_-]+(\\.[0-9a-zA-Z_-]+)*"); //$NON-NLS-1$
 		if (allowSnapshot) {
 			pattern.append("(?:"); //$NON-NLS-1$
@@ -829,8 +829,8 @@ public final class SpecificationTools {
 
 	private static Version parseJavaVersion(String version, Version defaultVersion) {
 		try {
-			Pattern pattern = Pattern.compile("^([0-9]+)(?:\\.([0-9]+)(?:\\.([0-9]+))?)?"); //$NON-NLS-1$
-			Matcher matcher = pattern.matcher(version);
+			final Pattern pattern = Pattern.compile("^([0-9]+)(?:\\.([0-9]+)(?:\\.([0-9]+))?)?"); //$NON-NLS-1$
+			final Matcher matcher = pattern.matcher(version);
 			if (matcher.find()) {
 				int minor = 0;
 				String group = matcher.group(2);
@@ -850,11 +850,11 @@ public final class SpecificationTools {
 						//
 					}
 				}
-				int major = Integer.parseInt(matcher.group(1));
+				final int major = Integer.parseInt(matcher.group(1));
 				return new Version(major, minor, micro);
 			}
 			if (version != null && !version.isEmpty()) {
-				Version v = Version.valueOf(version);
+				final Version v = Version.valueOf(version);
 				if (v != null) {
 					return v;
 				}
@@ -875,10 +875,10 @@ public final class SpecificationTools {
 	 * @return the validation status.
 	 */
 	public static boolean should_beJavaRange(String minVersion, String maxVersion) {
-		Version jreV = parseJavaVersion(System.getProperty("java.version"), null); //$NON-NLS-1$
+		final Version jreV = parseJavaVersion(System.getProperty("java.version"), null); //$NON-NLS-1$
 		printDebug("Current Java version: ", jreV); //$NON-NLS-1$
 		if (jreV != null && minVersion != null) {
-			Version minV = parseJavaVersion(minVersion, null);
+			final Version minV = parseJavaVersion(minVersion, null);
 			printDebug("Min version:", minV); //$NON-NLS-1$
 			if (minV != null) {
 				Version maxV = null;
@@ -909,7 +909,7 @@ public final class SpecificationTools {
 			return false;
 		}
 		try {
-			int nb = type.getDeclaredConstructors().length
+			final int nb = type.getDeclaredConstructors().length
 					+ type.getDeclaredFields().length
 					+ type.getDeclaredMethods().length
 					+ type.getDeclaredAnnotations().length
@@ -936,11 +936,11 @@ public final class SpecificationTools {
 		if (reference == null || reference.isEmpty()) {
 			return map.isEmpty();
 		}
-		for (Entry<? super K, ? super V> entry : reference.entrySet()) {
+		for (final Entry<? super K, ? super V> entry : reference.entrySet()) {
 			if (!map.containsKey(entry.getKey())) {
 				return false;
 			}
-			V currentValue = map.get(entry.getKey());
+			final V currentValue = map.get(entry.getKey());
 			if (!Objects.equals(currentValue, entry.getValue())) {
 				return false;
 			}
@@ -956,10 +956,10 @@ public final class SpecificationTools {
 	 */
 	public static boolean should_haveProperty(URL propertyFile, String propertyName) {
 		try {
-			Properties props = new Properties();
+			final Properties props = new Properties();
 			try (InputStream is = propertyFile.openStream()) {
 				props.load(is);
-				String value = props.getProperty(propertyName, null);
+				final String value = props.getProperty(propertyName, null);
 				return value != null;
 			}
 		} catch (Throwable exception) {
@@ -977,11 +977,11 @@ public final class SpecificationTools {
 	public static boolean should_haveProperty(URL propertyFile, Pair<String, String> property) {
 		if (propertyFile != null && property != null) {
 			try {
-				Properties props = new Properties();
+				final Properties props = new Properties();
 				try (InputStream is = propertyFile.openStream()) {
 					props.load(is);
-					String value = props.getProperty(property.getKey(), null);
-					return (Objects.equals(value, property.getValue()));
+					final String value = props.getProperty(property.getKey(), null);
+					return Objects.equals(value, property.getValue());
 				}
 			} catch (Throwable exception) {
 				//
@@ -998,11 +998,11 @@ public final class SpecificationTools {
 	 */
 	public static URL getBundlePropertyURL(String bundleName, String filename) {
 		try {
-			Iterator<URL> urls = ClasspathUtil.getClasspath();
+			final Iterator<URL> urls = ClasspathUtil.getClasspath();
 			URL url;
 			while (urls.hasNext()) {
 				url = urls.next();
-				String resourceName = FileSystem.basename(url);
+				final String resourceName = FileSystem.basename(url);
 				if (resourceName != null && resourceName.startsWith(bundleName + "-")) { //$NON-NLS-1$
 					return FileSystem.toJarURL(url, filename);
 				}
@@ -1056,7 +1056,7 @@ public final class SpecificationTools {
 			if (this.obj == null) {
 				throw new NoSuchElementException();
 			}
-			Object object = this.obj;
+			final Object object = this.obj;
 			searchNext();
 			return object;
 		}

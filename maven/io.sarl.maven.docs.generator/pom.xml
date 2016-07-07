@@ -10,24 +10,26 @@
 
 	<artifactId>io.sarl.maven.docs.generator</artifactId>
 	<packaging>maven-plugin</packaging>
-	<name>Documentation Generator</name>
+	<name>Documentation Generator Maven Plugin</name>
 	<description>Provides Maven tools for generating the SARL documentation.</description>
+
+	<properties>
+		<!-- Do not change this version since Jnario depends on 2.6.2 of Xtext -->
+		<xtext.version>2.6.2</xtext.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.jnario</groupId>
 			<artifactId>report</artifactId>
-			<version>${jnario.report.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>vmutils</artifactId>
-			<version>${afc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
-			<version>3.4</version>
 		</dependency>
 	</dependencies>
 
@@ -41,7 +43,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
-					<sourceDirectory>src/main/java</sourceDirectory>
+					<sourceDirectories>
+						<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+					</sourceDirectories>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -52,7 +56,7 @@
 	<!-- ======================================= -->
 	<profiles>
 		<profile>
-			<id>maven-release-of-util-plugin</id>
+			<id>maven-release-of-maven-doc-generator-plugin</id>
 			<activation>
 				<property>
 					<name>performRelease</name>

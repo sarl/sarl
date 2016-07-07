@@ -31,15 +31,6 @@
 	</modules>
 
 	<!-- ======================================= -->
-	<!-- ==== Plugins Dependency Management === -->
-	<!-- ======================================= -->
-
-	<dependencyManagement>
-		<!-- The other dependencies are inside the submodules for avoiding to propagate 
-			the dependency information outside a specific module -->
-	</dependencyManagement>
-
-	<!-- ======================================= -->
 	<!-- ==== Plugins Building Management === -->
 	<!-- ======================================= -->
 

@@ -17,23 +17,4 @@
 		<module>io.sarl.docs.suite</module>
 	</modules>
 
-	<!-- ======================================= -->
-	<!-- ==== Plugins Dependency Management === -->
-	<!-- ======================================= -->
-
-	<dependencyManagement>
-		<!-- The dependencies are inside the submodules for avoiding to propagate 
-			the dependency information outside a specific module -->
-	</dependencyManagement>
-
-	<!-- ======================================= -->
-	<!-- ==== Plugins Building Management === -->
-	<!-- ======================================= -->
-
-	<build>
-		<!-- The build configurations are inside the submodules
-		     for avoiding to propagate the information outside a
-		     specific module -->
-	</build>
-
 </project>

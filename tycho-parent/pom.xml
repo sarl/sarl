@@ -15,22 +15,6 @@
 	<packaging>pom</packaging>
 
 	<!-- ======================================= -->
-	<!-- ==== Main properties === -->
-	<!-- ======================================= -->
-
-	<properties>
-		<tycho.version>0.25.0</tycho.version>
-	</properties>
-
-	<!-- ======================================= -->
-	<!-- ==== Dependency Management === -->
-	<!-- ======================================= -->
-
-	<dependencyManagement>
-		<!-- SHOULD BE EMPTY -->
-	</dependencyManagement>
-
-	<!-- ======================================= -->
 	<!-- ==== Plugins Dependency Management === -->
 	<!-- ======================================= -->
 
@@ -49,7 +33,6 @@
 				<version>${tycho.version}</version>
 				<configuration>
 					<resolver>p2</resolver>
-					<pomDependencies>consider</pomDependencies>
 					<executionEnvironment>${jre.environment}</executionEnvironment>
 					<environments>
 						<environment>
@@ -142,9 +125,9 @@
 
 	<repositories>
 		<repository>
-			<id>org.eclipse.ide.mars</id>
+			<id>org.eclipse.ide.neon</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/mars/</url>
+			<url>http://download.eclipse.org/releases/neon/</url>
 		</repository>
 		<repository>
 			<id>org.jboss.m2e-jdt-compiler.update.lastest</id>

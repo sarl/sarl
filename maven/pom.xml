@@ -20,66 +20,7 @@
 		<module>io.sarl.maven.sdk</module>
 		<module>sarl-maven-plugin</module>
 		<module>io.sarl.maven.docs.generator</module>
+		<module>io.sarl.maven.sre</module>
 	</modules>
-
-	<!-- ======================================= -->
-	<!-- ==== Dependency Management === -->
-	<!-- ======================================= -->
-
-	<dependencyManagement>
-		<!-- The dependencies are inside the submodules for avoiding to propagate 
-			the dependency information outside a specific module -->
-	</dependencyManagement>
-
-	<!-- ======================================= -->
-	<!-- ==== Building configuration === -->
-	<!-- ======================================= -->
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.4</version>
-					<executions>
-						<execution>
-							<id>generated-helpmojo</id>
-							<goals>
-								<goal>helpmojo</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-
-				<!-- This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-plugin-plugin</artifactId>
-										<versionRange>[3.3,)</versionRange>
-										<goals>
-											<goal>descriptor</goal>
-											<goal>helpmojo</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute></execute>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
 
 </project>

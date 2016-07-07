@@ -55,7 +55,6 @@ public class Bug317 extends AbstractMojoTest {
 	}
 	
 	@Test
-	@Ignore
 	public void compile() throws Exception {
 		Verifier verifier = executeMojo("prj3", "compile");
 		Path path = FileSystems.getDefault().getPath(

@@ -1,0 +1,108 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2016 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.lang.validation;
+
+import java.util.List;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend.core.validation.XtendEarlyExitValidator;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XBlockExpression;
+import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
+import org.eclipse.xtext.xbase.validation.IssueCodes;
+
+import io.sarl.lang.controlflow.SARLEarlyExitComputerUtil;
+
+/** Validation of the early-exit control flow.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@Singleton
+public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
+
+	@Inject
+	private IEarlyExitComputer earlyExitComputer;
+
+	@Override
+	@Check
+	public void checkDeadCode(XBlockExpression block) {
+		// The XAbstractFeatureCall are skipped in the super function.
+		// We need to mark the dead code for a early XAbstractFeatureCall.
+		final EList<XExpression> expressions = block.getExpressions();
+		final int size = expressions.size();
+		for (int i = 0; i < size - 1; ++i) {
+			final XExpression expression = expressions.get(i);
+			if (this.earlyExitComputer.isEarlyExit(expression)) {
+				if (expression instanceof XAbstractFeatureCall) {
+					if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(
+							((XAbstractFeatureCall) expression).getFeature())) {
+						markAsDeadCode(expressions.get(i + 1));
+					}
+				} else {
+					// XAbstractFeatureCall does already a decent job for its argument lists
+					// no additional error necessary
+					markAsDeadCode(expressions.get(i + 1));
+				}
+				return;
+			}
+		}
+	}
+
+	@Override
+	protected void collectExits(EObject expr, List<XExpression> found) {
+		super.collectExits(expr, found);
+		if (expr instanceof XAbstractFeatureCall) {
+			final JvmIdentifiableElement element = ((XAbstractFeatureCall) expr).getFeature();
+			if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(element)) {
+				found.add((XExpression) expr);
+			}
+		}
+	}
+
+	// This code is copied from the super type
+	private boolean markAsDeadCode(XExpression expression) {
+		if (expression instanceof XBlockExpression) {
+			final XBlockExpression block = (XBlockExpression) expression;
+			final EList<XExpression> expressions = block.getExpressions();
+			if (!expressions.isEmpty()) {
+				markAsDeadCode(expressions.get(0));
+				return true;
+			}
+		}
+		if (expression != null) {
+			error("Unreachable expression.", expression, null, IssueCodes.UNREACHABLE_CODE); //$NON-NLS-1$
+			return true;
+		}
+		return false;
+	}
+
+}
+

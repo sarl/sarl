@@ -10,14 +10,13 @@
 
 	<artifactId>io.sarl.maven.sdk</artifactId>
 	<packaging>jar</packaging>
-	<name>SDK for Maven</name>
+	<name>SARL Library Maven Artifact</name>
 	<description>Provides all necessary dependencies to develop a MAS using SARL.</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang.core</artifactId>
-			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google.guava</groupId>
@@ -28,7 +27,6 @@
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.core</artifactId>
-			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google.guava</groupId>
@@ -39,7 +37,6 @@
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.util</artifactId>
-			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google.guava</groupId>
@@ -50,7 +47,6 @@
 		<dependency>
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-			<version>${xtext.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google.guava</groupId>
@@ -61,12 +57,10 @@
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
-			<version>${javaxinject.version}</version>
 		</dependency>
  		<dependency> 
  			<groupId>com.google.guava</groupId> 
  			<artifactId>guava</artifactId> 
-			<version>${guava.version}</version>
  		</dependency> 
 	</dependencies>
 
@@ -75,7 +69,7 @@
 	<!-- ======================================= -->
 	<profiles>
 		<profile>
-			<id>maven-release-of-util-plugin</id>
+			<id>maven-release-of-maven-sdk-plugin</id>
 			<activation>
 				<property>
 					<name>performRelease</name>

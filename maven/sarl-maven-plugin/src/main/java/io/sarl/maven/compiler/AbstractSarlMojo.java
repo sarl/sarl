@@ -136,7 +136,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 */
 	protected File makeAbsolute(File file) {
 		if (!file.isAbsolute()) {
-			File basedir = this.mavenHelper.getSession().getCurrentProject().getBasedir();
+			final File basedir = this.mavenHelper.getSession().getCurrentProject().getBasedir();
 			return new File(basedir, file.getPath()).getAbsoluteFile();
 		}
 		return file;
@@ -199,7 +199,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 			String version, String goal,
 			String configuration,
 			Dependency... dependencies) throws MojoExecutionException, MojoFailureException {
-		Plugin plugin = new Plugin();
+		final Plugin plugin = new Plugin();
 		plugin.setArtifactId(artifactId);
 		plugin.setGroupId(groupId);
 		plugin.setVersion(version);
@@ -207,18 +207,18 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 
 		getLog().debug(Locale.getString(AbstractSarlMojo.class, "LAUNCHING", plugin.getId())); //$NON-NLS-1$
 
-		PluginDescriptor pluginDescriptor = this.mavenHelper.loadPlugin(plugin);
+		final PluginDescriptor pluginDescriptor = this.mavenHelper.loadPlugin(plugin);
 		if (pluginDescriptor == null) {
 			throw new MojoExecutionException(Locale.getString(AbstractSarlMojo.class,
 					"PLUGIN_NOT_FOUND", plugin.getId())); //$NON-NLS-1$
 		}
-		MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
+		final MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
 		if (mojoDescriptor == null) {
 			throw new MojoExecutionException(Locale.getString(AbstractSarlMojo.class,
 					"GOAL_NOT_FOUND", goal)); //$NON-NLS-1$
 		}
 
-		Xpp3Dom mojoXml;
+		final Xpp3Dom mojoXml;
 		try {
 			mojoXml = toXpp3Dom(mojoDescriptor.getMojoConfiguration());
 		} catch (PlexusConfigurationException e1) {
@@ -245,18 +245,18 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		getLog().debug(Locale.getString(AbstractSarlMojo.class, "CONFIGURATION_FOR", //$NON-NLS-1$
 				plugin.getId(), configurationXml.toString()));
 
-		MojoExecution execution = new MojoExecution(mojoDescriptor, configurationXml);
+		final MojoExecution execution = new MojoExecution(mojoDescriptor, configurationXml);
 
 		this.mavenHelper.executeMojo(execution);
 	}
 
 	private Xpp3Dom toXpp3Dom(PlexusConfiguration config) throws PlexusConfigurationException {
-		Xpp3Dom result = new Xpp3Dom(config.getName());
+		final Xpp3Dom result = new Xpp3Dom(config.getName());
 		result.setValue(config.getValue(null));
-		for (String name : config.getAttributeNames()) {
+		for (final String name : config.getAttributeNames()) {
 			result.setAttribute(name, config.getAttribute(name));
 		}
-		for (PlexusConfiguration child : config.getChildren()) {
+		for (final PlexusConfiguration child : config.getChildren()) {
 			result.addChild(toXpp3Dom(child));
 		}
 		return result;
@@ -273,20 +273,20 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @throws MojoExecutionException if something cannot be done when extracting the dependencies.
 	 */
 	protected Dependency[] getDependenciesFor(String configurationKeyPrefix) throws MojoExecutionException {
-		List<Dependency> dependencies = new ArrayList<>();
-		Pattern pattern = Pattern.compile(
+		final List<Dependency> dependencies = new ArrayList<>();
+		final Pattern pattern = Pattern.compile(
 				"^[ \t\n\r]*([^: \t\n\t]+)[ \t\n\r]*:[ \t\n\r]*([^: \t\n\t]+)[ \t\n\r]*$"); //$NON-NLS-1$
-		String rawDependencies = this.mavenHelper.getConfig(configurationKeyPrefix + ".dependencies"); //$NON-NLS-1$
+		final String rawDependencies = this.mavenHelper.getConfig(configurationKeyPrefix + ".dependencies"); //$NON-NLS-1$
 
-		Map<String, Dependency> pomDependencies = this.mavenHelper.getPluginDependencies();
+		final Map<String, Dependency> pomDependencies = this.mavenHelper.getPluginDependencies();
 
-		for (String dependencyId : rawDependencies.split("\\s*[;|,]+\\s*")) { //$NON-NLS-1$
-			Matcher matcher = pattern.matcher(dependencyId);
+		for (final String dependencyId : rawDependencies.split("\\s*[;|,]+\\s*")) { //$NON-NLS-1$
+			final Matcher matcher = pattern.matcher(dependencyId);
 			if (matcher != null && matcher.matches()) {
-				String dependencyGroupId = matcher.group(1);
-				String dependencyArtifactId = matcher.group(2);
-				String dependencyKey = ArtifactUtils.versionlessKey(dependencyGroupId, dependencyArtifactId);
-				Dependency dependencyObject = pomDependencies.get(dependencyKey);
+				final String dependencyGroupId = matcher.group(1);
+				final String dependencyArtifactId = matcher.group(2);
+				final String dependencyKey = ArtifactUtils.versionlessKey(dependencyGroupId, dependencyArtifactId);
+				final Dependency dependencyObject = pomDependencies.get(dependencyKey);
 				if (dependencyObject == null) {
 					throw new MojoExecutionException(Locale.getString(AbstractSarlMojo.class,
 							"ARTIFACT_NOT_FOUND", dependencyKey)); //$NON-NLS-1$
@@ -295,7 +295,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 			}
 		}
 
-		Dependency[] dependencyArray = new Dependency[dependencies.size()];
+		final Dependency[] dependencyArray = new Dependency[dependencies.size()];
 		dependencies.toArray(dependencyArray);
 		return dependencyArray;
 	}

@@ -23,55 +23,39 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>osgi</artifactId>
-			<version>${osgi.nls.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>vmutils</artifactId>
-			<version>13.0</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.sdk</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.tests.api</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang.tests</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.eclipse</artifactId>
-			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.xtend</groupId>
 			<artifactId>org.eclipse.xtend.core</artifactId>
-			<version>${xtext.version}</version>
-			<scope>test</scope>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google.guava</groupId>
@@ -82,8 +66,6 @@
 		<dependency>
 			<groupId>org.jnario</groupId>
 			<artifactId>org.jnario.standalone</artifactId>
-			<version>${jnario.version}</version>
-			<scope>test</scope>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google.guava</groupId>
@@ -199,11 +181,11 @@
 						</replacement>
 						<replacement>
 							<token>%sarlversion%</token>
-							<value>${project.version}</value>
+							<value>${sarl.version}</value>
 						</replacement>
 						<replacement>
 							<token>%janusversion%</token>
-							<value>${janusversion}</value>
+							<value>${janus.version}</value>
 						</replacement>
 						<replacement>
 							<token>%xtextversion%</token>
@@ -227,15 +209,15 @@
 						</replacement>
 						<replacement>
 							<token>%sarlspecversion%</token>
-							<value>${sarlspecificationreleaseversion}</value>
+							<value>${sarl.specification.release_version}</value>
 						</replacement>
 						<replacement>
 							<token>%sarlspecreleasestatus%</token>
-							<value>${sarlspecificationreleasestatus}</value>
+							<value>${sarl.specification.release_status}</value>
 						</replacement>
 						<replacement>
 							<token>%sarlspecreleasedate%</token>
-							<value>${sarlspecificationreleasedate}</value>
+							<value>${sarl.specification.release_date}</value>
 						</replacement>
 						<replacement>
 							<token>%copyrightdate%</token>
@@ -290,7 +272,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
-					<sourceDirectory>src/test/java</sourceDirectory>
+					<sourceDirectories>
+						<sourceDirectory>${project.basedir}/src/test/java</sourceDirectory>
+					</sourceDirectories>
 				</configuration>
 			</plugin>
 		</plugins>

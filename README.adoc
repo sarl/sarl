@@ -100,11 +100,11 @@ For using this version, you must add the Maven Repository Server of SARL in your
 Several style specifications are provided for syntax highlighting in third party tools.
 Style specifications are provided for:
 
-* link:./external_tools/prettify/lang-sarl.js[Google Prettify]
-* link:./external_tools/gtk/sarl.lang[Gtk source view] (including gedit)
-* link:./external_tools/gnusrchighlite/sarl.lang[GNU src-highlite]
-* link:./external_tools/latex/sarl-beamer-listing.sty[LaTeX Beamer]
-* LaTeX listing: link:./external_tools/latex/sarl-listing.sty[monochrom], link:./external_tools/latex/sarl-colorized-listing.sty[color]
+* link:./formatting-styles/prettify/lang-sarl.js[Google Prettify]
+* link:./formatting-styles/gtk/sarl.lang[Gtk source view] (including gedit)
+* link:./formatting-styles/source-highlight/sarl.lang[GNU source-highlight]
+* link:./formatting-styles/latex/sarl-beamer-listing.sty[LaTeX Beamer]
+* LaTeX listing: link:./formatting-styles/latex/sarl-listing.sty[monochrom], link:./formatting-styles/latex/sarl-colorized-listing.sty[color]
 
 == 4. P2 Repository
 
@@ -149,7 +149,7 @@ For being merged, your must ensure the following points:
 
 * Your PR must be compilable with Maven.
 * Your PR must pass the compilation process successfully, including the code compilation, unit tests, and code style checking. This process is supported by Travis-CI for linux and OSX platforms, and AppVeyor for Windows platforms.
-* You must sign the link:./licences/CLA.md[Contributor License Agreement] on GitHub. It is supported by link:https://cla-assistant.io/sarl/sarl[cla-assistant].
+* You must sign the link:./build-tools/licences/CLA.md[Contributor License Agreement] on GitHub. It is supported by link:https://cla-assistant.io/sarl/sarl[cla-assistant].
 * Your PR should be reviewed by one or more of the main contributors for ensure it is following the development rules and philosophy related to SARL.
 
 The page of your PR on Github is displaying the status of your PR.

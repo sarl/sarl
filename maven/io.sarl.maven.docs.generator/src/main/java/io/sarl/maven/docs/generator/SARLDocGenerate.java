@@ -143,15 +143,15 @@ public class SARLDocGenerate extends XtendTestCompile {
 		getLog().info("Generating Jnario reports to " + this.docOutputDirectory); //$NON-NLS-1$
 
 		// the order is important, the suite compiler must be executed last
-		List<Injector> injectors = createInjectors(
+		final List<Injector> injectors = createInjectors(
 				new SARLSpecStandaloneSetup(),
 				new FeatureStandaloneSetup(),
 				new SuiteStandaloneSetup());
 		generateCssAndJsFiles(injectors);
 		this.resourceSetProvider = new JnarioMavenProjectResourceSetProvider(this.project);
 
-		HashBasedSpec2ResultMapping resultMapping = createSpec2ResultMapping(injectors);
-		for (Injector injector : injectors) {
+		final HashBasedSpec2ResultMapping resultMapping = createSpec2ResultMapping(injectors);
+		for (final Injector injector : injectors) {
 			generateDoc(injector, resultMapping);
 		}
 	}
@@ -162,8 +162,8 @@ public class SARLDocGenerate extends XtendTestCompile {
 	 * @throws MojoExecutionException when no Surefire report was found.
 	 */
 	protected HashBasedSpec2ResultMapping createSpec2ResultMapping(List<Injector> injectors) throws MojoExecutionException {
-		HashBasedSpec2ResultMapping resultMapping = injectors.get(2).getInstance(HashBasedSpec2ResultMapping.class);
-		File reportFolder = new File(this.reportsDirectory);
+		final HashBasedSpec2ResultMapping resultMapping = injectors.get(2).getInstance(HashBasedSpec2ResultMapping.class);
+		final File reportFolder = new File(this.reportsDirectory);
 		if (reportFolder.exists()) {
 			addExecutionResults(resultMapping, reportFolder);
 		} else {
@@ -176,7 +176,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 	 * @param injectors - the injector list.
 	 */
 	protected void generateCssAndJsFiles(List<Injector> injectors) {
-		HtmlAssetsCompiler assetsCompiler = injectors.get(0).getInstance(HtmlAssetsCompiler.class);
+		final HtmlAssetsCompiler assetsCompiler = injectors.get(0).getInstance(HtmlAssetsCompiler.class);
 		assetsCompiler.setOutputPath(this.docOutputDirectory);
 		getLog().info("Generating HTML assets to " + this.docOutputDirectory); //$NON-NLS-1$
 		assetsCompiler.compile();
@@ -189,8 +189,8 @@ public class SARLDocGenerate extends XtendTestCompile {
 	 */
 	protected void addExecutionResults(HashBasedSpec2ResultMapping resultMapping, File reportFolder)
 			throws MojoExecutionException {
-		SpecResultParser specResultParser = new SpecResultParser();
-		for (File file : reportFolder.listFiles(new XmlFiles())) {
+		final SpecResultParser specResultParser = new SpecResultParser();
+		for (final File file : reportFolder.listFiles(new XmlFiles())) {
 			try (FileInputStream is = new FileInputStream(file)) {
 				specResultParser.parse(is, resultMapping);
 			} catch (Exception e) {
@@ -202,7 +202,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 	@Override
 	protected void compileTestSources(XtendBatchCompiler xtend2BatchCompiler) throws MojoExecutionException {
 		List<String> testCompileSourceRoots = Lists.newArrayList(this.project.getTestCompileSourceRoots());
-		String testClassPath = Strings.concat(File.pathSeparator, getTestClassPath());
+		final String testClassPath = Strings.concat(File.pathSeparator, getTestClassPath());
 		if (this.sourceDirectory != null && !this.sourceDirectory.isEmpty()) {
 			testCompileSourceRoots = Collections.singletonList(this.sourceDirectory);
 		}
@@ -211,7 +211,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 	}
 
 	private void generateDoc(Injector injector, Executable2ResultMapping resultMapping) throws MojoExecutionException {
-		JnarioDocCompiler docCompiler = injector.getInstance(JnarioDocCompiler.class);
+		final JnarioDocCompiler docCompiler = injector.getInstance(JnarioDocCompiler.class);
 		docCompiler.setExecutable2ResultMapping(resultMapping);
 		compileTestSources(docCompiler);
 	}
@@ -223,7 +223,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 		this.resourceSetProvider.get().eAdapters().clear();
 		xtend2BatchCompiler.setResourceSetProvider(this.resourceSetProvider);
 		MavenProjectAdapter.install(this.resourceSetProvider.get(), this.project);
-		Iterable<String> filtered = Iterables.filter(sourceDirectories, FILE_EXISTS);
+		final Iterable<String> filtered = Iterables.filter(sourceDirectories, FILE_EXISTS);
 		if (Iterables.isEmpty(filtered)) {
 			getLog().info(
 					"skip compiling sources because the configured directory '" //$NON-NLS-1$
@@ -252,16 +252,16 @@ public class SARLDocGenerate extends XtendTestCompile {
 	}
 
 	private void configureWorkspace(List<String> sourceDirectories, String outputPath) throws MojoExecutionException {
-		WorkspaceConfig workspaceConfig = new WorkspaceConfig(this.project.getBasedir().getParentFile().getAbsolutePath());
-		ProjectConfig projectConfig = new ProjectConfig(this.project.getBasedir().getName());
-		URI absoluteRootPath = this.project.getBasedir().getAbsoluteFile().toURI();
-		URI relativizedTarget = absoluteRootPath.relativize(new File(outputPath).toURI());
+		final WorkspaceConfig workspaceConfig = new WorkspaceConfig(this.project.getBasedir().getParentFile().getAbsolutePath());
+		final ProjectConfig projectConfig = new ProjectConfig(this.project.getBasedir().getName());
+		final URI absoluteRootPath = this.project.getBasedir().getAbsoluteFile().toURI();
+		final URI relativizedTarget = absoluteRootPath.relativize(new File(outputPath).toURI());
 		if (relativizedTarget.isAbsolute()) {
 			throw new MojoExecutionException("Output path '" + outputPath //$NON-NLS-1$
 					+ "' must be a child of the project folder '" + absoluteRootPath + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		for (String source : sourceDirectories) {
-			URI relativizedSrc = absoluteRootPath.relativize(new File(source).toURI());
+		for (final String source : sourceDirectories) {
+			final URI relativizedSrc = absoluteRootPath.relativize(new File(source).toURI());
 			if (relativizedSrc.isAbsolute()) {
 				throw new MojoExecutionException("Source folder " + source //$NON-NLS-1$
 						+ " must be a child of the project folder " + absoluteRootPath); //$NON-NLS-1$
@@ -274,7 +274,7 @@ public class SARLDocGenerate extends XtendTestCompile {
 			getLog().debug("WS config root: " + workspaceConfig.getAbsoluteFileSystemPath()); //$NON-NLS-1$
 			getLog().debug("Project name: " + projectConfig.getName()); //$NON-NLS-1$
 			getLog().debug("Project root path: " + projectConfig.getRootPath()); //$NON-NLS-1$
-			for (Entry<Path, Path> entry : projectConfig.getSourceFolderMappings().entrySet()) {
+			for (final Entry<Path, Path> entry : projectConfig.getSourceFolderMappings().entrySet()) {
 				getLog().debug("Source path: " + entry.getKey() + " -> " + entry.getValue()); //$NON-NLS-1$//$NON-NLS-2$
 			}
 		}
