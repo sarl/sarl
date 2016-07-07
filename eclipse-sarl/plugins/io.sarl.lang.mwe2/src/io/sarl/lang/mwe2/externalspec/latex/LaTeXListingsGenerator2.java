@@ -262,7 +262,8 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored) {
+	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation,
+			Set<String> ignored, Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
 		final ColorConfig colors = getHighlightingConfig().getColors();
 
 		final Set<String> texKeywords = new TreeSet<>(keywords);
@@ -394,6 +395,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 				+ "\\else\\lstinline[basicstyle={0}]'{'#1'}'" //$NON-NLS-1$
 				+ "\\fi'}'", inlineBasicStyle); //$NON-NLS-1$
 		append(sty, "\\newcommand'{'\\sarl'}{'\\mbox'{'SARL'}'\\xspace'}'"); //$NON-NLS-1$
+		append(sty, "\\newcommand'{'\\sarlversion'}{'{0}'}'", getLanguageVersion()); //$NON-NLS-1$
 
 		append(sty, "\\endinput"); //$NON-NLS-1$
 

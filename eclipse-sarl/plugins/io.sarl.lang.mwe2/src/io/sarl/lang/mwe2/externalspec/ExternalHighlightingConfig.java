@@ -53,6 +53,10 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 
 	private final Set<String> additionalPunctuation = new TreeSet<>();
 
+	private final Set<String> specialKeywords = new TreeSet<>();
+
+	private final Set<String> typeDeclarationKeywords = new TreeSet<>();
+
 	private Boolean addNativeTypes;
 
 	private ColorConfig colors = new ColorConfig();
@@ -137,6 +141,58 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 	@Pure
 	public Set<String> getIgnoredKeywords() {
 		return this.excludedKeywords;
+	}
+
+	/** Mark a keyword as special. The meaning of a special keyword depends on the highlighting
+	 * generator.
+	 *
+	 * <p>The keyword will be ignored if it is not a keyword from the grammars or added with
+	 * {@link #addKeyword(String)}.
+	 *
+	 * <p>A special keyword cannot be a type declaration keyword.
+	 *
+	 * @param keyword the keyword to mark as special
+	 */
+	public void addSpecialKeyword(String keyword) {
+		if (!Strings.isEmpty(keyword)) {
+			this.specialKeywords.add(keyword);
+		}
+	}
+
+	/** Replies the special keywords. The meaning of a special keyword depends on the highlighting
+	 * generator.
+	 *
+	 * @return the special keywords.
+	 */
+	@Pure
+	public Set<String> getSpecialKeywords() {
+		return this.specialKeywords;
+	}
+
+	/** Mark a keyword as a type declaration keyword. The meaning of a type declaration keyword depends on the highlighting
+	 * generator.
+	 *
+	 * <p>The keyword will be ignored if it is not a keyword from the grammars or added with
+	 * {@link #addKeyword(String)}.
+	 *
+	 * <p>A type declaration keyword cannot be a special keyword.
+	 *
+	 * @param keyword the keyword to mark as special
+	 */
+	public void addTypeDeclarationKeyword(String keyword) {
+		if (!Strings.isEmpty(keyword)) {
+			this.typeDeclarationKeywords.add(keyword);
+		}
+	}
+
+	/** Replies the type declaration keywords. The meaning of a type declaration keyword depends on the highlighting
+	 * generator.
+	 *
+	 * @return the special keywords.
+	 */
+	@Pure
+	public Set<String> getTypeDeclarationKeywords() {
+		return this.typeDeclarationKeywords;
 	}
 
 	/** Add a punctuation symbol that is not inside the SARL grammar.

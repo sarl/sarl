@@ -151,7 +151,8 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 
 	@Override
 	protected final void generate(Set<String> literals, Set<String> keywords,
-			Set<String> punctuation, Set<String> ignored) {
+			Set<String> punctuation, Set<String> ignored, Set<String> specialKeywords,
+			Set<String> typeDeclarationKeywords) {
 		// Generate
 		this.lines.clear();
 		this.lines.add(MessageFormat.format("<?xml version=\"1.0\" encoding=\"{0}\"?>", //$NON-NLS-1$
@@ -164,7 +165,10 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 		}
 		this.lines.add("-->"); //$NON-NLS-1$
 
-		final String basename = generateXml(literals, keywords, punctuation, ignored);
+		this.lines.add(MessageFormat.format("<!-- Style for {0} {1} -->", //$NON-NLS-1$
+				getLanguageSimpleName(), getLanguageVersion()));
+
+		final String basename = generateXml(literals, keywords, punctuation, ignored, specialKeywords, typeDeclarationKeywords);
 
 		// Save
 		writeFile(basename, this.lines);
@@ -176,9 +180,12 @@ public abstract class AbstractXmlHighlightingFragment2 extends AbstractExternalH
 	 * @param keywords the keywords of the language.
 	 * @param punctuation the punctuation symbols.
 	 * @param ignored the tokens that were ignored in the MWE2 configuration.
+	 * @param specialKeywords - the keywords that are marked as special. They are also in {@code keywords}.
+	 * @param typeDeclarationKeywords - the keywords that are marked as type declaration keywords.
+	 *     They are also in {@code keywords}.
 	 * @return the basename of the file to create.
 	 */
 	protected abstract String generateXml(Set<String> literals, Set<String> keywords, Set<String> punctuation,
-			Set<String> ignored);
+			Set<String> ignored, Set<String> specialKeywords, Set<String> typeDeclarationKeywords);
 
 }

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.mwe2.externalspec.gnusrchighlite;
+package io.sarl.lang.mwe2.externalspec.gnusrchighlight;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -36,14 +36,14 @@ import io.sarl.lang.mwe2.externalspec.AbstractExternalHighlightingFragment2;
 
 /**
  * A {@link IGeneratorFragment} that create the language specification for
- * the GNU src-highlite.
+ * the GNU source-highlight.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class GnuSrcHighliteGenerator2 extends AbstractExternalHighlightingFragment2 {
+public class GnuSrcHighlightGenerator2 extends AbstractExternalHighlightingFragment2 {
 
 	/** The default basename pattern for {@link MessageFormat}.
 	 */
@@ -57,7 +57,7 @@ public class GnuSrcHighliteGenerator2 extends AbstractExternalHighlightingFragme
 
 	@Override
 	public String toString() {
-		return "GNU src-highlite"; //$NON-NLS-1$
+		return "GNU source-highlight"; //$NON-NLS-1$
 	}
 
 	private static void append(List<String> buffer, String text, Object... parameters) {
@@ -72,9 +72,20 @@ public class GnuSrcHighliteGenerator2 extends AbstractExternalHighlightingFragme
 		buffer.add(""); //$NON-NLS-1$
 	}
 
+	private static void comment(List<String> buffer, String text, Object... parameters) {
+		final String comment;
+		if (parameters.length > 0) {
+			comment = MessageFormat.format(text, parameters);
+		} else {
+			comment = text;
+		}
+		buffer.add("# " + comment); //$NON-NLS-1$
+	}
+
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored) {
+	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation,
+			Set<String> ignored, Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
 		final StringBuilder punctuationPattern = new StringBuilder();
 		for (final String punct : punctuation) {
 			if (punctuationPattern.length() > 0) {
@@ -107,25 +118,57 @@ public class GnuSrcHighliteGenerator2 extends AbstractExternalHighlightingFragme
 		for (final String headerLine : header) {
 			css.add(headerLine.replaceFirst("^\\s*[/]?[*][/]?", "#")); //$NON-NLS-1$//$NON-NLS-2$
 		}
-
+		comment(css, "Style for {0} {1}", getLanguageSimpleName(), getLanguageVersion()); //$NON-NLS-1$
+		nl(css);
+		if (!specialKeywords.isEmpty()) {
+			final StringBuilder preproc = new StringBuilder();
+			for (final String specialKeyword : specialKeywords) {
+				if (preproc.length() > 0) {
+					preproc.append(","); //$NON-NLS-1$
+				}
+				preproc.append("\"" + specialKeyword + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			append(css, "preproc = {0}", preproc); //$NON-NLS-1$
+			nl(css);
+		}
+		comment(css, "SARL comments"); //$NON-NLS-1$
 		append(css, "include \"c_comment.lang\""); //$NON-NLS-1$
 		nl(css);
-		append(css, "include \"number.lang\""); //$NON-NLS-1$
+		comment(css, "Numbers (integer, decimals, or hexadecimals"); //$NON-NLS-1$
+		append(css, "number = '\\<[+-]?((0[xX][[:xdigit:]_]+(\\#(([bB][iI])|([lL])))?)|" //$NON-NLS-1$
+				+ "(([[:digit:]][[:digit:]_]*\\.)?[[:digit:]]+([eE][+-]?[[:digit:]]+)?" //$NON-NLS-1$
+				+ "(([bB][iIdD])|([lLdDfF]))?))\\>'"); //$NON-NLS-1$
 		nl(css);
-		append(css, "string delim \"\\\"\" \"\\\"\" escape \"\\\\\""); //$NON-NLS-1$
-		append(css, "string delim \"'\" \"'\"  escape \"\\\\\""); //$NON-NLS-1$
-		append(css, "regexp = '/[^\n]*/'"); //$NON-NLS-1$
-		append(css, "(symbol,regexp) = `(%r)(\\{(?:\\\\\\}|#\\{[[:alnum:]]+\\}|[^}])*\\})`"); //$NON-NLS-1$
+		comment(css, "Strings of characters"); //$NON-NLS-1$
+		append(css, "include \"c_string.lang\""); //$NON-NLS-1$
 		nl(css);
+		comment(css, "Annotations"); //$NON-NLS-1$
+		append(css, "label = '@[$[:alnum:]_.:^]+'"); //$NON-NLS-1$
+		nl(css);
+		comment(css, "Protected IDs with ^"); //$NON-NLS-1$
+		append(css, "normal = '\\^[$[:alnum:]_]+'"); //$NON-NLS-1$
+		nl(css);
+		if (!typeDeclarationKeywords.isEmpty()) {
+			comment(css, "Highlight the type declarations"); //$NON-NLS-1$
+			final StringBuilder tdkeywords = new StringBuilder();
+			for (final String typeDeclarationKeyword : typeDeclarationKeywords) {
+				if (tdkeywords.length() > 0) {
+					tdkeywords.append("|"); //$NON-NLS-1$
+				}
+				tdkeywords.append(typeDeclarationKeyword);
+			}
+			append(css, "(keyword,normal,classname) = `(\\<(?:{0}))([[:blank:]]+)([$[:alnum:]_]+)`", tdkeywords); //$NON-NLS-1$
+			nl(css);
+		}
 		append(css, "keyword = \"{0}\"", keywordPattern); //$NON-NLS-1$
-		nl(css);
-		append(css, "keyword = \"{0}\"", punctuationPattern); //$NON-NLS-1$
 		nl(css);
 		append(css, "keyword = \"{0}\"", literalPattern); //$NON-NLS-1$
 		nl(css);
-		append(css, "include \"symbols.lang\""); //$NON-NLS-1$
+		append(css, "symbol = \"{0}\"", punctuationPattern); //$NON-NLS-1$
 		nl(css);
 		append(css, "cbracket = \"{|}\""); //$NON-NLS-1$
+		nl(css);
+		append(css, "cbracket = \"[|]\""); //$NON-NLS-1$
 
 		final String language = getLanguageSimpleName().toLowerCase();
 		final String basename = getBasename(MessageFormat.format(getBasenameTemplate(), language));

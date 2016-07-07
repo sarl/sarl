@@ -34,7 +34,7 @@ import io.sarl.lang.mwe2.externalspec.*
 import io.sarl.lang.mwe2.externalspec.prettify.* 
 import io.sarl.lang.mwe2.externalspec.latex.* 
 import io.sarl.lang.mwe2.externalspec.gtk.* 
-import io.sarl.lang.mwe2.externalspec.gnusrchighlite.* 
+import io.sarl.lang.mwe2.externalspec.gnusrchighlight.* 
 import io.sarl.lang.mwe2.codebuilder.* 
 import io.sarl.lang.mwe2.bugfixes.* 
 
@@ -58,7 +58,7 @@ var externalToolPath = "${overallRootPath}/formatting-styles"
 var prettifyToolPath = "${externalToolPath}/prettify"
 var latexToolPath = "${externalToolPath}/latex"
 var gtkToolPath = "${externalToolPath}/gtk"
-var srchighliteToolPath  = "${externalToolPath}/gnusrchighlite"
+var srchighlightToolPath  = "${externalToolPath}/source-highlight"
 var webjsPath = "${overallRootPath}/maven/io.sarl.maven.docs.generator/src/main/resources/org/jnario/doc/js"
 
 var file.extensions = "sarl"
@@ -111,7 +111,7 @@ Workflow {
 		directory = "${gtkToolPath}"
 	}
    	component = DirectoryCleaner {
-		directory = "${srchighliteToolPath}"
+		directory = "${srchighlightToolPath}"
 	}
 
  	component = XtextGenerator auto-inject {
@@ -216,6 +216,19 @@ Workflow {
 				ignoreKeyword = 'FOR'
 				ignoreKeyword = 'IF'
 				ignoreKeyword = 'SEPARATOR'
+				
+				specialKeyword = 'package'
+				specialKeyword = 'import'
+				
+				typeDeclarationKeyword = 'agent'
+				typeDeclarationKeyword = 'behavior'
+				typeDeclarationKeyword = 'capacity'
+				typeDeclarationKeyword = 'skill'
+				typeDeclarationKeyword = 'event'
+				typeDeclarationKeyword = 'space'
+				typeDeclarationKeyword = 'class'
+				typeDeclarationKeyword = 'interface'
+				typeDeclarationKeyword = 'enum'
 
     			colors = auto-inject {
     				color = auto-inject {
@@ -408,8 +421,8 @@ Workflow {
     		}
     		
 			// Generate the GNU src-hightlite style
-    		fragment = GnuSrcHighliteGenerator2 auto-inject {
-				output = srchighliteToolPath
+    		fragment = GnuSrcHighlightGenerator2 auto-inject {
+				output = srchighlightToolPath
     		}
 
     		// SARL specific bindings

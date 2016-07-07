@@ -22,6 +22,10 @@
 package io.sarl.lang.mwe2;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
+
+import io.sarl.lang.SARLVersion;
 
 /**
  * Guice module dedicated to the SARL language generator.
@@ -33,9 +37,14 @@ import com.google.inject.AbstractModule;
  */
 public class SarlLanguageGeneratorModule extends AbstractModule {
 
+	/** Property name for the version of the language.
+	 */
+	public static final String LANGUAGE_VERSION_PROPERTY = "LANGUAGE_VERSION"; //$NON-NLS-1$
+
 	@Override
 	protected void configure() {
-		//
+		bind(Key.get(String.class, Names.named(LANGUAGE_VERSION_PROPERTY))).toInstance(
+				SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
 	}
 
 }

@@ -163,7 +163,8 @@ public class GooglePrettifyGenerator2 extends AbstractExternalHighlightingFragme
 
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored) {
+	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation,
+			Set<String> ignored, Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
 		final Set<Character> characters = new TreeSet<>();
 		for (final String punct : punctuation) {
 			punct.chars().forEach((int candidate) -> characters.add(Character.valueOf((char) candidate)));
@@ -218,6 +219,8 @@ public class GooglePrettifyGenerator2 extends AbstractExternalHighlightingFragme
 
 		final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
 		css.addAll(Arrays.asList(header));
+
+		append(css, "/* Style for {0} {1} */", getLanguageSimpleName(), getLanguageVersion()); //$NON-NLS-1$
 
 		append(css, "PR[''registerLangHandler'']("); //$NON-NLS-1$
 		append(css, "   PR[''createSimpleLexer'']("); //$NON-NLS-1$

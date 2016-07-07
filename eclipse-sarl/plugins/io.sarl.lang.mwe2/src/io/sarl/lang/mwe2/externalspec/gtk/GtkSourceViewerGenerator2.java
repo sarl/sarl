@@ -351,7 +351,8 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 	}
 
 	@Override
-	protected String generateXml(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored) {
+	protected String generateXml(Set<String> literals, Set<String> keywords, Set<String> punctuation,
+			Set<String> ignored, Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
 		open("language", //$NON-NLS-1$
 				"id", getLanguageSimpleName().toLowerCase(), //$NON-NLS-1$
 				"_name", getLanguageSimpleName(), //$NON-NLS-1$

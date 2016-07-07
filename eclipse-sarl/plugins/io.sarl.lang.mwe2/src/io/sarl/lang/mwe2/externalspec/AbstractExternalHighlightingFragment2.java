@@ -34,6 +34,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
+import javax.inject.Named;
+
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -70,6 +72,10 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 
 	@Inject
 	private ExternalHighlightingConfig highlightingConfig;
+
+	@Inject
+	@Named("LANGUAGE_VERSION")
+	private String languageVersion;
 
 	private final Set<String> outputDirectories = new TreeSet<>();
 
@@ -225,6 +231,7 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public final void generate() {
 		final Grammar grammar = getGrammar();
 		if (grammar == null) {
@@ -276,7 +283,21 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 					tmp));
 		}
 
-		generate(literals, keywords, punctuation, ignored);
+		final Set<String> specialKeywords = new TreeSet<>();
+		for (final String specialKeyword : hconfig.getSpecialKeywords()) {
+			if (keywords.contains(specialKeyword) && !ignored.contains(specialKeyword)) {
+				specialKeywords.add(specialKeyword);
+			}
+		}
+
+		final Set<String> typeDeclarationKeywords = new TreeSet<>();
+		for (final String typeDeclarationKeyword : hconfig.getTypeDeclarationKeywords()) {
+			if (keywords.contains(typeDeclarationKeyword) && !ignored.contains(typeDeclarationKeyword)) {
+				typeDeclarationKeywords.add(typeDeclarationKeyword);
+			}
+		}
+
+		generate(literals, keywords, punctuation, ignored, specialKeywords, typeDeclarationKeywords);
 	}
 
 	/** Generate the external specification.
@@ -285,8 +306,12 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	 * @param keywords - the SARL keywords.
 	 * @param punctuation - the SARL punctuation symbols.
 	 * @param ignored - the ignored literals (mostly for information).
+	 * @param specialKeywords - the keywords that are marked as special. They are also in {@code keywords}.
+	 * @param typeDeclarationKeywords - the keywords that are marked as type declaration keywords.
+	 *     They are also in {@code keywords}.
 	 */
-	protected abstract void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation, Set<String> ignored);
+	protected abstract void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation,
+			Set<String> ignored, Set<String> specialKeywords, Set<String> typeDeclarationKeywords);
 
 	/** Write the given lines into the file.
 	 *
@@ -329,6 +354,14 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 			return name.substring(index + 1);
 		}
 		return name;
+	}
+
+	/** Replies the version of the language specification.
+	 *
+	 * @return the version.
+	 */
+	protected String getLanguageVersion() {
+		return Strings.emptyIfNull(this.languageVersion);
 	}
 
 }
