@@ -88,6 +88,7 @@ public class InterfaceCompilerTest {
 		public void method_0() throws Exception {
 			String source = "interface I1 { def fct }";
 			String expected = multilineString(
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract void fct();",
@@ -101,6 +102,7 @@ public class InterfaceCompilerTest {
 		public void method_1() throws Exception {
 			String source = "interface I1 { def fct(a : int) }";
 			String expected = multilineString(
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract void fct(final int a);",
@@ -114,6 +116,7 @@ public class InterfaceCompilerTest {
 		public void method_2() throws Exception {
 			String source = "interface I1 { def fct(a : int*) }";
 			String expected = multilineString(
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract void fct(final int... a);",
@@ -211,6 +214,7 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
+					"  @FunctionalInterface",
 					"  public interface I1 {",
 					"    public abstract void fct();",
 					"  }",
@@ -226,6 +230,7 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
+					"  @FunctionalInterface",
 					"  public interface I1 {",
 					"    public abstract void fct(final int a);",
 					"  }",
@@ -241,6 +246,7 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
+					"  @FunctionalInterface",
 					"  public interface I1 {",
 					"    public abstract void fct(final int... a);",
 					"  }",
@@ -408,6 +414,7 @@ public class InterfaceCompilerTest {
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
+					"  @FunctionalInterface",
 					"  protected interface I1 {",
 					"    public abstract void fct();",
 					"  }",
@@ -443,6 +450,7 @@ public class InterfaceCompilerTest {
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
+					"  @FunctionalInterface",
 					"  protected interface I1 {",
 					"    public abstract void fct(final int a);",
 					"  }",
@@ -478,6 +486,7 @@ public class InterfaceCompilerTest {
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
+					"  @FunctionalInterface",
 					"  protected interface I1 {",
 					"    public abstract void fct(final int... a);",
 					"  }",
@@ -661,6 +670,7 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object> void setX(final X param);",
@@ -680,6 +690,7 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object> void setX(final X param);",
@@ -699,6 +710,7 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Number> void setX(final X param);",
@@ -718,6 +730,7 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Number> void setX(final X param);",
@@ -737,6 +750,7 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object, Y extends Object> void setX(final X param);",
@@ -756,6 +770,7 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object, Y extends Object> void setX(final X param);",
@@ -775,6 +790,7 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object, Y extends X> void setX(final X param);",
@@ -794,6 +810,7 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object, Y extends X> void setX(final X param);",

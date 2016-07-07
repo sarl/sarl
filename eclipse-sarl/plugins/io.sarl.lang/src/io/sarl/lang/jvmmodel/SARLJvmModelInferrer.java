@@ -438,7 +438,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 		openContext(inferredJvmType);
 		try {
+			// Generate the interface with the Xtend inferrer.
 			super.initialize(source, inferredJvmType);
+			// Add the @FunctionalInterface
+			appendFunctionalInterfaceAnnotation(inferredJvmType);
 		} finally {
 			closeContext(inferredJvmType);
 		}
@@ -606,7 +609,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Generate the extended types.
 			appendConstrainedExtends(context, inferredJvmType, Behavior.class, source.getExtends());
 
-			// Issue #363: do not generate the agent if the SARL library is incompatible.
+			// Issue #363: do not generate the behavior if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 				// Generate the members of the generated type.
 				appendSarlMembers(
@@ -685,7 +688,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Generate the extended types.
 			appendConstrainedExtends(context, inferredJvmType, Event.class, source.getExtends());
 
-			// Issue #363: do not generate the agent if the SARL library is incompatible.
+			// Issue #363: do not generate the event if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 				// Generate the members of the generated type.
 				appendSarlMembers(
@@ -791,7 +794,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			appendConstrainedExtends(context, inferredJvmType, Skill.class, source.getExtends());
 			appendConstrainedImplements(context, inferredJvmType, Capacity.class, source.getImplements());
 
-			// Issue #363: do not generate the agent if the SARL library is incompatible.
+			// Issue #363: do not generate the skill if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 				// Generate the members of the generated type.
 				appendSarlMembers(
@@ -878,7 +881,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Generate the extended types.
 			appendConstrainedExtends(context, inferredJvmType, Capacity.class, source.getExtends());
 
-			// Issue #363: do not generate the agent if the SARL library is incompatible.
+			// Issue #363: do not generate the capacity if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 				// Generate the members of the generated type.
 				appendSarlMembers(
@@ -886,6 +889,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						source,
 						context);
 			}
+
+			// Add the @FunctionalInterface
+			appendFunctionalInterfaceAnnotation(inferredJvmType);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -2042,6 +2048,20 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.typeBuilder.copyDocumentationTo(source, operation);
 				this.typeExtensions.setSynthetic(operation, true);
 			}
+		}
+	}
+
+	/** Append the @FunctionalInterface to the given type if it is a functional interface according
+	 * to the Java 8 specification definition.
+	 *
+	 * @param type the type to update.
+	 */
+	protected void appendFunctionalInterfaceAnnotation(JvmGenericType type) {
+		if (type != null && Utils.isFunctionalInterface(type, this.sarlSignatureProvider)
+				&& !Utils.hasAnnotation(type, FunctionalInterface.class)) {
+			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(
+					FunctionalInterface.class);
+			type.getAnnotations().add(annotationRef);
 		}
 	}
 

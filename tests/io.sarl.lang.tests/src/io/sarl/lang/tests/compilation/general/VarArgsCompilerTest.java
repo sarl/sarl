@@ -275,6 +275,7 @@ public class VarArgsCompilerTest {
 			String expected = multilineString(
 					"import io.sarl.lang.core.Capacity;",
 					"",
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public abstract void myaction(final int... arg);",
@@ -294,6 +295,7 @@ public class VarArgsCompilerTest {
 			String expected = multilineString(
 					"import io.sarl.lang.core.Capacity;",
 					"",
+					"@FunctionalInterface",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public abstract void myaction(final char arg1, final boolean arg2, final int... arg3);",
