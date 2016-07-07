@@ -3,7 +3,7 @@
 :toc-placement!:
 :hide-uri-scheme:
 
-image:http://www.sarl.io/images/SARL-logo.svg[float=right]
+image:http://www.sarl.io/images/SARL-logo.svg[float=left]
 
 SARL is a general-purpose agent-oriented language, http://www.sarl.io.
 
@@ -15,19 +15,37 @@ Considering the variety of existing approaches and meta-models in the field of a
 
 However, we provide a first set of tools to support its execution based on the new version 2.0 of the Janus (see http://www.janusproject.io) platform, but it can be linked with other existing agent platforms and frameworks. 
 
-image:http://www.sarl.io/images/compilation-process.png[]
+image:http://www.sarl.io/images/compilation-process.png[align="center"]
 
-image:https://img.shields.io/badge/requires-Java%208-red.svg?style=flat-square[link=https://www.java.com]
-image:https://img.shields.io/maven-central/v/io.sarl.maven/io.sarl.maven.sdk.svg?label=Maven%20Central[link=http://search.maven.org/#search%7Cga%7C1%7Cio.sarl]
-image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
-image:https://ci.appveyor.com/api/projects/status/github/sarl/sarl?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/sarl]
 
-image:https://img.shields.io/badge/compliant-Maven-yellowgreen.svg?style=flat-square[link=http://maven.apache.com]
-image:https://img.shields.io/badge/compliant-Java-yellowgreen.svg?style=flat-square[link=https://www.java.com]
-image:https://img.shields.io/badge/compliant-Xtext-yellowgreen.svg?style=flat-square[link=https://eclipse.org/Xtext]
+image:https://img.shields.io/badge/Documentation-API-ff69b4.svg?style=flat-square[link=http://www.sarl.io/docs/api/index.html]
+image:https://img.shields.io/badge/Documentation-Reference-red.svg?style=flat-square[link=http://www.sarl.io/docs/suite/io/sarl/docs/SARLDocumentationSuite.html]
+
+
+image:https://img.shields.io/badge/Requires-Java%208-yellowgreen.svg?style=flat-square[link=https://www.java.com]
+image:https://img.shields.io/badge/Interoperable%20with-Java-yellowgreen.svg?style=flat-square[link=https://www.java.com]
+image:https://img.shields.io/maven-central/v/io.sarl.maven/io.sarl.maven.sdk.svg?label=Available%20on%20Maven%20Central[link=http://search.maven.org/#search%7Cga%7C1%7Cio.sarl]
+image:https://img.shields.io/badge/Build%20with-Maven-blue.svg?style=flat-square[link=http://maven.apache.com]
+
+
+image:https://img.shields.io/badge/Based%20on-Xtext-orange.svg?style=flat-square[link=https://eclipse.org/Xtext]
+
+
 
 image:https://img.shields.io/github/license/sarl/sarl.svg?style=flat-square[link=https://opensource.org/licenses/Apache-2.0]
 image:https://cla-assistant.io/readme/badge/sarl/sarl?style=flat-square[link=https://cla-assistant.io/sarl/sarl]
+
+
+
+
+[align="center",width="40%",frame="topbot",cols="2*^",options="header"]
+|==========================
+2+| Build Status 
+| Linux and OSX |image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
+| Windows |image:https://ci.appveyor.com/api/projects/status/github/sarl/sarl?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/sarl]
+|==========================
+
+
 
 toc::[]
 
@@ -163,11 +181,11 @@ If one point is failing, please follows the steps:
 
 == 7. Authors and Contributors
 
-* Mohamed Ezzat, code cleaning and optimization.
-* link:http://www.multiagent.fr/People:Galland_stephane[Stéphane GALLAND], founder, original and active author.
-* link:http://www.multiagent.fr/People:Gaud_nicolas[Nicolas GAUD], founder, original and active author.
-* Jeremie JOST, documentation contributor.
-* link:http://gitia.org/members/sebastian-rodriguez[Sebastian RODRIGUEZ], founder, original and active author.
+* image:https://avatars.githubusercontent.com/m-ezzat[width="50px",link=https://github.com/m-ezzat] Mohamed Ezzat, code cleaning and optimization.
+* image:https://avatars.githubusercontent.com/gallandarakhneorg[width="50px",link=https://github.com/gallandarakhneorg] link:http://www.multiagent.fr/People:Galland_stephane[Stéphane GALLAND], founder, original and active author.
+* image:https://avatars.githubusercontent.com/ngaud[width="50px",link=https://github.com/ngaud] link:http://www.multiagent.fr/People:Gaud_nicolas[Nicolas GAUD], founder, original and active author.
+* image:https://avatars.githubusercontent.com/jjst[width="50px",link=https://github.com/jjst] Jeremie JOST, documentation contributor.
+* image:https://avatars.githubusercontent.com/srodriguez[width="50px",link=https://github.com/srodriguez] link:http://gitia.org/members/sebastian-rodriguez[Sebastian RODRIGUEZ], founder, original and active author.
 
 == 8. License of SARL
 
