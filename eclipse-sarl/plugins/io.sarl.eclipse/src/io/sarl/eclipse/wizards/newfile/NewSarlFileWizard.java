@@ -24,6 +24,7 @@ package io.sarl.eclipse.wizards.newfile;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.google.inject.Injector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -52,6 +53,9 @@ public class NewSarlFileWizard extends Wizard implements INewWizard {
 
 	private final String fileExtension;
 
+	@Inject
+	private Injector injector;
+
 	/**
 	 * @param fileExtension - the extension of the file.
 	 */
@@ -70,6 +74,7 @@ public class NewSarlFileWizard extends Wizard implements INewWizard {
 	public void addPages() {
 		super.addPages();
 		this.pageOne = new NewSarlFileWizardPage(this.selection, this.fileExtension);
+		this.injector.injectMembers(this.pageOne);
 		addPage(this.pageOne);
 	}
 

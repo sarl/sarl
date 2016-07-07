@@ -34,6 +34,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.xtext.util.StringInputStream;
+import org.eclipse.xtext.xbase.conversion.XbaseValueConverterService;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
@@ -51,6 +52,9 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 
 	@Inject
 	private SARLGrammarAccess grammarAccess;
+
+	@Inject
+	private XbaseValueConverterService converter;
 
 	/**
 	 * @param selection - selection in the IDE.
@@ -92,12 +96,15 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 		final IPath packagePath = determinePackageName(folderInWorkspace);
 
 		if (packagePath != null && packagePath.segmentCount() > 0) {
-			content.append(this.grammarAccess.getSarlScriptAccess().getPackageKeyword_1_0() + " "); //$NON-NLS-1$
-			content.append(packagePath.segment(0));
+			content.append(this.grammarAccess.getSarlScriptAccess().getPackageKeyword_1_0().getValue() + " "); //$NON-NLS-1$
+			final StringBuilder packageName = new StringBuilder();
+			packageName.append(packagePath.segment(0));
 			for (int i = 1; i < packagePath.segmentCount(); ++i) {
-				content.append('.');
-				content.append(packagePath.segment(i));
+				packageName.append(this.grammarAccess.getXbaseGrammarAccess().getQualifiedNameInStaticImportAccess()
+						.getFullStopKeyword_1().getValue());
+				packageName.append(packagePath.segment(i));
 			}
+			content.append(this.converter.getQualifiedNameValueConverter().toString(packageName.toString()));
 			content.append("\n"); //$NON-NLS-1$
 		}
 
