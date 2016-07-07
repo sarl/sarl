@@ -113,6 +113,7 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.core.Capacity;",
 				"",
+				"@FunctionalInterface",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void name();",
@@ -120,6 +121,7 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				""
 			);
 		final String expectedC2 = multilineString(
+				"@FunctionalInterface",
 				"@SuppressWarnings(\"all\")",
 				"public interface C2 extends C1 {",
 				"  @Override",
@@ -144,6 +146,7 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 			multilineString(
 				"import io.sarl.lang.core.Capacity;",
 				"",
+				"@FunctionalInterface",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void name();",

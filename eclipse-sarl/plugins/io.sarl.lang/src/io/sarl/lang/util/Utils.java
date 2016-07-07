@@ -28,6 +28,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1046,6 +1047,24 @@ public final class Utils {
 	public static boolean isPrimitive(JvmType type) {
 		// TODO: Is a utility class from Xbase providing this feature that is different from LightweightTypeReference.
 		return type != null && type.eClass() == TypesPackage.Literals.JVM_PRIMITIVE_TYPE;
+	}
+
+	/** Replies if the given type is a functional interface.
+	 *
+	 * <p>This function does not test if the {@code @FunctionalInterface} is attached to the type.
+	 * The function counts the number of operations.
+	 *
+	 * @param type the type to test.
+	 * @param sarlSignatureProvider the provider of SARL operation signatures.
+	 * @return <code>true</code> if the given type is final.
+	 */
+	public static boolean isFunctionalInterface(JvmGenericType type, IActionPrototypeProvider sarlSignatureProvider) {
+		if (type != null && type.isInterface()) {
+			final Map<ActionPrototype, JvmOperation> operations = new HashMap<>();
+			populateInterfaceElements(type, operations, null, sarlSignatureProvider);
+			return operations.size() == 1;
+		}
+		return false;
 	}
 
 }

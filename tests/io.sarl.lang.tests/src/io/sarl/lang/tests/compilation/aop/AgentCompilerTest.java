@@ -1401,6 +1401,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.core.Capacity;",
 				"",
+				"@FunctionalInterface",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final double v);",
@@ -1462,6 +1463,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.core.Capacity;",
 				"",
+				"@FunctionalInterface",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final Class<?> v);",
@@ -1523,6 +1525,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.core.Capacity;",
 				"",
+				"@FunctionalInterface",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final Class<?> v);",
@@ -1589,6 +1592,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.core.Capacity;",
 				"",
+				"@FunctionalInterface",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final Class<?> v1, final int... v2);",
@@ -1658,6 +1662,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.core.Capacity;",
 				"",
+				"@FunctionalInterface",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final int... v2);",
