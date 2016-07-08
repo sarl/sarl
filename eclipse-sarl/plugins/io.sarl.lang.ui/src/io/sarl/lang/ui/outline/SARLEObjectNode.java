@@ -28,7 +28,6 @@ import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 
 /**
  * Customize the outline page.
- * The outline page is expanding the nodes at the startup.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

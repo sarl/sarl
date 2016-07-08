@@ -21,11 +21,18 @@
 
 package io.sarl.lang.ui.outline;
 
+import static com.google.common.collect.Lists.newArrayList;
+
+import java.util.List;
+
 import org.eclipse.xtend.ide.outline.XtendOutlinePage;
+import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
+import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
 
 /**
  * Customize the outline page.
- * The outline page is expanding the nodes at the startup.
+ *
+ * <p>The outline page is expanding the nodes at the startup.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -33,5 +40,17 @@ import org.eclipse.xtend.ide.outline.XtendOutlinePage;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLOutlinePage extends XtendOutlinePage {
-	//
+
+	@Override
+	protected List<IOutlineNode> getInitiallyExpandedNodes() {
+		final IOutlineNode rootNode = getTreeProvider().createRoot(getXtextDocument());
+		final List<IOutlineNode> result = newArrayList(rootNode);
+		for (final IOutlineNode firstLevelNode: rootNode.getChildren()) {
+			if (firstLevelNode instanceof EStructuralFeatureNode) {
+				result.add(firstLevelNode);
+			}
+		}
+		return result;
+	}
+
 }
