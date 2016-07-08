@@ -25,11 +25,24 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import com.google.common.base.Strings;
+import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
+import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.util.TypeReferences;
@@ -39,12 +52,16 @@ import org.eclipse.xtext.nodemodel.ILeafNode;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
+import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
+import org.eclipse.xtext.util.Pair;
+import org.eclipse.xtext.xbase.conversion.XbaseValueConverterService;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.ui.images.SARLImages;
 
 /** Provides proposal for the content assist mechanism.
  *
@@ -59,6 +76,15 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	@Inject
 	private TypeReferences typeReferences;
+
+	@Inject
+	private IStorage2UriMapper storage2UriMapper;
+
+	@Inject
+	private XbaseValueConverterService valueConverter;
+
+	@Inject
+	private SARLImages images;
 
 	/** Complete for obtaining SARL types that are subtypes of the given type.
 	 *
@@ -267,6 +293,60 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 				TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
 				getQualifiedNameValueConverter(),
 				createExtensionFilter(context, IJavaSearchConstants.CLASS), acceptor);
+	}
+
+	@Override
+	public void completeSarlScript_Package(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		final String expectedPackage = getExpectedPackageName(model);
+		if (!Strings.isNullOrEmpty(expectedPackage)) {
+			final String codeProposal = this.valueConverter.getQualifiedNameValueConverter().toString(expectedPackage);
+			final ICompletionProposal proposal = createCompletionProposal(codeProposal, expectedPackage,
+					this.images.forPackage().createImage(), context);
+			acceptor.accept(proposal);
+			return;
+		}
+		super.completeSarlScript_Package(model, assignment, context, acceptor);
+	}
+
+	/** Replies the expected package for the given model.
+	 *
+	 * @param model the model.
+	 * @return the expected package name.
+	 */
+	protected String getExpectedPackageName(EObject model) {
+		final URI fileURI = model.eResource().getURI();
+		for (final Pair<IStorage, IProject> storage: this.storage2UriMapper.getStorages(fileURI)) {
+			if (storage.getFirst() instanceof IFile) {
+				final IPath fileWorkspacePath = storage.getFirst().getFullPath();
+				final IJavaProject javaProject = JavaCore.create(storage.getSecond());
+				return extractProjectPath(fileWorkspacePath, javaProject);
+			}
+		}
+		return null;
+	}
+
+	private static String extractProjectPath(IPath fileWorkspacePath, IJavaProject javaProject) {
+		if (javaProject != null && javaProject.exists() && javaProject.isOpen()) {
+			try {
+				for (final IPackageFragmentRoot root: javaProject.getPackageFragmentRoots()) {
+					if (!root.isArchive() && !root.isExternal()) {
+						final IResource resource = root.getResource();
+						if (resource != null) {
+							final IPath sourceFolderPath = resource.getFullPath();
+							if (sourceFolderPath.isPrefixOf(fileWorkspacePath)) {
+								final IPath claspathRelativePath = fileWorkspacePath.makeRelativeTo(sourceFolderPath);
+								return claspathRelativePath.removeLastSegments(1)
+										.toString().replace("/", "."); //$NON-NLS-1$//$NON-NLS-2$
+							}
+						}
+					}
+				}
+			} catch (JavaModelException e) {
+				Logger.getLogger(SARLProposalProvider.class).error(e.getLocalizedMessage(), e);
+			}
+		}
+		return null;
 	}
 
 }
