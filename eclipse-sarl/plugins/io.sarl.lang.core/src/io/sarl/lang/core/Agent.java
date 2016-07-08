@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.SARLVersion;
@@ -119,20 +120,39 @@ public class Agent implements Identifiable {
 	 * @param capacity capacity to set.
 	 * @param skill implementaion of <code>capacity</code>.
 	 * @return the skill that was set.
+	 * @deprecated since 0.4, see {@link #setSkill(Skill, Class...)}
 	 */
+	@Inline("setSkill($2, $1)")
+	@Deprecated
 	protected <S extends Skill> S setSkill(Class<? extends Capacity> capacity, S skill) {
-		assert capacity != null : "the capacity parameter must not be null"; //$NON-NLS-1$
-		assert capacity.isInterface() : "the capacity parameter must be an interface"; //$NON-NLS-1$
+		return setSkill(skill, capacity);
+	}
+
+	/**
+	 * Set the skill for the {@link Capacity} <code>capacity</code>.
+	 *
+	 * @param <S> - type of the skill.
+	 * @param capacities the capacity or the capacities to set.
+	 * @param skill implementaion of <code>capacity</code>.
+	 * @return the skill that was set.
+	 * @since 0.4
+	 */
+	@SafeVarargs
+	protected final <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities) {
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
-		if (!capacity.isInstance(skill)) {
-			throw new InvalidParameterException(
-					"the skill must implement the given capacity " //$NON-NLS-1$
-					+ capacity.getName());
-		}
 		skill.setOwner(this);
-		final Skill oldS = this.capacities.put(capacity, skill);
-		if (oldS != null) {
-			oldS.uninstall();
+		for (final Class<? extends Capacity> capacity : capacities) {
+			assert capacity != null : "the capacity parameter must not be null"; //$NON-NLS-1$
+			assert capacity.isInterface() : "the capacity parameter must be an interface"; //$NON-NLS-1$
+			if (!capacity.isInstance(skill)) {
+				throw new InvalidParameterException(
+						"the skill must implement the given capacity " //$NON-NLS-1$
+						+ capacity.getName());
+			}
+			final Skill oldS = this.capacities.put(capacity, skill);
+			if (oldS != null) {
+				oldS.uninstall();
+			}
 		}
 		skill.install();
 		return skill;
@@ -145,7 +165,7 @@ public class Agent implements Identifiable {
 	 * @param skill - the skill to be mapped to.
 	 */
 	protected <S extends Skill> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
-		setSkill(capacity, skill);
+		setSkill(skill, capacity);
 	}
 
 	/**

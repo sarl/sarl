@@ -112,7 +112,7 @@ abstract class AgentTrait {
 	 * @param skill - the skill to associate to the capacity.
 	 */
 	protected <S extends Skill & Capacity> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
-		getOwner().setSkill(capacity, skill);
+		getOwner().setSkill(skill, capacity);
 	}
 
 }

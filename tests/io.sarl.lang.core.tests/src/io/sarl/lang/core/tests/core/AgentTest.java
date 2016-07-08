@@ -50,6 +50,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class AgentTest extends AbstractSarlTest {
 
 	@NonNullByDefault
@@ -126,7 +127,7 @@ public class AgentTest extends AbstractSarlTest {
 		assertNoSkill(Skill2.class);
 
 		s1 = new Skill1();
-		r = this.agent.setSkill(Capacity1.class, s1);
+		r = this.agent.setSkill_Fake(s1, Capacity1.class);
 		assertSame(s1, r);
 		assertSkill(Capacity1.class, s1);
 		assertNoSkill(Capacity2.class);
@@ -134,7 +135,7 @@ public class AgentTest extends AbstractSarlTest {
 		assertNoSkill(Skill2.class);
 
 		try {
-			this.agent.setSkill(Capacity1.class, new Skill2());
+			this.agent.setSkill_Fake(new Skill2(), Capacity1.class);
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
 		catch(InvalidParameterException exception) {
@@ -142,7 +143,7 @@ public class AgentTest extends AbstractSarlTest {
 		}
 
 		try {
-			this.agent.setSkill(Capacity1.class, new Skill3());
+			this.agent.setSkill_Fake(new Skill3(), Capacity1.class);
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
 		catch(InvalidParameterException exception) {
@@ -150,7 +151,7 @@ public class AgentTest extends AbstractSarlTest {
 		}
 
 		s2 = new Skill2();
-		r = this.agent.setSkill(Capacity2.class, s2);
+		r = this.agent.setSkill_Fake(s2, Capacity2.class);
 		assertSame(s2, r);
 		assertSkill(Capacity1.class, s1);
 		assertSkill(Capacity2.class, s2);
@@ -158,7 +159,7 @@ public class AgentTest extends AbstractSarlTest {
 		assertNoSkill(Skill2.class);
 
 		try {
-			this.agent.setSkill(Capacity2.class, new Skill1());
+			this.agent.setSkill_Fake(new Skill1(), Capacity2.class);
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
 		catch(InvalidParameterException exception) {
@@ -166,7 +167,7 @@ public class AgentTest extends AbstractSarlTest {
 		}
 
 		try {
-			this.agent.setSkill(Capacity2.class, new Skill3());
+			this.agent.setSkill_Fake(new Skill3(), Capacity2.class);
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
 		}
 		catch(InvalidParameterException exception) {
@@ -178,8 +179,8 @@ public class AgentTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void clearSkill() {
-		this.agent.setSkill(Capacity1.class, new Skill1());
-		this.agent.setSkill(Capacity2.class, new Skill2());
+		this.agent.setSkill_Fake(new Skill1(), Capacity1.class);
+		this.agent.setSkill_Fake(new Skill2(), Capacity2.class);
 		assertSkill(Capacity1.class);
 		assertSkill(Capacity2.class);
 		assertNoSkill(Skill1.class);
@@ -212,8 +213,8 @@ public class AgentTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void hasSkill() {
-		this.agent.setSkill(Capacity1.class, new Skill1());
-		this.agent.setSkill(Capacity2.class, new Skill2());
+		this.agent.setSkill_Fake(new Skill1(), Capacity1.class);
+		this.agent.setSkill_Fake(new Skill2(), Capacity2.class);
 		assertTrue(this.agent.hasSkill(Capacity1.class));
 		assertTrue(this.agent.hasSkill(Capacity2.class));
 
@@ -355,58 +356,41 @@ public class AgentTest extends AbstractSarlTest {
 			super(mock(BuiltinCapacitiesProvider.class), parentID, null);
 		}
 
-		/** {@inheritDoc}
-		 */
-		@Override
-		public <S extends Skill> S setSkill(Class<? extends Capacity> capacity, S skill) {
-			return super.setSkill(capacity, skill);
+		public <S extends Skill> S setSkill_Fake(S skill, Class<? extends Capacity>... capacity) {
+			return setSkill(skill, capacity);
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public <S extends Capacity> S getSkill(Class<S> capacity) {
 			return super.getSkill(capacity);
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public <S extends Capacity> S clearSkill(Class<S> capacity) {
 			return super.clearSkill(capacity);
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public boolean hasSkill(Class<? extends Capacity> capacity) {
 			return super.hasSkill(capacity);
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public <S extends Skill> void operator_mappedTo(
 				Class<? extends Capacity> capacity, S skill) {
 			super.operator_mappedTo(capacity, skill);
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public boolean isMe(Address address) {
 			return super.isMe(address);
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public boolean isMe(UUID id) {
 			return super.isMe(id);
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		protected boolean isFromMe(Event event) {
 			return super.isFromMe(event);
