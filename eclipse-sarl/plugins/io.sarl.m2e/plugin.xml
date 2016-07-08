@@ -9,7 +9,7 @@
      <configurator
            class="io.sarl.m2e.SARLProjectConfigurator"
            id="io.sarl.m2e.sarlConfigurator"
-           name="SARL Project Configurator">
+           name="%m2e.sarlconfigurator.name">
      </configurator>
   </extension>
    <extension
