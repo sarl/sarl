@@ -50,6 +50,7 @@ import org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider;
 import org.eclipse.xtext.conversion.IValueConverter;
 import org.eclipse.xtext.nodemodel.ILeafNode;
 import org.eclipse.xtext.nodemodel.INode;
+import org.eclipse.xtext.ui.IImageHelper;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
@@ -85,6 +86,9 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	@Inject
 	private SARLImages images;
+
+	@Inject
+	private IImageHelper imageHelper;
 
 	/** Complete for obtaining SARL types that are subtypes of the given type.
 	 *
@@ -302,7 +306,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 		if (!Strings.isNullOrEmpty(expectedPackage)) {
 			final String codeProposal = this.valueConverter.getQualifiedNameValueConverter().toString(expectedPackage);
 			final ICompletionProposal proposal = createCompletionProposal(codeProposal, expectedPackage,
-					this.images.forPackage().createImage(), context);
+					this.imageHelper.getImage(this.images.forPackage()), context);
 			acceptor.accept(proposal);
 			return;
 		}
