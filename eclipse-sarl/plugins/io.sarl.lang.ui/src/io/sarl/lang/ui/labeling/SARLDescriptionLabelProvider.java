@@ -21,6 +21,8 @@
 
 package io.sarl.lang.ui.labeling;
 
+import javax.inject.Singleton;
+
 import com.google.inject.Inject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
@@ -54,6 +56,7 @@ import io.sarl.lang.ui.images.SARLImages;
  * @mavenartifactid $ArtifactId$
  * @see "http://www.eclipse.org/Xtext/documentation.html#labelProvider"
  */
+@Singleton
 public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider {
 
 	@Inject

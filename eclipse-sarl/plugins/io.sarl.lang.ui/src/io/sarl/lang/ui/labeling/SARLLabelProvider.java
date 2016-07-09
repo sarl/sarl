@@ -24,20 +24,30 @@ package io.sarl.lang.ui.labeling;
 import java.util.Collections;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.inject.Singleton;
+
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
+import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.ide.labeling.XtendLabelProvider;
+import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmEnumerationType;
 import org.eclipse.xtext.common.types.JvmExecutable;
+import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.common.types.TypesPackage;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.common.types.util.RawSuperTypes;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
@@ -48,6 +58,11 @@ import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
 import org.eclipse.xtext.xbase.validation.UIStrings;
 
+import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.Behavior;
+import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.Event;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -60,6 +75,7 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
 import io.sarl.lang.ui.images.SARLImages;
 
 /**
@@ -71,7 +87,8 @@ import io.sarl.lang.ui.images.SARLImages;
  * @mavenartifactid $ArtifactId$
  * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#label-provider"
  */
-public class SARLLabelProvider extends XtendLabelProvider {
+@Singleton
+public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedNameImageProvider {
 
 	/** Max length of the text for the behavior units.
 	 */
@@ -95,6 +112,9 @@ public class SARLLabelProvider extends XtendLabelProvider {
 	private final PolymorphicDispatcher<ImageDescriptor> imageDescriptorDispatcher;
 
 	private final ReentrantLock imageDescriptorLock = new ReentrantLock();
+
+	@Inject
+	private RawSuperTypes superTypeCollector;
 
 	/**
 	 * @param delegate - the original provider.
@@ -510,6 +530,58 @@ public class SARLLabelProvider extends XtendLabelProvider {
 			text.append(txt, StyledString.DECORATIONS_STYLER);
 		}
 		return text;
+	}
+
+	private boolean isAssignableTo(JvmGenericType source, Class<?> target, IJvmTypeProvider jvmTypeProvider) {
+		final String name = target.getName();
+		if (name.equals(source.getIdentifier())) {
+			return true;
+		}
+		final JvmType targetType = jvmTypeProvider.findTypeByName(name);
+		return this.superTypeCollector.collect(source).contains(targetType);
+	}
+
+	@Override
+	public Image getImageForQualifiedName(String qualifiedName, IJvmTypeProvider jvmTypeProvider) {
+		final JvmType type = jvmTypeProvider.findTypeByName(qualifiedName);
+		int adornments = this.adornments.get(type);
+		final JvmVisibility visibility;
+		if (type.eClass() == TypesPackage.Literals.JVM_GENERIC_TYPE) {
+			final JvmGenericType gtype = (JvmGenericType) type;
+			visibility = gtype.getVisibility();
+			if (gtype.isInterface()) {
+				if (isAssignableTo(gtype, Capacity.class, jvmTypeProvider)) {
+					// Remove the "abstract" ornment because capacities are always abstract.
+					adornments = (adornments & JavaElementImageDescriptor.ABSTRACT) ^ adornments;
+					return convertToImage(this.images.forCapacity(visibility, adornments));
+				}
+				return convertToImage(this.images.forInterface(visibility, this.adornments.get(gtype)));
+			}
+			if (isAssignableTo(gtype, Agent.class, jvmTypeProvider)) {
+				return convertToImage(this.images.forAgent(visibility, this.adornments.get(gtype)));
+			}
+			if (isAssignableTo(gtype, Behavior.class, jvmTypeProvider)) {
+				return convertToImage(this.images.forBehavior(visibility, this.adornments.get(gtype)));
+			}
+			if (isAssignableTo(gtype, Skill.class, jvmTypeProvider)) {
+				return convertToImage(this.images.forSkill(visibility, this.adornments.get(gtype)));
+			}
+			if (isAssignableTo(gtype, Event.class, jvmTypeProvider)) {
+				return convertToImage(this.images.forEvent(visibility, this.adornments.get(gtype)));
+			}
+		} else if (type.eClass() == TypesPackage.Literals.JVM_ENUMERATION_TYPE) {
+			final JvmEnumerationType etype = (JvmEnumerationType) type;
+			visibility = etype.getVisibility();
+			return convertToImage(this.images.forEnum(visibility, adornments));
+		} else if (type.eClass() == TypesPackage.Literals.JVM_ANNOTATION_TYPE) {
+			final JvmAnnotationType atype = (JvmAnnotationType) type;
+			visibility = atype.getVisibility();
+			return convertToImage(this.images.forEnum(visibility, adornments));
+		} else {
+			visibility = JvmVisibility.DEFAULT;
+		}
+		// Default icon is the class icon.
+		return convertToImage(this.images.forClass(visibility, adornments));
 	}
 
 }

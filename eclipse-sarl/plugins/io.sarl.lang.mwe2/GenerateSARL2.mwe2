@@ -498,6 +498,11 @@ Workflow {
    				}
     			
     			ui = {
+    				bind = "io.sarl.lang.ui.images.IQualifiedNameImageProvider"
+    				to = "io.sarl.lang.ui.labeling.SARLLabelProvider"
+    				singleton = true
+    			}
+    			ui = {
     				bind = "org.eclipse.xtext.ui.validation.AbstractValidatorConfigurationBlock"
     				to = "io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock"
     			}

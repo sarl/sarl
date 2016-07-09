@@ -37,6 +37,7 @@ import io.sarl.lang.ui.contentassist.SARLProposalProvider;
 import io.sarl.lang.ui.contentassist.SARLTemplateContextType;
 import io.sarl.lang.ui.contentassist.SARLTemplateProposalProvider;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
+import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
 import io.sarl.lang.ui.labeling.SARLDescriptionLabelProvider;
 import io.sarl.lang.ui.labeling.SARLLabelProvider;
 import io.sarl.lang.ui.outline.SARLBehaviorUnitOutlineFilter;
@@ -461,6 +462,12 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IContentOutlinePage> bindIContentOutlinePage() {
 		return SARLOutlinePage.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	@SingletonBinding
+	public Class<? extends IQualifiedNameImageProvider> bindIQualifiedNameImageProvider() {
+		return SARLLabelProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
