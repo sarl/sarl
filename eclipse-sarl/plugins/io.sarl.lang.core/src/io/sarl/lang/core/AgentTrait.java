@@ -23,6 +23,7 @@ package io.sarl.lang.core;
 
 import java.lang.ref.WeakReference;
 
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a part of trait of an agent.
@@ -111,8 +112,49 @@ abstract class AgentTrait {
 	 * @param capacity - the implemented capacity.
 	 * @param skill - the skill to associate to the capacity.
 	 */
+	@Inline("$setSkill($2, $1)")
 	protected <S extends Skill & Capacity> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
-		getOwner().setSkill(skill, capacity);
+		setSkill(skill, capacity);
+	}
+
+	/**
+	 * Set the skill for the {@link Capacity} <code>capacity</code>.
+	 *
+	 * @param <S> - type of the skill.
+	 * @param capacities the capacity or the capacities to set.
+	 * @param skill implementaion of <code>capacity</code>.
+	 * @return the skill that was set.
+	 * @since 0.4
+	 */
+	@SafeVarargs
+	@Inline("$setSkill($1, $2)")
+	protected final <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities) {
+		return $setSkill(skill, capacities);
+	}
+
+	/**
+	 * Set the skill for the {@link Capacity} <code>capacity</code>.
+	 *
+	 * @param <S> - type of the skill.
+	 * @param capacities the capacity or the capacities to set.
+	 * @param skill implementaion of <code>capacity</code>.
+	 * @return the skill that was set.
+	 * @since 0.4
+	 */
+	protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>[] capacities) {
+		return getOwner().$setSkill(skill, capacities);
+	}
+
+	/**
+	 * Clears the Skill associated with the capacity.
+	 *
+	 * @param <S> - the type of the capacity.
+	 * @param capacity - the capacity for which the skill must be cleared.
+	 * @return the skill that was removed
+	 * @since 0.4
+	 */
+	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
+		return getOwner().clearSkill(capacity);
 	}
 
 }

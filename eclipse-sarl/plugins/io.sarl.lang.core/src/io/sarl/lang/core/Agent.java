@@ -138,7 +138,21 @@ public class Agent implements Identifiable {
 	 * @since 0.4
 	 */
 	@SafeVarargs
+	@Inline("$setSkill($1, $2)")
 	protected final <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities) {
+		return $setSkill(skill, capacities);
+	}
+
+	/**
+	 * Set the skill for the {@link Capacity} <code>capacity</code>.
+	 *
+	 * @param <S> - type of the skill.
+	 * @param capacities the capacity or the capacities to set.
+	 * @param skill implementaion of <code>capacity</code>.
+	 * @return the skill that was set.
+	 * @since 0.4
+	 */
+	protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>[] capacities) {
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
 		skill.setOwner(this);
 		for (final Class<? extends Capacity> capacity : capacities) {

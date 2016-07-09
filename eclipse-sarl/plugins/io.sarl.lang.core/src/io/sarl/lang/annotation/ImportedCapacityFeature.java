@@ -35,7 +35,7 @@ import io.sarl.lang.core.Capacity;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@Target({ ElementType.METHOD })
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ImportedCapacityFeature {
 

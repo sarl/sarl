@@ -89,9 +89,10 @@ import io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures;
 import io.sarl.lang.serializer.SARLEcoreDocumentationSyntacticSequencer;
 import io.sarl.lang.serializer.SARLSemanticSequencer;
 import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.typing.SARLExpressionHelper;
+import io.sarl.lang.typesystem.SARLExpressionHelper;
+import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
 import io.sarl.lang.validation.DefaultFeatureCallValidator;
-import io.sarl.lang.validation.FeatureCallValidator;
+import io.sarl.lang.validation.IFeatureCallValidator;
 import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
 import io.sarl.lang.validation.SARLEarlyExitValidator;
 import io.sarl.lang.validation.SARLFeatureNameValidator;
@@ -122,7 +123,6 @@ import org.eclipse.xtend.core.scoping.AnonymousClassConstructorScopes;
 import org.eclipse.xtend.core.serializer.XtendSerializerScopeProvider;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.typesystem.TypeDeclarationAwareBatchTypeResolver;
-import org.eclipse.xtend.core.typesystem.XtendReentrantTypeResolver;
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
 import org.eclipse.xtend.core.validation.CachingResourceValidatorImpl;
 import org.eclipse.xtend.core.validation.XtendImplicitReturnFinder;
@@ -494,6 +494,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends SARLExpressionHelper> bindSARLExpressionHelper() {
+		return SARLExpressionHelper.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends EarlyExitValidator> bindEarlyExitValidator() {
 		return SARLEarlyExitValidator.class;
 	}
@@ -534,13 +539,13 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends SARLExpressionHelper> bindSARLExpressionHelper() {
+	public Class<? extends XExpressionHelper> bindXExpressionHelper() {
 		return SARLExpressionHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends XExpressionHelper> bindXExpressionHelper() {
-		return SARLExpressionHelper.class;
+	public Class<? extends DefaultReentrantTypeResolver> bindDefaultReentrantTypeResolver() {
+		return SARLReentrantTypeResolver.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -554,7 +559,7 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends FeatureCallValidator> bindFeatureCallValidator() {
+	public Class<? extends IFeatureCallValidator> bindFeatureCallValidator() {
 		return DefaultFeatureCallValidator.class;
 	}
 	
@@ -683,11 +688,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends TargetURICollector> bindTargetURICollector() {
 		return JvmModelTargetURICollector.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public Class<? extends DefaultReentrantTypeResolver> bindDefaultReentrantTypeResolver() {
-		return XtendReentrantTypeResolver.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

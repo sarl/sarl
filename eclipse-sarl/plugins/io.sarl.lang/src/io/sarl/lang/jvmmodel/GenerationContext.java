@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.common.types.JvmConstructor;
@@ -58,6 +59,10 @@ abstract class GenerationContext {
 	/** Index of the late generated behavior unit.
 	 */
 	private int behaviorUnitIndex;
+
+	/** Set of capacities for which a capacuty-use field was generated.
+	 */
+	private final Set<String> generatedCapacityUseFields = CollectionLiterals.<String>newHashSet();
 
 	/** collection of the generated constructors.
 	 */
@@ -164,6 +169,22 @@ abstract class GenerationContext {
 	 */
 	public Map<ActionParameterTypes, JvmConstructor> getGeneratedConstructors() {
 		return this.generatedConstructors;
+	}
+
+	/** Add a capacity for which a capacity-use field is generated.
+	 *
+	 * @param capacity the identifier of the capacity.
+	 */
+	public void addGeneratedCapacityUseField(String capacity) {
+		this.generatedCapacityUseFields.add(capacity);
+	}
+
+	/** Replies the capacities for which capacity-use fields are generated.
+	 *
+	 * @return the capacity identifiers.
+	 */
+	public Set<String> getGeneratedCapacityUseFields() {
+		return this.generatedCapacityUseFields;
 	}
 
 	/** Replies the collection of the inherited final operations.

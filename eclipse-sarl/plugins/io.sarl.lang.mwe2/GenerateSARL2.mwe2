@@ -447,11 +447,11 @@ Workflow {
     				to = "io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer"
     			}
     			runtime = {
-    				bind = "io.sarl.lang.typing.SARLExpressionHelper"
-    				to = "io.sarl.lang.typing.SARLExpressionHelper"
+    				bind = "io.sarl.lang.typesystem.SARLExpressionHelper"
+    				to = "io.sarl.lang.typesystem.SARLExpressionHelper"
     			}
     			runtime = {
-    				bind = "io.sarl.lang.validation.FeatureCallValidator"
+    				bind = "io.sarl.lang.validation.IFeatureCallValidator"
     				to = "io.sarl.lang.validation.DefaultFeatureCallValidator"
     			}
     			runtime = {
@@ -490,11 +490,16 @@ Workflow {
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.util.XExpressionHelper"
-    				to = "io.sarl.lang.typing.SARLExpressionHelper"
+    				to = "io.sarl.lang.typesystem.SARLExpressionHelper"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.compiler.XbaseCompiler"
     				to = "io.sarl.lang.compiler.SarlCompiler"
+   				}
+    			runtime = {
+    				bind = "org.eclipse.xtext.xbase.typesystem.internal.DefaultReentrantTypeResolver"
+    				to = "io.sarl.lang.typesystem.SARLReentrantTypeResolver"
+    				override = true
    				}
     			
     			ui = {
@@ -605,11 +610,6 @@ Workflow {
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.typesystem.internal.DefaultBatchTypeResolver"
     				to = "org.eclipse.xtend.core.typesystem.TypeDeclarationAwareBatchTypeResolver"
-    				override = true
-   				}
-    			runtime = {
-    				bind = "org.eclipse.xtext.xbase.typesystem.internal.DefaultReentrantTypeResolver"
-    				to = "org.eclipse.xtend.core.typesystem.XtendReentrantTypeResolver"
     				override = true
    				}
     			runtime = {

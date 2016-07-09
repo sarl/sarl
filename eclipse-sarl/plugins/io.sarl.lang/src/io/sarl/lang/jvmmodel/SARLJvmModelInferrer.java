@@ -100,6 +100,7 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeExtensions;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Pair;
@@ -149,7 +150,7 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.typing.SARLExpressionHelper;
+import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
 
@@ -555,6 +556,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				appendGeneratedAnnotation(constructor);
 			}
 
+			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
+
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
 
@@ -639,6 +642,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						toStringConcatenation("super(owner);")); //$NON-NLS-1$
 				appendGeneratedAnnotation(constructor);
 			}
+
+			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -834,6 +839,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						toStringConcatenation("super(owner);")); //$NON-NLS-1$
 				appendGeneratedAnnotation(constructor);
 			}
+
+			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -1513,7 +1520,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param source the feature to transform.
 	 * @param container the target container of the transformation result.
 	 */
-	@SuppressWarnings({"unchecked", "checkstyle:npathcomplexity"})
 	protected void transform(SarlCapacityUses source, JvmGenericType container) {
 		final GenerationContext context = getContext(container);
 		if (context == null) {
@@ -1523,141 +1529,61 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final JvmType type = capacityType.getType();
 			if (type instanceof JvmGenericType) {
 				final LightweightTypeReference reference = Utils.toLightweightTypeReference(capacityType, this.services);
-				if (reference.isSubtypeOf(Capacity.class)) {
-					final Map<ActionPrototype, JvmOperation> capacityOperations = CollectionLiterals.newTreeMap(null);
+				if (reference.isSubtypeOf(Capacity.class)
+						&& !context.getGeneratedCapacityUseFields().contains(reference.getIdentifier())) {
 
-					Utils.populateInterfaceElements(
-							(JvmGenericType) type,
-							capacityOperations,
-							null,
-							this.sarlSignatureProvider);
+					// Generate the extension field
+					final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(reference.getIdentifier());
+					final JvmField field = this.typesFactory.createJvmField();
+					field.setVisibility(JvmVisibility.PRIVATE);
+					field.setSimpleName(fieldName);
+					field.setTransient(true);
+					field.setType(this.typeBuilder.cloneWithProxies(capacityType));
 
-					for (final Entry<ActionPrototype, JvmOperation> entry : capacityOperations.entrySet()) {
-						if (!context.getInheritedOverridableOperations().containsKey(entry.getKey())) {
+					this.associator.associatePrimary(source, field);
 
-							// Create the main function
-							final JvmOperation operation = this.typesFactory.createJvmOperation();
-							operation.setAbstract(false);
-							operation.setNative(false);
-							operation.setSynchronized(false);
-							operation.setStrictFloatingPoint(false);
-							operation.setFinal(false);
-							operation.setVisibility(JvmVisibility.PRIVATE);
-							operation.setStatic(false);
-							final JvmOperation implementedOperation = entry.getValue();
-							operation.setSimpleName(implementedOperation.getSimpleName());
-							final boolean isVarArgs = implementedOperation.isVarArgs();
-							operation.setVarArgs(isVarArgs);
-							container.getMembers().add(operation);
-							this.associator.associatePrimary(source, operation);
-							this.typeExtensions.setSynthetic(operation, true);
+					field.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Extension.class));
+					field.getAnnotations().add(annotationClassRef(ImportedCapacityFeature.class,
+							Collections.singletonList(capacityType)));
 
-							// Type parameters
-							copyAndFixTypeParameters(implementedOperation.getTypeParameters(), operation);
+					// Add the annotation dedicated to this particular method
+					appendGeneratedAnnotation(field);
 
-							// Return type
-							operation.setReturnType(cloneWithTypeParametersAndProxies(
-									implementedOperation,
-									implementedOperation.getReturnType(),
-									operation));
+					container.getMembers().add(field);
 
-							// Parameters
-							final List<String> args = CollectionLiterals.newArrayList();
-							final List<String> inlineArgs = CollectionLiterals.newArrayList();
-							final List<String> argTypes = CollectionLiterals.newArrayList();
-							int i = 1;
-							for (final JvmFormalParameter param : implementedOperation.getParameters()) {
-								final JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
-								jvmParam.setName(param.getSimpleName());
-								jvmParam.setParameterType(cloneWithTypeParametersAndProxies(
-										implementedOperation,
-										param.getParameterType(),
-										operation));
-								this.associator.associate(source, jvmParam);
-								operation.getParameters().add(jvmParam);
-								args.add(param.getSimpleName());
-								argTypes.add(
-										param.getParameterType().getIdentifier());
-								inlineArgs.add("$" + i); //$NON-NLS-1$
-								++i;
-							}
+					// Generate the calling function
+					final String methodName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(
+							fieldName);
+					final JvmOperation operation = this.typesFactory.createJvmOperation();
+					operation.setVisibility(JvmVisibility.PRIVATE);
+					operation.setReturnType(cloneWithTypeParametersAndProxies(capacityType, operation));
+					operation.setSimpleName(methodName);
 
-							// Documentation
-							if (!copyAndCleanDocumentationTo(implementedOperation, operation)) {
-								final String hyperrefLink = capacityType.getIdentifier() + "#" //$NON-NLS-1$
-										+ implementedOperation.getSimpleName() + "(" //$NON-NLS-1$
-										+ IterableExtensions.join(argTypes, ",") + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-								this.typeBuilder.setDocumentation(operation,
-										MessageFormat.format(
-												Messages.SARLJvmModelInferrer_13,
-												hyperrefLink));
-							}
-							// Exceptions
-							for (final JvmTypeReference exception : implementedOperation.getExceptions()) {
-								operation.getExceptions().add(this.typeBuilder.cloneWithProxies(exception));
-							}
+					this.associator.associatePrimary(source, operation);
 
-							// Body
-							this.typeBuilder.setBody(operation, (it) -> {
-								if (!Objects.equal("void", //$NON-NLS-1$
-										implementedOperation.getReturnType().getIdentifier())) {
-									it.append("return "); //$NON-NLS-1$
-								}
-								it.append("getSkill("); //$NON-NLS-1$
-								it.append(implementedOperation.getDeclaringType().getQualifiedName());
-								it.append(".class)."); //$NON-NLS-1$
-								it.append(implementedOperation.getSimpleName());
-								it.append("("); //$NON-NLS-1$
-								it.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
-								it.append(");"); //$NON-NLS-1$
-							});
+					this.typeBuilder.setBody(operation, (it) -> {
+						it.append("if (this.").append(fieldName).append(" == null) {"); //$NON-NLS-1$ //$NON-NLS-2$
+						it.increaseIndentation();
+						it.newLine();
+						it.append("this.").append(fieldName).append(" = getSkill("); //$NON-NLS-1$ //$NON-NLS-2$
+						it.append(capacityType.getType()).append(".class);"); //$NON-NLS-1$
+						it.decreaseIndentation();
+						it.newLine();
+						it.append("}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("return this.").append(fieldName).append(";"); //$NON-NLS-1$ //$NON-NLS-2$
+					});
 
-							// Copy annotations from the implemented method
-							translateAnnotationsTo(implementedOperation.getAnnotations(), operation,
-									FiredEvent.class, Generated.class, ImportedCapacityFeature.class);
+					// Add the annotation dedicated to this particular method
+					appendInlineAnnotation(operation, fieldName
+							+ " == null ? (this." + fieldName //$NON-NLS-1$
+							+ " = getSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
+							+ ".class)) : this." + fieldName); //$NON-NLS-1$
+					appendGeneratedAnnotation(operation);
 
-							// Add the inline annotation
-							// The Xtext inline evaluator is considering the function arguments, not the
-							// function formal parameters. Consequently, inline cannot be used for functions
-							// with variadic parameters.
-							if (!Utils.hasAnnotation(operation, Inline.class)) {
-								final JvmDeclaredType declaringType = implementedOperation.getDeclaringType();
-								final StringBuilder it = new StringBuilder();
-								it.append("getSkill("); //$NON-NLS-1$
-								it.append(declaringType.getQualifiedName());
-								it.append(".class)."); //$NON-NLS-1$
-								it.append(implementedOperation.getSimpleName());
-								it.append("("); //$NON-NLS-1$
-								it.append(IterableExtensions.join(inlineArgs, ", ")); //$NON-NLS-1$
-								it.append(")"); //$NON-NLS-1$
-								appendInlineAnnotation(operation, it.toString(), declaringType);
-							}
+					container.getMembers().add(operation);
 
-							// Copy the EarlyExit Annotation from the capacity
-							if (Utils.hasAnnotation(implementedOperation, EarlyExit.class)) {
-								operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(EarlyExit.class));
-							}
-
-							// Copy the FiredEvent annotation from the capacity
-							final List<JvmTypeReference> firedEvents = Utils.annotationClasses(implementedOperation,
-									FiredEvent.class);
-							if (!firedEvents.isEmpty()) {
-								operation.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
-							}
-
-							// Add the annotation dedicated to this particular method
-							appendGeneratedAnnotation(operation);
-
-							// Add the imported feature marker
-							operation.getAnnotations().add(annotationClassRef(ImportedCapacityFeature.class,
-									Collections.singletonList(capacityType)));
-							//
-							context.getInheritedOperationsToImplement().remove(entry.getKey());
-							context.getInheritedOverridableOperations().put(entry.getKey(), implementedOperation);
-							context.setActionIndex(context.getActionIndex() + 1);
-						}
-					}
-
+					context.addGeneratedCapacityUseField(reference.getIdentifier());
 					context.incrementSerial(capacityType.getIdentifier().hashCode());
 				}
 			}
@@ -1671,6 +1597,102 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void transform(SarlRequiredCapacity source, JvmGenericType container) {
 		//
+	}
+
+	/** Append the overriding of the hidden setSkill function.
+	 *
+	 * @param context the current generation context.
+	 * @param source the source object.
+	 * @param target the inferred JVM object.
+	 */
+	protected void appendOverridingHiddenSetSkillOperation(GenerationContext context, XtendTypeDeclaration source,
+			JvmGenericType target) {
+		final Set<String> usedCapacities = context.getGeneratedCapacityUseFields();
+		if (!usedCapacities.isEmpty()) {
+			appendSetSkillOperation(usedCapacities, target);
+			appendClearSkillOperation(usedCapacities, target);
+		}
+	}
+
+	private void appendClearSkillOperation(Set<String> usedCapacities, JvmGenericType target) {
+		final JvmOperation clearer = this.typesFactory.createJvmOperation();
+		clearer.setVisibility(JvmVisibility.PROTECTED);
+		final JvmTypeParameter typeParameter = this.typesFactory.createJvmTypeParameter();
+		typeParameter.setName("S"); //$NON-NLS-1$
+		final JvmTypeConstraint constraint1 = this.typesFactory.createJvmUpperBound();
+		constraint1.setTypeReference(this.typeReferences.getTypeForName(Capacity.class, target));
+		typeParameter.getConstraints().add(constraint1);
+		typeParameter.setDeclarator(clearer);
+		clearer.getTypeParameters().add(typeParameter);
+		final JvmTypeReference returnType = this.typeReferences.createTypeRef(typeParameter);
+		clearer.setReturnType(cloneWithTypeParametersAndProxies(returnType, clearer));
+		clearer.setSimpleName("clearSkill"); //$NON-NLS-1$
+
+		target.getMembers().add(clearer);
+
+		final JvmFormalParameter capacityParameter = this.typesFactory.createJvmFormalParameter();
+		capacityParameter.setName("capacity"); //$NON-NLS-1$
+		final JvmTypeReference capacityParameterType = this.typeReferences.getTypeForName(Class.class, target, returnType);
+		capacityParameter.setParameterType(this.typeBuilder.cloneWithProxies(capacityParameterType));
+		clearer.getParameters().add(capacityParameter);
+
+		this.typeBuilder.setBody(clearer, (it) -> {
+			for (final String capacityId : usedCapacities) {
+				it.append("this."); //$NON-NLS-1$
+				it.append(Utils.createNameForHiddenCapacityImplementationAttribute(capacityId));
+				it.append(" = null;"); //$NON-NLS-1$
+				it.newLine();
+			}
+			it.append("return super.clearSkill(capacity);"); //$NON-NLS-1$
+		});
+
+		appendGeneratedAnnotation(clearer);
+		clearer.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
+	}
+
+	private void appendSetSkillOperation(Set<String> usedCapacities, JvmGenericType target) {
+		final JvmOperation setter = this.typesFactory.createJvmOperation();
+		setter.setVisibility(JvmVisibility.PROTECTED);
+		final JvmTypeParameter typeParameter = this.typesFactory.createJvmTypeParameter();
+		typeParameter.setName("S"); //$NON-NLS-1$
+		final JvmTypeConstraint constraint1 = this.typesFactory.createJvmUpperBound();
+		constraint1.setTypeReference(this.typeReferences.getTypeForName(Skill.class, target));
+		typeParameter.getConstraints().add(constraint1);
+		typeParameter.setDeclarator(setter);
+		setter.getTypeParameters().add(typeParameter);
+		final JvmTypeReference returnType = this.typeReferences.createTypeRef(typeParameter);
+		setter.setReturnType(cloneWithTypeParametersAndProxies(returnType, setter));
+		setter.setSimpleName(Utils.HIDDEN_MEMBER_CHARACTER + "setSkill"); //$NON-NLS-1$
+
+		target.getMembers().add(setter);
+
+		final JvmFormalParameter skillParameter = this.typesFactory.createJvmFormalParameter();
+		skillParameter.setName("skill"); //$NON-NLS-1$
+		skillParameter.setParameterType(cloneWithTypeParametersAndProxies(returnType, setter));
+		setter.getParameters().add(skillParameter);
+
+		final JvmFormalParameter capacityParameter = this.typesFactory.createJvmFormalParameter();
+		capacityParameter.setName("capacities"); //$NON-NLS-1$
+		final JvmTypeReference constraint2 = this.typeReferences.wildCardExtends(
+				this.typeReferences.getTypeForName(Capacity.class, target));
+		final JvmTypeReference capacityParameterType = this.typeReferences.createArrayType(
+				this.typeReferences.getTypeForName(Class.class, target, constraint2));
+		capacityParameter.setParameterType(this.typeBuilder.cloneWithProxies(capacityParameterType));
+		setter.getParameters().add(capacityParameter);
+
+		this.typeBuilder.setBody(setter, (it) -> {
+			for (final String capacityId : usedCapacities) {
+				it.append("this."); //$NON-NLS-1$
+				it.append(Utils.createNameForHiddenCapacityImplementationAttribute(capacityId));
+				it.append(" = null;"); //$NON-NLS-1$
+				it.newLine();
+			}
+			it.append("return super.").append(Utils.HIDDEN_MEMBER_CHARACTER); //$NON-NLS-1$
+			it.append("setSkill(skill, capacities);"); //$NON-NLS-1$
+		});
+
+		appendGeneratedAnnotation(setter);
+		setter.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
 	}
 
 	/** Generate the code for the given SARL members.
@@ -2193,9 +2215,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 *
 	 * @param operation the operation to annotate.
 	 * @param inlineExpression the inline expression.
-	 * @param types the types to import if the inline expression is used.
+	 * @param types the types to import if the inline expression is used. The references are cloned by this function.
 	 */
-	protected void appendInlineAnnotation(JvmOperation operation, String inlineExpression, JvmDeclaredType... types) {
+	protected void appendInlineAnnotation(JvmOperation operation, String inlineExpression, JvmTypeReference... types) {
 		final JvmAnnotationReference annotationReference = this._annotationTypesBuilder.annotationRef(
 				Inline.class);
 		JvmOperation valueOperation = null;
@@ -2218,9 +2240,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		annotationStringValue.setOperation(valueOperation);
 		annotationReference.getExplicitValues().add(annotationStringValue);
 
-		for (final JvmDeclaredType type : types) {
+		for (final JvmTypeReference type : types) {
 			final JvmTypeAnnotationValue annotationTypeValue = this.services.getTypesFactory().createJvmTypeAnnotationValue();
-			annotationTypeValue.getValues().add(this.typeReferences.createTypeRef(type));
+			annotationTypeValue.getValues().add(this.typeBuilder.cloneWithProxies(type));
 			annotationTypeValue.setOperation(importOperation);
 			annotationReference.getExplicitValues().add(annotationTypeValue);
 		}
@@ -2531,13 +2553,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * <p>The proxies are not resolved, and the type parameters are clone when they are
 	 * related to the type parameter of the type container.
 	 *
-	 * @param typeReferenceContainer the operation that contains the source type reference.
 	 * @param type the source type.
 	 * @param forOperation the operation that will contain the result type.
 	 * @return the result type, i.e. a copy of the source type.
 	 */
-	protected JvmTypeReference cloneWithTypeParametersAndProxies(JvmOperation typeReferenceContainer,
-			JvmTypeReference type, JvmOperation forOperation) {
+	protected JvmTypeReference cloneWithTypeParametersAndProxies(JvmTypeReference type, JvmOperation forOperation) {
 		// TODO: Is similar function exist in Xtext?
 
 		if (type == null) {

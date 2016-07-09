@@ -21,6 +21,7 @@
 
 package io.sarl.lang.validation;
 
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 
 import io.sarl.lang.util.Utils;
@@ -32,7 +33,7 @@ import io.sarl.lang.util.Utils;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class DefaultFeatureCallValidator implements FeatureCallValidator {
+public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 
 	/** Construct the validator.
 	 */
@@ -43,8 +44,15 @@ public class DefaultFeatureCallValidator implements FeatureCallValidator {
 	@Override
 	public boolean isDisallowedCall(XAbstractFeatureCall call) {
 		if (call != null && call.getFeature() != null) {
-			final String id = call.getFeature().getQualifiedName();
-			return "java.lang.System.exit".equals(id); //$NON-NLS-1$
+			final JvmIdentifiableElement feature = call.getFeature();
+			final String id = feature.getQualifiedName();
+			if ("java.lang.System.exit".equals(id)) { //$NON-NLS-1$
+				return true;
+			}
+			if (Utils.isHiddenMember(feature.getSimpleName())
+				&& !Utils.isNameForHiddenCapacityImplementationCallingMethod(feature.getSimpleName())) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -64,9 +72,6 @@ public class DefaultFeatureCallValidator implements FeatureCallValidator {
 					return true;
 				default:
 					if (id.startsWith("org.eclipse.xtext.xbase.lib.InputOutput")) { //$NON-NLS-1$
-						return true;
-					}
-					if (Utils.isHiddenMember(call.getFeature().getSimpleName())) {
 						return true;
 					}
 				}

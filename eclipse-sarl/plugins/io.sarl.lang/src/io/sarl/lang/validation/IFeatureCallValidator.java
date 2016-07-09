@@ -30,7 +30,7 @@ import org.eclipse.xtext.xbase.XAbstractFeatureCall;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface FeatureCallValidator {
+public interface IFeatureCallValidator {
 
 	/** Replies if the given call is disallowed or not.
 	 *

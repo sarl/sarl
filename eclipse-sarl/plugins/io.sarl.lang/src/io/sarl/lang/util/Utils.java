@@ -100,10 +100,17 @@ import io.sarl.lang.services.SARLGrammarAccess.ParameterElements;
 @SuppressWarnings("checkstyle:classfanoutcomplexity")
 public final class Utils {
 
-	private static final String HIDDEN_MEMBER_CHARACTER = "$"; //$NON-NLS-1$
+	/** Character for hidden features.
+	 */
+	public static final String HIDDEN_MEMBER_CHARACTER = "$"; //$NON-NLS-1$
 
 	private static final String PREFIX_DEFAULT_VALUE = HIDDEN_MEMBER_CHARACTER + "DEFAULT_VALUE" //$NON-NLS-1$
 			+ HIDDEN_MEMBER_CHARACTER;
+
+	private static final String PREFIX_CAPACITY_IMPLEMENTATION = HIDDEN_MEMBER_CHARACTER + "CAPACITY_USE" //$NON-NLS-1$
+			+ HIDDEN_MEMBER_CHARACTER;
+
+	private static final String POSTFIX_CAPACITY_IMPLEMENTATION_CALLER = HIDDEN_MEMBER_CHARACTER + "CALLER"; //$NON-NLS-1$
 
 	private static final String PREFIX_GUARD_EVALUATOR = HIDDEN_MEMBER_CHARACTER + "guardEvaluator" //$NON-NLS-1$
 			+ HIDDEN_MEMBER_CHARACTER;
@@ -318,7 +325,37 @@ public final class Utils {
 	 * @return the method name.
 	 */
 	public static String createNameForHiddenDefaultValueAttribute(String id) {
-		return PREFIX_DEFAULT_VALUE + fixHiddenMember(id);
+		return PREFIX_DEFAULT_VALUE + fixHiddenMember(id.toUpperCase());
+	}
+
+	/** Create the name of the hidden field that is containing a capacity implementation.
+	 *
+	 * @param id the id of the capacity.
+	 * @return the field name.
+	 */
+	public static String createNameForHiddenCapacityImplementationAttribute(String id) {
+		return PREFIX_CAPACITY_IMPLEMENTATION + fixHiddenMember(id.toUpperCase()).replace(".", //$NON-NLS-1$
+				HIDDEN_MEMBER_REPLACEMENT_CHARACTER);
+	}
+
+	/** Create the name of the hidden method that is calling a capacity implementation.
+	 *
+	 * @param capacityImplementationFieldName the name of the extension field.
+	 * @return the method name.
+	 */
+	public static String createNameForHiddenCapacityImplementationCallingMethodFromFieldName(
+			String capacityImplementationFieldName) {
+		return capacityImplementationFieldName + POSTFIX_CAPACITY_IMPLEMENTATION_CALLER;
+	}
+
+	/** Replies if the given simple name is the name of the hidden method that is calling a capacity implementation.
+	 *
+	 * @param simpleName the simple name.
+	 * @return <code>true</code> if the given simple name if for the hidden method for capacuty uses.
+	 */
+	public static boolean isNameForHiddenCapacityImplementationCallingMethod(String simpleName) {
+		return simpleName != null && simpleName.startsWith(PREFIX_CAPACITY_IMPLEMENTATION)
+				&& simpleName.endsWith(POSTFIX_CAPACITY_IMPLEMENTATION_CALLER);
 	}
 
 	/** Create the name of the hidden local variable.
@@ -505,6 +542,8 @@ public final class Utils {
 
 	/** Extract the string value of the given annotation, if it exists.
 	 *
+	 * <p>TODO Replace by AnnotationLookup.
+	 *
 	 * @param op - the annoted element.
 	 * @param annotationType - the type of the annotation to consider
 	 * @return the value of the annotation, or <code>null</code> if no annotation or no
@@ -530,6 +569,8 @@ public final class Utils {
 	}
 
 	/** Extract the string values of the given annotation, if they exist.
+	 *
+	 * <p>TODO Replace by AnnotationLookup.
 	 *
 	 * @param op - the annoted element.
 	 * @param annotationType - the type of the annotation to consider
@@ -557,6 +598,8 @@ public final class Utils {
 
 	/** Extract the type values of the given annotation, if they exist.
 	 *
+	 * <p>TODO Replace by AnnotationLookup.
+	 *
 	 * @param op - the annoted element.
 	 * @param annotationType - the type of the annotation to consider
 	 * @return the values of the annotation, never <code>null</code>.
@@ -582,6 +625,8 @@ public final class Utils {
 	}
 
 	/** Replies if the given target is annotated.
+	 *
+	 * <p>TODO Replace by AnnotationLookup.
 	 *
 	 * @param op - the annoted element.
 	 * @param annotationType - the type of the annotation to consider

@@ -51,9 +51,7 @@ import org.eclipse.xtext.scoping.impl.MultimapBasedSelectable;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated Remove when Xtend is fixed.
  */
-@Deprecated
 @Singleton
 public class Bug356ImportedNamespaceScopeProvider extends XtendImportedNamespaceScopeProvider {
 

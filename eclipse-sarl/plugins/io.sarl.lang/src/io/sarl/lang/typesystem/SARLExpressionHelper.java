@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.typing;
+package io.sarl.lang.typesystem;
 
 import java.util.List;
 import java.util.regex.Pattern;

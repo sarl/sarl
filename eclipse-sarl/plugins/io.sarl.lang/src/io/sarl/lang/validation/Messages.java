@@ -103,6 +103,7 @@ public class Messages extends NLS {
 	public static String SARLValidator_40;
 	public static String SARLValidator_42;
 	public static String SARLValidator_43;
+	public static String SARLValidator_44;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

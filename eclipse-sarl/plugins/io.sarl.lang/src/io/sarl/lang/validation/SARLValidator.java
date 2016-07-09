@@ -93,14 +93,10 @@ import java.util.TreeMap;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
-import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -119,8 +115,6 @@ import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtext.common.types.JvmAnnotationReference;
-import org.eclipse.xtext.common.types.JvmAnnotationValue;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmField;
@@ -129,7 +123,6 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
-import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -142,8 +135,6 @@ import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
-import org.eclipse.xtext.xbase.lib.Functions;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
 import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
@@ -154,7 +145,6 @@ import io.sarl.lang.SARLLangActivator;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.IActionPrototypeProvider;
-import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
@@ -176,7 +166,7 @@ import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.typing.SARLExpressionHelper;
+import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.Utils;
 
 /**
@@ -321,7 +311,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private IActionPrototypeProvider sarlActionSignatures;
 
 	@Inject
-	private FeatureCallValidator featureCallValidator;
+	private IFeatureCallValidator featureCallValidator;
 
 	@Inject
 	private SARLGrammarAccess grammarAccess;
@@ -904,9 +894,23 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkForbiddenCalls(XAbstractFeatureCall expression) {
+		// specific message for System.exit
+		if (expression.getFeature() != null) {
+			final JvmIdentifiableElement feature = expression.getFeature();
+			final String id = feature.getQualifiedName();
+			if ("java.lang.System.exit".equals(id)) { //$NON-NLS-1$
+				error(
+						Messages.SARLValidator_44,
+						expression,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						FORBIDDEN_REFERENCE);
+				return;
+			}
+		}
 		if (this.featureCallValidator.isDisallowedCall(expression)) {
 			error(
-					Messages.SARLValidator_39,
+					MessageFormat.format(Messages.SARLValidator_39, expression.getFeature().getIdentifier()),
 					expression,
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1638,28 +1642,6 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
-	private static JvmAnnotationReference doGetFirstAnnotation(JvmOperation operation, final String annotationId) {
-		return IterableExtensions.findFirst(operation.getAnnotations(),
-				new Functions.Function1<JvmAnnotationReference, Boolean>() {
-						@Override
-						public Boolean apply(JvmAnnotationReference it) {
-							return Objects.equal(it.getAnnotation().getIdentifier(), annotationId);
-						}
-					});
-	}
-
-	private boolean doGetLocalUsage(Collection<JvmOperation> operations, EObject container) {
-		final Iterator<JvmOperation> iterator = operations.iterator();
-		boolean found = false;
-		while (!found && iterator.hasNext()) {
-			final JvmOperation operation = iterator.next();
-			if (isLocallyUsed(operation, container)) {
-				found = true;
-			}
-		}
-		return found;
-	}
-
 	/** Check for unused capacities.
 	 *
 	 * @param uses - the capacity use declaration.
@@ -1668,54 +1650,29 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check(CheckType.NORMAL)
 	public void checkUnusedCapacities(SarlCapacityUses uses) {
 		if (!isIgnored(UNUSED_AGENT_CAPACITY)) {
-			final EObject container = uses.getDeclaringType();
-			final EObject jvmContainer = this.associations.getPrimaryJvmElement(container);
-
-			final String annotationId = ImportedCapacityFeature.class.getName();
-			final Multimap<String, JvmOperation> importedFeatures = Multimaps.newMultimap(
-					CollectionLiterals.<String, Collection<JvmOperation>>newHashMap(),
-					new Supplier<Collection<JvmOperation>>() {
-						@Override
-						public Collection<JvmOperation> get() {
-							return CollectionLiterals.<JvmOperation>newArrayList();
-						}
-					});
-			final Iterable<EObject> fitleredObjects = IterableExtensions.filter(jvmContainer.eContents(),
-					new Functions.Function1<EObject, Boolean>() {
-						@SuppressWarnings("synthetic-access")
-						@Override
-						public Boolean apply(EObject it) {
-							if (it instanceof JvmOperation) {
-								final JvmOperation operation = (JvmOperation) it;
-								if (doGetFirstAnnotation(operation, annotationId) != null) {
-									return Boolean.TRUE;
-								}
-							}
-							return Boolean.FALSE;
-						}
-
-					});
-			for (final EObject method : fitleredObjects) {
-				final JvmOperation operation = (JvmOperation) method;
-				final EList<JvmAnnotationValue> annotationValues = doGetFirstAnnotation(operation, annotationId).getValues();
-				final JvmTypeAnnotationValue annotationType = (JvmTypeAnnotationValue) annotationValues.get(0);
-				final JvmTypeReference capacityType = annotationType.getValues().get(0);
-				importedFeatures.put(capacityType.getIdentifier(), operation);
+			final XtendTypeDeclaration container = uses.getDeclaringType();
+			final JvmDeclaredType jvmContainer = (JvmDeclaredType) this.associations.getPrimaryJvmElement(container);
+			final Map<String, JvmOperation> importedFeatures = CollectionLiterals.newHashMap();
+			for (final JvmOperation operation : jvmContainer.getDeclaredOperations()) {
+				if (Utils.isNameForHiddenCapacityImplementationCallingMethod(operation.getSimpleName())) {
+					importedFeatures.put(operation.getSimpleName(), operation);
+				}
 			}
 
 			int index = 0;
 			for (final JvmTypeReference capacity : uses.getCapacities()) {
-				final Collection<JvmOperation> operations = importedFeatures.get(capacity.getIdentifier());
-				if (!operations.isEmpty()) {
-					if (!doGetLocalUsage(operations, container)) {
-						addIssue(MessageFormat.format(
-								Messages.SARLValidator_42,
-								capacity.getSimpleName()),
-								uses,
-								SARL_CAPACITY_USES__CAPACITIES,
-								index, UNUSED_AGENT_CAPACITY,
-								capacity.getSimpleName());
-					}
+				final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacity.getIdentifier());
+				final String operationName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(fieldName);
+				final JvmOperation operation = importedFeatures.get(operationName);
+				assert operation != null;
+				if (!isLocallyUsed(operation, container)) {
+					addIssue(MessageFormat.format(
+							Messages.SARLValidator_42,
+							capacity.getSimpleName()),
+							uses,
+							SARL_CAPACITY_USES__CAPACITIES,
+							index, UNUSED_AGENT_CAPACITY,
+							capacity.getSimpleName());
 				}
 				++index;
 			}
