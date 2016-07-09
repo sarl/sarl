@@ -498,6 +498,12 @@ Workflow {
    				}
     			
     			ui = {
+    				bind = "org.eclipse.jface.viewers.ILabelDecorator"
+    				annotatedWithName = "DiagnosticDecorator"
+    				to = "io.sarl.lang.ui.labeling.SARLDiagnosticLabelDecorator"
+    				singleton = true
+    			}
+    			ui = {
     				bind = "io.sarl.lang.ui.images.IQualifiedNameImageProvider"
     				to = "io.sarl.lang.ui.labeling.SARLLabelProvider"
     				singleton = true

@@ -21,9 +21,12 @@
 
 package io.sarl.lang.ui.outline;
 
+import javax.inject.Named;
+
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
@@ -61,6 +64,10 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 
 	@Inject
 	private SarlJvmModelAssociations associations;
+
+	@Inject
+	@Named("DiagnosticDecorator")
+	private ILabelDecorator diagnoticDecorator;
 
 	/** Create a node for the SARL script.
 	 *
@@ -221,6 +228,12 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 			}
 		}
 		return false;
+	}
+
+	@Override
+	protected Image _image(Object modelElement) {
+		final Image img = super._image(modelElement);
+		return this.diagnoticDecorator.decorateImage(img, modelElement);
 	}
 
 }
