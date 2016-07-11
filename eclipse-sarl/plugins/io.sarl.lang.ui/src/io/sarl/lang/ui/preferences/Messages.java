@@ -41,15 +41,12 @@ public class Messages extends NLS {
 	}
 
 	public static String SARLValidatorConfigurationBlock_0;
-	public static String SARLValidatorConfigurationBlock_1;
 	public static String SARLValidatorConfigurationBlock_2;
 	public static String SARLValidatorConfigurationBlock_3;
 	public static String SARLValidatorConfigurationBlock_4;
 	public static String SARLValidatorConfigurationBlock_5;
-	public static String SARLValidatorConfigurationBlock_6;
-	public static String SARLValidatorConfigurationBlock_7;
-	public static String SARLValidatorConfigurationBlock_8;
 	public static String SARLValidatorConfigurationBlock_9;
+	public static String SARLValidatorConfigurationBlock_1;
 	public static String SARLValidatorConfigurationBlock_10;
 	public static String SARLValidatorConfigurationBlock_11;
 	public static String SARLValidatorConfigurationBlock_12;

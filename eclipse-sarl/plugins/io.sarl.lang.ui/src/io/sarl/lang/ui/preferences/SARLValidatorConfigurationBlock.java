@@ -22,13 +22,10 @@
 package io.sarl.lang.ui.preferences;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.xtend.ide.validator.preferences.XtendValidatorConfigurationBlock;
-import org.eclipse.xtext.validation.SeverityConverter;
 
 import io.sarl.lang.validation.IssueCodes;
 
@@ -62,32 +59,20 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 	@Override
 	protected void addAdditionalComponentsToSettingsPage(Composite settingsPage, int nbColumns, int defaultIndent) {
 		super.addAdditionalComponentsToSettingsPage(settingsPage, nbColumns, defaultIndent);
-		createHorizontalLine(settingsPage, nbColumns);
-		final Composite composite = new Composite(settingsPage, SWT.NONE);
-		final GridLayout layout = new GridLayout(nbColumns, false);
-		layout.marginHeight = 0;
-		composite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, nbColumns, 1));
-		composite.setLayout(layout);
-		final String[] values = new String[] {
-			SeverityConverter.SEVERITY_ERROR,
-			SeverityConverter.SEVERITY_WARNING,
-			SeverityConverter.SEVERITY_IGNORE,
-		};
-		final String[] valueLabels = new String[] {
-			Messages.SARLValidatorConfigurationBlock_6,
-			Messages.SARLValidatorConfigurationBlock_7,
-			Messages.SARLValidatorConfigurationBlock_8,
-		};
-		addComboBox(composite,
-				Messages.SARLValidatorConfigurationBlock_9,
-				org.eclipse.xtext.xbase.validation.IssueCodes.COPY_JAVA_PROBLEMS,
-				defaultIndent, values, valueLabels);
-	}
-
-	private static void createHorizontalLine(Composite settingsPage, int nbColumns) {
-		final Label horizontalLine = new Label(settingsPage, SWT.SEPARATOR | SWT.HORIZONTAL);
-		horizontalLine.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, nbColumns, 1));
-		horizontalLine.setFont(settingsPage.getFont());
+		// Xtend block add the "Display Java Problems in Xtend".
+		// It must be replaced by "Display Java Problems in SARL".
+		for (final Control ctrl : settingsPage.getChildren()) {
+			if (ctrl instanceof Composite) {
+				final Composite composite = (Composite) ctrl;
+				for (final Control ctrl2 : composite.getChildren()) {
+					if (ctrl2 instanceof Label
+							&& Messages.SARLValidatorConfigurationBlock_1.equals(((Label) ctrl2).getText())) {
+						((Label) ctrl2).setText(Messages.SARLValidatorConfigurationBlock_9);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	@Override
