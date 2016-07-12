@@ -63,10 +63,15 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.ui.images.SARLImages;
+import io.sarl.lang.util.Utils;
 
 /** Provides proposal for the content assist mechanism.
  *
- * <p>This provider restrict the proposal according to the context.
+ * <p>This provider:<ul>
+ * <li>restricts the proposals according to the context;</li>
+ * <li>avoid to propose the hidden features (with "$" inside their names);</li>
+ * <li>provides a valid name after the "package" keyword.</li>
+ * </ul>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -89,6 +94,14 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
 	@Inject
 	private IImageHelper imageHelper;
+
+	@Override
+	protected boolean isValidProposal(String proposal, String prefix, ContentAssistContext context) {
+		if (super.isValidProposal(proposal, prefix, context)) {
+			return !Utils.isHiddenMember(proposal);
+		}
+		return false;
+	}
 
 	/** Complete for obtaining SARL types that are subtypes of the given type.
 	 *
