@@ -33,6 +33,7 @@ import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;
 import io.sarl.lang.ui.builder.ProjectRelativeFileSystemAccess;
 import io.sarl.lang.ui.contentassist.SARLContentAssistFactory;
 import io.sarl.lang.ui.contentassist.SARLImportingTypesProposalProvider;
+import io.sarl.lang.ui.contentassist.SARLJavaDocContentAssistProcessor;
 import io.sarl.lang.ui.contentassist.SARLProposalProvider;
 import io.sarl.lang.ui.contentassist.SARLTemplateContextType;
 import io.sarl.lang.ui.contentassist.SARLTemplateProposalProvider;
@@ -69,6 +70,7 @@ import org.eclipse.xtend.ide.builder.UIResourceChangeRegistry;
 import org.eclipse.xtend.ide.common.editor.bracketmatching.XtendBracePairProvider;
 import org.eclipse.xtend.ide.contentassist.EscapeSequenceAwarePrefixMatcher;
 import org.eclipse.xtend.ide.contentassist.antlr.FlexProposalConflictHelper;
+import org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProcessor;
 import org.eclipse.xtend.ide.editor.OccurrenceComputer;
 import org.eclipse.xtend.ide.editor.OverrideIndicatorModelListener;
 import org.eclipse.xtend.ide.editor.OverrideIndicatorRulerAction;
@@ -511,6 +513,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	@SingletonBinding(eager=true)
 	public Class<? extends XbaseUIValidator> bindXbaseUIValidator() {
 		return SARLUIValidator.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends XtendJavaDocContentAssistProcessor> bindXtendJavaDocContentAssistProcessor() {
+		return SARLJavaDocContentAssistProcessor.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
