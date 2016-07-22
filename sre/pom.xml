@@ -3,8 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.sarl</groupId>
-		<artifactId>io.sarl</artifactId>
+		<artifactId>io.sarl.tycho-parent</artifactId>
 		<version>0.4.0-SNAPSHOT</version>
+		<relativePath>../tycho-parent</relativePath>
 	</parent>
 
 	<artifactId>io.sarl.sre</artifactId>
@@ -13,7 +14,7 @@
 	<name>SARL Runtime Environment Parent</name>
 
 	<modules>
-		<module>janus</module>
+		<module>io.janusproject</module>
 	</modules>
 
 </project>
