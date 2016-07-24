@@ -165,6 +165,7 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.Utils;
@@ -339,6 +340,19 @@ public class SARLValidator extends AbstractSARLValidator {
 			return ((JvmIdentifiableElement) jvmElement).getQualifiedName();
 		}
 		return null;
+	}
+
+	/** Space keyword is reserved.
+	 *
+	 * @param space - the space to check.
+	 */
+	@Check
+	public void checkSpaceUse(SarlSpace space) {
+		error(MessageFormat.format(
+					Messages.SARLJavaValidator_20,
+					this.grammarAccess.getSpaceKeyword()),
+					space,
+					null);
 	}
 
 	/** Emit a warning when the "fires" keyword is used.
