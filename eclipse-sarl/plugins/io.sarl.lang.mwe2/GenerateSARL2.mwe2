@@ -482,7 +482,7 @@ Workflow {
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures"
-    				to = "io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures"
+    				to = "io.sarl.lang.scoping.SARLImplicitlyImportedFeatures"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.generator.IOutputConfigurationProvider"

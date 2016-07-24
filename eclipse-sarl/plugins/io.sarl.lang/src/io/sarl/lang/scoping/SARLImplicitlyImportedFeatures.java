@@ -19,12 +19,15 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.scoping.batch;
+package io.sarl.lang.scoping;
 
 import java.util.List;
 
 import com.google.inject.Singleton;
 import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
+
+import io.sarl.lang.scoping.batch.SARLMapExtensions;
+import io.sarl.lang.scoping.batch.SARLTimeExtensions;
 
 
 /** Provider of the implicitly imported features in the SARL language.
