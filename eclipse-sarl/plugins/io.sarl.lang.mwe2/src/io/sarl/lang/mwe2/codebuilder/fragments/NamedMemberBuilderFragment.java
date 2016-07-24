@@ -21,28 +21,24 @@
 
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.AbstractRule;
-import org.eclipse.xtext.Assignment;
-import org.eclipse.xtext.Grammar;
-import org.eclipse.xtext.GrammarUtil;
-import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
+
+import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
 /** Generator of the builder for named members.
  *
@@ -63,60 +59,43 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 	protected Iterable<MemberDescription> getMembers() {
 		if (this.members == null) {
 			this.members = new HashMap<>();
-			Grammar grammar = getGrammar();
-			AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
-			if (rule != null) {
-				for (RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
-					AbstractRule topMemberRule = null;
-					for (Assignment assignment : GrammarUtil.containedAssignments(ruleCall.getRule())) {
-						if (Objects.equals(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName(), assignment.getFeature())) {
-							if (topMemberRule == null && assignment.getTerminal() instanceof RuleCall) {
-								topMemberRule = ((RuleCall) assignment.getTerminal()).getRule();
-							}
-						}
-					}
-					if (topMemberRule != null) {
-						visitMemberElements(ruleCall.getRule(), topMemberRule, getTopElementRules(),
-								null,
-								new Functions.Function3<AbstractRule, AbstractRule, String, Object>() {
-									@SuppressWarnings("synthetic-access")
-									@Override
-									public Object apply(AbstractRule containerRule, AbstractRule memberRule, String name) {
-										MemberDescription memberDescription = NamedMemberBuilderFragment.this.members.get(
-												memberRule.getName());
-										String memberName = Strings.toFirstUpper(memberRule.getName());
-										EClassifier classifier = getGeneratedTypeFor(memberRule);
-										TypeReference generatedType = newTypeReference(classifier);
-										if (memberDescription == null) {
-											TypeReference interfaceType = getElementBuilderInterface(memberName);
-											TypeReference implementationType = getElementBuilderImpl(memberName);
-											TypeReference customImplementationType = getElementBuilderImplCustom(memberName);
-											List<String> modifiers = getCodeBuilderConfig().getModifiers()
-													.get(generatedType.getSimpleName());
-											memberDescription = new MemberDescription(
-													memberRule.getName(),
-													memberName,
-													interfaceType,
-													implementationType,
-													customImplementationType,
-													generatedType,
-													modifiers);
-											NamedMemberBuilderFragment.this.members.put(memberRule.getName(),
-													memberDescription);
-										}
-										boolean isNoBody = getCodeBuilderConfig().getNoActionBodyTypes()
-												.contains(generatedType.getSimpleName());
-										Set<String> containers;
-										if (isNoBody) {
-											containers = memberDescription.getNoBodyContainers();
-										} else {
-											containers = memberDescription.getStandardContainers();
-										}
-										containers.add(Strings.toFirstUpper(containerRule.getName()));
-										return null;
-									}
-								});
-					}
+			final List<CodeElementExtractor.ElementDescription> topElements = new ArrayList<>();
+			for (final CodeElementExtractor.ElementDescription topElement : getCodeElementExtractor().getTopElements(
+					getGrammar(), getCodeBuilderConfig())) {
+				topElements.add(topElement);
+			}
+			for (final CodeElementExtractor.ElementDescription containerDescription : topElements) {
+				final AbstractRule rule = getMemberRule(containerDescription);
+				if (rule != null) {
+					getCodeElementExtractor().visitMemberElements(containerDescription, rule,
+							null,
+							(it, grammarContainer, memberContainer, classifier) -> {
+								String memberName = Strings.toFirstUpper(classifier.getName());
+								MemberDescription memberDescription = NamedMemberBuilderFragment.this.members.get(memberName);
+								if (memberDescription == null) {
+									final CodeElementExtractor.ElementDescription elementDescription =
+											it.newElementDescription(classifier.getName(), memberContainer, classifier);
+									final List<String> modifiers = getCodeBuilderConfig().getModifiers()
+											.get(elementDescription.getElementType().getSimpleName());
+									memberDescription = new MemberDescription(
+											elementDescription,
+											containerDescription,
+											topElements.contains(elementDescription),
+											modifiers);
+									NamedMemberBuilderFragment.this.members.put(memberName, memberDescription);
+								}
+								final String containerName = memberDescription.getContainerDescription().getElementType().getSimpleName();
+								boolean isNoBody = getCodeBuilderConfig().getNoActionBodyTypes()
+										.contains(containerName);
+								Set<String> containers;
+								if (isNoBody) {
+									containers = memberDescription.getNoBodyContainers();
+								} else {
+									containers = memberDescription.getStandardContainers();
+								}
+								containers.add(containerName);
+								return null;
+							});
 				}
 			}
 		}
@@ -137,6 +116,9 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 	 * @param description the description of the member.
 	 */
 	protected void generateBuilderFactoryContributions(MemberDescription description) {
+		if (description.isTopElement()) {
+			return;
+		}
 		if (description.getStandardContainers().isEmpty() && description.getNoBodyContainers().isEmpty()) {
 			return;
 		}
@@ -149,7 +131,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 		for (final String modifier : modifiers) {
 			final String createFunctionName = "create" //$NON-NLS-1$
 					+ Strings.toFirstUpper(modifier)
-					+ Strings.toFirstUpper(description.getSimpleName());
+					+ Strings.toFirstUpper(description.getElementDescription().getName());
 
 			String container = null;
 			if (!description.getStandardContainers().isEmpty()) {
@@ -160,14 +142,15 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 
 			final String createContainerFunctionName = "add" //$NON-NLS-1$
 					+ Strings.toFirstUpper(container);
-			final TypeReference containerBuilder = getElementBuilderInterface(container);
+			final TypeReference containerBuilder = description.getContainerDescription().getBuilderInterfaceType();
 			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
 					it.append("\t/** Create the factory for a " + getLanguageName() + " " //$NON-NLS-1$ //$NON-NLS-2$
-							+ description.getGeneratedType().getSimpleName() + "."); //$NON-NLS-1$
+							+ description.getElementDescription().getElementType().getSimpleName() + "."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @param name the name of the " + description.getSimpleName()); //$NON-NLS-1$
+					it.append("\t * @param name the name of the " //$NON-NLS-1$
+							+ description.getElementDescription().getName());
 					it.newLine();
 					it.append("\t * @param resourceSet the set of the resources that must be used for"); //$NON-NLS-1$
 					it.newLine();
@@ -181,7 +164,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 					it.append(Pure.class);
 					it.newLine();
 					it.append("\tpublic "); //$NON-NLS-1$
-					it.append(description.getBuilderInterface());
+					it.append(description.getElementDescription().getBuilderInterfaceType());
 					it.append(" "); //$NON-NLS-1$
 					it.append(createFunctionName);
 					it.append("(String name, "); //$NON-NLS-1$
@@ -196,9 +179,10 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 					it.newLineIfNotEmpty();
 					it.newLine();
 					it.append("\t/** Create the factory for a " + getLanguageName() + " " //$NON-NLS-1$ //$NON-NLS-2$
-							+ description.getGeneratedType().getSimpleName() + "."); //$NON-NLS-1$
+							+ description.getElementDescription().getElementType().getSimpleName() + "."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @param name the name of the " + description.getSimpleName()); //$NON-NLS-1$
+					it.append("\t * @param name the name of the " //$NON-NLS-1$
+							+ description.getElementDescription().getName());
 					it.newLine();
 					it.append("\t * @param resource the resource that must be used for"); //$NON-NLS-1$
 					it.newLine();
@@ -212,7 +196,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 					it.append(Pure.class);
 					it.newLine();
 					it.append("\tpublic "); //$NON-NLS-1$
-					it.append(description.getBuilderInterface());
+					it.append(description.getElementDescription().getBuilderInterfaceType());
 					it.append(" "); //$NON-NLS-1$
 					it.append(createFunctionName);
 					it.append("(String name, "); //$NON-NLS-1$
@@ -227,11 +211,11 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 					it.append(containerBuilder);
 					it.append(" containerBuilder = scriptBuilder."); //$NON-NLS-1$
 					it.append(createContainerFunctionName);
-					it.append("(\"FooType\");"); //$NON-NLS-1$
+					it.append("(getFooTypeName());"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\treturn containerBuilder.add"); //$NON-NLS-1$
 					it.append(Strings.toFirstUpper(modifier));
-					it.append(description.getSimpleName());
+					it.append(Strings.toFirstUpper(description.getElementDescription().getName()));
 					it.append("(name);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
@@ -242,15 +226,17 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 			if (enableAppenders) {
 				final String buildFunctionName = "build" //$NON-NLS-1$
 						+ Strings.toFirstUpper(modifier)
-						+ Strings.toFirstUpper(description.getSimpleName());
-				final TypeReference appender = getElementAppenderImpl(description.getSimpleName());
+						+ Strings.toFirstUpper(description.getElementDescription().getName());
+				final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl(
+						description.getElementDescription().getName());
 				this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 					@Override
 					protected void appendTo(TargetStringConcatenation it) {
 						it.append("\t/** Create the appender for a " + getLanguageName() + " " //$NON-NLS-1$ //$NON-NLS-2$
-								+ description.getGeneratedType().getSimpleName() + "."); //$NON-NLS-1$
+								+ description.getElementDescription().getElementType().getSimpleName() + "."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @param name the name of the " + description.getSimpleName()); //$NON-NLS-1$
+						it.append("\t * @param name the name of the " //$NON-NLS-1$
+								+ description.getElementDescription().getName());
 						it.newLine();
 						it.append("\t * @param resourceSet the set of the resources that must be used for"); //$NON-NLS-1$
 						it.newLine();
@@ -281,9 +267,10 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 						it.newLineIfNotEmpty();
 						it.newLine();
 						it.append("\t/** Create the appender for a " + getLanguageName() + " " //$NON-NLS-1$ //$NON-NLS-2$
-								+ description.getGeneratedType().getSimpleName() + "."); //$NON-NLS-1$
+								+ description.getElementDescription().getElementType().getSimpleName() + "."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @param name the name of the " + description.getSimpleName()); //$NON-NLS-1$
+						it.append("\t * @param name the name of the " //$NON-NLS-1$
+								+ description.getElementDescription().getName());
 						it.newLine();
 						it.append("\t * @param resource the resource that must be used for"); //$NON-NLS-1$
 						it.newLine();

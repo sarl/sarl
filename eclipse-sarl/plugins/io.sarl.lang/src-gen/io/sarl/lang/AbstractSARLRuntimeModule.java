@@ -29,44 +29,44 @@ import com.google.inject.name.Names;
 import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
 import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.codebuilder.CodeBuilderFactory;
-import io.sarl.lang.codebuilder.builders.ActionBuilderImpl;
-import io.sarl.lang.codebuilder.builders.AgentBuilderImpl;
-import io.sarl.lang.codebuilder.builders.AnnotationFieldBuilderImpl;
-import io.sarl.lang.codebuilder.builders.AnnotationTypeBuilderImpl;
-import io.sarl.lang.codebuilder.builders.BehaviorBuilderImpl;
-import io.sarl.lang.codebuilder.builders.BehaviorUnitBuilderImpl;
 import io.sarl.lang.codebuilder.builders.BlockExpressionBuilderImpl;
-import io.sarl.lang.codebuilder.builders.CapacityBuilderImpl;
-import io.sarl.lang.codebuilder.builders.ClassBuilderImpl;
-import io.sarl.lang.codebuilder.builders.ConstructorBuilderImpl;
-import io.sarl.lang.codebuilder.builders.EnumBuilderImpl;
-import io.sarl.lang.codebuilder.builders.EventBuilderImpl;
 import io.sarl.lang.codebuilder.builders.ExpressionBuilderImpl;
-import io.sarl.lang.codebuilder.builders.FieldBuilderImpl;
 import io.sarl.lang.codebuilder.builders.FormalParameterBuilderImpl;
-import io.sarl.lang.codebuilder.builders.IActionBuilder;
-import io.sarl.lang.codebuilder.builders.IAgentBuilder;
-import io.sarl.lang.codebuilder.builders.IAnnotationFieldBuilder;
-import io.sarl.lang.codebuilder.builders.IAnnotationTypeBuilder;
-import io.sarl.lang.codebuilder.builders.IBehaviorBuilder;
-import io.sarl.lang.codebuilder.builders.IBehaviorUnitBuilder;
 import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
-import io.sarl.lang.codebuilder.builders.ICapacityBuilder;
-import io.sarl.lang.codebuilder.builders.IClassBuilder;
-import io.sarl.lang.codebuilder.builders.IConstructorBuilder;
-import io.sarl.lang.codebuilder.builders.IEnumBuilder;
-import io.sarl.lang.codebuilder.builders.IEventBuilder;
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
-import io.sarl.lang.codebuilder.builders.IFieldBuilder;
 import io.sarl.lang.codebuilder.builders.IFormalParameterBuilder;
-import io.sarl.lang.codebuilder.builders.IInterfaceBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlAgentBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlAnnotationTypeBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlBehaviorBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlBehaviorUnitBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlCapacityBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlClassBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlConstructorBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlEnumLiteralBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlEnumerationBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlFieldBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
-import io.sarl.lang.codebuilder.builders.ISkillBuilder;
-import io.sarl.lang.codebuilder.builders.IXtendEnumLiteralBuilder;
-import io.sarl.lang.codebuilder.builders.InterfaceBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlActionBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlAgentBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlAnnotationTypeBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlBehaviorBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlBehaviorUnitBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlCapacityBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlClassBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlConstructorBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlEnumLiteralBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlEnumerationBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlEventBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlFieldBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlInterfaceBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlSkillBuilderImpl;
+import io.sarl.lang.codebuilder.builders.SarlSpaceBuilderImpl;
 import io.sarl.lang.codebuilder.builders.ScriptBuilderImpl;
-import io.sarl.lang.codebuilder.builders.SkillBuilderImpl;
-import io.sarl.lang.codebuilder.builders.XtendEnumLiteralBuilderImpl;
 import io.sarl.lang.compiler.SarlCompiler;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
@@ -366,13 +366,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	@SingletonBinding
 	public Class<? extends IEObjectDocumentationProvider> bindIEObjectDocumentationProvider() {
 		return SarlDocumentationProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	@SingletonBinding
 	public Class<? extends IEObjectDocumentationProviderExtension> bindIEObjectDocumentationProviderExtension() {
 		return SarlDocumentationProvider.class;
 	}
@@ -398,78 +396,78 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IConstructorBuilder> bindIConstructorBuilder() {
-		return ConstructorBuilderImpl.class;
+	public Class<? extends ISarlConstructorBuilder> bindISarlConstructorBuilder() {
+		return SarlConstructorBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IFieldBuilder> bindIFieldBuilder() {
-		return FieldBuilderImpl.class;
+	public Class<? extends ISarlActionBuilder> bindISarlActionBuilder() {
+		return SarlActionBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IActionBuilder> bindIActionBuilder() {
-		return ActionBuilderImpl.class;
+	public Class<? extends ISarlBehaviorUnitBuilder> bindISarlBehaviorUnitBuilder() {
+		return SarlBehaviorUnitBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IAnnotationFieldBuilder> bindIAnnotationFieldBuilder() {
-		return AnnotationFieldBuilderImpl.class;
+	public Class<? extends ISarlFieldBuilder> bindISarlFieldBuilder() {
+		return SarlFieldBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IBehaviorUnitBuilder> bindIBehaviorUnitBuilder() {
-		return BehaviorUnitBuilderImpl.class;
+	public Class<? extends ISarlEnumLiteralBuilder> bindISarlEnumLiteralBuilder() {
+		return SarlEnumLiteralBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IXtendEnumLiteralBuilder> bindIXtendEnumLiteralBuilder() {
-		return XtendEnumLiteralBuilderImpl.class;
+	public Class<? extends ISarlEventBuilder> bindISarlEventBuilder() {
+		return SarlEventBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IEventBuilder> bindIEventBuilder() {
-		return EventBuilderImpl.class;
+	public Class<? extends ISarlCapacityBuilder> bindISarlCapacityBuilder() {
+		return SarlCapacityBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends ICapacityBuilder> bindICapacityBuilder() {
-		return CapacityBuilderImpl.class;
+	public Class<? extends ISarlAgentBuilder> bindISarlAgentBuilder() {
+		return SarlAgentBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IAgentBuilder> bindIAgentBuilder() {
-		return AgentBuilderImpl.class;
+	public Class<? extends ISarlBehaviorBuilder> bindISarlBehaviorBuilder() {
+		return SarlBehaviorBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IBehaviorBuilder> bindIBehaviorBuilder() {
-		return BehaviorBuilderImpl.class;
+	public Class<? extends ISarlSkillBuilder> bindISarlSkillBuilder() {
+		return SarlSkillBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends ISkillBuilder> bindISkillBuilder() {
-		return SkillBuilderImpl.class;
+	public Class<? extends ISarlSpaceBuilder> bindISarlSpaceBuilder() {
+		return SarlSpaceBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IClassBuilder> bindIClassBuilder() {
-		return ClassBuilderImpl.class;
+	public Class<? extends ISarlClassBuilder> bindISarlClassBuilder() {
+		return SarlClassBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IInterfaceBuilder> bindIInterfaceBuilder() {
-		return InterfaceBuilderImpl.class;
+	public Class<? extends ISarlInterfaceBuilder> bindISarlInterfaceBuilder() {
+		return SarlInterfaceBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IEnumBuilder> bindIEnumBuilder() {
-		return EnumBuilderImpl.class;
+	public Class<? extends ISarlEnumerationBuilder> bindISarlEnumerationBuilder() {
+		return SarlEnumerationBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
-	public Class<? extends IAnnotationTypeBuilder> bindIAnnotationTypeBuilder() {
-		return AnnotationTypeBuilderImpl.class;
+	public Class<? extends ISarlAnnotationTypeBuilder> bindISarlAnnotationTypeBuilder() {
+		return SarlAnnotationTypeBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2

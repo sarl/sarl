@@ -52,7 +52,6 @@ import org.eclipse.xtext.formatting2.regionaccess.IComment;
 import org.eclipse.xtext.formatting2.regionaccess.ILineRegion;
 import org.eclipse.xtext.formatting2.regionaccess.ITextRegionAccess;
 import org.eclipse.xtext.formatting2.regionaccess.ITextSegment;
-import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.serializer.ISerializationContext;
 import org.eclipse.xtext.serializer.acceptor.ISequenceAcceptor;
@@ -89,7 +88,8 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	@Pure
 	public TypeReference getIEcoreDocumentationBuilder() {
-		return new TypeReference(getDocumentationPackage() + ".IEcoreDocumentationBuilder"); //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getDocumentationPackage()
+				+ ".IEcoreDocumentationBuilder"); //$NON-NLS-1$
 	}
 
 	/** Replies the implementation for the documentation builder.
@@ -98,7 +98,8 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	@Pure
 	public TypeReference getEcoreDocumentationBuilderImpl() {
-		return new TypeReference(getDocumentationPackage() + ".EcoreDocumentationBuilder"); //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getDocumentationPackage()
+				+ ".EcoreDocumentationBuilder"); //$NON-NLS-1$
 	}
 
 	/** Replies the interface for the documentation formatter.
@@ -107,7 +108,8 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	@Pure
 	public TypeReference getIDocumentationFormatter() {
-		return new TypeReference(getDocumentationPackage() + ".IDocumentationFormatter"); //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getDocumentationPackage()
+				+ ".IDocumentationFormatter"); //$NON-NLS-1$
 	}
 
 	/** Replies the implementation for the documentation formatter.
@@ -116,7 +118,8 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	@Pure
 	public TypeReference getDocumentationFormatterImpl() {
-		return new TypeReference(getDocumentationPackage() + ".DocumentationFormatter"); //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getDocumentationPackage()
+				+ ".DocumentationFormatter"); //$NON-NLS-1$
 	}
 
 	/** Replies the implementation for the syntactic sequencer supporting Ecore documentation.
@@ -125,7 +128,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	@Pure
 	public TypeReference getEcoreDocumentationSyntacticSequencer() {
-		return new TypeReference(getSerializerPackage() + "." //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getSerializerPackage() + "." //$NON-NLS-1$
 				+ getLanguageName().toUpperCase() + "EcoreDocumentationSyntacticSequencer"); //$NON-NLS-1$
 	}
 
@@ -135,7 +138,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	@Pure
 	public TypeReference getEcoreDocumentationSyntacticSequencerCustom() {
-		return new TypeReference(getSerializerPackage() + "." //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getSerializerPackage() + "." //$NON-NLS-1$
 				+ getLanguageName().toUpperCase() + "EcoreDocumentationSyntacticSequencerCustom"); //$NON-NLS-1$
 	}
 
@@ -145,7 +148,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	@Pure
 	public TypeReference getSyntacticSequencer() {
-		return new TypeReference(getSerializerPackage() + "." //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getSerializerPackage() + "." //$NON-NLS-1$
 				+ getLanguageName().toUpperCase() + "SyntacticSequencer"); //$NON-NLS-1$
 	}
 
@@ -155,7 +158,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	@Pure
 	public TypeReference getDocumentationProviderImpl() {
-		return new TypeReference(getDocumentationPackage() + "." //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getDocumentationPackage() + "." //$NON-NLS-1$
 				+ getLanguageName() + "DocumentationProvider"); //$NON-NLS-1$
 	}
 
@@ -165,7 +168,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	 */
 	@Pure
 	public TypeReference getDocumentationProviderImplCustom() {
-		return new TypeReference(getDocumentationPackage() + "." //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getDocumentationPackage() + "." //$NON-NLS-1$
 				+ getLanguageName().toUpperCase() + "DocumentationProviderCustom"); //$NON-NLS-1$
 	}
 
@@ -185,8 +188,8 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	public void getExportedPackages(Set<String> exportedPackages) {
 		if (exportedPackages != null) {
 			super.getExportedPackages(exportedPackages);
-			exportedPackages.add(getSerializerPackage());
-			exportedPackages.add(getDocumentationPackage());
+			exportedPackages.add(getCodeElementExtractor().getSerializerPackage());
+			exportedPackages.add(getCodeElementExtractor().getDocumentationPackage());
 		}
 	}
 
@@ -197,30 +200,24 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 		factory.addfinalTypeToType(getIDocumentationFormatter(), getDocumentationFormatterImpl());
 		factory.addfinalTypeToTypeSingleton(getIEcoreDocumentationBuilder(), getEcoreDocumentationBuilderImpl());
 
-		final IFileSystemAccess2 fileSystem = getSrc();
-		TypeReference type;
-		if ((fileSystem.isFile(getDocumentationProviderImplCustom().getJavaPath()))
-				|| (fileSystem.isFile(getDocumentationProviderImplCustom().getXtendPath()))) {
-			type = getDocumentationProviderImplCustom();
-		} else {
-			type = getDocumentationProviderImpl();
-		}
-		factory.addfinalTypeToTypeSingleton(new TypeReference(IEObjectDocumentationProvider.class), type);
-		factory.addfinalTypeToTypeSingleton(new TypeReference(IEObjectDocumentationProviderExtension.class), type);
-
-		if ((fileSystem.isFile(getEcoreDocumentationSyntacticSequencerCustom().getJavaPath()))
-				|| (fileSystem.isFile(getEcoreDocumentationSyntacticSequencerCustom().getXtendPath()))) {
-			type = getEcoreDocumentationSyntacticSequencerCustom();
-		} else {
-			type = getEcoreDocumentationSyntacticSequencer();
-		}
-		factory.addfinalTypeToType(new TypeReference(ISyntacticSequencer.class), type);
+		bindTypeReferences(factory,
+				new TypeReference(IEObjectDocumentationProvider.class),
+				getDocumentationProviderImpl(),
+				getDocumentationProviderImplCustom());
+		bindTypeReferences(factory,
+				new TypeReference(IEObjectDocumentationProviderExtension.class),
+				getDocumentationProviderImpl(),
+				getDocumentationProviderImplCustom());
+		bindTypeReferences(factory,
+				new TypeReference(ISyntacticSequencer.class),
+				getEcoreDocumentationSyntacticSequencer(),
+				getEcoreDocumentationSyntacticSequencerCustom());
 	}
 
 	/** Generate the adapter that supports the inner documentation.
 	 */
 	protected void generateInnerDocumentationAdapter() {
-		final TypeReference adapter = getInnerBlockDocumentationAdapter();
+		final TypeReference adapter = getCodeElementExtractor().getInnerBlockDocumentationAdapter();
 		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {

@@ -38,7 +38,7 @@ import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.codebuilder.builders.IAgentBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlAgentBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import io.sarl.lang.core.Agent;
 
@@ -83,7 +83,7 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
 		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
 				getPackageFragment().getElementName(), ecoreResource);
-		final IAgentBuilder agent = scriptBuilder.addAgent(getTypeName());
+		final ISarlAgentBuilder agent = scriptBuilder.addSarlAgent(getTypeName());
 		agent.setExtends(getSuperClass());
 		agent.setDocumentation(typeComment.trim());
 

@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.lang.codebuilder.builders.ICapacityBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlCapacityBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import io.sarl.lang.core.Capacity;
 
@@ -74,7 +74,7 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
 		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
 				getPackageFragment().getElementName(), ecoreResource);
-		final ICapacityBuilder capacity = scriptBuilder.addCapacity(getTypeName());
+		final ISarlCapacityBuilder capacity = scriptBuilder.addSarlCapacity(getTypeName());
 		capacity.addExtends(getSuperClass());
 		capacity.setDocumentation(typeComment.trim());
 		scriptBuilder.finalizeScript();

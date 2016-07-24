@@ -26,11 +26,8 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,7 +40,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.AbstractRule;
-import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.Grammar;
 import org.eclipse.xtext.GrammarUtil;
@@ -52,7 +48,6 @@ import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
-import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.AbstractStubGeneratingFragment;
@@ -64,7 +59,9 @@ import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 import org.eclipse.xtext.xtext.generator.util.GenModelUtil2;
 
-import io.sarl.lang.mwe2.codebuilder.CodeBuilderConfig;
+import io.sarl.lang.mwe2.codebuilder.config.CodeBuilderConfig;
+import io.sarl.lang.mwe2.codebuilder.config.ExpressionConfig;
+import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
 /** Abstract sub generator of code builder.
  *
@@ -77,15 +74,18 @@ import io.sarl.lang.mwe2.codebuilder.CodeBuilderConfig;
 public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGeneratingFragment {
 
 	@Inject
-	private XtextGeneratorNaming naming;
-
-	@Inject
 	private FileAccessFactory fileAccessFactory;
 
 	@Inject
 	private CodeBuilderConfig configuration;
 
 	private Collection<AbstractSubCodeBuilderFragment> subFragments;
+
+	@Inject
+	private CodeElementExtractor grammarExtractor;
+
+	@Inject
+	private XtextGeneratorNaming naming;
 
 	@Override
 	public void initialize(Injector injector) {
@@ -94,6 +94,22 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		for (final IXtextGeneratorFragment subFragment : this.subFragments) {
 			subFragment.initialize(injector);
 		}
+	}
+
+	/** Replies the naming conventions.
+	 *
+	 * @return the naming conventions.
+	 */
+	protected XtextGeneratorNaming getNaming() {
+		return this.naming;
+	}
+
+	/** Replies the grammar extractor.
+	 *
+	 * @return the grammar extractor.
+	 */
+	protected CodeElementExtractor getCodeElementExtractor() {
+		return this.grammarExtractor;
 	}
 
 	/** Initialize the sub generators.
@@ -140,10 +156,10 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	public void getExportedPackages(Set<String> exportedPackages) {
 		if (exportedPackages != null) {
-			exportedPackages.add(getBasePackage());
-			exportedPackages.add(getBuilderPackage());
+			exportedPackages.add(getCodeElementExtractor().getBasePackage());
+			exportedPackages.add(getCodeElementExtractor().getBuilderPackage());
 			if (getCodeBuilderConfig().isISourceAppendableEnable()) {
-				exportedPackages.add(getAppenderPackage());
+				exportedPackages.add(getCodeElementExtractor().getAppenderPackage());
 			}
 		}
 	}
@@ -181,15 +197,6 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		}
 	}
 
-	/** Replies the naming conventions.
-	 *
-	 * @return the naming conventions.
-	 */
-	@Pure
-	protected XtextGeneratorNaming getNaming() {
-		return this.naming;
-	}
-
 	/** Replies the code builder configuration.
 	 *
 	 * @return the configuration.
@@ -197,6 +204,15 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	@Pure
 	protected CodeBuilderConfig getCodeBuilderConfig() {
 		return this.configuration;
+	}
+
+	/** Replies the expression builder configuration.
+	 *
+	 * @return the configuration.
+	 */
+	@Pure
+	protected ExpressionConfig getExpressionConfig() {
+		return this.configuration.getExpression();
 	}
 
 	/** Replies the file access factory.
@@ -226,57 +242,6 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		return getProjectConfig().getRuntime().getSrc();
 	}
 
-	/** Replies the base package for the code builder.
-	 *
-	 * @return the base package for the code builder.
-	 */
-	@Pure
-	protected String getBasePackage() {
-		final Grammar grammar = getGrammar();
-		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
-		return basePackage + ".codebuilder"; //$NON-NLS-1$
-	}
-
-	/** Replies the base package for the builders.
-	 *
-	 * @return the base package for the builders.
-	 */
-	@Pure
-	protected String getBuilderPackage() {
-		return getBasePackage() + ".builders"; //$NON-NLS-1$
-	}
-
-	/** Replies the base package for the builders.
-	 *
-	 * @return the base package for the builders.
-	 */
-	@Pure
-	protected String getAppenderPackage() {
-		return getBasePackage() + ".appenders"; //$NON-NLS-1$
-	}
-
-	/** Replies the base package for the documentation tools.
-	 *
-	 * @return the base package for the documentation tools.
-	 */
-	@Pure
-	protected String getDocumentationPackage() {
-		final Grammar grammar = getGrammar();
-		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
-		return basePackage + ".documentation"; //$NON-NLS-1$
-	}
-
-	/** Replies the base package for the serialization tools.
-	 *
-	 * @return the base package for the serialization tools.
-	 */
-	@Pure
-	protected String getSerializerPackage() {
-		final Grammar grammar = getGrammar();
-		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
-		return basePackage + ".serializer"; //$NON-NLS-1$
-	}
-
 	/** Replies the language name.
 	 *
 	 * @return the language name.
@@ -292,7 +257,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getBuilderFactoryImpl() {
-		return new TypeReference(getBasePackage() + ".CodeBuilderFactory"); //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getBasePackage() + ".CodeBuilderFactory"); //$NON-NLS-1$
 	}
 
 	/** Replies the interface for the builder of scripts.
@@ -301,7 +266,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getScriptBuilderInterface() {
-		return getElementBuilderInterface("Script"); //$NON-NLS-1$
+		return getCodeElementExtractor().getElementBuilderInterface("Script"); //$NON-NLS-1$
 	}
 
 	/** Replies the interface for the expression builder.
@@ -310,7 +275,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getExpressionBuilderInterface() {
-		return getElementBuilderInterface("Expression"); //$NON-NLS-1$
+		return getCodeElementExtractor().getElementBuilderInterface("Expression"); //$NON-NLS-1$
 	}
 
 	/** Replies the interface for the block expression builder.
@@ -319,7 +284,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getBlockExpressionBuilderInterface() {
-		return getElementBuilderInterface("BlockExpression"); //$NON-NLS-1$
+		return getCodeElementExtractor().getElementBuilderInterface("BlockExpression"); //$NON-NLS-1$
 	}
 
 	/** Replies the interface for the formal parameter builder.
@@ -328,40 +293,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getFormalParameterBuilderInterface() {
-		return getElementBuilderInterface("FormalParameter"); //$NON-NLS-1$
-	}
-
-	/** Replies the interface for the code builder that is creating the element of the given name.
-	 *
-	 * @param elementName the name of the element.
-	 * @return the interface.
-	 */
-	@Pure
-	protected TypeReference getElementBuilderInterface(String elementName) {
-		return new TypeReference(getBuilderPackage() + ".I" //$NON-NLS-1$
-				+ Strings.toFirstUpper(elementName) + "Builder"); //$NON-NLS-1$
-	}
-
-	/** Replies the implementation for the code builder that is creating the element of the given name.
-	 *
-	 * @param elementName the name of the element.
-	 * @return the interface.
-	 */
-	@Pure
-	protected TypeReference getElementBuilderImpl(String elementName) {
-		return new TypeReference(getBuilderPackage() + "." //$NON-NLS-1$
-				+ Strings.toFirstUpper(elementName) + "BuilderImpl"); //$NON-NLS-1$
-	}
-
-	/** Replies the custom implementation for the code builder that is creating the element of the given name.
-	 *
-	 * @param elementName the name of the element.
-	 * @return the interface.
-	 */
-	@Pure
-	protected TypeReference getElementBuilderImplCustom(String elementName) {
-		return new TypeReference(getBuilderPackage() + "." //$NON-NLS-1$
-				+ Strings.toFirstUpper(elementName) + "BuilderImplCustom"); //$NON-NLS-1$
+		return getCodeElementExtractor().getElementBuilderInterface("FormalParameter"); //$NON-NLS-1$
 	}
 
 	/** Replies the adapter for post documentation.
@@ -374,77 +306,13 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		return new TypeReference(DocumentationAdapter.class);
 	}
 
-	/** Replies the adapter for inner-block documentation.
-	 *
-	 * @return the adapter.
-	 */
-	@Pure
-	protected TypeReference getInnerBlockDocumentationAdapter() {
-		return new TypeReference(getDocumentationPackage() + ".InnerBlockDocumentationAdapter"); //$NON-NLS-1$
-	}
-
 	/** Replies the implementation for the code builder.
 	 *
 	 * @return the implementation.
 	 */
 	@Pure
 	protected TypeReference getAbstractBuilderImpl() {
-		return new TypeReference(getBuilderPackage() + ".AbstractBuilder"); //$NON-NLS-1$
-	}
-
-	/** Replies the implementation for the code appender that is creating the element of the given name.
-	 *
-	 * @param elementName the name of the element.
-	 * @return the interface.
-	 */
-	@Pure
-	protected TypeReference getElementAppenderImpl(String elementName) {
-		return new TypeReference(getAppenderPackage() + "." //$NON-NLS-1$
-				+ Strings.toFirstUpper(elementName) + "SourceAppender"); //$NON-NLS-1$
-	}
-
-	/** Replies the custom implementation for the code appender that is creating the element of the given name.
-	 *
-	 * @param elementName the name of the element.
-	 * @return the interface.
-	 */
-	@Pure
-	protected TypeReference getElementAppenderImplCustom(String elementName) {
-		return new TypeReference(getAppenderPackage() + "." //$NON-NLS-1$
-				+ Strings.toFirstUpper(elementName) + "SourceAppenderCustom"); //$NON-NLS-1$
-	}
-
-	/** Replies the implementation for the code adapter.
-	 *
-	 * @return the implementation.
-	 */
-	@Pure
-	protected TypeReference getAbstractAppenderImpl() {
-		return new TypeReference(getAppenderPackage() + ".AbstractSourceAppender"); //$NON-NLS-1$
-	}
-
-	/** Replies the type for the scripts from the grammar.
-	 *
-	 * @return the language script.
-	 */
-	@Pure
-	protected TypeReference getLanguageScriptInterface() {
-		final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getScriptRuleName());
-		final EClassifier type = getGeneratedTypeFor(rule);
-		return newTypeReference(type);
-	}
-
-	/** Replies the base package for the ecore elements of the grammar.
-	 *
-	 * @return the base package for the ecore elements.
-	 */
-	@Pure
-	protected String getLanguageBasePackage() {
-		final Grammar grammar = getGrammar();
-		final String basePackage = getNaming().getRuntimeBasePackage(grammar);
-		final String ecorePackage = basePackage + "." //$NON-NLS-1$
-				+ GrammarUtil.getSimpleName(grammar).toLowerCase();
-		return ecorePackage;
+		return new TypeReference(getCodeElementExtractor().getBuilderPackage() + ".AbstractBuilder"); //$NON-NLS-1$
 	}
 
 	/** Replies the getter function for accessing to the top element collection of the script.
@@ -465,15 +333,13 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		throw new IllegalStateException("member not found"); //$NON-NLS-1$
 	}
 
-	/** Replies the type associated to the top elements.
+	/** Replies the getter function for accessing to the member collection of the declarating types.
 	 *
-	 * @return the type of the top elements.
+	 * @return the name of the getter function.
 	 */
 	@Pure
-	protected TypeReference getLanguageTopElementType() {
-		final Grammar grammar = getGrammar();
-		final AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
-		return newTypeReference(rule.getType().getClassifier());
+	protected String getLanguageContainerMemberGetter() {
+		return "get" + Strings.toFirstUpper(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName()); //$NON-NLS-1$
 	}
 
 	/** Replies the type for the factory for the given type.
@@ -522,7 +388,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 
 	private TypeReference getXFactoryFor(String packageName, Grammar grammar) {
 		final String languageName = GrammarUtil.getSimpleName(grammar).toLowerCase();
-		final String basePackage = getNaming().getRuntimeBasePackage(grammar) + "." + languageName; //$NON-NLS-1$
+		final String basePackage = this.naming.getRuntimeBasePackage(grammar) + "." + languageName; //$NON-NLS-1$
 		if (basePackage.equals(packageName)) {
 			return new TypeReference(basePackage + "." //$NON-NLS-1$
 					+ Strings.toFirstUpper(languageName) + "Factory"); //$NON-NLS-1$
@@ -707,22 +573,6 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		};
 	}
 
-	/** Replies the type that is generated by a rule.
-	 *
-	 * @param rule the rule.
-	 * @return the generated type.
-	 */
-	protected static EClassifier getGeneratedTypeFor(AbstractRule rule) {
-		final List<Action> actions = GrammarUtil.containedActions(rule);
-		final EClassifier classifier;
-		if (actions.isEmpty()) {
-			classifier = rule.getType().getClassifier();
-		} else {
-			classifier = actions.get(0).getType().getClassifier();
-		}
-		return classifier;
-	}
-
 	/** Replies the fully qualified name for the classifier.
 	 *
 	 * @param classifier the classifier.
@@ -799,7 +649,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @param name the name.
 	 * @return the assignment or <code>null</code>.
 	 */
-	protected static Assignment findAssignmentFromFeatureName(AbstractRule rule, String name) {
+	protected static Assignment findAssignmentFromFeatureName(EObject rule, String name) {
 		return IterableExtensions.findFirst(GrammarUtil.containedAssignments(rule),
 				(assignment) -> name.equals(assignment.getFeature()));
 	}
@@ -810,101 +660,65 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 * @param pattern pattern for the name of the terminal.
 	 * @return the assignment or <code>null</code>.
 	 */
-	protected static Assignment findAssignmentFromTerminalPattern(AbstractRule rule, String pattern) {
+	protected static Assignment findAssignmentFromTerminalPattern(EObject rule, String pattern) {
 		return IterableExtensions.findFirst(GrammarUtil.containedAssignments(rule),
 				(assignment) -> nameMatches(assignment.getTerminal(), pattern));
 	}
 
-	/** Extract type members from the given rule.
+	/** Binds the given descriptions according to the standard policy.
 	 *
-	 * @param <T> type of the value to extract.
-	 * @param containerRule the member's container rule.
-	 * @param memberRule the member's rule.
-	 * @param treatedRules the set of rules' names that must be ignored as members.
-	 * @param constructorCallback the function to call on each discovered constructor.
-	 * @param namedMemberCallback the function to call on each discovered named member.
-	 * @return the extract value, or <code>null</code>.
+	 * <p>If an custom implementation is defined, it is binded to. Otherwise, the default implementation
+	 * is binded.
+	 *
+	 * @param factory the binding factory to use for creating the bindings.
+	 * @param descriptions the descriptions to bind to.
 	 */
-	@SuppressWarnings("checkstyle:")
-	protected <T> T visitMemberElements(
-			AbstractRule containerRule,
-			AbstractRule memberRule, Set<String> treatedRules,
-			Functions.Function2<AbstractRule, AbstractRule, T> constructorCallback,
-			Functions.Function3<AbstractRule, AbstractRule, String, T> namedMemberCallback) {
-		final LinkedList<AbstractRule> rules = new LinkedList<>();
-		treatedRules.add(memberRule.getName());
-		rules.add(memberRule);
-		while (!rules.isEmpty()) {
-			final AbstractRule rule = rules.removeFirst();
-			final Assignment assignment = IterableExtensions.findFirst(
-					GrammarUtil.containedAssignments(rule),
-					(passignment) -> getCodeBuilderConfig()
-					.getMemberNameExtensionGrammarName().equals(passignment.getFeature()));
-			if (assignment != null) {
-				if (namedMemberCallback != null) {
-					final T retVal = namedMemberCallback.apply(containerRule, rule, assignment.getFeature());
-					if (retVal != null) {
-						return retVal;
-					}
-				}
-			} else {
-				final T retVal = searchConstructorRule(containerRule, rule, treatedRules, constructorCallback, rules);
-				if (retVal != null) {
-					return retVal;
+	protected void bindElementDescription(BindingFactory factory, CodeElementExtractor.ElementDescription... descriptions) {
+		for (final CodeElementExtractor.ElementDescription description : descriptions) {
+			bindTypeReferences(factory,
+					description.getBuilderInterfaceType(),
+					description.getBuilderImplementationType(),
+					description.getBuilderCustomImplementationType());
+		}
+	}
+
+	/** Binds the given references according to the standard policy.
+	 *
+	 * <p>If an custom implementation is defined, it is binded to. Otherwise, the default implementation
+	 * is binded.
+	 *
+	 * @param factory the binding factory to use for creating the bindings.
+	 * @param interfaceType the type to bind to an implementation type.
+	 * @param implementationType the implementation to bind to the interface type.
+	 * @param customImplementationType the custom implementation to bind to the interface type.
+	 */
+	protected void bindTypeReferences(BindingFactory factory, TypeReference interfaceType,
+			TypeReference implementationType, TypeReference customImplementationType) {
+		final IFileSystemAccess2 fileSystem = getSrc();
+		final TypeReference type;
+		if ((fileSystem.isFile(implementationType.getJavaPath()))
+				|| (fileSystem.isFile(customImplementationType.getXtendPath()))) {
+			type = customImplementationType;
+		} else {
+			type = implementationType;
+		}
+		factory.addfinalTypeToType(interfaceType, type);
+	}
+
+	/** Replies the rule used for defining the members of the given element.
+	 *
+	 * @param description description of the container.
+	 * @return the rule that is defining the members.
+	 */
+	protected AbstractRule getMemberRule(CodeElementExtractor.ElementDescription description) {
+		for (final Assignment assignment : GrammarUtil.containedAssignments(description.getGrammarComponent())) {
+			if (Objects.equals(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName(), assignment.getFeature())) {
+				if (assignment.getTerminal() instanceof RuleCall) {
+					return ((RuleCall) assignment.getTerminal()).getRule();
 				}
 			}
 		}
 		return null;
-	}
-
-	private <T> T searchConstructorRule(AbstractRule containerRule, AbstractRule rule, Set<String> treatedRules,
-			Functions.Function2<AbstractRule, AbstractRule, T> constructorCallback,
-			List<AbstractRule> rules) {
-		for (final RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
-			if (treatedRules.contains(ruleCall.getRule().getName())) {
-				continue;
-			}
-			// Is a constructor rule?
-			final Pattern constructorPattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
-			final Matcher constructorMatcher = constructorPattern.matcher(ruleCall.getRule().getName());
-			if (constructorMatcher.find()) {
-				if (!getCodeBuilderConfig().getConstructorFreeRuleNames().contains(containerRule.getName())) {
-					final Pattern blockPattern = Pattern.compile(getCodeBuilderConfig().getBlockExpressionGrammarPattern());
-					final RuleCall block = IterableExtensions.findFirst(
-							GrammarUtil.containedRuleCalls(ruleCall.getRule()), (rcall) -> {
-							final Matcher matcher = blockPattern.matcher(rcall.getRule().getName());
-							return matcher.find();
-						});
-					if (block != null && constructorCallback != null) {
-						final T retVal = constructorCallback.apply(containerRule, ruleCall.getRule());
-						if (retVal != null) {
-							return retVal;
-						}
-					}
-				}
-			} else {
-				treatedRules.add(ruleCall.getRule().getName());
-				rules.add(ruleCall.getRule());
-			}
-		}
-		return null;
-	}
-
-	/** Replies the top element rules from the grammar.
-	 *
-	 * @return the top element rules.
-	 */
-	protected Set<String> getTopElementRules() {
-		final Set<String> ruleNames = new TreeSet<>();
-		final Grammar grammar = getGrammar();
-		final AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
-		if (rule != null) {
-			for (final RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
-				final String elementName = Strings.toFirstUpper(ruleCall.getRule().getName());
-				ruleNames.add(elementName);
-			}
-		}
-		return ruleNames;
 	}
 
 }

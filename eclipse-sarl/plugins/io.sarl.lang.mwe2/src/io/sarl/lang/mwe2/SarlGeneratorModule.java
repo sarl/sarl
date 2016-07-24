@@ -25,7 +25,7 @@ import com.google.inject.Binder;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.DefaultGeneratorModule;
 
-import io.sarl.lang.mwe2.codebuilder.CodeBuilderConfig;
+import io.sarl.lang.mwe2.codebuilder.config.CodeBuilderConfig;
 import io.sarl.lang.mwe2.externalspec.ExternalHighlightingConfig;
 import io.sarl.lang.mwe2.keywords.GrammarKeywordAccessConfig;
 

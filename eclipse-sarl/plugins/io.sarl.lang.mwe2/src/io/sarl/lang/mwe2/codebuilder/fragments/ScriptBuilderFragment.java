@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -37,10 +35,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
-import org.eclipse.xtext.AbstractRule;
-import org.eclipse.xtext.Grammar;
-import org.eclipse.xtext.GrammarUtil;
-import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
@@ -54,6 +48,8 @@ import org.eclipse.xtext.xtext.generator.model.XtendFileAccess;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypeFactory;
+
+import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
 /** Generator of the script builder types.
  *
@@ -73,7 +69,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	@Pure
 	public TypeReference getScriptBuilderImplCustom() {
-		return new TypeReference(getBuilderPackage() + ".ScriptBuilderImplCustom"); //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getBuilderPackage() + ".ScriptBuilderImplCustom"); //$NON-NLS-1$
 	}
 
 	/** Replies the implementation for the builder of scripts.
@@ -82,7 +78,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	@Pure
 	public TypeReference getScriptBuilderImpl() {
-		return new TypeReference(getBuilderPackage() + ".ScriptBuilderImpl"); //$NON-NLS-1$
+		return new TypeReference(getCodeElementExtractor().getBuilderPackage() + ".ScriptBuilderImpl"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -100,6 +96,12 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 		generateScriptBuilderImpl();
 		generateBuilderFactoryContributions();
 		super.generate();
+	}
+
+	@Override
+	public void generateBindings(BindingFactory factory) {
+		super.generateBindings(factory);
+		bindTypeReferences(factory, getScriptBuilderInterface(), getScriptBuilderImpl(), getScriptBuilderImplCustom());
 	}
 
 	/** Generate the contributions for the BuildFactory.
@@ -228,30 +230,17 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 		}
 	}
 
-	@Override
-	public void generateBindings(BindingFactory factory) {
-		super.generateBindings(factory);
-		final IFileSystemAccess2 fileSystem = getSrc();
-		final TypeReference type;
-		if ((fileSystem.isFile(getScriptBuilderImplCustom().getJavaPath()))
-				|| (fileSystem.isFile(getScriptBuilderImplCustom().getXtendPath()))) {
-			type = getScriptBuilderImplCustom();
-		} else {
-			type = getScriptBuilderImpl();
-		}
-		factory.addfinalTypeToType(getScriptBuilderInterface(), type);
-	}
-
 	/** Extract a top element from the grammar.
 	 *
-	 * @param rule the rule to extract.
+	 * @param description the description of the top element.
 	 * @param forInterface indicates if the generated code is for interfaces.
 	 * @return the top element.
 	 */
 	@SuppressWarnings("checkstyle:all")
-	protected StringConcatenationClient generateTopElement(AbstractRule rule, boolean forInterface) {
-		final String topElementName = Strings.toFirstUpper(rule.getName());
-		final TypeReference builderType = getElementBuilderInterface(topElementName);
+	protected StringConcatenationClient generateTopElement(CodeElementExtractor.ElementDescription description,
+			boolean forInterface) {
+		final String topElementName = Strings.toFirstUpper(description.getName());
+		final TypeReference builderType = getCodeElementExtractor().getElementBuilderInterface(topElementName);
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -316,15 +305,10 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @return the top elements.
 	 */
 	protected List<StringConcatenationClient> generateTopElements(boolean forInterface) {
-		final Set<String> topElementNames = new TreeSet<>();
-		final Grammar grammar = getGrammar();
 		final List<StringConcatenationClient> topElements = new ArrayList<>();
-		final AbstractRule rule = GrammarUtil.findRuleForName(grammar, getCodeBuilderConfig().getTopElementRuleName());
-		if (rule != null) {
-			for (final RuleCall ruleCall : GrammarUtil.containedRuleCalls(rule)) {
-				topElements.add(generateTopElement(ruleCall.getRule(), forInterface));
-				topElementNames.add(ruleCall.getRule().getName());
-			}
+		for (final CodeElementExtractor.ElementDescription description : getCodeElementExtractor().getTopElements(
+				getGrammar(), getCodeBuilderConfig())) {
+			topElements.add(generateTopElement(description, forInterface));
 		}
 		return topElements;
 	}
@@ -412,7 +396,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateFieldsAndMethods(boolean forInterface) {
-		TypeReference scriptInterface = getLanguageScriptInterface();
+		TypeReference scriptInterface = getCodeElementExtractor().getLanguageScriptInterface();
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {

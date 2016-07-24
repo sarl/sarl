@@ -36,6 +36,7 @@ import io.sarl.lang.mwe2.externalspec.latex.*
 import io.sarl.lang.mwe2.externalspec.gtk.* 
 import io.sarl.lang.mwe2.externalspec.gnusrchighlight.* 
 import io.sarl.lang.mwe2.codebuilder.* 
+import io.sarl.lang.mwe2.codebuilder.config.* 
 import io.sarl.lang.mwe2.keywords.* 
 import io.sarl.lang.mwe2.bugfixes.* 
 
@@ -156,12 +157,11 @@ Workflow {
 				scriptRuleName = "SarlScript"
 				topElementRuleName = "Type"
 				formalParameterRuleName = "Parameter"
-				formalParameterContainerType = "org.eclipse.xtend.core.xtend.XtendExecutable"
 				multilineCommentedType = "org.eclipse.xtend.core.xtend.XtendMember"
-				constructorFreeRuleName = "Capacity"
-				constructorFreeRuleName = "Interface"
-				constructorFreeRuleName = "Enum"
-				constructorFreeRuleName = "AnnotationType"
+				constructorFreeType = "SarlCapacity"
+				constructorFreeType = "SarlInterface"
+				constructorFreeType = "SarlEnum"
+				constructorFreeType = "SarlAnnotationType"
 				defaultSuper = {
 					type = "SarlAgent"
 					super = "io.sarl.lang.core.Agent"
@@ -309,7 +309,7 @@ Workflow {
 				partialParsing = true
 				debugGrammar = true
 				options = auto-inject {
-					backtrack = true
+					//backtrack = true
 				}
 			}
 

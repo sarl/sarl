@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.apache.log4j.Logger;
 import org.eclipse.xtext.GrammarUtil;
@@ -38,6 +39,7 @@ import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.project.IBundleProjectConfig;
 import org.eclipse.xtext.xtext.generator.model.project.IXtextProjectConfig;
 
+import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 import io.sarl.lang.mwe2.codebuilder.fragments.AbstractAppenderBuilderFragment;
 import io.sarl.lang.mwe2.codebuilder.fragments.AbstractBuilderBuilderFragment;
 import io.sarl.lang.mwe2.codebuilder.fragments.AbstractSubCodeBuilderFragment;
@@ -62,6 +64,9 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 
 	private Collection<AbstractSubCodeBuilderFragment> subFragments;
 
+	@Inject
+	private CodeElementExtractor grammarExtractor;
+
 	/** Replies the language name.
 	 *
 	 * @return the language name.
@@ -74,6 +79,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 	@Override
 	public void initialize(Injector injector) {
 		super.initialize(injector);
+		this.grammarExtractor.initialize(getGrammar());
 		this.subFragments = initializeSubGenerators(injector);
 		for (final IXtextGeneratorFragment subFragment : this.subFragments) {
 			subFragment.initialize(injector);

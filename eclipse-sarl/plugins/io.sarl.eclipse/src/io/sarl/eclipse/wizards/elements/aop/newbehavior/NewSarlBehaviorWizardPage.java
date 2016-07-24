@@ -40,7 +40,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.codebuilder.builders.IBehaviorBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlBehaviorBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import io.sarl.lang.core.Behavior;
 
@@ -85,7 +85,7 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
 		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
 				getPackageFragment().getElementName(), ecoreResource);
-		final IBehaviorBuilder behavior = scriptBuilder.addBehavior(getTypeName());
+		final ISarlBehaviorBuilder behavior = scriptBuilder.addSarlBehavior(getTypeName());
 		behavior.setExtends(getSuperClass());
 		behavior.setDocumentation(typeComment);
 

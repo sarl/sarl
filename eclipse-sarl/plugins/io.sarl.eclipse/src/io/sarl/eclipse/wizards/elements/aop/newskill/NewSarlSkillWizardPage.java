@@ -39,8 +39,8 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
-import io.sarl.lang.codebuilder.builders.ISkillBuilder;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
 
@@ -88,7 +88,7 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
 		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
 				getPackageFragment().getElementName(), ecoreResource);
-		final ISkillBuilder skill = scriptBuilder.addSkill(getTypeName());
+		final ISarlSkillBuilder skill = scriptBuilder.addSarlSkill(getTypeName());
 		skill.setExtends(getSuperClass());
 		for (final String implementedType : getSuperInterfaces()) {
 			skill.addImplements(implementedType);

@@ -71,13 +71,13 @@ import io.sarl.lang.actionprototype.FormalParameterProvider;
 import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.SarlSourceCode;
-import io.sarl.lang.codebuilder.builders.IActionBuilder;
-import io.sarl.lang.codebuilder.builders.IAgentBuilder;
-import io.sarl.lang.codebuilder.builders.IBehaviorBuilder;
-import io.sarl.lang.codebuilder.builders.IConstructorBuilder;
-import io.sarl.lang.codebuilder.builders.IEventBuilder;
 import io.sarl.lang.codebuilder.builders.IFormalParameterBuilder;
-import io.sarl.lang.codebuilder.builders.ISkillBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlAgentBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlBehaviorBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlConstructorBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.util.Utils;
 
 
@@ -425,10 +425,10 @@ public class Jdt2Ecore {
 	 * @throws JavaModelException if the Java model is invalid.
 	 */
 	public void createStandardConstructors(
-			IBehaviorBuilder codeBuilder,
+			ISarlBehaviorBuilder codeBuilder,
 			Collection<IMethod> superClassConstructors,
 			XtendTypeDeclaration context) throws JavaModelException {
-		createStandardConstructorsWith(() -> codeBuilder.addConstructor(),
+		createStandardConstructorsWith(() -> codeBuilder.addSarlConstructor(),
 				superClassConstructors, context);
 	}
 
@@ -440,10 +440,10 @@ public class Jdt2Ecore {
 	 * @throws JavaModelException if the Java model is invalid.
 	 */
 	public void createStandardConstructors(
-			IEventBuilder codeBuilder,
+			ISarlEventBuilder codeBuilder,
 			Collection<IMethod> superClassConstructors,
 			XtendTypeDeclaration context) throws JavaModelException {
-		createStandardConstructorsWith(() -> codeBuilder.addConstructor(),
+		createStandardConstructorsWith(() -> codeBuilder.addSarlConstructor(),
 				superClassConstructors, context);
 	}
 
@@ -455,10 +455,10 @@ public class Jdt2Ecore {
 	 * @throws JavaModelException if the Java model is invalid.
 	 */
 	public void createStandardConstructors(
-			ISkillBuilder codeBuilder,
+			ISarlSkillBuilder codeBuilder,
 			Collection<IMethod> superClassConstructors,
 			XtendTypeDeclaration context) throws JavaModelException {
-		createStandardConstructorsWith(() -> codeBuilder.addConstructor(),
+		createStandardConstructorsWith(() -> codeBuilder.addSarlConstructor(),
 				superClassConstructors, context);
 	}
 
@@ -487,7 +487,7 @@ public class Jdt2Ecore {
 						arguments.add(paramRef);
 					}
 					//
-					final IConstructorBuilder cons = codeBuilder.addConstructor();
+					final ISarlConstructorBuilder cons = codeBuilder.addConstructor();
 					cons.getExpression().addExpression().setXExpression(call);
 					createFormalParametersWith((name) -> cons.addParameter(name), constructor);
 				}
@@ -503,9 +503,9 @@ public class Jdt2Ecore {
 	 * @throws IllegalArgumentException if the signature is not syntactically correct.
 	 */
 	public void createActions(
-			IAgentBuilder codeBuilder,
+			ISarlAgentBuilder codeBuilder,
 			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
-		createActionsWith((name) -> codeBuilder.addAction(name), methods);
+		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
 	}
 
 	/** Create the operations into the SARL feature container.
@@ -516,9 +516,9 @@ public class Jdt2Ecore {
 	 * @throws IllegalArgumentException if the signature is not syntactically correct.
 	 */
 	public void createActions(
-			IBehaviorBuilder codeBuilder,
+			ISarlBehaviorBuilder codeBuilder,
 			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
-		createActionsWith((name) -> codeBuilder.addAction(name), methods);
+		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
 	}
 
 	/** Create the operations into the SARL feature container.
@@ -529,9 +529,9 @@ public class Jdt2Ecore {
 	 * @throws IllegalArgumentException if the signature is not syntactically correct.
 	 */
 	public void createActions(
-			ISkillBuilder codeBuilder,
+			ISarlSkillBuilder codeBuilder,
 			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
-		createActionsWith((name) -> codeBuilder.addAction(name), methods);
+		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
 	}
 
 	/** Create the operations into the SARL feature container.
@@ -547,7 +547,7 @@ public class Jdt2Ecore {
 		if (methods != null) {
 			for (final IMethod operation : methods) {
 				if (!isGeneratedOperation(operation)) {
-					final IActionBuilder action = codeBuilder.addAction(operation.getElementName());
+					final ISarlActionBuilder action = codeBuilder.addAction(operation.getElementName());
 					action.setReturnType(operation.getReturnType());
 					createFormalParametersWith((name) -> action.addParameter(name), operation);
 				}
@@ -776,7 +776,7 @@ public class Jdt2Ecore {
 	 */
 	@FunctionalInterface
 	private interface ActionBuilder {
-		IActionBuilder addAction(String name);
+		ISarlActionBuilder addAction(String name);
 	}
 
 	/** Constructor builder.
@@ -788,7 +788,7 @@ public class Jdt2Ecore {
 	 */
 	@FunctionalInterface
 	private interface ConstructorBuilder {
-		IConstructorBuilder addConstructor();
+		ISarlConstructorBuilder addConstructor();
 	}
 
 }

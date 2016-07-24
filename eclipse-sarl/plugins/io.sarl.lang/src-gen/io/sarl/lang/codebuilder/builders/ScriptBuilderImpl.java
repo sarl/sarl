@@ -104,118 +104,131 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	}
 
 	@Inject
-	private Provider<IEventBuilder> eventProvider;
+	private Provider<ISarlEventBuilder> sarlEventProvider;
 
-	/** Create an Event builder.
-	 * @param name - the name of the Event.
+	/** Create a SarlEvent builder.
+	 * @param name - the name of the SarlEvent.
 	 * @return the builder.
 	 */
-	public IEventBuilder addEvent(String name) {
-		IEventBuilder builder = this.eventProvider.get();
+	public ISarlEventBuilder addSarlEvent(String name) {
+		ISarlEventBuilder builder = this.sarlEventProvider.get();
 		builder.eInit(getScript(), name);
 		return builder;
 	}
 
 	@Inject
-	private Provider<ICapacityBuilder> capacityProvider;
+	private Provider<ISarlCapacityBuilder> sarlCapacityProvider;
 
-	/** Create a Capacity builder.
-	 * @param name - the name of the Capacity.
+	/** Create a SarlCapacity builder.
+	 * @param name - the name of the SarlCapacity.
 	 * @return the builder.
 	 */
-	public ICapacityBuilder addCapacity(String name) {
-		ICapacityBuilder builder = this.capacityProvider.get();
+	public ISarlCapacityBuilder addSarlCapacity(String name) {
+		ISarlCapacityBuilder builder = this.sarlCapacityProvider.get();
 		builder.eInit(getScript(), name);
 		return builder;
 	}
 
 	@Inject
-	private Provider<IAgentBuilder> agentProvider;
+	private Provider<ISarlAgentBuilder> sarlAgentProvider;
 
-	/** Create an Agent builder.
-	 * @param name - the name of the Agent.
+	/** Create a SarlAgent builder.
+	 * @param name - the name of the SarlAgent.
 	 * @return the builder.
 	 */
-	public IAgentBuilder addAgent(String name) {
-		IAgentBuilder builder = this.agentProvider.get();
+	public ISarlAgentBuilder addSarlAgent(String name) {
+		ISarlAgentBuilder builder = this.sarlAgentProvider.get();
 		builder.eInit(getScript(), name);
 		return builder;
 	}
 
 	@Inject
-	private Provider<IBehaviorBuilder> behaviorProvider;
+	private Provider<ISarlBehaviorBuilder> sarlBehaviorProvider;
 
-	/** Create a Behavior builder.
-	 * @param name - the name of the Behavior.
+	/** Create a SarlBehavior builder.
+	 * @param name - the name of the SarlBehavior.
 	 * @return the builder.
 	 */
-	public IBehaviorBuilder addBehavior(String name) {
-		IBehaviorBuilder builder = this.behaviorProvider.get();
+	public ISarlBehaviorBuilder addSarlBehavior(String name) {
+		ISarlBehaviorBuilder builder = this.sarlBehaviorProvider.get();
 		builder.eInit(getScript(), name);
 		return builder;
 	}
 
 	@Inject
-	private Provider<ISkillBuilder> skillProvider;
+	private Provider<ISarlSkillBuilder> sarlSkillProvider;
 
-	/** Create a Skill builder.
-	 * @param name - the name of the Skill.
+	/** Create a SarlSkill builder.
+	 * @param name - the name of the SarlSkill.
 	 * @return the builder.
 	 */
-	public ISkillBuilder addSkill(String name) {
-		ISkillBuilder builder = this.skillProvider.get();
+	public ISarlSkillBuilder addSarlSkill(String name) {
+		ISarlSkillBuilder builder = this.sarlSkillProvider.get();
 		builder.eInit(getScript(), name);
 		return builder;
 	}
 
 	@Inject
-	private Provider<IClassBuilder> classProvider;
+	private Provider<ISarlSpaceBuilder> sarlSpaceProvider;
 
-	/** Create a Class builder.
-	 * @param name - the name of the Class.
+	/** Create a SarlSpace builder.
+	 * @param name - the name of the SarlSpace.
 	 * @return the builder.
 	 */
-	public IClassBuilder addClass(String name) {
-		IClassBuilder builder = this.classProvider.get();
+	public ISarlSpaceBuilder addSarlSpace(String name) {
+		ISarlSpaceBuilder builder = this.sarlSpaceProvider.get();
 		builder.eInit(getScript(), name);
 		return builder;
 	}
 
 	@Inject
-	private Provider<IInterfaceBuilder> interfaceProvider;
+	private Provider<ISarlClassBuilder> sarlClassProvider;
 
-	/** Create an Interface builder.
-	 * @param name - the name of the Interface.
+	/** Create a SarlClass builder.
+	 * @param name - the name of the SarlClass.
 	 * @return the builder.
 	 */
-	public IInterfaceBuilder addInterface(String name) {
-		IInterfaceBuilder builder = this.interfaceProvider.get();
+	public ISarlClassBuilder addSarlClass(String name) {
+		ISarlClassBuilder builder = this.sarlClassProvider.get();
 		builder.eInit(getScript(), name);
 		return builder;
 	}
 
 	@Inject
-	private Provider<IEnumBuilder> enumProvider;
+	private Provider<ISarlInterfaceBuilder> sarlInterfaceProvider;
 
-	/** Create an Enum builder.
-	 * @param name - the name of the Enum.
+	/** Create a SarlInterface builder.
+	 * @param name - the name of the SarlInterface.
 	 * @return the builder.
 	 */
-	public IEnumBuilder addEnum(String name) {
-		IEnumBuilder builder = this.enumProvider.get();
+	public ISarlInterfaceBuilder addSarlInterface(String name) {
+		ISarlInterfaceBuilder builder = this.sarlInterfaceProvider.get();
 		builder.eInit(getScript(), name);
 		return builder;
 	}
 
 	@Inject
-	private Provider<IAnnotationTypeBuilder> annotationTypeProvider;
+	private Provider<ISarlEnumerationBuilder> sarlEnumerationProvider;
 
-	/** Create an AnnotationType builder.
-	 * @param name - the name of the AnnotationType.
+	/** Create a SarlEnumeration builder.
+	 * @param name - the name of the SarlEnumeration.
 	 * @return the builder.
 	 */
-	public IAnnotationTypeBuilder addAnnotationType(String name) {
-		IAnnotationTypeBuilder builder = this.annotationTypeProvider.get();
+	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
+		ISarlEnumerationBuilder builder = this.sarlEnumerationProvider.get();
+		builder.eInit(getScript(), name);
+		return builder;
+	}
+
+	@Inject
+	private Provider<ISarlAnnotationTypeBuilder> sarlAnnotationTypeProvider;
+
+	/** Create a SarlAnnotationType builder.
+	 * @param name - the name of the SarlAnnotationType.
+	 * @return the builder.
+	 */
+	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
+		ISarlAnnotationTypeBuilder builder = this.sarlAnnotationTypeProvider.get();
 		builder.eInit(getScript(), name);
 		return builder;
 	}
