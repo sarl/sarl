@@ -31,6 +31,8 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
 
+import io.sarl.lang.mwe2.keywords.GrammarKeywordAccessConfig;
+
 /**
  * The configuration for the external highlighting tools.
  *
@@ -41,9 +43,13 @@ import org.eclipse.xtext.xtext.generator.IGuiceAwareGeneratorComponent;
  */
 public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent {
 
-	/** Add the native types by default.
+	/** Do not add the native types by default.
 	 */
 	public static final boolean DEFAULT_ADD_NATIVE_TYPES = false;
+
+	/** Do not use the keywords and ignored keywords from the {@link GrammarKeywordAccessConfig}.
+	 */
+	public static final boolean DEFAULT_INHERIT_GRAMMAR_KEYWORD_ACCESS = false;
 
 	private final Set<String> additionalLiterals = new TreeSet<>();
 
@@ -59,11 +65,35 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 
 	private Boolean addNativeTypes;
 
+	private Boolean inheritFromGrammarKeywordAccess;
+
 	private ColorConfig colors = new ColorConfig();
 
 	@Override
 	public void initialize(Injector injector) {
 		injector.injectMembers(this);
+	}
+
+	/** Indicates if the keywords and ignored keywords from the {@link GrammarKeywordAccessConfig}
+	 * are used.
+	 *
+	 * @param inheritFromGrammarKeywordAccess <code>true</code> for using inherited configuration.
+	 */
+	public void setInheritFromGrammarKeywordAccesss(boolean inheritFromGrammarKeywordAccess) {
+		this.inheritFromGrammarKeywordAccess = inheritFromGrammarKeywordAccess;
+	}
+
+	/** Replies if the keywords and ignored keywords from the {@link GrammarKeywordAccessConfig}
+	 * are used.
+	 *
+	 * @return <code>true</code> for using inherited configuration.
+	 */
+	@Pure
+	public boolean getInheritFromGrammarKeywordAccesss() {
+		if (this.inheritFromGrammarKeywordAccess == null) {
+			return DEFAULT_INHERIT_GRAMMAR_KEYWORD_ACCESS;
+		}
+		return this.inheritFromGrammarKeywordAccess.booleanValue();
 	}
 
 	/** Indicates if the native types must be added in the keyword list.

@@ -221,6 +221,7 @@ Workflow {
 			highlighting = auto-inject {
     			addNativeTypes = true
 
+				inheritFromGrammarKeywordAccesss = true
 				
 				specialKeyword = 'package'
 				specialKeyword = 'import'
