@@ -112,7 +112,6 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
-import io.sarl.lang.SARLKeywords;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
@@ -150,6 +149,7 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
@@ -259,6 +259,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Inject
 	private IContextFinder contextFinder;
+
+	@Inject
+	private SARLGrammarKeywordAccess grammarKeywordAccess;
 
 	/** Generation contexts.
 	 */
@@ -1408,7 +1411,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			this.associator.associatePrimary(source, bodyOperation);
 			// First parameter: occurrence
 			JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
-			jvmParam.setName(SARLKeywords.OCCURRENCE);
+			jvmParam.setName(this.grammarKeywordAccess.getOccurrenceKeyword());
 			jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(source.getName()));
 			this.associator.associate(source, jvmParam);
 			bodyOperation.getParameters().add(jvmParam);
@@ -1438,7 +1441,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					it.append(".add(() -> "); //$NON-NLS-1$
 					it.append(bodyMethodName);
 					it.append("("); //$NON-NLS-1$
-					it.append(SARLKeywords.OCCURRENCE);
+					it.append(this.grammarKeywordAccess.getOccurrenceKeyword());
 					it.append("));"); //$NON-NLS-1$
 				});
 			} else {
@@ -1466,13 +1469,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.associator.associatePrimary(source, guardOperation);
 				// First parameter: it
 				jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName(SARLKeywords.IT);
+				jvmParam.setName(this.grammarKeywordAccess.getItKeyword());
 				jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(source.getName()));
 				this.associator.associate(source, jvmParam);
 				guardOperation.getParameters().add(jvmParam);
 				// Second parameter: occurrence
 				jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName(SARLKeywords.OCCURRENCE);
+				jvmParam.setName(this.grammarKeywordAccess.getOccurrenceKeyword());
 				jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(source.getName()));
 				this.associator.associate(source, jvmParam);
 				guardOperation.getParameters().add(jvmParam);
@@ -1491,9 +1494,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					it.append("if ("); //$NON-NLS-1$
 					it.append(guardMethodName);
 					it.append("("); //$NON-NLS-1$
-					it.append(SARLKeywords.OCCURRENCE);
+					it.append(this.grammarKeywordAccess.getOccurrenceKeyword());
 					it.append(", "); //$NON-NLS-1$
-					it.append(SARLKeywords.OCCURRENCE);
+					it.append(this.grammarKeywordAccess.getOccurrenceKeyword());
 					it.append(")) {"); //$NON-NLS-1$
 					it.increaseIndentation();
 					it.newLine();
@@ -1501,7 +1504,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					it.append(".add(() -> "); //$NON-NLS-1$
 					it.append(bodyMethodName);
 					it.append("("); //$NON-NLS-1$
-					it.append(SARLKeywords.OCCURRENCE);
+					it.append(this.grammarKeywordAccess.getOccurrenceKeyword());
 					it.append("));"); //$NON-NLS-1$
 					it.decreaseIndentation();
 					it.newLine();
@@ -2031,7 +2034,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Guard evaluator unit parameters
 				// - Event occurrence
 				JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName(SARLKeywords.OCCURRENCE);
+				jvmParam.setName(this.grammarKeywordAccess.getOccurrenceKeyword());
 				jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(source.getName()));
 				this.associator.associate(source, jvmParam);
 				operation.getParameters().add(jvmParam);
@@ -2054,7 +2057,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 				this.typeBuilder.setBody(operation, (it) -> {
 					it.append("assert "); //$NON-NLS-1$
-					it.append(SARLKeywords.OCCURRENCE);
+					it.append(this.grammarKeywordAccess.getOccurrenceKeyword());
 					it.append(" != null;"); //$NON-NLS-1$
 					it.newLine();
 					it.append("assert "); //$NON-NLS-1$

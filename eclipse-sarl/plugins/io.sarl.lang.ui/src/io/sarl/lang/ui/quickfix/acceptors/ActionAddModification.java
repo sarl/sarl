@@ -92,8 +92,7 @@ public final class ActionAddModification extends SARLSemanticModification {
 			}
 			appendable.newLine();
 			appendable.append(
-					getTools().getGrammarAccess().getXtendGrammarAccess().getMethodModifierAccess()
-					.getDefKeyword_0().getValue());
+					getTools().getGrammarAccess().getDefKeyword());
 			appendable.append(" "); //$NON-NLS-1$
 			appendable.append(this.actionName);
 			if (changeIndentation) {

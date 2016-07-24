@@ -40,7 +40,7 @@ import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.lang.sarl.SarlFormalParameter;
-import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.util.Utils;
 
 /**
@@ -59,7 +59,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	private TypeReferences references;
 
 	@Inject
-	private SARLGrammarAccess grammarAccess;
+	private SARLGrammarKeywordAccess grammarAccess;
 
 	private final Map<String, Map<String, Map<ActionParameterTypes, InferredPrototype>>> prototypes = new TreeMap<>();
 
@@ -274,7 +274,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 		return new QualifiedActionName(
 				container.eResource().getURI().toString(),
 				container,
-				this.grammarAccess.getConstructorAccess().getNewKeyword_3().getValue());
+				this.grammarAccess.getNewKeyword());
 	}
 
 	@Override

@@ -69,14 +69,14 @@ public final class SuperTypeRemoveModification extends SARLSemanticModification 
 		final Issue issue = getIssue();
 		final SARLQuickfixProvider tools = getTools();
 		final IXtextDocument document = context.getXtextDocument();
-		final String sep = tools.getGrammarAccess().getCapacityAccess().getCommaKeyword_5_2_0().getValue();
+		final String sep = tools.getGrammarAccess().getCommaKeyword();
 		if (!tools.removeToPreviousSeparator(issue, document, sep)) {
 			if (!tools.removeToNextSeparator(issue, document, sep)) {
 				tools.removeToPreviousKeyword(issue, document,
-						tools.getGrammarAccess().getSkillAccess()
-						.getImplementsKeyword_5_1_0().getValue(),
-						tools.getGrammarAccess().getAgentAccess()
-						.getExtendsKeyword_5_0().getValue());
+						tools.getGrammarAccess()
+						.getImplementsKeyword(),
+						tools.getGrammarAccess()
+						.getExtendsKeyword());
 			}
 		}
 	}

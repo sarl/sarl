@@ -27,6 +27,7 @@ import org.eclipse.xtext.xtext.generator.DefaultGeneratorModule;
 
 import io.sarl.lang.mwe2.codebuilder.CodeBuilderConfig;
 import io.sarl.lang.mwe2.externalspec.ExternalHighlightingConfig;
+import io.sarl.lang.mwe2.keywords.GrammarKeywordAccessConfig;
 
 /**
  * The generation module for SARL.
@@ -41,6 +42,8 @@ public class SarlGeneratorModule extends DefaultGeneratorModule {
 	private ExternalHighlightingConfig highlighting = new ExternalHighlightingConfig();
 
 	private CodeBuilderConfig codeBuilderConfig = new CodeBuilderConfig();
+
+	private GrammarKeywordAccessConfig grammarKeywordConfig = new GrammarKeywordAccessConfig();
 
 	/** Configure the injection of the highlighting configuration.
 	 *
@@ -94,6 +97,33 @@ public class SarlGeneratorModule extends DefaultGeneratorModule {
 	@Pure
 	public CodeBuilderConfig getCodeBuilder() {
 		return this.codeBuilderConfig;
+	}
+
+	/** Configure the injection of the grammar keyword access configuration.
+	 *
+	 * @param binder the injection binder.
+	 */
+	public void configureGrammarKeywordAccess(Binder binder) {
+		binder.bind(GrammarKeywordAccessConfig.class).toInstance(this.grammarKeywordConfig);
+	}
+
+	/** Set the configuration for the grammar keyword access configuration.
+	 *
+	 * @param config the configuration.
+	 */
+	public void setGrammarKeywordAccess(GrammarKeywordAccessConfig config) {
+		if (config != null) {
+			this.grammarKeywordConfig = config;
+		}
+	}
+
+	/** Replies the configuration for the grammar keyword access configuration.
+	 *
+	 * @return the configuration.
+	 */
+	@Pure
+	public GrammarKeywordAccessConfig getGrammarKeywordAccess() {
+		return this.grammarKeywordConfig;
 	}
 
 }

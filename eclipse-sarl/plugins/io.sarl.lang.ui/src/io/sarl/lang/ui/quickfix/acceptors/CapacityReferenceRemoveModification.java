@@ -69,14 +69,14 @@ public final class CapacityReferenceRemoveModification extends SARLSemanticModif
 		final Issue issue = getIssue();
 		final SARLQuickfixProvider tools = getTools();
 		final IXtextDocument document = context.getXtextDocument();
-		final String sep = tools.getGrammarAccess().getCapacityUsesAccess().getCommaKeyword_3_0().getValue();
+		final String sep = tools.getGrammarAccess().getCommaKeyword();
 		if (!tools.removeToPreviousSeparator(issue, document, sep)) {
 			if (!tools.removeToNextSeparator(issue, document, sep)) {
 				tools.removeToPreviousKeyword(issue, document,
-						tools.getGrammarAccess().getRequiredCapacityAccess()
-						.getRequiresKeyword_1().getValue(),
-						tools.getGrammarAccess().getCapacityUsesAccess()
-						.getUsesKeyword_1().getValue());
+						tools.getGrammarAccess()
+						.getRequiresKeyword(),
+						tools.getGrammarAccess()
+						.getUsesKeyword());
 			}
 		}
 	}

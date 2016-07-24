@@ -97,7 +97,7 @@ public final class ReturnTypeAddModification extends SARLSemanticModification {
 		if (xtendExecutable.getExpression() == null) {
 			appendable.append(" "); //$NON-NLS-1$
 		}
-		appendable.append(getTools().getGrammarAccess().getActionAccess().getColonKeyword_8_0().getValue());
+		appendable.append(getTools().getGrammarAccess().getColonKeyword());
 		appendable.append(" "); //$NON-NLS-1$
 		appendable.append(this.expectedType);
 		if (xtendExecutable.getExpression() != null) {

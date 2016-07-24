@@ -66,7 +66,7 @@ import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.quickfix.acceptors.ActionAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.BehaviorUnitGuardRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.CapacityReferenceRemoveModification;
@@ -103,7 +103,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	private ReplacingAppendable.Factory appendableFactory;
 
 	@Inject
-	private SARLGrammarAccess grammarAccess;
+	private SARLGrammarKeywordAccess grammarAccess;
 
 	@Inject
 	private IXtendJvmAssociations associations;
@@ -198,7 +198,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 *
 	 * @return the SARL grammar accessor.
 	 */
-	public SARLGrammarAccess getGrammarAccess() {
+	public SARLGrammarKeywordAccess getGrammarAccess() {
 		return this.grammarAccess;
 	}
 
@@ -741,13 +741,13 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		String keyword = null;
 		if (container instanceof SarlAgent) {
 			declaration = (XtendTypeDeclaration) container;
-			keyword = getGrammarAccess().getAgentAccess().getAgentKeyword_3().getValue();
+			keyword = getGrammarAccess().getAgentKeyword();
 		} else if (container instanceof SarlBehavior) {
 			declaration = (XtendTypeDeclaration) container;
-			keyword = getGrammarAccess().getBehaviorAccess().getBehaviorKeyword_3().getValue();
+			keyword = getGrammarAccess().getBehaviorKeyword();
 		} else if (container instanceof SarlSkill) {
 			declaration = (XtendTypeDeclaration) container;
-			keyword = getGrammarAccess().getSkillAccess().getSkillKeyword_3().getValue();
+			keyword = getGrammarAccess().getSkillKeyword();
 		}
 		if (declaration != null && keyword != null) {
 			final IXtextDocument document = context.getXtextDocument();
@@ -776,7 +776,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				(XtextResource) typeDeclaration.eResource(),
 				offset, 0);
 		appendable.append(getGrammarAccess()
-				.getCommonModifierAccess().getAbstractKeyword_4().getValue())
+				.getAbstractKeyword())
 				.append(" "); //$NON-NLS-1$
 		appendable.commitChanges();
 	}

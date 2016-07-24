@@ -19,6 +19,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
+				<module>io.sarl.lang.mwe2</module>
 				<module>io.sarl.lang.core</module>
 				<module>io.sarl.lang</module>
 				<module>io.sarl.lang.ui</module>
@@ -26,7 +27,6 @@
 				<module>io.sarl.util</module>
 				<module>io.sarl.eclipse</module>
 				<module>io.sarl.m2e</module>
-				<module>io.sarl.lang.mwe2</module>
 			</modules>
 		</profile>
 		<profile>

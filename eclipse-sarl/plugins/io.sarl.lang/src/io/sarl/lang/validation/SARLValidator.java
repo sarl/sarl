@@ -165,7 +165,7 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.Utils;
 
@@ -314,7 +314,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private IFeatureCallValidator featureCallValidator;
 
 	@Inject
-	private SARLGrammarAccess grammarAccess;
+	private SARLGrammarKeywordAccess grammarAccess;
 
 	@Inject
 	private TypeReferences typeReferences;
@@ -350,7 +350,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		if (!action.getFiredEvents().isEmpty()) {
 			warning(MessageFormat.format(
 					Messages.SARLValidator_2,
-					this.grammarAccess.getActionAccess().getFiresKeyword_9_1_0().getValue()),
+					this.grammarAccess.getFiresKeyword()),
 					action,
 					null);
 		}
@@ -364,7 +364,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkRequiredCapacityUse(SarlRequiredCapacity statement) {
 		warning(MessageFormat.format(
 				Messages.SARLJavaValidator_20,
-				this.grammarAccess.getRequiredCapacityAccess().getRequiresKeyword_1().getValue()),
+				this.grammarAccess.getRequiresKeyword()),
 				statement,
 				null);
 	}
@@ -1303,7 +1303,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						Messages.SARLValidator_24,
 						usedType.getQualifiedName(),
 						Messages.SARLValidator_25,
-						this.grammarAccess.getCapacityUsesAccess().getUsesKeyword_1().getValue()),
+						this.grammarAccess.getUsesKeyword()),
 						usedType,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1326,7 +1326,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						Messages.SARLValidator_24,
 						requiredType.getQualifiedName(),
 						Messages.SARLValidator_25,
-						this.grammarAccess.getRequiredCapacityAccess().getRequiresKeyword_1().getValue()),
+						this.grammarAccess.getRequiresKeyword()),
 						requiredType,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1349,7 +1349,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						Messages.SARLValidator_24,
 						event.getQualifiedName(),
 						Messages.SARLValidator_26,
-						this.grammarAccess.getActionAccess().getFiresKeyword_9_1_0().getValue()),
+						this.grammarAccess.getFiresKeyword()),
 						event,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1615,7 +1615,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					Messages.SARLValidator_24,
 					event.getQualifiedName(),
 					Messages.SARLValidator_26,
-					this.grammarAccess.getBehaviorUnitAccess().getOnKeyword_2().getValue()),
+					this.grammarAccess.getOnKeyword()),
 					event,
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1664,8 +1664,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacity.getIdentifier());
 				final String operationName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(fieldName);
 				final JvmOperation operation = importedFeatures.get(operationName);
-				assert operation != null;
-				if (!isLocallyUsed(operation, container)) {
+				if (operation != null && !isLocallyUsed(operation, container)) {
 					addIssue(MessageFormat.format(
 							Messages.SARLValidator_42,
 							capacity.getSimpleName()),

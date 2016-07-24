@@ -66,7 +66,6 @@ import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.annotations.services.XbaseWithAnnotationsGrammarAccess.XAnnotationElements;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationElementValuePair;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
@@ -85,9 +84,7 @@ import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlFormalParameter;
-import io.sarl.lang.services.SARLGrammarAccess;
-import io.sarl.lang.services.SARLGrammarAccess.ActionElements;
-import io.sarl.lang.services.SARLGrammarAccess.ParameterElements;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /**
  * Utilities functions on JvmElements.
@@ -658,30 +655,28 @@ public final class Utils {
 		return VersionInfo.getInstance(v1).compareTo(VersionInfo.getInstance(v2));
 	}
 
-	private static void addAnnotationToSignature(StringBuilder textRepresentation, SARLGrammarAccess elements,
+	private static void addAnnotationToSignature(StringBuilder textRepresentation, SARLGrammarKeywordAccess elements,
 			ISerializer serializer, ImportManager importManager, XAnnotation annotation) {
-		final XAnnotationElements annotationElements = elements.getXAnnotationAccess();
-		textRepresentation.append(annotationElements.getCommercialAtKeyword_1());
+		textRepresentation.append(elements.getCommercialAtKeyword());
 		textRepresentation.append(getSignatureType(annotation.getAnnotationType(), importManager));
 		final XExpression value = annotation.getValue();
 		if (value != null) {
-			textRepresentation.append(annotationElements.getLeftParenthesisKeyword_3_0().getValue());
+			textRepresentation.append(elements.getLeftParenthesisKeyword());
 			textRepresentation.append(serializer.serialize(value).trim());
-			textRepresentation.append(annotationElements.getRightParenthesisKeyword_3_2().getValue());
+			textRepresentation.append(elements.getRightParenthesisKeyword());
 		} else if (!annotation.getElementValuePairs().isEmpty()) {
-			textRepresentation.append(annotationElements.getLeftParenthesisKeyword_3_0().getValue());
+			textRepresentation.append(elements.getLeftParenthesisKeyword());
 			boolean addComa = false;
 			for (final XAnnotationElementValuePair pair : annotation.getElementValuePairs()) {
 				if (addComa) {
-					textRepresentation.append(annotationElements.getCommaKeyword_3_1_0_1_0().getValue());
+					textRepresentation.append(elements.getCommaKeyword());
 				} else {
 					addComa = true;
 				}
-				textRepresentation.append(elements.getXAnnotationElementValuePairAccess()
-						.getEqualsSignKeyword_0_0_1().getValue());
+				textRepresentation.append(elements.getEqualsSignKeyword());
 				textRepresentation.append(serializer.serialize(pair.getValue()).trim());
 			}
-			textRepresentation.append(annotationElements.getRightParenthesisKeyword_3_2());
+			textRepresentation.append(elements.getRightParenthesisKeyword());
 		}
 	}
 
@@ -696,7 +691,7 @@ public final class Utils {
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static String getActionSignatureString(SarlAction signature, ISerializer serializer,
-			SARLGrammarAccess grammarAccess, ImportManager importManager) {
+			SARLGrammarKeywordAccess grammarAccess, ImportManager importManager) {
 		// Try the serializer
 		try {
 			//TODO: Check if there is a way to serialize without context
@@ -704,7 +699,6 @@ public final class Utils {
 		} catch (Throwable exception) {
 			// No working, perhaps the context's of the signature is unknown
 		}
-		final ActionElements signatureElements = grammarAccess.getActionAccess();
 		final StringBuilder textRepresentation = new StringBuilder();
 		// Annotations
 		for (final XAnnotation annotation : signature.getAnnotations()) {
@@ -718,52 +712,52 @@ public final class Utils {
 		// Generic type
 		if (!signature.getTypeParameters().isEmpty()) {
 			boolean addComa = false;
-			textRepresentation.append(signatureElements.getLessThanSignKeyword_5_0().getValue());
+			textRepresentation.append(grammarAccess.getLessThanSignKeyword());
 			for (final JvmTypeParameter typeParameter : signature.getTypeParameters()) {
 				if (addComa) {
-					textRepresentation.append(signatureElements.getCommaKeyword_5_2_0().getValue());
+					textRepresentation.append(grammarAccess.getCommaKeyword());
 					textRepresentation.append(' ');
 				} else {
 					addComa = true;
 				}
 				textRepresentation.append(getSignatureType(typeParameter, importManager));
 			}
-			textRepresentation.append(signatureElements.getLessThanSignKeyword_5_0().getValue());
+			textRepresentation.append(grammarAccess.getLessThanSignKeyword());
 			textRepresentation.append(' ');
 		}
 		// Name
 		textRepresentation.append(signature.getName());
 		// Parameters
 		if (!signature.getParameters().isEmpty()) {
-			textRepresentation.append(signatureElements.getLeftParenthesisKeyword_7_0().getValue());
+			textRepresentation.append(grammarAccess.getLeftParenthesisKeyword());
 			final int idx = signature.getParameters().size() - 1;
 			for (int i = 0; i < idx; ++i) {
 				addParamToSignature(textRepresentation, signature.getParameters().get(i), grammarAccess,
 						importManager, serializer);
-				textRepresentation.append(signatureElements.getCommaKeyword_9_0_2_0().getValue());
+				textRepresentation.append(grammarAccess.getCommaKeyword());
 				textRepresentation.append(' ');
 			}
 			addParamToSignature(textRepresentation, signature.getParameters().get(idx), grammarAccess,
 					importManager, serializer);
-			textRepresentation.append(signatureElements.getRightParenthesisKeyword_7_2().getValue());
+			textRepresentation.append(grammarAccess.getRightParenthesisKeyword());
 		}
 		// Return type
 		final JvmTypeReference returnType = signature.getReturnType();
 		if (returnType != null && !"void".equals(returnType.getIdentifier())) { //$NON-NLS-1$
 			textRepresentation.append(' ');
-			textRepresentation.append(signatureElements.getColonKeyword_8_0().getValue());
+			textRepresentation.append(grammarAccess.getColonKeyword());
 			textRepresentation.append(' ');
 			textRepresentation.append(getSignatureType(returnType.getType(), importManager));
 		}
 		// Throws
 		if (!signature.getExceptions().isEmpty()) {
 			textRepresentation.append(' ');
-			textRepresentation.append(signatureElements.getThrowsKeyword_9_0_0().getValue());
+			textRepresentation.append(grammarAccess.getThrowsKeyword());
 			textRepresentation.append(' ');
 			boolean addComa = false;
 			for (final JvmTypeReference eventType : signature.getExceptions()) {
 				if (addComa) {
-					textRepresentation.append(signatureElements.getCommaKeyword_9_0_2_0().getValue());
+					textRepresentation.append(grammarAccess.getCommaKeyword());
 					textRepresentation.append(' ');
 				} else {
 					addComa = true;
@@ -774,12 +768,12 @@ public final class Utils {
 		// Fires
 		if (!signature.getFiredEvents().isEmpty()) {
 			textRepresentation.append(' ');
-			textRepresentation.append(signatureElements.getFiresKeyword_9_1_0().getValue());
+			textRepresentation.append(grammarAccess.getFiresKeyword());
 			textRepresentation.append(' ');
 			boolean addComa = false;
 			for (final JvmTypeReference eventType : signature.getFiredEvents()) {
 				if (addComa) {
-					textRepresentation.append(signatureElements.getCommaKeyword_9_1_2_0().getValue());
+					textRepresentation.append(grammarAccess.getCommaKeyword());
 					textRepresentation.append(' ');
 				} else {
 					addComa = true;
@@ -791,20 +785,19 @@ public final class Utils {
 	}
 
 	private static void addParamToSignature(StringBuilder signature, XtendParameter parameter,
-			SARLGrammarAccess grammarAccess, ImportManager importManager, ISerializer serializer) {
-		final ParameterElements elements = grammarAccess.getParameterAccess();
+			SARLGrammarKeywordAccess grammarAccess, ImportManager importManager, ISerializer serializer) {
 		signature.append(parameter.getName());
 		signature.append(' ');
-		signature.append(elements.getColonKeyword_4().getValue());
+		signature.append(grammarAccess.getColonKeyword());
 		signature.append(' ');
 		signature.append(getSignatureType(parameter.getParameterType().getType(), importManager));
 		if (parameter.isVarArg()) {
-			signature.append(grammarAccess.getParameterAccess().getVarArgAsteriskKeyword_6_0_0().getValue());
+			signature.append(grammarAccess.getWildcardAsteriskKeyword());
 		} else if (parameter instanceof SarlFormalParameter) {
 			final SarlFormalParameter sarlParameter = (SarlFormalParameter) parameter;
 			if (sarlParameter.getDefaultValue() != null) {
 				signature.append(' ');
-				signature.append(elements.getEqualsSignKeyword_6_1_0().getValue());
+				signature.append(grammarAccess.getEqualsSignKeyword());
 				signature.append(' ');
 				signature.append(serializer.serialize(sarlParameter.getDefaultValue()).trim());
 			}

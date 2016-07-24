@@ -69,12 +69,11 @@ public final class FiredEventRemoveModification extends SARLSemanticModification
 		final Issue issue = getIssue();
 		final SARLQuickfixProvider tools = getTools();
 		final IXtextDocument document = context.getXtextDocument();
-		final String sep = tools.getGrammarAccess().getActionAccess().getCommaKeyword_5_2_0().getValue();
+		final String sep = tools.getGrammarAccess().getCommaKeyword();
 		if (!tools.removeToPreviousSeparator(issue, document, sep)) {
 			if (!tools.removeToNextSeparator(issue, document, sep)) {
 				tools.removeToPreviousKeyword(issue, document,
-						tools.getGrammarAccess().getActionAccess()
-						.getFiresKeyword_9_1_0().getValue());
+						tools.getGrammarAccess().getFiresKeyword());
 			}
 		}
 	}

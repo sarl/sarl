@@ -116,7 +116,7 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 		final IXtextDocument document = context.getXtextDocument();
 		final SARLQuickfixProvider tools = getTools();
 		final Issue issue = getIssue();
-		final String sep = tools.getGrammarAccess().getCapacityAccess().getCommaKeyword_5_2_0().getValue();
+		final String sep = tools.getGrammarAccess().getCommaKeyword();
 		switch (this.type) {
 		case PRE:
 			tools.removeToPreviousSeparator(issue, document, sep);
@@ -129,8 +129,7 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 			if (!tools.removeToPreviousSeparator(issue, document, sep)) {
 				if (!tools.removeToNextSeparator(issue, document, sep)) {
 					tools.removeToPreviousKeyword(issue, document,
-							tools.getGrammarAccess().getCapacityAccess()
-							.getExtendsKeyword_5_0().getValue());
+							tools.getGrammarAccess().getExtendsKeyword());
 				}
 			}
 		}

@@ -23,10 +23,12 @@ package io.sarl.lang.ui.highlighting;
 
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.eclipse.xtend.ide.common.highlighting.XtendHighlightingCalculator;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration;
 
-import io.sarl.lang.SARLKeywords;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /**
  * A base implementation of the semantic highlighting calculation.
@@ -41,10 +43,13 @@ import io.sarl.lang.SARLKeywords;
  */
 public class SARLHighlightingCalculator extends XtendHighlightingCalculator {
 
+	@Inject
+	private SARLGrammarKeywordAccess grammarKeywordAccess;
+
 	@Override
 	protected Map<String, String> initializeHighlightedIdentifiers() {
 		final Map<String, String> result = super.initializeHighlightedIdentifiers();
-		result.put(SARLKeywords.OCCURRENCE, DefaultHighlightingConfiguration.KEYWORD_ID);
+		result.put(this.grammarKeywordAccess.getOccurrenceKeyword(), DefaultHighlightingConfiguration.KEYWORD_ID);
 		return result;
 	}
 

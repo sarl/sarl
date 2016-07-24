@@ -38,7 +38,7 @@ import org.eclipse.xtext.xbase.conversion.XbaseValueConverterService;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /**
  * First page of the SARL new file wizard.
@@ -51,7 +51,7 @@ import io.sarl.lang.services.SARLGrammarAccess;
 public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 
 	@Inject
-	private SARLGrammarAccess grammarAccess;
+	private SARLGrammarKeywordAccess grammarAccess;
 
 	@Inject
 	private XbaseValueConverterService converter;
@@ -96,12 +96,11 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 		final IPath packagePath = determinePackageName(folderInWorkspace);
 
 		if (packagePath != null && packagePath.segmentCount() > 0) {
-			content.append(this.grammarAccess.getSarlScriptAccess().getPackageKeyword_1_0().getValue() + " "); //$NON-NLS-1$
+			content.append(this.grammarAccess.getPackageKeyword() + " "); //$NON-NLS-1$
 			final StringBuilder packageName = new StringBuilder();
 			packageName.append(packagePath.segment(0));
 			for (int i = 1; i < packagePath.segmentCount(); ++i) {
-				packageName.append(this.grammarAccess.getXbaseGrammarAccess().getQualifiedNameInStaticImportAccess()
-						.getFullStopKeyword_1().getValue());
+				packageName.append(this.grammarAccess.getFullStopKeyword());
 				packageName.append(packagePath.segment(i));
 			}
 			content.append(this.converter.getQualifiedNameValueConverter().toString(packageName.toString()));
