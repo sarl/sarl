@@ -33,6 +33,7 @@ import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEnumLiteral;
 import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
@@ -42,6 +43,7 @@ import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.services.SARLGrammarAccess;
 import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
@@ -54,10 +56,11 @@ import org.eclipse.xtend.core.xtend.RichStringElseIf;
 import org.eclipse.xtend.core.xtend.RichStringForLoop;
 import org.eclipse.xtend.core.xtend.RichStringIf;
 import org.eclipse.xtend.core.xtend.RichStringLiteral;
-import org.eclipse.xtend.core.xtend.XtendEnumLiteral;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendFormalParameter;
+import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend.core.xtend.XtendVariableDeclaration;
 import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Parameter;
@@ -71,6 +74,8 @@ import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.serializer.ISerializationContext;
+import org.eclipse.xtext.serializer.acceptor.SequenceFeeder;
+import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBasicForLoopExpression;
 import org.eclipse.xtext.xbase.XBinaryOperation;
@@ -125,50 +130,123 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 		if (epackage == SarlPackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
 			case SarlPackage.SARL_ACTION:
-				sequence_Action(context, (SarlAction) semanticObject); 
-				return; 
+				if (rule == grammarAccess.getAOPMemberRule()) {
+					sequence_AOPMember(context, (SarlAction) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getCapacityMemberRule()) {
+					sequence_CapacityMember(context, (SarlAction) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getMemberRule()) {
+					sequence_Member(context, (SarlAction) semanticObject); 
+					return; 
+				}
+				else break;
 			case SarlPackage.SARL_AGENT:
-				sequence_Agent(context, (SarlAgent) semanticObject); 
+				sequence_Type(context, (SarlAgent) semanticObject); 
 				return; 
 			case SarlPackage.SARL_ANNOTATION_TYPE:
-				sequence_AnnotationType(context, (SarlAnnotationType) semanticObject); 
-				return; 
+				if (rule == grammarAccess.getAOPMemberRule()) {
+					sequence_AOPMember(context, (SarlAnnotationType) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getAnnotationFieldRule()) {
+					sequence_AnnotationField(context, (SarlAnnotationType) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getMemberRule()) {
+					sequence_Member(context, (SarlAnnotationType) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getTypeRule()) {
+					sequence_Type(context, (SarlAnnotationType) semanticObject); 
+					return; 
+				}
+				else break;
 			case SarlPackage.SARL_BEHAVIOR:
-				sequence_Behavior(context, (SarlBehavior) semanticObject); 
+				sequence_Type(context, (SarlBehavior) semanticObject); 
 				return; 
 			case SarlPackage.SARL_BEHAVIOR_UNIT:
-				sequence_BehaviorUnit(context, (SarlBehaviorUnit) semanticObject); 
+				sequence_AOPMember(context, (SarlBehaviorUnit) semanticObject); 
 				return; 
 			case SarlPackage.SARL_CAPACITY:
-				sequence_Capacity(context, (SarlCapacity) semanticObject); 
+				sequence_Type(context, (SarlCapacity) semanticObject); 
 				return; 
 			case SarlPackage.SARL_CAPACITY_USES:
-				sequence_CapacityUses(context, (SarlCapacityUses) semanticObject); 
+				sequence_AOPMember(context, (SarlCapacityUses) semanticObject); 
 				return; 
 			case SarlPackage.SARL_CLASS:
-				sequence_Class(context, (SarlClass) semanticObject); 
-				return; 
+				if (rule == grammarAccess.getAOPMemberRule()) {
+					sequence_AOPMember(context, (SarlClass) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getAnnotationFieldRule()) {
+					sequence_AnnotationField(context, (SarlClass) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getMemberRule()) {
+					sequence_Member(context, (SarlClass) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getTypeRule()) {
+					sequence_Type(context, (SarlClass) semanticObject); 
+					return; 
+				}
+				else break;
 			case SarlPackage.SARL_CONSTRUCTOR:
-				sequence_Constructor(context, (SarlConstructor) semanticObject); 
+				if (rule == grammarAccess.getAOPMemberRule()) {
+					sequence_AOPMember(context, (SarlConstructor) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getEventMemberRule()) {
+					sequence_EventMember(context, (SarlConstructor) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getMemberRule()) {
+					sequence_Member(context, (SarlConstructor) semanticObject); 
+					return; 
+				}
+				else break;
+			case SarlPackage.SARL_ENUM_LITERAL:
+				sequence_XtendEnumLiteral(context, (SarlEnumLiteral) semanticObject); 
 				return; 
 			case SarlPackage.SARL_ENUMERATION:
-				sequence_Enum(context, (SarlEnumeration) semanticObject); 
-				return; 
+				if (rule == grammarAccess.getAOPMemberRule()) {
+					sequence_AOPMember(context, (SarlEnumeration) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getAnnotationFieldRule()) {
+					sequence_AnnotationField(context, (SarlEnumeration) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getMemberRule()) {
+					sequence_Member(context, (SarlEnumeration) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getTypeRule()) {
+					sequence_Type(context, (SarlEnumeration) semanticObject); 
+					return; 
+				}
+				else break;
 			case SarlPackage.SARL_EVENT:
-				sequence_Event(context, (SarlEvent) semanticObject); 
+				sequence_Type(context, (SarlEvent) semanticObject); 
 				return; 
 			case SarlPackage.SARL_FIELD:
-				if (rule == grammarAccess.getAnnotationFieldRule()) {
+				if (rule == grammarAccess.getAOPMemberRule()) {
+					sequence_AOPMember(context, (SarlField) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getAnnotationFieldRule()) {
 					sequence_AnnotationField(context, (SarlField) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getMemberRule()
-						|| rule == grammarAccess.getFieldRule()
-						|| rule == grammarAccess.getEventMemberRule()
-						|| rule == grammarAccess.getAgentMemberRule()
-						|| rule == grammarAccess.getBehaviorMemberRule()
-						|| rule == grammarAccess.getSkillMemberRule()) {
-					sequence_Field(context, (SarlField) semanticObject); 
+				else if (rule == grammarAccess.getEventMemberRule()) {
+					sequence_EventMember(context, (SarlField) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getMemberRule()) {
+					sequence_Member(context, (SarlField) semanticObject); 
 					return; 
 				}
 				else break;
@@ -176,16 +254,34 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 				sequence_Parameter(context, (SarlFormalParameter) semanticObject); 
 				return; 
 			case SarlPackage.SARL_INTERFACE:
-				sequence_Interface(context, (SarlInterface) semanticObject); 
-				return; 
+				if (rule == grammarAccess.getAOPMemberRule()) {
+					sequence_AOPMember(context, (SarlInterface) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getAnnotationFieldRule()) {
+					sequence_AnnotationField(context, (SarlInterface) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getMemberRule()) {
+					sequence_Member(context, (SarlInterface) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getTypeRule()) {
+					sequence_Type(context, (SarlInterface) semanticObject); 
+					return; 
+				}
+				else break;
 			case SarlPackage.SARL_REQUIRED_CAPACITY:
-				sequence_RequiredCapacity(context, (SarlRequiredCapacity) semanticObject); 
+				sequence_AOPMember(context, (SarlRequiredCapacity) semanticObject); 
 				return; 
 			case SarlPackage.SARL_SCRIPT:
 				sequence_SarlScript(context, (SarlScript) semanticObject); 
 				return; 
 			case SarlPackage.SARL_SKILL:
-				sequence_Skill(context, (SarlSkill) semanticObject); 
+				sequence_Type(context, (SarlSkill) semanticObject); 
+				return; 
+			case SarlPackage.SARL_SPACE:
+				sequence_Type(context, (SarlSpace) semanticObject); 
 				return; 
 			}
 		else if (epackage == TypesPackage.eINSTANCE)
@@ -359,8 +455,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 				sequence_XCatchClause(context, (XCatchClause) semanticObject); 
 				return; 
 			case XbasePackage.XCLOSURE:
-				if (rule == grammarAccess.getDefaultParameterValueRule()
-						|| rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
+				if (rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
 						|| rule == grammarAccess.getRichStringPartRule()
 						|| rule == grammarAccess.getXAnnotationElementValueOrCommaListRule()
 						|| action == grammarAccess.getXAnnotationElementValueOrCommaListAccess().getXListLiteralElementsAction_1_1_0()
@@ -432,8 +527,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					sequence_XAnnotationElementValue_XListLiteral(context, (XListLiteral) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getDefaultParameterValueRule()
-						|| rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
+				else if (rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
 						|| rule == grammarAccess.getRichStringPartRule()
 						|| action == grammarAccess.getXAnnotationElementValueOrCommaListAccess().getXListLiteralElementsAction_1_1_0()
 						|| rule == grammarAccess.getXAnnotationOrExpressionRule()
@@ -529,8 +623,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					sequence_InternalRichString(context, (RichString) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getDefaultParameterValueRule()
-						|| rule == grammarAccess.getXStringLiteralRule()
+				else if (rule == grammarAccess.getXStringLiteralRule()
 						|| rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
 						|| rule == grammarAccess.getRichStringRule()
 						|| rule == grammarAccess.getRichStringPartRule()
@@ -599,9 +692,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					return; 
 				}
 				else break;
-			case XtendPackage.XTEND_ENUM_LITERAL:
-				sequence_XtendEnumLiteral(context, (XtendEnumLiteral) semanticObject); 
-				return; 
 			case XtendPackage.XTEND_FILE:
 				sequence_File(context, (XtendFile) semanticObject); 
 				return; 
@@ -619,6 +709,51 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					return; 
 				}
 				else break;
+			case XtendPackage.XTEND_MEMBER:
+				if (action == grammarAccess.getAOPMemberAccess().getSarlBehaviorUnitAnnotationInfoAction_2_0_0()
+						|| action == grammarAccess.getAOPMemberAccess().getSarlCapacityUsesAnnotationInfoAction_2_1_0()
+						|| action == grammarAccess.getAOPMemberAccess().getSarlRequiredCapacityAnnotationInfoAction_2_2_0()
+						|| action == grammarAccess.getAOPMemberAccess().getSarlFieldAnnotationInfoAction_2_3_0()
+						|| action == grammarAccess.getAOPMemberAccess().getSarlConstructorAnnotationInfoAction_2_4_0()
+						|| action == grammarAccess.getAOPMemberAccess().getSarlActionAnnotationInfoAction_2_5_0()
+						|| action == grammarAccess.getAOPMemberAccess().getSarlClassAnnotationInfoAction_2_6_0()
+						|| action == grammarAccess.getAOPMemberAccess().getSarlInterfaceAnnotationInfoAction_2_7_0()
+						|| action == grammarAccess.getAOPMemberAccess().getSarlEnumerationAnnotationInfoAction_2_8_0()
+						|| action == grammarAccess.getAOPMemberAccess().getSarlAnnotationTypeAnnotationInfoAction_2_9_0()) {
+					sequence_AOPMember_SarlAction_2_5_0_SarlAnnotationType_2_9_0_SarlBehaviorUnit_2_0_0_SarlCapacityUses_2_1_0_SarlClass_2_6_0_SarlConstructor_2_4_0_SarlEnumeration_2_8_0_SarlField_2_3_0_SarlInterface_2_7_0_SarlRequiredCapacity_2_2_0(context, (XtendMember) semanticObject); 
+					return; 
+				}
+				else if (action == grammarAccess.getAnnotationFieldAccess().getSarlFieldAnnotationInfoAction_2_0_0()
+						|| action == grammarAccess.getAnnotationFieldAccess().getSarlClassAnnotationInfoAction_2_1_0()
+						|| action == grammarAccess.getAnnotationFieldAccess().getSarlInterfaceAnnotationInfoAction_2_2_0()
+						|| action == grammarAccess.getAnnotationFieldAccess().getSarlEnumerationAnnotationInfoAction_2_3_0()
+						|| action == grammarAccess.getAnnotationFieldAccess().getSarlAnnotationTypeAnnotationInfoAction_2_4_0()) {
+					sequence_AnnotationField_SarlAnnotationType_2_4_0_SarlClass_2_1_0_SarlEnumeration_2_3_0_SarlField_2_0_0_SarlInterface_2_2_0(context, (XtendMember) semanticObject); 
+					return; 
+				}
+				else if (action == grammarAccess.getCapacityMemberAccess().getSarlActionAnnotationInfoAction_2()) {
+					sequence_CapacityMember_SarlAction_2(context, (XtendMember) semanticObject); 
+					return; 
+				}
+				else if (action == grammarAccess.getEventMemberAccess().getSarlFieldAnnotationInfoAction_2_0_0()
+						|| action == grammarAccess.getEventMemberAccess().getSarlConstructorAnnotationInfoAction_2_1_0()) {
+					sequence_EventMember_SarlConstructor_2_1_0_SarlField_2_0_0(context, (XtendMember) semanticObject); 
+					return; 
+				}
+				else if (action == grammarAccess.getMemberAccess().getSarlFieldAnnotationInfoAction_2_0_0()
+						|| action == grammarAccess.getMemberAccess().getSarlConstructorAnnotationInfoAction_2_1_0()
+						|| action == grammarAccess.getMemberAccess().getSarlActionAnnotationInfoAction_2_2_0()
+						|| action == grammarAccess.getMemberAccess().getSarlClassAnnotationInfoAction_2_3_0()
+						|| action == grammarAccess.getMemberAccess().getSarlInterfaceAnnotationInfoAction_2_4_0()
+						|| action == grammarAccess.getMemberAccess().getSarlEnumerationAnnotationInfoAction_2_5_0()
+						|| action == grammarAccess.getMemberAccess().getSarlAnnotationTypeAnnotationInfoAction_2_6_0()) {
+					sequence_Member_SarlAction_2_2_0_SarlAnnotationType_2_6_0_SarlClass_2_3_0_SarlConstructor_2_1_0_SarlEnumeration_2_5_0_SarlField_2_0_0_SarlInterface_2_4_0(context, (XtendMember) semanticObject); 
+					return; 
+				}
+				else break;
+			case XtendPackage.XTEND_TYPE_DECLARATION:
+				sequence_Type_SarlAgent_2_2_0_SarlAnnotationType_2_9_0_SarlBehavior_2_3_0_SarlCapacity_2_1_0_SarlClass_2_6_0_SarlEnumeration_2_8_0_SarlEvent_2_0_0_SarlInterface_2_7_0_SarlSkill_2_4_0_SarlSpace_2_5_0(context, (XtendTypeDeclaration) semanticObject); 
+				return; 
 			case XtendPackage.XTEND_VARIABLE_DECLARATION:
 				sequence_XVariableDeclaration(context, (XtendVariableDeclaration) semanticObject); 
 				return; 
@@ -652,19 +787,14 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     Member returns SarlAction
-	 *     Action returns SarlAction
-	 *     AgentMember returns SarlAction
-	 *     CapacityMember returns SarlAction
-	 *     BehaviorMember returns SarlAction
-	 *     SkillMember returns SarlAction
+	 *     AOPMember returns SarlAction
 	 *
 	 * Constraint:
 	 *     (
-	 *         annotations+=XAnnotation* 
+	 *         annotationInfo=AOPMember_SarlAction_2_5_0 
 	 *         modifiers+=CommonModifier* 
 	 *         modifiers+=MethodModifier 
-	 *         modifiers+=CommonModifier* 
+	 *         (modifiers+=CommonModifier | modifiers+=MethodModifier)* 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
 	 *         name=FunctionID 
 	 *         (parameters+=Parameter parameters+=Parameter*)? 
@@ -677,20 +807,235 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         expression=XBlockExpression?
 	 *     )
 	 */
-	protected void sequence_Action(ISerializationContext context, SarlAction semanticObject) {
+	protected void sequence_AOPMember(ISerializationContext context, SarlAction semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     Type returns SarlAgent
-	 *     Agent returns SarlAgent
+	 *     AOPMember.SarlBehaviorUnit_2_0_0 returns XtendMember
+	 *     AOPMember.SarlCapacityUses_2_1_0 returns XtendMember
+	 *     AOPMember.SarlRequiredCapacity_2_2_0 returns XtendMember
+	 *     AOPMember.SarlField_2_3_0 returns XtendMember
+	 *     AOPMember.SarlConstructor_2_4_0 returns XtendMember
+	 *     AOPMember.SarlAction_2_5_0 returns XtendMember
+	 *     AOPMember.SarlClass_2_6_0 returns XtendMember
+	 *     AOPMember.SarlInterface_2_7_0 returns XtendMember
+	 *     AOPMember.SarlEnumeration_2_8_0 returns XtendMember
+	 *     AOPMember.SarlAnnotationType_2_9_0 returns XtendMember
 	 *
 	 * Constraint:
-	 *     (annotations+=XAnnotation* modifiers+=CommonModifier* name=ValidID extends=JvmParameterizedTypeReference? members+=AgentMember*)
+	 *     annotations+=XAnnotation*
 	 */
-	protected void sequence_Agent(ISerializationContext context, SarlAgent semanticObject) {
+	protected void sequence_AOPMember_SarlAction_2_5_0_SarlAnnotationType_2_9_0_SarlBehaviorUnit_2_0_0_SarlCapacityUses_2_1_0_SarlClass_2_6_0_SarlConstructor_2_4_0_SarlEnumeration_2_8_0_SarlField_2_3_0_SarlInterface_2_7_0_SarlRequiredCapacity_2_2_0(ISerializationContext context, XtendMember semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AOPMember returns SarlAnnotationType
+	 *
+	 * Constraint:
+	 *     (annotationInfo=AOPMember_SarlAnnotationType_2_9_0 modifiers+=CommonModifier* name=ValidID members+=AnnotationField*)
+	 */
+	protected void sequence_AOPMember(ISerializationContext context, SarlAnnotationType semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AOPMember returns SarlBehaviorUnit
+	 *
+	 * Constraint:
+	 *     (annotationInfo=AOPMember_SarlBehaviorUnit_2_0_0 name=JvmParameterizedTypeReference guard=XExpression? expression=XBlockExpression)
+	 */
+	protected void sequence_AOPMember(ISerializationContext context, SarlBehaviorUnit semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AOPMember returns SarlCapacityUses
+	 *
+	 * Constraint:
+	 *     (annotationInfo=AOPMember_SarlCapacityUses_2_1_0 capacities+=JvmParameterizedTypeReference capacities+=JvmParameterizedTypeReference*)
+	 */
+	protected void sequence_AOPMember(ISerializationContext context, SarlCapacityUses semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AOPMember returns SarlClass
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=AOPMember_SarlClass_2_6_0 
+	 *         modifiers+=CommonModifier* 
+	 *         name=ValidID 
+	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
+	 *         extends=JvmParameterizedTypeReference? 
+	 *         (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)? 
+	 *         members+=Member*
+	 *     )
+	 */
+	protected void sequence_AOPMember(ISerializationContext context, SarlClass semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AOPMember returns SarlConstructor
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=AOPMember_SarlConstructor_2_4_0 
+	 *         modifiers+=CommonModifier* 
+	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
+	 *         (parameters+=Parameter parameters+=Parameter*)? 
+	 *         ((exceptions+=JvmTypeReference exceptions+=JvmTypeReference*) | (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*))* 
+	 *         expression=XBlockExpression
+	 *     )
+	 */
+	protected void sequence_AOPMember(ISerializationContext context, SarlConstructor semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AOPMember returns SarlEnumeration
+	 *
+	 * Constraint:
+	 *     (annotationInfo=AOPMember_SarlEnumeration_2_8_0 modifiers+=CommonModifier* name=ValidID (members+=XtendEnumLiteral members+=XtendEnumLiteral*)?)
+	 */
+	protected void sequence_AOPMember(ISerializationContext context, SarlEnumeration semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AOPMember returns SarlField
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=AOPMember_SarlField_2_3_0 
+	 *         modifiers+=CommonModifier* 
+	 *         (
+	 *             (modifiers+='extension' (modifiers+=FieldModifier | modifiers+=CommonModifier)* name=ValidID type=JvmTypeReference) | 
+	 *             (
+	 *                 modifiers+=FieldModifier 
+	 *                 modifiers+=CommonModifier* 
+	 *                 ((modifiers+='extension' name=ValidID type=JvmTypeReference) | (name=ValidID type=JvmTypeReference?))
+	 *             )
+	 *         ) 
+	 *         initialValue=XExpression?
+	 *     )
+	 */
+	protected void sequence_AOPMember(ISerializationContext context, SarlField semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AOPMember returns SarlInterface
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=AOPMember_SarlInterface_2_7_0 
+	 *         modifiers+=CommonModifier* 
+	 *         name=ValidID 
+	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
+	 *         (extends+=JvmParameterizedTypeReference extends+=JvmParameterizedTypeReference*)? 
+	 *         members+=Member*
+	 *     )
+	 */
+	protected void sequence_AOPMember(ISerializationContext context, SarlInterface semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AOPMember returns SarlRequiredCapacity
+	 *
+	 * Constraint:
+	 *     (annotationInfo=AOPMember_SarlRequiredCapacity_2_2_0 capacities+=JvmParameterizedTypeReference capacities+=JvmParameterizedTypeReference*)
+	 */
+	protected void sequence_AOPMember(ISerializationContext context, SarlRequiredCapacity semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AnnotationField returns SarlAnnotationType
+	 *
+	 * Constraint:
+	 *     (annotationInfo=AnnotationField_SarlAnnotationType_2_4_0 modifiers+=CommonModifier* name=ValidID members+=AnnotationField*)
+	 */
+	protected void sequence_AnnotationField(ISerializationContext context, SarlAnnotationType semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AnnotationField.SarlField_2_0_0 returns XtendMember
+	 *     AnnotationField.SarlClass_2_1_0 returns XtendMember
+	 *     AnnotationField.SarlInterface_2_2_0 returns XtendMember
+	 *     AnnotationField.SarlEnumeration_2_3_0 returns XtendMember
+	 *     AnnotationField.SarlAnnotationType_2_4_0 returns XtendMember
+	 *
+	 * Constraint:
+	 *     annotations+=XAnnotation*
+	 */
+	protected void sequence_AnnotationField_SarlAnnotationType_2_4_0_SarlClass_2_1_0_SarlEnumeration_2_3_0_SarlField_2_0_0_SarlInterface_2_2_0(ISerializationContext context, XtendMember semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AnnotationField returns SarlClass
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=AnnotationField_SarlClass_2_1_0 
+	 *         modifiers+=CommonModifier* 
+	 *         name=ValidID 
+	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
+	 *         extends=JvmParameterizedTypeReference? 
+	 *         (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)? 
+	 *         members+=Member*
+	 *     )
+	 */
+	protected void sequence_AnnotationField(ISerializationContext context, SarlClass semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AnnotationField returns SarlEnumeration
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=AnnotationField_SarlEnumeration_2_3_0 
+	 *         modifiers+=CommonModifier* 
+	 *         name=ValidID 
+	 *         (members+=XtendEnumLiteral members+=XtendEnumLiteral*)?
+	 *     )
+	 */
+	protected void sequence_AnnotationField(ISerializationContext context, SarlEnumeration semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -701,7 +1046,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *
 	 * Constraint:
 	 *     (
-	 *         annotations+=XAnnotation* 
+	 *         annotationInfo=AnnotationField_SarlField_2_0_0 
 	 *         modifiers+=CommonModifier* 
 	 *         modifiers+=FieldModifier 
 	 *         modifiers+=CommonModifier* 
@@ -717,122 +1062,69 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     Type returns SarlAnnotationType
-	 *     Member returns SarlAnnotationType
-	 *     AnnotationField returns SarlAnnotationType
-	 *     AnnotationType returns SarlAnnotationType
-	 *     AgentMember returns SarlAnnotationType
-	 *     BehaviorMember returns SarlAnnotationType
-	 *     SkillMember returns SarlAnnotationType
-	 *
-	 * Constraint:
-	 *     (annotations+=XAnnotation* modifiers+=CommonModifier* name=ValidID members+=AnnotationField*)
-	 */
-	protected void sequence_AnnotationType(ISerializationContext context, SarlAnnotationType semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     BehaviorUnit returns SarlBehaviorUnit
-	 *     AgentMember returns SarlBehaviorUnit
-	 *     BehaviorMember returns SarlBehaviorUnit
-	 *     SkillMember returns SarlBehaviorUnit
-	 *
-	 * Constraint:
-	 *     (annotations+=XAnnotation* name=JvmParameterizedTypeReference guard=XExpression? expression=XBlockExpression)
-	 */
-	protected void sequence_BehaviorUnit(ISerializationContext context, SarlBehaviorUnit semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Type returns SarlBehavior
-	 *     Behavior returns SarlBehavior
-	 *
-	 * Constraint:
-	 *     (annotations+=XAnnotation* modifiers+=CommonModifier* name=ValidID extends=JvmParameterizedTypeReference? members+=BehaviorMember*)
-	 */
-	protected void sequence_Behavior(ISerializationContext context, SarlBehavior semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     CapacityUses returns SarlCapacityUses
-	 *     AgentMember returns SarlCapacityUses
-	 *     BehaviorMember returns SarlCapacityUses
-	 *     SkillMember returns SarlCapacityUses
-	 *
-	 * Constraint:
-	 *     (capacities+=JvmParameterizedTypeReference capacities+=JvmParameterizedTypeReference*)
-	 */
-	protected void sequence_CapacityUses(ISerializationContext context, SarlCapacityUses semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Type returns SarlCapacity
-	 *     Capacity returns SarlCapacity
+	 *     AnnotationField returns SarlInterface
 	 *
 	 * Constraint:
 	 *     (
-	 *         annotations+=XAnnotation* 
-	 *         modifiers+=CommonModifier* 
-	 *         name=ValidID 
-	 *         (extends+=JvmParameterizedTypeReference extends+=JvmParameterizedTypeReference*)? 
-	 *         members+=CapacityMember*
-	 *     )
-	 */
-	protected void sequence_Capacity(ISerializationContext context, SarlCapacity semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Type returns SarlClass
-	 *     Member returns SarlClass
-	 *     AnnotationField returns SarlClass
-	 *     Class returns SarlClass
-	 *     AgentMember returns SarlClass
-	 *     BehaviorMember returns SarlClass
-	 *     SkillMember returns SarlClass
-	 *
-	 * Constraint:
-	 *     (
-	 *         annotations+=XAnnotation* 
+	 *         annotationInfo=AnnotationField_SarlInterface_2_2_0 
 	 *         modifiers+=CommonModifier* 
 	 *         name=ValidID 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
-	 *         extends=JvmParameterizedTypeReference? 
-	 *         (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)? 
+	 *         (extends+=JvmParameterizedTypeReference extends+=JvmParameterizedTypeReference*)? 
 	 *         members+=Member*
 	 *     )
 	 */
-	protected void sequence_Class(ISerializationContext context, SarlClass semanticObject) {
+	protected void sequence_AnnotationField(ISerializationContext context, SarlInterface semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     Member returns SarlConstructor
-	 *     Constructor returns SarlConstructor
-	 *     EventMember returns SarlConstructor
-	 *     AgentMember returns SarlConstructor
-	 *     BehaviorMember returns SarlConstructor
-	 *     SkillMember returns SarlConstructor
+	 *     CapacityMember returns SarlAction
 	 *
 	 * Constraint:
 	 *     (
-	 *         annotations+=XAnnotation* 
+	 *         annotationInfo=CapacityMember_SarlAction_2 
+	 *         modifiers+=CommonModifier* 
+	 *         modifiers+=MethodModifier 
+	 *         modifiers+=CommonModifier* 
+	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
+	 *         name=FunctionID 
+	 *         (parameters+=Parameter parameters+=Parameter*)? 
+	 *         (returnType=TypeReferenceWithTypeArgs | returnType=TypeReferenceNoTypeArgs)? 
+	 *         (
+	 *             (exceptions+=JvmTypeReference exceptions+=JvmTypeReference*) | 
+	 *             (firedEvents+=JvmTypeReference firedEvents+=JvmTypeReference*) | 
+	 *             (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)
+	 *         )* 
+	 *         expression=XBlockExpression?
+	 *     )
+	 */
+	protected void sequence_CapacityMember(ISerializationContext context, SarlAction semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     CapacityMember.SarlAction_2 returns XtendMember
+	 *
+	 * Constraint:
+	 *     annotations+=XAnnotation*
+	 */
+	protected void sequence_CapacityMember_SarlAction_2(ISerializationContext context, XtendMember semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     EventMember returns SarlConstructor
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=EventMember_SarlConstructor_2_1_0 
 	 *         modifiers+=CommonModifier* 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
 	 *         (parameters+=Parameter parameters+=Parameter*)? 
@@ -840,63 +1132,44 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         expression=XBlockExpression
 	 *     )
 	 */
-	protected void sequence_Constructor(ISerializationContext context, SarlConstructor semanticObject) {
+	protected void sequence_EventMember(ISerializationContext context, SarlConstructor semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     Type returns SarlEnumeration
-	 *     Member returns SarlEnumeration
-	 *     AnnotationField returns SarlEnumeration
-	 *     Enum returns SarlEnumeration
-	 *     AgentMember returns SarlEnumeration
-	 *     BehaviorMember returns SarlEnumeration
-	 *     SkillMember returns SarlEnumeration
+	 *     EventMember.SarlField_2_0_0 returns XtendMember
+	 *     EventMember.SarlConstructor_2_1_0 returns XtendMember
 	 *
 	 * Constraint:
-	 *     (annotations+=XAnnotation* modifiers+=CommonModifier* name=ValidID (members+=XtendEnumLiteral members+=XtendEnumLiteral*)?)
+	 *     annotations+=XAnnotation*
 	 */
-	protected void sequence_Enum(ISerializationContext context, SarlEnumeration semanticObject) {
+	protected void sequence_EventMember_SarlConstructor_2_1_0_SarlField_2_0_0(ISerializationContext context, XtendMember semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     Type returns SarlEvent
-	 *     Event returns SarlEvent
-	 *
-	 * Constraint:
-	 *     (annotations+=XAnnotation* modifiers+=CommonModifier* name=ValidID extends=JvmParameterizedTypeReference? members+=EventMember*)
-	 */
-	protected void sequence_Event(ISerializationContext context, SarlEvent semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Member returns SarlField
-	 *     Field returns SarlField
 	 *     EventMember returns SarlField
-	 *     AgentMember returns SarlField
-	 *     BehaviorMember returns SarlField
-	 *     SkillMember returns SarlField
 	 *
 	 * Constraint:
 	 *     (
-	 *         annotations+=XAnnotation* 
+	 *         annotationInfo=EventMember_SarlField_2_0_0 
 	 *         modifiers+=CommonModifier* 
 	 *         (
-	 *             (modifiers+='extension' modifiers+=FieldModifier modifiers+=CommonModifier* name=ValidID type=JvmTypeReference) | 
-	 *             (modifiers+=FieldModifier modifiers+=CommonModifier* ((name=ValidID type=JvmTypeReference) | name=ValidID))
+	 *             (modifiers+='extension' (modifiers+=FieldModifier | modifiers+=CommonModifier)* name=ValidID type=JvmTypeReference) | 
+	 *             (
+	 *                 modifiers+=FieldModifier 
+	 *                 modifiers+=CommonModifier* 
+	 *                 ((modifiers+='extension' name=ValidID type=JvmTypeReference) | (name=ValidID type=JvmTypeReference?))
+	 *             )
 	 *         ) 
 	 *         initialValue=XExpression?
 	 *     )
 	 */
-	protected void sequence_Field(ISerializationContext context, SarlField semanticObject) {
+	protected void sequence_EventMember(ISerializationContext context, SarlField semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -915,17 +1188,155 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     Type returns SarlInterface
-	 *     Member returns SarlInterface
-	 *     AnnotationField returns SarlInterface
-	 *     Interface returns SarlInterface
-	 *     AgentMember returns SarlInterface
-	 *     BehaviorMember returns SarlInterface
-	 *     SkillMember returns SarlInterface
+	 *     JvmFormalParameter returns XtendFormalParameter
+	 *
+	 * Constraint:
+	 *     (extension?='extension'? name=InnerVarID parameterType=JvmTypeReference?)
+	 */
+	protected void sequence_JvmFormalParameter(ISerializationContext context, XtendFormalParameter semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Member returns SarlAction
 	 *
 	 * Constraint:
 	 *     (
-	 *         annotations+=XAnnotation* 
+	 *         annotationInfo=Member_SarlAction_2_2_0 
+	 *         modifiers+=CommonModifier* 
+	 *         modifiers+=MethodModifier 
+	 *         (modifiers+=CommonModifier | modifiers+=MethodModifier)* 
+	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
+	 *         name=FunctionID 
+	 *         (parameters+=Parameter parameters+=Parameter*)? 
+	 *         (returnType=TypeReferenceWithTypeArgs | returnType=TypeReferenceNoTypeArgs)? 
+	 *         (
+	 *             (exceptions+=JvmTypeReference exceptions+=JvmTypeReference*) | 
+	 *             (firedEvents+=JvmTypeReference firedEvents+=JvmTypeReference*) | 
+	 *             (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)
+	 *         )* 
+	 *         expression=XBlockExpression?
+	 *     )
+	 */
+	protected void sequence_Member(ISerializationContext context, SarlAction semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Member.SarlField_2_0_0 returns XtendMember
+	 *     Member.SarlConstructor_2_1_0 returns XtendMember
+	 *     Member.SarlAction_2_2_0 returns XtendMember
+	 *     Member.SarlClass_2_3_0 returns XtendMember
+	 *     Member.SarlInterface_2_4_0 returns XtendMember
+	 *     Member.SarlEnumeration_2_5_0 returns XtendMember
+	 *     Member.SarlAnnotationType_2_6_0 returns XtendMember
+	 *
+	 * Constraint:
+	 *     annotations+=XAnnotation*
+	 */
+	protected void sequence_Member_SarlAction_2_2_0_SarlAnnotationType_2_6_0_SarlClass_2_3_0_SarlConstructor_2_1_0_SarlEnumeration_2_5_0_SarlField_2_0_0_SarlInterface_2_4_0(ISerializationContext context, XtendMember semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Member returns SarlAnnotationType
+	 *
+	 * Constraint:
+	 *     (annotationInfo=Member_SarlAnnotationType_2_6_0 modifiers+=CommonModifier* name=ValidID members+=AnnotationField*)
+	 */
+	protected void sequence_Member(ISerializationContext context, SarlAnnotationType semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Member returns SarlClass
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=Member_SarlClass_2_3_0 
+	 *         modifiers+=CommonModifier* 
+	 *         name=ValidID 
+	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
+	 *         extends=JvmParameterizedTypeReference? 
+	 *         (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)? 
+	 *         members+=Member*
+	 *     )
+	 */
+	protected void sequence_Member(ISerializationContext context, SarlClass semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Member returns SarlConstructor
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=Member_SarlConstructor_2_1_0 
+	 *         modifiers+=CommonModifier* 
+	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
+	 *         (parameters+=Parameter parameters+=Parameter*)? 
+	 *         ((exceptions+=JvmTypeReference exceptions+=JvmTypeReference*) | (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*))* 
+	 *         expression=XBlockExpression
+	 *     )
+	 */
+	protected void sequence_Member(ISerializationContext context, SarlConstructor semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Member returns SarlEnumeration
+	 *
+	 * Constraint:
+	 *     (annotationInfo=Member_SarlEnumeration_2_5_0 modifiers+=CommonModifier* name=ValidID (members+=XtendEnumLiteral members+=XtendEnumLiteral*)?)
+	 */
+	protected void sequence_Member(ISerializationContext context, SarlEnumeration semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Member returns SarlField
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=Member_SarlField_2_0_0 
+	 *         modifiers+=CommonModifier* 
+	 *         (
+	 *             (modifiers+='extension' (modifiers+=FieldModifier | modifiers+=CommonModifier)* name=ValidID type=JvmTypeReference) | 
+	 *             (
+	 *                 modifiers+=FieldModifier 
+	 *                 modifiers+=CommonModifier* 
+	 *                 ((modifiers+='extension' name=ValidID type=JvmTypeReference) | (name=ValidID type=JvmTypeReference?))
+	 *             )
+	 *         ) 
+	 *         initialValue=XExpression?
+	 *     )
+	 */
+	protected void sequence_Member(ISerializationContext context, SarlField semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Member returns SarlInterface
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=Member_SarlInterface_2_4_0 
 	 *         modifiers+=CommonModifier* 
 	 *         name=ValidID 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
@@ -933,19 +1344,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         members+=Member*
 	 *     )
 	 */
-	protected void sequence_Interface(ISerializationContext context, SarlInterface semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     JvmFormalParameter returns XtendFormalParameter
-	 *
-	 * Constraint:
-	 *     (extension?='extension'? name=InnerVarID parameterType=JvmTypeReference?)
-	 */
-	protected void sequence_JvmFormalParameter(ISerializationContext context, XtendFormalParameter semanticObject) {
+	protected void sequence_Member(ISerializationContext context, SarlInterface semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -960,25 +1359,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         (extension?='extension' annotations+=XAnnotation*)? 
 	 *         name=InnerVarID 
 	 *         parameterType=JvmTypeReference 
-	 *         (varArg?='*' | defaultValue=DefaultParameterValue)?
+	 *         (varArg?='*' | defaultValue=XLiteral)?
 	 *     )
 	 */
 	protected void sequence_Parameter(ISerializationContext context, SarlFormalParameter semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     RequiredCapacity returns SarlRequiredCapacity
-	 *     AgentMember returns SarlRequiredCapacity
-	 *     BehaviorMember returns SarlRequiredCapacity
-	 *     SkillMember returns SarlRequiredCapacity
-	 *
-	 * Constraint:
-	 *     (capacities+=JvmParameterizedTypeReference capacities+=JvmParameterizedTypeReference*)
-	 */
-	protected void sequence_RequiredCapacity(ISerializationContext context, SarlRequiredCapacity semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1009,19 +1393,168 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     Type returns SarlSkill
-	 *     Skill returns SarlSkill
+	 *     Type returns SarlAgent
+	 *
+	 * Constraint:
+	 *     (annotationInfo=Type_SarlAgent_2_2_0 modifiers+=CommonModifier* name=ValidID extends=JvmParameterizedTypeReference? members+=AOPMember*)
+	 */
+	protected void sequence_Type(ISerializationContext context, SarlAgent semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Type.SarlEvent_2_0_0 returns XtendTypeDeclaration
+	 *     Type.SarlCapacity_2_1_0 returns XtendTypeDeclaration
+	 *     Type.SarlAgent_2_2_0 returns XtendTypeDeclaration
+	 *     Type.SarlBehavior_2_3_0 returns XtendTypeDeclaration
+	 *     Type.SarlSkill_2_4_0 returns XtendTypeDeclaration
+	 *     Type.SarlSpace_2_5_0 returns XtendTypeDeclaration
+	 *     Type.SarlClass_2_6_0 returns XtendTypeDeclaration
+	 *     Type.SarlInterface_2_7_0 returns XtendTypeDeclaration
+	 *     Type.SarlEnumeration_2_8_0 returns XtendTypeDeclaration
+	 *     Type.SarlAnnotationType_2_9_0 returns XtendTypeDeclaration
+	 *
+	 * Constraint:
+	 *     annotations+=XAnnotation*
+	 */
+	protected void sequence_Type_SarlAgent_2_2_0_SarlAnnotationType_2_9_0_SarlBehavior_2_3_0_SarlCapacity_2_1_0_SarlClass_2_6_0_SarlEnumeration_2_8_0_SarlEvent_2_0_0_SarlInterface_2_7_0_SarlSkill_2_4_0_SarlSpace_2_5_0(ISerializationContext context, XtendTypeDeclaration semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Type returns SarlAnnotationType
+	 *
+	 * Constraint:
+	 *     (annotationInfo=Type_SarlAnnotationType_2_9_0 modifiers+=CommonModifier* name=ValidID members+=AnnotationField*)
+	 */
+	protected void sequence_Type(ISerializationContext context, SarlAnnotationType semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Type returns SarlBehavior
+	 *
+	 * Constraint:
+	 *     (annotationInfo=Type_SarlBehavior_2_3_0 modifiers+=CommonModifier* name=ValidID extends=JvmParameterizedTypeReference? members+=AOPMember*)
+	 */
+	protected void sequence_Type(ISerializationContext context, SarlBehavior semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Type returns SarlCapacity
 	 *
 	 * Constraint:
 	 *     (
-	 *         annotations+=XAnnotation* 
+	 *         annotationInfo=Type_SarlCapacity_2_1_0 
+	 *         modifiers+=CommonModifier* 
+	 *         name=ValidID 
+	 *         (extends+=JvmParameterizedTypeReference extends+=JvmParameterizedTypeReference*)? 
+	 *         members+=CapacityMember*
+	 *     )
+	 */
+	protected void sequence_Type(ISerializationContext context, SarlCapacity semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Type returns SarlClass
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=Type_SarlClass_2_6_0 
+	 *         modifiers+=CommonModifier* 
+	 *         name=ValidID 
+	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
+	 *         extends=JvmParameterizedTypeReference? 
+	 *         (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)? 
+	 *         members+=Member*
+	 *     )
+	 */
+	protected void sequence_Type(ISerializationContext context, SarlClass semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Type returns SarlEnumeration
+	 *
+	 * Constraint:
+	 *     (annotationInfo=Type_SarlEnumeration_2_8_0 modifiers+=CommonModifier* name=ValidID (members+=XtendEnumLiteral members+=XtendEnumLiteral*)?)
+	 */
+	protected void sequence_Type(ISerializationContext context, SarlEnumeration semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Type returns SarlEvent
+	 *
+	 * Constraint:
+	 *     (annotationInfo=Type_SarlEvent_2_0_0 modifiers+=CommonModifier* name=ValidID extends=JvmParameterizedTypeReference? members+=EventMember*)
+	 */
+	protected void sequence_Type(ISerializationContext context, SarlEvent semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Type returns SarlInterface
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=Type_SarlInterface_2_7_0 
+	 *         modifiers+=CommonModifier* 
+	 *         name=ValidID 
+	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
+	 *         (extends+=JvmParameterizedTypeReference extends+=JvmParameterizedTypeReference*)? 
+	 *         members+=Member*
+	 *     )
+	 */
+	protected void sequence_Type(ISerializationContext context, SarlInterface semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Type returns SarlSkill
+	 *
+	 * Constraint:
+	 *     (
+	 *         annotationInfo=Type_SarlSkill_2_4_0 
 	 *         modifiers+=CommonModifier* 
 	 *         name=ValidID 
 	 *         (extends=JvmParameterizedTypeReference? (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)?)+ 
-	 *         members+=SkillMember*
+	 *         members+=AOPMember*
 	 *     )
 	 */
-	protected void sequence_Skill(ISerializationContext context, SarlSkill semanticObject) {
+	protected void sequence_Type(ISerializationContext context, SarlSkill semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Type returns SarlSpace
+	 *
+	 * Constraint:
+	 *     (annotationInfo=Type_SarlSpace_2_5_0 modifiers+=CommonModifier* name=ValidID)
+	 */
+	protected void sequence_Type(ISerializationContext context, SarlSpace semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1131,10 +1664,33 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XExpressionOrVarDeclaration returns XtendVariableDeclaration
 	 *
 	 * Constraint:
-	 *     (extension?='extension'? writeable?='var'? name=InnerVarID type=JvmTypeReference? right=XExpression?)
+	 *     (
+	 *         ((writeable?='var'? extension?='extension'?) | (extension?='extension' writeable?='var'?)) 
+	 *         name=InnerVarID 
+	 *         type=JvmTypeReference? 
+	 *         right=XExpression?
+	 *     )
 	 */
 	protected void sequence_XVariableDeclaration(ISerializationContext context, XtendVariableDeclaration semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     XtendEnumLiteral returns SarlEnumLiteral
+	 *
+	 * Constraint:
+	 *     name=ValidID
+	 */
+	protected void sequence_XtendEnumLiteral(ISerializationContext context, SarlEnumLiteral semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, XtendPackage.Literals.XTEND_ENUM_LITERAL__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XtendPackage.Literals.XTEND_ENUM_LITERAL__NAME));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getXtendEnumLiteralAccess().getNameValidIDParserRuleCall_1_0(), semanticObject.getName());
+		feeder.finish();
 	}
 	
 	

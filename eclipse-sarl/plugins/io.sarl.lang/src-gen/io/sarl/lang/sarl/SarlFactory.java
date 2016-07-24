@@ -122,6 +122,15 @@ public interface SarlFactory extends EFactory
 	SarlAnnotationType createSarlAnnotationType();
 
 	/**
+	 * Returns a new object of class '<em>Enum Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Enum Literal</em>'.
+	 * @generated
+	 */
+	SarlEnumLiteral createSarlEnumLiteral();
+
+	/**
 	 * Returns a new object of class '<em>Event</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -129,6 +138,15 @@ public interface SarlFactory extends EFactory
 	 * @generated
 	 */
 	SarlEvent createSarlEvent();
+
+	/**
+	 * Returns a new object of class '<em>Space</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Space</em>'.
+	 * @generated
+	 */
+	SarlSpace createSarlSpace();
 
 	/**
 	 * Returns a new object of class '<em>Agent</em>'.

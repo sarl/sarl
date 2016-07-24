@@ -16,6 +16,7 @@ import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendEnum;
+import org.eclipse.xtend.core.xtend.XtendEnumLiteral;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
@@ -144,9 +145,19 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 				return createSarlAnnotationTypeAdapter();
 			}
 			@Override
+			public Adapter caseSarlEnumLiteral(SarlEnumLiteral object)
+			{
+				return createSarlEnumLiteralAdapter();
+			}
+			@Override
 			public Adapter caseSarlEvent(SarlEvent object)
 			{
 				return createSarlEventAdapter();
+			}
+			@Override
+			public Adapter caseSarlSpace(SarlSpace object)
+			{
+				return createSarlSpaceAdapter();
 			}
 			@Override
 			public Adapter caseSarlAgent(SarlAgent object)
@@ -232,6 +243,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseXtendAnnotationType(XtendAnnotationType object)
 			{
 				return createXtendAnnotationTypeAdapter();
+			}
+			@Override
+			public Adapter caseXtendEnumLiteral(XtendEnumLiteral object)
+			{
+				return createXtendEnumLiteralAdapter();
 			}
 			@Override
 			public Adapter caseXtendParameter(XtendParameter object)
@@ -426,6 +442,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlEnumLiteral <em>Enum Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see io.sarl.lang.sarl.SarlEnumLiteral
+	 * @generated
+	 */
+	public Adapter createSarlEnumLiteralAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlEvent <em>Event</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -436,6 +467,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createSarlEventAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlSpace <em>Space</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see io.sarl.lang.sarl.SarlSpace
+	 * @generated
+	 */
+	public Adapter createSarlSpaceAdapter()
 	{
 		return null;
 	}
@@ -691,6 +737,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createXtendAnnotationTypeAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.xtend.core.xtend.XtendEnumLiteral <em>Enum Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.xtend.core.xtend.XtendEnumLiteral
+	 * @generated
+	 */
+	public Adapter createXtendEnumLiteralAdapter()
 	{
 		return null;
 	}
