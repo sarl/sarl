@@ -1367,7 +1367,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void transform(final SarlBehaviorUnit source, JvmGenericType container) {
 		final GenerationContext context = getContext(container);
-		if (source.getName() != null && context != null) {
+		if (source.getName() != null && source.getName().getSimpleName() != null && context != null) {
 			final XExpression guard = source.getGuard();
 
 			final boolean isTrueGuard;
