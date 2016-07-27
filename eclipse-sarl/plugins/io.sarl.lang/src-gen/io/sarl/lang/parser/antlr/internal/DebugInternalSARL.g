@@ -142,10 +142,11 @@ ruleType:
 			)*
 			'>'
 		)?
-		(
+		((
 			'extends'
 			ruleJvmParameterizedTypeReference
 		)?
+		    |
 		(
 			'implements'
 			ruleJvmParameterizedTypeReference
@@ -154,6 +155,7 @@ ruleType:
 				ruleJvmParameterizedTypeReference
 			)*
 		)?
+		)*
 		'{'
 		ruleMember
 		*
@@ -559,10 +561,11 @@ ruleAOPMember:
 			)*
 			'>'
 		)?
-		(
+		((
 			'extends'
 			ruleJvmParameterizedTypeReference
 		)?
+		    |
 		(
 			'implements'
 			ruleJvmParameterizedTypeReference
@@ -571,6 +574,7 @@ ruleAOPMember:
 				ruleJvmParameterizedTypeReference
 			)*
 		)?
+		)*
 		'{'
 		ruleMember
 		*
@@ -794,10 +798,11 @@ ruleMember:
 			)*
 			'>'
 		)?
-		(
+		((
 			'extends'
 			ruleJvmParameterizedTypeReference
 		)?
+		    |
 		(
 			'implements'
 			ruleJvmParameterizedTypeReference
@@ -806,6 +811,7 @@ ruleMember:
 				ruleJvmParameterizedTypeReference
 			)*
 		)?
+		)*
 		'{'
 		ruleMember
 		*
@@ -897,10 +903,11 @@ ruleAnnotationField:
 			)*
 			'>'
 		)?
-		(
+		((
 			'extends'
 			ruleJvmParameterizedTypeReference
 		)?
+		    |
 		(
 			'implements'
 			ruleJvmParameterizedTypeReference
@@ -909,6 +916,7 @@ ruleAnnotationField:
 				ruleJvmParameterizedTypeReference
 			)*
 		)?
+		)*
 		'{'
 		ruleMember
 		*

@@ -1,0 +1,92 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2016 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.lang.ui.tests.contentassist;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
+import org.eclipse.xtext.ISetup;
+import org.eclipse.xtext.junit4.ui.AbstractContentAssistProcessorTest;
+import org.eclipse.xtext.junit4.ui.ContentAssistProcessorTestBuilder;
+import org.eclipse.xtext.util.Modules2;
+import org.junit.Test;
+
+import io.sarl.lang.SARLRuntimeModule;
+import io.sarl.lang.SARLStandaloneSetup;
+import io.sarl.lang.ui.SARLUiModule;
+import io.sarl.lang.ui.internal.LangActivator;
+
+@SuppressWarnings("all")
+public class Bug406ContentAssistTest extends AbstractContentAssistTest {
+	
+	@Test
+	public void afterStaticTypeDotCharacterProposals() throws Exception {
+		assertTextInsideProposals(newBuilder()
+			.appendNl("class FooA1 {")
+			.appendNl("    static def myfct ; void {}")
+			.appendNl("}")
+			.appendNl("class FooA2 {")
+			.appendNl("    def myfct2 : void {")
+			.append  ("        FooA1.")
+			.appendSuffix("    }\n}"),
+			"myfct");
+	}
+
+	@Test
+	public void afterStaticTypeColumnCharactersProposals() throws Exception {
+		assertTextInsideProposals(newBuilder()
+				.appendNl("class FooA1 {")
+				.appendNl("    static def myfct ; void {}")
+				.appendNl("}")
+				.appendNl("class FooA2 {")
+				.appendNl("    def myfct2 : void {")
+				.append  ("        FooA1::")
+				.appendSuffix("    }\n}"),
+				"myfct");
+	}
+
+	/**
+	 * see https://github.com/eclipse/xtext-eclipse/issues/28
+	 */
+	@Test
+	public void dirtyStateTypeModifiers_01() throws Exception {
+		final ContentAssistProcessorTestBuilder builder = newBuilder().withDirtyState()
+			.appendNl("final class FooA1 {}")
+			.appendNl("class FooA2 {}")
+			.append("class FooA3 extends FooA")
+			.assertText("FooA2");
+		assertNoText(builder, "FooA1");
+	}
+	
+	/**
+	 * see https://github.com/eclipse/xtext-eclipse/issues/28
+	 */
+	@Test
+	public void dirtyStateTypeModifiers_02() throws Exception {
+		newBuilder().withDirtyState()
+			.appendNl("class FooA1 {}")
+			.appendNl("class FooA2 {}")
+			.append("class FooA3 extends FooA")
+			.assertText("FooA1", "FooA2");
+	}
+	
+}

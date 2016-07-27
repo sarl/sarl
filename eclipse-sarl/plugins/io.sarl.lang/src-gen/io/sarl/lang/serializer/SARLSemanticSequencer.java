@@ -879,8 +879,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         modifiers+=CommonModifier* 
 	 *         name=ValidID 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
-	 *         extends=JvmParameterizedTypeReference? 
-	 *         (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)? 
+	 *         (extends=JvmParameterizedTypeReference? (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)?)+ 
 	 *         members+=Member*
 	 *     )
 	 */
@@ -1013,8 +1012,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         modifiers+=CommonModifier* 
 	 *         name=ValidID 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
-	 *         extends=JvmParameterizedTypeReference? 
-	 *         (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)? 
+	 *         (extends=JvmParameterizedTypeReference? (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)?)+ 
 	 *         members+=Member*
 	 *     )
 	 */
@@ -1265,8 +1263,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         modifiers+=CommonModifier* 
 	 *         name=ValidID 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
-	 *         extends=JvmParameterizedTypeReference? 
-	 *         (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)? 
+	 *         (extends=JvmParameterizedTypeReference? (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)?)+ 
 	 *         members+=Member*
 	 *     )
 	 */
@@ -1476,8 +1473,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         modifiers+=CommonModifier* 
 	 *         name=ValidID 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
-	 *         extends=JvmParameterizedTypeReference? 
-	 *         (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)? 
+	 *         (extends=JvmParameterizedTypeReference? (implements+=JvmParameterizedTypeReference implements+=JvmParameterizedTypeReference*)?)+ 
 	 *         members+=Member*
 	 *     )
 	 */

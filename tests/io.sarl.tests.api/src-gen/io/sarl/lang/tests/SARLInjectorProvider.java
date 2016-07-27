@@ -25,12 +25,15 @@ package io.sarl.lang.tests;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.sarl.lang.SARLRuntimeModule;
-import io.sarl.lang.SARLStandaloneSetup;
 import org.eclipse.xtext.junit4.GlobalRegistries;
 import org.eclipse.xtext.junit4.GlobalRegistries.GlobalStateMemento;
 import org.eclipse.xtext.junit4.IInjectorProvider;
 import org.eclipse.xtext.junit4.IRegistryConfigurator;
+import org.eclipse.xtext.ui.editor.DirtyStateManager;
+import org.eclipse.xtext.ui.editor.IDirtyStateManager;
+
+import io.sarl.lang.SARLRuntimeModule;
+import io.sarl.lang.SARLStandaloneSetup;
 
 public class SARLInjectorProvider implements IInjectorProvider, IRegistryConfigurator {
 

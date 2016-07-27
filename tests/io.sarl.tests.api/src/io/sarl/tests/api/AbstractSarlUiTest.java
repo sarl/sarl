@@ -203,25 +203,35 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 */
 	public final Injector getInjectedInjector() {
 		return this.injectedInjector;
-	}	
+	}
+	
+	/** Replies the injection modules to be used.
+	 *
+	 * @return the injection modules.
+	 */
+	protected Module[] getInjectionModules() {
+		return new Module[] {
+				new Module() {
+					@Override
+					public void configure(Binder binder) {
+						binder.bind(ProjectCreator.class).to(JavaProjectCreator.class);
+						binder.bind(JavaVersion.class).toProvider(new Provider<JavaVersion>() {
+							@Override
+							public JavaVersion get() {
+								return JavaVersion.JAVA8;
+							}
+						});
+					}
+				},	
+		};
+	}
 
 	/** Replies the injector.
 	 *
 	 * @return the injector.
 	 */
 	public Injector getInjector() {
-		return getInjectedInjector().createChildInjector(new Module() {
-			@Override
-			public void configure(Binder binder) {
-				binder.bind(ProjectCreator.class).to(JavaProjectCreator.class);
-				binder.bind(JavaVersion.class).toProvider(new Provider<JavaVersion>() {
-					@Override
-					public JavaVersion get() {
-						return JavaVersion.JAVA8;
-					}
-				});
-			}
-		});
+		return getInjectedInjector().createChildInjector(getInjectionModules());
 	}
 
 	/** Assert the given image descriptor is for an image in a bundle.

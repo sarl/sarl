@@ -69,11 +69,7 @@ Type returns xtend::XtendTypeDeclaration:
 		'skill' name=ValidID 
 		(	('extends' extends=JvmParameterizedTypeReference)?
 			&
-			(	'implements' 
-				(	implements+=JvmParameterizedTypeReference
-					(',' implements+=JvmParameterizedTypeReference)*
-				)
-			)?
+			('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
 		)
 		'{' (members+=AOPMember)* '}'
 	|
@@ -86,8 +82,10 @@ Type returns xtend::XtendTypeDeclaration:
 		{SarlClass.annotationInfo = current}
 		modifiers+=CommonModifier*
 		'class' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
-		("extends" extends=JvmParameterizedTypeReference)? 
-		('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
+		(	('extends' extends=JvmParameterizedTypeReference)? 
+			&
+			('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
+		)
 		'{' (members+=Member)* '}'
 	|
 		// Interface
@@ -248,8 +246,10 @@ AOPMember returns xtend::XtendMember:
 		// Class
 		{SarlClass.annotationInfo = current} modifiers+=CommonModifier*
 		'class' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
-		("extends" extends=JvmParameterizedTypeReference)? 
-		('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
+		(	('extends' extends=JvmParameterizedTypeReference)?
+			&
+			('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
+		)
 		'{' (members+=Member)* '}'
 	|
 		// Interface
@@ -334,8 +334,10 @@ Member returns xtend::XtendMember:
 		// Class
 		{SarlClass.annotationInfo = current} modifiers+=CommonModifier*
 		'class' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
-		("extends" extends=JvmParameterizedTypeReference)? 
-		('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
+		(	('extends' extends=JvmParameterizedTypeReference)?
+			&
+			('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
+		)
 		'{' (members+=Member)* '}'
 	|
 		// Interface
@@ -373,8 +375,10 @@ AnnotationField returns xtend::XtendMember:
 		{SarlClass.annotationInfo = current}
 		modifiers+=CommonModifier*
 		'class' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
-		("extends" extends=JvmParameterizedTypeReference)? 
-		('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
+		(	('extends' extends=JvmParameterizedTypeReference)?
+			&
+			('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
+		)
 		'{' (members+=Member)* '}'
 	|
 		// Interface

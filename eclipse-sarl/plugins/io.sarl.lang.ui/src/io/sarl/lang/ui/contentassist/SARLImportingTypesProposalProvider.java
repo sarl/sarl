@@ -37,7 +37,9 @@ import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
 
 /** Provider of types to be imported.
  *
- * <p>This proposal does nothing special than the Xbase provider. But is is here allowing to filter types in SARL code.
+ * <p>This proposal does nothing special than the Xbase provider, except for: <ul>
+ * <li>Provide icons for the SARL elements;</li>
+ * </ul>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
