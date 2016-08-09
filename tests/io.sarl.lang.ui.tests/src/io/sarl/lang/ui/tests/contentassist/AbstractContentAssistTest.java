@@ -24,6 +24,7 @@ package io.sarl.lang.ui.tests.contentassist;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,10 +35,10 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.name.Named;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jface.text.contentassist.IContentAssistant;
-import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -47,14 +48,10 @@ import org.eclipse.xtext.junit4.internal.LineDelimiters;
 import org.eclipse.xtext.junit4.ui.ContentAssistProcessorTestBuilder;
 import org.eclipse.xtext.junit4.util.ResourceLoadHelper;
 import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration;
 import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal;
-import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ReplacementTextApplier;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
-import org.eclipse.xtext.util.StringInputStream;
 import org.junit.Assert;
-import org.junit.Assume;
 
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.WorkbenchTestHelper;
@@ -285,14 +282,20 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 		}
 		
 		protected Shell getShell() {
-			if (this.workbench == null) {
-				return null;
+			if (this.workbench != null) {
+				final IWorkbenchWindow window = this.workbench.getActiveWorkbenchWindow();
+				if (window != null) {
+					return window.getShell();
+				} else {
+					for (final IWorkbenchWindow window1 : this.workbench.getWorkbenchWindows()) {
+						Shell shell = window.getShell();
+						if (shell != null) {
+							return shell;
+						}
+					}
+				}
 			}
-			final IWorkbenchWindow window = this.workbench.getActiveWorkbenchWindow();
-			if (window == null) {
-				return null;
-			}
-			return window.getShell();
+			return null;
 		}
 		
 		@Override
@@ -302,12 +305,24 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 			if (shell != null) {
 				return computeCompletionProposals(xtextDocument, cursorPosition, shell);
 			}
-			shell = new Shell();
-			try {
-				return computeCompletionProposals(xtextDocument, cursorPosition, shell);
-			} finally {
-				shell.dispose();
+			final Display display = Display.getDefault();
+			final List<ICompletionProposal[]> resultBuffer = new ArrayList<>(1);
+			final List<BadLocationException> exceptionBuffer = new ArrayList<>(1);
+			display.syncExec(() -> {
+				final Shell asyncShell = new Shell(display);
+				try {
+					final ICompletionProposal[] result = computeCompletionProposals(xtextDocument, cursorPosition, asyncShell);
+					resultBuffer.add(result);
+				} catch (BadLocationException exception) {
+					exceptionBuffer.add(exception); 
+				} finally {
+					asyncShell.dispose();
+				}
+			});
+			if (!exceptionBuffer.isEmpty()) {
+				throw exceptionBuffer.get(0);
 			}
+			return resultBuffer.get(0);
 		}
 		
 		@Override

@@ -41,7 +41,6 @@ import io.sarl.lang.mwe2.keywords.*
 import io.sarl.lang.mwe2.bugfixes.* 
 
 var overallRootPath = "../../.."
-var eclipseRootPath = "../.."
 var rootPath = ".."
 
 var baseName = "io.sarl.lang"
@@ -53,7 +52,7 @@ var uiProjectName = "${baseName}.ui"
 var uiProjectPath = "${rootPath}/${uiProjectName}"
 
 var testProjectName = "io.sarl.tests.api"
-var testProjectPath = "${eclipseRootPath}/tests/${testProjectName}"
+var testProjectPath = "${overallRootPath}/tests/${testProjectName}"
 
 var externalToolPath = "${overallRootPath}/formatting-styles"
 
