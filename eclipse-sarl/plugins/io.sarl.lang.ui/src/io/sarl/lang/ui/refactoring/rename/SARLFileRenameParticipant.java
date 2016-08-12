@@ -73,6 +73,9 @@ public class SARLFileRenameParticipant extends AbstractProcessorBasedRenameParti
 
 	@Override
 	protected List<? extends IRenameElementContext> createRenameElementContexts(Object element) {
+		if (!getArguments().getUpdateReferences()) {
+			return super.createRenameElementContexts(element);
+		}
 		assert element instanceof IFile;
 		final IFile file = (IFile) element;
 		final IPath filePath = file.getFullPath();

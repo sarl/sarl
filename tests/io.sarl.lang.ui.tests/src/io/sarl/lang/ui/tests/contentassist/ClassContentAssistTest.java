@@ -67,16 +67,6 @@ public class ClassContentAssistTest {
 		}
 
 		@Test
-		public void afterExtendsSpace() throws Exception {
-			newBuilder().append("extends ").assertCount(2861);
-		}
-
-		@Test
-		public void afterImplementsSpace() throws Exception {
-			newBuilder().append("implements ").assertCount(1383);
-		}
-
-		@Test
 		public void startBlock() throws Exception {
 			assertTextInsideProposals(newBuilder().append("{ "),
 					// Inner types are expected.

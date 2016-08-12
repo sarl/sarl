@@ -89,26 +89,28 @@ public class SARLPackageRenameParticipant extends AbstractProcessorBasedRenamePa
 		assert element instanceof IPackageFragment;
 		final IPackageFragment packageFragment = (IPackageFragment) element;
 		final List<IRenameElementContext> contexts = new ArrayList<>();
-		try {
-			final ResourceSet resourceSet = this.resourceSetProvider.get(packageFragment.getJavaProject().getProject());
-			final String oldPackageName = packageFragment.getElementName();
-			final String[] oldPackageNameElements = oldPackageName.split(PACKAGE_SEPARATOR_PATTERN);
-			final String newPackageName = getNewName();
-			final String[] newPackageNameElements = newPackageName.split(PACKAGE_SEPARATOR_PATTERN);
-			for (final Object resourceObject : packageFragment.getNonJavaResources()) {
-				if (resourceObject instanceof IFile) {
-					final IFile file = (IFile) resourceObject;
-					if (file.getName().endsWith(this.fileExtension)) {
-						final IPath filePath = file.getFullPath();
-						final URI resourceURI = URI.createPlatformResourceURI(filePath.toString(), true);
-						final Resource resource = resourceSet.getResource(resourceURI, true);
-						createPackageRenameContext(oldPackageName, newPackageName, filePath,
-								resource, contexts, oldPackageNameElements.length, newPackageNameElements);
+		if (getArguments().getUpdateReferences()) {
+			try {
+				final ResourceSet resourceSet = this.resourceSetProvider.get(packageFragment.getJavaProject().getProject());
+				final String oldPackageName = packageFragment.getElementName();
+				final String[] oldPackageNameElements = oldPackageName.split(PACKAGE_SEPARATOR_PATTERN);
+				final String newPackageName = getNewName();
+				final String[] newPackageNameElements = newPackageName.split(PACKAGE_SEPARATOR_PATTERN);
+				for (final Object resourceObject : packageFragment.getNonJavaResources()) {
+					if (resourceObject instanceof IFile) {
+						final IFile file = (IFile) resourceObject;
+						if (file.getName().endsWith(this.fileExtension)) {
+							final IPath filePath = file.getFullPath();
+							final URI resourceURI = URI.createPlatformResourceURI(filePath.toString(), true);
+							final Resource resource = resourceSet.getResource(resourceURI, true);
+							createPackageRenameContext(oldPackageName, newPackageName, filePath,
+									resource, contexts, oldPackageNameElements.length, newPackageNameElements);
+						}
 					}
 				}
+			} catch (JavaModelException exception) {
+				getStatus().add(RefactoringStatus.ERROR, exception.getLocalizedMessage(), exception, LOG);
 			}
-		} catch (JavaModelException exception) {
-			getStatus().add(RefactoringStatus.ERROR, exception.getLocalizedMessage(), exception, LOG);
 		}
 		if (contexts.isEmpty()) {
 			return super.createRenameElementContexts(packageFragment);
