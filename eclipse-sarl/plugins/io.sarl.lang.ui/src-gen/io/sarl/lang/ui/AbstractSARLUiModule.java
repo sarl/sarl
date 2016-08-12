@@ -51,6 +51,7 @@ import io.sarl.lang.ui.outline.SARLOutlineTreeProvider;
 import io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer;
 import io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
+import io.sarl.lang.ui.refactoring.rename.SARLRenameStrategyProvider;
 import io.sarl.lang.ui.tasks.SarlTaskTagProvider;
 import io.sarl.lang.ui.validation.SARLUIValidator;
 import org.eclipse.compare.IViewerCreator;
@@ -350,11 +351,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.ui.refactoring.RefactorElementNameFragment2
-	public Class<? extends IRenameStrategy.Provider> bindIRenameStrategy$Provider() {
-		return JvmMemberRenameStrategy.Provider.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.ui.refactoring.RefactorElementNameFragment2
 	public void configureJvmMemberRenameStrategy$Provider$Delegate(Binder binder) {
 		binder.bind(IRenameStrategy.Provider.class).annotatedWith(JvmMemberRenameStrategy.Provider.Delegate.class).to(DefaultRenameStrategyProvider.class);
 	}
@@ -461,6 +457,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ISemanticHighlightingCalculator> bindIdeSemanticHighlightingCalculator() {
 		return SARLHighlightingCalculator.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IRenameStrategy.Provider> bindIRenameStrategy$Provider() {
+		return SARLRenameStrategyProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

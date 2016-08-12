@@ -601,6 +601,11 @@ Workflow {
     				bind = "org.eclipse.xtext.ui.editor.contentassist.ITemplateProposalProvider"
     				to = "io.sarl.lang.ui.contentassist.SARLTemplateProposalProvider"
     			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.refactoring.IRenameStrategy$Provider"
+    				to = "io.sarl.lang.ui.refactoring.rename.SARLRenameStrategyProvider"
+    				override = true
+    			}
 
     			both = {
     				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"

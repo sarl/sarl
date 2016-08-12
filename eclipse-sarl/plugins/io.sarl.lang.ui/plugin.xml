@@ -617,4 +617,17 @@
 		</actionSetPartAssociation>
 	</extension>
 
+   <extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <renameParticipant
+            class="io.sarl.lang.ui.SARLExecutableExtensionFactory:io.sarl.lang.ui.refactoring.rename.SARLPackageRenameParticipant"
+            id="io.sarl.lang.ui.refactoring.packageRenameParticipant"
+            name="%sarl.rename.participant">
+         <enablement>
+           <instanceof
+              value="org.eclipse.jdt.core.IPackageFragment">
+           </instanceof>
+         </enablement>
+      </renameParticipant>
+   </extension>
 </plugin>
