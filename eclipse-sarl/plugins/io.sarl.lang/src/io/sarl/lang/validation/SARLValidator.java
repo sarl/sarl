@@ -104,6 +104,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtend.core.validation.ModifierValidator;
+import org.eclipse.xtend.core.xtend.XtendAnnotationTarget;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
@@ -125,15 +126,20 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
+import org.eclipse.xtext.validation.IssueSeverities;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XCollectionLiteral;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XStringLiteral;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
@@ -164,6 +170,7 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
@@ -187,6 +194,8 @@ import io.sarl.lang.util.Utils;
  */
 @SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:methodcount"})
 public class SARLValidator extends AbstractSARLValidator {
+
+	private static final String ALL_WARNINGS = "all"; //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator constructorModifierValidator = new SARLModifierValidator(
@@ -325,6 +334,75 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private SARLExpressionHelper expressionHelper;
+
+	@Override
+	protected IssueSeverities getIssueSeverities(Map<Object, Object> context, EObject eObject) {
+		final IssueSeverities severities = super.getIssueSeverities(context, eObject);
+
+		// Search for @SuppressWarnings annotations
+		final LinkedList<EObject> eObjects = new LinkedList<>();
+		final List<String> codes = new ArrayList<>();
+		eObjects.add(eObject);
+		boolean ignoreAll = false;
+		while (!eObjects.isEmpty()) {
+			final EObject cObject = eObjects.removeFirst();
+			final EObject container = cObject.eContainer();
+			if (container != null && !(container instanceof SarlScript)) {
+				eObjects.add(container);
+			}
+			if (cObject instanceof XtendAnnotationTarget) {
+				final XtendAnnotationTarget target = (XtendAnnotationTarget) cObject;
+				for (final XAnnotation annotation : target.getAnnotations()) {
+					if (SuppressWarnings.class.getName().equals(annotation.getAnnotationType().getIdentifier())) {
+						final XExpression expr = annotation.getValue();
+						if (expr instanceof XStringLiteral) {
+							final String id = ((XStringLiteral) expr).getValue();
+							if (ALL_WARNINGS.equalsIgnoreCase(id)) {
+								ignoreAll = true;
+								codes.clear();
+								eObjects.clear();
+								break;
+							}
+							codes.add(id);
+						} else if (expr instanceof XCollectionLiteral) {
+							final XCollectionLiteral collection = (XCollectionLiteral) expr;
+							for (final XExpression idExpr : collection.getElements()) {
+								final String id;
+								if (idExpr instanceof XStringLiteral) {
+									id = ((XStringLiteral) idExpr).getValue();
+								} else {
+									id = null;
+								}
+								if (ALL_WARNINGS.equalsIgnoreCase(id)) {
+									ignoreAll = true;
+									codes.clear();
+									eObjects.clear();
+									break;
+								}
+								codes.add(id);
+							}
+						}
+					}
+				}
+			}
+		}
+		if (!ignoreAll && codes.isEmpty()) {
+			return severities;
+		}
+		return new SuppressWarningIssueSeverities(severities, ignoreAll, codes);
+	}
+
+	/** Replies if the given issue is ignored for the given object.
+	 *
+	 * @param issueCode the code if the issue.
+	 * @param currentObject the current object.
+	 * @return <code>true</code> if the issue is ignored.
+	 * @see #isIgnored(String)
+	 */
+	protected boolean isIgnored(String issueCode, EObject currentObject) {
+		final IssueSeverities severities = getIssueSeverities(getContext(), currentObject);
+		return severities.isIgnored(issueCode);
+	}
 
 	/** Replies the canonical name of the given object.
 	 *
@@ -1103,7 +1181,7 @@ public class SARLValidator extends AbstractSARLValidator {
 							returnTypeFeature(sourceElement), INCOMPATIBLE_RETURN_TYPE,
 							inherited.getResolvedReturnType().getIdentifier());
 				}
-			} else if (!isIgnored(RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED)
+			} else if (!isIgnored(RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED, sourceElement)
 					&& sourceElement instanceof SarlAction) {
 				final SarlAction function = (SarlAction) sourceElement;
 				if (function.getReturnType() == null && !inherited.getResolvedReturnType().isPrimitiveVoid()) {
@@ -1121,7 +1199,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		if (sourceElement instanceof SarlAction) {
 			final SarlAction function = (SarlAction) sourceElement;
 			if (!overrideProblems && !function.isOverride() && !function.isStatic()
-					&& !isIgnored(MISSING_OVERRIDE)) {
+					&& !isIgnored(MISSING_OVERRIDE, sourceElement)) {
 				warning(MessageFormat.format(Messages.SARLValidator_15,
 						resolved.getSimpleSignature(),
 						getDeclaratorName(resolved)),
@@ -1192,7 +1270,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					lightweightInterfaceReference,
 					knownInterfaces)) {
 				// Check the interface against the super-types
-				if (superTypes != null && !isIgnored(REDUNDANT_INTERFACE_IMPLEMENTATION)) {
+				if (superTypes != null && !isIgnored(REDUNDANT_INTERFACE_IMPLEMENTATION, element)) {
 					for (final JvmTypeReference superType : superTypes) {
 						final LightweightTypeReference lightweightSuperType = toLightweightTypeReference(superType);
 						if (memberOfTypeHierarchy(lightweightSuperType, lightweightInterfaceReference)) {
@@ -1862,6 +1940,43 @@ public class SARLValidator extends AbstractSARLValidator {
 		 */
 		protected void warning(String message, EObject source, int index) {
 			SARLValidator.this.acceptWarning(message, source, XTEND_MEMBER__MODIFIERS, index, IssueCodes.INVALID_MODIFIER);
+		}
+
+	}
+
+	/** The severity provider that supports <code>@SuppressWarnings</code>.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static final class SuppressWarningIssueSeverities extends IssueSeverities {
+
+		private final IssueSeverities delegate;
+
+		private final boolean ignoredAll;
+
+		private final Iterable<String> ignoredWarnings;
+
+		SuppressWarningIssueSeverities(IssueSeverities delegate, boolean ignoreAll, Iterable<String> codes) {
+			super(null, null, null);
+			this.delegate = delegate;
+			this.ignoredAll = ignoreAll;
+			this.ignoredWarnings = codes;
+		}
+
+		@Override
+		public Severity getSeverity(String code) {
+			if (this.ignoredAll) {
+				return Severity.IGNORE;
+			}
+			for (final String warningId : this.ignoredWarnings) {
+				if (Objects.equal(warningId, code)) {
+					return Severity.IGNORE;
+				}
+			}
+			return this.delegate.getSeverity(code);
 		}
 
 	}
