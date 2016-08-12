@@ -630,4 +630,24 @@
          </enablement>
       </renameParticipant>
    </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <renameParticipant
+            class="io.sarl.lang.ui.SARLExecutableExtensionFactory:io.sarl.lang.ui.refactoring.rename.SARLFileRenameParticipant"
+            id="io.sarl.lang.ui.refactoring.fileRenameParticipant"
+            name="%sarl.rename.participant">
+         <enablement>
+           <instanceof
+              value="org.eclipse.core.resources.IFile">
+           </instanceof>
+           <adapt type="org.eclipse.core.resources.IFile">
+              <test
+                    property="org.eclipse.core.resources.extension"
+                    value="sarl">
+              </test>
+           </adapt>
+         </enablement>
+      </renameParticipant>
+   </extension>
+
 </plugin>
