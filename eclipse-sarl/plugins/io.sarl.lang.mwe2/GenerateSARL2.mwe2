@@ -606,6 +606,17 @@ Workflow {
     				to = "io.sarl.lang.ui.refactoring.rename.SARLRenameStrategyProvider"
     				override = true
     			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.IImageHelper"
+    				to = "io.sarl.lang.ui.images.QualifiedPluginImageHelper"
+    				override = true
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.IImageHelper$IImageDescriptorHelper"
+    				to = "io.sarl.lang.ui.images.QualifiedPluginImageHelper"
+    				override = true
+    				functionName = "bindIImageDescriptorHelper"
+    			}
 
     			both = {
     				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"

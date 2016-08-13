@@ -39,6 +39,7 @@ import io.sarl.lang.ui.contentassist.SARLTemplateContextType;
 import io.sarl.lang.ui.contentassist.SARLTemplateProposalProvider;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
+import io.sarl.lang.ui.images.QualifiedPluginImageHelper;
 import io.sarl.lang.ui.labeling.SARLDescriptionLabelProvider;
 import io.sarl.lang.ui.labeling.SARLDiagnosticLabelDecorator;
 import io.sarl.lang.ui.labeling.SARLLabelProvider;
@@ -119,6 +120,7 @@ import org.eclipse.xtext.resource.containers.IAllContainersState;
 import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider;
 import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.tasks.ITaskTagProvider;
+import org.eclipse.xtext.ui.IImageHelper;
 import org.eclipse.xtext.ui.LanguageSpecific;
 import org.eclipse.xtext.ui.codetemplates.ui.AccessibleCodetemplatesActivator;
 import org.eclipse.xtext.ui.codetemplates.ui.partialEditing.IPartialEditingContentAssistContextFactory;
@@ -481,6 +483,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IImageHelper> bindIImageHelper() {
+		return QualifiedPluginImageHelper.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends AbstractValidatorConfigurationBlock> bindAbstractValidatorConfigurationBlock() {
 		return SARLValidatorConfigurationBlock.class;
 	}
@@ -508,6 +515,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public void configureSARLBehaviorUnitOutlineFilter(Binder binder) {
 		binder.bind(IOutlineContribution.class).annotatedWith(Names.named("SARLBehaviorUnitOutlineFilter")).to(SARLBehaviorUnitOutlineFilter.class);
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IImageHelper.IImageDescriptorHelper> bindIImageDescriptorHelper() {
+		return QualifiedPluginImageHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
