@@ -33,6 +33,9 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "io.sarl.lang.ui.quickfix.acceptors.messages"; //$NON-NLS-1$
+	public static String AddSuppressWarnings_0;
+	public static String AddSuppressWarnings_1;
+	public static String AddSuppressWarnings_2;
 	public static String SARLQuickfixProvider_0;
 	public static String SARLQuickfixProvider_1;
 	public static String SARLQuickfixProvider_10;

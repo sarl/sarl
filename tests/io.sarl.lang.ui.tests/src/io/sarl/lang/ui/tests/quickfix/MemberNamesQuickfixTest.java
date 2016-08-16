@@ -66,7 +66,6 @@ public class MemberNamesQuickfixTest extends AbstractSARLQuickfixTest {
 						"agent A2 extends A1 {",
 						"	var attr10 : int",
 						"}"));
-		asserts.assertNoQuickFix();
 	}
 
 	@Test
@@ -133,7 +132,6 @@ public class MemberNamesQuickfixTest extends AbstractSARLQuickfixTest {
 						"agent A1 {",
 						"	var myattr2 : float",
 						"}"));
-		asserts.assertNoQuickFix();
 	}
 
 	/**

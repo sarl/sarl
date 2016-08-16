@@ -21,10 +21,14 @@
 
 package io.sarl.lang.ui.quickfix;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import com.google.common.base.Predicate;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.emf.common.util.URI;
@@ -51,8 +55,11 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.Fix;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
+import org.eclipse.xtext.ui.refactoring.impl.ProjectUtil;
+import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.util.Arrays;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
@@ -68,6 +75,7 @@ import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.quickfix.acceptors.ActionAddModification;
+import io.sarl.lang.ui.quickfix.acceptors.AddSuppressWarningsModification;
 import io.sarl.lang.ui.quickfix.acceptors.BehaviorUnitGuardRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.CapacityReferenceRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.ExtendedTypeRemoveModification;
@@ -116,6 +124,53 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject
 	private IQualifiedNameProvider qualifiedNameProvider;
+
+	@Inject
+	private ConfigurableIssueCodesProvider issueCodesProvider;
+
+	@Inject
+	private ProjectUtil projectUtil;
+
+	@Inject
+	private IResourceSetProvider resourceSetProvider;
+
+
+	/** Replies if the given code is for a ignorable warning.
+	 *
+	 * @param code the code of the warning.
+	 * @return <code>true</code> if the warning could be ignored, <code>false</code> otherwise.
+	 */
+	protected boolean isIgnorable(String code) {
+		return this.issueCodesProvider.getConfigurableIssueCodes().containsKey(code);
+	}
+
+	@Override
+	protected Predicate<Method> getFixMethodPredicate(final String issueCode) {
+		return new Predicate<Method>() {
+			@Override
+			public boolean apply(Method input) {
+				final Fix annotation = input.getAnnotation(Fix.class);
+				final boolean result = annotation != null
+						&& ("*".equals(annotation.value()) || issueCode.equals(annotation.value())) //$NON-NLS-1$
+						&& input.getParameterTypes().length == 2 && Void.TYPE == input.getReturnType()
+						&& input.getParameterTypes()[0].isAssignableFrom(Issue.class)
+						&& input.getParameterTypes()[1].isAssignableFrom(IssueResolutionAcceptor.class);
+				return result;
+			}
+		};
+	}
+
+	/** Add the fixes with suppress-warning annotations.
+	 *
+	 * @param issue the issue.
+	 * @param acceptor the resolution acceptor.
+	 */
+	@Fix("*")
+	public void fixSuppressWarnings(Issue issue, IssueResolutionAcceptor acceptor) {
+		if (isIgnorable(issue.getCode())) {
+			AddSuppressWarningsModification.accept(this, issue, acceptor);
+		}
+	}
 
 	/** Replies the JVM operations that correspond to the given URIs.
 	 *
@@ -176,6 +231,22 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	public ReplacingAppendable.Factory getAppendableFactory() {
 		return this.appendableFactory;
+	}
+
+	/** Replies the project utilities.
+	 *
+	 * @return the utilities.
+	 */
+	public ProjectUtil getProjectUtil() {
+		return this.projectUtil;
+	}
+
+	/** Replies the resource set provider.
+	 *
+	 * @return the provider.
+	 */
+	public IResourceSetProvider getResourceSetProvider() {
+		return this.resourceSetProvider;
 	}
 
 	/** Replies the type services.
@@ -443,6 +514,24 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 			c = document.getChar(offset + size);
 		}
 		return size;
+	}
+
+	/** Replies the offset that corresponds to the given regular expression pattern.
+	 *
+	 * @param document the document to parse.
+	 * @param startOffset the offset in the text at which the pattern must be recognized.
+	 * @param pattern the regular expression pattern.
+	 * @return the offset (greater or equal to the startOffset), or <code>-1</code> if the pattern
+	 *     cannot be recognized.
+	 */
+	public int getOffsetForPattern(IXtextDocument document, int startOffset, String pattern) {
+		final Pattern compiledPattern = Pattern.compile(pattern);
+		final Matcher matcher = compiledPattern.matcher(document.get());
+		if (matcher.find(startOffset)) {
+			final int end = matcher.end();
+			return end;
+		}
+		return -1;
 	}
 
 	/** Replies the qualified name for the given name.

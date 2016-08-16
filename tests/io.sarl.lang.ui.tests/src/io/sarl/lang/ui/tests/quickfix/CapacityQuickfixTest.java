@@ -227,7 +227,6 @@ public class CapacityQuickfixTest extends AbstractSARLQuickfixTest {
 				// Expected fixed code:
 				//
 				multilineString("capacity C1 {", "	def aFunction", "}"));
-		asserts.assertNoQuickFix();
 	}
 
 	/**

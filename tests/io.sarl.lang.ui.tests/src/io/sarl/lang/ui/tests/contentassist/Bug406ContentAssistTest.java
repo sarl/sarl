@@ -21,21 +21,12 @@
 
 package io.sarl.lang.ui.tests.contentassist;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import org.eclipse.xtext.ISetup;
-import org.eclipse.xtext.junit4.ui.AbstractContentAssistProcessorTest;
 import org.eclipse.xtext.junit4.ui.ContentAssistProcessorTestBuilder;
-import org.eclipse.xtext.util.Modules2;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import io.sarl.lang.SARLRuntimeModule;
-import io.sarl.lang.SARLStandaloneSetup;
-import io.sarl.lang.ui.SARLUiModule;
-import io.sarl.lang.ui.internal.LangActivator;
-
 @SuppressWarnings("all")
+@Ignore
 public class Bug406ContentAssistTest extends AbstractContentAssistTest {
 	
 	@Test
