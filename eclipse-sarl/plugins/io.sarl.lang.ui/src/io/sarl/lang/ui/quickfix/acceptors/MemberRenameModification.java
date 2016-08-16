@@ -24,6 +24,8 @@ package io.sarl.lang.ui.quickfix.acceptors;
 import java.text.MessageFormat;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
@@ -65,8 +67,9 @@ public final class MemberRenameModification extends SARLSemanticModification {
 			acceptor.accept(issue,
 					msg,
 					MessageFormat.format(Messages.SARLQuickfixProvider_12, newName),
-					null,
-					modification);
+					JavaPluginImages.IMG_CORRECTION_RENAME,
+					modification,
+					IProposalRelevance.RENAME_REFACTORING);
 		}
 	}
 

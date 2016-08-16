@@ -25,6 +25,8 @@ import java.text.MessageFormat;
 
 import com.google.common.base.Strings;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
@@ -107,8 +109,9 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 		acceptor.accept(issue,
 				msg,
 				Messages.SARLQuickfixProvider_7,
-				null,
-				modification);
+				JavaPluginImages.IMG_CORRECTION_REMOVE,
+				modification,
+				IProposalRelevance.REMOVE_REDUNDANT_SUPER_INTERFACE);
 	}
 
 	@Override

@@ -31,6 +31,8 @@ import com.google.common.base.Strings;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -107,8 +109,9 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 					issue,
 					label,
 					label,
-					null,
-					modification);
+					JavaPluginImages.IMG_CORRECTION_ADD,
+					modification,
+					IProposalRelevance.ADD_UNIMPLEMENTED_METHODS);
 		}
 	}
 

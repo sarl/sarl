@@ -24,6 +24,8 @@ package io.sarl.lang.ui.quickfix.acceptors;
 import java.text.MessageFormat;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
@@ -65,8 +67,9 @@ public final class ReturnTypeReplaceModification extends SARLSemanticModificatio
 			acceptor.accept(issue,
 					MessageFormat.format(Messages.SARLQuickfixProvider_15, expectedType),
 					Messages.SARLQuickfixProvider_16,
-					null,
-					modification);
+					JavaPluginImages.IMG_CORRECTION_CHANGE,
+					modification,
+					IProposalRelevance.CHANGE_RETURN_TYPE);
 		}
 	}
 

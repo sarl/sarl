@@ -24,6 +24,8 @@ package io.sarl.lang.ui.quickfix.acceptors;
 import java.text.MessageFormat;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.XtextResource;
@@ -72,8 +74,9 @@ public final class ActionAddModification extends SARLSemanticModification {
 			acceptor.accept(issue,
 					MessageFormat.format(Messages.SARLQuickfixProvider_2, actionName),
 					MessageFormat.format(Messages.SARLQuickfixProvider_3, actionName),
-					null,
-					modification);
+					JavaPluginImages.IMG_CORRECTION_ADD,
+					modification,
+					IProposalRelevance.ADD_UNIMPLEMENTED_METHODS);
 		}
 	}
 
