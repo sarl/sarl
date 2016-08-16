@@ -241,4 +241,51 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
 	}
 
+	@Test
+	public void expression_noSuppression() throws Exception {
+		SarlScript mas = file(multilineString(
+				"package io.sarl.lang.tests.test",
+				"agent A1 {",
+				"	def mytst : void {",
+				"     if (1==1) {",
+				"     }",
+				"   }",
+				"}"), false);
+		validate(mas).assertWarning(
+				XbasePackage.eINSTANCE.getXBinaryOperation(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.CONSTANT_BOOLEAN_CONDITION);
+	}
+
+	@Test
+	public void expression_suppression_01() throws Exception {
+		SarlScript mas = file(multilineString(
+				"package io.sarl.lang.tests.test",
+				"agent A1 {",
+				"   @SuppressWarnings(\"constant_condition\")",
+				"	def mytst : void {",
+				"     if (1==1) {",
+				"     }",
+				"   }",
+				"}"), false);
+		validate(mas).assertNoWarnings(
+				XbasePackage.eINSTANCE.getXBinaryOperation(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.CONSTANT_BOOLEAN_CONDITION);
+	}
+
+	@Test
+	public void expression_suppression_02() throws Exception {
+		SarlScript mas = file(multilineString(
+				"package io.sarl.lang.tests.test",
+				"@SuppressWarnings(\"constant_condition\")",
+				"agent A1 {",
+				"	def mytst : void {",
+				"     if (1==1) {",
+				"     }",
+				"   }",
+				"}"), false);
+		validate(mas).assertNoWarnings(
+				XbasePackage.eINSTANCE.getXBinaryOperation(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.CONSTANT_BOOLEAN_CONDITION);
+	}
+
 }

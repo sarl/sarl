@@ -22,6 +22,7 @@
 package io.sarl.lang.validation;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -30,6 +31,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.validation.XtendEarlyExitValidator;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.IssueSeverities;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
@@ -50,6 +52,15 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 
 	@Inject
 	private IEarlyExitComputer earlyExitComputer;
+
+	@Inject
+	private IProgrammaticWarningSuppressor warningSuppressor;
+
+	@Override
+	protected IssueSeverities getIssueSeverities(Map<Object, Object> context, EObject eObject) {
+		final IssueSeverities severities = super.getIssueSeverities(context, eObject);
+		return this.warningSuppressor.getIssueSeverities(context, eObject, severities);
+	}
 
 	@Override
 	@Check
