@@ -67,6 +67,7 @@ import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 
 import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.DefaultValueUse;
+import io.sarl.lang.parser.SyntaxIssueCodes;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -87,6 +88,7 @@ import io.sarl.lang.ui.quickfix.acceptors.MemberRenameModification;
 import io.sarl.lang.ui.quickfix.acceptors.Messages;
 import io.sarl.lang.ui.quickfix.acceptors.MissedMethodAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.MultiModification;
+import io.sarl.lang.ui.quickfix.acceptors.ProtectKeywordModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeReplaceModification;
 import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
@@ -868,6 +870,16 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				.getAbstractKeyword())
 				.append(" "); //$NON-NLS-1$
 		appendable.commitChanges();
+	}
+
+	/** Quick fix for the no viable alternative at an input that is a SARL keyword.
+	 *
+	 * @param issue - the issue.
+	 * @param acceptor - the quick fix acceptor.
+	 */
+	@Fix(SyntaxIssueCodes.USED_RESERVED_KEYWORD)
+	public void fixNoViableAlternativeAtKeyword(final Issue issue, IssueResolutionAcceptor acceptor) {
+		ProtectKeywordModification.accept(this, issue, acceptor);
 	}
 
 }

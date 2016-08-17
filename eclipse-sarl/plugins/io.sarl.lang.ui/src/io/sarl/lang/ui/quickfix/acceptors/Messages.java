@@ -36,6 +36,8 @@ public class Messages extends NLS {
 	public static String AddSuppressWarnings_0;
 	public static String AddSuppressWarnings_1;
 	public static String AddSuppressWarnings_2;
+	public static String ProtectKeywordModification_0;
+	public static String ProtectKeywordModification_1;
 	public static String SARLQuickfixProvider_0;
 	public static String SARLQuickfixProvider_1;
 	public static String SARLQuickfixProvider_10;

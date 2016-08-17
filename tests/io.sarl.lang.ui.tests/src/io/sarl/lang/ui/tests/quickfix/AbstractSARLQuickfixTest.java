@@ -174,6 +174,28 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 		return asserts.assertQuickFix(expectedLabel, expected);
 	}
 
+	/** Assert the quick fix is changing the document in the expected way.
+	 *
+	 * @param issueCode - the code of the issue to test.
+	 * @param invalidCode - the code that is generating the issue.
+	 * @param expectedLabel - the expected label for the quick fix.
+	 * @param expectedResolution - the expected code after fixing.
+	 * @param expectedResolution2 - the expected code after fixing.
+	 * @return the matching resolved text.
+	 */
+	protected String assertQuickFixWithErrors(
+			String issueCode,
+			String invalidCode,
+			String expectedLabel,
+			String expectedResolution,
+			String... expectedResolution2) {
+		QuickFixAsserts asserts = getQuickFixAsserts(issueCode, invalidCode, false);
+		String[] expected = new String[expectedResolution2.length + 1];
+		expected[0] = expectedResolution;
+		System.arraycopy(expectedResolution2, 0, expected, 1, expectedResolution2.length);
+		return asserts.assertQuickFix(expectedLabel, expected);
+	}
+	
 	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
