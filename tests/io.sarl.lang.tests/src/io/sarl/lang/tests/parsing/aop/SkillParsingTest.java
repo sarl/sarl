@@ -750,6 +750,20 @@ public class SkillParsingTest {
 					"public / package / protected / private");
 		}
 
+		@Test
+		public void abstractSkill() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def fct(a : int = 4)",
+					"}",
+					"skill S1 implements C1 { }"));
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
+					44, 2,
+					"class S1 must be defined abstract");
+		}
+
 	}
 
 	public static class ActionTest extends AbstractSarlTest {

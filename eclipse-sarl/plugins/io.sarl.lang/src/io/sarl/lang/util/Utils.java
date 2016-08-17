@@ -25,7 +25,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,10 +41,6 @@ import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtext.common.types.JvmAnnotationReference;
-import org.eclipse.xtext.common.types.JvmAnnotationTarget;
-import org.eclipse.xtext.common.types.JvmAnnotationType;
-import org.eclipse.xtext.common.types.JvmAnnotationValue;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmFeature;
@@ -55,9 +50,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
-import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmType;
-import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
@@ -148,7 +141,7 @@ public final class Utils {
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
 	 */
 	public static void populateInterfaceElements(
-			JvmGenericType jvmElement,
+			JvmDeclaredType jvmElement,
 			Map<ActionPrototype, JvmOperation> operations,
 			Map<String, JvmField> fields,
 			IActionPrototypeProvider sarlSignatureProvider) {
@@ -184,7 +177,7 @@ public final class Utils {
 			"checkstyle:npathcomplexity",
 			"checkstyle:nestedifdepth"})
 	public static void populateInheritanceContext(
-			JvmGenericType jvmElement,
+			JvmDeclaredType jvmElement,
 			Map<ActionPrototype, JvmOperation> finalOperations,
 			Map<ActionPrototype, JvmOperation> overridableOperations,
 			Map<String, JvmField> inheritedFields,
@@ -535,110 +528,6 @@ public final class Utils {
 				keepUnboundWildcardInformation);
 		final LightweightTypeReference reference = factory.toLightweightReference(typeRef);
 		return reference;
-	}
-
-	/** Extract the string value of the given annotation, if it exists.
-	 *
-	 * <p>TODO Replace by AnnotationLookup.
-	 *
-	 * @param op - the annoted element.
-	 * @param annotationType - the type of the annotation to consider
-	 * @return the value of the annotation, or <code>null</code> if no annotation or no
-	 *     value.
-	 */
-	public static String annotationString(JvmAnnotationTarget op, Class<?> annotationType) {
-		final String name = annotationType.getName();
-		for (final JvmAnnotationReference aref : op.getAnnotations()) {
-			final JvmAnnotationType an = aref.getAnnotation();
-			if (name != null && name.equals(an.getQualifiedName())) {
-				for (final JvmAnnotationValue value : aref.getValues()) {
-					if (value instanceof JvmStringAnnotationValue) {
-						for (final String strValue : ((JvmStringAnnotationValue) value).getValues()) {
-							if (strValue != null) {
-								return strValue;
-							}
-						}
-					}
-				}
-			}
-		}
-		return null;
-	}
-
-	/** Extract the string values of the given annotation, if they exist.
-	 *
-	 * <p>TODO Replace by AnnotationLookup.
-	 *
-	 * @param op - the annoted element.
-	 * @param annotationType - the type of the annotation to consider
-	 * @return the values of the annotation, never <code>null</code>.
-	 */
-	public static List<String> annotationStrings(JvmAnnotationTarget op, Class<?> annotationType) {
-		final List<String> values = new ArrayList<>();
-		final String name = annotationType.getName();
-		for (final JvmAnnotationReference aref : op.getAnnotations()) {
-			final JvmAnnotationType an = aref.getAnnotation();
-			if (name != null && name.equals(an.getQualifiedName())) {
-				for (final JvmAnnotationValue value : aref.getValues()) {
-					if (value instanceof JvmStringAnnotationValue) {
-						for (final String strValue : ((JvmStringAnnotationValue) value).getValues()) {
-							if (strValue != null) {
-								values.add(strValue);
-							}
-						}
-					}
-				}
-			}
-		}
-		return values;
-	}
-
-	/** Extract the type values of the given annotation, if they exist.
-	 *
-	 * <p>TODO Replace by AnnotationLookup.
-	 *
-	 * @param op - the annoted element.
-	 * @param annotationType - the type of the annotation to consider
-	 * @return the values of the annotation, never <code>null</code>.
-	 */
-	public static List<JvmTypeReference> annotationClasses(JvmAnnotationTarget op, Class<?> annotationType) {
-		final List<JvmTypeReference> values = new ArrayList<>();
-		final String name = annotationType.getName();
-		for (final JvmAnnotationReference aref : op.getAnnotations()) {
-			final JvmAnnotationType an = aref.getAnnotation();
-			if (name != null && name.equals(an.getQualifiedName())) {
-				for (final JvmAnnotationValue value : aref.getValues()) {
-					if (value instanceof JvmTypeAnnotationValue) {
-						for (final JvmTypeReference strValue : ((JvmTypeAnnotationValue) value).getValues()) {
-							if (strValue != null) {
-								values.add(strValue);
-							}
-						}
-					}
-				}
-			}
-		}
-		return values;
-	}
-
-	/** Replies if the given target is annotated.
-	 *
-	 * <p>TODO Replace by AnnotationLookup.
-	 *
-	 * @param op - the annoted element.
-	 * @param annotationType - the type of the annotation to consider
-	 * @return <code>true</code> if the op is annotated with the given annotation type,
-	 *     otherwise <code>false</code>.
-	 */
-	public static boolean hasAnnotation(JvmAnnotationTarget op, Class<?> annotationType) {
-		final String name = annotationType.getName();
-		for (final JvmAnnotationReference aref : op.getAnnotations()) {
-			final JvmAnnotationType an = aref.getAnnotation();
-			if (name != null && name.equals(an.getQualifiedName())) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/** Compare the two strings as they are version numbers.

@@ -20,13 +20,13 @@
  */
 package io.sarl.lang.tests.actionprototype;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.google.inject.Inject;
 import org.eclipse.emf.common.util.BasicEList;
@@ -50,6 +51,7 @@ import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.xbase.XExpression;
 import org.junit.Before;
 import org.junit.ComparisonFailure;
@@ -856,9 +858,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			this.provider.clear();
 			this.parameterProvider = mock(FormalParameterProvider.class);
 			when(this.parameterProvider.getFormalParameterCount()).thenReturn(4);
-			when(this.parameterProvider.getFormalParameterName(anyInt())).thenAnswer(new Answer<String>() {
-				@Override
-				public String answer(InvocationOnMock invocation) throws Throwable {
+			when(this.parameterProvider.getFormalParameterName(anyInt())).thenAnswer((invocation) -> {
 					switch(((Integer) invocation.getArguments()[0]).intValue()) {
 					case 0:
 						return "firstarg";
@@ -870,11 +870,8 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 						return "fourtharg";
 					}
 					return null;
-				}
-			});
-			when(this.parameterProvider.getFormalParameterType(anyInt(), anyBoolean())).thenAnswer(new Answer<String>() {
-				@Override
-				public String answer(InvocationOnMock invocation) throws Throwable {
+				});
+			when(this.parameterProvider.getFormalParameterType(anyInt(), anyBoolean())).thenAnswer((invocation) -> {
 					switch(((Integer) invocation.getArguments()[0]).intValue()) {
 					case 0:
 						return "java.lang.String";
@@ -886,19 +883,15 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 						return "java.lang.Object[]";
 					}
 					return null;
-				}
-			});
-			when(this.parameterProvider.hasFormalParameterDefaultValue(anyInt())).thenAnswer(new Answer<Boolean>() {
-				@Override
-				public Boolean answer(InvocationOnMock invocation) throws Throwable {
+				});
+			when(this.parameterProvider.hasFormalParameterDefaultValue(anyInt())).thenAnswer((invocation) -> {
 					switch(((Integer) invocation.getArguments()[0]).intValue()) {
 					case 0:
 					case 2:
 						return Boolean.TRUE;
 					}
 					return Boolean.FALSE;
-				}
-			});
+				});
 			//
 			SarlFormalParameter p;
 			this.sarlParameters = new BasicEList<>();
@@ -941,6 +934,13 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmAnnotationReference annotationRef = mock(JvmAnnotationReference.class);
 			when(annotationRef.getAnnotation()).thenReturn(annotationType);
 			when(jp.getAnnotations()).thenReturn(ECollections.singletonEList(annotationRef));
+			when(jp.eIsSet(any())).thenAnswer((invocation) -> {
+				if (Objects.equals(TypesPackage.Literals.JVM_ANNOTATION_TARGET__ANNOTATIONS,
+						invocation.getArguments()[0])) {
+					return Boolean.TRUE;
+				}
+				return Boolean.FALSE;
+			});
 			this.jvmParameters.add(jp);
 
 			jp = mock(JvmFormalParameter.class);
@@ -959,6 +959,13 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			annotationRef = mock(JvmAnnotationReference.class);
 			when(annotationRef.getAnnotation()).thenReturn(annotationType);
 			when(jp.getAnnotations()).thenReturn(ECollections.singletonEList(annotationRef));
+			when(jp.eIsSet(any())).thenAnswer((invocation) -> {
+				if (Objects.equals(TypesPackage.Literals.JVM_ANNOTATION_TARGET__ANNOTATIONS,
+						invocation.getArguments()[0])) {
+					return Boolean.TRUE;
+				}
+				return Boolean.FALSE;
+			});
 			this.jvmParameters.add(jp);
 
 			jp = mock(JvmFormalParameter.class);

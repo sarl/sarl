@@ -27,65 +27,57 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-@RunWith(Suite.class)
-@SuiteClasses({
-	ClassContentAssistTest.Base.class,
-})
 @SuppressWarnings("all")
-public class ClassContentAssistTest {
+public class ClassContentAssistTest extends AbstractContentAssistTest {
 
-	public static class Base extends AbstractContentAssistTest {
+	@Override
+	protected String getPrefix() {
+		return "class TestClass ";
+	}
 
-		@Override
-		protected String getPrefix() {
-			return "class TestClass ";
-		}
+	@Test
+	public void afterAgentTypeName() throws Exception {
+		newBuilder().assertText("extends", "implements");
+	}
+	
+	@Test
+	public void ext() throws Exception {
+		newBuilder().append("ext").assertText("extends");
+	}
 
-		@Test
-		public void afterAgentTypeName() throws Exception {
-			newBuilder().assertText("extends", "implements");
-		}
-		
-		@Test
-		public void ext() throws Exception {
-			newBuilder().append("ext").assertText("extends");
-		}
+	@Test
+	public void im() throws Exception {
+		newBuilder().append("im").assertText("implements");
+	}
 
-		@Test
-		public void im() throws Exception {
-			newBuilder().append("im").assertText("implements");
-		}
+	@Test
+	public void afterExtends() throws Exception {
+		newBuilder().append("extends").assertText("extends");
+	}
 
-		@Test
-		public void afterExtends() throws Exception {
-			newBuilder().append("extends").assertText("extends");
-		}
+	@Test
+	public void afterImplements() throws Exception {
+		newBuilder().append("implements").assertText("implements");
+	}
 
-		@Test
-		public void afterImplements() throws Exception {
-			newBuilder().append("implements").assertText("implements");
-		}
+	@Test
+	public void startBlock() throws Exception {
+		assertTextInsideProposals(newBuilder().append("{ "),
+				// Inner types are expected.
+				"class", "interface", "enum", "annotation",
+				// Expected members
+				"extension",
+				"new");
+	}
 
-		@Test
-		public void startBlock() throws Exception {
-			assertTextInsideProposals(newBuilder().append("{ "),
-					// Inner types are expected.
-					"class", "interface", "enum", "annotation",
-					// Expected members
-					"extension",
-					"new");
-		}
-
-		@Test
-		public void continueBlock() throws Exception {
-			assertTextInsideProposals(newBuilder().append("{ new() { } "),
-					// Inner types are expected.
-					"class", "interface", "enum", "annotation",
-					// Expected members
-					"extension",
-					"new");
-		}
-
+	@Test
+	public void continueBlock() throws Exception {
+		assertTextInsideProposals(newBuilder().append("{ new() { } "),
+				// Inner types are expected.
+				"class", "interface", "enum", "annotation",
+				// Expected members
+				"extension",
+				"new");
 	}
 
 }

@@ -43,6 +43,7 @@ import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -92,7 +93,6 @@ import io.sarl.lang.ui.quickfix.acceptors.ProtectKeywordModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeReplaceModification;
 import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
-import io.sarl.lang.util.Utils;
 
 /**
  * Custom quickfixes.
@@ -103,7 +103,7 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#quick-fixes"
  */
-@SuppressWarnings({"static-method", "checkstyle:methodcount"})
+@SuppressWarnings({"static-method", "checkstyle:methodcount", "checkstyle:classfanoutcomplexity"})
 public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject
@@ -135,6 +135,9 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject
 	private IResourceSetProvider resourceSetProvider;
+
+	@Inject
+	private AnnotationLookup annotationFinder;
 
 
 	/** Replies if the given code is for a ignorable warning.
@@ -190,7 +193,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 			final EObject overridden = resourceSet.getEObject(operationURI, true);
 			if (overridden instanceof JvmOperation) {
 				final JvmOperation operation = (JvmOperation) overridden;
-				if (!Utils.hasAnnotation(operation, DefaultValueUse.class)) {
+				if (this.annotationFinder.findAnnotation(operation, DefaultValueUse.class) == null) {
 					operations.add(operation);
 				}
 			}

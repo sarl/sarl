@@ -1060,7 +1060,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			final JvmField inferredField = this.associations.getJvmField(field);
 			final Map<String, JvmField> inheritedFields = new TreeMap<>();
 			Utils.populateInheritanceContext(
-					(JvmGenericType) inferredField.getDeclaringType(),
+					inferredField.getDeclaringType(),
 					null, null,
 					inheritedFields,
 					null, null,

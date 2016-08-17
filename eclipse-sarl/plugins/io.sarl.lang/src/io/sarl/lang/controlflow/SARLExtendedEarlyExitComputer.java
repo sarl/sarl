@@ -21,6 +21,8 @@
 
 package io.sarl.lang.controlflow;
 
+import javax.inject.Inject;
+
 import com.google.inject.Singleton;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
@@ -37,6 +39,9 @@ import org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer;
  */
 @Singleton
 public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
+
+	@Inject
+	private SARLEarlyExitComputer originalComputer;
 
 	@Override
 	public boolean isDefiniteEarlyExit(XExpression expression) {
@@ -59,9 +64,8 @@ public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 	 * @param expression - the expression to test.
 	 * @return <code>true</code> if the given expression is a SARL early-exit
 	 *     statement, <code>false</code> otherwise.
-	 * @see SARLEarlyExitComputerUtil#isEarlyExitAnnotatedElement(Object)
+	 * @see SARLEarlyExitComputer#isEarlyExitAnnotatedElement(Object)
 	 */
-	@SuppressWarnings("static-method")
 	protected boolean isEarlyExitSARLStatement(XExpression expression) {
 		if (expression instanceof XAbstractFeatureCall) {
 			// Do not call expression.getFeature() since the feature may be unresolved.
@@ -70,7 +74,7 @@ public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 			final Object element = expression.eGet(
 					XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE,
 					false);
-			return SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(element);
+			return this.originalComputer.isEarlyExitAnnotatedElement(element);
 		}
 		return false;
 	}
@@ -80,11 +84,10 @@ public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 	 * @param expression - the expression to test.
 	 * @return <code>true</code> if the given expression is a SARL early-exit
 	 *     statement, <code>false</code> otherwise.
-	 * @see SARLEarlyExitComputerUtil#isEarlyExitEvent(JvmTypeReference)
+	 * @see SARLEarlyExitComputer#isEarlyExitEvent(JvmTypeReference)
 	 */
-	@SuppressWarnings("static-method")
 	public boolean isEarlyExitEvent(JvmTypeReference expression) {
-		return SARLEarlyExitComputerUtil.isEarlyExitEvent(expression);
+		return this.originalComputer.isEarlyExitEvent(expression);
 	}
 
 }

@@ -36,6 +36,7 @@ import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.xbase.lib.Pair;
 
@@ -64,6 +65,9 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	private final Map<String, Map<String, Map<ActionParameterTypes, InferredPrototype>>> prototypes = new TreeMap<>();
 
 	private final Map<String, Map<String, Integer>> defaultValueIDPrefixes = new TreeMap<>();
+
+	@Inject
+	private AnnotationLookup annotationFinder;
 
 	/** Construct a provider of action prototypes.
 	 */
@@ -257,7 +261,8 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	@Override
 	public final InferredPrototype createPrototypeFromJvmModel(QualifiedActionName id,
 			boolean isVarargs, List<JvmFormalParameter> parameters) {
-		return createPrototype(id, isVarargs, new JvmFormalParameterProvider(parameters));
+		return createPrototype(id, isVarargs,
+				new JvmFormalParameterProvider(parameters, this.annotationFinder));
 	}
 
 	@Override

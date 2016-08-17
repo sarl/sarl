@@ -24,10 +24,12 @@ package io.sarl.lang.jvmmodel;
 import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -44,7 +46,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
+import com.google.inject.MembersInjector;
 import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -72,6 +74,7 @@ import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmEnumerationType;
 import org.eclipse.xtext.common.types.JvmExecutable;
+import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
@@ -88,12 +91,14 @@ import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.serializer.sequencer.IContextFinder;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator;
@@ -129,6 +134,7 @@ import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SarlSpecification;
+import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
@@ -144,12 +150,15 @@ import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEnumLiteral;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
@@ -186,10 +195,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return true;
 	};
 
-	/** The injector.
+	/** The injector for generation contexts.
 	 */
 	@Inject
-	private Injector injector;
+	private MembersInjector<GenerationContext> contextInjector;
 
 	/** Generator of JVM elements.
 	 */
@@ -231,6 +240,16 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Inject
 	private SARLExtendedEarlyExitComputer earlyExitComputer;
 
+	/** Finder of annotations.
+	 */
+	@Inject
+	private AnnotationLookup annotationFinder;
+
+	/** Utilities for JVM annotations.
+	 */
+	@Inject
+	private SARLAnnotationUtil annotationUtils;
+
 	/** SARL Serializer.
 	 */
 	@Inject
@@ -265,39 +284,50 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Generation contexts.
 	 */
-	private Map<String, GenerationContext> ctx = new TreeMap<>();
-
-	private static String contextKey(JvmIdentifiableElement type) {
-		return type.eResource().getURI() + "/" + type.getQualifiedName(); //$NON-NLS-1$
-	}
+	private LinkedList<GenerationContext> bufferedContexes = new LinkedList<>();
 
 	/** Open the context for the generation of a SARL-specific element.
 	 *
+	 * @param sarlObject the SARL object that is the cause of the generation.
 	 * @param type - the generated type.
-	 * @param context - the SARL generation context.
+	 * @param supportedMemberTypes the types of the supported members.
+	 * @return the created context.
 	 */
-	protected void openContext(JvmIdentifiableElement type, GenerationContext context) {
-		openContext(type);
-		this.injector.injectMembers(context);
-		this.ctx.put(contextKey(type), context);
-	}
-
-	/** Open the context for the generation of an element.
-	 * The generated element may be an extension of Xtend or a
-	 * SARL-specirfic element.
-	 *
-	 * @param type - the generated type.
-	 */
-	protected void openContext(JvmIdentifiableElement type) {
+	protected final synchronized GenerationContext openContext(EObject sarlObject, JvmIdentifiableElement type,
+			final Iterable<Class<? extends XtendMember>> supportedMemberTypes) {
+		assert type != null;
+		assert supportedMemberTypes != null;
 		this.sarlSignatureProvider.clear(type);
+		final GenerationContext context = new GenerationContext(sarlObject, type.getIdentifier()) {
+			@Override
+			public boolean isSupportedMember(XtendMember member) {
+				for (final Class<? extends XtendMember> supportedMemberType : supportedMemberTypes) {
+					if (supportedMemberType.isInstance(member)) {
+						return true;
+					}
+				}
+				return false;
+			}
+		};
+		this.contextInjector.injectMembers(context);
+		this.bufferedContexes.push(context);
+		return context;
 	}
 
 	/** Close a generation context.
 	 *
-	 * @param type - the generated type.
+	 * @param context the context to be closed.
 	 */
-	protected void closeContext(JvmIdentifiableElement type) {
-		this.ctx.remove(contextKey(type));
+	protected final synchronized void closeContext(GenerationContext context) {
+		final Iterator<GenerationContext> iterator = this.bufferedContexes.iterator();
+		while (iterator.hasNext()) {
+			final GenerationContext candidate = iterator.next();
+			if (Objects.equal(candidate.getTypeIdentifier(), context.getTypeIdentifier())) {
+				iterator.remove();
+				return;
+			}
+		}
+		throw new IllegalStateException("Not same contexts when closing"); //$NON-NLS-1$
 	}
 
 	/** Replies the SARL-specific generation context.
@@ -305,8 +335,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param type - the generated type.
 	 * @return the SARL-specific generation context.
 	 */
-	protected GenerationContext getContext(JvmIdentifiableElement type) {
-		return this.ctx.get(contextKey(type));
+	protected final synchronized GenerationContext getContext(JvmIdentifiableElement type) {
+		for (final GenerationContext candidate : this.bufferedContexes) {
+			if (Objects.equal(candidate.getTypeIdentifier(), type.getIdentifier())) {
+				return candidate;
+			}
+		}
+		throw new IllegalStateException("generation context cannot be found for: " + type.getIdentifier()); //$NON-NLS-1$
 	}
 
 	@Override
@@ -385,6 +420,19 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 			return javaType;
 		}
+		if (declaration instanceof SarlSpace) {
+			final SarlSpace sarlSpace = (SarlSpace) declaration;
+			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
+			if (!preIndexingPhase) {
+				doLater.add(new Runnable() {
+					@Override
+					public void run() {
+						initialize(sarlSpace, javaType);
+					}
+				});
+			}
+			return javaType;
+		}
 		return null;
 	}
 
@@ -396,15 +444,35 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
-		// Issue #363: do not generate the agent if the SARL library is incompatible.
+		// Issue #363: do not generate the class if the SARL library is incompatible.
 		if (!Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 			return;
 		}
-		openContext(inferredJvmType);
+		// Create the generation context that is used by the other transformation functions.
+		final GenerationContext context = openContext(source, inferredJvmType, Arrays.asList(
+				SarlField.class, SarlConstructor.class, SarlAction.class,
+				SarlBehaviorUnit.class, SarlCapacityUses.class, SarlRequiredCapacity.class));
 		try {
+			// Initialize the context with inheriting features
+			Utils.populateInheritanceContext(
+					inferredJvmType,
+					context.getInheritedFinalOperations(),
+					context.getInheritedOverridableOperations(),
+					null,
+					context.getInheritedOperationsToImplement(),
+					null,
+					this.sarlSignatureProvider);
+			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+			// Add SARL synthetic functions
+			appendSyntheticDefaultValuedParameterMethods(
+					source,
+					inferredJvmType,
+					context);
+			// Add the specification version of SARL
+			appendSARLSpecificationVersion(context, source, inferredJvmType);
 		} finally {
-			closeContext(inferredJvmType);
+			closeContext(context);
 		}
 	}
 
@@ -416,15 +484,34 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
-		// Issue #363: do not generate the agent if the SARL library is incompatible.
+		// Issue #363: do not generate the annotation if the SARL library is incompatible.
 		if (!Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 			return;
 		}
-		openContext(inferredJvmType);
+		// Create the generation context that is used by the other transformation functions.
+		final GenerationContext context = openContext(source, inferredJvmType,
+				Collections.singleton(SarlEnumLiteral.class));
 		try {
+			// Initialize the context with inheriting features
+			Utils.populateInheritanceContext(
+					inferredJvmType,
+					context.getInheritedFinalOperations(),
+					context.getInheritedOverridableOperations(),
+					null,
+					context.getInheritedOperationsToImplement(),
+					null,
+					this.sarlSignatureProvider);
+			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+			// Add SARL synthetic functions
+			appendSyntheticDefaultValuedParameterMethods(
+					source,
+					inferredJvmType,
+					context);
+			// Add the specification version of SARL
+			appendSARLSpecificationVersion(context, source, inferredJvmType);
 		} finally {
-			closeContext(inferredJvmType);
+			closeContext(context);
 		}
 	}
 
@@ -436,18 +523,36 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
-		// Issue #363: do not generate the agent if the SARL library is incompatible.
+		// Issue #363: do not generate the interface if the SARL library is incompatible.
 		if (!Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 			return;
 		}
-		openContext(inferredJvmType);
+		// Create the generation context that is used by the other transformation functions.
+		final GenerationContext context = openContext(source, inferredJvmType, Arrays.asList(
+				SarlField.class, SarlAction.class));
 		try {
-			// Generate the interface with the Xtend inferrer.
+			// Initialize the context with inheriting features
+			Utils.populateInheritanceContext(
+					inferredJvmType,
+					context.getInheritedFinalOperations(),
+					context.getInheritedOverridableOperations(),
+					null,
+					context.getInheritedOperationsToImplement(),
+					null,
+					this.sarlSignatureProvider);
+			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+			// Add SARL synthetic functions
+			appendSyntheticDefaultValuedParameterMethods(
+					source,
+					inferredJvmType,
+					context);
 			// Add the @FunctionalInterface
 			appendFunctionalInterfaceAnnotation(inferredJvmType);
+			// Add the specification version of SARL
+			appendSARLSpecificationVersion(context, source, inferredJvmType);
 		} finally {
-			closeContext(inferredJvmType);
+			closeContext(context);
 		}
 	}
 
@@ -459,15 +564,34 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
-		// Issue #363: do not generate the agent if the SARL library is incompatible.
+		// Issue #363: do not generate the enumeration if the SARL library is incompatible.
 		if (!Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 			return;
 		}
-		openContext(inferredJvmType);
+		// Create the generation context that is used by the other transformation functions.
+		final GenerationContext context = openContext(source, inferredJvmType,
+				Collections.singleton(SarlField.class));
 		try {
+			// Initialize the context with inheriting features
+			Utils.populateInheritanceContext(
+					inferredJvmType,
+					context.getInheritedFinalOperations(),
+					context.getInheritedOverridableOperations(),
+					null,
+					context.getInheritedOperationsToImplement(),
+					null,
+					this.sarlSignatureProvider);
+			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+			// Add SARL synthetic functions
+			appendSyntheticDefaultValuedParameterMethods(
+					source,
+					inferredJvmType,
+					context);
+			// Add the specification version of SARL
+			appendSARLSpecificationVersion(context, source, inferredJvmType);
 		} finally {
-			closeContext(inferredJvmType);
+			closeContext(context);
 		}
 	}
 
@@ -483,21 +607,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
+		// Create the generation context that is used by the other transformation functions.
+		final GenerationContext context = openContext(source, inferredJvmType, Arrays.asList(
+				SarlField.class, SarlConstructor.class, SarlAction.class,
+				SarlBehaviorUnit.class, SarlCapacityUses.class, SarlRequiredCapacity.class));
 		try {
-			// Create the generation context that is used by the other transformation functions.
-			final GenerationContext context = new GenerationContext() {
-				@Override
-				public boolean isSupportedMember(XtendMember member) {
-					return member instanceof SarlField
-							|| member instanceof SarlConstructor
-							|| member instanceof SarlAction
-							|| member instanceof SarlBehaviorUnit
-							|| member instanceof SarlCapacityUses
-							|| member instanceof SarlRequiredCapacity;
-				}
-			};
-			openContext(inferredJvmType, context);
-
 			// Copy the documentation
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
@@ -518,7 +632,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Issue #363: do not generate the agent if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 				// Generate the members of the generated type.
-				appendSarlMembers(
+				appendAOPMembers(
 						inferredJvmType,
 						source,
 						context);
@@ -556,7 +670,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				final JvmAnnotationReference injectAnnotationRef = this._annotationTypesBuilder.annotationRef(
 						javax.inject.Inject.class);
 				constructor.getAnnotations().add(injectAnnotationRef);
-				appendGeneratedAnnotation(constructor);
+				appendGeneratedAnnotation(constructor, context);
 			}
 
 			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
@@ -567,7 +681,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
 		} finally {
-			closeContext(inferredJvmType);
+			closeContext(context);
 		}
 	}
 
@@ -583,21 +697,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
+		// Create the generation context that is used by the other transformation functions.
+		final GenerationContext context = openContext(source, inferredJvmType, Arrays.asList(
+				SarlField.class, SarlConstructor.class, SarlAction.class,
+				SarlBehaviorUnit.class, SarlCapacityUses.class, SarlRequiredCapacity.class));
 		try {
-			// Create the generation context that is used by the other transformation functions.
-			final GenerationContext context = new GenerationContext() {
-				@Override
-				public boolean isSupportedMember(XtendMember member) {
-					return member instanceof SarlField
-							|| member instanceof SarlConstructor
-							|| member instanceof SarlAction
-							|| member instanceof SarlBehaviorUnit
-							|| member instanceof SarlCapacityUses
-							|| member instanceof SarlRequiredCapacity;
-				}
-			};
-			openContext(inferredJvmType, context);
-
 			// Copy the documentation
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
@@ -618,7 +722,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Issue #363: do not generate the behavior if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 				// Generate the members of the generated type.
-				appendSarlMembers(
+				appendAOPMembers(
 						inferredJvmType,
 						source,
 						context);
@@ -643,15 +747,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				constructor.getParameters().add(jvmParam);
 				this.typeBuilder.setBody(constructor,
 						toStringConcatenation("super(owner);")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor);
+				appendGeneratedAnnotation(constructor, context);
 			}
 
 			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
 
+			// Add the specification version of SARL
+			appendSARLSpecificationVersion(context, source, inferredJvmType);
+
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
 		} finally {
-			closeContext(inferredJvmType);
+			closeContext(context);
 		}
 	}
 
@@ -667,17 +774,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
+		// Create the generation context that is used by the other transformation functions.
+		final GenerationContext context = openContext(source, inferredJvmType, Arrays.asList(
+				SarlField.class, SarlConstructor.class));
 		try {
-			// Create the generation context that is used by the other transformation functions.
-			final GenerationContext context = new GenerationContext() {
-				@Override
-				public boolean isSupportedMember(XtendMember member) {
-					return member instanceof SarlField
-							|| member instanceof SarlConstructor;
-				}
-			};
-			openContext(inferredJvmType, context);
-
 			// Copy the documentation
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
@@ -699,7 +799,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Issue #363: do not generate the event if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 				// Generate the members of the generated type.
-				appendSarlMembers(
+				appendAOPMembers(
 						inferredJvmType,
 						source,
 						context);
@@ -717,7 +817,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.typeExtensions.setSynthetic(constructor, true);
 				this.typeBuilder.setDocumentation(constructor, Messages.SARLJvmModelInferrer_0);
 				this.typeBuilder.setBody(constructor, toStringConcatenation("super();")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor);
+				appendGeneratedAnnotation(constructor, context);
 
 				// new(source: Address)
 				constructor = this.typesFactory.createJvmConstructor();
@@ -735,7 +835,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				constructor.getParameters().add(jvmParam);
 				this.typeBuilder.setBody(constructor,
 						toStringConcatenation("super(source);")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor);
+				appendGeneratedAnnotation(constructor, context);
 			}
 
 			// Add functions dedicated to comparisons (equals, hashCode, etc.)
@@ -753,7 +853,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
 		} finally {
-			closeContext(inferredJvmType);
+			closeContext(context);
 		}
 	}
 
@@ -769,21 +869,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
+		// Create the generation context that is used by the other transformation functions.
+		final GenerationContext context = openContext(source, inferredJvmType, Arrays.asList(
+				SarlField.class, SarlConstructor.class, SarlAction.class, SarlBehaviorUnit.class,
+				SarlCapacityUses.class, SarlRequiredCapacity.class));
 		try {
-			// Create the generation context that is used by the other transformation functions.
-			final GenerationContext context = new GenerationContext() {
-				@Override
-				public boolean isSupportedMember(XtendMember member) {
-					return member instanceof SarlField
-							|| member instanceof SarlConstructor
-							|| member instanceof SarlAction
-							|| member instanceof SarlBehaviorUnit
-							|| member instanceof SarlCapacityUses
-							|| member instanceof SarlRequiredCapacity;
-				}
-			};
-			openContext(inferredJvmType, context);
-
 			// Copy the documentation
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
@@ -805,7 +895,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Issue #363: do not generate the skill if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 				// Generate the members of the generated type.
-				appendSarlMembers(
+				appendAOPMembers(
 						inferredJvmType,
 						source,
 						context);
@@ -822,7 +912,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.typeExtensions.setSynthetic(constructor, true);
 				this.typeBuilder.setDocumentation(constructor, Messages.SARLJvmModelInferrer_4);
 				this.typeBuilder.setBody(constructor, toStringConcatenation("super();")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor);
+				appendGeneratedAnnotation(constructor, context);
 
 				// new(owner: Agent)
 				constructor = this.typesFactory.createJvmConstructor();
@@ -840,15 +930,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				constructor.getParameters().add(jvmParam);
 				this.typeBuilder.setBody(constructor,
 						toStringConcatenation("super(owner);")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor);
+				appendGeneratedAnnotation(constructor, context);
 			}
 
 			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
 
+			// Add the specification version of SARL
+			appendSARLSpecificationVersion(context, source, inferredJvmType);
+
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
 		} finally {
-			closeContext(inferredJvmType);
+			closeContext(context);
 		}
 	}
 
@@ -864,16 +957,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
+		// Create the generation context that is used by the other transformation functions.
+		final GenerationContext context = openContext(source, inferredJvmType,
+				Collections.singleton(SarlAction.class));
 		try {
-			// Create the generation context that is used by the other transformation functions.
-			final GenerationContext context = new GenerationContext() {
-				@Override
-				public boolean isSupportedMember(XtendMember member) {
-					return member instanceof SarlAction;
-				}
-			};
-			openContext(inferredJvmType, context);
-
 			// Copy the documentation
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
@@ -894,7 +981,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Issue #363: do not generate the capacity if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
 				// Generate the members of the generated type.
-				appendSarlMembers(
+				appendAOPMembers(
 						inferredJvmType,
 						source,
 						context);
@@ -903,11 +990,30 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add the @FunctionalInterface
 			appendFunctionalInterfaceAnnotation(inferredJvmType);
 
+			// Add the specification version of SARL
+			appendSARLSpecificationVersion(context, source, inferredJvmType);
+
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
 		} finally {
-			closeContext(inferredJvmType);
+			closeContext(context);
 		}
+	}
+
+	/** Initialize the SARL space type.
+	 *
+	 * @param source the source.
+	 * @param inferredJvmType the JVM type.
+	 */
+	@SuppressWarnings("static-method")
+	protected void initialize(SarlSpace source, JvmGenericType inferredJvmType) {
+		// Issue #356: do not generate if the space has no name.
+		assert source != null;
+		assert inferredJvmType != null;
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
+		// TODO: Generate the space
 	}
 
 	@Override
@@ -1003,7 +1109,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						constructor2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
 								DefaultValueUse.class,
 								constructorSignatures.getFormalParameterTypes().toString()));
-						appendGeneratedAnnotation(constructor2);
+						appendGeneratedAnnotation(constructor2, context);
 
 						SARLJvmModelInferrer.this.typeBuilder.setBody(constructor2, toStringConcatenation(
 								"this(" //$NON-NLS-1$
@@ -1171,13 +1277,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Annotations
 			translateAnnotationsTo(source.getAnnotations(), operation);
 			if (source.isOverride()
-					&& !Utils.hasAnnotation(operation, Override.class)
+					&& this.annotationFinder.findAnnotation(operation, Override.class) == null
 					&& this.typeReferences.findDeclaredType(Override.class, source) != null) {
 				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
 			}
-			if ((this.expressionHelper.isPurableOperation(operation, expression))
-					&& (!Utils.hasAnnotation(operation, Pure.class))
-					&& (this.typeReferences.findDeclaredType(Pure.class, source) != null)) {
+			if (this.expressionHelper.isPurableOperation(operation, expression)
+					&& this.annotationFinder.findAnnotation(operation, Pure.class) == null
+					&& this.typeReferences.findDeclaredType(Pure.class, source) != null) {
 				// The function is pure
 				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
 			}
@@ -1215,8 +1321,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				final JvmOperation implementedOperation = context.getInheritedOperationsToImplement().remove(actSigKey);
 				// Put the annotations that were defined in the implemented operation
 				if (implementedOperation != null) {
-					if (Utils.hasAnnotation(implementedOperation, DefaultValueSource.class)
-							&& !Utils.hasAnnotation(operation, DefaultValueSource.class)) {
+					if (this.annotationFinder.findAnnotation(implementedOperation, DefaultValueSource.class) != null
+							&& this.annotationFinder.findAnnotation(operation, DefaultValueSource.class) == null) {
 						operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
 								DefaultValueSource.class));
 					}
@@ -1227,9 +1333,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					for (int i = 0; i < oparams.size(); ++i) {
 						final JvmFormalParameter op = oparams.get(i);
 						final JvmFormalParameter cp = cparams.get(i);
-						final String ovalue = Utils.annotationString(op, DefaultValue.class);
+						final String ovalue = this.annotationUtils.findStringValue(op, DefaultValue.class);
 						if (ovalue != null
-								&& !Utils.hasAnnotation(cp, DefaultValue.class)) {
+								&& this.annotationFinder.findAnnotation(cp, DefaultValue.class) == null) {
 							cp.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
 									DefaultValue.class,
 									this.sarlSignatureProvider.qualifyDefaultValueID(
@@ -1280,7 +1386,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 							translateAnnotationsTo(source.getAnnotations(), operation2);
 							if (source.isOverride()
-									&& !Utils.hasAnnotation(operation, Override.class)
+									&& SARLJvmModelInferrer.this.annotationFinder.findAnnotation(operation,
+									Override.class) == null
 									&& SARLJvmModelInferrer.this.typeReferences.findDeclaredType(
 											Override.class, source) != null) {
 								operation.getAnnotations().add(
@@ -1306,7 +1413,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							operation2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
 									DefaultValueUse.class,
 									actionSignatures.getFormalParameterTypes().toString()));
-							appendGeneratedAnnotation(operation2);
+							appendGeneratedAnnotation(operation2, context);
 
 							// If the main action is an early-exit action, the additional operation
 							// is also an early-exit operation.
@@ -1419,7 +1526,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			this.typeBuilder.setBody(bodyOperation, source.getExpression());
 			// Annotations
 			translateAnnotationsTo(source.getAnnotations(), bodyOperation);
-			appendGeneratedAnnotation(bodyOperation);
+			appendGeneratedAnnotation(bodyOperation, context);
 			if (!this.services.getExpressionHelper().hasSideEffects(source.getExpression())) {
 				bodyOperation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
 			}
@@ -1482,7 +1589,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Body
 				this.typeBuilder.setBody(guardOperation, guard);
 				// Annotations
-				appendGeneratedAnnotation(guardOperation);
+				appendGeneratedAnnotation(guardOperation, context);
 				guardOperation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
 				// Synthetic flag
 				this.typeExtensions.setSynthetic(guardOperation, true);
@@ -1550,7 +1657,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							Collections.singletonList(capacityType)));
 
 					// Add the annotation dedicated to this particular method
-					appendGeneratedAnnotation(field);
+					appendGeneratedAnnotation(field, getContext(container));
 
 					container.getMembers().add(field);
 
@@ -1582,7 +1689,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							+ " == null ? (this." + fieldName //$NON-NLS-1$
 							+ " = getSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
 							+ ".class)) : this." + fieldName); //$NON-NLS-1$
-					appendGeneratedAnnotation(operation);
+					appendGeneratedAnnotation(operation, context);
 
 					container.getMembers().add(operation);
 
@@ -1649,7 +1756,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			it.append("return super.clearSkill(capacity);"); //$NON-NLS-1$
 		});
 
-		appendGeneratedAnnotation(clearer);
+		appendGeneratedAnnotation(clearer, getContext(target));
 		clearer.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
 	}
 
@@ -1694,17 +1801,17 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			it.append("setSkill(skill, capacities);"); //$NON-NLS-1$
 		});
 
-		appendGeneratedAnnotation(setter);
+		appendGeneratedAnnotation(setter, getContext(target));
 		setter.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
 	}
 
-	/** Generate the code for the given SARL members.
+	/** Generate the code for the given SARL members in a agent-oriented container.
 	 *
 	 * @param featureContainerType - the feature container.
 	 * @param container - the SARL container.
 	 * @param context - description of the generation context in which the members must be considered.
 	 */
-	protected void appendSarlMembers(
+	protected void appendAOPMembers(
 			JvmGenericType featureContainerType,
 			XtendTypeDeclaration container,
 			GenerationContext context) {
@@ -1781,7 +1888,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void appendSyntheticDefaultValuedParameterMethods(
 			XtendTypeDeclaration source,
-			JvmGenericType target,
+			JvmDeclaredType target,
 			GenerationContext context) {
 
 		// Generate the different operations.
@@ -1799,7 +1906,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		for (final Entry<ActionPrototype, JvmOperation> missedOperation : context.getInheritedOperationsToImplement()
 				.entrySet()) {
 
-			final String originalSignature = Utils.annotationString(missedOperation.getValue(), DefaultValueUse.class);
+			final String originalSignature = this.annotationUtils.findStringValue(
+					missedOperation.getValue(), DefaultValueUse.class);
 			if (!Strings.isNullOrEmpty(originalSignature)) {
 
 				// Find the definition of the operation from the inheritance context.
@@ -1867,7 +1975,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					// Add the annotations.
 					op.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
 							DefaultValueUse.class, originalSignature));
-					appendGeneratedAnnotation(op);
+					appendGeneratedAnnotation(op, context);
 
 					// Add the operation in the container.
 					target.getMembers().add(op);
@@ -1978,24 +2086,35 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * The annotation will not have any generated SARL code associated to it.
 	 *
 	 * @param target - the target of the annotation.
+	 * @param context the generation context.
 	 */
-	protected final void appendGeneratedAnnotation(JvmAnnotationTarget target) {
-		appendGeneratedAnnotation(target, null);
+	protected final void appendGeneratedAnnotation(JvmAnnotationTarget target, GenerationContext context) {
+		appendGeneratedAnnotation(target, context, null);
 	}
 
 	/** Add the @Generated annotation to the given target.
 	 *
 	 * @param target - the target of the annotation.
+	 * @param context the generation context.
 	 * @param sarlCode - the code that is the cause of the generation.
 	 */
-	protected void appendGeneratedAnnotation(JvmAnnotationTarget target, String sarlCode) {
-		JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(
-				Generated.class,
-				getClass().getName());
-		target.getAnnotations().add(annotationRef);
+	protected void appendGeneratedAnnotation(JvmAnnotationTarget target, GenerationContext context, String sarlCode) {
+		final GeneratorConfig config = context.getGeneratorConfig();
+		if (config.isGenerateGeneratedAnnotation()) {
+			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(
+					Generated.class,
+					getClass().getName());
+			target.getAnnotations().add(annotationRef);
+		}
+
+		if (target instanceof JvmFeature) {
+			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(
+					SyntheticMember.class);
+			target.getAnnotations().add(annotationRef);
+		}
 
 		if (!Strings.isNullOrEmpty(sarlCode)) {
-			annotationRef = this._annotationTypesBuilder.annotationRef(
+			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(
 					SarlSourceCode.class,
 					sarlCode);
 			target.getAnnotations().add(annotationRef);
@@ -2028,7 +2147,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 				// Annotation for the event bus
 
-				appendGeneratedAnnotation(operation);
+				appendGeneratedAnnotation(operation, context);
 				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(PerceptGuardEvaluator.class));
 
 				// Guard evaluator unit parameters
@@ -2083,7 +2202,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void appendFunctionalInterfaceAnnotation(JvmGenericType type) {
 		if (type != null && Utils.isFunctionalInterface(type, this.sarlSignatureProvider)
-				&& !Utils.hasAnnotation(type, FunctionalInterface.class)) {
+				&& this.annotationFinder.findAnnotation(type, FunctionalInterface.class) == null) {
 			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(
 					FunctionalInterface.class);
 			type.getAnnotations().add(annotationRef);
@@ -2108,14 +2227,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (!declaredInstanceFields.isEmpty()) {
 			JvmOperation op = toEqualsMethod(source, target, declaredInstanceFields);
 			if (op != null) {
-				appendGeneratedAnnotation(op);
+				appendGeneratedAnnotation(op, context);
 				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
 				target.getMembers().add(op);
 			}
 
 			op = toHashCodeMethod(source, declaredInstanceFields);
 			if (op != null) {
-				appendGeneratedAnnotation(op);
+				appendGeneratedAnnotation(op, context);
 				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
 				target.getMembers().add(op);
 			}
@@ -2159,7 +2278,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					});
 				});
 			if (op != null) {
-				appendGeneratedAnnotation(op);
+				appendGeneratedAnnotation(op, context);
 				op.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Pure.class));
 				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
 				target.getMembers().add(op);
@@ -2194,7 +2313,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		field.setType(this.typeBuilder.cloneWithProxies(this._typeReferenceBuilder.typeRef(long.class)));
 		final long serial = context.getSerial();
 		this.typeBuilder.setInitializer(field, toStringConcatenation(serial + "L")); //$NON-NLS-1$
-		appendGeneratedAnnotation(field);
+		appendGeneratedAnnotation(field, context);
 		this.typeExtensions.setSynthetic(field, true);
 		this.readAndWriteTracking.markInitialized(field, null);
 	}
@@ -2209,7 +2328,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param source the source object.
 	 * @param target the inferred JVM object.
 	 */
-	protected void appendSARLSpecificationVersion(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
+	protected void appendSARLSpecificationVersion(GenerationContext context, XtendTypeDeclaration source,
+			JvmDeclaredType target) {
 		target.getAnnotations().add(this._annotationTypesBuilder.annotationRef(SarlSpecification.class,
 				SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING));
 	}
@@ -2331,7 +2451,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					lastParam.getAnnotations().add(annot);
 
 					final String rawCode = reentrantSerialize(defaultValue);
-					appendGeneratedAnnotation(field, rawCode);
+					appendGeneratedAnnotation(field, context, rawCode);
 				}
 			}
 		}
@@ -2706,7 +2826,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			Thread.yield();
 			contexts = this.contextFinder.findByContentsAndContainer(object, null);
 		}
-		return this.sarlSerializer.serialize(object);
+		final String code = this.sarlSerializer.serialize(object);
+		if (code != null) {
+			return code.trim();
+		}
+		return code;
 	}
 
 }

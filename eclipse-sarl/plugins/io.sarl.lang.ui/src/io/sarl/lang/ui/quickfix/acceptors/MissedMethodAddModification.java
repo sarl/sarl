@@ -46,6 +46,7 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -64,6 +65,7 @@ import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 import io.sarl.lang.util.Utils;
 
@@ -81,6 +83,12 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 
 	@Inject
 	private CodeBuilderFactory codeBuilderFactory;
+
+	@Inject
+	private AnnotationLookup annotationFinder;
+
+	@Inject
+	private SARLAnnotationUtil annotationUtils;
 
 	private final String[] operationUris;
 
@@ -241,9 +249,11 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 							importableTypes.add(parameterType);
 						}
 
-						if (Utils.hasAnnotation(parameter, DefaultValue.class)) {
+						final JvmAnnotationReference annotationRef = this.annotationFinder.findAnnotation(
+								parameter, DefaultValue.class);
+						if (annotationRef != null) {
 							String defaultValue = null;
-							final String key = Utils.annotationString(parameter, DefaultValue.class);
+							final String key = this.annotationUtils.findStringValue(annotationRef);
 							final String argument = tools.getActionPrototypeProvider().toJavaArgument(
 									containerQualifiedName,
 									key);
@@ -279,7 +289,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 								while (defaultValue == null && iterator.hasNext()) {
 									final JvmField field = iterator.next();
 									if (fieldName.equals(field.getSimpleName())) {
-										String value = Utils.annotationString(field, SarlSourceCode.class);
+										String value = this.annotationUtils.findStringValue(field, SarlSourceCode.class);
 										if (!Strings.isNullOrEmpty(value)) {
 											value = value.trim();
 											if (!Strings.isNullOrEmpty(value)) {
@@ -329,11 +339,12 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				}
 
 				// Fired events
-				if (Utils.hasAnnotation(operation, FiredEvent.class)) {
+				final JvmAnnotationReference annotationRef = this.annotationFinder.findAnnotation(operation, FiredEvent.class);
+				if (annotationRef != null) {
 					appendable.append(" ").append(tools.getGrammarAccess() //$NON-NLS-1$
 							.getFiresKeyword()).append(" "); //$NON-NLS-1$
 					boolean addComa = false;
-					for (final JvmTypeReference eventType : Utils.annotationClasses(operation, FiredEvent.class)) {
+					for (final JvmTypeReference eventType : this.annotationUtils.findTypeValues(annotationRef)) {
 						if (addComa) {
 							appendable.append(tools.getGrammarAccess()
 									.getCommaKeyword());

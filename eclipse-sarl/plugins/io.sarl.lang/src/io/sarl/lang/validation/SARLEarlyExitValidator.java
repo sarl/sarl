@@ -35,10 +35,9 @@ import org.eclipse.xtext.validation.IssueSeverities;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 
-import io.sarl.lang.controlflow.SARLEarlyExitComputerUtil;
+import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 
 /** Validation of the early-exit control flow.
  *
@@ -51,7 +50,7 @@ import io.sarl.lang.controlflow.SARLEarlyExitComputerUtil;
 public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 
 	@Inject
-	private IEarlyExitComputer earlyExitComputer;
+	private SARLEarlyExitComputer earlyExitComputer;
 
 	@Inject
 	private IProgrammaticWarningSuppressor warningSuppressor;
@@ -73,7 +72,7 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 			final XExpression expression = expressions.get(i);
 			if (this.earlyExitComputer.isEarlyExit(expression)) {
 				if (expression instanceof XAbstractFeatureCall) {
-					if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(
+					if (this.earlyExitComputer.isEarlyExitAnnotatedElement(
 							((XAbstractFeatureCall) expression).getFeature())) {
 						markAsDeadCode(expressions.get(i + 1));
 					}
@@ -92,7 +91,7 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 		super.collectExits(expr, found);
 		if (expr instanceof XAbstractFeatureCall) {
 			final JvmIdentifiableElement element = ((XAbstractFeatureCall) expr).getFeature();
-			if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(element)) {
+			if (this.earlyExitComputer.isEarlyExitAnnotatedElement(element)) {
 				found.add((XExpression) expr);
 			}
 		}

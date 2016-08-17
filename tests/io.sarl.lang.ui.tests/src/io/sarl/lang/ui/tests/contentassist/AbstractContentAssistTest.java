@@ -301,9 +301,11 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 		@Override
 		protected ICompletionProposal[] computeCompletionProposals(final IXtextDocument xtextDocument, int cursorPosition)
 				throws BadLocationException {
-			Shell shell = getShell();
-			if (shell != null) {
-				return computeCompletionProposals(xtextDocument, cursorPosition, shell);
+			if (isEclipseRuntimeEnvironment()) {
+				Shell shell = getShell();
+				if (shell != null) {
+					return computeCompletionProposals(xtextDocument, cursorPosition, shell);
+				}
 			}
 			final Display display = Display.getDefault();
 			final List<ICompletionProposal[]> resultBuffer = new ArrayList<>(1);
