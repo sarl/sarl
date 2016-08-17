@@ -773,6 +773,16 @@ Workflow {
     				singleton = true
     				instance = true
     			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.parser.antlr.ISyntaxErrorMessageProvider"
+    				to = "io.sarl.lang.parser.SARLSyntaxErrorMessageProvider"
+    				singleton = true
+    			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.parser.antlr.SyntaxErrorMessageProvider"
+    				to = "io.sarl.lang.parser.SARLSyntaxErrorMessageProvider"
+    				singleton = true
+    			}
     			
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategyProvider"

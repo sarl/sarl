@@ -80,6 +80,7 @@ import io.sarl.lang.formatting2.SARLFormatterPreferenceKeys;
 import io.sarl.lang.generator.SarlOutputConfigurationProvider;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.parser.SARLSyntaxErrorMessageProvider;
 import io.sarl.lang.parser.antlr.SARLAntlrTokenFileProvider;
 import io.sarl.lang.parser.antlr.SARLParser;
 import io.sarl.lang.parser.antlr.internal.InternalSARLLexer;
@@ -153,11 +154,13 @@ import org.eclipse.xtext.parser.antlr.AntlrTokenDefProvider;
 import org.eclipse.xtext.parser.antlr.AntlrTokenToStringConverter;
 import org.eclipse.xtext.parser.antlr.IAntlrTokenFileProvider;
 import org.eclipse.xtext.parser.antlr.IPartialParsingHelper;
+import org.eclipse.xtext.parser.antlr.ISyntaxErrorMessageProvider;
 import org.eclipse.xtext.parser.antlr.ITokenDefProvider;
 import org.eclipse.xtext.parser.antlr.IUnorderedGroupHelper;
 import org.eclipse.xtext.parser.antlr.Lexer;
 import org.eclipse.xtext.parser.antlr.LexerBindings;
 import org.eclipse.xtext.parser.antlr.LexerProvider;
+import org.eclipse.xtext.parser.antlr.SyntaxErrorMessageProvider;
 import org.eclipse.xtext.parser.antlr.UnorderedGroupHelper;
 import org.eclipse.xtext.preferences.IPreferenceValuesProvider;
 import org.eclipse.xtext.resource.EObjectAtOffsetHelper;
@@ -602,6 +605,12 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	@SingletonBinding
+	public Class<? extends ISyntaxErrorMessageProvider> bindISyntaxErrorMessageProvider() {
+		return SARLSyntaxErrorMessageProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends IResourceValidator> bindIResourceValidator() {
 		return CachingResourceValidatorImpl.class;
 	}
@@ -686,6 +695,12 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends TargetURICollector> bindTargetURICollector() {
 		return JvmModelTargetURICollector.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	@SingletonBinding
+	public Class<? extends SyntaxErrorMessageProvider> bindSyntaxErrorMessageProvider() {
+		return SARLSyntaxErrorMessageProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
