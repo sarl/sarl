@@ -24,12 +24,18 @@ package io.sarl.lang.mwe2.keywords;
 import static org.eclipse.xtext.EcoreUtil2.eAllContentsAsList;
 import static org.eclipse.xtext.EcoreUtil2.typeSelect;
 
+import java.lang.ref.SoftReference;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
@@ -43,6 +49,7 @@ import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.ParserRule;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.compiler.JavaKeywords;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -79,6 +86,9 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 
 	@Inject
 	private GrammarKeywordAccessConfig configuration;
+
+	@Inject
+	private JavaKeywords javaKeywords;
 
 	/** Replies the language name.
 	 *
@@ -146,18 +156,20 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 				it.newLineIfNotEmpty();
 				it.newLine();
 				final Set<String> addedKeywords = new HashSet<>();
+				final Map<String, String> getters = new HashMap<>();
 				final LinkedList<Grammar> grammars = new LinkedList<>();
 				grammars.add(getGrammar());
 				while (!grammars.isEmpty()) {
 					final Grammar grammar = grammars.removeFirst();
 					if (isValidGrammar(grammar)) {
-						it.append(generateMembers(grammar, addedKeywords));
+						it.append(generateMembers(grammar, addedKeywords, getters));
 						if (GrammarKeywordAccessFragment2.this.configuration.getDependencyGrammarInheritance()) {
 							grammars.addAll(getEffectivelyUsedGrammars(grammar));
 						}
 					}
 				}
-				it.append(generateMembersFromConfig(addedKeywords));
+				it.append(generateMembersFromConfig(addedKeywords, getters));
+				it.append(generateAccessors(addedKeywords, getters));
 				it.append("}"); //$NON-NLS-1$
 				it.newLine();
 				it.newLineIfNotEmpty();
@@ -182,27 +194,30 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	/** Generate the members of the accessors.
 	 *
 	 * @param addedKeywords the set of keywords that are added to the output.
+	 * @param getters filled by this function with the getters' names.
 	 * @return the content.
 	 */
-	protected StringConcatenationClient generateMembersFromConfig(Set<String> addedKeywords) {
+	protected StringConcatenationClient generateMembersFromConfig(Set<String> addedKeywords, Map<String, String> getters) {
+		final List<StringConcatenationClient> clients = new ArrayList<>();
+		for (final String keyword : this.configuration.getKeywords()) {
+			final String id = keyword.toLowerCase();
+			if (!addedKeywords.contains(id) && !this.configuration.getIgnoredKeywords().contains(keyword)) {
+				clients.add(generateKeyword(keyword, getGrammar().getName(), getters));
+				addedKeywords.add(id);
+			}
+		}
+		for (final String keyword : this.configuration.getLiterals()) {
+			final String id = keyword.toLowerCase();
+			if (!addedKeywords.contains(id) && !this.configuration.getIgnoredKeywords().contains(keyword)) {
+				clients.add(generateKeyword(keyword, getGrammar().getName(), getters));
+				addedKeywords.add(id);
+			}
+		}
 		return new StringConcatenationClient() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
-				final GrammarKeywordAccessConfig config = GrammarKeywordAccessFragment2.this.configuration;
-				for (final String keyword : config.getKeywords()) {
-					final String id = keyword.toLowerCase();
-					if (!addedKeywords.contains(id) && !config.getIgnoredKeywords().contains(keyword)) {
-						it.append(generateKeyword(keyword, getGrammar().getName()));
-						addedKeywords.add(id);
-					}
-				}
-				for (final String keyword : config.getLiterals()) {
-					final String id = keyword.toLowerCase();
-					if (!addedKeywords.contains(id) && !config.getIgnoredKeywords().contains(keyword)) {
-						it.append(generateKeyword(keyword, getGrammar().getName()));
-						addedKeywords.add(id);
-					}
+				for (final StringConcatenationClient client : clients) {
+					it.append(client);
 				}
 			}
 		};
@@ -212,23 +227,27 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 *
 	 * @param grammar the grammar for which the keyword accessors must be generated.
 	 * @param addedKeywords the set of keywords that are added to the output.
+	 * @param getters filled by this function with the getters' names.
 	 * @return the content.
 	 */
-	protected StringConcatenationClient generateMembers(Grammar grammar, Set<String> addedKeywords) {
+	protected StringConcatenationClient generateMembers(Grammar grammar, Set<String> addedKeywords,
+			Map<String, String> getters) {
+		final List<StringConcatenationClient> clients = new ArrayList<>();
+		for (final Keyword grammarKeyword : getAllKeywords(grammar)) {
+			final String keyword = grammarKeyword.getValue().trim();
+			if (!keyword.isEmpty()) {
+				final String id = keyword.toLowerCase();
+				if (!addedKeywords.contains(id) && !this.configuration.getIgnoredKeywords().contains(keyword)) {
+					clients.add(generateKeyword(grammarKeyword, grammar.getName(), getters));
+					addedKeywords.add(id);
+				}
+			}
+		}
 		return new StringConcatenationClient() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
-				final GrammarKeywordAccessConfig config = GrammarKeywordAccessFragment2.this.configuration;
-				for (final Keyword grammarKeyword : getAllKeywords(grammar)) {
-					final String keyword = grammarKeyword.getValue().trim();
-					if (!keyword.isEmpty()) {
-						final String id = keyword.toLowerCase();
-						if (!addedKeywords.contains(id) && !config.getIgnoredKeywords().contains(keyword)) {
-							it.append(generateKeyword(grammarKeyword, grammar.getName()));
-							addedKeywords.add(id);
-						}
-					}
+				for (final StringConcatenationClient client : clients) {
+					it.append(client);
 				}
 			}
 		};
@@ -262,12 +281,16 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 *
 	 * @param keyword the keyword to add.
 	 * @param comment a comment for the javadoc.
+	 * @param getters filled by this function with the getters' names.
 	 * @return the content.
 	 */
-	protected StringConcatenationClient generateKeyword(final String keyword, final String comment) {
+	protected StringConcatenationClient generateKeyword(final String keyword, final String comment, Map<String, String> getters) {
 		final String fieldName = keyword.toUpperCase().replaceAll("[^a-zA-Z0-9_]+", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 		final String methodName = Strings.toFirstUpper(keyword.replaceAll("[^a-zA-Z0-9_]+", "_")) //$NON-NLS-1$ //$NON-NLS-2$
 				+ "Keyword"; //$NON-NLS-1$
+		if (getters != null) {
+			getters.put(methodName, keyword);
+		}
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -308,13 +331,18 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 *
 	 * @param keyword the keyword to add.
 	 * @param comment a comment for the javadoc.
+	 * @param getters filled by this function with the getters' names.
 	 * @return the content.
 	 */
-	protected StringConcatenationClient generateKeyword(final Keyword keyword, final String comment) {
+	protected StringConcatenationClient generateKeyword(final Keyword keyword, final String comment,
+			Map<String, String> getters) {
 		try {
 			final String methodName = getIdentifier(keyword);
 			final String accessor = GrammarKeywordAccessFragment2.this.grammarAccessExtensions.gaAccessor(keyword);
 			if (!Strings.isEmpty(methodName) && !Strings.isEmpty(accessor)) {
+				if (getters != null) {
+					getters.put(methodName, keyword.getValue());
+				}
 				return new StringConcatenationClient() {
 					@Override
 					protected void appendTo(TargetStringConcatenation it) {
@@ -389,6 +417,164 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 		final Iterable<Grammar> filter = IterableExtensions.<Grammar>filter(map, (it) -> Boolean.valueOf(it != grammar));
 		final Set<Grammar> set = IterableExtensions.<Grammar>toSet(filter);
 		return IterableExtensions.<Grammar>toList(set);
+	}
+
+	/** Generate the members of the accessors.
+	 *
+	 * @param addedKeywords the set of keywords that are added to the output.
+	 * @param getters filled by this function with the getters' names.
+	 * @return the content.
+	 */
+	@SuppressWarnings("checkstyle:anoninnerlength")
+	protected StringConcatenationClient generateAccessors(Set<String> addedKeywords, Map<String, String> getters) {
+		return new StringConcatenationClient() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			protected void appendTo(TargetStringConcatenation it) {
+				it.append("\tprivate "); //$NON-NLS-1$
+				it.append(SoftReference.class);
+				it.append("<"); //$NON-NLS-1$
+				it.append(Set.class);
+				it.append("<String>> allKeywords;"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies the SARL keywords."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the SARL keywords."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @see #getPureKeywords()"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tpublic "); //$NON-NLS-1$
+				it.append(Set.class);
+				it.append("<String> getKeywords() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t"); //$NON-NLS-1$
+				it.append(Set.class);
+				it.append("<String> kws = this.allKeywords == null ? null : this.allKeywords.get();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (kws == null) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tkws = new "); //$NON-NLS-1$
+				it.append(TreeSet.class);
+				it.append("<>();"); //$NON-NLS-1$
+				it.newLine();
+				final Pattern pattern = Pattern.compile("^[a-zA-Z_$]+$"); //$NON-NLS-1$
+				for (final Entry<String, String> getter : getters.entrySet()) {
+					if (pattern.matcher(getter.getValue()).matches()) {
+						it.append("\t\t\tkws.add(get"); //$NON-NLS-1$
+						it.append(getter.getKey());
+						it.append("());"); //$NON-NLS-1$
+						it.newLine();
+					}
+				}
+				it.append("\t\t\tthis.allKeywords = new "); //$NON-NLS-1$
+				it.append(SoftReference.class);
+				it.append("<>(kws);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn "); //$NON-NLS-1$
+				it.append(Collections.class);
+				it.append(".unmodifiableSet(kws);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies if the given string of characters is a SARL keyword."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param str the string of characters."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return <code>true</code> if the string of characters is a SARL keyword."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tpublic boolean isKeyword(String str) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tassert !"); //$NON-NLS-1$
+				it.append(Strings.class);
+				it.append(".isEmpty(str);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn getKeywords().contains(str);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprivate "); //$NON-NLS-1$
+				it.append(SoftReference.class);
+				it.append("<"); //$NON-NLS-1$
+				it.append(Set.class);
+				it.append("<String>> pureSarlKeywords;"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies the pure SARL keywords."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * Pure SARL keywords are SARL keywords that are not Java keywords."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the pure SARL keywords."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tpublic "); //$NON-NLS-1$
+				it.append(Set.class);
+				it.append("<String> getPureKeywords() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t"); //$NON-NLS-1$
+				it.append(Set.class);
+				it.append("<String> kws = this.pureSarlKeywords == null ? null : this.pureSarlKeywords.get();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (kws == null) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tkws = new "); //$NON-NLS-1$
+				it.append(HashSet.class);
+				it.append("<>();"); //$NON-NLS-1$
+				it.newLine();
+				for (final Entry<String, String> getter : getters.entrySet()) {
+					if (pattern.matcher(getter.getValue()).matches()
+							&& !GrammarKeywordAccessFragment2.this.javaKeywords.isJavaKeyword(getter.getValue())) {
+						it.append("\t\t\tkws.add(get"); //$NON-NLS-1$
+						it.append(getter.getKey());
+						it.append("());"); //$NON-NLS-1$
+						it.newLine();
+					}
+				}
+				it.append("\t\t\tthis.pureSarlKeywords = new "); //$NON-NLS-1$
+				it.append(SoftReference.class);
+				it.append("<>(kws);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn "); //$NON-NLS-1$
+				it.append(Collections.class);
+				it.append(".unmodifiableSet(kws);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies if the given string of characters is a pure SARL keyword."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * Pure SARL keywords are SARL keywords that are not Java keywords."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param str the string of characters."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return <code>true</code> if the string of characters is a SARL keyword."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tpublic boolean isPureKeyword(String str) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tassert !"); //$NON-NLS-1$
+				it.append(Strings.class);
+				it.append(".isEmpty(str);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn getPureKeywords().contains(str);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+			}
+		};
 	}
 
 }

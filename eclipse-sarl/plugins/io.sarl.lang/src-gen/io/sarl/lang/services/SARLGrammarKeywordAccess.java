@@ -24,6 +24,12 @@
 package io.sarl.lang.services;
 
 import com.google.inject.Inject;
+import java.lang.ref.SoftReference;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
+import org.eclipse.xtext.util.Strings;
 
 /** Set of SARL keywords that are not directly supported by the
  * {@link SARLGrammarAccess} or hardly accessible.
@@ -794,6 +800,138 @@ public class SARLGrammarKeywordAccess {
 	 */
 	public String getOccurrenceKeyword() {
 		return OCCURRENCE;
+	}
+
+	private SoftReference<Set<String>> allKeywords;
+
+	/** Replies the SARL keywords.
+	 * @return the SARL keywords.
+	 * @see #getPureKeywords()
+	 */
+	public Set<String> getKeywords() {
+		Set<String> kws = this.allKeywords == null ? null : this.allKeywords.get();
+		if (kws == null) {
+			kws = new TreeSet<>();
+			kws.add(getAsKeyword());
+			kws.add(getIfKeyword());
+			kws.add(getSynchronizedKeyword());
+			kws.add(getClassKeyword());
+			kws.add(getVolatileKeyword());
+			kws.add(getRequiresKeyword());
+			kws.add(getFalseKeyword());
+			kws.add(getWithKeyword());
+			kws.add(getItKeyword());
+			kws.add(getSwitchKeyword());
+			kws.add(getExtendsKeyword());
+			kws.add(getFinalKeyword());
+			kws.add(getSuperKeyword());
+			kws.add(getProtectedKeyword());
+			kws.add(getPrivateKeyword());
+			kws.add(getAnnotationKeyword());
+			kws.add(getFinallyKeyword());
+			kws.add(getReturnKeyword());
+			kws.add(getWhileKeyword());
+			kws.add(getSpaceKeyword());
+			kws.add(getInstanceofKeyword());
+			kws.add(getPublicKeyword());
+			kws.add(getIsTrueTrueKeyword());
+			kws.add(getTryKeyword());
+			kws.add(getOnKeyword());
+			kws.add(getCapacityKeyword());
+			kws.add(getEventKeyword());
+			kws.add(getVarKeyword());
+			kws.add(getImportKeyword());
+			kws.add(getAgentKeyword());
+			kws.add(getTransientKeyword());
+			kws.add(getNullKeyword());
+			kws.add(getCaseKeyword());
+			kws.add(getInterfaceKeyword());
+			kws.add(getThisKeyword());
+			kws.add(getDispatchKeyword());
+			kws.add(getEnumKeyword());
+			kws.add(getAbstractKeyword());
+			kws.add(getUsesKeyword());
+			kws.add(getSkillKeyword());
+			kws.add(getDefKeyword());
+			kws.add(getFiresKeyword());
+			kws.add(getOverrideKeyword());
+			kws.add(getThrowKeyword());
+			kws.add(getElseKeyword());
+			kws.add(getForKeyword());
+			kws.add(getDefaultKeyword());
+			kws.add(getNativeKeyword());
+			kws.add(getThrowsKeyword());
+			kws.add(getCatchKeyword());
+			kws.add(getDoKeyword());
+			kws.add(getBehaviorKeyword());
+			kws.add(getExtensionExtensionKeyword());
+			kws.add(getStaticStaticKeyword());
+			kws.add(getImplementsKeyword());
+			kws.add(getValKeyword());
+			kws.add(getNewKeyword());
+			kws.add(getStrictfpKeyword());
+			kws.add(getTypeofKeyword());
+			kws.add(getPackageKeyword());
+			kws.add(getOccurrenceKeyword());
+			this.allKeywords = new SoftReference<>(kws);
+		}
+		return Collections.unmodifiableSet(kws);
+	}
+
+	/** Replies if the given string of characters is a SARL keyword.
+	 * @param str the string of characters.
+	 * @return <code>true</code> if the string of characters is a SARL keyword.
+	 */
+	public boolean isKeyword(String str) {
+		assert !Strings.isEmpty(str);
+		return getKeywords().contains(str);
+	}
+
+	private SoftReference<Set<String>> pureSarlKeywords;
+
+	/** Replies the pure SARL keywords.
+	 * Pure SARL keywords are SARL keywords that are not Java keywords.
+	 * @return the pure SARL keywords.
+	 */
+	public Set<String> getPureKeywords() {
+		Set<String> kws = this.pureSarlKeywords == null ? null : this.pureSarlKeywords.get();
+		if (kws == null) {
+			kws = new HashSet<>();
+			kws.add(getAsKeyword());
+			kws.add(getRequiresKeyword());
+			kws.add(getWithKeyword());
+			kws.add(getItKeyword());
+			kws.add(getAnnotationKeyword());
+			kws.add(getSpaceKeyword());
+			kws.add(getOnKeyword());
+			kws.add(getCapacityKeyword());
+			kws.add(getEventKeyword());
+			kws.add(getVarKeyword());
+			kws.add(getAgentKeyword());
+			kws.add(getDispatchKeyword());
+			kws.add(getUsesKeyword());
+			kws.add(getSkillKeyword());
+			kws.add(getDefKeyword());
+			kws.add(getFiresKeyword());
+			kws.add(getOverrideKeyword());
+			kws.add(getBehaviorKeyword());
+			kws.add(getExtensionExtensionKeyword());
+			kws.add(getValKeyword());
+			kws.add(getTypeofKeyword());
+			kws.add(getOccurrenceKeyword());
+			this.pureSarlKeywords = new SoftReference<>(kws);
+		}
+		return Collections.unmodifiableSet(kws);
+	}
+
+	/** Replies if the given string of characters is a pure SARL keyword.
+	 * Pure SARL keywords are SARL keywords that are not Java keywords.
+	 * @param str the string of characters.
+	 * @return <code>true</code> if the string of characters is a SARL keyword.
+	 */
+	public boolean isPureKeyword(String str) {
+		assert !Strings.isEmpty(str);
+		return getPureKeywords().contains(str);
 	}
 
 }
