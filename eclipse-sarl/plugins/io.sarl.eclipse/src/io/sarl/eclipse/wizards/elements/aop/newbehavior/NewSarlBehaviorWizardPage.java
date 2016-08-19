@@ -30,14 +30,19 @@ import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
+import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
+import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.codebuilder.builders.ISarlBehaviorBuilder;
@@ -142,6 +147,12 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 	@Override
 	protected IType getRootSuperType() throws JavaModelException {
 		return getJavaProject().findType(Behavior.class.getName());
+	}
+
+	@Override
+	protected AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(Shell parent,
+			IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension) {
+		return new SuperBehaviorSelectionDialog(parent, context, project, this, extension);
 	}
 
 }

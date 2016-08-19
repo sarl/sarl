@@ -543,45 +543,50 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	@Override
 	public Image getImageForQualifiedName(String qualifiedName, IJvmTypeProvider jvmTypeProvider) {
-		final JvmType type = jvmTypeProvider.findTypeByName(qualifiedName);
+		return convertToImage(getImageForQualifiedName(qualifiedName, jvmTypeProvider));
+	}
+
+	@Override
+	public ImageDescriptor getImageDescriptorForQualifiedName(String qualifiedName, IJvmTypeProvider typeProvider) {
+		final JvmType type = typeProvider.findTypeByName(qualifiedName);
 		int adornments = this.adornments.get(type);
 		final JvmVisibility visibility;
 		if (type.eClass() == TypesPackage.Literals.JVM_GENERIC_TYPE) {
 			final JvmGenericType gtype = (JvmGenericType) type;
 			visibility = gtype.getVisibility();
 			if (gtype.isInterface()) {
-				if (isAssignableTo(gtype, Capacity.class, jvmTypeProvider)) {
+				if (isAssignableTo(gtype, Capacity.class, typeProvider)) {
 					// Remove the "abstract" ornment because capacities are always abstract.
 					adornments = (adornments & JavaElementImageDescriptor.ABSTRACT) ^ adornments;
-					return convertToImage(this.images.forCapacity(visibility, adornments));
+					return this.images.forCapacity(visibility, adornments);
 				}
-				return convertToImage(this.images.forInterface(visibility, this.adornments.get(gtype)));
+				return this.images.forInterface(visibility, this.adornments.get(gtype));
 			}
-			if (isAssignableTo(gtype, Agent.class, jvmTypeProvider)) {
-				return convertToImage(this.images.forAgent(visibility, this.adornments.get(gtype)));
+			if (isAssignableTo(gtype, Agent.class, typeProvider)) {
+				return this.images.forAgent(visibility, this.adornments.get(gtype));
 			}
-			if (isAssignableTo(gtype, Behavior.class, jvmTypeProvider)) {
-				return convertToImage(this.images.forBehavior(visibility, this.adornments.get(gtype)));
+			if (isAssignableTo(gtype, Behavior.class, typeProvider)) {
+				return this.images.forBehavior(visibility, this.adornments.get(gtype));
 			}
-			if (isAssignableTo(gtype, Skill.class, jvmTypeProvider)) {
-				return convertToImage(this.images.forSkill(visibility, this.adornments.get(gtype)));
+			if (isAssignableTo(gtype, Skill.class, typeProvider)) {
+				return this.images.forSkill(visibility, this.adornments.get(gtype));
 			}
-			if (isAssignableTo(gtype, Event.class, jvmTypeProvider)) {
-				return convertToImage(this.images.forEvent(visibility, this.adornments.get(gtype)));
+			if (isAssignableTo(gtype, Event.class, typeProvider)) {
+				return this.images.forEvent(visibility, this.adornments.get(gtype));
 			}
 		} else if (type.eClass() == TypesPackage.Literals.JVM_ENUMERATION_TYPE) {
 			final JvmEnumerationType etype = (JvmEnumerationType) type;
 			visibility = etype.getVisibility();
-			return convertToImage(this.images.forEnum(visibility, adornments));
+			return this.images.forEnum(visibility, adornments);
 		} else if (type.eClass() == TypesPackage.Literals.JVM_ANNOTATION_TYPE) {
 			final JvmAnnotationType atype = (JvmAnnotationType) type;
 			visibility = atype.getVisibility();
-			return convertToImage(this.images.forEnum(visibility, adornments));
+			return this.images.forEnum(visibility, adornments);
 		} else {
 			visibility = JvmVisibility.DEFAULT;
 		}
 		// Default icon is the class icon.
-		return convertToImage(this.images.forClass(visibility, adornments));
+		return this.images.forClass(visibility, adornments);
 	}
 
 }

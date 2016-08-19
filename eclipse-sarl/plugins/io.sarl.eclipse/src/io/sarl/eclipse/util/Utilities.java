@@ -22,6 +22,10 @@
 package io.sarl.eclipse.util;
 
 import com.google.common.base.Strings;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ITypeParameter;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.osgi.framework.Version;
 
 
@@ -123,6 +127,37 @@ public final class Utilities {
 		}
 		assert object1 != null && object2 != null;
 		return object1.compareTo(object2);
+	}
+
+	/** Replies the fully qualified name with generic parameters.
+	 *
+	 * @param type the type.
+	 * @return the qualified name.
+	 */
+	public static String getNameWithTypeParameters(IType type) {
+		final String superName = type.getFullyQualifiedName('.');
+		if (!JavaModelUtil.is50OrHigher(type.getJavaProject())) {
+			return superName;
+		}
+		try {
+			final ITypeParameter[] typeParameters = type.getTypeParameters();
+			if (typeParameters.length > 0) {
+				final StringBuffer buf = new StringBuffer(superName);
+				buf.append('<');
+				for (int k = 0; k < typeParameters.length; ++k) {
+					if (k != 0) {
+						buf.append(',').append(' ');
+					}
+					buf.append(typeParameters[k].getElementName());
+				}
+				buf.append('>');
+				return buf.toString();
+			}
+		} catch (JavaModelException e) {
+			// ignore
+		}
+		return superName;
+
 	}
 
 }
