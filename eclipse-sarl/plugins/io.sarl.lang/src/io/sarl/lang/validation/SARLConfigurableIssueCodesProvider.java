@@ -97,6 +97,10 @@ public class SARLConfigurableIssueCodesProvider extends XtendConfigurableIssueCo
 		acceptor.accept(create(
 				IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
 				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.USED_RESERVED_SARL_ANNOTATION,
+				SeverityConverter.SEVERITY_WARNING));
 	}
 
 }

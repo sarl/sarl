@@ -128,6 +128,12 @@ public final class IssueCodes {
 	public static final String INVALID_SARL_LIB_ON_CLASSPATH =
 			ISSUE_CODE_PREFIX + "invalid_sarl_lib_on_classpath"; //$NON-NLS-1$
 
+	/**
+	 * A SARL annotation is used. They are supposed to never be in the SARL code directly.
+	 */
+	public static final String USED_RESERVED_SARL_ANNOTATION =
+			ISSUE_CODE_PREFIX + "use_reserved_sarl_annotation"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

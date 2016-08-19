@@ -77,7 +77,7 @@ import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.quickfix.acceptors.ActionAddModification;
-import io.sarl.lang.ui.quickfix.acceptors.AddSuppressWarningsModification;
+import io.sarl.lang.ui.quickfix.acceptors.AnnotationRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.BehaviorUnitGuardRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.CapacityReferenceRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.ExtendedTypeRemoveModification;
@@ -93,6 +93,7 @@ import io.sarl.lang.ui.quickfix.acceptors.ProtectKeywordModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeReplaceModification;
 import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
+import io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification;
 
 /**
  * Custom quickfixes.
@@ -173,7 +174,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	@Fix("*")
 	public void fixSuppressWarnings(Issue issue, IssueResolutionAcceptor acceptor) {
 		if (isIgnorable(issue.getCode())) {
-			AddSuppressWarningsModification.accept(this, issue, acceptor);
+			SuppressWarningsAddModification.accept(this, issue, acceptor);
 		}
 	}
 
@@ -575,7 +576,51 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	@Override
 	public <T extends EObject> void remove(EObject element, Class<T> type, IModificationContext context)
 			throws BadLocationException {
+		// Make the function visible
 		super.remove(element, type, context);
+	}
+
+	/** Remove the given node and the whitespaces before/after.
+	 *
+	 * @param <T> the type of element to remove (must be for the given element or one of its container).
+	 * @param element the source of the change.
+	 * @param type the type of element to remove (must be for the given element or one of its container).
+	 * @param context the modification context.
+	 * @throws BadLocationException if the location cannot be computed properly.
+	 */
+	public <T extends EObject> void removeIncludingWhiteSpaces(EObject element, Class<T> type,
+			IModificationContext context) throws BadLocationException {
+		// Search the node
+		final T container = EcoreUtil2.getContainerOfType(element, type);
+		if (container == null) {
+			return;
+		}
+		final ICompositeNode node = NodeModelUtils.findActualNodeFor(container);
+		if (node == null) {
+			return;
+		}
+		// Compute region for the node
+		int offset = node.getOffset();
+		int length = node.getLength();
+		if (node.hasPreviousSibling()) {
+			final INode previousSibling = node.getPreviousSibling();
+			final int endOffset = previousSibling.getEndOffset();
+			length = length + (offset - endOffset);
+			offset = endOffset;
+		}
+		// Include spaces in the region
+		final IXtextDocument document = context.getXtextDocument();
+		final int doclen = document.getLength();
+		int endOffset = offset + length;
+		while (endOffset < doclen && Character.isWhitespace(document.getChar(endOffset))) {
+			++endOffset;
+			++length;
+		}
+		while (offset >= 0 && Character.isWhitespace(document.getChar(offset))) {
+			--offset;
+			++length;
+		}
+		document.replace(offset, length, ""); //$NON-NLS-1$
 	}
 
 	/** Quick fix for "Duplicate type".
@@ -883,6 +928,16 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	@Fix(SyntaxIssueCodes.USED_RESERVED_KEYWORD)
 	public void fixNoViableAlternativeAtKeyword(final Issue issue, IssueResolutionAcceptor acceptor) {
 		ProtectKeywordModification.accept(this, issue, acceptor);
+	}
+
+	/** Quick fix for the discouraged annotation uses.
+	 *
+	 * @param issue - the issue.
+	 * @param acceptor - the quick fix acceptor.
+	 */
+	@Fix(io.sarl.lang.validation.IssueCodes.USED_RESERVED_SARL_ANNOTATION)
+	public void fixDiscouragedAnnotationUse(final Issue issue, IssueResolutionAcceptor acceptor) {
+		AnnotationRemoveModification.accept(this, issue, acceptor);
 	}
 
 }

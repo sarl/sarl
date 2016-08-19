@@ -55,7 +55,7 @@ import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class AddSuppressWarningsModification extends SARLSemanticModification {
+public final class SuppressWarningsAddModification extends SARLSemanticModification {
 
 	private final URI uri;
 
@@ -66,7 +66,7 @@ public final class AddSuppressWarningsModification extends SARLSemanticModificat
 	 * @param uri the URI of the element to modify.
 	 * @param code the code of the issue to ignore.
 	 */
-	private AddSuppressWarningsModification(URI uri, String code) {
+	private SuppressWarningsAddModification(URI uri, String code) {
 		this.uri = uri;
 		this.code = code;
 	}
@@ -87,7 +87,7 @@ public final class AddSuppressWarningsModification extends SARLSemanticModificat
 		int relevance = IProposalRelevance.ADD_SUPPRESSWARNINGS;
 		while (eObject != null) {
 			final URI uri = EcoreUtil2.getNormalizedURI(eObject);
-			final AddSuppressWarningsModification modification = new AddSuppressWarningsModification(uri, issue.getCode());
+			final SuppressWarningsAddModification modification = new SuppressWarningsAddModification(uri, issue.getCode());
 			modification.setIssue(issue);
 			modification.setTools(provider);
 			final String elementName;

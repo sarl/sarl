@@ -21,6 +21,7 @@
 
 package io.sarl.lang.validation;
 
+import static com.google.common.collect.Iterables.any;
 import static com.google.common.collect.Iterables.toArray;
 import static com.google.common.collect.Lists.newArrayList;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_AGENT__EXTENDS;
@@ -77,6 +78,8 @@ import static org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH
 import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING;
 
+import java.lang.annotation.ElementType;
+import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -91,7 +94,9 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
@@ -102,6 +107,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.validation.ModifierValidator;
+import org.eclipse.xtend.core.validation.XtendValidator;
+import org.eclipse.xtend.core.xtend.XtendAnnotationTarget;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
@@ -123,6 +130,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
@@ -133,6 +141,7 @@ import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
@@ -144,6 +153,7 @@ import io.sarl.lang.SARLLangActivator;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
@@ -152,12 +162,14 @@ import io.sarl.lang.core.Skill;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
@@ -327,6 +339,52 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private IProgrammaticWarningSuppressor warningSuppressor;
+
+	@Inject
+	private IQualifiedNameConverter qualifiedNameConverter;
+
+	// Update thet annotation target information
+	{
+		final ImmutableMultimap.Builder<Class<?>, ElementType> result = ImmutableMultimap.builder();
+		result.putAll(this.targetInfos);
+		result.put(SarlAgent.class, ElementType.TYPE);
+		result.put(SarlCapacity.class, ElementType.TYPE);
+		result.put(SarlSkill.class, ElementType.TYPE);
+		result.put(SarlEvent.class, ElementType.TYPE);
+		result.put(SarlBehavior.class, ElementType.TYPE);
+		result.put(SarlSpace.class, ElementType.TYPE);
+		result.put(SarlClass.class, ElementType.TYPE);
+		result.put(SarlInterface.class, ElementType.TYPE);
+		result.put(SarlEnumeration.class, ElementType.TYPE);
+		result.putAll(SarlAnnotationType.class, ElementType.ANNOTATION_TYPE, ElementType.TYPE);
+		result.put(SarlField.class, ElementType.FIELD);
+		result.put(SarlAction.class, ElementType.METHOD);
+		result.put(SarlFormalParameter.class, ElementType.PARAMETER);
+		// Override the target informations
+		try {
+			final Field field = XtendValidator.class.getDeclaredField("targetInfos"); //$NON-NLS-1$
+			field.setAccessible(true);
+			field.set(this, result.build());
+		} catch (Exception exception) {
+			throw new Error(exception);
+		}
+	}
+
+	/** Copied from the Xtend validtor.
+	 *
+	 * <p>TODO: Change the visilibility in the Xtend validator.
+	 *
+	 * @param annotationTarget the target to test.
+	 * @return <code>true</code> if the annotation target is relevant for validation.
+	 */
+	protected boolean isRelevantAnnotationTarget(final XtendAnnotationTarget annotationTarget) {
+		return any(this.targetInfos.keySet(), new Predicate<Class<?>>() {
+			@Override
+			public boolean apply(Class<?> input) {
+				return input.isInstance(annotationTarget);
+			}
+		});
+	}
 
 	@Override
 	protected IssueSeverities getIssueSeverities(Map<Object, Object> context, EObject eObject) {
@@ -1843,6 +1901,45 @@ public class SARLValidator extends AbstractSARLValidator {
 			if (!getGeneratorConfig(function).getJavaSourceVersion().isAtLeast(JAVA8)) {
 				error(Messages.SARLJavaValidator_38, XTEND_FUNCTION__NAME, -1, ABSTRACT_METHOD_WITH_BODY);
 				return;
+			}
+		}
+	}
+
+	/** Check for reserved annotations.
+	 *
+	 * @param annotationTarget thee target to test.
+	 */
+	@Check
+	public void checkReservedAnnotation(XtendAnnotationTarget annotationTarget) {
+		if (!isIgnored(IssueCodes.USED_RESERVED_SARL_ANNOTATION)) {
+			if (annotationTarget.getAnnotations().isEmpty() || !isRelevantAnnotationTarget(annotationTarget)) {
+				return;
+			}
+			final QualifiedName reservedPackage = this.qualifiedNameConverter.toQualifiedName(
+					EarlyExit.class.getPackage().getName());
+			final String earlyExitAnnotation = EarlyExit.class.getName();
+			for (final XAnnotation annotation : annotationTarget.getAnnotations()) {
+				final JvmType type = annotation.getAnnotationType();
+				if (type != null && !type.eIsProxy()) {
+					if (Objects.equal(type.getIdentifier(), earlyExitAnnotation)) {
+						// Special case: EarlyExit is allowed on events for declaring early-exit events
+						if (!(annotationTarget instanceof SarlEvent)) {
+							addIssue(
+									MessageFormat.format(Messages.SARLValidator_3, type.getSimpleName()),
+									annotation,
+									IssueCodes.USED_RESERVED_SARL_ANNOTATION);
+						}
+					} else {
+						final QualifiedName annotationName = this.qualifiedNameConverter.toQualifiedName(
+								type.getIdentifier());
+						if (annotationName.startsWith(reservedPackage)) {
+							addIssue(
+									MessageFormat.format(Messages.SARLValidator_3, type.getSimpleName()),
+									annotation,
+									IssueCodes.USED_RESERVED_SARL_ANNOTATION);
+						}
+					}
+				}
 			}
 		}
 	}
