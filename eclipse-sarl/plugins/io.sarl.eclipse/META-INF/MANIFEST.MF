@@ -4,6 +4,7 @@ Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Version: 0.4.0.qualifier
 Bundle-SymbolicName: io.sarl.eclipse;singleton:=true
+xecutionEnvironment: JavaSE-1.8
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.sarl.lang.ui;bundle-version="0.4.0";visibility:=reexport,
