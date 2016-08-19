@@ -97,8 +97,17 @@ import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.serializer.sequencer.IContextFinder;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XInstanceOfExpression;
+import org.eclipse.xtext.xbase.XNullLiteral;
+import org.eclipse.xtext.xbase.XNumberLiteral;
+import org.eclipse.xtext.xbase.XReturnExpression;
+import org.eclipse.xtext.xbase.XStringLiteral;
+import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
+import org.eclipse.xtext.xbase.compiler.ImportManager;
+import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator;
@@ -1313,6 +1322,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				operation.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
 			}
 
+			// Add @Inline annotation
+			if (this.expressionHelper.isInlinableOperation(operation, expression)
+					&& this.annotationFinder.findAnnotation(operation, Inline.class) == null) {
+				appendInlineAnnotation(operation, expression);
+			}
+
 			// 1. Ensure that the Java annotations related to the default value are really present.
 			//    They may be not present if the generated action is a specific version of an inherited
 			//    action with default values for parameters.
@@ -2371,6 +2386,90 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 
 		operation.getAnnotations().add(annotationReference);
+	}
+
+	/** Append the inline annotation to the given operation.
+	 *
+	 * @param operation the operation to annotate.
+	 * @param expression the expression of the operation.
+	 * @see SARLExpressionHelper#isInlinableOperation(JvmOperation, XExpression)
+	 */
+	protected void appendInlineAnnotation(JvmOperation operation, XExpression expression) {
+		XExpression content = expression;
+		while (content instanceof XBlockExpression) {
+			final XBlockExpression blockExpr = (XBlockExpression) content;
+			if (blockExpr.getExpressions().size() == 1) {
+				content = blockExpr.getExpressions().get(0);
+			} else {
+				content = null;
+			}
+		}
+		final ImportManager imports = new ImportManager();
+		final ITreeAppendable result = new FakeTreeAppendable(imports, "", " "); //$NON-NLS-1$//$NON-NLS-2$
+		if (appendInlineAnnotation(operation, content, result)) {
+			final List<String> importedTypes = imports.getImports();
+			final JvmTypeReference[] importArray = new JvmTypeReference[importedTypes.size()];
+			for (int i = 0; i < importArray.length; ++i) {
+				importArray[i] = this.typeReferences.getTypeForName(importedTypes.get(i), expression);
+			}
+			appendInlineAnnotation(operation, result.toString(), importArray);
+		}
+	}
+
+	/** Append the inline annotation to the given operation.
+	 *
+	 * @param operation the operation to annotate.
+	 * @param expression the expression of the operation.
+	 * @param output the inline code.
+	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	private boolean appendInlineAnnotation(JvmOperation operation, XExpression expression, ITreeAppendable output) {
+		if (expression instanceof XBooleanLiteral) {
+			final XBooleanLiteral expr = (XBooleanLiteral) expression;
+			output.append(Boolean.toString(expr.isIsTrue()));
+			return true;
+		}
+		if (expression instanceof XNullLiteral) {
+			output.append("null"); //$NON-NLS-1$
+			return true;
+		}
+		if (expression instanceof XNumberLiteral) {
+			final XNumberLiteral expr = (XNumberLiteral) expression;
+			output.append(expr.getValue());
+			return true;
+		}
+		if (expression instanceof XStringLiteral) {
+			final XStringLiteral expr = (XStringLiteral) expression;
+			output.append("\"" //$NON-NLS-1$
+					+ org.eclipse.xtext.util.Strings.convertToJavaString(expr.getValue())
+					+ "\""); //$NON-NLS-1$
+			return true;
+		}
+		if (expression instanceof XTypeLiteral) {
+			final XTypeLiteral expr = (XTypeLiteral) expression;
+			output.append(expr.getType());
+			output.append(".class"); //$NON-NLS-1$
+			return true;
+		}
+		if (expression instanceof XReturnExpression) {
+			return appendInlineAnnotation(operation, ((XReturnExpression) expression).getExpression(), output);
+		}
+		if (expression instanceof XCastedExpression) {
+			final XCastedExpression expr = (XCastedExpression) expression;
+			output.append("("); //$NON-NLS-1$
+			output.append(expr.getType().getType());
+			output.append(")"); //$NON-NLS-1$
+			appendInlineAnnotation(operation, expr.getTarget(), output);
+			return true;
+		}
+		if (expression instanceof XInstanceOfExpression) {
+			final XInstanceOfExpression expr = (XInstanceOfExpression) expression;
+			appendInlineAnnotation(operation, expr.getExpression(), output);
+			output.append(" instanceof "); //$NON-NLS-1$
+			output.append(expr.getType().getType());
+			return true;
+		}
+		return false;
 	}
 
 	/** Create an annotation with classes as values.
