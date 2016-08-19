@@ -68,8 +68,9 @@ import io.sarl.lang.codebuilder.builders.SarlSkillBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SarlSpaceBuilderImpl;
 import io.sarl.lang.codebuilder.builders.ScriptBuilderImpl;
 import io.sarl.lang.compiler.SarlCompiler;
+import io.sarl.lang.controlflow.ExtendedSARLEarlyExitComputer;
+import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
-import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
 import io.sarl.lang.documentation.DocumentationFormatter;
 import io.sarl.lang.documentation.EcoreDocumentationBuilder;
 import io.sarl.lang.documentation.IDocumentationFormatter;
@@ -511,7 +512,7 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ExtendedEarlyExitComputer> bindExtendedEarlyExitComputer() {
-		return SARLExtendedEarlyExitComputer.class;
+		return ExtendedSARLEarlyExitComputer.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -527,6 +528,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ImplicitlyImportedFeatures> bindImplicitlyImportedFeatures() {
 		return SARLImplicitlyImportedFeatures.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ISarlEarlyExitComputer> bindISarlEarlyExitComputer() {
+		return SARLEarlyExitComputer.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

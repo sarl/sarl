@@ -135,7 +135,7 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
-import io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer;
+import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
@@ -238,7 +238,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	/** Computer of early-exits for SARL.
 	 */
 	@Inject
-	private SARLExtendedEarlyExitComputer earlyExitComputer;
+	private ISarlEarlyExitComputer earlyExitComputer;
 
 	/** Finder of annotations.
 	 */

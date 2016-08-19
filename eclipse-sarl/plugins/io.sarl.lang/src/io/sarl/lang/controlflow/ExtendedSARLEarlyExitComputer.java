@@ -24,7 +24,6 @@ package io.sarl.lang.controlflow;
 import javax.inject.Inject;
 
 import com.google.inject.Singleton;
-import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XbasePackage;
@@ -38,10 +37,10 @@ import org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer;
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
+public class ExtendedSARLEarlyExitComputer extends ExtendedEarlyExitComputer {
 
 	@Inject
-	private SARLEarlyExitComputer originalComputer;
+	private ISarlEarlyExitComputer originalComputer;
 
 	@Override
 	public boolean isDefiniteEarlyExit(XExpression expression) {
@@ -64,7 +63,7 @@ public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 	 * @param expression - the expression to test.
 	 * @return <code>true</code> if the given expression is a SARL early-exit
 	 *     statement, <code>false</code> otherwise.
-	 * @see SARLEarlyExitComputer#isEarlyExitAnnotatedElement(Object)
+	 * @see ISarlEarlyExitComputer#isEarlyExitAnnotatedElement(Object)
 	 */
 	protected boolean isEarlyExitSARLStatement(XExpression expression) {
 		if (expression instanceof XAbstractFeatureCall) {
@@ -77,17 +76,6 @@ public class SARLExtendedEarlyExitComputer extends ExtendedEarlyExitComputer {
 			return this.originalComputer.isEarlyExitAnnotatedElement(element);
 		}
 		return false;
-	}
-
-	/** Replies if the given type reference is a early-exit event.
-	 *
-	 * @param expression - the expression to test.
-	 * @return <code>true</code> if the given expression is a SARL early-exit
-	 *     statement, <code>false</code> otherwise.
-	 * @see SARLEarlyExitComputer#isEarlyExitEvent(JvmTypeReference)
-	 */
-	public boolean isEarlyExitEvent(JvmTypeReference expression) {
-		return this.originalComputer.isEarlyExitEvent(expression);
 	}
 
 }

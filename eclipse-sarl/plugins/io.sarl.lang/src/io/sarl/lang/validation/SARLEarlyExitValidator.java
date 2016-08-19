@@ -37,7 +37,7 @@ import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 
-import io.sarl.lang.controlflow.SARLEarlyExitComputer;
+import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 
 /** Validation of the early-exit control flow.
  *
@@ -50,7 +50,7 @@ import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 
 	@Inject
-	private SARLEarlyExitComputer earlyExitComputer;
+	private ISarlEarlyExitComputer earlyExitComputer;
 
 	@Inject
 	private IProgrammaticWarningSuppressor warningSuppressor;

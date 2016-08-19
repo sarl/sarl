@@ -452,10 +452,6 @@ Workflow {
     				to = "io.sarl.lang.validation.SARLEarlyExitValidator"
     			}
     			runtime = {
-    				bind = "org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer"
-    				to = "io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer"
-    			}
-    			runtime = {
     				bind = "io.sarl.lang.typesystem.SARLExpressionHelper"
     				to = "io.sarl.lang.typesystem.SARLExpressionHelper"
     			}
@@ -474,6 +470,14 @@ Workflow {
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer"
     				to = "io.sarl.lang.controlflow.SARLEarlyExitComputer"
+    			}
+    			runtime = {
+    				bind = "io.sarl.lang.controlflow.ISarlEarlyExitComputer"
+    				to = "io.sarl.lang.controlflow.SARLEarlyExitComputer"
+    			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer"
+    				to = "io.sarl.lang.controlflow.ExtendedSARLEarlyExitComputer"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.jvmmodel.IJvmModelInferrer"

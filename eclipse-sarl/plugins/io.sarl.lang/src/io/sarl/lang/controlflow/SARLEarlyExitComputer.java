@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
@@ -44,9 +45,7 @@ import io.sarl.lang.annotation.EarlyExit;
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-public class SARLEarlyExitComputer extends DefaultEarlyExitComputer {
-
-	private static final String EARLY_EXIT_EVENT = "io.sarl.core.Destroy"; //$NON-NLS-1$
+public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements ISarlEarlyExitComputer {
 
 	@Inject
 	private AnnotationLookup annotations;
@@ -64,28 +63,16 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer {
 		return Collections.emptyList();
 	}
 
-	/** Replies if the given event is an event that causes an early exit of the
-	 * function was is calling the firing function.
-	 *
-	 * @param reference - the event reference.
-	 * @return <code>true</code> if the event may causes early exit of the function,
-	 *     otherwise <code>false</code>.
-	 */
-	@SuppressWarnings("static-method")
+	@Override
 	public boolean isEarlyExitEvent(JvmTypeReference reference) {
-		if (reference != null) {
-			//TODO: Introduce inheritance testing. Should be solved by annotations' introduction in SARL.
-			return EARLY_EXIT_EVENT.equals(reference.getIdentifier());
+		if (reference != null && !reference.eIsProxy()) {
+			final JvmType type = reference.getType();
+			return isEarlyExitAnnotatedElement(type);
 		}
 		return false;
 	}
 
-	/** Replies if the given statement is annotated with the "early-exist" annotation.
-	 *
-	 * @param element - the element to test.
-	 * @return <code>true</code> if the given element is annotated with the "early-flag"
-	 *     annotation, otherwise <code>false</code>.
-	 */
+	@Override
 	public boolean isEarlyExitAnnotatedElement(Object element) {
 		return (element instanceof JvmAnnotationTarget)
 				&& (this.annotations.findAnnotation((JvmAnnotationTarget) element, EarlyExit.class) != null);
