@@ -22,10 +22,11 @@
 package io.sarl.eclipse.runtime;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.launching.LibraryLocation;
+import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -163,7 +164,7 @@ public interface ISREInstall extends Cloneable {
 	 * @return 	The library locations of this ISREInstall.
 	 *     Must not return <code>null</code>.
 	 */
-	LibraryLocation[] getLibraryLocations();
+	List<IRuntimeClasspathEntry> getClassPathEntries();
 
 	/** Replies the available command line options for this SRE.
 	 *
@@ -213,7 +214,7 @@ public interface ISREInstall extends Cloneable {
 	 * @param libraries - The library locations of this ISREInstall.
 	 *     Must not be <code>null</code>.
 	 */
-	void setLibraryLocations(LibraryLocation... libraries);
+	void setClassPathEntries(List<IRuntimeClasspathEntry> libraries);
 
 	/**
 	 * Change the minimal version number of the SARL specification

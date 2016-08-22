@@ -21,13 +21,10 @@
 package io.sarl.eclipse.tests.runtime;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
@@ -35,6 +32,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -54,6 +53,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
+import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.junit.Assume;
 import org.junit.Before;
@@ -80,10 +83,7 @@ import io.sarl.tests.api.AbstractSarlUiTest;
  * @mavenartifactid $ArtifactId$
  */
 @RunWith(Suite.class)
-@SuiteClasses({
-	StandardSREInstallTest.Valid.class,
-	StandardSREInstallTest.Invalid.class,
-})
+@SuiteClasses({ StandardSREInstallTest.Valid.class, StandardSREInstallTest.Invalid.class, })
 @SuppressWarnings("all")
 public class StandardSREInstallTest {
 
@@ -171,13 +171,39 @@ public class StandardSREInstallTest {
 		}
 
 		@Test
-		public void getLibraryLocation() {
-			assertArrayEquals(new LibraryLocation[] {
-					new LibraryLocation(this.path, Path.EMPTY, Path.EMPTY),
-					new LibraryLocation(Path.fromPortableString("a.jar"), Path.EMPTY, Path.EMPTY),
-					new LibraryLocation(Path.fromPortableString("b.jar"), Path.EMPTY, Path.EMPTY),
-					new LibraryLocation(Path.fromPortableString("c.jar"), Path.EMPTY, Path.EMPTY),
-			}, this.sre.getLibraryLocations());
+		public void getClassPathEntries() {
+
+			List<IRuntimeClasspathEntry> locations = new ArrayList<>();
+
+			LibraryLocation location = new LibraryLocation(this.path, Path.EMPTY, Path.EMPTY);
+			IClasspathEntry cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(),
+					location.getSystemLibrarySourcePath(), location.getPackageRootPath());
+			IRuntimeClasspathEntry rtcpEntry = new RuntimeClasspathEntry(cpEntry);
+			rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+			locations.add(rtcpEntry);
+			//
+			location = new LibraryLocation(Path.fromPortableString("a.jar"), Path.EMPTY, Path.EMPTY);
+			cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(), location.getSystemLibrarySourcePath(),
+					location.getPackageRootPath());
+			rtcpEntry = new RuntimeClasspathEntry(cpEntry);
+			rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+			locations.add(rtcpEntry);
+			//
+			location = new LibraryLocation(Path.fromPortableString("b.jar"), Path.EMPTY, Path.EMPTY);
+			cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(), location.getSystemLibrarySourcePath(),
+					location.getPackageRootPath());
+			rtcpEntry = new RuntimeClasspathEntry(cpEntry);
+			rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+			locations.add(rtcpEntry);
+			//
+			location = new LibraryLocation(Path.fromPortableString("c.jar"), Path.EMPTY, Path.EMPTY);
+			cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(), location.getSystemLibrarySourcePath(),
+					location.getPackageRootPath());
+			rtcpEntry = new RuntimeClasspathEntry(cpEntry);
+			rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+			locations.add(rtcpEntry);
+			//
+			assertEquals(locations, this.sre.getClassPathEntries());
 		}
 
 		@Test
@@ -201,19 +227,17 @@ public class StandardSREInstallTest {
 				StreamResult xmlStream = new StreamResult(flot);
 				trans.transform(source, xmlStream);
 				String content = new String(baos.toByteArray());
-				String[] expected = new String[] {
-						"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
+				String[] expected = new String[] { "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
 						"<root libraryPath=\"" + this.path.toOSString() + "\" standalone=\"true\">",
-						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString() + "\"/>",
+						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString()
+								+ "\"/>",
 						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"a.jar\"/>",
 						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"b.jar\"/>",
-						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"c.jar\"/>",
-						"</root>",
-				};
+						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"c.jar\"/>", "</root>", };
 				StringBuilder b = new StringBuilder();
-				for(String s : expected) {
+				for (String s : expected) {
 					b.append(s);
-					//b.append("\n");
+					// b.append("\n");
 				}
 				assertEquals(b.toString(), content);
 			}
@@ -221,19 +245,18 @@ public class StandardSREInstallTest {
 
 		@Test
 		public void setFromXML() throws Exception {
-			String[] expected = new String[] {
-					"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
-					"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toOSString() + "\" standalone=\"true\">",
-					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString() + "\"/>",
+			String[] expected = new String[] { "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
+					"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toOSString()
+							+ "\" standalone=\"true\">",
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString()
+							+ "\"/>",
 					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"x.jar\"/>",
 					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"y.jar\"/>",
-					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"z.jar\"/>",
-					"</SRE>",
-			};
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"z.jar\"/>", "</SRE>", };
 			StringBuilder b = new StringBuilder();
-			for(String s : expected) {
+			for (String s : expected) {
 				b.append(s);
-				//b.append("\n");
+				// b.append("\n");
 			}
 			try (ByteArrayInputStream bais = new ByteArrayInputStream(b.toString().getBytes())) {
 				DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -260,7 +283,7 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getSREArguments(), c.getSREArguments());
 			assertEquals(this.sre.getJVMArguments(), c.getJVMArguments());
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
-			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
+			assertEquals(this.sre.getClassPathEntries(), c.getClassPathEntries());
 		}
 
 		@Test
@@ -277,7 +300,7 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getSREArguments(), c.getSREArguments());
 			assertEquals(this.sre.getJVMArguments(), c.getJVMArguments());
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
-			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
+			assertEquals(this.sre.getClassPathEntries(), c.getClassPathEntries());
 		}
 
 		@Test
@@ -389,10 +412,19 @@ public class StandardSREInstallTest {
 		}
 
 		@Test
-		public void getLibraryLocation() {
-			assertArrayEquals(new LibraryLocation[] {
-					new LibraryLocation(this.path, Path.EMPTY, Path.EMPTY),
-			}, this.sre.getLibraryLocations());
+		public void getClassPathEntry() {
+			
+			List<IRuntimeClasspathEntry> locations = new ArrayList<>();
+			LibraryLocation location = new LibraryLocation(this.path, Path.EMPTY, Path.EMPTY);
+			IClasspathEntry cpEntry = JavaCore.newLibraryEntry(
+					location.getSystemLibraryPath(),
+					location.getSystemLibrarySourcePath(),
+					location.getPackageRootPath());
+			IRuntimeClasspathEntry rtcpEntry = new RuntimeClasspathEntry(cpEntry);			
+			rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+			locations.add(rtcpEntry);
+			
+			assertEquals(locations, this.sre.getClassPathEntries());
 		}
 
 		@Test
@@ -416,14 +448,12 @@ public class StandardSREInstallTest {
 				StreamResult xmlStream = new StreamResult(flot);
 				trans.transform(source, xmlStream);
 				String content = new String(baos.toByteArray());
-				String[] expected = new String[] {
-						"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
-						"<root libraryPath=\"" + this.path.toOSString() + "\" standalone=\"false\"/>",
-				};
+				String[] expected = new String[] { "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
+						"<root libraryPath=\"" + this.path.toOSString() + "\" standalone=\"false\"/>", };
 				StringBuilder b = new StringBuilder();
-				for(String s : expected) {
+				for (String s : expected) {
 					b.append(s);
-					//b.append("\n");
+					// b.append("\n");
 				}
 				assertEquals(b.toString(), content);
 			}
@@ -431,19 +461,18 @@ public class StandardSREInstallTest {
 
 		@Test
 		public void setFromXML() throws Exception {
-			String[] expected = new String[] {
-					"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
-					"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toOSString() + "\" standalone=\"true\">",
-					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString() + "\"/>",
+			String[] expected = new String[] { "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
+					"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toOSString()
+							+ "\" standalone=\"true\">",
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString()
+							+ "\"/>",
 					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"x.jar\"/>",
 					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"y.jar\"/>",
-					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"z.jar\"/>",
-					"</SRE>",
-			};
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"z.jar\"/>", "</SRE>", };
 			StringBuilder b = new StringBuilder();
-			for(String s : expected) {
+			for (String s : expected) {
 				b.append(s);
-				//b.append("\n");
+				// b.append("\n");
 			}
 			try (ByteArrayInputStream bais = new ByteArrayInputStream(b.toString().getBytes())) {
 				DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -470,7 +499,7 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getSREArguments(), c.getSREArguments());
 			assertEquals(this.sre.getJVMArguments(), c.getJVMArguments());
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
-			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
+			assertEquals(this.sre.getClassPathEntries(), c.getClassPathEntries());
 		}
 
 		@Test
@@ -487,7 +516,7 @@ public class StandardSREInstallTest {
 			assertEquals(this.sre.getSREArguments(), c.getSREArguments());
 			assertEquals(this.sre.getJVMArguments(), c.getJVMArguments());
 			assertEquals(this.sre.getJarFile(), c.getJarFile());
-			assertArrayEquals(this.sre.getLibraryLocations(), c.getLibraryLocations());
+			assertEquals(this.sre.getClassPathEntries(), c.getClassPathEntries());
 		}
 
 		@Test
