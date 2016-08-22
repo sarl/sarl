@@ -42,6 +42,8 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.generator.GeneratorConfig2;
+import io.sarl.lang.generator.IGeneratorConfigProvider2;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 
 /** Describe generation context.
@@ -106,14 +108,23 @@ abstract class GenerationContext {
 	 */
 	private final EObject contextObject;
 
-	/** The provider of generaion configuration.
+	/** The provider of generation configuration.
 	 */
 	@Inject
 	private IGeneratorConfigProvider generatorConfigProvider;
 
+	/** The provider of generation configuration v2.
+	 */
+	@Inject
+	private IGeneratorConfigProvider2 generatorConfigProvider2;
+
 	/** Buffering the current generator configuration.
 	 */
 	private GeneratorConfig generatorConfig;
+
+	/** Buffering the current generator configuration v2.
+	 */
+	private GeneratorConfig2 generatorConfig2;
 
 	/** Construct a information about the generation.
 	 *
@@ -148,6 +159,18 @@ abstract class GenerationContext {
 					EcoreUtil.getRootContainer(this.contextObject));
 		}
 		return this.generatorConfig;
+	}
+
+	/** Replies the generator configuration v2.
+	 *
+	 * @return the configuration.
+	 */
+	public GeneratorConfig2 getGeneratorConfig2() {
+		if (this.generatorConfig2 == null) {
+			this.generatorConfig2 = this.generatorConfigProvider2.get(
+					EcoreUtil.getRootContainer(this.contextObject));
+		}
+		return this.generatorConfig2;
 	}
 
 	/** Replies the guard evaluation code for the given event.

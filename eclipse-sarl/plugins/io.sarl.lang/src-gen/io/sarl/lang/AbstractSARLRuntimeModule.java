@@ -78,6 +78,8 @@ import io.sarl.lang.documentation.IEcoreDocumentationBuilder;
 import io.sarl.lang.documentation.SarlDocumentationProvider;
 import io.sarl.lang.formatting2.SARLFormatter;
 import io.sarl.lang.formatting2.SARLFormatterPreferenceKeys;
+import io.sarl.lang.generator.GeneratorConfigProvider2;
+import io.sarl.lang.generator.IGeneratorConfigProvider2;
 import io.sarl.lang.generator.SarlOutputConfigurationProvider;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
@@ -498,6 +500,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends SARLExpressionHelper> bindSARLExpressionHelper() {
 		return SARLExpressionHelper.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IGeneratorConfigProvider2> bindIGeneratorConfigProvider2() {
+		return GeneratorConfigProvider2.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

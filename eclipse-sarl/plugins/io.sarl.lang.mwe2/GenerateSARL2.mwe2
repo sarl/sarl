@@ -514,6 +514,11 @@ Workflow {
     				to = "io.sarl.lang.typesystem.SARLReentrantTypeResolver"
     				override = true
    				}
+    			runtime = {
+    				bind = "io.sarl.lang.generator.IGeneratorConfigProvider2"
+    				to = "io.sarl.lang.generator.GeneratorConfigProvider2"
+   				}
+   				
     			
     			ui = {
     				bind = "org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProcessor"
@@ -571,6 +576,11 @@ Workflow {
     				to = "io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer"
     			}
     			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer"
+    				annotatedWithName = "SarlBuilderPreferences"
+    				to = "io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess$Initializer"
+    			}
+    			ui = {
     				bind = "org.eclipse.xtext.ide.editor.syntaxcoloring.ISemanticHighlightingCalculator"
     				to = "io.sarl.lang.ui.highlighting.SARLHighlightingCalculator"
     				functionName = "bindIdeSemanticHighlightingCalculator"
@@ -621,6 +631,15 @@ Workflow {
     				override = true
     				functionName = "bindIImageDescriptorHelper"
     			}
+    			ui = {
+    				bind = "io.sarl.lang.generator.IGeneratorConfigProvider2"
+    				to = "io.sarl.lang.ui.builder.EclipseGeneratorConfigProvider2"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.builder.preferences.BuilderConfigurationBlock"
+    				to = "io.sarl.lang.ui.preferences.SARLBuilderConfigurationBlock"
+    				override = true
+   				}
 
     			both = {
     				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"

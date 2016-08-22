@@ -34,17 +34,10 @@ import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XBlockExpression;
-import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XInstanceOfExpression;
-import org.eclipse.xtext.xbase.XNullLiteral;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XReturnExpression;
-import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XSynchronizedExpression;
-import org.eclipse.xtext.xbase.XTypeLiteral;
-import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
@@ -162,60 +155,6 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 		}
 		final String name = operation.getSimpleName();
 		return (name != null && this.pattern.matcher(name).find()) || !hasSideEffects(body);
-	}
-
-	/** Replies if the given expression could be inline.
-	 *
-	 * @param expr - the body of the operation.
-	 * @return <code>true</code> if one of the components of the given expression could be inline;
-	 *     otherwise <code>false</code>.
-	 * @see Inline
-	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
-	public boolean isInlinableOperation(XExpression expr) {
-		if (expr != null) {
-			XExpression content = expr;
-			while (content instanceof XBlockExpression) {
-				final XBlockExpression blockExpr = (XBlockExpression) content;
-				if (blockExpr.getExpressions().size() == 1) {
-					content = blockExpr.getExpressions().get(0);
-				} else {
-					content = null;
-				}
-			}
-			if (content instanceof XBooleanLiteral
-					|| content instanceof XNullLiteral
-					|| content instanceof XNumberLiteral
-					|| content instanceof XStringLiteral
-					|| content instanceof XTypeLiteral) {
-				return true;
-			}
-			if (content instanceof XReturnExpression) {
-				return isInlinableOperation(((XReturnExpression) content).getExpression());
-			}
-			if (content instanceof XCastedExpression) {
-				return isInlinableOperation(((XCastedExpression) content).getTarget());
-			}
-			if (content instanceof XInstanceOfExpression) {
-				return isInlinableOperation(((XInstanceOfExpression) content).getExpression());
-			}
-		}
-		return false;
-	}
-
-	/** Replies if the given body could be inline.
-	 *
-	 * @param operation - the operation to test.
-	 * @param body - the body of the operation.
-	 * @return <code>true</code> if one of the components of the given expression could be inline;
-	 *     otherwise <code>false</code>.
-	 * @see Inline
-	 */
-	public boolean isInlinableOperation(JvmOperation operation, XExpression body) {
-		if (operation != null && !operation.isAbstract()) {
-			return isInlinableOperation(body);
-		}
-		return false;
 	}
 
 }

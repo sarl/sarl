@@ -30,6 +30,7 @@ import com.google.inject.Inject;
 import org.eclipse.xtend.core.compiler.XtendCompiler;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationValue;
+import org.eclipse.xtext.common.types.JvmBooleanAnnotationValue;
 import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
@@ -37,6 +38,7 @@ import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
@@ -49,6 +51,9 @@ import org.eclipse.xtext.xbase.util.XExpressionHelper;
  *
  * <p>This compiler provide a specific support for inline annotations. Indeed, the Xbase inline evaluation does
  * not support variadic parameters. This SARL compiler provides a support for variadic feature calls.
+ *
+ * <p>Additionally, this compiler supports the Inline annotation for non-static calls, by skipping the left
+ * operand of a memver feature call when the inline expression is constant.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -63,6 +68,8 @@ public class SarlCompiler extends XtendCompiler {
 	private static final String INLINE_VALUE_NAME = "value"; //$NON-NLS-1$
 
 	private static final String INLINE_IMPORTED_NAME = "imported"; //$NON-NLS-1$
+
+	private static final String CONSTANT_EXPRESSION_NAME = "constantExpression"; //$NON-NLS-1$
 
 	private static final Pattern INLINE_VARIABLE_PATTERN = Pattern.compile("\\" + INLINE_VARIABLE_PREFIX //$NON-NLS-1$
 			+ "(\\" + INLINE_VARIABLE_PREFIX + "|[0-9]+)"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -157,6 +164,40 @@ public class SarlCompiler extends XtendCompiler {
 		}
 		if (prevEnd != formatString.length()) {
 			target.append(formatString.substring(prevEnd));
+		}
+	}
+
+	private static boolean isConstantExpression(JvmAnnotationReference reference) {
+		//TODO: Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/issues/43
+		for (final JvmAnnotationValue annotationValue: reference.getValues()) {
+			if (CONSTANT_EXPRESSION_NAME.equals(annotationValue.getValueName())) {
+				return ((JvmBooleanAnnotationValue) annotationValue).getValues().get(0).booleanValue();
+			}
+		}
+		return false;
+	}
+
+	@Override
+	protected void featureCalltoJavaExpression(final XAbstractFeatureCall call, ITreeAppendable output,
+			boolean isExpressionContext) {
+		//TODO: Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/issues/43
+		if (call instanceof XAssignment) {
+			assignmentToJavaExpression((XAssignment) call, output, isExpressionContext);
+		} else {
+			if (needMultiAssignment(call)) {
+				appendLeftOperand(call, output, isExpressionContext).append(" = "); //$NON-NLS-1$
+			}
+
+			ITreeAppendable child = output;
+			final JvmAnnotationReference annotationRef = this.expressionHelper.findInlineAnnotation(call);
+			if (annotationRef == null || !isConstantExpression(annotationRef)) {
+				final boolean hasReceiver = appendReceiver(call, output, isExpressionContext);
+				if (hasReceiver) {
+					output.append("."); //$NON-NLS-1$
+					child = appendTypeArguments(call, output);
+				}
+			}
+			appendFeatureCall(call, child);
 		}
 	}
 
