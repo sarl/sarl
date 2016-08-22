@@ -36,11 +36,12 @@ import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.lang.sarl.SarlFormalParameter;
-import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.util.Utils;
 
 /**
@@ -59,11 +60,14 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	private TypeReferences references;
 
 	@Inject
-	private SARLGrammarAccess grammarAccess;
+	private SARLGrammarKeywordAccess grammarAccess;
 
 	private final Map<String, Map<String, Map<ActionParameterTypes, InferredPrototype>>> prototypes = new TreeMap<>();
 
 	private final Map<String, Map<String, Integer>> defaultValueIDPrefixes = new TreeMap<>();
+
+	@Inject
+	private AnnotationLookup annotationFinder;
 
 	/** Construct a provider of action prototypes.
 	 */
@@ -257,7 +261,8 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	@Override
 	public final InferredPrototype createPrototypeFromJvmModel(QualifiedActionName id,
 			boolean isVarargs, List<JvmFormalParameter> parameters) {
-		return createPrototype(id, isVarargs, new JvmFormalParameterProvider(parameters));
+		return createPrototype(id, isVarargs,
+				new JvmFormalParameterProvider(parameters, this.annotationFinder));
 	}
 
 	@Override
@@ -274,7 +279,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 		return new QualifiedActionName(
 				container.eResource().getURI().toString(),
 				container,
-				this.grammarAccess.getConstructorAccess().getNewKeyword_3().getValue());
+				this.grammarAccess.getNewKeyword());
 	}
 
 	@Override

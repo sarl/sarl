@@ -189,13 +189,13 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					
 					uses DefaultContextInteractions, Behaviors
 				
-					var space : OpenEventSpace
+					var ^space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpaceWithSpec(
+						^space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
-						space.register(asEventListener())
+						^space.register(asEventListener())
 					}
 				}
 				'''.parseSuccessfully(
@@ -228,13 +228,13 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					
 					uses DefaultContextInteractions, Behaviors
 				
-					var space : OpenEventSpace
+					var ^space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpaceWithSpec(
+						^space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
-						space.register(asEventListener())
+						^space.register(asEventListener())
 					}
 
 					on Ping {
@@ -306,19 +306,19 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					
 					uses DefaultContextInteractions, Behaviors
 				
-					var space : OpenEventSpace
+					var ^space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpaceWithSpec(
+						^space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
-						space.register(asEventListener())
+						^space.register(asEventListener())
 					}
 
 					on Ping {
 						var evt = new Pong( occurrence.index )
-						evt.source = space.getAddress(getID)
-						space.emit( evt )
+						evt.source = ^space.getAddress(getID)
+						^space.emit( evt )
 					}
 				}
 				'''.parseSuccessfully(
@@ -377,19 +377,19 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 				agent PongAgent {
 					uses DefaultContextInteractions, Behaviors
 				
-					var space : OpenEventSpace
+					var ^space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpaceWithSpec(
+						^space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
-						space.register(asEventListener())
+						^space.register(asEventListener())
 					}
 
 					on Ping {
 						var evt = new Pong( occurrence.index )
-						evt.source = space.getAddress(getID)
-						space.emit(
+						evt.source = ^space.getAddress(getID)
+						^space.emit(
 							evt,
 							Scopes.addresses( occurrence.source ))
 					}
@@ -438,13 +438,13 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					
 					uses DefaultContextInteractions, Behaviors
 				
-					var space : OpenEventSpace
+					var ^space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpaceWithSpec(
+						^space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
-						space.register(asEventListener())
+						^space.register(asEventListener())
 					}
 				}
 				'''.parseSuccessfully(
@@ -472,13 +472,13 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					
 					uses DefaultContextInteractions, Behaviors
 				
-					var space : OpenEventSpace
+					var ^space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpaceWithSpec(
+						^space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
-						space.register(asEventListener())
+						^space.register(asEventListener())
 					}
 
 					on Pong {
@@ -521,19 +521,19 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					
 					uses DefaultContextInteractions, Behaviors
 				
-					var space : OpenEventSpace
+					var ^space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpaceWithSpec(
+						^space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
-						space.register(asEventListener())
+						^space.register(asEventListener())
 					}
 
 					on Pong {
 						var evt = new Ping( occurrence.index + 1 )
-						evt.source = space.getAddress(getID)
-						space.emit(
+						evt.source = ^space.getAddress(getID)
+						^space.emit(
 							evt,
 							Scopes.addresses( occurrence.source )
 						)
@@ -581,22 +581,22 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					
 					uses DefaultContextInteractions, Behaviors
 				
-					var space : OpenEventSpace
+					var ^space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpaceWithSpec(
+						^space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
-						space.register(asEventListener())
+						^space.register(asEventListener())
 						var evt = new Ping(0)
-						evt.source = space.getAddress(getID)
-						space.emit( evt )
+						evt.source = ^space.getAddress(getID)
+						^space.emit( evt )
 					}
 
 					on Pong {
 						var evt = new Ping( occurrence.index + 1 )
-						evt.source = space.getAddress(getID)
-						space.emit(
+						evt.source = ^space.getAddress(getID)
+						^space.emit(
 							evt,
 							Scopes.addresses( occurrence.source )
 						)
@@ -667,19 +667,19 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 					
 					uses DefaultContextInteractions, Behaviors, Schedules
 				
-					var space : OpenEventSpace
+					var ^space : OpenEventSpace
 					
 					on Initialize {
-						space = defaultContext.getOrCreateSpaceWithSpec(
+						^space = defaultContext.getOrCreateSpaceWithSpec(
 							typeof(OpenEventSpaceSpecification),
 							occurrence.parameters.get(0) as UUID)
-						space.register(asEventListener())
+						^space.register(asEventListener())
 						val task = task("waiting_for_partner")
 						task.every(1000) [
 							if (defaultSpace.participants.size > 1) {
 								var evt = new Ping(0)
-								evt.source = space.getAddress(getID)
-								space.emit( evt )
+								evt.source = ^space.getAddress(getID)
+								^space.emit( evt )
 								task.cancel
 							}
 						]
@@ -687,8 +687,8 @@ describe "Agent Communication in Sub-Space with the Ping Pong Agents"{
 
 					on Pong {
 						var evt = new Ping( occurrence.index + 1 )
-						evt.source = space.getAddress(getID)
-						space.emit(
+						evt.source = ^space.getAddress(getID)
+						^space.emit(
 							evt,
 							Scopes.addresses( occurrence.source )
 						)

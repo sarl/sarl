@@ -24,8 +24,11 @@ package io.sarl.lang.ui;
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
+
+import io.sarl.lang.ui.bugfixes.Bug406ImportingTypesProposalProvider;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -52,6 +55,12 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		// matches ID of org.eclipse.ui.contexts extension registered in plugin.xml
 		binder.bindConstant().annotatedWith(Names.named(XtextEditor.KEY_BINDING_SCOPE))
 				.to("io.sarl.lang.ui.scoping.SARLEditorScope"); //$NON-NLS-1$
+	}
+
+	// TODO: Remove when https://github.com/eclipse/xtext-eclipse/issues/28 is fixed.
+	@Override
+	public Class<? extends ITypesProposalProvider> bindITypesProposalProvider() {
+		return Bug406ImportingTypesProposalProvider.class;
 	}
 
 }

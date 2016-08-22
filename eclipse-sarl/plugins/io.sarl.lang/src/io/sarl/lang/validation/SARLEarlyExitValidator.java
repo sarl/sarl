@@ -22,6 +22,7 @@
 package io.sarl.lang.validation;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -30,13 +31,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.validation.XtendEarlyExitValidator;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.IssueSeverities;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 
-import io.sarl.lang.controlflow.SARLEarlyExitComputerUtil;
+import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 
 /** Validation of the early-exit control flow.
  *
@@ -49,7 +50,16 @@ import io.sarl.lang.controlflow.SARLEarlyExitComputerUtil;
 public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 
 	@Inject
-	private IEarlyExitComputer earlyExitComputer;
+	private ISarlEarlyExitComputer earlyExitComputer;
+
+	@Inject
+	private IProgrammaticWarningSuppressor warningSuppressor;
+
+	@Override
+	protected IssueSeverities getIssueSeverities(Map<Object, Object> context, EObject eObject) {
+		final IssueSeverities severities = super.getIssueSeverities(context, eObject);
+		return this.warningSuppressor.getIssueSeverities(context, eObject, severities);
+	}
 
 	@Override
 	@Check
@@ -62,7 +72,7 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 			final XExpression expression = expressions.get(i);
 			if (this.earlyExitComputer.isEarlyExit(expression)) {
 				if (expression instanceof XAbstractFeatureCall) {
-					if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(
+					if (this.earlyExitComputer.isEarlyExitAnnotatedElement(
 							((XAbstractFeatureCall) expression).getFeature())) {
 						markAsDeadCode(expressions.get(i + 1));
 					}
@@ -81,7 +91,7 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 		super.collectExits(expr, found);
 		if (expr instanceof XAbstractFeatureCall) {
 			final JvmIdentifiableElement element = ((XAbstractFeatureCall) expr).getFeature();
-			if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(element)) {
+			if (this.earlyExitComputer.isEarlyExitAnnotatedElement(element)) {
 				found.add((XExpression) expr);
 			}
 		}

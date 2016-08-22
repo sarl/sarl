@@ -89,7 +89,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAgent(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
-				"extraneous input '.' expecting '}'");
+				"no viable alternative at input '}'");
 	}
 
 	@Test

@@ -38,6 +38,10 @@ public class Messages extends NLS {
 	public static String AbstractNewSarlElementWizardPage_2;
 	public static String AbstractNewSarlElementWizardPage_3;
 	public static String AbstractNewSarlElementWizardPage_4;
+	public static String AbstractSuperTypeSelectionDialog_0;
+	public static String AbstractSuperTypeSelectionDialog_1;
+	public static String AbstractSuperTypeSelectionDialog_2;
+	public static String AbstractSuperTypeSelectionDialog_3;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

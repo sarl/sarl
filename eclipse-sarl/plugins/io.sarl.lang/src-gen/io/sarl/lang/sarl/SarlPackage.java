@@ -951,6 +951,70 @@ public interface SarlPackage extends EPackage
 	int SARL_ANNOTATION_TYPE_FEATURE_COUNT = XtendPackage.XTEND_ANNOTATION_TYPE_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlEnumLiteralImpl <em>Enum Literal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see io.sarl.lang.sarl.impl.SarlEnumLiteralImpl
+	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlEnumLiteral()
+	 * @generated
+	 */
+	int SARL_ENUM_LITERAL = 11;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ENUM_LITERAL__ANNOTATIONS = XtendPackage.XTEND_ENUM_LITERAL__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ENUM_LITERAL__ANNOTATION_INFO = XtendPackage.XTEND_ENUM_LITERAL__ANNOTATION_INFO;
+
+	/**
+	 * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ENUM_LITERAL__MODIFIERS = XtendPackage.XTEND_ENUM_LITERAL__MODIFIERS;
+
+	/**
+	 * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ENUM_LITERAL__DECLARING_TYPE = XtendPackage.XTEND_ENUM_LITERAL__DECLARING_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ENUM_LITERAL__NAME = XtendPackage.XTEND_ENUM_LITERAL__NAME;
+
+	/**
+	 * The number of structural features of the '<em>Enum Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ENUM_LITERAL_FEATURE_COUNT = XtendPackage.XTEND_ENUM_LITERAL_FEATURE_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlEventImpl <em>Event</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -958,7 +1022,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlEvent()
 	 * @generated
 	 */
-	int SARL_EVENT = 11;
+	int SARL_EVENT = 12;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1033,6 +1097,88 @@ public interface SarlPackage extends EPackage
 	int SARL_EVENT_FEATURE_COUNT = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlSpaceImpl <em>Space</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see io.sarl.lang.sarl.impl.SarlSpaceImpl
+	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlSpace()
+	 * @generated
+	 */
+	int SARL_SPACE = 13;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_SPACE__ANNOTATIONS = XtendPackage.XTEND_TYPE_DECLARATION__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_SPACE__ANNOTATION_INFO = XtendPackage.XTEND_TYPE_DECLARATION__ANNOTATION_INFO;
+
+	/**
+	 * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_SPACE__MODIFIERS = XtendPackage.XTEND_TYPE_DECLARATION__MODIFIERS;
+
+	/**
+	 * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_SPACE__DECLARING_TYPE = XtendPackage.XTEND_TYPE_DECLARATION__DECLARING_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_SPACE__NAME = XtendPackage.XTEND_TYPE_DECLARATION__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Members</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_SPACE__MEMBERS = XtendPackage.XTEND_TYPE_DECLARATION__MEMBERS;
+
+	/**
+	 * The feature id for the '<em><b>Extends</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_SPACE__EXTENDS = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Space</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_SPACE_FEATURE_COUNT = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlAgentImpl <em>Agent</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1040,7 +1186,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAgent()
 	 * @generated
 	 */
-	int SARL_AGENT = 12;
+	int SARL_AGENT = 14;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1122,7 +1268,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlCapacity()
 	 * @generated
 	 */
-	int SARL_CAPACITY = 13;
+	int SARL_CAPACITY = 15;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1204,7 +1350,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBehavior()
 	 * @generated
 	 */
-	int SARL_BEHAVIOR = 14;
+	int SARL_BEHAVIOR = 16;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1286,7 +1432,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlSkill()
 	 * @generated
 	 */
-	int SARL_SKILL = 15;
+	int SARL_SKILL = 17;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1377,7 +1523,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlFormalParameter()
 	 * @generated
 	 */
-	int SARL_FORMAL_PARAMETER = 16;
+	int SARL_FORMAL_PARAMETER = 18;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1620,6 +1766,16 @@ public interface SarlPackage extends EPackage
 	EClass getSarlAnnotationType();
 
 	/**
+	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlEnumLiteral <em>Enum Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Enum Literal</em>'.
+	 * @see io.sarl.lang.sarl.SarlEnumLiteral
+	 * @generated
+	 */
+	EClass getSarlEnumLiteral();
+
+	/**
 	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlEvent <em>Event</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1639,6 +1795,27 @@ public interface SarlPackage extends EPackage
 	 * @generated
 	 */
 	EReference getSarlEvent_Extends();
+
+	/**
+	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlSpace <em>Space</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Space</em>'.
+	 * @see io.sarl.lang.sarl.SarlSpace
+	 * @generated
+	 */
+	EClass getSarlSpace();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.SarlSpace#getExtends <em>Extends</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Extends</em>'.
+	 * @see io.sarl.lang.sarl.SarlSpace#getExtends()
+	 * @see #getSarlSpace()
+	 * @generated
+	 */
+	EReference getSarlSpace_Extends();
 
 	/**
 	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlAgent <em>Agent</em>}'.
@@ -1938,6 +2115,16 @@ public interface SarlPackage extends EPackage
 		EClass SARL_ANNOTATION_TYPE = eINSTANCE.getSarlAnnotationType();
 
 		/**
+		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlEnumLiteralImpl <em>Enum Literal</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see io.sarl.lang.sarl.impl.SarlEnumLiteralImpl
+		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlEnumLiteral()
+		 * @generated
+		 */
+		EClass SARL_ENUM_LITERAL = eINSTANCE.getSarlEnumLiteral();
+
+		/**
 		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlEventImpl <em>Event</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1954,6 +2141,24 @@ public interface SarlPackage extends EPackage
 		 * @generated
 		 */
 		EReference SARL_EVENT__EXTENDS = eINSTANCE.getSarlEvent_Extends();
+
+		/**
+		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlSpaceImpl <em>Space</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see io.sarl.lang.sarl.impl.SarlSpaceImpl
+		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlSpace()
+		 * @generated
+		 */
+		EClass SARL_SPACE = eINSTANCE.getSarlSpace();
+
+		/**
+		 * The meta object literal for the '<em><b>Extends</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SARL_SPACE__EXTENDS = eINSTANCE.getSarlSpace_Extends();
 
 		/**
 		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlAgentImpl <em>Agent</em>}' class.

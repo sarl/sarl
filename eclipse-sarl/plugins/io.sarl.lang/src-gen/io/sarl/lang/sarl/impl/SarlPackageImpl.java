@@ -11,6 +11,7 @@ import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlEnumLiteral;
 import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlFactory;
@@ -21,6 +22,7 @@ import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.sarl.SarlSpace;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -124,7 +126,21 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass sarlEnumLiteralEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass sarlEventEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sarlSpaceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -402,6 +418,16 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getSarlEnumLiteral()
+	{
+		return sarlEnumLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getSarlEvent()
 	{
 		return sarlEventEClass;
@@ -415,6 +441,26 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	public EReference getSarlEvent_Extends()
 	{
 		return (EReference)sarlEventEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getSarlSpace()
+	{
+		return sarlSpaceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getSarlSpace_Extends()
+	{
+		return (EReference)sarlSpaceEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -585,8 +631,13 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 		sarlAnnotationTypeEClass = createEClass(SARL_ANNOTATION_TYPE);
 
+		sarlEnumLiteralEClass = createEClass(SARL_ENUM_LITERAL);
+
 		sarlEventEClass = createEClass(SARL_EVENT);
 		createEReference(sarlEventEClass, SARL_EVENT__EXTENDS);
+
+		sarlSpaceEClass = createEClass(SARL_SPACE);
+		createEReference(sarlSpaceEClass, SARL_SPACE__EXTENDS);
 
 		sarlAgentEClass = createEClass(SARL_AGENT);
 		createEReference(sarlAgentEClass, SARL_AGENT__EXTENDS);
@@ -650,7 +701,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		sarlInterfaceEClass.getESuperTypes().add(theXtendPackage.getXtendInterface());
 		sarlEnumerationEClass.getESuperTypes().add(theXtendPackage.getXtendEnum());
 		sarlAnnotationTypeEClass.getESuperTypes().add(theXtendPackage.getXtendAnnotationType());
+		sarlEnumLiteralEClass.getESuperTypes().add(theXtendPackage.getXtendEnumLiteral());
 		sarlEventEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
+		sarlSpaceEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
 		sarlAgentEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
 		sarlCapacityEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
 		sarlBehaviorEClass.getESuperTypes().add(theXtendPackage.getXtendTypeDeclaration());
@@ -686,10 +739,17 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 		initEClass(sarlAnnotationTypeEClass, SarlAnnotationType.class, "SarlAnnotationType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEClass(sarlEnumLiteralEClass, SarlEnumLiteral.class, "SarlEnumLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		initEClass(sarlEventEClass, SarlEvent.class, "SarlEvent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSarlEvent_Extends(), theTypesPackage.getJvmParameterizedTypeReference(), null, "extends", null, 0, 1, SarlEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(sarlEventEClass, ecorePackage.getEBoolean(), "isAbstract", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(sarlSpaceEClass, SarlSpace.class, "SarlSpace", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSarlSpace_Extends(), theTypesPackage.getJvmParameterizedTypeReference(), null, "extends", null, 0, 1, SarlSpace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		addEOperation(sarlSpaceEClass, ecorePackage.getEBoolean(), "isAbstract", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(sarlAgentEClass, SarlAgent.class, "SarlAgent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSarlAgent_Extends(), theTypesPackage.getJvmParameterizedTypeReference(), null, "extends", null, 0, 1, SarlAgent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

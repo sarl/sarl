@@ -22,6 +22,8 @@
 package io.sarl.lang.ui.quickfix.acceptors;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
@@ -52,8 +54,9 @@ public final class BehaviorUnitGuardRemoveModification extends SARLSemanticModif
 		acceptor.accept(issue,
 				Messages.SARLQuickfixProvider_0,
 				Messages.SARLQuickfixProvider_4,
-				null,
-				modification);
+				JavaPluginImages.IMG_CORRECTION_REMOVE,
+				modification,
+				IProposalRelevance.REMOVE_METHOD_BODY);
 	}
 
 	@Override

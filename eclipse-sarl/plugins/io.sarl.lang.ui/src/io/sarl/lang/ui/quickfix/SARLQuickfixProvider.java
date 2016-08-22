@@ -21,10 +21,14 @@
 
 package io.sarl.lang.ui.quickfix;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import com.google.common.base.Predicate;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.emf.common.util.URI;
@@ -39,6 +43,7 @@ import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -51,8 +56,11 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.Fix;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
+import org.eclipse.xtext.ui.refactoring.impl.ProjectUtil;
+import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.util.Arrays;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
@@ -60,14 +68,16 @@ import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 
 import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.DefaultValueUse;
+import io.sarl.lang.parser.SyntaxIssueCodes;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.quickfix.acceptors.ActionAddModification;
+import io.sarl.lang.ui.quickfix.acceptors.AnnotationRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.BehaviorUnitGuardRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.CapacityReferenceRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.ExtendedTypeRemoveModification;
@@ -79,10 +89,11 @@ import io.sarl.lang.ui.quickfix.acceptors.MemberRenameModification;
 import io.sarl.lang.ui.quickfix.acceptors.Messages;
 import io.sarl.lang.ui.quickfix.acceptors.MissedMethodAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.MultiModification;
+import io.sarl.lang.ui.quickfix.acceptors.ProtectKeywordModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeReplaceModification;
 import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
-import io.sarl.lang.util.Utils;
+import io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification;
 
 /**
  * Custom quickfixes.
@@ -93,7 +104,7 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#quick-fixes"
  */
-@SuppressWarnings({"static-method", "checkstyle:methodcount"})
+@SuppressWarnings({"static-method", "checkstyle:methodcount", "checkstyle:classfanoutcomplexity"})
 public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject
@@ -103,7 +114,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	private ReplacingAppendable.Factory appendableFactory;
 
 	@Inject
-	private SARLGrammarAccess grammarAccess;
+	private SARLGrammarKeywordAccess grammarAccess;
 
 	@Inject
 	private IXtendJvmAssociations associations;
@@ -116,6 +127,56 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject
 	private IQualifiedNameProvider qualifiedNameProvider;
+
+	@Inject
+	private ConfigurableIssueCodesProvider issueCodesProvider;
+
+	@Inject
+	private ProjectUtil projectUtil;
+
+	@Inject
+	private IResourceSetProvider resourceSetProvider;
+
+	@Inject
+	private AnnotationLookup annotationFinder;
+
+
+	/** Replies if the given code is for a ignorable warning.
+	 *
+	 * @param code the code of the warning.
+	 * @return <code>true</code> if the warning could be ignored, <code>false</code> otherwise.
+	 */
+	protected boolean isIgnorable(String code) {
+		return this.issueCodesProvider.getConfigurableIssueCodes().containsKey(code);
+	}
+
+	@Override
+	protected Predicate<Method> getFixMethodPredicate(final String issueCode) {
+		return new Predicate<Method>() {
+			@Override
+			public boolean apply(Method input) {
+				final Fix annotation = input.getAnnotation(Fix.class);
+				final boolean result = annotation != null
+						&& ("*".equals(annotation.value()) || issueCode.equals(annotation.value())) //$NON-NLS-1$
+						&& input.getParameterTypes().length == 2 && Void.TYPE == input.getReturnType()
+						&& input.getParameterTypes()[0].isAssignableFrom(Issue.class)
+						&& input.getParameterTypes()[1].isAssignableFrom(IssueResolutionAcceptor.class);
+				return result;
+			}
+		};
+	}
+
+	/** Add the fixes with suppress-warning annotations.
+	 *
+	 * @param issue the issue.
+	 * @param acceptor the resolution acceptor.
+	 */
+	@Fix("*")
+	public void fixSuppressWarnings(Issue issue, IssueResolutionAcceptor acceptor) {
+		if (isIgnorable(issue.getCode())) {
+			SuppressWarningsAddModification.accept(this, issue, acceptor);
+		}
+	}
 
 	/** Replies the JVM operations that correspond to the given URIs.
 	 *
@@ -133,7 +194,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 			final EObject overridden = resourceSet.getEObject(operationURI, true);
 			if (overridden instanceof JvmOperation) {
 				final JvmOperation operation = (JvmOperation) overridden;
-				if (!Utils.hasAnnotation(operation, DefaultValueUse.class)) {
+				if (this.annotationFinder.findAnnotation(operation, DefaultValueUse.class) == null) {
 					operations.add(operation);
 				}
 			}
@@ -178,6 +239,22 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		return this.appendableFactory;
 	}
 
+	/** Replies the project utilities.
+	 *
+	 * @return the utilities.
+	 */
+	public ProjectUtil getProjectUtil() {
+		return this.projectUtil;
+	}
+
+	/** Replies the resource set provider.
+	 *
+	 * @return the provider.
+	 */
+	public IResourceSetProvider getResourceSetProvider() {
+		return this.resourceSetProvider;
+	}
+
 	/** Replies the type services.
 	 *
 	 * @return the type serices.
@@ -198,7 +275,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 *
 	 * @return the SARL grammar accessor.
 	 */
-	public SARLGrammarAccess getGrammarAccess() {
+	public SARLGrammarKeywordAccess getGrammarAccess() {
 		return this.grammarAccess;
 	}
 
@@ -445,6 +522,24 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		return size;
 	}
 
+	/** Replies the offset that corresponds to the given regular expression pattern.
+	 *
+	 * @param document the document to parse.
+	 * @param startOffset the offset in the text at which the pattern must be recognized.
+	 * @param pattern the regular expression pattern.
+	 * @return the offset (greater or equal to the startOffset), or <code>-1</code> if the pattern
+	 *     cannot be recognized.
+	 */
+	public int getOffsetForPattern(IXtextDocument document, int startOffset, String pattern) {
+		final Pattern compiledPattern = Pattern.compile(pattern);
+		final Matcher matcher = compiledPattern.matcher(document.get());
+		if (matcher.find(startOffset)) {
+			final int end = matcher.end();
+			return end;
+		}
+		return -1;
+	}
+
 	/** Replies the qualified name for the given name.
 	 *
 	 * @param name - the name.
@@ -481,7 +576,51 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	@Override
 	public <T extends EObject> void remove(EObject element, Class<T> type, IModificationContext context)
 			throws BadLocationException {
+		// Make the function visible
 		super.remove(element, type, context);
+	}
+
+	/** Remove the given node and the whitespaces before/after.
+	 *
+	 * @param <T> the type of element to remove (must be for the given element or one of its container).
+	 * @param element the source of the change.
+	 * @param type the type of element to remove (must be for the given element or one of its container).
+	 * @param context the modification context.
+	 * @throws BadLocationException if the location cannot be computed properly.
+	 */
+	public <T extends EObject> void removeIncludingWhiteSpaces(EObject element, Class<T> type,
+			IModificationContext context) throws BadLocationException {
+		// Search the node
+		final T container = EcoreUtil2.getContainerOfType(element, type);
+		if (container == null) {
+			return;
+		}
+		final ICompositeNode node = NodeModelUtils.findActualNodeFor(container);
+		if (node == null) {
+			return;
+		}
+		// Compute region for the node
+		int offset = node.getOffset();
+		int length = node.getLength();
+		if (node.hasPreviousSibling()) {
+			final INode previousSibling = node.getPreviousSibling();
+			final int endOffset = previousSibling.getEndOffset();
+			length = length + (offset - endOffset);
+			offset = endOffset;
+		}
+		// Include spaces in the region
+		final IXtextDocument document = context.getXtextDocument();
+		final int doclen = document.getLength();
+		int endOffset = offset + length;
+		while (endOffset < doclen && Character.isWhitespace(document.getChar(endOffset))) {
+			++endOffset;
+			++length;
+		}
+		while (offset >= 0 && Character.isWhitespace(document.getChar(offset))) {
+			--offset;
+			++length;
+		}
+		document.replace(offset, length, ""); //$NON-NLS-1$
 	}
 
 	/** Quick fix for "Duplicate type".
@@ -741,13 +880,13 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		String keyword = null;
 		if (container instanceof SarlAgent) {
 			declaration = (XtendTypeDeclaration) container;
-			keyword = getGrammarAccess().getAgentAccess().getAgentKeyword_3().getValue();
+			keyword = getGrammarAccess().getAgentKeyword();
 		} else if (container instanceof SarlBehavior) {
 			declaration = (XtendTypeDeclaration) container;
-			keyword = getGrammarAccess().getBehaviorAccess().getBehaviorKeyword_3().getValue();
+			keyword = getGrammarAccess().getBehaviorKeyword();
 		} else if (container instanceof SarlSkill) {
 			declaration = (XtendTypeDeclaration) container;
-			keyword = getGrammarAccess().getSkillAccess().getSkillKeyword_3().getValue();
+			keyword = getGrammarAccess().getSkillKeyword();
 		}
 		if (declaration != null && keyword != null) {
 			final IXtextDocument document = context.getXtextDocument();
@@ -776,9 +915,29 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 				(XtextResource) typeDeclaration.eResource(),
 				offset, 0);
 		appendable.append(getGrammarAccess()
-				.getCommonModifierAccess().getAbstractKeyword_4().getValue())
+				.getAbstractKeyword())
 				.append(" "); //$NON-NLS-1$
 		appendable.commitChanges();
+	}
+
+	/** Quick fix for the no viable alternative at an input that is a SARL keyword.
+	 *
+	 * @param issue - the issue.
+	 * @param acceptor - the quick fix acceptor.
+	 */
+	@Fix(SyntaxIssueCodes.USED_RESERVED_KEYWORD)
+	public void fixNoViableAlternativeAtKeyword(final Issue issue, IssueResolutionAcceptor acceptor) {
+		ProtectKeywordModification.accept(this, issue, acceptor);
+	}
+
+	/** Quick fix for the discouraged annotation uses.
+	 *
+	 * @param issue - the issue.
+	 * @param acceptor - the quick fix acceptor.
+	 */
+	@Fix(io.sarl.lang.validation.IssueCodes.USED_RESERVED_SARL_ANNOTATION)
+	public void fixDiscouragedAnnotationUse(final Issue issue, IssueResolutionAcceptor acceptor) {
+		AnnotationRemoveModification.accept(this, issue, acceptor);
 	}
 
 }

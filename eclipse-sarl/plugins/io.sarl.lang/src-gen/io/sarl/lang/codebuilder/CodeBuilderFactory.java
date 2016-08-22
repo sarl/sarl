@@ -28,43 +28,41 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import io.sarl.lang.SARLRuntimeModule;
-import io.sarl.lang.codebuilder.appenders.ActionSourceAppender;
-import io.sarl.lang.codebuilder.appenders.AgentSourceAppender;
-import io.sarl.lang.codebuilder.appenders.AnnotationFieldSourceAppender;
-import io.sarl.lang.codebuilder.appenders.AnnotationTypeSourceAppender;
-import io.sarl.lang.codebuilder.appenders.BehaviorSourceAppender;
-import io.sarl.lang.codebuilder.appenders.BehaviorUnitSourceAppender;
 import io.sarl.lang.codebuilder.appenders.BlockExpressionSourceAppender;
-import io.sarl.lang.codebuilder.appenders.CapacitySourceAppender;
-import io.sarl.lang.codebuilder.appenders.ClassSourceAppender;
-import io.sarl.lang.codebuilder.appenders.ConstructorSourceAppender;
-import io.sarl.lang.codebuilder.appenders.EnumSourceAppender;
-import io.sarl.lang.codebuilder.appenders.EventSourceAppender;
 import io.sarl.lang.codebuilder.appenders.ExpressionSourceAppender;
-import io.sarl.lang.codebuilder.appenders.FieldSourceAppender;
-import io.sarl.lang.codebuilder.appenders.FormalParameterSourceAppender;
-import io.sarl.lang.codebuilder.appenders.InterfaceSourceAppender;
-import io.sarl.lang.codebuilder.appenders.SkillSourceAppender;
-import io.sarl.lang.codebuilder.appenders.XtendEnumLiteralSourceAppender;
-import io.sarl.lang.codebuilder.builders.IActionBuilder;
-import io.sarl.lang.codebuilder.builders.IAgentBuilder;
-import io.sarl.lang.codebuilder.builders.IAnnotationFieldBuilder;
-import io.sarl.lang.codebuilder.builders.IAnnotationTypeBuilder;
-import io.sarl.lang.codebuilder.builders.IBehaviorBuilder;
-import io.sarl.lang.codebuilder.builders.IBehaviorUnitBuilder;
+import io.sarl.lang.codebuilder.appenders.SarlActionSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlAgentSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlAnnotationTypeSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlBehaviorSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlBehaviorUnitSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlCapacitySourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlClassSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlConstructorSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlEnumLiteralSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlEnumerationSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlEventSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlFieldSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlInterfaceSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlSkillSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlSpaceSourceAppender;
 import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
-import io.sarl.lang.codebuilder.builders.ICapacityBuilder;
-import io.sarl.lang.codebuilder.builders.IClassBuilder;
-import io.sarl.lang.codebuilder.builders.IConstructorBuilder;
-import io.sarl.lang.codebuilder.builders.IEnumBuilder;
-import io.sarl.lang.codebuilder.builders.IEventBuilder;
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
-import io.sarl.lang.codebuilder.builders.IFieldBuilder;
-import io.sarl.lang.codebuilder.builders.IFormalParameterBuilder;
-import io.sarl.lang.codebuilder.builders.IInterfaceBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlAgentBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlAnnotationTypeBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlBehaviorBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlBehaviorUnitBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlCapacityBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlClassBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlConstructorBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlEnumLiteralBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlEnumerationBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlFieldBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
-import io.sarl.lang.codebuilder.builders.ISkillBuilder;
-import io.sarl.lang.codebuilder.builders.IXtendEnumLiteralBuilder;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
@@ -133,6 +131,24 @@ public class CodeBuilderFactory {
 	@Pure
 	protected String getFooPackageName() {
 		return "io.sarl.lang.foo";
+	}
+
+	/** Replies the name of the foo type.
+	 *
+	 * @return the name of the foo type.
+	 */
+	@Pure
+	protected String getFooTypeName() {
+		return "FooType";
+	}
+
+	/** Replies the name of the foo type member.
+	 *
+	 * @return the name of the foo type member.
+	 */
+	@Pure
+	protected String getFooMemberName() {
+		return "fooMember";
 	}
 
 	/** Create a synthetic resource.
@@ -213,7 +229,10 @@ public class CodeBuilderFactory {
 	 * @return the factory.
 	 */
 	public IExpressionBuilder createXExpression(Resource resource) {
-		return createScript(getFooPackageName(), resource).addEvent("Foo").addField("foo").getInitialValue();
+		final IScriptBuilder script = createScript(getFooPackageName(), resource);
+		final ISarlEventBuilder topElement = script.addSarlEvent(getFooTypeName());
+		final ISarlFieldBuilder memberElement = topElement.addSarlField(getFooMemberName());
+		return memberElement.getInitialValue();
 	}
 
 	/** Create the appender for a Sarl XExpression.
@@ -241,7 +260,7 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public IBlockExpressionBuilder createXBlockExpression(ResourceSet resourceSet) {
-		return createConstructor(resourceSet).getExpression();
+		return createXBlockExpression(createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl block expression.
@@ -251,7 +270,10 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public IBlockExpressionBuilder createXBlockExpression(Resource resource) {
-		return createConstructor(resource).getExpression();
+		final IScriptBuilder script = createScript(getFooPackageName(), resource);
+		final ISarlAgentBuilder topElement = script.addSarlAgent(getFooTypeName());
+		final ISarlActionBuilder memberElement = topElement.addSarlAction(getFooMemberName());
+		return memberElement.getExpression();
 	}
 
 	/** Create the appender for a Sarl block expression.
@@ -274,449 +296,454 @@ public class CodeBuilderFactory {
 		return new BlockExpressionSourceAppender(createXBlockExpression(resource));
 	}
 
-	/** Create the factory for a Sarl formal parameter.
-	 * @param name the name of the parameter.
+	/** Create the factory for a Sarl SarlEvent.
+	 * @param name the name of the SarlEvent
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
-	public IFormalParameterBuilder createParameter(String name, ResourceSet resourceSet) {
-		return createParameter(name, createResource(resourceSet));
-	}
-
-	/** Create the factory for a Sarl formal parameter.
-	 * @param name the name of the parameter.
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 */
-	public IFormalParameterBuilder createParameter(String name, Resource resource) {
-		return createConstructor(resource).addParameter(name);
-	}
-
-	/** Create the appender for a Sarl formal parameter.
-	 * @param name the name of the parameter.
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 */
-	public FormalParameterSourceAppender buildParameter(String name, ResourceSet resourceSet) {
-		return new FormalParameterSourceAppender(createParameter(name, resourceSet));
-	}
-
-	/** Create the appender for a Sarl formal parameter.
-	 * @param name the name of the parameter.
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 */
-	public FormalParameterSourceAppender buildParameter(String name, Resource resource) {
-		return new FormalParameterSourceAppender(createParameter(name, resource));
+	@Pure
+	public ISarlEventBuilder createSarlEvent(String name, ResourceSet resourceSet) {
+		 return createSarlEvent(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlEvent.
-	 * @param name the name of the Event
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 */
-	@Pure
-	public IEventBuilder createEvent(String name, ResourceSet resourceSet) {
-		 return createEvent(name, createResource(resourceSet));
-	}
-
-	/** Create the factory for a Sarl SarlEvent.
-	 * @param name the name of the Event
+	 * @param name the name of the SarlEvent
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IEventBuilder createEvent(String name, Resource resource) {
+	public ISarlEventBuilder createSarlEvent(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		return scriptBuilder.addEvent(name);
+		return scriptBuilder.addSarlEvent(name);
 	}
 
 	/** Create the appender for a Sarl SarlEvent.
-	 * @param name the name of the Event
+	 * @param name the name of the SarlEvent
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public EventSourceAppender buildEvent(String name, ResourceSet resourceSet) {
-		return new EventSourceAppender(buildEvent(name, resourceSet));
+	public SarlEventSourceAppender buildSarlEvent(String name, ResourceSet resourceSet) {
+		return new SarlEventSourceAppender(createSarlEvent(name, resourceSet));
 	}
 
 	/** Create the appender for a Sarl SarlEvent.
-	 * @param name the name of the Event
+	 * @param name the name of the SarlEvent
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public EventSourceAppender buildEvent(String name, Resource resource) {
-		return new EventSourceAppender(buildEvent(name, resource));
+	public SarlEventSourceAppender buildSarlEvent(String name, Resource resource) {
+		return new SarlEventSourceAppender(createSarlEvent(name, resource));
 	}
 
 	/** Create the factory for a Sarl SarlCapacity.
-	 * @param name the name of the Capacity
+	 * @param name the name of the SarlCapacity
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public ICapacityBuilder createCapacity(String name, ResourceSet resourceSet) {
-		 return createCapacity(name, createResource(resourceSet));
+	public ISarlCapacityBuilder createSarlCapacity(String name, ResourceSet resourceSet) {
+		 return createSarlCapacity(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlCapacity.
-	 * @param name the name of the Capacity
+	 * @param name the name of the SarlCapacity
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public ICapacityBuilder createCapacity(String name, Resource resource) {
+	public ISarlCapacityBuilder createSarlCapacity(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		return scriptBuilder.addCapacity(name);
+		return scriptBuilder.addSarlCapacity(name);
 	}
 
 	/** Create the appender for a Sarl SarlCapacity.
-	 * @param name the name of the Capacity
+	 * @param name the name of the SarlCapacity
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public CapacitySourceAppender buildCapacity(String name, ResourceSet resourceSet) {
-		return new CapacitySourceAppender(buildCapacity(name, resourceSet));
+	public SarlCapacitySourceAppender buildSarlCapacity(String name, ResourceSet resourceSet) {
+		return new SarlCapacitySourceAppender(createSarlCapacity(name, resourceSet));
 	}
 
 	/** Create the appender for a Sarl SarlCapacity.
-	 * @param name the name of the Capacity
+	 * @param name the name of the SarlCapacity
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public CapacitySourceAppender buildCapacity(String name, Resource resource) {
-		return new CapacitySourceAppender(buildCapacity(name, resource));
+	public SarlCapacitySourceAppender buildSarlCapacity(String name, Resource resource) {
+		return new SarlCapacitySourceAppender(createSarlCapacity(name, resource));
 	}
 
 	/** Create the factory for a Sarl SarlAgent.
-	 * @param name the name of the Agent
+	 * @param name the name of the SarlAgent
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IAgentBuilder createAgent(String name, ResourceSet resourceSet) {
-		 return createAgent(name, createResource(resourceSet));
+	public ISarlAgentBuilder createSarlAgent(String name, ResourceSet resourceSet) {
+		 return createSarlAgent(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlAgent.
-	 * @param name the name of the Agent
+	 * @param name the name of the SarlAgent
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IAgentBuilder createAgent(String name, Resource resource) {
+	public ISarlAgentBuilder createSarlAgent(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		return scriptBuilder.addAgent(name);
+		return scriptBuilder.addSarlAgent(name);
 	}
 
 	/** Create the appender for a Sarl SarlAgent.
-	 * @param name the name of the Agent
+	 * @param name the name of the SarlAgent
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public AgentSourceAppender buildAgent(String name, ResourceSet resourceSet) {
-		return new AgentSourceAppender(buildAgent(name, resourceSet));
+	public SarlAgentSourceAppender buildSarlAgent(String name, ResourceSet resourceSet) {
+		return new SarlAgentSourceAppender(createSarlAgent(name, resourceSet));
 	}
 
 	/** Create the appender for a Sarl SarlAgent.
-	 * @param name the name of the Agent
+	 * @param name the name of the SarlAgent
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public AgentSourceAppender buildAgent(String name, Resource resource) {
-		return new AgentSourceAppender(buildAgent(name, resource));
+	public SarlAgentSourceAppender buildSarlAgent(String name, Resource resource) {
+		return new SarlAgentSourceAppender(createSarlAgent(name, resource));
 	}
 
 	/** Create the factory for a Sarl SarlBehavior.
-	 * @param name the name of the Behavior
+	 * @param name the name of the SarlBehavior
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IBehaviorBuilder createBehavior(String name, ResourceSet resourceSet) {
-		 return createBehavior(name, createResource(resourceSet));
+	public ISarlBehaviorBuilder createSarlBehavior(String name, ResourceSet resourceSet) {
+		 return createSarlBehavior(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlBehavior.
-	 * @param name the name of the Behavior
+	 * @param name the name of the SarlBehavior
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IBehaviorBuilder createBehavior(String name, Resource resource) {
+	public ISarlBehaviorBuilder createSarlBehavior(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		return scriptBuilder.addBehavior(name);
+		return scriptBuilder.addSarlBehavior(name);
 	}
 
 	/** Create the appender for a Sarl SarlBehavior.
-	 * @param name the name of the Behavior
+	 * @param name the name of the SarlBehavior
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public BehaviorSourceAppender buildBehavior(String name, ResourceSet resourceSet) {
-		return new BehaviorSourceAppender(buildBehavior(name, resourceSet));
+	public SarlBehaviorSourceAppender buildSarlBehavior(String name, ResourceSet resourceSet) {
+		return new SarlBehaviorSourceAppender(createSarlBehavior(name, resourceSet));
 	}
 
 	/** Create the appender for a Sarl SarlBehavior.
-	 * @param name the name of the Behavior
+	 * @param name the name of the SarlBehavior
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public BehaviorSourceAppender buildBehavior(String name, Resource resource) {
-		return new BehaviorSourceAppender(buildBehavior(name, resource));
+	public SarlBehaviorSourceAppender buildSarlBehavior(String name, Resource resource) {
+		return new SarlBehaviorSourceAppender(createSarlBehavior(name, resource));
 	}
 
 	/** Create the factory for a Sarl SarlSkill.
-	 * @param name the name of the Skill
+	 * @param name the name of the SarlSkill
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public ISkillBuilder createSkill(String name, ResourceSet resourceSet) {
-		 return createSkill(name, createResource(resourceSet));
+	public ISarlSkillBuilder createSarlSkill(String name, ResourceSet resourceSet) {
+		 return createSarlSkill(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlSkill.
-	 * @param name the name of the Skill
+	 * @param name the name of the SarlSkill
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public ISkillBuilder createSkill(String name, Resource resource) {
+	public ISarlSkillBuilder createSarlSkill(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		return scriptBuilder.addSkill(name);
+		return scriptBuilder.addSarlSkill(name);
 	}
 
 	/** Create the appender for a Sarl SarlSkill.
-	 * @param name the name of the Skill
+	 * @param name the name of the SarlSkill
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public SkillSourceAppender buildSkill(String name, ResourceSet resourceSet) {
-		return new SkillSourceAppender(buildSkill(name, resourceSet));
+	public SarlSkillSourceAppender buildSarlSkill(String name, ResourceSet resourceSet) {
+		return new SarlSkillSourceAppender(createSarlSkill(name, resourceSet));
 	}
 
 	/** Create the appender for a Sarl SarlSkill.
-	 * @param name the name of the Skill
+	 * @param name the name of the SarlSkill
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public SkillSourceAppender buildSkill(String name, Resource resource) {
-		return new SkillSourceAppender(buildSkill(name, resource));
+	public SarlSkillSourceAppender buildSarlSkill(String name, Resource resource) {
+		return new SarlSkillSourceAppender(createSarlSkill(name, resource));
+	}
+
+	/** Create the factory for a Sarl SarlSpace.
+	 * @param name the name of the SarlSpace
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlSpaceBuilder createSarlSpace(String name, ResourceSet resourceSet) {
+		 return createSarlSpace(name, createResource(resourceSet));
+	}
+
+	/** Create the factory for a Sarl SarlSpace.
+	 * @param name the name of the SarlSpace
+	 * @param resource the resource that must be used for
+	 *    containing the generated element, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlSpaceBuilder createSarlSpace(String name, Resource resource) {
+		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
+		return scriptBuilder.addSarlSpace(name);
+	}
+
+	/** Create the appender for a Sarl SarlSpace.
+	 * @param name the name of the SarlSpace
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlSpaceSourceAppender buildSarlSpace(String name, ResourceSet resourceSet) {
+		return new SarlSpaceSourceAppender(createSarlSpace(name, resourceSet));
+	}
+
+	/** Create the appender for a Sarl SarlSpace.
+	 * @param name the name of the SarlSpace
+	 * @param resource the resource that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlSpaceSourceAppender buildSarlSpace(String name, Resource resource) {
+		return new SarlSpaceSourceAppender(createSarlSpace(name, resource));
 	}
 
 	/** Create the factory for a Sarl SarlClass.
-	 * @param name the name of the Class
+	 * @param name the name of the SarlClass
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IClassBuilder createClass(String name, ResourceSet resourceSet) {
-		 return createClass(name, createResource(resourceSet));
+	public ISarlClassBuilder createSarlClass(String name, ResourceSet resourceSet) {
+		 return createSarlClass(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlClass.
-	 * @param name the name of the Class
+	 * @param name the name of the SarlClass
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IClassBuilder createClass(String name, Resource resource) {
+	public ISarlClassBuilder createSarlClass(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		return scriptBuilder.addClass(name);
+		return scriptBuilder.addSarlClass(name);
 	}
 
 	/** Create the appender for a Sarl SarlClass.
-	 * @param name the name of the Class
+	 * @param name the name of the SarlClass
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public ClassSourceAppender buildClass(String name, ResourceSet resourceSet) {
-		return new ClassSourceAppender(buildClass(name, resourceSet));
+	public SarlClassSourceAppender buildSarlClass(String name, ResourceSet resourceSet) {
+		return new SarlClassSourceAppender(createSarlClass(name, resourceSet));
 	}
 
 	/** Create the appender for a Sarl SarlClass.
-	 * @param name the name of the Class
+	 * @param name the name of the SarlClass
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public ClassSourceAppender buildClass(String name, Resource resource) {
-		return new ClassSourceAppender(buildClass(name, resource));
+	public SarlClassSourceAppender buildSarlClass(String name, Resource resource) {
+		return new SarlClassSourceAppender(createSarlClass(name, resource));
 	}
 
 	/** Create the factory for a Sarl SarlInterface.
-	 * @param name the name of the Interface
+	 * @param name the name of the SarlInterface
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IInterfaceBuilder createInterface(String name, ResourceSet resourceSet) {
-		 return createInterface(name, createResource(resourceSet));
+	public ISarlInterfaceBuilder createSarlInterface(String name, ResourceSet resourceSet) {
+		 return createSarlInterface(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlInterface.
-	 * @param name the name of the Interface
+	 * @param name the name of the SarlInterface
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IInterfaceBuilder createInterface(String name, Resource resource) {
+	public ISarlInterfaceBuilder createSarlInterface(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		return scriptBuilder.addInterface(name);
+		return scriptBuilder.addSarlInterface(name);
 	}
 
 	/** Create the appender for a Sarl SarlInterface.
-	 * @param name the name of the Interface
+	 * @param name the name of the SarlInterface
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public InterfaceSourceAppender buildInterface(String name, ResourceSet resourceSet) {
-		return new InterfaceSourceAppender(buildInterface(name, resourceSet));
+	public SarlInterfaceSourceAppender buildSarlInterface(String name, ResourceSet resourceSet) {
+		return new SarlInterfaceSourceAppender(createSarlInterface(name, resourceSet));
 	}
 
 	/** Create the appender for a Sarl SarlInterface.
-	 * @param name the name of the Interface
+	 * @param name the name of the SarlInterface
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public InterfaceSourceAppender buildInterface(String name, Resource resource) {
-		return new InterfaceSourceAppender(buildInterface(name, resource));
+	public SarlInterfaceSourceAppender buildSarlInterface(String name, Resource resource) {
+		return new SarlInterfaceSourceAppender(createSarlInterface(name, resource));
 	}
 
 	/** Create the factory for a Sarl SarlEnumeration.
-	 * @param name the name of the Enum
+	 * @param name the name of the SarlEnumeration
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IEnumBuilder createEnum(String name, ResourceSet resourceSet) {
-		 return createEnum(name, createResource(resourceSet));
+	public ISarlEnumerationBuilder createSarlEnumeration(String name, ResourceSet resourceSet) {
+		 return createSarlEnumeration(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlEnumeration.
-	 * @param name the name of the Enum
+	 * @param name the name of the SarlEnumeration
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IEnumBuilder createEnum(String name, Resource resource) {
+	public ISarlEnumerationBuilder createSarlEnumeration(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		return scriptBuilder.addEnum(name);
+		return scriptBuilder.addSarlEnumeration(name);
 	}
 
 	/** Create the appender for a Sarl SarlEnumeration.
-	 * @param name the name of the Enum
+	 * @param name the name of the SarlEnumeration
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public EnumSourceAppender buildEnum(String name, ResourceSet resourceSet) {
-		return new EnumSourceAppender(buildEnum(name, resourceSet));
+	public SarlEnumerationSourceAppender buildSarlEnumeration(String name, ResourceSet resourceSet) {
+		return new SarlEnumerationSourceAppender(createSarlEnumeration(name, resourceSet));
 	}
 
 	/** Create the appender for a Sarl SarlEnumeration.
-	 * @param name the name of the Enum
+	 * @param name the name of the SarlEnumeration
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public EnumSourceAppender buildEnum(String name, Resource resource) {
-		return new EnumSourceAppender(buildEnum(name, resource));
+	public SarlEnumerationSourceAppender buildSarlEnumeration(String name, Resource resource) {
+		return new SarlEnumerationSourceAppender(createSarlEnumeration(name, resource));
 	}
 
 	/** Create the factory for a Sarl SarlAnnotationType.
-	 * @param name the name of the AnnotationType
+	 * @param name the name of the SarlAnnotationType
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IAnnotationTypeBuilder createAnnotationType(String name, ResourceSet resourceSet) {
-		 return createAnnotationType(name, createResource(resourceSet));
+	public ISarlAnnotationTypeBuilder createSarlAnnotationType(String name, ResourceSet resourceSet) {
+		 return createSarlAnnotationType(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlAnnotationType.
-	 * @param name the name of the AnnotationType
+	 * @param name the name of the SarlAnnotationType
 	 * @param resource the resource that must be used for
 	 *    containing the generated element, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IAnnotationTypeBuilder createAnnotationType(String name, Resource resource) {
+	public ISarlAnnotationTypeBuilder createSarlAnnotationType(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		return scriptBuilder.addAnnotationType(name);
+		return scriptBuilder.addSarlAnnotationType(name);
 	}
 
 	/** Create the appender for a Sarl SarlAnnotationType.
-	 * @param name the name of the AnnotationType
+	 * @param name the name of the SarlAnnotationType
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public AnnotationTypeSourceAppender buildAnnotationType(String name, ResourceSet resourceSet) {
-		return new AnnotationTypeSourceAppender(buildAnnotationType(name, resourceSet));
+	public SarlAnnotationTypeSourceAppender buildSarlAnnotationType(String name, ResourceSet resourceSet) {
+		return new SarlAnnotationTypeSourceAppender(createSarlAnnotationType(name, resourceSet));
 	}
 
 	/** Create the appender for a Sarl SarlAnnotationType.
-	 * @param name the name of the AnnotationType
+	 * @param name the name of the SarlAnnotationType
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public AnnotationTypeSourceAppender buildAnnotationType(String name, Resource resource) {
-		return new AnnotationTypeSourceAppender(buildAnnotationType(name, resource));
+	public SarlAnnotationTypeSourceAppender buildSarlAnnotationType(String name, Resource resource) {
+		return new SarlAnnotationTypeSourceAppender(createSarlAnnotationType(name, resource));
 	}
 
 	/** Create the factory for a Sarl constructor.
@@ -725,8 +752,8 @@ public class CodeBuilderFactory {
 	 * @return the factory.
 	 */
 	@Pure
-	public IConstructorBuilder createConstructor(ResourceSet resourceSet) {
-		return createConstructor(createResource(resourceSet));
+	public ISarlConstructorBuilder createSarlConstructor(ResourceSet resourceSet) {
+		return createSarlConstructor(createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl constructor.
@@ -735,10 +762,10 @@ public class CodeBuilderFactory {
 	 * @return the factory.
 	 */
 	@Pure
-	public IConstructorBuilder createConstructor(Resource resource) {
+	public ISarlConstructorBuilder createSarlConstructor(Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		IEventBuilder containerBuilder = scriptBuilder.addEvent("FooType");
-		return containerBuilder.addConstructor();
+		ISarlEventBuilder containerBuilder = scriptBuilder.addSarlEvent(getFooTypeName());
+		return containerBuilder.addSarlConstructor();
 	}
 
 	/** Create the appender for a Sarl constructor.
@@ -747,8 +774,8 @@ public class CodeBuilderFactory {
 	 * @return the appender.
 	 */
 	@Pure
-	public ConstructorSourceAppender buildConstructor(ResourceSet resourceSet) {
-		return new ConstructorSourceAppender(createConstructor(resourceSet));
+	public SarlConstructorSourceAppender buildSarlConstructor(ResourceSet resourceSet) {
+		return new SarlConstructorSourceAppender(createSarlConstructor(resourceSet));
 	}
 
 	/** Create the appender for a Sarl constructor.
@@ -757,330 +784,238 @@ public class CodeBuilderFactory {
 	 * @return the appender.
 	 */
 	@Pure
-	public ConstructorSourceAppender buildConstructor(Resource resource) {
-		return new ConstructorSourceAppender(createConstructor(resource));
-	}
-
-	/** Create the factory for a Sarl SarlField.
-	 * @param name the name of the Field
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 */
-	@Pure
-	public IFieldBuilder createVarField(String name, ResourceSet resourceSet) {
-		return createVarField(name, createResource(resourceSet));
-	}
-
-	/** Create the factory for a Sarl SarlField.
-	 * @param name the name of the Field
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 */
-	@Pure
-	public IFieldBuilder createVarField(String name, Resource resource) {
-		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		IAgentBuilder containerBuilder = scriptBuilder.addAgent("FooType");
-		return containerBuilder.addVarField(name);
-	}
-
-	/** Create the appender for a Sarl SarlField.
-	 * @param name the name of the Field
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 */
-	@Pure
-	public FieldSourceAppender buildVarField(String name, ResourceSet resourceSet) {
-		return new FieldSourceAppender(createVarField(name, resourceSet));
-	}
-
-	/** Create the appender for a Sarl SarlField.
-	 * @param name the name of the Field
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 */
-	@Pure
-	public FieldSourceAppender buildVarField(String name, Resource resource) {
-		return new FieldSourceAppender(createVarField(name, resource));
-	}
-
-	/** Create the factory for a Sarl SarlField.
-	 * @param name the name of the Field
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 */
-	@Pure
-	public IFieldBuilder createValField(String name, ResourceSet resourceSet) {
-		return createValField(name, createResource(resourceSet));
-	}
-
-	/** Create the factory for a Sarl SarlField.
-	 * @param name the name of the Field
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 */
-	@Pure
-	public IFieldBuilder createValField(String name, Resource resource) {
-		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		IAgentBuilder containerBuilder = scriptBuilder.addAgent("FooType");
-		return containerBuilder.addValField(name);
-	}
-
-	/** Create the appender for a Sarl SarlField.
-	 * @param name the name of the Field
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 */
-	@Pure
-	public FieldSourceAppender buildValField(String name, ResourceSet resourceSet) {
-		return new FieldSourceAppender(createValField(name, resourceSet));
-	}
-
-	/** Create the appender for a Sarl SarlField.
-	 * @param name the name of the Field
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 */
-	@Pure
-	public FieldSourceAppender buildValField(String name, Resource resource) {
-		return new FieldSourceAppender(createValField(name, resource));
+	public SarlConstructorSourceAppender buildSarlConstructor(Resource resource) {
+		return new SarlConstructorSourceAppender(createSarlConstructor(resource));
 	}
 
 	/** Create the factory for a Sarl SarlAction.
-	 * @param name the name of the Action
+	 * @param name the name of the SarlAction
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IActionBuilder createAction(String name, ResourceSet resourceSet) {
-		return createAction(name, createResource(resourceSet));
+	public ISarlActionBuilder createSarlAction(String name, ResourceSet resourceSet) {
+		return createSarlAction(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlAction.
-	 * @param name the name of the Action
+	 * @param name the name of the SarlAction
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IActionBuilder createAction(String name, Resource resource) {
+	public ISarlActionBuilder createSarlAction(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		IAgentBuilder containerBuilder = scriptBuilder.addAgent("FooType");
-		return containerBuilder.addAction(name);
+		ISarlCapacityBuilder containerBuilder = scriptBuilder.addSarlCapacity(getFooTypeName());
+		return containerBuilder.addSarlAction(name);
 	}
 
 	/** Create the appender for a Sarl SarlAction.
-	 * @param name the name of the Action
+	 * @param name the name of the SarlAction
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public ActionSourceAppender buildAction(String name, ResourceSet resourceSet) {
-		return new ActionSourceAppender(createAction(name, resourceSet));
+	public SarlActionSourceAppender buildSarlAction(String name, ResourceSet resourceSet) {
+		return new SarlActionSourceAppender(createSarlAction(name, resourceSet));
 	}
 
 	/** Create the appender for a Sarl SarlAction.
-	 * @param name the name of the Action
+	 * @param name the name of the SarlAction
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public ActionSourceAppender buildAction(String name, Resource resource) {
-		return new ActionSourceAppender(createAction(name, resource));
-	}
-
-	/** Create the factory for a Sarl SarlField.
-	 * @param name the name of the AnnotationField
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 */
-	@Pure
-	public IAnnotationFieldBuilder createVarAnnotationField(String name, ResourceSet resourceSet) {
-		return createVarAnnotationField(name, createResource(resourceSet));
-	}
-
-	/** Create the factory for a Sarl SarlField.
-	 * @param name the name of the AnnotationField
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 */
-	@Pure
-	public IAnnotationFieldBuilder createVarAnnotationField(String name, Resource resource) {
-		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		IAnnotationTypeBuilder containerBuilder = scriptBuilder.addAnnotationType("FooType");
-		return containerBuilder.addVarAnnotationField(name);
-	}
-
-	/** Create the appender for a Sarl SarlField.
-	 * @param name the name of the AnnotationField
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 */
-	@Pure
-	public AnnotationFieldSourceAppender buildVarAnnotationField(String name, ResourceSet resourceSet) {
-		return new AnnotationFieldSourceAppender(createVarAnnotationField(name, resourceSet));
-	}
-
-	/** Create the appender for a Sarl SarlField.
-	 * @param name the name of the AnnotationField
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 */
-	@Pure
-	public AnnotationFieldSourceAppender buildVarAnnotationField(String name, Resource resource) {
-		return new AnnotationFieldSourceAppender(createVarAnnotationField(name, resource));
-	}
-
-	/** Create the factory for a Sarl SarlField.
-	 * @param name the name of the AnnotationField
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 */
-	@Pure
-	public IAnnotationFieldBuilder createValAnnotationField(String name, ResourceSet resourceSet) {
-		return createValAnnotationField(name, createResource(resourceSet));
-	}
-
-	/** Create the factory for a Sarl SarlField.
-	 * @param name the name of the AnnotationField
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the factory.
-	 */
-	@Pure
-	public IAnnotationFieldBuilder createValAnnotationField(String name, Resource resource) {
-		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		IAnnotationTypeBuilder containerBuilder = scriptBuilder.addAnnotationType("FooType");
-		return containerBuilder.addValAnnotationField(name);
-	}
-
-	/** Create the appender for a Sarl SarlField.
-	 * @param name the name of the AnnotationField
-	 * @param resourceSet the set of the resources that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 */
-	@Pure
-	public AnnotationFieldSourceAppender buildValAnnotationField(String name, ResourceSet resourceSet) {
-		return new AnnotationFieldSourceAppender(createValAnnotationField(name, resourceSet));
-	}
-
-	/** Create the appender for a Sarl SarlField.
-	 * @param name the name of the AnnotationField
-	 * @param resource the resource that must be used for
-	 *    containing the generated resource, and resolving types from names.
-	 * @return the appender.
-	 */
-	@Pure
-	public AnnotationFieldSourceAppender buildValAnnotationField(String name, Resource resource) {
-		return new AnnotationFieldSourceAppender(createValAnnotationField(name, resource));
+	public SarlActionSourceAppender buildSarlAction(String name, Resource resource) {
+		return new SarlActionSourceAppender(createSarlAction(name, resource));
 	}
 
 	/** Create the factory for a Sarl SarlBehaviorUnit.
-	 * @param name the name of the BehaviorUnit
+	 * @param name the name of the SarlBehaviorUnit
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IBehaviorUnitBuilder createBehaviorUnit(String name, ResourceSet resourceSet) {
-		return createBehaviorUnit(name, createResource(resourceSet));
+	public ISarlBehaviorUnitBuilder createSarlBehaviorUnit(String name, ResourceSet resourceSet) {
+		return createSarlBehaviorUnit(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlBehaviorUnit.
-	 * @param name the name of the BehaviorUnit
+	 * @param name the name of the SarlBehaviorUnit
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IBehaviorUnitBuilder createBehaviorUnit(String name, Resource resource) {
+	public ISarlBehaviorUnitBuilder createSarlBehaviorUnit(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		IAgentBuilder containerBuilder = scriptBuilder.addAgent("FooType");
-		return containerBuilder.addBehaviorUnit(name);
+		ISarlAgentBuilder containerBuilder = scriptBuilder.addSarlAgent(getFooTypeName());
+		return containerBuilder.addSarlBehaviorUnit(name);
 	}
 
 	/** Create the appender for a Sarl SarlBehaviorUnit.
-	 * @param name the name of the BehaviorUnit
+	 * @param name the name of the SarlBehaviorUnit
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public BehaviorUnitSourceAppender buildBehaviorUnit(String name, ResourceSet resourceSet) {
-		return new BehaviorUnitSourceAppender(createBehaviorUnit(name, resourceSet));
+	public SarlBehaviorUnitSourceAppender buildSarlBehaviorUnit(String name, ResourceSet resourceSet) {
+		return new SarlBehaviorUnitSourceAppender(createSarlBehaviorUnit(name, resourceSet));
 	}
 
 	/** Create the appender for a Sarl SarlBehaviorUnit.
-	 * @param name the name of the BehaviorUnit
+	 * @param name the name of the SarlBehaviorUnit
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public BehaviorUnitSourceAppender buildBehaviorUnit(String name, Resource resource) {
-		return new BehaviorUnitSourceAppender(createBehaviorUnit(name, resource));
+	public SarlBehaviorUnitSourceAppender buildSarlBehaviorUnit(String name, Resource resource) {
+		return new SarlBehaviorUnitSourceAppender(createSarlBehaviorUnit(name, resource));
 	}
 
-	/** Create the factory for a Sarl XtendEnumLiteral.
-	 * @param name the name of the XtendEnumLiteral
+	/** Create the factory for a Sarl SarlField.
+	 * @param name the name of the SarlField
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IXtendEnumLiteralBuilder createXtendEnumLiteral(String name, ResourceSet resourceSet) {
-		return createXtendEnumLiteral(name, createResource(resourceSet));
+	public ISarlFieldBuilder createVarSarlField(String name, ResourceSet resourceSet) {
+		return createVarSarlField(name, createResource(resourceSet));
 	}
 
-	/** Create the factory for a Sarl XtendEnumLiteral.
-	 * @param name the name of the XtendEnumLiteral
+	/** Create the factory for a Sarl SarlField.
+	 * @param name the name of the SarlField
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the factory.
 	 */
 	@Pure
-	public IXtendEnumLiteralBuilder createXtendEnumLiteral(String name, Resource resource) {
+	public ISarlFieldBuilder createVarSarlField(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
-		IEnumBuilder containerBuilder = scriptBuilder.addEnum("FooType");
-		return containerBuilder.addXtendEnumLiteral(name);
+		ISarlEventBuilder containerBuilder = scriptBuilder.addSarlEvent(getFooTypeName());
+		return containerBuilder.addVarSarlField(name);
 	}
 
-	/** Create the appender for a Sarl XtendEnumLiteral.
-	 * @param name the name of the XtendEnumLiteral
+	/** Create the appender for a Sarl SarlField.
+	 * @param name the name of the SarlField
 	 * @param resourceSet the set of the resources that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public XtendEnumLiteralSourceAppender buildXtendEnumLiteral(String name, ResourceSet resourceSet) {
-		return new XtendEnumLiteralSourceAppender(createXtendEnumLiteral(name, resourceSet));
+	public SarlFieldSourceAppender buildVarSarlField(String name, ResourceSet resourceSet) {
+		return new SarlFieldSourceAppender(createVarSarlField(name, resourceSet));
 	}
 
-	/** Create the appender for a Sarl XtendEnumLiteral.
-	 * @param name the name of the XtendEnumLiteral
+	/** Create the appender for a Sarl SarlField.
+	 * @param name the name of the SarlField
 	 * @param resource the resource that must be used for
 	 *    containing the generated resource, and resolving types from names.
 	 * @return the appender.
 	 */
 	@Pure
-	public XtendEnumLiteralSourceAppender buildXtendEnumLiteral(String name, Resource resource) {
-		return new XtendEnumLiteralSourceAppender(createXtendEnumLiteral(name, resource));
+	public SarlFieldSourceAppender buildVarSarlField(String name, Resource resource) {
+		return new SarlFieldSourceAppender(createVarSarlField(name, resource));
+	}
+
+	/** Create the factory for a Sarl SarlField.
+	 * @param name the name of the SarlField
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlFieldBuilder createValSarlField(String name, ResourceSet resourceSet) {
+		return createValSarlField(name, createResource(resourceSet));
+	}
+
+	/** Create the factory for a Sarl SarlField.
+	 * @param name the name of the SarlField
+	 * @param resource the resource that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlFieldBuilder createValSarlField(String name, Resource resource) {
+		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
+		ISarlEventBuilder containerBuilder = scriptBuilder.addSarlEvent(getFooTypeName());
+		return containerBuilder.addValSarlField(name);
+	}
+
+	/** Create the appender for a Sarl SarlField.
+	 * @param name the name of the SarlField
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlFieldSourceAppender buildValSarlField(String name, ResourceSet resourceSet) {
+		return new SarlFieldSourceAppender(createValSarlField(name, resourceSet));
+	}
+
+	/** Create the appender for a Sarl SarlField.
+	 * @param name the name of the SarlField
+	 * @param resource the resource that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlFieldSourceAppender buildValSarlField(String name, Resource resource) {
+		return new SarlFieldSourceAppender(createValSarlField(name, resource));
+	}
+
+	/** Create the factory for a Sarl SarlEnumLiteral.
+	 * @param name the name of the SarlEnumLiteral
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlEnumLiteralBuilder createSarlEnumLiteral(String name, ResourceSet resourceSet) {
+		return createSarlEnumLiteral(name, createResource(resourceSet));
+	}
+
+	/** Create the factory for a Sarl SarlEnumLiteral.
+	 * @param name the name of the SarlEnumLiteral
+	 * @param resource the resource that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlEnumLiteralBuilder createSarlEnumLiteral(String name, Resource resource) {
+		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
+		ISarlEnumerationBuilder containerBuilder = scriptBuilder.addSarlEnumeration(getFooTypeName());
+		return containerBuilder.addSarlEnumLiteral(name);
+	}
+
+	/** Create the appender for a Sarl SarlEnumLiteral.
+	 * @param name the name of the SarlEnumLiteral
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlEnumLiteralSourceAppender buildSarlEnumLiteral(String name, ResourceSet resourceSet) {
+		return new SarlEnumLiteralSourceAppender(createSarlEnumLiteral(name, resourceSet));
+	}
+
+	/** Create the appender for a Sarl SarlEnumLiteral.
+	 * @param name the name of the SarlEnumLiteral
+	 * @param resource the resource that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlEnumLiteralSourceAppender buildSarlEnumLiteral(String name, Resource resource) {
+		return new SarlEnumLiteralSourceAppender(createSarlEnumLiteral(name, resource));
 	}
 
 }

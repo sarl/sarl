@@ -39,7 +39,7 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 * @mavengroupid $GroupId$
 * @mavenartifactid $ArtifactId$
 */
-public class SarlFormalParameterProvider implements FormalParameterProvider {
+class SarlFormalParameterProvider implements FormalParameterProvider {
 
 	private final TypeReferences references;
 
@@ -49,7 +49,7 @@ public class SarlFormalParameterProvider implements FormalParameterProvider {
 	 * @param parameters the list of the formal parameters.
 	 * @param references the utility for creating type references.
 	 */
-	public SarlFormalParameterProvider(List<? extends XtendParameter> parameters, TypeReferences references) {
+	SarlFormalParameterProvider(List<? extends XtendParameter> parameters, TypeReferences references) {
 		this.parameters = parameters;
 		this.references = references;
 	}

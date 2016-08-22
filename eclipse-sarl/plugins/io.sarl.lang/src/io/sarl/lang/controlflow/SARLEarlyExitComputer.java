@@ -24,10 +24,18 @@ package io.sarl.lang.controlflow;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.inject.Inject;
+
 import com.google.inject.Singleton;
+import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.controlflow.DefaultEarlyExitComputer;
+
+import io.sarl.lang.annotation.EarlyExit;
 
 /** Compute the early-exit flag for the SARL statements.
  *
@@ -37,7 +45,10 @@ import org.eclipse.xtext.xbase.controlflow.DefaultEarlyExitComputer;
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-public class SARLEarlyExitComputer extends DefaultEarlyExitComputer {
+public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements ISarlEarlyExitComputer {
+
+	@Inject
+	private AnnotationLookup annotations;
 
 	@Override
 	protected Collection<ExitPoint> _exitPoints(XAbstractFeatureCall expression) {
@@ -46,10 +57,25 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer {
 			return exitPoints;
 		}
 		final JvmIdentifiableElement element = expression.getFeature();
-		if (SARLEarlyExitComputerUtil.isEarlyExitAnnotatedElement(element)) {
+		if (isEarlyExitAnnotatedElement(element)) {
 			return Collections.<ExitPoint>singletonList(new ExitPoint(expression, true));
 		}
 		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isEarlyExitEvent(JvmTypeReference reference) {
+		if (reference != null && !reference.eIsProxy()) {
+			final JvmType type = reference.getType();
+			return isEarlyExitAnnotatedElement(type);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isEarlyExitAnnotatedElement(Object element) {
+		return (element instanceof JvmAnnotationTarget)
+				&& (this.annotations.findAnnotation((JvmAnnotationTarget) element, EarlyExit.class) != null);
 	}
 
 }

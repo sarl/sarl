@@ -460,7 +460,7 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append(Pure.class);
 				it.newLine();
 				it.append("\tprotected boolean isActionBodyAllowed("); //$NON-NLS-1$
-				it.append(getLanguageTopElementType());
+				it.append(getCodeElementExtractor().getLanguageTopElementType());
 				it.append(" type) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\treturn "); //$NON-NLS-1$
@@ -477,7 +477,7 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 							it.append("\t\t\t|| "); //$NON-NLS-1$
 						}
 						it.append("type instanceof "); //$NON-NLS-1$
-						it.append(new TypeReference(getLanguageBasePackage() + "." + noBodyType)); //$NON-NLS-1$
+						it.append(new TypeReference(getCodeElementExtractor().getLanguageBasePackage() + "." + noBodyType)); //$NON-NLS-1$
 					}
 					it.append(")"); //$NON-NLS-1$
 				}

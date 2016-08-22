@@ -23,11 +23,13 @@ package io.sarl.lang;
 
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
+import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 import org.eclipse.xtext.validation.CompositeEValidator;
 
 import io.sarl.lang.bugfixes.bug356.Bug356ImportedNamespaceScopeProvider;
+import io.sarl.lang.bugfixes.bug356.Bug356QualifiedNameConverter;
 
 /**
  * Use this class to register components to be used at runtime / without the
@@ -54,6 +56,11 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	public void configureIScopeProviderDelegate(Binder binder) {
 		binder.bind(IScopeProvider.class).annotatedWith(Names.named(AbstractDeclarativeScopeProvider.NAMED_DELEGATE))
 				.to(Bug356ImportedNamespaceScopeProvider.class);
+	}
+
+	@Override
+	public Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
+		return Bug356QualifiedNameConverter.class;
 	}
 
 }

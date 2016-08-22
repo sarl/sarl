@@ -14,6 +14,7 @@ import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendEnum;
+import org.eclipse.xtend.core.xtend.XtendEnumLiteral;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
@@ -197,6 +198,16 @@ public class SarlSwitch<T> extends Switch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case SarlPackage.SARL_ENUM_LITERAL:
+			{
+				SarlEnumLiteral sarlEnumLiteral = (SarlEnumLiteral)theEObject;
+				T result = caseSarlEnumLiteral(sarlEnumLiteral);
+				if (result == null) result = caseXtendEnumLiteral(sarlEnumLiteral);
+				if (result == null) result = caseXtendMember(sarlEnumLiteral);
+				if (result == null) result = caseXtendAnnotationTarget(sarlEnumLiteral);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case SarlPackage.SARL_EVENT:
 			{
 				SarlEvent sarlEvent = (SarlEvent)theEObject;
@@ -204,6 +215,16 @@ public class SarlSwitch<T> extends Switch<T>
 				if (result == null) result = caseXtendTypeDeclaration(sarlEvent);
 				if (result == null) result = caseXtendMember(sarlEvent);
 				if (result == null) result = caseXtendAnnotationTarget(sarlEvent);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SarlPackage.SARL_SPACE:
+			{
+				SarlSpace sarlSpace = (SarlSpace)theEObject;
+				T result = caseSarlSpace(sarlSpace);
+				if (result == null) result = caseXtendTypeDeclaration(sarlSpace);
+				if (result == null) result = caseXtendMember(sarlSpace);
+				if (result == null) result = caseXtendAnnotationTarget(sarlSpace);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -437,6 +458,22 @@ public class SarlSwitch<T> extends Switch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Enum Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Enum Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSarlEnumLiteral(SarlEnumLiteral object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Event</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -448,6 +485,22 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseSarlEvent(SarlEvent object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Space</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Space</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSarlSpace(SarlSpace object)
 	{
 		return null;
 	}
@@ -720,6 +773,22 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseXtendAnnotationType(XtendAnnotationType object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Enum Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Enum Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXtendEnumLiteral(XtendEnumLiteral object)
 	{
 		return null;
 	}

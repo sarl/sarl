@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.google.common.base.Strings;
+import com.google.inject.Injector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -57,20 +58,26 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.jdt.internal.core.PackageFragment;
+import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.LayoutUtil;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.SelectionButtonDialogFieldGroup;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.xtext.Constants;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.common.types.access.jdt.JdtTypeProviderFactory;
 import org.eclipse.xtext.formatting.IWhitespaceInformationProvider;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
@@ -128,6 +135,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	@Inject
 	private IWhitespaceInformationProvider whitespaceInformationProvider;
 
+	@Inject
+	private Injector injector;
+
 	private String sarlFileExtension;
 
 	private IResource resource;
@@ -140,6 +150,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	@Inject
 	private FormatterFacade formatterFacade;
+
+	@Inject
+	private JdtTypeProviderFactory jdtTypeProviderFactory;
 
 	/**
 	 * @param typeKind - Signals the kind of the type to be created. Valid kinds are
@@ -357,7 +370,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @throws JavaModelException if there is a problem for retreiving the Java information.
 	 */
 	protected boolean isValidExtendedType(String className) throws JavaModelException {
-		// accept the empty field (stands for java.lang.Object)
+		// accept the empty field (stands for the default super type)
 		if (!Strings.isNullOrEmpty(className)) {
 			final IType rootType = getRootSuperType();
 			if (rootType == null) {
@@ -799,6 +812,40 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			}
 			this.methodStubsButtons.setEnabled(canBeModified);
 		}
+	}
+
+	/** Create an instanceof the super-class selection dialog.
+	 *
+	 * @param parent the parent.
+	 * @param context the execution context.
+	 * @param project the Java project.
+	 * @param extension the extension to give to the dialog box.
+	 * @return the dialog.
+	 */
+	protected abstract AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(
+			Shell parent, IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension);
+
+	@Override
+	protected IType chooseSuperClass() {
+		final IJavaProject project = getJavaProject();
+		if (project == null) {
+			return null;
+		}
+		final IJvmTypeProvider typeProvider = this.jdtTypeProviderFactory.findOrCreateTypeProvider(
+				this.resourceSetFactory.get(project.getProject()));
+		final SarlSpecificTypeSelectionExtension extension = new SarlSpecificTypeSelectionExtension(typeProvider);
+		this.injector.injectMembers(extension);
+		final AbstractSuperTypeSelectionDialog<?> dialog = createSuperClassSelectionDialog(getShell(),
+				getWizard().getContainer(), project, extension);
+		this.injector.injectMembers(dialog);
+		dialog.setTitle(NewWizardMessages.NewTypeWizardPage_SuperClassDialog_title);
+		dialog.setMessage(NewWizardMessages.NewTypeWizardPage_SuperClassDialog_message);
+		dialog.setInitialPattern(getSuperClass());
+
+		if (dialog.open() == Window.OK) {
+			return (IType) dialog.getFirstResult();
+		}
+		return null;
 	}
 
 }

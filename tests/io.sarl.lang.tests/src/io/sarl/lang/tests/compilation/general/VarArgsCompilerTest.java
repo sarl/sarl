@@ -62,10 +62,10 @@ public class VarArgsCompilerTest {
 					);
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
-					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -82,7 +82,7 @@ public class VarArgsCompilerTest {
 					"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 					"   */",
 					"  @Inject",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
 					"    super(builtinCapacityProvider, parentID, agentID);",
 					"  }",
@@ -103,10 +103,10 @@ public class VarArgsCompilerTest {
 					);
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
-					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -123,7 +123,7 @@ public class VarArgsCompilerTest {
 					"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 					"   */",
 					"  @Inject",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public A1(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
 					"    super(builtinCapacityProvider, parentID, agentID);",
 					"  }",
@@ -150,10 +150,12 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Behavior;",
-					"import javax.annotation.Generated;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
 					"  protected void myaction(final int... arg) {",
@@ -164,7 +166,7 @@ public class VarArgsCompilerTest {
 					"   * Construct a behavior.",
 					"   * @param owner - reference to the agent that is owning this behavior.",
 					"   */",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public B1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -184,10 +186,12 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Behavior;",
-					"import javax.annotation.Generated;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
 					"  protected void myaction(final char arg1, final boolean arg2, final int... arg3) {",
@@ -198,7 +202,7 @@ public class VarArgsCompilerTest {
 					"   * Construct a behavior.",
 					"   * @param owner - reference to the agent that is owning this behavior.",
 					"   */",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public B1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -219,8 +223,10 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Behavior;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
 					"  public B1(final int... arg) {",
@@ -244,8 +250,10 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Behavior;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
 					"  public B1(final char arg1, final boolean arg2, final int... arg3) {",
@@ -273,9 +281,11 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public abstract void myaction(final int... arg);",
@@ -293,9 +303,11 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public abstract void myaction(final char arg1, final boolean arg2, final int... arg3);",
@@ -323,8 +335,8 @@ public class VarArgsCompilerTest {
 					);
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Event;",
-					"import javax.annotation.Generated;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
@@ -333,7 +345,7 @@ public class VarArgsCompilerTest {
 					"    System.out.println(arg);",
 					"  }",
 					"  ",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  private final static long serialVersionUID = -595401426L;",
 					"}",
 					""
@@ -352,8 +364,8 @@ public class VarArgsCompilerTest {
 					);
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Event;",
-					"import javax.annotation.Generated;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
@@ -362,7 +374,7 @@ public class VarArgsCompilerTest {
 					"    System.out.println(arg3);",
 					"  }",
 					"  ",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  private final static long serialVersionUID = 2202902528L;",
 					"}",
 					""
@@ -388,18 +400,22 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"}",
 					""
 					);
 			final String expectedS1 = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
-					"import javax.annotation.Generated;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
 					"  public void myaction(final int... arg) {",
@@ -409,7 +425,7 @@ public class VarArgsCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -418,7 +434,7 @@ public class VarArgsCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -442,10 +458,12 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
-					"import javax.annotation.Generated;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
 					"  public void myaction(final char arg1, final boolean arg2, final int... arg3) {",
@@ -455,7 +473,7 @@ public class VarArgsCompilerTest {
 					"  /**",
 					"   * Construct a skill. The owning agent is unknown.",
 					"   */",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public S1() {",
 					"    super();",
 					"  }",
@@ -464,7 +482,7 @@ public class VarArgsCompilerTest {
 					"   * Construct a skill.",
 					"   * @param owner - agent that is owning this skill.",
 					"   */",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public S1(final Agent owner) {",
 					"    super(owner);",
 					"  }",
@@ -490,8 +508,10 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Skill;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
 					"  public S1(final int... arg) {",
@@ -519,8 +539,10 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			final String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Skill;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
 					"  public S1(final char arg1, final boolean arg2, final int... arg3) {",

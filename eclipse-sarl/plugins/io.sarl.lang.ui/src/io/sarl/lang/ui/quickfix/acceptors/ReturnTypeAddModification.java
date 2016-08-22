@@ -24,6 +24,8 @@ package io.sarl.lang.ui.quickfix.acceptors;
 import java.text.MessageFormat;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
@@ -70,8 +72,9 @@ public final class ReturnTypeAddModification extends SARLSemanticModification {
 			acceptor.accept(issue,
 					MessageFormat.format(Messages.SARLQuickfixProvider_13, expectedType),
 					Messages.SARLQuickfixProvider_14,
-					null,
-					modification);
+					JavaPluginImages.IMG_CORRECTION_ADD,
+					modification,
+					IProposalRelevance.CHANGE_RETURN_TYPE);
 		}
 	}
 
@@ -97,7 +100,7 @@ public final class ReturnTypeAddModification extends SARLSemanticModification {
 		if (xtendExecutable.getExpression() == null) {
 			appendable.append(" "); //$NON-NLS-1$
 		}
-		appendable.append(getTools().getGrammarAccess().getActionAccess().getColonKeyword_8_0().getValue());
+		appendable.append(getTools().getGrammarAccess().getColonKeyword());
 		appendable.append(" "); //$NON-NLS-1$
 		appendable.append(this.expectedType);
 		if (xtendExecutable.getExpression() != null) {

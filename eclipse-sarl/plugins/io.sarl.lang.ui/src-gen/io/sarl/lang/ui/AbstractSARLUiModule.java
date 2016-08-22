@@ -39,6 +39,7 @@ import io.sarl.lang.ui.contentassist.SARLTemplateContextType;
 import io.sarl.lang.ui.contentassist.SARLTemplateProposalProvider;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
+import io.sarl.lang.ui.images.QualifiedPluginImageHelper;
 import io.sarl.lang.ui.labeling.SARLDescriptionLabelProvider;
 import io.sarl.lang.ui.labeling.SARLDiagnosticLabelDecorator;
 import io.sarl.lang.ui.labeling.SARLLabelProvider;
@@ -51,6 +52,7 @@ import io.sarl.lang.ui.outline.SARLOutlineTreeProvider;
 import io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer;
 import io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
+import io.sarl.lang.ui.refactoring.rename.SARLRenameStrategyProvider;
 import io.sarl.lang.ui.tasks.SarlTaskTagProvider;
 import io.sarl.lang.ui.validation.SARLUIValidator;
 import org.eclipse.compare.IViewerCreator;
@@ -118,6 +120,7 @@ import org.eclipse.xtext.resource.containers.IAllContainersState;
 import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider;
 import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.tasks.ITaskTagProvider;
+import org.eclipse.xtext.ui.IImageHelper;
 import org.eclipse.xtext.ui.LanguageSpecific;
 import org.eclipse.xtext.ui.codetemplates.ui.AccessibleCodetemplatesActivator;
 import org.eclipse.xtext.ui.codetemplates.ui.partialEditing.IPartialEditingContentAssistContextFactory;
@@ -350,11 +353,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.ui.refactoring.RefactorElementNameFragment2
-	public Class<? extends IRenameStrategy.Provider> bindIRenameStrategy$Provider() {
-		return JvmMemberRenameStrategy.Provider.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.ui.refactoring.RefactorElementNameFragment2
 	public void configureJvmMemberRenameStrategy$Provider$Delegate(Binder binder) {
 		binder.bind(IRenameStrategy.Provider.class).annotatedWith(JvmMemberRenameStrategy.Provider.Delegate.class).to(DefaultRenameStrategyProvider.class);
 	}
@@ -464,6 +462,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IRenameStrategy.Provider> bindIRenameStrategy$Provider() {
+		return SARLRenameStrategyProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IContentOutlinePage> bindIContentOutlinePage() {
 		return SARLOutlinePage.class;
 	}
@@ -477,6 +480,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public void configureDiagnosticDecorator(Binder binder) {
 		binder.bind(ILabelDecorator.class).annotatedWith(Names.named("DiagnosticDecorator")).to(SARLDiagnosticLabelDecorator.class);
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IImageHelper> bindIImageHelper() {
+		return QualifiedPluginImageHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -507,6 +515,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public void configureSARLBehaviorUnitOutlineFilter(Binder binder) {
 		binder.bind(IOutlineContribution.class).annotatedWith(Names.named("SARLBehaviorUnitOutlineFilter")).to(SARLBehaviorUnitOutlineFilter.class);
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IImageHelper.IImageDescriptorHelper> bindIImageDescriptorHelper() {
+		return QualifiedPluginImageHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

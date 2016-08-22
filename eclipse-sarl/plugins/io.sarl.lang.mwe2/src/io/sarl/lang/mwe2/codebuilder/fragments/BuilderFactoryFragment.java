@@ -64,7 +64,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	@Pure
 	public TypeReference getBuilderFactoryImplCustom() {
-		final String runtimeBasePackage = getBasePackage();
+		final String runtimeBasePackage = getCodeElementExtractor().getBasePackage();
 		return new TypeReference(runtimeBasePackage + ".CodeBuilderFactoryCustom"); //$NON-NLS-1$
 	}
 
@@ -222,6 +222,42 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t\treturn \""); //$NON-NLS-1$
 				it.append(Strings.convertToJavaString(GrammarUtil.getNamespace(getGrammar())));
 				it.append(".foo\";"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies the name of the foo type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t *"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the name of the foo type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Pure.class);
+				it.newLine();
+				it.append("\tprotected String getFooTypeName() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn \"FooType\";"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies the name of the foo type member."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t *"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the name of the foo type member."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Pure.class);
+				it.newLine();
+				it.append("\tprotected String getFooMemberName() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn \"fooMember\";"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();

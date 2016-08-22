@@ -31,6 +31,8 @@ import com.google.common.base.Strings;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -44,6 +46,7 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -62,6 +65,7 @@ import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 import io.sarl.lang.util.Utils;
 
@@ -79,6 +83,12 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 
 	@Inject
 	private CodeBuilderFactory codeBuilderFactory;
+
+	@Inject
+	private AnnotationLookup annotationFinder;
+
+	@Inject
+	private SARLAnnotationUtil annotationUtils;
 
 	private final String[] operationUris;
 
@@ -107,8 +117,9 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 					issue,
 					label,
 					label,
-					null,
-					modification);
+					JavaPluginImages.IMG_CORRECTION_ADD,
+					modification,
+					IProposalRelevance.ADD_UNIMPLEMENTED_METHODS);
 		}
 	}
 
@@ -164,97 +175,85 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 					switch (visibility) {
 					case PRIVATE:
 						appendable.append(
-								getTools().getGrammarAccess().getXtendGrammarAccess()
-								.getCommonModifierAccess().getPrivateKeyword_1().getValue())
+								getTools().getGrammarAccess().getPrivateKeyword())
 								.append(" "); //$NON-NLS-1$
 						break;
 					case PROTECTED:
 						appendable.append(
-								getTools().getGrammarAccess().getXtendGrammarAccess()
-								.getCommonModifierAccess().getProtectedKeyword_2().getValue())
+								getTools().getGrammarAccess().getProtectedKeyword())
 								.append(" "); //$NON-NLS-1$
 						break;
 					case PUBLIC:
 						appendable.append(
-								getTools().getGrammarAccess().getXtendGrammarAccess()
-								.getCommonModifierAccess().getPublicKeyword_0().getValue())
+								getTools().getGrammarAccess().getPublicKeyword())
 								.append(" "); //$NON-NLS-1$
 						break;
 					case DEFAULT:
 					default:
 						appendable.append(
-								getTools().getGrammarAccess().getXtendGrammarAccess()
-								.getCommonModifierAccess().getPackageKeyword_3().getValue())
+								getTools().getGrammarAccess().getPackageKeyword())
 								.append(" "); //$NON-NLS-1$
 						break;
 					}
 				}
 				if (operation.isStrictFloatingPoint()) {
 					appendable.append(
-							getTools().getGrammarAccess().getXtendGrammarAccess()
-							.getCommonModifierAccess().getStrictfpKeyword_8().getValue())
+							getTools().getGrammarAccess().getStrictfpKeyword())
 							.append(" "); //$NON-NLS-1$
 				}
 				if (operation.isSynchronized()) {
 					appendable.append(
-							getTools().getGrammarAccess().getXtendGrammarAccess()
-							.getCommonModifierAccess().getSynchronizedKeyword_11().getValue())
+							getTools().getGrammarAccess().getSynchronizedKeyword())
 							.append(" "); //$NON-NLS-1$
 				}
 				// Type parameters
 				if (!operation.getTypeParameters().isEmpty()) {
-					appendable.append(tools.getGrammarAccess().getActionAccess()
-							.getLessThanSignKeyword_5_0().getValue());
+					appendable.append(tools.getGrammarAccess().getLessThanSignKeyword());
 					boolean addComa = false;
 					for (final JvmTypeParameter typeParameter : operation.getTypeParameters()) {
 						if (addComa) {
-							appendable.append(tools.getGrammarAccess().getActionAccess()
-									.getCommaKeyword_5_2_0().getValue());
+							appendable.append(tools.getGrammarAccess().getCommaKeyword());
 						} else {
 							addComa = true;
 						}
 						appendable.append(typeParameter.getIdentifier());
 						importableTypes.add(typeParameter);
 					}
-					appendable.append(tools.getGrammarAccess().getActionAccess()
-							.getGreaterThanSignKeyword_5_3().getValue());
+					appendable.append(tools.getGrammarAccess().getGreaterThanSignKeyword());
 				}
 				// Name
-				appendable.append(tools.getGrammarAccess().getMethodModifierAccess()
-						.getOverrideKeyword_1().getValue()).append(" "); //$NON-NLS-1$
+				appendable.append(tools.getGrammarAccess().getOverrideKeyword()).append(" "); //$NON-NLS-1$
 				appendable.append(operation.getSimpleName());
 				// Parameters
 				if (!operation.getParameters().isEmpty()) {
-					appendable.append(tools.getGrammarAccess().getActionAccess()
-							.getLeftParenthesisKeyword_7_0().getValue());
+					appendable.append(tools.getGrammarAccess().getLeftParenthesisKeyword());
 					for (int i = 0; i < operation.getParameters().size(); ++i) {
 						final JvmFormalParameter parameter = operation.getParameters().get(i);
 						if (i > 0) {
-							appendable.append(tools.getGrammarAccess().getActionAccess()
-									.getCommaKeyword_5_2_0().getValue()).append(" "); //$NON-NLS-1$
+							appendable.append(tools.getGrammarAccess().getCommaKeyword()).append(" "); //$NON-NLS-1$
 						}
 						// Parameter name
 						appendable.append(parameter.getName()).append(" "); //$NON-NLS-1$
 						// Parameter type
-						appendable.append(tools.getGrammarAccess().getActionAccess()
-								.getColonKeyword_8_0().getValue()).append(" "); //$NON-NLS-1$
+						appendable.append(tools.getGrammarAccess().getColonKeyword()).append(" "); //$NON-NLS-1$
 						final JvmTypeReference parameterTypeReference = parameter.getParameterType();
 						final JvmType parameterType = parameterTypeReference.getType();
 						if (operation.isVarArgs() && i == operation.getParameters().size() - 1
 								&& parameterType instanceof JvmArrayType) {
 							final JvmType componentType = ((JvmArrayType) parameterType).getComponentType();
 							appendable.append(componentType);
-							appendable.append(tools.getGrammarAccess().getParameterAccess()
-									.getVarArgAsteriskKeyword_6_0_0().getValue());
+							appendable.append(tools.getGrammarAccess().getWildcardAsteriskKeyword());
 							importableTypes.add(componentType);
 						} else {
 							appendable.append(parameterType);
 							importableTypes.add(parameterType);
 						}
 
-						if (Utils.hasAnnotation(parameter, DefaultValue.class)) {
+						final JvmAnnotationReference annotationRef = this.annotationFinder.findAnnotation(
+								parameter, DefaultValue.class);
+						if (annotationRef != null) {
 							String defaultValue = null;
-							final String key = Utils.annotationString(parameter, DefaultValue.class);
+							final String key = this.annotationUtils.findStringValue(annotationRef);
 							final String argument = tools.getActionPrototypeProvider().toJavaArgument(
 									containerQualifiedName,
 									key);
@@ -290,7 +289,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 								while (defaultValue == null && iterator.hasNext()) {
 									final JvmField field = iterator.next();
 									if (fieldName.equals(field.getSimpleName())) {
-										String value = Utils.annotationString(field, SarlSourceCode.class);
+										String value = this.annotationUtils.findStringValue(field, SarlSourceCode.class);
 										if (!Strings.isNullOrEmpty(value)) {
 											value = value.trim();
 											if (!Strings.isNullOrEmpty(value)) {
@@ -301,14 +300,13 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 								}
 							}
 							if (!Strings.isNullOrEmpty(defaultValue)) {
-								appendable.append(" ").append(tools.getGrammarAccess().getParameterAccess() //$NON-NLS-1$
-										.getEqualsSignKeyword_6_1_0().getValue()).append(" "); //$NON-NLS-1$
+								appendable.append(" ").append(tools.getGrammarAccess() //$NON-NLS-1$
+										.getEqualsSignKeyword()).append(" "); //$NON-NLS-1$
 								appendable.append(defaultValue);
 							}
 						}
 					}
-					appendable.append(tools.getGrammarAccess().getActionAccess()
-							.getRightParenthesisKeyword_7_2().getValue());
+					appendable.append(tools.getGrammarAccess().getRightParenthesisKeyword());
 				}
 
 				// Return type
@@ -317,20 +315,20 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				final boolean hasReturnType = !Utils.isPrimitiveVoid(returnType);
 				if (hasReturnType) {
 					appendable.append(" ") //$NON-NLS-1$
-						.append(tools.getGrammarAccess().getActionAccess().getColonKeyword_8_0().getValue())
+						.append(tools.getGrammarAccess().getColonKeyword())
 						.append(" ") //$NON-NLS-1$
 						.append(returnType);
 				}
 
 				// Exceptions
 				if (!operation.getExceptions().isEmpty()) {
-					appendable.append(" ").append(tools.getGrammarAccess().getActionAccess() //$NON-NLS-1$
-							.getThrowsKeyword_9_0_0().getValue()).append(" "); //$NON-NLS-1$
+					appendable.append(" ").append(tools.getGrammarAccess() //$NON-NLS-1$
+							.getThrowsKeyword()).append(" "); //$NON-NLS-1$
 					boolean addComa = false;
 					for (final JvmTypeReference exceptionType : operation.getExceptions()) {
 						if (addComa) {
-							appendable.append(tools.getGrammarAccess().getActionAccess()
-									.getCommaKeyword_9_0_2_0().getValue());
+							appendable.append(tools.getGrammarAccess()
+									.getCommaKeyword());
 						} else {
 							addComa = true;
 						}
@@ -341,14 +339,15 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				}
 
 				// Fired events
-				if (Utils.hasAnnotation(operation, FiredEvent.class)) {
-					appendable.append(" ").append(tools.getGrammarAccess().getActionAccess() //$NON-NLS-1$
-							.getFiresKeyword_9_1_0().getValue()).append(" "); //$NON-NLS-1$
+				final JvmAnnotationReference annotationRef = this.annotationFinder.findAnnotation(operation, FiredEvent.class);
+				if (annotationRef != null) {
+					appendable.append(" ").append(tools.getGrammarAccess() //$NON-NLS-1$
+							.getFiresKeyword()).append(" "); //$NON-NLS-1$
 					boolean addComa = false;
-					for (final JvmTypeReference eventType : Utils.annotationClasses(operation, FiredEvent.class)) {
+					for (final JvmTypeReference eventType : this.annotationUtils.findTypeValues(annotationRef)) {
 						if (addComa) {
-							appendable.append(tools.getGrammarAccess().getActionAccess()
-									.getCommaKeyword_9_1_2_0().getValue());
+							appendable.append(tools.getGrammarAccess()
+									.getCommaKeyword());
 						} else {
 							addComa = true;
 						}
@@ -358,8 +357,8 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 					}
 				}
 				// Body
-				appendable.append(" ").append(tools.getGrammarAccess().getXBlockExpressionAccess() //$NON-NLS-1$
-						.getLeftCurlyBracketKeyword_1().getValue());
+				appendable.append(" ").append(tools.getGrammarAccess() //$NON-NLS-1$
+						.getLeftCurlyBracketKeyword());
 				appendable.increaseIndentation().newLine();
 				appendable.append(autoGeneratedComment);
 
@@ -369,8 +368,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				}
 
 				appendable.decreaseIndentation().newLine();
-				appendable.append(tools.getGrammarAccess().getXBlockExpressionAccess()
-						.getRightCurlyBracketKeyword_3().getValue());
+				appendable.append(tools.getGrammarAccess().getRightCurlyBracketKeyword());
 				appendable.newLine();
 			}
 			appendable.decreaseIndentation().newLine();
@@ -400,8 +398,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 			if (importManager.addImportFor(importableType)) {
 				appendable.newLine();
 				appendable.append(
-						tools.getGrammarAccess()
-						.getXImportDeclarationAccess().getImportKeyword_0().getValue());
+						tools.getGrammarAccess().getImportKeyword());
 				appendable.append(" "); //$NON-NLS-1$
 				appendable.append(importableType.getQualifiedName());
 			}

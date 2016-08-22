@@ -22,6 +22,8 @@
 package io.sarl.lang.ui.quickfix.acceptors;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
@@ -60,8 +62,9 @@ public final class CapacityReferenceRemoveModification extends SARLSemanticModif
 		acceptor.accept(issue,
 				Messages.SARLQuickfixProvider_0,
 				Messages.SARLQuickfixProvider_5,
-				null,
-				modification);
+				JavaPluginImages.IMG_CORRECTION_REMOVE,
+				modification,
+				IProposalRelevance.REMOVE_ARGUMENTS);
 	}
 
 	@Override
@@ -69,14 +72,14 @@ public final class CapacityReferenceRemoveModification extends SARLSemanticModif
 		final Issue issue = getIssue();
 		final SARLQuickfixProvider tools = getTools();
 		final IXtextDocument document = context.getXtextDocument();
-		final String sep = tools.getGrammarAccess().getCapacityUsesAccess().getCommaKeyword_3_0().getValue();
+		final String sep = tools.getGrammarAccess().getCommaKeyword();
 		if (!tools.removeToPreviousSeparator(issue, document, sep)) {
 			if (!tools.removeToNextSeparator(issue, document, sep)) {
 				tools.removeToPreviousKeyword(issue, document,
-						tools.getGrammarAccess().getRequiredCapacityAccess()
-						.getRequiresKeyword_1().getValue(),
-						tools.getGrammarAccess().getCapacityUsesAccess()
-						.getUsesKeyword_1().getValue());
+						tools.getGrammarAccess()
+						.getRequiresKeyword(),
+						tools.getGrammarAccess()
+						.getUsesKeyword());
 			}
 		}
 	}

@@ -29,6 +29,7 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
@@ -49,6 +50,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.AbstractXtextGeneratorFragment;
 import org.eclipse.xtext.xtext.generator.CodeConfig;
 
+import io.sarl.lang.mwe2.keywords.GrammarKeywordAccessConfig;
+
 /**
  * A {@link AbstractXtextGeneratorFragment} that enables to create the highlighting in
  * external tools.
@@ -66,6 +69,9 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 
 	@SuppressWarnings("checkstyle:linelength")
 	private static final Pattern PUNCTUATION_PATTERN = Pattern.compile("^[!#%&()*/+,\\-:;<=>?@\\[\\\\\\]^{|}~.%]+$"); //$NON-NLS-1$
+
+	@Inject(optional = true)
+	private GrammarKeywordAccessConfig grammarKeywordAccessConfig;
 
 	@Inject
 	private CodeConfig codeConfig;
@@ -231,7 +237,7 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:npathcomplexity")
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	public final void generate() {
 		final Grammar grammar = getGrammar();
 		if (grammar == null) {
@@ -245,9 +251,20 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 
 		final ExternalHighlightingConfig hconfig = getHighlightingConfig();
 
+		if (hconfig.getInheritFromGrammarKeywordAccesss() && this.grammarKeywordAccessConfig != null) {
+			literals.addAll(this.grammarKeywordAccessConfig.getLiterals());
+		}
 		literals.addAll(hconfig.getLiterals());
 
-		for (final String keyword : hconfig.getKeywords()) {
+		if (hconfig.getInheritFromGrammarKeywordAccesss() && this.grammarKeywordAccessConfig != null) {
+			for (final String keyword : this.grammarKeywordAccessConfig.getKeywords()) {
+				if (!literals.contains(keyword)) {
+					keywords.add(keyword);
+				}
+			}
+		}
+		final Set<String> hKeywords = hconfig.getKeywords();
+		for (final String keyword : hKeywords) {
 			if (!literals.contains(keyword)) {
 				keywords.add(keyword);
 			}
@@ -265,7 +282,15 @@ public abstract class AbstractExternalHighlightingFragment2 extends AbstractXtex
 		final Queue<Grammar> grammars = new ArrayDeque<>();
 		grammars.add(grammar);
 
-		final Set<String> excluded = hconfig.getIgnoredKeywords();
+		final Set<String> excluded = new HashSet<>();
+		if (hconfig.getInheritFromGrammarKeywordAccesss() && this.grammarKeywordAccessConfig != null) {
+			for (final String ignoredKeyword : this.grammarKeywordAccessConfig.getIgnoredKeywords()) {
+				if (!hKeywords.contains(ignoredKeyword)) {
+					excluded.add(ignoredKeyword);
+				}
+			}
+		}
+		excluded.addAll(hconfig.getIgnoredKeywords());
 
 		final Set<String> ignored = new TreeSet<>();
 

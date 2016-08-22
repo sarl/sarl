@@ -90,7 +90,7 @@ capacity ExternalContextAccess {
 	 * @since 0.2
 	 */
 	@Pure
-	def isInSpace(^event : Event, space : Space) : boolean
+	def isInSpace(^event : Event, ^space : Space) : boolean
 
 	/** Replies if the given event was emitted in the space with
 	 * the given identifier..
@@ -159,7 +159,7 @@ capacity InnerContextAccess {
 	 * @since 0.2
 	 */
 	@Pure
-	def isInnerDefaultSpace(space : Space) : boolean
+	def isInnerDefaultSpace(^space : Space) : boolean
 
 	/** Replies if the given identifier is the identifier of the
 	 * default space of the inner context.
@@ -430,7 +430,7 @@ capacity DefaultContextInteractions {
 	 * @since 0.2
 	 */
 	@Pure
-	def isDefaultSpace(space : Space) : boolean
+	def isDefaultSpace(^space : Space) : boolean
 	
 	/** Replies if the given identifier is the identifier of the default space of
 	 * the default context.
@@ -441,7 +441,7 @@ capacity DefaultContextInteractions {
 	 * @since 0.2
 	 */
 	@Pure
-	def isDefaultSpace(space : SpaceID) : boolean
+	def isDefaultSpace(^space : SpaceID) : boolean
 
 	/** Replies if the given identifier is the identifier of the default space of
 	 * the default context.
@@ -452,7 +452,7 @@ capacity DefaultContextInteractions {
 	 * @since 0.2
 	 */
 	@Pure
-	def isDefaultSpace(space : UUID) : boolean
+	def isDefaultSpace(^space : UUID) : boolean
 
 	/** Replies if the given event was emitted in the default space of
 	 * the default context.

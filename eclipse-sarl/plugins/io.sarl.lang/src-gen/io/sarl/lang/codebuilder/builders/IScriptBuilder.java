@@ -58,59 +58,65 @@ public interface IScriptBuilder {
 	 */
 	void finalizeScript();
 
-	/** Create an Event builder.
-	 * @param name - the name of the Event.
+	/** Create a SarlEvent builder.
+	 * @param name - the name of the SarlEvent.
 	 * @return the builder.
 	 */
-	IEventBuilder addEvent(String name);
+	ISarlEventBuilder addSarlEvent(String name);
 
-	/** Create a Capacity builder.
-	 * @param name - the name of the Capacity.
+	/** Create a SarlCapacity builder.
+	 * @param name - the name of the SarlCapacity.
 	 * @return the builder.
 	 */
-	ICapacityBuilder addCapacity(String name);
+	ISarlCapacityBuilder addSarlCapacity(String name);
 
-	/** Create an Agent builder.
-	 * @param name - the name of the Agent.
+	/** Create a SarlAgent builder.
+	 * @param name - the name of the SarlAgent.
 	 * @return the builder.
 	 */
-	IAgentBuilder addAgent(String name);
+	ISarlAgentBuilder addSarlAgent(String name);
 
-	/** Create a Behavior builder.
-	 * @param name - the name of the Behavior.
+	/** Create a SarlBehavior builder.
+	 * @param name - the name of the SarlBehavior.
 	 * @return the builder.
 	 */
-	IBehaviorBuilder addBehavior(String name);
+	ISarlBehaviorBuilder addSarlBehavior(String name);
 
-	/** Create a Skill builder.
-	 * @param name - the name of the Skill.
+	/** Create a SarlSkill builder.
+	 * @param name - the name of the SarlSkill.
 	 * @return the builder.
 	 */
-	ISkillBuilder addSkill(String name);
+	ISarlSkillBuilder addSarlSkill(String name);
 
-	/** Create a Class builder.
-	 * @param name - the name of the Class.
+	/** Create a SarlSpace builder.
+	 * @param name - the name of the SarlSpace.
 	 * @return the builder.
 	 */
-	IClassBuilder addClass(String name);
+	ISarlSpaceBuilder addSarlSpace(String name);
 
-	/** Create an Interface builder.
-	 * @param name - the name of the Interface.
+	/** Create a SarlClass builder.
+	 * @param name - the name of the SarlClass.
 	 * @return the builder.
 	 */
-	IInterfaceBuilder addInterface(String name);
+	ISarlClassBuilder addSarlClass(String name);
 
-	/** Create an Enum builder.
-	 * @param name - the name of the Enum.
+	/** Create a SarlInterface builder.
+	 * @param name - the name of the SarlInterface.
 	 * @return the builder.
 	 */
-	IEnumBuilder addEnum(String name);
+	ISarlInterfaceBuilder addSarlInterface(String name);
 
-	/** Create an AnnotationType builder.
-	 * @param name - the name of the AnnotationType.
+	/** Create a SarlEnumeration builder.
+	 * @param name - the name of the SarlEnumeration.
 	 * @return the builder.
 	 */
-	IAnnotationTypeBuilder addAnnotationType(String name);
+	ISarlEnumerationBuilder addSarlEnumeration(String name);
+
+	/** Create a SarlAnnotationType builder.
+	 * @param name - the name of the SarlAnnotationType.
+	 * @return the builder.
+	 */
+	ISarlAnnotationTypeBuilder addSarlAnnotationType(String name);
 
 }
 

@@ -169,6 +169,14 @@ public abstract class AbstractSarlTest {
 			Thread.currentThread().setContextClassLoader(loader);
 		}
 	}
+	
+	/** Replies if the runtime environment is Eclipse.
+	 *
+	 * @return <code>true</code> if the runtime environment is Eclipse.
+	 */
+	protected static boolean isEclipseRuntimeEnvironment() {
+		return System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.");
+	}
 
 	/** This rule permits to clean automatically the fields
 	 * at the end of the test.
@@ -209,7 +217,7 @@ public abstract class AbstractSarlTest {
 				if (!scope.tycho() && !scope.eclipse()) {
 					throw new AssumptionViolatedException("not running on the current framework");
 				} else if (scope.tycho() || scope.eclipse()) {
-					boolean isEclipse = System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.");
+					boolean isEclipse = isEclipseRuntimeEnvironment();
 					if (scope.tycho()) {
 						Assume.assumeFalse(isEclipse);
 					} else {

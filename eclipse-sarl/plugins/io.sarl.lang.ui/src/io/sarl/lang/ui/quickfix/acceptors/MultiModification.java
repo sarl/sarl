@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
@@ -60,7 +61,7 @@ public final class MultiModification extends SARLSemanticModification {
 				issue,
 				label,
 				description,
-				null,
+				JavaPluginImages.IMG_CORRECTION_MULTI_FIX,
 				this);
 	}
 

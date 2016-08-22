@@ -21,21 +21,12 @@
 
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
-import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Assignment;
-import org.eclipse.xtext.Grammar;
-import org.eclipse.xtext.GrammarUtil;
-import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.Procedures;
@@ -43,6 +34,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
+
+import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
 /** Generator of the builder for formal parameters.
  *
@@ -53,16 +46,13 @@ import org.eclipse.xtext.xtext.generator.model.TypeReference;
  */
 public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragment {
 
-	@Inject
-	private BuilderFactoryContributions builderFactoryContributions;
-
 	/** Replies the implementation for the formal parameter builder.
 	 *
 	 * @return the implementation.
 	 */
 	@Pure
 	public TypeReference getFormalParameterBuilderImpl() {
-		return getElementBuilderImpl("FormalParameter"); //$NON-NLS-1$
+		return getCodeElementExtractor().getElementBuilderImpl("FormalParameter"); //$NON-NLS-1$
 	}
 
 	/** Replies the custom implementation for the formal parameter builder.
@@ -71,7 +61,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	 */
 	@Pure
 	public TypeReference getFormalParameterBuilderImplCustom() {
-		return getElementBuilderImplCustom("FormalParameter"); //$NON-NLS-1$
+		return getCodeElementExtractor().getElementBuilderImplCustom("FormalParameter"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -81,27 +71,16 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 		if (getCodeBuilderConfig().isISourceAppendableEnable()) {
 			generateFormalParameterAppender();
 		}
-		generateBuilderFactoryContributions();
 		super.generate();
 	}
 
 	@Override
 	public void generateBindings(BindingFactory factory) {
 		super.generateBindings(factory);
-		final IFileSystemAccess2 fileSystem = getSrc();
-
-		final TypeReference builderInterface = getFormalParameterBuilderInterface();
-		final TypeReference builderImpl = getFormalParameterBuilderImpl();
-		final TypeReference builderImplCustom = getFormalParameterBuilderImplCustom();
-
-		final TypeReference type;
-		if ((fileSystem.isFile(builderImplCustom.getJavaPath()))
-				|| (fileSystem.isFile(builderImplCustom.getXtendPath()))) {
-			type = builderImplCustom;
-		} else {
-			type = builderImpl;
-		}
-		factory.addfinalTypeToType(builderInterface, type);
+		bindTypeReferences(factory,
+				getFormalParameterBuilderInterface(),
+				getFormalParameterBuilderImpl(),
+				getFormalParameterBuilderImplCustom());
 	}
 
 	/** Generate the formal parameter builder interface.
@@ -170,13 +149,11 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	/** Generate the formal parameter appender.
 	 */
 	protected void generateFormalParameterAppender() {
-		final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getFormalParameterRuleName());
-		final EClassifier classifier = getGeneratedTypeFor(rule);
-		final TypeReference parameterType = newTypeReference(classifier);
-		final TypeReference builderInterface = getFormalParameterBuilderInterface();
-		final TypeReference appender = getElementAppenderImpl("FormalParameter"); //$NON-NLS-1$
+		final CodeElementExtractor.ElementDescription parameter = getCodeElementExtractor().getFormalParameter();
 		final String accessor = "get" //$NON-NLS-1$
-				+ Strings.toFirstUpper(parameterType.getSimpleName()) + "()"; //$NON-NLS-1$
+				+ Strings.toFirstUpper(parameter.getElementType().getSimpleName()) + "()"; //$NON-NLS-1$
+		final TypeReference builderInterface = getFormalParameterBuilderInterface();
+		final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("FormalParameter"); //$NON-NLS-1$
 		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -190,7 +167,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("public class "); //$NON-NLS-1$
 				it.append(appender.getSimpleName());
 				it.append(" extends "); //$NON-NLS-1$
-				it.append(getAbstractAppenderImpl());
+				it.append(getCodeElementExtractor().getAbstractAppenderImpl());
 				it.append(" implements "); //$NON-NLS-1$
 				it.append(builderInterface);
 				it.append(" {"); //$NON-NLS-1$
@@ -215,13 +192,10 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	 */
 	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
-		final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getFormalParameterRuleName());
-		EClassifier classifier = getGeneratedTypeFor(rule);
-		final TypeReference parameterType = newTypeReference(classifier);
-		final TypeReference parameterContainerType = new TypeReference(
-				getCodeBuilderConfig().getFormalParameterContainerType());
-		final Assignment defaultValueAssignment = findAssignmentFromFeatureName(rule,
-				getCodeBuilderConfig().getParameterDefaultValueGrammarName());
+		final CodeElementExtractor.ElementDescription parameter = getCodeElementExtractor().getFormalParameter();
+		final FormalParameterDescription exparameter = new FormalParameterDescription(parameter,
+				findAssignmentFromFeatureName(parameter.getGrammarComponent(),
+						getCodeBuilderConfig().getParameterDefaultValueGrammarName()));
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -237,12 +211,12 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLineIfNotEmpty();
 					it.newLine();
 					it.append("\tprivate "); //$NON-NLS-1$
-					it.append(parameterContainerType);
+					it.append(getCodeElementExtractor().getFormalParameterContainerType());
 					it.append(" context;"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
 					it.append("\tprivate "); //$NON-NLS-1$
-					it.append(parameterType);
+					it.append(parameter.getElementType());
 					it.append(" parameter;"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
@@ -265,7 +239,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.append("public "); //$NON-NLS-1$
 				}
 				it.append("void eInit("); //$NON-NLS-1$
-				it.append(parameterContainerType);
+				it.append(getCodeElementExtractor().getFormalParameterContainerType());
 				it.append(" context, String name)"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
@@ -278,9 +252,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 						it.append("\t\tthis.context = context;"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\tthis.parameter = "); //$NON-NLS-1$
-						it.append(getXFactoryFor(parameterType));
+						it.append(getXFactoryFor(parameter.getElementType()));
 						it.append(".eINSTANCE.create"); //$NON-NLS-1$
-						it.append(Strings.toFirstUpper(parameterType.getSimpleName()));
+						it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
 						it.append("();"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\tthis.parameter.set"); //$NON-NLS-1$
@@ -315,9 +289,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				if (!forInterface) {
 					it.append("public "); //$NON-NLS-1$
 				}
-				it.append(parameterType);
+				it.append(parameter.getElementType());
 				it.append(" get"); //$NON-NLS-1$
-				it.append(Strings.toFirstUpper(parameterType.getSimpleName()));
+				it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
 				it.append("()"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
@@ -326,7 +300,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					if (forAppender) {
 						it.append("\t\treturn this.builder.get"); //$NON-NLS-1$
-						it.append(Strings.toFirstUpper(parameterType.getSimpleName()));
+						it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
 						it.append("();"); //$NON-NLS-1$
 					} else {
 						it.append("\t\treturn this.parameter;"); //$NON-NLS-1$
@@ -355,7 +329,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\treturn get"); //$NON-NLS-1$
-					it.append(Strings.toFirstUpper(parameterType.getSimpleName()));
+					it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
 					it.append("().eResource();"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
@@ -444,7 +418,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}
-				if (defaultValueAssignment != null) {
+				if (exparameter.getDefaultValueAssignment() != null) {
 					it.append("\t/** Replies the default value of the parameter."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the default value builder."); //$NON-NLS-1$
@@ -487,7 +461,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 							it.append(" it) {"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t\t\t\t\tget"); //$NON-NLS-1$
-							it.append(Strings.toFirstUpper(parameterType.getSimpleName()));
+							it.append(Strings.toFirstUpper(parameter.getElementType().getSimpleName()));
 							it.append("().set"); //$NON-NLS-1$
 							it.append(Strings.toFirstUpper(getCodeBuilderConfig().getParameterDefaultValueGrammarName()));
 							it.append("(it);"); //$NON-NLS-1$
@@ -510,165 +484,50 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 		};
 	}
 
-	/** Get the constructor rule from the grammar.
+	/** Description of a formal parameter.
 	 *
-	 * @return the top elements.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
 	 */
-	protected AbstractRule getConstructorRule() {
-		final Grammar grammar = getGrammar();
-		final Pattern pattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
-		for (final AbstractRule rule : GrammarUtil.allRules(grammar)) {
-			final Matcher matcher = pattern.matcher(rule.getName());
-			if (matcher.find()) {
-				return rule;
-			}
-		}
-		throw new IllegalStateException("Constructor rule not found"); //$NON-NLS-1$
-	}
+	public static class FormalParameterDescription {
 
-	/** Generate the contributions for the BuildFactory.
-	 */
-	protected void generateBuilderFactoryContributions() {
-		final String createFunctionName = "create" //$NON-NLS-1$
-				+ toSingular(Strings.toFirstUpper(getCodeBuilderConfig().getParameterListGrammarName()));
-		final String containerFunctionName = "add" //$NON-NLS-1$
-				+ toSingular(Strings.toFirstUpper(getCodeBuilderConfig().getParameterListGrammarName()));
-		final String containerCreationName = "create" //$NON-NLS-1$
-				+ Strings.toFirstUpper(getConstructorRule().getName());
-		this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
-			@Override
-			protected void appendTo(TargetStringConcatenation it) {
-				it.append("\t/** Create the factory for a " + getLanguageName() //$NON-NLS-1$
-						+ " formal parameter."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param name the name of the parameter."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param resourceSet the set of the resources that must be used for"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t *    containing the generated resource, and resolving types from names."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @return the factory."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t */"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\tpublic "); //$NON-NLS-1$
-				it.append(getFormalParameterBuilderInterface());
-				it.append(" "); //$NON-NLS-1$
-				it.append(createFunctionName);
-				it.append("(String name, "); //$NON-NLS-1$
-				it.append(ResourceSet.class);
-				it.append(" resourceSet) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\treturn "); //$NON-NLS-1$
-				it.append(createFunctionName);
-				it.append("(name, createResource(resourceSet));"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\t/** Create the factory for a " + getLanguageName() //$NON-NLS-1$
-						+ " formal parameter."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param name the name of the parameter."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param resource the resource that must be used for"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t *    containing the generated resource, and resolving types from names."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @return the factory."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t */"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\tpublic "); //$NON-NLS-1$
-				it.append(getFormalParameterBuilderInterface());
-				it.append(" "); //$NON-NLS-1$
-				it.append(createFunctionName);
-				it.append("(String name, "); //$NON-NLS-1$
-				it.append(Resource.class);
-				it.append(" resource) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t"); //$NON-NLS-1$
-				it.append("return "); //$NON-NLS-1$
-				it.append(containerCreationName);
-				it.append("(resource)."); //$NON-NLS-1$
-				it.append(containerFunctionName);
-				it.append("(name);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
-				it.newLine();
-			}
-		});
-		if (getCodeBuilderConfig().isISourceAppendableEnable()) {
-			final String buildFunctionName = "build" //$NON-NLS-1$
-					+ toSingular(Strings.toFirstUpper(getCodeBuilderConfig().getParameterListGrammarName()));
-			final TypeReference appender = getElementAppenderImpl("FormalParameter"); //$NON-NLS-1$
-			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
-				@Override
-				protected void appendTo(TargetStringConcatenation it) {
-					it.append("\t/** Create the appender for a " + getLanguageName() //$NON-NLS-1$
-							+ " formal parameter."); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t * @param name the name of the parameter."); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t * @param resourceSet the set of the resources that must be used for"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t *    containing the generated resource, and resolving types from names."); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t * @return the appender."); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t */"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\tpublic "); //$NON-NLS-1$
-					it.append(appender);
-					it.append(" "); //$NON-NLS-1$
-					it.append(buildFunctionName);
-					it.append("(String name, "); //$NON-NLS-1$
-					it.append(ResourceSet.class);
-					it.append(" resourceSet) {"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\treturn new "); //$NON-NLS-1$
-					it.append(appender);
-					it.append("("); //$NON-NLS-1$
-					it.append(createFunctionName);
-					it.append("(name, resourceSet));"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t}"); //$NON-NLS-1$
-					it.newLineIfNotEmpty();
-					it.newLine();
-					it.append("\t/** Create the appender for a " + getLanguageName() //$NON-NLS-1$
-							+ " formal parameter."); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t * @param name the name of the parameter."); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t * @param resource the resource that must be used for"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t *    containing the generated resource, and resolving types from names."); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t * @return the appender."); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t */"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\tpublic "); //$NON-NLS-1$
-					it.append(appender);
-					it.append(" "); //$NON-NLS-1$
-					it.append(buildFunctionName);
-					it.append("(String name, "); //$NON-NLS-1$
-					it.append(Resource.class);
-					it.append(" resource) {"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\treturn new "); //$NON-NLS-1$
-					it.append(appender);
-					it.append("("); //$NON-NLS-1$
-					it.append(createFunctionName);
-					it.append("(name, resource));"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t}"); //$NON-NLS-1$
-					it.newLineIfNotEmpty();
-					it.newLine();
-				}
-			});
+		private final CodeElementExtractor.ElementDescription element;
+
+		private final Assignment defaultValueAssignment;
+
+		/** Constructor.
+		 *
+		 * @param element the description of the element.
+		 * @param defaultValueAssignment the assignement for the default value.
+		 */
+		public FormalParameterDescription(CodeElementExtractor.ElementDescription element, Assignment defaultValueAssignment) {
+			this.element = element;
+			this.defaultValueAssignment = defaultValueAssignment;
 		}
+
+		@Override
+		public String toString() {
+			return this.element.getName();
+		}
+
+		/** Replies the element description embedded in this top element description.
+		 *
+		 * @return the element description.
+		 */
+		public CodeElementExtractor.ElementDescription getElementDescription() {
+			return this.element;
+		}
+
+		/** Replies the assignment for the parameter's default value.
+		 *
+		 * @return the default value parameter assignment.
+		 */
+		public Assignment getDefaultValueAssignment() {
+			return this.defaultValueAssignment;
+		}
+
 	}
 
 }

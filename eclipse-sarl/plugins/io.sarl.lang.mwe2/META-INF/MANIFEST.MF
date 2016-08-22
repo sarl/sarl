@@ -20,9 +20,12 @@ Export-Package: io.sarl.lang.mwe2,
  io.sarl.lang.mwe2.binding,
  io.sarl.lang.mwe2.bugfixes,
  io.sarl.lang.mwe2.codebuilder,
+ io.sarl.lang.mwe2.codebuilder.config,
+ io.sarl.lang.mwe2.codebuilder.extractor,
  io.sarl.lang.mwe2.codebuilder.fragments,
  io.sarl.lang.mwe2.externalspec,
  io.sarl.lang.mwe2.externalspec.gnusrchighlight,
  io.sarl.lang.mwe2.externalspec.gtk,
  io.sarl.lang.mwe2.externalspec.latex,
- io.sarl.lang.mwe2.externalspec.prettify
+ io.sarl.lang.mwe2.externalspec.prettify,
+ io.sarl.lang.mwe2.keywords

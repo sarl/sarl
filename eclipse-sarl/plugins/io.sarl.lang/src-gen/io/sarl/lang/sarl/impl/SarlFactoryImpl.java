@@ -75,7 +75,9 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 			case SarlPackage.SARL_INTERFACE: return createSarlInterface();
 			case SarlPackage.SARL_ENUMERATION: return createSarlEnumeration();
 			case SarlPackage.SARL_ANNOTATION_TYPE: return createSarlAnnotationType();
+			case SarlPackage.SARL_ENUM_LITERAL: return createSarlEnumLiteral();
 			case SarlPackage.SARL_EVENT: return createSarlEvent();
+			case SarlPackage.SARL_SPACE: return createSarlSpace();
 			case SarlPackage.SARL_AGENT: return createSarlAgent();
 			case SarlPackage.SARL_CAPACITY: return createSarlCapacity();
 			case SarlPackage.SARL_BEHAVIOR: return createSarlBehavior();
@@ -212,10 +214,32 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public SarlEnumLiteral createSarlEnumLiteral()
+	{
+		SarlEnumLiteralImpl sarlEnumLiteral = new SarlEnumLiteralImpl();
+		return sarlEnumLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public SarlEvent createSarlEvent()
 	{
 		SarlEventImplCustom sarlEvent = new SarlEventImplCustom();
 		return sarlEvent;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public SarlSpace createSarlSpace()
+	{
+		SarlSpaceImpl sarlSpace = new SarlSpaceImpl();
+		return sarlSpace;
 	}
 
 	/**

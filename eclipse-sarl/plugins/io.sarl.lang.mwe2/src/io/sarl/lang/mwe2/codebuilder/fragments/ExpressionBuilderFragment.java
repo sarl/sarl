@@ -21,24 +21,21 @@
 
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.regex.Matcher;
+import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import com.google.common.collect.Iterators;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Assignment;
-import org.eclipse.xtext.GrammarUtil;
-import org.eclipse.xtext.RuleCall;
-import org.eclipse.xtext.generator.IFileSystemAccess2;
+import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
@@ -46,13 +43,13 @@ import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbaseFactory;
-import org.eclipse.xtext.xbase.lib.Functions;
-import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
+
+import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
 /** Generator of the builder for XExpressions.
  *
@@ -72,7 +69,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	@Pure
 	public TypeReference getExpressionBuilderImpl() {
-		return getElementBuilderImpl("Expression"); //$NON-NLS-1$
+		return getCodeElementExtractor().getElementBuilderImpl("Expression"); //$NON-NLS-1$
 	}
 
 	/** Replies the custom implementation for the expression builder.
@@ -81,7 +78,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	@Pure
 	public TypeReference getExpressionBuilderImplCustom() {
-		return getElementBuilderImplCustom("Expression"); //$NON-NLS-1$
+		return getCodeElementExtractor().getElementBuilderImplCustom("Expression"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -98,20 +95,10 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	@Override
 	public void generateBindings(BindingFactory factory) {
 		super.generateBindings(factory);
-		final IFileSystemAccess2 fileSystem = getSrc();
-
-		final TypeReference builderInterface = getExpressionBuilderInterface();
-		final TypeReference builderImpl = getExpressionBuilderImpl();
-		final TypeReference builderImplCustom = getExpressionBuilderImplCustom();
-
-		final TypeReference type;
-		if ((fileSystem.isFile(builderImplCustom.getJavaPath()))
-				|| (fileSystem.isFile(builderImplCustom.getXtendPath()))) {
-			type = builderImplCustom;
-		} else {
-			type = builderImpl;
-		}
-		factory.addfinalTypeToType(builderInterface, type);
+		bindTypeReferences(factory,
+				getExpressionBuilderInterface(),
+				getExpressionBuilderImpl(),
+				getExpressionBuilderImplCustom());
 	}
 
 	/** Generate the expression builder interface.
@@ -181,7 +168,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	protected void generateExpressionAppender() {
 		final TypeReference builderInterface = getExpressionBuilderInterface();
-		final TypeReference appender = getElementAppenderImpl("Expression"); //$NON-NLS-1$
+		final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("Expression"); //$NON-NLS-1$
 		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -195,7 +182,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("public class "); //$NON-NLS-1$
 				it.append(appender.getSimpleName());
 				it.append(" extends "); //$NON-NLS-1$
-				it.append(getAbstractAppenderImpl());
+				it.append(getCodeElementExtractor().getAbstractAppenderImpl());
 				it.append(" implements "); //$NON-NLS-1$
 				it.append(builderInterface);
 				it.append(" {"); //$NON-NLS-1$
@@ -221,14 +208,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 */
 	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateMembers(boolean forInterface, boolean forAppender) {
-		Pair<AbstractRule, AbstractRule> expressionContext = extractExpressionContext();
-		TypeReference scriptType = getLanguageScriptInterface();
-		EClassifier classifier = getGeneratedTypeFor(expressionContext.getKey());
-		TypeReference topElementType = newTypeReference(classifier);
-		classifier = getGeneratedTypeFor(expressionContext.getValue());
-		TypeReference memberType = newTypeReference(classifier);
-		Assignment expressionAssignment = findAssignmentFromTerminalPattern(expressionContext.getValue(),
-				getCodeBuilderConfig().getExpressionGrammarPattern());
+		final ExpressionContextDescription expressionContext = getExpressionContextDescription();
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -425,9 +405,9 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\tprotected String generateExpressionCode(String expression) {"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\treturn \""); //$NON-NLS-1$
-					it.append(GrammarUtil.containedKeywords(expressionContext.getKey()).get(0).getValue());
+					it.append(expressionContext.getContainerKeyword());
 					it.append(" ____synthesis { "); //$NON-NLS-1$
-					it.append(getCodeBuilderConfig().getModifiers().get(memberType.getSimpleName()).get(0));
+					it.append(expressionContext.getFieldDeclarationKeyword());
 					it.append(" ____fakefield = \" + expression + \" }\";"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
@@ -478,29 +458,29 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t\t\t\tresource.load(is, null);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t\t\t"); //$NON-NLS-1$
-					it.append(scriptType);
+					it.append(getCodeElementExtractor().getLanguageScriptInterface());
 					it.append(" script = resource.getContents().isEmpty() ? null : ("); //$NON-NLS-1$
-					it.append(scriptType);
+					it.append(getCodeElementExtractor().getLanguageScriptInterface());
 					it.append(") resource.getContents().get(0);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t\t\t"); //$NON-NLS-1$
-					it.append(topElementType);
+					it.append(expressionContext.getContainerDescription().getElementType());
 					it.append(" topElement = ("); //$NON-NLS-1$
-					it.append(topElementType);
+					it.append(expressionContext.getContainerDescription().getElementType());
 					it.append(") script."); //$NON-NLS-1$
 					it.append(getLanguageScriptMemberGetter());
 					it.append("().get(0);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t\t\t"); //$NON-NLS-1$
-					it.append(memberType);
+					it.append(expressionContext.getMemberDescription().getElementType());
 					it.append(" member = ("); //$NON-NLS-1$
-					it.append(memberType);
+					it.append(expressionContext.getMemberDescription().getElementType());
 					it.append(") topElement.get"); //$NON-NLS-1$
 					it.append(Strings.toFirstUpper(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName()));
 					it.append("().get(0);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t\t\treturn member.get"); //$NON-NLS-1$
-					it.append(Strings.toFirstUpper(expressionAssignment.getFeature()));
+					it.append(Strings.toFirstUpper(expressionContext.getExpressionAssignment().getFeature()));
 					it.append("();"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t\t} catch (Throwable exception) {"); //$NON-NLS-1$
@@ -778,12 +758,72 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 		};
 	}
 
+	/** Replies a keyword for declaring a container.
+	 *
+	 * @param grammarContainer the container description.
+	 * @return the keyword, never <code>null</code> nor an empty string.
+	 */
+	protected String ensureContainerKeyword(EObject grammarContainer) {
+		final Iterator<Keyword> iterator = Iterators.filter(grammarContainer.eContents().iterator(), Keyword.class);
+		if (iterator.hasNext()) {
+			return iterator.next().getValue();
+		}
+		return getExpressionConfig().getFieldContainerDeclarationKeyword();
+	}
+
+	/** Replies a keyword for declaring a field.
+	 *
+	 * @param memberDescription the member description.
+	 * @return the keyword, never <code>null</code> nor an empty string.
+	 */
+	protected String ensureFieldDeclarationKeyword(CodeElementExtractor.ElementDescription memberDescription) {
+		final List<String> modifiers = getCodeBuilderConfig().getModifiers().get(memberDescription.getName());
+		if (modifiers != null && !modifiers.isEmpty()) {
+			return modifiers.get(0);
+		}
+		return getExpressionConfig().getFieldDeclarationKeyword();
+	}
+
+	/** Replies the description of the expression context.
+	 *
+	 * @return the description.
+	 */
+	protected ExpressionContextDescription getExpressionContextDescription() {
+		for (final CodeElementExtractor.ElementDescription containerDescription : getCodeElementExtractor().getTopElements(
+				getGrammar(), getCodeBuilderConfig())) {
+			final AbstractRule rule = getMemberRule(containerDescription);
+			if (rule != null) {
+				final Pattern fieldTypePattern = Pattern.compile(getExpressionConfig().getExpressionFieldTypenamePattern());
+				final ExpressionContextDescription description = getCodeElementExtractor().visitMemberElements(
+						containerDescription, rule, null,
+					(it, grammarContainer, memberContainer, classifier) -> {
+						if (fieldTypePattern.matcher(classifier.getName()).find()) {
+							final Assignment expressionAssignment = findAssignmentFromTerminalPattern(
+									memberContainer,
+									getExpressionConfig().getExpressionGrammarPattern());
+							final CodeElementExtractor.ElementDescription memberDescription =
+									it.newElementDescription(classifier.getName(), memberContainer, classifier);
+							return new ExpressionContextDescription(
+									containerDescription,
+									memberDescription,
+									ensureContainerKeyword(containerDescription.getGrammarComponent()),
+									ensureFieldDeclarationKeyword(memberDescription),
+									expressionAssignment);
+						}
+						return null;
+					});
+				if (description != null) {
+					return description;
+				}
+			}
+		}
+		return null;
+	}
+
 	/** Generate the contributions for the BuildFactory.
 	 */
 	protected void generateBuilderFactoryContributions() {
-		final Pair<AbstractRule, AbstractRule> context = extractExpressionContext();
-		final Assignment expressionAssignment = findAssignmentFromTerminalPattern(context.getValue(),
-				getCodeBuilderConfig().getExpressionGrammarPattern());
+		final ExpressionContextDescription expressionContext = getExpressionContextDescription();
 		final String createFunctionName = "createXExpression"; //$NON-NLS-1$
 		this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 			@Override
@@ -832,13 +872,24 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append(Resource.class);
 				it.append(" resource) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\treturn createScript(getFooPackageName(), resource)"); //$NON-NLS-1$
-				it.append(".add"); //$NON-NLS-1$
-				it.append(Strings.toFirstUpper(context.getKey().getName()));
-				it.append("(\"Foo\").add"); //$NON-NLS-1$
-				it.append(Strings.toFirstUpper(context.getValue().getName()));
-				it.append("(\"foo\").get"); //$NON-NLS-1$
-				it.append(Strings.toFirstUpper(expressionAssignment.getFeature()));
+				it.append("\t\tfinal "); //$NON-NLS-1$
+				it.append(getScriptBuilderInterface());
+				it.append(" script = createScript(getFooPackageName(), resource);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal "); //$NON-NLS-1$
+				it.append(expressionContext.getContainerDescription().getBuilderInterfaceType());
+				it.append(" topElement = script.add"); //$NON-NLS-1$
+				it.append(Strings.toFirstUpper(expressionContext.getContainerDescription().getElementType().getSimpleName()));
+				it.append("(getFooTypeName());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal "); //$NON-NLS-1$
+				it.append(expressionContext.getMemberDescription().getBuilderInterfaceType());
+				it.append(" memberElement = topElement.add"); //$NON-NLS-1$
+				it.append(Strings.toFirstUpper(expressionContext.getMemberDescription().getElementType().getSimpleName()));
+				it.append("(getFooMemberName());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn memberElement.get"); //$NON-NLS-1$
+				it.append(Strings.toFirstUpper(expressionContext.getExpressionAssignment().getFeature()));
 				it.append("();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
@@ -848,7 +899,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 		});
 		if (getCodeBuilderConfig().isISourceAppendableEnable()) {
 			final String buildFunctionName = "buildXExpression"; //$NON-NLS-1$
-			final TypeReference appender = getElementAppenderImpl("Expression"); //$NON-NLS-1$
+			final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("Expression"); //$NON-NLS-1$
 			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {
@@ -913,42 +964,86 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 		}
 	}
 
-	@SuppressWarnings("checkstyle:all")
-	private Pair<AbstractRule, AbstractRule> extractExpressionContext() {
-		AbstractRule topElementRule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getTopElementRuleName());
-		for (RuleCall ruleCall : GrammarUtil.containedRuleCalls(topElementRule)) {
-			AbstractRule topMemberRule = null;
-			for (Assignment assignment : GrammarUtil.containedAssignments(ruleCall.getRule())) {
-				if (Objects.equals(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName(), assignment.getFeature())) {
-					if (assignment.getTerminal() instanceof RuleCall) {
-						topMemberRule = ((RuleCall) assignment.getTerminal()).getRule();
-						break;
-					}
-				}
-			}
-			if (topMemberRule != null) {
-				Set<String> treatedRules = getTopElementRules();
-				Pattern fieldPattern = Pattern.compile(getCodeBuilderConfig().getFieldGrammarPattern());
-				Pair<AbstractRule, AbstractRule> pair = visitMemberElements(ruleCall.getRule(), topMemberRule, treatedRules,
-						null,
-						new Functions.Function3<AbstractRule, AbstractRule, String,
-						Pair<AbstractRule, AbstractRule>>() {
-					@Override
-					public Pair<AbstractRule, AbstractRule> apply(AbstractRule containerRule,
-							AbstractRule memberRule, String name) {
-						Matcher matcher = fieldPattern.matcher(memberRule.getName());
-						if (matcher.find()) {
-							return new Pair<>(containerRule, memberRule);
-						}
-						return null;
-					}
-				});
-				if (pair != null) {
-					return pair;
-				}
-			}
+	/** Description of the expression context.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class ExpressionContextDescription {
+
+		private final CodeElementExtractor.ElementDescription member;
+
+		private final CodeElementExtractor.ElementDescription container;
+
+		private final String containerKeyword;
+
+		private final String fieldDeclarationKeyword;
+
+		private final Assignment expressionAssignment;
+
+		/** Constructor.
+		 *
+		 * @param container the container of the element that contains the expression.
+		 * @param member the description of the expression container.
+		 * @param containerKeyword the keyword for declaring a type.
+		 * @param fieldDeclarationKeyword the keyword for declaring a field.
+		 * @param expressionAssignment the assignment that contains the expression in the element.
+		 */
+		public ExpressionContextDescription(
+				CodeElementExtractor.ElementDescription container,
+				CodeElementExtractor.ElementDescription member,
+				String containerKeyword,
+				String fieldDeclarationKeyword,
+				Assignment expressionAssignment) {
+			this.container = container;
+			this.member = member;
+			this.containerKeyword = containerKeyword;
+			this.fieldDeclarationKeyword = fieldDeclarationKeyword;
+			this.expressionAssignment = expressionAssignment;
 		}
-		throw new IllegalStateException("no expression context found."); //$NON-NLS-1$
+
+		/** Replies the container description.
+		 *
+		 * @return the container description.
+		 */
+		public CodeElementExtractor.ElementDescription getContainerDescription() {
+			return this.container;
+		}
+
+		/** Replies the member description.
+		 *
+		 * @return the member description.
+		 */
+		public CodeElementExtractor.ElementDescription getMemberDescription() {
+			return this.member;
+		}
+
+		/** Replies the assignment that contains the expression.
+		 *
+		 * @return the grammar assignment.
+		 */
+		public Assignment getExpressionAssignment() {
+			return this.expressionAssignment;
+		}
+
+		/** Replies the first keyword associated to the container.
+		 *
+		 * @return the keyword.
+		 */
+		public String getContainerKeyword() {
+			return this.containerKeyword;
+		}
+
+		/** Replies the keyword for declaring a field.
+		 *
+		 * @return the keyword.
+		 */
+		public String getFieldDeclarationKeyword() {
+			return this.fieldDeclarationKeyword;
+		}
+
 	}
 
 }

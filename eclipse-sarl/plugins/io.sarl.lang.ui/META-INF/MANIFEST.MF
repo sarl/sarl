@@ -24,7 +24,10 @@ Require-Bundle: io.sarl.lang;bundle-version="0.4.0";visibility:=reexport,
  org.arakhne.afc.core.references;bundle-version="14.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Activator: io.sarl.lang.ui.internal.LangActivator
-Export-Package: io.sarl.lang.ui;x-friends:="io.sarl.lang.ui.tests",
+Export-Package: io.sarl.lang.ide.contentassist.antlr,
+ io.sarl.lang.ide.contentassist.antlr.internal,
+ io.sarl.lang.ui;x-friends:="io.sarl.lang.ui.tests",
+ io.sarl.lang.ui.bugfixes,
  io.sarl.lang.ui.builder,
  io.sarl.lang.ui.contentassist,
  io.sarl.lang.ui.highlighting,
@@ -35,8 +38,7 @@ Export-Package: io.sarl.lang.ui;x-friends:="io.sarl.lang.ui.tests",
  io.sarl.lang.ui.preferences,
  io.sarl.lang.ui.quickfix;x-friends:="io.sarl.lang.ui.tests",
  io.sarl.lang.ui.quickfix.acceptors;x-friends:="io.sarl.lang.ui.tests",
+ io.sarl.lang.ui.refactoring.rename,
  io.sarl.lang.ui.tasks;x-friends:="io.sarl.lang.ui.tests",
- io.sarl.lang.ui.validation;x-friends:="io.sarl.lang.ui.tests",
- io.sarl.lang.ide.contentassist.antlr,
- io.sarl.lang.ide.contentassist.antlr.internal
+ io.sarl.lang.ui.validation;x-friends:="io.sarl.lang.ui.tests"
 Import-Package: org.apache.log4j

@@ -27,9 +27,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.inject.Inject;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
+import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pair;
@@ -47,6 +52,8 @@ import io.sarl.lang.sarl.SarlBehaviorUnit;
  * @mavenartifactid $ArtifactId$
  */
 abstract class GenerationContext {
+
+	private final String identifier;
 
 	/** Compute serial number for serializable objects.
 	 */
@@ -95,10 +102,52 @@ abstract class GenerationContext {
 	private final Map<String, Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>> guardEvaluators
 			= CollectionLiterals.newHashMap();
 
-	/** Construct a information about the generation.
+	/** The context object.
 	 */
-	GenerationContext() {
-		//
+	private final EObject contextObject;
+
+	/** The provider of generaion configuration.
+	 */
+	@Inject
+	private IGeneratorConfigProvider generatorConfigProvider;
+
+	/** Buffering the current generator configuration.
+	 */
+	private GeneratorConfig generatorConfig;
+
+	/** Construct a information about the generation.
+	 *
+	 * @param owner the object for which the context is created.
+	 * @param identifier the identifier of the type for which the context is opened.
+	 */
+	GenerationContext(EObject owner, String identifier) {
+		this.identifier = identifier;
+		this.contextObject = owner;
+	}
+
+	@Override
+	public String toString() {
+		return "Generation context for: " + getTypeIdentifier(); //$NON-NLS-1$
+	}
+
+	/** Replies the identifier of the associated type.
+	 *
+	 * @return the identifier of the context's type.
+	 */
+	public String getTypeIdentifier() {
+		return this.identifier;
+	}
+
+	/** Replies the generator configuration.
+	 *
+	 * @return the configuration.
+	 */
+	public GeneratorConfig getGeneratorConfig() {
+		if (this.generatorConfig == null) {
+			this.generatorConfig = this.generatorConfigProvider.get(
+					EcoreUtil.getRootContainer(this.contextObject));
+		}
+		return this.generatorConfig;
 	}
 
 	/** Replies the guard evaluation code for the given event.

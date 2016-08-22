@@ -21,6 +21,7 @@
 
 package io.sarl.lang.ui.images;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -53,6 +54,25 @@ public interface IQualifiedNameImageProvider {
 	@Inline("getImageForQualifiedName(($1).toString(), $2)")
 	default Image getImageForQualifiedName(QualifiedName qualifiedName, IJvmTypeProvider jvmTypeProvider) {
 		return getImageForQualifiedName(qualifiedName.toString(), jvmTypeProvider);
+	}
+
+	/** Replies the image descriptor associated to the element with the qualified name.
+	 *
+	 * @param qualifiedName the qualified name.
+	 * @param jvmTypeProvider the provider of types that should be used for retreiving the type description.
+	 * @return the image descriptor.
+	 */
+	ImageDescriptor getImageDescriptorForQualifiedName(String qualifiedName, IJvmTypeProvider jvmTypeProvider);
+
+	/** Replies the image descriptor associated to the element with the qualified name.
+	 *
+	 * @param qualifiedName the qualified name.
+	 * @param jvmTypeProvider the provider of types that should be used for retreiving the type description.
+	 * @return the image descriptor.
+	 */
+	@Inline("getImageDescriptorForQualifiedName(($1).toString(), $2)")
+	default ImageDescriptor getImageDescriptorForQualifiedName(QualifiedName qualifiedName, IJvmTypeProvider jvmTypeProvider) {
+		return getImageDescriptorForQualifiedName(qualifiedName.toString(), jvmTypeProvider);
 	}
 
 }

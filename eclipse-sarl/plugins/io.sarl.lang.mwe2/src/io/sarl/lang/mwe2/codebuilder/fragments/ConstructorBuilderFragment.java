@@ -22,26 +22,18 @@
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
 import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.AbstractRule;
-import org.eclipse.xtext.Assignment;
-import org.eclipse.xtext.Grammar;
-import org.eclipse.xtext.GrammarUtil;
-import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
+
+import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
 /** Generator of the builder for constructors.
  *
@@ -60,34 +52,27 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 	@Override
 	protected Iterable<MemberDescription> getMembers() {
 		if (this.constructor == null) {
-			final AbstractRule rule = getConstructorRule();
-			final String simpleName = Strings.toFirstUpper(rule.getName());
-			final TypeReference builderInterface = getElementBuilderInterface(simpleName);
-			final TypeReference builderImpl = getElementBuilderImpl(simpleName);
-			final TypeReference builderImplCustom = getElementBuilderImplCustom(simpleName);
-			final EClassifier classifier = getGeneratedTypeFor(rule);
-			final TypeReference generatedType = newTypeReference(classifier);
-			this.constructor = new MemberDescription(
-					rule.getName(), simpleName, builderInterface, builderImpl,
-					builderImplCustom, generatedType, null);
-		}
-		return Collections.singletonList(this.constructor);
-	}
-
-	/** Get the constructor rule from the grammar.
-	 *
-	 * @return the top elements.
-	 */
-	protected AbstractRule getConstructorRule() {
-		final Grammar grammar = getGrammar();
-		final Pattern pattern = Pattern.compile(getCodeBuilderConfig().getConstructorGrammarPattern());
-		for (final AbstractRule rule : GrammarUtil.allRules(grammar)) {
-			final Matcher matcher = pattern.matcher(rule.getName());
-			if (matcher.find()) {
-				return rule;
+			for (final CodeElementExtractor.ElementDescription containerDescription : getCodeElementExtractor().getTopElements(
+					getGrammar(), getCodeBuilderConfig())) {
+				final AbstractRule rule = getMemberRule(containerDescription);
+				if (rule != null) {
+					this.constructor = getCodeElementExtractor().visitMemberElements(containerDescription, rule,
+						(it, grammarContainer, memberContainer, classifier) -> {
+							final CodeElementExtractor.ElementDescription memberDescription = it.newElementDescription(
+									classifier.getName(), memberContainer, classifier);
+							return new MemberDescription(memberDescription, containerDescription, false, null);
+						},
+						null);
+					if (this.constructor != null) {
+						break;
+					}
+				}
+			}
+			if (this.constructor == null) {
+				throw new IllegalStateException("No grammar elements for a constructor"); //$NON-NLS-1$
 			}
 		}
-		throw new IllegalStateException("Constructor rule not found"); //$NON-NLS-1$
+		return Collections.singletonList(this.constructor);
 	}
 
 	@Override
@@ -96,50 +81,15 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 		generateBuilderFactoryContributions();
 	}
 
-	/** Replies the rule of a container of constructor.
-	 *
-	 * @return the rule for a constructor's container.
-	 */
-	private AbstractRule getConstructorContainerRule() {
-		final AbstractRule topElementRule = GrammarUtil.findRuleForName(getGrammar(),
-				getCodeBuilderConfig().getTopElementRuleName());
-		for (final RuleCall ruleCall : GrammarUtil.containedRuleCalls(topElementRule)) {
-			AbstractRule memberRule = null;
-			for (final Assignment assignment : GrammarUtil.containedAssignments(ruleCall.getRule())) {
-				if (Objects.equals(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName(), assignment.getFeature())) {
-					if (assignment.getTerminal() instanceof RuleCall) {
-						memberRule = ((RuleCall) assignment.getTerminal()).getRule();
-						break;
-					}
-				}
-			}
-			if (memberRule != null) {
-				final Set<String> treatedRules = getTopElementRules();
-				final AbstractRule foundRule = visitMemberElements(ruleCall.getRule(), memberRule, treatedRules,
-						new Functions.Function2<AbstractRule, AbstractRule, AbstractRule>() {
-							@Override
-							public AbstractRule apply(AbstractRule containerRule, AbstractRule constructorRule) {
-								return containerRule;
-							}
-						}, null);
-				if (foundRule != null) {
-					return foundRule;
-				}
-			}
-		}
-		return null;
-	}
-
 	/** Generate the contributions for the BuildFactory.
 	 */
 	protected void generateBuilderFactoryContributions() {
 		// Get a container
-		final AbstractRule containerRule = getConstructorContainerRule();
 		final String createFunctionName = "create" //$NON-NLS-1$
-				+ Strings.toFirstUpper(this.constructor.getSimpleName());
+				+ Strings.toFirstUpper(this.constructor.getElementDescription().getName());
 		final String createContainerFunctionName = "add" //$NON-NLS-1$
-				+ Strings.toFirstUpper(containerRule.getName());
-		final TypeReference containerBuilder = getElementBuilderInterface(containerRule.getName());
+				+ Strings.toFirstUpper(this.constructor.getContainerDescription().getName());
+		final TypeReference containerBuilder = this.constructor.getContainerDescription().getBuilderInterfaceType();
 		// Generate the contribution.
 		this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 			@SuppressWarnings("synthetic-access")
@@ -159,7 +109,7 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 				it.append(Pure.class);
 				it.newLine();
 				it.append("\tpublic "); //$NON-NLS-1$
-				it.append(ConstructorBuilderFragment.this.constructor.getBuilderInterface());
+				it.append(ConstructorBuilderFragment.this.constructor.getElementDescription().getBuilderInterfaceType());
 				it.append(" "); //$NON-NLS-1$
 				it.append(createFunctionName);
 				it.append("("); //$NON-NLS-1$
@@ -187,7 +137,7 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 				it.append(Pure.class);
 				it.newLine();
 				it.append("\tpublic "); //$NON-NLS-1$
-				it.append(ConstructorBuilderFragment.this.constructor.getBuilderInterface());
+				it.append(ConstructorBuilderFragment.this.constructor.getElementDescription().getBuilderInterfaceType());
 				it.append(" "); //$NON-NLS-1$
 				it.append(createFunctionName);
 				it.append("("); //$NON-NLS-1$
@@ -202,10 +152,10 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 				it.append(containerBuilder);
 				it.append(" containerBuilder = scriptBuilder."); //$NON-NLS-1$
 				it.append(createContainerFunctionName);
-				it.append("(\"FooType\");"); //$NON-NLS-1$
+				it.append("(getFooTypeName());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\treturn containerBuilder.add"); //$NON-NLS-1$
-				it.append(ConstructorBuilderFragment.this.constructor.getSimpleName());
+				it.append(ConstructorBuilderFragment.this.constructor.getElementDescription().getName());
 				it.append("();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
@@ -215,8 +165,9 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 		});
 		if (getCodeBuilderConfig().isISourceAppendableEnable()) {
 			final String buildFunctionName = "build" //$NON-NLS-1$
-					+ Strings.toFirstUpper(this.constructor.getSimpleName());
-			final TypeReference appender = getElementAppenderImpl(this.constructor.getSimpleName());
+					+ Strings.toFirstUpper(this.constructor.getElementDescription().getName());
+			final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl(
+					this.constructor.getElementDescription().getName());
 			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 				@Override
 				protected void appendTo(TargetStringConcatenation it) {

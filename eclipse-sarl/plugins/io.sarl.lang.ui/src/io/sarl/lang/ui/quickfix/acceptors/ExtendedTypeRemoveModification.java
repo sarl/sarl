@@ -25,6 +25,8 @@ import java.text.MessageFormat;
 
 import com.google.common.base.Strings;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
@@ -107,8 +109,9 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 		acceptor.accept(issue,
 				msg,
 				Messages.SARLQuickfixProvider_7,
-				null,
-				modification);
+				JavaPluginImages.IMG_CORRECTION_REMOVE,
+				modification,
+				IProposalRelevance.REMOVE_REDUNDANT_SUPER_INTERFACE);
 	}
 
 	@Override
@@ -116,7 +119,7 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 		final IXtextDocument document = context.getXtextDocument();
 		final SARLQuickfixProvider tools = getTools();
 		final Issue issue = getIssue();
-		final String sep = tools.getGrammarAccess().getCapacityAccess().getCommaKeyword_5_2_0().getValue();
+		final String sep = tools.getGrammarAccess().getCommaKeyword();
 		switch (this.type) {
 		case PRE:
 			tools.removeToPreviousSeparator(issue, document, sep);
@@ -129,8 +132,7 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 			if (!tools.removeToPreviousSeparator(issue, document, sep)) {
 				if (!tools.removeToNextSeparator(issue, document, sep)) {
 					tools.removeToPreviousKeyword(issue, document,
-							tools.getGrammarAccess().getCapacityAccess()
-							.getExtendsKeyword_5_0().getValue());
+							tools.getGrammarAccess().getExtendsKeyword());
 				}
 			}
 		}

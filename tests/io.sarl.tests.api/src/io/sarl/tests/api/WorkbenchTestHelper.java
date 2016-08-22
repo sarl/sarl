@@ -71,6 +71,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -1023,6 +1024,14 @@ public class WorkbenchTestHelper {
 	 */
 	public static String pathStr(String... path) {
 		return path(path).toOSString();
+	}
+
+	/** Replies the Eclipse shell used by this workbench.
+	 *
+	 * @return the shell.
+	 */
+	public Shell getShell() {
+		return this.workbench.getActiveWorkbenchWindow().getShell();
 	}
 
 	/** Factory of a project.

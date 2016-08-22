@@ -26,7 +26,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** Annotation for marking a function that causes an early exit
+/** Annotation for marking a function or an event that causes an early exit
  * in the calling function.
  *
  * <p>For example, the <code>return</code> keyword is a function that
@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@Target({ ElementType.METHOD })
+@Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.CLASS)
 public @interface EarlyExit {
 	//

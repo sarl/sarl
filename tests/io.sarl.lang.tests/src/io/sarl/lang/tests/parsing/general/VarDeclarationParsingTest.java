@@ -15,11 +15,11 @@
  */
 package io.sarl.lang.tests.parsing.general;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.google.common.base.Strings;
+import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
@@ -54,13 +54,9 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		));
 		validate(mas)
 			.assertError(
-				SarlPackage.eINSTANCE.getSarlField(),
+				SarlPackage.eINSTANCE.getSarlAgent(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
-				"no viable alternative at input 'List'")
-			.assertError(
-				SarlPackage.eINSTANCE.getSarlField(),
-				Diagnostic.SYNTAX_DIAGNOSTIC,
-				"no viable alternative at input 'double'");
+				"mismatched input '<' expecting '}");
 	}
 
 	@Test
@@ -165,13 +161,9 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 		));
 		validate(mas)
 			.assertError(
-				SarlPackage.eINSTANCE.getSarlField(),
+				SarlPackage.eINSTANCE.getSarlAgent(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
-				"no viable alternative at input 'List'")
-			.assertError(
-				SarlPackage.eINSTANCE.getSarlField(),
-				Diagnostic.SYNTAX_DIAGNOSTIC,
-				"no viable alternative at input 'double'");
+				"mismatched input '<' expecting '}");
 	}
 
 	@Test
@@ -275,9 +267,9 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		validate(mas).assertError(
-			SarlPackage.eINSTANCE.getSarlAgent(),
+			XbasePackage.eINSTANCE.getXFeatureCall(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"mismatched input '{' expecting '}'");
+			"missing ';' at 'i'");
 	}
 
 	@Test
@@ -361,9 +353,9 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		validate(mas).assertError(
-			SarlPackage.eINSTANCE.getSarlAgent(),
+			TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"mismatched input '{' expecting '}'");
+			"missing ':' at 'e'");
 	}
 
 	@Test
@@ -413,9 +405,9 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		validate(mas).assertError(
-			SarlPackage.eINSTANCE.getSarlAgent(),
+			TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"mismatched input '{' expecting '}'");
+			"missing ':' at 'e'");
 	}
 
 	@Test
@@ -465,9 +457,9 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 			"}"
 		));
 		validate(mas).assertError(
-			SarlPackage.eINSTANCE.getSarlAgent(),
+			XbasePackage.eINSTANCE.getXClosure(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
-			"mismatched input '{' expecting '}'");
+			"mismatched input ',' expecting ']'");
 	}
 
 	@Test

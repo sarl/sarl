@@ -38,128 +38,268 @@ ruleSarlScript:
 
 // Rule Type
 ruleType:
-	(
-		ruleEvent
-		    |
-		ruleCapacity
-		    |
-		ruleAgent
-		    |
-		ruleBehavior
-		    |
-		ruleSkill
-		    |
-		ruleClass
-		    |
-		ruleInterface
-		    |
-		ruleEnum
-		    |
-		ruleAnnotationType
-	)
-;
-
-// Rule Member
-ruleMember:
-	(
-		ruleField
-		    |
-		ruleConstructor
-		    |
-		ruleAction
-		    |
-		ruleClass
-		    |
-		ruleInterface
-		    |
-		ruleEnum
-		    |
-		ruleAnnotationType
-	)
-;
-
-// Rule Field
-ruleField:
 	ruleXAnnotation
 	*
-	ruleCommonModifier
+	(
+		ruleCommonModifier
+		*
+		'event'
+		ruleValidID
+		(
+			'extends'
+			ruleJvmParameterizedTypeReference
+		)?
+		(
+			'{'
+			ruleEventMember
+			*
+			'}'
+		)?
+		    |
+		ruleCommonModifier
+		*
+		'capacity'
+		ruleValidID
+		(
+			'extends'
+			ruleJvmParameterizedTypeReference
+			(
+				','
+				ruleJvmParameterizedTypeReference
+			)*
+		)?
+		'{'
+		ruleCapacityMember
+		*
+		'}'
+		    |
+		ruleCommonModifier
+		*
+		'agent'
+		ruleValidID
+		(
+			'extends'
+			ruleJvmParameterizedTypeReference
+		)?
+		'{'
+		ruleAOPMember
+		*
+		'}'
+		    |
+		ruleCommonModifier
+		*
+		'behavior'
+		ruleValidID
+		(
+			'extends'
+			ruleJvmParameterizedTypeReference
+		)?
+		'{'
+		ruleAOPMember
+		*
+		'}'
+		    |
+		ruleCommonModifier
+		*
+		'skill'
+		ruleValidID
+		((
+			'extends'
+			ruleJvmParameterizedTypeReference
+		)?
+		    |
+		(
+			'implements'
+			ruleJvmParameterizedTypeReference
+			(
+				','
+				ruleJvmParameterizedTypeReference
+			)*
+		)?
+		)*
+		'{'
+		ruleAOPMember
+		*
+		'}'
+		    |
+		ruleCommonModifier
+		*
+		'space'
+		ruleValidID
+		'{'
+		'}'
+		    |
+		ruleCommonModifier
+		*
+		'class'
+		ruleValidID
+		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		((
+			'extends'
+			ruleJvmParameterizedTypeReference
+		)?
+		    |
+		(
+			'implements'
+			ruleJvmParameterizedTypeReference
+			(
+				','
+				ruleJvmParameterizedTypeReference
+			)*
+		)?
+		)*
+		'{'
+		ruleMember
+		*
+		'}'
+		    |
+		ruleCommonModifier
+		*
+		'interface'
+		ruleValidID
+		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		(
+			'extends'
+			ruleJvmParameterizedTypeReference
+			(
+				','
+				ruleJvmParameterizedTypeReference
+			)*
+		)?
+		'{'
+		ruleMember
+		*
+		'}'
+		    |
+		ruleCommonModifier
+		*
+		'enum'
+		ruleValidID
+		'{'
+		(
+			ruleXtendEnumLiteral
+			(
+				','
+				ruleXtendEnumLiteral
+			)*
+		)?
+		';'?
+		'}'
+		    |
+		ruleCommonModifier
+		*
+		'annotation'
+		ruleValidID
+		'{'
+		ruleAnnotationField
+		*
+		'}'
+	)
+;
+
+// Rule EventMember
+ruleEventMember:
+	ruleXAnnotation
 	*
 	(
-		'extension'
-		ruleFieldModifier
 		ruleCommonModifier
 		*
 		(
-			(ruleValidID
-			':'
-			ruleJvmTypeReference
-			)=>
+			'extension'
+			(
+				ruleFieldModifier
+				    |
+				ruleCommonModifier
+			)*
 			ruleValidID
 			':'
 			ruleJvmTypeReference
-		)
-		    |
-		ruleFieldModifier
-		ruleCommonModifier
-		*
-		(
+			    |
+			ruleFieldModifier
+			ruleCommonModifier
+			*
 			(
-				(ruleValidID
-				':'
-				ruleJvmTypeReference
-				)=>
+				'extension'
 				ruleValidID
 				':'
 				ruleJvmTypeReference
+				    |
+				ruleValidID
+				(
+					':'
+					ruleJvmTypeReference
+				)?
 			)
-			    |
-			ruleValidID
 		)
-	)
-	(
-		'='
-		ruleXExpression
-	)?
-	';'?
-;
-
-// Rule AnnotationField
-ruleAnnotationField:
-	(
-		ruleXAnnotation
-		*
-		ruleCommonModifier
-		*
-		ruleFieldModifier
-		ruleCommonModifier
-		*
-		(
-			(ruleValidID
-			)=>
-			ruleValidID
-		)
-		(
-			':'
-			ruleJvmTypeReference
-		)?
 		(
 			'='
-			ruleXAnnotationElementValue
+			ruleXExpression
 		)?
 		';'?
 		    |
-		ruleClass
+		ruleCommonModifier
+		*
+		'new'
+		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		(
+			'('
+			(
+				ruleParameter
+				(
+					','
+					ruleParameter
+				)*
+			)?
+			')'
+		)?
+		((
+			'throws'
+			ruleJvmTypeReference
+			(
+				','
+				ruleJvmTypeReference
+			)*
+		)?
 		    |
-		ruleInterface
-		    |
-		ruleEnum
-		    |
-		ruleAnnotationType
+		(
+			'with'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+		)?
+		)*
+		ruleXBlockExpression
 	)
 ;
 
-// Rule Action
-ruleAction:
+// Rule CapacityMember
+ruleCapacityMember:
 	ruleXAnnotation
 	*
 	ruleCommonModifier
@@ -182,10 +322,7 @@ ruleAction:
 		(
 			ruleParameter
 			(
-				(
-					(',')=>
-					','
-				)
+				','
 				ruleParameter
 			)*
 		)?
@@ -227,370 +364,613 @@ ruleAction:
 	)?
 	)*
 	(
-		((
-			ruleXBlockExpression
-			    |
-			';'
-		)
-		)=>
-		(
-			ruleXBlockExpression
-			    |
-			';'
-		)
+		ruleXBlockExpression
+		    |
+		';'
 	)?
 ;
 
-// Rule Constructor
-ruleConstructor:
+// Rule AOPMember
+ruleAOPMember:
 	ruleXAnnotation
 	*
-	ruleCommonModifier
-	*
-	'new'
 	(
-		'<'
-		ruleJvmTypeParameter
+		'on'
+		ruleJvmParameterizedTypeReference
+		(
+			'['
+			ruleXExpression
+			']'
+		)?
+		ruleXBlockExpression
+		    |
+		'uses'
+		ruleJvmParameterizedTypeReference
 		(
 			','
-			ruleJvmTypeParameter
+			ruleJvmParameterizedTypeReference
 		)*
-		'>'
-	)?
-	(
-		'('
+		';'?
+		    |
+		'requires'
+		ruleJvmParameterizedTypeReference
 		(
-			ruleParameter
+			','
+			ruleJvmParameterizedTypeReference
+		)*
+		';'?
+		    |
+		ruleCommonModifier
+		*
+		(
+			'extension'
 			(
+				ruleFieldModifier
+				    |
+				ruleCommonModifier
+			)*
+			ruleValidID
+			':'
+			ruleJvmTypeReference
+			    |
+			ruleFieldModifier
+			ruleCommonModifier
+			*
+			(
+				'extension'
+				ruleValidID
+				':'
+				ruleJvmTypeReference
+				    |
+				ruleValidID
 				(
-					(',')=>
-					','
-				)
+					':'
+					ruleJvmTypeReference
+				)?
+			)
+		)
+		(
+			'='
+			ruleXExpression
+		)?
+		';'?
+		    |
+		ruleCommonModifier
+		*
+		'new'
+		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		(
+			'('
+			(
 				ruleParameter
+				(
+					','
+					ruleParameter
+				)*
+			)?
+			')'
+		)?
+		((
+			'throws'
+			ruleJvmTypeReference
+			(
+				','
+				ruleJvmTypeReference
 			)*
 		)?
-		')'
-	)?
-	((
-		'throws'
-		ruleJvmTypeReference
+		    |
 		(
-			','
-			ruleJvmTypeReference
-		)*
-	)?
-	    |
-	(
-		'with'
-		ruleJvmTypeParameter
-		(
-			','
+			'with'
 			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+		)?
 		)*
-	)?
-	)*
-	(
-		(ruleXBlockExpression
-		)=>
 		ruleXBlockExpression
-	)
-;
-
-// Rule BehaviorUnit
-ruleBehaviorUnit:
-	ruleXAnnotation
-	*
-	'on'
-	ruleJvmParameterizedTypeReference
-	(
+		    |
+		ruleCommonModifier
+		*
+		ruleMethodModifier
 		(
-			('[')=>
-			'['
-		)
-		ruleXExpression
-		']'
-	)?
-	ruleXBlockExpression
-;
-
-// Rule CapacityUses
-ruleCapacityUses:
-	'uses'
-	ruleJvmParameterizedTypeReference
-	(
-		','
-		ruleJvmParameterizedTypeReference
-	)*
-	';'?
-;
-
-// Rule RequiredCapacity
-ruleRequiredCapacity:
-	'requires'
-	ruleJvmParameterizedTypeReference
-	(
-		','
-		ruleJvmParameterizedTypeReference
-	)*
-	';'?
-;
-
-// Rule Class
-ruleClass:
-	ruleXAnnotation
-	*
-	ruleCommonModifier
-	*
-	'class'
-	ruleValidID
-	(
-		'<'
-		ruleJvmTypeParameter
+			ruleCommonModifier
+			    |
+			ruleMethodModifier
+		)*
 		(
-			','
+			'<'
 			ruleJvmTypeParameter
-		)*
-		'>'
-	)?
-	(
-		'extends'
-		ruleJvmParameterizedTypeReference
-	)?
-	(
-		'implements'
-		ruleJvmParameterizedTypeReference
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		ruleFunctionID
 		(
-			','
-			ruleJvmParameterizedTypeReference
-		)*
-	)?
-	'{'
-	ruleMember
-	*
-	'}'
-;
-
-// Rule Interface
-ruleInterface:
-	ruleXAnnotation
-	*
-	ruleCommonModifier
-	*
-	'interface'
-	ruleValidID
-	(
-		'<'
-		ruleJvmTypeParameter
+			'('
+			(
+				ruleParameter
+				(
+					','
+					ruleParameter
+				)*
+			)?
+			')'
+		)?
 		(
-			','
+			':'
+			(
+				ruleTypeReferenceWithTypeArgs
+				    |
+				ruleTypeReferenceNoTypeArgs
+			)
+		)?
+		((
+			'throws'
+			ruleJvmTypeReference
+			(
+				','
+				ruleJvmTypeReference
+			)*
+		)?
+		    |
+		(
+			'fires'
+			ruleJvmTypeReference
+			(
+				','
+				ruleJvmTypeReference
+			)*
+		)?
+		    |
+		(
+			'with'
 			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+		)?
 		)*
-		'>'
-	)?
-	(
-		'extends'
-		ruleJvmParameterizedTypeReference
 		(
-			','
+			ruleXBlockExpression
+			    |
+			';'
+		)?
+		    |
+		ruleCommonModifier
+		*
+		'class'
+		ruleValidID
+		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		((
+			'extends'
 			ruleJvmParameterizedTypeReference
-		)*
-	)?
-	'{'
-	ruleMember
-	*
-	'}'
-;
-
-// Rule Enum
-ruleEnum:
-	ruleXAnnotation
-	*
-	ruleCommonModifier
-	*
-	'enum'
-	ruleValidID
-	'{'
-	(
-		ruleXtendEnumLiteral
+		)?
+		    |
 		(
-			','
-			ruleXtendEnumLiteral
+			'implements'
+			ruleJvmParameterizedTypeReference
+			(
+				','
+				ruleJvmParameterizedTypeReference
+			)*
+		)?
 		)*
-	)?
-	';'?
-	'}'
-;
-
-// Rule AnnotationType
-ruleAnnotationType:
-	ruleXAnnotation
-	*
-	ruleCommonModifier
-	*
-	'annotation'
-	ruleValidID
-	'{'
-	ruleAnnotationField
-	*
-	'}'
-;
-
-// Rule Event
-ruleEvent:
-	ruleXAnnotation
-	*
-	ruleCommonModifier
-	*
-	'event'
-	ruleValidID
-	(
-		'extends'
-		ruleJvmParameterizedTypeReference
-	)?
-	(
 		'{'
-		ruleEventMember
+		ruleMember
 		*
 		'}'
-	)?
-;
-
-// Rule EventMember
-ruleEventMember:
-	(
-		ruleField
 		    |
-		ruleConstructor
-	)
-;
-
-// Rule Agent
-ruleAgent:
-	ruleXAnnotation
-	*
-	ruleCommonModifier
-	*
-	'agent'
-	ruleValidID
-	(
-		'extends'
-		ruleJvmParameterizedTypeReference
-	)?
-	'{'
-	ruleAgentMember
-	*
-	'}'
-;
-
-// Rule AgentMember
-ruleAgentMember:
-	(
-		ruleMember
-		    |
-		ruleBehaviorUnit
-		    |
-		ruleCapacityUses
-		    |
-		ruleRequiredCapacity
-	)
-;
-
-// Rule Capacity
-ruleCapacity:
-	ruleXAnnotation
-	*
-	ruleCommonModifier
-	*
-	'capacity'
-	ruleValidID
-	(
-		'extends'
-		ruleJvmParameterizedTypeReference
+		ruleCommonModifier
+		*
+		'interface'
+		ruleValidID
 		(
-			','
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		(
+			'extends'
 			ruleJvmParameterizedTypeReference
-		)*
-	)?
-	'{'
-	ruleCapacityMember
-	*
-	'}'
-;
-
-// Rule CapacityMember
-ruleCapacityMember:
-	ruleAction
-;
-
-// Rule Behavior
-ruleBehavior:
-	ruleXAnnotation
-	*
-	ruleCommonModifier
-	*
-	'behavior'
-	ruleValidID
-	(
-		'extends'
-		ruleJvmParameterizedTypeReference
-	)?
-	'{'
-	ruleBehaviorMember
-	*
-	'}'
-;
-
-// Rule BehaviorMember
-ruleBehaviorMember:
-	(
+			(
+				','
+				ruleJvmParameterizedTypeReference
+			)*
+		)?
+		'{'
 		ruleMember
+		*
+		'}'
 		    |
-		ruleBehaviorUnit
+		ruleCommonModifier
+		*
+		'enum'
+		ruleValidID
+		'{'
+		(
+			ruleXtendEnumLiteral
+			(
+				','
+				ruleXtendEnumLiteral
+			)*
+		)?
+		';'?
+		'}'
 		    |
-		ruleCapacityUses
-		    |
-		ruleRequiredCapacity
+		ruleCommonModifier
+		*
+		'annotation'
+		ruleValidID
+		'{'
+		ruleAnnotationField
+		*
+		'}'
 	)
 ;
 
-// Rule Skill
-ruleSkill:
+// Rule Member
+ruleMember:
 	ruleXAnnotation
 	*
-	ruleCommonModifier
-	*
-	'skill'
-	ruleValidID
-	((
-		'extends'
-		ruleJvmParameterizedTypeReference
-	)?
-	    |
 	(
-		'implements'
-		ruleJvmParameterizedTypeReference
+		ruleCommonModifier
+		*
 		(
-			','
-			ruleJvmParameterizedTypeReference
+			'extension'
+			(
+				ruleFieldModifier
+				    |
+				ruleCommonModifier
+			)*
+			ruleValidID
+			':'
+			ruleJvmTypeReference
+			    |
+			ruleFieldModifier
+			ruleCommonModifier
+			*
+			(
+				'extension'
+				ruleValidID
+				':'
+				ruleJvmTypeReference
+				    |
+				ruleValidID
+				(
+					':'
+					ruleJvmTypeReference
+				)?
+			)
+		)
+		(
+			'='
+			ruleXExpression
+		)?
+		';'?
+		    |
+		ruleCommonModifier
+		*
+		'new'
+		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		(
+			'('
+			(
+				ruleParameter
+				(
+					','
+					ruleParameter
+				)*
+			)?
+			')'
+		)?
+		((
+			'throws'
+			ruleJvmTypeReference
+			(
+				','
+				ruleJvmTypeReference
+			)*
+		)?
+		    |
+		(
+			'with'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+		)?
 		)*
-	)?
-	)*
-	'{'
-	ruleSkillMember
-	*
-	'}'
+		ruleXBlockExpression
+		    |
+		ruleCommonModifier
+		*
+		ruleMethodModifier
+		(
+			ruleCommonModifier
+			    |
+			ruleMethodModifier
+		)*
+		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		ruleFunctionID
+		(
+			'('
+			(
+				ruleParameter
+				(
+					','
+					ruleParameter
+				)*
+			)?
+			')'
+		)?
+		(
+			':'
+			(
+				ruleTypeReferenceWithTypeArgs
+				    |
+				ruleTypeReferenceNoTypeArgs
+			)
+		)?
+		((
+			'throws'
+			ruleJvmTypeReference
+			(
+				','
+				ruleJvmTypeReference
+			)*
+		)?
+		    |
+		(
+			'fires'
+			ruleJvmTypeReference
+			(
+				','
+				ruleJvmTypeReference
+			)*
+		)?
+		    |
+		(
+			'with'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+		)?
+		)*
+		(
+			ruleXBlockExpression
+			    |
+			';'
+		)?
+		    |
+		ruleCommonModifier
+		*
+		'class'
+		ruleValidID
+		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		((
+			'extends'
+			ruleJvmParameterizedTypeReference
+		)?
+		    |
+		(
+			'implements'
+			ruleJvmParameterizedTypeReference
+			(
+				','
+				ruleJvmParameterizedTypeReference
+			)*
+		)?
+		)*
+		'{'
+		ruleMember
+		*
+		'}'
+		    |
+		ruleCommonModifier
+		*
+		'interface'
+		ruleValidID
+		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		(
+			'extends'
+			ruleJvmParameterizedTypeReference
+			(
+				','
+				ruleJvmParameterizedTypeReference
+			)*
+		)?
+		'{'
+		ruleMember
+		*
+		'}'
+		    |
+		ruleCommonModifier
+		*
+		'enum'
+		ruleValidID
+		'{'
+		(
+			ruleXtendEnumLiteral
+			(
+				','
+				ruleXtendEnumLiteral
+			)*
+		)?
+		';'?
+		'}'
+		    |
+		ruleCommonModifier
+		*
+		'annotation'
+		ruleValidID
+		'{'
+		ruleAnnotationField
+		*
+		'}'
+	)
 ;
 
-// Rule SkillMember
-ruleSkillMember:
+// Rule AnnotationField
+ruleAnnotationField:
+	ruleXAnnotation
+	*
 	(
+		ruleCommonModifier
+		*
+		ruleFieldModifier
+		ruleCommonModifier
+		*
+		ruleValidID
+		(
+			':'
+			ruleJvmTypeReference
+		)?
+		(
+			'='
+			ruleXAnnotationElementValue
+		)?
+		';'?
+		    |
+		ruleCommonModifier
+		*
+		'class'
+		ruleValidID
+		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		((
+			'extends'
+			ruleJvmParameterizedTypeReference
+		)?
+		    |
+		(
+			'implements'
+			ruleJvmParameterizedTypeReference
+			(
+				','
+				ruleJvmParameterizedTypeReference
+			)*
+		)?
+		)*
+		'{'
 		ruleMember
+		*
+		'}'
 		    |
-		ruleBehaviorUnit
+		ruleCommonModifier
+		*
+		'interface'
+		ruleValidID
+		(
+			'<'
+			ruleJvmTypeParameter
+			(
+				','
+				ruleJvmTypeParameter
+			)*
+			'>'
+		)?
+		(
+			'extends'
+			ruleJvmParameterizedTypeReference
+			(
+				','
+				ruleJvmParameterizedTypeReference
+			)*
+		)?
+		'{'
+		ruleMember
+		*
+		'}'
 		    |
-		ruleCapacityUses
+		ruleCommonModifier
+		*
+		'enum'
+		ruleValidID
+		'{'
+		(
+			ruleXtendEnumLiteral
+			(
+				','
+				ruleXtendEnumLiteral
+			)*
+		)?
+		';'?
+		'}'
 		    |
-		ruleRequiredCapacity
+		ruleCommonModifier
+		*
+		'annotation'
+		ruleValidID
+		'{'
+		ruleAnnotationField
+		*
+		'}'
 	)
 ;
 
@@ -610,39 +990,53 @@ ruleParameter:
 		'*'
 		    |
 		'='
-		ruleDefaultParameterValue
+		ruleXLiteral
 	)?
 ;
 
-// Rule DefaultParameterValue
-ruleDefaultParameterValue:
-	ruleXLiteral
+// Rule XtendEnumLiteral
+ruleXtendEnumLiteral:
+	ruleValidID
 ;
 
 // Rule XVariableDeclaration
 ruleXVariableDeclaration:
 	(
-		('extension'
-		?
-		(
-			'var'
+		((
+			(
+				'var'
+				    |
+				'val'
+			)
+			'extension'
+			?
 			    |
-			'val'
+			'extension'
+			(
+				'var'
+				    |
+				'val'
+			)
 		)
 		)=>
-		'extension'
-		?
 		(
-			'var'
+			(
+				'var'
+				    |
+				'val'
+			)
+			'extension'
+			?
 			    |
-			'val'
+			'extension'
+			(
+				'var'
+				    |
+				'val'
+			)
 		)
 	)
-	(
-		(ruleInnerVarID
-		)=>
-		ruleInnerVarID
-	)
+	ruleInnerVarID
 	(
 		':'
 		ruleJvmTypeReference
@@ -850,11 +1244,6 @@ ruleOperators:
 		    |
 		ruleOpPostfix
 	)
-;
-
-// Rule XtendEnumLiteral
-ruleXtendEnumLiteral:
-	ruleValidID
 ;
 
 // Rule CommonModifier
@@ -1962,12 +2351,21 @@ ruleXBlockExpression:
 ruleXExpressionOrVarDeclaration:
 	(
 		(
-			('extension'
-			?
-			(
-				'var'
+			((
+				(
+					'var'
+					    |
+					'val'
+				)
+				'extension'
+				?
 				    |
-				'val'
+				'extension'
+				(
+					'var'
+					    |
+					'val'
+				)
 			)
 			)=>
 			ruleXVariableDeclaration

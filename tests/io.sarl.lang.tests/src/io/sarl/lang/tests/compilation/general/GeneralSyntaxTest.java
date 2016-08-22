@@ -19,6 +19,7 @@ import com.google.inject.Inject;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
 import org.junit.Test;
 
+import io.sarl.lang.SARLVersion;
 import io.sarl.tests.api.AbstractSarlTest;
 
 
@@ -43,6 +44,9 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 				"}",
 				"");
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public abstract class Light {",
 				"  public abstract void turnOn();",
@@ -63,6 +67,9 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 				"}",
 				"");
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public interface Light {",
 				"  public abstract void turnOn();",

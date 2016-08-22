@@ -36,10 +36,11 @@ import io.sarl.lang.mwe2.externalspec.latex.*
 import io.sarl.lang.mwe2.externalspec.gtk.* 
 import io.sarl.lang.mwe2.externalspec.gnusrchighlight.* 
 import io.sarl.lang.mwe2.codebuilder.* 
+import io.sarl.lang.mwe2.codebuilder.config.* 
+import io.sarl.lang.mwe2.keywords.* 
 import io.sarl.lang.mwe2.bugfixes.* 
 
 var overallRootPath = "../../.."
-var eclipseRootPath = "../.."
 var rootPath = ".."
 
 var baseName = "io.sarl.lang"
@@ -51,7 +52,7 @@ var uiProjectName = "${baseName}.ui"
 var uiProjectPath = "${rootPath}/${uiProjectName}"
 
 var testProjectName = "io.sarl.tests.api"
-var testProjectPath = "${eclipseRootPath}/tests/${testProjectName}"
+var testProjectPath = "${overallRootPath}/tests/${testProjectName}"
 
 var externalToolPath = "${overallRootPath}/formatting-styles"
 
@@ -155,12 +156,11 @@ Workflow {
 				scriptRuleName = "SarlScript"
 				topElementRuleName = "Type"
 				formalParameterRuleName = "Parameter"
-				formalParameterContainerType = "org.eclipse.xtend.core.xtend.XtendExecutable"
 				multilineCommentedType = "org.eclipse.xtend.core.xtend.XtendMember"
-				constructorFreeRuleName = "Capacity"
-				constructorFreeRuleName = "Interface"
-				constructorFreeRuleName = "Enum"
-				constructorFreeRuleName = "AnnotationType"
+				constructorFreeType = "SarlCapacity"
+				constructorFreeType = "SarlInterface"
+				constructorFreeType = "SarlEnum"
+				constructorFreeType = "SarlAnnotationType"
 				defaultSuper = {
 					type = "SarlAgent"
 					super = "io.sarl.lang.core.Agent"
@@ -195,10 +195,9 @@ Workflow {
 					modifier = "val"
 				}
 			}
-   			// Shared configuration between the generators of syntax highlighting formats
-			highlighting = auto-inject {
-    			addNativeTypes = true
-
+			grammarKeywordAccess = auto-inject {
+				dependencyGrammarInheritance = true
+				
     			literal = "true"
     			literal = "false"
     			literal = "null"
@@ -216,6 +215,12 @@ Workflow {
 				ignoreKeyword = 'FOR'
 				ignoreKeyword = 'IF'
 				ignoreKeyword = 'SEPARATOR'
+			}
+   			// Shared configuration between the generators of syntax highlighting formats
+			highlighting = auto-inject {
+    			addNativeTypes = true
+
+				inheritFromGrammarKeywordAccesss = true
 				
 				specialKeyword = 'package'
 				specialKeyword = 'import'
@@ -303,7 +308,7 @@ Workflow {
 				partialParsing = true
 				debugGrammar = true
 				options = auto-inject {
-					backtrack = true
+					//backtrack = true
 				}
 			}
 
@@ -392,6 +397,10 @@ Workflow {
 				generateStub = false
 			}
 
+			// Generate an helpful accessors to the grammar keywords.
+			fragment = GrammarKeywordAccessFragment2 auto-inject {
+			}
+
 			// Generate the Google Prettify style
     		fragment = GooglePrettifyGenerator2 auto-inject {
 				output = prettifyToolPath
@@ -443,10 +452,6 @@ Workflow {
     				to = "io.sarl.lang.validation.SARLEarlyExitValidator"
     			}
     			runtime = {
-    				bind = "org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer"
-    				to = "io.sarl.lang.controlflow.SARLExtendedEarlyExitComputer"
-    			}
-    			runtime = {
     				bind = "io.sarl.lang.typesystem.SARLExpressionHelper"
     				to = "io.sarl.lang.typesystem.SARLExpressionHelper"
     			}
@@ -467,12 +472,20 @@ Workflow {
     				to = "io.sarl.lang.controlflow.SARLEarlyExitComputer"
     			}
     			runtime = {
+    				bind = "io.sarl.lang.controlflow.ISarlEarlyExitComputer"
+    				to = "io.sarl.lang.controlflow.SARLEarlyExitComputer"
+    			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.xbase.typesystem.util.ExtendedEarlyExitComputer"
+    				to = "io.sarl.lang.controlflow.ExtendedSARLEarlyExitComputer"
+    			}
+    			runtime = {
     				bind = "org.eclipse.xtext.xbase.jvmmodel.IJvmModelInferrer"
     				to = "io.sarl.lang.jvmmodel.SARLJvmModelInferrer"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures"
-    				to = "io.sarl.lang.scoping.batch.SARLImplicitlyImportedFeatures"
+    				to = "io.sarl.lang.scoping.SARLImplicitlyImportedFeatures"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.generator.IOutputConfigurationProvider"
@@ -591,6 +604,22 @@ Workflow {
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.contentassist.ITemplateProposalProvider"
     				to = "io.sarl.lang.ui.contentassist.SARLTemplateProposalProvider"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.refactoring.IRenameStrategy$Provider"
+    				to = "io.sarl.lang.ui.refactoring.rename.SARLRenameStrategyProvider"
+    				override = true
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.IImageHelper"
+    				to = "io.sarl.lang.ui.images.QualifiedPluginImageHelper"
+    				override = true
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.IImageHelper$IImageDescriptorHelper"
+    				to = "io.sarl.lang.ui.images.QualifiedPluginImageHelper"
+    				override = true
+    				functionName = "bindIImageDescriptorHelper"
     			}
 
     			both = {
@@ -748,6 +777,16 @@ Workflow {
     				singleton = true
     				instance = true
     			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.parser.antlr.ISyntaxErrorMessageProvider"
+    				to = "io.sarl.lang.parser.SARLSyntaxErrorMessageProvider"
+    				singleton = true
+    			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.parser.antlr.SyntaxErrorMessageProvider"
+    				to = "io.sarl.lang.parser.SARLSyntaxErrorMessageProvider"
+    				singleton = true
+    			}
     			
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategyProvider"
@@ -851,7 +890,7 @@ Workflow {
 		}
  	}
  
- 	// SARL Ecore generator
+   	// SARL Ecore generator
 	component = org.eclipse.emf.mwe2.ecore.EcoreGenerator auto-inject {
 		resourceSet = resourceSet
 		genModel = "platform:/resource/${runtimeProjectName}/model/SARL.genmodel"
@@ -862,5 +901,6 @@ Workflow {
 		srcPath ="platform:/resource/org.eclipse.xtend.ide/src"
 		lineDelimiter = lineDelimiter
 	}
+ 
 
  }

@@ -35,10 +35,8 @@ import javax.inject.Provider;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
-import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.GrammarUtil;
-import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
@@ -49,6 +47,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
+
+import io.sarl.lang.mwe2.codebuilder.extractor.CodeElementExtractor;
 
 /** Generator of the builder for members.
  *
@@ -84,17 +84,10 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	@Override
 	public void generateBindings(BindingFactory factory) {
 		super.generateBindings(factory);
-		final IFileSystemAccess2 fileSystem = getSrc();
-		TypeReference type;
-
 		for (final MemberDescription description : getMembers()) {
-			if ((fileSystem.isFile(description.getBuilderCustomImplementation().getJavaPath()))
-					|| (fileSystem.isFile(description.getBuilderCustomImplementation().getXtendPath()))) {
-				type = description.getBuilderCustomImplementation();
-			} else {
-				type = description.getBuilderImplementation();
+			if (!description.isTopElement()) {
+				bindElementDescription(factory, description.getElementDescription());
 			}
-			factory.addfinalTypeToType(description.getBuilderInterface(), type);
 		}
 	}
 
@@ -103,12 +96,15 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	 * @param description the description of the member.
 	 */
 	protected void generateIMemberBuilder(MemberDescription description) {
-		final TypeReference builder = description.getBuilderInterface();
+		if (description.isTopElement()) {
+			return;
+		}
+		final TypeReference builder = description.getElementDescription().getBuilderInterfaceType();
 		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-						+ " " + description.getSimpleName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
+						+ " " + description.getElementDescription().getName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -134,13 +130,16 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	 * @param description the description of the member.
 	 */
 	protected void generateMemberBuilderImpl(MemberDescription description) {
-		final TypeReference builderInterface = description.getBuilderInterface();
-		final TypeReference builder = description.getBuilderImplementation();
+		if (description.isTopElement()) {
+			return;
+		}
+		final TypeReference builderInterface = description.getElementDescription().getBuilderInterfaceType();
+		final TypeReference builder = description.getElementDescription().getBuilderImplementationType();
 		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Builder of a " + getLanguageName() //$NON-NLS-1$
-						+ " " + description.getSimpleName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
+						+ " " + description.getElementDescription().getName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -170,13 +169,16 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	 * @param description the description of the member.
 	 */
 	protected void generateMemberAppender(MemberDescription description) {
-		final TypeReference appender = getElementAppenderImpl(description.getSimpleName());
+		if (description.isTopElement()) {
+			return;
+		}
+		final TypeReference appender = description.getElementDescription().getAppenderType();
 		final String generatedFieldAccessor = getGeneratedMemberAccessor(description);
 		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				it.append("/** Source appender of a " + getLanguageName() //$NON-NLS-1$
-						+ " " + description.getSimpleName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
+						+ " " + description.getElementDescription().getName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine();
 				it.append(" */"); //$NON-NLS-1$
 				it.newLine();
@@ -185,14 +187,14 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				it.append("public class "); //$NON-NLS-1$
 				it.append(appender.getSimpleName());
 				it.append(" extends "); //$NON-NLS-1$
-				it.append(getAbstractAppenderImpl());
+				it.append(getCodeElementExtractor().getAbstractAppenderImpl());
 				it.append(" implements "); //$NON-NLS-1$
-				it.append(description.getBuilderInterface());
+				it.append(description.getElementDescription().getBuilderInterfaceType());
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append(generateAppenderMembers(appender.getSimpleName(),
-						description.getBuilderInterface(), generatedFieldAccessor));
+						description.getElementDescription().getBuilderInterfaceType(), generatedFieldAccessor));
 				it.append(generateMembers(description, false, true));
 				it.append("}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -211,7 +213,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	@SuppressWarnings("static-method")
 	protected String getGeneratedMemberAccessor(MemberDescription description) {
 		return "get" //$NON-NLS-1$
-				+ Strings.toFirstUpper(description.getGeneratedType().getSimpleName()) + "()"; //$NON-NLS-1$
+				+ Strings.toFirstUpper(description.getElementDescription().getElementType().getSimpleName()) + "()"; //$NON-NLS-1$
 	}
 
 	/** Generate the members of the builder.
@@ -224,7 +226,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateMembers(MemberDescription description, boolean forInterface,
 			boolean forAppender) {
-		final TypeReference generatedType = description.getGeneratedType();
+		final TypeReference generatedType = description.getElementDescription().getElementType();
 		final String generatedFieldName = Strings.toFirstLower(generatedType.getSimpleName());
 		final String generatedFieldAccessor = getGeneratedMemberAccessor(description);
 
@@ -239,8 +241,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		final AtomicBoolean isAnnotated = new AtomicBoolean(false);
 		final AtomicBoolean hasModifiers = new AtomicBoolean(false);
 		final List<String> expressions = new ArrayList<>();
-		AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), description.getRuleName());
-		for (Assignment assignment : GrammarUtil.containedAssignments(rule)) {
+		for (Assignment assignment : GrammarUtil.containedAssignments(description.getElementDescription().getGrammarComponent())) {
 			if (Objects.equals(getCodeBuilderConfig().getModifierListGrammarName(), assignment.getFeature())) {
 				hasModifiers.set(true);
 			} else if (Objects.equals(getCodeBuilderConfig().getAnnotationListGrammarName(), assignment.getFeature())) {
@@ -267,10 +268,10 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				hasReturnType.set(true);
 			} else if (Objects.equals(getCodeBuilderConfig().getMemberBlockExpressionExtensionGrammarName(),
 					assignment.getFeature())) {
-				if (nameMatches(assignment.getTerminal(), getCodeBuilderConfig().getBlockExpressionGrammarPattern())) {
+				if (nameMatches(assignment.getTerminal(), getCodeBuilderConfig().getExpression().getBlockExpressionGrammarPattern())) {
 					hasBlock.set(true);
 				}
-			} else if (nameMatches(assignment.getTerminal(), getCodeBuilderConfig().getExpressionGrammarPattern())) {
+			} else if (nameMatches(assignment.getTerminal(), getCodeBuilderConfig().getExpression().getExpressionGrammarPattern())) {
 				expressions.add(assignment.getFeature());
 			}
 		}
@@ -322,7 +323,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				it.append("\t/** Initialize the Ecore element."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param container - the container of the " //$NON-NLS-1$
-						+ description.getSimpleName() + "."); //$NON-NLS-1$
+						+ description.getElementDescription().getName() + "."); //$NON-NLS-1$
 				it.newLine();
 				if (hasName.get()) {
 					it.append("\t * @param name - the "); //$NON-NLS-1$
@@ -331,7 +332,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					} else {
 						it.append("name"); //$NON-NLS-1$
 					}
-					it.append(" of the " + description.getSimpleName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append(" of the " + description.getElementDescription().getName() + "."); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine();
 				}
 				it.append("\t */"); //$NON-NLS-1$
@@ -341,7 +342,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					it.append("public "); //$NON-NLS-1$
 				}
 				it.append("void eInit("); //$NON-NLS-1$
-				it.append(getLanguageTopElementType());
+				it.append(getCodeElementExtractor().getLanguageTopElementType());
 				it.append(" container"); //$NON-NLS-1$
 				if (hasName.get()) {
 					it.append(", String name"); //$NON-NLS-1$
@@ -919,17 +920,9 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	 */
 	public static class MemberDescription {
 
-		private final String ruleName;
+		private final CodeElementExtractor.ElementDescription element;
 
-		private final String simpleName;
-
-		private final TypeReference interfaceType;
-
-		private final TypeReference implementationType;
-
-		private final TypeReference customImplementationType;
-
-		private final TypeReference generatedType;
+		private final CodeElementExtractor.ElementDescription container;
 
 		private final List<String> modifiers;
 
@@ -937,112 +930,52 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 
 		private final Set<String> noBodyContainers = new HashSet<>();
 
+		private final boolean isTopElement;
+
 		/** Constructor.
 		 *
-		 * @param ruleName the name of the rule.
-		 * @param simpleName the simple name.
-		 * @param interfaceType the type of the builder interface.
-		 * @param implementationType the type of the builder implementation.
-		 * @param customImplementationType the type of the builder custom implementation.
-		 * @param generatedType the type of the generated type.
+		 * @param element general description of the element.
+		 * @param container description of the container.
+		 * @param isTopElement indicates if the element is a top element too.
 		 * @param modifiers the modifiers.
 		 */
-		public MemberDescription(String ruleName, String simpleName,
-				TypeReference interfaceType, TypeReference implementationType,
-				TypeReference customImplementationType, TypeReference generatedType,
+		public MemberDescription(CodeElementExtractor.ElementDescription element,
+				CodeElementExtractor.ElementDescription container,
+				boolean isTopElement,
 				List<String> modifiers) {
-			this.ruleName = ruleName;
-			this.simpleName = simpleName;
-			this.interfaceType = interfaceType;
-			this.implementationType = implementationType;
-			this.customImplementationType = customImplementationType;
-			this.generatedType = generatedType;
+			this.element = element;
+			this.container = container;
+			this.isTopElement = isTopElement;
 			this.modifiers = modifiers;
 		}
 
-		@Override
-		public boolean equals(Object obj) {
-			if (obj instanceof MemberDescription) {
-				final MemberDescription other = (MemberDescription) obj;
-				return Strings.equal(this.ruleName, other.ruleName)
-					&& Strings.equal(this.simpleName, other.simpleName)
-					&& Strings.equal(this.interfaceType.getName(), other.interfaceType.getName())
-					&& Strings.equal(this.implementationType.getName(), other.implementationType.getName())
-					&& Strings.equal(this.customImplementationType.getName(), other.customImplementationType.getName())
-					&& Strings.equal(this.generatedType.getName(), other.generatedType.getName());
-			}
-			return false;
+		/** Replies the element description embedded in this member element description.
+		 *
+		 * @return the element description.
+		 */
+		public CodeElementExtractor.ElementDescription getElementDescription() {
+			return this.element;
 		}
 
-		@Override
-		public int hashCode() {
-			int bits = 1;
-			bits = bits * 31 + Objects.hashCode(this.ruleName);
-			bits = bits * 31 + Objects.hashCode(this.simpleName);
-			bits = bits * 31 + Objects.hashCode(this.interfaceType);
-			bits = bits * 31 + Objects.hashCode(this.implementationType);
-			bits = bits * 31 + Objects.hashCode(this.customImplementationType);
-			bits = bits * 31 + Objects.hashCode(this.generatedType);
-			return bits ^ (bits >> 31);
+		/** Replies the container description embedded in this member element description.
+		 *
+		 * @return the element description.
+		 */
+		public CodeElementExtractor.ElementDescription getContainerDescription() {
+			return this.container;
 		}
 
 		@Override
 		public String toString() {
-			return this.simpleName;
+			return this.element.getName();
 		}
 
-		/** Replies the rule name.
+		/** Replies if this element is a top element too.
 		 *
-		 * @return the rule name.
+		 * @return <code>true</code> if the element is a top element.
 		 */
-		@Pure
-		public String getRuleName() {
-			return this.ruleName;
-		}
-
-		/** Replies the simple name.
-		 *
-		 * @return the simple name.
-		 */
-		@Pure
-		public String getSimpleName() {
-			return this.simpleName;
-		}
-
-		/** Replies the type of the builder interface.
-		 *
-		 * @return the type.
-		 */
-		@Pure
-		public TypeReference getBuilderInterface() {
-			return this.interfaceType;
-		}
-
-		/** Replies the type of the builder implementation.
-		 *
-		 * @return the type.
-		 */
-		@Pure
-		public TypeReference getBuilderImplementation() {
-			return this.implementationType;
-		}
-
-		/** Replies the type of the builder custom implementation.
-		 *
-		 * @return the type.
-		 */
-		@Pure
-		public TypeReference getBuilderCustomImplementation() {
-			return this.customImplementationType;
-		}
-
-		/** Replies the type of the generated type.
-		 *
-		 * @return the type.
-		 */
-		@Pure
-		public TypeReference getGeneratedType() {
-			return this.generatedType;
+		public boolean isTopElement() {
+			return this.isTopElement;
 		}
 
 		/** Replies the modifiers.

@@ -23,6 +23,7 @@ import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
 import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
 import org.junit.Test;
 
+import io.sarl.lang.SARLVersion;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -42,8 +43,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 	public void basicCapacityCompile() throws Exception {
 		String source = "capacity C1 { }";
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"}",
@@ -59,8 +62,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"capacity C1 { }"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"}",
@@ -75,8 +80,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"public capacity C1 { }"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"}",
@@ -91,8 +98,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"private capacity C1 { }"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"interface C1 extends Capacity {",
 				"}",
@@ -111,9 +120,11 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"}"
 			);
 		final String expectedC1 = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void name();",
@@ -121,7 +132,10 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				""
 			);
 		final String expectedC2 = multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"",
 				"@FunctionalInterface",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C2 extends C1 {",
 				"  @Override",
@@ -144,9 +158,11 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void name();",

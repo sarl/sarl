@@ -26,6 +26,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -69,9 +70,11 @@ public class Bug312 {
 					"import io.sarl.lang.annotation.DefaultValueSource;",
 					"import io.sarl.lang.annotation.DefaultValueUse;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Capacity;",
-					"import javax.annotation.Generated;",
 					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  @DefaultValueSource",
@@ -80,8 +83,8 @@ public class Bug312 {
 					"  /**",
 					"   * Default value for the parameter changeHeading1",
 					"   */",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-					"  @SarlSourceCode(\" false\")",
+					"  @SyntheticMember",
+					"  @SarlSourceCode(\"false\")",
 					"  public final static boolean $DEFAULT_VALUE$MOVE_0 = false;",
 					"  ",
 					"  @DefaultValueSource",
@@ -90,16 +93,16 @@ public class Bug312 {
 					"  /**",
 					"   * Default value for the parameter changeHeading2",
 					"   */",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
-					"  @SarlSourceCode(\" false\")",
+					"  @SyntheticMember",
+					"  @SarlSourceCode(\"false\")",
 					"  public final static boolean $DEFAULT_VALUE$MOVE_1 = false;",
 					"  ",
 					"  @DefaultValueUse(\"Vector2f,boolean\")",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public abstract void move(final Vector2f direction1);",
 					"  ",
 					"  @DefaultValueUse(\"Vector2i,boolean\")",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public abstract void move(final Vector2i direction2);",
 					"}",
 					"");

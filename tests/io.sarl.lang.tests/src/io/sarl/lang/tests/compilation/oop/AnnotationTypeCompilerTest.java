@@ -49,6 +49,9 @@ public class AnnotationTypeCompilerTest {
 		public void basic() throws Exception {
 			String source = "annotation A1 { }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"public @interface A1 {",
 					"}",
 					""
@@ -60,6 +63,9 @@ public class AnnotationTypeCompilerTest {
 		public void variable_0() throws Exception {
 			String source = "annotation A1 { var v = 45 }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"public @interface A1 {",
 					"  public int v() default 45;",
 					"}",
@@ -72,6 +78,9 @@ public class AnnotationTypeCompilerTest {
 		public void variable_1() throws Exception {
 			String source = "annotation A1 { var v : int }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"public @interface A1 {",
 					"  public int v();",
 					"}",
@@ -84,6 +93,9 @@ public class AnnotationTypeCompilerTest {
 		public void value_0() throws Exception {
 			String source = "annotation A1 { val v = 45 }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"public @interface A1 {",
 					"  public int v() default 45;",
 					"}",
@@ -96,6 +108,9 @@ public class AnnotationTypeCompilerTest {
 		public void value_1() throws Exception {
 			String source = "annotation A1 { val v : int }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"public @interface A1 {",
 					"  public int v();",
 					"}",
@@ -115,8 +130,12 @@ public class AnnotationTypeCompilerTest {
 		public void basic() throws Exception {
 			String source = "class Container { annotation A1 { } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
+					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  public @interface A1 {",
 					"  }",
 					"}",
@@ -129,8 +148,12 @@ public class AnnotationTypeCompilerTest {
 		public void variable() throws Exception {
 			String source = "class Container { annotation A1 { var v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
+					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  public @interface A1 {",
 					"    public int v() default 45;",
 					"  }",
@@ -144,8 +167,12 @@ public class AnnotationTypeCompilerTest {
 		public void value() throws Exception {
 			String source = "class Container { annotation A1 { val v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
+					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  public @interface A1 {",
 					"    public int v() default 45;",
 					"  }",
@@ -167,15 +194,16 @@ public class AnnotationTypeCompilerTest {
 			String source = "agent Container { annotation A1 { } }";
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
-					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
+					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  protected @interface A1 {",
 					"  }",
 					"  ",
@@ -186,7 +214,7 @@ public class AnnotationTypeCompilerTest {
 					"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 					"   */",
 					"  @Inject",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public Container(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
 					"    super(builtinCapacityProvider, parentID, agentID);",
 					"  }",
@@ -201,15 +229,16 @@ public class AnnotationTypeCompilerTest {
 			String source = "agent Container { annotation A1 { var v = 45 } }";
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
-					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
+					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  protected @interface A1 {",
 					"    public int v() default 45;",
 					"  }",
@@ -221,7 +250,7 @@ public class AnnotationTypeCompilerTest {
 					"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 					"   */",
 					"  @Inject",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public Container(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
 					"    super(builtinCapacityProvider, parentID, agentID);",
 					"  }",
@@ -236,15 +265,16 @@ public class AnnotationTypeCompilerTest {
 			String source = "agent Container { annotation A1 { val v = 45 } }";
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
-					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
+					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  protected @interface A1 {",
 					"    public int v() default 45;",
 					"  }",
@@ -256,7 +286,7 @@ public class AnnotationTypeCompilerTest {
 					"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 					"   */",
 					"  @Inject",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public Container(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
 					"    super(builtinCapacityProvider, parentID, agentID);",
 					"  }",

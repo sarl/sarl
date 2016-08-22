@@ -26,10 +26,10 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.xbase.XExpression;
 
 import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.util.Utils;
 
 
 /** An object able to provide the name and the type of a formal parameter.
@@ -39,15 +39,19 @@ import io.sarl.lang.util.Utils;
 * @mavengroupid $GroupId$
 * @mavenartifactid $ArtifactId$
 */
-public class JvmFormalParameterProvider implements FormalParameterProvider {
+class JvmFormalParameterProvider implements FormalParameterProvider {
 
 	private final List<JvmFormalParameter> parameters;
 
+	private final AnnotationLookup annotationFinder;
+
 	/**
 	 * @param parameters the list of the formal parameters.
+	 * @param annotationFinder the finder of annotations.
 	 */
-	public JvmFormalParameterProvider(List<JvmFormalParameter> parameters) {
+	JvmFormalParameterProvider(List<JvmFormalParameter> parameters, AnnotationLookup annotationFinder) {
 		this.parameters = parameters;
+		this.annotationFinder = annotationFinder;
 	}
 
 	@Override
@@ -73,7 +77,7 @@ public class JvmFormalParameterProvider implements FormalParameterProvider {
 	@Override
 	public boolean hasFormalParameterDefaultValue(int position) {
 		final JvmFormalParameter parameter = this.parameters.get(position);
-		return Utils.hasAnnotation(parameter, DefaultValue.class);
+		return this.annotationFinder.findAnnotation(parameter, DefaultValue.class) != null;
 	}
 
 	@Override

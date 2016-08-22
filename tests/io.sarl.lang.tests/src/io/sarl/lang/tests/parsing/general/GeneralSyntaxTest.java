@@ -15,6 +15,8 @@
  */
 package io.sarl.lang.tests.parsing.general;
 
+import io.sarl.lang.parser.SyntaxIssueCodes;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -69,4 +71,28 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 		validate(mas).assertNoIssues();
 	}
 	
+	@Test
+	public void sarlKeywordAsIdentifier() throws Exception {
+		SarlScript mas = file(multilineString(
+				"package io.sarl.lang.tests.behavior.mypackage",
+				""));
+		validate(mas).assertError(
+				SarlPackage.eINSTANCE.getSarlScript(),
+				SyntaxIssueCodes.USED_RESERVED_KEYWORD,
+				26, 1,
+				"'behavior' is a reserved keyword which is not allowed as identifier.");
+	}
+
+	@Test
+	public void javaKeywordAsIdentifier() throws Exception {
+		SarlScript mas = file(multilineString(
+				"package io.sarl.lang.tests.null.mypackage",
+				""));
+		validate(mas).assertError(
+				SarlPackage.eINSTANCE.getSarlScript(),
+				SyntaxIssueCodes.USED_RESERVED_KEYWORD,
+				26, 1,
+				"'null' is a reserved keyword which is not allowed as identifier.");
+	}
+
 }

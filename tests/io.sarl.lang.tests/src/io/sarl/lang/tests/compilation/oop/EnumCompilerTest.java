@@ -49,6 +49,9 @@ public class EnumCompilerTest {
 		public void basic() throws Exception {
 			String source = "enum E1 { CST1, CST2 }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public enum E1 {",
 					"  CST1,",
@@ -71,8 +74,12 @@ public class EnumCompilerTest {
 		public void basic() throws Exception {
 			String source = "class Container { enum E1 { CST1, CST2 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
+					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  public enum E1 {",
 					"    CST1,",
 					"    ",
@@ -96,15 +103,16 @@ public class EnumCompilerTest {
 			String source = "agent Container { enum E1 { CST1, CST2 } }";
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
 					"import java.util.UUID;",
-					"import javax.annotation.Generated;",
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
+					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  protected enum E1 {",
 					"    CST1,",
 					"    ",
@@ -118,7 +126,7 @@ public class EnumCompilerTest {
 					"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
 					"   */",
 					"  @Inject",
-					"  @Generated(\"io.sarl.lang.jvmmodel.SARLJvmModelInferrer\")",
+					"  @SyntheticMember",
 					"  public Container(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
 					"    super(builtinCapacityProvider, parentID, agentID);",
 					"  }",
