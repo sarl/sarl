@@ -33,6 +33,7 @@ import javax.inject.Provider;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.util.Strings;
@@ -52,6 +53,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 		if (this.sarlBehavior == null) {
 			this.sarlBehavior = SarlFactory.eINSTANCE.createSarlBehavior();
 			script.getXtendTypes().add(this.sarlBehavior);
+			this.sarlBehavior.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
 			if (!Strings.isEmpty(name)) {
 				this.sarlBehavior.setName(name);
 			}

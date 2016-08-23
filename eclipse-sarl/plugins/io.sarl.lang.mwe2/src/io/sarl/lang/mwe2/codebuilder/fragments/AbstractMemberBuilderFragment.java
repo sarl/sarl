@@ -34,6 +34,7 @@ import javax.inject.Provider;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.GrammarUtil;
@@ -380,6 +381,16 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						it.append(Strings.toFirstUpper(generatedType.getSimpleName()));
 						it.append("();"); //$NON-NLS-1$
 						it.newLine();
+						if (description.isAnnotationInfo()) {
+							it.append("\t\t\tthis."); //$NON-NLS-1$
+							it.append(generatedFieldName);
+							it.append(".setAnnotationInfo("); //$NON-NLS-1$
+							it.append(getXFactoryFor(XtendTypeDeclaration.class));
+							it.append(".eINSTANCE.create"); //$NON-NLS-1$
+							it.append(XtendTypeDeclaration.class.getSimpleName());
+							it.append("());"); //$NON-NLS-1$
+							it.newLine();
+						}
 						if (hasName.get()) {
 							it.append("\t\t\tthis."); //$NON-NLS-1$
 							it.append(generatedFieldName);
@@ -932,20 +943,25 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 
 		private final boolean isTopElement;
 
+		private final boolean isAnnotationInfo;
+
 		/** Constructor.
 		 *
 		 * @param element general description of the element.
 		 * @param container description of the container.
 		 * @param isTopElement indicates if the element is a top element too.
+		 * @param annotationInfo indicates if the annotationInfo field is declared in the element.
 		 * @param modifiers the modifiers.
 		 */
 		public MemberDescription(CodeElementExtractor.ElementDescription element,
 				CodeElementExtractor.ElementDescription container,
 				boolean isTopElement,
+				boolean annotationInfo,
 				List<String> modifiers) {
 			this.element = element;
 			this.container = container;
 			this.isTopElement = isTopElement;
+			this.isAnnotationInfo = annotationInfo;
 			this.modifiers = modifiers;
 		}
 
@@ -976,6 +992,14 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 		 */
 		public boolean isTopElement() {
 			return this.isTopElement;
+		}
+
+		/** Replies if this element has the annotationInfo field.
+		 *
+		 * @return <code>true</code> if the field was declared.
+		 */
+		public boolean isAnnotationInfo() {
+			return this.isAnnotationInfo;
 		}
 
 		/** Replies the modifiers.

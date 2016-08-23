@@ -60,7 +60,8 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 						(it, grammarContainer, memberContainer, classifier) -> {
 							final CodeElementExtractor.ElementDescription memberDescription = it.newElementDescription(
 									classifier.getName(), memberContainer, classifier);
-							return new MemberDescription(memberDescription, containerDescription, false, null);
+							return new MemberDescription(memberDescription, containerDescription, false,
+									memberDescription.isAnnotationInfo(), null);
 						},
 						null);
 					if (this.constructor != null) {

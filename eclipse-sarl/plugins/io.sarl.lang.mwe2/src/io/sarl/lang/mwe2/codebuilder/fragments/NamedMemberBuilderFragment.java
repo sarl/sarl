@@ -81,6 +81,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 											elementDescription,
 											containerDescription,
 											topElements.contains(elementDescription),
+											elementDescription.isAnnotationInfo(),
 											modifiers);
 									NamedMemberBuilderFragment.this.members.put(memberName, memberDescription);
 								}

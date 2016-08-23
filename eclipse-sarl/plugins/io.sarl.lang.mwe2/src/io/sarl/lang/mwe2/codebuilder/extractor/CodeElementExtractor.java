@@ -236,6 +236,8 @@ public interface CodeElementExtractor {
 
 		private final TypeReference elementType;
 
+		private final boolean isAnnotationInfo;
+
 		/** Construct a description.
 		 *
 		 * @param name the name of the element.
@@ -245,11 +247,12 @@ public interface CodeElementExtractor {
 		 * @param builderImplementationType the type for the class that corresponds to this element builder.
 		 * @param builderCustomImplementationType the type for the class that corresponds to this element builder.
 		 * @param appenderType the type for the class that corresponds to this element appender.
+		 * @param annotationInfo indicates if the annotationInfo field is declared for the element.
 		 */
 		public ElementDescription(String name, EObject grammarComponent,
 				TypeReference elementType, TypeReference builderInterfaceType,
 				TypeReference builderImplementationType, TypeReference builderCustomImplementationType,
-				TypeReference appenderType) {
+				TypeReference appenderType, boolean annotationInfo) {
 			this.name = Strings.toFirstUpper(name);
 			this.grammarComponent = grammarComponent;
 			this.elementType = elementType;
@@ -257,6 +260,7 @@ public interface CodeElementExtractor {
 			this.builderImplementationType = builderImplementationType;
 			this.builderCustomImplementationType = builderCustomImplementationType;
 			this.appenderType = appenderType;
+			this.isAnnotationInfo = annotationInfo;
 		}
 
 		@Override
@@ -342,6 +346,14 @@ public interface CodeElementExtractor {
 		 */
 		public String getName() {
 			return this.name;
+		}
+
+		/** Replies if the annotationInfo field is declared for the element.
+		 *
+		 * @return <code>true</code> if the annotationInfo is declared.
+		 */
+		public boolean isAnnotationInfo() {
+			return this.isAnnotationInfo;
 		}
 
 	}

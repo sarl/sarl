@@ -40,7 +40,7 @@ Type returns xtend::XtendTypeDeclaration:
 		{SarlEvent.annotationInfo = current}
 		modifiers += CommonModifier*
 	    'event' name=ValidID ('extends' extends=JvmParameterizedTypeReference)? 
-	    ('{' (members+=EventMember)* '}')?
+	    ('{' members+=EventMember* '}')?
 	|
 		// Capacity
 		{SarlCapacity.annotationInfo = current}
@@ -48,20 +48,20 @@ Type returns xtend::XtendTypeDeclaration:
 		'capacity' name=ValidID
 		('extends' extends+=JvmParameterizedTypeReference
 		( ',' extends+=JvmParameterizedTypeReference )* )? 
-		'{' (members+=CapacityMember)* '}'
+		'{' members+=CapacityMember* '}'
 	|
 		// Agent
 		{SarlAgent.annotationInfo = current}
 		modifiers+=CommonModifier*
 		'agent' name=ValidID 
 		('extends' extends=JvmParameterizedTypeReference)?
-		'{' (members+=AOPMember)* '}'
+		'{' members+=AOPMember* '}'
 	|
 		// Behavior
 		{SarlBehavior.annotationInfo = current}
 		modifiers+=CommonModifier*
 		'behavior' name=ValidID ('extends' extends=JvmParameterizedTypeReference)?
-		'{' (members+=AOPMember)* '}'
+		'{' members+=AOPMember* '}'
 	|
 		// Skill
 		{SarlSkill.annotationInfo = current}
@@ -71,7 +71,7 @@ Type returns xtend::XtendTypeDeclaration:
 			&
 			('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
 		)
-		'{' (members+=AOPMember)* '}'
+		'{' members+=AOPMember* '}'
 	|
 		// Space
 		{SarlSpace.annotationInfo = current}
@@ -86,7 +86,7 @@ Type returns xtend::XtendTypeDeclaration:
 			&
 			('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
 		)
-		'{' (members+=Member)* '}'
+		'{' members+=Member* '}'
 	|
 		// Interface
 		{SarlInterface.annotationInfo = current}
@@ -106,7 +106,7 @@ Type returns xtend::XtendTypeDeclaration:
 		{SarlAnnotationType.annotationInfo = current}
 		modifiers+=CommonModifier*
 		'annotation' name=ValidID
-		'{' (members+=AnnotationField)* '}'
+		'{' members+=AnnotationField* '}'
 	)
 ;
 
@@ -250,13 +250,13 @@ AOPMember returns xtend::XtendMember:
 			&
 			('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
 		)
-		'{' (members+=Member)* '}'
+		'{' members+=Member* '}'
 	|
 		// Interface
 		{SarlInterface.annotationInfo = current} modifiers+=CommonModifier*
 		'interface' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
 		('extends' extends+=JvmParameterizedTypeReference (',' extends+=JvmParameterizedTypeReference)*)?
-		'{' (members+=Member)* '}'
+		'{' members+=Member* '}'
 	|
 		// Enum
 		{SarlEnumeration.annotationInfo = current} modifiers+=CommonModifier*
@@ -267,7 +267,7 @@ AOPMember returns xtend::XtendMember:
 		// AnnotationType
 		{SarlAnnotationType.annotationInfo = current} modifiers+=CommonModifier*
 		'annotation' name=ValidID
-		'{' (members+=AnnotationField)* '}'
+		'{' members+=AnnotationField* '}'
 	)
 ;
 
@@ -338,13 +338,13 @@ Member returns xtend::XtendMember:
 			&
 			('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
 		)
-		'{' (members+=Member)* '}'
+		'{' members+=Member* '}'
 	|
 		// Interface
 		{SarlInterface.annotationInfo = current} modifiers+=CommonModifier*
 		'interface' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
 		('extends' extends+=JvmParameterizedTypeReference (',' extends+=JvmParameterizedTypeReference)*)?
-		'{' (members+=Member)* '}'
+		'{' members+=Member* '}'
 	|
 		// Enum
 		{SarlEnumeration.annotationInfo = current} modifiers+=CommonModifier*
@@ -355,7 +355,7 @@ Member returns xtend::XtendMember:
 		// AnnotationType
 		{SarlAnnotationType.annotationInfo = current} modifiers+=CommonModifier*
 		'annotation' name=ValidID
-		'{' (members+=AnnotationField)* '}'
+		'{' members+=AnnotationField* '}'
 	)
 ;
 
@@ -379,14 +379,14 @@ AnnotationField returns xtend::XtendMember:
 			&
 			('implements' implements+=JvmParameterizedTypeReference (',' implements+=JvmParameterizedTypeReference)*)?
 		)
-		'{' (members+=Member)* '}'
+		'{' members+=Member* '}'
 	|
 		// Interface
 		{SarlInterface.annotationInfo = current}
 		modifiers+=CommonModifier*
 		'interface' name=ValidID ('<' typeParameters+=JvmTypeParameter (',' typeParameters+=JvmTypeParameter)* '>')?  
 		('extends' extends+=JvmParameterizedTypeReference (',' extends+=JvmParameterizedTypeReference)*)?
-		'{' (members+=Member)* '}'
+		'{' members+=Member* '}'
 	|
 		// Enum
 		{SarlEnumeration.annotationInfo = current}
@@ -399,7 +399,7 @@ AnnotationField returns xtend::XtendMember:
 		{SarlAnnotationType.annotationInfo = current}
 		modifiers+=CommonModifier*
 		'annotation' name=ValidID
-		'{' (members+=AnnotationField)* '}'
+		'{' members+=AnnotationField* '}'
 	)
 ;
 

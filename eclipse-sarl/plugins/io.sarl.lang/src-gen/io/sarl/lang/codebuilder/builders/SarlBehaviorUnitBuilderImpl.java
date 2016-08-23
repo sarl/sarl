@@ -32,6 +32,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
@@ -63,6 +64,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 		if (this.sarlBehaviorUnit == null) {
 			this.container = container;
 			this.sarlBehaviorUnit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
+			this.sarlBehaviorUnit.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
 			this.sarlBehaviorUnit.setName(newTypeRef(container, name));
 			container.getMembers().add(this.sarlBehaviorUnit);
 		}

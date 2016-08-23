@@ -33,6 +33,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
@@ -54,6 +55,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 			this.container = script;
 			this.sarlEnumeration = SarlFactory.eINSTANCE.createSarlEnumeration();
 			script.getXtendTypes().add(this.sarlEnumeration);
+			this.sarlEnumeration.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
 			if (!Strings.isEmpty(name)) {
 				this.sarlEnumeration.setName(name);
 			}
