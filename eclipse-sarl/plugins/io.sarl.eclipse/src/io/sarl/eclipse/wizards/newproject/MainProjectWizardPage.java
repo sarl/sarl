@@ -430,11 +430,10 @@ public class MainProjectWizardPage extends WizardPage {
 		final IClasspathEntry srcResourcesEntry = JavaCore.newSourceEntry(srcResources.makeAbsolute());
 
 		return Arrays.asList(
-				srcJavaEntry,
 				srcSarlEntry,
-				srcGeneratedSourcesEntry,
-				srcResourcesEntry
-				);
+				srcJavaEntry,
+				srcResourcesEntry,
+				srcGeneratedSourcesEntry);
 	}
 
 	/**
