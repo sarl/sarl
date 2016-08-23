@@ -200,6 +200,7 @@ public class DefaultInlineExpressionCompiler implements IInlineExpressionCompile
 		final ImportManager imports = new ImportManager();
 		final InlineAnnotationTreeAppendable result = newAppendable(imports);
 		generate(source.getExpression(), source, result);
+
 		final String content = result.getContent();
 		if (!Strings.isEmpty(content)) {
 			final List<String> importedTypes = imports.getImports();

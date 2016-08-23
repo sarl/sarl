@@ -40,6 +40,8 @@ public class Messages extends NLS {
 	private Messages() {
 	}
 
+	public static String SARLBuilderConfigurationBlock_0;
+	public static String SARLBuilderConfigurationBlock_1;
 	public static String SARLValidatorConfigurationBlock_0;
 	public static String SARLValidatorConfigurationBlock_2;
 	public static String SARLValidatorConfigurationBlock_3;

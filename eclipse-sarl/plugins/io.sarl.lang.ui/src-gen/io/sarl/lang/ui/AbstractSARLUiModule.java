@@ -26,10 +26,12 @@ package io.sarl.lang.ui;
 import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
+import io.sarl.lang.generator.IGeneratorConfigProvider2;
 import io.sarl.lang.generator.SarlOutputConfigurationProvider;
 import io.sarl.lang.ide.contentassist.antlr.PartialSARLContentAssistParser;
 import io.sarl.lang.ide.contentassist.antlr.SARLParser;
 import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;
+import io.sarl.lang.ui.builder.EclipseGeneratorConfigProvider2;
 import io.sarl.lang.ui.builder.ProjectRelativeFileSystemAccess;
 import io.sarl.lang.ui.contentassist.SARLContentAssistFactory;
 import io.sarl.lang.ui.contentassist.SARLImportingTypesProposalProvider;
@@ -49,6 +51,8 @@ import io.sarl.lang.ui.outline.SARLOperationOutlineFilter;
 import io.sarl.lang.ui.outline.SARLOutlineNodeComparator;
 import io.sarl.lang.ui.outline.SARLOutlinePage;
 import io.sarl.lang.ui.outline.SARLOutlineTreeProvider;
+import io.sarl.lang.ui.preferences.SARLBuilderConfigurationBlock;
+import io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess;
 import io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer;
 import io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
@@ -94,6 +98,7 @@ import org.eclipse.xtext.builder.builderState.IBuilderState;
 import org.eclipse.xtext.builder.clustering.CurrentDescriptions;
 import org.eclipse.xtext.builder.impl.PersistentDataAwareDirtyResource;
 import org.eclipse.xtext.builder.nature.NatureAddingEditorCallback;
+import org.eclipse.xtext.builder.preferences.BuilderConfigurationBlock;
 import org.eclipse.xtext.builder.preferences.BuilderPreferenceAccess;
 import org.eclipse.xtext.common.types.ui.navigation.GlobalDerivedMemberAwareURIEditorOpener;
 import org.eclipse.xtext.common.types.ui.navigation.IDerivedMemberAwareEditorOpener;
@@ -457,11 +462,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends ISemanticHighlightingCalculator> bindIdeSemanticHighlightingCalculator() {
-		return SARLHighlightingCalculator.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IRenameStrategy.Provider> bindIRenameStrategy$Provider() {
 		return SARLRenameStrategyProvider.class;
 	}
@@ -469,6 +469,31 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IContentOutlinePage> bindIContentOutlinePage() {
 		return SARLOutlinePage.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IImageHelper.IImageDescriptorHelper> bindIImageDescriptorHelper() {
+		return QualifiedPluginImageHelper.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends XtendJavaDocContentAssistProcessor> bindXtendJavaDocContentAssistProcessor() {
+		return SARLJavaDocContentAssistProcessor.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public void configureSARLFieldOutlineFilter(Binder binder) {
+		binder.bind(IOutlineContribution.class).annotatedWith(Names.named("SARLFieldOutlineFilter")).to(SARLFieldOutlineFilter.class);
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IContextualOutputConfigurationProvider> bindIContextualOutputConfigurationProvider() {
+		return SarlOutputConfigurationProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ISemanticHighlightingCalculator> bindIdeSemanticHighlightingCalculator() {
+		return SARLHighlightingCalculator.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -485,6 +510,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IImageHelper> bindIImageHelper() {
 		return QualifiedPluginImageHelper.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IGeneratorConfigProvider2> bindIGeneratorConfigProvider2() {
+		return EclipseGeneratorConfigProvider2.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -518,19 +548,9 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends IImageHelper.IImageDescriptorHelper> bindIImageDescriptorHelper() {
-		return QualifiedPluginImageHelper.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	@SingletonBinding(eager=true)
 	public Class<? extends XbaseUIValidator> bindXbaseUIValidator() {
 		return SARLUIValidator.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends XtendJavaDocContentAssistProcessor> bindXtendJavaDocContentAssistProcessor() {
-		return SARLJavaDocContentAssistProcessor.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -549,8 +569,8 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public void configureSARLFieldOutlineFilter(Binder binder) {
-		binder.bind(IOutlineContribution.class).annotatedWith(Names.named("SARLFieldOutlineFilter")).to(SARLFieldOutlineFilter.class);
+	public Class<? extends BuilderConfigurationBlock> bindBuilderConfigurationBlock() {
+		return SARLBuilderConfigurationBlock.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -564,8 +584,8 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends IContextualOutputConfigurationProvider> bindIContextualOutputConfigurationProvider() {
-		return SarlOutputConfigurationProvider.class;
+	public void configureSarlBuilderPreferences(Binder binder) {
+		binder.bind(IPreferenceStoreInitializer.class).annotatedWith(Names.named("SarlBuilderPreferences")).to(SARLBuilderPreferenceAccess.Initializer.class);
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
