@@ -65,8 +65,9 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 	}
 
 	private void setupIssueCodesDefaults(IPreferenceStoreAccess preferenceStoreAccess) {
+		final IPreferenceStore store = preferenceStoreAccess.getWritablePreferenceStore();
 		for (final PreferenceKey prefKey : this.issueCodes.getConfigurableIssueCodes().values()) {
-			preferenceStoreAccess.getWritablePreferenceStore().setDefault(prefKey.getId(), prefKey.getDefaultValue());
+			store.setDefault(prefKey.getId(), prefKey.getDefaultValue());
 		}
 	}
 

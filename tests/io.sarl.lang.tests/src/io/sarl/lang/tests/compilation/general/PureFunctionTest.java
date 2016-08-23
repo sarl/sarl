@@ -115,10 +115,12 @@ public class PureFunctionTest {
 					);
 			final String expectedC2 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class C2 extends C1 {",
+					"  @Inline(value = \"0.0\", constantExpression = true)",
 					"  @Override",
 					"  public double fct() {",
 					"    return 0;",
@@ -240,10 +242,12 @@ public class PureFunctionTest {
 					);
 			final String expectedC2 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class C2 extends C1 {",
+					"  @Inline(value = \"0.0\", constantExpression = true)",
 					"  @Override",
 					"  public double fct() {",
 					"    return 0;",
@@ -269,11 +273,13 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
+					"  @Inline(value = \"9.0\", constantExpression = true)",
 					"  @Pure",
 					"  public double getXXX() {",
 					"    return 9;",
@@ -293,11 +299,13 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
+					"  @Inline(value = \"false\", constantExpression = true)",
 					"  @Pure",
 					"  public boolean isXXX() {",
 					"    return false;",
@@ -317,11 +325,13 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
+					"  @Inline(value = \"false\", constantExpression = true)",
 					"  @Pure",
 					"  public boolean hasXXX() {",
 					"    return false;",
@@ -341,11 +351,13 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
+					"  @Inline(value = \"\\\"\\\"\", constantExpression = true)",
 					"  @Pure",
 					"  public String toString() {",
 					"    return \"\";",
@@ -365,11 +377,13 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
+					"  @Inline(value = \"0\", constantExpression = true)",
 					"  @Pure",
 					"  public int hashCode() {",
 					"    return 0;",
@@ -389,11 +403,13 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
+					"  @Inline(value = \"false\", constantExpression = true)",
 					"  @Pure",
 					"  public boolean equals(final Object a) {",
 					"    return false;",
