@@ -47,6 +47,7 @@ import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Provide a facade for the SARL formatter.
@@ -79,6 +80,7 @@ public class FormatterFacade {
 	 * @param sarlCode the code to format.
 	 * @return the code to format.
 	 */
+	@Pure
 	public String format(String sarlCode) {
 		return format(sarlCode, new XtextResourceSet());
 	}
@@ -90,6 +92,7 @@ public class FormatterFacade {
 	 *     used for resolving types by the underlying code.
 	 * @return the code to format.
 	 */
+	@Pure
 	public String format(String sarlCode, ResourceSet resourceSet) {
 		try {
 			final URI createURI = URI.createURI("synthetic://to-be-formatted." + this.fileExtension); //$NON-NLS-1$
@@ -128,10 +131,13 @@ public class FormatterFacade {
 
 	/** Format the code in the given resource.
 	 *
+	 * <p>This function does not change the resource content.
+	 *
 	 * @param resource the resource of the code to format.
 	 * @return the result of the formatting.
 	 */
-	protected String formatResource(final XtextResource resource) {
+	@Pure
+	protected String formatResource(XtextResource resource) {
 		assert resource != null;
 		try {
 			final ITextRegionAccess regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
@@ -141,6 +147,52 @@ public class FormatterFacade {
 			final IPreferenceValues preferenceValues = FormatterFacade.this.configurationProvider
 					.getPreferenceValues(resource);
 			formatterRequest.setPreferences(TypedPreferenceValues.castOrWrap(preferenceValues));
+			final List<ITextReplacement> replacements = this.formatter.format(formatterRequest);
+			return regionAccess.getRewriter().renderToString(replacements);
+		} catch (Exception exception) {
+			throw Exceptions.sneakyThrow(exception);
+		}
+	}
+
+	/** Format the code in the given region.
+	 *
+	 * @param resource the resource to format.
+	 * @param offset the offset of the text to format.
+	 * @param length the length of the text.
+	 */
+	public void formatRegion(XtextResource resource, int offset, int length) {
+		assert resource != null;
+		assert offset >= 0;
+		assert length >= 0;
+		final String result = formatResourceRegion(resource, offset, length);
+		// Write back to the resource
+		try (StringInputStream stringInputStream = new StringInputStream(result)) {
+			resource.load(stringInputStream, Collections.emptyMap());
+		} catch (Exception exception) {
+			throw Exceptions.sneakyThrow(exception);
+		}
+	}
+
+	/** Format the code in the given region.
+	 *
+	 * <p>This function does not change the resource content.
+	 *
+	 * @param resource the resource to format.
+	 * @param offset the offset of the text to format.
+	 * @param length the length of the text.
+	 * @return the result of the formatting.
+	 */
+	@Pure
+	public String formatResourceRegion(XtextResource resource, int offset, int length) {
+		assert resource != null;
+		assert offset >= 0;
+		assert length >= 0;
+		try {
+			final ITextRegionAccess regionAccess = this.regionAccessBuilder.get().forNodeModel(resource).create();
+			final FormatterRequest formatterRequest = new FormatterRequest();
+			formatterRequest.setAllowIdentityEdits(false);
+			formatterRequest.setRegions(Collections.singleton(regionAccess.regionForOffset(offset, length)));
+			formatterRequest.setTextRegionAccess(regionAccess);
 			final List<ITextReplacement> replacements = this.formatter.format(formatterRequest);
 			return regionAccess.getRewriter().renderToString(replacements);
 		} catch (Exception exception) {

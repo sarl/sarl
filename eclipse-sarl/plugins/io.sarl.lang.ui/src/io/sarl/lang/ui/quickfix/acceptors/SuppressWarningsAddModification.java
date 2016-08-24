@@ -80,9 +80,14 @@ public final class SuppressWarningsAddModification extends SARLSemanticModificat
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
 		final IFile file = provider.getProjectUtil().findFileStorage(issue.getUriToProblem(), false);
 		final ResourceSet resourceSet = provider.getResourceSetProvider().get(file.getProject());
-		XtendAnnotationTarget eObject = EcoreUtil2.getContainerOfType(
-				resourceSet.getEObject(issue.getUriToProblem(), true),
-				XtendAnnotationTarget.class);
+		final EObject failingObject;
+		try {
+			failingObject = resourceSet.getEObject(issue.getUriToProblem(), true);
+		} catch (Exception exception) {
+			// Something is going really wrong. Must of the time the cause is a major syntax error.
+			return;
+		}
+		XtendAnnotationTarget eObject = EcoreUtil2.getContainerOfType(failingObject, XtendAnnotationTarget.class);
 		boolean first = true;
 		int relevance = IProposalRelevance.ADD_SUPPRESSWARNINGS;
 		while (eObject != null) {
