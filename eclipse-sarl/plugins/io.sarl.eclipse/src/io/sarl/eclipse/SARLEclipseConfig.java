@@ -52,7 +52,12 @@ public final class SARLEclipseConfig {
 	/**
 	 * ID of the SARL perspective.
 	 */
-	public static final String SARL_PERSPECTIVE_ID = "io.sarl.eclipse.perspective.devel"; //$NON-NLS-1$
+	public static final String ID_SARL_PERSPECTIVE = "io.sarl.eclipse.perspective.devel"; //$NON-NLS-1$
+
+	/**
+	 * ID of the SARL perspective.
+	 */
+	public static final String ID_SARL_DEBUG_PERSPECTIVE = "io.sarl.eclipse.perspective.debug"; //$NON-NLS-1$
 
 	/**
 	 * The value is the identifier of the class path container for

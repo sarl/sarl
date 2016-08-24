@@ -283,6 +283,8 @@
 	<extension point="org.eclipse.ui.perspectives">
    		<perspective id="io.sarl.eclipse.perspective.devel" name="%perspective.name" class="io.sarl.eclipse.perspectives.SARLPerspectiveFactory"
    		             icon="icons/sarl_16.png" />
+   		<perspective id="io.sarl.eclipse.perspective.debug" name="%debug.perspective.name" class="io.sarl.eclipse.perspectives.SARLDebugPerspectiveFactory"
+   		             icon="icons/debug_16.png" />
     </extension>
  
  </plugin>

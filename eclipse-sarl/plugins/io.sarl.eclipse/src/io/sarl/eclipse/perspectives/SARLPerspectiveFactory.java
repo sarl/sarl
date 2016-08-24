@@ -36,11 +36,11 @@ import io.sarl.eclipse.SARLEclipseConfig;
 /**
  * Factory for the SARL Eclipse perspective.
  *
- * @author $Author: ngaud$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see SARLEclipseConfig#SARL_PERSPECTIVE_ID
+ * @see SARLEclipseConfig#ID_SARL_PERSPECTIVE
  */
 public class SARLPerspectiveFactory implements IPerspectiveFactory {
 
@@ -65,6 +65,7 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 				BOTTOM_PANEL_RATIO, editorArea);
 		outputfolder.addView(IPageLayout.ID_PROBLEM_VIEW);
 		outputfolder.addView(IConsoleConstants.ID_CONSOLE_VIEW);
+		outputfolder.addView(IPageLayout.ID_TASK_LIST);
 		outputfolder.addPlaceholder(JavaUI.ID_JAVADOC_VIEW);
 		outputfolder.addPlaceholder(JavaUI.ID_SOURCE_VIEW);
 		outputfolder.addPlaceholder(NewSearchUI.SEARCH_VIEW_ID);
@@ -114,6 +115,8 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 		layout.addNewWizardShortcut("org.eclipse.ui.editors.wizards.UntitledTextFileWizard"); //$NON-NLS-1$
 
 		// 'Window' > 'Open Perspective' contributions
+		//--- Add the SARL debug perspective
+		layout.addPerspectiveShortcut(SARLEclipseConfig.ID_SARL_DEBUG_PERSPECTIVE);
 		//--- Add the Java perspectives
 		layout.addPerspectiveShortcut(JavaUI.ID_PERSPECTIVE);
 		layout.addPerspectiveShortcut(JavaUI.ID_BROWSING_PERSPECTIVE);
