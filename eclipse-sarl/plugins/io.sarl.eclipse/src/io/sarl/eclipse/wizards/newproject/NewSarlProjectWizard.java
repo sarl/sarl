@@ -55,7 +55,6 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.eclipse.natures.SARLProjectConfigurator;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.util.Utilities;
@@ -274,11 +273,6 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 		final IJavaProject javaProject = this.secondPage.getJavaProject();
 
 		try {
-			final IStatus status = SARLProjectConfigurator.addSarlNatures(javaProject.getProject());
-			if (status != null && !status.isOK()) {
-				SARLEclipsePlugin.getDefault().getLog().log(status);
-			}
-
 			// Set the SRE configuration
 			final IProject project = javaProject.getProject();
 			final ISREInstall sre = this.firstPage.getSRE();

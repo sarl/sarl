@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -133,15 +134,16 @@ public class SARLProjectConfigurator implements ProjectConfigurator {
 
 	@Override
 	public void configure(IProject project, Set<IPath> ignoredPaths, IProgressMonitor monitor) {
-		configureSARLProject(project, monitor);
+		configureSARLProject(project, true, monitor);
 	}
 
 	/** Configure the SARL project.
 	 *
 	 * @param project the project.
+	 * @param configureJavaNature indicates if the Java configuration elements must be configured.
 	 * @param monitor the monitor.
 	 */
-	public static void configureSARLProject(IProject project, IProgressMonitor monitor) {
+	public static void configureSARLProject(IProject project, boolean configureJavaNature, IProgressMonitor monitor) {
 		try {
 			project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 			// Add Natures
@@ -166,19 +168,58 @@ public class SARLProjectConfigurator implements ProjectConfigurator {
 			SARLPreferences.setSpecificSARLConfigurationFor(project, generationFolder.getProjectRelativePath());
 
 			// Create the Java project
-			final IJavaProject javaProject = JavaCore.create(project);
+			if (configureJavaNature) {
+				final IJavaProject javaProject = JavaCore.create(project);
 
-			// Build path
-			BuildPathsBlock.flush(
-					buildClassPathEntries(javaProject,
-							new IFolder[] {sourceSarlFolder, sourceJavaFolder, resourcesFolder, testSourceSarlFolder},
-							new IFolder[] {generationFolder, testGenerationFolder}),
-					outputFolder.getFullPath(), javaProject, null, monitor);
+				// Build path
+				BuildPathsBlock.flush(
+						buildClassPathEntries(javaProject,
+								new IFolder[] {sourceSarlFolder, sourceJavaFolder, resourcesFolder, testSourceSarlFolder},
+								new IFolder[] {generationFolder, testGenerationFolder}),
+						outputFolder.getFullPath(), javaProject, null, monitor);
+			}
 
 			project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 		} catch (CoreException exception) {
 			SARLEclipsePlugin.getDefault().log(exception);
 		}
+	}
+
+	/** Replies the default source entries for a SARL project.
+	 *
+	 * @param projectFolder the folder of the project.
+	 * @return the classpath entries.
+	 */
+	public static List<IClasspathEntry> getDefaultSourceClassPathEntries(IPath projectFolder) {
+		final IPath srcJava = projectFolder.append(
+				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_JAVA));
+		final IClasspathEntry srcJavaEntry = JavaCore.newSourceEntry(srcJava.makeAbsolute());
+
+		final IPath srcSarl = projectFolder.append(
+				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_SARL));
+		final IClasspathEntry srcSarlEntry = JavaCore.newSourceEntry(srcSarl.makeAbsolute());
+
+		final IPath srcGeneratedSources = projectFolder.append(
+				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED));
+		final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+				IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS,
+				Boolean.TRUE.toString());
+		final IClasspathEntry srcGeneratedSourcesEntry = JavaCore.newSourceEntry(
+				srcGeneratedSources.makeAbsolute(),
+				ClasspathEntry.INCLUDE_ALL,
+				ClasspathEntry.EXCLUDE_NONE,
+				null /*output location*/,
+				new IClasspathAttribute[] {attr});
+
+		final IPath srcResources = projectFolder.append(
+				Path.fromPortableString(SARLConfig.FOLDER_RESOURCES));
+		final IClasspathEntry srcResourcesEntry = JavaCore.newSourceEntry(srcResources.makeAbsolute());
+
+		return Arrays.asList(
+				srcSarlEntry,
+				srcJavaEntry,
+				srcResourcesEntry,
+				srcGeneratedSourcesEntry);
 	}
 
 	private static List<CPListElement> buildClassPathEntries(IJavaProject project, IFolder[] sourcePaths,
@@ -374,11 +415,15 @@ public class SARLProjectConfigurator implements ProjectConfigurator {
 		if (project != null) {
 			try {
 				final IProjectDescription description = project.getDescription();
-				final List<String> natures = new ArrayList<>(Arrays.asList(description.getNatureIds()));
-				natures.add(0, SARLEclipseConfig.NATURE_ID);
-				natures.add(1, SARLEclipseConfig.XTEXT_NATURE_ID);
+				final List<String> natures = new LinkedList<>(Arrays.asList(description.getNatureIds()));
 				if (!natures.contains(JavaCore.NATURE_ID)) {
-					natures.add(2, JavaCore.NATURE_ID);
+					natures.add(0, JavaCore.NATURE_ID);
+				}
+				if (!natures.contains(SARLEclipseConfig.XTEXT_NATURE_ID)) {
+					natures.add(0, SARLEclipseConfig.XTEXT_NATURE_ID);
+				}
+				if (!natures.contains(SARLEclipseConfig.NATURE_ID)) {
+					natures.add(0, SARLEclipseConfig.NATURE_ID);
 				}
 
 				final String[] newNatures = natures.toArray(new String[natures.size()]);

@@ -75,8 +75,7 @@ import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.SARLConfig;
-import io.sarl.lang.ui.preferences.SARLPreferences;
+import io.sarl.eclipse.natures.SARLProjectConfigurator;
 
 /**
  * The second page of the SARL new project wizard.
@@ -319,7 +318,8 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		final List<IClasspathEntry> cpEntries = new ArrayList<>();
 		final IWorkspaceRoot root = project.getWorkspace().getRoot();
 
-		final Collection<IClasspathEntry> originalEntries = this.firstPage.getSourceClasspathEntries();
+		final Collection<IClasspathEntry> originalEntries = SARLProjectConfigurator.getDefaultSourceClassPathEntries(
+						new Path(this.firstPage.getProjectName()).makeAbsolute());
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, originalEntries.size() + 1);
 		for (final IClasspathEntry sourceClasspathEntry : originalEntries) {
 			final IPath path = sourceClasspathEntry.getPath();
@@ -570,24 +570,6 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		os.flush();
 	}
 
-	private IPath findGenerationSourcePath() {
-		final IPath projectPath = this.currProject.getFullPath();
-		IPath path;
-		final IPath generatedSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED);
-		final IPath deprecatedGeneratedSourceFolder = Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED_XTEXT);
-		for (final IClasspathEntry entry : getRawClassPath()) {
-			path = entry.getPath();
-			path = path.removeFirstSegments(path.matchingFirstSegments(projectPath));
-			if (path.equals(generatedSourceFolder)) {
-				return path;
-			}
-			if (path.equals(deprecatedGeneratedSourceFolder)) {
-				return path;
-			}
-		}
-		return null;
-	}
-
 	/**
 	 * Called from the wizard on finish.
 	 *
@@ -603,21 +585,9 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 				updateProject(subMonitor.newChild(1));
 			}
 
-			//FIXME: Use the SARLProjectConfigurator API.
 			final String newProjectCompliance = this.keepContent ? null : this.firstPage.getCompilerCompliance();
 			configureJavaProject(newProjectCompliance, subMonitor.newChild(1));
-
-			final IPath generationFolder = findGenerationSourcePath();
-			if (generationFolder == null) {
-				final IStatus status = SARLEclipsePlugin.getDefault().createStatus(
-						IStatus.ERROR,
-						MessageFormat.format(
-						Messages.BuildSettingWizardPage_0,
-						SARLConfig.FOLDER_SOURCE_GENERATED));
-				throw new CoreException(status);
-			}
-			SARLPreferences.setSpecificSARLConfigurationFor(
-					getJavaProject().getProject(), generationFolder);
+			SARLProjectConfigurator.configureSARLProject(getJavaProject().getProject(), false, monitor);
 		} catch (Throwable e) {
 			if (this.currProject != null) {
 				removeProvisonalProject();
