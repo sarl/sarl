@@ -163,6 +163,11 @@ public final class SARLEclipseConfig {
 	 */
 	public static final String NEW_SKILL_WIZARD_DIALOG_IMAGE = "icons/sarl_new_skill_dialog.png"; //$NON-NLS-1$
 
+	/** Filename of the image that may be used at
+	 * the top of the wizard dialog when importing a SARL project.
+	 */
+	public static final String IMPORT_PROJECT_WIZARD_DIALOG_IMAGE = "icons/sarl_import_project_dialog.png"; //$NON-NLS-1$
+
 	/** Filename of the image that may be used for representing a SARL project.
 	 */
 	public static final String SARL_PROJECT_IMAGE = "icons/sarl_project_16.png"; //$NON-NLS-1$

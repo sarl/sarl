@@ -603,6 +603,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 				updateProject(subMonitor.newChild(1));
 			}
 
+			//FIXME: Use the SARLProjectConfigurator API.
 			final String newProjectCompliance = this.keepContent ? null : this.firstPage.getCompilerCompliance();
 			configureJavaProject(newProjectCompliance, subMonitor.newChild(1));
 

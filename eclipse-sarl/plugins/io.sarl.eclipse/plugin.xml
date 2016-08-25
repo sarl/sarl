@@ -1,10 +1,6 @@
 <?eclipse version="3.0"?>
 
 <plugin>
-   <extension-point id="sreInstallations" name="%sreInstallations" schema="schema/sreInstallations.exsd"/>
-   <extension-point id="sreInstallPages" name="%sreInstallPages" schema="schema/sreInstallPages.exsd"/>
-   <extension-point id="projectSREProviderFactory" name="%projectSREProviderFactory" schema="schema/projectSREProviderFactory.exsd"/>
-   
 	<extension point="org.eclipse.ui.newWizards">
 		<category
 			id="io.sarl.eclipse.category.wizards"
@@ -16,8 +12,8 @@
 		        icon="icons/sarl_new_project_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlProject"
 		        name="%wizard.name.newSarlProject"
-		        finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
-		        preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective,org.eclipse.jdt.ui.JavaBrowsingPerspective"
+		        finalPerspective="io.sarl.eclipse.perspective.devel"
+		        preferredPerspectives="io.sarl.eclipse.perspective.devel,org.eclipse.jdt.ui.JavaPerspective,org.eclipse.jdt.ui.JavaBrowsingPerspective"
 		        project="true">
 				<description>%wizard.description.newSarlProject"</description>
 		  </wizard>
@@ -287,4 +283,19 @@
    		             icon="icons/debug_16.png" />
     </extension>
  
+  <!-- Extensions -->
+
+   <extension-point id="sreInstallations" name="%sreInstallations" schema="schema/sreInstallations.exsd"/>
+   <extension-point id="sreInstallPages" name="%sreInstallPages" schema="schema/sreInstallPages.exsd"/>
+   <extension-point id="projectSREProviderFactory" name="%projectSREProviderFactory" schema="schema/projectSREProviderFactory.exsd"/>
+   
+  <!-- Project configurators -->
+   <extension
+         point="org.eclipse.ui.ide.projectConfigurators">
+      <projectConfigurator
+            class="io.sarl.eclipse.natures.SARLProjectConfigurator"
+            label="%projectconfigurator.name">
+      </projectConfigurator>
+   </extension>
+
  </plugin>

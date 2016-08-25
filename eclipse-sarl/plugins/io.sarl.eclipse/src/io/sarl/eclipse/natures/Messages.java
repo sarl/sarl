@@ -19,39 +19,26 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse;
+package io.sarl.eclipse.natures;
 
-import com.google.inject.Injector;
-import org.eclipse.xtext.ui.guice.AbstractGuiceAwareExecutableExtensionFactory;
-import org.osgi.framework.Bundle;
+import org.eclipse.osgi.util.NLS;
 
-import io.sarl.lang.ui.internal.LangActivator;
-
-/** Factory for injecting SARL instances.
+/** Messages.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLEclipseExecutableExtensionFactory extends AbstractGuiceAwareExecutableExtensionFactory {
-
-	@Override
-	protected Bundle getBundle() {
-		return SARLEclipsePlugin.getDefault().getBundle();
+@SuppressWarnings("all")
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = "io.sarl.eclipse.natures.messages"; //$NON-NLS-1$
+	public static String SARLProjectConfigurator_0;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
-	@Override
-	protected Injector getInjector() {
-		return getSARLInjector();
+	private Messages() {
 	}
-
-	/** Replies the SARL injector.
-	 *
-	 * @return the injector.
-	 */
-	public static Injector getSARLInjector() {
-		return LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
-	}
-
 }

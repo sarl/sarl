@@ -403,6 +403,7 @@ public class MainProjectWizardPage extends WizardPage {
 	 * @return returns the source class path entries for the new project
 	 */
 	public Collection<IClasspathEntry> getSourceClasspathEntries() {
+		//FIXME: Use the SARLProjectConfigurator API.
 		final IPath sourceFolderPath = new Path(getProjectName()).makeAbsolute();
 
 		final IPath srcJava = sourceFolderPath.append(
