@@ -249,6 +249,18 @@
                 name="preferenceCustomization"
                 value="platform:/plugin/io.sarl.eclipse/plugin_customization.ini">
           </property>
+          <property
+                name="startupProgressRect"
+                value="5,280,442,15">
+          </property>
+          <property
+                name="startupForegroundColor"
+                value="F3F3F3">
+          </property>
+          <property
+                name="startupMessageRect"
+                value="7,252,330,20">
+          </property>
        </product>
     </extension>
 
