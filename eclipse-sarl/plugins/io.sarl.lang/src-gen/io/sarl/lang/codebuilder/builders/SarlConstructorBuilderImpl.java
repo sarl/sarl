@@ -32,6 +32,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
@@ -60,6 +61,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 		if (this.sarlConstructor == null) {
 			this.container = container;
 			this.sarlConstructor = SarlFactory.eINSTANCE.createSarlConstructor();
+			this.sarlConstructor.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
 			container.getMembers().add(this.sarlConstructor);
 		}
 	}

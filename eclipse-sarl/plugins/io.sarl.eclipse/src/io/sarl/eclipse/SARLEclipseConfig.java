@@ -50,6 +50,16 @@ public final class SARLEclipseConfig {
 	public static final String NATURE_ID = "io.sarl.eclipse.SARLProjectNature"; //$NON-NLS-1$
 
 	/**
+	 * ID of the SARL perspective.
+	 */
+	public static final String ID_SARL_PERSPECTIVE = "io.sarl.eclipse.perspective.devel"; //$NON-NLS-1$
+
+	/**
+	 * ID of the SARL perspective.
+	 */
+	public static final String ID_SARL_DEBUG_PERSPECTIVE = "io.sarl.eclipse.perspective.debug"; //$NON-NLS-1$
+
+	/**
 	 * The value is the identifier of the class path container for
 	 * the SARL runtime environment.
 	 */

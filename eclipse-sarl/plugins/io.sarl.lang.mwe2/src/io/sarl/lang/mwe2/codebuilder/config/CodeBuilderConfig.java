@@ -123,6 +123,10 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	 */
 	private static final String PARAMETER_CONTAINER_TYPE = "org.eclipse.xtend.core.xtend.XtendExecutable"; //$NON-NLS-1$
 
+	/** Default flag that is indicating if Xtend support is enable.
+	 */
+	private static final boolean XTEND_SUPPORT_ENABLED = true;
+
 	private String scriptRuleName;
 
 	private String topElementRuleName;
@@ -171,6 +175,8 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	private String parameterListGrammarName = PARAMETER_LIST_GRAMMAR_NAME;
 
+	private boolean isXtendSupportEnable = XTEND_SUPPORT_ENABLED;
+
 	private final Map<String, String> superTypeMapping = new TreeMap<>();
 
 	private final Map<String, List<String>> modifiers = new TreeMap<>();
@@ -191,6 +197,23 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 		if (!Strings.isEmpty(type)) {
 			this.multilineCommentedTypes.add(type);
 		}
+	}
+
+	/** Replies if the Xtend support is enabled.
+	 *
+	 * @return <code>true</code> if the Xtend support is enabled.
+	 */
+	@Pure
+	public boolean isXtendSupportEnabled() {
+		return this.isXtendSupportEnable;
+	}
+
+	/** Change if the Xtend support is enabled.
+	 *
+	 * @param enable <code>true</code> if the Xtend support is enabled.
+	 */
+	public void setXtendSupportEnabled(boolean enable) {
+		this.isXtendSupportEnable = enable;
 	}
 
 	/** Replies the types that should be commented with multiline comments.

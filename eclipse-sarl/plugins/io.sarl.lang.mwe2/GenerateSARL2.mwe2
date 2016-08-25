@@ -829,7 +829,7 @@ Workflow {
    				}
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.XtextSourceViewer$Factory"
-    				to = "org.eclipse.xtend.ide.editor.RichStringAwareSourceViewer$Factory"
+    				to = "io.sarl.lang.ui.editor.SARLSourceViewer$Factory"
    				}
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.actions.IActionContributor"

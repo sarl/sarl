@@ -38,6 +38,7 @@ import com.google.inject.Injector;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Assignment;
@@ -654,7 +655,9 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 		for (final CodeElementExtractor.ElementDescription description : getCodeElementExtractor().getTopElements(
 				getGrammar(), getCodeBuilderConfig())) {
 			final TopElementDescription topElementDescription = new TopElementDescription(
-					description, memberElements.contains(description.getElementType().getName()));
+					description,
+					memberElements.contains(description.getElementType().getName()),
+					getCodeBuilderConfig().isXtendSupportEnabled() && description.isAnnotationInfo());
 			generateTopElement(topElementDescription, forInterface, forAppender);
 			topElements.add(topElementDescription);
 			topElementContainers.add(topElementDescription.getElementDescription().getGrammarComponent());
@@ -783,6 +786,16 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append(generatedObjectFieldName);
 						it.append(");"); //$NON-NLS-1$
 						it.newLine();
+						if (description.isAnnotationInfo()) {
+							it.append("\t\t\tthis."); //$NON-NLS-1$
+							it.append(generatedObjectFieldName);
+							it.append(".setAnnotationInfo("); //$NON-NLS-1$
+							it.append(getXFactoryFor(XtendTypeDeclaration.class));
+							it.append(".eINSTANCE.create"); //$NON-NLS-1$
+							it.append(XtendTypeDeclaration.class.getSimpleName());
+							it.append("());"); //$NON-NLS-1$
+							it.newLine();
+						}
 						it.append("\t\t\tif (!"); //$NON-NLS-1$
 						it.append(Strings.class);
 						it.append(".isEmpty(name)) {"); //$NON-NLS-1$
@@ -1233,14 +1246,19 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 
 		private final boolean isMemberElement;
 
+		private final boolean isAnnotationInfo;
+
 		/** Constructor.
 		 *
 		 * @param element the description of the element.
 		 * @param isMemberElement indicates if this top element is also a member element.
+		 * @param isAnnotationInfo indicates if the top element has annotation info.
 		 */
-		public TopElementDescription(CodeElementExtractor.ElementDescription element, boolean isMemberElement) {
+		public TopElementDescription(CodeElementExtractor.ElementDescription element, boolean isMemberElement,
+				boolean isAnnotationInfo) {
 			this.element = element;
 			this.isMemberElement = isMemberElement;
+			this.isAnnotationInfo = isAnnotationInfo;
 		}
 
 		@Override
@@ -1262,6 +1280,14 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 		 */
 		public boolean isMemberElement() {
 			return this.isMemberElement;
+		}
+
+		/** Replies if this top element has annotation info.
+		 *
+		 * @return <code>true</code> if the top element has annotation info.
+		 */
+		public boolean isAnnotationInfo() {
+			return this.isAnnotationInfo;
 		}
 
 		/** Replies the named members.

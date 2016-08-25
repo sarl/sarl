@@ -39,6 +39,7 @@ import io.sarl.lang.ui.contentassist.SARLJavaDocContentAssistProcessor;
 import io.sarl.lang.ui.contentassist.SARLProposalProvider;
 import io.sarl.lang.ui.contentassist.SARLTemplateContextType;
 import io.sarl.lang.ui.contentassist.SARLTemplateProposalProvider;
+import io.sarl.lang.ui.editor.SARLSourceViewer;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
 import io.sarl.lang.ui.images.QualifiedPluginImageHelper;
@@ -80,7 +81,6 @@ import org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProc
 import org.eclipse.xtend.ide.editor.OccurrenceComputer;
 import org.eclipse.xtend.ide.editor.OverrideIndicatorModelListener;
 import org.eclipse.xtend.ide.editor.OverrideIndicatorRulerAction;
-import org.eclipse.xtend.ide.editor.RichStringAwareSourceViewer;
 import org.eclipse.xtend.ide.editor.RichStringAwareToggleCommentAction;
 import org.eclipse.xtend.ide.editor.SingleLineCommentHelper;
 import org.eclipse.xtend.ide.editor.XtendDoubleClickStrategyProvider;
@@ -686,7 +686,7 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends XtextSourceViewer.Factory> bindXtextSourceViewer$Factory() {
-		return RichStringAwareSourceViewer.Factory.class;
+		return SARLSourceViewer.Factory.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

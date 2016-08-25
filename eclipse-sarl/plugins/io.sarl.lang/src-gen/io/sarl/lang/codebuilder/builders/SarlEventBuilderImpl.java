@@ -33,6 +33,7 @@ import javax.inject.Provider;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.util.Strings;
@@ -52,6 +53,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 		if (this.sarlEvent == null) {
 			this.sarlEvent = SarlFactory.eINSTANCE.createSarlEvent();
 			script.getXtendTypes().add(this.sarlEvent);
+			this.sarlEvent.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
 			if (!Strings.isEmpty(name)) {
 				this.sarlEvent.setName(name);
 			}

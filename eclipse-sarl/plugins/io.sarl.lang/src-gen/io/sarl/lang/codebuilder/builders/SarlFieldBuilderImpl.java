@@ -32,6 +32,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
@@ -62,6 +63,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 		if (this.sarlField == null) {
 			this.container = container;
 			this.sarlField = SarlFactory.eINSTANCE.createSarlField();
+			this.sarlField.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
 			this.sarlField.setName(name);
 			if (Strings.equal(modifier, "var")
 				|| Strings.equal(modifier, "val")) {

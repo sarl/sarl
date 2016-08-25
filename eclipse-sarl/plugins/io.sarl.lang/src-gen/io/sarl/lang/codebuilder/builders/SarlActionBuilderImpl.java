@@ -33,6 +33,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
@@ -64,6 +65,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 		if (this.sarlAction == null) {
 			this.container = container;
 			this.sarlAction = SarlFactory.eINSTANCE.createSarlAction();
+			this.sarlAction.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
 			this.sarlAction.setName(name);
 			this.sarlAction.getModifiers().add("def");
 			container.getMembers().add(this.sarlAction);

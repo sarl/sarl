@@ -23,6 +23,7 @@ package io.sarl.lang.mwe2.codebuilder.extractor;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
@@ -48,6 +49,8 @@ import io.sarl.lang.mwe2.codebuilder.config.CodeBuilderConfig;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractCodeElementExtractor implements CodeElementExtractor {
+
+	private static final String ANNOTATION_INFO_FIELD_NAME = "annotationInfo"; //$NON-NLS-1$
 
 	@Inject
 	private XtextGeneratorNaming naming;
@@ -87,8 +90,36 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 		final TypeReference implementationType = getElementBuilderImpl(name);
 		final TypeReference customImplementationType = getElementBuilderImplCustom(name);
 		final TypeReference appenderType = getElementAppenderImpl(name);
+		final boolean isAnnotationInfo = findAction(grammarComponent, getAnnotationInfoFieldName()) != null;
 		return new ElementDescription(name, grammarComponent, newTypeReference(elementType), interfaceType,
-				implementationType, customImplementationType, appenderType);
+				implementationType, customImplementationType, appenderType,
+				isAnnotationInfo);
+	}
+
+	/** Replies the name of the Xtend annotation info field.
+	 *
+	 * @return the name of the annotation info field.
+	 */
+	@SuppressWarnings("static-method")
+	public String getAnnotationInfoFieldName() {
+		return ANNOTATION_INFO_FIELD_NAME;
+	}
+
+	/** Replies the assignment component with the given nazme in the given grammar component.
+	 *
+	 * @param grammarComponent the component to explore.
+	 * @param assignmentName the name of the assignment to search for.
+	 * @return the assignment component.
+	 */
+	protected static Action findAction(EObject grammarComponent, String assignmentName) {
+		for (final Action action : GrammarUtil.containedActions(grammarComponent)) {
+			if (GrammarUtil.isAssignedAction(action)) {
+				if (Objects.equals(assignmentName, action.getFeature())) {
+					return action;
+				}
+			}
+		}
+		return null;
 	}
 
 	/** Replies the first classifier that is defined in the given grammar element.
