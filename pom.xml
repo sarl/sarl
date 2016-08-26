@@ -40,7 +40,7 @@
 		<!-- Version of the Arakhne Foundation classes -->
 		<afc.version>13.0</afc.version>
 		<!-- Version of the Guava API -->
-		<guava.version>19.0</guava.version>
+		<guava.version>18.0</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module -->
