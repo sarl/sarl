@@ -58,7 +58,6 @@ Export-Package: io.janusproject,
  io.janusproject.services.network,
  io.janusproject.services.spawn,
  io.janusproject.util
-
 Main-Class: io.janusproject.Boot
 
 Name: SARL-Runtime-Environment
