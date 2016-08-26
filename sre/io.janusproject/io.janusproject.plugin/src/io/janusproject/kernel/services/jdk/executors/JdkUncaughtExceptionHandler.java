@@ -56,12 +56,12 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 	 */
 	@Inject
 	public JdkUncaughtExceptionHandler(LogService logger) {
-		assert (logger != null);
+		assert logger != null;
 		this.logger = logger;
 	}
 
 	private void log(Throwable exception, String taskId, String taskName) {
-		assert (exception != null);
+		assert exception != null;
 		Throwable cause = exception;
 		while (cause.getCause() != null && cause.getCause() != cause) {
 			cause = cause.getCause();
@@ -96,7 +96,7 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 		final StackTraceElement[] trace = cause.getStackTrace();
 		if (trace != null && trace.length > 0) {
 			final StackTraceElement elt = trace[0];
-			assert (elt != null);
+			assert elt != null;
 			record.setSourceClassName(elt.getClassName());
 			record.setSourceMethodName(elt.getMethodName());
 		}

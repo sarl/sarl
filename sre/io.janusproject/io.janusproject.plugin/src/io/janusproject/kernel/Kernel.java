@@ -194,7 +194,7 @@ public class Kernel {
 	 */
 	@Inject
 	void setJanusContext(@io.janusproject.kernel.annotations.Kernel AgentContext janusContext) {
-		assert (janusContext != null);
+		assert janusContext != null;
 		this.janusContext = janusContext;
 	}
 
@@ -278,12 +278,12 @@ public class Kernel {
 
 		@Override
 		public void uncaughtException(Thread thread, Throwable exception) {
-			assert (thread != null);
-			assert (exception != null);
+			assert thread != null;
+			assert exception != null;
 			final LogRecord record = new LogRecord(Level.SEVERE, exception.getLocalizedMessage());
 			record.setThrown(exception);
 			final StackTraceElement elt = exception.getStackTrace()[0];
-			assert (elt != null);
+			assert elt != null;
 			record.setSourceClassName(elt.getClassName());
 			record.setSourceMethodName(elt.getMethodName());
 			final Logger logger = getLogger();

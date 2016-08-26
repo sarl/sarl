@@ -106,6 +106,7 @@ public class BehaviorGuardEvaluatorRegistry {
 
     /**
      * Instanciates a new registry.
+     *
      * @param annotation
      *            - The annotation used to identify methods considered as the evaluator of the guard of a given behavior (on clause in SARL behavior)
      *            If class has a such method, it is considered as a {@code BehaviorGuardEvaluator}.
@@ -117,6 +118,7 @@ public class BehaviorGuardEvaluatorRegistry {
 
     /**
      * Registers all {@code PerceptGuardEvaluator} methods on the given listener object.
+     *
      * @param listener
      *            - the new {@code BehaviorGuardEvaluator} to add
      */
@@ -140,6 +142,7 @@ public class BehaviorGuardEvaluatorRegistry {
 
     /**
      * Unregisters all BehaviorGuardEvaluators on the given listener object.
+     *
      * @param listener
      *            - the new {@code BehaviorGuardEvaluator} to add
      */
@@ -171,6 +174,7 @@ public class BehaviorGuardEvaluatorRegistry {
 
     /**
      * Gets an iterator representing an immutable snapshot of all BehaviorGuardEvaluators to the given event at the time this method is called.
+     *
      * @param event
      *            -the event to process
      * @return the set of guard evaluators associated to the specified event
@@ -190,11 +194,12 @@ public class BehaviorGuardEvaluatorRegistry {
         return iBehaviorGuardEvaluators;
     }
 
-
     /**
      * Returns all {@code BehaviorGuardEvaluator}s for the given listener grouped by the type of event they subscribe to.
-     * @param listener - the listener
-     * @return a map associating event  classes to their guard evaluators
+     *
+     * @param listener
+     *            - the listener
+     * @return a map associating event classes to their guard evaluators
      */
     @SuppressWarnings("unchecked")
     private Multimap<Class<? extends Event>, BehaviorGuardEvaluator> findAllBehaviorGuardEvaluators(Object listener) {
@@ -225,9 +230,10 @@ public class BehaviorGuardEvaluatorRegistry {
                     // FIXME: Should check for a generic parameter type and error out
                     final Class<?>[] parameterTypes = method.getParameterTypes();
                     checkArgument(parameterTypes.length == 2,
-                            "Method %s has @" + this.perceptGuardEvaluatorAnnotation.toString() + " annotation but has %s parameters."
-                                    + "PerceptGuardEvaluator methods must have exactly 2 parameters (the event occurence to dispatch and the collection of Behavior methods to execute).",
-                            method, parameterTypes.length);
+                            "Method %s has @" + this.perceptGuardEvaluatorAnnotation.toString()
+                                    + " annotation but has %s parameters. PerceptGuardEvaluator methods must have exactly 2 parameters " //$NON-NLS-1$
+                                    + "(the event occurence to dispatch and the collection of Behavior methods to execute).", //$NON-NLS-1$
+                            method, Integer.valueOf(parameterTypes.length));
 
                     final MethodIdentifier ident = new MethodIdentifier(method, parameterTypes);
                     identifiers.put(ident, method);
@@ -241,6 +247,7 @@ public class BehaviorGuardEvaluatorRegistry {
     /**
      * Flattens a class's type hierarchy into a set of {@code Class} objects including all super-classes (transitively) and all interfaces implemented
      * by these super-classes.
+     *
      * @param concreteClass
      *            - the class you find the hierarchy
      * @return the set of class in the hierarchy of the specififed class
@@ -276,6 +283,7 @@ public class BehaviorGuardEvaluatorRegistry {
 
         /**
          * Creates a new method identifier according to the name and the list of parameter types of the considered method.
+         *
          * @param method
          *            - the name of the considered method.
          * @param parameterTypes

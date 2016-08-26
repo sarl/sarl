@@ -74,7 +74,7 @@ public class AESEventEncrypter extends AbstractEventEncrypter {
 
 	@Override
 	public void encrypt(EventEnvelope envelope) throws Exception {
-		assert (envelope != null) : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
+		assert envelope != null : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
 
 		final Cipher cipher = Cipher.getInstance(ALGORITHM);
 		cipher.init(Cipher.ENCRYPT_MODE, this.skeySpec, new IvParameterSpec(new byte[16]));
@@ -88,7 +88,7 @@ public class AESEventEncrypter extends AbstractEventEncrypter {
 
 	@Override
 	public void decrypt(EventEnvelope envelope) throws Exception {
-		assert (envelope != null) : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
+		assert envelope != null : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
 
 		final Cipher cipher = Cipher.getInstance(ALGORITHM);
 		cipher.init(Cipher.DECRYPT_MODE, this.skeySpec, new IvParameterSpec(new byte[16]));

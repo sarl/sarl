@@ -69,6 +69,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Class mostly inspired from jdt See {@link JavaProject#decodeClasspath} and {@code ClasspathEntry}.
+ *
  * @author $Author: ngaud$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -79,6 +80,7 @@ public final class JavaClasspathParser {
 
     /**
      * UnknownXmlElements.
+     *
      * @author $Author: ngaud$
      * @version $FullVersion$
      * @mavengroupid $GroupId$
@@ -105,6 +107,7 @@ public final class JavaClasspathParser {
 
     /**
      * Reads entry of a .classpath file.
+     *
      * @param projectName
      *            - the name of project containing the .classpath file
      * @param projectRootAbsoluteFullPath
@@ -126,6 +129,7 @@ public final class JavaClasspathParser {
 
     /**
      * Reads entry of a .classpath file.
+     *
      * @param projectName
      *            - the name of project containing the .classpath file
      * @param projectRootAbsoluteFullPath
@@ -142,6 +146,7 @@ public final class JavaClasspathParser {
      * @throws URISyntaxException
      *             - exception during parsing of .classpath
      */
+    @SuppressWarnings("checkstyle:innerassignment")
     public static IClasspathEntry[][] readFileEntriesWithException(String projectName, URL projectRootAbsoluteFullPath,
             Map<IPath, UnknownXmlElements> unknownElements)
             throws CoreException, IOException, ClasspathEntry.AssertionFailedException, URISyntaxException {
@@ -205,6 +210,7 @@ public final class JavaClasspathParser {
      * Reads and decode an XML classpath string. Returns a two-dimensional array, where the number of elements in the row is fixed to 2. The first
      * element is an array of raw classpath entries and the second element is an array of referenced entries that may have been stored by the client
      * earlier. See {@link IJavaProject#getReferencedClasspathEntries()} for more details.
+     *
      * @param projectName
      *            - the name of project containing the .classpath file
      * @param projectRootAbsoluteFullPath
@@ -225,17 +231,15 @@ public final class JavaClasspathParser {
 
         final List<IClasspathEntry> paths = new ArrayList<>();
         IClasspathEntry defaultOutput = null;
-        final StringReader reader = new StringReader(xmlClasspath);
         final Element cpElement;
-        try {
+
+        try (StringReader reader = new StringReader(xmlClasspath);) {
             final DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             cpElement = parser.parse(new InputSource(reader)).getDocumentElement();
         } catch (SAXException e) {
             throw new IOException(Messages.file_badFormat);
         } catch (ParserConfigurationException e) {
             throw new IOException(Messages.file_badFormat);
-        } finally {
-            reader.close();
         }
 
         if (!cpElement.getNodeName().equalsIgnoreCase("classpath")) { //$NON-NLS-1$
@@ -317,6 +321,7 @@ public final class JavaClasspathParser {
 
     /**
      * Decodes one XML element with the XML stream.
+     *
      * @param element
      *            - the considered element
      * @param projectName
@@ -517,7 +522,14 @@ public final class JavaClasspathParser {
 
     /**
      * Decode some element tag containing a sequence of patterns into IPath[].
+     *
+     * @param nodeMap
+     *            - map
+     * @param tag
+     *            - tag
+     * @return aarray of IPATH
      */
+    @SuppressWarnings("checkstyle:innerassignment")
     private static IPath[] decodePatterns(NamedNodeMap nodeMap, String tag) {
         final String sequence = removeAttribute(tag, nodeMap);
         if (!"".equals(sequence)) { //$NON-NLS-1$
@@ -543,7 +555,7 @@ public final class JavaClasspathParser {
         return null;
     }
 
-    @SuppressWarnings("checkstyle:npathcomplexity")
+    @SuppressWarnings({ "checkstyle:npathcomplexity", "checkstyle:innerassignment" })
     private static IAccessRule[] decodeAccessRules(NodeList list) {
         if (list == null) {
             return null;
@@ -583,6 +595,7 @@ public final class JavaClasspathParser {
         return result;
     }
 
+    @SuppressWarnings("checkstyle:innerassignment")
     private static IClasspathAttribute[] decodeExtraAttributes(NodeList attributes) {
         if (attributes == null) {
             return ClasspathEntry.NO_EXTRA_ATTRIBUTES;
@@ -619,16 +632,18 @@ public final class JavaClasspathParser {
         final OutputStreamWriter writer;
         try {
             writer = new OutputStreamWriter(s, "UTF8"); //$NON-NLS-1$
-            final GenericXMLWriter xmlWriter = new GenericXMLWriter(writer, System.getProperty("line.separator"), false/* don't print XML version */);
-            decodeUnknownNode(node, xmlWriter, true/* insert new line */);
-            xmlWriter.flush();
-            xmlWriter.close();
+            try (final GenericXMLWriter xmlWriter = new GenericXMLWriter(writer, System.getProperty("line.separator"),
+                    false/* don't print XML version */)) {
+                decodeUnknownNode(node, xmlWriter, true/* insert new line */);
+                xmlWriter.flush();
+            }
             buffer.append(s.toString("UTF8")); //$NON-NLS-1$
         } catch (UnsupportedEncodingException e) {
             // ignore (UTF8 is always supported)
         }
     }
 
+    @SuppressWarnings("checkstyle:innerassignment")
     private static void decodeUnknownNode(Node node, GenericXMLWriter xmlWriter, boolean insertNewLine) {
         switch (node.getNodeType()) {
         case Node.ELEMENT_NODE:
@@ -637,7 +652,7 @@ public final class JavaClasspathParser {
             if ((attributes = node.getAttributes()) != null) {
                 final int length = attributes.getLength();
                 if (length > 0) {
-                    parameters = new HashMap();
+                    parameters = new HashMap<>();
                     for (int i = 0; i < length; i++) {
                         final Node attribute = attributes.item(i);
                         parameters.put(attribute.getNodeName(), attribute.getNodeValue());
@@ -667,7 +682,12 @@ public final class JavaClasspathParser {
 
     /**
      * Returns the kind of a <code>PackageFragmentRoot</code> from its <code>String</code> form.
+     *
+     * @param kindStr
+     *            - string to test
+     * @return the integer identifier of the type of the specified string: CPE_PROJECT, CPE_VARIABLE, CPE_CONTAINER, etc.
      */
+    @SuppressWarnings("checkstyle:equalsavoidnull")
     private static int kindFromString(String kindStr) {
 
         if (kindStr.equalsIgnoreCase("prj")) { //$NON-NLS-1$

@@ -128,7 +128,7 @@ public class BootModule extends AbstractModule {
 			System.setProperty(JanusConfig.DEFAULT_CONTEXT_ID_NAME, str);
 		}
 
-		assert (!Strings.isNullOrEmpty(str));
+		assert !Strings.isNullOrEmpty(str);
 		return UUID.fromString(str);
 	}
 

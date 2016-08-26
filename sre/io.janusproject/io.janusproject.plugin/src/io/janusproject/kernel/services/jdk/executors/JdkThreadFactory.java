@@ -56,7 +56,7 @@ public class JdkThreadFactory implements ThreadFactory {
 	public Thread newThread(Runnable runnable) {
 		final Thread t = this.defaultThreadFactory.newThread(runnable);
 		t.setDaemon(false);
-		assert (this.handler != null);
+		assert this.handler != null;
 		t.setUncaughtExceptionHandler(this.handler);
 		return t;
 	}

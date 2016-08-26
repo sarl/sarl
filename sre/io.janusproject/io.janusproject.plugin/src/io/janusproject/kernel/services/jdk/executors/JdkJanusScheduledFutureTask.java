@@ -58,7 +58,7 @@ class JdkJanusScheduledFutureTask<V> implements JanusScheduledFutureTask<V> {
 	 * @param task - the JRE task that must be wrapped into the particular Janus implementation.
 	 */
 	JdkJanusScheduledFutureTask(RunnableScheduledFuture<V> task) {
-		assert (task != null);
+		assert task != null;
 		this.task = task;
 	}
 
@@ -84,9 +84,9 @@ class JdkJanusScheduledFutureTask<V> implements JanusScheduledFutureTask<V> {
 	/**
 	 * Report the exception if one.
 	 *
-	 * @param thread - thread for which an exception must be reported.
+	 * @param iThread - thread for which an exception must be reported.
 	 */
-	void reportException(Thread thread) {
+	void reportException(Thread iThread) {
 		try {
 			this.task.get();
 		} catch (ExecutionException e) {
@@ -95,11 +95,11 @@ class JdkJanusScheduledFutureTask<V> implements JanusScheduledFutureTask<V> {
 				ex = e.getCause();
 			}
 			if (!(ex instanceof ChuckNorrisException) && !this.treated.getAndSet(true)) {
-				JdkExecutorUtil.log(thread, ex);
+				JdkExecutorUtil.log(iThread, ex);
 			}
 		} catch (InterruptedException | CancellationException e) {
 			if (!this.treated.getAndSet(true)) {
-				JdkExecutorUtil.log(thread, e);
+				JdkExecutorUtil.log(iThread, e);
 			}
 		}
 	}

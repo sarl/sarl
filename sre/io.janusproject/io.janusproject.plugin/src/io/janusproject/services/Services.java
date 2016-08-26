@@ -122,14 +122,14 @@ public final class Services {
 	private static void addNodeIntoDependencyGraph(DependentService depServ,
 			Map<Class<? extends Service>, DependencyNode> dependentServices, List<DependencyNode> roots) {
 		final Class<? extends Service> type = depServ.getServiceType();
-		assert (type != null);
-		assert (type.isInterface()) : type.getName();
+		assert type != null;
+		assert type.isInterface() : type.getName();
 		DependencyNode node = dependentServices.get(type);
 		if (node == null) {
 			node = new DependencyNode(depServ, type);
 			dependentServices.put(type, node);
 		} else {
-			assert (node.getService() == null);
+			assert node.getService() == null;
 			node.setService(depServ);
 		}
 
@@ -190,7 +190,7 @@ public final class Services {
 
 		if (accessors.isAsyncStateWaitingEnabled()) {
 			for (final DependencyNode node : dependentServices.values()) {
-				assert (node.getService() != null);
+				assert node.getService() != null;
 				if (node.getService() instanceof AsyncStateService) {
 					for (final DependencyNode next : node.getNextServices()) {
 						next.getAsyncStateServices().add(new WeakReference<>(node));
@@ -229,7 +229,7 @@ public final class Services {
 						node = new DependencyNode(depServ, type);
 						dependentServices.put(type, node);
 					} else {
-						assert (node.getService() == null);
+						assert node.getService() == null;
 						node.setService(depServ);
 						isRoot = false;
 					}
@@ -284,16 +284,16 @@ public final class Services {
 		accessors.runFreeServicesBefore(freeServices);
 		while (!roots.isEmpty()) {
 			final DependencyNode node = roots.remove();
-			assert (node != null && node.getType() != null);
+			assert node != null && node.getType() != null;
 			if (!executed.contains(node.getType())) {
 				executed.add(node.getType());
 				roots.addAll(node.getNextServices());
 				roots.addAll(node.getNextWeakServices());
-				assert (node.getService() != null);
+				assert node.getService() != null;
 				if (async) {
 					for (final WeakReference<DependencyNode> asyncService : node.getAsyncStateServices()) {
 						final AsyncStateService as = (AsyncStateService) (asyncService.get().getService());
-						assert (as != null);
+						assert as != null;
 						while (!as.isReadyForOtherServices()) {
 							Thread.yield();
 						}
@@ -327,7 +327,7 @@ public final class Services {
 		private final Collection<WeakReference<DependencyNode>> asyncStateServices = new ArrayList<>();
 
 		DependencyNode(DependentService service, Class<? extends Service> type) {
-			assert (service != null);
+			assert service != null;
 			this.service = service;
 			this.type = type;
 		}

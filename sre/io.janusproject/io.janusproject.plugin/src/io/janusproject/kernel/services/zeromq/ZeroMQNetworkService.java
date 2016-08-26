@@ -123,7 +123,7 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
      */
     @Inject
     public ZeroMQNetworkService(@Named(JanusConfig.PUB_URI) URI uri) {
-        assert (uri != null) : "Injected URI must be not null nor empty"; //$NON-NLS-1$
+        assert uri != null : "Injected URI must be not null nor empty"; //$NON-NLS-1$
         this.uriCandidate = uri;
     }
 
@@ -311,19 +311,19 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
         final ByteBuffer buffer = ByteBuffer.wrap(data);
 
         final byte[] contextId = readBlock(buffer);
-        assert (contextId != null && contextId.length > 0);
+        assert contextId != null && contextId.length > 0;
 
         final byte[] spaceId = readBlock(buffer);
-        assert (spaceId != null && spaceId.length > 0);
+        assert spaceId != null && spaceId.length > 0;
 
         final byte[] scope = readBlock(buffer);
-        assert (scope != null && scope.length > 0);
+        assert scope != null && scope.length > 0;
 
         final byte[] headers = readBlock(buffer);
-        assert (headers != null && headers.length > 0);
+        assert headers != null && headers.length > 0;
 
         final byte[] body = readBlock(buffer);
-        assert (body != null && body.length > 0);
+        assert body != null && body.length > 0;
 
         return new EventEnvelope(contextId, spaceId, scope, headers, body);
     }
@@ -333,23 +333,23 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
     public synchronized void connectToRemoteSpaces(URI peerUri, SpaceID space, NetworkEventReceivingListener listener) throws Exception {
         if (this.validatedURI == null) {
             // Bufferizing the peerURI.
-            assert (this.bufferedConnections != null);
+            assert this.bufferedConnections != null;
             this.bufferedConnections.put(space, new BufferedConnection(peerUri, space, listener));
         } else {
             Socket receptionSocket = this.receptionSocketsPerRemoteKernel.get(peerUri);
             if (receptionSocket == null) {
                 this.logger.debug("PEER_CONNECTION", peerUri, space); //$NON-NLS-1$
                 receptionSocket = this.context.createSocket(ZMQ.SUB);
-                assert (receptionSocket != null);
+                assert receptionSocket != null;
                 this.receptionSocketsPerRemoteKernel.put(peerUri, receptionSocket);
                 receptionSocket.connect(peerUri.toString());
                 this.poller.register(receptionSocket, Poller.POLLIN);
                 this.logger.debug("PEER_CONNECTED", peerUri); //$NON-NLS-1$
             }
-            assert (receptionSocket != null);
+            assert receptionSocket != null;
             final NetworkEventReceivingListener old = this.messageRecvListeners.get(space);
             if (old == null) {
-                assert (listener != null);
+                assert listener != null;
                 this.messageRecvListeners.put(space, listener);
             }
             final byte[] header = buildFilterableHeader(this.serializer.serializeContextID(space.getContextID()));
@@ -414,7 +414,7 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
                             if (this.poller.pollin(i)) {
                                 this.logger.debug("POLLING", new Integer(i)); //$NON-NLS-1$
                                 final EventEnvelope ev = extractEnvelope(this.poller.getSocket(i));
-                                assert (ev != null);
+                                assert ev != null;
 
                                 try {
                                     receive(ev);

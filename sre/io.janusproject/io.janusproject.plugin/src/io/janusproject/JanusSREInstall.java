@@ -67,6 +67,7 @@ import io.sarl.eclipse.util.BundleUtil;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class JanusSREInstall extends AbstractSREInstall {
 
     /**
@@ -82,6 +83,8 @@ public class JanusSREInstall extends AbstractSREInstall {
     private static final Set<String> RUNTIME_REQUIRED_DEPDENCIES = new HashSet<>(Arrays.asList("io.sarl.core", //$NON-NLS-1$
             "io.sarl.util", "org.arakhne.afc.core.vmutils", "com.hazelcast", "com.google.gson", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             "com.google.inject", "org.zeromq.jeromq", "org.apache.commons.cli")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+
+    private static final String DEFAULT_PATH_TO_CLASSES_IN_MAVEN_PROJECT = "target/classes"; //$NON-NLS-1$
 
     /**
      * The path where this SRE plugin jar is effectively installed.
@@ -112,11 +115,11 @@ public class JanusSREInstall extends AbstractSREInstall {
             // Default value of the output folder for our project but will be
             // overload later in we find a .classpath precising the output
             // folder
-            this.janusSREInstallPath = Path.fromPortableString(bundleSourcePath.toPortableString().concat("target/classes"));
+            this.janusSREInstallPath = Path.fromPortableString(bundleSourcePath.toPortableString().concat(DEFAULT_PATH_TO_CLASSES_IN_MAVEN_PROJECT));
 
             URL janusBundleURL = null;
             try {
-                janusBundleURL = new URL("file://" + bundleSourcePath.toPortableString());
+                janusBundleURL = new URL("file://" + bundleSourcePath.toPortableString()); //$NON-NLS-1$
             } catch (MalformedURLException e) {
                 SARLEclipsePlugin.getDefault().log(e);
                 return;
@@ -128,21 +131,21 @@ public class JanusSREInstall extends AbstractSREInstall {
             this.janusSREInstallPath = bundlePath;
         }
         this.location = this.janusSREInstallPath.toPortableString();
-        this.setName("JANUS DEFAULT SRE");
+        this.setName("JANUS DEFAULT SRE"); //$NON-NLS-1$
 
         // Parsing all bundle dependencies
         getAllBundleDependencies(bundle, true);
 
         this.setClassPathEntries(this.classpathEntries);
 
-        this.setMainClass("io.janusproject.Boot");
+        this.setMainClass("io.janusproject.Boot"); //$NON-NLS-1$
 
         // FIXME Manual management of the required fragment of this plugin
         // The getWire of eclipse do not returned fragment
         // In our case we need the fragment com.google.inject.multibindings
         // see also the build.properties to enable Tycho to catch these
         // fragment's dependencies
-        final Bundle[] googleMultiBindinfsBundles = Platform.getBundles("com.google.inject.multibindings", "4.0.0");
+        final Bundle[] googleMultiBindinfsBundles = Platform.getBundles("com.google.inject.multibindings", "4.0.0");  //$NON-NLS-1$//$NON-NLS-2$
         if (googleMultiBindinfsBundles.length > 0) {
             final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(BundleUtil.getBundlePath(googleMultiBindinfsBundles[0]), null, null);
             this.classpathEntries.add(new RuntimeClasspathEntry(cpEntry));

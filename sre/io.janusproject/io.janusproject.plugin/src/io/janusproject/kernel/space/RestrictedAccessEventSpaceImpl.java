@@ -59,8 +59,8 @@ public class RestrictedAccessEventSpaceImpl extends AbstractEventSpace implement
 	public RestrictedAccessEventSpaceImpl(SpaceID id, Acl acl, Permission accessPermission,
 			DistributedDataStructureService factory) {
 		super(id, factory);
-		assert (acl != null);
-		assert (accessPermission != null);
+		assert acl != null;
+		assert accessPermission != null;
 		this.acl = acl;
 		this.accessPermission = accessPermission;
 	}

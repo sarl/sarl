@@ -106,7 +106,7 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 			final LogService serv = getLogService();
 			if (serv != null && serv.isLoggeable(level)) {
 				final StackTraceElement elt = getCaller();
-				assert (elt != null);
+				assert elt != null;
 				final LogRecord record = new LogRecord(level, message);
 				if (thrown != null) {
 					record.setThrown(thrown);

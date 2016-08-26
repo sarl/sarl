@@ -115,7 +115,7 @@ class ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 		}
 
 		final AgentContext ac = this.contextRepository.getContext(futureContext);
-		assert (ac != null) : "Unknown Context"; //$NON-NLS-1$
+		assert ac != null : "Unknown Context"; //$NON-NLS-1$
 
 		if (!futureContextDefaultSpaceID.equals(ac.getDefaultSpace().getID().getID())) {
 			throw new IllegalArgumentException(Locale.getString("INVALID_DEFAULT_SPACE_MATCHING", //$NON-NLS-1$

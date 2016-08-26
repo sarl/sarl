@@ -152,7 +152,7 @@ class InnerContextSkill extends Skill implements InnerContextAccess {
 	public synchronized SynchronizedSet<UUID> getMemberAgents() {
 		if (this.innerContext != null) {
 			final SynchronizedSet<UUID> participants = this.innerContext.getDefaultSpace().getParticipants();
-			assert (participants != null);
+			assert participants != null;
 			final Set<UUID> members = new HashSet<>();
 			final UUID myId = getOwner().getID();
 			for (final UUID id : participants) {
@@ -172,7 +172,7 @@ class InnerContextSkill extends Skill implements InnerContextAccess {
 
 	@Override
 	public boolean isInnerDefaultSpace(SpaceID spaceID) {
-		return spaceID.equals(innerContext.getDefaultSpace().getID());
+		return spaceID.equals(this.innerContext.getDefaultSpace().getID());
 	}
 
 	@Override

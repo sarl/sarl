@@ -96,14 +96,14 @@ public class JdkThreadPoolExecutor extends ThreadPoolExecutor {
 	 * @param task - the finished task.
 	 */
 	protected void fireTaskFinished(Thread thread, Runnable task) {
-		final JdkTaskListener[] listeners;
+		final JdkTaskListener[] iListeners;
 		synchronized (this) {
 			if (this.listeners == null) {
 				return;
 			}
-			listeners = this.listeners.getListeners(JdkTaskListener.class);
+			iListeners = this.listeners.getListeners(JdkTaskListener.class);
 		}
-		for (final JdkTaskListener listener : listeners) {
+		for (final JdkTaskListener listener : iListeners) {
 			listener.taskFinished(thread, task);
 		}
 	}

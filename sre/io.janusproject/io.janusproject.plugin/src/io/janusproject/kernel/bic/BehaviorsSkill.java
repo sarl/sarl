@@ -83,7 +83,7 @@ class BehaviorsSkill extends Skill implements Behaviors {
 			// Do not call getInnerContext(), which is creating the inner context automatically.
 			// In place, try to send the event inside the agent only (and its behaviors).
 			final EventListener listener = getSkill(InternalEventBusCapacity.class).asEventListener();
-			assert (listener != null);
+			assert listener != null;
 			evt.setSource(this.agentAddressInInnerDefaultSpace);
 			listener.receiveEvent(evt);
 		}

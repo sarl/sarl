@@ -282,7 +282,7 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 		}
 
 		private Map<K, Collection<V>> createMapView() {
-			final Map<K, Collection<V>> map = Maps.newHashMap();
+			final Map<K, Collection<V>> iMap = Maps.newHashMap();
 			K oldKey = null;
 			Collection<V> oldValues = null;
 			for (final Entry<K, V> entry : this.map.entrySet()) {
@@ -290,17 +290,17 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 				if (Objects.equal(entry.getKey(), oldKey)) {
 					values = oldValues;
 				} else {
-					values = map.get(entry.getKey());
+					values = iMap.get(entry.getKey());
 				}
 				if (values == null) {
 					values = Lists.newArrayList();
-					map.put(entry.getKey(), values);
+					iMap.put(entry.getKey(), values);
 				}
 				values.add(entry.getValue());
 				oldKey = entry.getKey();
 				oldValues = values;
 			}
-			return map;
+			return iMap;
 		}
 
 	}

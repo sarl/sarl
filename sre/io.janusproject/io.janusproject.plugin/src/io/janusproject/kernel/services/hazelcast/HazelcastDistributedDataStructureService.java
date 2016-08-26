@@ -139,7 +139,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 		private final IMap<K, V> map;
 
 		MapView(String name, IMap<K, V> map) {
-			assert (map != null);
+			assert map != null;
 			this.name = name;
 			this.map = map;
 		}
@@ -255,7 +255,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 
 		MultiMapView(String name, MultiMap<K, V> map) {
 			this.name = name;
-			assert (map != null);
+			assert map != null;
 			this.map = map;
 		}
 

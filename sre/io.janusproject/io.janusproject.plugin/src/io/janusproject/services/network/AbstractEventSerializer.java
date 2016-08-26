@@ -50,7 +50,7 @@ public abstract class AbstractEventSerializer implements EventSerializer {
 
 	@Override
 	public byte[] serializeContextID(UUID id) throws Exception {
-		assert (this.encrypter != null) : "Error in the injection of the encrypter"; //$NON-NLS-1$
+		assert this.encrypter != null : "Error in the injection of the encrypter"; //$NON-NLS-1$
 		return this.encrypter.encryptUUID(id);
 	}
 

@@ -123,7 +123,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 						agentClazz, parent.getID(), agentID);
 				final Injector agentInjector = this.injector.createChildInjector(agentInjectionModule);
 				final Agent agent = agentInjector.getInstance(Agent.class);
-				assert (agent != null);
+				assert agent != null;
 				this.agents.put(agent.getID(), agent);
 				fireAgentSpawned(parent, agent, params);
 				return agent.getID();
@@ -171,7 +171,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 * @return the registered agent, or <code>null</code>.
 	 */
 	synchronized Agent getAgent(UUID id) {
-		assert (id != null);
+		assert id != null;
 		return this.agents.get(id);
 	}
 
@@ -258,11 +258,11 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		// Send the event in the default space.
 		final UUID agentID = agent.getID();
-		assert (agentID != null) : "Empty agent identifier"; //$NON-NLS-1$
+		assert agentID != null : "Empty agent identifier"; //$NON-NLS-1$
 		final EventSpace defSpace = context.getDefaultSpace();
-		assert (defSpace != null) : "A context does not contain a default space"; //$NON-NLS-1$
+		assert defSpace != null : "A context does not contain a default space"; //$NON-NLS-1$
 		final Address agentAddress = defSpace.getAddress(agentID);
-		assert (agentAddress != null) : "Cannot find an address in the default space for " + agentID; //$NON-NLS-1$
+		assert agentAddress != null : "Cannot find an address in the default space for " + agentID; //$NON-NLS-1$
 
 		defSpace.emit(new AgentSpawned(agentAddress, agentID, agent.getClass().getName()));
 	}
@@ -448,9 +448,9 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		private final UUID agentID;
 
 		JustInTimeAgentInjectionModule(Injector injector, Class<? extends Agent> agentType, UUID parentID, UUID agentID) {
-			assert (injector != null);
-			assert (agentType != null);
-			assert (parentID != null);
+			assert injector != null;
+			assert agentType != null;
+			assert parentID != null;
 			this.injector = injector;
 			this.agentType = agentType;
 			this.parentID = parentID;

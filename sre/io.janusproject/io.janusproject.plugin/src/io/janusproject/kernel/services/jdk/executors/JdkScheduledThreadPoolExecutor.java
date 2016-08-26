@@ -87,14 +87,14 @@ public class JdkScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor 
 	 * @param task - the finished task.
 	 */
 	protected void fireTaskFinished(Thread thread, Runnable task) {
-		final JdkTaskListener[] listeners;
+		final JdkTaskListener[] iListeners;
 		synchronized (this) {
 			if (this.listeners == null) {
 				return;
 			}
-			listeners = this.listeners.getListeners(JdkTaskListener.class);
+			iListeners = this.listeners.getListeners(JdkTaskListener.class);
 		}
-		for (final JdkTaskListener listener : listeners) {
+		for (final JdkTaskListener listener : iListeners) {
 			listener.taskFinished(thread, task);
 		}
 	}
@@ -124,10 +124,10 @@ public class JdkScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor 
 
 	@Override
 	protected void afterExecute(Runnable runnable, Throwable thread) {
-		assert (thread == null);
-		assert (runnable instanceof JdkJanusScheduledFutureTask<?>);
+		assert thread == null;
+		assert runnable instanceof JdkJanusScheduledFutureTask<?>;
 		final JdkJanusScheduledFutureTask<?> task = (JdkJanusScheduledFutureTask<?>) runnable;
-		assert (task.isDone() || task.isCancelled() || task.isPeriodic());
+		assert task.isDone() || task.isCancelled() || task.isPeriodic();
 		if (task.isDone() || task.isCancelled()) {
 			task.reportException(task.getThread());
 			fireTaskFinished(task.getThread(), task);

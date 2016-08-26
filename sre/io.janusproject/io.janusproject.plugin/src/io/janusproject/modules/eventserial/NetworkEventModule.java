@@ -82,7 +82,7 @@ public class NetworkEventModule extends AbstractModule {
 			if (type != null && EventSerializer.class.isAssignableFrom(type)) {
 				serializerType = type.asSubclass(EventSerializer.class);
 			}
-			assert (injector != null);
+			assert injector != null;
 			return injector.getInstance(serializerType);
 		}
 		return injector.getInstance(serializerType);
@@ -110,7 +110,7 @@ public class NetworkEventModule extends AbstractModule {
 				encrypterType = PlainTextEventEncrypter.class;
 			}
 		}
-		assert (injector != null);
+		assert injector != null;
 		return injector.getInstance(encrypterType);
 	}
 

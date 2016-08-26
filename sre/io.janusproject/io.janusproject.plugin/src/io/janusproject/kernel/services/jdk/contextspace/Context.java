@@ -74,7 +74,7 @@ class Context implements AgentContext {
 	 *        creation of the default space.
 	 */
 	Context(UUID id, UUID defaultSpaceID, SpaceRepositoryFactory factory, SpaceRepositoryListener startUpListener) {
-		assert (factory != null);
+		assert factory != null;
 		this.id = id;
 		this.defaultSpaceID = defaultSpaceID;
 		this.spaceRepository = factory.newInstance(this, id.toString() + "-spaces", //$NON-NLS-1$
@@ -193,9 +193,9 @@ class Context implements AgentContext {
 		 * @param relay - the space repository listener to register at initialization time.
 		 */
 		SpaceListener(Context context, LogService logger, SpaceRepositoryListener relay) {
-			assert (context != null);
-			assert (logger != null);
-			assert (relay != null);
+			assert context != null;
+			assert logger != null;
+			assert relay != null;
 			this.context = context;
 			this.logger = logger;
 			this.relay = relay;

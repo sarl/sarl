@@ -40,13 +40,13 @@ public class PlainTextEventEncrypter extends AbstractEventEncrypter {
 
 	@Override
 	public void encrypt(EventEnvelope envelope) {
-		assert (envelope != null) : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
+		assert envelope != null : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
 		// Do nothing.
 	}
 
 	@Override
 	public void decrypt(EventEnvelope envelope) {
-		assert (envelope != null) : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
+		assert envelope != null : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
 		// Do nothing.
 	}
 

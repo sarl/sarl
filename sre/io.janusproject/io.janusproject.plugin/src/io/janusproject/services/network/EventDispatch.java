@@ -63,9 +63,9 @@ public class EventDispatch implements Serializable {
 	 * @param headers - custom headers associated to the event.
 	 */
 	public EventDispatch(SpaceID sid, Event event, Scope<?> scope, Map<String, String> headers) {
-		assert (sid != null) : "Parameter 'sid' must not be null"; //$NON-NLS-1$
-		assert (event != null) : "Parameter 'event' must not be null"; //$NON-NLS-1$
-		assert (scope != null) : "Parameter 'scope' must not be null"; //$NON-NLS-1$
+		assert sid != null : "Parameter 'sid' must not be null"; //$NON-NLS-1$
+		assert event != null : "Parameter 'event' must not be null"; //$NON-NLS-1$
+		assert scope != null : "Parameter 'scope' must not be null"; //$NON-NLS-1$
 		this.spaceID = sid;
 		this.event = event;
 		this.scope = scope;

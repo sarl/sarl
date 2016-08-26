@@ -88,8 +88,8 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 
 	@Override
 	protected void doStart() {
-		assert (this.schedules != null);
-		assert (this.exec != null);
+		assert this.schedules != null;
+		assert this.exec != null;
 		// Launch a periodic task that is purging the executor pools.
 		if ((this.schedules instanceof ThreadPoolExecutor) || (this.exec instanceof ThreadPoolExecutor)) {
 			final int delay = JanusConfig.getSystemPropertyAsInteger(JanusConfig.KERNEL_THREAD_PURGE_DELAY_NAME,
@@ -214,11 +214,11 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 
 		@Override
 		public void run() {
-			assert (setName());
+			assert setName();
 			try {
 				purge();
 			} finally {
-				assert (restoreName());
+				assert restoreName();
 			}
 		}
 

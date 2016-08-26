@@ -92,7 +92,7 @@ class DefaultContextInteractionsSkill extends Skill implements DefaultContextInt
 		Address adr = this.addressInParentDefaultSpace;
 		if (adr == null) {
 			adr = this.defaultSpace.getAddress(getOwner().getID());
-			assert (adr != null) : "The agent has no address in the default space"; //$NON-NLS-1$
+			assert adr != null : "The agent has no address in the default space"; //$NON-NLS-1$
 			this.addressInParentDefaultSpace = adr;
 		}
 		return adr;

@@ -79,7 +79,7 @@ public class HazelcastModule extends AbstractModule {
 		// Ensure the system property for the hazelcast logger factory
 		final String factory = JanusConfig.getSystemProperty(JanusConfig.HAZELCAST_LOGGER_FACTORY_NAME,
 				JanusConfig.HAZELCAST_LOGGER_FACTORY_VALUE);
-		assert (factory != null && !factory.isEmpty());
+		assert factory != null && !factory.isEmpty();
 		System.setProperty(JanusConfig.HAZELCAST_LOGGER_FACTORY_NAME, factory);
 
 		// Bind the infrastructure service dedicated to Hazelcast
@@ -95,7 +95,7 @@ public class HazelcastModule extends AbstractModule {
 	@Singleton
 	private static HazelcastInstance createHazelcastInstance(Config config, LogService logService,
 			@Named(JanusConfig.PUB_URI) URI uri) {
-		assert (uri != null);
+		assert uri != null;
 		boolean enableMulticast = true;
 		InetAddress adr = null;
 
@@ -119,7 +119,7 @@ public class HazelcastModule extends AbstractModule {
 			}
 		}
 
-		assert (adr != null);
+		assert adr != null;
 		final String hostname = adr.getHostAddress();
 		config.setProperty("hazelcast.local.localAddress", hostname); //$NON-NLS-1$
 

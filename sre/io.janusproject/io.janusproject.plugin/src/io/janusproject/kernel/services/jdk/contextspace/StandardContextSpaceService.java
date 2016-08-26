@@ -196,19 +196,19 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 
 	@Override
 	public synchronized AgentContext createContext(UUID contextID, UUID defaultSpaceUUID) {
-		assert (contextID != null) : "The contextID cannot be null"; //$NON-NLS-1$
-		assert (defaultSpaceUUID != null) : "The defaultSpaceUUID cannot be null"; //$NON-NLS-1$
-		assert (this.contexts != null) : "Internal Error: the context container must not be null"; //$NON-NLS-1$
+		assert contextID != null : "The contextID cannot be null"; //$NON-NLS-1$
+		assert defaultSpaceUUID != null : "The defaultSpaceUUID cannot be null"; //$NON-NLS-1$
+		assert this.contexts != null : "Internal Error: the context container must not be null"; //$NON-NLS-1$
 		final AgentContext context = this.contexts.get(contextID);
 		if (context == null) {
 			final Context ctx = this.contextFactory.newInstance(contextID, defaultSpaceUUID, this.spaceRepositoryFactory,
 					new SpaceEventProxy());
-			assert (ctx != null) : "The internal Context cannot be null"; //$NON-NLS-1$
-			assert (this.contexts != null) : "Internal Error: the context container must not be null"; //$NON-NLS-1$
+			assert ctx != null : "The internal Context cannot be null"; //$NON-NLS-1$
+			assert this.contexts != null : "Internal Error: the context container must not be null"; //$NON-NLS-1$
 			this.contexts.put(contextID, ctx);
 			fireContextCreated(ctx);
 			final Space defaultSpace = ctx.postConstruction();
-			assert (defaultSpace != null) : "The default space in the context " //$NON-NLS-1$
+			assert defaultSpace != null : "The default space in the context " //$NON-NLS-1$
 					+ contextID + " cannot be null"; //$NON-NLS-1$
 			this.defaultSpaces.putIfAbsent(ctx.getID(), defaultSpace.getID());
 			return ctx;
@@ -394,13 +394,13 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 
 		@Override
 		public void entryAdded(UUID key, SpaceID value) {
-			assert (value != null);
+			assert value != null;
 			ensureDefaultSpaceDefinition(value);
 		}
 
 		@Override
 		public void entryRemoved(UUID key, SpaceID value) {
-			assert (value != null);
+			assert value != null;
 			removeDefaultSpaceDefinition(value);
 		}
 

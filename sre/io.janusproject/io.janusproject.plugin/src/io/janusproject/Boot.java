@@ -636,7 +636,7 @@ public final class Boot {
 		// Set the boot agent classname
 		System.setProperty(JanusConfig.BOOT_AGENT, agentCls.getName());
 		// Get the start-up injection module
-		assert (startupModule != null) : "No platform injection module"; //$NON-NLS-1$
+		assert startupModule != null : "No platform injection module"; //$NON-NLS-1$
 		final Kernel k = Kernel.create(startupModule);
 		final Logger logger = k.getLogger();
 		if (logger != null) {

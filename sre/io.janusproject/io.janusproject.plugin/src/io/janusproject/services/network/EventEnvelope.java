@@ -63,11 +63,11 @@ public class EventEnvelope implements Serializable {
 	 */
 	public EventEnvelope(byte[] contextId, byte[] spaceID, byte[] scope, byte[] headers, byte[] body) {
 
-		assert (contextId != null && contextId.length > 0) : "Parameter 'contextId' must not be null or zero-length"; //$NON-NLS-1$
-		assert (spaceID != null && spaceID.length > 0) : "Parameter 'spaceID' must not be null or zero-length"; //$NON-NLS-1$
-		assert (scope != null && scope.length > 0) : "Parameter 'scope' must not be null or zero-length"; //$NON-NLS-1$
-		assert (headers != null && headers.length > 0) : "Parameter 'headers' must not be null or zero-length"; //$NON-NLS-1$
-		assert (body != null && body.length > 0) : "Parameter 'body' must not be null or zero-length"; //$NON-NLS-1$
+		assert contextId != null && contextId.length > 0 : "Parameter 'contextId' must not be null or zero-length"; //$NON-NLS-1$
+		assert spaceID != null && spaceID.length > 0 : "Parameter 'spaceID' must not be null or zero-length"; //$NON-NLS-1$
+		assert scope != null && scope.length > 0 : "Parameter 'scope' must not be null or zero-length"; //$NON-NLS-1$
+		assert headers != null && headers.length > 0 : "Parameter 'headers' must not be null or zero-length"; //$NON-NLS-1$
+		assert body != null && body.length > 0 : "Parameter 'body' must not be null or zero-length"; //$NON-NLS-1$
 
 		this.contextId = contextId;
 		this.spaceId = spaceID;
@@ -127,7 +127,7 @@ public class EventEnvelope implements Serializable {
 	 * @param headers - the serialized header for the message
 	 */
 	public void setCustomHeaders(byte[] headers) {
-		assert (headers != null && headers.length > 0) : "Parameter 'headers' must not be null or zero-length"; //$NON-NLS-1$
+		assert headers != null && headers.length > 0 : "Parameter 'headers' must not be null or zero-length"; //$NON-NLS-1$
 		this.customHeaders = headers;
 	}
 
@@ -137,7 +137,7 @@ public class EventEnvelope implements Serializable {
 	 * @param body - the serialized message content
 	 */
 	public void setBody(byte[] body) {
-		assert (body != null && body.length > 0) : "Parameter 'body' must not be null or zero-length"; //$NON-NLS-1$
+		assert body != null && body.length > 0 : "Parameter 'body' must not be null or zero-length"; //$NON-NLS-1$
 		this.body = body;
 	}
 
@@ -147,7 +147,7 @@ public class EventEnvelope implements Serializable {
 	 * @param contextID - the serialized context identifier
 	 */
 	public void setContextId(byte[] contextID) {
-		assert (contextID != null && contextID.length > 0) : "Parameter 'contextID' must not be null or zero-length"; //$NON-NLS-1$
+		assert contextID != null && contextID.length > 0 : "Parameter 'contextID' must not be null or zero-length"; //$NON-NLS-1$
 		this.contextId = contextID;
 	}
 
@@ -157,7 +157,7 @@ public class EventEnvelope implements Serializable {
 	 * @param spaceID - the serialized space identifier
 	 */
 	public void setSpaceId(byte[] spaceID) {
-		assert (spaceID != null && spaceID.length > 0) : "Parameter 'spaceID' must not be null or zero-length"; //$NON-NLS-1$
+		assert spaceID != null && spaceID.length > 0 : "Parameter 'spaceID' must not be null or zero-length"; //$NON-NLS-1$
 		this.spaceId = spaceID;
 	}
 
@@ -167,7 +167,7 @@ public class EventEnvelope implements Serializable {
 	 * @param scope - the serialized scope
 	 */
 	public void setScope(byte[] scope) {
-		assert (scope != null && scope.length > 0) : "Parameter 'scope' must not be null or zero-length"; //$NON-NLS-1$
+		assert scope != null && scope.length > 0 : "Parameter 'scope' must not be null or zero-length"; //$NON-NLS-1$
 		this.scope = scope;
 	}
 

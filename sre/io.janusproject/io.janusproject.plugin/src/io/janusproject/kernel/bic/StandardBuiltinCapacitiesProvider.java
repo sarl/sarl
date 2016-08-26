@@ -191,7 +191,7 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 		@Override
 		public void agentDestroy(Agent agent) {
 			final SpawnService service = this.spawnService.get();
-			assert (service != null);
+			assert service != null;
 			service.removeSpawnServiceListener(this.agentID, this);
 
 			final Destroy destroy = new Destroy();

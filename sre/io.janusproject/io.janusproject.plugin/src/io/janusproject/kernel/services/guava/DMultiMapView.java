@@ -46,7 +46,7 @@ public class DMultiMapView<K, V> extends AbstractDMultiMapView<K, V> {
 	 */
 	public DMultiMapView(String name, Multimap<K, V> map) {
 		super(name);
-		assert (map != null);
+		assert map != null;
 		this.map = map;
 	}
 

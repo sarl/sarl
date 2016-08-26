@@ -226,8 +226,8 @@ class InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void receiveEvent(Event event) {
-			assert ((!(event instanceof Initialize)) && (!(event instanceof Destroy))
-					&& (!(event instanceof AsynchronousAgentKillingEvent))) : "Unsupported type of event: " + event; //$NON-NLS-1$
+			assert (!(event instanceof Initialize)) && (!(event instanceof Destroy))
+					&& (!(event instanceof AsynchronousAgentKillingEvent)) : "Unsupported type of event: " + event; //$NON-NLS-1$
 			if (event instanceof AgentSpawned && this.aid.equals(((AgentSpawned) event).agentID)) {
 				// This permits to ensure that the killing event
 				// is correctly treated when fired from the initialization

@@ -47,7 +47,7 @@ public class DMapView<K, V> extends AbstractDMapView<K, V> {
 	 */
 	public DMapView(String name, Map<K, V> map) {
 		super(name);
-		assert (map != null);
+		assert map != null;
 		this.map = map;
 	}
 

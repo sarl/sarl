@@ -81,19 +81,19 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 
 	@Override
 	public EventEnvelope serialize(EventDispatch dispatch) throws Exception {
-		assert (this.encrypter != null) : "Invalid injection of the encrypter"; //$NON-NLS-1$
-		assert (this.gson != null) : "Invalid injection of Gson"; //$NON-NLS-1$
-		assert (dispatch != null) : "Parameter 'dispatch' must not be null"; //$NON-NLS-1$
+		assert this.encrypter != null : "Invalid injection of the encrypter"; //$NON-NLS-1$
+		assert this.gson != null : "Invalid injection of Gson"; //$NON-NLS-1$
+		assert dispatch != null : "Parameter 'dispatch' must not be null"; //$NON-NLS-1$
 
 		final Event event = dispatch.getEvent();
-		assert (event != null);
+		assert event != null;
 		final Scope<?> scope = dispatch.getScope();
-		assert (scope != null);
+		assert scope != null;
 		final SpaceID spaceID = dispatch.getSpaceID();
-		assert (spaceID != null);
-		assert (spaceID.getSpaceSpecification() != null);
+		assert spaceID != null;
+		assert spaceID.getSpaceSpecification() != null;
 		final Map<String, String> headers = dispatch.getCustomHeaders();
-		assert (headers != null);
+		assert headers != null;
 
 		headers.put("x-java-event-class", //$NON-NLS-1$
 				event.getClass().getName());
@@ -126,8 +126,8 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public EventDispatch deserialize(EventEnvelope envelope) throws Exception {
-		assert (this.encrypter != null) : "Invalid injection of the encrypter"; //$NON-NLS-1$
-		assert (this.gson != null) : "Invalid injection of Gson"; //$NON-NLS-1$
+		assert this.encrypter != null : "Invalid injection of the encrypter"; //$NON-NLS-1$
+		assert this.gson != null : "Invalid injection of Gson"; //$NON-NLS-1$
 
 		this.encrypter.decrypt(envelope);
 
@@ -144,16 +144,16 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 		final SpaceID spaceID = new SpaceID(contextId, spaceId, (Class<? extends SpaceSpecification<?>>) spaceSpec);
 
 		final Event event = this.gson.fromJson(new String(envelope.getBody(), NetworkConfig.getStringEncodingCharset()), eventClazz);
-		assert (event != null);
+		assert event != null;
 		final Scope scope = this.gson.fromJson(new String(envelope.getScope(), NetworkConfig.getStringEncodingCharset()), scopeClazz);
-		assert (scope != null);
+		assert scope != null;
 
 		return new EventDispatch(spaceID, event, scope, headers);
 	}
 
 	private static <T> Class<? extends T> extractClass(String key, Map<String, String> headers, Class<T> expectedType) {
-		assert (key != null);
-		assert (headers != null);
+		assert key != null;
+		assert headers != null;
 		final String classname = headers.get(key);
 		Class<?> type = null;
 		if (classname != null) {
@@ -166,7 +166,7 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 		if (type == null || !expectedType.isAssignableFrom(type)) {
 			throw new ClassCastException(Locale.getString("INVALID_TYPE", type)); //$NON-NLS-1$
 		}
-		assert (type != null);
+		assert type != null;
 		return type.asSubclass(expectedType);
 	}
 

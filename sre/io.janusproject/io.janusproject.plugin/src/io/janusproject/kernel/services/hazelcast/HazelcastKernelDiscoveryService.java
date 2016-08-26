@@ -125,19 +125,19 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 	/**
 	 * Do the post initialization.
 	 *
-	 * @param hazelcastInstance - instance of the Hazelcast service that permits to shared data among the network.
+	 * @param iHazelcastInstance - instance of the Hazelcast service that permits to shared data among the network.
 	 * @param networkService - network service to be linked to.
-	 * @param executorService - execution service to use.
-	 * @param logger - logging service to use.
+	 * @param iExecutorService - execution service to use.
+	 * @param iLogger - logging service to use.
 	 */
 	@Inject
-	void postConstruction(HazelcastInstance hazelcastInstance, NetworkService networkService, ExecutorService executorService,
-			LogService logger) {
-		this.executorService = executorService;
-		this.hazelcastInstance = hazelcastInstance;
-		this.logger = logger;
+	void postConstruction(HazelcastInstance iHazelcastInstance, NetworkService networkService, ExecutorService iExecutorService,
+			LogService iLogger) {
+		this.executorService = iExecutorService;
+		this.hazelcastInstance = iHazelcastInstance;
+		this.logger = iLogger;
 		this.network = networkService;
-		this.kernels = hazelcastInstance.getMap(this.janusID.toString() + "-kernels"); //$NON-NLS-1$
+		this.kernels = iHazelcastInstance.getMap(this.janusID.toString() + "-kernels"); //$NON-NLS-1$
 		this.network.addListener(this.networkStartListener, this.executorService.getExecutorService());
 	}
 
@@ -256,7 +256,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 		@Override
 		public void entryAdded(EntryEvent<URI, URI> event) {
 			final URI newPeer = event.getValue();
-			assert (newPeer != null);
+			assert newPeer != null;
 			if (!newPeer.equals(getCurrentKernel())) {
 				fireKernelDiscovered(newPeer);
 			}
@@ -274,7 +274,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 
 		private void fireDisconnected(EntryEvent<URI, URI> event) {
 			final URI oldPeer = event.getValue();
-			assert (oldPeer != null);
+			assert oldPeer != null;
 			if (!oldPeer.equals(getCurrentKernel())) {
 				fireKernelDisconnected(oldPeer);
 			}

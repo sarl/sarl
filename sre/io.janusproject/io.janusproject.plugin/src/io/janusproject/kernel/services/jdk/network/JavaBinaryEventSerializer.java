@@ -68,16 +68,16 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 
 	@Override
 	public EventEnvelope serialize(EventDispatch dispatch) throws Exception {
-		assert (this.encrypter != null) : "Invalid injection of the encrypter"; //$NON-NLS-1$
-		assert (dispatch != null) : "Parameter 'dispatch' must not be null"; //$NON-NLS-1$
+		assert this.encrypter != null : "Invalid injection of the encrypter"; //$NON-NLS-1$
+		assert dispatch != null : "Parameter 'dispatch' must not be null"; //$NON-NLS-1$
 		final Event event = dispatch.getEvent();
-		assert (event != null);
+		assert event != null;
 		final SpaceID spaceID = dispatch.getSpaceID();
-		assert (spaceID != null);
-		assert (spaceID.getSpaceSpecification() != null);
+		assert spaceID != null;
+		assert spaceID.getSpaceSpecification() != null;
 
 		final Map<String, String> headers = dispatch.getCustomHeaders();
-		assert (headers != null);
+		assert headers != null;
 		headers.put("x-java-spacespec-class", //$NON-NLS-1$
 				spaceID.getSpaceSpecification().getName());
 
@@ -102,13 +102,13 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 	@SuppressWarnings("unchecked")
 	@Override
 	public EventDispatch deserialize(EventEnvelope envelope) throws Exception {
-		assert (this.encrypter != null) : "Invalid injection of the encrypter"; //$NON-NLS-1$
-		assert (envelope != null) : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
+		assert this.encrypter != null : "Invalid injection of the encrypter"; //$NON-NLS-1$
+		assert envelope != null : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
 
 		this.encrypter.decrypt(envelope);
 
 		final Map<String, String> headers = fromBytes(envelope.getCustomHeaders(), Map.class);
-		assert (headers != null);
+		assert headers != null;
 
 		Class<?> spaceSpec = null;
 		final String classname = headers.get("x-java-spacespec-class"); //$NON-NLS-1$
@@ -130,7 +130,7 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 		final SpaceID spaceID = new SpaceID(contextId, spaceId, (Class<? extends SpaceSpecification<?>>) spaceSpec);
 
 		final Event event = fromBytes(envelope.getBody(), Event.class);
-		assert (event != null);
+		assert event != null;
 		final Scope<?> scope = fromBytes(envelope.getScope(), Scope.class);
 		return new EventDispatch(spaceID, event, scope, headers);
 

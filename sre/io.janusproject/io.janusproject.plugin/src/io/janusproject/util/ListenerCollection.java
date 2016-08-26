@@ -99,13 +99,13 @@ public class ListenerCollection<L extends EventListener> {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends EventListener> T[] getListeners(Class<T> type) {
-		final Object[] listeners = this.listeners;
-		final int listenerCount = getListenerCount(listeners, type);
+		final Object[] iListeners = this.listeners;
+		final int listenerCount = getListenerCount(iListeners, type);
 		final T[] result = (T[]) Array.newInstance(type, listenerCount);
 		int j = 0;
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == type) {
-				result[j++] = type.cast(listeners[i + 1]);
+		for (int i = iListeners.length - 2; i >= 0; i -= 2) {
+			if (iListeners[i] == type) {
+				result[j++] = type.cast(iListeners[i + 1]);
 			}
 		}
 		return result;
@@ -148,7 +148,7 @@ public class ListenerCollection<L extends EventListener> {
 	 * @param listener the listener to be added
 	 */
 	public synchronized <T extends EventListener> void add(Class<T> type, T listener) {
-		assert (listener != null);
+		assert listener != null;
 		if (this.listeners == NULL) {
 			// if this is the first listener added,
 			// initialize the lists
@@ -174,7 +174,7 @@ public class ListenerCollection<L extends EventListener> {
 	 * @param listener the listener to be removed
 	 */
 	public synchronized <T extends EventListener> void remove(Class<T> type, T listener) {
-		assert (listener != null);
+		assert listener != null;
 		// Is l on the list?
 		int index = -1;
 		for (int i = this.listeners.length - 2; i >= 0; i -= 2) {

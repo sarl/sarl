@@ -116,7 +116,7 @@ class SpaceRepository {
 	 */
 	synchronized void postConstruction() {
 		for (final Entry<SpaceID, Object[]> e : this.spaceIDs.entrySet()) {
-			assert (this.spaceIDs.containsKey(e.getKey()));
+			assert this.spaceIDs.containsKey(e.getKey());
 			ensureLocalSpaceDefinition(e.getKey(), e.getValue());
 		}
 		this.internalListener = new SpaceDMapListener();
@@ -144,17 +144,17 @@ class SpaceRepository {
 	private synchronized <S extends Space> S createSpaceInstance(Class<? extends SpaceSpecification<S>> spec, SpaceID spaceID,
 			boolean isLocalCreation, Object[] creationParams) {
 		final S space;
-		assert (spaceID.getSpaceSpecification() == null
-				|| spaceID.getSpaceSpecification().equals(spec)) : "The specification type is invalid"; //$NON-NLS-1$
+		assert spaceID.getSpaceSpecification() == null
+				|| spaceID.getSpaceSpecification().equals(spec) : "The specification type is invalid"; //$NON-NLS-1$
 		// Split the call to create() to let the JVM to create the "empty" array for creation parameters.
 		if (creationParams != null && creationParams.length > 0) {
 			space = this.injector.getInstance(spec).create(spaceID, creationParams);
 		} else {
 			space = this.injector.getInstance(spec).create(spaceID);
 		}
-		assert (space != null);
+		assert space != null;
 		final SpaceID id = space.getID();
-		assert (id != null);
+		assert id != null;
 		this.spaces.put(id, space);
 		this.spacesBySpec.put(id.getSpaceSpecification(), id);
 		if (isLocalCreation) {
@@ -264,7 +264,7 @@ class SpaceRepository {
 		} else {
 			firstSpace = (S) this.spaces.get(ispaces.iterator().next());
 		}
-		assert (firstSpace != null);
+		assert firstSpace != null;
 		return firstSpace;
 	}
 
@@ -284,7 +284,7 @@ class SpaceRepository {
 		if (space == null) {
 			space = createSpaceInstance(spec, spaceID, true, creationParams);
 		}
-		assert (space != null);
+		assert space != null;
 		return (S) space;
 	}
 
@@ -369,14 +369,14 @@ class SpaceRepository {
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void entryAdded(SpaceID key, Object[] value) {
-			assert (SpaceRepository.this.spaceIDs.containsKey(key));
+			assert SpaceRepository.this.spaceIDs.containsKey(key);
 			ensureLocalSpaceDefinition(key, value);
 		}
 
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void entryRemoved(SpaceID key, Object[] value) {
-			assert (!SpaceRepository.this.spaceIDs.containsKey(key));
+			assert !SpaceRepository.this.spaceIDs.containsKey(key);
 			removeLocalSpaceDefinition(key, false);
 		}
 

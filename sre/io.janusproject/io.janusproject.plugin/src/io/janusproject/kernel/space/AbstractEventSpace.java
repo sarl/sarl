@@ -118,8 +118,8 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 * @see #emit(Event)
 	 */
 	public final void emit(Event event, Scope<Address> scope) {
-		assert (event != null);
-		assert (event.getSource() != null) : "Every event must have a source"; //$NON-NLS-1$
+		assert event != null;
+		assert event.getSource() != null : "Every event must have a source"; //$NON-NLS-1$
 		assert this.getID().equals(event.getSource().getSpaceId()) : "The source address must belong to this space"; //$NON-NLS-1$
 
 		try {
