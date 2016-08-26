@@ -23,23 +23,52 @@
  */
 package io.sarl.lang.codebuilder.appenders;
 
+import com.google.inject.Binding;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.name.Named;
+import com.google.inject.util.Modules;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.common.types.xtext.AbstractTypeScopeProvider;
 import org.eclipse.xtext.formatting.impl.AbstractTokenStream;
 import org.eclipse.xtext.resource.SaveOptions;
+import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.serializer.impl.Serializer;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
+import org.eclipse.xtext.xbase.scoping.batch.DelegatingScopes;
+import org.eclipse.xtext.xbase.scoping.batch.TypeScopes;
 
 /** Abstract implementation of an appender for the Sarl language.
  */
 @SuppressWarnings("all")
 public abstract class AbstractSourceAppender {
 
+	public static final String OVERRIDEN_TYPE_SCOPE_PROVIDER_NAME = "io.sarl.lang.codebuilder.appenders.SourceAppender.providerType";
+
 	@Inject
-	private AppenderSerializer serializer;
+	private Injector originalInjector;
+
+	@Inject
+	@Named(OVERRIDEN_TYPE_SCOPE_PROVIDER_NAME)
+	private AbstractTypeScopeProvider scopeProvider;
+
+	@Inject
+	private TypeScopes typeScopes;
+
+	/** Replies the context for type resolution.
+	 * @return the context, or <code>null</code> if the Ecore object is the context.
+	 */
+	protected abstract IJvmTypeProvider getTypeResolutionContext();
 
 	/** Build the source code and put it into the given appender.
 	 * @param appender the object that permits to create the source code.
@@ -49,25 +78,59 @@ public abstract class AbstractSourceAppender {
 	/** Build the source code and put it into the given appender.
 	 * @param the object to serialize
 	 * @param appender the object that permits to create the source code.
+	 * @param context the context for type resolution.
 	 */
 	protected void build(EObject object, ISourceAppender appender) throws IOException {
-		this.serializer.serialize(object, appender);
+		final IJvmTypeProvider provider = getTypeResolutionContext();
+		if (provider != null) {
+			final Map<Key<?>, Binding<?>> bindings = this.originalInjector.getBindings();
+			Injector localInjector = Guice.createInjector(Modules.override((binder) -> {
+				for(Binding<?> binding: bindings.values()) {
+					Type typeLiteral = binding.getKey().getTypeLiteral().getType();
+					if (!Injector.class.equals(typeLiteral) && !Logger.class.equals(typeLiteral)) {
+						binding.applyTo(binder);
+					}
+				}
+			}).with((binder) ->
+					binder.bind(AbstractTypeScopeProvider.class).toInstance(AbstractSourceAppender.this.scopeProvider)));
+			final IScopeProvider oldDelegate = this.typeScopes.getDelegate();
+			localInjector.injectMembers(this.typeScopes);
+			try {
+				final AppenderSerializer serializer = localInjector.getProvider(AppenderSerializer.class).get();
+				serializer.serialize(object, appender);
+			} finally {
+				try {
+					final Field f = DelegatingScopes.class.getDeclaredField("delegate");
+					if (!f.isAccessible()) {
+						f.setAccessible(true);
+					}
+					f.set(this.typeScopes, oldDelegate);
+				} catch (Exception exception) {
+					throw new Error(exception);
+				}
+			}
+		} else {
+			final AppenderSerializer serializer = this.originalInjector.getProvider(AppenderSerializer.class).get();
+			serializer.serialize(object, appender);
+		}
 	}
 
 	@Singleton
 	public static class AppenderSerializer extends Serializer {
 
 		public void serialize(EObject object, ISourceAppender appender) throws IOException {
-			serialize(object, new TokenStream(appender), SaveOptions.defaultOptions());
+			final AppenderBasedTokenStream stream = new AppenderBasedTokenStream(appender);
+			serialize(object, stream, SaveOptions.defaultOptions());
+			stream.flush();
 		}
 
 	}
 
-	private static class TokenStream extends AbstractTokenStream {
+	private static class AppenderBasedTokenStream extends AbstractTokenStream {
 
 		private final ISourceAppender appender;
 
-		public TokenStream(ISourceAppender appender) {
+		public AppenderBasedTokenStream(ISourceAppender appender) {
 			this.appender = appender;
 		}
 
@@ -77,13 +140,13 @@ public abstract class AbstractSourceAppender {
 
 		public void writeHidden(EObject grammarElement, String value) throws IOException {
 			if (!Strings.isEmpty(value)) {
-				System.out.println(value);
+				this.appender.append(value);
 			}
 		}
 
 		public void writeSemantic(EObject grammarElement, String value) throws IOException {
 			if (!Strings.isEmpty(value)) {
-				System.out.println(value);
+				this.appender.append(value);
 			}
 		}
 

@@ -34,6 +34,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
@@ -59,7 +61,8 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	 * @param container - the container of the SarlField.
 	 * @param name - the name of the SarlField.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name, String modifier) {
+	public void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlField == null) {
 			this.container = container;
 			this.sarlField = SarlFactory.eINSTANCE.createSarlField();
@@ -130,7 +133,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 				public void apply(XExpression expr) {
 					getSarlField().setInitialValue(expr);
 				}
-			});
+			}, getTypeResolutionContext());
 		return exprBuilder;
 	}
 
@@ -141,6 +144,12 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 		if (!Strings.isEmpty(modifier)) {
 			getSarlField().getModifiers().add(modifier);
 		}
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlField());
 	}
 
 }

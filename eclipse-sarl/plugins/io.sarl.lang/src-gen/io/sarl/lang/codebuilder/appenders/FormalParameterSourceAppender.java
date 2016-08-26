@@ -29,6 +29,7 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import java.io.IOException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -47,12 +48,16 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 		build(this.builder.getSarlFormalParameter(), appender);
 	}
 
+	public IJvmTypeProvider getTypeResolutionContext() {
+		return this.builder.getTypeResolutionContext();
+	}
+
 	/** Initialize the formal parameter.
 	 * @param context - the context of the formal parameter.
 	 * @param name - the name of the formal parameter.
 	 */
-	public void eInit(XtendExecutable context, String name) {
-		this.builder.eInit(context, name);
+	public void eInit(XtendExecutable context, String name, IJvmTypeProvider typeContext) {
+		this.builder.eInit(context, name, typeContext);
 	}
 
 	/** Replies the created parameter.

@@ -27,6 +27,7 @@ import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlScript;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlAnnotationType.
@@ -34,13 +35,18 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings("all")
 public interface ISarlAnnotationTypeBuilder {
 
+	/** Replies the context for type resolution.
+	 * @return the context or <code>null</code> if the Ecore object is the context.
+	 */
+	IJvmTypeProvider getTypeResolutionContext();
+
 	/** Initialize the Ecore element when inside a script.
 	 */
-	void eInit(SarlScript script, String name);
+	void eInit(SarlScript script, String name, IJvmTypeProvider context);
 
 	/** Initialize the Ecore element when inner type declaration.
 	 */
-	void eInit(XtendTypeDeclaration container, String name);
+	void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context);
 
 	/** Replies the generated SarlAnnotationType.
 	 */

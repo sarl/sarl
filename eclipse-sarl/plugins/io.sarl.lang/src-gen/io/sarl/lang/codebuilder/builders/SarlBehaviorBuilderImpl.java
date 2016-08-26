@@ -36,6 +36,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -47,9 +49,16 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 
 	private SarlBehavior sarlBehavior;
 
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlBehavior());
+	}
+
 	/** Initialize the Ecore element when inside a script.
 	 */
-	public void eInit(SarlScript script, String name) {
+	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlBehavior == null) {
 			this.sarlBehavior = SarlFactory.eINSTANCE.createSarlBehavior();
 			script.getXtendTypes().add(this.sarlBehavior);
@@ -106,7 +115,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 		if (!Strings.isEmpty(superType)
 				&& !Behavior.class.getName().equals(superType)) {
 			JvmParameterizedTypeReference superTypeRef = newTypeRef(this.sarlBehavior, superType);
-			JvmTypeReference baseTypeRef = newTypeRef(this.sarlBehavior, Behavior.class);
+			JvmTypeReference baseTypeRef = findType(this.sarlBehavior, Behavior.class.getCanonicalName());
 			if (isSubTypeOf(this.sarlBehavior, superTypeRef, baseTypeRef)) {
 				this.sarlBehavior.setExtends(superTypeRef);
 				return;
@@ -132,7 +141,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 */
 	public ISarlConstructorBuilder addSarlConstructor() {
 		ISarlConstructorBuilder builder = this.iSarlConstructorBuilderProvider.get();
-		builder.eInit(getSarlBehavior());
+		builder.eInit(getSarlBehavior(), getTypeResolutionContext());
 		return builder;
 	}
 
@@ -145,7 +154,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 */
 	public ISarlBehaviorUnitBuilder addSarlBehaviorUnit(String name) {
 		ISarlBehaviorUnitBuilder builder = this.iSarlBehaviorUnitBuilderProvider.get();
-		builder.eInit(getSarlBehavior(), name);
+		builder.eInit(getSarlBehavior(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -158,7 +167,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
-		builder.eInit(getSarlBehavior(), name, "var");
+		builder.eInit(getSarlBehavior(), name, "var", getTypeResolutionContext());
 		return builder;
 	}
 
@@ -168,7 +177,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
-		builder.eInit(getSarlBehavior(), name, "val");
+		builder.eInit(getSarlBehavior(), name, "val", getTypeResolutionContext());
 		return builder;
 	}
 
@@ -190,7 +199,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
-		builder.eInit(getSarlBehavior(), name);
+		builder.eInit(getSarlBehavior(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -203,7 +212,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
 		ISarlClassBuilder builder = this.iSarlClassBuilderProvider.get();
-		builder.eInit(getSarlBehavior(), name);
+		builder.eInit(getSarlBehavior(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -216,7 +225,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
 		ISarlInterfaceBuilder builder = this.iSarlInterfaceBuilderProvider.get();
-		builder.eInit(getSarlBehavior(), name);
+		builder.eInit(getSarlBehavior(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -229,7 +238,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
 		ISarlEnumerationBuilder builder = this.iSarlEnumerationBuilderProvider.get();
-		builder.eInit(getSarlBehavior(), name);
+		builder.eInit(getSarlBehavior(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -242,7 +251,7 @@ public class SarlBehaviorBuilderImpl extends AbstractBuilder implements ISarlBeh
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
 		ISarlAnnotationTypeBuilder builder = this.iSarlAnnotationTypeBuilderProvider.get();
-		builder.eInit(getSarlBehavior(), name);
+		builder.eInit(getSarlBehavior(), name, getTypeResolutionContext());
 		return builder;
 	}
 

@@ -30,6 +30,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
@@ -55,7 +57,8 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	 * @param context - the context of the expressions.
 	 * @param setter - the object that permits to assign the expression to the context.
 	 */
-	public void eInit(EObject context, Procedure1<XExpression> setter) {
+	public void eInit(EObject context, Procedure1<XExpression> setter, IJvmTypeProvider typeContext) {
+		setTypeResolutionContext(typeContext);
 		this.context = context;
 		this.setter = setter;
 		this.expr = null;
@@ -230,6 +233,12 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 			}
 		}
 		return defaultValue;
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getXExpression());
 	}
 
 }

@@ -30,8 +30,10 @@ import javax.inject.Provider;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.tasks.ITaskTagProvider;
 import org.eclipse.xtext.tasks.TaskTags;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
@@ -61,7 +63,8 @@ public class BlockExpressionBuilderImpl extends AbstractBuilder implements IBloc
 
 	/** Create the XBlockExpression.
 	 */
-	public void eInit() {
+	public void eInit(IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.block == null) {
 			this.block = XbaseFactory.eINSTANCE.createXBlockExpression();
 		}
@@ -145,7 +148,7 @@ public class BlockExpressionBuilderImpl extends AbstractBuilder implements IBloc
 							this.index = getXBlockExpression().getExpressions().size() - 1;
 						}
 					}
-				});
+				}, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -167,6 +170,12 @@ public class BlockExpressionBuilderImpl extends AbstractBuilder implements IBloc
 				expr.setExpression(defaultValue);
 			}
 		}
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getXBlockExpression());
 	}
 
 }

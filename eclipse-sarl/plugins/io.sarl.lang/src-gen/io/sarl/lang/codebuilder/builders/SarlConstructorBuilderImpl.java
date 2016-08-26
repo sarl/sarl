@@ -34,6 +34,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
@@ -57,7 +59,8 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	/** Initialize the Ecore element.
 	 * @param container - the container of the SarlConstructor.
 	 */
-	public void eInit(XtendTypeDeclaration container) {
+	public void eInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlConstructor == null) {
 			this.container = container;
 			this.sarlConstructor = SarlFactory.eINSTANCE.createSarlConstructor();
@@ -109,7 +112,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	 */
 	public IFormalParameterBuilder addParameter(String name) {
 		IFormalParameterBuilder builder = this.parameterProvider.get();
-		builder.eInit(this.sarlConstructor, name);
+		builder.eInit(this.sarlConstructor, name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -125,7 +128,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		IBlockExpressionBuilder block = this.blockExpressionProvider.get();
-		block.eInit();
+		block.eInit(getTypeResolutionContext());
 		XBlockExpression expr = block.getXBlockExpression();
 		this.sarlConstructor.setExpression(expr);
 		return block;
@@ -138,6 +141,12 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 		if (!Strings.isEmpty(modifier)) {
 			getSarlConstructor().getModifiers().add(modifier);
 		}
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlConstructor());
 	}
 
 }

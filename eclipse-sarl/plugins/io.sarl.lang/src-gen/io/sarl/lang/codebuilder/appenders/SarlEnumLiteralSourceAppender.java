@@ -28,6 +28,7 @@ import io.sarl.lang.sarl.SarlEnumLiteral;
 import java.io.IOException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -46,12 +47,16 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 		build(this.builder.getSarlEnumLiteral(), appender);
 	}
 
+	public IJvmTypeProvider getTypeResolutionContext() {
+		return this.builder.getTypeResolutionContext();
+	}
+
 	/** Initialize the Ecore element.
 	 * @param container - the container of the SarlEnumLiteral.
 	 * @param name - the name of the SarlEnumLiteral.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name) {
-		this.builder.eInit(container, name);
+	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
+		this.builder.eInit(container, name, context);
 	}
 
 	/** Replies the generated element.
@@ -76,6 +81,12 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	 */
 	public void setDocumentation(String doc) {
 		this.builder.setDocumentation(doc);
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return this.builder.toString();
 	}
 
 }

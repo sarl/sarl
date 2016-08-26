@@ -24,6 +24,7 @@
 package io.sarl.lang.codebuilder.builders;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -32,9 +33,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings("all")
 public interface IBlockExpressionBuilder {
 
+	/** Replies the context for type resolution.
+	 * @return the context or <code>null</code> if the Ecore object is the context.
+	 */
+	IJvmTypeProvider getTypeResolutionContext();
+
 	/** Create the XBlockExpression.
 	 */
-	void eInit();
+	void eInit(IJvmTypeProvider context);
 
 	/** Replies the string for "auto-generated" comments.
 	 * @return the comment text.

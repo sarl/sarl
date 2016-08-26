@@ -33,6 +33,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -56,7 +58,8 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	 * @param container - the container of the SarlEnumLiteral.
 	 * @param name - the name of the SarlEnumLiteral.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name) {
+	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlEnumLiteral == null) {
 			this.container = container;
 			this.sarlEnumLiteral = SarlFactory.eINSTANCE.createSarlEnumLiteral();
@@ -101,6 +104,12 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 			}
 			adapter.setDocumentation(doc);
 		}
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlEnumLiteral());
 	}
 
 }

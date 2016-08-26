@@ -29,6 +29,8 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.Procedures;
@@ -52,7 +54,8 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 	 * @param context - the context of the formal parameter.
 	 * @param name - the name of the formal parameter.
 	 */
-	public void eInit(XtendExecutable context, String name) {
+	public void eInit(XtendExecutable context, String name, IJvmTypeProvider typeContext) {
+		setTypeResolutionContext(typeContext);
 		this.context = context;
 			this.parameter = SarlFactory.eINSTANCE.createSarlFormalParameter();
 			this.parameter.setName(name);
@@ -109,9 +112,15 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 					public void apply(XExpression it) {
 						getSarlFormalParameter().setDefaultValue(it);
 					}
-				});
+				}, getTypeResolutionContext());
 		}
 		return this.defaultValue;
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getDefaultValue());
 	}
 
 }

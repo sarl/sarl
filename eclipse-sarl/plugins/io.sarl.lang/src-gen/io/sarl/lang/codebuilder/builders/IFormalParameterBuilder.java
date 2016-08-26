@@ -26,6 +26,7 @@ package io.sarl.lang.codebuilder.builders;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl formal parameter.
@@ -33,11 +34,16 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings("all")
 public interface IFormalParameterBuilder {
 
+	/** Replies the context for type resolution.
+	 * @return the context or <code>null</code> if the Ecore object is the context.
+	 */
+	IJvmTypeProvider getTypeResolutionContext();
+
 	/** Initialize the formal parameter.
 	 * @param context - the context of the formal parameter.
 	 * @param name - the name of the formal parameter.
 	 */
-	void eInit(XtendExecutable context, String name);
+	void eInit(XtendExecutable context, String name, IJvmTypeProvider typeContext);
 
 	/** Replies the created parameter.
 	 *

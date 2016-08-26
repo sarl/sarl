@@ -34,6 +34,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
@@ -60,7 +62,8 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 * @param container - the container of the SarlBehaviorUnit.
 	 * @param name - the type of the SarlBehaviorUnit.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name) {
+	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlBehaviorUnit == null) {
 			this.container = container;
 			this.sarlBehaviorUnit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
@@ -118,7 +121,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 				public void apply(XExpression expr) {
 					getSarlBehaviorUnit().setGuard(expr);
 				}
-			});
+			}, getTypeResolutionContext());
 		return exprBuilder;
 	}
 
@@ -127,10 +130,16 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		IBlockExpressionBuilder block = this.blockExpressionProvider.get();
-		block.eInit();
+		block.eInit(getTypeResolutionContext());
 		XBlockExpression expr = block.getXBlockExpression();
 		this.sarlBehaviorUnit.setExpression(expr);
 		return block;
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlBehaviorUnit());
 	}
 
 }

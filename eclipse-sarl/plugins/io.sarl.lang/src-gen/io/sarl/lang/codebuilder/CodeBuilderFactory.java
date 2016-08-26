@@ -24,10 +24,11 @@
 package io.sarl.lang.codebuilder;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Binding;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
-import io.sarl.lang.SARLRuntimeModule;
+import com.google.inject.Key;
+import com.google.inject.util.Modules;
 import io.sarl.lang.codebuilder.appenders.BlockExpressionSourceAppender;
 import io.sarl.lang.codebuilder.appenders.ExpressionSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlActionSourceAppender;
@@ -45,6 +46,7 @@ import io.sarl.lang.codebuilder.appenders.SarlFieldSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlInterfaceSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlSkillSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlSpaceSourceAppender;
+import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
 import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
@@ -63,6 +65,9 @@ import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
+import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
@@ -70,8 +75,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.resource.IResourceFactory;
-import org.eclipse.xtext.util.Modules2;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -86,6 +91,11 @@ public class CodeBuilderFactory {
 
 	@Inject
 	private Provider<ImportManager> importManagerProvider;
+
+	@Inject
+	private Injector originalInjector;
+
+	private Injector builderInjector;
 
 	@Inject
 	public void setFileExtensions(@Named(Constants.FILE_EXTENSIONS) String fileExtensions) {
@@ -164,6 +174,26 @@ public class CodeBuilderFactory {
 		return resource;
 	}
 
+	/** Replies the injector.
+	 * @return the injector.
+	 */
+	@Pure
+	protected Injector getInjector() {
+		if (this.builderInjector == null) {
+			ImportManager importManager = this.importManagerProvider.get();
+			final Map<Key<?>, Binding<?>> bindings = this.originalInjector.getBindings();
+			this.builderInjector = Guice.createInjector(Modules.override((binder) -> {
+					for(Binding<?> binding: bindings.values()) {
+						Type typeLiteral = binding.getKey().getTypeLiteral().getType();
+						if (!Injector.class.equals(typeLiteral) && !Logger.class.equals(typeLiteral)) {
+							binding.applyTo(binder);
+						}
+					}
+				}).with(new CodeBuilderModule(importManager)));
+		}
+		return builderInjector;
+	}
+
 	/** Replies a provider for the given type.
 	 * <p>The provider uses a local context singleton of the import manager.
 	 * @param type the type of the object to provide.
@@ -171,11 +201,7 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	protected <T> Provider<T> getProvider(Class<T> type) {
-		SARLRuntimeModule runtimeModule = new SARLRuntimeModule();
-		ImportManager importManager = this.importManagerProvider.get();
-		Module mergedModule = Modules2.mixin(runtimeModule, new CodeBuilderModule(importManager));
-		Injector injector = Guice.createInjector(mergedModule);
-		return injector.getProvider(type);
+		return getInjector().getProvider(type);
 	}
 
 	private static class CodeBuilderModule extends AbstractModule {
@@ -200,7 +226,7 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public IScriptBuilder createScript(String packageName, ResourceSet resourceSet) {
-		return createScript(packageName, createResource(resourceSet));
+		return createScript(packageName, createResource(resourceSet), null);
 	}
 
 	/** Create the factory for a Sarl script.
@@ -210,9 +236,81 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public IScriptBuilder createScript(String packageName, Resource resource) {
+		return createScript(packageName, resource, null);
+	}
+
+	/** Create the factory for a Sarl script.
+	 * @param packageName the name of the package of the script.
+	 * @param resource the resource in which the script is created.
+	 * @param context the context for type resolution.
+	 * @return the factory.
+	 */
+	@Pure
+	public IScriptBuilder createScript(String packageName, Resource resource, IJvmTypeProvider context) {
 		IScriptBuilder builder = getProvider(IScriptBuilder.class).get();
-		builder.eInit(resource, packageName);
+		builder.eInit(resource, packageName, context);
 		return builder;
+	}
+
+	/** Create the factory for a Sarl script.
+	 * <p>The resource set is provided by the context.
+	 * @param packageName the name of the package of the script.
+	 * @param context the context for type resolution.
+	 * @return the factory.
+	 */
+	@Pure
+	public IScriptBuilder createScript(String packageName, IJvmTypeProvider context) {
+		return createScript(packageName, createResource(context.getResourceSet()), context);
+	}
+
+	/** Create the appender for a Sarl script.
+	 * @param packageName the name of the package of the script.
+	 * @param resourceSet the resource set in which the script is created.
+	 * @return the appender.
+	 */
+	@Pure
+	public ScriptSourceAppender buildScript(String packageName, ResourceSet resourceSet) {
+		ScriptSourceAppender a = new ScriptSourceAppender(createScript(packageName, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
+	}
+
+	/** Create the appender for a Sarl script.
+	 * @param packageName the name of the package of the script.
+	 * @param resource the resource in which the script is created.
+	 * @return the appender.
+	 */
+	@Pure
+	public ScriptSourceAppender buildScript(String packageName, Resource resource) {
+		ScriptSourceAppender a = new ScriptSourceAppender(createScript(packageName, resource));
+		getInjector().injectMembers(a);
+		return a;
+	}
+
+	/** Create the appender for a Sarl script.
+	 * @param packageName the name of the package of the script.
+	 * @param resource the resource in which the script is created.
+	 * @param context the context for type resolution.
+	 * @return the appender.
+	 */
+	@Pure
+	public ScriptSourceAppender buildScript(String packageName, Resource resource, IJvmTypeProvider context) {
+		ScriptSourceAppender a = new ScriptSourceAppender(createScript(packageName, resource, context));
+		getInjector().injectMembers(a);
+		return a;
+	}
+
+	/** Create the appender for a Sarl script.
+	 * <p>The resource set is provided by the context.
+	 * @param packageName the name of the package of the script.
+	 * @param context the context for type resolution.
+	 * @return the appender.
+	 */
+	@Pure
+	public ScriptSourceAppender buildScript(String packageName, IJvmTypeProvider context) {
+		ScriptSourceAppender a = new ScriptSourceAppender(createScript(packageName, context));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl XExpression.
@@ -327,7 +425,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlEventSourceAppender buildSarlEvent(String name, ResourceSet resourceSet) {
-		return new SarlEventSourceAppender(createSarlEvent(name, resourceSet));
+		SarlEventSourceAppender a = new SarlEventSourceAppender(createSarlEvent(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlEvent.
@@ -338,7 +438,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlEventSourceAppender buildSarlEvent(String name, Resource resource) {
-		return new SarlEventSourceAppender(createSarlEvent(name, resource));
+		SarlEventSourceAppender a = new SarlEventSourceAppender(createSarlEvent(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlCapacity.
@@ -372,7 +474,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlCapacitySourceAppender buildSarlCapacity(String name, ResourceSet resourceSet) {
-		return new SarlCapacitySourceAppender(createSarlCapacity(name, resourceSet));
+		SarlCapacitySourceAppender a = new SarlCapacitySourceAppender(createSarlCapacity(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlCapacity.
@@ -383,7 +487,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlCapacitySourceAppender buildSarlCapacity(String name, Resource resource) {
-		return new SarlCapacitySourceAppender(createSarlCapacity(name, resource));
+		SarlCapacitySourceAppender a = new SarlCapacitySourceAppender(createSarlCapacity(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlAgent.
@@ -417,7 +523,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlAgentSourceAppender buildSarlAgent(String name, ResourceSet resourceSet) {
-		return new SarlAgentSourceAppender(createSarlAgent(name, resourceSet));
+		SarlAgentSourceAppender a = new SarlAgentSourceAppender(createSarlAgent(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlAgent.
@@ -428,7 +536,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlAgentSourceAppender buildSarlAgent(String name, Resource resource) {
-		return new SarlAgentSourceAppender(createSarlAgent(name, resource));
+		SarlAgentSourceAppender a = new SarlAgentSourceAppender(createSarlAgent(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlBehavior.
@@ -462,7 +572,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlBehaviorSourceAppender buildSarlBehavior(String name, ResourceSet resourceSet) {
-		return new SarlBehaviorSourceAppender(createSarlBehavior(name, resourceSet));
+		SarlBehaviorSourceAppender a = new SarlBehaviorSourceAppender(createSarlBehavior(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlBehavior.
@@ -473,7 +585,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlBehaviorSourceAppender buildSarlBehavior(String name, Resource resource) {
-		return new SarlBehaviorSourceAppender(createSarlBehavior(name, resource));
+		SarlBehaviorSourceAppender a = new SarlBehaviorSourceAppender(createSarlBehavior(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlSkill.
@@ -507,7 +621,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlSkillSourceAppender buildSarlSkill(String name, ResourceSet resourceSet) {
-		return new SarlSkillSourceAppender(createSarlSkill(name, resourceSet));
+		SarlSkillSourceAppender a = new SarlSkillSourceAppender(createSarlSkill(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlSkill.
@@ -518,7 +634,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlSkillSourceAppender buildSarlSkill(String name, Resource resource) {
-		return new SarlSkillSourceAppender(createSarlSkill(name, resource));
+		SarlSkillSourceAppender a = new SarlSkillSourceAppender(createSarlSkill(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlSpace.
@@ -552,7 +670,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlSpaceSourceAppender buildSarlSpace(String name, ResourceSet resourceSet) {
-		return new SarlSpaceSourceAppender(createSarlSpace(name, resourceSet));
+		SarlSpaceSourceAppender a = new SarlSpaceSourceAppender(createSarlSpace(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlSpace.
@@ -563,7 +683,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlSpaceSourceAppender buildSarlSpace(String name, Resource resource) {
-		return new SarlSpaceSourceAppender(createSarlSpace(name, resource));
+		SarlSpaceSourceAppender a = new SarlSpaceSourceAppender(createSarlSpace(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlClass.
@@ -597,7 +719,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlClassSourceAppender buildSarlClass(String name, ResourceSet resourceSet) {
-		return new SarlClassSourceAppender(createSarlClass(name, resourceSet));
+		SarlClassSourceAppender a = new SarlClassSourceAppender(createSarlClass(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlClass.
@@ -608,7 +732,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlClassSourceAppender buildSarlClass(String name, Resource resource) {
-		return new SarlClassSourceAppender(createSarlClass(name, resource));
+		SarlClassSourceAppender a = new SarlClassSourceAppender(createSarlClass(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlInterface.
@@ -642,7 +768,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlInterfaceSourceAppender buildSarlInterface(String name, ResourceSet resourceSet) {
-		return new SarlInterfaceSourceAppender(createSarlInterface(name, resourceSet));
+		SarlInterfaceSourceAppender a = new SarlInterfaceSourceAppender(createSarlInterface(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlInterface.
@@ -653,7 +781,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlInterfaceSourceAppender buildSarlInterface(String name, Resource resource) {
-		return new SarlInterfaceSourceAppender(createSarlInterface(name, resource));
+		SarlInterfaceSourceAppender a = new SarlInterfaceSourceAppender(createSarlInterface(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlEnumeration.
@@ -687,7 +817,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlEnumerationSourceAppender buildSarlEnumeration(String name, ResourceSet resourceSet) {
-		return new SarlEnumerationSourceAppender(createSarlEnumeration(name, resourceSet));
+		SarlEnumerationSourceAppender a = new SarlEnumerationSourceAppender(createSarlEnumeration(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlEnumeration.
@@ -698,7 +830,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlEnumerationSourceAppender buildSarlEnumeration(String name, Resource resource) {
-		return new SarlEnumerationSourceAppender(createSarlEnumeration(name, resource));
+		SarlEnumerationSourceAppender a = new SarlEnumerationSourceAppender(createSarlEnumeration(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlAnnotationType.
@@ -732,7 +866,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlAnnotationTypeSourceAppender buildSarlAnnotationType(String name, ResourceSet resourceSet) {
-		return new SarlAnnotationTypeSourceAppender(createSarlAnnotationType(name, resourceSet));
+		SarlAnnotationTypeSourceAppender a = new SarlAnnotationTypeSourceAppender(createSarlAnnotationType(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlAnnotationType.
@@ -743,7 +879,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlAnnotationTypeSourceAppender buildSarlAnnotationType(String name, Resource resource) {
-		return new SarlAnnotationTypeSourceAppender(createSarlAnnotationType(name, resource));
+		SarlAnnotationTypeSourceAppender a = new SarlAnnotationTypeSourceAppender(createSarlAnnotationType(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl constructor.
@@ -775,7 +913,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlConstructorSourceAppender buildSarlConstructor(ResourceSet resourceSet) {
-		return new SarlConstructorSourceAppender(createSarlConstructor(resourceSet));
+		SarlConstructorSourceAppender a = new SarlConstructorSourceAppender(createSarlConstructor(resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl constructor.
@@ -785,7 +925,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlConstructorSourceAppender buildSarlConstructor(Resource resource) {
-		return new SarlConstructorSourceAppender(createSarlConstructor(resource));
+		SarlConstructorSourceAppender a = new SarlConstructorSourceAppender(createSarlConstructor(resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlAction.
@@ -820,7 +962,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlActionSourceAppender buildSarlAction(String name, ResourceSet resourceSet) {
-		return new SarlActionSourceAppender(createSarlAction(name, resourceSet));
+		SarlActionSourceAppender a = new SarlActionSourceAppender(createSarlAction(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlAction.
@@ -831,7 +975,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlActionSourceAppender buildSarlAction(String name, Resource resource) {
-		return new SarlActionSourceAppender(createSarlAction(name, resource));
+		SarlActionSourceAppender a = new SarlActionSourceAppender(createSarlAction(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlBehaviorUnit.
@@ -866,7 +1012,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlBehaviorUnitSourceAppender buildSarlBehaviorUnit(String name, ResourceSet resourceSet) {
-		return new SarlBehaviorUnitSourceAppender(createSarlBehaviorUnit(name, resourceSet));
+		SarlBehaviorUnitSourceAppender a = new SarlBehaviorUnitSourceAppender(createSarlBehaviorUnit(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlBehaviorUnit.
@@ -877,7 +1025,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlBehaviorUnitSourceAppender buildSarlBehaviorUnit(String name, Resource resource) {
-		return new SarlBehaviorUnitSourceAppender(createSarlBehaviorUnit(name, resource));
+		SarlBehaviorUnitSourceAppender a = new SarlBehaviorUnitSourceAppender(createSarlBehaviorUnit(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlField.
@@ -912,7 +1062,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlFieldSourceAppender buildVarSarlField(String name, ResourceSet resourceSet) {
-		return new SarlFieldSourceAppender(createVarSarlField(name, resourceSet));
+		SarlFieldSourceAppender a = new SarlFieldSourceAppender(createVarSarlField(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlField.
@@ -923,7 +1075,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlFieldSourceAppender buildVarSarlField(String name, Resource resource) {
-		return new SarlFieldSourceAppender(createVarSarlField(name, resource));
+		SarlFieldSourceAppender a = new SarlFieldSourceAppender(createVarSarlField(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlField.
@@ -958,7 +1112,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlFieldSourceAppender buildValSarlField(String name, ResourceSet resourceSet) {
-		return new SarlFieldSourceAppender(createValSarlField(name, resourceSet));
+		SarlFieldSourceAppender a = new SarlFieldSourceAppender(createValSarlField(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlField.
@@ -969,7 +1125,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlFieldSourceAppender buildValSarlField(String name, Resource resource) {
-		return new SarlFieldSourceAppender(createValSarlField(name, resource));
+		SarlFieldSourceAppender a = new SarlFieldSourceAppender(createValSarlField(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the factory for a Sarl SarlEnumLiteral.
@@ -1004,7 +1162,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlEnumLiteralSourceAppender buildSarlEnumLiteral(String name, ResourceSet resourceSet) {
-		return new SarlEnumLiteralSourceAppender(createSarlEnumLiteral(name, resourceSet));
+		SarlEnumLiteralSourceAppender a = new SarlEnumLiteralSourceAppender(createSarlEnumLiteral(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 	/** Create the appender for a Sarl SarlEnumLiteral.
@@ -1015,7 +1175,9 @@ public class CodeBuilderFactory {
 	 */
 	@Pure
 	public SarlEnumLiteralSourceAppender buildSarlEnumLiteral(String name, Resource resource) {
-		return new SarlEnumLiteralSourceAppender(createSarlEnumLiteral(name, resource));
+		SarlEnumLiteralSourceAppender a = new SarlEnumLiteralSourceAppender(createSarlEnumLiteral(name, resource));
+		getInjector().injectMembers(a);
+		return a;
 	}
 
 }

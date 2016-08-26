@@ -148,7 +148,10 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 				}
 			}
 		}
-		createBindings().contributeTo(getLanguage().getRuntimeGenModule());
+		createRuntimeBindings().contributeTo(getLanguage().getRuntimeGenModule());
+		createEclipseBindings().contributeTo(getLanguage().getEclipsePluginGenModule());
+		createIdeaBindings().contributeTo(getLanguage().getIdeaGenModule());
+		createWebBindings().contributeTo(getLanguage().getWebGenModule());
 
 		final Set<String> exportedPackages = getProjectConfig().getRuntime().getManifest().getExportedPackages();
 		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
@@ -156,16 +159,50 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 		}
 	}
 
-	/** Create the bindings for the builders.
-	 *
-	 * <p>This function is invoked for the Eclipse UI and the IDEA UI.
+	/** Create the runtime bindings for the builders.
 	 *
 	 * @return the bindings.
 	 */
-	protected BindingFactory createBindings() {
+	protected BindingFactory createRuntimeBindings() {
 		final BindingFactory factory = new BindingFactory(getClass().getName());
 		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
-			subFragment.generateBindings(factory);
+			subFragment.generateRuntimeBindings(factory);
+		}
+		return factory;
+	}
+
+	/** Create the Eclipse bindings for the builders.
+	 *
+	 * @return the bindings.
+	 */
+	protected BindingFactory createEclipseBindings() {
+		final BindingFactory factory = new BindingFactory(getClass().getName());
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+			subFragment.generateEclipseBindings(factory);
+		}
+		return factory;
+	}
+
+	/** Create the IDEA bindings for the builders.
+	 *
+	 * @return the bindings.
+	 */
+	protected BindingFactory createIdeaBindings() {
+		final BindingFactory factory = new BindingFactory(getClass().getName());
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+			subFragment.generateIdeaBindings(factory);
+		}
+		return factory;
+	}
+
+	/** Create the Web-interface bindings for the builders.
+	 *
+	 * @return the bindings.
+	 */
+	protected BindingFactory createWebBindings() {
+		final BindingFactory factory = new BindingFactory(getClass().getName());
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+			subFragment.generateWebBindings(factory);
 		}
 		return factory;
 	}

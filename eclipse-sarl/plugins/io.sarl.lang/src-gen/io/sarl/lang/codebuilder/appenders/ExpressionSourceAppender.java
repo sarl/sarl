@@ -27,6 +27,7 @@ import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import java.io.IOException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
@@ -47,12 +48,16 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 		build(this.builder.getXExpression(), appender);
 	}
 
+	public IJvmTypeProvider getTypeResolutionContext() {
+		return this.builder.getTypeResolutionContext();
+	}
+
 	/** Initialize the expression.
 	 * @param context - the context of the expressions.
 	 * @param setter - the object that permits to assign the expression to the context.
 	 */
-	public void eInit(EObject context, Procedure1<XExpression> setter) {
-		this.builder.eInit(context, setter);
+	public void eInit(EObject context, Procedure1<XExpression> setter, IJvmTypeProvider typeContext) {
+		this.builder.eInit(context, setter, typeContext);
 	}
 
 	/** Replies the last created expression.
@@ -104,6 +109,12 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	@Pure
 	public String getDefaultValueForType(String type) {
 		return this.builder.getDefaultValueForType(type);
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return this.builder.toString();
 	}
 
 }

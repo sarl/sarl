@@ -90,6 +90,7 @@ import io.sarl.lang.parser.antlr.internal.InternalSARLLexer;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.scoping.SARLImplicitlyImportedFeatures;
 import io.sarl.lang.scoping.SARLScopeProvider;
+import io.sarl.lang.scoping.SARLSerializerScopeProvider;
 import io.sarl.lang.serializer.SARLEcoreDocumentationSyntacticSequencer;
 import io.sarl.lang.serializer.SARLSemanticSequencer;
 import io.sarl.lang.services.SARLGrammarAccess;
@@ -124,7 +125,6 @@ import org.eclipse.xtend.core.resource.XtendLocationInFileProvider;
 import org.eclipse.xtend.core.resource.XtendResourceDescriptionManager;
 import org.eclipse.xtend.core.resource.XtendResourceDescriptionStrategy;
 import org.eclipse.xtend.core.scoping.AnonymousClassConstructorScopes;
-import org.eclipse.xtend.core.serializer.XtendSerializerScopeProvider;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.typesystem.TypeDeclarationAwareBatchTypeResolver;
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
@@ -134,6 +134,8 @@ import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.lib.macro.file.MutableFileSystemSupport;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.IGrammarAccess;
+import org.eclipse.xtext.common.types.xtext.AbstractTypeScopeProvider;
+import org.eclipse.xtext.common.types.xtext.ClasspathBasedTypeScopeProvider;
 import org.eclipse.xtext.common.types.xtext.TypesAwareDefaultGlobalScopeProvider;
 import org.eclipse.xtext.conversion.IValueConverterService;
 import org.eclipse.xtext.conversion.impl.IDValueConverter;
@@ -384,6 +386,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
 	public Class<? extends ISyntacticSequencer> bindISyntacticSequencer() {
 		return SARLEcoreDocumentationSyntacticSequencer.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public void configureconfigureAbstractTypeScopeProviderForSourceAppender(Binder binder) {
+		binder.bind(AbstractTypeScopeProvider.class).annotatedWith(Names.named("io.sarl.lang.codebuilder.appenders.SourceAppender.providerType")).to(ClasspathBasedTypeScopeProvider.class);
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
@@ -656,7 +663,7 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public void configureSerializerIScopeProvider(Binder binder) {
-		binder.bind(IScopeProvider.class).annotatedWith(SerializerScopeProviderBinding.class).to(XtendSerializerScopeProvider.class);
+		binder.bind(IScopeProvider.class).annotatedWith(SerializerScopeProviderBinding.class).to(SARLSerializerScopeProvider.class);
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

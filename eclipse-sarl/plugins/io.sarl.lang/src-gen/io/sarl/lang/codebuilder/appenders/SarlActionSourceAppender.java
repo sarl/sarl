@@ -30,6 +30,7 @@ import io.sarl.lang.sarl.SarlAction;
 import java.io.IOException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -48,12 +49,16 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 		build(this.builder.getSarlAction(), appender);
 	}
 
+	public IJvmTypeProvider getTypeResolutionContext() {
+		return this.builder.getTypeResolutionContext();
+	}
+
 	/** Initialize the Ecore element.
 	 * @param container - the container of the SarlAction.
 	 * @param name - the name of the SarlAction.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name) {
-		this.builder.eInit(container, name);
+	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
+		this.builder.eInit(container, name, context);
 	}
 
 	/** Replies the generated element.
@@ -127,6 +132,12 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return this.builder.toString();
 	}
 
 }

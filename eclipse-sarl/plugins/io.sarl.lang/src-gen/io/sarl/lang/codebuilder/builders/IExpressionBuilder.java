@@ -25,6 +25,7 @@ package io.sarl.lang.codebuilder.builders;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -34,11 +35,16 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings("all")
 public interface IExpressionBuilder {
 
+	/** Replies the context for type resolution.
+	 * @return the context or <code>null</code> if the Ecore object is the context.
+	 */
+	IJvmTypeProvider getTypeResolutionContext();
+
 	/** Initialize the expression.
 	 * @param context - the context of the expressions.
 	 * @param setter - the object that permits to assign the expression to the context.
 	 */
-	void eInit(EObject context, Procedure1<XExpression> setter);
+	void eInit(EObject context, Procedure1<XExpression> setter, IJvmTypeProvider typeContext);
 
 	/** Replies the last created expression.
 	 *

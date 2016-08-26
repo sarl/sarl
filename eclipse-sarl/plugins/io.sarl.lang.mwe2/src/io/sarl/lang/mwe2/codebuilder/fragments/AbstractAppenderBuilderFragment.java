@@ -22,17 +22,36 @@
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.google.inject.Binding;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.name.Named;
+import com.google.inject.name.Names;
+import com.google.inject.util.Modules;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.common.types.xtext.AbstractTypeScopeProvider;
+import org.eclipse.xtext.common.types.xtext.ClasspathBasedTypeScopeProvider;
+import org.eclipse.xtext.common.types.xtext.ui.JdtBasedSimpleTypeScopeProvider;
 import org.eclipse.xtext.formatting.impl.AbstractTokenStream;
 import org.eclipse.xtext.resource.SaveOptions;
+import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.serializer.impl.Serializer;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
+import org.eclipse.xtext.xbase.scoping.batch.DelegatingScopes;
+import org.eclipse.xtext.xbase.scoping.batch.TypeScopes;
+import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.JavaFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
@@ -45,11 +64,50 @@ import org.eclipse.xtext.xtext.generator.model.TypeReference;
  */
 public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragment {
 
+	private static final String SCOPE_PROVIDER_NAME =
+			"io.sarl.lang.codebuilder.appenders.SourceAppender.providerType"; //$NON-NLS-1$
+
 	@Override
 	public void generate() {
 		if (getCodeBuilderConfig().isISourceAppendableEnable()) {
 			generateAbstractAppender();
 		}
+	}
+
+	private static void bind(BindingFactory factory, Class<?> type) {
+		factory.addConfiguredBinding(
+				"configureAbstractTypeScopeProviderForSourceAppender", new StringConcatenationClient() { //$NON-NLS-1$
+					@Override
+					protected void appendTo(TargetStringConcatenation it) {
+				        it.append("binder.bind("); //$NON-NLS-1$
+				        it.append(AbstractTypeScopeProvider.class);
+				        it.append(".class).annotatedWith("); //$NON-NLS-1$
+				        it.append(Names.class, ""); //$NON-NLS-1$
+				        it.append(".named(\""); //$NON-NLS-1$
+				        it.append(SCOPE_PROVIDER_NAME);
+				        it.append("\")).to("); //$NON-NLS-1$
+				        it.append(type);
+				        it.append(".class);"); //$NON-NLS-1$
+					}
+				});
+	}
+
+	@Override
+	public void generateRuntimeBindings(BindingFactory factory) {
+		super.generateRuntimeBindings(factory);
+		bind(factory, ClasspathBasedTypeScopeProvider.class);
+	}
+
+	@Override
+	public void generateEclipseBindings(BindingFactory factory) {
+		super.generateRuntimeBindings(factory);
+		bind(factory, JdtBasedSimpleTypeScopeProvider.class);
+	}
+
+	@Override
+	public void generateIdeaBindings(BindingFactory factory) {
+		super.generateRuntimeBindings(factory);
+		bind(factory, JdtBasedSimpleTypeScopeProvider.class);
 	}
 
 	/** Generate the abstract appender.
@@ -72,10 +130,48 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append("\tpublic static final String OVERRIDEN_TYPE_SCOPE_PROVIDER_NAME = \""); //$NON-NLS-1$
+				it.append(SCOPE_PROVIDER_NAME);
+				it.append("\";"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Inject.class);
 				it.newLine();
-				it.append("\tprivate AppenderSerializer serializer;"); //$NON-NLS-1$
+				it.append("\tprivate "); //$NON-NLS-1$
+				it.append(Injector.class);
+				it.append(" originalInjector;"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Inject.class);
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Named.class);
+				it.append("(OVERRIDEN_TYPE_SCOPE_PROVIDER_NAME)"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tprivate "); //$NON-NLS-1$
+				it.append(AbstractTypeScopeProvider.class);
+				it.append(" scopeProvider;"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Inject.class);
+				it.newLine();
+				it.append("\tprivate "); //$NON-NLS-1$
+				it.append(TypeScopes.class);
+				it.append(" typeScopes;"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the context, or <code>null</code> if the Ecore object is the context."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tprotected abstract "); //$NON-NLS-1$
+				it.append(IJvmTypeProvider.class);
+				it.append(" getTypeResolutionContext();"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t/** Build the source code and put it into the given appender."); //$NON-NLS-1$
@@ -97,6 +193,8 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.newLine();
 				it.append("\t * @param appender the object that permits to create the source code."); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t * @param context the context for type resolution."); //$NON-NLS-1$
+				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\tprotected void build("); //$NON-NLS-1$
@@ -107,7 +205,105 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append(IOException.class);
 				it.append(" {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tthis.serializer.serialize(object, appender);"); //$NON-NLS-1$
+				it.append("\t\tfinal "); //$NON-NLS-1$
+				it.append(IJvmTypeProvider.class);
+				it.append(" provider = getTypeResolutionContext();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (provider != null) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfinal "); //$NON-NLS-1$
+				it.append(Map.class);
+				it.append("<"); //$NON-NLS-1$
+				it.append(Key.class);
+				it.append("<?>, "); //$NON-NLS-1$
+				it.append(Binding.class);
+				it.append("<?>> bindings = this.originalInjector.getBindings();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t"); //$NON-NLS-1$
+				it.append(Injector.class);
+				it.append(" localInjector = "); //$NON-NLS-1$
+				it.append(Guice.class);
+				it.append(".createInjector("); //$NON-NLS-1$
+				it.append(Modules.class);
+				it.append(".override((binder) -> {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tfor("); //$NON-NLS-1$
+				it.append(Binding.class);
+				it.append("<?> binding: bindings.values()) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t"); //$NON-NLS-1$
+				it.append(Type.class);
+				it.append(" typeLiteral = binding.getKey().getTypeLiteral().getType();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tif (!"); //$NON-NLS-1$
+				it.append(Injector.class);
+				it.append(".class.equals(typeLiteral) && !"); //$NON-NLS-1$
+				it.append(Logger.class);
+				it.append(".class.equals(typeLiteral)) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t\tbinding.applyTo(binder);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}).with((binder) ->"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tbinder.bind("); //$NON-NLS-1$
+				it.append(AbstractTypeScopeProvider.class);
+				it.append(".class).toInstance("); //$NON-NLS-1$
+				it.append(abstractAppender.getSimpleName());
+				it.append(".this.scopeProvider)));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfinal "); //$NON-NLS-1$
+				it.append(IScopeProvider.class);
+				it.append(" oldDelegate = this.typeScopes.getDelegate();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tlocalInjector.injectMembers(this.typeScopes);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\ttry {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tfinal AppenderSerializer serializer = localInjector.getProvider(AppenderSerializer.class).get();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tserializer.serialize(object, appender);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t} finally {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\ttry {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tfinal "); //$NON-NLS-1$
+				it.append(Field.class);
+				it.append(" f = "); //$NON-NLS-1$
+				it.append(DelegatingScopes.class);
+				it.append(".class.getDeclaredField(\"delegate\");"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tif (!f.isAccessible()) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t\tf.setAccessible(true);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tf.set(this.typeScopes, oldDelegate);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t} catch ("); //$NON-NLS-1$
+				it.append(Exception.class);
+				it.append(" exception) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tthrow new "); //$NON-NLS-1$
+				it.append(Error.class);
+				it.append("(exception);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t} else {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfinal AppenderSerializer serializer = this.originalInjector.getProvider(AppenderSerializer.class).get();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tserializer.serialize(object, appender);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -128,9 +324,13 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append(IOException.class);
 				it.append(" {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tserialize(object, new TokenStream(appender), "); //$NON-NLS-1$
+				it.append("\t\t\tfinal AppenderBasedTokenStream stream = new AppenderBasedTokenStream(appender);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tserialize(object, stream, "); //$NON-NLS-1$
 				it.append(SaveOptions.class);
 				it.append(".defaultOptions());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tstream.flush();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -138,7 +338,7 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\tprivate static class TokenStream extends "); //$NON-NLS-1$
+				it.append("\tprivate static class AppenderBasedTokenStream extends "); //$NON-NLS-1$
 				it.append(AbstractTokenStream.class);
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -148,7 +348,7 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append(" appender;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t\tpublic TokenStream("); //$NON-NLS-1$
+				it.append("\t\tpublic AppenderBasedTokenStream("); //$NON-NLS-1$
 				it.append(ISourceAppender.class);
 				it.append(" appender) {"); //$NON-NLS-1$
 				it.newLine();
@@ -174,7 +374,7 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append(Strings.class);
 				it.append(".isEmpty(value)) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\tSystem.out.println(value);"); //$NON-NLS-1$
+				it.append("\t\t\t\tthis.appender.append(value);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
@@ -191,7 +391,7 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append(Strings.class);
 				it.append(".isEmpty(value)) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\tSystem.out.println(value);"); //$NON-NLS-1$
+				it.append("\t\t\t\tthis.appender.append(value);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t}"); //$NON-NLS-1$
 				it.newLine();

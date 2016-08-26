@@ -36,6 +36,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -47,9 +49,16 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 
 	private SarlEvent sarlEvent;
 
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlEvent());
+	}
+
 	/** Initialize the Ecore element when inside a script.
 	 */
-	public void eInit(SarlScript script, String name) {
+	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlEvent == null) {
 			this.sarlEvent = SarlFactory.eINSTANCE.createSarlEvent();
 			script.getXtendTypes().add(this.sarlEvent);
@@ -106,7 +115,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 		if (!Strings.isEmpty(superType)
 				&& !Event.class.getName().equals(superType)) {
 			JvmParameterizedTypeReference superTypeRef = newTypeRef(this.sarlEvent, superType);
-			JvmTypeReference baseTypeRef = newTypeRef(this.sarlEvent, Event.class);
+			JvmTypeReference baseTypeRef = findType(this.sarlEvent, Event.class.getCanonicalName());
 			if (isSubTypeOf(this.sarlEvent, superTypeRef, baseTypeRef)) {
 				this.sarlEvent.setExtends(superTypeRef);
 				return;
@@ -132,7 +141,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	 */
 	public ISarlConstructorBuilder addSarlConstructor() {
 		ISarlConstructorBuilder builder = this.iSarlConstructorBuilderProvider.get();
-		builder.eInit(getSarlEvent());
+		builder.eInit(getSarlEvent(), getTypeResolutionContext());
 		return builder;
 	}
 
@@ -145,7 +154,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
-		builder.eInit(getSarlEvent(), name, "var");
+		builder.eInit(getSarlEvent(), name, "var", getTypeResolutionContext());
 		return builder;
 	}
 
@@ -155,7 +164,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
-		builder.eInit(getSarlEvent(), name, "val");
+		builder.eInit(getSarlEvent(), name, "val", getTypeResolutionContext());
 		return builder;
 	}
 

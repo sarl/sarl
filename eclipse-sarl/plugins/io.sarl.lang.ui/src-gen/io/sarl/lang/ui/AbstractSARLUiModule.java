@@ -106,7 +106,9 @@ import org.eclipse.xtext.common.types.ui.query.IJavaSearchParticipation;
 import org.eclipse.xtext.common.types.ui.refactoring.JdtRenameSupport;
 import org.eclipse.xtext.common.types.ui.refactoring.participant.JdtRenameParticipant;
 import org.eclipse.xtext.common.types.ui.refactoring.participant.JvmMemberRenameStrategy;
+import org.eclipse.xtext.common.types.xtext.AbstractTypeScopeProvider;
 import org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider;
+import org.eclipse.xtext.common.types.xtext.ui.JdtBasedSimpleTypeScopeProvider;
 import org.eclipse.xtext.generator.AbstractFileSystemAccess2;
 import org.eclipse.xtext.generator.IContextualOutputConfigurationProvider;
 import org.eclipse.xtext.ide.LexerIdeBindings;
@@ -459,6 +461,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by org.eclipse.xtext.xtext.generator.ui.templates.CodetemplatesGeneratorFragment2
 	public Class<? extends IPartialEditingContentAssistContextFactory> bindIPartialEditingContentAssistContextFactory() {
 		return PartialEditingContentAssistContextFactory.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public void configureconfigureAbstractTypeScopeProviderForSourceAppender(Binder binder) {
+		binder.bind(AbstractTypeScopeProvider.class).annotatedWith(Names.named("io.sarl.lang.codebuilder.appenders.SourceAppender.providerType")).to(JdtBasedSimpleTypeScopeProvider.class);
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

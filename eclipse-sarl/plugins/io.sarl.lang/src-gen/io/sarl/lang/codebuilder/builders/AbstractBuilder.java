@@ -35,7 +35,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.common.types.util.Primitives;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.resource.IResourceFactory;
@@ -73,9 +75,19 @@ public abstract class AbstractBuilder {
 
 	private String fileExtension;
 
+	private IJvmTypeProvider typeResolutionContext;
+
 	@Inject
 	public void setFileExtensions(@Named(Constants.FILE_EXTENSIONS) String fileExtensions) {
 		this.fileExtension = fileExtensions.split("[:;,]+")[0];
+	}
+
+	protected void setTypeResolutionContext(IJvmTypeProvider context) {
+		this.typeResolutionContext = context;
+	}
+
+	public IJvmTypeProvider getTypeResolutionContext() {
+		return this.typeResolutionContext;
 	}
 
 	/** Replies the script's file extension.
@@ -103,35 +115,24 @@ public abstract class AbstractBuilder {
 		return this.primitives;
 	}
 
-	/** Create a reference to the given type.
-	 *
-	 * @param context - the context.
-	 * @param typeName - the name of the type.
-	 * @return the type reference.
-	 */
-	protected JvmParameterizedTypeReference newTypeRef(EObject context, String typeName) {
+	protected JvmTypeReference findType(EObject context, String typeName) {
+		final IJvmTypeProvider provider = getTypeResolutionContext();
+		JvmType type = null;
+		if (provider != null) {
+			type = provider.findTypeByName(typeName);
+		}
 		TypeReferences typeRefs = getTypeReferences();
-		return newTypeRef(context, typeName, typeRefs.getTypeForName(typeName, context));
-	}
-
-	/** Create a reference to the given type.
-	 *
-	 * @param context - the context.
-	 * @param type - the type.
-	 * @return the type reference.
-	 */
-	protected JvmParameterizedTypeReference newTypeRef(EObject context, Class<?> type) {
-		TypeReferences typeRefs = getTypeReferences();
-		return newTypeRef(context, type.getName(), typeRefs.getTypeForName(type, context));
-	}
-
-	private JvmParameterizedTypeReference newTypeRef(EObject context, String typeName, JvmTypeReference typeReference) {
+		if (type == null) {
+			type = typeRefs.findDeclaredType(typeName, context);
+		}
+		if (type == null) {
+			throw new TypeNotPresentException(typeName, null);
+		}
+		JvmTypeReference typeReference = typeRefs.createTypeRef(type);
 		if (!isTypeReference(typeReference) && !getPrimitiveTypes().isPrimitive(typeReference)) {
-			TypeReferences typeRefs = getTypeReferences();
 			for (String packageName : getImportsConfiguration().getImplicitlyImportedPackages((XtextResource) context.eResource())) {
-				typeReference = typeRefs.getTypeForName(packageName + "." + typeName, context);
+				typeReference = findType(context, packageName + "." + typeName);
 				if (isTypeReference(typeReference)) {
-					getImportManager().addImportFor(typeReference.getType());
 					return (JvmParameterizedTypeReference) typeReference;
 				}
 			}
@@ -139,8 +140,17 @@ public abstract class AbstractBuilder {
 		if (!isTypeReference(typeReference)) {
 			throw new TypeNotPresentException(typeName, null);
 		}
+					return (JvmParameterizedTypeReference) typeReference;
+	}
+
+	protected JvmParameterizedTypeReference newTypeRef(EObject context, String typeName) {
+		JvmTypeReference typeReference = findType(context, typeName);
 		getImportManager().addImportFor(typeReference.getType());
 		return (JvmParameterizedTypeReference) typeReference;
+	}
+
+	protected JvmParameterizedTypeReference newTypeRef(EObject context, Class<?> jtype) {
+		return newTypeRef(context, jtype.getCanonicalName());
 	}
 
 	/** Replies if the first parameter is a subtype of the second parameter.
