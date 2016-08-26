@@ -252,28 +252,35 @@ tools upon the Eclipse IDE.
          id="io.sarl.eclipse"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.4.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="io.sarl.m2e"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.4.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.debug.ui"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="3.11.200.v20160518-1858"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.core.variables"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="3.3.0.v20160419-1720"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.guava"
+         download-size="0"
+         install-size="0"
+         version="15.0.0.v201403281430"
          unpack="false"/>
 
 </feature>
