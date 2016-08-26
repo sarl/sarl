@@ -3,6 +3,16 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: io.janusproject.tests;singleton:=true
 Bundle-Version: 0.4.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Require-Bundle: io.sarl.core;bundle-version="0.4.0",
+ io.sarl.util;bundle-version="0.4.0",
+ io.sarl.tests.api;bundle-version="0.4.0",
+ io.janusproject.plugin;bundle-version="0.4.0",
+ com.hazelcast;bundle-version="3.7.0",
+ com.google.gson;bundle-version="2.4.0",
+ com.google.guava.testlib;bundle-version="18.0.0",
+ org.mockito.mockito-core;bundle-version="2.0.73",
+ org.arakhne.afc.core.vmutils;bundle-version="14.0.0",
+ javassist;bundle-version="3.20.0"
 
