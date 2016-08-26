@@ -632,7 +632,7 @@ public final class JavaClasspathParser {
         final OutputStreamWriter writer;
         try {
             writer = new OutputStreamWriter(s, "UTF8"); //$NON-NLS-1$
-            try (final GenericXMLWriter xmlWriter = new GenericXMLWriter(writer, System.getProperty("line.separator"),
+            try (final GenericXMLWriter xmlWriter = new GenericXMLWriter(writer, System.getProperty("line.separator"), //$NON-NLS-1$
                     false/* don't print XML version */)) {
                 decodeUnknownNode(node, xmlWriter, true/* insert new line */);
                 xmlWriter.flush();
