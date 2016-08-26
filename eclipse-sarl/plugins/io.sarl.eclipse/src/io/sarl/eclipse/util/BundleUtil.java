@@ -29,6 +29,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.osgi.framework.Bundle;
 
+import io.sarl.lang.SARLConfig;
+
 /** Utilities around bundles. It should be replaced
  * by the OSGi, Eclipse and Xtext API.
  *
@@ -42,15 +44,15 @@ public final class BundleUtil {
 	/** OS-independent paths of the bin folders.
 	 */
 	public static final String[] BIN_FOLDERS = {
-		"target/classes", //$NON-NLS-1$
+		SARLConfig.FOLDER_BIN,
 		"bin", //$NON-NLS-1$
 	};
 
 	/** OS-independent paths of the source folders.
 	 */
 	public static final String[] SRC_FOLDERS = {
-		"src/main/java", //$NON-NLS-1$
-		"src/main/sarl", //$NON-NLS-1$
+		SARLConfig.FOLDER_SOURCE_JAVA,
+		SARLConfig.FOLDER_SOURCE_SARL,
 		"src", //$NON-NLS-1$
 	};
 

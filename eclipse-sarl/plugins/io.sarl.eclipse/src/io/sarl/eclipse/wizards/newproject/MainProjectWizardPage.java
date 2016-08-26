@@ -50,7 +50,6 @@ import org.eclipse.jdt.core.IAccessRule;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.internal.core.ClasspathEntry;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.jdt.internal.ui.IJavaHelpContextIds;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
@@ -108,6 +107,7 @@ import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
+import io.sarl.eclipse.natures.SARLProjectConfigurator;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
 import io.sarl.lang.SARLConfig;
@@ -117,8 +117,8 @@ import io.sarl.lang.SARLConfig;
  * is copy/paste from {@link NewJavaProjectWizardPageOne}
  *
  * <p>This version removes the choice of the project structure and update the structure of
- * the source folder of the project
- * {@link MainProjectWizardPage#getSourceClasspathEntries()}
+ * the source folder of the project with
+ * {@link SARLProjectConfigurator#getDefaultSourceClassPathEntries(IPath)}
  *
  * @author $Author: ngaud$
  * @author $Author: sgalland$
@@ -394,46 +394,6 @@ public class MainProjectWizardPage extends WizardPage {
 				new IClasspathAttribute[0],
 				true);
 		classpathEntries.add(sarlClasspathEntry);
-	}
-
-	/**
-	 * Returns the source class path entries to be added on new projects. The underlying resources may not
-	 * exist. All entries that are returned must be of kind {@link IClasspathEntry#CPE_SOURCE}.
-	 *
-	 * @return returns the source class path entries for the new project
-	 */
-	public Collection<IClasspathEntry> getSourceClasspathEntries() {
-		final IPath sourceFolderPath = new Path(getProjectName()).makeAbsolute();
-
-		final IPath srcJava = sourceFolderPath.append(
-				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_JAVA));
-		final IClasspathEntry srcJavaEntry = JavaCore.newSourceEntry(srcJava.makeAbsolute());
-
-		final IPath srcSarl = sourceFolderPath.append(
-				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_SARL));
-		final IClasspathEntry srcSarlEntry = JavaCore.newSourceEntry(srcSarl.makeAbsolute());
-
-		final IPath srcGeneratedSources = sourceFolderPath.append(
-				Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED));
-		final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
-				IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS,
-				Boolean.TRUE.toString());
-		final IClasspathEntry srcGeneratedSourcesEntry = JavaCore.newSourceEntry(
-				srcGeneratedSources.makeAbsolute(),
-				ClasspathEntry.INCLUDE_ALL,
-				ClasspathEntry.EXCLUDE_NONE,
-				null /*output location*/,
-				new IClasspathAttribute[] {attr});
-
-		final IPath srcResources = sourceFolderPath.append(
-				Path.fromPortableString(SARLConfig.FOLDER_RESOURCES));
-		final IClasspathEntry srcResourcesEntry = JavaCore.newSourceEntry(srcResources.makeAbsolute());
-
-		return Arrays.asList(
-				srcSarlEntry,
-				srcJavaEntry,
-				srcResourcesEntry,
-				srcGeneratedSourcesEntry);
 	}
 
 	/**

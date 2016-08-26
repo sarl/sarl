@@ -26,7 +26,10 @@
    <windowImages i16="/io.sarl.eclipse/icons/sarl_16.png" i32="/io.sarl.eclipse/icons/sarl_32.png" i48="/io.sarl.eclipse/icons/sarl_48.png" i64="/io.sarl.eclipse/icons/sarl_64.png" i128="/io.sarl.eclipse/icons/sarl_128.png" i256="/io.sarl.eclipse/icons/sarl_256.png"/>
 
    <splash
-      location="io.sarl.eclipse" />
+      location="io.sarl.eclipse"
+      startupProgressRect="5,280,442,15"
+      startupMessageRect="7,252,330,20"
+      startupForegroundColor="F3F3F3" />
    <launcher name="eclipse-sarl">
       <linux icon="icons/sarl.xpm"/>
       <macosx icon="icons/sarl.icns"/>

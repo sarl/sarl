@@ -110,20 +110,6 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 				facade.getProject(), outputPath);
 	}
 
-	/** Invoked to add the natures.
-	 *
-	 * @param facade - the Maven facade.
-	 * @param config - the configuration.
-	 * @param monitor - the monitor.
-	 * @throws CoreException if cannot add the source folders.
-	 */
-	@SuppressWarnings("static-method")
-	protected void addNatures(IMavenProjectFacade facade,
-			SARLConfiguration config, IProgressMonitor monitor) throws CoreException {
-		addNature(facade.getProject(), SARLEclipseConfig.NATURE_ID, monitor);
-		addNature(facade.getProject(), SARLEclipseConfig.XTEXT_NATURE_ID, monitor);
-	}
-
 	private static IPath makeFullPath(IMavenProjectFacade facade, File file) {
 		assert file != null;
 		final IProject project = facade.getProject();
@@ -405,7 +391,8 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			IProgressMonitor monitor) throws CoreException {
 		final SARLConfiguration config = readConfiguration(request, monitor);
 		forceMavenCompilerConfiguration(request.getMavenProjectFacade(), config);
-		addNatures(request.getMavenProjectFacade(), config, monitor);
+		io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
+				request.getMavenProjectFacade().getProject());
 	}
 
 	@Override

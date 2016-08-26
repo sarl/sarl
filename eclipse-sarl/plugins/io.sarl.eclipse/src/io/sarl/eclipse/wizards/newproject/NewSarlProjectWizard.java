@@ -23,20 +23,14 @@ package io.sarl.eclipse.wizards.newproject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaElement;
@@ -48,8 +42,10 @@ import org.eclipse.jdt.internal.ui.wizards.JavaProjectWizard;
 import org.eclipse.jdt.internal.ui.wizards.NewElementWizard;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.ui.IPackagesViewPart;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -96,13 +92,17 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 * @param pageTwo - reference to the second page of the wizard.
 	 */
 	public NewSarlProjectWizard(MainProjectWizardPage pageOne, BuildSettingWizardPage pageTwo) {
-		setDefaultPageImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
-				SARLEclipseConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
-		setWindowTitle(Messages.SARLProjectNewWizard_0);
-
 		this.firstPage = pageOne;
 		this.secondPage = pageTwo;
+	}
+
+	@Override
+	public void init(IWorkbench workbench, IStructuredSelection currentSelection) {
+		super.init(workbench, currentSelection);
+		setDefaultPageImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(
+				SARLEclipseConfig.NEW_PROJECT_WIZARD_DIALOG_IMAGE));
+		setWindowTitle(Messages.SARLProjectNewWizard_0);
 	}
 
 	@Override
@@ -273,8 +273,6 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 		final IJavaProject javaProject = this.secondPage.getJavaProject();
 
 		try {
-			addNatures(javaProject.getProject());
-
 			// Set the SRE configuration
 			final IProject project = javaProject.getProject();
 			final ISREInstall sre = this.firstPage.getSRE();
@@ -298,25 +296,4 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 		return javaProject;
 	}
 
-	private static void addNatures(IProject project) throws CoreException {
-		final IProjectDescription description = project.getDescription();
-		final List<String> natures = new ArrayList<>(Arrays.asList(description.getNatureIds()));
-		natures.add(0, SARLEclipseConfig.NATURE_ID);
-		natures.add(1, SARLEclipseConfig.XTEXT_NATURE_ID);
-		// natures.add(2, JavaCore.NATURE_ID); not necessary since the project is already a java project
-
-		final String[] newNatures = natures.toArray(new String[natures.size()]);
-		final IStatus status = ResourcesPlugin.getWorkspace().validateNatureSet(newNatures);
-
-		// check the status and decide what to do
-		if (status.getCode() == IStatus.OK) {
-			description.setNatureIds(newNatures);
-			final IProgressMonitor monitor = new NullProgressMonitor();
-			project.setDescription(description, monitor);
-		} else {
-			JavaPlugin.logErrorStatus(
-					Messages.SARLProjectNewWizard_4,
-					status);
-		}
-	}
 }
