@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -55,8 +56,7 @@ import io.janusproject.util.TwoStepConstruction;
 /**
  * Service that is providing the access to the repository of the Janus kernels.
  *
- * <p>
- * It uses the Hazelcast library for discovering the nodes over the network.
+ * <p>It uses the Hazelcast library for discovering the nodes over the network.
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
@@ -168,7 +168,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 	 */
 	protected void fireKernelDiscovered(URI uri) {
 		this.logger.info(HazelcastKernelDiscoveryService.class, "KERNEL_DISCOVERY", uri, getCurrentKernel()); //$NON-NLS-1$
-		for (KernelDiscoveryServiceListener listener : this.listeners.getListeners(KernelDiscoveryServiceListener.class)) {
+		for (final KernelDiscoveryServiceListener listener : this.listeners.getListeners(KernelDiscoveryServiceListener.class)) {
 			listener.kernelDiscovered(uri);
 		}
 	}
@@ -180,7 +180,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 	 */
 	protected void fireKernelDisconnected(URI uri) {
 		this.logger.info(HazelcastKernelDiscoveryService.class, "KERNEL_DISCONNECTION", uri, getCurrentKernel()); //$NON-NLS-1$
-		for (KernelDiscoveryServiceListener listener : this.listeners.getListeners(KernelDiscoveryServiceListener.class)) {
+		for (final KernelDiscoveryServiceListener listener : this.listeners.getListeners(KernelDiscoveryServiceListener.class)) {
 			listener.kernelDisconnected(uri);
 		}
 	}
@@ -237,9 +237,9 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void memberRemoved(MembershipEvent membershipEvent) {
-			InetSocketAddress socketAddress = membershipEvent.getMember().getSocketAddress();
+			final InetSocketAddress socketAddress = membershipEvent.getMember().getSocketAddress();
 			if (socketAddress != null) {
-				URI u = NetworkUtil.toURI(socketAddress);
+				final URI u = NetworkUtil.toURI(socketAddress);
 				if (u != null) {
 					synchronized (HazelcastKernelDiscoveryService.this) {
 						HazelcastKernelDiscoveryService.this.kernels.remove(u);
@@ -255,7 +255,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 
 		@Override
 		public void entryAdded(EntryEvent<URI, URI> event) {
-			URI newPeer = event.getValue();
+			final URI newPeer = event.getValue();
 			assert (newPeer != null);
 			if (!newPeer.equals(getCurrentKernel())) {
 				fireKernelDiscovered(newPeer);
@@ -273,7 +273,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 		}
 
 		private void fireDisconnected(EntryEvent<URI, URI> event) {
-			URI oldPeer = event.getValue();
+			final URI oldPeer = event.getValue();
 			assert (oldPeer != null);
 			if (!oldPeer.equals(getCurrentKernel())) {
 				fireKernelDisconnected(oldPeer);
@@ -304,7 +304,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 		@Override
 		public void running() {
 			// Outside the synchronizing statement to avoid deadlock
-			URI uri = HazelcastKernelDiscoveryService.this.network.getURI();
+			final URI uri = HazelcastKernelDiscoveryService.this.network.getURI();
 			if (HazelcastKernelDiscoveryService.this.currentPubURI == null) {
 				synchronized (HazelcastKernelDiscoveryService.this) {
 					HazelcastKernelDiscoveryService.this.currentPubURI = uri;
@@ -314,7 +314,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 				}
 
 				// Notify about the discovery of the already launched kernels
-				for (URI remotePublicKernel : getKernels()) {
+				for (final URI remotePublicKernel : getKernels()) {
 					fireKernelDiscovered(remotePublicKernel);
 				}
 

@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,11 +30,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.google.common.collect.Queues;
 import com.google.inject.Inject;
-
 import io.janusproject.kernel.bic.internaleventdispatching.AgentInternalEventsDispatcher;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.services.spawn.SpawnService.AgentKillException;
+
 import io.sarl.core.AgentSpawned;
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
@@ -125,10 +126,10 @@ class InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	protected void uninstall() {
 		this.eventDispatcher.unregister(getOwner());
 		// TODO: dispose eventBus => remove any registered objects, but without a list in this skill
-		List<Object> list = this.eventListeners;
+		final List<Object> list = this.eventListeners;
 		this.eventListeners = null;
 		if (list != null) {
-			for (Object o : list) {
+			for (final Object o : list) {
 				this.eventDispatcher.unregister(o);
 			}
 		}
@@ -258,10 +259,10 @@ class InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 		@SuppressWarnings("synthetic-access")
 		private void fireEnqueuedEvents(InternalEventBusSkill skill) {
-			Queue<Event> queue = this.buffer;
+			final Queue<Event> queue = this.buffer;
 			if (queue != null && !queue.isEmpty()) {
 				this.buffer = null;
-				for (Event evt : queue) {
+				for (final Event evt : queue) {
 					skill.eventDispatcher.asyncDispatch(evt);
 				}
 			}

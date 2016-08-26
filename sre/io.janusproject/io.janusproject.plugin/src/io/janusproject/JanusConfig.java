@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +38,6 @@ public final class JanusConfig {
 
 	/**
 	 * Name of the property that contains the logger factory for hazelcast.
-	 * 
 	 * @see #HAZELCAST_LOGGER_FACTORY_VALUE
 	 */
 	public static final String HAZELCAST_LOGGER_FACTORY_NAME = "hazelcast.logging.class"; //$NON-NLS-1$
@@ -304,7 +304,7 @@ public final class JanusConfig {
 	 * @return the value, or defaultValue.
 	 */
 	public static boolean getSystemPropertyAsBoolean(String name, boolean defaultValue) {
-		String value = getSystemProperty(name, null);
+		final String value = getSystemProperty(name, null);
 		if (value != null) {
 			try {
 				return Boolean.parseBoolean(value);
@@ -333,7 +333,7 @@ public final class JanusConfig {
 	 * @return the value, or defaultValue.
 	 */
 	public static int getSystemPropertyAsInteger(String name, int defaultValue) {
-		String value = getSystemProperty(name, null);
+		final String value = getSystemProperty(name, null);
 		if (value != null) {
 			try {
 				return Integer.parseInt(value);
@@ -362,7 +362,7 @@ public final class JanusConfig {
 	 * @return the value, or defaultValue.
 	 */
 	public static float getSystemPropertyAsFloat(String name, float defaultValue) {
-		String value = getSystemProperty(name, null);
+		final String value = getSystemProperty(name, null);
 		if (value != null) {
 			try {
 				return Float.parseFloat(value);
@@ -395,10 +395,10 @@ public final class JanusConfig {
 	 * @return the value, or defaultValue.
 	 */
 	public static <S extends Enum<S>> S getSystemPropertyAsEnum(Class<S> type, String name, S defaultValue) {
-		String value = getSystemProperty(name, null);
+		final String value = getSystemProperty(name, null);
 		if (value != null) {
 			try {
-				S enumeration = Enum.valueOf(type, value);
+				final S enumeration = Enum.valueOf(type, value);
 				if (enumeration != null) {
 					return enumeration;
 				}
@@ -406,8 +406,8 @@ public final class JanusConfig {
 				//
 			}
 			try {
-				int ordinal = Integer.parseInt(value);
-				S enumeration = type.getEnumConstants()[ordinal];
+				final int ordinal = Integer.parseInt(value);
+				final S enumeration = type.getEnumConstants()[ordinal];
 				if (enumeration != null) {
 					return enumeration;
 				}
@@ -440,10 +440,10 @@ public final class JanusConfig {
 	 * @return the value, or defaultValue.
 	 */
 	public static <S> Class<? extends S> getSystemPropertyAsClass(Class<S> type, String name, Class<S> defaultValue) {
-		String value = getSystemProperty(name, null);
+		final String value = getSystemProperty(name, null);
 		if (value != null) {
 			try {
-				Class<?> typeInstance = Class.forName(value);
+				final Class<?> typeInstance = Class.forName(value);
 				if (typeInstance != null) {
 					return typeInstance.asSubclass(type);
 				}
@@ -472,10 +472,10 @@ public final class JanusConfig {
 	 * @return the value, or defaultValue.
 	 */
 	public static Class<?> getSystemPropertyAsClass(String name, Class<?> defaultValue) {
-		String value = getSystemProperty(name, null);
+		final String value = getSystemProperty(name, null);
 		if (value != null) {
 			try {
-				Class<?> typeInstance = Class.forName(value);
+				final Class<?> typeInstance = Class.forName(value);
 				if (typeInstance != null) {
 					return typeInstance;
 				}
@@ -496,10 +496,10 @@ public final class JanusConfig {
 	 * @return the value, or defaultValue.
 	 */
 	public static <S> Class<? extends S> getSystemPropertyAsClass(Class<S> type, String name, String defaultValue) {
-		String value = getSystemProperty(name, null);
+		final String value = getSystemProperty(name, null);
 		if (value != null) {
 			try {
-				Class<?> typeInstance = Class.forName(value);
+				final Class<?> typeInstance = Class.forName(value);
 				if (typeInstance != null) {
 					return typeInstance.asSubclass(type);
 				}
@@ -509,7 +509,7 @@ public final class JanusConfig {
 		}
 		if (defaultValue != null) {
 			try {
-				Class<?> typeInstance = Class.forName(defaultValue);
+				final Class<?> typeInstance = Class.forName(defaultValue);
 				if (typeInstance != null) {
 					return typeInstance.asSubclass(type);
 				}
@@ -528,10 +528,10 @@ public final class JanusConfig {
 	 * @return the value, or defaultValue.
 	 */
 	public static Class<?> getSystemPropertyAsClass(String name, String defaultValue) {
-		String value = getSystemProperty(name, null);
+		final String value = getSystemProperty(name, null);
 		if (value != null) {
 			try {
-				Class<?> typeInstance = Class.forName(value);
+				final Class<?> typeInstance = Class.forName(value);
 				if (typeInstance != null) {
 					return typeInstance;
 				}
@@ -541,7 +541,7 @@ public final class JanusConfig {
 		}
 		if (defaultValue != null) {
 			try {
-				Class<?> typeInstance = Class.forName(defaultValue);
+				final Class<?> typeInstance = Class.forName(defaultValue);
 				if (typeInstance != null) {
 					return typeInstance;
 				}

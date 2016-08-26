@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,8 +32,7 @@ import io.janusproject.services.DependentService;
  * This class enables to log information by ensuring that the values of the parameters are not evaluated until the information
  * should be really log, according to the log level.
  *
- * <p>
- * The LogService considers the parameters of the functions as:
+ * <p>The LogService considers the parameters of the functions as:
  * <ul>
  * <li>the messageKey is the name of the message in the property file;</li>
  * <li>the message parameters are the values that will replace the strings {0}, {1}, {2}... in the text extracted from the
@@ -40,14 +40,11 @@ import io.janusproject.services.DependentService;
  * <li>the parameter propertyType is the class from which the filename of the property file will be built.</li>
  * </ul>
  *
- * <p>
- * If a <code>Throwable</code> is passed as parameter, the text of the exception is retreived.
+ * <p>If a <code>Throwable</code> is passed as parameter, the text of the exception is retreived.
  *
- * <p>
- * If a <code>LogParam</code> is passed as parameter, the <code>toString</code> function will be invoked.
+ * <p>If a <code>LogParam</code> is passed as parameter, the <code>toString</code> function will be invoked.
  *
- * <p>
- * For all the other objects, the {@link Object#toString()} function is invoked.
+ * <p>For all the other objects, the {@link Object#toString()} function is invoked.
  *
  *
  * @author $Author: sgalland$

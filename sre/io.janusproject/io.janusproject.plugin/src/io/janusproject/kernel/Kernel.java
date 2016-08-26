@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,15 +51,12 @@ import io.sarl.lang.core.AgentContext;
 /**
  * This class represents the Kernel of the Janus platform.
  *
- * <p>
- * <strong>The Kernel is a singleton.</strong>
+ * <p><strong>The Kernel is a singleton.</strong>
  *
- * <p>
- * The Kernel is assimilated to an agent that is omniscient and distributed other the network. It is containing all the other
+ * <p>The Kernel is assimilated to an agent that is omniscient and distributed other the network. It is containing all the other
  * agents.
  *
- * <p>
- * To create a Kernel, you should use the function {@link #create(Module...)}.
+ * <p>To create a Kernel, you should use the function {@link #create(Module...)}.
  *
  * @author $Author: srodriguez$
  * @author $Author: ngaud$
@@ -120,8 +118,8 @@ public class Kernel {
 	 * @return the new kernel.
 	 */
 	public static final Kernel create(Module... modules) {
-		Injector injector = Guice.createInjector(modules);
-		Kernel k = injector.getInstance(Kernel.class);
+		final Injector injector = Guice.createInjector(modules);
+		final Kernel k = injector.getInstance(Kernel.class);
 		return k;
 	}
 
@@ -165,7 +163,7 @@ public class Kernel {
 	 * @return the service, or <code>null</code>.
 	 */
 	public <S extends Service> S getService(Class<S> type) {
-		for (Service serv : this.serviceManager.servicesByState().values()) {
+		for (final Service serv : this.serviceManager.servicesByState().values()) {
 			if (serv.isRunning() && type.isInstance(serv)) {
 				return type.cast(serv);
 			}
@@ -229,7 +227,7 @@ public class Kernel {
 			// CREATED BY THE EXECUTORSERVICE.
 			// THIS AVOID THE STOP FUNCTION TO BE INTERRUPTED
 			// BECAUSE THE EXECUTORSERVICE WAS SHUTTED DOWN.
-			StopTheKernel t = new StopTheKernel();
+			final StopTheKernel t = new StopTheKernel();
 			t.start();
 		}
 	}
@@ -255,14 +253,14 @@ public class Kernel {
 		 * Start the thread.
 		 */
 		public void start() {
-			Thread t = newThread(this);
+			final Thread t = newThread(this);
 			t.start();
 		}
 
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void run() {
-			Logger logger = getLogger();
+			final Logger logger = getLogger();
 			logger.info(Locale.getString(Kernel.class, "STOP_KERNEL_SERVICES")); //$NON-NLS-1$
 			Services.stopServices(Kernel.this.serviceManager);
 			logger.info(Locale.getString(Kernel.class, "KERNEL_SERVICES_STOPPED")); //$NON-NLS-1$
@@ -271,7 +269,7 @@ public class Kernel {
 
 		@Override
 		public Thread newThread(Runnable runnable) {
-			Thread t = Executors.defaultThreadFactory().newThread(runnable);
+			final Thread t = Executors.defaultThreadFactory().newThread(runnable);
 			t.setName("Janus kernel shutdown"); //$NON-NLS-1$
 			t.setDaemon(false);
 			t.setUncaughtExceptionHandler(this);
@@ -282,13 +280,13 @@ public class Kernel {
 		public void uncaughtException(Thread thread, Throwable exception) {
 			assert (thread != null);
 			assert (exception != null);
-			LogRecord record = new LogRecord(Level.SEVERE, exception.getLocalizedMessage());
+			final LogRecord record = new LogRecord(Level.SEVERE, exception.getLocalizedMessage());
 			record.setThrown(exception);
-			StackTraceElement elt = exception.getStackTrace()[0];
+			final StackTraceElement elt = exception.getStackTrace()[0];
 			assert (elt != null);
 			record.setSourceClassName(elt.getClassName());
 			record.setSourceMethodName(elt.getMethodName());
-			Logger logger = getLogger();
+			final Logger logger = getLogger();
 			logger.log(record);
 		}
 

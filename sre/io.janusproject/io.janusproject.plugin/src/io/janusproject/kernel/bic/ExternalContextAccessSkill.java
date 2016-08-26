@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,14 +77,14 @@ class ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 
 	@Override
 	protected void install() {
-		AgentContext ac = this.contextRepository.getContext(getOwner().getParentID());
+		final AgentContext ac = this.contextRepository.getContext(getOwner().getParentID());
 		join(ac.getID(), ac.getDefaultSpace().getID().getID());
 	}
 
 	@Override
 	protected void uninstall() {
 		// Leave all contexts including the default one.
-		for (UUID contextID : this.contexts) {
+		for (final UUID contextID : this.contexts) {
 			leave(contextID);
 		}
 	}
@@ -97,7 +98,7 @@ class ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 
 	@Override
 	public AgentContext getContext(UUID contextID) {
-		assert (contextID != null);
+		assert contextID != null;
 		if (!this.contexts.contains(contextID)) {
 			throw new IllegalArgumentException(Locale.getString("UNKNOWN_CONTEXT_ID", contextID)); //$NON-NLS-1$
 		}
@@ -106,14 +107,14 @@ class ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 
 	@Override
 	public void join(UUID futureContext, UUID futureContextDefaultSpaceID) {
-		assert (futureContext != null);
-		assert (futureContextDefaultSpaceID != null);
+		assert futureContext != null;
+		assert futureContextDefaultSpaceID != null;
 
 		if (this.contexts.contains(futureContext)) {
 			return;
 		}
 
-		AgentContext ac = this.contextRepository.getContext(futureContext);
+		final AgentContext ac = this.contextRepository.getContext(futureContext);
 		assert (ac != null) : "Unknown Context"; //$NON-NLS-1$
 
 		if (!futureContextDefaultSpaceID.equals(ac.getDefaultSpace().getID().getID())) {
@@ -147,18 +148,18 @@ class ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 	 * @param newJoinedContext - the newly joined context to notify its members
 	 */
 	protected void fireMemberJoined(AgentContext newJoinedContext) {
-		EventSpace defSpace = newJoinedContext.getDefaultSpace();
+		final EventSpace defSpace = newJoinedContext.getDefaultSpace();
 		defSpace.emit(new MemberJoined(defSpace.getAddress(getOwner().getID()), newJoinedContext.getID(), getOwner().getID(),
 				getOwner().getClass().getName()));
 	}
 
 	@Override
 	public void leave(UUID contextID) {
-		assert (contextID != null);
+		assert contextID != null;
 
-		AgentContext ac = this.contextRepository.getContext(contextID);
+		final AgentContext ac = this.contextRepository.getContext(contextID);
 
-		assert (ac != null) : "Unknown Context"; //$NON-NLS-1$
+		assert ac != null : "Unknown Context"; //$NON-NLS-1$
 
 		if (!this.contexts.contains(contextID)) {
 			return;
@@ -190,7 +191,7 @@ class ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 	 * @param leftContext - the context that will be left
 	 */
 	protected void fireMemberLeft(AgentContext leftContext) {
-		EventSpace defSpace = leftContext.getDefaultSpace();
+		final EventSpace defSpace = leftContext.getDefaultSpace();
 		defSpace.emit(
 				new MemberLeft(defSpace.getAddress(getOwner().getID()), getOwner().getID(), getOwner().getClass().getName()));
 	}

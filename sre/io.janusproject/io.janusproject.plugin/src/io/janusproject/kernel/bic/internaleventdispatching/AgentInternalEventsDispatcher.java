@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,10 +31,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
-import org.eclipse.xtext.xbase.lib.Pair;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.lang.core.DeadEvent;
 import io.sarl.lang.core.Event;
@@ -138,7 +138,7 @@ public class AgentInternalEventsDispatcher {
 					.getBehaviorGuardEvaluators(event);
 		}
 		if (behaviorGuardEvaluators != null && !behaviorGuardEvaluators.isEmpty()) {
-			Collection<Runnable> behaviorsMethodsToExecute;
+			final Collection<Runnable> behaviorsMethodsToExecute;
 			try {
 				behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
 				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(event, behaviorsMethodsToExecute);
@@ -162,7 +162,6 @@ public class AgentInternalEventsDispatcher {
 	 * If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
 	 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
 	 * </p>
-	 * 
 	 * @param event - an event to dispatch asynchronously.
 	 */
 	@SuppressWarnings("synthetic-access")
@@ -178,7 +177,7 @@ public class AgentInternalEventsDispatcher {
 				}
 				if (behaviorGuardEvaluators != null && !behaviorGuardEvaluators.isEmpty()) {
 
-					Collection<Runnable> behaviorsMethodsToExecute;
+					final Collection<Runnable> behaviorsMethodsToExecute;
 					try {
 						behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
 					} catch (InvocationTargetException e) {
@@ -206,10 +205,10 @@ public class AgentInternalEventsDispatcher {
 	private static Collection<Runnable> evaluateGuards(final Object event,
 			final Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators) throws InvocationTargetException {
 
-		Collection<Runnable> behaviorsMethodsToExecute = Lists.newLinkedList();
+		final Collection<Runnable> behaviorsMethodsToExecute = Lists.newLinkedList();
 
 		Collection<Runnable> behaviorsMethodsToExecutePerTarget = null;
-		for (BehaviorGuardEvaluator evaluator : behaviorGuardEvaluators) {
+		for (final BehaviorGuardEvaluator evaluator : behaviorGuardEvaluators) {
 			// TODO Maybe we can parallelize this loop, could be interesting when the number of guardEvaluators increase
 			behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
 			evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
@@ -222,19 +221,18 @@ public class AgentInternalEventsDispatcher {
 	/**
 	 * Execute every single Behaviors runnable, a dedicated thread will created by the executor local to this class and be used to
 	 * execute each runnable in parallel, and this method waits until its future has been completed before leaving.
-	 * 
 	 * @param event - the event occurrence that has activated the specified behaviors, used just for indexing purpose but not
 	 *        passed to runnable here, they were created according to this occurrence
 	 * @param behaviorsMethodsToExecute - the collection of Behaviors runnable that must be executed.
-	 * @throws InterruptedException
-	 * @throws ExecutionException
+	 * @throws InterruptedException - exception
+	 * @throws ExecutionException - exception
 	 */
 	private void executeBehaviorMethodsInParalellWithSynchroAtTheEnd(Event event, Collection<Runnable> behaviorsMethodsToExecute)
 			throws InterruptedException, ExecutionException {
 
 		final CountDownLatch doneSignal = new CountDownLatch(behaviorsMethodsToExecute.size());
 
-		for (Runnable runnable : behaviorsMethodsToExecute) {
+		for (final Runnable runnable : behaviorsMethodsToExecute) {
 			this.executor.execute(new Runnable() {
 
 				@Override
@@ -285,14 +283,13 @@ public class AgentInternalEventsDispatcher {
 	/**
 	 * Execute every single Behaviors runnable, a dedicated thread will created by the executor local to this class and be used to
 	 * execute each runnable in parallel.
-	 * 
 	 * @param event - the event occurrence that has activated the specified behaviors, used just for indexing purpose but not
 	 *        passed to runnable here, they were created according to this occurrence
 	 * @param behaviorsMethodsToExecute - the collection of Behaviors runnable that must be executed.
 	 */
 	private void executeAsynchronouslyBehaviorMethods(Event event, Collection<Runnable> behaviorsMethodsToExecute) {
 
-		Queue<Pair<Event, Collection<Runnable>>> queueForThread = this.queue.get();
+		final Queue<Pair<Event, Collection<Runnable>>> queueForThread = this.queue.get();
 		queueForThread.offer(new Pair<>(event, behaviorsMethodsToExecute));
 
 		if (!this.dispatching.get().booleanValue()) {
@@ -300,7 +297,7 @@ public class AgentInternalEventsDispatcher {
 			try {
 				Pair<Event, Collection<Runnable>> nextEvent;
 				while ((nextEvent = queueForThread.poll()) != null) {
-					for (Runnable runnable : nextEvent.getValue()) {
+					for (final Runnable runnable : nextEvent.getValue()) {
 						this.executor.execute(runnable);
 					}
 				}

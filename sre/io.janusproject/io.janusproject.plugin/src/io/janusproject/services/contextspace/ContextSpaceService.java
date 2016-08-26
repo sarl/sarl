@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -101,8 +102,7 @@ public interface ContextSpaceService extends DependentService {
 	/**
 	 * Returns the collection of {@link AgentContext} with the given IDs.
 	 *
-	 * <p>
-	 * The replies collection is synchronized and any iteration on it must be synchronized on the mutex replies by {@link #mutex}.
+	 * <p>The replies collection is synchronized and any iteration on it must be synchronized on the mutex replies by {@link #mutex}.
 	 *
 	 * @param contextIDs - the identifiers of the contexts to retreive.
 	 * @return the collection of {@link AgentContext} with the given IDs
@@ -112,8 +112,7 @@ public interface ContextSpaceService extends DependentService {
 	/**
 	 * Returns the set of all agent context IDs stored in this repository.
 	 *
-	 * <p>
-	 * The replies collection is synchronized and any iteration on it must be synchronized on the mutex replies by {@link #mutex}.
+	 * <p>The replies collection is synchronized and any iteration on it must be synchronized on the mutex replies by {@link #mutex}.
 	 *
 	 * @return the set of all agent context IDs stored in this repository
 	 */

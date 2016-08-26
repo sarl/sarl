@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -131,7 +132,7 @@ implements DMap<K, V>, Serializable, Delegator<Map<K, V>> {
 
 	@Override
 	public V put(K key, V value) {
-		V old = getDelegatedObject().put(key, value);
+		final V old = getDelegatedObject().put(key, value);
 		if (old != null) {
 			fireEntryUpdated(key, value);
 		} else {
@@ -142,7 +143,7 @@ implements DMap<K, V>, Serializable, Delegator<Map<K, V>> {
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> map) {
-		for (Entry<? extends K, ? extends V> entry : map.entrySet()) {
+		for (final Entry<? extends K, ? extends V> entry : map.entrySet()) {
 			put(entry.getKey(), entry.getValue());
 		}
 	}
@@ -150,7 +151,7 @@ implements DMap<K, V>, Serializable, Delegator<Map<K, V>> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public V remove(Object key) {
-		V old = getDelegatedObject().remove(key);
+		final V old = getDelegatedObject().remove(key);
 		if (old != null) {
 			fireEntryRemoved((K) key, old);
 		}
@@ -160,7 +161,7 @@ implements DMap<K, V>, Serializable, Delegator<Map<K, V>> {
 	@Override
 	public V putIfAbsent(K key, V value) {
 		if (!getDelegatedObject().containsKey(key)) {
-			V old = getDelegatedObject().put(key, value);
+			final V old = getDelegatedObject().put(key, value);
 			fireEntryAdded(key, value);
 			return old;
 		}
@@ -245,7 +246,7 @@ implements DMap<K, V>, Serializable, Delegator<Map<K, V>> {
 
 			@Override
 			public Entry<K, V> next() {
-				Entry<K, V> entry = this.iterator.next();
+				final Entry<K, V> entry = this.iterator.next();
 				this.key = entry.getKey();
 				this.value = entry.getValue();
 				return entry;
@@ -338,7 +339,7 @@ implements DMap<K, V>, Serializable, Delegator<Map<K, V>> {
 
 			@Override
 			public K next() {
-				Entry<K, V> entry = this.iterator.next();
+				final Entry<K, V> entry = this.iterator.next();
 				this.key = entry.getKey();
 				this.value = entry.getValue();
 				return this.key;
@@ -431,7 +432,7 @@ implements DMap<K, V>, Serializable, Delegator<Map<K, V>> {
 
 			@Override
 			public V next() {
-				Entry<K, V> entry = this.iterator.next();
+				final Entry<K, V> entry = this.iterator.next();
 				this.key = entry.getKey();
 				this.value = entry.getValue();
 				return this.value;

@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -83,8 +84,7 @@ class InnerContextSkill extends Skill implements InnerContextAccess {
 	/**
 	 * Force to reset the inner context. This function does not update the context repository.
 	 *
-	 * <p>
-	 * Do not call this function, exception if you are sure that the setting of the inner context to <code>null</code> only does
+	 * <p>Do not call this function, exception if you are sure that the setting of the inner context to <code>null</code> only does
 	 * not introduce problems.
 	 */
 	synchronized void resetInnerContext() {
@@ -98,11 +98,11 @@ class InnerContextSkill extends Skill implements InnerContextAccess {
 
 	@Override
 	protected void uninstall() {
-		AgentContext context = this.innerContext;
+		final AgentContext context = this.innerContext;
 		this.innerContext = null;
 		if (context != null) {
 			// Unregister the agent from the default space
-			EventListener listener = getSkill(InternalEventBusCapacity.class).asEventListener();
+			final EventListener listener = getSkill(InternalEventBusCapacity.class).asEventListener();
 			((OpenEventSpace) context.getDefaultSpace()).unregister(listener);
 			// Destroy the context
 			this.contextService.removeContext(context);
@@ -117,8 +117,8 @@ class InnerContextSkill extends Skill implements InnerContextAccess {
 					this.agentAddressInInnerDefaultSpace.getSpaceId().getContextID(),
 					this.agentAddressInInnerDefaultSpace.getSpaceId().getID());
 			// Register the agent in the default space
-			EventListener listener = getSkill(InternalEventBusCapacity.class).asEventListener();
-			OpenEventSpace defSpace = (OpenEventSpace) this.innerContext.getDefaultSpace();
+			final EventListener listener = getSkill(InternalEventBusCapacity.class).asEventListener();
+			final OpenEventSpace defSpace = (OpenEventSpace) this.innerContext.getDefaultSpace();
 			defSpace.register(listener);
 		}
 		return this.innerContext;
@@ -127,9 +127,9 @@ class InnerContextSkill extends Skill implements InnerContextAccess {
 	@Override
 	public synchronized boolean hasMemberAgent() {
 		if (this.innerContext != null) {
-			Set<UUID> participants = this.innerContext.getDefaultSpace().getParticipants();
-			assert (participants != null);
-			return ((participants.size() > 1) || ((participants.size() == 1) && (!participants.contains(getOwner().getID()))));
+			final Set<UUID> participants = this.innerContext.getDefaultSpace().getParticipants();
+			assert participants != null;
+			return (participants.size() > 1) || ((participants.size() == 1) && (!participants.contains(getOwner().getID())));
 		}
 		return false;
 	}
@@ -137,8 +137,8 @@ class InnerContextSkill extends Skill implements InnerContextAccess {
 	@Override
 	public synchronized int getMemberAgentCount() {
 		if (this.innerContext != null) {
-			SynchronizedSet<UUID> participants = this.innerContext.getDefaultSpace().getParticipants();
-			assert (participants != null);
+			final SynchronizedSet<UUID> participants = this.innerContext.getDefaultSpace().getParticipants();
+			assert participants != null;
 			int count = participants.size();
 			if (participants.contains(getOwner().getID())) {
 				--count;
@@ -151,11 +151,11 @@ class InnerContextSkill extends Skill implements InnerContextAccess {
 	@Override
 	public synchronized SynchronizedSet<UUID> getMemberAgents() {
 		if (this.innerContext != null) {
-			SynchronizedSet<UUID> participants = this.innerContext.getDefaultSpace().getParticipants();
+			final SynchronizedSet<UUID> participants = this.innerContext.getDefaultSpace().getParticipants();
 			assert (participants != null);
-			Set<UUID> members = new HashSet<>();
-			UUID myId = getOwner().getID();
-			for (UUID id : participants) {
+			final Set<UUID> members = new HashSet<>();
+			final UUID myId = getOwner().getID();
+			for (final UUID id : participants) {
 				if (!id.equals(myId)) {
 					members.add(id);
 				}
@@ -183,7 +183,7 @@ class InnerContextSkill extends Skill implements InnerContextAccess {
 	@Override
 	public boolean isInInnerDefaultSpace(Event event) {
 		if (event != null) {
-			Address adr = event.getSource();
+			final Address adr = event.getSource();
 			if (adr != null) {
 				return isInnerDefaultSpace(adr.getSpaceId());
 			}

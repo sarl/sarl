@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,8 +26,7 @@ import com.google.common.collect.Multimap;
 /**
  * Interface that represents a distributed multi-map.
  *
- * <p>
- * A multi-map is a map that is associating a key to multiple values.
+ * <p>A multi-map is a map that is associating a key to multiple values.
  *
  * @param <K> the type of the keys.
  * @param <V> the type of the values.
@@ -55,11 +55,9 @@ public interface DMultiMap<K, V> extends Multimap<K, V> {
 	/**
 	 * Returns number of values matching to given key in the multimap.
 	 *
-	 * <p>
-	 * <b>Warning:</b>
+	 * <p><b>Warning:</b>
 	 *
-	 * <p>
-	 * This method uses <tt>hashCode</tt> and <tt>equals</tt> of binary form of the <tt>key</tt>, not the actual implementations
+	 * <p>This method uses <tt>hashCode</tt> and <tt>equals</tt> of binary form of the <tt>key</tt>, not the actual implementations
 	 * of <tt>hashCode</tt> and <tt>equals</tt> defined in <tt>key</tt>'s class.
 	 *
 	 * @param key the key whose values count are to be returned

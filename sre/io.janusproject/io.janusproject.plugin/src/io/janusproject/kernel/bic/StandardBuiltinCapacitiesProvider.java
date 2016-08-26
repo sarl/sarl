@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -73,20 +74,20 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 
 	@Override
 	public Map<Class<? extends Capacity>, Skill> getBuiltinCapacities(Agent agent) {
-		UUID innerContextID = agent.getID();
-		SpaceID innerSpaceID = new SpaceID(innerContextID, UUID.randomUUID(), OpenEventSpaceSpecification.class);
-		Address agentAddressInInnerSpace = new Address(innerSpaceID, agent.getID());
-		Kernel k = this.injector.getInstance(Kernel.class);
+		final UUID innerContextID = agent.getID();
+		final SpaceID innerSpaceID = new SpaceID(innerContextID, UUID.randomUUID(), OpenEventSpaceSpecification.class);
+		final Address agentAddressInInnerSpace = new Address(innerSpaceID, agent.getID());
+		final Kernel k = this.injector.getInstance(Kernel.class);
 
-		InternalEventBusSkill eventBusSkill = new InternalEventBusSkill(agent, agentAddressInInnerSpace);
-		InnerContextSkill innerContextSkill = new InnerContextSkill(agent, agentAddressInInnerSpace);
-		BehaviorsSkill behaviorSkill = new BehaviorsSkill(agent, agentAddressInInnerSpace);
-		LifecycleSkill lifecycleSkill = new LifecycleSkill(agent);
-		ExternalContextAccessSkill externalContextSkill = new ExternalContextAccessSkill(agent);
-		DefaultContextInteractionsSkill interactionSkill = new DefaultContextInteractionsSkill(agent,
+		final InternalEventBusSkill eventBusSkill = new InternalEventBusSkill(agent, agentAddressInInnerSpace);
+		final InnerContextSkill innerContextSkill = new InnerContextSkill(agent, agentAddressInInnerSpace);
+		final BehaviorsSkill behaviorSkill = new BehaviorsSkill(agent, agentAddressInInnerSpace);
+		final LifecycleSkill lifecycleSkill = new LifecycleSkill(agent);
+		final ExternalContextAccessSkill externalContextSkill = new ExternalContextAccessSkill(agent);
+		final DefaultContextInteractionsSkill interactionSkill = new DefaultContextInteractionsSkill(agent,
 				this.contextRepository.getContext(agent.getParentID()));
-		SchedulesSkill scheduleSkill = new SchedulesSkill(agent);
-		LoggingSkill loggingSkill = new LoggingSkill(agent);
+		final SchedulesSkill scheduleSkill = new SchedulesSkill(agent);
+		final LoggingSkill loggingSkill = new LoggingSkill(agent);
 
 		this.injector.injectMembers(eventBusSkill);
 		this.injector.injectMembers(innerContextSkill);
@@ -97,10 +98,10 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 		this.injector.injectMembers(scheduleSkill);
 		this.injector.injectMembers(loggingSkill);
 
-		MicroKernelSkill microKernelSkill = new MicroKernelSkill(agent, k);
+		final MicroKernelSkill microKernelSkill = new MicroKernelSkill(agent, k);
 
 		// no need to be synchronized
-		Map<Class<? extends Capacity>, Skill> result = new HashMap<>();
+		final Map<Class<? extends Capacity>, Skill> result = new HashMap<>();
 		result.put(MicroKernelCapacity.class, microKernelSkill);
 		result.put(InternalEventBusCapacity.class, eventBusSkill);
 		result.put(InnerContextAccess.class, innerContextSkill);
@@ -116,15 +117,15 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 						behaviorSkill, lifecycleSkill, externalContextSkill, interactionSkill, scheduleSkill, loggingSkill));
 
 		// Test if all the BICs are installed.
-		assert (result.get(Behaviors.class) != null);
-		assert (result.get(DefaultContextInteractions.class) != null);
-		assert (result.get(InternalEventBusCapacity.class) != null);
-		assert (result.get(ExternalContextAccess.class) != null);
-		assert (result.get(InnerContextAccess.class) != null);
-		assert (result.get(Lifecycle.class) != null);
-		assert (result.get(Schedules.class) != null);
-		assert (result.get(MicroKernelCapacity.class) != null);
-		assert (result.get(Logging.class) != null);
+		assert result.get(Behaviors.class) != null;
+		assert result.get(DefaultContextInteractions.class) != null;
+		assert result.get(InternalEventBusCapacity.class) != null;
+		assert result.get(ExternalContextAccess.class) != null;
+		assert result.get(InnerContextAccess.class) != null;
+		assert result.get(Lifecycle.class) != null;
+		assert result.get(Schedules.class) != null;
+		assert result.get(MicroKernelCapacity.class) != null;
+		assert result.get(Logging.class) != null;
 
 		return result;
 	}
@@ -165,12 +166,12 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 		public void agentSpawned(AgentContext parent, Agent agent, Object[] initializationParameters) {
 			try {
 				// Use reflection to ignore the "protected" access right.
-				Method method = Skill.class.getDeclaredMethod("install"); //$NON-NLS-1$
-				boolean isAccessible = method.isAccessible();
+				final Method method = Skill.class.getDeclaredMethod("install"); //$NON-NLS-1$
+				final boolean isAccessible = method.isAccessible();
 				try {
 					method.setAccessible(true);
 					method.invoke(this.eventBusCapacity);
-					for (Skill s : this.skills) {
+					for (final Skill s : this.skills) {
 						method.invoke(s);
 					}
 				} finally {
@@ -182,24 +183,24 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 				throw new RuntimeException(e);
 			}
 
-			Initialize init = new Initialize();
+			final Initialize init = new Initialize();
 			init.parameters = initializationParameters;
 			this.eventBusCapacity.selfEvent(init);
 		}
 
 		@Override
 		public void agentDestroy(Agent agent) {
-			SpawnService service = this.spawnService.get();
+			final SpawnService service = this.spawnService.get();
 			assert (service != null);
 			service.removeSpawnServiceListener(this.agentID, this);
 
-			Destroy destroy = new Destroy();
+			final Destroy destroy = new Destroy();
 			this.eventBusCapacity.selfEvent(destroy);
 
 			try {
 				// Use reflection to ignore the "protected" access right.
-				Method method = Skill.class.getDeclaredMethod("uninstall"); //$NON-NLS-1$
-				boolean isAccessible = method.isAccessible();
+				final Method method = Skill.class.getDeclaredMethod("uninstall"); //$NON-NLS-1$
+				final boolean isAccessible = method.isAccessible();
 				try {
 					method.setAccessible(true);
 					for (int i = this.skills.length - 1; i >= 0; i--) {

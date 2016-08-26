@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -197,7 +198,7 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 		@Override
 		public boolean putAll(K key, Iterable<? extends V> values) {
 			boolean changed = false;
-			for (V value : values) {
+			for (final V value : values) {
 				if (this.map.put(key, value)) {
 					changed = true;
 				}
@@ -211,7 +212,7 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 		@Override
 		public boolean putAll(Multimap<? extends K, ? extends V> multimap) {
 			boolean changed = false;
-			for (Entry<? extends K, ? extends V> entry : multimap.entries()) {
+			for (final Entry<? extends K, ? extends V> entry : multimap.entries()) {
 				if (this.map.put(entry.getKey(), entry.getValue())) {
 					changed = true;
 				}
@@ -240,8 +241,8 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 		@Override
 		public Collection<V> replaceValues(K key, Iterable<? extends V> values) {
 			this.mapView = null;
-			Collection<V> oldValue = this.map.remove(key);
-			for (V value : values) {
+			final Collection<V> oldValue = this.map.remove(key);
+			for (final V value : values) {
 				this.map.put(key, value);
 			}
 			return oldValue;
@@ -281,10 +282,10 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 		}
 
 		private Map<K, Collection<V>> createMapView() {
-			Map<K, Collection<V>> map = Maps.newHashMap();
+			final Map<K, Collection<V>> map = Maps.newHashMap();
 			K oldKey = null;
 			Collection<V> oldValues = null;
-			for (Entry<K, V> entry : this.map.entrySet()) {
+			for (final Entry<K, V> entry : this.map.entrySet()) {
 				Collection<V> values;
 				if (Objects.equal(entry.getKey(), oldKey)) {
 					values = oldValues;

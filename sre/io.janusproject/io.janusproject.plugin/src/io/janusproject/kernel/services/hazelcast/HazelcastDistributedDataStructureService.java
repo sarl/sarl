@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -89,7 +90,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 
 	@Override
 	public <K, V> DMap<K, V> getMap(String name) {
-		IMap<K, V> map = this.hazelcastInstance.getMap(name);
+		final IMap<K, V> map = this.hazelcastInstance.getMap(name);
 		if (map != null) {
 			return new MapView<>(name, map);
 		}
@@ -98,7 +99,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 
 	@Override
 	public <K, V> DMap<K, V> getMap(String name, Comparator<? super K> comparator) {
-		IMap<K, V> map = this.hazelcastInstance.getMap(name);
+		final IMap<K, V> map = this.hazelcastInstance.getMap(name);
 		if (map != null) {
 			return new MapView<>(name, map);
 		}
@@ -107,7 +108,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 
 	@Override
 	public <K, V> DMultiMap<K, V> getMultiMap(String name) {
-		MultiMap<K, V> map = this.hazelcastInstance.getMultiMap(name);
+		final MultiMap<K, V> map = this.hazelcastInstance.getMultiMap(name);
 		if (map != null) {
 			return new MultiMapView<>(name, map);
 		}
@@ -116,7 +117,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 
 	@Override
 	public <K, V> DMultiMap<K, V> getMultiMap(String name, Comparator<? super K> comparator) {
-		MultiMap<K, V> map = this.hazelcastInstance.getMultiMap(name);
+		final MultiMap<K, V> map = this.hazelcastInstance.getMultiMap(name);
 		if (map != null) {
 			return new MultiMapView<>(name, map);
 		}
@@ -220,15 +221,15 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 
 		@Override
 		public void addDMapListener(DMapListener<? super K, ? super V> listener) {
-			EntryListenerWrapper<K, V> w = new EntryListenerWrapper<>(listener);
-			String k = this.map.addEntryListener((MapListener) w, true);
+			final EntryListenerWrapper<K, V> w = new EntryListenerWrapper<>(listener);
+			final String k = this.map.addEntryListener((MapListener) w, true);
 			w.setHazelcastListener(k);
 		}
 
 		@Override
 		public void removeDMapListener(DMapListener<? super K, ? super V> listener) {
 			if (listener instanceof EntryListenerWrapper) {
-				String k = ((EntryListenerWrapper<?, ?>) listener).getHazelcastListener();
+				final String k = ((EntryListenerWrapper<?, ?>) listener).getHazelcastListener();
 				if (k != null) {
 					this.map.removeEntryListener(k);
 				}
@@ -348,15 +349,15 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 
 		@Override
 		public void addDMapListener(DMapListener<? super K, ? super V> listener) {
-			EntryListenerWrapper<K, V> w = new EntryListenerWrapper<>(listener);
-			String k = this.map.addEntryListener(w, true);
+			final EntryListenerWrapper<K, V> w = new EntryListenerWrapper<>(listener);
+			final String k = this.map.addEntryListener(w, true);
 			w.setHazelcastListener(k);
 		}
 
 		@Override
 		public void removeDMapListener(DMapListener<? super K, ? super V> listener) {
 			if (listener instanceof EntryListenerWrapper) {
-				String k = ((EntryListenerWrapper<?, ?>) listener).getHazelcastListener();
+				final String k = ((EntryListenerWrapper<?, ?>) listener).getHazelcastListener();
 				if (k != null) {
 					this.map.removeEntryListener(k);
 				}
@@ -370,8 +371,8 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 
 		@Override
 		public Collection<V> replaceValues(K key, Iterable<? extends V> values) {
-			Collection<V> oldValues = this.map.remove(key);
-			for (V value : values) {
+			final Collection<V> oldValues = this.map.remove(key);
+			for (final V value : values) {
 				this.map.put(key, value);
 			}
 			return oldValues;
@@ -380,7 +381,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 		@Override
 		public boolean putAll(Multimap<? extends K, ? extends V> multimap) {
 			boolean changed = false;
-			for (Entry<? extends K, ? extends V> value : multimap.entries()) {
+			for (final Entry<? extends K, ? extends V> value : multimap.entries()) {
 				changed = this.map.put(value.getKey(), value.getValue()) && changed;
 			}
 			return changed;
@@ -389,7 +390,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 		@Override
 		public boolean putAll(K key, Iterable<? extends V> values) {
 			boolean changed = false;
-			for (V value : values) {
+			for (final V value : values) {
 				changed = this.map.put(key, value) && changed;
 			}
 			return changed;
@@ -429,9 +430,9 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 
 			@Override
 			public Object[] toArray() {
-				Object[] tab = new Object[MultiMapView.this.size()];
+				final Object[] tab = new Object[MultiMapView.this.size()];
 				int i = 0;
-				for (Map.Entry<K, ?> e : MultiMapView.this.entries()) {
+				for (final Map.Entry<K, ?> e : MultiMapView.this.entries()) {
 					tab[i] = e.getKey();
 					++i;
 				}
@@ -444,7 +445,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 				if (tab == null || tab.length < MultiMapView.this.size()) {
 					tab = (T[]) new Object[MultiMapView.this.size()];
 					int i = 0;
-					for (Map.Entry<K, ?> e : MultiMapView.this.entries()) {
+					for (final Map.Entry<K, ?> e : MultiMapView.this.entries()) {
 						tab[i] = (T) e.getKey();
 						++i;
 					}
@@ -460,7 +461,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 			@Override
 			public int count(Object element) {
 				int c = 0;
-				for (Map.Entry<K, ?> e : MultiMapView.this.entries()) {
+				for (final Map.Entry<K, ?> e : MultiMapView.this.entries()) {
 					if (Objects.equal(element, e.getKey())) {
 						++c;
 					}
@@ -480,7 +481,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 
 			@Override
 			public boolean remove(Object element) {
-				Collection<?> values = MultiMapView.this.removeAll(element);
+				final Collection<?> values = MultiMapView.this.removeAll(element);
 				return values != null && !values.isEmpty();
 			}
 
@@ -490,9 +491,9 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 					throw new IllegalArgumentException();
 				}
 				try {
-					Collection<?> values = MultiMapView.this.get((K) element);
-					int old = values.size();
-					Iterator<?> iterator = values.iterator();
+					final Collection<?> values = MultiMapView.this.get((K) element);
+					final int old = values.size();
+					final Iterator<?> iterator = values.iterator();
 					for (int i = 0; i < occurrences && iterator.hasNext(); ++i) {
 						iterator.next();
 						iterator.remove();
@@ -508,14 +509,14 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 				if (count < 0) {
 					throw new IllegalArgumentException();
 				}
-				Collection<?> values = MultiMapView.this.get(element);
-				int old = values.size();
+				final Collection<?> values = MultiMapView.this.get(element);
+				final int old = values.size();
 				if (count > old) {
 					throw new UnsupportedOperationException();
 				}
 				try {
-					Iterator<?> iterator = values.iterator();
-					int toRemove = old - count;
+					final Iterator<?> iterator = values.iterator();
+					final int toRemove = old - count;
 					for (int i = 0; i < toRemove && iterator.hasNext(); ++i) {
 						iterator.next();
 						iterator.remove();
@@ -531,15 +532,15 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 				if (oldCount < 0 || newCount < 0) {
 					throw new IllegalArgumentException();
 				}
-				Collection<?> values = MultiMapView.this.get(element);
-				int old = values.size();
+				final Collection<?> values = MultiMapView.this.get(element);
+				final int old = values.size();
 				if (oldCount == old) {
 					if (newCount > old) {
 						throw new UnsupportedOperationException();
 					}
 					try {
-						Iterator<?> iterator = values.iterator();
-						int toRemove = old - newCount;
+						final Iterator<?> iterator = values.iterator();
+						final int toRemove = old - newCount;
 						if (toRemove > 0) {
 							for (int i = 0; i < toRemove && iterator.hasNext(); ++i) {
 								iterator.next();

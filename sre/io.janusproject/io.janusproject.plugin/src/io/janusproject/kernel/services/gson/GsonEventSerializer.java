@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,8 +51,7 @@ import io.sarl.lang.core.SpaceSpecification;
 /**
  * Serialize the {@link EventDispatch} content using GSON to generate the corresponding {@link EventEnvelope}.
  *
- * <p>
- * This implementation assumes that an {@link EventEncrypter} and {@link Gson} are injected.
+ * <p>This implementation assumes that an {@link EventEncrypter} and {@link Gson} are injected.
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
@@ -85,14 +85,14 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 		assert (this.gson != null) : "Invalid injection of Gson"; //$NON-NLS-1$
 		assert (dispatch != null) : "Parameter 'dispatch' must not be null"; //$NON-NLS-1$
 
-		Event event = dispatch.getEvent();
+		final Event event = dispatch.getEvent();
 		assert (event != null);
-		Scope<?> scope = dispatch.getScope();
+		final Scope<?> scope = dispatch.getScope();
 		assert (scope != null);
-		SpaceID spaceID = dispatch.getSpaceID();
+		final SpaceID spaceID = dispatch.getSpaceID();
 		assert (spaceID != null);
 		assert (spaceID.getSpaceSpecification() != null);
-		Map<String, String> headers = dispatch.getCustomHeaders();
+		final Map<String, String> headers = dispatch.getCustomHeaders();
 		assert (headers != null);
 
 		headers.put("x-java-event-class", //$NON-NLS-1$
@@ -102,7 +102,7 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 		headers.put("x-java-spacespec-class", //$NON-NLS-1$
 				spaceID.getSpaceSpecification().getName());
 
-		EventEnvelope envelope = new EventEnvelope(NetworkUtil.toByteArray(spaceID.getContextID()),
+		final EventEnvelope envelope = new EventEnvelope(NetworkUtil.toByteArray(spaceID.getContextID()),
 				NetworkUtil.toByteArray(spaceID.getID()),
 				this.gson.toJson(scope).getBytes(NetworkConfig.getStringEncodingCharset()),
 				this.gson.toJson(dispatch.getCustomHeaders()).getBytes(NetworkConfig.getStringEncodingCharset()),
@@ -115,8 +115,8 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 	}
 
 	private static Map<String, String> getHeadersFromString(String src) {
-		Gson gson = new Gson();
-		Type headersType = new TypeToken<Map<String, String>>() {
+		final Gson gson = new Gson();
+		final Type headersType = new TypeToken<Map<String, String>>() {
 			//
 		}.getType();
 		return gson.fromJson(src, headersType);
@@ -131,21 +131,21 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 
 		this.encrypter.decrypt(envelope);
 
-		UUID contextId = NetworkUtil.fromByteArray(envelope.getContextId());
-		UUID spaceId = NetworkUtil.fromByteArray(envelope.getSpaceId());
+		final UUID contextId = NetworkUtil.fromByteArray(envelope.getContextId());
+		final UUID spaceId = NetworkUtil.fromByteArray(envelope.getSpaceId());
 
-		Map<String, String> headers = getHeadersFromString(
+		final Map<String, String> headers = getHeadersFromString(
 				new String(envelope.getCustomHeaders(), NetworkConfig.getStringEncodingCharset()));
 
-		Class<? extends SpaceSpecification> spaceSpec = extractClass("x-java-spacespec-class", headers, SpaceSpecification.class); //$NON-NLS-1$
-		Class<? extends Event> eventClazz = extractClass("x-java-event-class", headers, Event.class); //$NON-NLS-1$
-		Class<? extends Scope> scopeClazz = extractClass("x-java-scope-class", headers, Scope.class); //$NON-NLS-1$
+		final Class<? extends SpaceSpecification> spaceSpec = extractClass("x-java-spacespec-class", headers, SpaceSpecification.class); //$NON-NLS-1$
+		final Class<? extends Event> eventClazz = extractClass("x-java-event-class", headers, Event.class); //$NON-NLS-1$
+		final Class<? extends Scope> scopeClazz = extractClass("x-java-scope-class", headers, Scope.class); //$NON-NLS-1$
 
-		SpaceID spaceID = new SpaceID(contextId, spaceId, (Class<? extends SpaceSpecification<?>>) spaceSpec);
+		final SpaceID spaceID = new SpaceID(contextId, spaceId, (Class<? extends SpaceSpecification<?>>) spaceSpec);
 
-		Event event = this.gson.fromJson(new String(envelope.getBody(), NetworkConfig.getStringEncodingCharset()), eventClazz);
+		final Event event = this.gson.fromJson(new String(envelope.getBody(), NetworkConfig.getStringEncodingCharset()), eventClazz);
 		assert (event != null);
-		Scope scope = this.gson.fromJson(new String(envelope.getScope(), NetworkConfig.getStringEncodingCharset()), scopeClazz);
+		final Scope scope = this.gson.fromJson(new String(envelope.getScope(), NetworkConfig.getStringEncodingCharset()), scopeClazz);
 		assert (scope != null);
 
 		return new EventDispatch(spaceID, event, scope, headers);
@@ -154,7 +154,7 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 	private static <T> Class<? extends T> extractClass(String key, Map<String, String> headers, Class<T> expectedType) {
 		assert (key != null);
 		assert (headers != null);
-		String classname = headers.get(key);
+		final String classname = headers.get(key);
 		Class<?> type = null;
 		if (classname != null) {
 			try {

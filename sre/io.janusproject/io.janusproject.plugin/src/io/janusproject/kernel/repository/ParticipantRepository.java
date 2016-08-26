@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -155,7 +156,7 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 * @return the addresses in this repository.
 	 */
 	protected SynchronizedSet<ADDRESST> getAdresses() {
-		Object mutex = mutex();
+		final Object mutex = mutex();
 		synchronized (mutex) {
 			return Collections3.synchronizedSet(this.listeners.keySet(), mutex);
 		}
@@ -167,7 +168,7 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 * @return the participants.
 	 */
 	public SynchronizedCollection<EventListener> getListeners() {
-		Object mutex = mutex();
+		final Object mutex = mutex();
 		synchronized (mutex) {
 			return Collections3.synchronizedCollection(this.listeners.values(), mutex);
 		}
@@ -179,7 +180,7 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 * @return the pairs of addresses and participants
 	 */
 	protected Set<Entry<ADDRESST, EventListener>> listenersEntrySet() {
-		Object mutex = mutex();
+		final Object mutex = mutex();
 		synchronized (mutex) {
 			return Collections3.synchronizedSet(this.listeners.entrySet(), mutex);
 		}

@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -94,7 +95,7 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 
 		@Override
 		public void log(Level level, String message) {
-			LogService serv = getLogService();
+			final LogService serv = getLogService();
 			if (serv != null) {
 				serv.log(new LogRecord(level, message));
 			}
@@ -102,11 +103,11 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 
 		@Override
 		public void log(Level level, String message, Throwable thrown) {
-			LogService serv = getLogService();
+			final LogService serv = getLogService();
 			if (serv != null && serv.isLoggeable(level)) {
-				StackTraceElement elt = getCaller();
+				final StackTraceElement elt = getCaller();
 				assert (elt != null);
-				LogRecord record = new LogRecord(level, message);
+				final LogRecord record = new LogRecord(level, message);
 				if (thrown != null) {
 					record.setThrown(thrown);
 				}
@@ -118,7 +119,7 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 
 		@Override
 		public void log(LogEvent logEvent) {
-			LogService serv = getLogService();
+			final LogService serv = getLogService();
 			if (serv != null) {
 				serv.log(logEvent.getLogRecord());
 			}
@@ -126,7 +127,7 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 
 		@Override
 		public Level getLevel() {
-			LogService serv = getLogService();
+			final LogService serv = getLogService();
 			if (serv != null) {
 				return serv.getLevel();
 			}
@@ -135,7 +136,7 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 
 		@Override
 		public boolean isLoggable(Level level) {
-			LogService serv = getLogService();
+			final LogService serv = getLogService();
 			if (serv != null) {
 				return serv.isLoggeable(level);
 			}
@@ -143,7 +144,7 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 		}
 
 		private static StackTraceElement getCaller() {
-			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+			final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 			Class<?> type;
 			// Start at 1 because the top of the stack corresponds to getStackTrace.
 			for (int i = 1; i < stackTrace.length; ++i) {

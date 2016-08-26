@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,26 +37,21 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * This class enables to log information by ensuring that the values of the parameters are not evaluated until the information
  * should be really log, according to the log level. This implementation is based on {@link Locale}, and the logger is injected.
  *
- * <p>
- * The LogService considers the parameters of the functions as:
+ * <p>The LogService considers the parameters of the functions as:
  * <ul>
  * <li>the messageKey is the name of the message in the property file;</li>
  * <li>the message parameters are the values that will replace the strings {0}, {1}, {2}... in the text extracted from the
- * ressource property;</li>
+ * resource property;</li>
  * <li>the parameter propertyType is the class from which the filename of the property file will be built.</li>
  * </ul>
  *
- * <p>
- * If a <code>Throwable</code> is passed as parameter, the text of the exception is retreived.
+ * <p>If a <code>Throwable</code> is passed as parameter, the text of the exception is retrieved.
  *
- * <p>
- * If a <code>Callable</code> is passed as parameter, the object is automatically called.
+ * <p>If a <code>Callable</code> is passed as parameter, the object is automatically called.
  *
- * <p>
- * If a <code>LogParam</code> is passed as parameter, the <code>toString</code> function will be invoked.
+ * <p>If a <code>LogParam</code> is passed as parameter, the <code>toString</code> function will be invoked.
  *
- * <p>
- * For all the other objects, the {@link #toString()} function is invoked.
+ * <p>For all the other objects, the {@link #toString()} function is invoked.
  *
  *
  * @author $Author: sgalland$
@@ -126,14 +122,14 @@ public class ArakhneLocaleLogService extends AbstractDependentService implements
 	private static LogRecord createLogRecord(Level level, String text, boolean exception, Object... message) {
 		Throwable realException = null;
 		if (exception) {
-			for (Object m : message) {
+			for (final Object m : message) {
 				if (m instanceof Throwable) {
 					realException = (Throwable) m;
 					break;
 				}
 			}
 		}
-		LogRecord record = new LogRecord(level, text);
+		final LogRecord record = new LogRecord(level, text);
 		if (realException != null) {
 			record.setThrown(realException);
 		}
@@ -143,11 +139,11 @@ public class ArakhneLocaleLogService extends AbstractDependentService implements
 	private synchronized void writeInLog(Level level, boolean exception, Class<?> propertyType, String messageKey,
 			Object... message) {
 		if (isLogEnabled() && this.logger.isLoggable(level)) {
-			LoggerCaller caller = this.loggerCallerProvider.getLoggerCaller();
-			String text = getLogRecordText(caller, propertyType, messageKey, message);
-			LogRecord record = createLogRecord(level, text, exception, message);
+			final LoggerCaller caller = this.loggerCallerProvider.getLoggerCaller();
+			final String text = getLogRecordText(caller, propertyType, messageKey, message);
+			final LogRecord record = createLogRecord(level, text, exception, message);
 			record.setSourceClassName(caller.getTypeName());
-			String methodName = caller.getMethod();
+			final String methodName = caller.getMethod();
 			if (!Strings.isNullOrEmpty(methodName)) {
 				record.setSourceMethodName(methodName);
 			}
@@ -373,7 +369,7 @@ public class ArakhneLocaleLogService extends AbstractDependentService implements
 		}
 
 		private static StackTraceElement getStackTraceElement() {
-			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+			final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 			Class<?> type;
 			// Start at 1 because the top of the stack corresponds to getStackTrace.
 			for (int i = 3; i < stackTrace.length; ++i) {
@@ -392,7 +388,7 @@ public class ArakhneLocaleLogService extends AbstractDependentService implements
 
 		@Override
 		public LoggerCaller getLoggerCaller() {
-			StackTraceElement element = getStackTraceElement();
+			final StackTraceElement element = getStackTraceElement();
 			if (element != null) {
 				try {
 					return new LoggerCaller(Class.forName(element.getClassName()), element.getClassName(),

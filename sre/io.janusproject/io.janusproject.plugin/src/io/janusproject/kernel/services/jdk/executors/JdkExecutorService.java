@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -91,7 +92,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 		assert (this.exec != null);
 		// Launch a periodic task that is purging the executor pools.
 		if ((this.schedules instanceof ThreadPoolExecutor) || (this.exec instanceof ThreadPoolExecutor)) {
-			int delay = JanusConfig.getSystemPropertyAsInteger(JanusConfig.KERNEL_THREAD_PURGE_DELAY_NAME,
+			final int delay = JanusConfig.getSystemPropertyAsInteger(JanusConfig.KERNEL_THREAD_PURGE_DELAY_NAME,
 					JanusConfig.KERNEL_THREAD_PURGE_DELAY_VALUE);
 			this.purgeTask = this.schedules.scheduleWithFixedDelay(new Purger(), delay, delay, TimeUnit.SECONDS);
 		}
@@ -107,7 +108,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 		this.exec.shutdown();
 		this.schedules.shutdown();
 		try {
-			int timeout = JanusConfig.getSystemPropertyAsInteger(JanusConfig.KERNEL_THREAD_TIMEOUT_NAME,
+			final int timeout = JanusConfig.getSystemPropertyAsInteger(JanusConfig.KERNEL_THREAD_TIMEOUT_NAME,
 					JanusConfig.KERNEL_THREAD_TIMEOUT_VALUE);
 			this.schedules.awaitTermination(timeout, TimeUnit.SECONDS);
 			this.exec.awaitTermination(timeout, TimeUnit.SECONDS);
@@ -195,7 +196,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 			if (this.oldThreadName != null) {
 				return false;
 			}
-			Thread t = Thread.currentThread();
+			final Thread t = Thread.currentThread();
 			this.oldThreadName = t.getName();
 			t.setName(toString());
 			return true;
@@ -205,7 +206,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 			if (this.oldThreadName == null) {
 				return false;
 			}
-			Thread t = Thread.currentThread();
+			final Thread t = Thread.currentThread();
 			t.setName(this.oldThreadName);
 			this.oldThreadName = null;
 			return true;

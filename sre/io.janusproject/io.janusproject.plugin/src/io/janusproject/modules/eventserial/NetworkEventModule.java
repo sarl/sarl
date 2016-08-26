@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -70,9 +71,9 @@ public class NetworkEventModule extends AbstractModule {
 	@Provides
 	private static EventSerializer createEventSerializer(Injector injector) {
 		Class<? extends EventSerializer> serializerType = GsonEventSerializer.class;
-		String serializerClassname = JanusConfig.getSystemProperty(NetworkConfig.SERIALIZER_CLASSNAME);
+		final String serializerClassname = JanusConfig.getSystemProperty(NetworkConfig.SERIALIZER_CLASSNAME);
 		if (serializerClassname != null && !serializerClassname.isEmpty()) {
-			Class<?> type;
+			final Class<?> type;
 			try {
 				type = Class.forName(serializerClassname);
 			} catch (ClassNotFoundException e) {
@@ -90,10 +91,10 @@ public class NetworkEventModule extends AbstractModule {
 	@Provides
 	private static EventEncrypter getEncrypter(Injector injector) {
 		Class<? extends EventEncrypter> encrypterType = null;
-		String encrypterClassname = JanusConfig.getSystemProperty(NetworkConfig.ENCRYPTER_CLASSNAME);
+		final String encrypterClassname = JanusConfig.getSystemProperty(NetworkConfig.ENCRYPTER_CLASSNAME);
 		if (encrypterClassname != null && !encrypterClassname.isEmpty()) {
 			try {
-				Class<?> type = Class.forName(encrypterClassname);
+				final Class<?> type = Class.forName(encrypterClassname);
 				if (type != null && EventEncrypter.class.isAssignableFrom(type)) {
 					encrypterType = type.asSubclass(EventEncrypter.class);
 				}
@@ -102,7 +103,7 @@ public class NetworkEventModule extends AbstractModule {
 			}
 		}
 		if (encrypterType == null) {
-			String aesKey = JanusConfig.getSystemProperty(NetworkConfig.AES_KEY);
+			final String aesKey = JanusConfig.getSystemProperty(NetworkConfig.AES_KEY);
 			if (aesKey != null && !aesKey.isEmpty()) {
 				encrypterType = AESEventEncrypter.class;
 			} else {

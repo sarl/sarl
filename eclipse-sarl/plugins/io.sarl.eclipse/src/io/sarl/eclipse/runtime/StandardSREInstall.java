@@ -475,7 +475,12 @@ public class StandardSREInstall extends AbstractSREInstall {
 		throw new IOException(MessageFormat.format(Messages.StandardSREInstall_5, getId()));
 	}
 
-	private static IPath parsePath(String path, IPath defaultPath) {
+	/** dfsfsf.
+	 * @param path sdfsdf
+	 * @param defaultPath sdfsf
+	 * @return sfsfs
+	 */
+	public static IPath parsePath(String path, IPath defaultPath) {
 		if (!Strings.isNullOrEmpty(path)) {
 			try {
 				final IPath pathObject = Path.fromPortableString(path);

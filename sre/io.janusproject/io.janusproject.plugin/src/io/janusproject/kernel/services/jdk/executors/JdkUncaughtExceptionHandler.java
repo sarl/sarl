@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,14 +26,13 @@ import java.util.concurrent.CancellationException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import org.arakhne.afc.vmutil.locale.Locale;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
 import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.services.spawn.SpawnService;
+import org.arakhne.afc.vmutil.locale.Locale;
+
 import io.sarl.core.Initialize;
 
 /**
@@ -66,7 +66,7 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 		while (cause.getCause() != null && cause.getCause() != cause) {
 			cause = cause.getCause();
 		}
-		LogRecord record;
+		final LogRecord record;
 		if (cause instanceof ChuckNorrisException || exception instanceof ChuckNorrisException) {
 			// Chuck Norris cannot be catched!
 			return;
@@ -93,9 +93,9 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 		}
 
 		record.setThrown(cause);
-		StackTraceElement[] trace = cause.getStackTrace();
+		final StackTraceElement[] trace = cause.getStackTrace();
 		if (trace != null && trace.length > 0) {
-			StackTraceElement elt = trace[0];
+			final StackTraceElement elt = trace[0];
 			assert (elt != null);
 			record.setSourceClassName(elt.getClassName());
 			record.setSourceMethodName(elt.getMethodName());

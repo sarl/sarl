@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,8 +38,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 /**
  * Encrypts the {@link EventEnvelope} content using the AES algorithm.
  *
- * <p>
- * To define the key you need to specify the binding {@link NetworkConfig}.
+ * <p>To define the key you need to specify the binding {@link NetworkConfig}.
  *
  * @author $Author: srodriguez$
  * @author $Author: ngaud$
@@ -61,8 +61,8 @@ public class AESEventEncrypter extends AbstractEventEncrypter {
 	 */
 	@Inject
 	public void setKey(@Named(NetworkConfig.AES_KEY) String key) throws Exception {
-		byte[] raw = key.getBytes(NetworkConfig.getStringEncodingCharset());
-		int keySize = raw.length;
+		final byte[] raw = key.getBytes(NetworkConfig.getStringEncodingCharset());
+		final int keySize = raw.length;
 		if ((keySize % 16) == 0 || (keySize % 24) == 0 || (keySize % 32) == 0) {
 			this.skeySpec = new SecretKeySpec(raw, "AES"); //$NON-NLS-1$
 			// this.cipher = Cipher.getInstance(ALGORITHM);
@@ -76,7 +76,7 @@ public class AESEventEncrypter extends AbstractEventEncrypter {
 	public void encrypt(EventEnvelope envelope) throws Exception {
 		assert (envelope != null) : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
 
-		Cipher cipher = Cipher.getInstance(ALGORITHM);
+		final Cipher cipher = Cipher.getInstance(ALGORITHM);
 		cipher.init(Cipher.ENCRYPT_MODE, this.skeySpec, new IvParameterSpec(new byte[16]));
 
 		envelope.setContextId(cipher.doFinal(envelope.getContextId()));
@@ -90,7 +90,7 @@ public class AESEventEncrypter extends AbstractEventEncrypter {
 	public void decrypt(EventEnvelope envelope) throws Exception {
 		assert (envelope != null) : "Parameter 'envelope' must not be null"; //$NON-NLS-1$
 
-		Cipher cipher = Cipher.getInstance(ALGORITHM);
+		final Cipher cipher = Cipher.getInstance(ALGORITHM);
 		cipher.init(Cipher.DECRYPT_MODE, this.skeySpec, new IvParameterSpec(new byte[16]));
 
 		envelope.setContextId(cipher.doFinal(envelope.getContextId()));
@@ -103,7 +103,7 @@ public class AESEventEncrypter extends AbstractEventEncrypter {
 	@Override
 	public byte[] encryptUUID(UUID uuid) {
 		try {
-			Cipher cipher = Cipher.getInstance(ALGORITHM);
+			final Cipher cipher = Cipher.getInstance(ALGORITHM);
 			cipher.init(Cipher.ENCRYPT_MODE, this.skeySpec, new IvParameterSpec(new byte[16]));
 			return cipher.doFinal(super.encryptUUID(uuid));
 		} catch (GeneralSecurityException e) {

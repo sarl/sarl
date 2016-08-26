@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,8 +28,8 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation that permits to mark the classes that must be constructed in two explicit steps.
- * <p>
- * The steps are:
+ *
+ * <p>The steps are:
  * <ol>
  * <li>invoke the constructor (explicit call);</li>
  * <li>injection mechanism (implicit, done during the constructor call);</li>

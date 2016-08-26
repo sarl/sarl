@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,7 +75,7 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 			return true;
 		}
 		if (obj instanceof Multiset) {
-			Multiset<?> that = (Multiset<?>) obj;
+			final Multiset<?> that = (Multiset<?>) obj;
 
 			// We can't simply check whether the entry sets are equal, since that
 			// approach fails when a TreeMultiset has a comparator that returns 0
@@ -82,7 +83,7 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 			if (size() != that.size() || entrySet().size() != that.entrySet().size()) {
 				return false;
 			}
-			for (Entry<?> entry : that.entrySet()) {
+			for (final Entry<?> entry : that.entrySet()) {
 				if (count(entry.getElement()) != entry.getCount()) {
 					return false;
 				}
@@ -121,7 +122,7 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 	@Override
 	public int count(Object element) {
 		try {
-			Collection<V> values = getDelegatedObject().get((K) element);
+			final Collection<V> values = getDelegatedObject().get((K) element);
 			return values.size();
 		} catch (ClassCastException exception) {
 			return 0;
@@ -141,22 +142,22 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 		}
 		if (occurrences > 0) {
 			try {
-				K key = (K) element;
-				Collection<V> values = getDelegatedObject().get(key);
+				final K key = (K) element;
+				final Collection<V> values = getDelegatedObject().get(key);
 				if (values.isEmpty()) {
 					return 0;
 				}
 
-				int oldCount = values.size();
+				final int oldCount = values.size();
 
-				int numberRemoved;
+				final int numberRemoved;
 				if (oldCount > occurrences) {
 					numberRemoved = occurrences;
 				} else {
 					numberRemoved = oldCount;
 				}
 
-				Iterator<V> valueIterator = values.iterator();
+				final Iterator<V> valueIterator = values.iterator();
 				for (int i = 0; i < numberRemoved && valueIterator.hasNext(); ++i) {
 					valueIterator.next();
 					valueIterator.remove();
@@ -175,7 +176,7 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 		if (count < 0) {
 			throw new IllegalArgumentException();
 		}
-		int currentCount = count(element);
+		final int currentCount = count(element);
 		return setCountImpl(element, currentCount, count);
 	}
 
@@ -184,7 +185,7 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 		if (oldCount < 0 || newCount < 0) {
 			throw new IllegalArgumentException();
 		}
-		int count = count(element);
+		final int count = count(element);
 		if (count == oldCount) {
 			setCountImpl(element, count, newCount);
 			return true;
@@ -193,7 +194,7 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 	}
 
 	private int setCountImpl(K element, int oldCount, int newCount) {
-		int delta = newCount - oldCount;
+		final int delta = newCount - oldCount;
 		if (delta > 0) {
 			add(element, delta);
 		} else if (delta < 0) {
@@ -208,8 +209,8 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 			return false;
 		}
 		if (collection instanceof Multiset) {
-			Multiset<? extends K> that = (Multiset<? extends K>) collection;
-			for (Entry<? extends K> entry : that.entrySet()) {
+			final Multiset<? extends K> that = (Multiset<? extends K>) collection;
+			for (final Entry<? extends K> entry : that.entrySet()) {
 				add(entry.getElement(), entry.getCount());
 			}
 		} else {
@@ -280,11 +281,11 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 		@Override
 		public boolean contains(Object obj) {
 			if (obj instanceof Entry) {
-				Entry<?> entry = (Entry<?>) obj;
+				final Entry<?> entry = (Entry<?>) obj;
 				if (entry.getCount() <= 0) {
 					return false;
 				}
-				int count = multiset().count(entry.getElement());
+				final int count = multiset().count(entry.getElement());
 				return count == entry.getCount();
 
 			}
@@ -295,12 +296,12 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 		@Override
 		public boolean remove(Object object) {
 			if (object instanceof Multiset.Entry) {
-				Entry<?> entry = (Entry<?>) object;
-				Object element = entry.getElement();
-				int entryCount = entry.getCount();
+				final Entry<?> entry = (Entry<?>) object;
+				final Object element = entry.getElement();
+				final int entryCount = entry.getCount();
 				if (entryCount != 0) {
 					// Safe as long as we never add a new entry, which we won't.
-					Multiset<Object> multiset = (Multiset) multiset();
+					final Multiset<Object> multiset = (Multiset) multiset();
 					return multiset.setCount(element, entryCount, 0);
 				}
 			}
@@ -332,7 +333,7 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 						@Override
 						public boolean equals(Object object) {
 							if (object instanceof Multiset.Entry) {
-								Multiset.Entry<?> that = (Multiset.Entry<?>) object;
+								final Multiset.Entry<?> that = (Multiset.Entry<?>) object;
 								return this.getCount() == that.getCount() && Objects.equal(getElement(), that.getElement());
 							}
 							return false;
@@ -340,15 +341,15 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 
 						@Override
 						public int hashCode() {
-							K element = getElement();
+							final K element = getElement();
 							return ((element == null) ? 0 : element.hashCode()) ^ getCount();
 						}
 
 						@Override
 						public String toString() {
-							StringBuilder b = new StringBuilder();
+							final StringBuilder b = new StringBuilder();
 							b.append(String.valueOf(getElement()));
-							int elementCount = getCount();
+							final int elementCount = getCount();
 							if (elementCount != 1) {
 								b.append(" x "); //$NON-NLS-1$
 								b.append(elementCount);
@@ -444,7 +445,7 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 
 		@Override
 		public boolean remove(Object obj) {
-			int count = multiset().count(obj);
+			final int count = multiset().count(obj);
 			if (count > 0) {
 				multiset().remove(obj, count);
 				return true;

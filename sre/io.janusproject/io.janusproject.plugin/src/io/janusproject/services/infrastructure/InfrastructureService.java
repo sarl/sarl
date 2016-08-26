@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,14 +26,11 @@ import com.google.common.util.concurrent.Service;
 /**
  * This class supports the management of the infrastructure as a service for the Janus platform.
  *
- * <p>
- * <strong>All the other services must depends on this service</strong>.
+ * <p><strong>All the other services must depends on this service</strong>.
  *
- * <p>
- * The tasks that are done by this service are low-level and must not depend on other services.
+ * <p>The tasks that are done by this service are low-level and must not depend on other services.
  *
- * <p>
- * This service is used for released any resource that is shared by several other services. For example, Hazelcast instance may be
+ * <p>This service is used for released any resource that is shared by several other services. For example, Hazelcast instance may be
  * release by a specific implementation of this service.
  *
  * @author $Author: sgalland$

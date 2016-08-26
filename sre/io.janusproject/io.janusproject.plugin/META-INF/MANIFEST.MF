@@ -10,12 +10,29 @@ Require-Bundle: io.sarl.core;bundle-version="0.4.0",
  org.arakhne.afc.core.vmutils;bundle-version="14.0.0",
  com.hazelcast;bundle-version="3.7.0",
  com.google.gson;bundle-version="2.4.0",
- com.google.inject;bundle-version="4.0.0",
  org.zeromq.jeromq;bundle-version="0.3.5",
+ com.google.inject;bundle-version="4.0.0",
  org.apache.commons.cli;bundle-version="1.3.1",
+ org.eclipse.jdt.core;bundle-version="3.12.0",
  org.eclipse.jdt.launching;bundle-version="3.8.100",
  org.eclipse.core.runtime;bundle-version="3.12.0",
- org.eclipse.ui.ide;bundle-version="3.12.0"
+ org.eclipse.ui.workbench;bundle-version="3.108.0",
+ org.eclipse.core.resources;bundle-version="3.11.0"
 Bundle-Activator: io.janusproject.JANUSEclipsePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
+Main-Class: io.janusproject.Boot
+
+Name: SARL-Runtime-Environment
+CLI-Offline: --offline
+SARL-Spec-Version: 0.4.0
+CLI-No-More-Option: --
+SRE-Name: JANUS
+CLI-Random-Context-ID: --randomid
+CLI-Hide-Logo: --nologo
+CLI-Show-Info: --log=info
+CLI-Hide-Info: --log=warning
+Standalone-SRE: false
+CLI-Default-Context-ID: --worldid
+CLI-BootAgent-Context-ID: --bootid
+

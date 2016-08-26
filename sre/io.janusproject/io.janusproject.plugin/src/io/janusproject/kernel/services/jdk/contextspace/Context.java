@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,8 +65,7 @@ class Context implements AgentContext {
 	/**
 	 * Constructs a <code>Context</code>.
 	 *
-	 * <p>
-	 * CAUTION: Do not miss to call {@link #postConstruction()}.
+	 * <p>CAUTION: Do not miss to call {@link #postConstruction()}.
 	 *
 	 * @param id - identifier of the context.
 	 * @param defaultSpaceID - identifier of the default space in the context.
@@ -138,8 +138,7 @@ class Context implements AgentContext {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
+	 * {@inheritDoc}.
 	 * @deprecated see {@link #getOrCreateSpaceWithSpec(Class, UUID, Object...)}.
 	 */
 	@Override
@@ -209,7 +208,7 @@ class Context implements AgentContext {
 			this.relay.spaceCreated(space, isLocalCreation);
 			// Send the event in the default space of the context.
 			if (isLocalCreation) {
-				EventSpace defSpace = this.context.getDefaultSpace();
+				final EventSpace defSpace = this.context.getDefaultSpace();
 				// defSpace may be null if the created space is the default space.
 				if (defSpace != null) {
 					defSpace.emit(new SpaceCreated(new Address(defSpace.getID(), this.context.getID()), space.getID()));
@@ -222,7 +221,7 @@ class Context implements AgentContext {
 			this.logger.info(Context.class, "SPACE_DESTROYED", space.getID()); //$NON-NLS-1$
 			// Send the event in the default space of the context.
 			if (isLocalDestruction) {
-				EventSpace defSpace = this.context.getDefaultSpace();
+				final EventSpace defSpace = this.context.getDefaultSpace();
 				// defSpace may be null if the created space is the default space.
 				if (defSpace != null) {
 					defSpace.emit(new SpaceDestroyed(new Address(defSpace.getID(), this.context.getID()), space.getID()));
@@ -265,8 +264,7 @@ class Context implements AgentContext {
 		/**
 		 * {@inheritDoc}
 		 *
-		 * <p>
-		 * In opposite to {@link #newInstanceWithPrivateSpaceListener(Context, String, SpaceRepositoryListener)}, this function
+		 * <p>In opposite to {@link #newInstanceWithPrivateSpaceListener(Context, String, SpaceRepositoryListener)}, this function
 		 * wraps the listener into a private space listener proxy before giving this wrapper to the space repository.
 		 */
 		@Override
@@ -279,8 +277,7 @@ class Context implements AgentContext {
 		/**
 		 * Create an instance of the space repository.
 		 *
-		 * <p>
-		 * In opposite to {@link #newInstance(Context, String, SpaceRepositoryListener)}, this function gives the listener to the
+		 * <p>In opposite to {@link #newInstance(Context, String, SpaceRepositoryListener)}, this function gives the listener to the
 		 * space repository, without wrapping it into the private space listener proxy.
 		 *
 		 * @param context - the context in which the space repository must be created.

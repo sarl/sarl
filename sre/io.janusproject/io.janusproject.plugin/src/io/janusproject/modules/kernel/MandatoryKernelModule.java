@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +33,6 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
-
 import io.janusproject.JanusConfig;
 import io.janusproject.kernel.bic.StandardBuiltinCapacitiesProvider;
 import io.janusproject.kernel.bic.internaleventdispatching.AgentInternalEventsDispatcher;
@@ -42,10 +42,11 @@ import io.janusproject.kernel.space.RestrictedAccessEventSpaceSpecificationImpl;
 import io.janusproject.services.GoogleServiceManager;
 import io.janusproject.services.IServiceManager;
 import io.janusproject.services.contextspace.ContextSpaceService;
+
+import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.EventSpaceSpecification;
-import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.util.OpenEventSpaceSpecification;
 import io.sarl.util.RestrictedAccessEventSpaceSpecification;
 
@@ -88,7 +89,7 @@ public class MandatoryKernelModule extends AbstractModule {
 	@Provides
 	private static AgentInternalEventsDispatcher createAgentInternalEventsDispatcher(Injector injector,
 			java.util.concurrent.ExecutorService service) {
-		AgentInternalEventsDispatcher aeb = new AgentInternalEventsDispatcher(service, PerceptGuardEvaluator.class);
+		final AgentInternalEventsDispatcher aeb = new AgentInternalEventsDispatcher(service, PerceptGuardEvaluator.class);
 		// to be able to inject the SubscriberFindingStrategy
 		injector.injectMembers(aeb);
 		return aeb;

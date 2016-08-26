@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,11 +35,9 @@ import io.sarl.util.Collections3;
 /**
  * A repository of participants specific to a given space.
  *
- * <p>
- * This repository links the id of an entity to its various addresses in the related space.
+ * <p>This repository links the id of an entity to its various addresses in the related space.
  *
- * <p>
- * The repository must be distributed and synchronized all over the network by using data-structures that are provided by an
+ * <p>The repository must be distributed and synchronized all over the network by using data-structures that are provided by an
  * injected {@link DistributedDataStructureService}.
  *
  * @param <ADDRESST> - the generic type representing the address of a participant in the related space. This type must remains
@@ -74,7 +73,6 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 
 	/**
 	 * Registers a new participant in this repository.
-	 * 
 	 * @param address - the address of the participant
 	 * @param entity - the entity associated to the specified address
 	 * @return the address of the participant
@@ -138,7 +136,7 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * @return all the addresses.
 	 */
 	public SynchronizedCollection<ADDRESST> getParticipantAddresses() {
-		Object mutex = mutex();
+		final Object mutex = mutex();
 		synchronized (mutex) {
 			return Collections3.synchronizedCollection(this.participants.values(), mutex);
 		}
@@ -150,7 +148,7 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * @return all the identifiers.
 	 */
 	public SynchronizedSet<UUID> getParticipantIDs() {
-		Object mutex = mutex();
+		final Object mutex = mutex();
 		synchronized (mutex) {
 			return Collections3.synchronizedSet(this.participants.keySet(), mutex);
 		}

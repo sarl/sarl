@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -70,7 +71,7 @@ public class BootModule extends AbstractModule {
 		// Bind the system properties.
 		boolean foundPubUri = false;
 		String name;
-		for (Entry<Object, Object> entry : System.getProperties().entrySet()) {
+		for (final Entry<Object, Object> entry : System.getProperties().entrySet()) {
 			name = entry.getKey().toString();
 			bind(Key.get(String.class, Names.named(name))).toInstance(entry.getValue().toString());
 			if (JanusConfig.PUB_URI.equals(name)) {
@@ -106,7 +107,7 @@ public class BootModule extends AbstractModule {
 				v = Boolean.valueOf(Boolean.parseBoolean(str));
 			}
 			if (v.booleanValue()) {
-				String bootClassname = JanusConfig.getSystemProperty(JanusConfig.BOOT_AGENT);
+				final String bootClassname = JanusConfig.getSystemProperty(JanusConfig.BOOT_AGENT);
 				str = UUID.nameUUIDFromBytes(bootClassname.getBytes()).toString();
 			} else {
 				// Random
@@ -139,19 +140,18 @@ public class BootModule extends AbstractModule {
 	@Provides
 	@Named(JanusConfig.DEFAULT_SPACE_ID_NAME)
 	private static UUID getSpaceID() {
-		String v = JanusConfig.getSystemProperty(JanusConfig.DEFAULT_SPACE_ID_NAME, JanusConfig.DEFAULT_SPACE_ID_VALUE);
+		final String v = JanusConfig.getSystemProperty(JanusConfig.DEFAULT_SPACE_ID_NAME, JanusConfig.DEFAULT_SPACE_ID_VALUE);
 		return UUID.fromString(v);
 	}
 
 	/**
 	 * Inject the PUB_URI as a real {@link URI}.
-	 * 
 	 * @return the PUB_URI
 	 */
 	@Provides
 	@Named(JanusConfig.PUB_URI)
 	private static URI getPubURIAsURI() {
-		String v = getPUBURIAsString();
+		final String v = getPUBURIAsString();
 		try {
 			return NetworkUtil.toURI(v);
 		} catch (URISyntaxException e) {
@@ -217,10 +217,10 @@ public class BootModule extends AbstractModule {
 		}
 
 		private static void init() {
-			String propertyFileName = JanusConfig.getSystemProperty(JanusConfig.LOGGING_PROPERTY_FILE_NAME,
+			final String propertyFileName = JanusConfig.getSystemProperty(JanusConfig.LOGGING_PROPERTY_FILE_NAME,
 					JanusConfig.LOGGING_PROPERTY_FILE_VALUE);
 			if (propertyFileName != null && !propertyFileName.isEmpty()) {
-				URL url = FileSystem.convertStringToURL(propertyFileName, true);
+				final URL url = FileSystem.convertStringToURL(propertyFileName, true);
 				if (url != null) {
 					try (InputStream is = url.openStream()) {
 						LogManager.getLogManager().readConfiguration(is);
@@ -233,7 +233,7 @@ public class BootModule extends AbstractModule {
 
 		@Override
 		public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {
-			for (Field field : type.getRawType().getDeclaredFields()) {
+			for (final Field field : type.getRawType().getDeclaredFields()) {
 				if (field.getType() == Logger.class) {
 					if (!this.isInit.getAndSet(true)) {
 						init();
@@ -269,9 +269,9 @@ public class BootModule extends AbstractModule {
 
 		@Override
 		public void injectMembers(T instance) {
-			Logger logger = LoggerCreator.createLogger(this.field.getDeclaringClass().getName());
+			final Logger logger = LoggerCreator.createLogger(this.field.getDeclaringClass().getName());
 
-			boolean accessible = this.field.isAccessible();
+			final boolean accessible = this.field.isAccessible();
 			try {
 				this.field.setAccessible(true);
 				this.field.set(instance, logger);

@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,8 +41,7 @@ import io.janusproject.services.distributeddata.DistributedDataStructureService;
 /**
  * Service providing tools for creating distributed data structures.
  *
- * <p>
- * This implementation creates standard Java collections that cannot be distributed other several JVM.
+ * <p>This implementation creates standard Java collections that cannot be distributed other several JVM.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -73,7 +73,7 @@ public class StandardDistributedDataStructureService extends AbstractDependentSe
 	@SuppressWarnings("unchecked")
 	@Override
 	public <K, V> DMap<K, V> getMap(String name, Comparator<? super K> comparator) {
-		Map<K, V> map;
+		final Map<K, V> map;
 		if (comparator == null) {
 			map = (Map<K, V>) Maps.newTreeMap();
 		} else {
@@ -84,21 +84,21 @@ public class StandardDistributedDataStructureService extends AbstractDependentSe
 
 	@Override
 	public <K, V> DMultiMap<K, V> getMultiMap(String name) {
-		Map<K, Collection<V>> map = Maps.newHashMap();
-		Multimap<K, V> multimap = Multimaps.newListMultimap(map, new ArrayListSupplier<V>());
+		final Map<K, Collection<V>> map = Maps.newHashMap();
+		final Multimap<K, V> multimap = Multimaps.newListMultimap(map, new ArrayListSupplier<V>());
 		return new DMultiMapView<>(name, multimap);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public <K, V> DMultiMap<K, V> getMultiMap(String name, Comparator<? super K> comparator) {
-		Map map;
+		final Map map;
 		if (comparator == null) {
 			map = Maps.newTreeMap();
 		} else {
 			map = Maps.newTreeMap(comparator);
 		}
-		Multimap<K, V> multimap = Multimaps.newListMultimap(map, new ArrayListSupplier<V>());
+		final Multimap<K, V> multimap = Multimaps.newListMultimap(map, new ArrayListSupplier<V>());
 		return new DMultiMapView<>(name, multimap);
 	}
 

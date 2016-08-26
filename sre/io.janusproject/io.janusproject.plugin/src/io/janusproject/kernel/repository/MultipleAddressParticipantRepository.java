@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,11 +35,9 @@ import io.sarl.util.Collections3;
 /**
  * Repository that maps participants to multiple addresses.
  *
- * <p>
- * This repository links the id of an entity to its various addresses in the related space.
+ * <p>This repository links the id of an entity to its various addresses in the related space.
  *
- * <p>
- * The repository must be distributed and synchronized all over the network by using data-structures that are provided by an
+ * <p>The repository must be distributed and synchronized all over the network by using data-structures that are provided by an
  * injected {@link DistributedDataStructureService}.
  *
  * @param <ADDRESST> - the generic type representing the address of a participant in the related space. This type must remains
@@ -109,7 +108,7 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	 * @return the collection of addresses. It may be <code>null</code> if the participant is unknown.
 	 */
 	public SynchronizedCollection<ADDRESST> getAddresses(UUID participant) {
-		Object mutex = mutex();
+		final Object mutex = mutex();
 		synchronized (mutex) {
 			return Collections3.synchronizedCollection(this.participants.get(participant), mutex);
 		}
@@ -121,7 +120,7 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	 * @return the collection of addresses.
 	 */
 	public SynchronizedCollection<ADDRESST> getParticipantAddresses() {
-		Object mutex = mutex();
+		final Object mutex = mutex();
 		synchronized (mutex) {
 			return Collections3.synchronizedCollection(this.participants.values(), mutex);
 		}
@@ -133,7 +132,7 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	 * @return the collection of identifiers.
 	 */
 	public SynchronizedSet<UUID> getParticipantIDs() {
-		Object mutex = mutex();
+		final Object mutex = mutex();
 		synchronized (mutex) {
 			return Collections3.synchronizedSet(this.participants.keySet(), mutex);
 		}

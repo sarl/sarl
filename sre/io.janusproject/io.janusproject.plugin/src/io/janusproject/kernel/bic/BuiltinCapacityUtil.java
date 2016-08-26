@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,9 +51,9 @@ public final class BuiltinCapacityUtil {
 	 * @throws Exception - when it is not possible to retreive the contexts.
 	 */
 	public static SynchronizedCollection<AgentContext> getContextsOf(Agent agent) throws Exception {
-		Method method = Agent.class.getDeclaredMethod("getSkill", Class.class); //$NON-NLS-1$
-		boolean isAccessible = method.isAccessible();
-		ExternalContextAccess skill;
+		final Method method = Agent.class.getDeclaredMethod("getSkill", Class.class); //$NON-NLS-1$
+		final boolean isAccessible = method.isAccessible();
+		final ExternalContextAccess skill;
 		try {
 			method.setAccessible(true);
 			skill = (ExternalContextAccess) method.invoke(agent, ExternalContextAccess.class);
@@ -71,9 +72,9 @@ public final class BuiltinCapacityUtil {
 	 * @throws Exception - when it is not possible to retreive the inner context.
 	 */
 	public static AgentContext getContextIn(Agent agent) throws Exception {
-		Method method = Agent.class.getDeclaredMethod("getSkill", Class.class); //$NON-NLS-1$
-		boolean isAccessible = method.isAccessible();
-		InnerContextAccess skill;
+		final Method method = Agent.class.getDeclaredMethod("getSkill", Class.class); //$NON-NLS-1$
+		final boolean isAccessible = method.isAccessible();
+		final InnerContextAccess skill;
 		try {
 			method.setAccessible(true);
 			skill = (InnerContextAccess) method.invoke(agent, InnerContextAccess.class);
@@ -82,7 +83,7 @@ public final class BuiltinCapacityUtil {
 		}
 
 		if (skill instanceof InnerContextSkill) {
-			InnerContextSkill janusSkill = (InnerContextSkill) skill;
+			final InnerContextSkill janusSkill = (InnerContextSkill) skill;
 			if (janusSkill.hasInnerContext()) {
 				return janusSkill.getInnerContext();
 			}

@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,8 +32,7 @@ import io.sarl.lang.core.SpaceID;
 /**
  * Description of the required information for dispatching an event over the network.
  *
- * <p>
- * A {@link EventDispatch} can be transformed into/from a {@link EventEnvelope} with a {@link EventSerializer}.
+ * <p>A {@link EventDispatch} can be transformed into/from a {@link EventEnvelope} with a {@link EventSerializer}.
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$

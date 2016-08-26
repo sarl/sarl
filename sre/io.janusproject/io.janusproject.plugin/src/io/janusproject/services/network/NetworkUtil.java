@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,7 +63,7 @@ public final class NetworkUtil {
 	 */
 	public static InetAddress getPrimaryAddress() {
 		try {
-			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+			final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 			if (interfaces != null) {
 				NetworkInterface inter;
 				InetAddress adr;
@@ -93,7 +94,7 @@ public final class NetworkUtil {
 	 */
 	public static InetAddress getLoopbackAddress() {
 		try {
-			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+			final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 			if (interfaces != null) {
 				NetworkInterface inter;
 				InetAddress adr;
@@ -140,15 +141,14 @@ public final class NetworkUtil {
 	/**
 	 * Convert a string URI to an object URI.
 	 *
-	 * <p>
-	 * This function support the syntax ":*" for the port.
+	 * <p>This function support the syntax ":*" for the port.
 	 *
 	 * @param uri - the string representation of the URI to parse.
 	 * @return the URI.
 	 * @throws URISyntaxException - if the given string has invalid format.
 	 */
 	public static URI toURI(String uri) throws URISyntaxException {
-		URI u = new URI(uri);
+		final URI u = new URI(uri);
 		// Inspired by ZeroMQ
 		String adr = u.getAuthority();
 		if (adr == null) {
@@ -209,8 +209,8 @@ public final class NetworkUtil {
 	public static InetAddress toInetAddress(URI uri) {
 		try {
 			// Copy/paste from the ZeroMQ lib
-			String protocol = uri.getScheme();
-			String address = uri.getHost();
+			final String protocol = uri.getScheme();
+			final String address = uri.getHost();
 			if ("tcp".equalsIgnoreCase(protocol)) { //$NON-NLS-1$
 				return InetAddress.getByName(address);
 			}
@@ -227,8 +227,8 @@ public final class NetworkUtil {
 	 * @return the address.
 	 */
 	public static InetSocketAddress toInetSocketAddress(URI uri) {
-		InetAddress adr = toInetAddress(uri);
-		int port = uri.getPort();
+		final InetAddress adr = toInetAddress(uri);
+		final int port = uri.getPort();
 		if (port <= 0) {
 			throw new IllegalArgumentException(uri.toString());
 		}

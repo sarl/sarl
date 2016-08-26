@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,14 +31,11 @@ import java.util.EventListener;
 /**
  * A collection of listeners.
  *
- * <p>
- * This collection is thread-safe.
+ * <p>This collection is thread-safe.
  *
- * <p>
- * This class is inspirated by <code>EventListenerList</code>.
+ * <p>This class is inspirated by <code>EventListenerList</code>.
  *
- * <p>
- * This class is copied from the <a href="http://www.arakhne.org/afc">Arakhn&ecirc; Foundation Classes</a>.
+ * <p>This class is copied from the <a href="http://www.arakhne.org/afc">Arakhn&ecirc; Foundation Classes</a>.
  *
  * @param <L> is the type of listeners.
  * @author $Author: galland$
@@ -83,8 +81,7 @@ public class ListenerCollection<L extends EventListener> {
 	 * guaranteed to pass back a non-null array, so that no null-checking is required in fire methods. A zero-length array of
 	 * Object should be returned if there are currently no listeners.
 	 *
-	 * <p>
-	 * WARNING!!! Absolutely NO modification of the data contained in this array should be made -- if any such manipulation is
+	 * <p><b>WARNING!!!</b> Absolutely NO modification of the data contained in this array should be made -- if any such manipulation is
 	 * necessary, it should be done on a copy of the array returned rather than the array itself.
 	 *
 	 * @return the listeners.
@@ -102,9 +99,9 @@ public class ListenerCollection<L extends EventListener> {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends EventListener> T[] getListeners(Class<T> type) {
-		Object[] listeners = this.listeners;
-		int listenerCount = getListenerCount(listeners, type);
-		T[] result = (T[]) Array.newInstance(type, listenerCount);
+		final Object[] listeners = this.listeners;
+		final int listenerCount = getListenerCount(listeners, type);
+		final T[] result = (T[]) Array.newInstance(type, listenerCount);
 		int j = 0;
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == type) {
@@ -158,8 +155,8 @@ public class ListenerCollection<L extends EventListener> {
 			this.listeners = new Object[] {type, listener, };
 		} else {
 			// Otherwise copy the array and add the new listener
-			int i = this.listeners.length;
-			Object[] tmp = new Object[i + 2];
+			final int i = this.listeners.length;
+			final Object[] tmp = new Object[i + 2];
 			System.arraycopy(this.listeners, 0, tmp, 0, i);
 
 			tmp[i] = type;
@@ -189,7 +186,7 @@ public class ListenerCollection<L extends EventListener> {
 
 		// If so, remove it
 		if (index != -1) {
-			Object[] tmp = new Object[this.listeners.length - 2];
+			final Object[] tmp = new Object[this.listeners.length - 2];
 			// Copy the list up to index
 			System.arraycopy(this.listeners, 0, tmp, 0, index);
 			// Copy from two past the index, up to
@@ -205,13 +202,13 @@ public class ListenerCollection<L extends EventListener> {
 
 	// Serialization support.
 	private void writeObject(ObjectOutputStream stream) throws IOException {
-		Object[] lList = this.listeners;
+		final Object[] lList = this.listeners;
 		stream.defaultWriteObject();
 
 		// Save the non-null event listeners:
 		for (int i = 0; i < lList.length; i += 2) {
-			Class<?> t = (Class<?>) lList[i];
-			EventListener listener = (EventListener) lList[i + 1];
+			final Class<?> t = (Class<?>) lList[i];
+			final EventListener listener = (EventListener) lList[i + 1];
 			if ((listener != null) && (listener instanceof Serializable)) {
 				stream.writeObject(t.getName());
 				stream.writeObject(listener);
@@ -228,15 +225,15 @@ public class ListenerCollection<L extends EventListener> {
 		Object listenerTypeOrNull;
 
 		while (null != (listenerTypeOrNull = stream.readObject())) {
-			ClassLoader cl = Thread.currentThread().getContextClassLoader();
-			EventListener listener = (EventListener) stream.readObject();
+			final ClassLoader cl = Thread.currentThread().getContextClassLoader();
+			final EventListener listener = (EventListener) stream.readObject();
 			add((Class<EventListener>) Class.forName((String) listenerTypeOrNull, true, cl), listener);
 		}
 	}
 
 	@Override
 	public String toString() {
-		Object[] lList = this.listeners;
+		final Object[] lList = this.listeners;
 		String txt = "EventListenerList: "; //$NON-NLS-1$
 		txt += lList.length / 2 + " listeners: "; //$NON-NLS-1$
 		for (int i = 0; i <= lList.length - 2; i += 2) {

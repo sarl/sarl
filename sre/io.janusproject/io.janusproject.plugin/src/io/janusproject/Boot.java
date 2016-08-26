@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,25 +55,19 @@ import io.sarl.lang.core.Agent;
 /**
  * This is the class that permits to boot the Janus platform.
  *
- * <p>
- * This class provides the "main" function for the platform. The list of the parameters is composed of a list of options, the
+ * <p>This class provides the "main" function for the platform. The list of the parameters is composed of a list of options, the
  * classname of an agent to launch, and the parameters to pass to the launched agent.
  *
- * <p>
- * The supported options may be obtain by passing no parameter, or the option <code>-h</code>.
+ * <p>The supported options may be obtain by passing no parameter, or the option <code>-h</code>.
  *
- * <p>
- * Example of Janus launching with Maven:
- * 
+ * <p>Example of Janus launching with Maven:
  * <pre>
  * <code>mvn exec:java
  *     -Dexec.mainClass="io.janusproject.Boot"
  *     -Dexec.args="my.Agent"</code>
  * </pre>
  *
- * <p>
- * Example of Janus launching from the CLI (only with the Jar file that is containing all the jar dependencies):
- * 
+ * <p>Example of Janus launching from the CLI (only with the Jar file that is containing all the jar dependencies):
  * <pre>
  * <code>java -jar janus-with-dependencies.jar my.Agent</code>
  * </pre>
@@ -103,9 +98,9 @@ public final class Boot {
 	 */
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static String[] parseCommandLine(String[] args) {
-		CommandLineParser parser = new DefaultParser();
+		final CommandLineParser parser = new DefaultParser();
 		try {
-			CommandLine cmd = parser.parse(getOptions(), args);
+			final CommandLine cmd = parser.parse(getOptions(), args);
 
 			// Show the help when there is no argument.
 			if (cmd.getArgs().length == 0) {
@@ -116,9 +111,9 @@ public final class Boot {
 			boolean noLogo = false;
 			int verbose = LoggerCreator.toInt(JanusConfig.VERBOSE_LEVEL_VALUE);
 
-			Iterator<Option> optIterator = cmd.iterator();
+			final Iterator<Option> optIterator = cmd.iterator();
 			while (optIterator.hasNext()) {
-				Option opt = optIterator.next();
+				final Option opt = optIterator.next();
 				switch (opt.getLongOpt()) {
 				case "help": //$NON-NLS-1$
 					showHelp();
@@ -130,11 +125,11 @@ public final class Boot {
 					showCommandLineArguments(args);
 					return null;
 				case "file": //$NON-NLS-1$
-					String rawFilename = opt.getValue();
+					final String rawFilename = opt.getValue();
 					if (rawFilename == null || "".equals(rawFilename)) { //$NON-NLS-1$
 						showHelp();
 					}
-					File file = new File(rawFilename);
+					final File file = new File(rawFilename);
 					if (!file.canRead()) {
 						showError(Locale.getString("INVALID_PROPERTY_FILENAME", //$NON-NLS-1$
 								rawFilename), null);
@@ -155,7 +150,7 @@ public final class Boot {
 					setDefaultContextUUID();
 					break;
 				case "define": //$NON-NLS-1$
-					String name = opt.getValue(0);
+					final String name = opt.getValue(0);
 					if (!Strings.isNullOrEmpty(name)) {
 						setProperty(name, Strings.emptyToNull(opt.getValue(1)));
 					}
@@ -194,7 +189,7 @@ public final class Boot {
 	}
 
 	private static Class<? extends Agent> loadAgentClass(String fullyQualifiedName) {
-		Class<?> type;
+		final Class<?> type;
 		try {
 			type = Class.forName(fullyQualifiedName);
 		} catch (Exception e) {
@@ -243,12 +238,12 @@ public final class Boot {
 				return;
 			}
 
-			String agentToLaunch = freeArgs[0].toString();
+			final String agentToLaunch = freeArgs[0].toString();
 			freeArgs = Arrays.copyOfRange(freeArgs, 1, freeArgs.length, String[].class);
 
 			// Load the agent class
-			Class<? extends Agent> agent = loadAgentClass(agentToLaunch);
-			assert (agent != null);
+			final Class<? extends Agent> agent = loadAgentClass(agentToLaunch);
+			assert agent != null;
 
 			startJanus((Class<? extends Module>) null, (Class<? extends Agent>) agent, freeArgs);
 		} catch (Exception e) {
@@ -263,8 +258,7 @@ public final class Boot {
 	/**
 	 * Replies the console stream for logging messages from the boot mechanism.
 	 *
-	 * <p>
-	 * The console stream is independent of the stream used by the {@link LoggingService logging service} of the platform. Indeed,
+	 * <p>The console stream is independent of the stream used by the {@link LoggingService logging service} of the platform. Indeed,
 	 * the console stream is used for displaying information, warnings and messages before the Janus platform is realy launched.
 	 *
 	 * @return the console logger.
@@ -276,8 +270,7 @@ public final class Boot {
 	/**
 	 * Replies the console stream for logging messages from the boot mechanism.
 	 *
-	 * <p>
-	 * The console stream is independent of the stream used by the {@link LoggingService logging service} of the platform. Indeed,
+	 * <p>The console stream is independent of the stream used by the {@link LoggingService logging service} of the platform. Indeed,
 	 * the console stream is used for displaying information, warnings and messages before the Janus platform is realy launched.
 	 *
 	 * @param stream - the stream to use for the console logging.
@@ -292,7 +285,7 @@ public final class Boot {
 	 * @return the command line options.
 	 */
 	public static Options getOptions() {
-		Options options = new Options();
+		final Options options = new Options();
 
 		options.addOption("B", "bootid", false, //$NON-NLS-1$//$NON-NLS-2$
 				Locale.getString("CLI_HELP_B", //$NON-NLS-1$
@@ -328,9 +321,9 @@ public final class Boot {
 		options.addOption("W", "worldid", false, //$NON-NLS-1$//$NON-NLS-2$
 				Locale.getString("CLI_HELP_W", //$NON-NLS-1$
 						JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME, JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME));
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		int level = 0;
-		for (String logLevel : LoggerCreator.getLevelStrings()) {
+		for (final String logLevel : LoggerCreator.getLevelStrings()) {
 			if (b.length() > 0) {
 				b.append(", "); //$NON-NLS-1$
 			}
@@ -355,8 +348,7 @@ public final class Boot {
 	/**
 	 * Show an error message, and exit.
 	 *
-	 * <p>
-	 * This function never returns.
+	 * <p>This function never returns.
 	 *
 	 * @param message - the description of the error.
 	 * @param exception - the cause of the error.
@@ -383,7 +375,7 @@ public final class Boot {
 	}
 
 	private static void showHelp(PrintWriter logger) {
-		HelpFormatter formatter = new HelpFormatter();
+		final HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp(logger, HelpFormatter.DEFAULT_WIDTH,
 				Boot.class.getName() + " " //$NON-NLS-1$
 						+ Locale.getString(Boot.class, "CLI_PARAM_SYNOPTIC"), //$NON-NLS-1$
@@ -397,7 +389,7 @@ public final class Boot {
 	 */
 	@SuppressWarnings("checkstyle:regexp")
 	public static void showDefaults() {
-		Properties defaultValues = new Properties();
+		final Properties defaultValues = new Properties();
 		JanusConfig.getDefaultValues(defaultValues);
 		NetworkConfig.getDefaultValues(defaultValues);
 		try (OutputStream os = getConsoleLogger()) {
@@ -438,11 +430,9 @@ public final class Boot {
 	/**
 	 * Set offline flag of the Janus platform.
 	 *
-	 * <p>
-	 * This function is equivalent to the command line option <code>-o</code>.
+	 * <p>This function is equivalent to the command line option <code>-o</code>.
 	 *
-	 * <p>
-	 * This function must be called before launching the Janus platform.
+	 * <p>This function must be called before launching the Janus platform.
 	 *
 	 * @param isOffline - the offline flag.
 	 * @since 2.0.2.0
@@ -455,11 +445,9 @@ public final class Boot {
 	/**
 	 * Force the Janus platform to use a random identifier for its default context.
 	 *
-	 * <p>
-	 * This function is equivalent to the command line option <code>-R</code>.
+	 * <p>This function is equivalent to the command line option <code>-R</code>.
 	 *
-	 * <p>
-	 * This function must be called before launching the Janus platform.
+	 * <p>This function must be called before launching the Janus platform.
 	 *
 	 * @since 2.0.2.0
 	 * @see JanusConfig#BOOT_DEFAULT_CONTEXT_ID_NAME
@@ -474,8 +462,7 @@ public final class Boot {
 	 * Force the Janus platform to use a default context identifier that tis build upon the classname of the boot agent. It means
 	 * that the UUID is always the same for a given classname.
 	 *
-	 * <p>
-	 * This function is equivalent to the command line option <code>-B</code>.
+	 * <p>This function is equivalent to the command line option <code>-B</code>.
 	 *
 	 * @since 2.0.2.0
 	 * @see JanusConfig#BOOT_DEFAULT_CONTEXT_ID_NAME
@@ -489,11 +476,9 @@ public final class Boot {
 	/**
 	 * Force the Janus platform to use the identifier hard-coded in the source code for its default context.
 	 *
-	 * <p>
-	 * This function is equivalent to the command line option <code>-W</code>.
+	 * <p>This function is equivalent to the command line option <code>-W</code>.
 	 *
-	 * <p>
-	 * This function must be called before launching the Janus platform.
+	 * <p>This function must be called before launching the Janus platform.
 	 *
 	 * @since 2.0.2.0
 	 * @see JanusConfig#BOOT_DEFAULT_CONTEXT_ID_NAME
@@ -507,8 +492,7 @@ public final class Boot {
 	/**
 	 * Force the verbosity level.
 	 *
-	 * <p>
-	 * This function must be called before launching the Janus platform.
+	 * <p>This function must be called before launching the Janus platform.
 	 *
 	 * @param level - the verbosity level.
 	 * @since 2.0.2.0
@@ -521,8 +505,7 @@ public final class Boot {
 	/**
 	 * Set the system property. This function is an helper for setting a system property usually accessible with {@link System}.
 	 *
-	 * <p>
-	 * This function must be called before launching the Janus platform.
+	 * <p>This function must be called before launching the Janus platform.
 	 *
 	 * @param name - the name of the property.
 	 * @param value - the value of the property. If the value is <code>null</code> or empty, the property is removed.
@@ -551,7 +534,7 @@ public final class Boot {
 	 * @see Properties#load(InputStream)
 	 */
 	public static void setPropertiesFrom(URL propertyFile) throws IOException {
-		Properties systemProperties = System.getProperties();
+		final Properties systemProperties = System.getProperties();
 		try (InputStream stream = propertyFile.openStream()) {
 			systemProperties.load(stream);
 		}
@@ -568,7 +551,7 @@ public final class Boot {
 	 * @see Properties#load(InputStream)
 	 */
 	public static void setPropertiesFrom(File propertyFile) throws IOException {
-		Properties systemProperties = System.getProperties();
+		final Properties systemProperties = System.getProperties();
 		try (InputStream stream = new FileInputStream(propertyFile)) {
 			systemProperties.load(stream);
 		}
@@ -584,7 +567,7 @@ public final class Boot {
 	 * @see #startJanus(Class, Class, Object...)
 	 */
 	public static UUID getBootAgentIdentifier() {
-		String id = JanusConfig.getSystemProperty(JanusConfig.BOOT_AGENT_ID);
+		final String id = JanusConfig.getSystemProperty(JanusConfig.BOOT_AGENT_ID);
 		if (id != null && !id.isEmpty()) {
 			try {
 				return UUID.fromString(id);
@@ -598,18 +581,15 @@ public final class Boot {
 	/**
 	 * Launch the Janus kernel and the first agent in the kernel.
 	 *
-	 * <p>
-	 * Thus function does not parse the command line. See {@link #main(String[])} for the command line management. When this
+	 * <p>Thus function does not parse the command line. See {@link #main(String[])} for the command line management. When this
 	 * function is called, it is assumed that all the system's properties are correctly set.
 	 *
-	 * <p>
-	 * The platformModule parameter permits to specify the injection module to use. The injection module is in change of
+	 * <p>The platformModule parameter permits to specify the injection module to use. The injection module is in change of
 	 * creating/injecting all the components of the platform. The default injection module is retreived from the system property
 	 * with the name stored in {@link JanusConfig#INJECTION_MODULE_NAME}. The default type for the injection module is stored in
 	 * the constant {@link JanusConfig#INJECTION_MODULE_NAME_VALUE}.
 	 *
-	 * <p>
-	 * The function {@link #getBootAgentIdentifier()} permits to retreive the identifier of the launched agent.
+	 * <p>The function {@link #getBootAgentIdentifier()} permits to retreive the identifier of the launched agent.
 	 *
 	 * @param platformModule - type of the injection module to use for initializing the platform, if <code>null</code> the default
 	 *        module will be used.
@@ -627,25 +607,22 @@ public final class Boot {
 			startupModule = JanusConfig.getSystemPropertyAsClass(Module.class, JanusConfig.INJECTION_MODULE_NAME,
 					JanusConfig.INJECTION_MODULE_NAME_VALUE);
 		}
-		assert (startupModule != null) : "No platform injection module"; //$NON-NLS-1$
+		assert startupModule != null : "No platform injection module"; //$NON-NLS-1$
 		return startJanus(startupModule.newInstance(), agentCls, params);
 	}
 
 	/**
 	 * Launch the Janus kernel and the first agent in the kernel.
 	 *
-	 * <p>
-	 * Thus function does not parse the command line. See {@link #main(String[])} for the command line management. When this
+	 * <p>Thus function does not parse the command line. See {@link #main(String[])} for the command line management. When this
 	 * function is called, it is assumed that all the system's properties are correctly set.
 	 *
-	 * <p>
-	 * The startupModule parameter permits to specify the injection module to use. The injection module is in change of
+	 * <p>The startupModule parameter permits to specify the injection module to use. The injection module is in change of
 	 * creating/injecting all the components of the platform. The default injection module is retreived from the system property
 	 * with the name stored in {@link JanusConfig#INJECTION_MODULE_NAME}. The default type for the injection module is stored in
 	 * the constant {@link JanusConfig#INJECTION_MODULE_NAME_VALUE}.
 	 *
-	 * <p>
-	 * The function {@link #getBootAgentIdentifier()} permits to retreive the identifier of the launched agent.
+	 * <p>The function {@link #getBootAgentIdentifier()} permits to retreive the identifier of the launched agent.
 	 *
 	 * @param startupModule - the injection module to use for initializing the platform.
 	 * @param agentCls - type of the first agent to launch.
@@ -660,12 +637,12 @@ public final class Boot {
 		System.setProperty(JanusConfig.BOOT_AGENT, agentCls.getName());
 		// Get the start-up injection module
 		assert (startupModule != null) : "No platform injection module"; //$NON-NLS-1$
-		Kernel k = Kernel.create(startupModule);
-		Logger logger = k.getLogger();
+		final Kernel k = Kernel.create(startupModule);
+		final Logger logger = k.getLogger();
 		if (logger != null) {
 			logger.info(Locale.getString("LAUNCHING_AGENT", agentCls.getName())); //$NON-NLS-1$
 		}
-		UUID id = k.spawn(agentCls, params);
+		final UUID id = k.spawn(agentCls, params);
 		if (id != null) {
 			System.setProperty(JanusConfig.BOOT_AGENT_ID, id.toString());
 		} else {

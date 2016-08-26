@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -55,8 +56,7 @@ public final class Services {
 	/**
 	 * Start the services associated to the given service manager.
 	 *
-	 * <p>
-	 * This starting function supports the {@link DependentService prioritized services}.
+	 * <p>This starting function supports the {@link DependentService prioritized services}.
 	 *
 	 * @param manager - the manager of the services to start.
 	 */
@@ -67,16 +67,15 @@ public final class Services {
 	/**
 	 * Start the services associated to the given service manager.
 	 *
-	 * <p>
-	 * This starting function supports the {@link DependentService prioritized services}.
+	 * <p>This starting function supports the {@link DependentService prioritized services}.
 	 *
 	 * @param manager - the manager of the services to start.
 	 */
 	public static void startServices(IServiceManager manager) {
-		List<Service> otherServices = new ArrayList<>();
-		List<Service> infraServices = new ArrayList<>();
-		LinkedList<DependencyNode> serviceQueue = new LinkedList<>();
-		Accessors accessors = new StartingPhaseAccessors();
+		final List<Service> otherServices = new ArrayList<>();
+		final List<Service> infraServices = new ArrayList<>();
+		final LinkedList<DependencyNode> serviceQueue = new LinkedList<>();
+		final Accessors accessors = new StartingPhaseAccessors();
 
 		// Build the dependency graph
 		buildDependencyGraph(manager, serviceQueue, infraServices, otherServices, accessors);
@@ -90,8 +89,7 @@ public final class Services {
 	/**
 	 * Stop the services associated to the given service manager.
 	 *
-	 * <p>
-	 * This stopping function supports the {@link DependentService prioritized services}.
+	 * <p>This stopping function supports the {@link DependentService prioritized services}.
 	 *
 	 * @param manager - the manager of the services to stop.
 	 */
@@ -102,16 +100,15 @@ public final class Services {
 	/**
 	 * Stop the services associated to the given service manager.
 	 *
-	 * <p>
-	 * This stopping function supports the {@link DependentService prioritized services}.
+	 * <p>This stopping function supports the {@link DependentService prioritized services}.
 	 *
 	 * @param manager - the manager of the services to stop.
 	 */
 	public static void stopServices(IServiceManager manager) {
-		List<Service> otherServices = new ArrayList<>();
-		List<Service> infraServices = new ArrayList<>();
-		LinkedList<DependencyNode> serviceQueue = new LinkedList<>();
-		Accessors accessors = new StoppingPhaseAccessors();
+		final List<Service> otherServices = new ArrayList<>();
+		final List<Service> infraServices = new ArrayList<>();
+		final LinkedList<DependencyNode> serviceQueue = new LinkedList<>();
+		final Accessors accessors = new StoppingPhaseAccessors();
 
 		// Build the dependency graph
 		buildInvertedDependencyGraph(manager, serviceQueue, infraServices, otherServices, accessors);
@@ -124,7 +121,7 @@ public final class Services {
 
 	private static void addNodeIntoDependencyGraph(DependentService depServ,
 			Map<Class<? extends Service>, DependencyNode> dependentServices, List<DependencyNode> roots) {
-		Class<? extends Service> type = depServ.getServiceType();
+		final Class<? extends Service> type = depServ.getServiceType();
 		assert (type != null);
 		assert (type.isInterface()) : type.getName();
 		DependencyNode node = dependentServices.get(type);
@@ -138,7 +135,7 @@ public final class Services {
 
 		boolean isRoot = true;
 		Collection<Class<? extends Service>> deps = depServ.getServiceDependencies();
-		for (Class<? extends Service> dep : deps) {
+		for (final Class<? extends Service> dep : deps) {
 			isRoot = false;
 			DependencyNode depNode = dependentServices.get(dep);
 			if (depNode == null) {
@@ -149,7 +146,7 @@ public final class Services {
 		}
 
 		deps = depServ.getServiceWeakDependencies();
-		for (Class<? extends Service> dep : deps) {
+		for (final Class<? extends Service> dep : deps) {
 			isRoot = false;
 			DependencyNode depNode = dependentServices.get(dep);
 			if (depNode == null) {
@@ -175,10 +172,10 @@ public final class Services {
 	 */
 	private static void buildDependencyGraph(IServiceManager manager, List<DependencyNode> roots, List<Service> infraServices,
 			List<Service> freeServices, Accessors accessors) {
-		Map<Class<? extends Service>, DependencyNode> dependentServices = new TreeMap<>(ClassComparator.SINGLETON);
+		final Map<Class<? extends Service>, DependencyNode> dependentServices = new TreeMap<>(ClassComparator.SINGLETON);
 
 		Service service;
-		for (Entry<State, Service> entry : manager.servicesByState().entries()) {
+		for (final Entry<State, Service> entry : manager.servicesByState().entries()) {
 			if (accessors.matches(entry.getKey())) {
 				service = entry.getValue();
 				if (service instanceof InfrastructureService) {
@@ -192,10 +189,10 @@ public final class Services {
 		}
 
 		if (accessors.isAsyncStateWaitingEnabled()) {
-			for (DependencyNode node : dependentServices.values()) {
+			for (final DependencyNode node : dependentServices.values()) {
 				assert (node.getService() != null);
 				if (node.getService() instanceof AsyncStateService) {
-					for (DependencyNode next : node.getNextServices()) {
+					for (final DependencyNode next : node.getNextServices()) {
 						next.getAsyncStateServices().add(new WeakReference<>(node));
 					}
 				}
@@ -214,18 +211,18 @@ public final class Services {
 	 */
 	private static void buildInvertedDependencyGraph(IServiceManager manager, List<DependencyNode> roots,
 			List<Service> infraServices, List<Service> freeServices, Accessors accessors) {
-		Map<Class<? extends Service>, DependencyNode> dependentServices = new TreeMap<>(ClassComparator.SINGLETON);
-		Map<Class<? extends Service>, DependencyNode> rootServices = new TreeMap<>(ClassComparator.SINGLETON);
+		final Map<Class<? extends Service>, DependencyNode> dependentServices = new TreeMap<>(ClassComparator.SINGLETON);
+		final Map<Class<? extends Service>, DependencyNode> rootServices = new TreeMap<>(ClassComparator.SINGLETON);
 
 		Service service;
-		for (Entry<State, Service> entry : manager.servicesByState().entries()) {
+		for (final Entry<State, Service> entry : manager.servicesByState().entries()) {
 			if (accessors.matches(entry.getKey())) {
 				service = entry.getValue();
 				if (service instanceof InfrastructureService) {
 					infraServices.add(service);
 				} else if (service instanceof DependentService) {
-					DependentService depServ = (DependentService) service;
-					Class<? extends Service> type = depServ.getServiceType();
+					final DependentService depServ = (DependentService) service;
+					final Class<? extends Service> type = depServ.getServiceType();
 					DependencyNode node = dependentServices.get(type);
 					boolean isRoot = true;
 					if (node == null) {
@@ -238,7 +235,7 @@ public final class Services {
 					}
 
 					Collection<Class<? extends Service>> deps = depServ.getServiceDependencies();
-					for (Class<? extends Service> dep : deps) {
+					for (final Class<? extends Service> dep : deps) {
 						DependencyNode depNode = dependentServices.get(dep);
 						if (depNode == null) {
 							depNode = new DependencyNode(dep);
@@ -249,7 +246,7 @@ public final class Services {
 					}
 
 					deps = depServ.getServiceWeakDependencies();
-					for (Class<? extends Service> dep : deps) {
+					for (final Class<? extends Service> dep : deps) {
 						DependencyNode depNode = dependentServices.get(dep);
 						if (depNode == null) {
 							depNode = new DependencyNode(dep);
@@ -282,11 +279,11 @@ public final class Services {
 	private static void runDependencyGraph(Queue<DependencyNode> roots, List<Service> infraServices, List<Service> freeServices,
 			Accessors accessors) {
 		final boolean async = accessors.isAsyncStateWaitingEnabled();
-		Set<Class<? extends Service>> executed = new TreeSet<>(ClassComparator.SINGLETON);
+		final Set<Class<? extends Service>> executed = new TreeSet<>(ClassComparator.SINGLETON);
 		accessors.runInfrastructureServicesBefore(infraServices);
 		accessors.runFreeServicesBefore(freeServices);
 		while (!roots.isEmpty()) {
-			DependencyNode node = roots.remove();
+			final DependencyNode node = roots.remove();
 			assert (node != null && node.getType() != null);
 			if (!executed.contains(node.getType())) {
 				executed.add(node.getType());
@@ -294,8 +291,8 @@ public final class Services {
 				roots.addAll(node.getNextWeakServices());
 				assert (node.getService() != null);
 				if (async) {
-					for (WeakReference<DependencyNode> asyncService : node.getAsyncStateServices()) {
-						AsyncStateService as = (AsyncStateService) (asyncService.get().getService());
+					for (final WeakReference<DependencyNode> asyncService : node.getAsyncStateServices()) {
+						final AsyncStateService as = (AsyncStateService) (asyncService.get().getService());
 						assert (as != null);
 						while (!as.isReadyForOtherServices()) {
 							Thread.yield();
@@ -429,7 +426,7 @@ public final class Services {
 
 		@Override
 		public void runInfrastructureServicesBefore(List<Service> infraServices) {
-			for (Service serv : infraServices) {
+			for (final Service serv : infraServices) {
 				serv.startAsync().awaitRunning();
 			}
 		}
@@ -446,7 +443,7 @@ public final class Services {
 
 		@Override
 		public void runFreeServicesAfter(List<Service> freeServices) {
-			for (Service serv : freeServices) {
+			for (final Service serv : freeServices) {
 				serv.startAsync();
 			}
 		}
@@ -482,7 +479,7 @@ public final class Services {
 
 		@Override
 		public void runFreeServicesBefore(List<Service> freeServices) {
-			for (Service serv : freeServices) {
+			for (final Service serv : freeServices) {
 				serv.stopAsync();
 			}
 		}
@@ -509,7 +506,7 @@ public final class Services {
 
 		@Override
 		public void runInfrastructureServicesAfter(List<Service> infraServices) {
-			for (Service serv : infraServices) {
+			for (final Service serv : infraServices) {
 				serv.stopAsync();
 			}
 		}

@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -95,14 +96,14 @@ public class JdkThreadPoolExecutor extends ThreadPoolExecutor {
 	 * @param task - the finished task.
 	 */
 	protected void fireTaskFinished(Thread thread, Runnable task) {
-		JdkTaskListener[] listeners;
+		final JdkTaskListener[] listeners;
 		synchronized (this) {
 			if (this.listeners == null) {
 				return;
 			}
 			listeners = this.listeners.getListeners(JdkTaskListener.class);
 		}
-		for (JdkTaskListener listener : listeners) {
+		for (final JdkTaskListener listener : listeners) {
 			listener.taskFinished(thread, task);
 		}
 	}
@@ -129,8 +130,8 @@ public class JdkThreadPoolExecutor extends ThreadPoolExecutor {
 
 	@Override
 	protected void afterExecute(Runnable runnable, Throwable throwable) {
-		Thread th;
-		JdkJanusFutureTask<?> task;
+		final Thread th;
+		final JdkJanusFutureTask<?> task;
 		if (runnable instanceof JdkJanusFutureTask<?>) {
 			task = (JdkJanusFutureTask<?>) runnable;
 			th = task.getThread();

@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,8 +46,7 @@ import io.sarl.lang.core.SpaceSpecification;
  * Serialize the {@link EventDispatch} content using the Java serialization mechanism to generate the corresponding
  * {@link EventEnvelope}.
  *
- * <p>
- * This implementation assumes that an {@link EventEncrypter} is injected.
+ * <p>This implementation assumes that an {@link EventEncrypter} is injected.
  *
  * @author $Author: sgalland$
  * @author $Author: ngaud$
@@ -70,20 +70,20 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 	public EventEnvelope serialize(EventDispatch dispatch) throws Exception {
 		assert (this.encrypter != null) : "Invalid injection of the encrypter"; //$NON-NLS-1$
 		assert (dispatch != null) : "Parameter 'dispatch' must not be null"; //$NON-NLS-1$
-		Event event = dispatch.getEvent();
+		final Event event = dispatch.getEvent();
 		assert (event != null);
-		SpaceID spaceID = dispatch.getSpaceID();
+		final SpaceID spaceID = dispatch.getSpaceID();
 		assert (spaceID != null);
 		assert (spaceID.getSpaceSpecification() != null);
 
-		Map<String, String> headers = dispatch.getCustomHeaders();
+		final Map<String, String> headers = dispatch.getCustomHeaders();
 		assert (headers != null);
 		headers.put("x-java-spacespec-class", //$NON-NLS-1$
 				spaceID.getSpaceSpecification().getName());
 
-		Scope<?> scope = dispatch.getScope();
+		final Scope<?> scope = dispatch.getScope();
 
-		EventEnvelope envelope = new EventEnvelope(NetworkUtil.toByteArray(spaceID.getContextID()),
+		final EventEnvelope envelope = new EventEnvelope(NetworkUtil.toByteArray(spaceID.getContextID()),
 				NetworkUtil.toByteArray(spaceID.getID()), toBytes(scope), toBytes(dispatch.getCustomHeaders()), toBytes(event));
 
 		this.encrypter.encrypt(envelope);
@@ -93,7 +93,7 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 
 	private static byte[] toBytes(Object object) throws IOException {
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			final ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(object);
 			return baos.toByteArray();
 		}
@@ -107,11 +107,11 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 
 		this.encrypter.decrypt(envelope);
 
-		Map<String, String> headers = fromBytes(envelope.getCustomHeaders(), Map.class);
+		final Map<String, String> headers = fromBytes(envelope.getCustomHeaders(), Map.class);
 		assert (headers != null);
 
 		Class<?> spaceSpec = null;
-		String classname = headers.get("x-java-spacespec-class"); //$NON-NLS-1$
+		final String classname = headers.get("x-java-spacespec-class"); //$NON-NLS-1$
 		if (classname != null) {
 			try {
 				spaceSpec = Class.forName(classname);
@@ -124,22 +124,22 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 			throw new ClassCastException(Locale.getString("INVALID_TYPE", spaceSpec)); //$NON-NLS-1$
 		}
 
-		UUID contextId = NetworkUtil.fromByteArray(envelope.getContextId());
-		UUID spaceId = NetworkUtil.fromByteArray(envelope.getSpaceId());
+		final UUID contextId = NetworkUtil.fromByteArray(envelope.getContextId());
+		final UUID spaceId = NetworkUtil.fromByteArray(envelope.getSpaceId());
 
-		SpaceID spaceID = new SpaceID(contextId, spaceId, (Class<? extends SpaceSpecification<?>>) spaceSpec);
+		final SpaceID spaceID = new SpaceID(contextId, spaceId, (Class<? extends SpaceSpecification<?>>) spaceSpec);
 
-		Event event = fromBytes(envelope.getBody(), Event.class);
+		final Event event = fromBytes(envelope.getBody(), Event.class);
 		assert (event != null);
-		Scope<?> scope = fromBytes(envelope.getScope(), Scope.class);
+		final Scope<?> scope = fromBytes(envelope.getScope(), Scope.class);
 		return new EventDispatch(spaceID, event, scope, headers);
 
 	}
 
 	private static <T> T fromBytes(byte[] data, Class<T> type) throws IOException, ClassNotFoundException {
 		try (ByteArrayInputStream bais = new ByteArrayInputStream(data)) {
-			ObjectInputStream oos = new ObjectInputStream(bais);
-			Object object = oos.readObject();
+			final ObjectInputStream oos = new ObjectInputStream(bais);
+			final Object object = oos.readObject();
 			if (object != null && type.isInstance(object)) {
 				return type.cast(object);
 			}

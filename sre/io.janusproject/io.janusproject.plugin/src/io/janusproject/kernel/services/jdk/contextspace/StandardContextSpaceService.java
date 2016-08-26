@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -198,15 +199,15 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 		assert (contextID != null) : "The contextID cannot be null"; //$NON-NLS-1$
 		assert (defaultSpaceUUID != null) : "The defaultSpaceUUID cannot be null"; //$NON-NLS-1$
 		assert (this.contexts != null) : "Internal Error: the context container must not be null"; //$NON-NLS-1$
-		AgentContext context = this.contexts.get(contextID);
+		final AgentContext context = this.contexts.get(contextID);
 		if (context == null) {
-			Context ctx = this.contextFactory.newInstance(contextID, defaultSpaceUUID, this.spaceRepositoryFactory,
+			final Context ctx = this.contextFactory.newInstance(contextID, defaultSpaceUUID, this.spaceRepositoryFactory,
 					new SpaceEventProxy());
 			assert (ctx != null) : "The internal Context cannot be null"; //$NON-NLS-1$
 			assert (this.contexts != null) : "Internal Error: the context container must not be null"; //$NON-NLS-1$
 			this.contexts.put(contextID, ctx);
 			fireContextCreated(ctx);
-			Space defaultSpace = ctx.postConstruction();
+			final Space defaultSpace = ctx.postConstruction();
 			assert (defaultSpace != null) : "The default space in the context " //$NON-NLS-1$
 					+ contextID + " cannot be null"; //$NON-NLS-1$
 			this.defaultSpaces.putIfAbsent(ctx.getID(), defaultSpace.getID());
@@ -223,7 +224,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	@Override
 	public synchronized void removeContext(UUID contextID) {
 		this.defaultSpaces.remove(contextID);
-		AgentContext context = this.contexts.remove(contextID);
+		final AgentContext context = this.contexts.remove(contextID);
 		if (context != null) {
 			((Context) context).destroy();
 			fireContextDestroyed(context);
@@ -271,9 +272,9 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 * @param context - reference to the created context.
 	 */
 	protected void fireContextCreated(AgentContext context) {
-		ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
+		final ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
 		this.logger.info(StandardContextSpaceService.class, "CONTEXT_CREATED", context.getID()); //$NON-NLS-1$
-		for (ContextRepositoryListener listener : ilisteners) {
+		for (final ContextRepositoryListener listener : ilisteners) {
 			listener.contextCreated(context);
 		}
 	}
@@ -284,9 +285,9 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 * @param context - reference to the destroyed context.
 	 */
 	protected void fireContextDestroyed(AgentContext context) {
-		ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
+		final ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
 		this.logger.info(StandardContextSpaceService.class, "CONTEXT_DESTROYED", context.getID()); //$NON-NLS-1$
-		for (ContextRepositoryListener listener : ilisteners) {
+		for (final ContextRepositoryListener listener : ilisteners) {
 			listener.contextDestroyed(context);
 		}
 	}
@@ -308,7 +309,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 * @param isLocalCreation - indicates if the space was initially created on the current kernel.
 	 */
 	protected void fireSpaceCreated(Space space, boolean isLocalCreation) {
-		for (SpaceRepositoryListener listener : this.listeners.getListeners(SpaceRepositoryListener.class)) {
+		for (final SpaceRepositoryListener listener : this.listeners.getListeners(SpaceRepositoryListener.class)) {
 			listener.spaceCreated(space, isLocalCreation);
 		}
 	}
@@ -320,7 +321,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 * @param isLocalDestruction - indicates if the space was destroyed in the current kernel.
 	 */
 	protected void fireSpaceDestroyed(Space space, boolean isLocalDestruction) {
-		for (SpaceRepositoryListener listener : this.listeners.getListeners(SpaceRepositoryListener.class)) {
+		for (final SpaceRepositoryListener listener : this.listeners.getListeners(SpaceRepositoryListener.class)) {
 			listener.spaceDestroyed(space, isLocalDestruction);
 		}
 	}
@@ -331,7 +332,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 * @param spaceID - identifier of the space to initialize.
 	 */
 	protected synchronized void ensureDefaultSpaceDefinition(SpaceID spaceID) {
-		UUID contextID = spaceID.getContextID();
+		final UUID contextID = spaceID.getContextID();
 		createContext(contextID, spaceID.getID());
 	}
 
@@ -341,7 +342,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 * @param spaceID - identifier of the space to remove.
 	 */
 	protected synchronized void removeDefaultSpaceDefinition(SpaceID spaceID) {
-		AgentContext context = this.contexts.remove(spaceID.getContextID());
+		final AgentContext context = this.contexts.remove(spaceID.getContextID());
 		if (context != null) {
 			fireContextDestroyed(context);
 		}
@@ -349,7 +350,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 
 	@Override
 	protected synchronized void doStart() {
-		for (SpaceID space : this.defaultSpaces.values()) {
+		for (final SpaceID space : this.defaultSpaces.values()) {
 			ensureDefaultSpaceDefinition(space);
 		}
 		this.dmapListener = new ContextDMapListener();
@@ -365,9 +366,9 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 		// Unconnect the default space collection from remote clusters
 		// Not needed becasue the Kernel will be stopped: this.defaultSpaces.destroy();
 		// Delete the contexts from this repository
-		Map<UUID, AgentContext> old = this.contexts;
+		final Map<UUID, AgentContext> old = this.contexts;
 		this.contexts = new TreeMap<>();
-		for (AgentContext context : old.values()) {
+		for (final AgentContext context : old.values()) {
 			((Context) context).destroy();
 			fireContextDestroyed(context);
 		}

@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -110,8 +111,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	/**
 	 * Emit the given event in the given scope.
 	 *
-	 * <p>
-	 * This function emits on the internal event bus of the agent (call to {@link #doEmit(Event, Scope)}), and on the network.
+	 * <p>This function emits on the internal event bus of the agent (call to {@link #doEmit(Event, Scope)}), and on the network.
 	 *
 	 * @param event - the event to emit.
 	 * @param scope - description of the scope of the event, i.e. the receivers of the event.
@@ -134,8 +134,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	/**
 	 * Emit the given event.
 	 *
-	 * <p>
-	 * This function emits on the internal event bus of the agent (call to {@link #doEmit(Event, Scope)}), and on the network.
+	 * <p>This function emits on the internal event bus of the agent (call to {@link #doEmit(Event, Scope)}), and on the network.
 	 *
 	 * @param event - the event to emit.
 	 * @see #emit(Event, Scope)
@@ -147,15 +146,14 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	/**
 	 * Do the emission of the event.
 	 *
-	 * <p>
-	 * This function emits the event <strong>only on the internal event bus</strong> of the agents.
+	 * <p>This function emits the event <strong>only on the internal event bus</strong> of the agents.
 	 *
 	 * @param event - the event to emit.
 	 * @param scope - description of the scope of the event, i.e. the receivers of the event.
 	 */
 	protected void doEmit(Event event, Scope<? super Address> scope) {
 		synchronized (this.participants) {
-			for (EventListener agent : this.participants.getListeners()) {
+			for (final EventListener agent : this.participants.getListeners()) {
 				if (scope.matches(getAddress(agent))) {
 					// TODO Verify the agent is still alive and running
 					this.executorService.submit(new AsyncRunner(agent, event));
@@ -202,7 +200,6 @@ public abstract class AbstractEventSpace extends SpaceBase {
 
 		/**
 		 * Construct.
-		 * 
 		 * @param agent the agent listener.
 		 * @param event the event.
 		 */

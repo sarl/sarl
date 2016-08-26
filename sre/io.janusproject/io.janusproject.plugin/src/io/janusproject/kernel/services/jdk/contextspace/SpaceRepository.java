@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -114,7 +115,7 @@ class SpaceRepository {
 	 * Finalize the initialization: ensure that the events are fired outside the scope of the SpaceRepository constructor.
 	 */
 	synchronized void postConstruction() {
-		for (Entry<SpaceID, Object[]> e : this.spaceIDs.entrySet()) {
+		for (final Entry<SpaceID, Object[]> e : this.spaceIDs.entrySet()) {
 			assert (this.spaceIDs.containsKey(e.getKey()));
 			ensureLocalSpaceDefinition(e.getKey(), e.getValue());
 		}
@@ -133,16 +134,16 @@ class SpaceRepository {
 		// Delete the spaces. If this function is called, it
 		// means that the spaces seems to have no more participant.
 		// The process cannot be done through hazelcast.
-		List<SpaceID> ids = new ArrayList<>(this.spaceIDs.keySet());
+		final List<SpaceID> ids = new ArrayList<>(this.spaceIDs.keySet());
 		this.spaceIDs.clear();
-		for (SpaceID spaceId : ids) {
+		for (final SpaceID spaceId : ids) {
 			removeLocalSpaceDefinition(spaceId, true);
 		}
 	}
 
 	private synchronized <S extends Space> S createSpaceInstance(Class<? extends SpaceSpecification<S>> spec, SpaceID spaceID,
 			boolean isLocalCreation, Object[] creationParams) {
-		S space;
+		final S space;
 		assert (spaceID.getSpaceSpecification() == null
 				|| spaceID.getSpaceSpecification().equals(spec)) : "The specification type is invalid"; //$NON-NLS-1$
 		// Split the call to create() to let the JVM to create the "empty" array for creation parameters.
@@ -152,15 +153,15 @@ class SpaceRepository {
 			space = this.injector.getInstance(spec).create(spaceID);
 		}
 		assert (space != null);
-		SpaceID id = space.getID();
+		final SpaceID id = space.getID();
 		assert (id != null);
 		this.spaces.put(id, space);
 		this.spacesBySpec.put(id.getSpaceSpecification(), id);
 		if (isLocalCreation) {
 			Object[] sharedParams = NO_PARAMETERS;
 			if (creationParams != null && creationParams.length > 0) {
-				List<Object> serializableParameters = new ArrayList<>(creationParams.length);
-				for (Object creationParameter : creationParams) {
+				final List<Object> serializableParameters = new ArrayList<>(creationParams.length);
+				for (final Object creationParameter : creationParams) {
 					if (creationParameter instanceof Serializable) {
 						serializableParameters.add(creationParameter);
 					}
@@ -195,7 +196,7 @@ class SpaceRepository {
 	 * @param isLocalDestruction - indicates if the destruction is initiated by the local kernel.
 	 */
 	protected synchronized void removeLocalSpaceDefinition(SpaceID id, boolean isLocalDestruction) {
-		Space space = this.spaces.remove(id);
+		final Space space = this.spaces.remove(id);
 		if (space != null) {
 			this.spacesBySpec.remove(id.getSpaceSpecification(), id);
 			fireSpaceRemoved(space, isLocalDestruction);
@@ -209,19 +210,19 @@ class SpaceRepository {
 	 */
 	protected synchronized void removeLocalSpaceDefinitions(boolean isLocalDestruction) {
 		if (!this.spaces.isEmpty()) {
-			List<Space> removedSpaces = new ArrayList<>(this.spaces.size());
-			Iterator<Entry<SpaceID, Space>> iterator = this.spaces.entrySet().iterator();
+			final List<Space> removedSpaces = new ArrayList<>(this.spaces.size());
+			final Iterator<Entry<SpaceID, Space>> iterator = this.spaces.entrySet().iterator();
 			Space space;
 			SpaceID id;
 			while (iterator.hasNext()) {
-				Entry<SpaceID, Space> entry = iterator.next();
+				final Entry<SpaceID, Space> entry = iterator.next();
 				id = entry.getKey();
 				space = entry.getValue();
 				iterator.remove();
 				this.spacesBySpec.remove(id.getSpaceSpecification(), id);
 				removedSpaces.add(space);
 			}
-			for (Space s : removedSpaces) {
+			for (final Space s : removedSpaces) {
 				fireSpaceRemoved(s, isLocalDestruction);
 			}
 		}
@@ -256,8 +257,8 @@ class SpaceRepository {
 	@SuppressWarnings("unchecked")
 	public synchronized <S extends io.sarl.lang.core.Space> S getOrCreateSpaceWithSpec(SpaceID spaceID,
 			Class<? extends SpaceSpecification<S>> spec, Object... creationParams) {
-		Collection<SpaceID> ispaces = this.spacesBySpec.get(spec);
-		S firstSpace;
+		final Collection<SpaceID> ispaces = this.spacesBySpec.get(spec);
+		final S firstSpace;
 		if (ispaces == null || ispaces.isEmpty()) {
 			firstSpace = createSpaceInstance(spec, spaceID, true, creationParams);
 		} else {

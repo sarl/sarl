@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,28 +62,28 @@ public class HazelcastModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		SerializerConfig sc = new SerializerConfig();
+		final SerializerConfig sc = new SerializerConfig();
 		sc.setTypeClass(SpaceID.class);
 		sc.setImplementation(new SpaceIDSerializer());
 
-		SerializerConfig sc2 = new SerializerConfig();
+		final SerializerConfig sc2 = new SerializerConfig();
 		sc2.setTypeClass(Address.class);
 		sc2.setImplementation(new AddressSerializer());
 
-		Config hazelcastConfig = new Config();
+		final Config hazelcastConfig = new Config();
 		hazelcastConfig.getSerializationConfig().addSerializerConfig(sc);
 		hazelcastConfig.getSerializationConfig().addSerializerConfig(sc2);
 
 		bind(Config.class).toInstance(hazelcastConfig);
 
 		// Ensure the system property for the hazelcast logger factory
-		String factory = JanusConfig.getSystemProperty(JanusConfig.HAZELCAST_LOGGER_FACTORY_NAME,
+		final String factory = JanusConfig.getSystemProperty(JanusConfig.HAZELCAST_LOGGER_FACTORY_NAME,
 				JanusConfig.HAZELCAST_LOGGER_FACTORY_VALUE);
 		assert (factory != null && !factory.isEmpty());
 		System.setProperty(JanusConfig.HAZELCAST_LOGGER_FACTORY_NAME, factory);
 
 		// Bind the infrastructure service dedicated to Hazelcast
-		Multibinder<Service> serviceSetBinder = Multibinder.newSetBinder(binder(), Service.class);
+		final Multibinder<Service> serviceSetBinder = Multibinder.newSetBinder(binder(), Service.class);
 		serviceSetBinder.addBinding().to(HazelcastInfrastructureService.class).in(Singleton.class);
 
 		// Bind the services based on Hazelcast
@@ -119,11 +120,11 @@ public class HazelcastModule extends AbstractModule {
 		}
 
 		assert (adr != null);
-		String hostname = adr.getHostAddress();
+		final String hostname = adr.getHostAddress();
 		config.setProperty("hazelcast.local.localAddress", hostname); //$NON-NLS-1$
 
-		NetworkConfig networkConfig = config.getNetworkConfig();
-		MulticastConfig multicastConfig = networkConfig.getJoin().getMulticastConfig();
+		final NetworkConfig networkConfig = config.getNetworkConfig();
+		final MulticastConfig multicastConfig = networkConfig.getJoin().getMulticastConfig();
 
 		// The following block of code is fixing the issue hazelcast/hazelcast#2594.
 		if (enableMulticast) {

@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,8 +35,7 @@ import io.sarl.util.RestrictedAccessEventSpaceSpecification;
 /**
  * Default implementation of the specification of a restricted-access event space.
  *
- * <p>
- * The initialization parameters of {@link #create(SpaceID, Object...)} must contain an instance of {@link Acl}. This instance is
+ * <p>The initialization parameters of {@link #create(SpaceID, Object...)} must contain an instance of {@link Acl}. This instance is
  * the Access Control List. The first parameter that is a {@link Permission} will be assumed as the permission to have to be
  * allowed to access to the space.
  *
@@ -53,7 +53,7 @@ public class RestrictedAccessEventSpaceSpecificationImpl implements RestrictedAc
 	public RestrictedAccessEventSpace create(SpaceID id, Object... params) {
 		Acl acl = null;
 		Permission permission = null;
-		for (Object o : params) {
+		for (final Object o : params) {
 			if (o instanceof Acl) {
 				acl = (Acl) o;
 			} else if (o instanceof Permission) {
@@ -64,7 +64,7 @@ public class RestrictedAccessEventSpaceSpecificationImpl implements RestrictedAc
 			if (permission == null) {
 				permission = new RegistrationPermission();
 			}
-			RestrictedAccessEventSpaceImpl space = new RestrictedAccessEventSpaceImpl(id, acl, permission,
+			final RestrictedAccessEventSpaceImpl space = new RestrictedAccessEventSpaceImpl(id, acl, permission,
 					this.injector.getInstance(DistributedDataStructureService.class));
 			this.injector.injectMembers(space);
 			return space;

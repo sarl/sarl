@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,11 +26,9 @@ import java.util.UUID;
 /**
  * A serializer of events to be published over the network.
  *
- * <p>
- * A serializer convert an {@link EventDispatch} into/from an {@link EventEnvelope}.
+ * <p>A serializer convert an {@link EventDispatch} into/from an {@link EventEnvelope}.
  *
- * <p>
- * The implementation of a serializer may use an {@link EventEncrypter} for encrypting/decrypting the envelope.
+ * <p>The implementation of a serializer may use an {@link EventEncrypter} for encrypting/decrypting the envelope.
  *
  * @author $Author: srodriguez$
  * @version $FullVersion$

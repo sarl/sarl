@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -107,7 +108,7 @@ class SchedulesSkill extends Skill implements Schedules {
 	@Override
 	protected synchronized void uninstall() {
 		ScheduledFuture<?> future;
-		for (Entry<String, ScheduledFuture<?>> futureDescription : this.futures.entrySet()) {
+		for (final Entry<String, ScheduledFuture<?>> futureDescription : this.futures.entrySet()) {
 			future = futureDescription.getValue();
 			if ((future instanceof JanusScheduledFutureTask<?>) && ((JanusScheduledFutureTask<?>) future).isCurrentThread()) {
 				// Ignore the cancelation of the future.
@@ -131,7 +132,7 @@ class SchedulesSkill extends Skill implements Schedules {
 	@Override
 	public synchronized AgentTask in(AgentTask task, long delay, Procedure1<? super Agent> procedure) {
 		task.setProcedure(procedure);
-		ScheduledFuture<?> sf = this.executorService.schedule(new AgentRunnableTask(task, false), delay, TimeUnit.MILLISECONDS);
+		final ScheduledFuture<?> sf = this.executorService.schedule(new AgentRunnableTask(task, false), delay, TimeUnit.MILLISECONDS);
 		this.futures.put(task.getName(), sf);
 		return task;
 	}
@@ -162,8 +163,8 @@ class SchedulesSkill extends Skill implements Schedules {
 	@Override
 	public synchronized boolean cancel(AgentTask task, boolean mayInterruptIfRunning) {
 		if (task != null) {
-			String name = task.getName();
-			ScheduledFuture<?> future = this.futures.get(name);
+			final String name = task.getName();
+			final ScheduledFuture<?> future = this.futures.get(name);
 			if (future != null && !future.isDone() && !future.isCancelled() && future.cancel(mayInterruptIfRunning)) {
 				finishTask(name);
 			}
@@ -179,7 +180,7 @@ class SchedulesSkill extends Skill implements Schedules {
 	@Override
 	public synchronized AgentTask every(AgentTask task, long period, Procedure1<? super Agent> procedure) {
 		task.setProcedure(procedure);
-		ScheduledFuture<?> sf = this.executorService.scheduleAtFixedRate(new AgentRunnableTask(task, true), 0, period,
+		final ScheduledFuture<?> sf = this.executorService.scheduleAtFixedRate(new AgentRunnableTask(task, true), 0, period,
 				TimeUnit.MILLISECONDS);
 		this.futures.put(task.getName(), sf);
 		return task;
@@ -206,12 +207,12 @@ class SchedulesSkill extends Skill implements Schedules {
 
 		@Override
 		public void run() {
-			AgentTask task = this.agentTaskRef.get();
+			final AgentTask task = this.agentTaskRef.get();
 			if (task == null) {
 				throw new RuntimeException(Locale.getString(SchedulesSkill.class, "NULL_AGENT_TASK")); //$NON-NLS-1$
 			}
 			try {
-				Agent owner = getOwner();
+				final Agent owner = getOwner();
 				if (task.getGuard().apply(owner).booleanValue()) {
 					task.getProcedure().apply(owner);
 				}

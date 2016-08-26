@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,8 +77,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 	/**
 	 * Wrap the given values into a dedicated view.
 	 *
-	 * <p>
-	 * The replies view may be a {@link SingleKeyValueListView} or a {@link SingleKeyValueSetView} according to the type of the
+	 * <p>The replies view may be a {@link SingleKeyValueListView} or a {@link SingleKeyValueSetView} according to the type of the
 	 * given values' collection.
 	 *
 	 * @param key - the key of the values.
@@ -85,7 +85,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 	 * @return the wrapper.
 	 */
 	Collection<V> wrapValues(K key, Collection<V> values) {
-		Object backEnd = DataViewDelegate.undelegate(values);
+		final Object backEnd = DataViewDelegate.undelegate(values);
 		if (backEnd instanceof List<?>) {
 			return new SingleKeyValueListView(key, (List<V>) values);
 		}
@@ -98,15 +98,14 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 	/**
 	 * Copy the given values.
 	 *
-	 * <p>
-	 * The replies collection may be a {@link List} or a {@link Set} according to the type of the given values' collection.
+	 * <p>The replies collection may be a {@link List} or a {@link Set} according to the type of the given values' collection.
 	 *
 	 * @param values - the values.
 	 * @return the copy.
 	 */
 	@SuppressWarnings({ "unchecked", "checkstyle:illegaltype" })
 	Collection<V> copyValues(Collection<V> values) {
-		Object backEnd = DataViewDelegate.undelegate(values);
+		final Object backEnd = DataViewDelegate.undelegate(values);
 		if (backEnd instanceof List<?>) {
 			return Lists.newArrayList(values);
 		}
@@ -167,7 +166,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 
 	@Override
 	public int valueCount(K key) {
-		Collection<V> values = getDelegatedObject().get(key);
+		final Collection<V> values = getDelegatedObject().get(key);
 		if (values != null && !values.isEmpty()) {
 			return values.size();
 		}
@@ -201,10 +200,10 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<V> removeAll(Object key) {
-		Collection<V> values = getDelegatedObject().removeAll(key);
+		final Collection<V> values = getDelegatedObject().removeAll(key);
 		if (values != null && !values.isEmpty()) {
-			K kkey = (K) key;
-			for (V value : values) {
+			final K kkey = (K) key;
+			for (final V value : values) {
 				fireEntryRemoved(kkey, value);
 			}
 		}
@@ -214,7 +213,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 	@Override
 	public boolean putAll(K key, Iterable<? extends V> values) {
 		boolean changed = false;
-		for (V value : values) {
+		for (final V value : values) {
 			if (getDelegatedObject().put(key, value)) {
 				changed = true;
 				fireEntryAdded(key, value);
@@ -226,7 +225,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 	@Override
 	public boolean putAll(Multimap<? extends K, ? extends V> multimap) {
 		boolean changed = false;
-		for (Entry<? extends K, ? extends V> entry : multimap.entries()) {
+		for (final Entry<? extends K, ? extends V> entry : multimap.entries()) {
 			if (getDelegatedObject().put(entry.getKey(), entry.getValue())) {
 				changed = true;
 				fireEntryAdded(entry.getKey(), entry.getValue());
@@ -587,11 +586,11 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 			@SuppressWarnings("unchecked")
 			@Override
 			public void remove() {
-				Collection<V> oldValues = get(this.key);
-				V[] tab = (V[]) new Object[oldValues.size()];
+				final Collection<V> oldValues = get(this.key);
+				final V[] tab = (V[]) new Object[oldValues.size()];
 				oldValues.toArray(tab);
 				this.iterator.remove();
-				for (V value : tab) {
+				for (final V value : tab) {
 					fireEntryRemoved(this.key, value);
 				}
 			}
@@ -840,13 +839,13 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 		@SuppressWarnings("unchecked")
 		@Override
 		public Collection<V> remove(Object key) {
-			Collection<V> collection = this.backedMap.remove(key);
+			final Collection<V> collection = this.backedMap.remove(key);
 			if (collection == null) {
 				return null;
 			}
-			Collection<V> output = copyValues(collection);
+			final Collection<V> output = copyValues(collection);
 			collection.clear();
-			for (V value : output) {
+			for (final V value : output) {
 				fireEntryRemoved((K) key, value);
 			}
 			return output;
@@ -855,7 +854,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 		@SuppressWarnings("unchecked")
 		@Override
 		public Collection<V> get(Object key) {
-			Collection<V> collection = this.backedMap.get(key);
+			final Collection<V> collection = this.backedMap.get(key);
 			if (collection == null) {
 				return null;
 			}
@@ -930,7 +929,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 				@Override
 				public Entry<K, Collection<V>> next() {
 					this.entry = this.iterator.next();
-					Collection<V> wrappedValues = wrapValues(this.entry.getKey(), this.entry.getValue());
+					final Collection<V> wrappedValues = wrapValues(this.entry.getKey(), this.entry.getValue());
 					return Maps.immutableEntry(this.entry.getKey(), wrappedValues);
 				}
 
@@ -939,12 +938,12 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 					if (this.entry == null) {
 						throw new IllegalStateException();
 					}
-					Collection<V> originalCollection = this.entry.getValue();
-					Collection<V> oldValues = Lists.newArrayList(originalCollection);
+					final Collection<V> originalCollection = this.entry.getValue();
+					final Collection<V> oldValues = Lists.newArrayList(originalCollection);
 					// The remove is clearing the backend collection
 					this.iterator.remove();
-					K key = this.entry.getKey();
-					for (V value : oldValues) {
+					final K key = this.entry.getKey();
+					for (final V value : oldValues) {
 						fireEntryRemoved(key, value);
 					}
 					this.entry = null;

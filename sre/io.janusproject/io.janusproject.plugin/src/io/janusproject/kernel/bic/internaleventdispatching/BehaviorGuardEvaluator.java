@@ -1,15 +1,16 @@
 /*
  * $Id$
  *
- * Janus platform is an open-source multiagent platform.
- * More details on http://www.janusproject.io
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,59 +31,56 @@ import java.util.Collection;
  * Describes each class having one of its methods annotated with {@code PerceptGuardEvaluator} annotation corresponding to the
  * method in charge of evaluating the guard associated to a given event and returns the list of behaviors runnable that must be
  * executed according to the result of the guard evaluation.
- * 
- * 
  * @author $Author: ngaud$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  *
  */
-public class BehaviorGuardEvaluator {
+public final class BehaviorGuardEvaluator {
+
+    /** The object with the {@code PerceptGuardEvaluator} method. */
+    private final Object target;
+
+    /** {@code PerceptGuardEvaluator} method. */
+    private final Method method;
+
+    private BehaviorGuardEvaluator(Object target, Method method) {
+        this.target = checkNotNull(target);
+        this.method = method;
+    }
 
 	/**
 	 * Creates a {@code Subscriber} for {@code method} on {@code listener}.
-	 * 
-	 * @param listener
-	 * @param method
-	 * @return
+	 * @param listener - the listener
+	 * @param method - the method to call to evaluate a guard
+	 * @return a BehaviorGuardEvaluator
 	 */
 	static BehaviorGuardEvaluator create(Object listener, Method method) {
 		return new BehaviorGuardEvaluator(listener, method);
 	}
 
-	/** The object with the {@code PerceptGuardEvaluator} method. */
-	private final Object target;
-
-	/** {@code PerceptGuardEvaluator} method. */
-	private final Method method;
-
-	private BehaviorGuardEvaluator(Object target, Method method) {
-		this.target = checkNotNull(target);
-		this.method = method;
-	}
-
 	/**
-	 * Evaluate the guard associated to the specified {@code event} and returns the list of behaviors methods that must be
-	 * executed
-	 * 
+	 * Evaluates the guard associated to the specified {@code event} and returns the list of behaviors methods that must be
+	 * executed.
 	 * @param event - the event triggering behaviors
 	 * @param behaviorsMethodsToExecute - the list of behavior methods that will be completed according to the result of the guard
 	 *        evaluation, BE CARFEUL: we suppose that these behavior methods are parts of the SAME object where the
 	 *        {@code PerceptGuardEvaluator} method is declared
-	 * @throws InvocationTargetException
+	 * @throws InvocationTargetException - exception during evaluation, can find the method to invoke
 	 */
-	final void evaluateGuard(final Object event, Collection<Runnable> behaviorsMethodsToExecute)
+	void evaluateGuard(final Object event, Collection<Runnable> behaviorsMethodsToExecute)
 			throws InvocationTargetException {
 		invokeBehaviorGuardEvaluatorMethod(event, behaviorsMethodsToExecute);
 	}
 
 	/**
 	 * Invokes the subscriber method. This method can be overridden to make the invocation synchronized.
-	 * 
-	 * @param event
-	 * @param behaviorsMethodsToExecute
-	 * @throws InvocationTargetException
+     * @param event - the event triggering behaviors
+     * @param behaviorsMethodsToExecute - the list of behavior methods that will be completed according to the result of the guard
+     *        evaluation, BE CARFEUL: we suppose that these behavior methods are parts of the SAME object where the
+     *        {@code PerceptGuardEvaluator} method is declared
+     * @throws InvocationTargetException - exception during evaluation, can find the method to invoke
 	 */
 	private void invokeBehaviorGuardEvaluatorMethod(Object event, Collection<Runnable> behaviorsMethodsToExecute)
 			throws InvocationTargetException {
@@ -103,8 +101,7 @@ public class BehaviorGuardEvaluator {
 	}
 
 	/**
-	 * Returns he object instance containing the {@code PerceptGuardEvaluator}
-	 * 
+	 * Returns he object instance containing the {@code PerceptGuardEvaluator}.
 	 * @return the object instance containing the {@code PerceptGuardEvaluator}
 	 */
 	public Object getTarget() {
@@ -117,9 +114,9 @@ public class BehaviorGuardEvaluator {
 	}
 
 	@Override
-	public final boolean equals(Object obj) {
+	public boolean equals(Object obj) {
 		if (obj instanceof BehaviorGuardEvaluator) {
-			BehaviorGuardEvaluator that = (BehaviorGuardEvaluator) obj;
+			final BehaviorGuardEvaluator that = (BehaviorGuardEvaluator) obj;
 			// Use == so that different equal instances will still receive events.
 			// We only guard against the case that the same object is registered
 			// multiple times
