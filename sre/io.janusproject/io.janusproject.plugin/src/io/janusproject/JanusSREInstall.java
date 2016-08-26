@@ -29,11 +29,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.CoreException;
@@ -48,7 +50,9 @@ import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.core.util.Util;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
+import org.eclipse.xtext.xbase.lib.Pair;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
 import org.w3c.dom.Document;
@@ -77,7 +81,7 @@ public class JanusSREInstall extends AbstractSREInstall {
 
     /**
      * The set of dependencies of the Janus plugin that really useful the runtime configuration This a manual configuration that must be update each
-     * time you change the dependency FIXME Update this array if you change the dependency of the JAnus plugin and if this dependency is required at
+     * time you change the dependency FIXME Update this array if you change the dependency of the Janus plugin and if this dependency is required at
      * runtime by the launch configuration.
      */
     private static final Set<String> RUNTIME_REQUIRED_DEPDENCIES = new HashSet<>(Arrays.asList("io.sarl.core", //$NON-NLS-1$
@@ -92,12 +96,19 @@ public class JanusSREInstall extends AbstractSREInstall {
     private IPath janusSREInstallPath;
 
     /**
-     * The set of dependencies of this bundle.
+     * The map associating a given bundle (the Janus plugins and its transitive dependencies) to its corresponding ClassPath Entry.
+     * The version is used when we have multiple times the same bundle with different version, in this case, we only kept the latest version.
      */
-    private Set<Bundle> dependencies = new HashSet<>();
+    private Map<Bundle, Pair<Version, List<IRuntimeClasspathEntry>>> dependencies = new TreeMap<>(new Comparator<Bundle>() {
+        @Override
+        public int compare(Bundle o1, Bundle o2) {
+            return o1.getSymbolicName().compareTo(o2.getSymbolicName());
+        }
+    });
 
-    private List<IRuntimeClasspathEntry> classpathEntries = new ArrayList<>();
-
+    /**
+     * The path of this installation of the Janus plugin.
+     */
     private String location;
 
     /**
@@ -129,6 +140,10 @@ public class JanusSREInstall extends AbstractSREInstall {
 
         } else {
             this.janusSREInstallPath = bundlePath;
+            final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(bundlePath, null, null);
+            final List<IRuntimeClasspathEntry> cpEntries = new ArrayList<>();
+            cpEntries.add(new RuntimeClasspathEntry(cpEntry));
+            this.dependencies.put(bundle, new Pair<>(bundle.getVersion(), cpEntries));
         }
         this.location = this.janusSREInstallPath.toPortableString();
         this.setName("JANUS DEFAULT SRE"); //$NON-NLS-1$
@@ -136,7 +151,10 @@ public class JanusSREInstall extends AbstractSREInstall {
         // Parsing all bundle dependencies
         getAllBundleDependencies(bundle, true);
 
-        this.setClassPathEntries(this.classpathEntries);
+        final List<IRuntimeClasspathEntry> classpathEntries = new ArrayList<>();
+        for (final Pair<Version, List<IRuntimeClasspathEntry>> cpe : this.dependencies.values()) {
+            classpathEntries.addAll(cpe.getValue());
+        }
 
         this.setMainClass("io.janusproject.Boot"); //$NON-NLS-1$
 
@@ -145,26 +163,27 @@ public class JanusSREInstall extends AbstractSREInstall {
         // In our case we need the fragment com.google.inject.multibindings
         // see also the build.properties to enable Tycho to catch these
         // fragment's dependencies
-        final Bundle[] googleMultiBindinfsBundles = Platform.getBundles("com.google.inject.multibindings", "4.0.0");  //$NON-NLS-1$//$NON-NLS-2$
+        final Bundle[] googleMultiBindinfsBundles = Platform.getBundles("com.google.inject.multibindings", "4.0.0"); //$NON-NLS-1$//$NON-NLS-2$
         if (googleMultiBindinfsBundles.length > 0) {
             final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(BundleUtil.getBundlePath(googleMultiBindinfsBundles[0]), null, null);
-            this.classpathEntries.add(new RuntimeClasspathEntry(cpEntry));
+            classpathEntries.add(new RuntimeClasspathEntry(cpEntry));
         }
+
+        this.setClassPathEntries(new ArrayList<>(classpathEntries));
     }
 
     /**
      * Recrusive function to get all the required runtime dependencies of this SRE plugin and adding the corresponding elements to the
      * {@code classpathEntries} collection.
+     *
      * @param bundle
      *            - the bundle used as root to start the dynamic search of dependencies
      * @param firstcall
      *            - boolean specifying if we are at the first recursive call, in this case we use the {@code runtimeNecessaryDependencies} collections
      *            to filter the dependencies that are really useful at runtime.
-     * @return the complete dependency tree of bundles (dependencies and transitive dependencies) required by the specified bundle
      */
-    private Set<Bundle> getAllBundleDependencies(Bundle bundle, boolean firstcall) {
-
-        addBundleClasspathAndReferencetoClasspath(bundle);
+    @SuppressWarnings("checkstyle:nestedifdepth")
+    private void getAllBundleDependencies(Bundle bundle, boolean firstcall) {
 
         final BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
         final List<BundleWire> bundleWires = bundleWiring.getRequiredWires(null);
@@ -175,91 +194,76 @@ public class JanusSREInstall extends AbstractSREInstall {
 
                 dependency = wire.getProviderWiring().getBundle();
                 final String dependencyInstallationPath = dependency.getLocation();
-                if (firstcall) {
-                    // First level of dependencies that are filtered according
-                    // to runtimeNecessaryDependencies
-                    if (RUNTIME_REQUIRED_DEPDENCIES.contains(dependency.getSymbolicName())) {
-                        // System.out.println("Managing " +
-                        // dependency.getSymbolicName() + "_" +
-                        // dependency.getLocation());
 
+                final Pair<Version, List<IRuntimeClasspathEntry>> existingDependencyCPE = this.dependencies.get(dependency);
+                if (existingDependencyCPE == null
+                        || (existingDependencyCPE != null && dependency.getVersion().compareTo(existingDependencyCPE.getKey()) > 0)) {
+                    if (firstcall) {
+                        // First level of dependencies that are filtered according to runtimeNecessaryDependencies
+                        if (RUNTIME_REQUIRED_DEPDENCIES.contains(dependency.getSymbolicName())) {
+                            URL u = null;
+                            try {
+                                u = FileLocator.resolve(dependency.getEntry("/"));
+                            } catch (IOException e) {
+                                SARLEclipsePlugin.getDefault().log(e);
+                                return;
+                            }
+
+                            if (dependencyInstallationPath.contains("jar") || u.getProtocol().equals("jar")) {
+
+                                final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(BundleUtil.getBundlePath(dependency), null, null);
+                                final List<IRuntimeClasspathEntry> cpEntries = new ArrayList<>();
+                                cpEntries.add(new RuntimeClasspathEntry(cpEntry));
+                                this.dependencies.put(dependency, new Pair<>(dependency.getVersion(), cpEntries));
+
+                            } else {
+                                // Management of a project having a .classpath to get the classapth
+                                readDotClasspathAndReferencestoClasspath(dependency, u);
+                            }
+
+                            getAllBundleDependencies(dependency, false);
+
+                        } else {
+                            //DO NOTHING this is a dependency that is required at runtime by the launch configuration
+                        }
+
+                    } else {
                         URL u = null;
-
                         try {
                             u = FileLocator.resolve(dependency.getEntry("/"));
                         } catch (IOException e) {
+
                             SARLEclipsePlugin.getDefault().log(e);
-                            return null;
+                            return;
                         }
 
                         if (dependencyInstallationPath.contains("jar") || u.getProtocol().equals("jar")) {
 
                             final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(BundleUtil.getBundlePath(dependency), null, null);
-                            this.classpathEntries.add(new RuntimeClasspathEntry(cpEntry));
+                            final List<IRuntimeClasspathEntry> cpEntries = new ArrayList<>();
+                            cpEntries.add(new RuntimeClasspathEntry(cpEntry));
+                            this.dependencies.put(dependency, new Pair<>(dependency.getVersion(), cpEntries));
 
                         } else {
-                            // Management of a project having a .classpath to
-                            // get the classapth
-                            readDotClasspathAndReferencestoClasspath(bundle, u);
+                            // Management of a project having a .classpath to get
+                            // the classapth
+                            readDotClasspathAndReferencestoClasspath(dependency, u);
                         }
 
-                        if (this.dependencies.add(dependency)) {
-                            // System.out.println("Managing DEPENDENCIES OF " +
-                            // dependency.getSymbolicName() + "_" +
-                            // bundle.getLocation());
-                            this.dependencies.addAll(getAllBundleDependencies(dependency, false));
-                        }
-                    } else {
-                        // System.out.println("NOT MANAGING" +
-                        // dependency.getSymbolicName() + "_" +
-                        // dependency.getLocation());
-                        // DO NOTHING this is a dependency that is required at
-                        // runtime by the launch configuration
-                    }
-
-                } else {
-                    // System.out.println("Managing " +
-                    // dependency.getSymbolicName() + "_" +
-                    // dependency.getLocation());
-
-                    URL u = null;
-
-                    try {
-                        u = FileLocator.resolve(dependency.getEntry("/"));
-                    } catch (IOException e) {
-
-                        SARLEclipsePlugin.getDefault().log(e);
-                        return null;
-                    }
-
-                    if (dependencyInstallationPath.contains("jar") || u.getProtocol().equals("jar")) {
-
-                        final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(BundleUtil.getBundlePath(dependency), null, null);
-                        this.classpathEntries.add(new RuntimeClasspathEntry(cpEntry));
-
-                    } else {
-                        // Management of a project having a .classpath to get
-                        // the classapth
-                        readDotClasspathAndReferencestoClasspath(bundle, u);
-                    }
-
-                    if (this.dependencies.add(dependency)) {
-                        // Recursive call to next level of dependencies
-                        this.dependencies.addAll(getAllBundleDependencies(dependency, false));
+                        getAllBundleDependencies(dependency, false);
                     }
                 }
-
             }
         }
-        return this.dependencies;
     }
 
     /**
      * Detects if the specified bundle is a jar or a directory and react accordingly to parse its content.
+     *
      * @param bundle
      *            - the bundle to check
      */
-    private void addBundleClasspathAndReferencetoClasspath(Bundle bundle) {
+    /*private void addBundleClasspathAndReferencetoClasspath(Bundle bundle) {
 
         final IPath bundlePath = BundleUtil.getBundlePath(bundle);
 
@@ -296,16 +300,20 @@ public class JanusSREInstall extends AbstractSREInstall {
             if (bundlePath.toFile().isFile() && bundlePath.getFileExtension().equals("jar")) {
                 // this is a common jar file, just add it to the classpath
                 final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(bundlePath, null, null);
-                this.classpathEntries.add(new RuntimeClasspathEntry(cpEntry));
-
+                final List<IRuntimeClasspathEntry> cpEntries = new ArrayList<>();
+                cpEntries.add(new RuntimeClasspathEntry(cpEntry));
+                System.out.println("Adding bundle itself " + bundle);
+                this.dependencies.put(bundle, new Pair<>(bundle.getVersion(), cpEntries));
             }
 
         }
 
-    }
+    }*/
 
     /**
-     * Explore the various entries of a bundle to find its .classpath file, parse it and update accordingly the {@code classpathEntries} collection.
+     * Explore the various entries of a bundle to find its .classpath file, parse it and update accordingly the {@code classpathEntries}
+     * collection of this bundle.
+     *
      * @param bundle
      *            - the bundle to explore
      * @param bundleInstallURL
@@ -314,7 +322,7 @@ public class JanusSREInstall extends AbstractSREInstall {
      */
     private IPath readDotClasspathAndReferencestoClasspath(Bundle bundle, URL bundleInstallURL) {
         IPath outputLocation = null;
-
+        final List<IRuntimeClasspathEntry> cpEntries = new ArrayList<>();
         final Enumeration<String> entries = bundle.getEntryPaths("/"); //$NON-NLS-1$
         String entry = null;
         while (entries.hasMoreElements()) {
@@ -330,7 +338,7 @@ public class JanusSREInstall extends AbstractSREInstall {
                         final IClasspathEntry outputLocationEntry = classpath[0][classpath[0].length - 1];
                         if (outputLocationEntry.getContentKind() == ClasspathEntry.K_OUTPUT) {
                             outputLocation = outputLocationEntry.getPath();
-                            this.classpathEntries.add(new RuntimeClasspathEntry(outputLocationEntry));
+                            cpEntries.add(new RuntimeClasspathEntry(outputLocationEntry));
                         }
                     }
 
@@ -359,12 +367,14 @@ public class JanusSREInstall extends AbstractSREInstall {
                                     // Common entry type:
                                     // CPE_PROJECT|CPE_LIBRARY|CPE_VARIABLE,
                                     // directly managed by RuntimeClasspathEntry
-                                    this.classpathEntries.add(new RuntimeClasspathEntry(cpentry));
+                                    cpEntries.add(new RuntimeClasspathEntry(cpentry));
                                 }
                             }
                         }
 
                     }
+
+
                 } catch (IOException | CoreException | URISyntaxException e) {
 
                     SARLEclipsePlugin.getDefault().log(e);
@@ -379,7 +389,8 @@ public class JanusSREInstall extends AbstractSREInstall {
                     final File jarFile = Util.toLocalFile(bundleJARfileFullURL.toURI(), null);
                     final IPath jarFilePath = new Path(jarFile.getAbsolutePath());
                     final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(jarFilePath, null, null);
-                    this.classpathEntries.add(new RuntimeClasspathEntry(cpEntry));
+
+                    cpEntries.add(new RuntimeClasspathEntry(cpEntry));
                 } catch (CoreException | URISyntaxException | MalformedURLException e) {
 
                     SARLEclipsePlugin.getDefault().log(e);
@@ -387,6 +398,12 @@ public class JanusSREInstall extends AbstractSREInstall {
                 }
             }
         }
+
+
+        if (cpEntries.size() > 0) {
+            this.dependencies.put(bundle, new Pair<>(bundle.getVersion(), cpEntries));
+        }
+
         return outputLocation;
     }
 
