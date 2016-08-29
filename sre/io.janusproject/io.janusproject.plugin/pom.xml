@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>io.janusproject.sre</groupId>
+		<artifactId>io.janusproject</artifactId>
+		<version>0.4.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>io.janusproject</groupId>
+	<artifactId>io.janusproject.plugin</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	<name>Janus Project</name>
+	<url>http://www.janusproject.io/</url>
+	<inceptionYear>2008</inceptionYear>
+
+
+
+
+	<build>
+
+		<resources>
+			<resource>
+				<directory>aboutfeature</directory>
+				<filtering>true</filtering>
+				<targetPath>.</targetPath>
+			</resource>
+		</resources>
+
+
+		<plugins>
+			<plugin>
+				<groupId>io.sarl.maven</groupId>
+				<artifactId>io.sarl.maven.sre</artifactId>
+				<version>${project.version}</version>
+				<configuration>
+					<sreName>JANUS</sreName>
+					<standaloneSRE>false</standaloneSRE>
+					<commandLineOptions>
+						<hideInfo>--log=warning</hideInfo>
+						<hideLogo>--nologo</hideLogo>
+						<showInfo>--log=info</showInfo>
+						<showLogo></showLogo>
+						<defaultContextId>--worldid</defaultContextId>
+						<randomContextId>--randomid</randomContextId>
+						<bootAgentContextId>--bootid</bootAgentContextId>
+						<offline>--offline</offline>
+						<noMoreOption>--</noMoreOption>
+					</commandLineOptions>
+					<mainClass>io.janusproject.Boot</mainClass>
+				</configuration>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>updatemanifest</goal>
+						</goals>
+					</execution>
+				</executions>
+
+			</plugin>
+
+		</plugins>
+
+	</build>
+
+</project>

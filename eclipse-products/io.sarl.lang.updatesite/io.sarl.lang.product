@@ -261,6 +261,7 @@
       <feature id="io.sarl.ide" version="0.4.0.qualifier"/>
       <feature id="io.sarl.baseplatform" version="0.4.0.qualifier"/>
       <feature id="io.sarl.examples.feature" version="0.4.0.qualifier"/>
+      <feature id="io.janusproject.feature" version="0.4.0.qualifier"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.jboss.tools.m2e.jdt.feature"/>
       <feature id="org.eclipse.help"/>

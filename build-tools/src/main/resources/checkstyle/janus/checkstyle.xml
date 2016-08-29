@@ -251,9 +251,9 @@
 
 		<!-- ************* *** SIZES *** ************* -->
 
-		<!-- Line length is 130 (100 in Google standards). -->
+		<!-- Line length is 150 (100 in Google standards). -->
 		<module name="LineLength">
-			<property name="max" value="130" />
+			<property name="max" value="150" />
 			<property name="ignorePattern"
 				value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
 		</module>

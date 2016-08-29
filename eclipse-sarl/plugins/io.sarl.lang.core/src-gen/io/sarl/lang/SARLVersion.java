@@ -70,7 +70,7 @@ public final class SARLVersion {
 	/** The version number of the Janus platform that should support the current version
 	 * of the SARL tools.
 	 */
-	public static final String PRECONIZED_JANUS_VERSION = "2.0.4.0-SNAPSHOT"; //$NON-NLS-1$
+	public static final String PRECONIZED_JANUS_VERSION = "0.4.0-SNAPSHOT"; //$NON-NLS-1$
 
 	private SARLVersion() {
 		//

@@ -41,6 +41,10 @@ import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
+import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
 import org.osgi.framework.Version;
@@ -52,33 +56,29 @@ import org.w3c.dom.NodeList;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Utilities;
 
-
 /**
  * Standard SRE install.
  *
- * <p>The standard SRE install assumes: <ul>
+ * <p>The standard SRE install assumes:
+ * <ul>
  * <li>The SRE is based on a single JAR file.</li>
  * <li>The main class of the SRE is defined in the Manifest field <code>"Main-Class"</code>.</li>
- * <li>The Manifest contains a section named <code>"SARL-Runtime-Environment"</code>. This
- *     section contains the following entries: <ul>
- *     <li>The version number of the SARL sepcifications that are supported by the SRE is
- *     defined in the Manifest field <code>"SARL-Spec-Version"</code>.</li>
- *     <li>The name of the SRE may be given by the field <code>"Name"</code>.</li>
- *     <li>The VM arguments of the SRE may be given by the field <code>"VM-Arguments"</code>.</li>
- *     <li>The program arguments of the SRE may be given by the field <code>"Program-Arguments"</code>.</li>
- *     <li>The command line option for avoiding the logo is given by the field <code>"CLI-Hide-Logo"</code>.</li>
- *     <li>The command line option for displaying the logo is given by the field <code>"CLI-Show-Logo"</code>.</li>
- *     <li>The command line option for displaying the information messages is given by the
- *     		field<code>"CLI-Show-Info"</code>.</li>
- *     <li>The command line option for hiding the information messages is given by the
- *     		field<code>"CLI-Hide-Info"</code>.</li>
- *     <li>The command line option for using the default root context id is given by the
- *     		field<code>"CLI-Default-Context-ID"</code>.</li>
- *     <li>The command line option for using the random root context id is given by the
- *     		field<code>"CLI-Random-Context-ID"</code>.</li>
- *     <li>The command line option for using the agent-type-based root context id is given by the
- *     		field<code>"CLI-BootAgent-Context-ID"</code>.</li>
- *     </ul></li>
+ * <li>The Manifest contains a section named <code>"SARL-Runtime-Environment"</code>. This section contains the following entries:
+ * <ul>
+ * <li>The version number of the SARL sepcifications that are supported by the SRE is defined in the Manifest field <code>"SARL-Spec-Version"</code>.
+ * </li>
+ * <li>The name of the SRE may be given by the field <code>"Name"</code>.</li>
+ * <li>The VM arguments of the SRE may be given by the field <code>"VM-Arguments"</code>.</li>
+ * <li>The program arguments of the SRE may be given by the field <code>"Program-Arguments"</code>.</li>
+ * <li>The command line option for avoiding the logo is given by the field <code>"CLI-Hide-Logo"</code>.</li>
+ * <li>The command line option for displaying the logo is given by the field <code>"CLI-Show-Logo"</code>.</li>
+ * <li>The command line option for displaying the information messages is given by the field<code>"CLI-Show-Info"</code>.</li>
+ * <li>The command line option for hiding the information messages is given by the field<code>"CLI-Hide-Info"</code>.</li>
+ * <li>The command line option for using the default root context id is given by the field<code>"CLI-Default-Context-ID"</code>.</li>
+ * <li>The command line option for using the random root context id is given by the field<code>"CLI-Random-Context-ID"</code>.</li>
+ * <li>The command line option for using the agent-type-based root context id is given by the field<code>"CLI-BootAgent-Context-ID"</code>.</li>
+ * </ul>
+ * </li>
  * </ul>
  *
  * @author $Author: sgalland$
@@ -118,7 +118,8 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 	private transient SoftReference<Map<String, String>> optionBuffer;
 
-	/** Construct a SRE installation.
+	/**
+	 * Construct a SRE installation.
 	 *
 	 * @param id - the identifier of this SRE installation.
 	 */
@@ -129,8 +130,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	@Override
 	public StandardSREInstall clone() {
 		final StandardSREInstall clone = (StandardSREInstall) super.clone();
-		clone.jarFile = this.jarFile == null ? null
-				: Path.fromPortableString(clone.jarFile.toPortableString());
+		clone.jarFile = this.jarFile == null ? null : Path.fromPortableString(clone.jarFile.toPortableString());
 		return clone;
 	}
 
@@ -139,7 +139,8 @@ public class StandardSREInstall extends AbstractSREInstall {
 		return (StandardSREInstall) super.copy(id);
 	}
 
-	/** Replies the path to the JAR file that is supporting this SRE installation.
+	/**
+	 * Replies the path to the JAR file that is supporting this SRE installation.
 	 *
 	 * @return the path to the JAR file. Must not be <code>null</code>.
 	 */
@@ -147,14 +148,14 @@ public class StandardSREInstall extends AbstractSREInstall {
 		return this.jarFile;
 	}
 
-	/** Change the path to the JAR file that is supporting this SRE installation.
+	/**
+	 * Change the path to the JAR file that is supporting this SRE installation.
 	 *
 	 * @param jarFile - the path to the JAR file. Must not be <code>null</code>.
 	 */
 	public void setJarFile(IPath jarFile) {
 		if (!Objects.equal(jarFile, this.jarFile)) {
-			final PropertyChangeEvent event = new PropertyChangeEvent(
-					this, ISREInstallChangedListener.PROPERTY_JAR_FILE,
+			final PropertyChangeEvent event = new PropertyChangeEvent(this, ISREInstallChangedListener.PROPERTY_JAR_FILE,
 					this.jarFile, jarFile);
 			this.jarFile = jarFile;
 			setDirty(true);
@@ -166,11 +167,11 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 	@Override
 	public String getLocation() {
-		final IPath jarFile = getJarFile();
-		if (jarFile == null) {
+		final IPath iJarFile = getJarFile();
+		if (iJarFile == null) {
 			return getName();
 		}
-		return jarFile.toOSString();
+		return iJarFile.toOSString();
 	}
 
 	@Override
@@ -192,7 +193,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 		return super.getName();
 	}
 
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	@SuppressWarnings({ "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity" })
 	@Override
 	protected void resolveDirtyFields(boolean forceSettings) {
 		if (this.jarFile != null) {
@@ -252,9 +253,8 @@ public class StandardSREInstall extends AbstractSREInstall {
 				// VM arguments
 				final String vmArgs = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_VM_ARGUMENTS));
 				if (!this.vmArguments.equals(vmArgs)) {
-					final PropertyChangeEvent event = new PropertyChangeEvent(
-							this, ISREInstallChangedListener.PROPERTY_VM_ARGUMENTS,
-							this.vmArguments, Strings.nullToEmpty(vmArgs));
+					final PropertyChangeEvent event = new PropertyChangeEvent(this,
+							ISREInstallChangedListener.PROPERTY_VM_ARGUMENTS, this.vmArguments, Strings.nullToEmpty(vmArgs));
 					this.vmArguments = vmArgs;
 					if (getNotify()) {
 						SARLRuntime.fireSREChanged(event);
@@ -279,9 +279,8 @@ public class StandardSREInstall extends AbstractSREInstall {
 				// Program arguments
 				final String programArgs = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_PROGRAM_ARGUMENTS));
 				if (!this.programArguments.equals(programArgs)) {
-					final PropertyChangeEvent event = new PropertyChangeEvent(
-							this, ISREInstallChangedListener.PROPERTY_PROGRAM_ARGUMENTS,
-							this.programArguments, programArgs);
+					final PropertyChangeEvent event = new PropertyChangeEvent(this,
+							ISREInstallChangedListener.PROPERTY_PROGRAM_ARGUMENTS, this.programArguments, programArgs);
 					this.programArguments = programArgs;
 					if (getNotify()) {
 						SARLRuntime.fireSREChanged(event);
@@ -289,18 +288,33 @@ public class StandardSREInstall extends AbstractSREInstall {
 				}
 				//
 				// Library Location
-				if (forceSettings || getLibraryLocations().length == 0) {
-					final List<LibraryLocation> classPath = new ArrayList<>();
-					classPath.add(new LibraryLocation(this.jarFile, Path.EMPTY, Path.EMPTY));
+				if (forceSettings || getClassPathEntries().isEmpty()) {
+					final List<IRuntimeClasspathEntry> classPath = new ArrayList<>();
+					LibraryLocation location = new LibraryLocation(this.jarFile, Path.EMPTY, Path.EMPTY);
+					IClasspathEntry cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(),
+							location.getSystemLibrarySourcePath(), location.getPackageRootPath());
+
+					IRuntimeClasspathEntry rtcpEntry = new RuntimeClasspathEntry(cpEntry);
+					// No more a bootstrap library for enabling it to be in the classpath (not the JVM bootstrap).
+					// In fact you can have a single bootstrap library if you add a new one you remove the default one and it bugs
+					rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+					classPath.add(rtcpEntry);
+					//
 					final String classPathStr = manifest.getMainAttributes().getValue(SREConstants.MANIFEST_CLASS_PATH);
 					if (!Strings.isNullOrEmpty(classPathStr)) {
 						for (final String cpElement : classPathStr.split(Pattern.quote(":"))) { //$NON-NLS-1$
 							final IPath path = Path.fromPortableString(cpElement);
-							classPath.add(new LibraryLocation(path, Path.EMPTY, Path.EMPTY));
+							location = new LibraryLocation(path, Path.EMPTY, Path.EMPTY);
+							cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(),
+									location.getSystemLibrarySourcePath(), location.getPackageRootPath());
+							rtcpEntry = new RuntimeClasspathEntry(cpEntry);
+							// No more a bootstrap library for enabling it to be in the classpath (not the JVM bootstrap).
+							// In fact you can have a single bootstrap library if you add a new one you remove the default one and it bugs
+							rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+							classPath.add(rtcpEntry);
 						}
 					}
-					final LibraryLocation[] locations = classPath.toArray(new LibraryLocation[classPath.size()]);
-					setLibraryLocations(locations);
+					setClassPathEntries(classPath);
 				}
 			} catch (SREException e) {
 				throw e;
@@ -369,18 +383,20 @@ public class StandardSREInstall extends AbstractSREInstall {
 		if (!mainClass.equals(this.manifestMainClass)) {
 			element.setAttribute(SREConstants.XML_MAIN_CLASS, mainClass);
 		}
-		final LibraryLocation[] libraries = getLibraryLocations();
-		if (libraries.length != 1 || !libraries[0].getSystemLibraryPath().equals(this.jarFile)) {
-			for (final LibraryLocation location : libraries) {
+		final List<IRuntimeClasspathEntry> libraries = getClassPathEntries();
+		if (libraries.size() != 1 || !libraries.get(0).getClasspathEntry().getPath().equals(this.jarFile)) {
+			for (final IRuntimeClasspathEntry location : libraries) {
 				final Element libraryNode = document.createElement(SREConstants.XML_LIBRARY_LOCATION);
 				libraryNode.setAttribute(SREConstants.XML_SYSTEM_LIBRARY_PATH,
-						location.getSystemLibraryPath().toPortableString());
-				libraryNode.setAttribute(SREConstants.XML_PACKAGE_ROOT_PATH, location.getPackageRootPath().toPortableString());
-				libraryNode.setAttribute(SREConstants.XML_SOURCE_PATH, location.getSystemLibrarySourcePath().toPortableString());
+						location.getPath().toPortableString());
+				libraryNode.setAttribute(SREConstants.XML_PACKAGE_ROOT_PATH, location.getSourceAttachmentRootPath().toPortableString());
+				libraryNode.setAttribute(SREConstants.XML_SOURCE_PATH, location.getSourceAttachmentPath().toPortableString());
+				/* No javadoc path accessible from ClasspathEntry
 				final URL javadoc = location.getJavadocLocation();
 				if (javadoc != null) {
 					libraryNode.setAttribute(SREConstants.XML_JAVADOC_PATH, javadoc.toString());
 				}
+				*/
 				element.appendChild(libraryNode);
 			}
 		}
@@ -409,19 +425,19 @@ public class StandardSREInstall extends AbstractSREInstall {
 					setMainClass(mainClass);
 				}
 
-				final List<LibraryLocation> locations = new ArrayList<>();
+				final List<IRuntimeClasspathEntry> locations = new ArrayList<>();
 				final NodeList children = element.getChildNodes();
 				for (int i = 0; i < children.getLength(); ++i) {
 					final Node node = children.item(i);
 					if (node instanceof Element && SREConstants.XML_LIBRARY_LOCATION.equalsIgnoreCase(node.getNodeName())) {
 						final Element libraryNode = (Element) node;
-						final IPath systemLibraryPath = parsePath(
-								libraryNode.getAttribute(SREConstants.XML_SYSTEM_LIBRARY_PATH), null);
+						final IPath systemLibraryPath = parsePath(libraryNode.getAttribute(SREConstants.XML_SYSTEM_LIBRARY_PATH),
+								null);
 						if (systemLibraryPath != null) {
-							final IPath packageRootPath = parsePath(
-									libraryNode.getAttribute(SREConstants.XML_PACKAGE_ROOT_PATH), Path.EMPTY);
-							final IPath sourcePath = parsePath(
-									libraryNode.getAttribute(SREConstants.XML_SOURCE_PATH), Path.EMPTY);
+							final IPath packageRootPath = parsePath(libraryNode.getAttribute(SREConstants.XML_PACKAGE_ROOT_PATH),
+									Path.EMPTY);
+							final IPath sourcePath = parsePath(libraryNode.getAttribute(SREConstants.XML_SOURCE_PATH),
+									Path.EMPTY);
 							URL javadoc = null;
 							try {
 								final String urlTxt = libraryNode.getAttribute(SREConstants.XML_JAVADOC_PATH);
@@ -429,20 +445,26 @@ public class StandardSREInstall extends AbstractSREInstall {
 							} catch (Throwable exception) {
 								//
 							}
-							final LibraryLocation location = new LibraryLocation(
-									systemLibraryPath, sourcePath, packageRootPath,
+							final LibraryLocation location = new LibraryLocation(systemLibraryPath, sourcePath, packageRootPath,
 									javadoc);
-							locations.add(location);
+							final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(
+									location.getSystemLibraryPath(),
+									location.getSystemLibrarySourcePath(),
+									location.getPackageRootPath());
+							final IRuntimeClasspathEntry rtcpEntry = new RuntimeClasspathEntry(cpEntry);
+							// No more a bootstrap library for enabling it to be in the classpath (not the JVM bootstrap).
+							// In fact you can have a single bootstrap library if you add a new one you remove the default one and it bugs
+							rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+							locations.add(rtcpEntry);
 						} else {
-							SARLEclipsePlugin.getDefault().logErrorMessage(
-									MessageFormat.format(Messages.StandardSREInstall_4, getId()));
+							SARLEclipsePlugin.getDefault()
+									.logErrorMessage(MessageFormat.format(Messages.StandardSREInstall_4, getId()));
 						}
 					}
 				}
 
 				if (!locations.isEmpty()) {
-					final LibraryLocation[] tab = locations.toArray(new LibraryLocation[locations.size()]);
-					setLibraryLocations(tab);
+					setClassPathEntries(locations);
 				}
 
 				return;
@@ -453,7 +475,12 @@ public class StandardSREInstall extends AbstractSREInstall {
 		throw new IOException(MessageFormat.format(Messages.StandardSREInstall_5, getId()));
 	}
 
-	private static IPath parsePath(String path, IPath defaultPath) {
+	/** dfsfsf.
+	 * @param path sdfsdf
+	 * @param defaultPath sdfsf
+	 * @return sfsfs
+	 */
+	public static IPath parsePath(String path, IPath defaultPath) {
 		if (!Strings.isNullOrEmpty(path)) {
 			try {
 				final IPath pathObject = Path.fromPortableString(path);

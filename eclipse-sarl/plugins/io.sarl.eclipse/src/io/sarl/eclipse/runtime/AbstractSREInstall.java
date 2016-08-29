@@ -22,16 +22,17 @@
 package io.sarl.eclipse.runtime;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jdt.launching.LibraryLocation;
+import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.PropertyChangeEvent;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
@@ -63,7 +64,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 
 	private boolean isStandalone;
 
-	private LibraryLocation[] libraryLocations;
+	private List<IRuntimeClasspathEntry> classPathEntries;
 
 	private Map<String, String> attributeMap;
 
@@ -87,11 +88,11 @@ public abstract class AbstractSREInstall implements ISREInstall {
 			final AbstractSREInstall clone = (AbstractSREInstall) super.clone();
 			clone.attributeMap = this.attributeMap == null ? null
 					: new HashMap<>(this.attributeMap);
-			if (this.libraryLocations != null) {
-				clone.libraryLocations = this.libraryLocations.clone();
+			if (this.classPathEntries != null) {
+				clone.classPathEntries = new ArrayList<>(this.classPathEntries);
 			}
-			if (this.libraryLocations != null) {
-				clone.libraryLocations = this.libraryLocations.clone();
+			if (this.classPathEntries != null) {
+				clone.classPathEntries = new ArrayList<>(this.classPathEntries);
 			}
 			return clone;
 		} catch (CloneNotSupportedException e) {
@@ -100,9 +101,9 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	}
 
 	@Override
-	public ISREInstall copy(String id) {
+	public ISREInstall copy(String uId) {
 		final AbstractSREInstall copy = clone();
-		copy.id = id;
+		copy.id = uId;
 		return copy;
 	}
 
@@ -197,13 +198,13 @@ public abstract class AbstractSREInstall implements ISREInstall {
 				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_STANDALONE_SRE,
 						Messages.AbstractSREInstall_5);
 			}
-			final String mainClass = getMainClass();
-			if (Strings.isNullOrEmpty(mainClass) && (ignoreCauses & CODE_MAIN_CLASS) == 0) {
+			final String iMainClass = getMainClass();
+			if (Strings.isNullOrEmpty(iMainClass) && (ignoreCauses & CODE_MAIN_CLASS) == 0) {
 				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_MAIN_CLASS,
 						Messages.AbstractSREInstall_2);
 			}
-			final String name = getName();
-			if (Strings.isNullOrEmpty(name) && (ignoreCauses & CODE_NAME) == 0) {
+			final String iName = getName();
+			if (Strings.isNullOrEmpty(iName) && (ignoreCauses & CODE_NAME) == 0) {
 				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_NAME,
 						Messages.AbstractSREInstall_3);
 			}
@@ -221,8 +222,8 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	}
 
 	private IStatus getLibraryLocationValidity(int ignoreCauses) {
-		final LibraryLocation[] locations = getLibraryLocations();
-		if ((locations == null || locations.length == 0) &&  (ignoreCauses & CODE_LIBRARY_LOCATION) == 0) {
+		final List<IRuntimeClasspathEntry> locations = getClassPathEntries();
+		if ((locations == null || locations.isEmpty()) &&  (ignoreCauses & CODE_LIBRARY_LOCATION) == 0) {
 			return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_LIBRARY_LOCATION,
 					Messages.AbstractSREInstall_4);
 		}
@@ -304,15 +305,15 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	}
 
 	@Override
-	public LibraryLocation[] getLibraryLocations() {
+	public List<IRuntimeClasspathEntry> getClassPathEntries() {
 		if (isDirty()) {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		if (this.libraryLocations == null) {
-			return new LibraryLocation[0];
+		if (this.classPathEntries == null) {
+			return new ArrayList<>();
 		}
-		return this.libraryLocations;
+		return this.classPathEntries;
 	}
 
 	@Override
@@ -351,19 +352,19 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	 *     Must not be <code>null</code>.
 	 */
 	@Override
-	public void setLibraryLocations(LibraryLocation... libraries) {
+	public void setClassPathEntries(List<IRuntimeClasspathEntry> libraries) {
 		if (isDirty()) {
 			setDirty(false);
 			resolveDirtyFields(true);
 		}
-		if ((libraries == null && this.libraryLocations != null)
+		if ((libraries == null && this.classPathEntries != null)
 				|| (libraries != null
-				&& (this.libraryLocations == null
-				|| Arrays.equals(libraries, this.libraryLocations)))) {
+					&& (this.classPathEntries == null
+						|| libraries != this.classPathEntries))) {
 			final PropertyChangeEvent event = new PropertyChangeEvent(
 					this, ISREInstallChangedListener.PROPERTY_LIBRARY_LOCATIONS,
-					this.libraryLocations, libraries);
-			this.libraryLocations = libraries;
+					this.classPathEntries, libraries);
+			this.classPathEntries = libraries;
 			if (this.notify) {
 				SARLRuntime.fireSREChanged(event);
 			}

@@ -43,12 +43,9 @@ import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.launching.JRERuntimeClasspathEntryResolver;
 import org.eclipse.jdt.internal.launching.LaunchingMessages;
-import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.ExecutionArguments;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
@@ -494,20 +491,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	private List<IRuntimeClasspathEntry> getSREClasspathEntries(
 			ILaunchConfiguration configuration) throws CoreException {
 		final ISREInstall sre = getSREInstallFor(configuration);
-		final LibraryLocation[] locations = sre.getLibraryLocations();
-		final List<IRuntimeClasspathEntry> sreClasspathEntries = new ArrayList<>(locations.length);
-		for (int i = 0; i < locations.length; ++i) {
-			final LibraryLocation location = locations[i];
-			final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(
-					location.getSystemLibraryPath(),
-					location.getSystemLibrarySourcePath(),
-					location.getPackageRootPath());
-			final IRuntimeClasspathEntry rtcpEntry = new RuntimeClasspathEntry(cpEntry);
-			// No more a bootstrap library for enabling it to be in the classpath (not the JVM bootstrap).
-			rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
-			sreClasspathEntries.add(rtcpEntry);
-		}
-		return sreClasspathEntries;
+		return sre.getClassPathEntries();
 	}
 
 	/** Replies if the given classpath entry is a SRE.

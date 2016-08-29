@@ -40,7 +40,7 @@
 		<!-- Version of the Arakhne Foundation classes -->
 		<afc.version>13.0</afc.version>
 		<!-- Version of the Guava API -->
-		<guava.version>19.0</guava.version>
+		<guava.version>18.0</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module -->
@@ -704,7 +704,7 @@
 							project.properties["sarl.specification.release_date"] = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
 							project.properties["sarl.specification.release_status"] = releaseStatus;
 							project.properties["sarl.is_stable_version"] = Boolean.toString(!isSnapshot);
-							project.properties["janus.version"] = "2."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2]+endOfVersion;
+							project.properties["janus.version"] = versionFields[0]+"."+versionFields[1]+"."+versionFields[2]+endOfVersion;
 
 							log.info("set sarl.specification.release_version to: " + project.properties["sarl.specification.release_version"]);
 							log.info("set sarl.release_version to: " + project.properties["sarl.release_version"]);
