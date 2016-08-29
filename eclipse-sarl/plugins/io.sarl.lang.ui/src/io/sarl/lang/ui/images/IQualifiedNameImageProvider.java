@@ -21,6 +21,7 @@
 
 package io.sarl.lang.ui.images;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -40,39 +41,46 @@ public interface IQualifiedNameImageProvider {
 	/** Replies the image associated to the element with the qualified name.
 	 *
 	 * @param qualifiedName the qualified name.
+	 * @param context the context of the reference to the qualified name of the element.
 	 * @param jvmTypeProvider the provider of types that should be used for retreiving the type description.
 	 * @return the image.
 	 */
-	Image getImageForQualifiedName(String qualifiedName, IJvmTypeProvider jvmTypeProvider);
+	Image getImageForQualifiedName(String qualifiedName, Notifier context, IJvmTypeProvider jvmTypeProvider);
 
 	/** Replies the image associated to the element with the qualified name.
 	 *
 	 * @param qualifiedName the qualified name.
+	 * @param context the context of the reference to the qualified name of the element.
 	 * @param jvmTypeProvider the provider of types that should be used for retreiving the type description.
 	 * @return the image.
 	 */
 	@Inline("getImageForQualifiedName(($1).toString(), $2)")
-	default Image getImageForQualifiedName(QualifiedName qualifiedName, IJvmTypeProvider jvmTypeProvider) {
-		return getImageForQualifiedName(qualifiedName.toString(), jvmTypeProvider);
+	default Image getImageForQualifiedName(QualifiedName qualifiedName, Notifier context,
+			IJvmTypeProvider jvmTypeProvider) {
+		return getImageForQualifiedName(qualifiedName.toString(), context, jvmTypeProvider);
 	}
 
 	/** Replies the image descriptor associated to the element with the qualified name.
 	 *
 	 * @param qualifiedName the qualified name.
+	 * @param context the context of the reference to the qualified name of the element.
 	 * @param jvmTypeProvider the provider of types that should be used for retreiving the type description.
 	 * @return the image descriptor.
 	 */
-	ImageDescriptor getImageDescriptorForQualifiedName(String qualifiedName, IJvmTypeProvider jvmTypeProvider);
+	ImageDescriptor getImageDescriptorForQualifiedName(String qualifiedName, Notifier context,
+			IJvmTypeProvider jvmTypeProvider);
 
 	/** Replies the image descriptor associated to the element with the qualified name.
 	 *
 	 * @param qualifiedName the qualified name.
+	 * @param context the context of the reference to the qualified name of the element.
 	 * @param jvmTypeProvider the provider of types that should be used for retreiving the type description.
 	 * @return the image descriptor.
 	 */
 	@Inline("getImageDescriptorForQualifiedName(($1).toString(), $2)")
-	default ImageDescriptor getImageDescriptorForQualifiedName(QualifiedName qualifiedName, IJvmTypeProvider jvmTypeProvider) {
-		return getImageDescriptorForQualifiedName(qualifiedName.toString(), jvmTypeProvider);
+	default ImageDescriptor getImageDescriptorForQualifiedName(QualifiedName qualifiedName, Notifier context,
+			IJvmTypeProvider jvmTypeProvider) {
+		return getImageDescriptorForQualifiedName(qualifiedName.toString(), context, jvmTypeProvider);
 	}
 
 }
