@@ -79,9 +79,9 @@ class SpaceIDSerializer implements StreamSerializer<SpaceID> {
 					return new SpaceID(cid, id, (Class<? extends SpaceSpecification<?>>) type);
 				}
 			}
-			throw new IOException(Locale.getString("BUILD_ERROR", cid, id, specCls)); //$NON-NLS-1$
+			throw new IOException(Locale.getString(SpaceIDSerializer.class, "BUILD_ERROR", cid, id, specCls)); //$NON-NLS-1$
 		} catch (ClassNotFoundException e) {
-			throw new IOException(Locale.getString("SPECIFICATION_CLASS_NOT_FOUND"), e); //$NON-NLS-1$
+			throw new IOException(Locale.getString(SpaceIDSerializer.class, "SPECIFICATION_CLASS_NOT_FOUND"), e); //$NON-NLS-1$
 		}
 
 	}

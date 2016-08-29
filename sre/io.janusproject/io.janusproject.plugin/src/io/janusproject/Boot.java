@@ -131,7 +131,7 @@ public final class Boot {
 					}
 					final File file = new File(rawFilename);
 					if (!file.canRead()) {
-						showError(Locale.getString("INVALID_PROPERTY_FILENAME", //$NON-NLS-1$
+						showError(Locale.getString(Boot.class, "INVALID_PROPERTY_FILENAME", //$NON-NLS-1$
 								rawFilename), null);
 						return null;
 					}
@@ -194,7 +194,7 @@ public final class Boot {
 			type = Class.forName(fullyQualifiedName);
 		} catch (Exception e) {
 			showError(
-					Locale.getString("INVALID_AGENT_QUALIFIED_NAME", //$NON-NLS-1$
+					Locale.getString(Boot.class, "INVALID_AGENT_QUALIFIED_NAME", //$NON-NLS-1$
 							fullyQualifiedName, System.getProperty("java.class.path")), //$NON-NLS-1$
 					e);
 			// Event if showError never returns, add the return statement for
@@ -209,7 +209,7 @@ public final class Boot {
 			return type.asSubclass(Agent.class);
 		}
 
-		showError(Locale.getString("INVALID_AGENT_TYPE", //$NON-NLS-1$
+		showError(Locale.getString(Boot.class, "INVALID_AGENT_TYPE", //$NON-NLS-1$
 				fullyQualifiedName), null);
 		// Event if showError never returns, add the return statement for
 		// avoiding compilation error.
@@ -231,7 +231,7 @@ public final class Boot {
 			}
 
 			if (freeArgs.length == 0) {
-				showError(Locale.getString("NO_AGENT_QUALIFIED_NAME"), //$NON-NLS-1$
+				showError(Locale.getString(Boot.class, "NO_AGENT_QUALIFIED_NAME"), //$NON-NLS-1$
 						null);
 				// Event if showError never returns, add the return statement for
 				// avoiding compilation error.
@@ -247,7 +247,7 @@ public final class Boot {
 
 			startJanus((Class<? extends Module>) null, (Class<? extends Agent>) agent, freeArgs);
 		} catch (Exception e) {
-			showError(Locale.getString("LAUNCHING_ERROR", //$NON-NLS-1$
+			showError(Locale.getString(Boot.class, "LAUNCHING_ERROR", //$NON-NLS-1$
 					e.getLocalizedMessage()), e);
 			// Event if showError never returns, add the return statement for
 			// avoiding compilation error.
@@ -288,38 +288,38 @@ public final class Boot {
 		final Options options = new Options();
 
 		options.addOption("B", "bootid", false, //$NON-NLS-1$//$NON-NLS-2$
-				Locale.getString("CLI_HELP_B", //$NON-NLS-1$
+				Locale.getString(Boot.class, "CLI_HELP_B", //$NON-NLS-1$
 						JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME, JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME));
 
 		options.addOption("f", "file", true, //$NON-NLS-1$//$NON-NLS-2$
-				Locale.getString("CLI_HELP_F")); //$NON-NLS-1$
+				Locale.getString(Boot.class, "CLI_HELP_F")); //$NON-NLS-1$
 
 		options.addOption("h", "help", false, //$NON-NLS-1$//$NON-NLS-2$
-				Locale.getString("CLI_HELP_H")); //$NON-NLS-1$
+				Locale.getString(Boot.class, "CLI_HELP_H")); //$NON-NLS-1$
 
 		options.addOption(null, "nologo", false, //$NON-NLS-1$
-				Locale.getString("CLI_HELP_NOLOGO")); //$NON-NLS-1$
+				Locale.getString(Boot.class, "CLI_HELP_NOLOGO")); //$NON-NLS-1$
 
 		options.addOption("o", "offline", false, //$NON-NLS-1$//$NON-NLS-2$
-				Locale.getString("CLI_HELP_O", JanusConfig.OFFLINE)); //$NON-NLS-1$
+				Locale.getString(Boot.class, "CLI_HELP_O", JanusConfig.OFFLINE)); //$NON-NLS-1$
 
 		options.addOption("q", "quiet", false, //$NON-NLS-1$//$NON-NLS-2$
-				Locale.getString("CLI_HELP_Q")); //$NON-NLS-1$
+				Locale.getString(Boot.class, "CLI_HELP_Q")); //$NON-NLS-1$
 
 		options.addOption("R", "randomid", false, //$NON-NLS-1$//$NON-NLS-2$
-				Locale.getString("CLI_HELP_R", //$NON-NLS-1$
+				Locale.getString(Boot.class, "CLI_HELP_R", //$NON-NLS-1$
 						JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME, JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME));
 
 		options.addOption("s", "showdefaults", false, //$NON-NLS-1$//$NON-NLS-2$
-				Locale.getString("CLI_HELP_S")); //$NON-NLS-1$
+				Locale.getString(Boot.class, "CLI_HELP_S")); //$NON-NLS-1$
 		options.addOption(null, "cli", false, //$NON-NLS-1$
-				Locale.getString("CLI_HELP_CLI")); //$NON-NLS-1$
+				Locale.getString(Boot.class, "CLI_HELP_CLI")); //$NON-NLS-1$
 
 		options.addOption("v", "verbose", false, //$NON-NLS-1$//$NON-NLS-2$
-				Locale.getString("CLI_HELP_V")); //$NON-NLS-1$
+				Locale.getString(Boot.class, "CLI_HELP_V")); //$NON-NLS-1$
 
 		options.addOption("W", "worldid", false, //$NON-NLS-1$//$NON-NLS-2$
-				Locale.getString("CLI_HELP_W", //$NON-NLS-1$
+				Locale.getString(Boot.class, "CLI_HELP_W", //$NON-NLS-1$
 						JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME, JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME));
 		final StringBuilder b = new StringBuilder();
 		int level = 0;
@@ -333,14 +333,14 @@ public final class Boot {
 			b.append(")"); //$NON-NLS-1$
 			++level;
 		}
-		Option opt = new Option("l", "log", true, Locale.getString("CLI_HELP_L", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+		Option opt = new Option("l", "log", true, Locale.getString(Boot.class, "CLI_HELP_L", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 				JanusConfig.VERBOSE_LEVEL_VALUE, b));
 		opt.setArgs(1);
 		options.addOption(opt);
-		opt = new Option("D", "define", true, Locale.getString("CLI_HELP_D")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+		opt = new Option("D", "define", true, Locale.getString(Boot.class, "CLI_HELP_D")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 		opt.setArgs(2);
 		opt.setValueSeparator('=');
-		opt.setArgName(Locale.getString("CLI_HELP_D_ARGNAME")); //$NON-NLS-1$
+		opt.setArgName(Locale.getString(Boot.class, "CLI_HELP_D_ARGNAME")); //$NON-NLS-1$
 		options.addOption(opt);
 		return options;
 	}
@@ -424,7 +424,7 @@ public final class Boot {
 	 */
 	@SuppressWarnings("checkstyle:regexp")
 	public static void showJanusLogo() {
-		System.out.println(Locale.getString("JANUS_TEXT_LOGO")); //$NON-NLS-1$
+		System.out.println(Locale.getString(Boot.class, "JANUS_TEXT_LOGO")); //$NON-NLS-1$
 	}
 
 	/**
@@ -640,7 +640,7 @@ public final class Boot {
 		final Kernel k = Kernel.create(startupModule);
 		final Logger logger = k.getLogger();
 		if (logger != null) {
-			logger.info(Locale.getString("LAUNCHING_AGENT", agentCls.getName())); //$NON-NLS-1$
+			logger.info(Locale.getString(Boot.class, "LAUNCHING_AGENT", agentCls.getName())); //$NON-NLS-1$
 		}
 		final UUID id = k.spawn(agentCls, params);
 		if (id != null) {

@@ -164,7 +164,7 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 			}
 		}
 		if (type == null || !expectedType.isAssignableFrom(type)) {
-			throw new ClassCastException(Locale.getString("INVALID_TYPE", type)); //$NON-NLS-1$
+			throw new ClassCastException(Locale.getString(GsonEventSerializer.class, "INVALID_TYPE", type)); //$NON-NLS-1$
 		}
 		assert type != null;
 		return type.asSubclass(expectedType);

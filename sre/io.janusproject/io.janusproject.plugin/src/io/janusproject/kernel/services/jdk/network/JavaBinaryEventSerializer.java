@@ -121,7 +121,7 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 		}
 
 		if (spaceSpec == null || !SpaceSpecification.class.isAssignableFrom(spaceSpec)) {
-			throw new ClassCastException(Locale.getString("INVALID_TYPE", spaceSpec)); //$NON-NLS-1$
+			throw new ClassCastException(Locale.getString(JavaBinaryEventSerializer.class, "INVALID_TYPE", spaceSpec)); //$NON-NLS-1$
 		}
 
 		final UUID contextId = NetworkUtil.fromByteArray(envelope.getContextId());
@@ -143,7 +143,7 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 			if (object != null && type.isInstance(object)) {
 				return type.cast(object);
 			}
-			throw new ClassCastException(Locale.getString("INVALID_TYPE", //$NON-NLS-1$
+			throw new ClassCastException(Locale.getString(JavaBinaryEventSerializer.class, "INVALID_TYPE", //$NON-NLS-1$
 					type.getName()));
 		}
 	}
