@@ -39,12 +39,13 @@ import javax.inject.Singleton;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMember;
@@ -56,7 +57,6 @@ import org.eclipse.jdt.core.Signature;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
@@ -72,15 +72,11 @@ import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
+import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.IFormalParameterBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlAgentBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlBehaviorBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlClassBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlConstructorBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
-import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.util.Utils;
 
 
@@ -396,29 +392,38 @@ public class Jdt2Ecore {
 	 *
 	 * @param parameterBuilder the code builder.
 	 * @param operation - the operation that describes the formal parameters.
+	 * @return the parameters.
 	 * @throws JavaModelException if the Java model is invalid.
 	 * @throws IllegalArgumentException if the signature is not syntactically correct.
 	 */
-	protected void createFormalParametersWith(
+	protected IFormalParameterBuilder[] createFormalParametersWith(
 			ParameterBuilder parameterBuilder,
 			IMethod operation) throws JavaModelException, IllegalArgumentException {
 		final boolean isVarargs = Flags.isVarargs(operation.getFlags());
-		final ILocalVariable[] parameters = operation.getParameters();
-		for (int i = 0; i < parameters.length; ++i) {
-			final ILocalVariable parameter = parameters[i];
-			final IAnnotation annotation = getAnnotation(parameter, DefaultValue.class.getName());
+		final ILocalVariable[] rawParameters = operation.getParameters();
+		final FormalParameterProvider parameters = getFormalParameterProvider(operation);
+		final int len = parameters.getFormalParameterCount();
+		final IFormalParameterBuilder[] paramBuilders = new IFormalParameterBuilder[len];
+		for (int i = 0; i < len; ++i) {
+			final ILocalVariable rawParameter = rawParameters[i];
+			final IAnnotation annotation = getAnnotation(rawParameter, DefaultValue.class.getName());
 			final String defaultValue = (annotation != null) ? extractDefaultValue(operation, annotation) : null;
-			String type = Signature.toString(parameter.getTypeSignature());
-			if (isVarargs && i == parameters.length - 1 && type.endsWith("[]")) { //$NON-NLS-1$
+			final boolean isV = isVarargs && i == len - 1;
+			String type = parameters.getFormalParameterType(i, isV);
+			if (isV && type.endsWith("[]")) { //$NON-NLS-1$
 				type = type.substring(0, type.length() - 2);
 			}
-			final IFormalParameterBuilder sarlParameter = parameterBuilder.addParameter(parameter.getElementName());
+			final IFormalParameterBuilder sarlParameter = parameterBuilder.addParameter(parameters.getFormalParameterName(i));
 			sarlParameter.setParameterType(type);
-			sarlParameter.getDefaultValue().setExpression(defaultValue);
-			if (isVarargs && i == parameters.length - 1) {
-				sarlParameter.setVarArg(isVarargs);
+			if (defaultValue != null) {
+				sarlParameter.getDefaultValue().setExpression(defaultValue);
 			}
+			if (isV) {
+				sarlParameter.setVarArg(true);
+			}
+			paramBuilders[i] = sarlParameter;
 		}
+		return paramBuilders;
 	}
 
 	/** Add the given constructors to the Ecore container.
@@ -428,72 +433,31 @@ public class Jdt2Ecore {
 	 * @param context - the context of the constructors.
 	 * @throws JavaModelException if the Java model is invalid.
 	 */
-	public void createStandardConstructors(
-			ISarlBehaviorBuilder codeBuilder,
-			Collection<IMethod> superClassConstructors,
-			XtendTypeDeclaration context) throws JavaModelException {
-		createStandardConstructorsWith(() -> codeBuilder.addSarlConstructor(),
-				superClassConstructors, context);
-	}
-
-	/** Add the given constructors to the Ecore container.
-	 *
-	 * @param codeBuilder - the code builder to use.
-	 * @param superClassConstructors - the constructors defined in the super class.
-	 * @param context - the context of the constructors.
-	 * @throws JavaModelException if the Java model is invalid.
-	 */
-	public void createStandardConstructors(
-			ISarlEventBuilder codeBuilder,
-			Collection<IMethod> superClassConstructors,
-			XtendTypeDeclaration context) throws JavaModelException {
-		createStandardConstructorsWith(() -> codeBuilder.addSarlConstructor(),
-				superClassConstructors, context);
-	}
-
-	/** Add the given constructors to the Ecore container.
-	 *
-	 * @param codeBuilder - the code builder to use.
-	 * @param superClassConstructors - the constructors defined in the super class.
-	 * @param context - the context of the constructors.
-	 * @throws JavaModelException if the Java model is invalid.
-	 */
-	public void createStandardConstructors(
-			ISarlSkillBuilder codeBuilder,
-			Collection<IMethod> superClassConstructors,
-			XtendTypeDeclaration context) throws JavaModelException {
-		createStandardConstructorsWith(() -> codeBuilder.addSarlConstructor(),
-				superClassConstructors, context);
-	}
-
-	/** Add the given constructors to the Ecore container.
-	 *
-	 * @param codeBuilder - the code builder to use.
-	 * @param superClassConstructors - the constructors defined in the super class.
-	 * @param context - the context of the constructors.
-	 * @throws JavaModelException if the Java model is invalid.
-	 */
-	protected void createStandardConstructorsWith(
+	public void createStandardConstructorsWith(
 			ConstructorBuilder codeBuilder,
 			Collection<IMethod> superClassConstructors,
 			XtendTypeDeclaration context) throws JavaModelException {
 		if (superClassConstructors != null) {
 			for (final IMethod constructor : superClassConstructors) {
 				if (!isGeneratedOperation(constructor)) {
-					final JvmConstructor jvmConstructor = getJvmConstructor(constructor, context);
-					final XFeatureCall call = XbaseFactory.eINSTANCE.createXFeatureCall();
-					call.setFeature(jvmConstructor);
-					call.setExplicitOperationCall(true);
-					final EList<XExpression> arguments = call.getFeatureCallArguments();
-					for (final JvmFormalParameter param : jvmConstructor.getParameters()) {
-						final XFeatureCall paramRef = XbaseFactory.eINSTANCE.createXFeatureCall();
-						paramRef.setFeature(param);
-						arguments.add(paramRef);
-					}
-					//
 					final ISarlConstructorBuilder cons = codeBuilder.addConstructor();
-					cons.getExpression().addExpression().setXExpression(call);
-					createFormalParametersWith((name) -> cons.addParameter(name), constructor);
+					// Create parameters
+					final IFormalParameterBuilder[] sarlParams = createFormalParametersWith(
+							(name) -> cons.addParameter(name), constructor);
+					// Build the ad-hoc call to the super constructor
+					final XFeatureCall call = XbaseFactory.eINSTANCE.createXFeatureCall();
+					call.setFeature(getJvmConstructor(constructor, context));
+					call.setExplicitOperationCall(true);
+					final List<XExpression> arguments = call.getFeatureCallArguments();
+					for (final IFormalParameterBuilder currentParam : sarlParams) {
+						final XFeatureCall argumentSource = XbaseFactory.eINSTANCE.createXFeatureCall();
+						argumentSource.setFeature(currentParam.getJvmIdentifiableElement());
+						arguments.add(argumentSource);
+					}
+					// Create the block
+					final IBlockExpressionBuilder block = cons.getExpression();
+					final IExpressionBuilder superCall = block.addExpression();
+					superCall.setXExpression(call);
 				}
 			}
 		}
@@ -506,72 +470,7 @@ public class Jdt2Ecore {
 	 * @throws JavaModelException if the Java model is invalid.
 	 * @throws IllegalArgumentException if the signature is not syntactically correct.
 	 */
-	public void createActions(
-			ISarlAgentBuilder codeBuilder,
-			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
-		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
-	}
-
-	/** Create the operations into the SARL feature container.
-	 *
-	 * @param codeBuilder - the builder of the script.
-	 * @param methods - the operations to create.
-	 * @throws JavaModelException if the Java model is invalid.
-	 * @throws IllegalArgumentException if the signature is not syntactically correct.
-	 */
-	public void createActions(
-			ISarlInterfaceBuilder codeBuilder,
-			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
-		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
-	}
-
-	/** Create the operations into the SARL feature container.
-	 *
-	 * @param codeBuilder - the builder of the script.
-	 * @param methods - the operations to create.
-	 * @throws JavaModelException if the Java model is invalid.
-	 * @throws IllegalArgumentException if the signature is not syntactically correct.
-	 */
-	public void createActions(
-			ISarlBehaviorBuilder codeBuilder,
-			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
-		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
-	}
-
-	/** Create the operations into the SARL feature container.
-	 *
-	 * @param codeBuilder - the builder of the script.
-	 * @param methods - the operations to create.
-	 * @throws JavaModelException if the Java model is invalid.
-	 * @throws IllegalArgumentException if the signature is not syntactically correct.
-	 */
-	public void createActions(
-			ISarlSkillBuilder codeBuilder,
-			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
-		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
-	}
-
-	/** Create the operations into the SARL feature container.
-	 *
-	 * @param codeBuilder - the builder of the script.
-	 * @param methods - the operations to create.
-	 * @throws JavaModelException if the Java model is invalid.
-	 * @throws IllegalArgumentException if the signature is not syntactically correct.
-	 */
-	public void createActions(
-			ISarlClassBuilder codeBuilder,
-			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
-		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
-	}
-
-	/** Create the operations into the SARL feature container.
-	 *
-	 * @param codeBuilder - the builder of the script.
-	 * @param methods - the operations to create.
-	 * @throws JavaModelException if the Java model is invalid.
-	 * @throws IllegalArgumentException if the signature is not syntactically correct.
-	 */
-	protected void createActionsWith(
+	public void createActionsWith(
 			ActionBuilder codeBuilder,
 			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
 		if (methods != null) {
@@ -717,29 +616,54 @@ public class Jdt2Ecore {
 	 */
 	private class JdtFormalParameterList implements FormalParameterProvider {
 
-		private final ILocalVariable[] parameters;
+		private final int nb;
+
+		private final String[] names;
+
+		private final String[] types;
 
 		/**
 		 * @param operation - the operation.
 		 * @throws JavaModelException if the parameters cannot be retreived.
 		 */
 		JdtFormalParameterList(IMethod operation) throws JavaModelException {
-			this.parameters = operation.getParameters();
+			this.nb = operation.getNumberOfParameters();
+			this.names = operation.getParameterNames();
+			this.types = new String[this.nb];
+			final ILocalVariable[] unresolvedParameters = operation.getParameters();
+			for (int i = 0; i < this.nb; ++i) {
+				this.types[i] = resolve(operation, unresolvedParameters[i].getTypeSignature());
+			}
+		}
+
+		private String resolve(IMethod operation, String typename) throws JavaModelException {
+			if (Signature.C_UNRESOLVED == Signature.getElementType(typename).charAt(0)) {
+				final ICompilationUnit unit = operation.getCompilationUnit();
+				if (unit != null) {
+					final String post = "." + Signature.toString(typename); //$NON-NLS-1$
+					for (final IImportDeclaration decl : unit.getImports()) {
+						if (decl.getElementName().endsWith(post)) {
+							return decl.getElementName();
+						}
+					}
+				}
+			}
+			return Signature.toString(typename);
 		}
 
 		@Override
 		public int getFormalParameterCount() {
-			return this.parameters.length;
+			return this.nb;
 		}
 
 		@Override
 		public String getFormalParameterName(int position) {
-			return this.parameters[position].getElementName();
+			return this.names[position];
 		}
 
 		@Override
 		public String getFormalParameterType(int position, boolean isVarArgs) {
-			return Signature.toString(this.parameters[position].getTypeSignature());
+			return this.types[position];
 		}
 
 		@Override
@@ -749,12 +673,12 @@ public class Jdt2Ecore {
 
 		@Override
 		public boolean hasFormalParameterDefaultValue(int position) {
-			throw new UnsupportedOperationException();
+			return false;
 		}
 
 		@Override
 		public XExpression getFormalParameterDefaultValue(int position) {
-			throw new UnsupportedOperationException();
+			return null;
 		}
 
 		@Override
@@ -805,7 +729,12 @@ public class Jdt2Ecore {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@FunctionalInterface
-	private interface ActionBuilder {
+	public interface ActionBuilder {
+		/** Add an action.
+		 *
+		 * @param name the name of the action.
+		 * @return the builder of the action.
+		 */
 		ISarlActionBuilder addAction(String name);
 	}
 
@@ -817,7 +746,11 @@ public class Jdt2Ecore {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@FunctionalInterface
-	private interface ConstructorBuilder {
+	public interface ConstructorBuilder {
+		/** Add a constructor.
+		 *
+		 * @return the builder of the constructor.
+		 */
 		ISarlConstructorBuilder addConstructor();
 	}
 

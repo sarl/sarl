@@ -51,12 +51,14 @@ public class SuperBehaviorSelectionDialog extends AbstractSuperTypeSelectionDial
 	 * @param project the java project which will be considered when searching for interfaces.
 	 * @param wizardPage the wizard page.
 	 * @param extension the wizard type selection extension.
+	 * @param multi indicates if multiple elements could be selected.
 	 */
 	public SuperBehaviorSelectionDialog(Shell parent, IRunnableContext context, IJavaProject project,
-			NewSarlBehaviorWizardPage wizardPage, SarlSpecificTypeSelectionExtension extension) {
+			NewSarlBehaviorWizardPage wizardPage, SarlSpecificTypeSelectionExtension extension,
+			boolean multi) {
 		super(parent, context, wizardPage,
 				createSearchScope(project, Behavior.class, true),
-				IJavaSearchConstants.CLASS, extension);
+				IJavaSearchConstants.CLASS, extension, multi);
 	}
 
 	@Override

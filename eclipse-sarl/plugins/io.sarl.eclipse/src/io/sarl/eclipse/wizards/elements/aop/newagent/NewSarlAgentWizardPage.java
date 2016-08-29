@@ -21,30 +21,33 @@
 
 package io.sarl.eclipse.wizards.elements.aop.newagent;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
+import javax.inject.Inject;
 
-import com.google.common.collect.Maps;
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.ui.resource.IResourceSetProvider;
+import org.eclipse.xtext.util.EmfFormatter;
+import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
-import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
 import io.sarl.lang.codebuilder.builders.ISarlAgentBuilder;
-import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import io.sarl.lang.core.Agent;
 
 /**
@@ -83,42 +86,153 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 		};
 		updateStatus(status);
 	}
+	
+	@Inject
+	private IResourceSetProvider resourceSetProvider;
 
 	@Override
-	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
-				getPackageFragment().getElementName(), ecoreResource);
+	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
+			IProgressMonitor monitor) throws Exception {
+		final SubMonitor mon = SubMonitor.convert(monitor, 3);
+
+		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
+				getPackageFragment().getElementName(), typeProvider);
 		final ISarlAgentBuilder agent = scriptBuilder.addSarlAgent(getTypeName());
 		agent.setExtends(getSuperClass());
-		agent.setDocumentation(typeComment.trim());
+		mon.worked(1);
 
-		final Map<ActionPrototype, IMethod> operationsToImplement;
+		URI uri = URI.createURI("platform:/resource/testcreation/src/main/sarl/test.sarl");
+		Resource resource = this.resourceSetProvider.get(getJavaProject().getProject()).getResource(uri, true);
+		EObject obj = resource.getContents().get(0);
+//		
+//		System.out.println(EmfFormatter.objToStr(obj));
 
-		if (isCreateInherited()) {
-			operationsToImplement = Maps.newTreeMap((Comparator<ActionPrototype>) null);
-		} else {
-			operationsToImplement = null;
+		/*
+		 SarlScript {
+    cref XImportSection importSection XImportSection {
+        cref XImportDeclaration importDeclarations [
+            0: XImportDeclaration {
+                ref JvmDeclaredType importedType ref: JvmGenericType@java:/Objects/io.sarl.lang.core.BuiltinCapacitiesProvider#io.sarl.lang.core.BuiltinCapacitiesProvider
+            }
+            1: XImportDeclaration {
+                ref JvmDeclaredType importedType ref: JvmGenericType@java:/Objects/java.util.UUID#java.util.UUID
+            }
+            2: XImportDeclaration {
+                ref JvmDeclaredType importedType ref: JvmGenericType@platform:/resource/testcreation/src/main/sarl/testcreation2/WizAgent1.sarl#/1
+            }
+        ]
+    }
+    cref XtendTypeDeclaration xtendTypes [
+        0: SarlAgent {
+            cref XtendAnnotationTarget annotationInfo XtendTypeDeclaration {
+            }
+            attr EString name 'WWW'
+            cref XtendMember members [
+                0: SarlConstructor {
+                    cref XtendAnnotationTarget annotationInfo XtendMember {
+                    }
+                    ref XtendTypeDeclaration declaringType ref: SarlAgent@/0/@xtendTypes.0
+                    cref XExpression expression XBlockExpression {
+                        cref XExpression expressions [
+                            0: XFeatureCall {
+                                ref JvmIdentifiableElement feature ref: JvmConstructor@platform:/resource/testcreation/src/main/sarl/testcreation2/WizAgent1.sarl#/1/@members.0
+                                cref XExpression featureCallArguments [
+                                    0: XFeatureCall {
+                                        ref JvmIdentifiableElement feature ref: JvmFormalParameter@/1/@members.0/@parameters.0
+                                    }
+                                    1: XFeatureCall {
+                                        ref JvmIdentifiableElement feature ref: JvmFormalParameter@/1/@members.0/@parameters.1
+                                    }
+                                    2: XFeatureCall {
+                                        ref JvmIdentifiableElement feature ref: JvmFormalParameter@/1/@members.0/@parameters.2
+                                    }
+                                    3: XFeatureCall {
+                                        ref JvmIdentifiableElement feature ref: JvmFormalParameter@/1/@members.0/@parameters.3
+                                    }
+                                ]
+                                attr EBoolean explicitOperationCall 'true'
+                            }
+                        ]
+                    }
+                    cref XtendParameter parameters [
+                        0: SarlFormalParameter {
+                            attr EString name 'a'
+                            cref JvmTypeReference parameterType JvmParameterizedTypeReference {
+                                ref JvmType type ref: JvmGenericType@java:/Objects/io.sarl.lang.core.BuiltinCapacitiesProvider#io.sarl.lang.core.BuiltinCapacitiesProvider
+                            }
+                        }
+                        1: SarlFormalParameter {
+                            attr EString name 'b'
+                            cref JvmTypeReference parameterType JvmParameterizedTypeReference {
+                                ref JvmType type ref: JvmGenericType@java:/Objects/java.util.UUID#java.util.UUID
+                            }
+                        }
+                        2: SarlFormalParameter {
+                            attr EString name 'c'
+                            cref JvmTypeReference parameterType JvmParameterizedTypeReference {
+                                ref JvmType type ref: JvmGenericType@java:/Objects/java.util.UUID#java.util.UUID
+                            }
+                        }
+                        3: SarlFormalParameter {
+                            attr EString name 'd'
+                            cref JvmTypeReference parameterType JvmParameterizedTypeReference {
+                                ref JvmType type ref: JvmPrimitiveType@java:/Primitives#int
+                            }
+                        }
+                    ]
+                }
+            ]
+            cref JvmParameterizedTypeReference extends JvmParameterizedTypeReference {
+                ref JvmType type ref: JvmGenericType@platform:/resource/testcreation/src/main/sarl/testcreation2/WizAgent1.sarl#/1
+            }
+        }
+    ]
+    attr EString package 'toto'
+}
+
+		 */
+
+		if (agent.getSarlAgent().getExtends() != null) {
+			createInheritedMembers(
+					Agent.class.getCanonicalName(), getSuperClass(),
+					agent.getSarlAgent(),
+					() -> agent.addSarlConstructor(),
+					(name) -> agent.addSarlAction(name));
 		}
+		mon.worked(2);
 
-		this.jdt2sarl.populateInheritanceContext(
-				this.jdt2sarl.toTypeFinder(getJavaProject()),
-				// Discarding final operation.
-				null,
-				// Discarding overridable operation.
-				null,
-				// Discarding inherited fields,
-				null,
-				operationsToImplement,
-				// Discarding super constructors,
-				null,
-				getSuperClass(),
-				Collections.<String>emptyList());
-
-		if (operationsToImplement != null) {
-			this.jdt2sarl.createActions(agent, operationsToImplement.values());
-		}
-
-		scriptBuilder.finalizeScript();
+		System.out.println(EmfFormatter.objToStr(scriptBuilder.getScript()));
+/*
+ SarlScript {
+    cref XtendTypeDeclaration xtendTypes [
+        0: SarlAgent {
+            cref XtendAnnotationTarget annotationInfo XtendTypeDeclaration {
+            }
+            attr EString name 'WizAgent3'
+            cref XtendMember members [
+                0: SarlConstructor {
+                    cref XtendAnnotationTarget annotationInfo XtendTypeDeclaration {
+                    }
+                    ref XtendTypeDeclaration declaringType ref: SarlAgent@/0/@xtendTypes.0
+                    cref XExpression expression XBlockExpression {
+                        cref XExpression expressions [
+                            0: XBlockExpression {
+                            }
+                        ]
+                    }
+                }
+            ]
+            cref JvmParameterizedTypeReference extends JvmParameterizedTypeReference {
+                ref JvmType type ref: JvmGenericType@platform:/resource/testcreation/src/main/sarl/testcreation2/WizAgent1.sarl#/1
+            }
+        }
+    ]
+    attr EString package 'testcreation2'
+}
+		
+ */
+		scriptBuilder.build(appender);
+		mon.done();
 	}
 
 	@Override
@@ -138,8 +252,9 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(Shell parent,
-			IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension) {
-		return new SuperAgentSelectionDialog(parent, context, project, this, extension);
+			IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
+			boolean multi) {
+		return new SuperAgentSelectionDialog(parent, context, project, this, extension, multi);
 	}
 
 }

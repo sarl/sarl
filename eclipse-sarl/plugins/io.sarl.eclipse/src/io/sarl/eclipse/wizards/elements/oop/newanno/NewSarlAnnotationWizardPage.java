@@ -19,53 +19,48 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.wizards.elements.aop.newcapacity;
+package io.sarl.eclipse.wizards.elements.oop.newanno;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
-import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
-import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
-import io.sarl.lang.codebuilder.builders.ISarlCapacityBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
-import io.sarl.lang.core.Capacity;
 
 /**
- * Wizard page for creating a new SARL behavior.
+ * Wizard page for creating a new SARL annotation.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage {
+public class NewSarlAnnotationWizardPage extends AbstractNewSarlElementWizardPage {
+
+	private static final String IMAGE_HEADER =
+			"platform:/plugin/org.eclipse.jdt.ui/icons/full/wizban/newannotation_wiz.png"; //$NON-NLS-1$
 
 	/** Construct a wizard page.
 	 */
-	public NewSarlCapacityWizardPage() {
-		super(INTERFACE_TYPE, Messages.NewSarlCapacity_0);
-		setTitle(Messages.NewSarlCapacity_0);
-		setDescription(Messages.NewSarlCapacityWizardPage_0);
-		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLEclipseConfig.NEW_CAPACITY_WIZARD_DIALOG_IMAGE));
+	public NewSarlAnnotationWizardPage() {
+		super(CLASS_TYPE, Messages.NewSarlAnnotationWizard_0);
+		setTitle(Messages.NewSarlAnnotationWizard_0);
+		setDescription(Messages.NewSarlAnnotationWizardPage_0);
+		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(IMAGE_HEADER));
 	}
 
 	@Override
 	public void createPageControls(Composite parent) {
-		createSuperClassControls(parent, COLUMNS);
+		//
 	}
 
 	@Override
@@ -74,7 +69,6 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 			this.fContainerStatus,
 			this.fPackageStatus,
 			this.fTypeNameStatus,
-			this.fSuperClassStatus,
 		};
 		updateStatus(status);
 	}
@@ -84,31 +78,23 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 			IProgressMonitor monitor) throws CoreException {
 //		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
 //				getPackageFragment().getElementName(), ecoreResource);
-//		final ISarlCapacityBuilder capacity = scriptBuilder.addSarlCapacity(getTypeName());
-//		capacity.addExtends(getSuperClass());
+//		scriptBuilder.addSarlAnnotationType(getTypeName());
 //		scriptBuilder.finalizeScript();
 	}
 
 	@Override
 	protected String getExistingElementErrorMessage() {
-		return Messages.NewSarlCapacityWizardPage_1;
+		return Messages.NewSarlAnnotationWizardPage_1;
 	}
 
 	@Override
 	protected String getInvalidSubtypeErrorMessage() {
-		return Messages.NewSarlCapacityWizardPage_2;
+		return null;
 	}
 
 	@Override
 	protected IType getRootSuperType() throws JavaModelException {
-		return getJavaProject().findType(Capacity.class.getName());
-	}
-
-	@Override
-	protected AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(Shell parent,
-			IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
-			boolean multi) {
-		return new SuperCapacitySelectionDialog(parent, context, project, this, extension, multi);
+		return getJavaProject().findType(Object.class.getName());
 	}
 
 }

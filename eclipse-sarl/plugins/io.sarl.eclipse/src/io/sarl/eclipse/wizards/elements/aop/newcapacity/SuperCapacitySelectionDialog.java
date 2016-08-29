@@ -50,12 +50,14 @@ public class SuperCapacitySelectionDialog extends AbstractSuperTypeSelectionDial
 	 * @param project the java project which will be considered when searching for interfaces.
 	 * @param wizardPage the wizard page.
 	 * @param extension the wizard type selection extension.
+	 * @param multi indicates if multiple elements could be selected.
 	 */
 	public SuperCapacitySelectionDialog(Shell parent, IRunnableContext context, IJavaProject project,
-			NewSarlCapacityWizardPage wizardPage, SarlSpecificTypeSelectionExtension extension) {
+			NewSarlCapacityWizardPage wizardPage, SarlSpecificTypeSelectionExtension extension,
+			boolean multi) {
 		super(parent, context, wizardPage,
 				createSearchScope(project, Capacity.class, true),
-				IJavaSearchConstants.INTERFACE, extension);
+				IJavaSearchConstants.INTERFACE, extension, multi);
 	}
 
 	@Override
