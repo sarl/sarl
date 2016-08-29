@@ -389,10 +389,13 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	@Override
 	public void configure(ProjectConfigurationRequest request,
 			IProgressMonitor monitor) throws CoreException {
-		final SARLConfiguration config = readConfiguration(request, monitor);
+		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		final SARLConfiguration config = readConfiguration(request, subMonitor.newChild(1));
 		forceMavenCompilerConfiguration(request.getMavenProjectFacade(), config);
+		subMonitor.worked(1);
 		io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
-				request.getMavenProjectFacade().getProject());
+				request.getMavenProjectFacade().getProject(),
+				subMonitor.newChild(1));
 	}
 
 	@Override
