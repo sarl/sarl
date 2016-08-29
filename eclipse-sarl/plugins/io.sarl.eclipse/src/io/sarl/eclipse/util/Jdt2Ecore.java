@@ -76,8 +76,10 @@ import io.sarl.lang.codebuilder.builders.IFormalParameterBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlAgentBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlBehaviorBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlClassBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlConstructorBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.util.Utils;
 
@@ -92,7 +94,7 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-@SuppressWarnings("static-method")
+@SuppressWarnings({"static-method", "checkstyle:classfanoutcomplexity"})
 public class Jdt2Ecore {
 
 	@Inject
@@ -518,6 +520,19 @@ public class Jdt2Ecore {
 	 * @throws IllegalArgumentException if the signature is not syntactically correct.
 	 */
 	public void createActions(
+			ISarlInterfaceBuilder codeBuilder,
+			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
+		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
+	}
+
+	/** Create the operations into the SARL feature container.
+	 *
+	 * @param codeBuilder - the builder of the script.
+	 * @param methods - the operations to create.
+	 * @throws JavaModelException if the Java model is invalid.
+	 * @throws IllegalArgumentException if the signature is not syntactically correct.
+	 */
+	public void createActions(
 			ISarlBehaviorBuilder codeBuilder,
 			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
 		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
@@ -532,6 +547,19 @@ public class Jdt2Ecore {
 	 */
 	public void createActions(
 			ISarlSkillBuilder codeBuilder,
+			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
+		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
+	}
+
+	/** Create the operations into the SARL feature container.
+	 *
+	 * @param codeBuilder - the builder of the script.
+	 * @param methods - the operations to create.
+	 * @throws JavaModelException if the Java model is invalid.
+	 * @throws IllegalArgumentException if the signature is not syntactically correct.
+	 */
+	public void createActions(
+			ISarlClassBuilder codeBuilder,
 			Collection<IMethod> methods) throws JavaModelException, IllegalArgumentException {
 		createActionsWith((name) -> codeBuilder.addSarlAction(name), methods);
 	}
