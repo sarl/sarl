@@ -141,7 +141,8 @@ abstract class AgentTrait {
 	 * @return the skill that was set.
 	 * @since 0.4
 	 */
-	protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>[] capacities) {
+	@SuppressWarnings("unchecked")
+    protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... capacities) {
 		return getOwner().$setSkill(skill, capacities);
 	}
 
