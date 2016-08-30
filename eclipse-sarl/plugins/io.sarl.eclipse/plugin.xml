@@ -374,5 +374,14 @@
             content="intro/SARL-Intro.xml">
       </configExtension>
    </extension>
+   <extension
+         point="org.eclipse.ui.intro.quicklinks">
+         <command
+          	id="org.eclipse.ui.newWizard(newWizardId=io.sarl.eclipse.wizard.newSarlProject)"            
+            description="Create a new SARL Eclipse project"
+            label="Create a new SARL project"
+            icon="icons/sarl_new_project_16.png">
+         </command>
+   </extension>
 
  </plugin>
