@@ -510,9 +510,6 @@
 						<show>protected</show>
 						<detectLinks>true</detectLinks>
 						<detectJavaApiLink>true</detectJavaApiLink>
-						<links>
-							<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.8/</link>
-						</links>
 						<docfilessubdirs>true</docfilessubdirs>
 						<excludePackageNames></excludePackageNames>
 						<breakiterator>true</breakiterator>

@@ -24,6 +24,7 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -363,15 +364,18 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				}
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("/** Replies the JvmIdentifiable that corresponds to the formal parameter."); //$NON-NLS-1$
+				it.append("\t/** Replies the JvmIdentifiable that corresponds to the formal parameter."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" *"); //$NON-NLS-1$
+				it.append("\t *"); //$NON-NLS-1$
 				it.newLine();
-				it.append(" * @return the identifiable parameter."); //$NON-NLS-1$
+				it.append("\t * @return the identifiable parameter."); //$NON-NLS-1$
 				it.newLine();
-				it.append(" */"); //$NON-NLS-1$
+				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t"); //$NON-NLS-1$
+				if (!forInterface) {
+					it.append("public "); //$NON-NLS-1$
+				}
 				it.append(JvmIdentifiableElement.class);
 				it.append(" getJvmIdentifiableElement() "); //$NON-NLS-1$
 				if (forInterface) {
@@ -381,7 +385,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t\t"); //$NON-NLS-1$
 					if (forAppender) {
-						it.append("\t\treturn this.builder.getJvmIdentifiableElement();"); //$NON-NLS-1$
+						it.append("return this.builder.getJvmIdentifiableElement();"); //$NON-NLS-1$
 					} else {
 						it.append(JvmVoid.class);
 						it.append(" jvmVoid = this.jvmTypesFactory.createJvmVoid();"); //$NON-NLS-1$
@@ -400,7 +404,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 						it.append(EcoreUtil2.class);
 						it.append(".getURIFragment(getSarlFormalParameter());"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\t\tiobject.eSetProxyURI(URI.createHierarchicalURI(null, null, null, null, fragment));"); //$NON-NLS-1$
+						it.append("\t\t\tiobject.eSetProxyURI("); //$NON-NLS-1$
+						it.append(URI.class);
+						it.append(".createHierarchicalURI(null, null, null, null, fragment));"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\tfinal "); //$NON-NLS-1$
 						it.append(EObject.class);

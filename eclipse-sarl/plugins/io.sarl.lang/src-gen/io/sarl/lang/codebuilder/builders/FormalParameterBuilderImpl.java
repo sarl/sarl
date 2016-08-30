@@ -27,6 +27,8 @@ import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import javax.inject.Inject;
 import javax.inject.Provider;
+
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -86,11 +88,11 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 		return this.parameter;
 	}
 
-/** Replies the JvmIdentifiable that corresponds to the formal parameter.
- *
- * @return the identifiable parameter.
- */
-	JvmIdentifiableElement getJvmIdentifiableElement() {
+	/** Replies the JvmIdentifiable that corresponds to the formal parameter.
+	 *
+	 * @return the identifiable parameter.
+	 */
+	public JvmIdentifiableElement getJvmIdentifiableElement() {
 		JvmVoid jvmVoid = this.jvmTypesFactory.createJvmVoid();
 		if (jvmVoid instanceof InternalEObject) {
 			InternalEObject iobject = (InternalEObject) jvmVoid;

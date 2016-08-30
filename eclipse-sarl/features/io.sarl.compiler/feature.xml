@@ -249,6 +249,7 @@
       <import plugin="org.eclipse.jdt.debug.ui" version="3.7.200" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.108.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.editors" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="org.arakhne.afc.core.references" version="14.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.emf.common" version="2.12.0" match="compatible"/>
       <import plugin="org.eclipse.core.resources" version="3.5.0" match="compatible"/>
@@ -283,8 +284,6 @@
       <import plugin="org.eclipse.xtext.xbase.ide" version="2.10.0" match="compatible"/>
       <import feature="io.sarl.lib" version="0.4.0.qualifier"/>
       <import feature="org.eclipse.xtend.sdk" version="2.10.0.v201605250459"/>
-      <import plugin="org.arakhne.afc.core.references" version="14.0.0" match="greaterOrEqual"/>
-      <import plugin="org.antlr.runtime" version="3.2.0" match="perfect"/>
    </requires>
 
    <plugin
