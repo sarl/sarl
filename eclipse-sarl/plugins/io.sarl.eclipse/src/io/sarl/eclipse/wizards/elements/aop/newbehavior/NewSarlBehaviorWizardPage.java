@@ -21,17 +21,10 @@
 
 package io.sarl.eclipse.wizards.elements.aop.newbehavior;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.operation.IRunnableContext;
@@ -45,9 +38,6 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
-import io.sarl.lang.codebuilder.builders.ISarlBehaviorBuilder;
 import io.sarl.lang.core.Behavior;
 
 /**
@@ -87,10 +77,11 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 		updateStatus(status);
 	}
 
+	@SuppressWarnings("all")
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
 			IProgressMonitor monitor) throws CoreException {
-		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
+		/*final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
 				getPackageFragment().getElementName(), typeProvider);
 		final ISarlBehaviorBuilder behavior = scriptBuilder.addSarlBehavior(getTypeName());
 		behavior.setExtends(getSuperClass());
@@ -118,7 +109,7 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 		} catch (IOException exception) {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, exception));
 		}
-		monitor.done();
+		monitor.done();*/
 	}
 
 	@Override

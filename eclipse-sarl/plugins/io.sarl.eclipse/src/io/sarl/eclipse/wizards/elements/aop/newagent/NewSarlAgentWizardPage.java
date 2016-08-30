@@ -23,7 +23,6 @@ package io.sarl.eclipse.wizards.elements.aop.newagent;
 
 import javax.inject.Inject;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubMonitor;
@@ -58,6 +57,7 @@ import io.sarl.lang.core.Agent;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 
 	/** Construct a wizard page.

@@ -21,18 +21,10 @@
 
 package io.sarl.eclipse.wizards.elements.aop.newskill;
 
-import java.util.Comparator;
-import java.util.Map;
-
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.operation.IRunnableContext;
@@ -46,10 +38,6 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
-import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
 
@@ -93,6 +81,7 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 		updateStatus(status);
 	}
 
+	@SuppressWarnings("all")
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
 			IProgressMonitor monitor) throws CoreException {

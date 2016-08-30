@@ -24,8 +24,6 @@ package io.sarl.eclipse.wizards.elements.aop.newcapacity;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -40,8 +38,6 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
-import io.sarl.lang.codebuilder.builders.ISarlCapacityBuilder;
-import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import io.sarl.lang.core.Capacity;
 
 /**
@@ -79,6 +75,7 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 		updateStatus(status);
 	}
 
+	@SuppressWarnings("all")
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
 			IProgressMonitor monitor) throws CoreException {
