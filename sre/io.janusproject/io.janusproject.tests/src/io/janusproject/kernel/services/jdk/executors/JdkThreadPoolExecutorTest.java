@@ -49,7 +49,7 @@ import org.mockito.exceptions.base.MockitoException;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({ "javadoc" })
+@SuppressWarnings("all")
 public class JdkThreadPoolExecutorTest extends AbstractJanusTest {
 
 	static final Object VALUE = new Object();

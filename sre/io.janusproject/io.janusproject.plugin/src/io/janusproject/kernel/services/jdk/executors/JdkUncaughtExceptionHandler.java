@@ -30,7 +30,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.services.logging.LogService;
-import io.janusproject.services.spawn.SpawnService;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.core.Initialize;
@@ -47,9 +46,6 @@ import io.sarl.core.Initialize;
 public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 
 	private final LogService logger;
-
-	@Inject
-	private SpawnService spawnService;
 
 	/**
 	 * @param logger - the logging service that must be used for output the errors.

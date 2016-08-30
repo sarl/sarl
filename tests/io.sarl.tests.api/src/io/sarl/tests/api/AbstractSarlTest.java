@@ -66,6 +66,7 @@ import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.AssumptionViolatedException;
 import org.junit.ComparisonFailure;
@@ -312,6 +313,38 @@ public abstract class AbstractSarlTest {
 			}
 		}
 		throw new NoSuchFieldError(fieldName);
+	}
+
+	/** Assert the values are equal.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param epsilon the precision.
+	 */
+	public static void assertEquals(float expected, float actual, float precision) {
+		Assert.assertEquals(expected, actual, precision);
+	}
+	/**
+	 * Test if the given exception has a cause of the given type.
+	 *
+	 * If the given exception has no cause, it is the cause.
+	 *
+	 * @param <T> - the type of the expected cause.
+	 * @param expected - the type of the expected cause.
+	 * @param actual - the exception to test.
+	 * @return the cause.
+	 */
+	public static <T extends Throwable> T assertCause(Class<T> expected, Throwable actual) {
+		Throwable cause = actual;
+		while (cause != null && cause.getCause() != null && cause.getCause() != cause) {
+			cause = cause.getCause();
+		}
+		if (cause == null) {
+			cause = actual;
+		}
+		assertTrue("Unexpected type of exception's cause. Expected: " + expected.getName() + ". Actual: "
+				+ cause.getClass().getName(), expected.isInstance(cause));
+		return expected.cast(cause);
 	}
 
 	/** Test if the objects are equal.

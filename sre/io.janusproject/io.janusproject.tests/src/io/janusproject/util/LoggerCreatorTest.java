@@ -19,7 +19,6 @@
  */
 package io.janusproject.util;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
@@ -27,10 +26,9 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.junit.Test;
-
 import io.janusproject.JanusConfig;
 import io.janusproject.testutils.AbstractJanusTest;
+import org.junit.Test;
 
 /**
  * @author $Author: sgalland$

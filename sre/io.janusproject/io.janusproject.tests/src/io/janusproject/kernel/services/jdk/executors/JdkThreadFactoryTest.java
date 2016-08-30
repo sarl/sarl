@@ -36,7 +36,7 @@ import org.mockito.Mockito;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({ "javadoc" })
+@SuppressWarnings("all")
 public class JdkThreadFactoryTest extends AbstractJanusTest {
 
 	@Nullable
