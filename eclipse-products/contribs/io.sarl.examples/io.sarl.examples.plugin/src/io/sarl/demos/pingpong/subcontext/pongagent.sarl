@@ -1,0 +1,38 @@
+package io.sarl.demos.pingpong.subcontext
+
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.lang.core.AgentContext
+import io.sarl.util.Scopes
+import java.util.UUID
+
+
+agent PongAgent {
+	
+	uses ExternalContextAccess, Logging
+	
+	var context : AgentContext
+
+	on Initialize {
+		
+		
+		
+		var cID = occurrence.parameters.get(0) as UUID
+		var sID = occurrence.parameters.get(1) as UUID
+		join(cID, sID)
+		context = getContext(cID)
+	}
+	
+	on Ping {
+		info("Receiving Ping #" + occurrence.index)
+		info("Sending Pong #" + occurrence.index)
+		var evt = new Pong( occurrence.index )
+		evt.source = context.defaultSpace.getAddress(getID)
+		context.defaultSpace.emit(
+			evt,
+			Scopes.addresses( occurrence.source )
+		)
+		
+	}
+}

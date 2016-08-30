@@ -1,0 +1,61 @@
+package io.sarl.demos.schedule
+
+import io.sarl.core.Schedules
+import io.sarl.core.Behaviors
+import io.sarl.core.Lifecycle
+
+import io.sarl.core.Initialize
+import java.util.concurrent.atomic.AtomicInteger
+import io.sarl.core.Logging
+
+event Die
+
+agent ScheduleAgent {
+	uses Schedules, Lifecycle, Behaviors, Logging
+	
+	var secs : AtomicInteger = new AtomicInteger(0)
+	var hideText = false
+	
+	on Initialize{
+		//Periodic task every 1 second
+		every(1.seconds)[updateCounter]
+		
+		//Periodic task with condition. You can also use ifTrue
+		every(1.seconds)[secondsFromStart].unless[hideText]
+		
+		//Delayed task. It can also be guarded with conditions unless and ifTrue
+		in(2.seconds)[hideText=true]
+		in(5.seconds)[hideText=false]
+		
+		//You can access all agent actions included Capacity defined.
+		in(20.seconds)[ wake(new Die)]
+		
+		//Named task 
+		task("say-hi").in(1.seconds)[info('HelloWorld')]
+		
+		//Named task can be retrieved later for be modified if necessary.		
+		task("say-hi2").in(4.seconds)[info('HelloWorld that should never show')].unless[hideText]
+		
+		
+		//You can compose schedules
+		in(10.seconds)[every(1.seconds)[info("Started after "+this.secs)]]
+
+	}
+	
+	def seconds(value : long) : Long{
+		value * 1000 
+	}
+	def updateCounter{
+		this.secs.incrementAndGet
+	}
+	
+	def secondsFromStart{
+		 info("Seconds from Initialize "+secs.get)
+	}
+	
+	on Die {
+		info("Killing Agent");
+		killMe
+	}
+	
+}

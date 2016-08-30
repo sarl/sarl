@@ -1,0 +1,92 @@
+package io.sarl.demos.factorial.distributed
+
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+
+event Factorial {
+	var number : Long
+	var value : Long
+} 
+
+event Calculate { 
+	var number : Long 
+} 
+
+event ComputationDone { 
+	var result : Long 
+}
+
+event Hello
+
+event Die
+
+agent FactorialQueryAgent {
+	uses Lifecycle, DefaultContextInteractions, Schedules, Logging
+	
+	var factValue : Long
+
+	var started = false
+	
+	on Initialize {
+		factValue = new Long(occurrence.parameters.get(0) as String)
+
+		info("Auto-detecting Factorial")
+		task("discovery-task").every(1000) [
+			emit(new Hello)
+		]
+	}
+
+	on Hello [occurrence.source != defaultAddress && !started] {
+		started = true
+		task("discovery-task").cancel
+		info("Found Factorial")
+		info("Query sent with number "+factValue)
+		emit(new Calculate=>[number=factValue])
+	}
+		
+	on ComputationDone {
+		info(factValue+"! = "+occurrence.result)
+		emit(new Die)
+		info("Killing")
+		killMe
+	}
+}
+
+agent FactorialAgent {
+	uses Lifecycle, Behaviors, Logging, DefaultContextInteractions
+	var upto : Long
+	  
+	on Initialize {		
+		info("Factorial initialized")	
+	} 
+
+	on Hello [occurrence.source != defaultAddress] {
+		emit(new Hello)
+	}
+
+	on Factorial [occurrence.number < upto ] {		
+		wake(new Factorial => [ number = occurrence.number + 1 ; value = occurrence.value * (occurrence.number+1) ])
+	}
+
+	on Factorial [ occurrence.number == upto ] {  
+		info(this.upto+"! = "+occurrence.value)	
+		emit(new ComputationDone=>[result=occurrence.value])	
+	}
+	
+	on Calculate {
+		this.upto  = new Long(occurrence.number);
+		info("Query for " + this.upto + "!")
+		wake(new Factorial => [ number = 0l ; value = 1l ])
+	}
+
+	on Die {
+		info("Killing")
+		killMe
+	}
+
+}
+

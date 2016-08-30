@@ -1,0 +1,19 @@
+package io.sarl.docs.tutorials.pingpongspace
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import java.util.UUID
+
+agent BootAgent {
+
+	uses DefaultContextInteractions, Lifecycle
+
+	on Initialize {
+		var spaceId = UUID::randomUUID
+		spawn( PongAgent, spaceId )
+		spawn( PingAgent, spaceId )
+		killMe
+	}
+
+}

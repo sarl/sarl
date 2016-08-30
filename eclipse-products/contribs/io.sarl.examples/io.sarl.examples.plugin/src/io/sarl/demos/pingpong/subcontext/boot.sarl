@@ -1,0 +1,16 @@
+package io.sarl.demos.pingpong.subcontext
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+
+agent BootAgent {
+
+	uses DefaultContextInteractions, InnerContextAccess
+
+	on Initialize {
+		spawn( PongAgent, innerContext.ID, innerContext.defaultSpace.ID.ID )
+		spawn( PingAgent, innerContext.ID, innerContext.defaultSpace.ID.ID )
+	}
+
+}

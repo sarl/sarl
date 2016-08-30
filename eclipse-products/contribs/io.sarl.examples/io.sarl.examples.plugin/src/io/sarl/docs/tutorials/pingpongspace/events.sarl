@@ -1,0 +1,21 @@
+package io.sarl.docs.tutorials.pingpongspace
+
+event Ping {
+	
+	val index : int
+	
+	new (i : int) {
+		index = i
+	}
+
+}
+
+event Pong {
+	
+	val index : int
+	
+	new (i : int) {
+		index = i
+	}
+
+}

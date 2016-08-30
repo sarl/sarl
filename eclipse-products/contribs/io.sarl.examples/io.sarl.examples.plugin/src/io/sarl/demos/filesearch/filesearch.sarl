@@ -1,0 +1,201 @@
+package io.sarl.demos.filesearch
+
+import io.sarl.core.AgentKilled
+import io.sarl.core.AgentSpawned
+import io.sarl.core.Behaviors
+import io.sarl.core.ContextJoined
+import io.sarl.core.ContextLeft
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.Schedules
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.Event
+import io.sarl.util.Scopes
+import java.io.File
+import java.util.Date
+
+import static java.lang.String.*
+import io.sarl.core.Logging
+
+/* Search for a given minSize (in kb) */
+event Search {
+	var fileMatch : String
+	var date : Date
+}
+
+/* Notify a file matching the criteria was found */
+event FoundFile {
+	var file : String
+}
+
+/* Request the agent to stop processing */
+event Stop
+
+
+
+
+agent SearchCommanderAgent {
+	uses DefaultContextInteractions, Lifecycle, Schedules, Logging
+	on Initialize {
+		var ext = if (occurrence.parameters.empty) "" else occurrence.parameters.get(0)
+		if (ext=="") {
+			ext = ".sarl"
+		}
+		val cExt = ext?.toString
+		
+		info("Waiting for FileSearch Agent")
+		val task = task("waiting_for_partner")
+		task.every(1000) [
+			if (getDefaultContext().defaultSpace.participants.size > 1) {
+				info("Sending Search")
+				emit(new Search=>[fileMatch=cExt;date=new Date()])
+				every(5000) [
+					val searcherNb = getDefaultContext().defaultSpace.participants.size;
+					if (searcherNb == 1) {
+						info("I'm alone, all others died")
+						killMe						
+					} else if(searcherNb == 1) {
+						info("Only 2 holons remains, me and the first search agent")
+					} else {
+						info("Still "+(searcherNb-1)+" holons currently searching...")
+					}
+				]
+			
+				task.cancel
+			} else {
+				info("Waiting FileSearch");
+			}
+		]
+		emit(new Search=>[fileMatch=cExt;date=new Date()])
+		info("SearchCommander initialized, waiting search results")
+	}
+	
+	on FoundFile{
+		info(format("[receiver = %s, source=%s] Matching File Found [path=%s]",ID, occurrence.source.UUID,occurrence.file))		
+	}
+	
+	on Destroy {
+		info("Commander I'm about to die, bye :-)")
+	}
+}
+
+/*
+ * An Agent that searches for files larger than a given size.
+ * 
+ * To explore sub-directories this agent spawns members (sub-holons) in its innerContext.
+ * 
+ * This agent can be used to search in distant machines by setting the stayAlive and requesting a
+ * with Search event in the default context.
+ * 
+ * @param String path where this agent looks for
+ * @param Integar size the minimum size to match
+ * @param Boolean stayAlive after search
+ */
+agent FileSearchAgent {
+	uses Behaviors, Lifecycle, DefaultContextInteractions, InnerContextAccess, Schedules, Logging
+
+	var myPath : String
+	var stayAlive : Boolean
+	var cmdAddr : Address
+	
+	on Initialize {  
+		myPath = occurrence.parameters.get(0) as String
+		//wake(new Search =>[minSize=new Integer(occurrence.parameters.get(1) as String)])
+		stayAlive = Boolean.parseBoolean(occurrence.parameters.get(1) as String);
+		info("FileSearch Launched in "+myPath)
+	}
+	
+	on Search{
+		val maxDate = occurrence.date
+		val fMatch = occurrence.fileMatch
+		cmdAddr = occurrence.source
+		
+		info(format("[ID=%s - parent %s] Searching in %s file matching %s created before %s", ID, defaultContext.ID,myPath,fMatch,maxDate.toString))
+		
+		
+		val dir = new File(myPath)
+		if(!dir.exists){
+			throw new IllegalArgumentException("Path ["+myPath+"] is not a Directory")
+		}
+		
+		for(f : dir.listFiles()){
+			if(f.directory){
+				if(!f.name.equals(".")&& !f.name.equals("..")) {
+					val targetID = FileSearchAgent.spawnInContext(innerContext,#[f.absolutePath,false.toString]);
+					innerContext.defaultSpace.emit(new Search =>[source=innerContext.defaultSpace.getAddress(ID); date=maxDate;fileMatch = fMatch],
+						Scopes.addresses(innerContext.defaultSpace.getAddress(targetID))
+					);
+				}
+			}else{
+				if((maxDate.time >= f.lastModified) && !(f.name.startsWith(".")) && (f.name.endsWith(fMatch))){
+					emit(new FoundFile =>[file = f.absolutePath],
+						Scopes.addresses(cmdAddr)
+					)
+				}
+			}
+		}
+		
+		if(!stayAlive){
+			//wait for members searching in sub-directories
+			every(500)[if(!hasMembers){wake(new Stop)}]
+		}
+	}
+	
+	on FoundFile{
+		info(format("[receiver = %s, source=%s] Matching File Found [path=%s]",ID, occurrence.source.UUID,occurrence.file))	
+		emit(occurrence, Scopes.addresses(cmdAddr));	
+		
+	}
+	
+	on Stop{
+		info(format("[ID=%s] Request to stop received", ID, occurrence.source.UUID))
+		killMe
+	}
+	
+	on Destroy {
+		info("I'm about to die, bye :-)")
+	}
+	
+	def isInternal(e:Event) : boolean {
+		return e.source.spaceId.equals(innerContext.defaultSpace.ID);
+	}
+	
+	def hasMembers : boolean {
+		return innerContext.defaultSpace.participants.size > 1
+	}
+	
+	
+	on ContextJoined {
+		info("ContextJoined, contextID:"+occurrence.holonContextID+" SpaceID: "+occurrence.defaultSpaceID)
+	}
+	
+	on ContextLeft {
+		info("ContextLeft, contextID:"+occurrence.holonContextID)
+	}
+	
+	on MemberJoined {
+		info("MemberJoined, agentID:"+occurrence.agentID)
+	}
+	
+	on MemberLeft {
+		info("MemberLeft, agentID:"+occurrence.agentID)		
+	}
+	
+	on AgentSpawned {
+		info("AgentSpawned, agentID:"+occurrence.agentID+" AgentType: "+occurrence.agentType)		
+	}
+	
+	on AgentKilled {
+		info("AgentKilled, agentID:"+occurrence.agentID)	
+	}
+	
+	on Destroy {
+		info("Destroy")	
+	}
+	
+}

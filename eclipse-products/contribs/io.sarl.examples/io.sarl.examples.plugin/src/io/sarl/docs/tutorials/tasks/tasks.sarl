@@ -1,0 +1,160 @@
+package io.sarl.docs.tutorials.tasks
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.lang.core.Address
+import io.sarl.util.Scopes
+import java.util.Arrays
+import java.util.Collection
+import java.util.UUID
+
+/** Request for running a task.
+ */
+event TaskExecutionRequest
+
+/** A task was executed.
+ */
+event TaskExecuted {
+	val success : boolean
+	new(isSuccessful : boolean) {
+		success = isSuccessful
+	}
+}
+
+/** Stop the execution */
+event StopRequest
+
+
+/** Specify the capacity of an agent to execute tasks.
+ */
+capacity TaskExecution {
+
+	/** Run the task
+	 * 
+	 * @param inputData - collection of input information that are required for running the task.
+	 * @return the success state of the execution.
+	 */
+	def runTask(inputData : Object*) : boolean
+
+}
+
+/** Definition of the skill for running the GCC compiler
+ */
+skill JavaCompilation implements TaskExecution {
+
+	uses Logging
+
+	/** Run the GCC compiler
+	 * 
+	 * @param inputData - collection of input information that are required for running the task.
+	 * @return the success state of the execution
+	 */
+	override runTask(inputData : Object*) : boolean {
+		info("Run the javac compiler on the parameters: " + Arrays.toString(inputData))
+		true
+	}
+	
+}
+
+/** Agent that is able to execute a task.
+ */
+agent TaskManager {
+	
+	uses DefaultContextInteractions, Lifecycle, TaskExecution
+	
+	var state = TaskManagerState::NO_REQUEST
+	var taskParameters : Object[]
+	var dependencies = <Address>newArrayList
+	var requesters = <Address>newArrayList
+	var nbReplies : int
+	
+	on Initialize {
+		var ids = occurrence.parameters.get(0) as Collection<UUID>
+		for(id : ids) {
+			dependencies += defaultSpace.getAddress(id)
+		}
+		taskParameters = (occurrence.parameters.get(1) as Collection<?>).toArray
+		setSkill(new JavaCompilation, TaskExecution)
+	}
+	
+	on TaskExecutionRequest [state == TaskManagerState::NO_REQUEST] {
+		state = TaskManagerState::WAITING_EXECUTION_TERMINATION_WITH_SUCCESS
+		requesters += occurrence.source
+		if (dependencies.empty) {
+			var isSuccess = runTask(taskParameters)
+			if (isSuccess) {
+				state = TaskManagerState::SUCCESS
+			} else {
+				state = TaskManagerState::ERROR
+			}
+			var r = <Address>newArrayList(requesters)
+			requesters.clear
+			emit( new TaskExecuted(isSuccess), Scopes::addresses(r))
+		} else {
+			nbReplies = 0
+			emit( new TaskExecutionRequest, Scopes::addresses(dependencies))
+		}
+	}
+
+	on TaskExecutionRequest [state == TaskManagerState::WAITING_EXECUTION_TERMINATION_WITH_SUCCESS
+							|| state == TaskManagerState::WAITING_EXECUTION_TERMINATION_WITH_ERROR] {
+			requesters += occurrence.source
+	}
+	
+	on TaskExecutionRequest [state == TaskManagerState::SUCCESS] {
+		emit( new TaskExecuted(true), Scopes::addresses(occurrence.source))
+	}
+
+	on TaskExecutionRequest [state == TaskManagerState::ERROR] {
+		emit( new TaskExecuted(false), Scopes::addresses(occurrence.source))
+	}
+	
+	on TaskExecuted [state == TaskManagerState::WAITING_EXECUTION_TERMINATION_WITH_SUCCESS
+					|| state == TaskManagerState::WAITING_EXECUTION_TERMINATION_WITH_ERROR]  {
+		nbReplies++
+		if (nbReplies >= dependencies.size) {
+			var isSuccess = (state == TaskManagerState::WAITING_EXECUTION_TERMINATION_WITH_SUCCESS)
+							&& occurrence.success
+			if (isSuccess) {
+				isSuccess = runTask(taskParameters)
+			}
+			state = if (isSuccess) TaskManagerState::SUCCESS else TaskManagerState::ERROR
+			var r = <Address>newArrayList(requesters)
+			requesters.clear
+			emit( new TaskExecuted(isSuccess), Scopes::addresses(r))
+		}
+	}
+
+	on StopRequest {
+		killMe
+	}
+
+}
+
+agent TaskInitializer {
+
+	uses DefaultContextInteractions, Logging, Lifecycle
+
+	on Initialize {
+		var id1 = spawn(TaskManager, #[], #["File_1_1_1.java"])
+		var id2 = spawn(TaskManager, #[], #["File_1_1_2.java"])
+		var id3 = spawn(TaskManager, #[id1, id2], #["File_1_1.java"])
+		var id4 = spawn(TaskManager, #[], #["File_1_2.java"])
+		var id5 = spawn(TaskManager, #[id3, id4], #["File_1.java"])
+		
+		emit(new TaskExecutionRequest, Scopes::addresses(defaultSpace.getAddress(id5)))
+	}
+	
+	on TaskExecuted {
+		if (occurrence.success) {
+			info("Task executed with success")
+		} else {
+			error("Task executed with error")
+		}
+		emit( new StopRequest )
+		killMe
+	}
+
+}

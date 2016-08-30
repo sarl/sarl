@@ -1,0 +1,51 @@
+package io.sarl.docs.tutorials.pingpongspace
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Schedules
+import io.sarl.util.Scopes
+import io.sarl.core.Behaviors
+import io.sarl.util.OpenEventSpace
+import io.sarl.util.OpenEventSpaceSpecification
+import java.util.UUID
+import io.sarl.core.Logging
+
+agent PingAgent {
+
+	uses DefaultContextInteractions, Schedules, Behaviors, Logging
+
+	var comspace : OpenEventSpace
+
+	on Pong {
+		info("Receiving Pong #" + occurrence.index)
+		info("Sending Ping #" + (occurrence.index + 1))
+		var evt = new Ping(occurrence.index + 1)
+		evt.source = comspace.getAddress(getID())
+		comspace.emit(
+			evt,
+			Scopes.addresses(occurrence.source)
+		)
+	}
+
+	on Initialize {
+		comspace = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification),
+			occurrence.parameters.get(0) as UUID)
+
+		comspace.register(asEventListener())
+
+		info("Waiting for Pong Agent")
+		val task = task("waiting_for_partner")
+		task.every(1000) [
+			if (comspace.participants.size > 1) {
+				info("Pong Agent detected.")
+				info("Sending Ping #0")
+				var evt = new Ping(0)
+				evt.source = comspace.getAddress(getID())
+
+				comspace.emit(evt)
+				task.cancel
+			}
+		]
+	}
+
+}

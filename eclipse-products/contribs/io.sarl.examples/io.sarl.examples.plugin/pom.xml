@@ -12,7 +12,29 @@
 	<name>SARL Examples Plugin</name>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/sarl</directory>
+				<includes>
+					<include>**/*.sarl</include>
+				</includes>
+			</resource>
+		</resources>
+
+
 		<plugins>
+			<plugin>
+				<groupId>io.sarl.maven</groupId>
+				<artifactId>sarl-maven-plugin</artifactId>
+				<version>${sarl.version}</version>
+				<extensions>true</extensions>
+				
+				<configuration>
+					<source>${compiler.level}</source>
+					<target>${compiler.level}</target>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>

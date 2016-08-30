@@ -1,0 +1,17 @@
+package io.sarl.docs.tutorials.holonicauction
+
+event Price {
+	val price : float
+	new(price : float) {
+		this.price = price
+	}
+}
+
+event Bid {
+	val value : float
+	new(value : float) {
+		this.value = value
+	}
+}
+
+event StopAuction
