@@ -310,7 +310,7 @@
           <property name="introBrandingImage"
           		value="product:icons/sarl_64.png"/>
           <property name="introTitle"
-          		value="Welcome to the Eclipse IDE for SARL Developers">
+          		value="%welcome.message">
           </property>
        </product>
     </extension>
