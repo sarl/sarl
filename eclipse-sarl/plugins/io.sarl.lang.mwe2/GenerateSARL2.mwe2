@@ -741,7 +741,7 @@ Workflow {
     			runtime = {
     				bind = "org.eclipse.xtext.scoping.IScopeProvider"
     				annotatedWith = "org.eclipse.xtext.serializer.tokens.SerializerScopeProviderBinding"
-    				to = "org.eclipse.xtend.core.serializer.XtendSerializerScopeProvider"
+    				to = "io.sarl.lang.scoping.SARLSerializerScopeProvider"
     				functionName = "configureSerializerIScopeProvider"
    				}
     			runtime = {

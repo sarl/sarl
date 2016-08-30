@@ -30,6 +30,7 @@ import io.sarl.lang.sarl.SarlBehaviorUnit;
 import java.io.IOException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -48,12 +49,16 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 		build(this.builder.getSarlBehaviorUnit(), appender);
 	}
 
+	public IJvmTypeProvider getTypeResolutionContext() {
+		return this.builder.getTypeResolutionContext();
+	}
+
 	/** Initialize the Ecore element.
 	 * @param container - the container of the SarlBehaviorUnit.
 	 * @param name - the type of the SarlBehaviorUnit.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name) {
-		this.builder.eInit(container, name);
+	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
+		this.builder.eInit(container, name, context);
 	}
 
 	/** Replies the generated element.
@@ -93,6 +98,12 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		return this.builder.getExpression();
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return this.builder.toString();
 	}
 
 }

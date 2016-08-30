@@ -35,8 +35,10 @@ import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.Keyword;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.tasks.ITaskTagProvider;
 import org.eclipse.xtext.tasks.TaskTags;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
@@ -91,8 +93,8 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	}
 
 	@Override
-	public void generateBindings(BindingFactory factory) {
-		super.generateBindings(factory);
+	public void generateRuntimeBindings(BindingFactory factory) {
+		super.generateRuntimeBindings(factory);
 		bindTypeReferences(factory,
 				getBlockExpressionBuilderInterface(),
 				getBlockExpressionBuilderImpl(),
@@ -251,6 +253,29 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}
+				if (forInterface) {
+					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the context or <code>null</code> if the Ecore object is the context."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" getTypeResolutionContext();"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				} else if (forAppender) {
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" getTypeResolutionContext() {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn this.builder.getTypeResolutionContext();"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
 				it.append("\t/** Create the XBlockExpression."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
@@ -259,15 +284,19 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				if (!forInterface) {
 					it.append("public "); //$NON-NLS-1$
 				}
-				it.append("void eInit()"); //$NON-NLS-1$
+				it.append("void eInit("); //$NON-NLS-1$
+				it.append(IJvmTypeProvider.class);
+				it.append(" context)"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
 				} else {
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
 					if (forAppender) {
-						it.append("\t\tthis.builder.eInit();"); //$NON-NLS-1$
+						it.append("\t\tthis.builder.eInit(context);"); //$NON-NLS-1$
 					} else {
+						it.append("\t\tsetTypeResolutionContext(context);"); //$NON-NLS-1$
+						it.newLine();
 						it.append("\t\tif (this.block == null) {"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\tthis.block = "); //$NON-NLS-1$
@@ -469,7 +498,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 						it.newLine();
 						it.append("\t\t\t\t\t}"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\t\t\t});"); //$NON-NLS-1$
+						it.append("\t\t\t\t}, getTypeResolutionContext());"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\treturn builder;"); //$NON-NLS-1$
 					}
@@ -536,6 +565,29 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				}
 				it.newLineIfNotEmpty();
 				it.newLine();
+				if (!forInterface) {
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Override.class);
+					it.newLine();
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Pure.class);
+					it.newLine();
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(String.class);
+					it.append(" toString() {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn "); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("this.builder.toString();"); //$NON-NLS-1$
+					} else {
+						it.append(EmfFormatter.class);
+						it.append(".objToStr(getXBlockExpression());"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
 			}
 		};
 	}

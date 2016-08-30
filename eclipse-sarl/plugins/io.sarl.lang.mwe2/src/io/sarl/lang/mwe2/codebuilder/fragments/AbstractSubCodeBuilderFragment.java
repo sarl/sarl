@@ -187,13 +187,43 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		}
 	}
 
-	/** Generates the bindings.
+	/** Generates the bindings for the Runtime module.
 	 *
 	 * @param factory the factory for creating the bindings.
 	 */
-	public void generateBindings(BindingFactory factory) {
+	public void generateRuntimeBindings(BindingFactory factory) {
 		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
-			subFragment.generateBindings(factory);
+			subFragment.generateRuntimeBindings(factory);
+		}
+	}
+
+	/** Generates the bindings for the UI/Eclipse module.
+	 *
+	 * @param factory the factory for creating the bindings.
+	 */
+	public void generateEclipseBindings(BindingFactory factory) {
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+			subFragment.generateEclipseBindings(factory);
+		}
+	}
+
+	/** Generates the bindings for the UI/IDEA module.
+	 *
+	 * @param factory the factory for creating the bindings.
+	 */
+	public void generateIdeaBindings(BindingFactory factory) {
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+			subFragment.generateIdeaBindings(factory);
+		}
+	}
+
+	/** Generates the bindings for the UI/Web-interface module.
+	 *
+	 * @param factory the factory for creating the bindings.
+	 */
+	public void generateWebBindings(BindingFactory factory) {
+		for (final AbstractSubCodeBuilderFragment subFragment : this.subFragments) {
+			subFragment.generateWebBindings(factory);
 		}
 	}
 

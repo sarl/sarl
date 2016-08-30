@@ -22,9 +22,9 @@
 package io.sarl.eclipse;
 
 import com.google.inject.Injector;
-import org.eclipse.xtext.ui.guice.AbstractGuiceAwareExecutableExtensionFactory;
 import org.osgi.framework.Bundle;
 
+import io.sarl.lang.ui.SARLExecutableExtensionFactory;
 import io.sarl.lang.ui.internal.LangActivator;
 
 /** Factory for injecting SARL instances.
@@ -34,16 +34,11 @@ import io.sarl.lang.ui.internal.LangActivator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLEclipseExecutableExtensionFactory extends AbstractGuiceAwareExecutableExtensionFactory {
+public class SARLEclipseExecutableExtensionFactory extends SARLExecutableExtensionFactory {
 
 	@Override
 	protected Bundle getBundle() {
 		return SARLEclipsePlugin.getDefault().getBundle();
-	}
-
-	@Override
-	protected Injector getInjector() {
-		return getSARLInjector();
 	}
 
 	/** Replies the SARL injector.

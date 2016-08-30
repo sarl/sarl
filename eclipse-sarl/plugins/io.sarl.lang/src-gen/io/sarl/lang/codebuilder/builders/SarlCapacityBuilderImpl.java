@@ -36,6 +36,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -47,9 +49,16 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 
 	private SarlCapacity sarlCapacity;
 
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlCapacity());
+	}
+
 	/** Initialize the Ecore element when inside a script.
 	 */
-	public void eInit(SarlScript script, String name) {
+	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlCapacity == null) {
 			this.sarlCapacity = SarlFactory.eINSTANCE.createSarlCapacity();
 			script.getXtendTypes().add(this.sarlCapacity);
@@ -105,7 +114,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 		if (!Strings.isEmpty(superType)
 				&& !Capacity.class.getName().equals(superType)) {
 			JvmParameterizedTypeReference superTypeRef = newTypeRef(this.sarlCapacity, superType);
-			JvmTypeReference baseTypeRef = newTypeRef(this.sarlCapacity, Capacity.class);
+			JvmTypeReference baseTypeRef = findType(this.sarlCapacity, Capacity.class.getCanonicalName());
 			if (isSubTypeOf(this.sarlCapacity, superTypeRef, baseTypeRef)) {
 				this.sarlCapacity.getExtends().add(superTypeRef);
 			}
@@ -130,7 +139,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
-		builder.eInit(getSarlCapacity(), name);
+		builder.eInit(getSarlCapacity(), name, getTypeResolutionContext());
 		return builder;
 	}
 

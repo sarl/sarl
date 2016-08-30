@@ -31,6 +31,8 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -42,9 +44,16 @@ public class SarlSpaceBuilderImpl extends AbstractBuilder implements ISarlSpaceB
 
 	private SarlSpace sarlSpace;
 
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlSpace());
+	}
+
 	/** Initialize the Ecore element when inside a script.
 	 */
-	public void eInit(SarlScript script, String name) {
+	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlSpace == null) {
 			this.sarlSpace = SarlFactory.eINSTANCE.createSarlSpace();
 			script.getXtendTypes().add(this.sarlSpace);

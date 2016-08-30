@@ -51,12 +51,14 @@ public class SuperAgentSelectionDialog extends AbstractSuperTypeSelectionDialog<
 	 * @param project the java project which will be considered when searching for interfaces.
 	 * @param wizardPage the wizard page.
 	 * @param extension the wizard type selection extension.
+	 * @param multi indicates if multiple elements could be selected.
 	 */
 	protected SuperAgentSelectionDialog(Shell parent, IRunnableContext context, IJavaProject project,
-			NewSarlAgentWizardPage wizardPage, SarlSpecificTypeSelectionExtension extension) {
+			NewSarlAgentWizardPage wizardPage, SarlSpecificTypeSelectionExtension extension,
+			boolean multi) {
 		super(parent, context, wizardPage,
 				createSearchScope(project, Agent.class, true),
-				IJavaSearchConstants.CLASS, extension);
+				IJavaSearchConstants.CLASS, extension, multi);
 	}
 
 	@Override

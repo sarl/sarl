@@ -27,6 +27,8 @@ import javax.inject.Provider;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.Assignment;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.Procedures;
@@ -75,8 +77,8 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 	}
 
 	@Override
-	public void generateBindings(BindingFactory factory) {
-		super.generateBindings(factory);
+	public void generateRuntimeBindings(BindingFactory factory) {
+		super.generateRuntimeBindings(factory);
 		bindTypeReferences(factory,
 				getFormalParameterBuilderInterface(),
 				getFormalParameterBuilderImpl(),
@@ -226,6 +228,29 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}
+				if (forInterface) {
+					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the context or <code>null</code> if the Ecore object is the context."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" getTypeResolutionContext();"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				} else if (forAppender) {
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" getTypeResolutionContext() {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn this.builder.getTypeResolutionContext();"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
 				it.append("\t/** Initialize the formal parameter."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param context - the context of the formal parameter."); //$NON-NLS-1$
@@ -240,15 +265,19 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				}
 				it.append("void eInit("); //$NON-NLS-1$
 				it.append(getCodeElementExtractor().getFormalParameterContainerType());
-				it.append(" context, String name)"); //$NON-NLS-1$
+				it.append(" context, String name, "); //$NON-NLS-1$
+				it.append(IJvmTypeProvider.class);
+				it.append(" typeContext)"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
 				} else {
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
 					if (forAppender) {
-						it.append("\t\tthis.builder.eInit(context, name);"); //$NON-NLS-1$
+						it.append("\t\tthis.builder.eInit(context, name, typeContext);"); //$NON-NLS-1$
 					} else {
+						it.append("\t\tsetTypeResolutionContext(typeContext);"); //$NON-NLS-1$
+						it.newLine();
 						it.append("\t\tthis.context = context;"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\tthis.parameter = "); //$NON-NLS-1$
@@ -433,9 +462,11 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 						it.append("public "); //$NON-NLS-1$
 					}
 					it.append(getExpressionBuilderInterface());
-					it.append(" get"); //$NON-NLS-1$
-					it.append(Strings.toFirstUpper(getCodeBuilderConfig().getParameterDefaultValueGrammarName()));
-					it.append("()"); //$NON-NLS-1$
+					final String accessor = "get" //$NON-NLS-1$
+							+ Strings.toFirstUpper(getCodeBuilderConfig().getParameterDefaultValueGrammarName())
+							+ "()"; //$NON-NLS-1$
+					it.append(" "); //$NON-NLS-1$
+					it.append(accessor);
 					if (forInterface) {
 						it.append(";"); //$NON-NLS-1$
 					} else {
@@ -468,7 +499,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 							it.newLine();
 							it.append("\t\t\t\t\t}"); //$NON-NLS-1$
 							it.newLine();
-							it.append("\t\t\t\t});"); //$NON-NLS-1$
+							it.append("\t\t\t\t}, getTypeResolutionContext());"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t}"); //$NON-NLS-1$
 							it.newLine();
@@ -479,6 +510,31 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					}
 					it.newLineIfNotEmpty();
 					it.newLine();
+					if (!forAppender && !forInterface) {
+						it.append("\t@"); //$NON-NLS-1$
+						it.append(Override.class);
+						it.newLine();
+						it.append("\t@"); //$NON-NLS-1$
+						it.append(Pure.class);
+						it.newLine();
+						it.append("\tpublic "); //$NON-NLS-1$
+						it.append(String.class);
+						it.append(" toString() {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn "); //$NON-NLS-1$
+						if (forAppender) {
+							it.append("this.builder.toString();"); //$NON-NLS-1$
+						} else {
+							it.append(EmfFormatter.class);
+							it.append(".objToStr("); //$NON-NLS-1$
+							it.append(accessor);
+							it.append(");"); //$NON-NLS-1$
+						}
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+						it.newLineIfNotEmpty();
+						it.newLine();
+					}
 				}
 			}
 		};

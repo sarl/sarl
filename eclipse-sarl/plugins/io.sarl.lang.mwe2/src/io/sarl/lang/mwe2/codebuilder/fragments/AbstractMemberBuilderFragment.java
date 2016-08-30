@@ -38,6 +38,8 @@ import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.GrammarUtil;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
@@ -83,8 +85,8 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 	}
 
 	@Override
-	public void generateBindings(BindingFactory factory) {
-		super.generateBindings(factory);
+	public void generateRuntimeBindings(BindingFactory factory) {
+		super.generateRuntimeBindings(factory);
 		for (final MemberDescription description : getMembers()) {
 			if (!description.isTopElement()) {
 				bindElementDescription(factory, description.getElementDescription());
@@ -321,6 +323,29 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}
+				if (forInterface) {
+					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the context or <code>null</code> if the Ecore object is the context."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" getTypeResolutionContext();"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				} else if (forAppender) {
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" getTypeResolutionContext() {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn this.builder.getTypeResolutionContext();"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
 				it.append("\t/** Initialize the Ecore element."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param container - the container of the " //$NON-NLS-1$
@@ -344,29 +369,32 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				}
 				it.append("void eInit("); //$NON-NLS-1$
 				it.append(getCodeElementExtractor().getLanguageTopElementType());
-				it.append(" container"); //$NON-NLS-1$
+				it.append(" container, "); //$NON-NLS-1$
 				if (hasName.get()) {
-					it.append(", String name"); //$NON-NLS-1$
+					it.append("String name, "); //$NON-NLS-1$
 				}
 				if (description.getModifiers().size() > 1) {
-					it.append(", String modifier"); //$NON-NLS-1$
+					it.append("String modifier, "); //$NON-NLS-1$
 				}
-				it.append(")"); //$NON-NLS-1$
+				it.append(IJvmTypeProvider.class);
+				it.append(" context)"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
 				} else {
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
 					if (forAppender) {
-						it.append("\t\tthis.builder.eInit(container"); //$NON-NLS-1$
+						it.append("\t\tthis.builder.eInit(container, "); //$NON-NLS-1$
 						if (hasName.get()) {
-							it.append(", name"); //$NON-NLS-1$
+							it.append("name, "); //$NON-NLS-1$
 						}
 						if (description.getModifiers().size() > 1) {
-							it.append(", modifier"); //$NON-NLS-1$
+							it.append("modifier, "); //$NON-NLS-1$
 						}
-						it.append(");"); //$NON-NLS-1$
+						it.append("context);"); //$NON-NLS-1$
 					} else {
+						it.append("\t\tsetTypeResolutionContext(context);"); //$NON-NLS-1$
+						it.newLine();
 						it.append("\t\tif (this."); //$NON-NLS-1$
 						it.append(generatedFieldName);
 						it.append(" == null) {"); //$NON-NLS-1$
@@ -578,7 +606,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 							it.newLine();
 							it.append("\t\tbuilder.eInit(this."); //$NON-NLS-1$
 							it.append(generatedFieldName);
-							it.append(", name);"); //$NON-NLS-1$
+							it.append(", name, getTypeResolutionContext());"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\treturn builder;"); //$NON-NLS-1$
 						}
@@ -774,7 +802,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 							it.newLine();
 							it.append("\t\t\t\t}"); //$NON-NLS-1$
 							it.newLine();
-							it.append("\t\t\t});"); //$NON-NLS-1$
+							it.append("\t\t\t}, getTypeResolutionContext());"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\treturn exprBuilder;"); //$NON-NLS-1$
 						}
@@ -815,7 +843,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 							it.append(getBlockExpressionBuilderInterface());
 							it.append(" block = this.blockExpressionProvider.get();"); //$NON-NLS-1$
 							it.newLine();
-							it.append("\t\tblock.eInit();"); //$NON-NLS-1$
+							it.append("\t\tblock.eInit(getTypeResolutionContext());"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t"); //$NON-NLS-1$
 							it.append(XBlockExpression.class);
@@ -915,6 +943,31 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						it.newLine();
 						it.append("\t}"); //$NON-NLS-1$
 					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+				if (!forInterface) {
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Override.class);
+					it.newLine();
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Pure.class);
+					it.newLine();
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(String.class);
+					it.append(" toString() {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn "); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("this.builder.toString();"); //$NON-NLS-1$
+					} else {
+						it.append(EmfFormatter.class);
+						it.append(".objToStr("); //$NON-NLS-1$
+						it.append(generatedFieldAccessor);
+						it.append(");"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}

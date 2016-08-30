@@ -36,6 +36,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -49,9 +51,16 @@ public class SarlInterfaceBuilderImpl extends AbstractBuilder implements ISarlIn
 
 	private EObject container;
 
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlInterface());
+	}
+
 	/** Initialize the Ecore element when inside a script.
 	 */
-	public void eInit(SarlScript script, String name) {
+	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlInterface == null) {
 			this.container = script;
 			this.sarlInterface = SarlFactory.eINSTANCE.createSarlInterface();
@@ -65,7 +74,7 @@ public class SarlInterfaceBuilderImpl extends AbstractBuilder implements ISarlIn
 
 	/** Initialize the Ecore element when inner type declaration.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name) {
+	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		if (this.sarlInterface == null) {
 			this.container = container;
 			this.sarlInterface = SarlFactory.eINSTANCE.createSarlInterface();
@@ -142,7 +151,7 @@ public class SarlInterfaceBuilderImpl extends AbstractBuilder implements ISarlIn
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
-		builder.eInit(getSarlInterface(), name, "var");
+		builder.eInit(getSarlInterface(), name, "var", getTypeResolutionContext());
 		return builder;
 	}
 
@@ -152,7 +161,7 @@ public class SarlInterfaceBuilderImpl extends AbstractBuilder implements ISarlIn
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
-		builder.eInit(getSarlInterface(), name, "val");
+		builder.eInit(getSarlInterface(), name, "val", getTypeResolutionContext());
 		return builder;
 	}
 
@@ -174,7 +183,7 @@ public class SarlInterfaceBuilderImpl extends AbstractBuilder implements ISarlIn
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
-		builder.eInit(getSarlInterface(), name);
+		builder.eInit(getSarlInterface(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -187,7 +196,7 @@ public class SarlInterfaceBuilderImpl extends AbstractBuilder implements ISarlIn
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
 		ISarlClassBuilder builder = this.iSarlClassBuilderProvider.get();
-		builder.eInit(getSarlInterface(), name);
+		builder.eInit(getSarlInterface(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -200,7 +209,7 @@ public class SarlInterfaceBuilderImpl extends AbstractBuilder implements ISarlIn
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
 		ISarlInterfaceBuilder builder = this.iSarlInterfaceBuilderProvider.get();
-		builder.eInit(getSarlInterface(), name);
+		builder.eInit(getSarlInterface(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -213,7 +222,7 @@ public class SarlInterfaceBuilderImpl extends AbstractBuilder implements ISarlIn
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
 		ISarlEnumerationBuilder builder = this.iSarlEnumerationBuilderProvider.get();
-		builder.eInit(getSarlInterface(), name);
+		builder.eInit(getSarlInterface(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -226,7 +235,7 @@ public class SarlInterfaceBuilderImpl extends AbstractBuilder implements ISarlIn
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
 		ISarlAnnotationTypeBuilder builder = this.iSarlAnnotationTypeBuilderProvider.get();
-		builder.eInit(getSarlInterface(), name);
+		builder.eInit(getSarlInterface(), name, getTypeResolutionContext());
 		return builder;
 	}
 

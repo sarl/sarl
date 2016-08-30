@@ -152,7 +152,8 @@ public class Agent implements Identifiable {
 	 * @return the skill that was set.
 	 * @since 0.4
 	 */
-	protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>[] capacities) {
+	@SuppressWarnings("unchecked")
+	protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... capacities) {
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
 		skill.setOwner(this);
 		for (final Class<? extends Capacity> capacity : capacities) {

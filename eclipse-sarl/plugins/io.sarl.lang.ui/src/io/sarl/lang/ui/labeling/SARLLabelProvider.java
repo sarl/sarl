@@ -28,6 +28,7 @@ import javax.inject.Singleton;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -55,6 +56,7 @@ import org.eclipse.xtext.util.Exceptions;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
 import org.eclipse.xtext.util.PolymorphicDispatcher.ErrorHandler;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
+import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
 import org.eclipse.xtext.xbase.validation.UIStrings;
 
@@ -87,6 +89,7 @@ import io.sarl.lang.ui.images.SARLImages;
  * @mavenartifactid $ArtifactId$
  * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#label-provider"
  */
+@SuppressWarnings("checkstyle:classfanoutcomplexity")
 @Singleton
 public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedNameImageProvider {
 
@@ -115,6 +118,9 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	@Inject
 	private RawSuperTypes superTypeCollector;
+
+	@Inject
+	private CommonTypeComputationServices services;
 
 	/**
 	 * @param delegate - the original provider.
@@ -542,48 +548,58 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	}
 
 	@Override
-	public Image getImageForQualifiedName(String qualifiedName, IJvmTypeProvider jvmTypeProvider) {
-		return convertToImage(getImageForQualifiedName(qualifiedName, jvmTypeProvider));
+	public Image getImageForQualifiedName(String qualifiedName, Notifier context, IJvmTypeProvider jvmTypeProvider) {
+		return convertToImage(getImageDescriptorForQualifiedName(qualifiedName, context, jvmTypeProvider));
 	}
 
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	@Override
-	public ImageDescriptor getImageDescriptorForQualifiedName(String qualifiedName, IJvmTypeProvider typeProvider) {
-		final JvmType type = typeProvider.findTypeByName(qualifiedName);
+	public ImageDescriptor getImageDescriptorForQualifiedName(String qualifiedName, Notifier context,
+			IJvmTypeProvider typeProvider) {
+		JvmType type = null;
+		if (typeProvider != null) {
+			type = typeProvider.findTypeByName(qualifiedName);
+		}
+		if (type == null && context != null) {
+			type = this.services.getTypeReferences().findDeclaredType(qualifiedName, context);
+		}
 		int adornments = this.adornments.get(type);
-		final JvmVisibility visibility;
-		if (type.eClass() == TypesPackage.Literals.JVM_GENERIC_TYPE) {
-			final JvmGenericType gtype = (JvmGenericType) type;
-			visibility = gtype.getVisibility();
-			if (gtype.isInterface()) {
-				if (isAssignableTo(gtype, Capacity.class, typeProvider)) {
-					// Remove the "abstract" ornment because capacities are always abstract.
-					adornments = (adornments & JavaElementImageDescriptor.ABSTRACT) ^ adornments;
-					return this.images.forCapacity(visibility, adornments);
+		JvmVisibility visibility = JvmVisibility.DEFAULT;
+		if (type != null) {
+			if (type.eClass() == TypesPackage.Literals.JVM_GENERIC_TYPE) {
+				final JvmGenericType gtype = (JvmGenericType) type;
+				visibility = gtype.getVisibility();
+				if (gtype.isInterface()) {
+					if (isAssignableTo(gtype, Capacity.class, typeProvider)) {
+						// Remove the "abstract" ornment because capacities are always abstract.
+						adornments = (adornments & JavaElementImageDescriptor.ABSTRACT) ^ adornments;
+						return this.images.forCapacity(visibility, adornments);
+					}
+					return this.images.forInterface(visibility, this.adornments.get(gtype));
 				}
-				return this.images.forInterface(visibility, this.adornments.get(gtype));
+				if (isAssignableTo(gtype, Agent.class, typeProvider)) {
+					return this.images.forAgent(visibility, this.adornments.get(gtype));
+				}
+				if (isAssignableTo(gtype, Behavior.class, typeProvider)) {
+					return this.images.forBehavior(visibility, this.adornments.get(gtype));
+				}
+				if (isAssignableTo(gtype, Skill.class, typeProvider)) {
+					return this.images.forSkill(visibility, this.adornments.get(gtype));
+				}
+				if (isAssignableTo(gtype, Event.class, typeProvider)) {
+					return this.images.forEvent(visibility, this.adornments.get(gtype));
+				}
+			} else if (type.eClass() == TypesPackage.Literals.JVM_ENUMERATION_TYPE) {
+				final JvmEnumerationType etype = (JvmEnumerationType) type;
+				visibility = etype.getVisibility();
+				return this.images.forEnum(visibility, adornments);
+			} else if (type.eClass() == TypesPackage.Literals.JVM_ANNOTATION_TYPE) {
+				final JvmAnnotationType atype = (JvmAnnotationType) type;
+				visibility = atype.getVisibility();
+				return this.images.forEnum(visibility, adornments);
+			} else {
+				visibility = JvmVisibility.DEFAULT;
 			}
-			if (isAssignableTo(gtype, Agent.class, typeProvider)) {
-				return this.images.forAgent(visibility, this.adornments.get(gtype));
-			}
-			if (isAssignableTo(gtype, Behavior.class, typeProvider)) {
-				return this.images.forBehavior(visibility, this.adornments.get(gtype));
-			}
-			if (isAssignableTo(gtype, Skill.class, typeProvider)) {
-				return this.images.forSkill(visibility, this.adornments.get(gtype));
-			}
-			if (isAssignableTo(gtype, Event.class, typeProvider)) {
-				return this.images.forEvent(visibility, this.adornments.get(gtype));
-			}
-		} else if (type.eClass() == TypesPackage.Literals.JVM_ENUMERATION_TYPE) {
-			final JvmEnumerationType etype = (JvmEnumerationType) type;
-			visibility = etype.getVisibility();
-			return this.images.forEnum(visibility, adornments);
-		} else if (type.eClass() == TypesPackage.Literals.JVM_ANNOTATION_TYPE) {
-			final JvmAnnotationType atype = (JvmAnnotationType) type;
-			visibility = atype.getVisibility();
-			return this.images.forEnum(visibility, adornments);
-		} else {
-			visibility = JvmVisibility.DEFAULT;
 		}
 		// Default icon is the class icon.
 		return this.images.forClass(visibility, adornments);

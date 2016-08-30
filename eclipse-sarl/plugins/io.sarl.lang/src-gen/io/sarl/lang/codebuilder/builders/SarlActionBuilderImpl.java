@@ -35,6 +35,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
@@ -61,7 +63,8 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	 * @param container - the container of the SarlAction.
 	 * @param name - the name of the SarlAction.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name) {
+	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlAction == null) {
 			this.container = container;
 			this.sarlAction = SarlFactory.eINSTANCE.createSarlAction();
@@ -115,7 +118,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	 */
 	public IFormalParameterBuilder addParameter(String name) {
 		IFormalParameterBuilder builder = this.parameterProvider.get();
-		builder.eInit(this.sarlAction, name);
+		builder.eInit(this.sarlAction, name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -151,7 +154,7 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	 */
 	public IBlockExpressionBuilder getExpression() {
 		IBlockExpressionBuilder block = this.blockExpressionProvider.get();
-		block.eInit();
+		block.eInit(getTypeResolutionContext());
 		XBlockExpression expr = block.getXBlockExpression();
 		this.sarlAction.setExpression(expr);
 		return block;
@@ -175,6 +178,12 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 		if (!Strings.isEmpty(modifier)) {
 			getSarlAction().getModifiers().add(modifier);
 		}
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlAction());
 	}
 
 }

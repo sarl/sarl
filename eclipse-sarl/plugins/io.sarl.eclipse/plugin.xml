@@ -80,6 +80,50 @@
 				</class>
 				<description>%wizard.description.newSkill"</description>
       	  </wizard>
+		  <wizard
+		        category="io.sarl.eclipse.category.wizards"
+				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newclass_wiz.png"
+		        id="io.sarl.eclipse.wizard.newSarlClass"
+				name="%wizard.name.newClass">
+				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
+					<parameter name="javatype" value="true" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.oop.newclass.NewSarlClassWizard" />
+				</class>
+				<description>%wizard.description.newClass</description>
+      	  </wizard>
+		  <wizard
+		        category="io.sarl.eclipse.category.wizards"
+				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newint_wiz.png"
+		        id="io.sarl.eclipse.wizard.newSarlInterface"
+				name="%wizard.name.newInterface">
+				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
+					<parameter name="javatype" value="true" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.oop.newinterface.NewSarlInterfaceWizard" />
+				</class>
+				<description>%wizard.description.newInterface</description>
+      	  </wizard>
+		  <wizard
+		        category="io.sarl.eclipse.category.wizards"
+				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newenum_wiz.png"
+		        id="io.sarl.eclipse.wizard.newSarlEnumeration"
+				name="%wizard.name.newEnumeration">
+				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
+					<parameter name="javatype" value="true" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.oop.newenum.NewSarlEnumerationWizard" />
+				</class>
+				<description>%wizard.description.newEnumeration</description>
+      	  </wizard>
+		  <wizard
+		        category="io.sarl.eclipse.category.wizards"
+				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newannotation_wiz.png"
+		        id="io.sarl.eclipse.wizard.newSarlAnnotation"
+				name="%wizard.name.newAnnotation">
+				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
+					<parameter name="javatype" value="true" />
+					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.oop.newanno.NewSarlAnnotationWizard" />
+				</class>
+				<description>%wizard.description.newAnnotation</description>
+      	  </wizard>
 	</extension>
 	
 	<extension

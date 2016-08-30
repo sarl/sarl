@@ -21,14 +21,20 @@
 
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
+import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Binding;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
+import com.google.inject.Key;
+import com.google.inject.util.Modules;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -37,7 +43,6 @@ import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.resource.IResourceFactory;
-import org.eclipse.xtext.util.Modules2;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -80,7 +85,6 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	@SuppressWarnings("checkstyle:all")
 	public void generate() {
 		super.generate();
-		final TypeReference runtimeModule = getNaming().getRuntimeModule(getGrammar());
 		final TypeReference factory = getBuilderFactoryImpl();
 		StringConcatenationClient content = new StringConcatenationClient() {
 			@SuppressWarnings("synthetic-access")
@@ -116,6 +120,19 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("<"); //$NON-NLS-1$
 				it.append(ImportManager.class);
 				it.append("> importManagerProvider;"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Inject.class);
+				it.newLine();
+				it.append("\tprivate "); //$NON-NLS-1$
+				it.append(Injector.class);
+				it.append(" originalInjector;"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprivate "); //$NON-NLS-1$
+				it.append(Injector.class);
+				it.append(" builderInjector;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -296,6 +313,68 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append("\t/** Replies the injector."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the injector."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Pure.class);
+				it.newLine();
+				it.append("\tprotected "); //$NON-NLS-1$
+				it.append(Injector.class);
+				it.append(" getInjector() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (this.builderInjector == null) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t"); //$NON-NLS-1$
+				it.append(ImportManager.class);
+				it.append(" importManager = this.importManagerProvider.get();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfinal "); //$NON-NLS-1$
+				it.append(Map.class);
+				it.append("<"); //$NON-NLS-1$
+				it.append(Key.class);
+				it.append("<?>, "); //$NON-NLS-1$
+				it.append(Binding.class);
+				it.append("<?>> bindings = this.originalInjector.getBindings();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tthis.builderInjector = "); //$NON-NLS-1$
+				it.append(Guice.class);
+				it.append(".createInjector("); //$NON-NLS-1$
+				it.append(Modules.class);
+				it.append(".override((binder) -> {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tfor("); //$NON-NLS-1$
+				it.append(Binding.class);
+				it.append("<?> binding: bindings.values()) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t\t"); //$NON-NLS-1$
+				it.append(Type.class);
+				it.append(" typeLiteral = binding.getKey().getTypeLiteral().getType();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t\tif (!"); //$NON-NLS-1$
+				it.append(Injector.class);
+				it.append(".class.equals(typeLiteral) && !"); //$NON-NLS-1$
+				it.append(Logger.class);
+				it.append(".class.equals(typeLiteral)) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t\t\tbinding.applyTo(binder);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}).with(new CodeBuilderModule(importManager)));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn builderInjector;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
 				it.append("\t/** Replies a provider for the given type."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * <p>The provider uses a local context singleton of the import manager."); //$NON-NLS-1$
@@ -313,29 +392,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append(Provider.class);
 				it.append("<T> getProvider(Class<T> type) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t"); //$NON-NLS-1$
-				it.append(runtimeModule);
-				it.append(" runtimeModule = new "); //$NON-NLS-1$
-				it.append(runtimeModule);
-				it.append("();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t"); //$NON-NLS-1$
-				it.append(ImportManager.class);
-				it.append(" importManager = this.importManagerProvider.get();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t"); //$NON-NLS-1$
-				it.append(Module.class);
-				it.append(" mergedModule = "); //$NON-NLS-1$
-				it.append(Modules2.class);
-				it.append(".mixin(runtimeModule, new CodeBuilderModule(importManager));"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t"); //$NON-NLS-1$
-				it.append(Injector.class);
-				it.append(" injector = "); //$NON-NLS-1$
-				it.append(Guice.class);
-				it.append(".createInjector(mergedModule);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\treturn injector.getProvider(type);"); //$NON-NLS-1$
+				it.append("\t\treturn getInjector().getProvider(type);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -457,8 +514,8 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 	}
 
 	@Override
-	public void generateBindings(BindingFactory factory) {
-		super.generateBindings(factory);
+	public void generateRuntimeBindings(BindingFactory factory) {
+		super.generateRuntimeBindings(factory);
 		final IFileSystemAccess2 fileSystem = getSrc();
 		final TypeReference type;
 		if ((fileSystem.isFile(getBuilderFactoryImplCustom().getJavaPath()))

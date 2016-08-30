@@ -29,6 +29,7 @@ import io.sarl.lang.sarl.SarlField;
 import java.io.IOException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -47,12 +48,16 @@ public class SarlFieldSourceAppender extends AbstractSourceAppender implements I
 		build(this.builder.getSarlField(), appender);
 	}
 
+	public IJvmTypeProvider getTypeResolutionContext() {
+		return this.builder.getTypeResolutionContext();
+	}
+
 	/** Initialize the Ecore element.
 	 * @param container - the container of the SarlField.
 	 * @param name - the name of the SarlField.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name, String modifier) {
-		this.builder.eInit(container, name, modifier);
+	public void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context) {
+		this.builder.eInit(container, name, modifier, context);
 	}
 
 	/** Replies the generated element.
@@ -99,6 +104,12 @@ public class SarlFieldSourceAppender extends AbstractSourceAppender implements I
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return this.builder.toString();
 	}
 
 }

@@ -76,7 +76,8 @@ public class SarlSpecificTypeSelectionExtension extends TypeSelectionExtension
 			qualifiedName = this.converter.toQualifiedName(typeInfoRequestor.getEnclosingName());
 		}
 		qualifiedName = qualifiedName.append(typeInfoRequestor.getTypeName());
-		return this.imageProvider.getImageDescriptorForQualifiedName(qualifiedName, this.typeProvider);
+		return this.imageProvider.getImageDescriptorForQualifiedName(qualifiedName, this.typeProvider.getResourceSet(),
+				this.typeProvider);
 	}
 
 }

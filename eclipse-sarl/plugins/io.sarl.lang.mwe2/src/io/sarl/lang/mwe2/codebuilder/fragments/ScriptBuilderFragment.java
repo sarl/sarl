@@ -21,6 +21,7 @@
 
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,8 +38,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
@@ -81,6 +85,14 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 		return new TypeReference(getCodeElementExtractor().getBuilderPackage() + ".ScriptBuilderImpl"); //$NON-NLS-1$
 	}
 
+	/** Replies the appender for the scripts.
+	 *
+	 * @return the appender
+	 */
+	public TypeReference getScriptAppender() {
+		return getCodeElementExtractor().getElementAppenderImpl("Script"); //$NON-NLS-1$
+	}
+
 	@Override
 	protected Collection<AbstractSubCodeBuilderFragment> initializeSubGenerators(Injector injector) {
 		return Arrays.asList(
@@ -94,19 +106,22 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	public void generate() {
 		generateIScriptBuilder();
 		generateScriptBuilderImpl();
+		generateScriptSourceAppender();
 		generateBuilderFactoryContributions();
 		super.generate();
 	}
 
 	@Override
-	public void generateBindings(BindingFactory factory) {
-		super.generateBindings(factory);
+	public void generateRuntimeBindings(BindingFactory factory) {
+		super.generateRuntimeBindings(factory);
 		bindTypeReferences(factory, getScriptBuilderInterface(), getScriptBuilderImpl(), getScriptBuilderImplCustom());
 	}
 
 	/** Generate the contributions for the BuildFactory.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected void generateBuilderFactoryContributions() {
+		final boolean enableAppenders = getCodeBuilderConfig().isISourceAppendableEnable();
 		this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -129,7 +144,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append(ResourceSet.class);
 				it.append(" resourceSet) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\treturn createScript(packageName, createResource(resourceSet));"); //$NON-NLS-1$
+				it.append("\t\treturn createScript(packageName, createResource(resourceSet), null);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -153,21 +168,216 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append(Resource.class);
 				it.append(" resource) {"); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t\treturn createScript(packageName, resource, null);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Create the factory for a " + getLanguageName() + " script."); //$NON-NLS-1$ //$NON-NLS-2$
+				it.newLine();
+				it.append("\t * @param packageName the name of the package of the script."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param resource the resource in which the script is created."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param context the context for type resolution."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the factory."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Pure.class);
+				it.newLine();
+				it.append("\tpublic "); //$NON-NLS-1$
+				it.append(getScriptBuilderInterface());
+				it.append(" createScript(String packageName, "); //$NON-NLS-1$
+				it.append(Resource.class);
+				it.append(" resource, "); //$NON-NLS-1$
+				it.append(IJvmTypeProvider.class);
+				it.append(" context) {"); //$NON-NLS-1$
+				it.newLine();
 				it.append("\t\t"); //$NON-NLS-1$
 				it.append(getScriptBuilderInterface());
 				it.append(" builder = getProvider("); //$NON-NLS-1$
 				it.append(getScriptBuilderInterface());
 				it.append(".class).get();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tbuilder.eInit(resource, packageName);"); //$NON-NLS-1$
+				it.append("\t\tbuilder.eInit(resource, packageName, context);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\treturn builder;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append("\t/** Create the factory for a " + getLanguageName() + " script."); //$NON-NLS-1$ //$NON-NLS-2$
+				it.newLine();
+				it.append("\t * <p>The resource set is provided by the context."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param packageName the name of the package of the script."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param context the context for type resolution."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the factory."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Pure.class);
+				it.newLine();
+				it.append("\tpublic "); //$NON-NLS-1$
+				it.append(getScriptBuilderInterface());
+				it.append(" createScript(String packageName, "); //$NON-NLS-1$
+				it.append(IJvmTypeProvider.class);
+				it.append(" context) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn createScript(packageName, createResource(context.getResourceSet()), context);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
 			}
 		});
+		if (enableAppenders) {
+			this.builderFactoryContributions.addContribution(new StringConcatenationClient() {
+				@Override
+				protected void appendTo(TargetStringConcatenation it) {
+					it.append("\t/** Create the appender for a " + getLanguageName() + " script."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.newLine();
+					it.append("\t * @param packageName the name of the package of the script."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param resourceSet the resource set in which the script is created."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the appender."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Pure.class);
+					it.newLine();
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append(" buildScript(String packageName, "); //$NON-NLS-1$
+					it.append(ResourceSet.class);
+					it.append(" resourceSet) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append(" a = new "); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append("(createScript(packageName, resourceSet));"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tgetInjector().injectMembers(a);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn a;"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Create the appender for a " + getLanguageName() + " script."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.newLine();
+					it.append("\t * @param packageName the name of the package of the script."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param resource the resource in which the script is created."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the appender."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Pure.class);
+					it.newLine();
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append(" buildScript(String packageName, "); //$NON-NLS-1$
+					it.append(Resource.class);
+					it.append(" resource) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append(" a = new "); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append("(createScript(packageName, resource));"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tgetInjector().injectMembers(a);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn a;"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Create the appender for a " + getLanguageName() + " script."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.newLine();
+					it.append("\t * @param packageName the name of the package of the script."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param resource the resource in which the script is created."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param context the context for type resolution."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the appender."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Pure.class);
+					it.newLine();
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append(" buildScript(String packageName, "); //$NON-NLS-1$
+					it.append(Resource.class);
+					it.append(" resource, "); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" context) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append(" a = new "); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append("(createScript(packageName, resource, context));"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tgetInjector().injectMembers(a);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn a;"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t/** Create the appender for a " + getLanguageName() + " script."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.newLine();
+					it.append("\t * <p>The resource set is provided by the context."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param packageName the name of the package of the script."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param context the context for type resolution."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the appender."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Pure.class);
+					it.newLine();
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append(" buildScript(String packageName, "); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" context) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append(" a = new "); //$NON-NLS-1$
+					it.append(getScriptAppender());
+					it.append("(createScript(packageName, context));"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tgetInjector().injectMembers(a);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn a;"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+			});
+		}
 	}
 
 	@Override
@@ -234,17 +444,18 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 *
 	 * @param description the description of the top element.
 	 * @param forInterface indicates if the generated code is for interfaces.
+	 * @param forAppender indicates if the generated code is for appenders.
 	 * @return the top element.
 	 */
 	@SuppressWarnings("checkstyle:all")
 	protected StringConcatenationClient generateTopElement(CodeElementExtractor.ElementDescription description,
-			boolean forInterface) {
+			boolean forInterface, boolean forAppender) {
 		final String topElementName = Strings.toFirstUpper(description.getName());
 		final TypeReference builderType = getCodeElementExtractor().getElementBuilderInterface(topElementName);
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
-				if (!forInterface) {
+				if (!forInterface && !forAppender) {
 					it.append("\t@"); //$NON-NLS-1$
 					it.append(Inject.class);
 					it.newLine();
@@ -281,15 +492,21 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				} else {
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t\t"); //$NON-NLS-1$
-					it.append(builderType);
-					it.append(" builder = this."); //$NON-NLS-1$
-					it.append(Strings.toFirstLower(topElementName));
-					it.append("Provider.get();"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\tbuilder.eInit(getScript(), name);"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\treturn builder;"); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("\t\t return this.builder.add"); //$NON-NLS-1$
+						it.append(topElementName);
+						it.append("(name);"); //$NON-NLS-1$
+					} else {
+						it.append("\t\t"); //$NON-NLS-1$
+						it.append(builderType);
+						it.append(" builder = this."); //$NON-NLS-1$
+						it.append(Strings.toFirstLower(topElementName));
+						it.append("Provider.get();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tbuilder.eInit(getScript(), name, getTypeResolutionContext());"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn builder;"); //$NON-NLS-1$
+					}
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
@@ -302,13 +519,14 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Extract top elements from the grammar.
 	 *
 	 * @param forInterface indicates if the generated code is for interfaces.
+	 * @param forAppender indicates if the generated code is for appender.
 	 * @return the top elements.
 	 */
-	protected List<StringConcatenationClient> generateTopElements(boolean forInterface) {
+	protected List<StringConcatenationClient> generateTopElements(boolean forInterface, boolean forAppender) {
 		final List<StringConcatenationClient> topElements = new ArrayList<>();
 		for (final CodeElementExtractor.ElementDescription description : getCodeElementExtractor().getTopElements(
 				getGrammar(), getCodeBuilderConfig())) {
-			topElements.add(generateTopElement(description, forInterface));
+			topElements.add(generateTopElement(description, forInterface, forAppender));
 		}
 		return topElements;
 	}
@@ -316,7 +534,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate the script builder interface.
 	 */
 	protected void generateIScriptBuilder() {
-		final List<StringConcatenationClient> topElements = generateTopElements(true);
+		final List<StringConcatenationClient> topElements = generateTopElements(true, false);
 		final TypeReference builder = getScriptBuilderInterface();
 		final StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
@@ -342,7 +560,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append(generateFieldsAndMethods(true));
+				it.append(generateFieldsAndMethods(true, false));
 				for (final StringConcatenationClient element : topElements) {
 					it.append(element);
 				}
@@ -356,10 +574,49 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 		javaFile.writeTo(getSrcGen());
 	}
 
+	/** Generate the script appender.
+	 */
+	protected void generateScriptSourceAppender() {
+		final List<StringConcatenationClient> topElements = generateTopElements(false, true);
+		final TypeReference appender = getCodeElementExtractor().getElementAppenderImpl("Script"); //$NON-NLS-1$
+		final StringConcatenationClient content = new StringConcatenationClient() {
+			@Override
+			protected void appendTo(TargetStringConcatenation it) {
+				it.append("/** Appender of " + getLanguageName() + " scripts."); //$NON-NLS-1$ //$NON-NLS-2$
+				it.newLine();
+				it.append(" *"); //$NON-NLS-1$
+				it.newLine();
+				it.append(" */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("@SuppressWarnings(\"all\")"); //$NON-NLS-1$
+				it.newLine();
+				it.append("public class "); //$NON-NLS-1$
+				it.append(getScriptAppender().getSimpleName());
+				it.append(" extends "); //$NON-NLS-1$
+				it.append(getCodeElementExtractor().getAbstractAppenderImpl());
+				it.append(" implements "); //$NON-NLS-1$
+				it.append(getScriptBuilderInterface());
+				it.append(" {"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append(generateFieldsAndMethods(false, true));
+				for (final StringConcatenationClient element : topElements) {
+					it.append(element);
+				}
+				it.append("}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+			}
+
+		};
+		final JavaFileAccess javaFile = getFileAccessFactory().createJavaFile(appender, content);
+		javaFile.writeTo(getSrcGen());
+	}
+
 	/** Generate the script builder default implementation.
 	 */
 	protected void generateScriptBuilderImpl() {
-		final List<StringConcatenationClient> topElements = generateTopElements(false);
+		final List<StringConcatenationClient> topElements = generateTopElements(false, false);
 		final TypeReference script = getScriptBuilderImpl();
 		final TypeReference scriptInterface = getScriptBuilderInterface();
 		final StringConcatenationClient content = new StringConcatenationClient() {
@@ -376,7 +633,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append(generateFieldsAndMethods(false));
+				it.append(generateFieldsAndMethods(false, false));
 				for (final StringConcatenationClient element : topElements) {
 					it.append(element);
 				}
@@ -392,19 +649,82 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 	/** Generate the fields and the methods.
 	 *
 	 * @param forInterface indicates if the generated code is for interfaces.
+	 * @param forAppender indicates if the generated code is for appender.
 	 * @return the fields and methods.
 	 */
 	@SuppressWarnings("checkstyle:all")
-	protected StringConcatenationClient generateFieldsAndMethods(boolean forInterface) {
+	protected StringConcatenationClient generateFieldsAndMethods(boolean forInterface, boolean forAppender) {
 		TypeReference scriptInterface = getCodeElementExtractor().getLanguageScriptInterface();
 		return new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
 				// Fields
-				if (!forInterface) {
+				if (!forInterface && !forAppender) {
 					it.append("\tprivate "); //$NON-NLS-1$
 					it.append(scriptInterface);
 					it.append(" script;"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\tprivate boolean isFinalized;"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				} else if (forAppender) {
+					it.append("\tprivate "); //$NON-NLS-1$
+					it.append(getScriptBuilderInterface());
+					it.append(" builder;"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+				if (forInterface) {
+					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the context or <code>null</code> if the Ecore object is the context."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" getTypeResolutionContext();"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				} else if (forAppender) {
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" getTypeResolutionContext() {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn this.builder.getTypeResolutionContext();"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+				if (forAppender) {
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(getScriptAppender().getSimpleName());
+					it.append("("); //$NON-NLS-1$
+					it.append(getScriptBuilderInterface());
+					it.append(" builder) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tthis.builder = builder;"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\tpublic void build("); //$NON-NLS-1$
+					it.append(ISourceAppender.class);
+					it.append(" appender) throws "); //$NON-NLS-1$
+					it.append(IOException.class);
+					it.append(" {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tif (!isFinalized()) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\tfinalizeScript();"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t}"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tbuild(this.builder.getScript(), appender);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}
@@ -418,43 +738,51 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				}
 				it.append("void eInit("); //$NON-NLS-1$
 				it.append(Resource.class);
-				it.append(" resource, String packageName)"); //$NON-NLS-1$
+				it.append(" resource, String packageName, "); //$NON-NLS-1$
+				it.append(IJvmTypeProvider.class);
+				it.append(" context)"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
 				} else {
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t\tif (this.script == null) {"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\tthis.script = "); //$NON-NLS-1$
-					it.append(getXFactoryFor(scriptInterface));
-					it.append(".eINSTANCE.create"); //$NON-NLS-1$
-					it.append(Strings.toFirstUpper(scriptInterface.getSimpleName()));
-					it.append("();"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t"); //$NON-NLS-1$
-					it.append(EList.class);
-					it.append("<"); //$NON-NLS-1$
-					it.append(EObject.class);
-					it.append("> content = resource.getContents();"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\tif (!content.isEmpty()) {"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t\tcontent.clear();"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t}"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\tcontent.add(this.script);"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\tif (!"); //$NON-NLS-1$
-					it.append(Strings.class);
-					it.append(".isEmpty(packageName)) {"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t\tscript.setPackage(packageName);"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t}"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t}"); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("\t\tthis.builder.eInit(resource, packageName, context);"); //$NON-NLS-1$
+					} else {
+						it.append("\t\tsetTypeResolutionContext(context);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tif (this.script == null) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tthis.script = "); //$NON-NLS-1$
+						it.append(getXFactoryFor(scriptInterface));
+						it.append(".eINSTANCE.create"); //$NON-NLS-1$
+						it.append(Strings.toFirstUpper(scriptInterface.getSimpleName()));
+						it.append("();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t"); //$NON-NLS-1$
+						it.append(EList.class);
+						it.append("<"); //$NON-NLS-1$
+						it.append(EObject.class);
+						it.append("> content = resource.getContents();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tif (!content.isEmpty()) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\tcontent.clear();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tcontent.add(this.script);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tif (!"); //$NON-NLS-1$
+						it.append(Strings.class);
+						it.append(".isEmpty(packageName)) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\tscript.setPackage(packageName);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t}"); //$NON-NLS-1$
+					}
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 				}
@@ -478,7 +806,11 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				} else {
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t\treturn this.script;"); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("\t\treturn this.builder.getScript();"); //$NON-NLS-1$
+					} else {
+						it.append("\t\treturn this.script;"); //$NON-NLS-1$
+					}
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 				}
@@ -530,69 +862,129 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				} else {
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t\t"); //$NON-NLS-1$
-					it.append(ImportManager.class);
-					it.append(" concreteImports = new "); //$NON-NLS-1$
-					it.append(ImportManager.class);
-					it.append("();"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t"); //$NON-NLS-1$
-					it.append(XImportSection.class);
-					it.append(" importSection = getScript().getImportSection();"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\tif (importSection != null) {"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\tfor ("); //$NON-NLS-1$
-					it.append(XImportDeclaration.class);
-					it.append(" decl : importSection.getImportDeclarations()) {"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t\tconcreteImports.addImportFor(decl.getImportedType());"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t}"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t}"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\tfor (String importName : getImportManager().getImports()) {"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t"); //$NON-NLS-1$
-					it.append(JvmType.class);
-					it.append(" type = getTypeReferences().findDeclaredType(importName, getScript());"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\tif (type instanceof "); //$NON-NLS-1$
-					it.append(JvmDeclaredType.class);
-					it.newLine();
-					it.append("\t\t\t\t\t&& concreteImports.addImportFor(type)) {"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t\t"); //$NON-NLS-1$
-					it.append(XImportDeclaration.class);
-					it.append(" declaration = "); //$NON-NLS-1$
-					it.append(XtypeFactory.class);
-					it.append(".eINSTANCE.createXImportDeclaration();"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t\tdeclaration.setImportedType(("); //$NON-NLS-1$
-					it.append(JvmDeclaredType.class);
-					it.append(") type);"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t\tif (importSection == null) {"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t\t\timportSection = "); //$NON-NLS-1$
-					it.append(XtypeFactory.class);
-					it.append(".eINSTANCE.createXImportSection();"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t\t\tgetScript().setImportSection(importSection);"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t\t}"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t\timportSection.getImportDeclarations().add(declaration);"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t\t}"); //$NON-NLS-1$
-					it.newLine();
-					it.append("\t\t}"); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("\t\tthis.builder.finalizeScript();"); //$NON-NLS-1$
+					} else {
+						it.append("\t\tif (this.isFinalized) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tthrow new "); //$NON-NLS-1$
+						it.append(IllegalStateException.class);
+						it.append("(\"already finalized\");"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tthis.isFinalized = true;"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t"); //$NON-NLS-1$
+						it.append(ImportManager.class);
+						it.append(" concreteImports = new "); //$NON-NLS-1$
+						it.append(ImportManager.class);
+						it.append("(true);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t"); //$NON-NLS-1$
+						it.append(XImportSection.class);
+						it.append(" importSection = getScript().getImportSection();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tif (importSection != null) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tfor ("); //$NON-NLS-1$
+						it.append(XImportDeclaration.class);
+						it.append(" decl : importSection.getImportDeclarations()) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\tconcreteImports.addImportFor(decl.getImportedType());"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tfor (String importName : getImportManager().getImports()) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t"); //$NON-NLS-1$
+						it.append(JvmType.class);
+						it.append(" type = findType(getScript(), importName).getType();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tif (concreteImports.addImportFor(type) && type instanceof "); //$NON-NLS-1$
+						it.append(JvmDeclaredType.class);
+						it.append(") {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\t"); //$NON-NLS-1$
+						it.append(XImportDeclaration.class);
+						it.append(" declaration = "); //$NON-NLS-1$
+						it.append(XtypeFactory.class);
+						it.append(".eINSTANCE.createXImportDeclaration();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\tdeclaration.setImportedType(("); //$NON-NLS-1$
+						it.append(JvmDeclaredType.class);
+						it.append(") type);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\tif (importSection == null) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\t\timportSection = "); //$NON-NLS-1$
+						it.append(XtypeFactory.class);
+						it.append(".eINSTANCE.createXImportSection();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\t\tgetScript().setImportSection(importSection);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\timportSection.getImportDeclarations().add(declaration);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t}"); //$NON-NLS-1$
+					}
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 				}
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append("\t/** Replies if the script was finalized."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t"); //$NON-NLS-1$
+				if (!forInterface) {
+					it.append("public "); //$NON-NLS-1$
+				}
+				it.append("boolean isFinalized()"); //$NON-NLS-1$
+				if (forInterface) {
+					it.append(";"); //$NON-NLS-1$
+				} else {
+					it.append(" {"); //$NON-NLS-1$
+					it.newLine();
+					if (forAppender) {
+						it.append("\t\treturn this.builder.isFinalized();"); //$NON-NLS-1$
+					} else {
+						it.append("\t\treturn this.isFinalized;"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+				}
+				it.newLineIfNotEmpty();
+				it.newLine();
+				if (!forInterface) {
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Override.class);
+					it.newLine();
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Pure.class);
+					it.newLine();
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(String.class);
+					it.append(" toString() {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn "); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("this.builder.toString();"); //$NON-NLS-1$
+					} else {
+						it.append(EmfFormatter.class);
+						it.append(".objToStr(this.script);"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
 			}
 		};
 	}

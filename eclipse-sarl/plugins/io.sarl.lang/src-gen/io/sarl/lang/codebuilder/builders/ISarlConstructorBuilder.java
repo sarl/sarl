@@ -26,6 +26,7 @@ package io.sarl.lang.codebuilder.builders;
 import io.sarl.lang.sarl.SarlConstructor;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl SarlConstructor.
@@ -33,10 +34,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings("all")
 public interface ISarlConstructorBuilder {
 
+	/** Replies the context for type resolution.
+	 * @return the context or <code>null</code> if the Ecore object is the context.
+	 */
+	IJvmTypeProvider getTypeResolutionContext();
+
 	/** Initialize the Ecore element.
 	 * @param container - the container of the SarlConstructor.
 	 */
-	void eInit(XtendTypeDeclaration container);
+	void eInit(XtendTypeDeclaration container, IJvmTypeProvider context);
 
 	/** Replies the generated element.
 	 */

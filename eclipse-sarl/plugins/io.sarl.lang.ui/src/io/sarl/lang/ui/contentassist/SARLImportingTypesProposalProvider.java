@@ -58,7 +58,7 @@ public class SARLImportingTypesProposalProvider extends ImportingTypesProposalPr
 			ICompletionProposalFactory proposalFactory, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor, IJvmTypeProvider jvmTypeProvider,
 			IValueConverter<String> valueConverter) {
-		final Image image = this.images.getImageForQualifiedName(typeName, jvmTypeProvider);
+		final Image image = this.images.getImageForQualifiedName(typeName, context.getCurrentModel(), jvmTypeProvider);
 		synchronized (this.imageBuffer) {
 			this.imageBuffer.put(typeName, image);
 		}

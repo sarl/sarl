@@ -32,6 +32,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -44,9 +46,12 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 
 	private SarlScript script;
 
+	private boolean isFinalized;
+
 	/** Create the internal Sarl script.
 	 */
-	public void eInit(Resource resource, String packageName) {
+	public void eInit(Resource resource, String packageName, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.script == null) {
 			this.script = SarlFactory.eINSTANCE.createSarlScript();
 			EList<EObject> content = resource.getContents();
@@ -81,7 +86,11 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 * </ul>
 	 */
 	public void finalizeScript() {
-		ImportManager concreteImports = new ImportManager();
+		if (this.isFinalized) {
+			throw new IllegalStateException("already finalized");
+		}
+		this.isFinalized = true;
+		ImportManager concreteImports = new ImportManager(true);
 		XImportSection importSection = getScript().getImportSection();
 		if (importSection != null) {
 			for (XImportDeclaration decl : importSection.getImportDeclarations()) {
@@ -89,9 +98,8 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 			}
 		}
 		for (String importName : getImportManager().getImports()) {
-			JvmType type = getTypeReferences().findDeclaredType(importName, getScript());
-			if (type instanceof JvmDeclaredType
-					&& concreteImports.addImportFor(type)) {
+			JvmType type = findType(getScript(), importName).getType();
+			if (concreteImports.addImportFor(type) && type instanceof JvmDeclaredType) {
 				XImportDeclaration declaration = XtypeFactory.eINSTANCE.createXImportDeclaration();
 				declaration.setImportedType((JvmDeclaredType) type);
 				if (importSection == null) {
@@ -103,6 +111,18 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 		}
 	}
 
+	/** Replies if the script was finalized.
+	 */
+	public boolean isFinalized() {
+		return this.isFinalized;
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(this.script);
+	}
+
 	@Inject
 	private Provider<ISarlEventBuilder> sarlEventProvider;
 
@@ -112,7 +132,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 */
 	public ISarlEventBuilder addSarlEvent(String name) {
 		ISarlEventBuilder builder = this.sarlEventProvider.get();
-		builder.eInit(getScript(), name);
+		builder.eInit(getScript(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -125,7 +145,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 */
 	public ISarlCapacityBuilder addSarlCapacity(String name) {
 		ISarlCapacityBuilder builder = this.sarlCapacityProvider.get();
-		builder.eInit(getScript(), name);
+		builder.eInit(getScript(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -138,7 +158,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 */
 	public ISarlAgentBuilder addSarlAgent(String name) {
 		ISarlAgentBuilder builder = this.sarlAgentProvider.get();
-		builder.eInit(getScript(), name);
+		builder.eInit(getScript(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -151,7 +171,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 */
 	public ISarlBehaviorBuilder addSarlBehavior(String name) {
 		ISarlBehaviorBuilder builder = this.sarlBehaviorProvider.get();
-		builder.eInit(getScript(), name);
+		builder.eInit(getScript(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -164,7 +184,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 */
 	public ISarlSkillBuilder addSarlSkill(String name) {
 		ISarlSkillBuilder builder = this.sarlSkillProvider.get();
-		builder.eInit(getScript(), name);
+		builder.eInit(getScript(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -177,7 +197,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 */
 	public ISarlSpaceBuilder addSarlSpace(String name) {
 		ISarlSpaceBuilder builder = this.sarlSpaceProvider.get();
-		builder.eInit(getScript(), name);
+		builder.eInit(getScript(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -190,7 +210,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
 		ISarlClassBuilder builder = this.sarlClassProvider.get();
-		builder.eInit(getScript(), name);
+		builder.eInit(getScript(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -203,7 +223,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
 		ISarlInterfaceBuilder builder = this.sarlInterfaceProvider.get();
-		builder.eInit(getScript(), name);
+		builder.eInit(getScript(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -216,7 +236,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
 		ISarlEnumerationBuilder builder = this.sarlEnumerationProvider.get();
-		builder.eInit(getScript(), name);
+		builder.eInit(getScript(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -229,7 +249,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
 		ISarlAnnotationTypeBuilder builder = this.sarlAnnotationTypeProvider.get();
-		builder.eInit(getScript(), name);
+		builder.eInit(getScript(), name, getTypeResolutionContext());
 		return builder;
 	}
 

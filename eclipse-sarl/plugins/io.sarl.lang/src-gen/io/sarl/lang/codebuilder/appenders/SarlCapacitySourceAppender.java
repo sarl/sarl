@@ -29,6 +29,7 @@ import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import java.io.IOException;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -47,10 +48,20 @@ public class SarlCapacitySourceAppender extends AbstractSourceAppender implement
 		build(this.builder.getSarlCapacity(), appender);
 	}
 
+	public IJvmTypeProvider getTypeResolutionContext() {
+		return this.builder.getTypeResolutionContext();
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return this.builder.toString();
+	}
+
 	/** Initialize the Ecore element when inside a script.
 	 */
-	public void eInit(SarlScript script, String name) {
-		this.builder.eInit(script, name);
+	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
+		this.builder.eInit(script, name, context);
 	}
 
 	/** Replies the generated SarlCapacity.

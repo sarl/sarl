@@ -75,10 +75,12 @@ public abstract class AbstractSuperTypeSelectionDialog<T extends NewTypeWizardPa
 	 * @param scope the search scope.
 	 * @param elementType the type of elements in the dialog box.
 	 * @param extension the type selection extension.
+	 * @param multi indicates if multiple elements could be selected.
 	 */
 	public AbstractSuperTypeSelectionDialog(Shell parent, IRunnableContext context, T page,
-			IJavaSearchScope scope, int elementType, SarlSpecificTypeSelectionExtension extension) {
-		super(parent, true, context, scope, elementType, extension);
+			IJavaSearchScope scope, int elementType, SarlSpecificTypeSelectionExtension extension,
+			boolean multi) {
+		super(parent, multi, context, scope, elementType, extension);
 		this.typeWizardPage = page;
 		this.oldContent = saveWizardPage(this.typeWizardPage);
 		setStatusLineAboveButtons(true);
@@ -92,7 +94,7 @@ public abstract class AbstractSuperTypeSelectionDialog<T extends NewTypeWizardPa
 	 *     <code>false</code>, the super type is allowed too.
 	 * @return the search scope.
 	 */
-	protected static IJavaSearchScope createSearchScope(IJavaProject project, Class<?> type, boolean onlySubTypes) {
+	public static IJavaSearchScope createSearchScope(IJavaProject project, Class<?> type, boolean onlySubTypes) {
 		try {
 			final IType superType = project.findType(type.getName());
 			return SearchEngine.createStrictHierarchyScope(

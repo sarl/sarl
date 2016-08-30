@@ -1832,6 +1832,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.typeReferences.getTypeForName(Class.class, target, constraint2));
 		capacityParameter.setParameterType(this.typeBuilder.cloneWithProxies(capacityParameterType));
 		setter.getParameters().add(capacityParameter);
+		setter.setVarArgs(true);
 
 		setBody(setter, (it) -> {
 			for (final String capacityId : usedCapacities) {

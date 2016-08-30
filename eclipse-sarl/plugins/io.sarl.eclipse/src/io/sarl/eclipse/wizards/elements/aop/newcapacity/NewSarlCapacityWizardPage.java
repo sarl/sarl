@@ -22,7 +22,9 @@
 package io.sarl.eclipse.wizards.elements.aop.newcapacity;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -30,6 +32,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
@@ -76,13 +80,13 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 	}
 
 	@Override
-	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
-				getPackageFragment().getElementName(), ecoreResource);
-		final ISarlCapacityBuilder capacity = scriptBuilder.addSarlCapacity(getTypeName());
-		capacity.addExtends(getSuperClass());
-		capacity.setDocumentation(typeComment.trim());
-		scriptBuilder.finalizeScript();
+	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
+			IProgressMonitor monitor) throws CoreException {
+//		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
+//				getPackageFragment().getElementName(), ecoreResource);
+//		final ISarlCapacityBuilder capacity = scriptBuilder.addSarlCapacity(getTypeName());
+//		capacity.addExtends(getSuperClass());
+//		scriptBuilder.finalizeScript();
 	}
 
 	@Override
@@ -102,8 +106,9 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 
 	@Override
 	protected AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(Shell parent,
-			IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension) {
-		return new SuperCapacitySelectionDialog(parent, context, project, this, extension);
+			IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
+			boolean multi) {
+		return new SuperCapacitySelectionDialog(parent, context, project, this, extension, multi);
 	}
 
 }

@@ -28,7 +28,9 @@ import java.util.Map;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
@@ -37,6 +39,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
@@ -86,41 +90,41 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 	}
 
 	@Override
-	protected void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException {
-		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
-				getPackageFragment().getElementName(), ecoreResource);
-		final ISarlEventBuilder event = scriptBuilder.addSarlEvent(getTypeName());
-		event.setExtends(getSuperClass());
-		event.setDocumentation(typeComment.trim());
-
-		final Map<ActionParameterTypes, IMethod> constructors;
-
-		final String superClass = getSuperClass();
-		if (Strings.isNullOrEmpty(superClass) || !isCreateConstructors()) {
-			constructors = null;
-		} else {
-			constructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
-		}
-
-		this.jdt2sarl.populateInheritanceContext(
-				this.jdt2sarl.toTypeFinder(getJavaProject()),
-				// Discarding final operation.
-				null,
-				// Discarding overridable operation.
-				null,
-				// Discarding inherited fields,
-				null,
-				// Discarding the operations to implement.
-				null,
-				constructors,
-				getSuperClass(),
-				Collections.<String>emptyList());
-
-		if (constructors != null) {
-			this.jdt2sarl.createStandardConstructors(event, constructors.values(), event.getSarlEvent());
-		}
-
-		scriptBuilder.finalizeScript();
+	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
+			IProgressMonitor monitor) throws CoreException {
+//		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
+//				getPackageFragment().getElementName(), ecoreResource);
+//		final ISarlEventBuilder event = scriptBuilder.addSarlEvent(getTypeName());
+//		event.setExtends(getSuperClass());
+//
+//		final Map<ActionParameterTypes, IMethod> constructors;
+//
+//		final String superClass = getSuperClass();
+//		if (Strings.isNullOrEmpty(superClass) || !isCreateConstructors()) {
+//			constructors = null;
+//		} else {
+//			constructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
+//		}
+//
+//		this.jdt2sarl.populateInheritanceContext(
+//				this.jdt2sarl.toTypeFinder(getJavaProject()),
+//				// Discarding final operation.
+//				null,
+//				// Discarding overridable operation.
+//				null,
+//				// Discarding inherited fields,
+//				null,
+//				// Discarding the operations to implement.
+//				null,
+//				constructors,
+//				getSuperClass(),
+//				Collections.<String>emptyList());
+//
+//		if (constructors != null) {
+//			this.jdt2sarl.createStandardConstructors(event, constructors.values(), event.getSarlEvent());
+//		}
+//
+//		scriptBuilder.finalizeScript();
 	}
 
 	@Override
@@ -140,8 +144,9 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 
 	@Override
 	protected AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(Shell parent,
-			IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension) {
-		return new SuperEventSelectionDialog(parent, context, project, this, extension);
+			IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
+			boolean multi) {
+		return new SuperEventSelectionDialog(parent, context, project, this, extension, multi);
 	}
 
 }

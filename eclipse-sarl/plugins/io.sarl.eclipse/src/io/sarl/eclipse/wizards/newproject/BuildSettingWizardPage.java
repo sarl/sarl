@@ -578,7 +578,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	 * @throws InterruptedException thrown when the user cancelled the project creation
 	 */
 	public void performFinish(IProgressMonitor monitor) throws CoreException, InterruptedException {
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		final SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		try {
 			monitor.beginTask(NewWizardMessages.NewJavaProjectWizardPageTwo_operation_create, 3);
 			if (this.currProject == null) {
@@ -587,7 +587,6 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 			final String newProjectCompliance = this.keepContent ? null : this.firstPage.getCompilerCompliance();
 			configureJavaProject(newProjectCompliance, subMonitor.newChild(1));
-			SARLProjectConfigurator.configureSARLProject(getJavaProject().getProject(), false, monitor);
 		} catch (Throwable e) {
 			if (this.currProject != null) {
 				removeProvisonalProject();

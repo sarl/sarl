@@ -194,8 +194,8 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 	}
 
 	@Override
-	public void generateBindings(BindingFactory factory) {
-		super.generateBindings(factory);
+	public void generateRuntimeBindings(BindingFactory factory) {
+		super.generateRuntimeBindings(factory);
 
 		factory.addfinalTypeToType(getIDocumentationFormatter(), getDocumentationFormatterImpl());
 		factory.addfinalTypeToTypeSingleton(getIEcoreDocumentationBuilder(), getEcoreDocumentationBuilderImpl());

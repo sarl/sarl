@@ -23,16 +23,30 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
-import io.sarl.lang.sarl.SarlFactory;
-import io.sarl.lang.sarl.SarlFormalParameter;
 import javax.inject.Inject;
 import javax.inject.Provider;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.common.types.JvmFormalParameter;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmVoid;
+import org.eclipse.xtext.common.types.TypesFactory;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.resource.IFragmentProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import io.sarl.lang.sarl.SarlFactory;
+import io.sarl.lang.sarl.SarlFormalParameter;
 
 /** Builder of a Sarl formal parameter.
  */
@@ -48,11 +62,20 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 
 	private IExpressionBuilder defaultValue;
 
+	//TODO
+	@Inject
+	private TypesFactory jvmTypesFactory;
+	
+	//TODO
+	@Inject
+	private IFragmentProvider fragmentProvider;
+
 	/** Initialize the formal parameter.
 	 * @param context - the context of the formal parameter.
 	 * @param name - the name of the formal parameter.
 	 */
-	public void eInit(XtendExecutable context, String name) {
+	public void eInit(XtendExecutable context, String name, IJvmTypeProvider typeContext) {
+		setTypeResolutionContext(typeContext);
 		this.context = context;
 			this.parameter = SarlFactory.eINSTANCE.createSarlFormalParameter();
 			this.parameter.setName(name);
@@ -67,6 +90,22 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 	@Pure
 	public SarlFormalParameter getSarlFormalParameter() {
 		return this.parameter;
+	}
+	
+	//TODO
+	@Override
+	public JvmIdentifiableElement getJvmIdentifiableElement() {
+		JvmVoid jvmVoid = this.jvmTypesFactory.createJvmVoid();
+		if (jvmVoid instanceof InternalEObject) {
+			InternalEObject iobject = (InternalEObject) jvmVoid;
+			final String fragment = EcoreUtil2.getURIFragment(getSarlFormalParameter());
+			iobject.eSetProxyURI(URI.createHierarchicalURI(null, null, null, null, fragment));
+			final EObject resolved = EcoreUtil.resolve(iobject, getSarlFormalParameter().eResource().getResourceSet());
+			if (jvmVoid != resolved && resolved instanceof JvmIdentifiableElement) {
+				return (JvmIdentifiableElement) resolved;
+			}
+		}
+		return jvmVoid;
 	}
 
 	/** Replies the resource to which the formal parameter is attached.
@@ -109,9 +148,15 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 					public void apply(XExpression it) {
 						getSarlFormalParameter().setDefaultValue(it);
 					}
-				});
+				}, getTypeResolutionContext());
 		}
 		return this.defaultValue;
+	}
+
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getDefaultValue());
 	}
 
 }

@@ -36,6 +36,8 @@ import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.Keyword;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
@@ -93,8 +95,8 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 	}
 
 	@Override
-	public void generateBindings(BindingFactory factory) {
-		super.generateBindings(factory);
+	public void generateRuntimeBindings(BindingFactory factory) {
+		super.generateRuntimeBindings(factory);
 		bindTypeReferences(factory,
 				getExpressionBuilderInterface(),
 				getExpressionBuilderImpl(),
@@ -231,6 +233,29 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}
+				if (forInterface) {
+					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the context or <code>null</code> if the Ecore object is the context."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" getTypeResolutionContext();"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				} else if (forAppender) {
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(IJvmTypeProvider.class);
+					it.append(" getTypeResolutionContext() {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn this.builder.getTypeResolutionContext();"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
 				it.append("\t/** Initialize the expression."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @param context - the context of the expressions."); //$NON-NLS-1$
@@ -249,15 +274,19 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append(Procedures.Procedure1.class);
 				it.append("<"); //$NON-NLS-1$
 				it.append(XExpression.class);
-				it.append("> setter)"); //$NON-NLS-1$
+				it.append("> setter, "); //$NON-NLS-1$
+				it.append(IJvmTypeProvider.class);
+				it.append(" typeContext)"); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
 				} else {
 					it.append(" {"); //$NON-NLS-1$
 					it.newLine();
 					if (forAppender) {
-						it.append("\t\tthis.builder.eInit(context, setter);"); //$NON-NLS-1$
+						it.append("\t\tthis.builder.eInit(context, setter, typeContext);"); //$NON-NLS-1$
 					} else {
+						it.append("\t\tsetTypeResolutionContext(typeContext);"); //$NON-NLS-1$
+						it.newLine();
 						it.append("\t\tthis.context = context;"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\tthis.setter = setter;"); //$NON-NLS-1$
@@ -754,6 +783,29 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				}
 				it.newLineIfNotEmpty();
 				it.newLine();
+				if (!forInterface) {
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Override.class);
+					it.newLine();
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Pure.class);
+					it.newLine();
+					it.append("\tpublic "); //$NON-NLS-1$
+					it.append(String.class);
+					it.append(" toString() {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn "); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("this.builder.toString();"); //$NON-NLS-1$
+					} else {
+						it.append(EmfFormatter.class);
+						it.append(".objToStr(getXExpression());"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
 			}
 		};
 	}

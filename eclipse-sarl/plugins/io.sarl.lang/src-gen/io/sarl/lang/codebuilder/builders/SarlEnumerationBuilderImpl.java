@@ -35,6 +35,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -48,9 +50,16 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 
 	private EObject container;
 
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlEnumeration());
+	}
+
 	/** Initialize the Ecore element when inside a script.
 	 */
-	public void eInit(SarlScript script, String name) {
+	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlEnumeration == null) {
 			this.container = script;
 			this.sarlEnumeration = SarlFactory.eINSTANCE.createSarlEnumeration();
@@ -64,7 +73,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 
 	/** Initialize the Ecore element when inner type declaration.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name) {
+	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		if (this.sarlEnumeration == null) {
 			this.container = container;
 			this.sarlEnumeration = SarlFactory.eINSTANCE.createSarlEnumeration();
@@ -131,7 +140,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	 */
 	public ISarlEnumLiteralBuilder addSarlEnumLiteral(String name) {
 		ISarlEnumLiteralBuilder builder = this.iSarlEnumLiteralBuilderProvider.get();
-		builder.eInit(getSarlEnumeration(), name);
+		builder.eInit(getSarlEnumeration(), name, getTypeResolutionContext());
 		return builder;
 	}
 

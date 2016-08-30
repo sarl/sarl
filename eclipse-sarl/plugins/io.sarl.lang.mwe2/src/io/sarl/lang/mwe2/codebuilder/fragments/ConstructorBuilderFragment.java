@@ -194,11 +194,17 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 					it.append(ResourceSet.class);
 					it.append(" resourceSet) {"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t\treturn new "); //$NON-NLS-1$
+					it.append("\t\t"); //$NON-NLS-1$
+					it.append(appender);
+					it.append(" a = new "); //$NON-NLS-1$
 					it.append(appender);
 					it.append("("); //$NON-NLS-1$
 					it.append(createFunctionName);
 					it.append("(resourceSet));"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tgetInjector().injectMembers(a);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn a;"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
@@ -225,11 +231,17 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 					it.append(Resource.class);
 					it.append(" resource) {"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t\treturn new "); //$NON-NLS-1$
+					it.append("\t\t"); //$NON-NLS-1$
+					it.append(appender);
+					it.append(" a = new "); //$NON-NLS-1$
 					it.append(appender);
 					it.append("("); //$NON-NLS-1$
 					it.append(createFunctionName);
 					it.append("(resource));"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tgetInjector().injectMembers(a);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn a;"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();

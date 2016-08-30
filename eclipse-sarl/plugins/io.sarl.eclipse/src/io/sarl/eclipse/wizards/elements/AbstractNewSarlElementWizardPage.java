@@ -21,18 +21,23 @@
 
 package io.sarl.eclipse.wizards.elements;
 
-import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.google.inject.Injector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -45,11 +50,11 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
@@ -58,6 +63,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.jdt.internal.core.PackageFragment;
+import org.eclipse.jdt.internal.ui.util.CoreUtility;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.LayoutUtil;
@@ -75,16 +81,23 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
-import org.eclipse.xtext.common.types.access.jdt.JdtTypeProviderFactory;
 import org.eclipse.xtext.formatting.IWhitespaceInformationProvider;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
-import org.eclipse.xtext.util.StringInputStream;
+import org.eclipse.xtext.xbase.compiler.ISourceAppender;
+import org.eclipse.xtext.xbase.compiler.ImportManager;
+import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
+import io.sarl.eclipse.util.Jdt2Ecore.ActionBuilder;
+import io.sarl.eclipse.util.Jdt2Ecore.ConstructorBuilder;
+import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
+import io.sarl.lang.actionprototype.ActionParameterTypes;
+import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import io.sarl.lang.formatting2.FormatterFacade;
 
@@ -107,30 +120,30 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected static final int COLUMNS = 4;
 
-	private static final int STEPS = 5;
+	private static final int STEPS = 8;
 
 	private static final String SETTINGS_CREATECONSTR = "create_constructor"; //$NON-NLS-1$
 
 	private static final String SETTINGS_CREATEUNIMPLEMENTED = "create_unimplemented"; //$NON-NLS-1$
 
-	/** Creator of SARL elements.
+	/** A builder of code.
 	 */
 	@Inject
 	protected CodeBuilderFactory codeBuilderFactory;
 
-	/** The trnaslator from JDT to SARL Ecore.
+	/** Provider of the resource set associated to a project.
 	 */
 	@Inject
-	protected Jdt2Ecore jdt2sarl;
+	protected IResourceSetProvider resourceSetFactory;
+
+	@Inject
+	private Jdt2Ecore jdt2sarl;
 
 	@Inject
 	private FieldInitializerUtil fieldInitializer;
 
 	@Inject
 	private IStorage2UriMapper storage2UriMapper;
-
-	@Inject
-	private IResourceSetProvider resourceSetFactory;
 
 	@Inject
 	private IWhitespaceInformationProvider whitespaceInformationProvider;
@@ -152,7 +165,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	private FormatterFacade formatterFacade;
 
 	@Inject
-	private JdtTypeProviderFactory jdtTypeProviderFactory;
+	private IJvmTypeProvider.Factory jdtTypeProviderFactory;
 
 	/**
 	 * @param typeKind - Signals the kind of the type to be created. Valid kinds are
@@ -539,7 +552,10 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return the allowed root super type.
 	 * @throws JavaModelException - when the Java model cannot enable to retreive the root type.
 	 */
-	protected abstract IType getRootSuperType() throws JavaModelException;
+	@SuppressWarnings("static-method")
+	protected IType getRootSuperType() throws JavaModelException {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Replies the allowed root super interface for the created type.
 	 *
@@ -617,7 +633,71 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	@Override
 	public final void createType(IProgressMonitor monitor) throws CoreException, InterruptedException {
-		createSARLType(monitor);
+		// See createSARLType
+		throw new UnsupportedOperationException();
+	}
+
+	private ICompilationUnit getCompilationUnitStub() {
+		final String compilationUnitName = getCompilationUnitName(getTypeName());
+		return new CompilationUnit((PackageFragment) getPackageFragment(), compilationUnitName, DefaultWorkingCopyOwner.PRIMARY);
+	}
+
+	/** Create the inherited members.
+	 *
+	 * @param defaultSuperTypeQualifiedName the qualified name of the default super type.
+	 * @param superTypeQualifiedName the qualified name of the super type.
+	 * @param context the context.
+	 * @param constructorBuilder the code for adding a constructor.
+	 * @param actionBuilder the code for adding an operation.
+	 * @throws JavaModelException if the java model is invalid.
+	 */
+	protected void createInheritedMembers(
+			String defaultSuperTypeQualifiedName, String superTypeQualifiedName,
+			XtendTypeDeclaration context, ConstructorBuilder constructorBuilder, ActionBuilder actionBuilder)
+					throws JavaModelException {
+		final TypeFinder typeFinder = this.jdt2sarl.toTypeFinder(getJavaProject());
+
+		final Map<ActionParameterTypes, IMethod> baseConstructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
+		this.jdt2sarl.populateInheritanceContext(
+				typeFinder,
+				null, null, null, null,
+				baseConstructors,
+				defaultSuperTypeQualifiedName,
+				Collections.<String>emptyList());
+
+		final Map<ActionParameterTypes, IMethod> constructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
+
+		final Map<ActionPrototype, IMethod> operationsToImplement;
+		if (isCreateInherited()) {
+			operationsToImplement = Maps.newHashMap();
+		} else {
+			operationsToImplement = null;
+		}
+
+		this.jdt2sarl.populateInheritanceContext(
+				typeFinder,
+				null, null, null,
+				operationsToImplement,
+				constructors,
+				superTypeQualifiedName,
+				Collections.<String>emptyList());
+
+		if (context != null) {
+			if (constructorBuilder != null) {
+				for (final Entry<ActionParameterTypes, IMethod> constructor : constructors.entrySet()) {
+					if (!baseConstructors.containsKey(constructor.getKey())) {
+						this.jdt2sarl.createStandardConstructorsWith(constructorBuilder,
+								Collections.singletonList(constructor.getValue()),
+								context);
+						break;
+					}
+				}
+			}
+
+			if (operationsToImplement != null && actionBuilder != null) {
+				this.jdt2sarl.createActionsWith(actionBuilder, operationsToImplement.values());
+			}
+		}
 	}
 
 	/** Create the SARL type.
@@ -628,52 +708,75 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @throws InterruptedException when the operation was canceled.
 	 */
 	public int createSARLType(IProgressMonitor monitor) throws CoreException, InterruptedException {
-		final SubMonitor mon = SubMonitor.convert(monitor, STEPS);
+		final SubMonitor mon = SubMonitor.convert(monitor, getTitle(), STEPS);
 		try {
 			// Create the package if not existing
-			if (!getPackageFragment().exists()) {
-				getPackageFragmentRoot().createPackageFragment(
+			IPackageFragment packageFragment = getPackageFragment();
+			if (!packageFragment.exists()) {
+				packageFragment = getPackageFragmentRoot().createPackageFragment(
 						getPackageFragment().getElementName(),
 						true,
 						mon.newChild(1));
 			} else {
 				mon.worked(1);
 			}
+
 			// Create the file
-			final IResource packageResource = getPackageFragment().getResource();
-			final IFolder folder = (IFolder) packageResource;
-			final IFile sarlFile = folder.getFile(
+			final IFolder packageResource = (IFolder) packageFragment.getResource();
+			if (!packageResource.exists()) {
+				CoreUtility.createFolder(packageResource, true, true, mon.newChild(1));
+			} else {
+				mon.worked(1);
+			}
+			IFile sarlFile = packageResource.getFile(
 					getTypeName() + "." //$NON-NLS-1$
-					+ AbstractNewSarlElementWizardPage.this.sarlFileExtension);
-			final URI sarlUri = AbstractNewSarlElementWizardPage.this.storage2UriMapper.getUri(sarlFile);
-			final ResourceSet resourceSet = AbstractNewSarlElementWizardPage.this.resourceSetFactory.get(
-					getJavaProject().getProject());
-			final Resource ecoreResource = resourceSet.createResource(sarlUri);
+					+ this.sarlFileExtension);
+			int index = 1;
+			while (sarlFile.exists()) {
+				sarlFile = packageResource.getFile(
+						getTypeName() + index + "." //$NON-NLS-1$
+						+ this.sarlFileExtension);
+				++index;
+			}
+
+			final URI sarlUri = this.storage2UriMapper.getUri(sarlFile);
+			final ResourceSet resourceSet = this.resourceSetFactory.get(packageFragment.getJavaProject().getProject());
 			mon.worked(1);
 
-			// Create the file content
+			// Create the type content
+			mon.setTaskName(MessageFormat.format("Generating the semantic content for {0}", getTypeName())); //$NON-NLS-1$
+			final IJvmTypeProvider typeProvider = this.jdtTypeProviderFactory.findOrCreateTypeProvider(resourceSet);
+			final ImportManager imports = new ImportManager(true);
+			this.injector.injectMembers(imports);
+			final FakeTreeAppendable appender = new FakeTreeAppendable(imports);
+			this.injector.injectMembers(appender);
+			generateTypeContent(appender, typeProvider, mon.newChild(1));
+
+			// Build the full file content
+			mon.setTaskName(MessageFormat.format("Generating the textual content for {0}", getTypeName())); //$NON-NLS-1$
 			final ICompilationUnit compilationUnit = getCompilationUnitStub();
-			final String lineSeparator = AbstractNewSarlElementWizardPage.this.whitespaceInformationProvider
+			final String lineSeparator = this.whitespaceInformationProvider
 					.getLineSeparatorInformation(sarlUri).getLineSeparator();
 			final String fileComment = getFileComment(compilationUnit, lineSeparator);
-			final String typeComment = getTypeComment(compilationUnit, lineSeparator);
-			getTypeContent(ecoreResource, typeComment);
-			String content;
-			try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-				if (!Strings.isNullOrEmpty(fileComment)) {
-					baos.write(fileComment.getBytes());
-					baos.write(lineSeparator.getBytes());
-				}
-				ecoreResource.save(baos, null);
-				content = baos.toString();
+			//final String typeComment = getTypeComment(compilationUnit, lineSeparator);
+			final StringBuilder realContent = new StringBuilder();
+			if (!Strings.isNullOrEmpty(fileComment)) {
+				realContent.append(fileComment);
+				realContent.append(lineSeparator);
+				realContent.append(lineSeparator);
 			}
+			realContent.append(appender.getContent());
+			realContent.append(lineSeparator);
 			mon.worked(1);
 
-			content = this.formatterFacade.format(content);
+			mon.setTaskName(MessageFormat.format("Formatting the textual content for {0}", getTypeName())); //$NON-NLS-1$
+			final String content = this.formatterFacade.format(realContent.toString());
 			mon.worked(1);
 
-			try (StringInputStream stringInputStream = new StringInputStream(content)) {
-				sarlFile.create(stringInputStream, true, mon.newChild(1));
+			// Write the resource
+			mon.setTaskName(MessageFormat.format("Creating the resource for {0}", getTypeName())); //$NON-NLS-1$
+			try (ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes())) {
+				sarlFile.create(stream, true, mon.newChild(1));
 			}
 			setResource(sarlFile);
 
@@ -719,19 +822,15 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		}
 	}
 
-	private ICompilationUnit getCompilationUnitStub() {
-		final String compilationUnitName = getCompilationUnitName(getTypeName());
-		return new CompilationUnit((PackageFragment) getPackageFragment(), compilationUnitName,
-				DefaultWorkingCopyOwner.PRIMARY);
-	}
-
 	/** Invoked for retreiving the definition of the new type.
 	 *
-	 * @param ecoreResource - the Ecore resource of the script.
-	 * @param typeComment - the comment for the type.
-	 * @throws CoreException if an error occurs when creating the content.
+	 * @param appender the receiver of the code.
+	 * @param typeProvider provides types.
+	 * @param monitor the progression monitor.
+	 * @throws Exception if an error occurs when creating the content.
 	 */
-	protected abstract void getTypeContent(Resource ecoreResource, String typeComment) throws CoreException;
+	protected abstract void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
+			IProgressMonitor monitor) throws Exception;
 
 	/** Create the controls related to the behavior units to generate.
 	 *
@@ -820,10 +919,15 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param context the execution context.
 	 * @param project the Java project.
 	 * @param extension the extension to give to the dialog box.
-	 * @return the dialog.
+	 * @param multi indicates if the selection could be done on multiple elements.
+	 * @return the dialog, or <code>null</code> for using the default dialog box.
 	 */
-	protected abstract AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(
-			Shell parent, IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension);
+	@SuppressWarnings("static-method")
+	protected AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(
+			Shell parent, IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
+			boolean multi) {
+		return null;
+	}
 
 	@Override
 	protected IType chooseSuperClass() {
@@ -836,16 +940,71 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		final SarlSpecificTypeSelectionExtension extension = new SarlSpecificTypeSelectionExtension(typeProvider);
 		this.injector.injectMembers(extension);
 		final AbstractSuperTypeSelectionDialog<?> dialog = createSuperClassSelectionDialog(getShell(),
-				getWizard().getContainer(), project, extension);
-		this.injector.injectMembers(dialog);
-		dialog.setTitle(NewWizardMessages.NewTypeWizardPage_SuperClassDialog_title);
-		dialog.setMessage(NewWizardMessages.NewTypeWizardPage_SuperClassDialog_message);
-		dialog.setInitialPattern(getSuperClass());
+				getWizard().getContainer(), project, extension, false);
+		if (dialog != null) {
+			this.injector.injectMembers(dialog);
+			dialog.setTitle(NewWizardMessages.NewTypeWizardPage_SuperClassDialog_title);
+			dialog.setMessage(NewWizardMessages.NewTypeWizardPage_SuperClassDialog_message);
+			dialog.setInitialPattern(getSuperClass());
 
-		if (dialog.open() == Window.OK) {
-			return (IType) dialog.getFirstResult();
+			if (dialog.open() == Window.OK) {
+				return (IType) dialog.getFirstResult();
+			}
+		} else {
+			super.chooseSuperClass();
 		}
 		return null;
+	}
+
+	/** Create an instanceof the super-interface selection dialog.
+	 *
+	 * @param parent the parent.
+	 * @param context the execution context.
+	 * @param project the Java project.
+	 * @param extension the extension to give to the dialog box.
+	 * @param multi indicates if the selection could be done on multiple elements.
+	 * @return the dialog, or <code>null</code> for using the default dialog box.
+	 */
+	@SuppressWarnings("static-method")
+	protected AbstractSuperTypeSelectionDialog<?> createSuperInterfaceSelectionDialog(
+			Shell parent, IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
+			boolean multi) {
+		return null;
+	}
+
+	@Override
+	protected void chooseSuperInterfaces() {
+		final IJavaProject project = getJavaProject();
+		if (project == null) {
+			return;
+		}
+		final IJvmTypeProvider typeProvider = this.jdtTypeProviderFactory.findOrCreateTypeProvider(
+				this.resourceSetFactory.get(project.getProject()));
+		final SarlSpecificTypeSelectionExtension extension = new SarlSpecificTypeSelectionExtension(typeProvider);
+		this.injector.injectMembers(extension);
+		final AbstractSuperTypeSelectionDialog<?> dialog = createSuperInterfaceSelectionDialog(getShell(),
+				getWizard().getContainer(), project, extension, true);
+		if (dialog != null) {
+			this.injector.injectMembers(dialog);
+			dialog.setTitle(NewWizardMessages.NewTypeWizardPage_InterfacesDialog_interface_title);
+			dialog.setMessage(NewWizardMessages.NewTypeWizardPage_InterfacesDialog_message);
+			dialog.setInitialPattern(getSuperClass());
+
+			if (dialog.open() == Window.OK) {
+				final Object[] tab = dialog.getResult();
+				if (tab != null) {
+					final List<String> list = new ArrayList<>(tab.length);
+					for (final Object obj : tab) {
+						if (obj != null) {
+							list.add(obj.toString());
+						}
+					}
+					setSuperInterfaces(list, true);
+				}
+			}
+		} else {
+			super.chooseSuperInterfaces();
+		}
 	}
 
 }

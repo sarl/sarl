@@ -1954,7 +1954,7 @@ public class SkillCompilerTest {
 					"  ",
 					"  @SyntheticMember",
 					"  @Override",
-					"  protected <S extends Skill> S $setSkill(final S skill, final Class<? extends Capacity>[] capacities) {",
+					"  protected <S extends Skill> S $setSkill(final S skill, final Class<? extends Capacity>... capacities) {",
 					"    this.$CAPACITY_USE$C2 = null;",
 					"    return super.$setSkill(skill, capacities);",
 					"  }",

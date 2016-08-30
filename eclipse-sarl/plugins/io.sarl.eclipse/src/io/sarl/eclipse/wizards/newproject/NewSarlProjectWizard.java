@@ -25,12 +25,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaElement;
@@ -55,6 +57,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
+import io.sarl.eclipse.natures.SARLProjectConfigurator;
 import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.util.Utilities;
@@ -200,13 +203,17 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	public boolean performFinish() {
 		final boolean res = super.performFinish();
 		if (res) {
-			final IJavaElement newElement;
+			final IJavaProject newElement;
 			try {
 				newElement = getCreatedElement();
 			} catch (Throwable e) {
 				handleFinishException(getShell(), new InvocationTargetException(e));
 				return false;
 			}
+
+			// Force SARL configuration
+			SARLProjectConfigurator.configureSARLProject(newElement.getProject(),
+					false, false, new NullProgressMonitor());
 
 			// Validate the SARL specific elements
 			if (!validateSARLSpecificElements(newElement)) {
@@ -218,8 +225,14 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 				PlatformUI.getWorkbench().getWorkingSetManager().addToWorkingSets(newElement, workingSets);
 			}
 
+			try {
+				newElement.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+			} catch (CoreException e) {
+				handleFinishException(getShell(), new InvocationTargetException(e));
+				return false;
+			}
 			BasicNewProjectResourceWizard.updatePerspective(this.fConfigElement);
-			selectAndReveal(this.secondPage.getJavaProject().getProject());
+			selectAndReveal(newElement.getProject());
 
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
@@ -269,7 +282,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	}
 
 	@Override
-	public IJavaElement getCreatedElement() {
+	public IJavaProject getCreatedElement() {
 		final IJavaProject javaProject = this.secondPage.getJavaProject();
 
 		try {

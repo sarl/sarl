@@ -35,6 +35,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -48,9 +50,16 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 
 	private EObject container;
 
+	@Override
+	@Pure
+	public String toString() {
+		return EmfFormatter.objToStr(getSarlAnnotationType());
+	}
+
 	/** Initialize the Ecore element when inside a script.
 	 */
-	public void eInit(SarlScript script, String name) {
+	public void eInit(SarlScript script, String name, IJvmTypeProvider context) {
+		setTypeResolutionContext(context);
 		if (this.sarlAnnotationType == null) {
 			this.container = script;
 			this.sarlAnnotationType = SarlFactory.eINSTANCE.createSarlAnnotationType();
@@ -64,7 +73,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 
 	/** Initialize the Ecore element when inner type declaration.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name) {
+	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		if (this.sarlAnnotationType == null) {
 			this.container = container;
 			this.sarlAnnotationType = SarlFactory.eINSTANCE.createSarlAnnotationType();
@@ -131,7 +140,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
-		builder.eInit(getSarlAnnotationType(), name, "var");
+		builder.eInit(getSarlAnnotationType(), name, "var", getTypeResolutionContext());
 		return builder;
 	}
 
@@ -141,7 +150,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
 		ISarlFieldBuilder builder = this.iSarlFieldBuilderProvider.get();
-		builder.eInit(getSarlAnnotationType(), name, "val");
+		builder.eInit(getSarlAnnotationType(), name, "val", getTypeResolutionContext());
 		return builder;
 	}
 
@@ -163,7 +172,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
 		ISarlClassBuilder builder = this.iSarlClassBuilderProvider.get();
-		builder.eInit(getSarlAnnotationType(), name);
+		builder.eInit(getSarlAnnotationType(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -176,7 +185,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
 		ISarlInterfaceBuilder builder = this.iSarlInterfaceBuilderProvider.get();
-		builder.eInit(getSarlAnnotationType(), name);
+		builder.eInit(getSarlAnnotationType(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -189,7 +198,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
 		ISarlEnumerationBuilder builder = this.iSarlEnumerationBuilderProvider.get();
-		builder.eInit(getSarlAnnotationType(), name);
+		builder.eInit(getSarlAnnotationType(), name, getTypeResolutionContext());
 		return builder;
 	}
 
@@ -202,7 +211,7 @@ public class SarlAnnotationTypeBuilderImpl extends AbstractBuilder implements IS
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
 		ISarlAnnotationTypeBuilder builder = this.iSarlAnnotationTypeBuilderProvider.get();
-		builder.eInit(getSarlAnnotationType(), name);
+		builder.eInit(getSarlAnnotationType(), name, getTypeResolutionContext());
 		return builder;
 	}
 
