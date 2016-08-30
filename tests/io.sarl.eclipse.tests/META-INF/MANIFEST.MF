@@ -18,4 +18,5 @@ Export-Package: io.sarl.eclipse.tests,
  io.sarl.eclipse.tests.natures,
  io.sarl.eclipse.tests.navigator,
  io.sarl.eclipse.tests.runtime,
- io.sarl.eclipse.tests.util
+ io.sarl.eclipse.tests.util,
+ io.sarl.eclipse.tests.wizards
