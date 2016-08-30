@@ -305,6 +305,13 @@
                 name="startupMessageRect"
                 value="7,252,330,20">
           </property>
+          <property name="introBrandingImageText"
+          		value="SARL"/>
+          <property name="introBrandingImage"
+          		value="product:icons/sarl_64.png"/>
+          <property name="introTitle"
+          		value="Welcome to the Eclipse IDE for SARL Developers">
+          </property>
        </product>
     </extension>
 
@@ -352,6 +359,20 @@
             class="io.sarl.eclipse.natures.SARLProjectConfigurator"
             label="%projectconfigurator.name">
       </projectConfigurator>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro">
+      <introProductBinding
+            introId="org.eclipse.ui.intro.universal"
+            productId="io.sarl.eclipse.io_sarl_lang_product">
+      </introProductBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro.configExtension">
+      <configExtension
+            configId="org.eclipse.ui.intro.universalConfig"
+            content="intro/SARL-Intro.xml">
+      </configExtension>
    </extension>
 
  </plugin>

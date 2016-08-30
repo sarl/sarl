@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="94">
+<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="95">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.xtend.sdk.feature.group" version="2.10.0.v201605250459"/>
@@ -14,7 +14,6 @@
 <unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.8.0.v201603091933"/>
 <unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.8.0.v201605120036"/>
 <unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.7.1.v201508262220"/>
-<unit id="org.eclipse.pde.source.feature.group" version="3.12.0.v20160606-1100"/>
 <unit id="org.eclipse.egit.feature.group" version="4.4.0.201606070830-r"/>
 <unit id="org.eclipse.equinox.executable.feature.group" version="3.6.300.v20160525-1303"/>
 <unit id="org.eclipse.epp.mpc.feature.group" version="1.5.0.v20160608-1804"/>

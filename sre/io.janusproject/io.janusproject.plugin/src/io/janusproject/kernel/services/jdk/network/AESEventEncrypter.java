@@ -67,7 +67,7 @@ public class AESEventEncrypter extends AbstractEventEncrypter {
 			this.skeySpec = new SecretKeySpec(raw, "AES"); //$NON-NLS-1$
 			// this.cipher = Cipher.getInstance(ALGORITHM);
 		} else {
-			throw new IllegalArgumentException(Locale.getString("INVALID_KEY_SIZE")); //$NON-NLS-1$
+			throw new IllegalArgumentException(Locale.getString(AESEventEncrypter.class, "INVALID_KEY_SIZE")); //$NON-NLS-1$
 		}
 
 	}

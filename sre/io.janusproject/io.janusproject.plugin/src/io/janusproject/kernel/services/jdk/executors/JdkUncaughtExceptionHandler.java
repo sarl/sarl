@@ -76,19 +76,20 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 			if (!this.logger.isLoggeable(Level.FINEST)) {
 				return;
 			}
-			record = new LogRecord(Level.FINEST, Locale.getString("CANCEL_TASK", taskId, taskName)); //$NON-NLS-1$
+			record = new LogRecord(Level.FINEST, Locale.getString(JdkUncaughtExceptionHandler.class, "CANCEL_TASK", taskId, taskName)); //$NON-NLS-1$
 		} else if (cause instanceof InterruptedException || exception instanceof InterruptedException) {
 			// Avoid too much processing if the error is not loggeable
 			if (!this.logger.isLoggeable(Level.FINEST)) {
 				return;
 			}
-			record = new LogRecord(Level.FINEST, Locale.getString("INTERRUPT_TASK", taskId, taskName)); //$NON-NLS-1$
+			record = new LogRecord(Level.FINEST, Locale.getString(JdkUncaughtExceptionHandler.class,
+			        "INTERRUPT_TASK", taskId, taskName)); //$NON-NLS-1$
 		} else {
 			// Avoid too much processing if the error is not loggeable
 			if (!this.logger.isLoggeable(Level.SEVERE)) {
 				return;
 			}
-			record = new LogRecord(Level.SEVERE, Locale.getString("UNCAUGHT_EXCEPTION", //$NON-NLS-1$
+			record = new LogRecord(Level.SEVERE, Locale.getString(JdkUncaughtExceptionHandler.class, "UNCAUGHT_EXCEPTION", //$NON-NLS-1$
 					cause.getLocalizedMessage(), taskId, taskName));
 		}
 

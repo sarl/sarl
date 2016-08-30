@@ -100,7 +100,7 @@ class ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 	public AgentContext getContext(UUID contextID) {
 		assert contextID != null;
 		if (!this.contexts.contains(contextID)) {
-			throw new IllegalArgumentException(Locale.getString("UNKNOWN_CONTEXT_ID", contextID)); //$NON-NLS-1$
+			throw new IllegalArgumentException(Locale.getString(ExternalContextAccessSkill.class, "UNKNOWN_CONTEXT_ID", contextID)); //$NON-NLS-1$
 		}
 		return this.contextRepository.getContext(contextID);
 	}
@@ -118,7 +118,7 @@ class ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 		assert ac != null : "Unknown Context"; //$NON-NLS-1$
 
 		if (!futureContextDefaultSpaceID.equals(ac.getDefaultSpace().getID().getID())) {
-			throw new IllegalArgumentException(Locale.getString("INVALID_DEFAULT_SPACE_MATCHING", //$NON-NLS-1$
+			throw new IllegalArgumentException(Locale.getString(ExternalContextAccessSkill.class, "INVALID_DEFAULT_SPACE_MATCHING", //$NON-NLS-1$
 					futureContextDefaultSpaceID));
 		}
 
