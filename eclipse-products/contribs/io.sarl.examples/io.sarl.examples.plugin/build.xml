@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="project" default="zip_all_examples">
+
+	<property name="source" location="projects" />
+	<property name="target_xtend" location="contents" />
+
+	<macrodef name="zip_example">
+		<attribute name="name" default="default" />
+		<attribute name="target" default="${target_xtend}" />
+		<attribute name="excludes" default="bin,bin/**,**/*._trace,.antlr-generator*.jar,component.def" />
+		<sequential>
+			<delete file="@{target}/@{name}.zip" />
+			<zip destfile="@{target}/@{name}.zip" basedir="${source}/@{name}" excludes="@{excludes}"  />
+		</sequential>
+	</macrodef>
+
+	<target name="zip_all_examples">
+		<!-- run task "generate_self" to compose this list -->
+		<zip_example name="io-sarl-demos-basic-helloworld"/>
+		<zip_example name="io-sarl-demos-basic-behaviors"/>
+		<zip_example name="io-sarl-demos-basic-behaviorinheritance"/>
+		<!--zip_example name="xtend-annotation-examples" excludes="**/*._trace,.antlr-generator*.jar"/>-->
+	</target>
+
+	<target name="generate_self">
+		<exec executable="bash">
+			<arg value="-c" />
+			<arg value="for i in `ls ${source}`; do echo &quot;&lt;zip_example name=\&quot;$i\&quot; /&gt;&quot;; done" />
+		</exec>
+	</target>
+
+</project>
