@@ -25,8 +25,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
 
 import java.util.UUID;
 
@@ -35,7 +34,7 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 
 import io.sarl.core.AgentTask;
 import io.sarl.lang.core.Agent;
@@ -128,7 +127,7 @@ public class AgentTaskTest extends AbstractSarlTest {
 	@Test
 	public void unless_positive() {
 		Function1<Agent,Boolean> guard = mock(Function1.class);
-		doReturn(Boolean.TRUE).when(guard).apply(Matchers.any(Agent.class));
+		doReturn(Boolean.TRUE).when(guard).apply(ArgumentMatchers.any(Agent.class));
 
 		assertSame(this.task, this.task.unless(guard));
 
@@ -142,7 +141,7 @@ public class AgentTaskTest extends AbstractSarlTest {
 	@Test
 	public void unless_negative() {
 		Function1<Agent,Boolean> guard = mock(Function1.class);
-		doReturn(Boolean.FALSE).when(guard).apply(Matchers.any(Agent.class));
+		doReturn(Boolean.FALSE).when(guard).apply(ArgumentMatchers.any(Agent.class));
 
 		assertSame(this.task, this.task.unless(guard));
 
@@ -156,7 +155,7 @@ public class AgentTaskTest extends AbstractSarlTest {
 	@Test
 	public void ifTrue() {
 		Function1<Agent,Boolean> guard = mock(Function1.class);
-		doReturn(Boolean.TRUE).when(guard).apply(Matchers.any(Agent.class));
+		doReturn(Boolean.TRUE).when(guard).apply(ArgumentMatchers.any(Agent.class));
 
 		assertSame(this.task, this.task.ifTrue(guard));
 

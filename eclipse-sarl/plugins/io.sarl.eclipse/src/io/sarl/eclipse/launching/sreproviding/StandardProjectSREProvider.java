@@ -21,7 +21,7 @@
 
 package io.sarl.eclipse.launching.sreproviding;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -61,13 +61,13 @@ public class StandardProjectSREProvider implements ProjectSREProvider {
 			try {
 				QualifiedName propertyName = RuntimeEnvironmentPropertyPage.qualify(
 						RuntimeEnvironmentPropertyPage.PROPERTY_NAME_HAS_PROJECT_SPECIFIC);
-				tmpSpecific = Boolean.parseBoolean(Objects.firstNonNull(
+				tmpSpecific = Boolean.parseBoolean(MoreObjects.firstNonNull(
 						project.getPersistentProperty(propertyName),
 						Boolean.FALSE.toString()));
 				if (tmpSpecific) {
 					propertyName = RuntimeEnvironmentPropertyPage.qualify(
 							RuntimeEnvironmentPropertyPage.PROPERTY_NAME_USE_SYSTEM_WIDE_SRE);
-					tmpUseSystem = Boolean.parseBoolean(Objects.firstNonNull(
+					tmpUseSystem = Boolean.parseBoolean(MoreObjects.firstNonNull(
 							project.getPersistentProperty(propertyName), Boolean.FALSE.toString()));
 					if (!tmpUseSystem) {
 						propertyName = RuntimeEnvironmentPropertyPage.qualify(

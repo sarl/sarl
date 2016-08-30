@@ -36,7 +36,7 @@ import io.sarl.util.OpenEventSpaceSpecification;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({ "javadoc" })
+@SuppressWarnings("all")
 public class SpaceIDSerializerTest extends AbstractSerializerTest {
 
 	@Nullable

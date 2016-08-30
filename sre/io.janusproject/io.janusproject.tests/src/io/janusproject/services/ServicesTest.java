@@ -50,7 +50,7 @@ import org.mockito.stubbing.Answer;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({ "javadoc" })
+@SuppressWarnings("all")
 public class ServicesTest extends AbstractJanusTest {
 
 	@Nullable

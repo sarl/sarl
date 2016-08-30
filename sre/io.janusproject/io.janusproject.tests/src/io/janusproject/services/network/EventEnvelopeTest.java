@@ -22,9 +22,10 @@ package io.janusproject.services.network;
 import static org.junit.Assert.assertSame;
 
 import io.janusproject.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
+
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

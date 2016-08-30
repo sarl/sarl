@@ -38,6 +38,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.google.common.collect.Maps;
+import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -71,13 +72,18 @@ import io.sarl.eclipse.util.BundleUtil;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("restriction")
 public class JanusSREInstall extends AbstractSREInstall {
 
     /**
      * The unique identifier of this SRE.
      */
     public static final String JANUS_SRE_ID = "io.janusproject.plugin.sre"; //$NON-NLS-1$
+
+    private static final String ROOT_NAME = "/"; //$NON-NLS-1$
+
+    private static final String JAR_EXTENSION = "jar"; //$NON-NLS-1$
+
+    private static final String DOT_JAR_EXTENSION = "." + JAR_EXTENSION; //$NON-NLS-1$
 
     /**
      * The set of dependencies of the Janus plugin that really useful the runtime configuration This a manual configuration that must be update each
@@ -197,19 +203,19 @@ public class JanusSREInstall extends AbstractSREInstall {
 
                 final Pair<Version, List<IRuntimeClasspathEntry>> existingDependencyCPE = this.dependencies.get(dependency);
                 if (existingDependencyCPE == null
-                        || (existingDependencyCPE != null && dependency.getVersion().compareTo(existingDependencyCPE.getKey()) > 0)) {
+                        || dependency.getVersion().compareTo(existingDependencyCPE.getKey()) > 0) {
                     if (firstcall) {
                         // First level of dependencies that are filtered according to runtimeNecessaryDependencies
                         if (RUNTIME_REQUIRED_DEPDENCIES.contains(dependency.getSymbolicName())) {
                             URL u = null;
                             try {
-                                u = FileLocator.resolve(dependency.getEntry("/"));
+                                u = FileLocator.resolve(dependency.getEntry(ROOT_NAME));
                             } catch (IOException e) {
                                 SARLEclipsePlugin.getDefault().log(e);
                                 return;
                             }
 
-                            if (dependencyInstallationPath.contains("jar") || u.getProtocol().equals("jar")) {
+                            if (dependencyInstallationPath.contains(JAR_EXTENSION) || u.getProtocol().equals(JAR_EXTENSION)) {
 
                                 final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(BundleUtil.getBundlePath(dependency), null, null);
                                 final List<IRuntimeClasspathEntry> cpEntries = new ArrayList<>();
@@ -230,14 +236,14 @@ public class JanusSREInstall extends AbstractSREInstall {
                     } else {
                         URL u = null;
                         try {
-                            u = FileLocator.resolve(dependency.getEntry("/"));
+                            u = FileLocator.resolve(dependency.getEntry(ROOT_NAME));
                         } catch (IOException e) {
 
                             SARLEclipsePlugin.getDefault().log(e);
                             return;
                         }
 
-                        if (dependencyInstallationPath.contains("jar") || u.getProtocol().equals("jar")) {
+                        if (dependencyInstallationPath.contains(JAR_EXTENSION) || u.getProtocol().equals(JAR_EXTENSION)) {
 
                             final IClasspathEntry cpEntry = JavaCore.newLibraryEntry(BundleUtil.getBundlePath(dependency), null, null);
                             final List<IRuntimeClasspathEntry> cpEntries = new ArrayList<>();
@@ -381,7 +387,7 @@ public class JanusSREInstall extends AbstractSREInstall {
                     return null;
                 }
 
-            } else if (entry.contains(".jar")) {
+            } else if (entry.contains(DOT_JAR_EXTENSION)) {
                 // A jar inside the bundle
                 // FIXME we have an error at runtime to these referenced jars
                 try {
@@ -412,7 +418,7 @@ public class JanusSREInstall extends AbstractSREInstall {
      */
     @Override
     public String getNameNoDefault() {
-        return "JANUS integrated SRE plugin";
+        return Locale.getString(getClass(), "PLUGIN_NAME"); //$NON-NLS-1$
     }
 
     /**

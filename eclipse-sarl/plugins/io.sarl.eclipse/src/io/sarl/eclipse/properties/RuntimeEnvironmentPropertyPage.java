@@ -21,7 +21,7 @@
 
 package io.sarl.eclipse.properties;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -112,7 +112,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 			try {
 				this.sreBlock.setNotify(false);
 				this.sreBlock.selectSpecificSRE(sre);
-				if (Boolean.parseBoolean(Objects.firstNonNull(
+				if (Boolean.parseBoolean(MoreObjects.firstNonNull(
 						Strings.emptyToNull(useSystemWide), Boolean.TRUE.toString()))) {
 					this.sreBlock.selectSystemWideSRE();
 				} else {

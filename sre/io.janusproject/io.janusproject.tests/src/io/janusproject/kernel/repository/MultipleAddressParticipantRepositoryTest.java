@@ -47,7 +47,7 @@ import io.sarl.lang.core.EventListener;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({ "javadoc" })
+@SuppressWarnings("all")
 public class MultipleAddressParticipantRepositoryTest extends AbstractJanusTest {
 
 	@Nullable

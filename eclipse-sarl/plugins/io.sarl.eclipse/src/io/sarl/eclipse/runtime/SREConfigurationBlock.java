@@ -29,7 +29,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
@@ -317,7 +317,7 @@ public class SREConfigurationBlock {
 
 		final int nbColumns = this.enableSystemWideSelector ? 3 : 2;
 		final Group group = SWTFactory.createGroup(this.control,
-				Objects.firstNonNull(this.title, Messages.SREConfigurationBlock_7),
+				MoreObjects.firstNonNull(this.title, Messages.SREConfigurationBlock_7),
 				nbColumns, 1, GridData.FILL_HORIZONTAL);
 
 		if (this.enableSystemWideSelector || !this.projectProviderFactories.isEmpty()) {
