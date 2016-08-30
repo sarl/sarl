@@ -225,17 +225,14 @@
       <import plugin="io.sarl.lang.core" version="0.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.core" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext" version="2.10.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.util" version="2.10.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.xbase" version="2.10.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.common.types" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.11.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.equinox.common" version="3.8.0" match="greaterOrEqual"/>
       <import plugin="com.ibm.icu" version="56.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.codegen" version="2.11.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.ecore" version="2.12.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.common" version="2.12.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase" version="2.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.common.types" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.util" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j"/>
       <import plugin="io.sarl.lang" version="0.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
@@ -249,9 +246,9 @@
       <import plugin="org.eclipse.jdt.core" version="3.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.ui" version="3.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.compare" version="3.6.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.editors" version="3.10.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui" version="3.108.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.debug.ui" version="3.7.200" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.108.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.editors" version="3.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.emf.common" version="2.12.0" match="compatible"/>
       <import plugin="org.eclipse.core.resources" version="3.5.0" match="compatible"/>
@@ -267,7 +264,6 @@
       <import plugin="org.eclipse.xtext.util" version="2.10.0" match="compatible"/>
       <import plugin="org.eclipse.emf.ecore" version="2.10.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.common" version="2.10.1" match="greaterOrEqual"/>
-      <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.10.0" match="compatible"/>
       <import plugin="org.eclipse.xtend.lib" version="2.10.0" match="compatible"/>
       <import plugin="org.eclipse.xtext.xbase" version="2.10.0" match="compatible"/>
@@ -287,6 +283,8 @@
       <import plugin="org.eclipse.xtext.xbase.ide" version="2.10.0" match="compatible"/>
       <import feature="io.sarl.lib" version="0.4.0.qualifier"/>
       <import feature="org.eclipse.xtend.sdk" version="2.10.0.v201605250459"/>
+      <import plugin="org.arakhne.afc.core.references" version="14.0.0" match="greaterOrEqual"/>
+      <import plugin="org.antlr.runtime" version="3.2.0" match="perfect"/>
    </requires>
 
    <plugin

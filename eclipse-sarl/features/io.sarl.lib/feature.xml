@@ -224,7 +224,6 @@
    <requires>
       <import plugin="io.sarl.lang.core" version="0.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
-      <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.xtext.xbase.lib" version="2.10.0.v201605250459"/>
    </requires>
 

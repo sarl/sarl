@@ -44,7 +44,7 @@
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module -->
-		<tycho.version>0.25.0</tycho.version>
+		<tycho.version>0.26.0</tycho.version>
 
 		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
@@ -318,7 +318,7 @@
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
-				<version>2.0.73-beta</version>
+				<version>2.0.111-beta</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -348,7 +348,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.10</version>
+					<version>1.12</version>
 				</plugin>
 
 				<plugin>
