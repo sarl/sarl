@@ -60,6 +60,14 @@
 
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<sourceDirectory>src</sourceDirectory>
+				</configuration>
+			</plugin>
+
 		</plugins>
 
 	</build>

@@ -47,6 +47,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.reflect.TypeToken;
 import com.google.common.util.concurrent.UncheckedExecutionException;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.lang.core.Event;
 
@@ -163,8 +164,7 @@ public class BehaviorGuardEvaluatorRegistry {
                 // removed... however, barring something very strange we can assume that if at least one
                 // subscriber was removed, all subscribers on listener for that event type were... after
                 // all, the definition of subscribers on a particular class is totally static
-                throw new IllegalArgumentException(
-                        "missing BehaviorGuardEvaluator for a method annotated with @PerceptGuardEvaluator. Is " + listener + " registered?");
+                throw new IllegalArgumentException(Locale.getString(getClass(), "ANNOTATION_MISSED", listener)); //$NON-NLS-1$
             }
 
             // don't try to remove the set if it's empty; that can't be done safely without a lock
@@ -230,10 +230,9 @@ public class BehaviorGuardEvaluatorRegistry {
                     // FIXME: Should check for a generic parameter type and error out
                     final Class<?>[] parameterTypes = method.getParameterTypes();
                     checkArgument(parameterTypes.length == 2,
-                            "Method %s has @" + this.perceptGuardEvaluatorAnnotation.toString()
-                                    + " annotation but has %s parameters. PerceptGuardEvaluator methods must have exactly 2 parameters " //$NON-NLS-1$
-                                    + "(the event occurence to dispatch and the collection of Behavior methods to execute).", //$NON-NLS-1$
-                            method, Integer.valueOf(parameterTypes.length));
+                    		Locale.getString(getClass(), "INVALID_PROTOTYPE", //$NON-NLS-1$
+                    				method, this.perceptGuardEvaluatorAnnotation.toString(),
+                    				Integer.valueOf(parameterTypes.length)));
 
                     final MethodIdentifier ident = new MethodIdentifier(method, parameterTypes);
                     identifiers.put(ident, method);

@@ -27,6 +27,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
+import org.arakhne.afc.vmutil.locale.Locale;
+
 /**
  * Describes each class having one of its methods annotated with {@code PerceptGuardEvaluator} annotation corresponding to the
  * method in charge of evaluating the guard associated to a given event and returns the list of behaviors runnable that must be
@@ -89,9 +91,9 @@ public final class BehaviorGuardEvaluator {
 			this.method.invoke(this.target, event, behaviorsMethodsToExecute);
 			this.method.setAccessible(false);
 		} catch (IllegalArgumentException e) {
-			throw new Error("PerceptGuardEvaluator method rejected target/argument: " + event, e);
+			throw new Error(Locale.getString(getClass(), "EVALUATOR_REJECTION", event), e); //$NON-NLS-1$
 		} catch (IllegalAccessException e) {
-			throw new Error("PerceptGuardEvaluator method became inaccessible: " + event, e);
+			throw new Error(Locale.getString(getClass(), "INACCESSIBLE_EVALUATOR", event), e); //$NON-NLS-1$
 		} catch (InvocationTargetException e) {
 			if (e.getCause() instanceof Error) {
 				throw (Error) e.getCause();

@@ -75,7 +75,7 @@ import org.xml.sax.SAXException;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({ "restriction", "checkstyle:classdataabstractioncoupling" })
+@SuppressWarnings({ "checkstyle:classdataabstractioncoupling" })
 public final class JavaClasspathParser {
 
     /**
@@ -335,7 +335,6 @@ public final class JavaClasspathParser {
     @SuppressWarnings({ "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity" })
     public static IClasspathEntry elementDecode(Element element, String projectName, IPath projectRootAbsoluteFullPath,
             Map<IPath, UnknownXmlElements> unknownElements) {
-
         final IPath projectPath = projectRootAbsoluteFullPath;
         final NamedNodeMap attributes = element.getAttributes();
         final NodeList children = element.getChildNodes();
@@ -484,7 +483,9 @@ public final class JavaClasspathParser {
             final UnknownXmlElements unknownXmlElements = new UnknownXmlElements();
             unknownXmlElements.attributes = unknownAttributes;
             unknownXmlElements.children = unknownChildren;
-            unknownElements.put(path, unknownXmlElements);
+            if (unknownElements != null) {
+            	unknownElements.put(path, unknownXmlElements);
+            }
         }
 
         return entry;
@@ -722,11 +723,15 @@ public final class JavaClasspathParser {
             return null;
         }
         final IAccessRule[] accessRules = new IAccessRule[length];
-        for (int i = 0; i < accessibleFilesLength; i++) {
-            accessRules[i] = JavaCore.newAccessRule(accessibleFiles[i], IAccessRule.K_ACCESSIBLE);
+        if (accessibleFiles != null) {
+	        for (int i = 0; i < accessibleFilesLength; i++) {
+	            accessRules[i] = JavaCore.newAccessRule(accessibleFiles[i], IAccessRule.K_ACCESSIBLE);
+	        }
         }
-        for (int i = 0; i < nonAccessibleFilesLength; i++) {
-            accessRules[accessibleFilesLength + i] = JavaCore.newAccessRule(nonAccessibleFiles[i], IAccessRule.K_NON_ACCESSIBLE);
+        if (nonAccessibleFiles != null) {
+	        for (int i = 0; i < nonAccessibleFilesLength; i++) {
+	            accessRules[accessibleFilesLength + i] = JavaCore.newAccessRule(nonAccessibleFiles[i], IAccessRule.K_NON_ACCESSIBLE);
+	        }
         }
         return accessRules;
     }
