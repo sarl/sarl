@@ -80,6 +80,7 @@ import io.sarl.lang.formatting2.SARLFormatter;
 import io.sarl.lang.formatting2.SARLFormatterPreferenceKeys;
 import io.sarl.lang.generator.GeneratorConfigProvider2;
 import io.sarl.lang.generator.IGeneratorConfigProvider2;
+import io.sarl.lang.generator.SARLGeneratorConfigProvider;
 import io.sarl.lang.generator.SarlOutputConfigurationProvider;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
@@ -195,6 +196,7 @@ import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 import org.eclipse.xtext.validation.IResourceValidator;
 import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.annotations.DefaultXbaseWithAnnotationsRuntimeModule;
+import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.JvmModelGenerator;
 import org.eclipse.xtext.xbase.compiler.XbaseCompiler;
 import org.eclipse.xtext.xbase.compiler.output.TraceAwarePostProcessor;
@@ -587,6 +589,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IContextualOutputConfigurationProvider> bindIContextualOutputConfigurationProvider() {
 		return SarlOutputConfigurationProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IGeneratorConfigProvider> bindIGeneratorConfigProvider() {
+		return SARLGeneratorConfigProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

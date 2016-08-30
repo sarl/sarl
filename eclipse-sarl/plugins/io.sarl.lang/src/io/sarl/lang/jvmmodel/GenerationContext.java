@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
@@ -40,6 +41,7 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.generator.GeneratorConfig2;
@@ -338,5 +340,14 @@ abstract class GenerationContext {
 	 * @return <code>true</code> if the member is supported, <code>false</code> for ignoring it.
 	 */
 	public abstract boolean isSupportedMember(XtendMember member);
+
+	/** Replies if the compiler is using Java8 or higher.
+	 *
+	 * @return <code>true</code> if the compiler uses Java8 or higher. Otherwise <code>false</code>.
+	 */
+	public boolean isAtLeastJava8() {
+		final JavaVersion javaVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION);
+		return javaVersion != null && getGeneratorConfig().getJavaSourceVersion().isAtLeast(javaVersion);
+	}
 
 }

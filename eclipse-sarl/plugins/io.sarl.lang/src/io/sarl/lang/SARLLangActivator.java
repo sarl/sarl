@@ -21,8 +21,6 @@
 
 package io.sarl.lang;
 
-import java.util.ResourceBundle;
-
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -39,10 +37,6 @@ import org.osgi.framework.BundleContext;
 public class SARLLangActivator implements BundleActivator {
 
 	private static SARLLangActivator singleton;
-
-	private String minimalJdkVersion;
-
-	private String minimalXtextVersion;
 
 	/** Constructor the the activator.
 	 */
@@ -61,34 +55,11 @@ public class SARLLangActivator implements BundleActivator {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		singleton = this;
-		final ResourceBundle bundle = ResourceBundle.getBundle("OSGI-INF/l10n/bundle"); //$NON-NLS-1$
-		this.minimalJdkVersion = bundle.getString("min.jdk.version"); //$NON-NLS-1$
-		this.minimalXtextVersion = bundle.getString("min.xtext.version"); //$NON-NLS-1$
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		//
-	}
-
-	/** Returns the minimal JDK version required by SARL.
-	 *
-	 * <p>The version is read from the bundle's properties.
-	 *
-	 * @return the minimal JDK version required by SARL.
-	 */
-	public String getMinimalJdkVersion() {
-		return this.minimalJdkVersion;
-	}
-
-	/** Returns the minimal Xbase version required by SARL.
-	 *
-	 * <p>The version is read from the bundle's properties.
-	 *
-	 * @return the minimal Xbase version required by SARL.
-	 */
-	public String getMinimalXtextVersion() {
-		return this.minimalXtextVersion;
 	}
 
 }

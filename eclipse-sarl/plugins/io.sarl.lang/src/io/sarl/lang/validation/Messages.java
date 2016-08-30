@@ -101,10 +101,12 @@ public class Messages extends NLS {
 	public static String SARLValidator_36;
 	public static String SARLValidator_37;
 	public static String SARLValidator_39;
+	public static String SARLValidator_4;
 	public static String SARLValidator_40;
 	public static String SARLValidator_42;
 	public static String SARLValidator_43;
 	public static String SARLValidator_44;
+	public static String SARLValidator_5;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -644,7 +644,7 @@ public final class JavaClasspathParser {
         }
     }
 
-    @SuppressWarnings("checkstyle:innerassignment")
+    @SuppressWarnings({"checkstyle:innerassignment", "checkstyle:illegaltype"})
     private static void decodeUnknownNode(Node node, GenericXMLWriter xmlWriter, boolean insertNewLine) {
         switch (node.getNodeType()) {
         case Node.ELEMENT_NODE:

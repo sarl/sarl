@@ -1310,6 +1310,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add @Inline annotation
 			if (context != null
+					&& context.isAtLeastJava8()
 					&& context.getGeneratorConfig2().isGenerateInlineAnnotation()
 					&& !source.isAbstract() && !container.isInterface()
 					&& this.annotationFinder.findAnnotation(operation, Inline.class) == null) {
@@ -1727,11 +1728,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					});
 
 					// Add the annotation dedicated to this particular method
-					this.inlineExpressionCompiler.appendInlineAnnotation(
-							operation, source.eResource().getResourceSet(), fieldName
-							+ " == null ? (this." + fieldName //$NON-NLS-1$
-							+ " = getSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
-							+ ".class)) : this." + fieldName); //$NON-NLS-1$
+					if (context.isAtLeastJava8()) {
+						this.inlineExpressionCompiler.appendInlineAnnotation(
+								operation, source.eResource().getResourceSet(), fieldName
+								+ " == null ? (this." + fieldName //$NON-NLS-1$
+								+ " = getSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
+								+ ".class)) : this." + fieldName); //$NON-NLS-1$
+					}
 					appendGeneratedAnnotation(operation, context);
 
 					container.getMembers().add(operation);

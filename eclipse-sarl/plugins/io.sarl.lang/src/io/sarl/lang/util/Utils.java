@@ -35,6 +35,7 @@ import java.util.SortedSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Strings;
 import com.ibm.icu.util.VersionInfo;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.xtend.core.xtend.XtendFunction;
@@ -58,6 +59,7 @@ import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.serializer.ISerializer;
+import org.eclipse.xtext.util.XtextVersion;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationElementValuePair;
@@ -173,9 +175,9 @@ public final class Utils {
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
 	 */
 	@SuppressWarnings({
-			"checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity",
-			"checkstyle:nestedifdepth"})
+		"checkstyle:cyclomaticcomplexity",
+		"checkstyle:npathcomplexity",
+		"checkstyle:nestedifdepth"})
 	public static void populateInheritanceContext(
 			JvmDeclaredType jvmElement,
 			Map<ActionPrototype, JvmOperation> finalOperations,
@@ -374,7 +376,7 @@ public final class Utils {
 	 */
 	public static String createNameForHiddenGuardEvaluatorMethod(String eventId, int handlerIndex) {
 		return PREFIX_GUARD + fixHiddenMember(eventId)
-				+ HIDDEN_MEMBER_CHARACTER + handlerIndex;
+			+ HIDDEN_MEMBER_CHARACTER + handlerIndex;
 	}
 
 	/** Create the name of the hidden method that is containing the event handler code.
@@ -489,7 +491,7 @@ public final class Utils {
 				&& (!isInterface(toType) || isFinal(fromType))
 				&& (!toType.isAssignableFrom(fromType, conform))
 				&& (isFinal(fromType) || isFinal(toType)
-				|| isClass(fromType) && isClass(toType))
+						|| isClass(fromType) && isClass(toType))
 				// no upcast
 				&& (!fromType.isAssignableFrom(toType, conform)))
 				|| (toType.isPrimitive() && !(fromType.isPrimitive() || fromType.isWrapper()))) {
@@ -708,10 +710,10 @@ public final class Utils {
 	 * @see "http://docs.oracle.com/javase/8/docs/platform/serialization/spec/class.html#a4100"
 	 */
 	@SuppressWarnings({
-			"checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity",
-			"checkstyle:magicnumber",
-			"checkstyle:booleanexpressioncomplexity"})
+		"checkstyle:cyclomaticcomplexity",
+		"checkstyle:npathcomplexity",
+		"checkstyle:magicnumber",
+		"checkstyle:booleanexpressioncomplexity"})
 	public static long computeSerialVersionUID(JvmGenericType jvm) {
 		final StringBuilder serialVersionUIDBuffer = new StringBuilder();
 
@@ -896,7 +898,7 @@ public final class Utils {
 		return isCompatibleSARLLibraryVersion(getSARLLibraryVersionOnClasspath(typeReferences, context));
 	}
 
-	/** Check if a version in compatible with the expected SARL library.
+	/** Check if a version is compatible with the expected SARL library.
 	 *
 	 * @param version - the version to test.
 	 * @return <code>true</code> if a compatible SARL library was found.
@@ -904,6 +906,50 @@ public final class Utils {
 	 */
 	public static boolean isCompatibleSARLLibraryVersion(String version) {
 		return org.eclipse.xtext.util.Strings.equal(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING, version);
+	}
+
+	/** Check if a version of the JRE is compatible with the SARL library.
+	 *
+	 * @param version - the version to test.
+	 * @return <code>true</code> if this version is for a compatible JRE.
+	 *     Otherwise <code>false</code>.
+	 */
+	public static boolean isCompatibleJREVersion(String version) {
+		return version != null && !version.isEmpty()
+				&& compareVersions(version, SARLVersion.MINIMAL_JDK_VERSION) >= 0;
+	}
+
+	/** Check if a version of the current JRE is compatible with the SARL library.
+	 *
+	 * @return <code>true</code> if this version is for a compatible JRE.
+	 *     Otherwise <code>false</code>.
+	 */
+	public static boolean isCompatibleJREVersion() {
+		return isCompatibleJREVersion(System.getProperty("java.specification.version")); //$NON-NLS-1$
+	}
+
+	/** Check if a version of Xtext is compatible with the SARL library.
+	 *
+	 * @param version - the version to test.
+	 * @return <code>true</code> if this version is for a compatible Xtext.
+	 *     Otherwise <code>false</code>.
+	 */
+	public static boolean isCompatibleXtextVersion(String version) {
+		return version != null && !version.isEmpty()
+				&& compareVersions(version, SARLVersion.MINIMAL_XTEXT_VERSION) >= 0;
+	}
+
+	/** Check if a version of the current Xtext is compatible with the SARL library.
+	 *
+	 * @return <code>true</code> if this version is for a compatible Xtext.
+	 *     Otherwise <code>false</code>.
+	 */
+	public static boolean isCompatibleXtextVersion() {
+		final XtextVersion xtextVersion = XtextVersion.getCurrent();
+		if (xtextVersion != null && !Strings.isNullOrEmpty(xtextVersion.getVersion())) {
+			return isCompatibleXtextVersion(xtextVersion.getVersion());
+		}
+		return false;
 	}
 
 	/** Replies the version of the SARL library on the classpath.

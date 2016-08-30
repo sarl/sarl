@@ -132,6 +132,8 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.util.JavaVersion;
+import org.eclipse.xtext.util.XtextVersion;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.IssueSeverities;
@@ -142,6 +144,7 @@ import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
+import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
@@ -149,7 +152,6 @@ import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 
-import io.sarl.lang.SARLLangActivator;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.IActionPrototypeProvider;
@@ -461,7 +463,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				null);
 	}
 
-	/** Check if the JRE, the XBase, and the SARL libraries are on the classpath.
+	/** Check if the correct SARL libraries are on the classpath.
 	 *
 	 * <p>This function is overriding the function given by the Xtend validator
 	 * for having finer tests, and firing a warning in place of an error.
@@ -473,28 +475,51 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkClassPath(XtendFile sarlScript) {
 		final TypeReferences typeReferences = getServices().getTypeReferences();
 
-		final String version = System.getProperty("java.specification.version"); //$NON-NLS-1$
-
-		final SARLLangActivator sarlLangBundle = SARLLangActivator.getActivator();
-		final String minJdkVersion = sarlLangBundle.getMinimalJdkVersion();
-		final String minXtextVersion = sarlLangBundle.getMinimalXtextVersion();
-
-		if (version == null || version.isEmpty() || Utils.compareVersions(version, minJdkVersion) < 0) {
+		if (!Utils.isCompatibleJREVersion()) {
 			error(
-					MessageFormat.format(Messages.SARLValidator_0, minJdkVersion),
+					MessageFormat.format(
+							Messages.SARLValidator_4,
+							System.getProperty("java.specification.version"), //$NON-NLS-1$
+							SARLVersion.MINIMAL_JDK_VERSION),
 					sarlScript,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					JDK_NOT_ON_CLASSPATH);
+		} else {
+			final GeneratorConfig generatorConfiguration = getGeneratorConfig(sarlScript);
+			final JavaVersion javaVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION);
+			if (javaVersion == null
+					|| !generatorConfiguration.getJavaSourceVersion().isAtLeast(javaVersion)) {
+				error(
+						MessageFormat.format(Messages.SARLValidator_0,
+								javaVersion,
+								SARLVersion.MINIMAL_JDK_VERSION),
+						sarlScript,
+						XtendPackage.Literals.XTEND_FILE__PACKAGE,
+						JDK_NOT_ON_CLASSPATH);
+			}
 		}
 
-		// XXX: Update the following type according to the super type's implementation.
-		if (typeReferences.findDeclaredType(ToStringBuilder.class, sarlScript) == null) {
+		if (!Utils.isCompatibleXtextVersion()) {
 			error(
-					MessageFormat.format(Messages.SARLValidator_1, minXtextVersion),
+					MessageFormat.format(
+							Messages.SARLValidator_5,
+							XtextVersion.getCurrent(),
+							SARLVersion.MINIMAL_XTEXT_VERSION),
 					sarlScript,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					XBASE_LIB_NOT_ON_CLASSPATH);
+		} else {
+			final JvmType type = typeReferences.findDeclaredType(ToStringBuilder.class.getName(), sarlScript);
+			if (type == null) {
+				error(
+						MessageFormat.format(Messages.SARLValidator_1,
+								SARLVersion.MINIMAL_XTEXT_VERSION),
+						sarlScript,
+						XtendPackage.Literals.XTEND_FILE__PACKAGE,
+						XBASE_LIB_NOT_ON_CLASSPATH);
+			}
 		}
+
 
 		final String sarlOnClasspath = Utils.getSARLLibraryVersionOnClasspath(typeReferences, sarlScript);
 		if (Strings.isNullOrEmpty(sarlOnClasspath)) {
