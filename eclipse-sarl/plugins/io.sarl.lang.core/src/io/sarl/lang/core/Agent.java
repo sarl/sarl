@@ -147,16 +147,16 @@ public class Agent implements Identifiable {
 	 * Set the skill for the {@link Capacity} <code>capacity</code>.
 	 *
 	 * @param <S> - type of the skill.
-	 * @param capacities the capacity or the capacities to set.
+	 * @param iCapacities the capacity or the capacities to set.
 	 * @param skill implementaion of <code>capacity</code>.
 	 * @return the skill that was set.
 	 * @since 0.4
 	 */
 	@SuppressWarnings("unchecked")
-	protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... capacities) {
+	protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... iCapacities) {
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
 		skill.setOwner(this);
-		for (final Class<? extends Capacity> capacity : capacities) {
+		for (final Class<? extends Capacity> capacity : iCapacities) {
 			assert capacity != null : "the capacity parameter must not be null"; //$NON-NLS-1$
 			assert capacity.isInterface() : "the capacity parameter must be an interface"; //$NON-NLS-1$
 			if (!capacity.isInstance(skill)) {
@@ -255,13 +255,13 @@ public class Agent implements Identifiable {
 	 * id.equals( agent.getID() )
 	 * </code></pre>
 	 *
-	 * @param id - the identifier to test.
+	 * @param uID - the identifier to test.
 	 * @return <code>true</code> if the given identifier is the one of this agent,
 	 *     otherwise <code>false</code>.
 	 */
 	@Pure
-	protected boolean isMe(UUID id) {
-		return (id != null) && (this.id.equals(id));
+	protected boolean isMe(UUID uID) {
+		return (uID != null) && (this.id.equals(uID));
 	}
 
 	/** Replies if the given event was emitted by this agent.

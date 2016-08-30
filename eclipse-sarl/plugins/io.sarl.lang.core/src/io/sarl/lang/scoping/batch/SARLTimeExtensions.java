@@ -62,7 +62,7 @@ public final class SARLTimeExtensions {
 	@Inline(value = "$1 * TimeExtensionsConstants.MILLIS_IN_SECOND",
 			imported = { TimeExtensionsConstants.class })
 	public static long seconds(Integer secs) {
-		return secs * TimeExtensionsConstants.MILLIS_IN_SECOND;
+		return secs.longValue() * TimeExtensionsConstants.MILLIS_IN_SECOND;
 	}
 
 	/** Convert minutes to milliseconds.
@@ -74,7 +74,7 @@ public final class SARLTimeExtensions {
 	@Inline(value = "$1 * TimeExtensionsConstants.MILLIS_IN_MINUTE",
 			imported = { TimeExtensionsConstants.class })
 	public static long minutes(Integer mins) {
-		return mins * TimeExtensionsConstants.MILLIS_IN_MINUTE;
+		return mins.longValue() * TimeExtensionsConstants.MILLIS_IN_MINUTE;
 	}
 
 	/** Convert hours to milliseconds.
@@ -86,7 +86,7 @@ public final class SARLTimeExtensions {
 	@Inline(value = "$1 * TimeExtensionsConstants.MILLIS_IN_HOUR",
 			imported = { TimeExtensionsConstants.class })
 	public static long hours(Integer hours) {
-		return hours * TimeExtensionsConstants.MILLIS_IN_HOUR;
+		return hours.longValue() * TimeExtensionsConstants.MILLIS_IN_HOUR;
 	}
 
 	/** Convert days to milliseconds.
@@ -98,7 +98,7 @@ public final class SARLTimeExtensions {
 	@Inline(value = "$1 * TimeExtensionsConstants.MILLIS_IN_DAY",
 			imported = { TimeExtensionsConstants.class })
 	public static long days(Integer days) {
-		return days * TimeExtensionsConstants.MILLIS_IN_DAY;
+		return days.longValue() * TimeExtensionsConstants.MILLIS_IN_DAY;
 	}
 
 	/** Convert weeks to milliseconds.
@@ -110,7 +110,7 @@ public final class SARLTimeExtensions {
 	@Inline(value = "$1 * TimeExtensionsConstants.MILLIS_IN_WEEK",
 			imported = { TimeExtensionsConstants.class })
 	public static long weeks(Integer weeks) {
-		return weeks * TimeExtensionsConstants.MILLIS_IN_WEEK;
+		return weeks.longValue() * TimeExtensionsConstants.MILLIS_IN_WEEK;
 	}
 
 	/**
