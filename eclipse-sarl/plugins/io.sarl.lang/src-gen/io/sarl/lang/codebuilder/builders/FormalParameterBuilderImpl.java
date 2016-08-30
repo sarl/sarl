@@ -23,6 +23,8 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
+import io.sarl.lang.sarl.SarlFactory;
+import io.sarl.lang.sarl.SarlFormalParameter;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
@@ -33,7 +35,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmVoid;
 import org.eclipse.xtext.common.types.TypesFactory;
@@ -44,9 +45,6 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
-
-import io.sarl.lang.sarl.SarlFactory;
-import io.sarl.lang.sarl.SarlFormalParameter;
 
 /** Builder of a Sarl formal parameter.
  */
@@ -62,13 +60,11 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 
 	private IExpressionBuilder defaultValue;
 
-	//TODO
 	@Inject
-	private TypesFactory jvmTypesFactory;
-	
-	//TODO
+		private TypesFactory jvmTypesFactory;
+
 	@Inject
-	private IFragmentProvider fragmentProvider;
+ private IFragmentProvider fragmentProvider;
 
 	/** Initialize the formal parameter.
 	 * @param context - the context of the formal parameter.
@@ -91,9 +87,11 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 	public SarlFormalParameter getSarlFormalParameter() {
 		return this.parameter;
 	}
-	
-	//TODO
-	@Override
+
+	/** Replies the JvmIdentifiable that corresponds to the formal parameter.
+	 *
+	 * @return the identifiable parameter.
+	 */
 	public JvmIdentifiableElement getJvmIdentifiableElement() {
 		JvmVoid jvmVoid = this.jvmTypesFactory.createJvmVoid();
 		if (jvmVoid instanceof InternalEObject) {

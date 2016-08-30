@@ -21,16 +21,9 @@
 
 package io.sarl.eclipse.wizards.elements.oop.newclass;
 
-import java.util.Comparator;
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.widgets.Composite;
@@ -39,9 +32,6 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.codebuilder.builders.ISarlClassBuilder;
-import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 
 /**
  * Wizard page for creating a new SARL class.
@@ -85,6 +75,7 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 		updateStatus(status);
 	}
 
+	@SuppressWarnings("all")
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
 			IProgressMonitor monitor) throws CoreException {

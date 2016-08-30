@@ -238,7 +238,6 @@
       <import plugin="org.eclipse.ui.workbench" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.emf.edit" version="2.12.0" match="compatible"/>
       <import plugin="org.eclipse.emf.common.ui" version="2.11.0" match="compatible"/>
-      <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.mwe2.runtime" version="2.9.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext" version="2.10.0" match="compatible"/>
       <import plugin="org.eclipse.xtext.builder.standalone" version="2.10.0" match="compatible"/>
@@ -298,7 +297,6 @@
       <import plugin="org.apache.commons.codec" version="1.6.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.0.0" match="compatible"/>
       <import plugin="org.eclipse.userstorage" version="1.0.0" match="compatible"/>
-      <import plugin="org.apache.commons.lang" version="2.0.0" match="compatible"/>
       <import feature="org.eclipse.rcp" version="4.6.0.v20160606-1342"/>
       <import feature="org.eclipse.jdt" version="3.12.0.v20160606-1100"/>
       <import feature="org.eclipse.egit" version="4.4.0.201606070830-r"/>
@@ -309,6 +307,7 @@
       <import feature="org.eclipse.wst.common_core.feature" version="3.7.1.v201508262220"/>
       <import feature="org.eclipse.xsd" version="2.12.0.v20160526-0356"/>
       <import feature="org.eclipse.wst.common_ui.feature" version="3.8.0.v201603091933"/>
+      <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

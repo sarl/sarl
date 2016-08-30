@@ -144,6 +144,11 @@
 			<layout>p2</layout>
 			<url>http://download.tuxfamily.org/arakhne/p2/</url>
 		</repository>
+		<repository>
+			<id>io.sarl.dependencies</id>
+			<layout>p2</layout>
+			<url>http://dependencies.sarl.io</url>
+		</repository>
 	</repositories>
 
 </project>

@@ -24,10 +24,19 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.Assignment;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmVoid;
+import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.resource.IFragmentProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
@@ -227,6 +236,22 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.append(" defaultValue;"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Inject.class);
+					it.newLine();
+					it.append("\t\tprivate "); //$NON-NLS-1$
+					it.append(TypesFactory.class);
+					it.append(" jvmTypesFactory;"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\t@"); //$NON-NLS-1$
+					it.append(Inject.class);
+					it.newLine();
+					it.append(" private "); //$NON-NLS-1$
+					it.append(IFragmentProvider.class);
+					it.append(" fragmentProvider;"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
 				}
 				if (forInterface) {
 					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
@@ -333,6 +358,75 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 						it.append("();"); //$NON-NLS-1$
 					} else {
 						it.append("\t\treturn this.parameter;"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+				}
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies the JvmIdentifiable that corresponds to the formal parameter."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t *"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the identifiable parameter."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t"); //$NON-NLS-1$
+				if (!forInterface) {
+					it.append("public "); //$NON-NLS-1$
+				}
+				it.append(JvmIdentifiableElement.class);
+				it.append(" getJvmIdentifiableElement() "); //$NON-NLS-1$
+				if (forInterface) {
+					it.append(";"); //$NON-NLS-1$
+				} else {
+					it.append("{"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("return this.builder.getJvmIdentifiableElement();"); //$NON-NLS-1$
+					} else {
+						it.append(JvmVoid.class);
+						it.append(" jvmVoid = this.jvmTypesFactory.createJvmVoid();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tif (jvmVoid instanceof "); //$NON-NLS-1$
+						it.append(InternalEObject.class);
+						it.append(") {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t"); //$NON-NLS-1$
+						it.append(InternalEObject.class);
+						it.append(" iobject = ("); //$NON-NLS-1$
+						it.append(InternalEObject.class);
+						it.append(") jvmVoid;"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tfinal String fragment = "); //$NON-NLS-1$
+						it.append(EcoreUtil2.class);
+						it.append(".getURIFragment(getSarlFormalParameter());"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tiobject.eSetProxyURI("); //$NON-NLS-1$
+						it.append(URI.class);
+						it.append(".createHierarchicalURI(null, null, null, null, fragment));"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tfinal "); //$NON-NLS-1$
+						it.append(EObject.class);
+						it.append(" resolved = "); //$NON-NLS-1$
+						it.append(EcoreUtil.class);
+						it.append(".resolve(iobject, getSarlFormalParameter().eResource().getResourceSet());"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tif (jvmVoid != resolved && resolved instanceof "); //$NON-NLS-1$
+						it.append(JvmIdentifiableElement.class);
+						it.append(") {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\treturn ("); //$NON-NLS-1$
+						it.append(JvmIdentifiableElement.class);
+						it.append(") resolved;"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn jvmVoid;"); //$NON-NLS-1$
 					}
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$

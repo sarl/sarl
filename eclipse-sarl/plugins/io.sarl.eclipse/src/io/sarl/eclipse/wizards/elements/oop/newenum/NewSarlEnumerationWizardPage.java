@@ -24,8 +24,6 @@ package io.sarl.eclipse.wizards.elements.oop.newenum;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.widgets.Composite;
@@ -34,7 +32,6 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
-import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 
 /**
  * Wizard page for creating a new SARL enumeration.
@@ -73,6 +70,7 @@ public class NewSarlEnumerationWizardPage extends AbstractNewSarlElementWizardPa
 		updateStatus(status);
 	}
 
+	@SuppressWarnings("all")
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
 			IProgressMonitor monitor) throws CoreException {
