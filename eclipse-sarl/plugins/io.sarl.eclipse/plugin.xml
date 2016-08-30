@@ -380,7 +380,7 @@
           	id="org.eclipse.ui.newWizard(newWizardId=io.sarl.eclipse.wizard.newSarlProject)"            
             description="Create a new SARL Eclipse project"
             label="Create a new SARL project"
-            icon="icons/sarl_new_project_16.png">
+            icon="platform:/plugin/org.eclipse.ui.intro.universal/themes/solstice/graphics/icons/ctool/new-project.png">
          </command>
    </extension>
 
