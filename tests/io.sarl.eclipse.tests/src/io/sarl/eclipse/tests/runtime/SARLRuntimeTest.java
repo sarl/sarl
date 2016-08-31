@@ -72,6 +72,7 @@ import io.sarl.eclipse.runtime.ISREInstallChangedListener;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
+import io.sarl.tests.api.TestScope;
 
 /**
  * @author $Author: sgalland$
@@ -480,8 +481,32 @@ public final class SARLRuntimeTest {
 			assertSame(sre, defaultSRE);
 		}
 
+		/** @see #reset_inTycho()
+		 */
 		@Test
-		public void reset() throws Exception {
+		@TestScope(eclipse = true, tycho = false)
+		public void reset_inEclipse() throws Exception {
+			ISREInstall[] installs = createSREInstallArray();
+			SARLRuntime.setSREInstalls(installs, null);
+			//
+			SARLRuntime.reset();
+			//
+			String xml = SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null);
+			assertEquals(
+					"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"
+					+ "<SREs defaultSRE=\"io.janusproject.plugin.sre\">"
+					+ "<SRE class=\"io.janusproject.JanusSREInstall\" id=\"io.janusproject.plugin.sre\" platform=\"true\"/>"
+					+ "</SREs>", xml);
+			ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
+			assertNotNull(defaultSRE);
+			assertEquals("io.janusproject.plugin.sre", defaultSRE.getId());
+		}
+
+		/** @see #reset_inEclipse()
+		 */
+		@Test
+		@TestScope(eclipse = false, tycho = true)
+		public void reset_inTycho() throws Exception {
 			ISREInstall[] installs = createSREInstallArray();
 			SARLRuntime.setSREInstalls(installs, null);
 			//
@@ -489,7 +514,8 @@ public final class SARLRuntimeTest {
 			//
 			String xml = SARLEclipsePlugin.getDefault().getPreferences().get(TESTING_PREFERENCE_KEY, null);
 			assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><SREs/>", xml);
-			assertNull(SARLRuntime.getDefaultSREInstall());
+			ISREInstall defaultSRE = SARLRuntime.getDefaultSREInstall();
+			assertNull(defaultSRE);
 		}
 
 		@Test

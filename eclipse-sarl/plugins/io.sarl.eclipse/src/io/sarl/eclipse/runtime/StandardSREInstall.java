@@ -301,9 +301,10 @@ public class StandardSREInstall extends AbstractSREInstall {
 					classPath.add(rtcpEntry);
 					//
 					final String classPathStr = manifest.getMainAttributes().getValue(SREConstants.MANIFEST_CLASS_PATH);
+					final IPath rootPath = this.jarFile.removeLastSegments(1);
 					if (!Strings.isNullOrEmpty(classPathStr)) {
 						for (final String cpElement : classPathStr.split(Pattern.quote(":"))) { //$NON-NLS-1$
-							final IPath path = Path.fromPortableString(cpElement);
+							final IPath path = parsePath(cpElement, Path.EMPTY, rootPath);
 							location = new LibraryLocation(path, Path.EMPTY, Path.EMPTY);
 							cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(),
 									location.getSystemLibrarySourcePath(), location.getPackageRootPath());
@@ -385,12 +386,15 @@ public class StandardSREInstall extends AbstractSREInstall {
 		}
 		final List<IRuntimeClasspathEntry> libraries = getClassPathEntries();
 		if (libraries.size() != 1 || !libraries.get(0).getClasspathEntry().getPath().equals(this.jarFile)) {
+			final IPath rootPath = path.removeLastSegments(1);
 			for (final IRuntimeClasspathEntry location : libraries) {
 				final Element libraryNode = document.createElement(SREConstants.XML_LIBRARY_LOCATION);
 				libraryNode.setAttribute(SREConstants.XML_SYSTEM_LIBRARY_PATH,
-						location.getPath().toPortableString());
-				libraryNode.setAttribute(SREConstants.XML_PACKAGE_ROOT_PATH, location.getSourceAttachmentRootPath().toPortableString());
-				libraryNode.setAttribute(SREConstants.XML_SOURCE_PATH, location.getSourceAttachmentPath().toPortableString());
+						makeRelativePath(location.getPath(), path, rootPath));
+				libraryNode.setAttribute(SREConstants.XML_PACKAGE_ROOT_PATH,
+						makeRelativePath(location.getSourceAttachmentRootPath(), path, rootPath));
+				libraryNode.setAttribute(SREConstants.XML_SOURCE_PATH,
+						makeRelativePath(location.getSourceAttachmentPath(), path, rootPath));
 				/* No javadoc path accessible from ClasspathEntry
 				final URL javadoc = location.getJavadocLocation();
 				if (javadoc != null) {
@@ -404,7 +408,8 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 	@Override
 	public void setFromXML(Element element) throws IOException {
-		final IPath path = parsePath(element.getAttribute(SREConstants.XML_LIBRARY_PATH), null);
+		final IPath path = parsePath(
+				element.getAttribute(SREConstants.XML_LIBRARY_PATH), null, null);
 		try {
 			if (path != null) {
 				setJarFile(path);
@@ -427,17 +432,19 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 				final List<IRuntimeClasspathEntry> locations = new ArrayList<>();
 				final NodeList children = element.getChildNodes();
+				final IPath rootPath = path.removeLastSegments(1);
 				for (int i = 0; i < children.getLength(); ++i) {
 					final Node node = children.item(i);
 					if (node instanceof Element && SREConstants.XML_LIBRARY_LOCATION.equalsIgnoreCase(node.getNodeName())) {
 						final Element libraryNode = (Element) node;
-						final IPath systemLibraryPath = parsePath(libraryNode.getAttribute(SREConstants.XML_SYSTEM_LIBRARY_PATH),
-								null);
+						final IPath systemLibraryPath = parsePath(
+								libraryNode.getAttribute(SREConstants.XML_SYSTEM_LIBRARY_PATH), null, rootPath);
 						if (systemLibraryPath != null) {
-							final IPath packageRootPath = parsePath(libraryNode.getAttribute(SREConstants.XML_PACKAGE_ROOT_PATH),
-									Path.EMPTY);
-							final IPath sourcePath = parsePath(libraryNode.getAttribute(SREConstants.XML_SOURCE_PATH),
-									Path.EMPTY);
+							final IPath packageRootPath = parsePath(
+									libraryNode.getAttribute(SREConstants.XML_PACKAGE_ROOT_PATH),
+									Path.EMPTY, rootPath);
+							final IPath sourcePath = parsePath(
+									libraryNode.getAttribute(SREConstants.XML_SOURCE_PATH), Path.EMPTY, rootPath);
 							URL javadoc = null;
 							try {
 								final String urlTxt = libraryNode.getAttribute(SREConstants.XML_JAVADOC_PATH);
@@ -470,21 +477,26 @@ public class StandardSREInstall extends AbstractSREInstall {
 				return;
 			}
 		} catch (Throwable exception) {
-			//
+			throw new IOException(MessageFormat.format(Messages.StandardSREInstall_5, getId()), exception);
 		}
 		throw new IOException(MessageFormat.format(Messages.StandardSREInstall_5, getId()));
 	}
 
-	/** dfsfsf.
-	 * @param path sdfsdf
-	 * @param defaultPath sdfsf
-	 * @return sfsfs
+	/** Path the given string for extracting a path.
+	 *
+	 * @param path the string representation of the path to parse.
+	 * @param defaultPath the default path.
+	 * @param rootPath the root path to use is the given path is not absolute.
+	 * @return the absolute path.
 	 */
-	public static IPath parsePath(String path, IPath defaultPath) {
+	private static IPath parsePath(String path, IPath defaultPath, IPath rootPath) {
 		if (!Strings.isNullOrEmpty(path)) {
 			try {
 				final IPath pathObject = Path.fromPortableString(path);
 				if (pathObject != null) {
+					if (rootPath != null && !pathObject.isAbsolute()) {
+						return rootPath.append(pathObject);
+					}
 					return pathObject;
 				}
 			} catch (Throwable exception) {
@@ -492,6 +504,16 @@ public class StandardSREInstall extends AbstractSREInstall {
 			}
 		}
 		return defaultPath;
+	}
+
+	private static String makeRelativePath(IPath pathToConvert, IPath jarPath, IPath rootPath) {
+		if (pathToConvert == null) {
+			return null;
+		}
+		if (!jarPath.equals(pathToConvert) && rootPath.isPrefixOf(pathToConvert)) {
+			return pathToConvert.makeRelativeTo(rootPath).toPortableString();
+		}
+		return pathToConvert.toPortableString();
 	}
 
 	@Override

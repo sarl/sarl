@@ -172,7 +172,7 @@ public class StandardSREInstallTest {
 
 		@Test
 		public void getClassPathEntries() {
-
+			IPath root = this.path.removeLastSegments(1);
 			List<IRuntimeClasspathEntry> locations = new ArrayList<>();
 
 			LibraryLocation location = new LibraryLocation(this.path, Path.EMPTY, Path.EMPTY);
@@ -182,21 +182,24 @@ public class StandardSREInstallTest {
 			rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
 			locations.add(rtcpEntry);
 			//
-			location = new LibraryLocation(Path.fromPortableString("a.jar"), Path.EMPTY, Path.EMPTY);
+			location = new LibraryLocation(
+					root.append(Path.fromPortableString("a.jar")), Path.EMPTY, Path.EMPTY);
 			cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(), location.getSystemLibrarySourcePath(),
 					location.getPackageRootPath());
 			rtcpEntry = new RuntimeClasspathEntry(cpEntry);
 			rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
 			locations.add(rtcpEntry);
 			//
-			location = new LibraryLocation(Path.fromPortableString("b.jar"), Path.EMPTY, Path.EMPTY);
+			location = new LibraryLocation(
+					root.append(Path.fromPortableString("b.jar")), Path.EMPTY, Path.EMPTY);
 			cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(), location.getSystemLibrarySourcePath(),
 					location.getPackageRootPath());
 			rtcpEntry = new RuntimeClasspathEntry(cpEntry);
 			rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
 			locations.add(rtcpEntry);
 			//
-			location = new LibraryLocation(Path.fromPortableString("c.jar"), Path.EMPTY, Path.EMPTY);
+			location = new LibraryLocation(
+					root.append(Path.fromPortableString("c.jar")), Path.EMPTY, Path.EMPTY);
 			cpEntry = JavaCore.newLibraryEntry(location.getSystemLibraryPath(), location.getSystemLibrarySourcePath(),
 					location.getPackageRootPath());
 			rtcpEntry = new RuntimeClasspathEntry(cpEntry);
