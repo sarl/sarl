@@ -36,6 +36,8 @@ import io.sarl.lang.core.Agent;
  */
 public class AgentTask {
 
+	private static final Function1<Agent, Boolean> FALSE_GUARD = (agent) -> Boolean.FALSE;
+
 	private String name;
 
 	private Function1<Agent, Boolean> guard;
@@ -104,8 +106,12 @@ public class AgentTask {
 	 * @return <code>this</code>.
 	 * @see #setGuard
 	 */
-	public AgentTask unless(Function1<Agent, Boolean> predicate) {
-		this.guard = new NegateFunction(predicate);
+	public AgentTask unless(final Function1<Agent, Boolean> predicate) {
+		if (predicate == null) {
+			this.guard = FALSE_GUARD;
+		} else {
+			this.guard = (agent) -> predicate.apply(agent) == Boolean.TRUE ? Boolean.FALSE : Boolean.TRUE;
+		}
 		return this;
 	}
 
@@ -116,35 +122,17 @@ public class AgentTask {
 	 * @see #setGuard
 	 */
 	public AgentTask ifTrue(Function1<Agent, Boolean> predicate) {
-		this.guard = predicate;
+		if (predicate == null) {
+			this.guard = null;
+		} else {
+			this.guard = predicate;
+		}
 		return this;
 	}
 
 	@Override
 	public String toString() {
 		return "AgentTask: " + this.name; //$NON-NLS-1$
-	}
-
-	/** Private implementation of a negation function.
-	 *
-	 * @author $Author: srodriguez$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private class NegateFunction implements Function1<Agent, Boolean> {
-
-		private Function1<Agent, Boolean> unlessPredicate;
-
-		NegateFunction(Function1<Agent, Boolean> predicate) {
-			this.unlessPredicate = predicate;
-		}
-
-		@Override
-		public Boolean apply(Agent agent) {
-			return !this.unlessPredicate.apply(agent);
-		}
-
 	}
 
 }

@@ -29,7 +29,7 @@
 	
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.examples.helloworld"
-			name="Helloworld Agent"
+			name="%HelloworldExample_Name"
 			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"

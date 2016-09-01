@@ -28,8 +28,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Properties;
 
 import org.apache.maven.it.Verifier;
+import org.apache.maven.shared.utils.cli.CommandLineUtils;
 import org.apache.maven.shared.utils.io.FileUtils;
 
 /** Abstract test of Maven Mojo.
@@ -40,6 +42,22 @@ import org.apache.maven.shared.utils.io.FileUtils;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractMojoTest {
+
+	/** Helper for writting a multiline string in unit tests.
+	 *
+	 * @param lines - the lines in the string.
+	 * @return the complete multiline string.
+	 */
+	public static String multilineString(Object... lines) {
+		final StringBuilder b = new StringBuilder();
+		for (final Object line : lines) {
+			if (line != null) {
+				b.append(line);
+			}
+			b.append("\n"); //$NON-NLS-1$
+		}
+		return b.toString();
+	}
 
 	/** Recursive deletion of a folder when the VM is exiting.
 	 *
@@ -90,8 +108,33 @@ public abstract class AbstractMojoTest {
 		Verifier verifier = new Verifier(baseDir.getAbsolutePath());
 		verifier.setAutoclean(false);
 		verifier.setDebug(false);
+		final String m2home = findDefaultMavenHome();
+		if (m2home != null && !m2home.isEmpty()) {
+			verifier.setForkJvm(false);
+			verifier.getSystemProperties().put("maven.multiModuleProjectDirectory", m2home); //$NON-NLS-1$
+			verifier.getVerifierProperties().put("use.mavenRepoLocal", Boolean.FALSE.toString()); //$NON-NLS-1$
+		}
 		verifier.executeGoals(Arrays.asList("clean", goalName)); //$NON-NLS-1$
 		return verifier;
+	}
+
+	private static String findDefaultMavenHome() {
+		String defaultMavenHome = System.getProperty("maven.home"); //$NON-NLS-1$
+
+		if ( defaultMavenHome == null ) {
+			Properties envVars = CommandLineUtils.getSystemEnvVars();
+			defaultMavenHome = envVars.getProperty("M2_HOME"); //$NON-NLS-1$
+		}
+
+		if ( defaultMavenHome == null )
+		{
+			File f = new File( System.getProperty( "user.home" ), "m2" ); //$NON-NLS-1$ //$NON-NLS-2$
+			if ( new File( f, "bin/mvn" ).isFile() ) //$NON-NLS-1$
+			{
+				defaultMavenHome = f.getAbsolutePath();
+			}
+		}
+		return defaultMavenHome;
 	}
 
 }

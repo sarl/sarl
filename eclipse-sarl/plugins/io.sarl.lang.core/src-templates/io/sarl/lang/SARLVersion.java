@@ -39,7 +39,7 @@ public final class SARLVersion {
 	 * <p>The version number is usually composed of two digits that
 	 * represent the version of the SARL specification and tools.
 	 */
-	public static final float SPECIFICATION_RELEASE_VERSION = (float) (@sarlspecificationreleaseversion@); //$NON-NLS-1$
+	public static final float SPECIFICATION_RELEASE_VERSION = (float) (@sarlspecificationreleaseversion@);
 
 	/** Version number of the SARL specification.
 	 *
@@ -71,6 +71,14 @@ public final class SARLVersion {
 	 * of the SARL tools.
 	 */
 	public static final String PRECONIZED_JANUS_VERSION = "@janusversion@"; //$NON-NLS-1$
+
+	/** The minimal JDK version to use SARL features.
+	 */
+	public static final String MINIMAL_JDK_VERSION = "@minimaljdkversion@"; //$NON-NLS-1$
+
+	/** The minimal Xtext version to use SARL features.
+	 */
+	public static final String MINIMAL_XTEXT_VERSION = "@minimalxtextversion@"; //$NON-NLS-1$
 
 	private SARLVersion() {
 		//

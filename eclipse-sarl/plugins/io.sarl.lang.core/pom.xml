@@ -59,6 +59,14 @@
 									<token>@janusversion@</token>
 									<value>${janus.version}</value>
 								</replacement>
+								<replacement>
+									<token>@minimaljdkversion@</token>
+									<value>${compiler.level}</value>
+								</replacement>
+								<replacement>
+									<token>@minimalxtextversion@</token>
+									<value>${xtext.version}</value>
+								</replacement>
 							</replacements>
 						</configuration>
 					</execution>

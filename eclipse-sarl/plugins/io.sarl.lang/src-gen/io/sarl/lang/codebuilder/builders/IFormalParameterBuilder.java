@@ -53,10 +53,10 @@ public interface IFormalParameterBuilder {
 	@Pure
 	SarlFormalParameter getSarlFormalParameter();
 
-/** Replies the JvmIdentifiable that corresponds to the formal parameter.
- *
- * @return the identifiable parameter.
- */
+	/** Replies the JvmIdentifiable that corresponds to the formal parameter.
+	 *
+	 * @return the identifiable parameter.
+	 */
 	JvmIdentifiableElement getJvmIdentifiableElement() ;
 
 	/** Replies the resource to which the formal parameter is attached.

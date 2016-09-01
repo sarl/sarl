@@ -60,6 +60,7 @@ import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNullLiteral;
@@ -80,6 +81,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import io.sarl.lang.SARLConfig;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -199,6 +202,13 @@ public abstract class AbstractSarlTest {
 		}
 		@Override
 		protected void starting(Description description) {
+			// Check if the minimal version of Java is used for running the tests.
+			final JavaVersion cVersion = JavaVersion.fromQualifier(System.getProperty("java.specification.version"));
+			final JavaVersion mVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION);
+			if (!cVersion.isAtLeast(mVersion)) {
+				throw new Error("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION + " for running the tests.");
+			}
+			//
 			if (isMockable()) {
 				MockitoAnnotations.initMocks(AbstractSarlTest.this);
 			}

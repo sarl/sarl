@@ -1,0 +1,19 @@
+package io.sarl.maven.compiler.tests
+
+import io.sarl.core.Initialize
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Schedules
+
+event Hello
+
+agent MyAgent {
+
+	uses DefaultContextInteractions, Schedules
+
+	on Initialize {
+		task("discovery-task").every(1000) [
+			emit(new Hello)
+		]
+	}
+
+}

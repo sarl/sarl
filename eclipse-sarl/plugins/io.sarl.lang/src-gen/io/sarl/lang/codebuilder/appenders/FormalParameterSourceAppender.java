@@ -70,7 +70,7 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 		return this.builder.getSarlFormalParameter();
 	}
 
-	/** Replies the JvmIdentifiable that corresponds to the formal parameter.	
+	/** Replies the JvmIdentifiable that corresponds to the formal parameter.
 	 *
 	 * @return the identifiable parameter.
 	 */

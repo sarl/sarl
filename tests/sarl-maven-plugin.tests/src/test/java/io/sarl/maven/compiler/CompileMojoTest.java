@@ -46,14 +46,9 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class CompileMojoTest extends AbstractMojoTest {
 
-	@Test
-	public void compile() throws Exception {
-		Verifier verifier = executeMojo("prj1", "compile");
-		Path path = FileSystems.getDefault().getPath(
-				"src", "main", "generated-sources", "sarl",
-				"io", "sarl", "maven", "compiler", "tests", "MyAgent.java");
-		assertNotNull(path);
-		verifier.assertFilePresent(path.toString());
+	@Test(expected = VerificationException.class)
+	public void invalidXtext() throws Exception {
+		executeMojo("prj1", "compile");
 	}
 
 	@Test(expected = VerificationException.class)

@@ -515,6 +515,10 @@ Workflow {
     				override = true
    				}
     			runtime = {
+    				bind = "org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider"
+    				to = "io.sarl.lang.generator.SARLGeneratorConfigProvider"
+   				}
+    			runtime = {
     				bind = "io.sarl.lang.generator.IGeneratorConfigProvider2"
     				to = "io.sarl.lang.generator.GeneratorConfigProvider2"
    				}
