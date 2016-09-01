@@ -20,7 +20,6 @@
  */
 package io.sarl.eclipse.tests.runtime;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -30,7 +29,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -58,7 +56,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.osgi.framework.Bundle;
@@ -230,7 +228,7 @@ public final class SARLRuntimeTest {
 			ISREInstall[] actual = SARLRuntime.getSREInstalls();
 			assertArraySimilar(installs, actual);
 			//
-			verify(monitor, times(1)).beginTask(Matchers.anyString(), Matchers.anyInt());
+			verify(monitor, times(1)).beginTask(ArgumentMatchers.anyString(), ArgumentMatchers.anyInt());
 		}
 
 		@Test
@@ -739,7 +737,7 @@ public final class SARLRuntimeTest {
 					element.appendChild(node);
 					return null;
 				}
-			}).when(sre).getAsXML(Matchers.any(Document.class), Matchers.any(Element.class));
+			}).when(sre).getAsXML(ArgumentMatchers.any(Document.class), ArgumentMatchers.any(Element.class));
 			//
 			String xml = SARLRuntime.getSREAsXML(sre);
 			assertNotNull(xml);

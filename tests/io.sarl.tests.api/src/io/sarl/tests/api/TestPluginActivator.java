@@ -18,35 +18,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.tests.api;
 
-package io.sarl.eclipse.wizards.elements.aop.newskill;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
 
-import org.eclipse.osgi.util.NLS;
 
-/** Localized messages.
+/** Activator of the bundle test.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eclipse.wizards.elements.aop.newskill.messages"; //$NON-NLS-1$
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+public class TestPluginActivator implements BundleActivator {
+
+	/** Current bundle context.
+	 */
+	public static BundleContext context;
+	
+	@Override
+	public void start(BundleContext ctx) throws Exception {
+		context = ctx;
 	}
 
-	private Messages() {
+	@Override
+	public void stop(BundleContext ctx) throws Exception {
+		if (ctx == context) {
+			context = null;
+		}
 	}
 
-	public static String NewSarlSkill_0;
-	public static String NewSarlSkillPage_0;
-	public static String NewSarlSkillWizardPage_0;
-	public static String NewSarlSkillWizardPage_1;
-	public static String NewSarlSkillWizardPage_2;
-	public static String NewSarlSkillWizardPage_3;
-	public static String NewSarlSkillWizardPage_4;
-	public static String NewSarlSkillWizardPage_5;
 }

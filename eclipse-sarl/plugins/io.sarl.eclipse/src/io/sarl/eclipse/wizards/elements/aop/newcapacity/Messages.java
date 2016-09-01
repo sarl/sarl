@@ -45,4 +45,5 @@ public class Messages extends NLS {
 	public static String NewSarlCapacityWizardPage_0;
 	public static String NewSarlCapacityWizardPage_1;
 	public static String NewSarlCapacityWizardPage_2;
+	public static String NewSarlCapacityWizardPage_3;
 }

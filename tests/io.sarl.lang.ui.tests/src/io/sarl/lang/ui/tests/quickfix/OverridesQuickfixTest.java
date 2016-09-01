@@ -22,7 +22,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-@Ignore("Until the code builder is fixed")
 public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 
 	@Inject

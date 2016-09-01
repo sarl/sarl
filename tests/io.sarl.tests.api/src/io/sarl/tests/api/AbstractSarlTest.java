@@ -28,7 +28,9 @@ import static org.junit.Assert.fail;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLConnection;
@@ -40,6 +42,7 @@ import java.util.List;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
@@ -49,6 +52,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.ui.internal.util.BundleUtility;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
@@ -67,6 +71,7 @@ import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.AssumptionViolatedException;
@@ -80,8 +85,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 
-import io.sarl.lang.SARLConfig;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
@@ -122,7 +128,7 @@ public abstract class AbstractSarlTest {
 	/** URL of the Maven central repository.
 	 */
 	public static final String MAVEN_CENTRAL_REPOSITORY_URL = "http://repo1.maven.org/maven2/io/sarl/lang/io.sarl.lang.core/0.2.0/io.sarl.lang.core-0.2.0.pom";
-	
+
 	/** Timeout for connecting to the Maven central server (in milliseconds).
 	 */
 	public static final int MAVEN_CENTRAL_TIMEOUT = 15000;
@@ -135,7 +141,12 @@ public abstract class AbstractSarlTest {
 
 	@Inject
 	private SarlJvmModelAssociations associations;
-	
+
+	/** Utility for reflection.
+	 */
+	@Inject
+	public ExtendedReflectExtensions reflect;
+
 	/** Temporary fixing a bug in the class loading of Mockito 2.
 	 * 
 	 * @param type the type to mock.
@@ -149,12 +160,12 @@ public abstract class AbstractSarlTest {
 		final ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(Mockito.class.getClassLoader());
 		try {
-		  return Mockito.mock(type);
+			return Mockito.mock(type);
 		} finally {
 			Thread.currentThread().setContextClassLoader(loader);
 		}
 	}
-	
+
 	/** Temporary fixing a bug in the class loading of Mockito 2.
 	 * 
 	 * @param instance the instance to spy.
@@ -168,12 +179,12 @@ public abstract class AbstractSarlTest {
 		final ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(Mockito.class.getClassLoader());
 		try {
-		  return Mockito.spy(instance);
+			return Mockito.spy(instance);
 		} finally {
 			Thread.currentThread().setContextClassLoader(loader);
 		}
 	}
-	
+
 	/** Replies if the runtime environment is Eclipse.
 	 *
 	 * @return <code>true</code> if the runtime environment is Eclipse.
@@ -188,17 +199,21 @@ public abstract class AbstractSarlTest {
 	@Rule
 	public TestWatcher rootSarlWatchter = new TestWatcher() {
 		private boolean isMockable() {
+			boolean isMockable = false;
 			Class<?> type = AbstractSarlTest.this.getClass();
-			while (type != null && !Object.class.equals(type)) {
+			while (type != null && !AbstractSarlTest.class.equals(type)) {
+				if (type.getAnnotation(ManualMocking.class) != null) {
+					return false;
+				}
 				for (Field field : type.getDeclaredFields()) {
 					if (field.getAnnotation(Mock.class) != null
 							|| field.getAnnotation(InjectMocks.class) != null) {
-						return true;
+						isMockable = true;
 					}
 				}
 				type = type.getSuperclass();
 			}
-			return false;
+			return isMockable;
 		}
 		@Override
 		protected void starting(Description description) {
@@ -256,15 +271,15 @@ public abstract class AbstractSarlTest {
 			}
 			return super.apply(base, description);
 		}
-		
+
 		private boolean isNullable(Field field) {
 			if (field.getAnnotation(Mock.class) != null
-				|| field.getAnnotation(InjectMocks.class) != null) {
+					|| field.getAnnotation(InjectMocks.class) != null) {
 				return true;
 			}
 			for (Annotation annotation : field.getAnnotations()) {
 				if ("Nullable".equals(annotation.annotationType().getSimpleName())
-					|| "NonNullByDefault".equals(annotation.annotationType().getSimpleName())) {
+						|| "NonNullByDefault".equals(annotation.annotationType().getSimpleName())) {
 					return true;
 				}
 			}
@@ -292,9 +307,9 @@ public abstract class AbstractSarlTest {
 				type = type.getSuperclass();
 			}
 		}
-		
+
 	};
-	
+
 	/** Helpfer for setting a field, even if it is not visible.
 	 *
 	 * @param instance - the object.
@@ -708,7 +723,7 @@ public abstract class AbstractSarlTest {
 		}
 		if (i < expectedIdentifiers.length) {
 			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedIdentifiers)
-					+ "Actual: " + Iterables.toString(actualReferences));
+			+ "Actual: " + Iterables.toString(actualReferences));
 		}
 	}
 
@@ -742,7 +757,7 @@ public abstract class AbstractSarlTest {
 		}
 		if (i < expectedParameterNames.length) {
 			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedParameterNames)
-					+ "Actual: " + Iterables.toString(actualFormalParameters));
+			+ "Actual: " + Iterables.toString(actualFormalParameters));
 		}
 	}
 
@@ -762,7 +777,7 @@ public abstract class AbstractSarlTest {
 		}
 		if (i < expectedParameterTypes.length) {
 			fail("Not enough identifiers. Expected: " + Arrays.toString(expectedParameterTypes)
-					+ "Actual: " + Iterables.toString(actualFormalParameters));
+			+ "Actual: " + Iterables.toString(actualFormalParameters));
 		}
 	}
 
@@ -807,7 +822,7 @@ public abstract class AbstractSarlTest {
 		}
 		if (i < expectedDefaultValues.length) {
 			fail("Not enough default values. Expected: " + Arrays.toString(expectedDefaultValues)
-					+ "Actual: " + Iterables.toString(actualFormalParameters));
+			+ "Actual: " + Iterables.toString(actualFormalParameters));
 		}
 	}
 
@@ -869,7 +884,7 @@ public abstract class AbstractSarlTest {
 	public static void assertInstanceOf(Class<?> expected, Object actual) {
 		assertInstanceOf(null, expected, actual);
 	}
-	
+
 	/** Assert the actual object is a not-null instance of the given type.
 	 *
 	 * @param message - the error message.
@@ -1468,6 +1483,178 @@ public abstract class AbstractSarlTest {
 			return this;
 		}
 
+	}
+
+	/**
+	 * Extended utility class for reflection.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class ExtendedReflectExtensions extends ReflectExtensions {
+
+		/**
+		 * Retrieves the value of the given accessible static field of the given type.
+		 * 
+		 * @param receiverType the type of the container of the field, not <code>null</code>
+		 * @param fieldName the field's name, not <code>null</code>
+		 * @return the value of the field
+		 * 
+		 * @throws NoSuchFieldException see {@link Class#getField(String)}
+		 * @throws SecurityException see {@link Class#getField(String)}
+		 * @throws IllegalAccessException see {@link Field#get(Object)}
+		 * @throws IllegalArgumentException see {@link Field#get(Object)}
+		 */
+		@SuppressWarnings("unchecked")
+		public <T> T getStatic(Class<?> receiverType, String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+			Field f = getDeclaredField(receiverType, fieldName);
+			if (!f.isAccessible()) {
+				f.setAccessible(true);
+			}
+			return (T) f.get(null);
+		}
+
+		/**
+		 * Invokes the first accessible constructor defined on the receiver's class with
+		 * a parameter list compatible to the given arguments.
+		 *
+		 * @param <T> the type of the object to create.
+		 * @param type type of the object to create.
+		 * @param args the arguments for the method invocation
+		 * @return the result of the constructor invocation.
+		 * @throws InvocationTargetException 
+		 * @throws IllegalArgumentException 
+		 * @throws IllegalAccessException 
+		 * @throws InstantiationException 
+		 * @throws SecurityException 
+		 * @throws NoSuchMethodException 
+		 */
+		@SuppressWarnings("static-method")
+		public <T> T newInstance(Class<T> type, Object... args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+			final Object[] arguments = args == null ? new Object[]{null} : args;
+			Constructor<?> compatible = null;
+			for (Constructor<?> candidate : type.getDeclaredConstructors()) {
+				if (candidate != null && isCompatible(candidate, arguments)) {
+					if (compatible != null) {
+						throw new IllegalStateException(
+								"Ambiguous constructor to invoke. Both " //$NON-NLS-1$
+								+ compatible + " and  " + candidate + " would be compatible choices."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-2
+					}
+					compatible = candidate;
+				}
+			}
+			if (compatible != null) {
+				if (!compatible.isAccessible()) {
+					compatible.setAccessible(true);
+				}
+				return type.cast(compatible.newInstance(arguments));
+			}
+			// not found provoke constructor not found exception
+			Class<?>[] paramTypes = new Class<?>[arguments.length];
+			for (int i = 0; i< arguments.length ; i++) {
+				paramTypes[i] = arguments[i] == null ? Object.class : arguments[i].getClass();
+			}
+			Constructor<T> cons = type.getConstructor(paramTypes);
+			return cons.newInstance(args);
+		}
+
+		protected static boolean isCompatible(Constructor<?> candidate, Object... args) {
+			if (candidate.getParameterTypes().length != args.length)
+				return false;
+			for (int i = 0; i< candidate.getParameterTypes().length; i++) {
+				Object param = args[i];
+				Class<?> class1 = candidate.getParameterTypes()[i];
+				if (class1.isPrimitive()) {
+					class1 = wrapperTypeFor(class1);
+				}
+				if (param != null && !class1.isInstance(param))
+					return false;
+			}
+			return true;
+		}
+
+		protected static Class<?> wrapperTypeFor(Class<?> primitive) {
+			Preconditions.checkNotNull(primitive);
+			if (primitive == Boolean.TYPE) return Boolean.class;
+			if (primitive == Byte.TYPE) return Byte.class;
+			if (primitive == Character.TYPE) return Character.class;
+			if (primitive == Short.TYPE) return Short.class;
+			if (primitive == Integer.TYPE) return Integer.class;
+			if (primitive == Long.TYPE) return Long.class;
+			if (primitive == Float.TYPE) return Float.class;
+			if (primitive == Double.TYPE) return Double.class;
+			if (primitive == Void.TYPE) return Void.class;
+			throw new IllegalArgumentException(primitive+ " is not a primitive"); //$NON-NLS-1$
+		}
+		
+		protected Field getDeclaredField(Class<?> clazz, String name) throws NoSuchFieldException {
+			NoSuchFieldException initialException = null;
+			do {
+				try {
+					Field f = clazz.getDeclaredField(name);
+					return f;
+				} catch(NoSuchFieldException noSuchField) {
+					if (initialException == null) {
+						initialException = noSuchField;
+					}
+				}
+			} while((clazz = clazz.getSuperclass()) != null);
+			throw initialException;
+		}
+
+		/**
+		 * Invokes the first accessible constructor defined on the receiver's class with
+		 * a parameter list compatible to the given arguments.
+		 *
+		 * @param <T> the type of the object to create.
+		 * @param type type of the object to create.
+		 * @param args the arguments for the method invocation
+		 * @return the result of the constructor invocation.
+		 * @throws InvocationTargetException 
+		 * @throws IllegalArgumentException 
+		 * @throws IllegalAccessException 
+		 * @throws InstantiationException 
+		 * @throws SecurityException 
+		 * @throws NoSuchMethodException 
+		 * @throws ClassNotFoundException 
+		 */
+		@SuppressWarnings("static-method")
+		public <T> T newInstance(String type, Object... args)
+				throws InstantiationException, IllegalAccessException, IllegalArgumentException,
+				InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+			final Class<?> t = forName(type);
+			return (T) newInstance(t, args);
+		}
+
+		/**
+		 * Find the given type.
+		 *
+		 * @param name the name of the type. 
+		 * @return the class.
+		 * @throws ClassNotFoundException 
+		 */
+		@SuppressWarnings("static-method")
+		public Class<?> forName(String name) throws ClassNotFoundException {
+			try {
+				return Class.forName(name);
+			} catch (Exception exception) {
+				//
+			}
+			BundleContext context = TestPluginActivator.context;
+			if (context != null) {
+				for (Bundle b : context.getBundles()) {
+			        try {
+			            return b.loadClass(name);
+			        } catch (ClassNotFoundException e) {
+			            // No problem, this bundle doesn't have the class
+			        }
+			    }
+			}
+			throw new ClassNotFoundException(name);
+		}
+		
 	}
 
 }

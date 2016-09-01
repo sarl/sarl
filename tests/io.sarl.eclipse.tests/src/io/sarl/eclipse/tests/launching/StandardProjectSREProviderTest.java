@@ -20,10 +20,8 @@
  */
 package io.sarl.eclipse.tests.launching;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.eclipse.core.resources.IProject;
@@ -31,7 +29,7 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -63,7 +61,7 @@ public class StandardProjectSREProviderTest extends AbstractSarlUiTest {
 	public void setUp() throws Exception {
 		this.id = SARLRuntime.createUniqueIdentifier();
 		this.project = mock(IProject.class);
-		when(this.project.getPersistentProperty(Matchers.any(QualifiedName.class))).thenAnswer(new Answer() {
+		when(this.project.getPersistentProperty(ArgumentMatchers.any(QualifiedName.class))).thenAnswer(new Answer() {
 		@Override
 			public Object answer(InvocationOnMock invocation) throws Throwable {
 				QualifiedName qn = (QualifiedName) invocation.getArguments()[0];

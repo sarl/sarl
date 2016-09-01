@@ -18,35 +18,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.tests.api;
 
-package io.sarl.eclipse.wizards.elements.aop.newskill;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.eclipse.osgi.util.NLS;
 
-/** Localized messages.
+/** Annotation for indicating that a unit test is maunally mocked.
+ *
+ * <p>If not present, the @Mock and @InjectMocks will be considered.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eclipse.wizards.elements.aop.newskill.messages"; //$NON-NLS-1$
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}
-
-	private Messages() {
-	}
-
-	public static String NewSarlSkill_0;
-	public static String NewSarlSkillPage_0;
-	public static String NewSarlSkillWizardPage_0;
-	public static String NewSarlSkillWizardPage_1;
-	public static String NewSarlSkillWizardPage_2;
-	public static String NewSarlSkillWizardPage_3;
-	public static String NewSarlSkillWizardPage_4;
-	public static String NewSarlSkillWizardPage_5;
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ManualMocking {
+	//
 }

@@ -43,6 +43,7 @@ public class Messages extends NLS {
 
 	public static String NewSarlAgent_0;
 	public static String NewSarlAgentPage_0;
+	public static String NewSarlAgentWizardPage_0;
 	public static String NewSarlAgentWizardPage_1;
 	public static String NewSarlAgentWizardPage_2;
 }

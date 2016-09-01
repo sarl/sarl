@@ -21,9 +21,9 @@
 
 package io.sarl.eclipse.wizards.elements.aop.newevent;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -38,6 +38,8 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
+import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
+import io.sarl.lang.codebuilder.builders.ISarlEventBuilder;
 import io.sarl.lang.core.Event;
 
 /**
@@ -57,6 +59,11 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 		setTitle(Messages.NewSarlEvent_0);
 		setDescription(Messages.NewSarlEventWizardPage_0);
 		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLEclipseConfig.NEW_EVENT_WIZARD_DIALOG_IMAGE));
+	}
+
+	@Override
+	protected String getSuperClassLabel() {
+		return Messages.NewSarlEventWizardPage_3;
 	}
 
 	@Override
@@ -80,40 +87,26 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 	@SuppressWarnings("all")
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
-			IProgressMonitor monitor) throws CoreException {
-//		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
-//				getPackageFragment().getElementName(), ecoreResource);
-//		final ISarlEventBuilder event = scriptBuilder.addSarlEvent(getTypeName());
-//		event.setExtends(getSuperClass());
-//
-//		final Map<ActionParameterTypes, IMethod> constructors;
-//
-//		final String superClass = getSuperClass();
-//		if (Strings.isNullOrEmpty(superClass) || !isCreateConstructors()) {
-//			constructors = null;
-//		} else {
-//			constructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
-//		}
-//
-//		this.jdt2sarl.populateInheritanceContext(
-//				this.jdt2sarl.toTypeFinder(getJavaProject()),
-//				// Discarding final operation.
-//				null,
-//				// Discarding overridable operation.
-//				null,
-//				// Discarding inherited fields,
-//				null,
-//				// Discarding the operations to implement.
-//				null,
-//				constructors,
-//				getSuperClass(),
-//				Collections.<String>emptyList());
-//
-//		if (constructors != null) {
-//			this.jdt2sarl.createStandardConstructors(event, constructors.values(), event.getSarlEvent());
-//		}
-//
-//		scriptBuilder.finalizeScript();
+			String comment, IProgressMonitor monitor) throws Exception {
+		final SubMonitor mon = SubMonitor.convert(monitor, 3);
+		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
+				getPackageFragment().getElementName(), typeProvider);
+		final ISarlEventBuilder event = scriptBuilder.addSarlEvent(getTypeName());
+		event.setExtends(getSuperClass());
+		event.setDocumentation(comment);
+		mon.worked(1);
+		if (event.getSarlEvent().getExtends() != null) {
+			createInheritedMembers(
+					Event.class.getCanonicalName(),
+					event.getSarlEvent(),
+					false,
+					() -> event.addSarlConstructor(),
+					null,
+					getSuperClass());
+		}
+		mon.worked(2);
+		scriptBuilder.build(appender);
+		mon.done();
 	}
 
 	@Override

@@ -954,7 +954,6 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		private Jdt2Ecore jdt2ecore;
 
 		@Test
-		@Ignore("Until the code builder is fixed")
 		public void getFormalParameterProvider_noVarargs() throws JavaModelException {
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
 			IMethod method = createIMethodMock(
@@ -974,7 +973,6 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		}
 
 		@Test
-		@Ignore("Until the code builder is fixed")
 		public void getFormalParameterProvider_noVarargs_lastIsArray() throws JavaModelException {
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
 			IMethod method = createIMethodMock(
@@ -994,7 +992,6 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		}
 
 		@Test
-		@Ignore("Until the code builder is fixed")
 		public void getFormalParameterProvider_varargs() throws JavaModelException {
 			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
 			IMethod method = createIMethodMock(

@@ -20,21 +20,19 @@
  */
 package io.sarl.lang.core.tests.core;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
 
 import java.util.UUID;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Event;
@@ -92,10 +90,10 @@ public class EventTest extends AbstractSarlTest {
 		Event e;
 		Address adr1 = mock(Address.class);
 		Address adr2 = mock(Address.class);
-		doReturn(Boolean.TRUE).when(adr1).equals(Matchers.eq(adr1));
-		doReturn(Boolean.FALSE).when(adr1).equals(Matchers.eq(adr2));
-		doReturn(Boolean.FALSE).when(adr2).equals(Matchers.eq(adr1));
-		doReturn(Boolean.TRUE).when(adr2).equals(Matchers.eq(adr2));
+		doReturn(Boolean.TRUE).when(adr1).equals(ArgumentMatchers.eq(adr1));
+		doReturn(Boolean.FALSE).when(adr1).equals(ArgumentMatchers.eq(adr2));
+		doReturn(Boolean.FALSE).when(adr2).equals(ArgumentMatchers.eq(adr1));
+		doReturn(Boolean.TRUE).when(adr2).equals(ArgumentMatchers.eq(adr2));
 		this.event.setSource(adr1);
 		//
 		assertTrue(this.event.equals(this.event));

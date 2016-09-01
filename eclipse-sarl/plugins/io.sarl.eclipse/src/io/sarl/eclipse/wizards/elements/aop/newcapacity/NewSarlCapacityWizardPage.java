@@ -21,9 +21,9 @@
 
 package io.sarl.eclipse.wizards.elements.aop.newcapacity;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -38,6 +38,8 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
+import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
+import io.sarl.lang.codebuilder.builders.ISarlCapacityBuilder;
 import io.sarl.lang.core.Capacity;
 
 /**
@@ -60,8 +62,13 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 	}
 
 	@Override
+	protected String getSuperInterfacesLabel() {
+		return Messages.NewSarlCapacityWizardPage_3;
+	}
+
+	@Override
 	public void createPageControls(Composite parent) {
-		createSuperClassControls(parent, COLUMNS);
+		createSuperInterfacesControls(parent, COLUMNS);
 	}
 
 	@Override
@@ -70,20 +77,25 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 			this.fContainerStatus,
 			this.fPackageStatus,
 			this.fTypeNameStatus,
-			this.fSuperClassStatus,
+			this.fSuperInterfacesStatus,
 		};
 		updateStatus(status);
 	}
 
-	@SuppressWarnings("all")
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
-			IProgressMonitor monitor) throws CoreException {
-//		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
-//				getPackageFragment().getElementName(), ecoreResource);
-//		final ISarlCapacityBuilder capacity = scriptBuilder.addSarlCapacity(getTypeName());
-//		capacity.addExtends(getSuperClass());
-//		scriptBuilder.finalizeScript();
+			String comment, IProgressMonitor monitor) throws Exception {
+		final SubMonitor mon = SubMonitor.convert(monitor, 2);
+		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
+				getPackageFragment().getElementName(), typeProvider);
+		final ISarlCapacityBuilder behavior = scriptBuilder.addSarlCapacity(getTypeName());
+		for (final String type : getSuperInterfaces()) {
+			behavior.addExtends(type);
+		}
+		behavior.setDocumentation(comment);
+		mon.worked(1);
+		scriptBuilder.build(appender);
+		mon.done();
 	}
 
 	@Override
@@ -92,20 +104,20 @@ public class NewSarlCapacityWizardPage extends AbstractNewSarlElementWizardPage 
 	}
 
 	@Override
-	protected String getInvalidSubtypeErrorMessage() {
+	protected String getInvalidInterfaceTypeErrorMessage() {
 		return Messages.NewSarlCapacityWizardPage_2;
 	}
 
 	@Override
-	protected IType getRootSuperType() throws JavaModelException {
+	protected IType getRootSuperInterface() throws JavaModelException {
 		return getJavaProject().findType(Capacity.class.getName());
 	}
 
 	@Override
-	protected AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(Shell parent,
+	protected AbstractSuperTypeSelectionDialog<?> createSuperInterfaceSelectionDialog(Shell parent,
 			IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
 			boolean multi) {
-		return new SuperCapacitySelectionDialog(parent, context, project, this, extension, multi);
+		return new SuperCapacitySelectionDialog<>(parent, context, project, this, extension, multi);
 	}
 
 }

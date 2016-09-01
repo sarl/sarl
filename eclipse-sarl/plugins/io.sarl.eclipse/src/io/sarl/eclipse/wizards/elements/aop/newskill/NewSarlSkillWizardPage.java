@@ -21,9 +21,9 @@
 
 package io.sarl.eclipse.wizards.elements.aop.newskill;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -38,6 +38,9 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
+import io.sarl.eclipse.wizards.elements.aop.newcapacity.SuperCapacitySelectionDialog;
+import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
+import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
 
@@ -59,6 +62,16 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 		setTitle(Messages.NewSarlSkill_0);
 		setDescription(Messages.NewSarlSkillPage_0);
 		setImageDescriptor(SARLEclipsePlugin.getDefault().getImageDescriptor(SARLEclipseConfig.NEW_SKILL_WIZARD_DIALOG_IMAGE));
+	}
+
+	@Override
+	protected String getSuperClassLabel() {
+		return Messages.NewSarlSkillWizardPage_4;
+	}
+
+	@Override
+	protected String getSuperInterfacesLabel() {
+		return Messages.NewSarlSkillWizardPage_5;
 	}
 
 	@Override
@@ -84,53 +97,28 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 	@SuppressWarnings("all")
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
-			IProgressMonitor monitor) throws CoreException {
-//		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
-//				getPackageFragment().getElementName(), ecoreResource);
-//		final ISarlSkillBuilder skill = scriptBuilder.addSarlSkill(getTypeName());
-//		skill.setExtends(getSuperClass());
-//		for (final String implementedType : getSuperInterfaces()) {
-//			skill.addImplements(implementedType);
-//		}
-//
-//		final Map<ActionPrototype, IMethod> operationsToImplement;
-//		final Map<ActionParameterTypes, IMethod> constructors;
-//
-//		final String superClass = getSuperClass();
-//		if (Strings.isNullOrEmpty(superClass) || !isCreateConstructors()) {
-//			constructors = null;
-//		} else {
-//			constructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
-//		}
-//
-//		if (isCreateInherited()) {
-//			operationsToImplement = Maps.newTreeMap((Comparator<ActionPrototype>) null);
-//		} else {
-//			operationsToImplement = null;
-//		}
-//
-//		this.jdt2sarl.populateInheritanceContext(
-//				this.jdt2sarl.toTypeFinder(getJavaProject()),
-//				// Discarding final operation
-//				null,
-//				// Discarding overridable operation
-//				null,
-//				// Discarding inherited fields,
-//				null,
-//				operationsToImplement,
-//				constructors,
-//				getSuperClass(),
-//				getSuperInterfaces());
-//
-//		if (constructors != null) {
-//			this.jdt2sarl.createStandardConstructors(skill, constructors.values(), skill.getSarlSkill());
-//		}
-//
-//		if (operationsToImplement != null) {
-//			this.jdt2sarl.createActions(skill, operationsToImplement.values());
-//		}
-//
-//		scriptBuilder.finalizeScript();
+			String comment, IProgressMonitor monitor) throws Exception {
+		final SubMonitor mon = SubMonitor.convert(monitor, 3);
+		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
+				getPackageFragment().getElementName(), typeProvider);
+		final ISarlSkillBuilder skill = scriptBuilder.addSarlSkill(getTypeName());
+		skill.setExtends(getSuperClass());
+		for (final String type : getSuperInterfaces()) {
+			skill.addImplements(type);
+		}
+		skill.setDocumentation(comment);
+		mon.worked(1);
+		createInheritedMembers(
+				Skill.class.getCanonicalName(),
+				skill.getSarlSkill(),
+				true,
+				() -> skill.addSarlConstructor(),
+				(name) -> skill.addOverrideSarlAction(name),
+				getSuperClass(),
+				getSuperInterfaces());
+		mon.worked(2);
+		scriptBuilder.build(appender);
+		mon.done();
 	}
 
 	@Override
@@ -173,6 +161,13 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 			IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
 			boolean multi) {
 		return new SuperSkillSelectionDialog(parent, context, project, this, extension, multi);
+	}
+
+	@Override
+	protected AbstractSuperTypeSelectionDialog<?> createSuperInterfaceSelectionDialog(Shell parent,
+			IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
+			boolean multi) {
+		return new SuperCapacitySelectionDialog<>(parent, context, project, this, extension, multi);
 	}
 
 }

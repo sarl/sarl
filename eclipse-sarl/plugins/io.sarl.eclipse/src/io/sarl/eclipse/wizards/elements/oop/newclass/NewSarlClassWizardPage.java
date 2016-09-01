@@ -21,9 +21,9 @@
 
 package io.sarl.eclipse.wizards.elements.oop.newclass;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.widgets.Composite;
@@ -32,6 +32,8 @@ import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
+import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
+import io.sarl.lang.codebuilder.builders.ISarlClassBuilder;
 
 /**
  * Wizard page for creating a new SARL class.
@@ -60,7 +62,7 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 		createSuperClassControls(parent, COLUMNS);
 		createSuperInterfacesControls(parent, COLUMNS);
 		createSeparator(parent, COLUMNS);
-		createMethodStubControls(parent, COLUMNS, false, true);
+		createMethodStubControls(parent, COLUMNS, true, true);
 	}
 
 	@Override
@@ -75,45 +77,30 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 		updateStatus(status);
 	}
 
-	@SuppressWarnings("all")
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
-			IProgressMonitor monitor) throws CoreException {
-//		final IScriptBuilder scriptBuilder = this.codeBuilderFactory.createScript(
-//				getPackageFragment().getElementName(), ecoreResource);
-//		final ISarlClassBuilder classType = scriptBuilder.addSarlClass(getTypeName());
-//		classType.setExtends(getSuperClass());
-//		for (final String implementedType : getSuperInterfaces()) {
-//			classType.addImplements(implementedType);
-//		}
-//
-//		final Map<ActionPrototype, IMethod> operationsToImplement;
-//
-//		if (isCreateInherited()) {
-//			operationsToImplement = Maps.newTreeMap((Comparator<ActionPrototype>) null);
-//		} else {
-//			operationsToImplement = null;
-//		}
-//
-//		this.jdt2sarl.populateInheritanceContext(
-//				this.jdt2sarl.toTypeFinder(getJavaProject()),
-//				// Discarding final operation.
-//				null,
-//				// Discarding overridable operation.
-//				null,
-//				// Discarding inherited fields,
-//				null,
-//				operationsToImplement,
-//				// Discarding super constructors,
-//				null,
-//				getSuperClass(),
-//				getSuperInterfaces());
-//
-//		if (operationsToImplement != null) {
-//			this.jdt2sarl.createActions(classType, operationsToImplement.values());
-//		}
-//
-//		scriptBuilder.finalizeScript();
+			String comment, IProgressMonitor monitor) throws Exception {
+		final SubMonitor mon = SubMonitor.convert(monitor, 3);
+		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
+				getPackageFragment().getElementName(), typeProvider);
+		final ISarlClassBuilder clazz = scriptBuilder.addSarlClass(getTypeName());
+		clazz.setExtends(getSuperClass());
+		for (final String type : getSuperInterfaces()) {
+			clazz.addImplements(type);
+		}
+		clazz.setDocumentation(comment);
+		mon.worked(1);
+		createInheritedMembers(
+				Object.class.getCanonicalName(),
+				clazz.getSarlClass(),
+				true,
+				() -> clazz.addSarlConstructor(),
+				(name) -> clazz.addOverrideSarlAction(name),
+				getSuperClass(),
+				getSuperInterfaces());
+		mon.worked(2);
+		scriptBuilder.build(appender);
+		mon.done();
 	}
 
 	@Override

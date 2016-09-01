@@ -32,3 +32,4 @@ Import-Package: org.junit.runner;version="4.5.0",
 Export-Package: io.sarl.lang.tests,
  io.sarl.lang.ui.tests,
  io.sarl.tests.api
+Bundle-Activator: io.sarl.tests.api.TestPluginActivator

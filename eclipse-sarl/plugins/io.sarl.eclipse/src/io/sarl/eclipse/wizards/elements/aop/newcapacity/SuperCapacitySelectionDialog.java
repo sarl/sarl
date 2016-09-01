@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
+import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Shell;
 
@@ -35,12 +36,13 @@ import io.sarl.lang.core.Capacity;
 
 /** Dialog box for selecting a SARL capacity type.
  *
+ * @param <T> the type of the wizard page.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SuperCapacitySelectionDialog extends AbstractSuperTypeSelectionDialog<NewSarlCapacityWizardPage> {
+public class SuperCapacitySelectionDialog<T extends NewTypeWizardPage> extends AbstractSuperTypeSelectionDialog<T> {
 
 	/**
 	 * Creates new instance.
@@ -53,7 +55,7 @@ public class SuperCapacitySelectionDialog extends AbstractSuperTypeSelectionDial
 	 * @param multi indicates if multiple elements could be selected.
 	 */
 	public SuperCapacitySelectionDialog(Shell parent, IRunnableContext context, IJavaProject project,
-			NewSarlCapacityWizardPage wizardPage, SarlSpecificTypeSelectionExtension extension,
+			T wizardPage, SarlSpecificTypeSelectionExtension extension,
 			boolean multi) {
 		super(parent, context, wizardPage,
 				createSearchScope(project, Capacity.class, true),
@@ -61,22 +63,22 @@ public class SuperCapacitySelectionDialog extends AbstractSuperTypeSelectionDial
 	}
 
 	@Override
-	protected List<String> saveWizardPage(NewSarlCapacityWizardPage wizardPage) {
+	protected List<String> saveWizardPage(T wizardPage) {
 		return Collections.unmodifiableList(wizardPage.getSuperInterfaces());
 	}
 
 	@Override
-	protected void restoreWizardPage(NewSarlCapacityWizardPage wizardPage, List<String> savedContent) {
+	protected void restoreWizardPage(T wizardPage, List<String> savedContent) {
 		wizardPage.setSuperInterfaces(savedContent, true);
 	}
 
 	@Override
-	protected boolean addTypeToWizardPage(NewSarlCapacityWizardPage wizardPage, String qualifiedName) {
+	protected boolean addTypeToWizardPage(T wizardPage, String qualifiedName) {
 		return wizardPage.addSuperInterface(qualifiedName);
 	}
 
 	@Override
-	protected int getSuperTypeCount(NewSarlCapacityWizardPage wizardPage) {
+	protected int getSuperTypeCount(T wizardPage) {
 		return wizardPage.getSuperInterfaces().size();
 	}
 

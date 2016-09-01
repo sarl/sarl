@@ -26,7 +26,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-@Ignore
 public class Bug406ContentAssistTest extends AbstractContentAssistTest {
 	
 	@Test

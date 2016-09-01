@@ -21,9 +21,9 @@
 
 package io.sarl.eclipse.wizards.elements.aop.newbehavior;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -38,6 +38,8 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizardPage;
 import io.sarl.eclipse.wizards.elements.AbstractSuperTypeSelectionDialog;
 import io.sarl.eclipse.wizards.elements.SarlSpecificTypeSelectionExtension;
+import io.sarl.lang.codebuilder.appenders.ScriptSourceAppender;
+import io.sarl.lang.codebuilder.builders.ISarlBehaviorBuilder;
 import io.sarl.lang.core.Behavior;
 
 /**
@@ -60,6 +62,11 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 	}
 
 	@Override
+	protected String getSuperClassLabel() {
+		return Messages.NewSarlBehaviorWizardPage_3;
+	}
+
+	@Override
 	public void createPageControls(Composite parent) {
 		createSuperClassControls(parent, COLUMNS);
 		createSeparator(parent, COLUMNS);
@@ -77,39 +84,28 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 		updateStatus(status);
 	}
 
-	@SuppressWarnings("all")
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
-			IProgressMonitor monitor) throws CoreException {
-		/*final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
+			String comment, IProgressMonitor monitor) throws Exception {
+		final SubMonitor mon = SubMonitor.convert(monitor, 3);
+		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
 				getPackageFragment().getElementName(), typeProvider);
 		final ISarlBehaviorBuilder behavior = scriptBuilder.addSarlBehavior(getTypeName());
 		behavior.setExtends(getSuperClass());
-
-		if (isCreateInherited()) {
-			final Map<ActionPrototype, IMethod> operationsToImplement = Maps.newTreeMap((Comparator<ActionPrototype>) null);
-			this.jdt2sarl.populateInheritanceContext(
-					this.jdt2sarl.toTypeFinder(getJavaProject()),
-					// Discarding final operation.
-					null,
-					// Discarding overridable operation.
-					null,
-					// Discarding inherited fields,
-					null,
-					operationsToImplement,
-					// Discarding super constructors,
-					null,
-					getSuperClass(),
-					Collections.<String>emptyList());
-			this.jdt2sarl.createActions(behavior, operationsToImplement.values());
+		behavior.setDocumentation(comment);
+		mon.worked(1);
+		if (behavior.getSarlBehavior().getExtends() != null) {
+			createInheritedMembers(
+					Behavior.class.getCanonicalName(),
+					behavior.getSarlBehavior(),
+					true,
+					() -> behavior.addSarlConstructor(),
+					(name) -> behavior.addOverrideSarlAction(name),
+					getSuperClass());
 		}
-
-		try {
-			scriptBuilder.build(appender);
-		} catch (IOException exception) {
-			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, exception));
-		}
-		monitor.done();*/
+		mon.worked(2);
+		scriptBuilder.build(appender);
+		mon.done();
 	}
 
 	@Override
