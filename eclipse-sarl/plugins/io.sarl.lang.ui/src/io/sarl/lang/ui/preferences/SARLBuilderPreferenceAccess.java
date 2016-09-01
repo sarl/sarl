@@ -56,13 +56,15 @@ public class SARLBuilderPreferenceAccess {
 	@SuppressWarnings("static-method")
 	public void loadBuilderPreferences(GeneratorConfig2 generatorConfig, IProject context) {
 		final IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(context);
-		if (preferenceStore.contains(PREF_GENERATE_INLINE)) {
-			generatorConfig.setGenerateInlineAnnotation(preferenceStore.getBoolean(PREF_GENERATE_INLINE));
-		}
-		if (generatorConfig.isGenerateInlineAnnotation()
-				&& preferenceStore.contains(PREF_USE_EXPRESSION_INTERPRETER)) {
-			generatorConfig.setUseExpressionInterpreterForInlineAnnotation(preferenceStore.getBoolean(
-					PREF_USE_EXPRESSION_INTERPRETER));
+		if (preferenceStore != null) {
+			if (preferenceStore.contains(PREF_GENERATE_INLINE)) {
+				generatorConfig.setGenerateInlineAnnotation(preferenceStore.getBoolean(PREF_GENERATE_INLINE));
+			}
+			if (generatorConfig.isGenerateInlineAnnotation()
+					&& preferenceStore.contains(PREF_USE_EXPRESSION_INTERPRETER)) {
+				generatorConfig.setUseExpressionInterpreterForInlineAnnotation(preferenceStore.getBoolean(
+						PREF_USE_EXPRESSION_INTERPRETER));
+			}
 		}
 	}
 
