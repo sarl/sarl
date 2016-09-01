@@ -381,6 +381,7 @@ public final class Boot {
 						+ Locale.getString(Boot.class, "CLI_PARAM_SYNOPTIC"), //$NON-NLS-1$
 				"", //$NON-NLS-1$
 				getOptions(), HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, ""); //$NON-NLS-1$
+		logger.flush();
 		getExiter().exit();
 	}
 
@@ -394,6 +395,7 @@ public final class Boot {
 		NetworkConfig.getDefaultValues(defaultValues);
 		try (OutputStream os = getConsoleLogger()) {
 			defaultValues.storeToXML(os, null);
+			os.flush();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
