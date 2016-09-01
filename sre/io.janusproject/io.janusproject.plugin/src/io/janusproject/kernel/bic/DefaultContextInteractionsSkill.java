@@ -44,7 +44,7 @@ import io.sarl.util.Scopes;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class DefaultContextInteractionsSkill extends Skill implements DefaultContextInteractions {
+public class DefaultContextInteractionsSkill extends Skill implements DefaultContextInteractions {
 
 	private AgentContext parentContext;
 

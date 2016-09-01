@@ -53,7 +53,7 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class SchedulesSkill extends Skill implements Schedules {
+public class SchedulesSkill extends Skill implements Schedules {
 
 	@Inject
 	private ExecutorService executorService;

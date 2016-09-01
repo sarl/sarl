@@ -42,7 +42,7 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class LifecycleSkill extends Skill implements Lifecycle {
+public class LifecycleSkill extends Skill implements Lifecycle {
 
 	@Inject
 	private SpawnService spawnService;

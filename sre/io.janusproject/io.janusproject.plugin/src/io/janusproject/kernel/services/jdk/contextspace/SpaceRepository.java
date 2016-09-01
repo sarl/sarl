@@ -60,7 +60,7 @@ import io.sarl.util.Collections3;
  * @mavenartifactid $ArtifactId$
  */
 @TwoStepConstruction
-class SpaceRepository {
+public class SpaceRepository {
 
 	private static final Object[] NO_PARAMETERS = new Object[0];
 

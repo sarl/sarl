@@ -56,7 +56,7 @@ import io.sarl.util.OpenEventSpace;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class ExternalContextAccessSkill extends Skill implements ExternalContextAccess {
+public class ExternalContextAccessSkill extends Skill implements ExternalContextAccess {
 
 	private final Set<UUID> contexts = Sets.newConcurrentHashSet();
 

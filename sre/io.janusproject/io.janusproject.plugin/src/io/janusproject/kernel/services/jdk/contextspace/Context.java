@@ -52,7 +52,7 @@ import io.sarl.util.OpenEventSpaceSpecification;
  * @mavenartifactid $ArtifactId$
  */
 @TwoStepConstruction
-class Context implements AgentContext {
+public class Context implements AgentContext {
 
 	private final UUID id;
 
@@ -254,7 +254,7 @@ class Context implements AgentContext {
 		 * @param distributedDataStructure - service that permits to obtain distributed data structure.
 		 * @param logger - logging service.
 		 */
-		DefaultSpaceRepositoryFactory(Injector injector, DistributedDataStructureService distributedDataStructure,
+		public DefaultSpaceRepositoryFactory(Injector injector, DistributedDataStructureService distributedDataStructure,
 				LogService logger) {
 			this.dataStructureService = distributedDataStructure;
 			this.injector = injector;

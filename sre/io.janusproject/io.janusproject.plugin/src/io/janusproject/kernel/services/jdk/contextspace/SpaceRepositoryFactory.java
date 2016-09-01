@@ -31,7 +31,8 @@ import io.janusproject.services.contextspace.SpaceRepositoryListener;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-interface SpaceRepositoryFactory {
+@FunctionalInterface
+public interface SpaceRepositoryFactory {
 
 	/**
 	 * Create an instance of the space repository.

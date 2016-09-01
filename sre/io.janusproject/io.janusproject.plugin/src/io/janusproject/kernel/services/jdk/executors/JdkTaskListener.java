@@ -31,7 +31,7 @@ import java.util.EventListener;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-interface JdkTaskListener extends EventListener {
+public interface JdkTaskListener extends EventListener {
 
 	/**
 	 * Invoked when a task is finished.

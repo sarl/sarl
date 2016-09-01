@@ -55,7 +55,7 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
+public class InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	/**
 	 * State of the owner.

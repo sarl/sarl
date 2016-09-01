@@ -51,7 +51,7 @@ import io.sarl.util.OpenEventSpace;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class InnerContextSkill extends Skill implements InnerContextAccess {
+public class InnerContextSkill extends Skill implements InnerContextAccess {
 
 	private final Address agentAddressInInnerDefaultSpace;
 

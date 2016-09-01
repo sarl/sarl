@@ -45,7 +45,7 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class LoggingSkill extends Skill implements Logging {
+public class LoggingSkill extends Skill implements Logging {
 
 	@Inject
 	private LogService logService;

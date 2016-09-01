@@ -33,7 +33,8 @@ import io.janusproject.services.contextspace.SpaceRepositoryListener;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-interface ContextFactory {
+@FunctionalInterface
+public interface ContextFactory {
 
 	/**
 	 * Create an instance of context.

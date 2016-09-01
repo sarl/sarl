@@ -41,7 +41,7 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class BehaviorsSkill extends Skill implements Behaviors {
+public class BehaviorsSkill extends Skill implements Behaviors {
 
 	private final Address agentAddressInInnerDefaultSpace;
 

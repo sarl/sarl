@@ -37,7 +37,7 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class MicroKernelSkill extends Skill implements MicroKernelCapacity {
+public class MicroKernelSkill extends Skill implements MicroKernelCapacity {
 
 	private WeakReference<Kernel> kernel;
 
