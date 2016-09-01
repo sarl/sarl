@@ -2006,7 +2006,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							final JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
 							jvmParam.setName(parameter.getName());
 							jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(parameter.getType()));
-							this.associator.associate(source, jvmParam);
+							this.associator.associate(parameter.getParameter(), jvmParam);
 							op.getParameters().add(jvmParam);
 						}
 					}
