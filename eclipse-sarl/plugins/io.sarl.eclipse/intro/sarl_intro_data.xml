@@ -4,13 +4,6 @@
 	not listed in here will show in a default place on their page. Items listen 
 	in <hidden></hidden> sections will be, well, hidden. -->
 <extensions>
-	<!-- <page id="overview"> <group path="page-content/top-left"> <extension 
-		id="org.csstudio.myproduct.product.overview" importance="high"/> </group> 
-		</page> <page id="whatsnew"> <group path="page-content/top-left"> <extension 
-		id="org.csstudio.sns.product.whatsnew" importance="high"/> </group> </page> 
-		<page id="firststeps"> <group path="page-content/top-left"> <extension id="org.csstudio.trends.databrowser" 
-		importance="medium"/> </group> <group path="page-content/top-right"> <extension 
-		id="org.csstudio.opibuilder" importance="medium"/> </group> </page> -->
 
 	<page id="overview">
 		<group path="page-content/bottom-left" default="true">
@@ -48,6 +41,7 @@
 
 		<hidden>
 			<extension id="org.eclipse.egit" />
+			<extension id="org.eclipse.jdt"/>
 		</hidden>
 	</page>
 

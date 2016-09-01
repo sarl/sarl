@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<introContent>
+
+
+
+
+	<extensionContent id="io.sarl.examples.introExtension"
+		name="SARL Overview Extension" path="samples/@">
+
+		<html src="./samples.html"></html>
+
+		<group style-id="quick-links" id="quick-links">
+
+			<link style-id="content-link" label="A Helloworld Agent in SARL"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.examples.helloworld%29"
+				id="Helloworld-Sample">
+				<text>
+					A simple agent displaying Hello on the console and dying 2sec
+					later.
+				</text>
+			</link>
+		</group>
+
+
+		<group style-id="quick-links" id="quick-links">
+
+			<link style-id="content-link" label="Agent with a behavior"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.examples.behaviors%29"
+				id="Behavior-Sample">
+				<text>
+					A simple agent playing an externally described behavior to
+					compute a factorial.
+				</text>
+			</link>
+		</group>
+
+		<group style-id="quick-links" id="quick-links">
+
+			<link style-id="content-link"
+				label="Agent with a behavior extending an existing behavior"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.basic.behaviorinheritance%29"
+				id="Behavior-Sample">
+				<text>
+					A simple example to illustrate the richness of behavior
+					inheritance and corresponding overload in SARL.
+				</text>
+			</link>
+		</group>
+
+
+	</extensionContent>
+
+
+
+</introContent>

@@ -109,5 +109,27 @@
 
 		</example>
 	</extension>
+	
+	<!-- ========= Intro (welcome page) Extensions ========= -->	
+	
+	<extension
+         point="org.eclipse.ui.intro.configExtension">
+      <configExtension
+            configId="org.eclipse.ui.intro.universalConfig"
+            content="intro/SARL-Example-Intro.xml">
+      </configExtension>
+	</extension>
+
+
+   <extension
+         point="org.eclipse.ui.intro.quicklinks">
+         <command
+          	id="org.eclipse.ui.newWizard(newWizardId=io.sarl.examples.helloworld)"            
+            description="%HelloworldExample_Description"
+            label="%HelloworldExample_Name"
+            icon="platform:/plugin/org.eclipse.ui.intro.universal/themes/circles/graphics/icons/ctool/sa_onesample48.gif">
+         </command>
+   </extension>
+
 		
 </plugin>
