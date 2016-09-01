@@ -1,0 +1,88 @@
+package io.sarl.demos.basic.holarchy
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.Schedules
+import io.sarl.core.Logging
+
+event HolarchyDestroyed
+
+agent HolarchyManager {
+	
+	uses Lifecycle, Schedules, DefaultContextInteractions, Logging
+
+	on Initialize {
+		/* Spawn a first holon that will in turn spawn a whole hierarchy of holons */
+		spawn(Holon, #[])
+	}
+	
+	/* Wait the HolarchyDestroyed event to die */
+	on HolarchyDestroyed {
+		info("Holarchy destroyed. Waiting awhile to ensure that all pending context destruction is processed.")
+		in(5000) [
+			killMe
+		]
+	}
+	
+}
+
+agent Holon {
+	
+	uses Lifecycle, InnerContextAccess, Schedules, DefaultContextInteractions, Logging
+	
+	val depth = 3
+	val childCount = 2
+	
+	var isRoot : boolean
+	
+	on Initialize {
+		var count : Integer
+		if (occurrence.parameters.isEmpty) {
+			count = depth
+			isRoot = true
+		}
+		else {
+			isRoot = false
+			count = occurrence.parameters.get(0) as Integer
+			if (count===null) count = 0
+		}
+		
+ 		if (isRoot || count > 0) {
+			count = count - 1
+			for(i : 1..childCount) {
+				info("Create the child #"+i+" at level "+count)
+				/* spawn a new sub-holon (a holon inside his own internal context) */
+				spawnInContext(Holon, innerContext, #[count])
+			}
+			
+			/* check every seconds if he's himself the last remaining holon as member of its internal context event space 
+			 * in this case, its means that all of its members are dead, he can thus die peacefully
+			 * */
+			every(1000) [
+				if (innerContext.defaultSpace.participants.size == 1) {
+					info("No more child: I'm killing myself.")
+					killMe
+				}
+			]
+		}
+		else {
+			info("As leaf: Waiting awhile before commiting a suicide.")
+			/* Wait 10 sec before dying */
+			in(10000) [
+				info("As leaf: I'm killing myself.")
+				killMe
+			]
+		}
+	}
+	
+	on Destroy {
+		if (isRoot) {
+			/* the top super-holon die, it sends an HolarchyDestroyed to the holoarchy manager */
+			emit(new HolarchyDestroyed)
+		}
+	}
+		
+}

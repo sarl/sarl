@@ -42,7 +42,6 @@
 		<example wizardID="io.sarl.examples.helloworld" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-basic-helloworld" contentURI="contents/io-sarl-demos-basic-helloworld.zip" description="%HelloworldExample_Description"/>
 			<fileToOpen location="io-sarl-demos-basic-helloworld/src/main/sarl/io/sarl/demos/basic/helloworld/helloworld.sarl"/>
-
 		</example>
 	</extension>
 	
@@ -74,7 +73,6 @@
 		<example wizardID="io.sarl.examples.behaviors" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-basic-behaviors" contentURI="contents/io-sarl-demos-basic-behaviors.zip" description="%BehaviorsExample_Description"/>
 			<fileToOpen location="io-sarl-demos-basic-behaviors/src/main/sarl/io/sarl/demos/basic/behaviors/behaviors.sarl"/>
-
 		</example>
 	</extension>
 	
@@ -106,10 +104,71 @@
 		<example wizardID="io.sarl.demos.basic.behaviorinheritance" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-basic-behaviorinheritance" contentURI="contents/io-sarl-demos-basic-behaviorinheritance.zip" description="%BehaviorsInheritanceExample_Description"/>
 			<fileToOpen location="io-sarl-demos-basic-behaviorinheritance/src/main/sarl/io/sarl/demos/basic/inheritance/inheritance.sarl"/>
-
 		</example>
 	</extension>
+
+	<!-- ========= io.sarl.demos.basic.countdown Example ========= -->
 	
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.demos.basic.countdown"
+			name="%CountdownExample_Name"
+			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			category="org.eclipse.ui.Examples/io.sarl.Examples"
+			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			project="true">
+			<description>%CountdownExample_Description</description>
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.demos.basic.countdown"
+			name="%CountdownExample_Name"
+			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
+			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			project="true">
+			<description>%CountdownExample_Description</description>
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.emf.common.ui.examples">
+		<example wizardID="io.sarl.demos.basic.countdown" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+			<projectDescriptor name="io-sarl-demos-basic-countdown" contentURI="contents/io-sarl-demos-basic-countdown.zip" description="%CountdownExample_Description"/>
+			<fileToOpen location="io-sarl-demos-basic-behaviorinheritance/src/main/sarl/io/sarl/demos/basic/countdown/countdown.sarl"/>
+		</example>
+	</extension>	
+
+	<!-- ========= io.sarl.demos.basic.countdown Example ========= -->
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.demos.basic.holarchy"
+			name="%HolarchyExample_Name"
+			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			category="org.eclipse.ui.Examples/io.sarl.Examples"
+			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			project="true">
+			<description>%HolarchyExample_Description</description>
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.demos.basic.holarchy"
+			name="%HolarchyExample_Name"
+			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
+			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			project="true">
+			<description>%HolarchyExample_Description</description>
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.emf.common.ui.examples">
+		<example wizardID="io.sarl.demos.basic.holarchy" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+			<projectDescriptor name="io-sarl-demos-basic-holarchy" contentURI="contents/io-sarl-demos-basic-holarchy.zip" description="%HolarchyExample_Description"/>
+			<fileToOpen location="io-sarl-demos-basic-behaviorinheritance/src/main/sarl/io/sarl/demos/basic/holarchy/holarchy.sarl"/>
+		</example>
+	</extension>
+		
 	<!-- ========= Intro (welcome page) Extensions ========= -->	
 	
 	<extension
@@ -120,7 +179,7 @@
       </configExtension>
 	</extension>
 
-
+	<!-- adding a new quicklink for the hello world example -->
    <extension
          point="org.eclipse.ui.intro.quicklinks">
          <command

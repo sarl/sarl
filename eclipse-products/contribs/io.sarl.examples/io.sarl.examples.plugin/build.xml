@@ -10,16 +10,18 @@
 		<attribute name="excludes" default="bin,bin/**,**/*._trace,.antlr-generator*.jar,component.def" />
 		<sequential>
 			<delete file="@{target}/@{name}.zip" />
-			<zip destfile="@{target}/@{name}.zip" basedir="${source}/@{name}" excludes="@{excludes}"  />
+			<zip destfile="@{target}/@{name}.zip" basedir="${source}/@{name}" excludes="@{excludes}" />
 		</sequential>
 	</macrodef>
 
 	<target name="zip_all_examples">
 		<!-- run task "generate_self" to compose this list -->
-		<zip_example name="io-sarl-demos-basic-helloworld"/>
-		<zip_example name="io-sarl-demos-basic-behaviors"/>
-		<zip_example name="io-sarl-demos-basic-behaviorinheritance"/>
-		<!--zip_example name="xtend-annotation-examples" excludes="**/*._trace,.antlr-generator*.jar"/>-->
+		<zip_example name="io-sarl-demos-basic-helloworld" />
+		<zip_example name="io-sarl-demos-basic-behaviors" />
+		<zip_example name="io-sarl-demos-basic-behaviorinheritance" />
+		<zip_example name="io-sarl-demos-basic-countdown" />
+		<zip_example name="io-sarl-demos-basic-holarchy" />
+		<!--zip_example name="name-examples" excludes="**/*._trace,.antlr-generator*.jar"/>-->
 	</target>
 
 	<target name="generate_self">

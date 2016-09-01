@@ -48,6 +48,31 @@
 		</group>
 
 
+		<group style-id="quick-links" id="quick-links">
+
+			<link style-id="content-link"
+				label="A simple Agent decrementing an integer before dying"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.basic.countdown%29"
+				id="Behavior-Sample">
+				<text>
+					A first illustration of the concept of task to schedule a sub
+					process doing something from a given behavior.
+				</text>
+			</link>
+		</group>
+
+		<group style-id="quick-links" id="quick-links">
+
+			<link style-id="content-link" label="A first example of holarchy"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.basic.holarchy%29"
+				id="Behavior-Sample">
+				<text>
+					Creation of complete hierarchy of holons.
+				</text>
+			</link>
+		</group>
+
+
 	</extensionContent>
 
 
