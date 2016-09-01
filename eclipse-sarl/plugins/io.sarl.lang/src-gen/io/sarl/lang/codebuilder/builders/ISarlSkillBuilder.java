@@ -111,6 +111,19 @@ public interface ISarlSkillBuilder {
 	 * @param name - the name of the SarlAction.
 	 * @return the builder.
 	 */
+	ISarlActionBuilder addDefSarlAction(String name);
+
+	/** Create a SarlAction.
+	 * @param name - the name of the SarlAction.
+	 * @return the builder.
+	 */
+	ISarlActionBuilder addOverrideSarlAction(String name);
+
+	/** Create a SarlAction.	 *
+	 * <p>This function is equivalent to {@link #addDefSarlAction}.
+	 * @param name - the name of the SarlAction.
+	 * @return the builder.
+	 */
 	ISarlActionBuilder addSarlAction(String name);
 
 	/** Create a SarlClass.

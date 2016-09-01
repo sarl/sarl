@@ -63,14 +63,19 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 	 * @param container - the container of the SarlAction.
 	 * @param name - the name of the SarlAction.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
+	public void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
 		if (this.sarlAction == null) {
 			this.container = container;
 			this.sarlAction = SarlFactory.eINSTANCE.createSarlAction();
-			this.sarlAction.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
+			this.sarlAction.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
 			this.sarlAction.setName(name);
-			this.sarlAction.getModifiers().add("def");
+			if (Strings.equal(modifier, "def")
+				|| Strings.equal(modifier, "override")) {
+				this.sarlAction.getModifiers().add(modifier);
+			} else {
+				throw new IllegalStateException("Invalid modifier");
+			}
 			container.getMembers().add(this.sarlAction);
 		}
 	}

@@ -26,19 +26,27 @@ import javax.inject.Named;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.Constants;
+import org.eclipse.xtext.common.types.JvmAnyTypeReference;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeConstraint;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.common.types.util.Primitives;
 import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.resource.DerivedStateAwareResource;
 import org.eclipse.xtext.resource.IResourceFactory;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.imports.IImportsConfiguration;
+import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
@@ -66,6 +74,7 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 	@SuppressWarnings("checkstyle:all")
 	protected void generateAbstractBuilder() {
 		final TypeReference abstractBuilder = getAbstractBuilderImpl();
+		final TypeReference expressionBuilder = getExpressionBuilderImpl();
 		StringConcatenationClient content = new StringConcatenationClient() {
 			@Override
 			protected void appendTo(TargetStringConcatenation it) {
@@ -79,6 +88,21 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("public abstract class "); //$NON-NLS-1$
 				it.append(abstractBuilder.getSimpleName());
 				it.append(" {"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Inject.class);
+				it.newLine();
+				it.append("\t\tprivate "); //$NON-NLS-1$
+				it.append(IQualifiedNameProvider.class);
+				it.append(" qualifiedNameProvider;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Inject.class);
+				it.newLine();
+				it.append("\tprivate "); //$NON-NLS-1$
+				it.append(JvmModelAssociator.class);
+				it.append(" associations;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -147,6 +171,45 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append(".FILE_EXTENSIONS) String fileExtensions) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tthis.fileExtension = fileExtensions.split(\"[:;,]+\")[0];"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprotected <T> T getAssociatedElement(Class<T> expectedType, "); //$NON-NLS-1$
+				it.append(EObject.class);
+				it.append(" dslObject, "); //$NON-NLS-1$
+				it.append(Resource.class);
+				it.append(" resource) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfor (final "); //$NON-NLS-1$
+				it.append(EObject.class);
+				it.append(" obj : this.associations.getJvmElements(dslObject)) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (expectedType.isInstance(obj)) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\treturn expectedType.cast(obj);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (resource instanceof "); //$NON-NLS-1$
+				it.append(DerivedStateAwareResource.class);
+				it.append(") {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t(("); //$NON-NLS-1$
+				it.append(DerivedStateAwareResource.class);
+				it.append(") resource).discardDerivedState();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tresource.getContents();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn getAssociatedElement(expectedType, dslObject, null);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tthrow new "); //$NON-NLS-1$
+				it.append(IllegalStateException.class);
+				it.append("(\"No JvmFormalParameter associated to \" + dslObject + \" in \" + dslObject.eContainer());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -223,10 +286,9 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				
-				it.append("\tprotected "); //$NON-NLS-1$
+				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(JvmTypeReference.class);
-				it.append(" findType("); //$NON-NLS-1$
+				it.append(" innerFindType("); //$NON-NLS-1$
 				it.append(EObject.class);
 				it.append(" context, String typeName) {"); //$NON-NLS-1$
 				it.newLine();
@@ -256,37 +318,42 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t\tif (type == null) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tthrow new "); //$NON-NLS-1$
-				it.append(TypeNotPresentException.class);
-				it.append("(typeName, null);"); //$NON-NLS-1$
+				it.append("\t\t\treturn null;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t"); //$NON-NLS-1$
-				it.append(JvmTypeReference.class);
-				it.append(" typeReference = typeRefs.createTypeRef(type);"); //$NON-NLS-1$
+				it.append("\t\treturn typeRefs.createTypeRef(type);"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tif (!isTypeReference(typeReference) && !getPrimitiveTypes().isPrimitive(typeReference)) {"); //$NON-NLS-1$
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprotected "); //$NON-NLS-1$
+				it.append(JvmTypeReference.class);
+				it.append(" findType("); //$NON-NLS-1$
+				it.append(EObject.class);
+				it.append(" context, String typeName) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal "); //$NON-NLS-1$
+				it.append(JvmTypeReference.class);
+				it.append(" type = innerFindType(context, typeName);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (!isTypeReference(type)) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tfor (String packageName : getImportsConfiguration().getImplicitlyImportedPackages(("); //$NON-NLS-1$
 				it.append(XtextResource.class);
 				it.append(") context.eResource())) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\ttypeReference = findType(context, packageName + \".\" + typeName);"); //$NON-NLS-1$
+				it.append("\t\t\t\t"); //$NON-NLS-1$
+				it.append(JvmTypeReference.class);
+				it.append(" typeReference = innerFindType(context, packageName + \".\" + typeName);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\tif (isTypeReference(typeReference)) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\treturn ("); //$NON-NLS-1$
-				it.append(JvmParameterizedTypeReference.class);
-				it.append(") typeReference;"); //$NON-NLS-1$
+				it.append("\t\t\t\t\treturn typeReference;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tif (!isTypeReference(typeReference)) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tthrow new "); //$NON-NLS-1$
 				it.append(TypeNotPresentException.class);
@@ -294,9 +361,7 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\treturn ("); //$NON-NLS-1$
-				it.append(JvmParameterizedTypeReference.class);
-				it.append(") typeReference;"); //$NON-NLS-1$
+				it.append("\t\treturn type;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -309,29 +374,93 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t\t"); //$NON-NLS-1$
 				it.append(JvmTypeReference.class);
-				it.append(" typeReference = findType(context, typeName);"); //$NON-NLS-1$
+				it.append(" typeReference;"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tgetImportManager().addImportFor(typeReference.getType());"); //$NON-NLS-1$
+				it.append("\t\ttry {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\treturn ("); //$NON-NLS-1$
+				it.append("\t\t\ttypeReference = findType(context, typeName);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tgetImportManager().addImportFor(typeReference.getType());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn ("); //$NON-NLS-1$
 				it.append(JvmParameterizedTypeReference.class);
 				it.append(") typeReference;"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
+				it.append("\t\t} catch ("); //$NON-NLS-1$
+				it.append(TypeNotPresentException.class);
+				it.append(" exception) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\tprotected "); //$NON-NLS-1$
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal "); //$NON-NLS-1$
 				it.append(JvmParameterizedTypeReference.class);
-				it.append(" newTypeRef("); //$NON-NLS-1$
-				it.append(EObject.class);
-				it.append(" context, Class<?> jtype) {"); //$NON-NLS-1$
+				it.append(" pref = "); //$NON-NLS-1$
+				it.append(expressionBuilder);
+				it.append(".parseType(context, typeName, this);"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\treturn newTypeRef(context, jtype.getCanonicalName());"); //$NON-NLS-1$
+				it.append("\t\tfinal "); //$NON-NLS-1$
+				it.append(JvmTypeReference.class);
+				it.append(" baseType = findType(context, pref.getType().getIdentifier());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal int len = pref.getArguments().size();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal "); //$NON-NLS-1$
+				it.append(JvmTypeReference.class);
+				it.append("[] args = new "); //$NON-NLS-1$
+				it.append(JvmTypeReference.class);
+				it.append("[len];"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfor (int i = 0; i < len; ++i) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfinal "); //$NON-NLS-1$
+				it.append(JvmTypeReference.class);
+				it.append(" original = pref.getArguments().get(i);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (original instanceof "); //$NON-NLS-1$
+				it.append(JvmAnyTypeReference.class);
+				it.append(") {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\targs[i] = "); //$NON-NLS-1$
+				it.append(EcoreUtil.class);
+				it.append(".copy(original);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t} else if (original instanceof "); //$NON-NLS-1$
+				it.append(JvmWildcardTypeReference.class);
+				it.append(") {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tfinal "); //$NON-NLS-1$
+				it.append(JvmWildcardTypeReference.class);
+				it.append(" wc = EcoreUtil.copy(("); //$NON-NLS-1$
+				it.append(JvmWildcardTypeReference.class);
+				it.append(") original);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tfor (final "); //$NON-NLS-1$
+				it.append(JvmTypeConstraint.class);
+				it.append(" c : wc.getConstraints()) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tc.setTypeReference(newTypeRef(context, c.getTypeReference().getIdentifier()));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\targs[i] = wc;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t} else {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\targs[i] = newTypeRef(context, original.getIdentifier());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal "); //$NON-NLS-1$
+				it.append(TypeReferences.class);
+				it.append(" typeRefs = getTypeReferences();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn typeRefs.createTypeRef(baseType.getType(), args);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-
 				it.append("\t/** Replies if the first parameter is a subtype of the second parameter."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t *"); //$NON-NLS-1$
@@ -532,6 +661,15 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append(" getImportManager() {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\treturn this.importManager;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprotected String getQualifiedName("); //$NON-NLS-1$
+				it.append(EObject.class);
+				it.append(" object) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn this.qualifiedNameProvider.getFullyQualifiedName(object).toString();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();

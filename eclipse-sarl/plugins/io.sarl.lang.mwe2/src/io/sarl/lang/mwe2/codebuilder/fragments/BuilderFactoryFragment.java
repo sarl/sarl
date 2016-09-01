@@ -23,7 +23,6 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 
 import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -34,7 +33,7 @@ import com.google.inject.Binding;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
-import com.google.inject.util.Modules;
+import com.google.inject.Module;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -43,6 +42,7 @@ import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.resource.IResourceFactory;
+import org.eclipse.xtext.util.Modules2;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -99,6 +99,34 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append("public class "); //$NON-NLS-1$
 				it.append(factory.getSimpleName());
 				it.append(" {"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprivate static final String[] FORBIDDEN_INJECTION_PREFIXES = new String[] {"); //$NON-NLS-1$
+				it.newLine();
+				for (final String forbiddenPackage : getCodeBuilderConfig().getForbiddenInjectionPrefixes()) {
+					it.append("\t\t\""); //$NON-NLS-1$
+					it.append(Strings.convertToJavaString(forbiddenPackage));
+					if (!forbiddenPackage.endsWith(".")) { //$NON-NLS-1$
+						it.append("."); //$NON-NLS-1$
+					}
+					it.append("\","); //$NON-NLS-1$
+					it.newLine();
+				}
+				it.append("\t};"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprivate static final String[] FORBIDDEN_INJECTION_POSTFIXES = new String[] {"); //$NON-NLS-1$
+				it.newLine();
+				for (final String forbiddenPostfix : getCodeBuilderConfig().getForbiddenInjectionPostfixes()) {
+					it.append("\t\t\""); //$NON-NLS-1$
+					if (!forbiddenPostfix.startsWith(".")) { //$NON-NLS-1$
+						it.append("."); //$NON-NLS-1$
+					}
+					it.append(Strings.convertToJavaString(forbiddenPostfix));
+					it.append("\","); //$NON-NLS-1$
+					it.newLine();
+				}
+				it.append("\t};"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -332,45 +360,99 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.append(ImportManager.class);
 				it.append(" importManager = this.importManagerProvider.get();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tfinal "); //$NON-NLS-1$
+				it.append("\t\t\tthis.builderInjector = createOverridingInjector(this.originalInjector, new CodeBuilderModule(importManager));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn builderInjector;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Create an injector that override the given injectors with the modules."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t *"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param originalInjector the original injector."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param modules the overriding modules."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the new injector."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tpublic static "); //$NON-NLS-1$
+				it.append(Injector.class);
+				it.append(" createOverridingInjector("); //$NON-NLS-1$
+				it.append(Injector.class);
+				it.append(" originalInjector, "); //$NON-NLS-1$
+				it.append(Module.class);
+				it.append(" module) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal "); //$NON-NLS-1$
 				it.append(Map.class);
 				it.append("<"); //$NON-NLS-1$
 				it.append(Key.class);
 				it.append("<?>, "); //$NON-NLS-1$
 				it.append(Binding.class);
-				it.append("<?>> bindings = this.originalInjector.getBindings();"); //$NON-NLS-1$
+				it.append("<?>> bindings = originalInjector.getBindings();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tthis.builderInjector = "); //$NON-NLS-1$
+				it.append("\t\treturn "); //$NON-NLS-1$
 				it.append(Guice.class);
 				it.append(".createInjector("); //$NON-NLS-1$
-				it.append(Modules.class);
-				it.append(".override((binder) -> {"); //$NON-NLS-1$
+				it.append(Modules2.class);
+				it.append(".mixin((binder) -> {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\tfor("); //$NON-NLS-1$
+				it.append("\t\t\tfor("); //$NON-NLS-1$
 				it.append(Binding.class);
 				it.append("<?> binding: bindings.values()) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\t\t"); //$NON-NLS-1$
+				it.append("\t\t\t\tfinal "); //$NON-NLS-1$
 				it.append(Type.class);
 				it.append(" typeLiteral = binding.getKey().getTypeLiteral().getType();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\t\tif (!"); //$NON-NLS-1$
-				it.append(Injector.class);
-				it.append(".class.equals(typeLiteral) && !"); //$NON-NLS-1$
-				it.append(Logger.class);
-				it.append(".class.equals(typeLiteral)) {"); //$NON-NLS-1$
+				it.append("\t\t\t\tif (typeLiteral != null) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\t\t\tbinding.applyTo(binder);"); //$NON-NLS-1$
+				it.append("\t\t\t\t\tfinal String typeName = typeLiteral.getTypeName();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\t\t}"); //$NON-NLS-1$
+				it.append("\t\t\t\t\tif (isValid(typeName)) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t\tbinding.applyTo(binder);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t}).with(new CodeBuilderModule(importManager)));"); //$NON-NLS-1$
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}, module));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();				
+				it.append("\tprivate static boolean isValid(String name) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfor (final String prefix : FORBIDDEN_INJECTION_PREFIXES) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (name.startsWith(prefix)) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\treturn false;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\treturn builderInjector;"); //$NON-NLS-1$
+				it.append("\t\tfor (final String postfix : FORBIDDEN_INJECTION_POSTFIXES) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (name.endsWith(postfix)) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\treturn false;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn true;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();

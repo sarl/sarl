@@ -67,7 +67,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 		if (this.sarlBehaviorUnit == null) {
 			this.container = container;
 			this.sarlBehaviorUnit = SarlFactory.eINSTANCE.createSarlBehaviorUnit();
-			this.sarlBehaviorUnit.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
+			this.sarlBehaviorUnit.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
 			this.sarlBehaviorUnit.setName(newTypeRef(container, name));
 			container.getMembers().add(this.sarlBehaviorUnit);
 		}

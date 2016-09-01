@@ -57,8 +57,8 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	 * @param container - the container of the SarlAction.
 	 * @param name - the name of the SarlAction.
 	 */
-	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
-		this.builder.eInit(container, name, context);
+	public void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context) {
+		this.builder.eInit(container, name, modifier, context);
 	}
 
 	/** Replies the generated element.

@@ -24,16 +24,13 @@
 package io.sarl.lang.codebuilder.appenders;
 
 import com.google.inject.Binding;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Named;
-import com.google.inject.util.Modules;
+import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
@@ -84,15 +81,7 @@ public abstract class AbstractSourceAppender {
 		final IJvmTypeProvider provider = getTypeResolutionContext();
 		if (provider != null) {
 			final Map<Key<?>, Binding<?>> bindings = this.originalInjector.getBindings();
-			Injector localInjector = Guice.createInjector(Modules.override((binder) -> {
-				for(Binding<?> binding: bindings.values()) {
-					Type typeLiteral = binding.getKey().getTypeLiteral().getType();
-					if (!Injector.class.equals(typeLiteral) && !Logger.class.equals(typeLiteral)) {
-						binding.applyTo(binder);
-					}
-				}
-			}).with((binder) ->
-					binder.bind(AbstractTypeScopeProvider.class).toInstance(AbstractSourceAppender.this.scopeProvider)));
+			Injector localInjector = CodeBuilderFactory.createOverridingInjector(this.originalInjector, (binder) -> binder.bind(AbstractTypeScopeProvider.class).toInstance(AbstractSourceAppender.this.scopeProvider));
 			final IScopeProvider oldDelegate = this.typeScopes.getDelegate();
 			localInjector.injectMembers(this.typeScopes);
 			try {

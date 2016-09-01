@@ -26,10 +26,20 @@ package io.sarl.lang.codebuilder.builders;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlScript;
+import java.util.function.Predicate;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.StringInputStream;
@@ -37,8 +47,10 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbaseFactory;
+import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -103,8 +115,38 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	 * @param expression the expression to compile.
 	 * @return the Sarl code.
 	 */
-	protected String generateExpressionCode(String expression) {
+	static String generateExpressionCode(String expression) {
 		return "event ____synthesis { var ____fakefield = " + expression + " }";
+	}
+
+	static String generateTypenameCode(String typeName) {
+		return "event ____synthesis { var ____fakefield : " + typeName + " }";
+	}
+
+	static JvmParameterizedTypeReference parseType(EObject context, String typeName, AbstractBuilder caller) {
+		ResourceSet resourceSet = context.eResource().getResourceSet();
+		URI uri = caller.computeUnusedUri(resourceSet);
+		Resource resource = caller.getResourceFactory().createResource(uri);
+		resourceSet.getResources().add(resource);
+		try (StringInputStream is = new StringInputStream(generateTypenameCode(typeName))) {
+			resource.load(is, null);
+			SarlScript script = resource.getContents().isEmpty() ? null : (SarlScript) resource.getContents().get(0);
+			SarlEvent topElement = (SarlEvent) script.getXtendTypes().get(0);
+			SarlField member = (SarlField) topElement.getMembers().get(0);
+			JvmTypeReference reference = member.getType();
+			if (reference instanceof JvmParameterizedTypeReference) {
+				final JvmParameterizedTypeReference pref = (JvmParameterizedTypeReference) reference;
+				if (!pref.getArguments().isEmpty()) {
+					EcoreUtil2.resolveAll(resource);
+					return pref;
+				}
+			}
+			throw new TypeNotPresentException(typeName, null);
+		} catch (Exception exception) {
+			throw new TypeNotPresentException(typeName, exception);
+		} finally {
+			resourceSet.getResources().remove(resource);
+		}
 	}
 
 	/** Create an expression but does not change the container.
@@ -235,10 +277,74 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 		return defaultValue;
 	}
 
+	/** Change the documentation of the element.
+	 *
+	 * <p>The documentation will be displayed just before the element.
+	 *
+	 * @param doc the documentation.
+	 */
+	public void setDocumentation(String doc) {
+		if (Strings.isEmpty(doc)) {
+			getXExpression().eAdapters().removeIf(new Predicate<Adapter>() {
+				public boolean test(Adapter adapter) {
+					return adapter.isAdapterForType(DocumentationAdapter.class);
+				}
+			});
+		} else {
+			DocumentationAdapter adapter = (DocumentationAdapter) EcoreUtil.getExistingAdapter(
+					getXExpression(), DocumentationAdapter.class);
+			if (adapter == null) {
+				adapter = new DocumentationAdapter();
+				getXExpression().eAdapters().add(adapter);
+			}
+			adapter.setDocumentation(doc);
+		}
+	}
+
 	@Override
 	@Pure
 	public String toString() {
 		return EmfFormatter.objToStr(getXExpression());
+	}
+
+	/** Create a reference to "this" object or to the current type.
+	 *
+	 * @return the reference.
+	 */
+	public XFeatureCall createReferenceToThis() {
+		final XExpression expr = getXExpression();
+		XtendTypeDeclaration type = EcoreUtil2.getContainerOfType(expr, XtendTypeDeclaration.class);
+		JvmType jvmObject = getAssociatedElement(JvmType.class, type, expr.eResource());
+		final XFeatureCall thisFeature = XbaseFactory.eINSTANCE.createXFeatureCall();
+		thisFeature.setFeature(jvmObject);
+		return thisFeature;
+	}
+
+	/** Create a reference to "super" object or to the super type.
+	 *
+	 * @return the reference.
+	 */
+	public XFeatureCall createReferenceToSuper() {
+		final XExpression expr = getXExpression();
+		XtendTypeDeclaration type = EcoreUtil2.getContainerOfType(expr, XtendTypeDeclaration.class);
+		JvmType jvmObject = getAssociatedElement(JvmType.class, type, expr.eResource());
+		final XFeatureCall superFeature = XbaseFactory.eINSTANCE.createXFeatureCall();
+		JvmIdentifiableElement feature;
+		if (jvmObject instanceof JvmDeclaredType) {
+			feature = ((JvmDeclaredType) jvmObject).getExtendedClass().getType();
+		} else {
+			feature = findType(expr, getQualifiedName(type)).getType();
+			if (feature instanceof JvmDeclaredType) {
+				feature = ((JvmDeclaredType) feature).getExtendedClass().getType();
+			} else {
+				feature = null;
+			}
+		}
+		if (feature == null) {
+			return null;
+		}
+		superFeature.setFeature(feature);
+		return superFeature;
 	}
 
 }

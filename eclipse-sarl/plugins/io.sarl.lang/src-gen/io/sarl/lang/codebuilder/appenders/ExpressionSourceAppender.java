@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -111,10 +112,36 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 		return this.builder.getDefaultValueForType(type);
 	}
 
+	/** Change the documentation of the element.
+	 *
+	 * <p>The documentation will be displayed just before the element.
+	 *
+	 * @param doc the documentation.
+	 */
+	public void setDocumentation(String doc) {
+		this.builder.setDocumentation(doc);
+	}
+
 	@Override
 	@Pure
 	public String toString() {
 		return this.builder.toString();
+	}
+
+	/** Create a reference to "this" object or to the current type.
+	 *
+	 * @return the reference.
+	 */
+	public XFeatureCall createReferenceToThis() {
+		return this.builder.createReferenceToThis();
+	}
+
+	/** Create a reference to "super" object or to the super type.
+	 *
+	 * @return the reference.
+	 */
+	public XFeatureCall createReferenceToSuper() {
+		return this.builder.createReferenceToSuper();
 	}
 
 }

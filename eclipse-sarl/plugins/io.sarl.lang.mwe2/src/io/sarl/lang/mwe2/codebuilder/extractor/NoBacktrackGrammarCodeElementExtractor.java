@@ -56,13 +56,14 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 	public Iterable<ElementDescription> getTopElements(Grammar grammar, CodeBuilderConfig config) {
 		final AbstractRule topRule = GrammarUtil.findRuleForName(grammar, config.getTopElementRuleName());
 		if (topRule != null) {
+			final EClassifier commonType = getGeneratedTypeFor(topRule);
 			final Iterable<Action> filteredElements = Iterables.filter(GrammarUtil.containedActions(topRule),
 					(it) -> !Strings.isEmpty(it.getFeature()));
 			return Iterables.transform(filteredElements, (it) -> {
 				final EClassifier classifier = it.getType().getClassifier();
 				final String name = classifier.getName();
 				final Group container = GrammarUtil.containingGroup(it);
-				return newElementDescription(name, container, classifier);
+				return newElementDescription(name, container, classifier, commonType);
 			});
 		}
 		return Collections.emptyList();

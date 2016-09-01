@@ -40,6 +40,7 @@ import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
+import org.eclipse.xtext.resource.DerivedStateAwareResource;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
@@ -930,6 +931,20 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append("\t\t\t\timportSection.getImportDeclarations().add(declaration);"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t"); //$NON-NLS-1$
+						it.append(Resource.class);
+						it.append(" resource = getScript().eResource();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tif (resource instanceof "); //$NON-NLS-1$
+						it.append(DerivedStateAwareResource.class);
+						it.append(") {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t(("); //$NON-NLS-1$
+						it.append(DerivedStateAwareResource.class);
+						it.append(") resource).discardDerivedState();"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t}"); //$NON-NLS-1$
 					}

@@ -96,20 +96,32 @@ public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 		StringBuilder documentation = new StringBuilder();
 		IDocumentationFormatter formatter = getDocumentationFormatter();
 		if (isMultilineCommentFor(objectType)) {
-			if (!doc.startsWith(this.mlStartSymbols)) {
+			if (!givenDocumentation.startsWith(this.mlStartSymbols)) {
 				documentation.append(this.mlStartSymbols);
 			}
 			documentation.append(givenDocumentation);
-			if (!doc.endsWith(this.mlEndTagSymbols)) {
+			if (!givenDocumentation.endsWith(this.mlEndTagSymbols)) {
 				documentation.append(this.mlEndTagSymbols);
 			}
 			return formatter.formatMultilineComment(documentation.toString());
 		}
-		if (!doc.startsWith(this.slStartSymbols)) {
+		documentation.append("\n");
+		if (!givenDocumentation.startsWith(this.slStartSymbols)) {
 			documentation.append(this.slStartSymbols);
 		}
 		documentation.append(givenDocumentation);
+		if (!givenDocumentation.isEmpty() && !isNewLine(givenDocumentation.charAt(givenDocumentation.length() - 1))) {
+			documentation.append("\n");
+		}
 		return formatter.formatSinglelineComment(documentation.toString());
+	}
+
+	private static boolean isNewLine(char character) {
+		if (character == '\n' || character == '\r' || character == '\f') {
+			return true;
+		}
+		return ((((1 << Character.LINE_SEPARATOR)
+				| (1 << Character.PARAGRAPH_SEPARATOR)) >> Character.getType((int) character)) & 1) != 0;
 	}
 
 }

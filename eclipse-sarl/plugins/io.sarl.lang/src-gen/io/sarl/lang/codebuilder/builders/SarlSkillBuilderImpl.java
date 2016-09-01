@@ -206,10 +206,29 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	 * @param name - the name of the SarlAction.
 	 * @return the builder.
 	 */
-	public ISarlActionBuilder addSarlAction(String name) {
+	public ISarlActionBuilder addDefSarlAction(String name) {
 		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
-		builder.eInit(getSarlSkill(), name, getTypeResolutionContext());
+		builder.eInit(getSarlSkill(), name, "def", getTypeResolutionContext());
 		return builder;
+	}
+
+	/** Create a SarlAction.
+	 * @param name - the name of the SarlAction.
+	 * @return the builder.
+	 */
+	public ISarlActionBuilder addOverrideSarlAction(String name) {
+		ISarlActionBuilder builder = this.iSarlActionBuilderProvider.get();
+		builder.eInit(getSarlSkill(), name, "override", getTypeResolutionContext());
+		return builder;
+	}
+
+	/** Create a SarlAction.	 *
+	 * <p>This function is equivalent to {@link #addDefSarlAction}.
+	 * @param name - the name of the SarlAction.
+	 * @return the builder.
+	 */
+	public ISarlActionBuilder addSarlAction(String name) {
+		return this.addDefSarlAction(name);
 	}
 
 	@Inject

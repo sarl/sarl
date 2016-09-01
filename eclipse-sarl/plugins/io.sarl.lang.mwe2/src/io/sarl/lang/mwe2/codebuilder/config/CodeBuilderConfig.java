@@ -22,6 +22,7 @@
 package io.sarl.lang.mwe2.codebuilder.config;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -127,6 +128,14 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	 */
 	private static final boolean XTEND_SUPPORT_ENABLED = true;
 
+	/** Default prefix for avoiding overriding of Google inject types.
+	 */
+	private static final String FORBIDDEN_GOOGLE_INJECT = "com.google.inject"; //$NON-NLS-1$
+
+	/** Default postfix for avoiding overriding of loggers.
+	 */
+	private static final String FORBIDDEN_LOGGER = "Logger"; //$NON-NLS-1$
+
 	private String scriptRuleName;
 
 	private String topElementRuleName;
@@ -188,6 +197,50 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	private final BooleanGeneratorOption generateUnitTests = new BooleanGeneratorOption(true);
 
 	private final ExpressionConfig expression = new ExpressionConfig();
+
+	private final Set<String> forbiddenInjectionPrefixes = new TreeSet<>(Collections.singleton(FORBIDDEN_GOOGLE_INJECT));
+
+	private final Set<String> forbiddenInjectionPostfixes = new TreeSet<>(Collections.singleton(FORBIDDEN_LOGGER));
+
+	/** Add a prefix of typenames that should not be considered for injection overriding.
+	 *
+	 * @param prefix the prefix.
+	 */
+	public void addForbiddenInjectionPrefix(String prefix) {
+		if (!Strings.isEmpty(prefix)) {
+			final String real = prefix.endsWith(".") ? prefix.substring(0, prefix.length() - 1) : prefix; //$NON-NLS-1$
+			this.forbiddenInjectionPrefixes.add(real);
+		}
+	}
+
+	/** Add a postfix of typenames that should not be considered for injection overriding.
+	 *
+	 * @param postfix the postfix.
+	 */
+	public void addForbiddenInjectionPostfixes(String postfix) {
+		if (!Strings.isEmpty(postfix)) {
+			final String real = postfix.startsWith(".") ? postfix.substring(1) : postfix; //$NON-NLS-1$
+			this.forbiddenInjectionPrefixes.add(real);
+		}
+	}
+
+	/** Replies the prefixes of typenames that should not be considered for injection overriding.
+	 *
+	 * @return the prefixes.
+	 */
+	@Pure
+	public Set<String> getForbiddenInjectionPrefixes() {
+		return this.forbiddenInjectionPrefixes;
+	}
+
+	/** Replies the postfixes of typenames that should not be considered for injection overriding.
+	 *
+	 * @return the postfixes.
+	 */
+	@Pure
+	public Set<String> getForbiddenInjectionPostfixes() {
+		return this.forbiddenInjectionPostfixes;
+	}
 
 	/** Add a type that should be commented with multiline comments.
 	 *

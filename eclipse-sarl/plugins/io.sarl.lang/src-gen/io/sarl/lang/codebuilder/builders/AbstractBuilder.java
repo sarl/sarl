@@ -31,19 +31,27 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
+import org.eclipse.xtext.common.types.JvmAnyTypeReference;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeConstraint;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.common.types.util.Primitives;
 import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.resource.DerivedStateAwareResource;
 import org.eclipse.xtext.resource.IResourceFactory;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.imports.IImportsConfiguration;
+import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
@@ -54,6 +62,11 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
  */
 @SuppressWarnings("all")
 public abstract class AbstractBuilder {
+
+	@Inject
+		private IQualifiedNameProvider qualifiedNameProvider;
+	@Inject
+	private JvmModelAssociator associations;
 
 	@Inject
 	private CommonTypeComputationServices services;
@@ -80,6 +93,20 @@ public abstract class AbstractBuilder {
 	@Inject
 	public void setFileExtensions(@Named(Constants.FILE_EXTENSIONS) String fileExtensions) {
 		this.fileExtension = fileExtensions.split("[:;,]+")[0];
+	}
+
+	protected <T> T getAssociatedElement(Class<T> expectedType, EObject dslObject, Resource resource) {
+		for (final EObject obj : this.associations.getJvmElements(dslObject)) {
+			if (expectedType.isInstance(obj)) {
+				return expectedType.cast(obj);
+			}
+		}
+		if (resource instanceof DerivedStateAwareResource) {
+			((DerivedStateAwareResource) resource).discardDerivedState();
+			resource.getContents();
+			return getAssociatedElement(expectedType, dslObject, null);
+		}
+		throw new IllegalStateException("No JvmFormalParameter associated to " + dslObject + " in " + dslObject.eContainer());
 	}
 
 	protected void setTypeResolutionContext(IJvmTypeProvider context) {
@@ -115,7 +142,7 @@ public abstract class AbstractBuilder {
 		return this.primitives;
 	}
 
-	protected JvmTypeReference findType(EObject context, String typeName) {
+	private JvmTypeReference innerFindType(EObject context, String typeName) {
 		final IJvmTypeProvider provider = getTypeResolutionContext();
 		JvmType type = null;
 		if (provider != null) {
@@ -126,31 +153,53 @@ public abstract class AbstractBuilder {
 			type = typeRefs.findDeclaredType(typeName, context);
 		}
 		if (type == null) {
-			throw new TypeNotPresentException(typeName, null);
+			return null;
 		}
-		JvmTypeReference typeReference = typeRefs.createTypeRef(type);
-		if (!isTypeReference(typeReference) && !getPrimitiveTypes().isPrimitive(typeReference)) {
+		return typeRefs.createTypeRef(type);
+	}
+
+	protected JvmTypeReference findType(EObject context, String typeName) {
+		final JvmTypeReference type = innerFindType(context, typeName);
+		if (!isTypeReference(type)) {
 			for (String packageName : getImportsConfiguration().getImplicitlyImportedPackages((XtextResource) context.eResource())) {
-				typeReference = findType(context, packageName + "." + typeName);
+				JvmTypeReference typeReference = innerFindType(context, packageName + "." + typeName);
 				if (isTypeReference(typeReference)) {
-					return (JvmParameterizedTypeReference) typeReference;
+					return typeReference;
 				}
 			}
-		}
-		if (!isTypeReference(typeReference)) {
 			throw new TypeNotPresentException(typeName, null);
 		}
-					return (JvmParameterizedTypeReference) typeReference;
+		return type;
 	}
 
 	protected JvmParameterizedTypeReference newTypeRef(EObject context, String typeName) {
-		JvmTypeReference typeReference = findType(context, typeName);
-		getImportManager().addImportFor(typeReference.getType());
-		return (JvmParameterizedTypeReference) typeReference;
-	}
-
-	protected JvmParameterizedTypeReference newTypeRef(EObject context, Class<?> jtype) {
-		return newTypeRef(context, jtype.getCanonicalName());
+		JvmTypeReference typeReference;
+		try {
+			typeReference = findType(context, typeName);
+			getImportManager().addImportFor(typeReference.getType());
+			return (JvmParameterizedTypeReference) typeReference;
+		} catch (TypeNotPresentException exception) {
+		}
+		final JvmParameterizedTypeReference pref = ExpressionBuilderImpl.parseType(context, typeName, this);
+		final JvmTypeReference baseType = findType(context, pref.getType().getIdentifier());
+		final int len = pref.getArguments().size();
+		final JvmTypeReference[] args = new JvmTypeReference[len];
+		for (int i = 0; i < len; ++i) {
+			final JvmTypeReference original = pref.getArguments().get(i);
+			if (original instanceof JvmAnyTypeReference) {
+				args[i] = EcoreUtil.copy(original);
+			} else if (original instanceof JvmWildcardTypeReference) {
+				final JvmWildcardTypeReference wc = EcoreUtil.copy((JvmWildcardTypeReference) original);
+				for (final JvmTypeConstraint c : wc.getConstraints()) {
+					c.setTypeReference(newTypeRef(context, c.getTypeReference().getIdentifier()));
+				}
+				args[i] = wc;
+			} else {
+				args[i] = newTypeRef(context, original.getIdentifier());
+			}
+		}
+		final TypeReferences typeRefs = getTypeReferences();
+		return typeRefs.createTypeRef(baseType.getType(), args);
 	}
 
 	/** Replies if the first parameter is a subtype of the second parameter.
@@ -230,6 +279,10 @@ public abstract class AbstractBuilder {
 	@Pure
 	protected ImportManager getImportManager() {
 		return this.importManager;
+	}
+
+	protected String getQualifiedName(EObject object) {
+		return this.qualifiedNameProvider.getFullyQualifiedName(object).toString();
 	}
 
 }

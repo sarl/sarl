@@ -29,8 +29,8 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import java.io.IOException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -72,10 +72,10 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 
 	/** Replies the JvmIdentifiable that corresponds to the formal parameter.
 	 *
-	 * @return the identifiable parameter.
+	 * @param container the feature call that is supposed to contains the replied identifiable element.
 	 */
-	public JvmIdentifiableElement getJvmIdentifiableElement() {
-		return this.builder.getJvmIdentifiableElement();
+	public void setReferenceInto(XFeatureCall container) {
+		this.builder.setReferenceInto(container);
 	}
 
 	/** Replies the resource to which the formal parameter is attached.

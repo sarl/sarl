@@ -28,11 +28,9 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmVoid;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -40,6 +38,7 @@ import org.eclipse.xtext.resource.IFragmentProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
@@ -368,7 +367,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t *"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @return the identifiable parameter."); //$NON-NLS-1$
+				it.append("\t * @param container the feature call that is supposed to contains the replied identifiable element."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -376,8 +375,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				if (!forInterface) {
 					it.append("public "); //$NON-NLS-1$
 				}
-				it.append(JvmIdentifiableElement.class);
-				it.append(" getJvmIdentifiableElement() "); //$NON-NLS-1$
+				it.append("void setReferenceInto("); //$NON-NLS-1$
+				it.append(XFeatureCall.class);
+				it.append(" container) "); //$NON-NLS-1$
 				if (forInterface) {
 					it.append(";"); //$NON-NLS-1$
 				} else {
@@ -385,7 +385,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 					it.newLine();
 					it.append("\t\t"); //$NON-NLS-1$
 					if (forAppender) {
-						it.append("return this.builder.getJvmIdentifiableElement();"); //$NON-NLS-1$
+						it.append("this.builder.setReferenceInto(container);"); //$NON-NLS-1$
 					} else {
 						it.append(JvmVoid.class);
 						it.append(" jvmVoid = this.jvmTypesFactory.createJvmVoid();"); //$NON-NLS-1$
@@ -394,39 +394,41 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 						it.append(InternalEObject.class);
 						it.append(") {"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\t\t"); //$NON-NLS-1$
+						it.append("\t\t\tfinal "); //$NON-NLS-1$
 						it.append(InternalEObject.class);
-						it.append(" iobject = ("); //$NON-NLS-1$
+						it.append("\t\t\tjvmVoidProxy = ("); //$NON-NLS-1$
 						it.append(InternalEObject.class);
 						it.append(") jvmVoid;"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\t\tfinal String fragment = "); //$NON-NLS-1$
-						it.append(EcoreUtil2.class);
-						it.append(".getURIFragment(getSarlFormalParameter());"); //$NON-NLS-1$
-						it.newLine();
-						it.append("\t\t\tiobject.eSetProxyURI("); //$NON-NLS-1$
-						it.append(URI.class);
-						it.append(".createHierarchicalURI(null, null, null, null, fragment));"); //$NON-NLS-1$
-						it.newLine();
 						it.append("\t\t\tfinal "); //$NON-NLS-1$
 						it.append(EObject.class);
-						it.append(" resolved = "); //$NON-NLS-1$
-						it.append(EcoreUtil.class);
-						it.append(".resolve(iobject, getSarlFormalParameter().eResource().getResourceSet());"); //$NON-NLS-1$
+						it.append(" param = getSarlFormalParameter();"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\t\tif (jvmVoid != resolved && resolved instanceof "); //$NON-NLS-1$
-						it.append(JvmIdentifiableElement.class);
-						it.append(") {"); //$NON-NLS-1$
+						it.append("\t\t\tfinal "); //$NON-NLS-1$
+						it.append(Resource.class);
+						it.append(" resource = param.eResource();"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\t\t\treturn ("); //$NON-NLS-1$
-						it.append(JvmIdentifiableElement.class);
-						it.append(") resolved;"); //$NON-NLS-1$
+						it.append("\t\t\t// Get the derived object"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\t\t}"); //$NON-NLS-1$
+						it.append("\t\t\tfinal "); //$NON-NLS-1$
+						it.append(parameter.getElementType());
+						it.append(" jvmParam = getAssociatedElement("); //$NON-NLS-1$
+						it.append(parameter.getElementType());
+						it.append(".class, param, resource);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t// Set the proxy URI"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tfinal "); //$NON-NLS-1$
+						it.append(URI.class);
+						it.append(" uri = "); //$NON-NLS-1$
+						it.append(EcoreUtil2.class);
+						it.append(".getNormalizedURI(jvmParam);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tjvmVoidProxy.eSetProxyURI(uri);"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t\t}"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t\treturn jvmVoid;"); //$NON-NLS-1$
+						it.append("\t\tcontainer.setFeature(jvmVoid);"); //$NON-NLS-1$
 					}
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$

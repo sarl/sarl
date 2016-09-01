@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.resource.DerivedStateAwareResource;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
@@ -108,6 +109,10 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 				}
 				importSection.getImportDeclarations().add(declaration);
 			}
+		}
+		Resource resource = getScript().eResource();
+		if (resource instanceof DerivedStateAwareResource) {
+			((DerivedStateAwareResource) resource).discardDerivedState();
 		}
 	}
 

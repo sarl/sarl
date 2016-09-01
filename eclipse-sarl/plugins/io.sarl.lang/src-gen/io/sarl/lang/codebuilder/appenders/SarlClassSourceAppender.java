@@ -157,6 +157,23 @@ public class SarlClassSourceAppender extends AbstractSourceAppender implements I
 	 * @param name - the name of the SarlAction.
 	 * @return the builder.
 	 */
+	public ISarlActionBuilder addDefSarlAction(String name) {
+		return this.builder.addDefSarlAction(name);
+	}
+
+	/** Create a SarlAction.
+	 * @param name - the name of the SarlAction.
+	 * @return the builder.
+	 */
+	public ISarlActionBuilder addOverrideSarlAction(String name) {
+		return this.builder.addOverrideSarlAction(name);
+	}
+
+	/** Create a SarlAction.	 *
+	 * <p>This function is equivalent to {@link #addDefSarlAction}.
+	 * @param name - the name of the SarlAction.
+	 * @return the builder.
+	 */
 	public ISarlActionBuilder addSarlAction(String name) {
 		return this.builder.addSarlAction(name);
 	}

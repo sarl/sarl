@@ -43,7 +43,7 @@ public interface ISarlActionBuilder {
 	 * @param container - the container of the SarlAction.
 	 * @param name - the name of the SarlAction.
 	 */
-	void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context);
+	void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context);
 
 	/** Replies the generated element.
 	 */

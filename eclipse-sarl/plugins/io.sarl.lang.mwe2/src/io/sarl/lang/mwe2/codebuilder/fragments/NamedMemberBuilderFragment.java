@@ -30,6 +30,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
@@ -67,6 +68,7 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 			for (final CodeElementExtractor.ElementDescription containerDescription : topElements) {
 				final AbstractRule rule = getMemberRule(containerDescription);
 				if (rule != null) {
+					final EClassifier commonSuperType = getCodeElementExtractor().getGeneratedTypeFor(rule);
 					getCodeElementExtractor().visitMemberElements(containerDescription, rule,
 							null,
 							(it, grammarContainer, memberContainer, classifier) -> {
@@ -74,7 +76,8 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 								MemberDescription memberDescription = NamedMemberBuilderFragment.this.members.get(memberName);
 								if (memberDescription == null) {
 									final CodeElementExtractor.ElementDescription elementDescription =
-											it.newElementDescription(classifier.getName(), memberContainer, classifier);
+											it.newElementDescription(classifier.getName(), memberContainer,
+													classifier, commonSuperType);
 									final List<String> modifiers = getCodeBuilderConfig().getModifiers()
 											.get(elementDescription.getElementType().getSimpleName());
 									memberDescription = new MemberDescription(

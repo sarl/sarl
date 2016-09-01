@@ -57,7 +57,6 @@ import org.eclipse.xtext.xtext.generator.XtextGeneratorNaming;
 import org.eclipse.xtext.xtext.generator.model.FileAccessFactory;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
-import org.eclipse.xtext.xtext.generator.util.GenModelUtil2;
 
 import io.sarl.lang.mwe2.codebuilder.config.CodeBuilderConfig;
 import io.sarl.lang.mwe2.codebuilder.config.ExpressionConfig;
@@ -308,6 +307,15 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		return getCodeElementExtractor().getElementBuilderInterface("Expression"); //$NON-NLS-1$
 	}
 
+	/** Replies the implementation for the expression builder.
+	 *
+	 * @return the implementation.
+	 */
+	@Pure
+	public TypeReference getExpressionBuilderImpl() {
+		return getCodeElementExtractor().getElementBuilderImpl("Expression"); //$NON-NLS-1$
+	}
+
 	/** Replies the interface for the block expression builder.
 	 *
 	 * @return the interface.
@@ -385,6 +393,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		if (reference != null) {
 			return reference;
 		}
+
 		for (final Grammar usedGrammar : GrammarUtil.allUsedGrammars(grammar)) {
 			reference = getXFactoryFor(packageName, usedGrammar);
 			if (reference != null) {
@@ -401,19 +410,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	@Pure
 	protected TypeReference getXFactoryFor(Class<?> type) {
-		final String packageName = type.getPackage().getName();
-		final Grammar grammar = getGrammar();
-		TypeReference reference = getXFactoryFor(packageName, grammar);
-		if (reference != null) {
-			return reference;
-		}
-		for (final Grammar usedGrammar : GrammarUtil.allUsedGrammars(grammar)) {
-			reference = getXFactoryFor(packageName, usedGrammar);
-			if (reference != null) {
-				return reference;
-			}
-		}
-		throw new IllegalStateException("Cannot find the XFactory for " + type); //$NON-NLS-1$
+		return getXFactoryFor(new TypeReference(type));
 	}
 
 	private TypeReference getXFactoryFor(String packageName, Grammar grammar) {
@@ -607,16 +604,11 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 *
 	 * @param classifier the classifier.
 	 * @return the fully qualified name for the given classifier.
+	 * @deprecated see {@link CodeElementExtractor#newTypeReference(EClassifier)}
 	 */
-	protected static TypeReference newTypeReference(EClassifier classifier) {
-		if (classifier == null) {
-			return new TypeReference(Object.class);
-		}
-		final String name = GenModelUtil2.getJavaTypeName(classifier, classifier.eResource().getResourceSet());
-		if (Strings.isEmpty(name)) {
-			return new TypeReference(Object.class);
-		}
-		return new TypeReference(name);
+	@Deprecated
+	protected TypeReference newTypeReference(EClassifier classifier) {
+		return getCodeElementExtractor().newTypeReference(classifier);
 	}
 
 	/** Replies the "an" or "a" article according to the given word.

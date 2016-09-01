@@ -25,6 +25,7 @@ import java.util.Collections;
 
 import javax.inject.Inject;
 
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
@@ -56,10 +57,11 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 					getGrammar(), getCodeBuilderConfig())) {
 				final AbstractRule rule = getMemberRule(containerDescription);
 				if (rule != null) {
+					final EClassifier commonSuperType = getCodeElementExtractor().getGeneratedTypeFor(rule);
 					this.constructor = getCodeElementExtractor().visitMemberElements(containerDescription, rule,
 						(it, grammarContainer, memberContainer, classifier) -> {
 							final CodeElementExtractor.ElementDescription memberDescription = it.newElementDescription(
-									classifier.getName(), memberContainer, classifier);
+									classifier.getName(), memberContainer, classifier, commonSuperType);
 							return new MemberDescription(memberDescription, containerDescription, false,
 									memberDescription.isAnnotationInfo(), null);
 						},

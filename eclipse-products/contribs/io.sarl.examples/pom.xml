@@ -15,8 +15,8 @@
 
 	<modules>
 		<module>io.sarl.examples.plugin</module>
-		<module>io.sarl.examples.tests</module>
 		<module>io.sarl.examples.feature</module>
+		<module>io.sarl.examples.tests</module>
 	</modules>
 
 </project>

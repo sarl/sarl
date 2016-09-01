@@ -181,6 +181,10 @@ Workflow {
 					type = "SarlSkill"
 					super = "io.sarl.lang.core.Skill"
 				}
+				defaultSuper = {
+					type = "SarlSpace"
+					super = "io.sarl.lang.core.Space"
+				}
 				noActionBodyType = "SarlCapacity"
 				noActionBodyType = "SarlEvent"
 				noActionBodyType = "SarlAnnotationType"
@@ -188,6 +192,7 @@ Workflow {
 				modifier = {
 					type = "SarlAction"
 					modifier = "def"
+					modifier = "override"
 				}
 				modifier = {
 					type = "SarlField"

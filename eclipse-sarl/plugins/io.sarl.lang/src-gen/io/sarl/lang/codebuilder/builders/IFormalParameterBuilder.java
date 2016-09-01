@@ -26,8 +26,8 @@ package io.sarl.lang.codebuilder.builders;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Builder of a Sarl formal parameter.
@@ -55,9 +55,9 @@ public interface IFormalParameterBuilder {
 
 	/** Replies the JvmIdentifiable that corresponds to the formal parameter.
 	 *
-	 * @return the identifiable parameter.
+	 * @param container the feature call that is supposed to contains the replied identifiable element.
 	 */
-	JvmIdentifiableElement getJvmIdentifiableElement() ;
+	void setReferenceInto(XFeatureCall container) ;
 
 	/** Replies the resource to which the formal parameter is attached.
 	 */

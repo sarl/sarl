@@ -32,10 +32,17 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Assignment;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.Keyword;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.StringInputStream;
@@ -43,6 +50,7 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.lib.Procedures;
@@ -64,15 +72,6 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 
 	@Inject
 	private BuilderFactoryContributions builderFactoryContributions;
-
-	/** Replies the implementation for the expression builder.
-	 *
-	 * @return the implementation.
-	 */
-	@Pure
-	public TypeReference getExpressionBuilderImpl() {
-		return getCodeElementExtractor().getElementBuilderImpl("Expression"); //$NON-NLS-1$
-	}
 
 	/** Replies the custom implementation for the expression builder.
 	 *
@@ -431,7 +430,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\tprotected String generateExpressionCode(String expression) {"); //$NON-NLS-1$
+					it.append("\tstatic String generateExpressionCode(String expression) {"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\treturn \""); //$NON-NLS-1$
 					it.append(expressionContext.getContainerKeyword());
@@ -442,6 +441,116 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
 					it.newLine();
+					it.append("\tstatic String generateTypenameCode(String typeName) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\treturn \""); //$NON-NLS-1$
+					it.append(expressionContext.getContainerKeyword());
+					it.append(" ____synthesis { "); //$NON-NLS-1$
+					it.append(expressionContext.getFieldDeclarationKeyword());
+					it.append(" ____fakefield : \" + typeName + \" }\";"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+					it.append("\tstatic "); //$NON-NLS-1$
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" parseType("); //$NON-NLS-1$
+					it.append(EObject.class);
+					it.append(" context, String typeName, "); //$NON-NLS-1$
+					it.append(getAbstractBuilderImpl());
+					it.append(" caller) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					it.append(ResourceSet.class);
+					it.append(" resourceSet = context.eResource().getResourceSet();"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					it.append(URI.class);
+					it.append(" uri = caller.computeUnusedUri(resourceSet);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					it.append(Resource.class);
+					it.append(" resource = caller.getResourceFactory().createResource(uri);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tresourceSet.getResources().add(resource);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\ttry ("); //$NON-NLS-1$
+					it.append(StringInputStream.class);
+					it.append(" is = new "); //$NON-NLS-1$
+					it.append(StringInputStream.class);
+					it.append("(generateTypenameCode(typeName))) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\tresource.load(is, null);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\t"); //$NON-NLS-1$
+					it.append(getCodeElementExtractor().getLanguageScriptInterface());
+					it.append(" script = resource.getContents().isEmpty() ? null : ("); //$NON-NLS-1$
+					it.append(getCodeElementExtractor().getLanguageScriptInterface());
+					it.append(") resource.getContents().get(0);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\t"); //$NON-NLS-1$
+					it.append(expressionContext.getContainerDescription().getElementType());
+					it.append(" topElement = ("); //$NON-NLS-1$
+					it.append(expressionContext.getContainerDescription().getElementType());
+					it.append(") script."); //$NON-NLS-1$
+					it.append(getLanguageScriptMemberGetter());
+					it.append("().get(0);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\t"); //$NON-NLS-1$
+					it.append(expressionContext.getMemberDescription().getElementType());
+					it.append(" member = ("); //$NON-NLS-1$
+					it.append(expressionContext.getMemberDescription().getElementType());
+					it.append(") topElement.get"); //$NON-NLS-1$
+					it.append(Strings.toFirstUpper(getCodeBuilderConfig().getMemberCollectionExtensionGrammarName()));
+					it.append("().get(0);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\t"); //$NON-NLS-1$
+					it.append(JvmTypeReference.class);
+					it.append(" reference = member.getType();"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\tif (reference instanceof "); //$NON-NLS-1$
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(") {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\t\tfinal "); //$NON-NLS-1$
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(" pref = ("); //$NON-NLS-1$
+					it.append(JvmParameterizedTypeReference.class);
+					it.append(") reference;"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\t\tif (!pref.getArguments().isEmpty()) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\t\t\t"); //$NON-NLS-1$
+					it.append(EcoreUtil2.class);
+					it.append(".resolveAll(resource);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\t\t\treturn pref;"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\t\t}"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\t}"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\tthrow new "); //$NON-NLS-1$
+					it.append(TypeNotPresentException.class);
+					it.append("(typeName, null);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t} catch ("); //$NON-NLS-1$
+					it.append(Exception.class);
+					it.append(" exception) {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\tthrow new "); //$NON-NLS-1$
+					it.append(TypeNotPresentException.class);
+					it.append("(typeName, exception);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t} finally {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t\tresourceSet.getResources().remove(resource);"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t}"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();					
 					it.append("\t/** Create an expression but does not change the container."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t *"); //$NON-NLS-1$
@@ -783,6 +892,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				}
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append(generateStandardCommentFunctions(forInterface, forAppender, "getXExpression()")); //$NON-NLS-1$
 				if (!forInterface) {
 					it.append("\t@"); //$NON-NLS-1$
 					it.append(Override.class);
@@ -806,6 +916,157 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLineIfNotEmpty();
 					it.newLine();
 				}
+				it.append("\t/** Create a reference to \"this\" object or to the current type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t *"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the reference."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t"); //$NON-NLS-1$
+				if (!forInterface) {
+					it.append("public "); //$NON-NLS-1$
+				}
+				it.append(XFeatureCall.class);
+				it.append(" createReferenceToThis()"); //$NON-NLS-1$
+				if (forInterface) {
+					it.append(";"); //$NON-NLS-1$
+				} else {
+					it.append(" {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("return this.builder.createReferenceToThis();"); //$NON-NLS-1$
+					} else {
+						it.append("final "); //$NON-NLS-1$
+						it.append(XExpression.class);
+						it.append(" expr = getXExpression();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t"); //$NON-NLS-1$
+						it.append(XtendTypeDeclaration.class);
+						it.append(" type = "); //$NON-NLS-1$
+						it.append(EcoreUtil2.class);
+						it.append(".getContainerOfType(expr, "); //$NON-NLS-1$
+						it.append(XtendTypeDeclaration.class);
+						it.append(".class);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t"); //$NON-NLS-1$
+						it.append(JvmType.class);
+						it.append(" jvmObject = getAssociatedElement("); //$NON-NLS-1$
+						it.append(JvmType.class);
+						it.append(".class, type, expr.eResource());"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tfinal "); //$NON-NLS-1$
+						it.append(XFeatureCall.class);
+						it.append(" thisFeature = "); //$NON-NLS-1$
+						it.append(XbaseFactory.class);
+						it.append(".eINSTANCE.createXFeatureCall();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tthisFeature.setFeature(jvmObject);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn thisFeature;"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+				}
+				it.newLineIfNotEmpty();
+				it.newLine();
+
+				it.append("\t/** Create a reference to \"super\" object or to the super type."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t *"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the reference."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t"); //$NON-NLS-1$
+				if (!forInterface) {
+					it.append("public "); //$NON-NLS-1$
+				}
+				it.append(XFeatureCall.class);
+				it.append(" createReferenceToSuper()"); //$NON-NLS-1$
+				if (forInterface) {
+					it.append(";"); //$NON-NLS-1$
+				} else {
+					it.append(" {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\t"); //$NON-NLS-1$
+					if (forAppender) {
+						it.append("return this.builder.createReferenceToSuper();"); //$NON-NLS-1$
+					} else {
+						it.append("final "); //$NON-NLS-1$
+						it.append(XExpression.class);
+						it.append(" expr = getXExpression();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t"); //$NON-NLS-1$
+						it.append(XtendTypeDeclaration.class);
+						it.append(" type = "); //$NON-NLS-1$
+						it.append(EcoreUtil2.class);
+						it.append(".getContainerOfType(expr, "); //$NON-NLS-1$
+						it.append(XtendTypeDeclaration.class);
+						it.append(".class);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t"); //$NON-NLS-1$
+						it.append(JvmType.class);
+						it.append(" jvmObject = getAssociatedElement("); //$NON-NLS-1$
+						it.append(JvmType.class);
+						it.append(".class, type, expr.eResource());"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tfinal "); //$NON-NLS-1$
+						it.append(XFeatureCall.class);
+						it.append(" superFeature = "); //$NON-NLS-1$
+						it.append(XbaseFactory.class);
+						it.append(".eINSTANCE.createXFeatureCall();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t"); //$NON-NLS-1$
+						it.append(JvmIdentifiableElement.class);
+						it.append(" feature;"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tif (jvmObject instanceof "); //$NON-NLS-1$
+						it.append(JvmDeclaredType.class);
+						it.append(") {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tfeature = (("); //$NON-NLS-1$
+						it.append(JvmDeclaredType.class);
+						it.append(") jvmObject).getExtendedClass().getType();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t} else {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tfeature = findType(expr, getQualifiedName(type)).getType();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\tif (feature instanceof "); //$NON-NLS-1$
+						it.append(JvmDeclaredType.class);
+						it.append(") {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\tfeature = (("); //$NON-NLS-1$
+						it.append(JvmDeclaredType.class);
+						it.append(") feature).getExtendedClass().getType();"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t} else {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t\tfeature = null;"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tif (feature == null) {"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t\treturn null;"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\t}"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\tsuperFeature.setFeature(feature);"); //$NON-NLS-1$
+						it.newLine();
+						it.append("\t\treturn superFeature;"); //$NON-NLS-1$
+					}
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+				}
+				it.newLineIfNotEmpty();
+				it.newLine();
 			}
 		};
 	}
@@ -854,7 +1115,8 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 									memberContainer,
 									getExpressionConfig().getExpressionGrammarPattern());
 							final CodeElementExtractor.ElementDescription memberDescription =
-									it.newElementDescription(classifier.getName(), memberContainer, classifier);
+									it.newElementDescription(classifier.getName(), memberContainer,
+											classifier, XExpression.class);
 							return new ExpressionContextDescription(
 									containerDescription,
 									memberDescription,

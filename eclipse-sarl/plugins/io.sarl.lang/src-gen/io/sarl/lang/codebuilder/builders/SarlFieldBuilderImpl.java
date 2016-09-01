@@ -66,7 +66,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 		if (this.sarlField == null) {
 			this.container = container;
 			this.sarlField = SarlFactory.eINSTANCE.createSarlField();
-			this.sarlField.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
+			this.sarlField.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
 			this.sarlField.setName(name);
 			if (Strings.equal(modifier, "var")
 				|| Strings.equal(modifier, "val")) {

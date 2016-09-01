@@ -34,7 +34,6 @@ import javax.inject.Provider;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.GrammarUtil;
@@ -410,12 +409,13 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 						it.append("();"); //$NON-NLS-1$
 						it.newLine();
 						if (description.isAnnotationInfo()) {
+							final TypeReference commonSuperType = description.getElementDescription().getCommonSuperType();
 							it.append("\t\t\tthis."); //$NON-NLS-1$
 							it.append(generatedFieldName);
 							it.append(".setAnnotationInfo("); //$NON-NLS-1$
-							it.append(getXFactoryFor(XtendTypeDeclaration.class));
+							it.append(getXFactoryFor(commonSuperType));
 							it.append(".eINSTANCE.create"); //$NON-NLS-1$
-							it.append(XtendTypeDeclaration.class.getSimpleName());
+							it.append(Strings.toFirstUpper(commonSuperType.getSimpleName()));
 							it.append("());"); //$NON-NLS-1$
 							it.newLine();
 						}

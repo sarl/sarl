@@ -23,20 +23,16 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.google.inject.Binding;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
-import com.google.inject.util.Modules;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -222,38 +218,13 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append("\t\t\t"); //$NON-NLS-1$
 				it.append(Injector.class);
 				it.append(" localInjector = "); //$NON-NLS-1$
-				it.append(Guice.class);
-				it.append(".createInjector("); //$NON-NLS-1$
-				it.append(Modules.class);
-				it.append(".override((binder) -> {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tfor("); //$NON-NLS-1$
-				it.append(Binding.class);
-				it.append("<?> binding: bindings.values()) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t"); //$NON-NLS-1$
-				it.append(Type.class);
-				it.append(" typeLiteral = binding.getKey().getTypeLiteral().getType();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tif (!"); //$NON-NLS-1$
-				it.append(Injector.class);
-				it.append(".class.equals(typeLiteral) && !"); //$NON-NLS-1$
-				it.append(Logger.class);
-				it.append(".class.equals(typeLiteral)) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t\tbinding.applyTo(binder);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t}).with((binder) ->"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tbinder.bind("); //$NON-NLS-1$
+				it.append(getBuilderFactoryImpl());
+				it.append(".createOverridingInjector(this.originalInjector, "); //$NON-NLS-1$
+				it.append("(binder) -> binder.bind("); //$NON-NLS-1$
 				it.append(AbstractTypeScopeProvider.class);
 				it.append(".class).toInstance("); //$NON-NLS-1$
 				it.append(abstractAppender.getSimpleName());
-				it.append(".this.scopeProvider)));"); //$NON-NLS-1$
+				it.append(".this.scopeProvider));"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tfinal "); //$NON-NLS-1$
 				it.append(IScopeProvider.class);

@@ -35,10 +35,10 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import com.google.inject.Injector;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.Assignment;
@@ -647,7 +647,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 			if (rule != null) {
 				getCodeElementExtractor().visitMemberElements(containerDescription, rule, null,
 					(it, grammarContainer, memberContainer, classifier) -> {
-						memberElements.add(newTypeReference(classifier).getName());
+						memberElements.add(getCodeElementExtractor().newTypeReference(classifier).getName());
 						return null;
 					});
 			}
@@ -727,13 +727,16 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 		}
 
 		if (memberRule != null) {
+			final EClassifier commonSuperClassifier = getCodeElementExtractor().getGeneratedTypeFor(memberRule);
 			getCodeElementExtractor().visitMemberElements(description.getElementDescription(), memberRule,
 					(it, grammarContainer, memberContainer, classifier) -> {
-						description.getConstructors().add(it.newElementDescription(classifier.getName(), memberContainer, classifier));
+						description.getConstructors().add(it.newElementDescription(
+								classifier.getName(), memberContainer, classifier, commonSuperClassifier));
 						return null;
 					},
 					(it, grammarContainer, memberContainer, classifier) -> {
-						description.getNamedMembers().add(it.newElementDescription(classifier.getName(), memberContainer, classifier));
+						description.getNamedMembers().add(it.newElementDescription(
+								classifier.getName(), memberContainer, classifier, commonSuperClassifier));
 						return null;
 					});
 		}
@@ -853,12 +856,13 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append(");"); //$NON-NLS-1$
 						it.newLine();
 						if (description.isAnnotationInfo()) {
+							final TypeReference commonType = description.getElementDescription().getCommonSuperType();
 							it.append("\t\t\tthis."); //$NON-NLS-1$
 							it.append(generatedObjectFieldName);
 							it.append(".setAnnotationInfo("); //$NON-NLS-1$
-							it.append(getXFactoryFor(XtendTypeDeclaration.class));
+							it.append(getXFactoryFor(commonType));
 							it.append(".eINSTANCE.create"); //$NON-NLS-1$
-							it.append(XtendTypeDeclaration.class.getSimpleName());
+							it.append(Strings.toFirstUpper(commonType.getSimpleName()));
 							it.append("());"); //$NON-NLS-1$
 							it.newLine();
 						}

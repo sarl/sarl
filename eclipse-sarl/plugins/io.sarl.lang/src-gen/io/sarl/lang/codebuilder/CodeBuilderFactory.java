@@ -28,7 +28,7 @@ import com.google.inject.Binding;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
-import com.google.inject.util.Modules;
+import com.google.inject.Module;
 import io.sarl.lang.codebuilder.appenders.BlockExpressionSourceAppender;
 import io.sarl.lang.codebuilder.appenders.ExpressionSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlActionSourceAppender;
@@ -67,7 +67,6 @@ import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
 import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
@@ -77,12 +76,21 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.resource.IResourceFactory;
+import org.eclipse.xtext.util.Modules2;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** * Creates {@link ICodeBuilder}s to insert SARL code snippets. */
 @SuppressWarnings("all")
 public class CodeBuilderFactory {
+
+	private static final String[] FORBIDDEN_INJECTION_PREFIXES = new String[] {
+		"com.google.inject.",
+	};
+
+	private static final String[] FORBIDDEN_INJECTION_POSTFIXES = new String[] {
+		".Logger",
+	};
 
 	@Inject
 	private IResourceFactory resourceFactory;
@@ -181,17 +189,44 @@ public class CodeBuilderFactory {
 	protected Injector getInjector() {
 		if (this.builderInjector == null) {
 			ImportManager importManager = this.importManagerProvider.get();
-			final Map<Key<?>, Binding<?>> bindings = this.originalInjector.getBindings();
-			this.builderInjector = Guice.createInjector(Modules.override((binder) -> {
-					for(Binding<?> binding: bindings.values()) {
-						Type typeLiteral = binding.getKey().getTypeLiteral().getType();
-						if (!Injector.class.equals(typeLiteral) && !Logger.class.equals(typeLiteral)) {
-							binding.applyTo(binder);
-						}
-					}
-				}).with(new CodeBuilderModule(importManager)));
+			this.builderInjector = createOverridingInjector(this.originalInjector, new CodeBuilderModule(importManager));
 		}
 		return builderInjector;
+	}
+
+	/** Create an injector that override the given injectors with the modules.
+	 *
+	 * @param originalInjector the original injector.
+	 * @param modules the overriding modules.
+	 * @return the new injector.
+	 */
+	public static Injector createOverridingInjector(Injector originalInjector, Module module) {
+		final Map<Key<?>, Binding<?>> bindings = originalInjector.getBindings();
+		return Guice.createInjector(Modules2.mixin((binder) -> {
+			for(Binding<?> binding: bindings.values()) {
+				final Type typeLiteral = binding.getKey().getTypeLiteral().getType();
+				if (typeLiteral != null) {
+					final String typeName = typeLiteral.getTypeName();
+					if (isValid(typeName)) {
+						binding.applyTo(binder);
+					}
+				}
+			}
+		}, module));
+	}
+
+	private static boolean isValid(String name) {
+		for (final String prefix : FORBIDDEN_INJECTION_PREFIXES) {
+			if (name.startsWith(prefix)) {
+				return false;
+			}
+		}
+		for (final String postfix : FORBIDDEN_INJECTION_POSTFIXES) {
+			if (name.endsWith(postfix)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/** Replies a provider for the given type.
@@ -937,8 +972,8 @@ public class CodeBuilderFactory {
 	 * @return the factory.
 	 */
 	@Pure
-	public ISarlActionBuilder createSarlAction(String name, ResourceSet resourceSet) {
-		return createSarlAction(name, createResource(resourceSet));
+	public ISarlActionBuilder createDefSarlAction(String name, ResourceSet resourceSet) {
+		return createDefSarlAction(name, createResource(resourceSet));
 	}
 
 	/** Create the factory for a Sarl SarlAction.
@@ -948,10 +983,10 @@ public class CodeBuilderFactory {
 	 * @return the factory.
 	 */
 	@Pure
-	public ISarlActionBuilder createSarlAction(String name, Resource resource) {
+	public ISarlActionBuilder createDefSarlAction(String name, Resource resource) {
 		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
 		ISarlCapacityBuilder containerBuilder = scriptBuilder.addSarlCapacity(getFooTypeName());
-		return containerBuilder.addSarlAction(name);
+		return containerBuilder.addDefSarlAction(name);
 	}
 
 	/** Create the appender for a Sarl SarlAction.
@@ -961,8 +996,8 @@ public class CodeBuilderFactory {
 	 * @return the appender.
 	 */
 	@Pure
-	public SarlActionSourceAppender buildSarlAction(String name, ResourceSet resourceSet) {
-		SarlActionSourceAppender a = new SarlActionSourceAppender(createSarlAction(name, resourceSet));
+	public SarlActionSourceAppender buildDefSarlAction(String name, ResourceSet resourceSet) {
+		SarlActionSourceAppender a = new SarlActionSourceAppender(createDefSarlAction(name, resourceSet));
 		getInjector().injectMembers(a);
 		return a;
 	}
@@ -974,8 +1009,58 @@ public class CodeBuilderFactory {
 	 * @return the appender.
 	 */
 	@Pure
-	public SarlActionSourceAppender buildSarlAction(String name, Resource resource) {
-		SarlActionSourceAppender a = new SarlActionSourceAppender(createSarlAction(name, resource));
+	public SarlActionSourceAppender buildDefSarlAction(String name, Resource resource) {
+		SarlActionSourceAppender a = new SarlActionSourceAppender(createDefSarlAction(name, resource));
+		getInjector().injectMembers(a);
+		return a;
+	}
+
+	/** Create the factory for a Sarl SarlAction.
+	 * @param name the name of the SarlAction
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlActionBuilder createOverrideSarlAction(String name, ResourceSet resourceSet) {
+		return createOverrideSarlAction(name, createResource(resourceSet));
+	}
+
+	/** Create the factory for a Sarl SarlAction.
+	 * @param name the name of the SarlAction
+	 * @param resource the resource that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlActionBuilder createOverrideSarlAction(String name, Resource resource) {
+		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
+		ISarlCapacityBuilder containerBuilder = scriptBuilder.addSarlCapacity(getFooTypeName());
+		return containerBuilder.addOverrideSarlAction(name);
+	}
+
+	/** Create the appender for a Sarl SarlAction.
+	 * @param name the name of the SarlAction
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlActionSourceAppender buildOverrideSarlAction(String name, ResourceSet resourceSet) {
+		SarlActionSourceAppender a = new SarlActionSourceAppender(createOverrideSarlAction(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
+	}
+
+	/** Create the appender for a Sarl SarlAction.
+	 * @param name the name of the SarlAction
+	 * @param resource the resource that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlActionSourceAppender buildOverrideSarlAction(String name, Resource resource) {
+		SarlActionSourceAppender a = new SarlActionSourceAppender(createOverrideSarlAction(name, resource));
 		getInjector().injectMembers(a);
 		return a;
 	}

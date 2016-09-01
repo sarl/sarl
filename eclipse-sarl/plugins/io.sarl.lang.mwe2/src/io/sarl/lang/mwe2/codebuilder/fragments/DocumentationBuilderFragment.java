@@ -2071,7 +2071,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\tif (isMultilineCommentFor(objectType)) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tif (!doc.startsWith(this.mlStartSymbols)) {"); //$NON-NLS-1$
+				it.append("\t\t\tif (!givenDocumentation.startsWith(this.mlStartSymbols)) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\tdocumentation.append(this.mlStartSymbols);"); //$NON-NLS-1$
 				it.newLine();
@@ -2079,7 +2079,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t\tdocumentation.append(givenDocumentation);"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tif (!doc.endsWith(this.mlEndTagSymbols)) {"); //$NON-NLS-1$
+				it.append("\t\t\tif (!givenDocumentation.endsWith(this.mlEndTagSymbols)) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\tdocumentation.append(this.mlEndTagSymbols);"); //$NON-NLS-1$
 				it.newLine();
@@ -2089,7 +2089,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tif (!doc.startsWith(this.slStartSymbols)) {"); //$NON-NLS-1$
+				it.append("\t\tdocumentation.append(\"\\n\");"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (!givenDocumentation.startsWith(this.slStartSymbols)) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tdocumentation.append(this.slStartSymbols);"); //$NON-NLS-1$
 				it.newLine();
@@ -2097,7 +2099,34 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\tdocumentation.append(givenDocumentation);"); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t\tif (!givenDocumentation.isEmpty() && !isNewLine(givenDocumentation.charAt(givenDocumentation.length() - 1))) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tdocumentation.append(\"\\n\");"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
 				it.append("\t\treturn formatter.formatSinglelineComment(documentation.toString());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprivate static boolean isNewLine(char character) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (character == '\\n' || character == '\\r' || character == '\\f') {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn true;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn ((((1 << "); //$NON-NLS-1$
+				it.append(Character.class);
+				it.append(".LINE_SEPARATOR)"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t| (1 << "); //$NON-NLS-1$
+				it.append(Character.class);
+				it.append(".PARAGRAPH_SEPARATOR)) >> "); //$NON-NLS-1$
+				it.append(Character.class);
+				it.append(".getType((int) character)) & 1) != 0;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();

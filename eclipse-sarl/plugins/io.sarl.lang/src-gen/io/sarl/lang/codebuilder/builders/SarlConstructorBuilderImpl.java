@@ -64,7 +64,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 		if (this.sarlConstructor == null) {
 			this.container = container;
 			this.sarlConstructor = SarlFactory.eINSTANCE.createSarlConstructor();
-			this.sarlConstructor.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendTypeDeclaration());
+			this.sarlConstructor.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
 			container.getMembers().add(this.sarlConstructor);
 		}
 	}

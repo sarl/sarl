@@ -31,10 +31,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmVoid;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
@@ -42,6 +40,7 @@ import org.eclipse.xtext.resource.IFragmentProvider;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -89,20 +88,21 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
 
 	/** Replies the JvmIdentifiable that corresponds to the formal parameter.
 	 *
-	 * @return the identifiable parameter.
+	 * @param container the feature call that is supposed to contains the replied identifiable element.
 	 */
-	public JvmIdentifiableElement getJvmIdentifiableElement() {
+	public void setReferenceInto(XFeatureCall container) {
 		JvmVoid jvmVoid = this.jvmTypesFactory.createJvmVoid();
 		if (jvmVoid instanceof InternalEObject) {
-			InternalEObject iobject = (InternalEObject) jvmVoid;
-			final String fragment = EcoreUtil2.getURIFragment(getSarlFormalParameter());
-			iobject.eSetProxyURI(URI.createHierarchicalURI(null, null, null, null, fragment));
-			final EObject resolved = EcoreUtil.resolve(iobject, getSarlFormalParameter().eResource().getResourceSet());
-			if (jvmVoid != resolved && resolved instanceof JvmIdentifiableElement) {
-				return (JvmIdentifiableElement) resolved;
-			}
+			final InternalEObject			jvmVoidProxy = (InternalEObject) jvmVoid;
+			final EObject param = getSarlFormalParameter();
+			final Resource resource = param.eResource();
+			// Get the derived object
+			final SarlFormalParameter jvmParam = getAssociatedElement(SarlFormalParameter.class, param, resource);
+			// Set the proxy URI
+			final URI uri = EcoreUtil2.getNormalizedURI(jvmParam);
+			jvmVoidProxy.eSetProxyURI(uri);
 		}
-		return jvmVoid;
+		container.setFeature(jvmVoid);
 	}
 
 	/** Replies the resource to which the formal parameter is attached.
