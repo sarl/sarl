@@ -384,4 +384,17 @@
          </command>
    </extension>
 
- </plugin>
+  <!-- Splash -->
+ 	<extension
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="io.sarl.eclipse.splash.SarlSplashHandler"
+            id="io.sarl.eclipse.splash">
+      </splashHandler>
+      <splashHandlerProductBinding
+            productId="io.sarl.eclipse.io_sarl_lang_product"
+            splashId="io.sarl.eclipse.splash">
+      </splashHandlerProductBinding>
+   </extension>
+   
+</plugin>
