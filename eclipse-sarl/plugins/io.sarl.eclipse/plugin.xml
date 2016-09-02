@@ -15,7 +15,7 @@
 		        finalPerspective="io.sarl.eclipse.perspective.devel"
 		        preferredPerspectives="io.sarl.eclipse.perspective.devel,org.eclipse.jdt.ui.JavaPerspective,org.eclipse.jdt.ui.JavaBrowsingPerspective"
 		        project="true">
-				<description>%wizard.description.newSarlProject"</description>
+				<description>%wizard.description.newSarlProject.short"</description>
 		  </wizard>
 		  <wizard 
 		        category="io.sarl.eclipse.category.wizards"
@@ -213,7 +213,7 @@
         <keywordReference id="org.eclipse.jdt.ui.buildpath"/>
     </page>
     <page category="io.sarl.lang.SARL"
-          class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
+          class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
           id="io.sarl.eclipse.preferences.Validator"
           name="%preference.errorWarning">
         <keywordReference id="io.sarl.eclipse.keyword_SARL"/>
@@ -239,7 +239,7 @@
     </page>
     <page
           category="io.sarl.lang.SARL"
-          class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
+          class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
           id="io.sarl.eclipse.properties.Validator"
           name="%preference.errorWarning">
 		<keywordReference id="io.sarl.eclipse.keyword_SARL"/>
@@ -360,6 +360,55 @@
             label="%projectconfigurator.name">
       </projectConfigurator>
    </extension>
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="popup:org.eclipse.ui.projectConfigure">
+         <command commandId="io.sarl.eclipse.natures.addSarlNature"
+                  label="%action.addSarlNature"
+                  style="push">
+             <visibleWhen checkEnabled="false">
+             	<with variable="selection">
+             		<iterate ifEmpty="false" operator="or">
+             			<adapt type="org.eclipse.core.resources.IProject">
+             				<not>
+	             				<test property="org.eclipse.core.resources.projectNature"
+	            					value="io.sarl.eclipse.SARLProjectNature"/>
+             				</not>
+             			</adapt>
+             		</iterate>
+             	</with>
+             </visibleWhen>
+         </command>
+         <command commandId="io.sarl.eclipse.natures.removeSarlNature"
+                  label="%action.removeSarlNature"
+                  style="push">
+             <visibleWhen checkEnabled="false">
+             	<with variable="selection">
+             		<iterate ifEmpty="false" operator="or">
+             			<adapt type="org.eclipse.core.resources.IProject">
+             				<test property="org.eclipse.core.resources.projectNature"
+            					value="io.sarl.eclipse.SARLProjectNature"/>
+             			</adapt>
+             		</iterate>
+             	</with>
+             </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension point="org.eclipse.ui.commands">
+      <command id="io.sarl.eclipse.natures.addSarlNature"
+            name="%action.addSarlNature" />
+      <command id="io.sarl.eclipse.natures.removeSarlNature"
+            name="%action.removeSarlNature" />
+   </extension>
+   <extension point="org.eclipse.ui.handlers">
+   		<handler
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.natures.AddSarlNatureHandler"
+            commandId="io.sarl.eclipse.natures.addSarlNature" />
+   		<handler
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.natures.RemoveSarlNatureHandler"
+            commandId="io.sarl.eclipse.natures.removeSarlNature" />
+   </extension>
+  <!-- Welcome pages -->
    <extension
          point="org.eclipse.ui.intro">
       <introProductBinding
@@ -378,8 +427,8 @@
          point="org.eclipse.ui.intro.quicklinks">
          <command
           	id="org.eclipse.ui.newWizard(newWizardId=io.sarl.eclipse.wizard.newSarlProject)"            
-            description="Create a new SARL Eclipse project"
-            label="Create a new SARL project"
+            description="%wizard.description.newSarlProject.long"
+            label="%wizard.description.newSarlProject.short"
             icon="platform:/plugin/org.eclipse.ui.intro.universal/themes/solstice/graphics/icons/ctool/new-project.png">
          </command>
    </extension>

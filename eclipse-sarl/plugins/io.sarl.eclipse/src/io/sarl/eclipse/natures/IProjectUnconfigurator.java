@@ -21,28 +21,36 @@
 
 package io.sarl.eclipse.natures;
 
-import org.eclipse.osgi.util.NLS;
+import com.google.inject.ImplementedBy;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 
-/** Messages.
+/**
+ * Configurator for a SARL project.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eclipse.natures.messages"; //$NON-NLS-1$
-	public static String AddSarlNatureHandler_2;
-	public static String RemoveSarlNatureHandler_0;
-	public static String RemoveSarlNatureHandler_1;
-	public static String RemoveSarlNatureHandler_2;
-	public static String SARLProjectConfigurator_0;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}
+@ImplementedBy(SARLProjectConfigurator.class)
+public interface IProjectUnconfigurator {
 
-	private Messages() {
-	}
+	/** Replies if the project can be unconfigured.
+	 *
+	 * @param project the project.
+	 * @param monitor the progress monitor.
+	 * @return <code>true</code> if the project could be unconfigured.
+	 */
+	boolean canUnconfigure(IProject project, IProgressMonitor monitor);
+
+	/** Unconfigure the given project.
+	 *
+	 * @param project the project.
+	 * @param monitor the progress monitor.
+	 * @throws CoreException if the project cannot be unconfigured.
+	 */
+	void unconfigure(IProject project, IProgressMonitor monitor) throws CoreException;
+
 }

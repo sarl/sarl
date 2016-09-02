@@ -79,7 +79,7 @@ import io.sarl.lang.ui.preferences.SARLPreferences;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLProjectConfigurator implements ProjectConfigurator {
+public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnconfigurator {
 
 	private final String fileExtension;
 
@@ -132,12 +132,67 @@ public class SARLProjectConfigurator implements ProjectConfigurator {
 
 	@Override
 	public boolean canConfigure(IProject project, Set<IPath> ignoredPaths, IProgressMonitor monitor) {
-		return true;
+		try {
+			return project != null && !project.hasNature(SARLEclipseConfig.NATURE_ID);
+		} catch (CoreException exception) {
+			return false;
+		} finally {
+			monitor.done();
+		}
 	}
 
 	@Override
 	public void configure(IProject project, Set<IPath> ignoredPaths, IProgressMonitor monitor) {
-		configureSARLProject(project, true, true, monitor);
+		try {
+			configureSARLProject(project, true, true, monitor);
+			safeRefresh(project, monitor);
+		} finally {
+			monitor.done();
+		}
+	}
+
+	@Override
+	public boolean canUnconfigure(IProject project, IProgressMonitor monitor) {
+		try {
+			return project != null && project.hasNature(SARLEclipseConfig.NATURE_ID);
+		} catch (CoreException exception) {
+			return false;
+		} finally {
+			monitor.done();
+		}
+	}
+
+	@Override
+	public void unconfigure(IProject project, IProgressMonitor monitor) throws CoreException {
+		try {
+			final SubMonitor mon = SubMonitor.convert(monitor, 4);
+			final IProjectDescription description = project.getDescription();
+			final List<String> natures = new LinkedList<>(Arrays.asList(description.getNatureIds()));
+			natures.remove(SARLEclipseConfig.XTEXT_NATURE_ID);
+			natures.remove(SARLEclipseConfig.NATURE_ID);
+			final String[] newNatures = natures.toArray(new String[natures.size()]);
+			mon.worked(1);
+			final IStatus status = ResourcesPlugin.getWorkspace().validateNatureSet(newNatures);
+			mon.worked(1);
+			if (status.getCode() == IStatus.OK) {
+				description.setNatureIds(newNatures);
+				project.setDescription(description, mon.newChild(1));
+				safeRefresh(project, mon.newChild(1));
+			} else {
+				throw new CoreException(status);
+			}
+		} finally {
+			monitor.done();
+		}
+	}
+
+	/** Refresh the project file hierarchy.
+	 *
+	 * @param project the project.
+	 * @param monitor the progress monitor.
+	 */
+	@SuppressWarnings("static-method")
+	protected void safeRefresh(IProject project, IProgressMonitor monitor) {
 		try {
 			project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 		} catch (CoreException exception) {
