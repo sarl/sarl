@@ -108,8 +108,17 @@ public class DefaultContextInteractionsSkill extends Skill implements DefaultCon
 		return this.defaultSpace;
 	}
 
+	/** {@inheritDoc}
+	 * @deprecated see {@link #willReceive(UUID, Event)}
+	 */
+	@Deprecated
 	@Override
 	public void receive(UUID receiverID, Event event) {
+		willReceive(receiverID, event);
+	}
+
+	@Override
+	public void willReceive(UUID receiverID, Event event) {
 		final Address recAddr = this.defaultSpace.getAddress(receiverID);
 		this.emit(event, Scopes.addresses(recAddr));
 	}
