@@ -130,7 +130,7 @@ public class DefaultContextInteractionsSkill extends Skill implements DefaultCon
 
 	@Override
 	public boolean isDefaultSpace(Space space) {
-		return isDefaultSpace(space.getID());
+		return isDefaultSpace(space.getSpaceID());
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class DefaultContextInteractionsSkill extends Skill implements DefaultCon
 
 	@Override
 	public boolean isDefaultSpace(UUID space) {
-		return space.equals(this.defaultSpace.getID().getID());
+		return space.equals(this.defaultSpace.getSpaceID().getID());
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class DefaultContextInteractionsSkill extends Skill implements DefaultCon
 
 	@Override
 	public boolean isDefaultContext(UUID contextID) {
-		return contextID.equals(this.defaultSpace.getID().getContextID());
+		return contextID.equals(this.defaultSpace.getSpaceID().getContextID());
 	}
 
 }

@@ -203,7 +203,7 @@ public class Context implements AgentContext {
 
 		@Override
 		public void spaceCreated(Space space, boolean isLocalCreation) {
-			this.logger.info(Context.class, "SPACE_CREATED", space.getID()); //$NON-NLS-1$
+			this.logger.info(Context.class, "SPACE_CREATED", space.getSpaceID()); //$NON-NLS-1$
 			// Notify the relays (other services)
 			this.relay.spaceCreated(space, isLocalCreation);
 			// Send the event in the default space of the context.
@@ -211,20 +211,20 @@ public class Context implements AgentContext {
 				final EventSpace defSpace = this.context.getDefaultSpace();
 				// defSpace may be null if the created space is the default space.
 				if (defSpace != null) {
-					defSpace.emit(new SpaceCreated(new Address(defSpace.getID(), this.context.getID()), space.getID()));
+					defSpace.emit(new SpaceCreated(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
 				}
 			}
 		}
 
 		@Override
 		public void spaceDestroyed(Space space, boolean isLocalDestruction) {
-			this.logger.info(Context.class, "SPACE_DESTROYED", space.getID()); //$NON-NLS-1$
+			this.logger.info(Context.class, "SPACE_DESTROYED", space.getSpaceID()); //$NON-NLS-1$
 			// Send the event in the default space of the context.
 			if (isLocalDestruction) {
 				final EventSpace defSpace = this.context.getDefaultSpace();
 				// defSpace may be null if the created space is the default space.
 				if (defSpace != null) {
-					defSpace.emit(new SpaceDestroyed(new Address(defSpace.getID(), this.context.getID()), space.getID()));
+					defSpace.emit(new SpaceDestroyed(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
 				}
 			}
 			// Notify the relays (other services)

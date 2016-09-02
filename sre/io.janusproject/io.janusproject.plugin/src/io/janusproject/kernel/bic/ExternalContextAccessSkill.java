@@ -78,7 +78,7 @@ public class ExternalContextAccessSkill extends Skill implements ExternalContext
 	@Override
 	protected void install() {
 		final AgentContext ac = this.contextRepository.getContext(getOwner().getParentID());
-		join(ac.getID(), ac.getDefaultSpace().getID().getID());
+		join(ac.getID(), ac.getDefaultSpace().getSpaceID().getID());
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class ExternalContextAccessSkill extends Skill implements ExternalContext
 		final AgentContext ac = this.contextRepository.getContext(futureContext);
 		assert ac != null : "Unknown Context"; //$NON-NLS-1$
 
-		if (!futureContextDefaultSpaceID.equals(ac.getDefaultSpace().getID().getID())) {
+		if (!futureContextDefaultSpaceID.equals(ac.getDefaultSpace().getSpaceID().getID())) {
 			throw new IllegalArgumentException(Locale.getString(ExternalContextAccessSkill.class, "INVALID_DEFAULT_SPACE_MATCHING", //$NON-NLS-1$
 					futureContextDefaultSpaceID));
 		}
@@ -198,7 +198,7 @@ public class ExternalContextAccessSkill extends Skill implements ExternalContext
 
 	@Override
 	public boolean isInSpace(Event event, Space space) {
-		return isInSpace(event, space.getID());
+		return isInSpace(event, space.getSpaceID());
 	}
 
 	@Override

@@ -153,7 +153,7 @@ public class SpaceRepository {
 			space = this.injector.getInstance(spec).create(spaceID);
 		}
 		assert space != null;
-		final SpaceID id = space.getID();
+		final SpaceID id = space.getSpaceID();
 		assert id != null;
 		this.spaces.put(id, space);
 		this.spacesBySpec.put(id.getSpaceSpecification(), id);
@@ -310,7 +310,7 @@ public class SpaceRepository {
 				.synchronizedCollection((Collection<S>) Collections2.filter(this.spaces.values(), new Predicate<Space>() {
 					@Override
 					public boolean apply(Space input) {
-						return input.getID().getSpaceSpecification().equals(spec);
+						return input.getSpaceID().getSpaceSpecification().equals(spec);
 					}
 				}), this);
 	}

@@ -649,7 +649,7 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
         private void magicConnect(URI peer, Collection<SpaceID> spaceIDs, Collection<BufferedSpace> ibufferedSpaces, Space space) {
             if (space != null) {
                 try {
-                    connectToRemoteSpaces(peer, space.getID(), (NetworkEventReceivingListener) space);
+                    connectToRemoteSpaces(peer, space.getSpaceID(), (NetworkEventReceivingListener) space);
                 } catch (Exception e) {
                     ZeroMQNetworkService.this.logger.error(ZeroMQNetworkService.class, "UNEXPECTED_EXCEPTION", e); //$NON-NLS-1$
                 }
@@ -694,8 +694,8 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
                     if (!isUsed) {
                         // The space was not used to be connected to a remote host => put in a buffer.
                         if (space instanceof NetworkEventReceivingListener) {
-                            ZeroMQNetworkService.this.bufferedSpaces.put(space.getID(),
-                                    new BufferedSpace(space.getID(), (NetworkEventReceivingListener) space));
+                            ZeroMQNetworkService.this.bufferedSpaces.put(space.getSpaceID(),
+                                    new BufferedSpace(space.getSpaceID(), (NetworkEventReceivingListener) space));
                         } else {
                             ZeroMQNetworkService.this.logger.error(ZeroMQNetworkService.class, "NOT_DISTRIBUTABLE_SPACE", space); //$NON-NLS-1$
                         }
@@ -717,15 +717,15 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
                 try {
                     for (final URI peer : ZeroMQNetworkService.this.kernelService.getKernels()) {
                         if (!peer.equals(localUri)) {
-                            disconnectFromRemoteSpace(peer, space.getID());
+                            disconnectFromRemoteSpace(peer, space.getSpaceID());
                         }
                     }
                     // Ensure that the space becomes unknown
-                    ZeroMQNetworkService.this.messageRecvListeners.remove(space.getID());
+                    ZeroMQNetworkService.this.messageRecvListeners.remove(space.getSpaceID());
                     if (ZeroMQNetworkService.this.bufferedConnections != null) {
-                        ZeroMQNetworkService.this.bufferedConnections.remove(space.getID());
+                        ZeroMQNetworkService.this.bufferedConnections.remove(space.getSpaceID());
                     }
-                    ZeroMQNetworkService.this.bufferedSpaces.remove(space.getID());
+                    ZeroMQNetworkService.this.bufferedSpaces.remove(space.getSpaceID());
                 } catch (Exception e) {
                     ZeroMQNetworkService.this.logger.error(ZeroMQNetworkService.class, "UNEXPECTED_EXCEPTION", e); //$NON-NLS-1$
                 }

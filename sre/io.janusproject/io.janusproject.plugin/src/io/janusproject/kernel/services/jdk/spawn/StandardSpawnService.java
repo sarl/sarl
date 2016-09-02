@@ -145,14 +145,11 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
             if (agent != null) {
                 if (canKillAgent(agent)) {
                     this.agents.remove(agentID);
-                    return new Pair<>(true, agent);
-                } else {
-                    return new Pair<>(false, null);
+                    return new Pair<>(Boolean.TRUE, agent);
                 }
-            } else {
-                return null;
+                return new Pair<>(Boolean.FALSE, null);
             }
-
+            return null;
         }
     }
 
