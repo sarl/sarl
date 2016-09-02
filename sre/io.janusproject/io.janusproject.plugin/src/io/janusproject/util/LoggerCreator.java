@@ -49,7 +49,7 @@ public final class LoggerCreator {
      * <li><code>%6</code>: the throwable.</li>
      * </ul>
      */
-    private static final String JANUS_FORMAT = "%1$tb %1$td, %1$tY %1$tl:%1$tM:%1$tS %1$Tp %3$s%n%4$s: %5$s%6$s%n"; //$NON-NLS-1$
+    private static final String JANUS_FORMAT = "[%4$s, %1$tl:%1$tM:%1$tS%1$tp, %3$s] %5$s%6$s%n"; //$NON-NLS-1$
 
     private static Level levelFromProperties;
 

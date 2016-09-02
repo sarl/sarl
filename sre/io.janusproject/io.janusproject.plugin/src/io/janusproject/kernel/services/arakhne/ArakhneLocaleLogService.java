@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import com.google.common.base.Strings;
 import com.google.common.util.concurrent.Service;
 import com.google.inject.Inject;
+import io.janusproject.JanusConfig;
 import io.janusproject.services.AbstractDependentService;
 import io.janusproject.services.logging.LogService;
 import org.arakhne.afc.vmutil.locale.Locale;
@@ -132,6 +133,10 @@ public class ArakhneLocaleLogService extends AbstractDependentService implements
 		final LogRecord record = new LogRecord(level, text);
 		if (realException != null) {
 			record.setThrown(realException);
+		}
+
+		if (record.getLoggerName() == null) {
+		    record.setLoggerName(JanusConfig.JANUS_DEFAULT_PLATFORM_NAME);
 		}
 		return record;
 	}

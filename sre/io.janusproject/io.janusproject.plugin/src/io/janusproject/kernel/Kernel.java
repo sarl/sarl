@@ -36,6 +36,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
+import io.janusproject.JanusConfig;
 import io.janusproject.services.IServiceManager;
 import io.janusproject.services.Services;
 import io.janusproject.services.logging.LogService;
@@ -180,7 +181,7 @@ public class Kernel {
 		Logger log = this.loggingService.getLogger();
 		if (log == null) {
 			if (this.rawLogger == null) {
-				this.rawLogger = LoggerCreator.createLogger(Kernel.class.getName());
+				this.rawLogger = LoggerCreator.createLogger(JanusConfig.JANUS_DEFAULT_PLATFORM_NAME);
 			}
 			log = this.rawLogger;
 		}

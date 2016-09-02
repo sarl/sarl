@@ -62,226 +62,230 @@ import org.arakhne.afc.vmutil.FileSystem;
  */
 public class BootModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		// Custom logger
-		LoggerCreator.useJanusMessageFormat();
-		bindListener(Matchers.any(), new LoggerMemberListener());
+    @Override
+    protected void configure() {
+        // Custom logger
+        LoggerCreator.useJanusMessageFormat();
+        bindListener(Matchers.any(), new LoggerMemberListener());
 
-		// Bind the system properties.
-		boolean foundPubUri = false;
-		String name;
-		for (final Entry<Object, Object> entry : System.getProperties().entrySet()) {
-			name = entry.getKey().toString();
-			bind(Key.get(String.class, Names.named(name))).toInstance(entry.getValue().toString());
-			if (JanusConfig.PUB_URI.equals(name)) {
-				foundPubUri = true;
-			}
-		}
+        // Bind the system properties.
+        boolean foundPubUri = false;
+        String name;
+        for (final Entry<Object, Object> entry : System.getProperties().entrySet()) {
+            name = entry.getKey().toString();
+            bind(Key.get(String.class, Names.named(name))).toInstance(entry.getValue().toString());
+            if (JanusConfig.PUB_URI.equals(name)) {
+                foundPubUri = true;
+            }
+        }
 
-		// If the PUB_URI is already given as system property,
-		// then it was already binded (with a property-based binder).
-		// Otherwise, the PUB_URI should be binded here with a provider.
-		if (!foundPubUri) {
-			bind(Key.get(String.class, Names.named(JanusConfig.PUB_URI))).toProvider(PublicURIProvider.class);
-		}
-	}
+        // If the PUB_URI is already given as system property,
+        // then it was already binded (with a property-based binder).
+        // Otherwise, the PUB_URI should be binded here with a provider.
+        if (!foundPubUri) {
+            bind(Key.get(String.class, Names.named(JanusConfig.PUB_URI))).toProvider(PublicURIProvider.class);
+        }
+    }
 
-	/**
-	 * Create a context identifier.
-	 *
-	 * @return the contextID
-	 */
-	@Provides
-	@Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME)
-	private static UUID getContextID() {
-		String str = JanusConfig.getSystemProperty(JanusConfig.DEFAULT_CONTEXT_ID_NAME);
-		if (Strings.isNullOrEmpty(str)) {
-			Boolean v;
+    /**
+     * Create a context identifier.
+     *
+     * @return the contextID
+     */
+    @Provides
+    @Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME)
+    private static UUID getContextID() {
+        String str = JanusConfig.getSystemProperty(JanusConfig.DEFAULT_CONTEXT_ID_NAME);
+        if (Strings.isNullOrEmpty(str)) {
+            Boolean v;
 
-			// From boot agent type
-			str = JanusConfig.getSystemProperty(JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME);
-			if (Strings.isNullOrEmpty(str)) {
-				v = JanusConfig.BOOT_DEFAULT_CONTEXT_ID_VALUE;
-			} else {
-				v = Boolean.valueOf(Boolean.parseBoolean(str));
-			}
-			if (v.booleanValue()) {
-				final String bootClassname = JanusConfig.getSystemProperty(JanusConfig.BOOT_AGENT);
-				str = UUID.nameUUIDFromBytes(bootClassname.getBytes()).toString();
-			} else {
-				// Random
-				str = JanusConfig.getSystemProperty(JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME);
-				if (Strings.isNullOrEmpty(str)) {
-					v = JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_VALUE;
-				} else {
-					v = Boolean.valueOf(Boolean.parseBoolean(str));
-				}
-				if (v.booleanValue()) {
-					str = UUID.randomUUID().toString();
-				} else {
-					str = JanusConfig.DEFAULT_CONTEXT_ID_VALUE;
-				}
-			}
+            // From boot agent type
+            str = JanusConfig.getSystemProperty(JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME);
+            if (Strings.isNullOrEmpty(str)) {
+                v = JanusConfig.BOOT_DEFAULT_CONTEXT_ID_VALUE;
+            } else {
+                v = Boolean.valueOf(Boolean.parseBoolean(str));
+            }
+            if (v.booleanValue()) {
+                final String bootClassname = JanusConfig.getSystemProperty(JanusConfig.BOOT_AGENT);
+                str = UUID.nameUUIDFromBytes(bootClassname.getBytes()).toString();
+            } else {
+                // Random
+                str = JanusConfig.getSystemProperty(JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME);
+                if (Strings.isNullOrEmpty(str)) {
+                    v = JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_VALUE;
+                } else {
+                    v = Boolean.valueOf(Boolean.parseBoolean(str));
+                }
+                if (v.booleanValue()) {
+                    str = UUID.randomUUID().toString();
+                } else {
+                    str = JanusConfig.DEFAULT_CONTEXT_ID_VALUE;
+                }
+            }
 
-			// Force the global value of the property to prevent to re-generate the UUID at the next call.
-			System.setProperty(JanusConfig.DEFAULT_CONTEXT_ID_NAME, str);
-		}
+            // Force the global value of the property to prevent to re-generate the UUID at the next call.
+            System.setProperty(JanusConfig.DEFAULT_CONTEXT_ID_NAME, str);
+        }
 
-		assert !Strings.isNullOrEmpty(str);
-		return UUID.fromString(str);
-	}
+        assert !Strings.isNullOrEmpty(str);
+        return UUID.fromString(str);
+    }
 
-	/**
-	 * Construct a space identifier.
-	 *
-	 * @return the spaceID
-	 */
-	@Provides
-	@Named(JanusConfig.DEFAULT_SPACE_ID_NAME)
-	private static UUID getSpaceID() {
-		final String v = JanusConfig.getSystemProperty(JanusConfig.DEFAULT_SPACE_ID_NAME, JanusConfig.DEFAULT_SPACE_ID_VALUE);
-		return UUID.fromString(v);
-	}
+    /**
+     * Construct a space identifier.
+     *
+     * @return the spaceID
+     */
+    @Provides
+    @Named(JanusConfig.DEFAULT_SPACE_ID_NAME)
+    private static UUID getSpaceID() {
+        final String v = JanusConfig.getSystemProperty(JanusConfig.DEFAULT_SPACE_ID_NAME, JanusConfig.DEFAULT_SPACE_ID_VALUE);
+        return UUID.fromString(v);
+    }
 
-	/**
-	 * Inject the PUB_URI as a real {@link URI}.
-	 * @return the PUB_URI
-	 */
-	@Provides
-	@Named(JanusConfig.PUB_URI)
-	private static URI getPubURIAsURI() {
-		final String v = getPUBURIAsString();
-		try {
-			return NetworkUtil.toURI(v);
-		} catch (URISyntaxException e) {
-			throw new IOError(e);
-		}
-	}
+    /**
+     * Inject the PUB_URI as a real {@link URI}.
+     *
+     * @return the PUB_URI
+     */
+    @Provides
+    @Named(JanusConfig.PUB_URI)
+    private static URI getPubURIAsURI() {
+        final String v = getPUBURIAsString();
+        try {
+            return NetworkUtil.toURI(v);
+        } catch (URISyntaxException e) {
+            throw new IOError(e);
+        }
+    }
 
-	/**
-	 * Extract the current value of the PUB_URI from the system's property or form the platform default value.
-	 *
-	 * @return the current PUB_URI
-	 */
-	private static String getPUBURIAsString() {
-		String pubUri = JanusConfig.getSystemProperty(JanusConfig.PUB_URI);
-		if (pubUri == null || pubUri.isEmpty()) {
-			InetAddress a = NetworkUtil.getPrimaryAddress();
-			if (a == null) {
-				a = NetworkUtil.getLoopbackAddress();
-			}
-			if (a != null) {
-				pubUri = NetworkUtil.toURI(a, -1).toString();
-				System.setProperty(JanusConfig.PUB_URI, pubUri);
-			}
-		}
-		return pubUri;
-	}
+    /**
+     * Extract the current value of the PUB_URI from the system's property or form the platform default value.
+     *
+     * @return the current PUB_URI
+     */
+    private static String getPUBURIAsString() {
+        String pubUri = JanusConfig.getSystemProperty(JanusConfig.PUB_URI);
+        if (pubUri == null || pubUri.isEmpty()) {
+            InetAddress a = NetworkUtil.getPrimaryAddress();
+            if (a == null) {
+                a = NetworkUtil.getLoopbackAddress();
+            }
+            if (a != null) {
+                pubUri = NetworkUtil.toURI(a, -1).toString();
+                System.setProperty(JanusConfig.PUB_URI, pubUri);
+            }
+        }
+        return pubUri;
+    }
 
-	/**
-	 * Provider of public URI for the network layer.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private static class PublicURIProvider implements Provider<String> {
+    /**
+     * Provider of public URI for the network layer.
+     *
+     * @author $Author: sgalland$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     */
+    private static class PublicURIProvider implements Provider<String> {
 
-		@SuppressWarnings("synthetic-access")
-		@Override
-		public String get() {
-			return getPUBURIAsString();
-		}
+        @SuppressWarnings("synthetic-access")
+        @Override
+        public String get() {
+            return getPUBURIAsString();
+        }
 
-	}
+    }
 
-	/**
-	 * Provider of logger.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private static final class LoggerMemberListener implements TypeListener {
+    /**
+     * Provider of logger.
+     *
+     * @author $Author: sgalland$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     */
+    private static final class LoggerMemberListener implements TypeListener {
 
-		private final AtomicBoolean isInit = new AtomicBoolean(false);
+        private final AtomicBoolean isInit = new AtomicBoolean(false);
 
-		/**
-		 * Construct.
-		 */
-		LoggerMemberListener() {
-			//
-		}
+        /**
+         * Construct.
+         */
+        LoggerMemberListener() {
+            //
+        }
 
-		private static void init() {
-			final String propertyFileName = JanusConfig.getSystemProperty(JanusConfig.LOGGING_PROPERTY_FILE_NAME,
-					JanusConfig.LOGGING_PROPERTY_FILE_VALUE);
-			if (propertyFileName != null && !propertyFileName.isEmpty()) {
-				final URL url = FileSystem.convertStringToURL(propertyFileName, true);
-				if (url != null) {
-					try (InputStream is = url.openStream()) {
-						LogManager.getLogManager().readConfiguration(is);
-					} catch (IOException e) {
-						throw new IOError(e);
-					}
-				}
-			}
-		}
+        private static void init() {
+            final String propertyFileName = JanusConfig.getSystemProperty(JanusConfig.LOGGING_PROPERTY_FILE_NAME,
+                    JanusConfig.LOGGING_PROPERTY_FILE_VALUE);
+            if (propertyFileName != null && !propertyFileName.isEmpty()) {
+                final URL url = FileSystem.convertStringToURL(propertyFileName, true);
+                if (url != null) {
+                    try (InputStream is = url.openStream()) {
+                        LogManager.getLogManager().readConfiguration(is);
+                    } catch (IOException e) {
+                        throw new IOError(e);
+                    }
+                }
+            }
+        }
 
-		@Override
-		public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {
-			for (final Field field : type.getRawType().getDeclaredFields()) {
-				if (field.getType() == Logger.class) {
-					if (!this.isInit.getAndSet(true)) {
-						init();
-					}
-					encounter.register(new LoggerMemberInjector<I>(field));
-				}
-			}
-		}
+        @Override
+        public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {
+            for (final Field field : type.getRawType().getDeclaredFields()) {
+                if (field.getType() == Logger.class) {
+                    if (!this.isInit.getAndSet(true)) {
+                        init();
+                    }
+                    encounter.register(new LoggerMemberInjector<I>(field));
+                }
+            }
+        }
 
-	}
+    }
 
-	/**
-	 * Provider of logger.
-	 *
-	 * @param <T> the type of the type of the field.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private static final class LoggerMemberInjector<T> implements MembersInjector<T> {
+    /**
+     * Provider of logger.
+     *
+     * @param <T>
+     *            the type of the type of the field.
+     * @author $Author: sgalland$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     */
+    private static final class LoggerMemberInjector<T> implements MembersInjector<T> {
 
-		private final Field field;
+        private final Field field;
 
-		/**
-		 * Construct.
-		 *
-		 * @param field the field to inject.
-		 */
-		LoggerMemberInjector(Field field) {
-			this.field = field;
-		}
+        /**
+         * Construct.
+         *
+         * @param field
+         *            the field to inject.
+         */
+        LoggerMemberInjector(Field field) {
+            this.field = field;
+        }
 
-		@Override
-		public void injectMembers(T instance) {
-			final Logger logger = LoggerCreator.createLogger(this.field.getDeclaringClass().getName());
+        @Override
+        public void injectMembers(T instance) {
+            final Logger logger = LoggerCreator.createLogger(JanusConfig.JANUS_DEFAULT_PLATFORM_NAME + " (" //$NON-NLS-1$
+                    + this.field.getDeclaringClass().getSimpleName() + ")"); //$NON-NLS-1$
 
-			final boolean accessible = this.field.isAccessible();
-			try {
-				this.field.setAccessible(true);
-				this.field.set(instance, logger);
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				throw new RuntimeException(e);
-			} finally {
-				this.field.setAccessible(accessible);
-			}
-		}
+            final boolean accessible = this.field.isAccessible();
+            try {
+                this.field.setAccessible(true);
+                this.field.set(instance, logger);
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } finally {
+                this.field.setAccessible(accessible);
+            }
+        }
 
-	}
+    }
 
 }
