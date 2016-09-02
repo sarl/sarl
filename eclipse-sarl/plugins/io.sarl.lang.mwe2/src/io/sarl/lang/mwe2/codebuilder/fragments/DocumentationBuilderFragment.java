@@ -1299,6 +1299,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t\tFormatterBackend<T> backend) {"); //$NON-NLS-1$
 				it.newLine();
+				//TODO Code this function
+				it.append("\t\t/* FIXME Implement the multiline formatting function"); //$NON-NLS-1$
+				it.newLine();
 				it.append("\t\tfinal String indent = "); //$NON-NLS-1$
 				it.append(Strings.class);
 				it.append(".emptyIfNull(indentationString);"); //$NON-NLS-1$
@@ -1492,6 +1495,8 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t\t\t\tnewText);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t*/"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();

@@ -355,6 +355,7 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 	private <T> void formatMultlineComment(
 			String indentationString, String newLineString,
 			FormatterBackend<T> backend) {
+		/* FIXME Implement the multiline formatting function
 		final String indent = Strings.emptyIfNull(indentationString);
 		final String postfix = getLinePostfix(null);
 		final String startSymbols = getMultilineCommentStartSymbols();
@@ -444,6 +445,7 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 					referenceText.length(),
 					newText);
 		}
+		*/
 	}
 
 	private interface FormatterBackend<T> {
