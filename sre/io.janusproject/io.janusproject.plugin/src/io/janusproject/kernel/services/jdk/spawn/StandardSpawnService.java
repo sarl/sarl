@@ -48,7 +48,6 @@ import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.services.spawn.SpawnServiceListener;
 import io.janusproject.util.ListenerCollection;
 import org.arakhne.afc.vmutil.locale.Locale;
-import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.core.AgentKilled;
 import io.sarl.core.AgentSpawned;
@@ -138,16 +137,41 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
         throw new SpawnDisabledException(parent.getID(), agentClazz);
     }
 
-    private Pair<Boolean, Agent> $killAgent(UUID agentID) {
+    /**
+     * Simple structure to store the result of various tests that must be done synchronously before killing agents.
+     * @author $Author: ngaud$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     *
+     */
+    private class KillAgentResultStructure {
+        Boolean canKill = Boolean.TRUE;
+
+        Boolean isLast = Boolean.FALSE;
+
+        Agent killAgent;
+
+        KillAgentResultStructure() {
+            //
+        }
+    }
+
+    private KillAgentResultStructure $killAgent(UUID agentID) {
         // We should check if it is possible to kill the agent BEFORE killing it.
+        final KillAgentResultStructure k;
         synchronized (this.agents) {
             final Agent agent = this.agents.get(agentID);
             if (agent != null) {
+                k = new KillAgentResultStructure();
                 if (canKillAgent(agent)) {
                     this.agents.remove(agentID);
-                    return new Pair<>(Boolean.TRUE, agent);
+                    k.isLast = Boolean.valueOf(this.agents.isEmpty());
+                    k.canKill = Boolean.TRUE;
+                    k.killAgent = agent;
+                    return k;
                 }
-                return new Pair<>(Boolean.FALSE, null);
+                return k;
             }
             return null;
         }
@@ -157,22 +181,18 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
     public void killAgent(UUID agentID) throws AgentKillException {
         final boolean error = !isRunning();
 
-        final Pair<Boolean, Agent> pair = $killAgent(agentID);
-        if (pair != null && pair.getKey().booleanValue()) {
-            fireAgentDestroyed(pair.getValue());
+        final KillAgentResultStructure synchroTests = $killAgent(agentID);
+        if (synchroTests != null && synchroTests.canKill.booleanValue()) {
+            fireAgentDestroyed(synchroTests.killAgent);
 
-            final boolean b;
-            synchronized (this.agents) {
-                b = this.agents.isEmpty();
-            }
-            if (b) {
+            if (synchroTests.isLast.booleanValue()) {
                 fireKernelAgentDestroy();
             }
             if (error) {
                 throw new SpawnServiceStopException(agentID);
             }
         } else {
-            if (pair == null) {
+            if (synchroTests == null) {
                 throw new AgentKillException(agentID);
             }
         }
