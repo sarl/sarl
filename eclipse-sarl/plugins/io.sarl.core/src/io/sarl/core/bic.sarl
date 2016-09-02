@@ -274,6 +274,7 @@ capacity Schedules {
 
 	/**
 	 * Create a named task that can be retrieved and schedule later.
+	 * If a task with the specified name already exists, this task is returned.
 	 */
 	def task(name : String) : AgentTask
 
