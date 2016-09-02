@@ -29,12 +29,13 @@ import io.janusproject.kernel.services.jdk.executors.JdkUncaughtExceptionHandler
 import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

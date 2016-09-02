@@ -30,7 +30,6 @@ import io.janusproject.kernel.space.EventSpaceSpecificationImpl;
 import io.janusproject.services.distributeddata.DMap;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -43,6 +42,7 @@ import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.ManualMocking;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

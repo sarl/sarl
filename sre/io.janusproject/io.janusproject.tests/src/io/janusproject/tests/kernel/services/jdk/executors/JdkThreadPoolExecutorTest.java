@@ -37,13 +37,14 @@ import io.janusproject.kernel.services.jdk.executors.JdkThreadPoolExecutor;
 import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 import io.janusproject.tests.testutils.FutureExceptionMatcher;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.exceptions.base.MockitoException;
+
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

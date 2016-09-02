@@ -26,7 +26,6 @@ import java.util.UUID;
 import io.janusproject.kernel.bic.BehaviorsSkill;
 import io.janusproject.kernel.bic.InternalEventBusCapacity;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -45,6 +44,7 @@ import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

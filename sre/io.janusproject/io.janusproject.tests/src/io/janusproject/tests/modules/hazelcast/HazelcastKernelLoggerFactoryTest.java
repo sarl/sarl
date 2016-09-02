@@ -19,7 +19,6 @@
  */
 package io.janusproject.tests.modules.hazelcast;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -32,11 +31,12 @@ import com.hazelcast.logging.ILogger;
 import io.janusproject.modules.hazelcast.HazelcastKernelLoggerFactory;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

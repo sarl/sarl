@@ -19,13 +19,11 @@
  */
 package io.janusproject.tests.kernel.services.hazelcast;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -56,7 +54,6 @@ import io.janusproject.services.distributeddata.DMapListener;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 import io.janusproject.tests.testutils.HzMultiMapMock;
 import io.janusproject.util.DataViewDelegate.Delegator;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -65,6 +62,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.mockito.ArgumentCaptor;
+
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

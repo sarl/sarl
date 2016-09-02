@@ -32,7 +32,6 @@ import java.util.UUID;
 
 import io.janusproject.kernel.bic.DefaultContextInteractionsSkill;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -52,6 +51,7 @@ import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.tests.api.Nullable;
 import io.sarl.util.Scopes;
 
 /**

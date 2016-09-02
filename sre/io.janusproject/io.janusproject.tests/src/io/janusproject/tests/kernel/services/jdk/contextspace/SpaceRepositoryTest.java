@@ -19,7 +19,6 @@
  */
 package io.janusproject.tests.kernel.services.jdk.contextspace;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -43,12 +42,10 @@ import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 import io.janusproject.util.TwoStepConstruction;
 import javassist.Modifier;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.Times;
 import org.mockito.invocation.InvocationOnMock;
@@ -58,6 +55,7 @@ import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
 import io.sarl.util.OpenEventSpace;
 import io.sarl.util.OpenEventSpaceSpecification;
@@ -117,7 +115,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 				this.dds, this.injector, this.listener);
 	}
 
-	private void initMocks() {
+	private void initMocks() throws Exception {
 		Mockito.when(this.spaceIDs.containsKey(this.spaceID)).thenReturn(true);
 		Mockito.when(this.spaceIDs.keySet()).thenReturn(new HashSet<>(Collections.singleton(this.spaceID)));
 		this.spaceSpecification = Mockito.mock(OpenEventSpaceSpecification.class);
@@ -127,7 +125,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 		Mockito.when(this.space.getID()).thenReturn(this.spaceID);
 	}
 
-	private void baseInit() {
+	private void baseInit() throws Exception {
 		this.spaceSpecification = Mockito.mock(OpenEventSpaceSpecification.class);
 		Mockito.when(this.injector.getInstance(OpenEventSpaceSpecification.class)).thenReturn(this.spaceSpecification);
 		this.space = Mockito.mock(OpenEventSpace.class);
@@ -264,7 +262,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void createSpace_singlecreation() {
+	public void createSpace_singlecreation() throws Exception {
 		baseInit();
 		//
 		OpenEventSpace space = this.repository.createSpace(this.spaceID, OpenEventSpaceSpecification.class, this.params);
@@ -285,7 +283,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void createSpace_doublecreation() {
+	public void createSpace_doublecreation() throws Exception {
 		baseInit();
 		//
 		OpenEventSpace space1 = this.repository.createSpace(this.spaceID, OpenEventSpaceSpecification.class, this.params);
@@ -307,7 +305,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void getOrCreateSpaceWithSpec_singlecreation() {
+	public void getOrCreateSpaceWithSpec_singlecreation() throws Exception {
 		baseInit();
 		//
 		OpenEventSpace space = this.repository.getOrCreateSpaceWithSpec(this.spaceID, OpenEventSpaceSpecification.class,
@@ -329,7 +327,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void getOrCreateSpaceWithSpec_doublecreation() {
+	public void getOrCreateSpaceWithSpec_doublecreation() throws Exception {
 		baseInit();
 		//
 		OpenEventSpace space1 = this.repository.getOrCreateSpaceWithSpec(this.spaceID, OpenEventSpaceSpecification.class,
@@ -354,7 +352,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void getOrCreateSpaceWithID_singlecreation() {
+	public void getOrCreateSpaceWithID_singlecreation() throws Exception {
 		baseInit();
 		//
 		OpenEventSpace space = this.repository.getOrCreateSpaceWithID(this.spaceID, OpenEventSpaceSpecification.class,
@@ -376,7 +374,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void getOrCreateSpaceWithID_doublecreation() {
+	public void getOrCreateSpaceWithID_doublecreation() throws Exception {
 		baseInit();
 		//
 		OpenEventSpace space1 = this.repository.getOrCreateSpaceWithID(this.spaceID, OpenEventSpaceSpecification.class,
@@ -401,27 +399,27 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void destroy_notinit() {
+	public void destroy_notinit() throws Exception {
 		this.repository.destroy();
 		Mockito.verifyZeroInteractions(this.listener);
 	}
 
 	@Test
-	public void destroy_baseinit() {
+	public void destroy_baseinit() throws Exception {
 		baseInit();
 		this.repository.destroy();
 		Mockito.verifyZeroInteractions(this.listener);
 	}
 
 	@Test
-	public void destroy_initmocks() {
+	public void destroy_initmocks() throws Exception {
 		initMocks();
 		this.repository.destroy();
 		Mockito.verifyZeroInteractions(this.listener);
 	}
 
 	@Test
-	public void destroy_initrepository() {
+	public void destroy_initrepository() throws Exception {
 		initRepository();
 		Mockito.when(this.space.getParticipants()).thenReturn(Collections3.<UUID> emptySynchronizedSet());
 		this.repository.destroy();
@@ -433,7 +431,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void destroy_hasparticipant() {
+	public void destroy_hasparticipant() throws Exception {
 		initRepository();
 		Mockito.when(this.space.getParticipants()).thenReturn(Collections3.synchronizedSingleton(UUID.randomUUID()));
 		this.repository.destroy();
@@ -445,7 +443,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void createSpace_bug92() {
+	public void createSpace_bug92() throws Exception {
 		initMocks();
 		//
 		final UUID contextID = UUID.randomUUID();
@@ -478,7 +476,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void getOrCreateSpaceWithSpec_bug92() {
+	public void getOrCreateSpaceWithSpec_bug92() throws Exception {
 		initMocks();
 		//
 		final UUID contextID = UUID.randomUUID();
@@ -511,7 +509,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void getOrCreateSpaceWithID_bug92() {
+	public void getOrCreateSpaceWithID_bug92() throws Exception {
 		initMocks();
 		//
 		final UUID contextID = UUID.randomUUID();

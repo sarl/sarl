@@ -62,7 +62,6 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.Resources;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -80,6 +79,7 @@ import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

@@ -45,13 +45,14 @@ import io.janusproject.tests.testutils.HzMapMock;
 import io.janusproject.tests.testutils.StartServiceForTest;
 import io.janusproject.util.TwoStepConstruction;
 import javassist.Modifier;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.Times;
+
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

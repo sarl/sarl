@@ -19,7 +19,6 @@
  */
 package io.janusproject.tests.kernel.services.jdk.contextspace;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -42,13 +41,11 @@ import io.janusproject.services.logging.LogService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 import io.janusproject.util.TwoStepConstruction;
 import javassist.Modifier;
-import org.eclipse.jdt.annotation.Nullable;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.Times;
 import org.mockito.invocation.InvocationOnMock;
@@ -59,6 +56,7 @@ import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedCollection;
+import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
 import io.sarl.util.OpenEventSpace;
 import io.sarl.util.OpenEventSpaceSpecification;

@@ -19,7 +19,6 @@
  */
 package io.janusproject.tests.testutils;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
@@ -41,7 +40,6 @@ import com.google.inject.util.Modules;
 import io.janusproject.Boot;
 import io.janusproject.kernel.Kernel;
 import io.janusproject.modules.StandardJanusPlatformModule;
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
@@ -53,6 +51,7 @@ import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
+import io.sarl.tests.api.Nullable;
 
 /**
  * Abstract class for creating unit tests that needs to launch a Janus instance.

@@ -22,12 +22,12 @@ package io.janusproject.tests.modules.hazelcast;
 import java.util.UUID;
 
 import com.hazelcast.nio.serialization.StreamSerializer;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.tests.api.Nullable;
 import io.sarl.util.OpenEventSpaceSpecification;
 
 /**

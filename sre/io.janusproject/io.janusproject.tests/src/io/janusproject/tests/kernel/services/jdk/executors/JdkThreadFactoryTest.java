@@ -26,10 +26,11 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import io.janusproject.kernel.services.jdk.executors.JdkThreadFactory;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

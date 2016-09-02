@@ -33,7 +33,6 @@ import javax.swing.text.StyledEditorKit.BoldAction;
 
 import com.google.inject.Inject;
 import junit.framework.TestSuite;
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.xtext.junit4.formatter.FormatterTestRequest;
 import org.eclipse.xtext.junit4.formatter.FormatterTester;
 import org.eclipse.xtext.util.Strings;

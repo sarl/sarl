@@ -19,7 +19,6 @@
  */
 package io.janusproject.tests.services.network;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import java.util.HashMap;
@@ -27,7 +26,6 @@ import java.util.Map;
 
 import io.janusproject.services.network.EventDispatch;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -35,6 +33,7 @@ import org.mockito.Mockito;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

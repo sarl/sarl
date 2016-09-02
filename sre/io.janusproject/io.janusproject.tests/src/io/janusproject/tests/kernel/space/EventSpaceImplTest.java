@@ -38,7 +38,6 @@ import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.network.NetworkService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -57,6 +56,7 @@ import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.ManualMocking;
+import io.sarl.tests.api.Nullable;
 import io.sarl.util.OpenEventSpaceSpecification;
 import io.sarl.util.Scopes;
 

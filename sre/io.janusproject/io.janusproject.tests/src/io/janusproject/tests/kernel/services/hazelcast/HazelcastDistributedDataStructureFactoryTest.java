@@ -19,18 +19,10 @@
  */
 package io.janusproject.tests.kernel.services.hazelcast;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Comparator;
 import java.util.UUID;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
@@ -41,6 +33,12 @@ import io.janusproject.services.distributeddata.DMultiMap;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.tests.testutils.AbstractDependentServiceTest;
 import io.janusproject.tests.testutils.StartServiceForTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$
