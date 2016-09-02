@@ -146,7 +146,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
      *
      */
     private class KillAgentResultStructure {
-        Boolean canKill = Boolean.TRUE;
+        Boolean canKill = Boolean.FALSE;
 
         Boolean isLast = Boolean.FALSE;
 
