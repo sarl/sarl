@@ -22,6 +22,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
+@Ignore("until #466 is being to be solved")
 public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 
 	@Inject
