@@ -72,6 +72,7 @@ import io.sarl.eclipse.util.BundleUtil;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class JanusSREInstall extends AbstractSREInstall {
 
     /**
