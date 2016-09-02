@@ -34,7 +34,6 @@ import io.janusproject.kernel.bic.SchedulesSkill;
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,6 +48,7 @@ import org.mockito.stubbing.Answer;
 
 import io.sarl.core.AgentTask;
 import io.sarl.lang.core.Agent;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

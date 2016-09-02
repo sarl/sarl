@@ -43,7 +43,6 @@ import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 import io.janusproject.util.TwoStepConstruction;
 import javassist.Modifier;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -51,6 +50,7 @@ import org.mockito.ArgumentMatchers;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

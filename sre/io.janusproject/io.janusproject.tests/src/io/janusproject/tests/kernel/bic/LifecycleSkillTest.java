@@ -35,7 +35,6 @@ import io.janusproject.kernel.bic.LifecycleSkill;
 import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +47,7 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Event;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: srodriguez$

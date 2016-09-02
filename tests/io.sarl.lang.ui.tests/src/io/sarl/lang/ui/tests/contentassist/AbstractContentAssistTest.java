@@ -35,7 +35,6 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.name.Named;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.swt.widgets.Display;

@@ -36,7 +36,6 @@ import io.janusproject.kernel.bic.ExternalContextAccessSkill;
 import io.janusproject.kernel.bic.InternalEventBusCapacity;
 import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -65,6 +64,7 @@ import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.ManualMocking;
+import io.sarl.tests.api.Nullable;
 import io.sarl.util.OpenEventSpace;
 
 /**

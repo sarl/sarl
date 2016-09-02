@@ -41,7 +41,6 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;

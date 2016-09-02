@@ -19,7 +19,6 @@
  */
 package io.janusproject.tests.services;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import java.util.Arrays;
@@ -39,12 +38,13 @@ import io.janusproject.services.logging.LogService;
 import io.janusproject.services.network.NetworkService;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

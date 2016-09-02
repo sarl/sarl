@@ -19,7 +19,6 @@
  */
 package io.janusproject.tests.kernel.repository;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -29,19 +28,17 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import io.janusproject.kernel.repository.ParticipantRepository;
-import io.janusproject.tests.testutils.AbstractJanusTest;
-
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.eclipse.jdt.annotation.Nullable;
+import io.janusproject.kernel.repository.ParticipantRepository;
+import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import io.sarl.lang.core.EventListener;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

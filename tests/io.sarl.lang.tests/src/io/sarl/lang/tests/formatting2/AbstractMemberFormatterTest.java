@@ -15,46 +15,12 @@
  */
 package io.sarl.lang.tests.formatting2;
 
-import java.io.InputStream;
-import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Named;
-
 import com.google.inject.Inject;
-import junit.framework.TestSuite;
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.xtext.junit4.formatter.FormatterTestRequest;
 import org.eclipse.xtext.junit4.formatter.FormatterTester;
-import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Procedures;
-import org.junit.Assume;
-import org.junit.AssumptionViolatedException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
-import org.junit.rules.TestName;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.model.InitializationError;
-import org.junit.runners.model.Statement;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.TestScope;
 
 /** Abstract test of a SARL formatter.
  *

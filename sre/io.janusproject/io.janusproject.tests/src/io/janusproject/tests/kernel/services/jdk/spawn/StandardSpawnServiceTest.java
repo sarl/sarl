@@ -44,7 +44,6 @@ import io.janusproject.services.spawn.SpawnServiceListener;
 import io.janusproject.tests.testutils.AbstractDependentServiceTest;
 import io.janusproject.tests.testutils.AvoidServiceStartForTest;
 import io.janusproject.tests.testutils.StartServiceForTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -68,6 +67,7 @@ import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.tests.api.ManualMocking;
+import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
 import io.sarl.util.OpenEventSpace;
 

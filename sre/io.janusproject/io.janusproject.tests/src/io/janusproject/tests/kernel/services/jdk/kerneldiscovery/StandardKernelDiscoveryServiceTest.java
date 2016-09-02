@@ -37,13 +37,14 @@ import io.janusproject.services.network.NetworkService;
 import io.janusproject.services.network.NetworkUtil;
 import io.janusproject.tests.testutils.AbstractDependentServiceTest;
 import io.janusproject.tests.testutils.StartServiceForTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

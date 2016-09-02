@@ -19,7 +19,6 @@
  */
 package io.janusproject.tests.kernel.repository;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -33,12 +32,12 @@ import io.janusproject.kernel.services.jdk.distributeddata.DMapView;
 import io.janusproject.services.distributeddata.DMap;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import io.sarl.lang.core.EventListener;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$

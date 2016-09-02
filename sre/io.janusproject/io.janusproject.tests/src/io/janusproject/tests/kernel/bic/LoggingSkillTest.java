@@ -19,7 +19,6 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -36,7 +35,6 @@ import io.janusproject.kernel.bic.LoggingSkill;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 import io.janusproject.util.LoggerCreator;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -50,6 +48,7 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
 import io.sarl.tests.api.ManualMocking;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$
