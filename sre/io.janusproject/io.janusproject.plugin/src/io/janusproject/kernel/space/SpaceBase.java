@@ -49,4 +49,9 @@ public abstract class SpaceBase implements DistributedSpace {
 		return this.id;
 	}
 
+	@Override
+    public final SpaceID getSpaceID() {
+        return this.id;
+    }
+
 }

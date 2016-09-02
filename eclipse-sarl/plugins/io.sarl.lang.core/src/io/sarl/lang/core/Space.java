@@ -28,9 +28,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import io.sarl.lang.util.SynchronizedSet;
 
 /**
- * Agents in SARL can interact only via Interaction Spaces.
- * A space is the support of the event-driven interaction between agents
- * respecting the rules defined in various Space Specifications.
+ * Agents in SARL can interact only via Interaction Spaces. A space is the support of the event-driven interaction between agents respecting the rules
+ * defined in various Space Specifications.
  *
  * @author $Author: srodriguez$
  * @version $FullVersion$
@@ -39,21 +38,30 @@ import io.sarl.lang.util.SynchronizedSet;
  */
 public interface Space {
 
-	/**
-	 * Replies the Identification of this Interaction {@link Space}.
-	 *
-	 * @return the space's id
-	 */
-	@Pure
-	SpaceID getID();
+    /**
+     * Replies the Identification of this Interaction {@link Space}.
+     *
+     * @deprecated replaced by {@link #getSpaceID()}, to increase readability in the SARL code
+     * @return the space's id
+     */
+    @Pure
+    @Deprecated
+    SpaceID getID();
 
-	/**
-	 * Returns the IDs of all agents interacting in this space all over the
-	 * network.
-	 *
-	 * @return participants IDs
-	 */
-	@Pure
-	SynchronizedSet<UUID> getParticipants();
+    /**
+     * Replies the Identification of this Interaction {@link Space}.
+     *
+     * @return the space's id
+     */
+    @Pure
+    SpaceID getSpaceID();
+
+    /**
+     * Returns the IDs of all agents interacting in this space all over the network.
+     *
+     * @return participants IDs
+     */
+    @Pure
+    SynchronizedSet<UUID> getParticipants();
 
 }
