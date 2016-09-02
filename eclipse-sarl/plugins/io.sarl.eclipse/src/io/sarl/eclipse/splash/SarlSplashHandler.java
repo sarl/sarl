@@ -66,8 +66,6 @@ public class SarlSplashHandler extends EclipseSplashHandler {
 				betaCtrl.setBackgroundImage(this.image);
 				betaCtrl.setBounds(betaRectangle);
 			}
-			// ensure creation of the progress
-			getContent();
 		}
 	}
 
