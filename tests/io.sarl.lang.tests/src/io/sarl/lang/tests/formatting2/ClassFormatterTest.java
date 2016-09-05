@@ -57,244 +57,259 @@ public class ClassFormatterTest {
 	 */
 	public static class FormatterAPITest extends AbstractFormatterTest {
 	
-	@Test
-	public void empty() throws Exception {
-		String source = "class  EntityX{}";
-		String expected = multilineString(
-				"class EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void modifiers() throws Exception {
-		String source = "public    static    class EntityX{}";
-		String expected = multilineString(
-				"public static class EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void twoAnnotations() throws Exception {
-		String source = "@Pure@Beta    class EntityX{}";
-		String expected = multilineString(
-				"@Pure @Beta class EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void threeAnnotations() throws Exception {
-		String source = "@Pure@Beta\n@Hello    class EntityX{}";
-		String expected = multilineString(
-				"@Pure @Beta",
-				"@Hello class EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void annotationValue() throws Exception {
-		String source = "@SuppressWarnings(        value= \"name\"   )class EntityX{}";
-		String expected = multilineString(
-				"@SuppressWarnings(value = \"name\") class EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void annotationImplicitValue() throws Exception {
-		String source = "@SuppressWarnings(   \"name\"   )class EntityX{}";
-		String expected = multilineString(
-				"@SuppressWarnings(\"name\") class EntityX {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void typeParameter() throws Exception {
-		String source = "class EntityX    <  T   > {}";
-		String expected = multilineString(
-				"class EntityX<T> {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void typeParameters() throws Exception {
-		String source = "class EntityX    <  T , TT   extends T  > {}";
-		String expected = multilineString(
-				"class EntityX<T, TT extends T> {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void empty() throws Exception {
+			String source = "class  EntityX{}";
+			String expected = multilineString(
+					"class EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
 	
-	@Test
-	public void extend() throws Exception {
-		String source = "class EntityX    extends    EntityY {}";
-		String expected = multilineString(
-				"class EntityX extends EntityY {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void modifiers() throws Exception {
+			String source = "public    static    class EntityX{}";
+			String expected = multilineString(
+					"public static class EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void twoAnnotations() throws Exception {
+			String source = "@Pure@Beta    class EntityX{}";
+			String expected = multilineString(
+					"@Pure @Beta class EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void threeAnnotations() throws Exception {
+			String source = "@Pure@Beta\n@Hello    class EntityX{}";
+			String expected = multilineString(
+					"@Pure @Beta",
+					"@Hello class EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void annotationValue() throws Exception {
+			String source = "@SuppressWarnings(        value= \"name\"   )class EntityX{}";
+			String expected = multilineString(
+					"@SuppressWarnings(value = \"name\") class EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void annotationImplicitValue() throws Exception {
+			String source = "@SuppressWarnings(   \"name\"   )class EntityX{}";
+			String expected = multilineString(
+					"@SuppressWarnings(\"name\") class EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void typeParameter() throws Exception {
+			String source = "class EntityX    <  T   > {}";
+			String expected = multilineString(
+					"class EntityX<T> {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void typeParameters() throws Exception {
+			String source = "class EntityX    <  T , TT   extends T  > {}";
+			String expected = multilineString(
+					"class EntityX<T, TT extends T> {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+		
+		@Test
+		public void extend() throws Exception {
+			String source = "class EntityX    extends    EntityY {}";
+			String expected = multilineString(
+					"class EntityX extends EntityY {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void extendGeneric() throws Exception {
+			String source = "class EntityX    extends    EntityY <   Boolean > {}";
+			String expected = multilineString(
+					"class EntityX extends EntityY<Boolean> {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void genericExtendGeneric() throws Exception {
+			String source = "class EntityX  < T   >    extends    EntityY <   T > {}";
+			String expected = multilineString(
+					"class EntityX<T> extends EntityY<T> {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void oneImplement() throws Exception {
+			String source = "class EntityX    implements    EntityY {}";
+			String expected = multilineString(
+					"class EntityX implements EntityY {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void twoImplements() throws Exception {
+			String source = "class EntityX    implements    EntityY  ,    EntityZ {}";
+			String expected = multilineString(
+					"class EntityX implements EntityY, EntityZ {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void oneImplementGeneric() throws Exception {
+			String source = "class EntityX    implements    EntityY <   Boolean  > {}";
+			String expected = multilineString(
+					"class EntityX implements EntityY<Boolean> {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void twoImplementsGeneric() throws Exception {
+			String source = "class EntityX    implements    EntityY  < Boolean  > ,    EntityZ {}";
+			String expected = multilineString(
+					"class EntityX implements EntityY<Boolean>, EntityZ {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void memberIndent() throws Exception {
+			String source = "class EntityX{var x:int}";
+			String expected = multilineString(
+					"class EntityX {",
+					"	var x : int",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void mlStandardComment1() throws Exception {
+			String source = "/*Hello world.\n* That's the second line.\n*/class A{}";
+			String expected = multilineString(
+					"/* Hello world.",
+					" * That's the second line.",
+					" */",
+					"class A {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void mlStandardComment2() throws Exception {
+			String source = "/*Hello world.\nThat's the second line.*/class A{}";
+			String expected = multilineString(
+					"/* Hello world.",
+					" * That's the second line.",
+					" */",
+					"class A {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void mlStandardComment3() throws Exception {
+			String source = "/*     Hello world.     */class A{}";
+			String expected = multilineString(
+					"/* Hello world.",
+					" */",
+					"class A {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void mlStandardComment4() throws Exception {
+			String source = "/*     Hello world.     */class A{/*Second comment*/}";
+			String expected = multilineString(
+					"/* Hello world.",
+					" */",
+					"class A {",
+					"\t/* Second comment",
+					"\t */",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void mlStandardComment5() throws Exception {
+			String source = "class X {}\n\n/*Hello world.\n* That's the second line.\n*/class A{}";
+			String expected = multilineString(
+					"class X {",
+					"}",
+					"/* Hello world.",
+					" * That's the second line.",
+					" */",
+					"class A {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void extendGeneric() throws Exception {
-		String source = "class EntityX    extends    EntityY <   Boolean > {}";
-		String expected = multilineString(
-				"class EntityX extends EntityY<Boolean> {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
+		@Test
+		public void mlJavaComment() throws Exception {
+			String source = "/**Hello world.\nThat's the second line.*/class A{}";
+			String expected = multilineString(
+					"/** Hello world.",
+					" * That's the second line.",
+					" */",
+					"class A {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+	
+		@Test
+		public void slComment() throws Exception {
+			String source = "\n//Hello world.\nclass A{}";
+			String expected = multilineString(
+					"// Hello world.",
+					"class A {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
 
-	@Test
-	public void genericExtendGeneric() throws Exception {
-		String source = "class EntityX  < T   >    extends    EntityY <   T > {}";
-		String expected = multilineString(
-				"class EntityX<T> extends EntityY<T> {",
-				"}",
-				"");
-		assertFormatted(source, expected);
 	}
-
-	@Test
-	public void oneImplement() throws Exception {
-		String source = "class EntityX    implements    EntityY {}";
-		String expected = multilineString(
-				"class EntityX implements EntityY {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void twoImplements() throws Exception {
-		String source = "class EntityX    implements    EntityY  ,    EntityZ {}";
-		String expected = multilineString(
-				"class EntityX implements EntityY, EntityZ {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void oneImplementGeneric() throws Exception {
-		String source = "class EntityX    implements    EntityY <   Boolean  > {}";
-		String expected = multilineString(
-				"class EntityX implements EntityY<Boolean> {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void twoImplementsGeneric() throws Exception {
-		String source = "class EntityX    implements    EntityY  < Boolean  > ,    EntityZ {}";
-		String expected = multilineString(
-				"class EntityX implements EntityY<Boolean>, EntityZ {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void memberIndent() throws Exception {
-		String source = "class EntityX{var x:int}";
-		String expected = multilineString(
-				"class EntityX {",
-				"	var x : int",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void mlStandardComment1() throws Exception {
-		String source = "/*Hello world.\n* That's the second line.\n*/class A{}";
-		String expected = multilineString(
-				"/* Hello world.",
-				" * That's the second line.",
-				" */",
-				"class A {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void mlStandardComment2() throws Exception {
-		String source = "/*Hello world.\nThat's the second line.*/class A{}";
-		String expected = multilineString(
-				"/* Hello world.",
-				" * That's the second line.",
-				" */",
-				"class A {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void mlStandardComment3() throws Exception {
-		String source = "/*     Hello world.     */class A{}";
-		String expected = multilineString(
-				"/* Hello world.",
-				" */",
-				"class A {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void mlStandardComment4() throws Exception {
-		String source = "/*     Hello world.     */class A{/*Second comment*/}";
-		String expected = multilineString(
-				"/* Hello world.",
-				" */",
-				"class A {",
-				"\t/* Second comment",
-				"\t */",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void mlJavaComment() throws Exception {
-		String source = "/**Hello world.\nThat's the second line.*/class A{}";
-		String expected = multilineString(
-				"/** Hello world.",
-				" * That's the second line.",
-				" */",
-				"class A {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-	@Test
-	public void slComment() throws Exception {
-		String source = "\n//Hello world.\nclass A{}";
-		String expected = multilineString(
-				"// Hello world.",
-				"class A {",
-				"}",
-				"");
-		assertFormatted(source, expected);
-	}
-
-}
 	
 }

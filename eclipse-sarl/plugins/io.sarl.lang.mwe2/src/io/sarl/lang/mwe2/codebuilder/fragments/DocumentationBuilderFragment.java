@@ -22,13 +22,13 @@
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -64,6 +64,7 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.compiler.IAppendable;
 import org.eclipse.xtext.xbase.compiler.StringBuilderBasedAppendable;
+import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.grammarAccess.GrammarAccessExtensions;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.BindingFactory;
@@ -614,16 +615,34 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(" {"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append("\tprivate static final String SPACE_CHAR = \" \";"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tprivate static final String NL_CHAR = \"\\n\";"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tprivate static final String EMPTY_STR = \"\";"); //$NON-NLS-1$
+				it.newLine();
 				it.append("\tprivate String mlLinePrefix;"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\tprivate String mlStart;"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\tprivate String mlEnd;"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\tprivate String slPrefix;"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprotected static boolean isNewLine(char character) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (character == '\\n' || character == '\\r' || character == '\\f') {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn true;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\treturn ((((1 << Character.LINE_SEPARATOR)"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t| (1 << Character.PARAGRAPH_SEPARATOR)) >> Character.getType((int) character)) & 1) != 0;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t@"); //$NON-NLS-1$
@@ -635,12 +654,6 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\t/** Change the characters that must be used to start a comment."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param symbol the start comment symbols."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\tpublic void setMultilineCommentStartSymbols(String symbols) {"); //$NON-NLS-1$
 				it.newLine();
@@ -659,12 +672,6 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t/** Change the characters that must be used to end a comment."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param symbol the end comment symbols."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t */"); //$NON-NLS-1$
-				it.newLine();
 				it.append("\tpublic void setMultilineCommentEndSymbols(String symbols) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tthis.mlEnd = symbols;"); //$NON-NLS-1$
@@ -681,12 +688,6 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\t/** Change the line prefix for the multiline comments."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param prefix the new prefix."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\tpublic void setMultilineCommentLinePrefix(String prefix) {"); //$NON-NLS-1$
 				it.newLine();
@@ -705,11 +706,31 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t/** Change the line prefix for the singleline comments."); //$NON-NLS-1$
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Pure.class);
 				it.newLine();
-				it.append("\t * @param prefix the new prefix."); //$NON-NLS-1$
+				it.append("\tprotected "); //$NON-NLS-1$
+				it.append(Set.class);
+				it.append("<Character> getSinglelineCommentSpecialChars() {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t */"); //$NON-NLS-1$
+				it.append("\t\tfinal "); //$NON-NLS-1$
+				it.append(Set.class);
+				it.append("<Character> set = new "); //$NON-NLS-1$
+				it.append(TreeSet.class);
+				it.append("<>();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tset.add('*');"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tset.add('+');"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tset.add('-');"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tset.add('=');"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn set;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\tpublic void setSinglelineCommentPrefix(String prefix) {"); //$NON-NLS-1$
 				it.newLine();
@@ -850,200 +871,12 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(".isEmpty(doc)) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tfinal "); //$NON-NLS-1$
-				it.append(Map.class);
-				it.append("<Integer, "); //$NON-NLS-1$
-				it.append(List.class);
-				it.append("<Replacement>> replacements = new "); //$NON-NLS-1$
+				it.append(SortedMap.class);
+				it.append("<Integer, Replacement> replacements = new "); //$NON-NLS-1$
 				it.append(TreeMap.class);
 				it.append("();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tformatMultlineComment("); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tindentation,"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t"); //$NON-NLS-1$
-				it.append(Strings.class);
-				it.append(".newLine(),"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tnew AppendableBackend(doc, replacements, 0, doc.length()));"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tapplyReplacements(appendable, doc, replacements);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\tprivate void applyReplacements("); //$NON-NLS-1$
-				it.append(IAppendable.class);
-				it.append(" appendable, String documentation, "); //$NON-NLS-1$
-				it.append(Map.class);
-				it.append("<Integer, "); //$NON-NLS-1$
-				it.append(List.class);
-				it.append("<Replacement>> replacements) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tint offset = 0;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tfor ("); //$NON-NLS-1$
-				it.append(List.class);
-				it.append("<Replacement> replacementList : replacements.values()) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tfor (Replacement replacement : replacementList) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tif (replacement.getOffset() < offset) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tthrow new IllegalStateException(\"replacements are overlapping\");"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tif (replacement.getOffset() > offset) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tString notReplacedString = documentation.substring(offset, replacement.getOffset());"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tappendable.append(notReplacedString);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\toffset = replacement.getOffset();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tappendable.append(replacement.getText());"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\toffset += replacement.getLength();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tif (offset < documentation.length()) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tString notReplacedString = documentation.substring(offset);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tappendable.append(notReplacedString);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\t/** Replies the string that should appear at the start of each documentation line."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param prefix the default prefix text."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param isFirstLine indicates if the prefix string is for the first line of the documentation,"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t *    or the other lines."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param isLastLine indicates if the prefix string is for the last line of the documentation,"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t *    or the other lines."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @return the real prefix text."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t */"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t@"); //$NON-NLS-1$
-				it.append(Pure.class);
-				it.newLine();
-				it.append("\tprotected String getLinePrefix(String prefix, boolean isFirstLine, boolean isLastLine) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tif (isFirstLine) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\treturn \" \";"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t} else if (isLastLine) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\treturn \" \" + prefix;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\treturn \" \" + prefix + \" \";"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\t/** Replies the string that should appear at the end of each documentation line."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param postfix the default postfix text."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @return the real postfix text."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t */"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t@Pure"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\tprotected String getLinePostfix(String postfix) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\treturn postfix;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\t/** Format a line of comment."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param appendable the result of the format."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param line the line to format."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param prefix the expected prefix text for the line."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t * @param postfix the expected postfix text for the line."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t */"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t@"); //$NON-NLS-1$
-				it.append(Pure.class);
-				it.newLine();
-				it.append("\tprotected void formatLine("); //$NON-NLS-1$
-				it.append(IAppendable.class);
-				it.append(" appendable, String line, String prefix, String postfix) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tString simpleLine = (line == null) ? \"\" : line.trim();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tString simplePrefix = (prefix == null) ? \"\" : prefix.trim();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tString simplePostfix = (postfix == null) ? \"\" : postfix.trim();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tif (prefix != null) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tappendable.append(prefix);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tif (!"); //$NON-NLS-1$
-				it.append(Strings.class);
-				it.append(".isEmpty(simplePrefix) && simpleLine.startsWith(simplePrefix)) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tint index = simplePrefix.length();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\twhile (index < simpleLine.length() && Character.isSpaceChar(simpleLine.charAt(index))) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t++index;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tsimpleLine = simpleLine.substring(index);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tif (!Strings.isEmpty(simplePostfix) && simpleLine.endsWith(simplePostfix)) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tint index = simpleLine.length() - simplePostfix.length() - 1;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\twhile (index < simpleLine.length() && Character.isSpaceChar(simpleLine.charAt(index))) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t--index;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tsimpleLine = simpleLine.substring(0, index + 1);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tappendable.append(simpleLine);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tif (postfix != null) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tappendable.append(postfix);"); //$NON-NLS-1$
+				it.append("\t\t\tformatMultlineComment(indentation, Strings.newLine(), new AppendableAccessor(appendable, doc, replacements, 0, doc.length()));"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
@@ -1059,13 +892,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(IComment.class);
 				it.append(" comment) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tformatMultlineComment("); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tcontext.getIndentationString(),"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tcontext.getNewLinesString(1),"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tnew RegionBackend(context, comment));"); //$NON-NLS-1$
+				it.append("\t\tformatMultlineComment(context.getIndentationString(), context.getNewLinesString(1), new RegionAccessor(context, comment));"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -1083,7 +910,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t@"); //$NON-NLS-1$
 				it.append(Pure.class);
 				it.newLine();
-				it.append("\tpublic String formatSinglelineComment(String doc, String indentation) {"); //$NON-NLS-1$
+				it.append("\t\tpublic String formatSinglelineComment(String doc, String indentation) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t"); //$NON-NLS-1$
 				it.append(StringBuilderBasedAppendable.class);
@@ -1121,25 +948,17 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(Strings.class);
 				it.append(".isEmpty(doc)) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tfinal "); //$NON-NLS-1$
-				it.append(Map.class);
-				it.append("<Integer, "); //$NON-NLS-1$
-				it.append(List.class);
-				it.append("<Replacement>> replacements = new "); //$NON-NLS-1$
+				it.append("\t\tfinal "); //$NON-NLS-1$
+				it.append(SortedMap.class);
+				it.append("<Integer, Replacement> replacements = new "); //$NON-NLS-1$
 				it.append(TreeMap.class);
-				it.append("();"); //$NON-NLS-1$
+				it.append("<>();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tformatSinglelineComment("); //$NON-NLS-1$
+				it.append("\t\tformatSinglelineComment("); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\tindentation,"); //$NON-NLS-1$
+				it.append("\t\t\t\tindentation,"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\tnew AppendableBackend(doc, replacements,"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t\tMath.max(0, doc.indexOf(getSinglelineCommentPrefix())),"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t\tdoc.length()));"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tapplyReplacements(appendable, doc, replacements);"); //$NON-NLS-1$
+				it.append("\t\t\t\tnew AppendableAccessor(appendable, doc, replacements, 0, doc.length()));"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
@@ -1152,26 +971,36 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(IComment.class);
 				it.append(" comment) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tformatSinglelineComment("); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tcontext.getIndentationString(),"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tnew RegionBackend(context, comment));"); //$NON-NLS-1$
+				it.append("\t\tformatSinglelineComment(context.getIndentationString(), new RegionAccessor(context, comment));"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\tprivate <T> void formatSinglelineComment("); //$NON-NLS-1$
+				it.append("\tprivate <T> void formatSinglelineComment(String indentationString, FormattedTextAccessor<T> backend) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tString indentationString,"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tFormatterBackend<T> backend) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tString indent = "); //$NON-NLS-1$
+				it.append("\t\tfinal String indent = "); //$NON-NLS-1$
 				it.append(Strings.class);
 				it.append(".emptyIfNull(indentationString);"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tString prefix = getSinglelineCommentPrefix();"); //$NON-NLS-1$
+				it.append("\t\tfinal String comment = backend.getCommentText();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t// Compute the starting offset of the text inside the comment"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tint offset = comment.indexOf(getSinglelineCommentPrefix());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (offset < 0) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tbackend.replace(0, 0, getSinglelineCommentPrefix());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\toffset = 0;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t} else {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\toffset += getSinglelineCommentPrefix().length();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal int endOffset = comment.length();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tT currentLine = backend.getFirstLine(backend.getCommentOffset());"); //$NON-NLS-1$
 				it.newLine();
@@ -1179,329 +1008,482 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\twhile (currentLine != null) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tint lineOffset = backend.getLineOffset(currentLine);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tif (lineOffset >= backend.getCommentEndOffset()) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t// Ok, break is not the best statement, but it makes the code easier to read."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
 				it.append("\t\t\tString lineText = backend.getLineText(currentLine);"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tcurrentLine = backend.getNextLine(currentLine);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tint symbolOffset = lineText.indexOf(prefix);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tint textZoneOffset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tif (symbolOffset >= 0) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tif (firstLine) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tfirstLine = false;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t} else {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tbackend.replace(symbolOffset + lineOffset, 0, indent);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\ttextZoneOffset = symbolOffset + prefix.length();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t} else {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tif (firstLine) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tfirstLine = false;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tbackend.replace(lineOffset, 0, prefix);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t} else {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tbackend.replace(lineOffset, 0, indent + prefix);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\ttextZoneOffset = 0;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tint textOffset = textZoneOffset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\twhile (textOffset < lineText.length() && isSpaceChar(lineText.charAt(textOffset))) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t++textOffset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tif ((textOffset >= lineText.length()) || Character.isWhitespace(lineText.charAt(textOffset))) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t// No text in the comment."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tif (textOffset != textZoneOffset) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t// Remove trailing spaces"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tbackend.replace(lineOffset + textZoneOffset, textOffset - textZoneOffset, \"\");"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t} else {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t// Text in comment."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tif ((textZoneOffset + 1) != textOffset) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t// Fixing the invalid number of spaces after the start symbols."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tbackend.replace(lineOffset + textZoneOffset, textOffset - textZoneOffset, \" \");"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t// Remove trailing white spaces."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tint endTextOffset = lineText.length() - 1;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\twhile (endTextOffset > textOffset && isSpaceChar(lineText.charAt(endTextOffset))) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t--endTextOffset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t++endTextOffset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tif (endTextOffset != lineText.length()) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tbackend.replace(lineOffset + endTextOffset, lineText.length() - endTextOffset, \"\");"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\tprivate static boolean isSpaceChar(char character) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\treturn (((1 << Character.SPACE_SEPARATOR) >> Character.getType((int) character)) & 1) != 0;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\tprivate <T> void formatMultlineComment("); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tString indentationString, String newLineString,"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tFormatterBackend<T> backend) {"); //$NON-NLS-1$
-				it.newLine();
-				//TODO Code this function
-				it.append("\t\t/* FIXME Implement the multiline formatting function"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tfinal String indent = "); //$NON-NLS-1$
-				it.append(Strings.class);
-				it.append(".emptyIfNull(indentationString);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tfinal String postfix = getLinePostfix(null);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tfinal String startSymbols = getMultilineCommentStartSymbols();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tfinal String fullText = backend.getCommentText();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tfinal int commentOffset = backend.getCommentOffset();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tfinal int endCommentOffset = backend.getCommentEndOffset();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tint startOffset = fullText.indexOf(startSymbols);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tif (startOffset < 0) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tbackend.replace(0, 0, startSymbols);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tstartOffset = 0;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t} else {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tstartOffset += startSymbols.length();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tfinal String endSymbols = getMultilineCommentEndSymbols();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tint endOffset = fullText.indexOf(endSymbols, startOffset);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tif (endOffset < 0) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tendOffset = fullText.length();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tfinal String startLineSymbols = getMultilineCommentLinePrefix();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tT currentLine = backend.getFirstLine(startOffset + commentOffset);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tboolean firstLine = true;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\twhile (currentLine != null) {"); //$NON-NLS-1$
-				it.newLine();
 				it.append("\t\t\tint lineOffset = backend.getLineOffset(currentLine);"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tif (lineOffset >= endCommentOffset) {"); //$NON-NLS-1$
+				it.append("\t\t\tint lineLength = backend.getLineLength(currentLine);"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t// Ok, break is not the best statement, but it makes the code easier to read."); //$NON-NLS-1$
+				it.append("\t\t\t// Clamp the line text to the comment area."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\tbreak;"); //$NON-NLS-1$
+				it.append("\t\t\tif (firstLine) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tif (lineOffset < offset) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tfinal int len = offset - lineOffset;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tlineText = lineText.substring(len);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tlineOffset += len;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tlineLength -= len;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t} else if (lineOffset >= endOffset) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t// After the end of comment"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tbackend.applyReplacements();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\treturn;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t} else {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tfinal String prefix;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tif (!startsWith(lineText, 0, getSinglelineCommentPrefix())) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tprefix = indent + getSinglelineCommentPrefix();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t} else {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tprefix = indent;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tbackend.replace(lineOffset, 0, prefix);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tint textStartOffset;"); //$NON-NLS-1$
+				it.append("\t\t\t// Skip the comment characters that corresponds to the Javadoc format: //[*-+=]."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tString referenceText = fullText.substring("); //$NON-NLS-1$
+				it.append("\t\t\tint realCommentStart = 0;"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\tMath.max(lineOffset - commentOffset, startOffset),"); //$NON-NLS-1$
+				it.append("\t\t\tfinal "); //$NON-NLS-1$
+				it.append(Set.class);
+				it.append("<Character> specialChars = getSinglelineCommentSpecialChars();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\tMath.min(backend.getLineEndOffset(currentLine) - commentOffset, endOffset));"); //$NON-NLS-1$
+				it.append("\t\t\twhile (realCommentStart < lineLength && specialChars.contains(lineText.charAt(realCommentStart))) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t// Move to next line"); //$NON-NLS-1$
+				it.append("\t\t\t\t++realCommentStart;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t// Search for the first non whitespace"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tint firstNonWhiteSpacePos = realCommentStart;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\twhile (firstNonWhiteSpacePos < lineLength && Character.isWhitespace(lineText.charAt(firstNonWhiteSpacePos))) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t++firstNonWhiteSpacePos;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t// Add whitespace at the beginning."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (firstNonWhiteSpacePos == lineLength) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t// Empty comment"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tif (realCommentStart < firstNonWhiteSpacePos) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tbackend.replace(realCommentStart + lineOffset, lineLength - realCommentStart, EMPTY_STR);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t} else {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tfinal int expectedNbWhiteSpaces = getWhiteSpacesOnFirstLine();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tfinal int nbWhiteSpaces = firstNonWhiteSpacePos - realCommentStart;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tif (nbWhiteSpaces != expectedNbWhiteSpaces) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tbackend.replace(realCommentStart + lineOffset, nbWhiteSpaces, makeWhiteSpaces(expectedNbWhiteSpaces));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t// Format the comment text"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tformatLineText("); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tlineText.substring(firstNonWhiteSpacePos, lineLength), true,"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tnew SubAccessor<>(backend, lineOffset + firstNonWhiteSpacePos));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t// Remove trailing whitespaces"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tint endOfText = lineLength;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\twhile ((endOfText - 1) > firstNonWhiteSpacePos && Character.isWhitespace(lineText.charAt(endOfText - 1))) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\t--endOfText;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tif (endOfText < lineLength) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tbackend.replace(endOfText + lineOffset, lineLength - endOfText, EMPTY_STR);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfirstLine = false;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tcurrentLine = backend.getNextLine(currentLine);"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tif (!"); //$NON-NLS-1$
-				it.append(Strings.class);
-				it.append(".isEmpty(referenceText) || currentLine != null) {"); //$NON-NLS-1$
+				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\tString prefix;"); //$NON-NLS-1$
+				it.append("\t\tbackend.applyReplacements();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprivate static String safeSubstring(String text, int start, int length) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (text == null) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn EMPTY_STR;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal int index = Math.max(0, start);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal int len = Math.max(0, Math.min(length, text.length()));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn text.substring(index, index + len);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprivate static boolean startsWith(String text, int start, String pattern) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn safeSubstring(text, start, pattern.length()).equals(pattern);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprivate static String makeWhiteSpaces(int nb) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal StringBuilder b = new StringBuilder();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfor (int i = 0; i < nb; ++i) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tb.append(SPACE_CHAR);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn b.toString();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprotected int getWhiteSpacesOnFirstLine() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn 1;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprotected int getWhiteSpacesOnOtherLines() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn 1;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprotected <T> void formatLineText(String lineText, boolean isMultlineComment, FormattedTextAccessor<T> backend) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprivate <T> boolean formatMultlineCommentFirstLine(String lineText, String indentationString, String newLineString, int endCommentOffset, FormattedTextAccessor<T> backend) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t// Skip the comment characters that corresponds to the Javadoc format: /**."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tint realCommentStart = 0;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\twhile (realCommentStart < lineText.length() && startsWith(lineText, realCommentStart, getMultilineCommentLinePrefix())) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\trealCommentStart += getMultilineCommentLinePrefix().length();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t// Search for the first non whitespace"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tint firstNonWhiteSpacePos = realCommentStart;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tboolean hasNonSpaceChar = false;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\twhile (firstNonWhiteSpacePos < lineText.length() && Character.isWhitespace(lineText.charAt(firstNonWhiteSpacePos))) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (!Character.isSpaceChar(lineText.charAt(firstNonWhiteSpacePos))) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\thasNonSpaceChar = true;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t++firstNonWhiteSpacePos;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t// Add whitespace at the beginning."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal int expectedNbWhiteSpaces = getWhiteSpacesOnFirstLine();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal int nbWhiteSpaces = firstNonWhiteSpacePos - realCommentStart;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (hasNonSpaceChar || nbWhiteSpaces != expectedNbWhiteSpaces) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tbackend.replace(realCommentStart, nbWhiteSpaces, makeWhiteSpaces(expectedNbWhiteSpaces));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t// Treat the end of comment"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (endCommentOffset <= lineText.length()) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t// Comment end at the first line. Insert a newline character"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t// Search for the end of comment text."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tint endPos = endCommentOffset;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfinal int end = endPos;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\twhile ((endPos - 1) > firstNonWhiteSpacePos && Character.isWhitespace(lineText.charAt(endPos - 1))) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t--endPos;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t// Format the comment text"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tformatLineText(lineText.substring(firstNonWhiteSpacePos, endPos), true, new SubAccessor<>(backend, firstNonWhiteSpacePos));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t// Do the replacement"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tbackend.replace(endPos, end - endPos, newLineString + indentationString + SPACE_CHAR);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t// We don't need to treat more line"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn true;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t// Format the comment text"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tformatLineText(lineText.substring(firstNonWhiteSpacePos, lineText.length()), true, new SubAccessor<>(backend, firstNonWhiteSpacePos));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn false;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprivate <T> boolean formatMultlineCommentOtherLines(String lineText, String indentationString, String newLineString, int endCommentOffset, FormattedTextAccessor<T> backend) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t// Search for the comment prefix (usually \" * \""); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tint realCommentStart = 0;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\twhile (realCommentStart < lineText.length() && Character.isWhitespace(lineText.charAt(realCommentStart))) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t++realCommentStart;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tboolean foundStar = false;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (realCommentStart < lineText.length() && startsWith(lineText, realCommentStart, getMultilineCommentLinePrefix())) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\trealCommentStart += getMultilineCommentLinePrefix().length();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfoundStar = true;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\twhile (realCommentStart < lineText.length() && Character.isWhitespace(lineText.charAt(realCommentStart))) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t++realCommentStart;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t// Compute the standard prefix."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tStringBuilder prefix = new StringBuilder(indentationString);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprefix.append(SPACE_CHAR);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprefix.append(getMultilineCommentLinePrefix());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprefix.append(makeWhiteSpaces(getWhiteSpacesOnOtherLines()));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t// Force replacement by the line's prefix"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tint minBoundForEnd = 0;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (endCommentOffset > lineText.length() || foundStar || realCommentStart < endCommentOffset) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tbackend.replace(0, realCommentStart, prefix.toString());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (foundStar) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tminBoundForEnd = prefix.length();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t// Format the comment text"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (endCommentOffset <= lineText.length()) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t// End of comment on the current line."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tint endPosition = endCommentOffset;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfinal int end = endPosition;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\twhile ((endPosition - 1) >= minBoundForEnd && Character.isWhitespace(lineText.charAt(endPosition - 1))) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t--endPosition;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (endPosition > 0) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t// Comment end with a text before. Insert a newline character"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tbackend.replace(endPosition, end - endPosition, newLineString + indentationString + SPACE_CHAR);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t} else {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t// Replace spaces before end of comment if they exist"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tbackend.replace(endPosition, end - endPosition, indentationString + SPACE_CHAR);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t// We don't need to treat more line"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn true;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn false;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tprivate <T> void formatMultlineComment(String indentationString, String newLineString, FormattedTextAccessor<T> backend) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal String indent = Strings.emptyIfNull(indentationString);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tfinal String comment = backend.getCommentText();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t// Compute the starting offset of the text inside the comment"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tint offset = comment.indexOf(getMultilineCommentStartSymbols());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (offset < 0) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tbackend.replace(0, 0, getMultilineCommentStartSymbols());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\toffset = 0;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t} else {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\toffset += getMultilineCommentStartSymbols().length();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t// Compute the ending offset of the text inside the comment"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tint endOffset = comment.indexOf(getMultilineCommentEndSymbols(), offset);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (endOffset < 0) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tendOffset = comment.length();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tbackend.replace(endOffset, 0, getMultilineCommentEndSymbols());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t// Go through the lines"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tT currentLine = backend.getFirstLine(backend.getCommentOffset());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tboolean firstLine = true;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\twhile (currentLine != null) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tString lineText = backend.getLineText(currentLine);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tint lineOffset = backend.getLineOffset(currentLine);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tint lineLength = backend.getLineLength(currentLine);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t// Clamp the line text to the comment area."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tif (lineOffset < offset) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tfinal int len = offset - lineOffset;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tlineText = lineText.substring(len);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tlineOffset += len;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tlineLength -= len;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tif ((lineOffset + lineLength) > endOffset) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tfinal int len = lineOffset + lineLength - endOffset;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tlineText = lineText.substring(0, lineText.length() - len);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tlineLength -= len;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\tif (firstLine) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\tfirstLine = false;"); //$NON-NLS-1$
+				it.append("\t\t\t\t\tif (formatMultlineCommentFirstLine(lineText, indent, newLineString, endOffset - lineOffset, new SubAccessor(backend, lineOffset))) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\ttextStartOffset = 0;"); //$NON-NLS-1$
+				it.append("\t\t\t\t\t\tbackend.applyReplacements();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\t// Skip prefix symbols (for Javadoc-like comments)."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\twhile ((textStartOffset < referenceText.length())"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t\t\t\t&& referenceText.regionMatches(textStartOffset, startLineSymbols, 0, startLineSymbols.length())) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t\ttextStartOffset += startLineSymbols.length();"); //$NON-NLS-1$
+				it.append("\t\t\t\t\t\treturn;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\treferenceText = referenceText.substring(textStartOffset);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tprefix = getLinePrefix(null, true, false);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\ttextStartOffset += Math.max(lineOffset - commentOffset, startOffset);"); //$NON-NLS-1$
-				it.newLine();
 				it.append("\t\t\t\t} else {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\ttextStartOffset = Math.max(lineOffset - commentOffset, startOffset);"); //$NON-NLS-1$
+				it.append("\t\t\t\tif (formatMultlineCommentOtherLines(lineText, indent, newLineString, endOffset - lineOffset, new SubAccessor(backend, lineOffset))) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\tprefix = indent + getLinePrefix(startLineSymbols, false, false);"); //$NON-NLS-1$
+				it.append("\t\t\t\t\tbackend.applyReplacements();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t// Format the line"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t"); //$NON-NLS-1$
-				it.append(StringBuilderBasedAppendable.class);
-				it.append(" appendable = new "); //$NON-NLS-1$
-				it.append(StringBuilderBasedAppendable.class);
-				it.append("();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tformatLine(appendable, referenceText, prefix, postfix);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tString newText = appendable.getContent();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t// Change the text"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\tif (!"); //$NON-NLS-1$
-				it.append(Strings.class);
-				it.append(".equal(referenceText, newText)) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tbackend.replace("); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t\t\ttextStartOffset + commentOffset,"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t\t\treferenceText.length(),"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t\t\tnewText);"); //$NON-NLS-1$
+				it.append("\t\t\t\t\treturn;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
+				it.append("\t\t\tfirstLine = false;"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t// Format the closing symbols."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tint textEndOffset = endOffset - 1;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\twhile (textEndOffset > startOffset"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t&& isSpaceChar(fullText.charAt(textEndOffset))) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t--textEndOffset;"); //$NON-NLS-1$
+				it.append("\t\t\tcurrentLine = backend.getNextLine(currentLine);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tString referenceText;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t"); //$NON-NLS-1$
-				it.append(StringBuilderBasedAppendable.class);
-				it.append(" appendable = new "); //$NON-NLS-1$
-				it.append(StringBuilderBasedAppendable.class);
-				it.append("();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tif (textEndOffset <= startOffset || !Character.isWhitespace(fullText.charAt(textEndOffset))) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t// Do not find a new line."); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tappendable.append(newLineString);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\ttextEndOffset = endOffset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\treferenceText = endSymbols;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t} else {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t++textEndOffset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\treferenceText = fullText.substring(textEndOffset, endOffset) + endSymbols;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tString prefix = indent + getLinePrefix(endSymbols, false, true);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tformatLine(appendable, \"\", prefix, null);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tString newText = appendable.getContent();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tif (!"); //$NON-NLS-1$
-				it.append(Strings.class);
-				it.append(".equal(referenceText, newText)) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tbackend.replace("); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\ttextEndOffset + commentOffset,"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\treferenceText.length(),"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\tnewText);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t*/"); //$NON-NLS-1$
+				it.append("\t\tbackend.applyReplacements();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
+				it.newLine();
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\tprivate interface FormatterBackend<T> {"); //$NON-NLS-1$
+				it.append("\tpublic interface FormattedTextAccessor<T> {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tT getFirstLine(int offset);"); //$NON-NLS-1$
 				it.newLine();
@@ -1509,30 +1491,109 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\tint getLineOffset(T currentLine);"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tint getLineEndOffset(T currentLine);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tvoid replace(int offset, int length, String newText);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tString getCommentText();"); //$NON-NLS-1$
+				it.append("\t\tint getLineLength(T currentLine);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tString getLineText(T line);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tString getCommentText();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tint getCommentOffset();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tint getCommentEndOffset();"); //$NON-NLS-1$
 				it.newLine();
+				it.append("\t\tReplacement replace(int offset, int length, String newText);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tvoid applyReplacements();"); //$NON-NLS-1$
+				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\tprivate static class Line {"); //$NON-NLS-1$
+				it.append("\tpublic class SubAccessor<T> implements FormattedTextAccessor<T> {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tprivate final int startOffset;"); //$NON-NLS-1$
+				it.append("\t\tprivate final FormattedTextAccessor<T> parent;"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tprivate final int endOffset;"); //$NON-NLS-1$
+				it.append("\t\tprivate final int offsetInParent;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic SubAccessor(FormattedTextAccessor<T> parent, int offsetInParent) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tassert parent != null;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tthis.parent = parent;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tthis.offsetInParent = offsetInParent;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic T getFirstLine(int offset) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.parent.getFirstLine(offset);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic T getNextLine(T currentLine) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.parent.getNextLine(currentLine);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic int getLineOffset(T currentLine) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.parent.getLineOffset(currentLine);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic int getLineLength(T currentLine) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.parent.getLineLength(currentLine);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic String getLineText(T line) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.parent.getLineText(line);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic String getCommentText() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.parent.getCommentText();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic int getCommentOffset() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.parent.getCommentOffset();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic int getCommentEndOffset() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.parent.getCommentEndOffset();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic Replacement replace(int offset, int length, String newText) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.parent.replace(this.offsetInParent + offset, length, newText);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic final void applyReplacements() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tthrow new UnsupportedOperationException();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tpublic static class Line {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprivate final int offset;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprivate final int length;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tpublic Line(String text, int offset) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t// Search for the begining of the line."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tint soffset = offset;"); //$NON-NLS-1$
 				it.newLine();
@@ -1542,9 +1603,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tthis.startOffset = soffset + 1;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t// Search for the end of the line."); //$NON-NLS-1$
+				it.append("\t\t\tthis.offset = soffset + 1;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tint eoffset = offset;"); //$NON-NLS-1$
 				it.newLine();
@@ -1554,54 +1613,7 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tthis.endOffset = eoffset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tpublic int getStartOffset() {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\treturn this.startOffset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tpublic int getEndOffset() {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\treturn this.endOffset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tprivate static boolean isNewLine(char character) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tif (character == '\\n' || character == '\\r' || character == '\\f') {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\treturn true;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\treturn ((((1 << Character.LINE_SEPARATOR)"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\t\t| (1 << Character.PARAGRAPH_SEPARATOR)) >> Character.getType((int) character)) & 1) != 0;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\tprivate static class Replacement {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tprivate final int offset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tprivate final int length;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tprivate final String text;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\tpublic Replacement(int offset, int length, String text) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tthis.offset = offset;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tthis.length = length;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tthis.text = text;"); //$NON-NLS-1$
+				it.append("\t\t\tthis.length = eoffset - this.offset;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
@@ -1617,40 +1629,214 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\tpublic String getText() {"); //$NON-NLS-1$
+				it.append("\t\tpublic String toString() {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\treturn this.text;"); //$NON-NLS-1$
+				it.append("\t\t\treturn \"offset: \" + getOffset() + \"; length: \" + getLength();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\tprivate static class RegionBackend implements FormatterBackend<"); //$NON-NLS-1$
+				it.append("\tpublic static abstract class AbstractReplacementAccessor<T> implements FormattedTextAccessor<T> {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprivate final String documentation;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprivate "); //$NON-NLS-1$
+				it.append(SortedMap.class);
+				it.append("<Integer, Replacement> replacements;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprivate boolean applied;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic AbstractReplacementAccessor(String documentation, "); //$NON-NLS-1$
+				it.append(SortedMap.class);
+				it.append("<Integer, Replacement> replacements) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tthis.documentation = documentation;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tthis.replacements = replacements;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprotected final void checkNotApplied() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (this.applied) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tthrow new IllegalStateException(\"Changes are already applied\");"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tthis.applied = true;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic String getCommentText() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.documentation;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprotected "); //$NON-NLS-1$
+				it.append(SortedMap.class);
+				it.append("<Integer, Replacement> getReplacements() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (this.replacements == null) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tthis.replacements = new "); //$NON-NLS-1$
+				it.append(TreeMap.class);
+				it.append("<>();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.replacements;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic Replacement replace(int offset, int length, String newText) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tReplacement rep = getReplacements().remove(offset);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (rep == null) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\trep = new Replacement(offset, length, newText);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t} else {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\trep = new Replacement(offset, rep.getLength() + length, rep.getText() + newText);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tgetReplacements().put(offset, rep);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn rep;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprotected static void applyReplacements("); //$NON-NLS-1$
+				it.append(IAppendable.class);
+				it.append(" appendable, String text, "); //$NON-NLS-1$
+				it.append(Map.class);
+				it.append("<Integer, Replacement> replacements) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tint offset = 0;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfor (final Replacement replacement : replacements.values()) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tif (replacement.getOffset() < offset) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tappendable.append(\"<<<Conflicting replacements>>>\");"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t} else {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tfinal int len = replacement.getOffset() - offset;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tassert offset >= 0;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tassert replacement.getOffset() <= text.length();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tString notReplacedString = text.substring(offset, replacement.getOffset());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tappendable.append(notReplacedString);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\toffset += notReplacedString.length();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\tappendable.append(replacement.getText());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t\toffset += replacement.getLength();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (offset < text.length()) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tString notReplacedString = text.substring(offset);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tappendable.append(notReplacedString);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tpublic static abstract class AbstractDebuggingAccessor<T> extends AbstractReplacementAccessor<T> {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprivate String buffer;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic AbstractDebuggingAccessor(String text, "); //$NON-NLS-1$
+				it.append(SortedMap.class);
+				it.append("<Integer, Replacement> replacements) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tsuper(text, replacements);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprivate String computeBuffer() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t"); //$NON-NLS-1$
+				it.append(IAppendable.class);
+				it.append(" appendable = new "); //$NON-NLS-1$
+				it.append(FakeTreeAppendable.class);
+				it.append("();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tapplyReplacements(appendable, getCommentText(), getReplacements());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn appendable.getContent();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic String toString() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (this.buffer == null) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\tthis.buffer = computeBuffer();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.buffer;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t\tpublic Replacement replace(int offset, int length, String newText) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfinal Replacement rep = super.replace(offset, length, newText);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tthis.buffer = computeBuffer();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn rep;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tpublic static class RegionAccessor extends AbstractReplacementAccessor<"); //$NON-NLS-1$
 				it.append(ILineRegion.class);
 				it.append("> {"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t\tprivate final "); //$NON-NLS-1$
 				it.append(ITextReplacerContext.class);
 				it.append(" context;"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t\tprivate final "); //$NON-NLS-1$
 				it.append(ITextRegionAccess.class);
 				it.append(" access;"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t\tprivate final "); //$NON-NLS-1$
 				it.append(IComment.class);
 				it.append(" comment;"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t\tpublic RegionBackend("); //$NON-NLS-1$
+				it.append("\t\tpublic RegionAccessor("); //$NON-NLS-1$
 				it.append(ITextReplacerContext.class);
 				it.append(" context, "); //$NON-NLS-1$
 				it.append(IComment.class);
 				it.append(" comment) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tsuper(comment.getText(), null);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tthis.context = context;"); //$NON-NLS-1$
 				it.newLine();
@@ -1706,7 +1892,9 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\tpublic "); //$NON-NLS-1$
 				it.append(ILineRegion.class);
-				it.append(" getNextLine(ILineRegion currentLine) {"); //$NON-NLS-1$
+				it.append(" getNextLine("); //$NON-NLS-1$
+				it.append(ILineRegion.class);
+				it.append(" currentLine) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\treturn currentLine.getNextLine();"); //$NON-NLS-1$
 				it.newLine();
@@ -1717,27 +1905,33 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append(ILineRegion.class);
 				it.append(" currentLine) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\treturn currentLine.getOffset();"); //$NON-NLS-1$
+				it.append("\t\t\treturn currentLine.getOffset() - getCommentOffset();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t\tpublic int getLineEndOffset("); //$NON-NLS-1$
+				it.append("\t\tpublic int getLineLength("); //$NON-NLS-1$
 				it.append(ILineRegion.class);
 				it.append(" currentLine) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\treturn currentLine.getEndOffset();"); //$NON-NLS-1$
+				it.append("\t\t\treturn currentLine.getLength();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t\tpublic void replace(int offset, int length, String newText) {"); //$NON-NLS-1$
+				it.append("\t\tpublic void applyReplacements() {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t"); //$NON-NLS-1$
+				it.append("\t\t\tcheckNotApplied();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfor (Replacement replacement : getReplacements().values()) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\t"); //$NON-NLS-1$
 				it.append(ITextSegment.class);
-				it.append(" target = this.access.regionForOffset(offset, length);"); //$NON-NLS-1$
+				it.append(" target = this.access.regionForOffset(replacement.getOffset() + getCommentOffset(), replacement.getLength());"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tthis.context.addReplacement(target.replaceWith(newText));"); //$NON-NLS-1$
+				it.append("\t\t\t\tthis.context.addReplacement(target.replaceWith(replacement.getText()));"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -1745,36 +1939,25 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\tprivate static class AppendableBackend implements FormatterBackend<Line> {"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\t\tprivate final String documentation;"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
+				it.append("\tprivate static class AppendableAccessor extends AbstractReplacementAccessor<Line> {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tprivate final "); //$NON-NLS-1$
-				it.append(Map.class);
-				it.append("<Integer, "); //$NON-NLS-1$
-				it.append(List.class);
-				it.append("<Replacement>> replacements;"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
+				it.append(IAppendable.class);
+				it.append(" target;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tprivate final int commentOffset;"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t\tprivate final int commentEndOffset;"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t\tpublic AppendableBackend(String documentation, "); //$NON-NLS-1$
-				it.append(Map.class);
-				it.append("<Integer, "); //$NON-NLS-1$
-				it.append(List.class);
-				it.append("<Replacement>> replacements,"); //$NON-NLS-1$
+				it.append("\t\tpublic AppendableAccessor("); //$NON-NLS-1$
+				it.append(IAppendable.class);
+				it.append(" target, String documentation, "); //$NON-NLS-1$
+				it.append(SortedMap.class);
+				it.append("<Integer, Replacement> replacements, int commentOffset, int commentEndOffset) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\tint commentOffset, int commentEndOffset) {"); //$NON-NLS-1$
+				it.append("\t\t\tsuper(documentation, replacements);"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tthis.documentation = documentation;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\tthis.replacements = replacements;"); //$NON-NLS-1$
+				it.append("\t\t\tthis.target = target;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tthis.commentOffset = commentOffset;"); //$NON-NLS-1$
 				it.newLine();
@@ -1783,16 +1966,47 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t\tpublic String getCommentText() {"); //$NON-NLS-1$
+				it.append("\t\tpublic Line getFirstLine(int offset) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\treturn this.documentation;"); //$NON-NLS-1$
+				it.append("\t\t\treturn new Line(getCommentText(), 0);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t\tpublic Line getNextLine(Line currentLine) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tint index = getCommentText().indexOf(NL_CHAR, currentLine.getOffset());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (index < 0) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\treturn null;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn new Line(getCommentText(), index + 1);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t\tpublic int getLineOffset(Line currentLine) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn currentLine.getOffset();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t\tpublic int getLineLength(Line currentLine) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn currentLine.getLength();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
 				it.append("\t\tpublic String getLineText(Line line) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\treturn this.documentation.substring(line.getStartOffset(), line.getEndOffset());"); //$NON-NLS-1$
+				it.append("\t\t\tfinal int offset = line.getOffset();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn getCommentText().substring(offset, offset + line.getLength());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
@@ -1811,59 +2025,57 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t\tpublic Line getFirstLine(int offset) {"); //$NON-NLS-1$
+				it.append("\t\tpublic void applyReplacements() {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\treturn new Line(this.documentation, offset);"); //$NON-NLS-1$
+				it.append("\t\t\tcheckNotApplied();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
-				it.newLine();
-				it.append("\t\tpublic Line getNextLine(Line currentLine) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\ttry {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\treturn new Line(this.documentation, currentLine.getEndOffset() + 1);"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t} catch (Throwable exception) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t\treturn null;"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.append("\t\t\tapplyReplacements(this.target, getCommentText(), getReplacements());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t\tpublic int getLineOffset(Line currentLine) {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t\treturn currentLine.getStartOffset();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("\t\t}"); //$NON-NLS-1$
+				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t\tpublic int getLineEndOffset(Line currentLine) {"); //$NON-NLS-1$
+				it.append("\tpublic static class Replacement {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\treturn currentLine.getEndOffset();"); //$NON-NLS-1$
+				it.append("\t\tprivate final int offset;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprivate final int length;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tprivate final String text;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic Replacement(int offset, int length, String text) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tthis.offset = offset;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tthis.length = length;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tthis.text = text;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
-				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\t\tpublic void replace(int offset, int length, String newText) {"); //$NON-NLS-1$
+				it.append("\t\tpublic int getOffset() {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t"); //$NON-NLS-1$
-				it.append(List.class);
-				it.append("<Replacement> list = this.replacements.get(offset);"); //$NON-NLS-1$
+				it.append("\t\t\treturn this.offset;"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tif (list == null) {"); //$NON-NLS-1$
+				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\tlist = new "); //$NON-NLS-1$
-				it.append(ArrayList.class);
-				it.append("<>();"); //$NON-NLS-1$
+				it.append("\t\tpublic int getLength() {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\tthis.replacements.put(offset, list);"); //$NON-NLS-1$
+				it.append("\t\t\treturn this.length;"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tlist.add(new Replacement(offset, length, newText));"); //$NON-NLS-1$
+				it.append("\t\tpublic String getText() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn this.text;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tpublic String toString() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn \"offset: \" + getOffset() + \"; length: \" + getLength() + \"; new text: \" + getText();"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
