@@ -698,11 +698,14 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 		final AtomicBoolean isImplementsKeywordFound = new AtomicBoolean(false);
 		final AtomicBoolean isAnnotated = new AtomicBoolean(false);
 		final AtomicBoolean hasModifiers = new AtomicBoolean(false);
+		final AtomicBoolean hasTypeParameters = new AtomicBoolean(false);
 		AbstractRule memberRule = null;
 
 		for (Assignment assignment : GrammarUtil.containedAssignments(description.getElementDescription().getGrammarComponent())) {
 			if (Objects.equals(getCodeBuilderConfig().getModifierListGrammarName(), assignment.getFeature())) {
 				hasModifiers.set(true);
+			} else if (Objects.equals(getCodeBuilderConfig().getTypeParameterListGrammarName(), assignment.getFeature())) {
+					hasTypeParameters.set(true);
 			} else if (Objects.equals(getCodeBuilderConfig().getAnnotationListGrammarName(), assignment.getFeature())) {
 				isAnnotated.set(true);
 			} else if (Objects.equals(getCodeBuilderConfig().getTypeExtensionGrammarName(), assignment.getFeature())) {
@@ -780,6 +783,27 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append(" getTypeResolutionContext() {"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\treturn this.builder.getTypeResolutionContext();"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+				if (forInterface) {
+					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\tvoid dispose();"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				} else if (forAppender) {
+					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\tpublic void dispose() {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tthis.builder.dispose();"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
@@ -1288,6 +1312,63 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 							it.append(".getModifiers().add(modifier);"); //$NON-NLS-1$
 							it.newLine();
 							it.append("\t\t}"); //$NON-NLS-1$
+						}
+						it.newLine();
+						it.append("\t}"); //$NON-NLS-1$
+					}
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
+				if (hasTypeParameters.get()) {
+					if (!forInterface && !forAppender) {
+						it.append("\t@"); //$NON-NLS-1$
+						it.append(Inject.class);
+						it.newLine();
+						it.append("\tprivate "); //$NON-NLS-1$
+						it.append(Provider.class);
+						it.append("<"); //$NON-NLS-1$
+						it.append(getTypeParameterBuilderInterface());
+						it.append("> iTypeParameterBuilderProvider;"); //$NON-NLS-1$
+						it.newLineIfNotEmpty();
+						it.newLine();
+					}
+					it.append("\t/** Add a type parameter."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @param name - the simple name of the type parameter."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t * @return the builder of type parameter."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t"); //$NON-NLS-1$
+					if (!forInterface) {
+						it.append("public "); //$NON-NLS-1$
+					}
+					it.append(getTypeParameterBuilderInterface());
+					it.append(" addTypeParameter(String name)"); //$NON-NLS-1$
+					if (forInterface) {
+						it.append(";"); //$NON-NLS-1$
+					} else {
+						it.append(" {"); //$NON-NLS-1$
+						it.newLine();
+						if (forAppender) {
+							it.append("\t\treturn this.builder.addTypeParameter(name);"); //$NON-NLS-1$
+						} else {
+							it.append("\t\t"); //$NON-NLS-1$
+							it.append(getTypeParameterBuilderInterface());
+							it.append(" builder = this.iTypeParameterBuilderProvider.get();"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\tfinal "); //$NON-NLS-1$
+							it.append(description.getElementDescription().getElementType());
+							it.append(" object = "); //$NON-NLS-1$
+							it.append(getGeneratedTypeAccessor(description.getElementDescription().getElementType()));
+							it.append(";"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\tbuilder.eInit(object, name, getTypeResolutionContext());"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\tobject.getTypeParameters().add(builder.getJvmTypeParameter());"); //$NON-NLS-1$
+							it.newLine();
+							it.append("\t\treturn builder;"); //$NON-NLS-1$
 						}
 						it.newLine();
 						it.append("\t}"); //$NON-NLS-1$

@@ -159,6 +159,39 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append(" typeScopes;"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append("\tprivate boolean isFormatting;"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Set if this building is formatting the generated code."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t *"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param formatting <code>true</code> if the appender is formatting the generated code."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tpublic void setFormatting(boolean formatting) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tthis.isFormatting = formatting;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies if this building is formatting the generated code."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t *"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return <code>true</code> if the appender is formatting the generated code."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tpublic boolean isFormatting() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn this.isFormatting;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
 				it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the context, or <code>null</code> if the Ecore object is the context."); //$NON-NLS-1$
@@ -236,7 +269,7 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.newLine();
 				it.append("\t\t\t\tfinal AppenderSerializer serializer = localInjector.getProvider(AppenderSerializer.class).get();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\tserializer.serialize(object, appender);"); //$NON-NLS-1$
+				it.append("\t\t\t\tserializer.serialize(object, appender, isFormatting());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t} finally {"); //$NON-NLS-1$
 				it.newLine();
@@ -272,7 +305,7 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.newLine();
 				it.append("\t\t\tfinal AppenderSerializer serializer = this.originalInjector.getProvider(AppenderSerializer.class).get();"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tserializer.serialize(object, appender);"); //$NON-NLS-1$
+				it.append("\t\t\tserializer.serialize(object, appender, isFormatting());"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t}"); //$NON-NLS-1$
 				it.newLine();
@@ -291,15 +324,31 @@ public class AbstractAppenderBuilderFragment extends AbstractSubCodeBuilderFragm
 				it.append(EObject.class);
 				it.append(" object, "); //$NON-NLS-1$
 				it.append(ISourceAppender.class);
-				it.append(" appender) throws "); //$NON-NLS-1$
+				it.append(" appender, boolean isFormatting) throws "); //$NON-NLS-1$
 				it.append(IOException.class);
 				it.append(" {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tfinal AppenderBasedTokenStream stream = new AppenderBasedTokenStream(appender);"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tserialize(object, stream, "); //$NON-NLS-1$
+				it.append("\t\t\tfinal "); //$NON-NLS-1$
 				it.append(SaveOptions.class);
-				it.append(".defaultOptions());"); //$NON-NLS-1$
+				it.append(" options;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tif (isFormatting) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\toptions = "); //$NON-NLS-1$
+				it.append(SaveOptions.class);
+				it.append(".newBuilder().format().getOptions();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t} else {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t\toptions = "); //$NON-NLS-1$
+				it.append(SaveOptions.class);
+				it.append(".defaultOptions();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tserialize(object, stream, options);"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\tstream.flush();"); //$NON-NLS-1$
 				it.newLine();

@@ -285,5 +285,14 @@ public abstract class AbstractBuilder {
 		return this.qualifiedNameProvider.getFullyQualifiedName(object).toString();
 	}
 
+	@Pure
+	public abstract Resource eResource();
+
+	public void dispose() {
+		Resource resource = eResource();
+		ResourceSet resourceSet = resource.getResourceSet();
+		resourceSet.getResources().remove(resource);
+	}
+
 }
 

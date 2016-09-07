@@ -100,6 +100,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				injector.getInstance(ExpressionBuilderFragment.class),
 				injector.getInstance(BlockExpressionBuilderFragment.class),
 				injector.getInstance(FormalParameterBuilderFragment.class),
+				injector.getInstance(TypeParameterBuilderFragment.class),
 				injector.getInstance(TopElementBuilderFragment.class));
 	}
 

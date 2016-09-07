@@ -191,5 +191,20 @@ public class SarlActionBuilderImpl extends AbstractBuilder implements ISarlActio
 		return EmfFormatter.objToStr(getSarlAction());
 	}
 
+	@Inject
+	private Provider<ITypeParameterBuilder> iTypeParameterBuilderProvider;
+
+	/** Add a type parameter.
+	 * @param name - the simple name of the type parameter.
+	 * @return the builder of type parameter.
+	 */
+	public ITypeParameterBuilder addTypeParameter(String name) {
+		ITypeParameterBuilder builder = this.iTypeParameterBuilderProvider.get();
+		final SarlAction object = getSarlAction();
+		builder.eInit(object, name, getTypeResolutionContext());
+		object.getTypeParameters().add(builder.getJvmTypeParameter());
+		return builder;
+	}
+
 }
 

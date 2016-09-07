@@ -303,6 +303,14 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 	}
 
 	@Override
+	public TypeReference getLanguageKeywordAccessor() {
+		final Grammar grammar = getGrammar();
+		final String basePackage = this.naming.getRuntimeBasePackage(grammar);
+		return new TypeReference(basePackage + ".services." //$NON-NLS-1$
+				+ GrammarUtil.getSimpleName(grammar).toUpperCase() + "GrammarKeywordAccess"); //$NON-NLS-1$
+	}
+
+	@Override
 	public TypeReference getFormalParameterContainerType() {
 		return new TypeReference(
 				getCodeBuilderConfig().getFormalParameterContainerType());
@@ -311,6 +319,13 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 	@Override
 	public ElementDescription getFormalParameter() {
 		final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getFormalParameterRuleName());
+		final EClassifier classifier = getGeneratedTypeFor(rule);
+		return newElementDescription(classifier.getName(), rule, classifier, classifier);
+	}
+
+	@Override
+	public ElementDescription getTypeParameter() {
+		final AbstractRule rule = GrammarUtil.findRuleForName(getGrammar(), getCodeBuilderConfig().getTypeParameterRuleName());
 		final EClassifier classifier = getGeneratedTypeFor(rule);
 		return newElementDescription(classifier.getName(), rule, classifier, classifier);
 	}

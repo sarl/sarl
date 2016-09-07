@@ -24,20 +24,28 @@
 package io.sarl.lang.serializer;
 
 import io.sarl.lang.documentation.IEcoreDocumentationBuilder;
+import io.sarl.lang.documentation.InnerBlockDocumentationAdapter;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtext.AbstractRule;
+import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.serializer.ISerializationContext;
 import org.eclipse.xtext.serializer.acceptor.ISequenceAcceptor;
 import org.eclipse.xtext.serializer.acceptor.ISyntacticSequenceAcceptor;
+import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynState;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynTransition;
+import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.SynStateType;
 import org.eclipse.xtext.serializer.diagnostic.ISerializationDiagnostic;
 import org.eclipse.xtext.serializer.sequencer.HiddenTokenSequencer;
+import org.eclipse.xtext.serializer.sequencer.RuleCallStack;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 
 /** Syntactic sequencer which supports documentations of Ecore elements.
@@ -46,8 +54,15 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 
 	private final Set<EObject> documentedSemanticObjects = new HashSet<>();
 
+	private final Set<EObject> indocumentedSemanticObjects = new HashSet<>();
+
+	private InnerBlockDocumentationAdapter lastInnerBlock;
+
 	@Inject
 	private IEcoreDocumentationBuilder documentationBuilder;
+
+	@Inject
+	private SARLGrammarKeywordAccess keywords;
 
 	private ISequenceAcceptor trailingSequenceAcceptor;
 
@@ -58,6 +73,8 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 			this.trailingSequenceAcceptor = (ISequenceAcceptor) sequenceAcceptor;
 		}
 		this.documentedSemanticObjects.clear();
+		this.indocumentedSemanticObjects.clear();
+		this.lastInnerBlock = null;
 	}
 
 	protected ISequenceAcceptor getTrailingSequenceAcceptor() {
@@ -73,25 +90,60 @@ public class SARLEcoreDocumentationSyntacticSequencer extends SARLSyntacticSeque
 		return this.trailingSequenceAcceptor;
 	}
 
+	protected void emitDocumentation(Class<?> semanticObjectType, String comment) {
+		final String fmtcomment = this.documentationBuilder.build(comment, semanticObjectType);
+		if (!Strings.isEmpty(fmtcomment)) {
+			final AbstractRule rule = this.documentationBuilder.isMultilineCommentFor(semanticObjectType) ? this.documentationBuilder.getMLCommentRule() : this.documentationBuilder.getSLCommentRule();
+			getTrailingSequenceAcceptor().acceptComment(rule, fmtcomment, null);
+		}
+	}
+
 	protected void emitDocumentation(EObject semanticObject) {
 		if (this.documentedSemanticObjects.add(semanticObject)) {
-			DocumentationAdapter documentationAdapter = (DocumentationAdapter) EcoreUtil.getAdapter(
-					semanticObject.eAdapters(), DocumentationAdapter.class);
+			DocumentationAdapter documentationAdapter = (DocumentationAdapter) EcoreUtil.getAdapter(semanticObject.eAdapters(), DocumentationAdapter.class);
 			if (documentationAdapter != null) {
-				String comment = documentationAdapter.getDocumentation();
-				comment = this.documentationBuilder.build(comment, semanticObject.getClass());
-				if (!Strings.isEmpty(comment)) {
-					getTrailingSequenceAcceptor().acceptComment(
-							this.documentationBuilder.getMLCommentRule(), comment, null);
-				}
+				emitDocumentation(semanticObject.getClass(), documentationAdapter.getDocumentation());
 			}
 		}
+	}
+
+	protected void emitInnerDocumentation(EObject semanticObject) {
+		if (this.indocumentedSemanticObjects.add(semanticObject)) {
+			InnerBlockDocumentationAdapter documentationAdapter = (InnerBlockDocumentationAdapter) EcoreUtil.getAdapter(semanticObject.eAdapters(), InnerBlockDocumentationAdapter.class);
+			if (documentationAdapter != null) {
+				emitDocumentation(semanticObject.getClass(), documentationAdapter.getDocumentation());
+			}
+		}
+	}
+
+	private InnerBlockDocumentationAdapter getInnerDocumentation(EObject semanticObject) {
+		if (this.indocumentedSemanticObjects.add(semanticObject)) {
+			return (InnerBlockDocumentationAdapter) EcoreUtil.getAdapter(semanticObject.eAdapters(), InnerBlockDocumentationAdapter.class);
+		}
+		return null;
 	}
 
 	protected void emitUnassignedTokens(EObject semanticObject, ISynTransition transition,
 				INode fromNode, INode toNode) {
 		super.emitUnassignedTokens(semanticObject, transition, fromNode, toNode);
 		emitDocumentation(semanticObject);
+		if (semanticObject instanceof XBlockExpression) {
+			this.lastInnerBlock = getInnerDocumentation(semanticObject);
+		}
 	}
+
+	protected void accept(ISynState emitter, INode node, RuleCallStack stack) {
+		super.accept(emitter, node, stack);
+		final InnerBlockDocumentationAdapter documentation = this.lastInnerBlock;
+		if (documentation != null && emitter.getType() == SynStateType.UNASSIGEND_KEYWORD) {
+			Keyword keyword = (Keyword) emitter.getGrammarElement();
+			String token = node != null ? node.getText() : keyword.getValue();
+			if (Strings.equal(token, this.keywords.getLeftCurlyBracketKeyword())) {
+				this.lastInnerBlock = null;
+				emitDocumentation(documentation.getTarget().getClass(), documentation.getDocumentation());
+			}
+		}
+	}
+
 }
 

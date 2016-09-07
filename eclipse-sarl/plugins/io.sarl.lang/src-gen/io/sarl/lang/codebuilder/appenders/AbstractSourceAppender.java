@@ -62,6 +62,24 @@ public abstract class AbstractSourceAppender {
 	@Inject
 	private TypeScopes typeScopes;
 
+	private boolean isFormatting;
+
+	/** Set if this building is formatting the generated code.
+	 *
+	 * @param formatting <code>true</code> if the appender is formatting the generated code.
+	 */
+	public void setFormatting(boolean formatting) {
+		this.isFormatting = formatting;
+	}
+
+	/** Replies if this building is formatting the generated code.
+	 *
+	 * @return <code>true</code> if the appender is formatting the generated code.
+	 */
+	public boolean isFormatting() {
+		return this.isFormatting;
+	}
+
 	/** Replies the context for type resolution.
 	 * @return the context, or <code>null</code> if the Ecore object is the context.
 	 */
@@ -86,7 +104,7 @@ public abstract class AbstractSourceAppender {
 			localInjector.injectMembers(this.typeScopes);
 			try {
 				final AppenderSerializer serializer = localInjector.getProvider(AppenderSerializer.class).get();
-				serializer.serialize(object, appender);
+				serializer.serialize(object, appender, isFormatting());
 			} finally {
 				try {
 					final Field f = DelegatingScopes.class.getDeclaredField("delegate");
@@ -100,16 +118,22 @@ public abstract class AbstractSourceAppender {
 			}
 		} else {
 			final AppenderSerializer serializer = this.originalInjector.getProvider(AppenderSerializer.class).get();
-			serializer.serialize(object, appender);
+			serializer.serialize(object, appender, isFormatting());
 		}
 	}
 
 	@Singleton
 	public static class AppenderSerializer extends Serializer {
 
-		public void serialize(EObject object, ISourceAppender appender) throws IOException {
+		public void serialize(EObject object, ISourceAppender appender, boolean isFormatting) throws IOException {
 			final AppenderBasedTokenStream stream = new AppenderBasedTokenStream(appender);
-			serialize(object, stream, SaveOptions.defaultOptions());
+			final SaveOptions options;
+			if (isFormatting) {
+				options = SaveOptions.newBuilder().format().getOptions();
+			} else {
+				options = SaveOptions.defaultOptions();
+			}
+			serialize(object, stream, options);
 			stream.flush();
 		}
 

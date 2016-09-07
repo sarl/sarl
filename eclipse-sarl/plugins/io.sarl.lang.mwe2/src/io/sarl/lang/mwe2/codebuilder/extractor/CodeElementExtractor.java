@@ -33,6 +33,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 
 import io.sarl.lang.mwe2.codebuilder.config.CodeBuilderConfig;
+import io.sarl.lang.mwe2.keywords.GrammarKeywordAccessFragment2;
 
 /** Extract elements from the grammar.
  *
@@ -145,6 +146,14 @@ public interface CodeElementExtractor {
 	 */
 	@Pure
 	TypeReference getLanguageTopElementType();
+
+	/** Replies the type associated to the utility for accessing the keywords.
+	 *
+	 * @return the type of the languaage keyword accessor.
+	 * @see GrammarKeywordAccessFragment2
+	 */
+	@Pure
+	TypeReference getLanguageKeywordAccessor();
 
 	/** Replies the implementation for the code appender that is creating the element of the given name.
 	 *
@@ -265,6 +274,12 @@ public interface CodeElementExtractor {
 	 */
 	TypeReference getFormalParameterContainerType();
 
+	/** Replies the description of the type parameters.
+	 *
+	 * @return the description of the type parameter.
+	 */
+	ElementDescription getTypeParameter();
+
 	/** Description of an element.
 	 *
 	 * @author $Author: sgalland$
@@ -304,7 +319,7 @@ public interface CodeElementExtractor {
 		 * @param appenderType the type for the class that corresponds to this element appender.
 		 * @param annotationInfo indicates if the annotationInfo field is declared for the element.
 		 */
-		public ElementDescription(String name, EObject grammarComponent,
+		ElementDescription(String name, EObject grammarComponent,
 				TypeReference elementType, TypeReference commonSuperType, TypeReference builderInterfaceType,
 				TypeReference builderImplementationType, TypeReference builderCustomImplementationType,
 				TypeReference appenderType, boolean annotationInfo) {

@@ -188,10 +188,18 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 	@Pure
 	public void formatSinglelineComment(String doc, String indentation, IAppendable appendable) {
 		if (!Strings.isEmpty(doc)) {
-		final SortedMap<Integer, Replacement> replacements = new TreeMap<>();
-		formatSinglelineComment(
+			final SortedMap<Integer, Replacement> replacements = new TreeMap<>();
+			int offset = doc.indexOf(getSinglelineCommentPrefix());
+			if (offset < 0) {
+				offset = 0;
+			}
+			int endOffset = doc.indexOf(NL_CHAR, offset);
+			if (endOffset < 0) {
+				endOffset = doc.length();
+			}
+			formatSinglelineComment(
 				indentation,
-				new AppendableAccessor(appendable, doc, replacements, 0, doc.length()));
+				new AppendableAccessor(appendable, doc, replacements, offset, endOffset));
 		}
 	}
 
@@ -511,17 +519,25 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 	public static class Line {
 		private final int offset;
 		private final int length;
-		public Line(String text, int offset) {
+		public static Line newInstance(String text, int offset) {
+			if (offset < 0 || offset >= text.length()) {
+				return null;
+			}
 			int soffset = offset;
 			while (soffset >= 0 && !isNewLine(text.charAt(soffset))) {
 				--soffset;
 			}
-			this.offset = soffset + 1;
-			int eoffset = offset;
+			++soffset;
+			int eoffset = soffset;
 			while (eoffset < text.length() && !isNewLine(text.charAt(eoffset))) {
 				++eoffset;
 			}
-			this.length = eoffset - this.offset;
+			final int length = Math.max(0, eoffset - soffset);
+			return new Line(soffset, length);
+		}
+		private Line(int offset, int length) {
+			this.offset = offset;
+			this.length = length;
 		}
 		public int getOffset() {
 			return this.offset;
@@ -681,7 +697,7 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 		}
 
 		public Line getFirstLine(int offset) {
-			return new Line(getCommentText(), 0);
+			return Line.newInstance(getCommentText(), offset);
 		}
 
 		public Line getNextLine(Line currentLine) {
@@ -689,7 +705,7 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 			if (index < 0) {
 				return null;
 			}
-			return new Line(getCommentText(), index + 1);
+			return Line.newInstance(getCommentText(), index + 1);
 		}
 
 		public int getLineOffset(Line currentLine) {

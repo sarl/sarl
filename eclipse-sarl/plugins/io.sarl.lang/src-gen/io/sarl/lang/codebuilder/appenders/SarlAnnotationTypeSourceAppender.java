@@ -56,6 +56,12 @@ public class SarlAnnotationTypeSourceAppender extends AbstractSourceAppender imp
 		return this.builder.getTypeResolutionContext();
 	}
 
+	/** Dispose the resource.
+	 */
+	public void dispose() {
+		this.builder.dispose();
+	}
+
 	@Override
 	@Pure
 	public String toString() {

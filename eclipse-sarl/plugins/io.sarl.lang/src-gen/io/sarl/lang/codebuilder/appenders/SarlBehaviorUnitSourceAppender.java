@@ -49,6 +49,12 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 		build(this.builder.getSarlBehaviorUnit(), appender);
 	}
 
+	/** Dispose the resource.
+	 */
+	public void dispose() {
+		this.builder.dispose();
+	}
+
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.builder.getTypeResolutionContext();
 	}

@@ -30,6 +30,7 @@ import io.sarl.lang.codebuilder.builders.ISarlConstructorBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlEnumerationBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlFieldBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
+import io.sarl.lang.codebuilder.builders.ITypeParameterBuilder;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlScript;
 import java.io.IOException;
@@ -56,6 +57,12 @@ public class SarlClassSourceAppender extends AbstractSourceAppender implements I
 
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.builder.getTypeResolutionContext();
+	}
+
+	/** Dispose the resource.
+	 */
+	public void dispose() {
+		this.builder.dispose();
 	}
 
 	@Override
@@ -119,6 +126,14 @@ public class SarlClassSourceAppender extends AbstractSourceAppender implements I
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);
+	}
+
+	/** Add a type parameter.
+	 * @param name - the simple name of the type parameter.
+	 * @return the builder of type parameter.
+	 */
+	public ITypeParameterBuilder addTypeParameter(String name) {
+		return this.builder.addTypeParameter(name);
 	}
 
 	/** Create a SarlConstructor.

@@ -86,7 +86,8 @@ public class EcoreDocumentationBuilder implements IEcoreDocumentationBuilder {
 		return this.documentationFormatter;
 	}
 
-	protected boolean isMultilineCommentFor(Class<?> type) {
+	@Pure
+	public boolean isMultilineCommentFor(Class<?> type) {
 		return XtendMember.class.isAssignableFrom(type);
 	}
 

@@ -140,5 +140,11 @@ public class BlockExpressionSourceAppender extends AbstractSourceAppender implem
 		return this.builder.toString();
 	}
 
+	/** Dispose the resource.
+	 */
+	public void dispose() {
+		this.builder.dispose();
+	}
+
 }
 

@@ -34,6 +34,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings("all")
 public interface ISarlFieldBuilder {
 
+	/** Dispose the resource.
+	 */
+	void dispose();
+
 	/** Replies the context for type resolution.
 	 * @return the context or <code>null</code> if the Ecore object is the context.
 	 */

@@ -142,6 +142,13 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	 */
 	public XFeatureCall createReferenceToSuper() {
 		return this.builder.createReferenceToSuper();
+
+	}
+
+	/** Dispose the resource.
+	 */
+	public void dispose() {
+		this.builder.dispose();
 	}
 
 }

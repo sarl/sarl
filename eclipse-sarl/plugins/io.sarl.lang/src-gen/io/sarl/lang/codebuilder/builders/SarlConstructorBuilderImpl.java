@@ -149,5 +149,20 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 		return EmfFormatter.objToStr(getSarlConstructor());
 	}
 
+	@Inject
+	private Provider<ITypeParameterBuilder> iTypeParameterBuilderProvider;
+
+	/** Add a type parameter.
+	 * @param name - the simple name of the type parameter.
+	 * @return the builder of type parameter.
+	 */
+	public ITypeParameterBuilder addTypeParameter(String name) {
+		ITypeParameterBuilder builder = this.iTypeParameterBuilderProvider.get();
+		final SarlConstructor object = getSarlConstructor();
+		builder.eInit(object, name, getTypeResolutionContext());
+		object.getTypeParameters().add(builder.getJvmTypeParameter());
+		return builder;
+	}
+
 }
 

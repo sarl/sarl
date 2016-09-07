@@ -106,5 +106,9 @@ public interface IExpressionBuilder {
 	 */
 	XFeatureCall createReferenceToSuper();
 
+	/** Dispose the resource.
+	 */
+	void dispose();
+
 }
 

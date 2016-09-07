@@ -341,10 +341,13 @@ public class SARLFormatter extends XtendFormatter {
 		final ISemanticRegion open;
 		if (immediatelyFollowing != null) {
 			open = immediatelyFollowing.keyword("("); //$NON-NLS-1$
+			document.prepend(open, NO_SPACE);
+			final ISemanticRegion close = regionFor.keyword(")"); //$NON-NLS-1$
+			final EList<XtendParameter> parameters = function.getParameters();
+			formatCommaSeparatedList(parameters, open, close, document);
 		} else {
 			open = null;
 		}
-		final ISemanticRegion close = regionFor.keyword(")"); //$NON-NLS-1$
 
 		final JvmTypeReference returnType = function.getReturnType();
 		if (returnType != null) {
@@ -353,20 +356,6 @@ public class SARLFormatter extends XtendFormatter {
 			document.surround(typeColumn, ONE_SPACE);
 			document.format(returnType);
 		}
-
-		final XExpression expression = function.getExpression();
-		if (expression != null) {
-			final ISemanticRegionFinder finder = this.textRegionExtensions.regionFor(expression);
-			final ISemanticRegion brace = finder.keyword("{"); //$NON-NLS-1$
-			document.prepend(brace, XbaseFormatterPreferenceKeys.bracesInNewLine);
-			document.format(expression);
-		} else {
-			final ISemanticRegion column = regionFor.keyword(";"); //$NON-NLS-1$
-			document.prepend(column, NO_SPACE);
-		}
-
-		final EList<XtendParameter> parameters = function.getParameters();
-		formatCommaSeparatedList(parameters, open, close, document);
 
 		final EList<JvmTypeReference> exceptions = function.getExceptions();
 		if (!exceptions.isEmpty()) {
@@ -380,6 +369,17 @@ public class SARLFormatter extends XtendFormatter {
 				document.surround(regionFor.keyword("fires"), ONE_SPACE); //$NON-NLS-1$
 			}
 			formatCommaSeparatedList(events, document);
+		}
+
+		final XExpression expression = function.getExpression();
+		if (expression != null) {
+			final ISemanticRegionFinder finder = this.textRegionExtensions.regionFor(expression);
+			final ISemanticRegion brace = finder.keyword("{"); //$NON-NLS-1$
+			document.prepend(brace, XbaseFormatterPreferenceKeys.bracesInNewLine);
+			document.format(expression);
+		} else {
+			final ISemanticRegion column = regionFor.keyword(";"); //$NON-NLS-1$
+			document.prepend(column, NO_SPACE);
 		}
 	}
 

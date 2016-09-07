@@ -40,6 +40,10 @@ public interface ISarlAnnotationTypeBuilder {
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
+	/** Dispose the resource.
+	 */
+	void dispose();
+
 	/** Initialize the Ecore element when inside a script.
 	 */
 	void eInit(SarlScript script, String name, IJvmTypeProvider context);

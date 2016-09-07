@@ -154,6 +154,21 @@ public class SarlClassBuilderImpl extends AbstractBuilder implements ISarlClassB
 	}
 
 	@Inject
+	private Provider<ITypeParameterBuilder> iTypeParameterBuilderProvider;
+
+	/** Add a type parameter.
+	 * @param name - the simple name of the type parameter.
+	 * @return the builder of type parameter.
+	 */
+	public ITypeParameterBuilder addTypeParameter(String name) {
+		ITypeParameterBuilder builder = this.iTypeParameterBuilderProvider.get();
+		final SarlClass object = getSarlClass();
+		builder.eInit(object, name, getTypeResolutionContext());
+		object.getTypeParameters().add(builder.getJvmTypeParameter());
+		return builder;
+	}
+
+	@Inject
 	private Provider<ISarlConstructorBuilder> iSarlConstructorBuilderProvider;
 
 	/** Create a SarlConstructor.

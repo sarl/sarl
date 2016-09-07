@@ -56,5 +56,13 @@ public interface IEcoreDocumentationBuilder {
 	@Pure
 	String build(String doc, Class<?> objectType);
 
+	/** Replies if multiline comments are the default for the given type of objects.
+	 * @param type the type of objects.
+	 * @return <code>true</code> if multiline comment is the default.
+	 *      Otherwise singleline comment is the default.
+	 */
+	@Pure
+	boolean isMultilineCommentFor(Class<?> type);
+
 }
 

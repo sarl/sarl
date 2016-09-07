@@ -23,52 +23,55 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.SarlSpace;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Builder of a Sarl SarlSpace.
+/** Builder of a Sarl type parameter.
  */
 @SuppressWarnings("all")
-public interface ISarlSpaceBuilder {
+public interface ITypeParameterBuilder {
+
+	/** Initialize the type parameter.
+	 * <p>Caution: This initialization function does not add the type parameter in its container.
+	 * The container is responsible of adding the type parameter in its internal object.
+	 * @param name - the name of the type parameter.
+	 * @param typeContext - the provider of types or null.
+	 */
+	void eInit(EObject context, String name, IJvmTypeProvider typeContext);
 
 	/** Replies the context for type resolution.
 	 * @return the context or <code>null</code> if the Ecore object is the context.
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
-	/** Dispose the resource.
-	 */
-	void dispose();
-
-	/** Initialize the Ecore element when inside a script.
-	 */
-	void eInit(SarlScript script, String name, IJvmTypeProvider context);
-
-	/** Replies the generated SarlSpace.
+	/** Replies the created parameter.
+	 *
+	 * @return the parameter.
 	 */
 	@Pure
-	SarlSpace getSarlSpace();
+	JvmTypeParameter getJvmTypeParameter();
 
-	/** Replies the resource to which the SarlSpace is attached.
+	/** Replies the resource to which the type parameter is attached.
 	 */
 	@Pure
 	Resource eResource();
 
-	/** Change the documentation of the element.
-	 *
-	 * <p>The documentation will be displayed just before the element.
-	 *
-	 * @param doc the documentation.
+	/** Dispose the resource.
 	 */
-	void setDocumentation(String doc);
+	void dispose();
 
-	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	/** Add upper type bounds.
+	 * @param type the type.
 	 */
-	void addModifier(String modifier);
+	void addUpperConstraint(String type);
+
+	/** Add lower type bounds.
+	 * @param type the type.
+	 */
+	void addLowerConstraint(String type);
 
 }
 

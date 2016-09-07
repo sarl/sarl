@@ -48,6 +48,12 @@ public class SarlFieldSourceAppender extends AbstractSourceAppender implements I
 		build(this.builder.getSarlField(), appender);
 	}
 
+	/** Dispose the resource.
+	 */
+	public void dispose() {
+		this.builder.dispose();
+	}
+
 	public IJvmTypeProvider getTypeResolutionContext() {
 		return this.builder.getTypeResolutionContext();
 	}

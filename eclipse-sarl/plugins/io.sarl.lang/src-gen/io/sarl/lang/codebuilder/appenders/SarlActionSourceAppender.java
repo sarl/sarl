@@ -26,6 +26,7 @@ package io.sarl.lang.codebuilder.appenders;
 import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.IFormalParameterBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
+import io.sarl.lang.codebuilder.builders.ITypeParameterBuilder;
 import io.sarl.lang.sarl.SarlAction;
 import java.io.IOException;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -47,6 +48,12 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 
 	public void build(ISourceAppender appender) throws IOException {
 		build(this.builder.getSarlAction(), appender);
+	}
+
+	/** Dispose the resource.
+	 */
+	public void dispose() {
+		this.builder.dispose();
 	}
 
 	public IJvmTypeProvider getTypeResolutionContext() {
@@ -138,6 +145,14 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	@Pure
 	public String toString() {
 		return this.builder.toString();
+	}
+
+	/** Add a type parameter.
+	 * @param name - the simple name of the type parameter.
+	 * @return the builder of type parameter.
+	 */
+	public ITypeParameterBuilder addTypeParameter(String name) {
+		return this.builder.addTypeParameter(name);
 	}
 
 }

@@ -40,6 +40,10 @@ public interface ISarlInterfaceBuilder {
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
+	/** Dispose the resource.
+	 */
+	void dispose();
+
 	/** Initialize the Ecore element when inside a script.
 	 */
 	void eInit(SarlScript script, String name, IJvmTypeProvider context);
@@ -75,6 +79,12 @@ public interface ISarlInterfaceBuilder {
 	 * @param modifier - the modifier to add.
 	 */
 	void addModifier(String modifier);
+
+	/** Add a type parameter.
+	 * @param name - the simple name of the type parameter.
+	 * @return the builder of type parameter.
+	 */
+	ITypeParameterBuilder addTypeParameter(String name);
 
 	/** Create a SarlField.
 	 * @param name - the name of the SarlField.

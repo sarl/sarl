@@ -51,6 +51,7 @@ import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlSpaceBuilder;
 import io.sarl.lang.codebuilder.builders.IScriptBuilder;
+import io.sarl.lang.codebuilder.builders.ITypeParameterBuilder;
 import io.sarl.lang.codebuilder.builders.SarlActionBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SarlAgentBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SarlAnnotationTypeBuilderImpl;
@@ -67,6 +68,7 @@ import io.sarl.lang.codebuilder.builders.SarlInterfaceBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SarlSkillBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SarlSpaceBuilderImpl;
 import io.sarl.lang.codebuilder.builders.ScriptBuilderImpl;
+import io.sarl.lang.codebuilder.builders.TypeParameterBuilderImpl;
 import io.sarl.lang.compiler.SarlCompiler;
 import io.sarl.lang.controlflow.ExtendedSARLEarlyExitComputer;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
@@ -408,6 +410,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
 	public Class<? extends IFormalParameterBuilder> bindIFormalParameterBuilder() {
 		return FormalParameterBuilderImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public Class<? extends ITypeParameterBuilder> bindITypeParameterBuilder() {
+		return TypeParameterBuilderImpl.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2

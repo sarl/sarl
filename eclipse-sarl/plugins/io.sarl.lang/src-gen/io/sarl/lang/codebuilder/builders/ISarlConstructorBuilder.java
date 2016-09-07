@@ -34,6 +34,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings("all")
 public interface ISarlConstructorBuilder {
 
+	/** Dispose the resource.
+	 */
+	void dispose();
+
 	/** Replies the context for type resolution.
 	 * @return the context or <code>null</code> if the Ecore object is the context.
 	 */
@@ -81,6 +85,12 @@ public interface ISarlConstructorBuilder {
 	 * @param modifier - the modifier to add.
 	 */
 	void addModifier(String modifier);
+
+	/** Add a type parameter.
+	 * @param name - the simple name of the type parameter.
+	 * @return the builder of type parameter.
+	 */
+	ITypeParameterBuilder addTypeParameter(String name);
 
 }
 

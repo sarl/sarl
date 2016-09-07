@@ -674,6 +674,29 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append("\t@"); //$NON-NLS-1$
+				it.append(Pure.class);
+				it.newLine();
+				it.append("\tpublic abstract "); //$NON-NLS-1$
+				it.append(Resource.class);
+				it.append(" eResource();"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\tpublic void dispose() {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t"); //$NON-NLS-1$
+				it.append(Resource.class);
+				it.append(" resource = eResource();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t"); //$NON-NLS-1$
+				it.append(ResourceSet.class);
+				it.append(" resourceSet = resource.getResourceSet();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tresourceSet.getResources().remove(resource);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
 				
 				it.append("}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();

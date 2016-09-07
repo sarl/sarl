@@ -334,7 +334,16 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 		return getCodeElementExtractor().getElementBuilderInterface("FormalParameter"); //$NON-NLS-1$
 	}
 
-	/** Replies the adapter for post documentation.
+	/** Replies the interface for the type parameter builder.
+	 *
+	 * @return the interface.
+	 */
+	@Pure
+	protected TypeReference getTypeParameterBuilderInterface() {
+		return getCodeElementExtractor().getElementBuilderInterface("TypeParameter"); //$NON-NLS-1$
+	}
+
+	/** Replies the adapter for pre documentation.
 	 *
 	 * @return the adapter.
 	 */

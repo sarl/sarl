@@ -59,6 +59,12 @@ public class SarlBehaviorSourceAppender extends AbstractSourceAppender implement
 		return this.builder.getTypeResolutionContext();
 	}
 
+	/** Dispose the resource.
+	 */
+	public void dispose() {
+		this.builder.dispose();
+	}
+
 	@Override
 	@Pure
 	public String toString() {

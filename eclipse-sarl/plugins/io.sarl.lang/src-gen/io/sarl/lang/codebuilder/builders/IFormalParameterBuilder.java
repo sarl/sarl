@@ -82,5 +82,9 @@ public interface IFormalParameterBuilder {
 	@Pure
 	IExpressionBuilder getDefaultValue();
 
+	/** Dispose the resource.
+	 */
+	void dispose();
+
 }
 

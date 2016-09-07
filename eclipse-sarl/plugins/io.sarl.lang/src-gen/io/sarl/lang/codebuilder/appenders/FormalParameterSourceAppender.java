@@ -109,5 +109,11 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 		return this.builder.getDefaultValue();
 	}
 
+	/** Dispose the resource.
+	 */
+	public void dispose() {
+		this.builder.dispose();
+	}
+
 }
 

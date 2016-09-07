@@ -1063,10 +1063,33 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.append("\t\treturn superFeature;"); //$NON-NLS-1$
 					}
 					it.newLine();
+					it.newLineIfNotEmpty();
+					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 				}
 				it.newLineIfNotEmpty();
 				it.newLine();
+				if (forInterface) {
+					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\tvoid dispose();"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				} else if (forAppender) {
+					it.append("\t/** Dispose the resource."); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t */"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\tpublic void dispose() {"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tthis.builder.dispose();"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t}"); //$NON-NLS-1$
+					it.newLineIfNotEmpty();
+					it.newLine();
+				}
 			}
 		};
 	}

@@ -63,6 +63,14 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	 */
 	private static final String MODIFIER_LIST_GRAMMAR_NAME = "modifiers"; //$NON-NLS-1$
 
+	/** Default name of the assignment in the grammar that is used for representing a type parameter assignment.
+	 */
+	private static final String TYPE_PARAMETER_LIST_GRAMMAR_NAME = "typeParameters"; //$NON-NLS-1$
+
+	/** Default name of the rule in the grammar that is used for parsing a type parameter.
+	 */
+	private static final String TYPE_PARAMETER_RULE_NAME = "JvmTypeParameter"; //$NON-NLS-1$
+
 	/** Default name of the assignment in the grammar that is used for representing a collection of members.
 	 */
 	private static final String MEMBER_COLLECTION_GRAMMAR_NAME = "members"; //$NON-NLS-1$
@@ -140,6 +148,8 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	private String topElementRuleName;
 
+	private String typeParameterRuleName = TYPE_PARAMETER_RULE_NAME;
+
 	private String formalParameterRuleName;
 
 	private String formalParameterContainerType = PARAMETER_CONTAINER_TYPE;
@@ -153,6 +163,8 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	private String annotationListGrammarName = ANNOTATION_LIST_GRAMMAR_NAME;
 
 	private String modifierListGrammarName = MODIFIER_LIST_GRAMMAR_NAME;
+
+	private String typeParameterListGrammarName = TYPE_PARAMETER_LIST_GRAMMAR_NAME;
 
 	private String memberCollectionGrammarName = MEMBER_COLLECTION_GRAMMAR_NAME;
 
@@ -711,6 +723,25 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 		}
 	}
 
+	/** Replies the name that is used for representing type parameters in the grammar's assignments.
+	 *
+	 * @return the name of the assignment for type parameters.
+	 */
+	@Pure
+	public String getTypeParameterListGrammarName() {
+		return this.typeParameterListGrammarName;
+	}
+
+	/** Set the name that is used for representing type parameters in the grammar's assignments.
+	 *
+	 * @param name the name of the assignment for type parameters.
+	 */
+	public void setTypeParameterListGrammarName(String name) {
+		if (!Strings.isEmpty(name)) {
+			this.typeParameterListGrammarName = name;
+		}
+	}
+
 	/** Replies the name that is used for representing type implementations in the grammar's assignments.
 	 *
 	 * @return the name of the assignment for type implementations.
@@ -775,6 +806,25 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	@Pure
 	public String getTopElementRuleName() {
 		return this.topElementRuleName;
+	}
+
+	/** Change the name of the grammar rule that defines the type parameters.
+	 *
+	 * @param name the name of the rule.
+	 */
+	public void setTypeParameterRuleName(String name) {
+		if (!Strings.isEmpty(name)) {
+			this.typeParameterRuleName = name;
+		}
+	}
+
+	/** Replies the name of the grammar rule that defines the type parameters.
+	 *
+	 * @return the name of the rule.
+	 */
+	@Pure
+	public String getTypeParameterRuleName() {
+		return this.typeParameterRuleName;
 	}
 
 	/** Change the name of the type that is a formal parameter container.
