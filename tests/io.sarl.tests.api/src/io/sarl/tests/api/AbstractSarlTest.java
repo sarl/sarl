@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.Console;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -52,7 +53,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.ui.internal.util.BundleUtility;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
@@ -190,7 +190,11 @@ public abstract class AbstractSarlTest {
 	 * @return <code>true</code> if the runtime environment is Eclipse.
 	 */
 	protected static boolean isEclipseRuntimeEnvironment() {
-		return System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.");
+		final String cmd = System.getProperty("sun.java.command", "");
+		// Assuming that the Maven launcher is providing an absolute path to the launcher.
+		return cmd != null
+				&& (cmd.startsWith("org.eclipse.equinox.launcher.Main")
+					|| cmd.startsWith("org.eclipse.jdt.internal.junit."));
 	}
 
 	/** This rule permits to clean automatically the fields
@@ -1514,6 +1518,27 @@ public abstract class AbstractSarlTest {
 				f.setAccessible(true);
 			}
 			return (T) f.get(null);
+		}
+
+		/**
+		 * Set the value of the given accessible static field of the given type.
+		 * 
+		 * @param receiverType the type of the container of the field, not <code>null</code>
+		 * @param fieldName the field's name, not <code>null</code>
+		 * @return the value of the field
+		 * 
+		 * @throws NoSuchFieldException see {@link Class#getField(String)}
+		 * @throws SecurityException see {@link Class#getField(String)}
+		 * @throws IllegalAccessException see {@link Field#get(Object)}
+		 * @throws IllegalArgumentException see {@link Field#get(Object)}
+		 */
+		@SuppressWarnings("unchecked")
+		public <T> void setStatic(Class<?> receiverType, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+			Field f = getDeclaredField(receiverType, fieldName);
+			if (!f.isAccessible()) {
+				f.setAccessible(true);
+			}
+			f.set(null, value);
 		}
 
 		/**

@@ -53,7 +53,7 @@ public class DefaultContextInteractionsTest extends AbstractSarlCoreTest<Capacit
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(13, this.type.getDeclaredMethods().length);
+		assertEquals(14, this.type.getDeclaredMethods().length);
 	}
 
 	/**

@@ -163,6 +163,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		} else {
 			when(method.getReturnType()).thenReturn(returnType);
 		}
+		when(method.getNumberOfParameters()).thenReturn(parameterNames.length);
 		when(method.getParameterNames()).thenReturn(parameterNames);
 		when(method.getParameterTypes()).thenReturn(parameterTypes);
 		ILocalVariable[] parameters = new ILocalVariable[parameterNames.length];

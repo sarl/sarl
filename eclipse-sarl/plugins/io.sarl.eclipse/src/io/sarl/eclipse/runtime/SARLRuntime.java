@@ -102,6 +102,11 @@ public final class SARLRuntime {
 	 */
 	public static final String DEFAULT_PREFERENCE_KEY = SARLEclipsePlugin.PLUGIN_ID + ".runtime.PREF_SRE_XML"; //$NON-NLS-1$
 
+	/** Flag that enables to turn on/off the SRE extensions points.
+	 * This flag is mainly used for unit tests. It is not expected to be changed outside unit tests.
+	 */
+	private static boolean enableSreExtensionPoints = true;
+
 	private static String currentPreferenceKey = DEFAULT_PREFERENCE_KEY;
 
 	/**
@@ -733,7 +738,9 @@ public final class SARLRuntime {
 				ALL_SRE_INSTALLS.clear();
 
 				// Install the SREs from the Eclipse extension points
-				initializeSREExtensions();
+				if (enableSreExtensionPoints) {
+					initializeSREExtensions();
+				}
 				// install the SREs from the user-defined preferences.
 				final String predefinedDefaultId = Strings.nullToEmpty(initializePersistedSREs());
 

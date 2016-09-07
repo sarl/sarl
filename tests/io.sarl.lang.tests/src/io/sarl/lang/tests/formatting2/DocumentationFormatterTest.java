@@ -340,6 +340,13 @@ public class DocumentationFormatterTest {
 			assertSLFormatted(source, expected);
 		}
 
+		@Test
+		public void sl_commentFromEcoreSerializer() throws Exception {
+			String source = "\n//TODO Auto-generated code.\n";
+			String expected = "\n// TODO Auto-generated code.\n";
+			assertSLFormatted(source, expected);
+		}
+
 	}
 
 }

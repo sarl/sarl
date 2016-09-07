@@ -68,6 +68,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ISREInstallChangedListener;
 import io.sarl.eclipse.runtime.SARLRuntime;
+import io.sarl.eclipse.tests.AbstractEclipseTestPreferencesTest;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestScope;
@@ -88,8 +89,6 @@ import io.sarl.tests.api.TestScope;
 })
 @SuppressWarnings("all")
 public final class SARLRuntimeTest {
-
-	public static final String TESTING_PREFERENCE_KEY = SARLEclipsePlugin.PLUGIN_ID + ".tests.runtime.PREF_SRE_XML"; //$NON-NLS-1$
 
 	protected static ISREInstall[] createSREInstallArray() {
 		ISREInstall[] installs = new ISREInstall[15];
@@ -128,8 +127,8 @@ public final class SARLRuntimeTest {
 
 		@Test
 		public void setCurrentPreferenceKey_notNull_1() {
-			SARLRuntime.setCurrentPreferenceKey(TESTING_PREFERENCE_KEY);
-			assertEquals(TESTING_PREFERENCE_KEY, SARLRuntime.getCurrentPreferenceKey());
+			SARLRuntime.setCurrentPreferenceKey(AbstractEclipseTestPreferencesTest.TESTING_PREFERENCE_KEY);
+			assertEquals(AbstractEclipseTestPreferencesTest.TESTING_PREFERENCE_KEY, SARLRuntime.getCurrentPreferenceKey());
 		}
 
 		@Test
@@ -156,44 +155,7 @@ public final class SARLRuntimeTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class GetterSetter extends AbstractSarlUiTest {
-
-		@NonNullByDefault
-		private SARLEclipsePlugin plugin;
-
-		@NonNullByDefault
-		private IEclipsePreferences preferences;
-
-		@NonNullByDefault
-		private BundleContext bundleContext;
-
-		@NonNullByDefault
-		private Bundle bundle;
-
-		@Before
-		public void setUp() throws Exception {
-			this.preferences = new EclipsePreferences();
-			this.plugin = spy(new SARLEclipsePlugin());
-			SARLEclipsePlugin.setDefault(this.plugin);
-			when(this.plugin.getPreferences()).thenReturn(this.preferences);
-			this.bundle = mock(Bundle.class);
-			when(this.bundle.getSymbolicName()).thenReturn(SARLEclipsePlugin.PLUGIN_ID);
-			this.bundleContext = mock(BundleContext.class);
-			when(this.bundleContext.getBundle()).thenReturn(this.bundle);
-			when(this.bundle.getBundleContext()).thenReturn(this.bundleContext);
-			SARLRuntime.setCurrentPreferenceKey(TESTING_PREFERENCE_KEY);
-			this.plugin.start(this.bundleContext);
-		}
-
-		@After
-		public void tearDown() throws Exception {
-			if (SARLEclipsePlugin.getDefault() != null) {
-				SARLRuntime.setSREInstalls(new ISREInstall[0], null);
-				SARLRuntime.clearSREConfiguration();
-				SARLRuntime.setCurrentPreferenceKey(null);
-				SARLEclipsePlugin.setDefault(null);
-			}
-		}
+	public static class GetterSetter extends AbstractEclipseTestPreferencesTest {
 
 		@Test
 		public void createUniqueIdentifier() {
@@ -554,25 +516,14 @@ public final class SARLRuntimeTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class EventFiring extends AbstractSarlUiTest {
+	public static class EventFiring extends AbstractEclipseTestPreferencesTest {
 
 		@NonNullByDefault
 		private ISREInstallChangedListener listener;
 
-		@NonNullByDefault
-		private SARLEclipsePlugin plugin;
-
-		@NonNullByDefault
-		private IEclipsePreferences preferences;
-
 		@Before
 		public void setUp() throws Exception {
-			Bundle mockedBundle = mock(Bundle.class);
-			this.preferences = mock(IEclipsePreferences.class);
-			this.plugin = mock(SARLEclipsePlugin.class);
-			when(this.plugin.getPreferences()).thenReturn(this.preferences);
-			SARLEclipsePlugin.setDefault(this.plugin);
-			SARLRuntime.setCurrentPreferenceKey(TESTING_PREFERENCE_KEY);
+			super.setUp();
 			this.listener = mock(ISREInstallChangedListener.class);
 			SARLRuntime.addSREInstallChangedListener(listener);
 		}
@@ -582,12 +533,7 @@ public final class SARLRuntimeTest {
 			if (this.listener != null) {
 				SARLRuntime.removeSREInstallChangedListener(this.listener);
 			}
-			if (SARLEclipsePlugin.getDefault() != null) {
-				SARLRuntime.clearSREConfiguration();
-				SARLRuntime.setSREInstalls(new ISREInstall[0], null);
-				SARLRuntime.setCurrentPreferenceKey(null);
-				SARLEclipsePlugin.setDefault(null);
-			}
+			super.tearDown();
 		}
 
 		@Test
@@ -625,44 +571,7 @@ public final class SARLRuntimeTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class InputOutput extends AbstractSarlTest {
-
-		@NonNullByDefault
-		private SARLEclipsePlugin plugin;
-
-		@NonNullByDefault
-		private IEclipsePreferences preferences;
-
-		@NonNullByDefault
-		private BundleContext bundleContext;
-
-		@NonNullByDefault
-		private Bundle bundle;
-
-		@Before
-		public void setUp() throws Exception {
-			this.preferences = new EclipsePreferences();
-			this.plugin = spy(new SARLEclipsePlugin());
-			SARLEclipsePlugin.setDefault(this.plugin);
-			when(this.plugin.getPreferences()).thenReturn(this.preferences);
-			this.bundle = mock(Bundle.class);
-			when(this.bundle.getSymbolicName()).thenReturn(SARLEclipsePlugin.PLUGIN_ID);
-			this.bundleContext = mock(BundleContext.class);
-			when(this.bundleContext.getBundle()).thenReturn(this.bundle);
-			when(this.bundle.getBundleContext()).thenReturn(this.bundleContext);
-			SARLRuntime.setCurrentPreferenceKey(TESTING_PREFERENCE_KEY);
-			this.plugin.start(this.bundleContext);
-		}
-
-		@After
-		public void tearDown() throws Exception {
-			if (SARLEclipsePlugin.getDefault() != null) {
-				SARLRuntime.setSREInstalls(new ISREInstall[0], null);
-				SARLRuntime.clearSREConfiguration();
-				SARLRuntime.setCurrentPreferenceKey(null);
-				SARLEclipsePlugin.setDefault(null);
-			}
-		}
+	public static class InputOutput extends AbstractEclipseTestPreferencesTest {
 
 		@Test
 		public void saveSREConfiguration_nullMonitor_noSRE() throws Exception {

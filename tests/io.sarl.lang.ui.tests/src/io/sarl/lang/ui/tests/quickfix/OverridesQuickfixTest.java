@@ -22,14 +22,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-@Ignore("until #466 is being to be solved")
 public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 
 	@Inject
 	private ISerializer serializer;
 	
 	@Test
-	public void fixOverriddenFinaMethod() {
+	public void fixOverriddenFinalMethod() {
 		assertQuickFix(
 				org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL,
 				//
@@ -112,16 +111,16 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	override fct1 {",
 						"		// TODO Auto-generated code.",
 						"	}",
-						"	",
+						"",
 						"	override fct2(a : int) {",
 						"		// TODO Auto-generated code.",
 						"	}",
-						"	",
+						"",
 						"	override fct3 : boolean {",
 						"		// TODO Auto-generated code.",
 						"		true",
 						"	}",
-						"	",
+						"",
 						"}"));
 	}
 
@@ -153,7 +152,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	override fct(a : int*) {",
 						"		// TODO Auto-generated code.",
 						"	}",
-						"	",
+						"",
 						"}"));
 	}
 
@@ -188,11 +187,11 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	override fct1(a : int*) {",
 						"		// TODO Auto-generated code.",
 						"	}",
-						"	",
+						"",
 						"	override fct2(b : String, c : double*) {",
 						"		// TODO Auto-generated code.",
 						"	}",
-						"	",
+						"",
 						"}"));
 	}
 
@@ -224,7 +223,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	override fct(a : int = 4) {",
 						"		// TODO Auto-generated code.",
 						"	}",
-						"	",
+						"",
 						"}"));
 	}
 
@@ -256,7 +255,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	override fct(a : int = 4, b : String) {",
 						"		// TODO Auto-generated code.",
 						"	}",
-						"	",
+						"",
 						"}"));
 	}
 
@@ -314,7 +313,7 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	override fct(a : int = 4, b : String, c : int*) {",
 						"		// TODO Auto-generated code.",
 						"	}",
-						"	",
+						"",
 						"}"));
 	}
 
