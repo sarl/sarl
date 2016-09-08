@@ -200,6 +200,49 @@
             id="io.sarl.eclipse.debug.LaunchConfigTabGroup"
             type="io.sarl.eclipse.debug.LaunchConfigType" />
     </extension>
+
+    <!-- Launch shortcuts (Run As, Debug As) -->
+ 	<extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.SARLLaunchShortcut"
+        icon="icons/sarl_16.png"
+        id="io.sarl.eclipse.launching.shortcuts.SARLLaunchShortcut"
+        label="%launch.sarlApplication"
+        modes="run,debug">
+        <contextualLaunch>
+         	<contextLabel mode="run" label="%launch.runas" />
+         	<contextLabel mode="debug" label="%launch.debugas" />
+	         <enablement>
+	           <with variable="selection">
+	               <count value="1"/>
+	               <iterate ifEmpty="false" operator="or">
+	                 <or>
+	                   <reference definitionId="io.sarl.lang.SARL.Editor.opened"/>
+	                   <and>
+	                      <instanceof value="org.eclipse.core.resources.IFile"/>
+						  <adapt type="org.eclipse.core.resources.IFile">
+                            <test property="org.eclipse.core.resources.extension" value="sarl"/>
+                          </adapt>	                      
+	                   </and>
+	                   <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+	                   <instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+	                   <instanceof value="org.eclipse.core.resources.IProject"/>
+	                   <and>
+	                   		<instanceof value="org.eclipse.jdt.core.IJavaProject"/>
+	             			<adapt type="org.eclipse.core.resources.IProject">
+	             				<test property="org.eclipse.core.resources.projectNature"
+	            					value="io.sarl.eclipse.SARLProjectNature"/>
+	             			</adapt>
+	                   </and>
+	                 </or>
+	               </iterate>
+	           </with>
+	       </enablement>
+        </contextualLaunch>
+      </shortcut>
+   </extension>
+
  <extension
        point="org.eclipse.ui.preferencePages">
     <page

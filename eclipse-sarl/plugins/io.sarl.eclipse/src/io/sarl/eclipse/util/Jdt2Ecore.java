@@ -30,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -565,6 +566,28 @@ public class Jdt2Ecore {
 				}
 			}
 		}
+	}
+
+	/** Replies if the given type is a subclass of the second type.
+	 *
+	 * <p>The type finder could be obtained with {@link #toTypeFinder(IJavaProject)}.
+	 *
+	 * @param typeFinder - the type finder to be used for finding the type definitions.
+	 * @param subClass - the name of the sub class.
+	 * @param superClass - the name of the expected super class.
+	 * @return <code>true</code> if it is a subclass.
+	 * @throws JavaModelException if the Java model is invalid.
+	 * @see #toTypeFinder(IJavaProject)
+	 */
+	public boolean isSubClassOf(TypeFinder typeFinder, String subClass, String superClass) throws JavaModelException {
+		final SuperTypeIterator typeIterator = new SuperTypeIterator(typeFinder, false, subClass);
+		while (typeIterator.hasNext()) {
+			final IType type = typeIterator.next();
+			if (Objects.equals(type.getFullyQualifiedName(), superClass)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/** Iterator on the super types of a given type.
