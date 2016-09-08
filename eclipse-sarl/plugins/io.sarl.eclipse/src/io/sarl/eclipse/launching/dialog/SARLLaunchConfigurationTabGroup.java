@@ -21,6 +21,9 @@
 
 package io.sarl.eclipse.launching.dialog;
 
+import javax.inject.Inject;
+
+import com.google.inject.Injector;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
 import org.eclipse.debug.ui.EnvironmentTab;
@@ -38,6 +41,9 @@ import org.eclipse.jdt.debug.ui.launchConfigurations.JavaClasspathTab;
  */
 public class SARLLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
+	@Inject
+	private Injector injector;
+
 	/** Construct a group of tabs for being used in launch config.
 	 */
 	public SARLLaunchConfigurationTabGroup() {
@@ -54,6 +60,9 @@ public class SARLLaunchConfigurationTabGroup extends AbstractLaunchConfiguration
 			new EnvironmentTab(),
 			new CommonTab(),
 		};
+		for (final ILaunchConfigurationTab tab : tabs) {
+			this.injector.injectMembers(tab);
+		}
 		setTabs(tabs);
 	}
 }

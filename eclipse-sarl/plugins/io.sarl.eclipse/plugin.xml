@@ -175,7 +175,7 @@
 
  	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
         <launchConfigurationType
-              delegate="io.sarl.eclipse.launching.runner.SARLLaunchConfigurationDelegate"
+              delegate="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.runner.SARLLaunchConfigurationDelegate"
               delegateDescription="%launch.sarlLauncherDescription"
               delegateName="%launch.sarlLauncher"
               id="io.sarl.eclipse.debug.LaunchConfigType"
@@ -195,7 +195,7 @@
     
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
          <launchConfigurationTabGroup
-            class="io.sarl.eclipse.launching.dialog.SARLLaunchConfigurationTabGroup"
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.dialog.SARLLaunchConfigurationTabGroup"
             description="%launch.sarlApplication"
             id="io.sarl.eclipse.debug.LaunchConfigTabGroup"
             type="io.sarl.eclipse.debug.LaunchConfigType" />

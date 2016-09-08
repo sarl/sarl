@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.inject.Inject;
+
 import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -59,7 +61,8 @@ import org.eclipse.xtext.xbase.lib.Pair;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
-import io.sarl.eclipse.launching.dialog.RootContextIdentifierType;
+import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
+import io.sarl.eclipse.launching.config.RootContextIdentifierType;
 import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ProjectSREProvider;
@@ -83,6 +86,9 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	private SoftReference<IRuntimeClasspathEntry[]> unresolvedClasspathEntries;
 
 	private SoftReference<String[]> classpathEntries;
+
+	@Inject
+	private ILaunchConfigurationAccessor accessor;
 
 	/** Construct a delegate for running a SARL application.
 	 */
@@ -133,11 +139,8 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 *         or <code>null</code> if none
 	 * @throws CoreException if unable to retrieve the attribute
 	 */
-	@SuppressWarnings("static-method")
 	protected String getAgentName(ILaunchConfiguration configuration) throws CoreException {
-		final String agentName = configuration.getAttribute(
-				SARLEclipseConfig.ATTR_AGENT_NAME,
-				(String) null);
+		final String agentName = this.accessor.getAgent(configuration);
 		if (agentName == null) {
 			return null;
 		}
@@ -456,20 +459,14 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * @throws CoreException if impossible to get the SRE.
 	 */
 	private ISREInstall getSREInstallFor(ILaunchConfiguration configuration) throws CoreException {
-		final String useSystemSRE = configuration.getAttribute(
-				SARLEclipseConfig.ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
-				Boolean.TRUE.toString());
-		final String useProjectSRE = configuration.getAttribute(
-				SARLEclipseConfig.ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
-				Boolean.FALSE.toString());
 		final ISREInstall sre;
-		if (Boolean.parseBoolean(useSystemSRE)) {
+		if (this.accessor.getUseSystemSREFlag(configuration)) {
 			sre = SARLRuntime.getDefaultSREInstall();
 			verifySREValidity(sre, sre.getId(), true);
-		} else if (Boolean.parseBoolean(useProjectSRE)) {
+		} else if (this.accessor.getUseProjectSREFlag(configuration)) {
 			sre = getProjectSpecificSRE(configuration, true);
 		} else  {
-			final String runtime = configuration.getAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT, (String) null);
+			final String runtime = this.accessor.getSREId(configuration);
 			sre = SARLRuntime.getSREFromId(runtime);
 			verifySREValidity(sre, runtime, true);
 		}
@@ -591,9 +588,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		final String sreArgs1 = substitutor.performStringSubstitution(sre.getSREArguments());
 
 		// Retreive the SRE arguments from the launch configuration
-		final String sreArgs2 = substitutor.performStringSubstitution(configuration.getAttribute(
-				SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
-				Strings.nullToEmpty(null)));
+		final String sreArgs2 = substitutor.performStringSubstitution(this.accessor.getSRELaunchingArguments(configuration));
 
 		// Retreive the classname of the boot agent.
 		final String bootAgent = getAgentName(configuration);
@@ -603,31 +598,23 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		assert cliOptions != null;
 		String options = null;
 
-		if (configuration.getAttribute(SARLEclipseConfig.ATTR_SHOW_LOGO_OPTION, false)) {
+		if (this.accessor.getShowLogoFlag(configuration)) {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SHOW_LOGO));
 		} else {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_HIDE_LOGO));
 		}
 
-		if (configuration.getAttribute(SARLEclipseConfig.ATTR_SHOW_LOG_INFO, true)) {
+		if (this.accessor.getShowLogInfoFlag(configuration)) {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SHOW_INFO));
 		} else {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_HIDE_INFO));
 		}
 
-		if (configuration.getAttribute(SARLEclipseConfig.ATTR_SRE_OFFLINE, true)) {
+		if (this.accessor.getOfflineFlag(configuration)) {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SRE_OFFLINE));
 		}
 
-		RootContextIdentifierType type = RootContextIdentifierType.DEFAULT_CONTEXT_ID;
-		final String typeName = configuration.getAttribute(SARLEclipseConfig.ATTR_ROOT_CONTEXT_ID_TYPE, (String) null);
-		if (!Strings.isNullOrEmpty(typeName)) {
-			try {
-				type = RootContextIdentifierType.valueOf(typeName);
-			} catch (Throwable exception) {
-				//
-			}
-		}
+		final RootContextIdentifierType type = this.accessor.getDefaultContextIdentifier(configuration);
 		switch (type) {
 		case RANDOM_CONTEXT_ID:
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID));

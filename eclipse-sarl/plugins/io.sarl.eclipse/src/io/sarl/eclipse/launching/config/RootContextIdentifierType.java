@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.launching.dialog;
+package io.sarl.eclipse.launching.config;
 
 
 /**

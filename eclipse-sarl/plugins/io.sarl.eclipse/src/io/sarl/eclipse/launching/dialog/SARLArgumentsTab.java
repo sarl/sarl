@@ -21,14 +21,12 @@
 
 package io.sarl.eclipse.launching.dialog;
 
-import java.text.MessageFormat;
+import javax.inject.Inject;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaArgumentsTab;
-import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
 import org.eclipse.jdt.internal.debug.ui.actions.ControlAccessibleListener;
 import org.eclipse.jdt.internal.debug.ui.launcher.LauncherMessages;
 import org.eclipse.jdt.internal.debug.ui.launcher.VMArgumentsBlock;
@@ -46,9 +44,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.xtext.util.Strings;
 
-import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
+import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
 
 /**
  * Class for the configuration tab for the SARL arguments.
@@ -64,10 +62,15 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 
 	private static final int WIDTH_HINT = 100;
 
-
 	/** Arguments for the SRE.
 	 */
 	protected Text sreArgumentsText;
+
+	@Inject
+	private ILaunchConfigurationConfigurator configurator;
+
+	@Inject
+	private ILaunchConfigurationAccessor accessor;
 
 	/** Construct a configuration tab for the SARL arguments.
 	 */
@@ -209,27 +212,18 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		super.setDefaults(config);
-		config.setAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, (String) null);
+		this.configurator.setSRELaunchingArguments(config, null);
 	}
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		super.initializeFrom(configuration);
-		try {
-			this.sreArgumentsText.setText(configuration.getAttribute(
-					SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, Strings.emptyIfNull(null)));
-		} catch (CoreException e) {
-			setErrorMessage(MessageFormat.format(
-					Messages.SARLArgumentsTab_4,
-					e.getStatus().getMessage()));
-			JDIDebugUIPlugin.log(e);
-		}
+		this.sreArgumentsText.setText(this.accessor.getSRELaunchingArguments(configuration));
 	}
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(SARLEclipseConfig.ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS,
-				getAttributeValueFrom(this.sreArgumentsText));
+		this.configurator.setSRELaunchingArguments(configuration, getAttributeValueFrom(this.sreArgumentsText));
 		super.performApply(configuration);
 	}
 
