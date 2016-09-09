@@ -106,6 +106,12 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	public static final String ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS = SARLEclipsePlugin.PLUGIN_ID
 			+ ".SARL_RUNTIME_ENVIRONMENT_ARGUMENTS"; //$NON-NLS-1$
 
+	/**
+	 * Launch configuration attribute key. The value indicates if the agents are run in the same VM as
+	 * the Eclipse product.
+	 */
+	public static final String ATTR_EMBEDDED_SRE = SARLEclipsePlugin.PLUGIN_ID + ".EMBEDDED_SRE"; //$NON-NLS-1$
+
 	/** Identifier of the type of launch configuration dedicated to SARL
 	 * (value <code>io.sarl.eclipse.debug.LaunchConfigType</code>).
 	 */
@@ -120,6 +126,8 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	private static final boolean DEFAULT_USE_SYSTEM_SRE = true;
 
 	private static final boolean DEFAULT_USE_PROJECT_SRE = false;
+
+	private static final boolean DEFAULT_EMBEDDED_SRE = false;
 
 	@Override
 	public String getLaunchConfigurationType() {
@@ -388,6 +396,24 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		} catch (CoreException e) {
 			return null;
 		}
+	}
+
+	/** {@inheritDoc}
+	 */
+	@Override
+	public boolean isEmbeddedSRE(ILaunchConfiguration configuration) {
+		try {
+			return configuration.getAttribute(ATTR_EMBEDDED_SRE, DEFAULT_EMBEDDED_SRE);
+		} catch (CoreException e) {
+			return DEFAULT_EMBEDDED_SRE;
+		}
+	}
+
+	/** {@inheritDoc}
+	 */
+	@Override
+	public void setEmbeddedSRE(ILaunchConfigurationWorkingCopy configuration, boolean embedded) {
+		configuration.setAttribute(ATTR_EMBEDDED_SRE, embedded);
 	}
 
 }

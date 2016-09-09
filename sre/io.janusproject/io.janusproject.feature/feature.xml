@@ -236,6 +236,7 @@
       <import plugin="org.eclipse.core.runtime" version="3.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.workbench" version="3.108.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.11.0" match="greaterOrEqual"/>
+      <import plugin="org.arakhne.afc.core.util" version="14.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -286,6 +287,13 @@
          download-size="0"
          install-size="0"
          version="18.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.arakhne.afc.core.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

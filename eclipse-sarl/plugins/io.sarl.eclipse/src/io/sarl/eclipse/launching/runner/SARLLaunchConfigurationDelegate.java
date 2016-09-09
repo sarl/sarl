@@ -661,6 +661,14 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		return buffer.toString();
 	}
 
+	@Override
+	public IVMRunner getVMRunner(ILaunchConfiguration configuration, String mode) throws CoreException {
+		if (this.accessor.isEmbeddedSRE(configuration)) {
+			return new EmbeddedVMRunner();
+		}
+		return super.getVMRunner(configuration, mode);
+	}
+
 	/** Definition of the launching process splitted in separated steps for
 	 * making easier the cancellation.
 	 *

@@ -42,6 +42,7 @@ public class Messages extends NLS {
 	public static String SARLLaunchConfigurationDelegate_6;
 	public static String SARLLaunchConfigurationDelegate_7;
 	public static String SARLLaunchConfigurationDelegate_8;
+	public static String EmbeddedVMRunner_0;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

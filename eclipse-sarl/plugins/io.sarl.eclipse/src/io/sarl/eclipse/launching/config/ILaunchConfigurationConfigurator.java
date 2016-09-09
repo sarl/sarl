@@ -143,4 +143,11 @@ public interface ILaunchConfigurationConfigurator {
 	 */
 	void setJRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String arguments);
 
+	/** Set if the agent should be launched in the current Eclipse VM.
+	 *
+	 * @param configuration the configuration to change.
+	 * @param embedded <code>true</code> if the current Eclipse VM must be used for running the agent.
+	 */
+	void setEmbeddedSRE(ILaunchConfigurationWorkingCopy configuration, boolean embedded);
+
 }

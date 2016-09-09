@@ -133,4 +133,11 @@ public interface ILaunchConfigurationAccessor {
 	 */
 	String getJRELaunchingArguments(ILaunchConfiguration configuration);
 
+	/** Replies the agent should be launched in the current Eclipse VM.
+	 *
+	 * @param configuration the configuration.
+	 * @return <code>true</code> if the current Eclipse VM must be used for running the agent.
+	 */
+	boolean isEmbeddedSRE(ILaunchConfiguration configuration);
+
 }

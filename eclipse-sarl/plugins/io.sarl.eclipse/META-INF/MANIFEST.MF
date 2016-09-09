@@ -26,7 +26,8 @@ Require-Bundle: io.sarl.lang.ui;bundle-version="0.4.0";visibility:=reexport,
  org.eclipse.ui,
  org.eclipse.ui.intro;bundle-version="3.5.0",
  org.eclipse.ui.intro.quicklinks;bundle-version="1.0.0",
- org.eclipse.ui.intro.universal;bundle-version="3.3.0"
+ org.eclipse.ui.intro.universal;bundle-version="3.3.0",
+ org.arakhne.afc.core.vmutils;bundle-version="14.0.0"
 Bundle-Activator: io.sarl.eclipse.SARLEclipsePlugin
 Export-Package: io.sarl.eclipse,
  io.sarl.eclipse.buildpath,
