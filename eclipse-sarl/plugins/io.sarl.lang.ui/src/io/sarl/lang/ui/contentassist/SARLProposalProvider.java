@@ -45,6 +45,7 @@ import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Assignment;
+import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider;
@@ -59,6 +60,7 @@ import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.xbase.conversion.XbaseValueConverterService;
+import org.eclipse.xtext.xbase.ui.contentassist.XbaseReferenceProposalCreator;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
@@ -69,10 +71,13 @@ import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlInterface;
+import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.images.SARLImages;
 import io.sarl.lang.util.Utils;
 
@@ -109,6 +114,9 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 	@Inject
 	private IImageHelper imageHelper;
 
+	@Inject
+	private SARLGrammarKeywordAccess keywords;
+
 	//==============================================
 	// Utilities functions
 	//==============================================
@@ -129,98 +137,116 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 			acceptor);
 	}
 
-	/** Complete for obtaining SARL events.
+	/** Complete for obtaining SARL events if the proposals are enabled.
 	 *
 	 * @param allowEventType is <code>true</code> for enabling the {@link Event} type to be in the proposals.
 	 * @param isExtensionFilter indicates if the type filter is for "extends" or only based on visibility.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
+	 * @see #isSarlProposalEnabled()
 	 */
 	protected void completeSarlEvents(boolean allowEventType, boolean isExtensionFilter, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeSubJavaTypes(Event.class, allowEventType, context,
-				TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
-				getQualifiedNameValueConverter(),
-				isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
-				: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+		if (isSarlProposalEnabled()) {
+			completeSubJavaTypes(Event.class, allowEventType, context,
+					TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
+					getQualifiedNameValueConverter(),
+					isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
+					: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+		}
 	}
 
-	/** Complete for obtaining SARL capacities.
+	/** Complete for obtaining SARL capacities if the proposals are enabled.
 	 *
 	 * @param allowCapacityType is <code>true</code> for enabling the {@link Capacity} type to be in the proposals.
 	 * @param isExtensionFilter indicates if the type filter is for "extends" or only based on visibility.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
+	 * @see #isSarlProposalEnabled()
 	 */
 	protected void completeSarlCapacities(boolean allowCapacityType, boolean isExtensionFilter, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeSubJavaTypes(Capacity.class, allowCapacityType, context,
-				TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
-				getQualifiedNameValueConverter(),
-				isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.INSTANCEOF_TYPE_REFERENCE)
-				: createVisibilityFilter(context, IJavaSearchConstants.INTERFACE), acceptor);
+		if (isSarlProposalEnabled()) {
+			completeSubJavaTypes(Capacity.class, allowCapacityType, context,
+					TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
+					getQualifiedNameValueConverter(),
+					isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.INSTANCEOF_TYPE_REFERENCE)
+					: createVisibilityFilter(context, IJavaSearchConstants.INTERFACE), acceptor);
+		}
 	}
 
-	/** Complete for obtaining SARL agents.
+	/** Complete for obtaining SARL agents if the proposals are enabled.
 	 *
 	 * @param allowAgentType is <code>true</code> for enabling the {@link Agent} type to be in the proposals.
 	 * @param isExtensionFilter indicates if the type filter is for "extends" or only based on visibility.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
+	 * @see #isSarlProposalEnabled()
 	 */
 	protected void completeSarlAgents(boolean allowAgentType, boolean isExtensionFilter, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeSubJavaTypes(Agent.class, allowAgentType, context,
-				TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
-				getQualifiedNameValueConverter(),
-				isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
-				: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+		if (isSarlProposalEnabled()) {
+			completeSubJavaTypes(Agent.class, allowAgentType, context,
+					TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
+					getQualifiedNameValueConverter(),
+					isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
+					: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+		}
 	}
 
-	/** Complete for obtaining SARL behaviors.
+	/** Complete for obtaining SARL behaviors if the proposals are enabled.
 	 *
 	 * @param allowBehaviorType is <code>true</code> for enabling the {@link Behavior} type to be in the proposals.
 	 * @param isExtensionFilter indicates if the type filter is for "extends" or only based on visibility.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
+	 * @see #isSarlProposalEnabled()
 	 */
 	protected void completeSarlBehaviors(boolean allowBehaviorType, boolean isExtensionFilter, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeSubJavaTypes(Behavior.class, allowBehaviorType, context,
-				TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
-				getQualifiedNameValueConverter(),
-				isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
-				: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+		if (isSarlProposalEnabled()) {
+			completeSubJavaTypes(Behavior.class, allowBehaviorType, context,
+					TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
+					getQualifiedNameValueConverter(),
+					isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
+					: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+		}
 	}
 
-	/** Complete for obtaining SARL skills.
+	/** Complete for obtaining SARL skills if proposals are enabled.
 	 *
 	 * @param allowSkillType is <code>true</code> for enabling the {@link Skill} type to be in the proposals.
 	 * @param isExtensionFilter indicates if the type filter is for "extends" or only based on visibility.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
+	 * @see #isSarlProposalEnabled()
 	 */
 	protected void completeSarlSkills(boolean allowSkillType, boolean isExtensionFilter, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeSubJavaTypes(Skill.class, allowSkillType, context,
-				TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
-				getQualifiedNameValueConverter(),
-				isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
-				: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+		if (isSarlProposalEnabled()) {
+			completeSubJavaTypes(Skill.class, allowSkillType, context,
+					TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
+					getQualifiedNameValueConverter(),
+					isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
+					: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+		}
 	}
 
-	/** Complete for obtaining exception types.
+	/** Complete for obtaining exception types if proposals are enabled.
 	 *
 	 * @param allowExceptionType is <code>true</code> for enabling the {@link Exception} type to be in the proposals.
 	 * @param context the completion context.
 	 * @param acceptor the proposal acceptor.
+	 * @see #isSarlProposalEnabled()
 	 */
 	protected void completeExceptions(boolean allowExceptionType, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeSubJavaTypes(Exception.class, allowExceptionType, context,
-				TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
-				getQualifiedNameValueConverter(),
-				createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+		if (isSarlProposalEnabled()) {
+			completeSubJavaTypes(Exception.class, allowExceptionType, context,
+					TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
+					getQualifiedNameValueConverter(),
+					createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+		}
 	}
 
 	/** Complete for obtaining SARL types that are subtypes of the given type.
@@ -337,6 +363,62 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 		return null;
 	}
 
+	/** Complete the "extends" if the proposals are enabled.
+	 *
+	 * @param model the model.
+	 * @param context the context.
+	 * @param acceptor the proposal acceptor.
+	 * @see #isSarlProposalEnabled()
+	 */
+	protected void completeExtends(EObject model, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		if (isSarlProposalEnabled()) {
+			if (model instanceof SarlAgent) {
+				completeSarlAgents(false, true, context, acceptor);
+			} else if (model instanceof SarlBehavior) {
+				completeSarlBehaviors(false, true, context, acceptor);
+			} else if (model instanceof SarlCapacity) {
+				completeSarlCapacities(false, true, context, acceptor);
+			} else if (model instanceof SarlSkill) {
+				completeSarlSkills(false, true, context, acceptor);
+			} else if (model instanceof SarlEvent) {
+				completeSarlEvents(false, true, context, acceptor);
+			} else if (model instanceof SarlClass) {
+				completeJavaTypes(
+						context,
+						createExtensionFilter(context, IJavaSearchConstants.CLASS),
+						acceptor);
+			} else if (model instanceof SarlInterface) {
+				completeJavaTypes(
+						context,
+						createExtensionFilter(context, IJavaSearchConstants.INTERFACE),
+						acceptor);
+			}
+		}
+	}
+
+	private void completeImplements(EObject model, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		if (isSarlProposalEnabled()) {
+			if (model instanceof SarlSkill) {
+				completeSarlCapacities(true, false, context, acceptor);
+			} else if (model instanceof SarlClass) {
+				completeJavaTypes(
+						context,
+						createVisibilityFilter(context, IJavaSearchConstants.INTERFACE),
+						acceptor);
+			}
+		}
+	}
+
+	/** Replies if the SARL proposals are enabled.
+	 * @return <code>true</code> if the proposals are proposed.
+	 */
+	protected boolean isSarlProposalEnabled() {
+		final XbaseReferenceProposalCreator creator = getXbaseCrossReferenceProposalCreator();
+		return creator.isShowTypeProposals() || creator.isShowSmartProposals();
+	}
+
 	//==============================================
 	// Proposals Functions
 	//==============================================
@@ -362,180 +444,109 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 	}
 
 	@Override
-	public void completeAOPMember_Name(EObject model, Assignment assignment, ContentAssistContext context,
-			ICompletionProposalAcceptor acceptor) {
-		if (model instanceof SarlBehaviorUnit) {
-			if (getXbaseCrossReferenceProposalCreator().isShowTypeProposals()
-					|| getXbaseCrossReferenceProposalCreator().isShowSmartProposals()) {
-				completeSarlEvents(true, false, context, acceptor);
-			}
-		} else {
-			super.completeAOPMember_Name(model, assignment, context, acceptor);
-		}
-	}
-
-	@Override
-	public void completeAOPMember_Capacities(EObject model, Assignment assignment, ContentAssistContext context,
-			ICompletionProposalAcceptor acceptor) {
-		if (getXbaseCrossReferenceProposalCreator().isShowTypeProposals()
-				|| getXbaseCrossReferenceProposalCreator().isShowSmartProposals()) {
-			completeSarlCapacities(false, false, context, acceptor);
-		}
-	}
-
-	@Override
-	public void completeAOPMember_FiredEvents(EObject model, Assignment assignment, ContentAssistContext context,
-			ICompletionProposalAcceptor acceptor) {
-		if (getXbaseCrossReferenceProposalCreator().isShowTypeProposals()
-				|| getXbaseCrossReferenceProposalCreator().isShowSmartProposals()) {
-			completeSarlEvents(true, false, context, acceptor);
-		}
-	}
-
-	@Override
-	public void completeMember_FiredEvents(EObject model, Assignment assignment, ContentAssistContext context,
-			ICompletionProposalAcceptor acceptor) {
-		if (getXbaseCrossReferenceProposalCreator().isShowTypeProposals()
-				|| getXbaseCrossReferenceProposalCreator().isShowSmartProposals()) {
-			completeSarlEvents(true, false, context, acceptor);
-		}
-	}
-
-	@Override
-	public void completeCapacityMember_FiredEvents(EObject model, Assignment assignment, ContentAssistContext context,
-			ICompletionProposalAcceptor acceptor) {
-		if (getXbaseCrossReferenceProposalCreator().isShowTypeProposals()
-				|| getXbaseCrossReferenceProposalCreator().isShowSmartProposals()) {
-			completeSarlEvents(true, false, context, acceptor);
-		}
-	}
-
-	@Override
-	public void completeAOPMember_Exceptions(EObject model, Assignment assignment, ContentAssistContext context,
-			ICompletionProposalAcceptor acceptor) {
-		if (getXbaseCrossReferenceProposalCreator().isShowTypeProposals()
-				|| getXbaseCrossReferenceProposalCreator().isShowSmartProposals()) {
-			completeExceptions(true, context, acceptor);
-		}
-	}
-
-	@Override
-	public void completeMember_Exceptions(EObject model, Assignment assignment, ContentAssistContext context,
-			ICompletionProposalAcceptor acceptor) {
-		if (getXbaseCrossReferenceProposalCreator().isShowTypeProposals()
-				|| getXbaseCrossReferenceProposalCreator().isShowSmartProposals()) {
-			completeExceptions(true, context, acceptor);
-		}
-	}
-
-	@Override
-	public void completeCapacityMember_Exceptions(EObject model, Assignment assignment, ContentAssistContext context,
-			ICompletionProposalAcceptor acceptor) {
-		if (getXbaseCrossReferenceProposalCreator().isShowTypeProposals()
-				|| getXbaseCrossReferenceProposalCreator().isShowSmartProposals()) {
-			completeExceptions(true, context, acceptor);
-		}
-	}
-
-	@Override
 	public void completeJvmParameterizedTypeReference_Type(EObject model, Assignment assignment,
 			ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		if (model instanceof XtendTypeDeclaration) {
-			// Otherwise treated in specific functions.
+		if (model instanceof SarlBehaviorUnit) {
+			completeSarlEvents(true, false, context, acceptor);
+		} else if (model instanceof SarlCapacityUses || model instanceof SarlRequiredCapacity) {
+			completeSarlCapacities(false, false, context, acceptor);
+		} else if (model instanceof XtendTypeDeclaration) {
+			final EObject grammarElement = context.getLastCompleteNode().getGrammarElement();
+			if (grammarElement instanceof Keyword) {
+				final String keyword = ((Keyword) grammarElement).getValue();
+				if (Objects.equals(keyword, this.keywords.getExtendsKeyword())) {
+					completeExtends(model, context, acceptor);
+				} else if (Objects.equals(keyword, this.keywords.getImplementsKeyword())) {
+					completeImplements(model, context, acceptor);
+				}
+			}
 		} else {
 			super.completeJvmParameterizedTypeReference_Type(model, assignment, context, acceptor);
 		}
 	}
 
 	@Override
+	public void completeAOPMember_FiredEvents(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		completeSarlEvents(true, false, context, acceptor);
+	}
+
+	@Override
+	public void completeMember_FiredEvents(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		completeSarlEvents(true, false, context, acceptor);
+	}
+
+	@Override
+	public void completeCapacityMember_FiredEvents(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		completeSarlEvents(true, false, context, acceptor);
+	}
+
+	@Override
+	public void completeAOPMember_Exceptions(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		completeExceptions(true, context, acceptor);
+	}
+
+	@Override
+	public void completeMember_Exceptions(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		completeExceptions(true, context, acceptor);
+	}
+
+	@Override
+	public void completeCapacityMember_Exceptions(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		completeExceptions(true, context, acceptor);
+	}
+
+	@Override
 	public final void completeType_Extends(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeExtends(model, context, acceptor);
+		// Do not propose because it is supported by the type reference completion.
 	}
 
 	@Override
 	public final void completeAOPMember_Extends(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeExtends(model, context, acceptor);
+		// Do not propose because it is supported by the type reference completion.
 	}
 
 	@Override
 	public final void completeMember_Extends(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeExtends(model, context, acceptor);
+		// Do not propose because it is supported by the type reference completion.
 	}
 
 	@Override
 	public final void completeAnnotationField_Extends(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeExtends(model, context, acceptor);
-	}
-
-	private void completeExtends(EObject model, ContentAssistContext context,
-			ICompletionProposalAcceptor acceptor) {
-		if (getXbaseCrossReferenceProposalCreator().isShowTypeProposals()
-				|| getXbaseCrossReferenceProposalCreator().isShowSmartProposals()) {
-			if (model instanceof SarlAgent) {
-				completeSarlAgents(false, true, context, acceptor);
-			} else if (model instanceof SarlBehavior) {
-				completeSarlBehaviors(false, true, context, acceptor);
-			} else if (model instanceof SarlCapacity) {
-				completeSarlCapacities(false, true, context, acceptor);
-			} else if (model instanceof SarlSkill) {
-				completeSarlSkills(false, true, context, acceptor);
-			} else if (model instanceof SarlEvent) {
-				completeSarlEvents(false, true, context, acceptor);
-			} else if (model instanceof SarlClass) {
-				completeJavaTypes(
-						context,
-						createExtensionFilter(context, IJavaSearchConstants.CLASS),
-						acceptor);
-			} else if (model instanceof SarlInterface) {
-				completeJavaTypes(
-						context,
-						createExtensionFilter(context, IJavaSearchConstants.INTERFACE),
-						acceptor);
-			}
-		}
+		// Do not propose because it is supported by the type reference completion.
 	}
 
 	@Override
 	public final void completeType_Implements(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeImplements(model, context, acceptor);
+		// Do not propose because it is supported by the type reference completion.
 	}
 
 	@Override
 	public final void completeAOPMember_Implements(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeImplements(model, context, acceptor);
+		// Do not propose because it is supported by the type reference completion.
 	}
 
 	@Override
 	public final void completeMember_Implements(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeImplements(model, context, acceptor);
+		// Do not propose because it is supported by the type reference completion.
 	}
 
 	@Override
 	public final void completeAnnotationField_Implements(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
-		completeImplements(model, context, acceptor);
-	}
-
-	private void completeImplements(EObject model, ContentAssistContext context,
-			ICompletionProposalAcceptor acceptor) {
-		if (getXbaseCrossReferenceProposalCreator().isShowTypeProposals()
-				|| getXbaseCrossReferenceProposalCreator().isShowSmartProposals()) {
-			if (model instanceof SarlSkill) {
-				completeSarlCapacities(true, false, context, acceptor);
-			} else if (model instanceof SarlClass) {
-				completeJavaTypes(
-						context,
-						createVisibilityFilter(context, IJavaSearchConstants.INTERFACE),
-						acceptor);
-			}
-		}
+		// Do not propose because it is supported by the type reference completion.
 	}
 
 	/** Filter for "extends".
