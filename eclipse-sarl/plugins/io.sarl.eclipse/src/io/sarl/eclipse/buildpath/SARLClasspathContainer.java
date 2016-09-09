@@ -22,7 +22,10 @@
 package io.sarl.eclipse.buildpath;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.naming.NameNotFoundException;
 
@@ -73,11 +76,24 @@ public class SARLClasspathContainer implements IClasspathContainer {
 		this.containerPath = containerPath;
 	}
 
+	/** Replies the list of the symbolic names of the bundle dependencies.
+	 *
+	 * @return the bundle symbolic names of the dependencies.
+	 */
+	@SuppressWarnings("static-method")
+	public Set<String> getBundleDependencies() {
+		final Set<String> deps = new HashSet<>();
+		deps.addAll(Arrays.asList(SARL_REFERENCE_LIBRARIES));
+		return deps;
+	}
+
 	@Override
 	public synchronized IClasspathEntry[] getClasspathEntries() {
 		if (this.entries == null) {
 			try {
-				updateEntries();
+				final List<IClasspathEntry> newEntries = new ArrayList<>();
+				updateEntries(newEntries);
+				this.entries = newEntries.toArray(new IClasspathEntry[newEntries.size()]);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -85,48 +101,62 @@ public class SARLClasspathContainer implements IClasspathContainer {
 		return this.entries;
 	}
 
-	private void updateEntries() throws Exception {
-		final List<IClasspathEntry> newEntries = new ArrayList<>();
+	/** Compute the entries of the container.
+	 *
+	 * @param entries the list of entries to update..
+	 * @throws Exception if something is going wrong.
+	 */
+	protected void updateEntries(List<IClasspathEntry> entries) throws Exception {
 		for (final String referenceLibrary : SARL_REFERENCE_LIBRARIES) {
-			// Retreive the bundle
-			final Bundle bundle = Platform.getBundle(referenceLibrary);
-			if (bundle == null) {
-				throw new NameNotFoundException("No bundle found for: " + referenceLibrary); //$NON-NLS-1$
-			}
-
-			final IPath bundlePath = BundleUtil.getBundlePath(bundle);
-			final IPath sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
-
-			IClasspathAttribute[] extraAttributes = null;
-			if (referenceLibrary.startsWith("io.sarl")) { //$NON-NLS-1$
-				final IPath javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
-				final IClasspathAttribute attr;
-				if (javadocPath == null) {
-					attr = JavaCore.newClasspathAttribute(
-							IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
-							JAVADOC_URL);
-				} else {
-					attr = JavaCore.newClasspathAttribute(
-							IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
-							javadocPath.makeAbsolute().toOSString());
-				}
-				extraAttributes = new IClasspathAttribute[] {attr};
-			}
-
-			newEntries.add(JavaCore.newLibraryEntry(
-					bundlePath,
-					sourceBundlePath,
-					null,
-					new IAccessRule[] {},
-					extraAttributes,
-					false));
+			entries.add(newLibrary(referenceLibrary));
 		}
-		this.entries = newEntries.toArray(new IClasspathEntry[newEntries.size()]);
+	}
+
+	/** Create the classpath library linked to the bundle with the given name.
+	 *
+	 * @param libraryName the bundle name.
+	 * @return the classpath entry.
+	 * @throws Exception if something is going wrong.
+	 */
+	@SuppressWarnings("static-method")
+	protected IClasspathEntry newLibrary(String libraryName) throws Exception {
+		// Retreive the bundle
+		final Bundle bundle = Platform.getBundle(libraryName);
+		if (bundle == null) {
+			throw new NameNotFoundException("No bundle found for: " + libraryName); //$NON-NLS-1$
+		}
+
+		final IPath bundlePath = BundleUtil.getBundlePath(bundle);
+		final IPath sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
+
+		IClasspathAttribute[] extraAttributes = null;
+		if (libraryName.startsWith("io.sarl")) { //$NON-NLS-1$
+			final IPath javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
+			final IClasspathAttribute attr;
+			if (javadocPath == null) {
+				attr = JavaCore.newClasspathAttribute(
+						IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
+						JAVADOC_URL);
+			} else {
+				attr = JavaCore.newClasspathAttribute(
+						IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
+						javadocPath.makeAbsolute().toOSString());
+			}
+			extraAttributes = new IClasspathAttribute[] {attr};
+		}
+
+		return JavaCore.newLibraryEntry(
+				bundlePath,
+				sourceBundlePath,
+				null,
+				new IAccessRule[] {},
+				extraAttributes,
+				false);
 	}
 
 	/** Reset the container.
 	 */
-	synchronized void reset() {
+	public synchronized void reset() {
 		this.entries = null;
 	}
 

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.janusproject;
+package io.janusproject.eclipse.sre;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,17 +27,17 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import com.google.common.collect.Maps;
+import io.janusproject.eclipse.JanusEclipsePlugin;
+import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
 import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -72,7 +72,6 @@ import io.sarl.eclipse.util.BundleUtil;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("restriction")
 public class JanusSREInstall extends AbstractSREInstall {
 
     /**
@@ -86,16 +85,9 @@ public class JanusSREInstall extends AbstractSREInstall {
 
     private static final String DOT_JAR_EXTENSION = "." + JAR_EXTENSION; //$NON-NLS-1$
 
-    /**
-     * The set of dependencies of the Janus plugin that really useful the runtime configuration This a manual configuration that must be update each
-     * time you change the dependency FIXME Update this array if you change the dependency of the Janus plugin and if this dependency is required at
-     * runtime by the launch configuration.
-     */
-    private static final Set<String> RUNTIME_REQUIRED_DEPDENCIES = new HashSet<>(Arrays.asList("io.sarl.core", //$NON-NLS-1$
-            "io.sarl.util", "org.arakhne.afc.core.vmutils", "com.hazelcast", "com.google.gson", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            "com.google.inject", "org.zeromq.jeromq", "org.apache.commons.cli")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-
     private static final String DEFAULT_PATH_TO_CLASSES_IN_MAVEN_PROJECT = "target/classes"; //$NON-NLS-1$
+
+    private static Set<String> janusBundleDependencies;
 
     /**
      * The path where this SRE plugin jar is effectively installed.
@@ -123,7 +115,7 @@ public class JanusSREInstall extends AbstractSREInstall {
      */
     public JanusSREInstall() {
         super(JANUS_SRE_ID);
-        final Bundle bundle = Platform.getBundle(JANUSEclipsePlugin.PLUGIN_ID);
+        final Bundle bundle = Platform.getBundle(JanusEclipsePlugin.PLUGIN_ID);
         final IPath bundlePath = BundleUtil.getBundlePath(bundle);
         if (bundlePath.toFile().isDirectory()) {
             // we have a directory, we assume we are in debug mode of the
@@ -179,6 +171,14 @@ public class JanusSREInstall extends AbstractSREInstall {
         this.setClassPathEntries(new ArrayList<>(classpathEntries));
     }
 
+    private static Set<String> getJanusBundleDependencies() {
+    	if (janusBundleDependencies == null) {
+    		final JanusClasspathContainer container = new JanusClasspathContainer(null);
+    		janusBundleDependencies = container.getBundleDependencies();
+    	}
+    	return janusBundleDependencies;
+    }
+
     /**
      * Recrusive function to get all the required runtime dependencies of this SRE plugin and adding the corresponding elements to the
      * {@code classpathEntries} collection.
@@ -207,7 +207,7 @@ public class JanusSREInstall extends AbstractSREInstall {
                         || dependency.getVersion().compareTo(existingDependencyCPE.getKey()) > 0) {
                     if (firstcall) {
                         // First level of dependencies that are filtered according to runtimeNecessaryDependencies
-                        if (RUNTIME_REQUIRED_DEPDENCIES.contains(dependency.getSymbolicName())) {
+                        if (getJanusBundleDependencies().contains(dependency.getSymbolicName())) {
                             URL u = null;
                             try {
                                 u = FileLocator.resolve(dependency.getEntry(ROOT_NAME));

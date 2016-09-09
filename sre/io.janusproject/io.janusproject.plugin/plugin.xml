@@ -4,8 +4,23 @@
    <extension
          point="io.sarl.eclipse.sreInstallations">
       <sreInstallation
-            class="io.janusproject.JanusSREInstall">
+            class="io.janusproject.eclipse.sre.JanusSREInstall">
       </sreInstallation>
+   </extension>
+
+  <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
+      <classpathContainerInitializer
+          id="io.janusproject.plugin.launching.JANUS_SUPPORT"
+          class="io.janusproject.eclipse.buildpath.JanusClasspathContainerInitializer"/>
+   </extension>
+
+	<extension
+         point="org.eclipse.jdt.ui.classpathContainerPage">
+      <classpathContainerPage
+            name="%classpathContainerPage.name"
+            class="io.janusproject.eclipse.buildpath.JanusContainerWizardPage"
+            id="io.janusproject.plugin.launching.JANUS_SUPPORT">
+      </classpathContainerPage>
    </extension>
 
 </plugin>

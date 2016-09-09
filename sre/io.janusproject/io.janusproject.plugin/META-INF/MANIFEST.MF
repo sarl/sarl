@@ -17,11 +17,17 @@ Require-Bundle: io.sarl.core;bundle-version="0.4.0",
  org.eclipse.jdt.launching;bundle-version="3.8.100",
  org.eclipse.core.runtime;bundle-version="3.12.0",
  org.eclipse.ui.workbench;bundle-version="3.108.0",
- org.eclipse.core.resources;bundle-version="3.11.0"
-Bundle-Activator: io.janusproject.JANUSEclipsePlugin
+ org.eclipse.core.resources;bundle-version="3.11.0",
+ org.eclipse.jdt.ui;bundle-version="3.12.0",
+ org.eclipse.swt;bundle-version="3.105.0",
+ org.eclipse.jface;bundle-version="3.12.0"
+Bundle-Activator: io.janusproject.eclipse.JanusEclipsePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Export-Package: io.janusproject,
+ io.janusproject.eclipse,
+ io.janusproject.eclipse.buildpath,
+ io.janusproject.eclipse.sre,
  io.janusproject.kernel,
  io.janusproject.kernel.annotations,
  io.janusproject.kernel.bic,

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.janusproject;
+package io.janusproject.eclipse.sre;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -75,7 +75,7 @@ import org.xml.sax.SAXException;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({ "checkstyle:classdataabstractioncoupling", "restriction" })
+@SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public final class JavaClasspathParser {
 
     /**
