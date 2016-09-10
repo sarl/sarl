@@ -88,7 +88,6 @@ public final class BehaviorGuardEvaluator {
 		try {
 			this.method.setAccessible(true);
 			this.method.invoke(this.target, event, behaviorsMethodsToExecute);
-			this.method.setAccessible(false);
 		} catch (IllegalArgumentException e) {
 			throw new Error(Locale.getString(getClass(), "EVALUATOR_REJECTION", event), e); //$NON-NLS-1$
 		} catch (IllegalAccessException e) {

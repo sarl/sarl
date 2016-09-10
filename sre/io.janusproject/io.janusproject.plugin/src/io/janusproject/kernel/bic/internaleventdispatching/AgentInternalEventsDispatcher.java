@@ -31,6 +31,7 @@ import java.util.concurrent.ExecutorService;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
+import org.arakhne.afc.util.MultiCollection;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.lang.core.DeadEvent;
@@ -163,30 +164,27 @@ public class AgentInternalEventsDispatcher {
 	 * </p>
 	 * @param event - an event to dispatch asynchronously.
 	 */
-	@SuppressWarnings("synthetic-access")
 	public void asyncDispatch(Event event) {
-			@Override
-			public void run() {
-				Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
-				synchronized (AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry) {
-					behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
-							.getBehaviorGuardEvaluators(event);
-				}
-				if (behaviorGuardEvaluators != null && !behaviorGuardEvaluators.isEmpty()) {
-
-					final Collection<Runnable> behaviorsMethodsToExecute;
-					try {
-						behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
-					} catch (InvocationTargetException e) {
-						throw new RuntimeException(e);
-					}
-					executeAsynchronouslyBehaviorMethods(event, behaviorsMethodsToExecute);
 		assert event != null;
+		this.executor.execute(() -> {
+			Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
+			synchronized (AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry) {
+				behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
+						.getBehaviorGuardEvaluators(event);
+			}
+			if (behaviorGuardEvaluators != null && !behaviorGuardEvaluators.isEmpty()) {
 
-				} else if (!(event instanceof DeadEvent)) {
-					// the event had no subscribers and was not itself a DeadEvent
-					asyncDispatch(new DeadEvent(event));
+				final Collection<Runnable> behaviorsMethodsToExecute;
+				try {
+					behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
+				} catch (InvocationTargetException e) {
+					throw new RuntimeException(e);
 				}
+				executeAsynchronouslyBehaviorMethods(event, behaviorsMethodsToExecute);
+
+			} else if (!(event instanceof DeadEvent)) {
+				// the event had no subscribers and was not itself a DeadEvent
+				asyncDispatch(new DeadEvent(event));
 			}
 		});
 	}
@@ -203,14 +201,26 @@ public class AgentInternalEventsDispatcher {
 	private static Collection<Runnable> evaluateGuards(final Object event,
 			final Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators) throws InvocationTargetException {
 
-		final Collection<Runnable> behaviorsMethodsToExecute = Lists.newLinkedList();
+		final MultiCollection<Runnable> behaviorsMethodsToExecute = new MultiCollection<>();
 
-		Collection<Runnable> behaviorsMethodsToExecutePerTarget = null;
-		for (final BehaviorGuardEvaluator evaluator : behaviorGuardEvaluators) {
-			// TODO Maybe we can parallelize this loop, could be interesting when the number of guardEvaluators increase
-			behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
-			evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
-			behaviorsMethodsToExecute.addAll(behaviorsMethodsToExecutePerTarget);
+		try {
+			behaviorGuardEvaluators.parallelStream().forEach((evaluator) -> {
+				try {
+					final Collection<Runnable> behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
+					evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
+					synchronized (behaviorsMethodsToExecute) {
+						behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget);
+					}
+				} catch (InvocationTargetException exception) {
+					throw new RuntimeException(exception);
+				}
+			});
+		} catch (RuntimeException exception) {
+			final Throwable t = exception.getCause();
+			if (t instanceof InvocationTargetException) {
+				throw (InvocationTargetException) t;
+			}
+			throw exception;
 		}
 
 		return behaviorsMethodsToExecute;
@@ -231,48 +241,16 @@ public class AgentInternalEventsDispatcher {
 		final CountDownLatch doneSignal = new CountDownLatch(behaviorsMethodsToExecute.size());
 
 		for (final Runnable runnable : behaviorsMethodsToExecute) {
-			this.executor.execute(new Runnable() {
-
-				@Override
-				public void run() {
-					try {
-						runnable.run();
-					} catch (Exception e) {
-						throw new RuntimeException(e);
-					} finally {
-						doneSignal.countDown();
-					}
+			this.executor.execute(() -> {
+				try {
+					runnable.run();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				} finally {
+					doneSignal.countDown();
 				}
-
 			});
 		}
-
-		/*Queue<Pair<Event, Collection<Runnable>>> queueForThread = this.queue.get();
-		queueForThread.offer(new Pair<>(event, behaviorsMethodsToExecute));
-
-		if (!this.dispatching.get().booleanValue()) {
-			this.dispatching.set(Boolean.TRUE);
-			try {
-				Pair<Event, Collection<Runnable>> nextEvent;
-				while ((nextEvent = queueForThread.poll()) != null) {
-					for (Runnable runnable : nextEvent.getValue()) {
-						this.executor.execute(new Runnable() {
-
-							@Override
-							public void run() {
-								runnable.run();
-								doneSignal.countDown();
-							}
-
-						});
-					}
-				}
-
-			} finally {
-				this.dispatching.remove();
-				this.queue.remove();
-			}
-		}*/
 
 		// Wait for all Behaviors runnable to complete before continuing
 		doneSignal.await();
