@@ -21,6 +21,8 @@
 
 package io.sarl.lang.core;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * A possible implementation of a capacity fulfilling all the constraints of
  * this specification. Require Capacities should be accessed via the
@@ -33,6 +35,8 @@ package io.sarl.lang.core;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class Skill extends AgentTrait {
+
+	private final AtomicInteger uses = new AtomicInteger();
 
 	/**
 	 * Creates a new Skill.
@@ -55,6 +59,24 @@ public abstract class Skill extends AgentTrait {
 	 */
 	public Skill() {
 		super();
+	}
+
+	/** Mark this skill as used by one user.
+	 */
+	void registerUse() {
+		final int value = this.uses.getAndIncrement();
+		if (value <= 0) {
+			install();
+		}
+	}
+
+	/** Mark this skill as release by one user.
+	 */
+	void unregisterUse() {
+		final int value = this.uses.getAndDecrement();
+		if (value <= 0) {
+			uninstall();
+		}
 	}
 
 	/**

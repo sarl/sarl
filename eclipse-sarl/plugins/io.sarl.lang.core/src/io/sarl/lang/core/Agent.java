@@ -26,7 +26,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.google.common.reflect.TypeToken;
 import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.SARLVersion;
@@ -131,6 +133,9 @@ public class Agent implements Identifiable {
 	/**
 	 * Set the skill for the {@link Capacity} <code>capacity</code>.
 	 *
+	 * <p>If no capacity is provided as argument, this function will associate the skill to all the capacities
+	 * it is implementing.
+	 *
 	 * @param <S> - type of the skill.
 	 * @param capacities the capacity or the capacities to set.
 	 * @param skill implementaion of <code>capacity</code>.
@@ -146,6 +151,9 @@ public class Agent implements Identifiable {
 	/**
 	 * Set the skill for the {@link Capacity} <code>capacity</code>.
 	 *
+	 * <p>If no capacity is provided as argument, this function will associate the skill to all the capacities
+	 * it is implementing.
+	 *
 	 * @param <S> - type of the skill.
 	 * @param iCapacities the capacity or the capacities to set.
 	 * @param skill implementaion of <code>capacity</code>.
@@ -156,21 +164,40 @@ public class Agent implements Identifiable {
 	protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... iCapacities) {
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
 		skill.setOwner(this);
-		for (final Class<? extends Capacity> capacity : iCapacities) {
-			assert capacity != null : "the capacity parameter must not be null"; //$NON-NLS-1$
-			assert capacity.isInterface() : "the capacity parameter must be an interface"; //$NON-NLS-1$
-			if (!capacity.isInstance(skill)) {
-				throw new InvalidParameterException(
-						"the skill must implement the given capacity " //$NON-NLS-1$
-						+ capacity.getName());
-			}
-			final Skill oldS = this.skills.put(capacity, skill);
-			if (oldS != null) {
-				oldS.uninstall();
+		if (iCapacities == null || iCapacities.length == 0) {
+			runOnImplementedCapacities(skill, (capacity) -> {
+				final Skill oldS = this.skills.put(capacity, skill);
+				skill.registerUse();
+				if (oldS != null && oldS != skill) {
+					oldS.unregisterUse();
+				}
+			});
+		} else {
+			for (final Class<? extends Capacity> capacity : iCapacities) {
+				assert capacity != null : "the capacity parameter must not be null"; //$NON-NLS-1$
+				assert capacity.isInterface() : "the capacity parameter must be an interface"; //$NON-NLS-1$
+				if (!capacity.isInstance(skill)) {
+					throw new InvalidParameterException(
+							"the skill must implement the given capacity " //$NON-NLS-1$
+							+ capacity.getName());
+				}
+				final Skill oldS = this.skills.put(capacity, skill);
+				skill.registerUse();
+				if (oldS != null && oldS != skill) {
+					oldS.unregisterUse();
+				}
 			}
 		}
-		skill.install();
 		return skill;
+	}
+
+	private static void runOnImplementedCapacities(Skill skill, Procedure1<Class<? extends Capacity>> callback) {
+		TypeToken.of(skill.getClass()).getTypes().interfaces().stream().parallel().forEach((it) -> {
+			final Class<?> type = it.getRawType();
+			if (Capacity.class.isAssignableFrom(type)) {
+				callback.apply(type.asSubclass(Capacity.class));
+			}
+		});
 	}
 
 	/** Implementation of the operator "capacity maps-to skill".
@@ -179,8 +206,10 @@ public class Agent implements Identifiable {
 	 * @param capacity - the capacity to map.
 	 * @param skill - the skill to be mapped to.
 	 */
+	@SuppressWarnings("unchecked")
+	@Inline("$setSkill($2, $1)")
 	protected <S extends Skill> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
-		setSkill(skill, capacity);
+		$setSkill(skill, capacity);
 	}
 
 	/**
@@ -194,7 +223,7 @@ public class Agent implements Identifiable {
 		assert capacity != null;
 		final Skill skill = this.skills.remove(capacity);
 		if (skill != null) {
-			skill.uninstall();
+			skill.unregisterUse();
 		}
 		return capacity.cast(skill);
 	}

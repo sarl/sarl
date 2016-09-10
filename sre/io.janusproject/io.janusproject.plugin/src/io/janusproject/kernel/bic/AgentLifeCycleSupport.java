@@ -27,9 +27,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
 import io.janusproject.services.spawn.SpawnService;
@@ -104,7 +105,7 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 		uninstallSkills(agent);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "checkstyle:npathcomplexity"})
 	private static Iterable<? extends Skill> getAllSkills(Agent agent, boolean inReverseOrder) {
 		// Use reflection to ignore the "private/protected" access right.
 		try {
@@ -119,15 +120,18 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 			final Map<?, Skill> skills = (Map<?, Skill>) agentSkillField.get(agent);
 			if (skills != null) {
 				final List<BuiltinSkill> builtinSkills = new ArrayList<>();
-				final LinkedList<Skill> otherSkills = new LinkedList<>();
+				final Set<Skill> otherSkills = new TreeSet<>((first, second) -> {
+					if (first == second) {
+						return 0;
+					}
+					return Integer.compare(System.identityHashCode(first), System.identityHashCode(second));
+				});
 				final Comparator<BuiltinSkill> comparator = inReverseOrder ? REVERSE_ORDER_COMPARATOR : ORDER_COMPARATOR;
 				for (final Skill skill : skills.values()) {
 					if (skill instanceof BuiltinSkill) {
 						ListUtil.add(builtinSkills, comparator, (BuiltinSkill) skill, true, false);
-					} else if (inReverseOrder) {
-						otherSkills.addFirst(skill);
 					} else {
-						otherSkills.addLast(skill);
+						otherSkills.add(skill);
 					}
 				}
 				if (otherSkills.isEmpty()) {
