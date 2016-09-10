@@ -29,7 +29,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.lib.Inline;
 
 
-/** Compiler for crating inline expressions.
+/** Compiler for creating inline expressions.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

@@ -53,7 +53,7 @@ import org.eclipse.xtext.xbase.util.XExpressionHelper;
  * not support variadic parameters. This SARL compiler provides a support for variadic feature calls.
  *
  * <p>Additionally, this compiler supports the Inline annotation for non-static calls, by skipping the left
- * operand of a memver feature call when the inline expression is constant.
+ * operand of a member feature call when the inline expression is constant.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
