@@ -21,8 +21,6 @@
 
 package io.janusproject.kernel.bic.internaleventdispatching;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -48,7 +46,8 @@ public final class BehaviorGuardEvaluator {
     private final Method method;
 
     private BehaviorGuardEvaluator(Object target, Method method) {
-        this.target = checkNotNull(target);
+    	assert target != null;
+        this.target = target;
         this.method = method;
     }
 

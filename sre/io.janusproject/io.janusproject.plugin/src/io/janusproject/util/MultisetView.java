@@ -21,8 +21,6 @@
 
 package io.janusproject.util;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.io.Serializable;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
@@ -540,7 +538,8 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 		 * @param backingIterator - the iterator.
 		 */
 		TransformedIterator(Iterator<? extends Entry<K>> backingIterator) {
-			this.backingIterator = checkNotNull(backingIterator);
+			assert backingIterator != null;
+			this.backingIterator = backingIterator;
 		}
 
 		protected abstract K transform(Entry<K> from);

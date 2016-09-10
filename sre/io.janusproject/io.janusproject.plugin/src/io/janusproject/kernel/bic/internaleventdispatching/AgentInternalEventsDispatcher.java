@@ -21,8 +21,6 @@
 
 package io.janusproject.kernel.bic.internaleventdispatching;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -91,7 +89,8 @@ public class AgentInternalEventsDispatcher {
 	 *        {@code BehaviorGuardEvaluator}.
 	 */
 	public AgentInternalEventsDispatcher(ExecutorService executor, Class<? extends Annotation> perceptGuardEvaluatorAnnotation) {
-		this.executor = checkNotNull(executor);
+		assert executor != null;
+		this.executor = executor;
 		this.behaviorGuardEvaluatorRegistry = new BehaviorGuardEvaluatorRegistry(perceptGuardEvaluatorAnnotation);
 	}
 
@@ -131,7 +130,7 @@ public class AgentInternalEventsDispatcher {
 	 * @param event - an event to dispatch synchronously.
 	 */
 	public void immediateDispatch(Event event) {
-		checkNotNull(event);
+		assert event != null;
 		Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
 			behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
@@ -166,8 +165,6 @@ public class AgentInternalEventsDispatcher {
 	 */
 	@SuppressWarnings("synthetic-access")
 	public void asyncDispatch(Event event) {
-		checkNotNull(event);
-		this.executor.execute(new Runnable() {
 			@Override
 			public void run() {
 				Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
@@ -184,6 +181,7 @@ public class AgentInternalEventsDispatcher {
 						throw new RuntimeException(e);
 					}
 					executeAsynchronouslyBehaviorMethods(event, behaviorsMethodsToExecute);
+		assert event != null;
 
 				} else if (!(event instanceof DeadEvent)) {
 					// the event had no subscribers and was not itself a DeadEvent

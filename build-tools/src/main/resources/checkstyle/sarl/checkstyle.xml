@@ -617,6 +617,14 @@
 			<property name="ignoreComments" value="true" />
 		</module>
 
+		<!-- Avoid com.google.common.base.Preconditions -->
+		<module name="Regexp">
+			<property name="format" value="(com\.google\.common\.base\.)?Preconditions" />
+			<property name="illegalPattern" value="true" />
+			<property name="message" value="Avoid run-time preconditions, use assertions." />
+			<property name="ignoreComments" value="true" />
+		</module>
+
 		<!-- Avoid too complex boolean expressions: 6 boolean operators are allowed -->
 		<module name="BooleanExpressionComplexity">
 			<property name="max" value="6" />

@@ -21,8 +21,6 @@
 
 package io.janusproject.kernel.bic.internaleventdispatching;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;

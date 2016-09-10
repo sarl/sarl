@@ -21,8 +21,6 @@
 
 package io.sarl.lang.core;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Wraps an event that was posted, but which had no subscribers and thus could not be delivered.
  *
@@ -52,7 +50,8 @@ public final class DeadEvent extends Event {
 	 */
 	public DeadEvent(Event event) {
 		super(event.getSource());
-		this.event = checkNotNull(event);
+		assert event != null;
+		this.event = event;
 	}
 
 	/**
