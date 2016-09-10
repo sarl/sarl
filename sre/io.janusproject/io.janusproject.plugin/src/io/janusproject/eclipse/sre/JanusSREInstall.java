@@ -444,6 +444,7 @@ public class JanusSREInstall extends AbstractSREInstall {
         options.put(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID, "--randomid"); //$NON-NLS-1$
         options.put(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID, "--bootid"); //$NON-NLS-1$
         options.put(SREConstants.MANIFEST_CLI_SRE_OFFLINE, "--offline"); //$NON-NLS-1$
+        options.put(SREConstants.MANIFEST_CLI_EMBEDDED, "--embedded"); //$NON-NLS-1$
         options.put(SREConstants.MANIFEST_CLI_NO_MORE_OPTION, "--"); //$NON-NLS-1$
         return Collections.unmodifiableMap(options);
     }

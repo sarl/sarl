@@ -598,6 +598,10 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		assert cliOptions != null;
 		String options = null;
 
+		if (this.accessor.isEmbeddedSRE(configuration)) {
+			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_EMBEDDED));
+		}
+
 		if (this.accessor.getShowLogoFlag(configuration)) {
 			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SHOW_LOGO));
 		} else {

@@ -59,6 +59,9 @@ public class CommandLineOptions {
 	private String offline;
 
 	@Parameter
+	private String embedded;
+
+	@Parameter
 	private String noMoreOption = "--"; //$NON-NLS-1$
 
 	@Override
@@ -78,7 +81,8 @@ public class CommandLineOptions {
 				&& Objects.equals(getDefaultContextId(), other.getDefaultContextId())
 				&& Objects.equals(getRandomContextId(), other.getRandomContextId())
 				&& Objects.equals(getBootAgentContextId(), other.getBootAgentContextId())
-				&& Objects.equals(getNoMoreOption(), other.getNoMoreOption());
+				&& Objects.equals(getNoMoreOption(), other.getNoMoreOption())
+				&& Objects.equals(getEmbedded(), other.getEmbedded());
 		}
 		return false;
 	}
@@ -86,7 +90,7 @@ public class CommandLineOptions {
 	@Override
 	public int hashCode() {
 		return Objects.hash(this.bootAgentContextId, this.defaultContextId, this.hideInfo, this.hideLogo,
-				this.noMoreOption, this.offline, this.randomContextId, this.showInfo);
+				this.noMoreOption, this.offline, this.randomContextId, this.showInfo, this.embedded);
 	}
 
 	/** Replies the command line option for hiding the SRE logo.
@@ -239,7 +243,6 @@ public class CommandLineOptions {
 		return this.noMoreOption;
 	}
 
-
 	/** Change the command line option for indicates that no more option will be present on the rest of the command line.
 	 *
 	 * @param noMoreOptionCLIOption the command line option.
@@ -248,6 +251,21 @@ public class CommandLineOptions {
 		this.noMoreOption = noMoreOptionCLIOption;
 	}
 
+	/** Replies the command line option for indicating that the SRE is embedded in another application.
+	 *
+	 * @return the command line option.
+	 */
+	public String getEmbedded() {
+		return this.embedded;
+	}
+
+	/** Change the command line option for indicating that the SRE is embedded in another application.
+	 *
+	 * @param embeddedCLIOption the command line option.
+	 */
+	public void setEmbedded(String embeddedCLIOption) {
+		this.embedded = embeddedCLIOption;
+	}
 
 	/** Put the string representation of the properties of this object into the given buffer.
 	 *

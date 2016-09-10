@@ -440,6 +440,7 @@ public abstract class AbstractSREMojo extends AbstractMojo {
 		updater.addSREAttribute(SREConstants.MANIFEST_CLI_HIDE_INFO, cmd.getHideInfo());
 		updater.addSREAttribute(SREConstants.MANIFEST_CLI_SHOW_INFO, cmd.getShowInfo());
 		updater.addSREAttribute(SREConstants.MANIFEST_CLI_NO_MORE_OPTION, cmd.getNoMoreOption());
+		updater.addSREAttribute(SREConstants.MANIFEST_CLI_EMBEDDED, cmd.getEmbedded());
 		updater.addSREAttribute(SREConstants.MANIFEST_VM_ARGUMENTS, getVmArguments());
 		updater.addSREAttribute(SREConstants.MANIFEST_PROGRAM_ARGUMENTS, getApplicationArguments());
 	}

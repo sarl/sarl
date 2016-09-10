@@ -39,6 +39,7 @@ import com.google.common.base.Strings;
 import com.google.inject.Module;
 import com.hazelcast.logging.LoggingService;
 import io.janusproject.kernel.Kernel;
+import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.services.network.NetworkConfig;
 import io.janusproject.util.LoggerCreator;
 import org.apache.commons.cli.CommandLine;
@@ -96,7 +97,7 @@ public final class Boot {
 	 * @param args - the CLI arguments given to the program.
 	 * @return the arguments that are not recognized as CLI options.
 	 */
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static String[] parseCommandLine(String[] args) {
 		final CommandLineParser parser = new DefaultParser();
 		try {
@@ -109,6 +110,7 @@ public final class Boot {
 			}
 
 			boolean noLogo = false;
+			boolean embedded = false;
 			int verbose = LoggerCreator.toInt(JanusConfig.VERBOSE_LEVEL_VALUE);
 
 			final Iterator<Option> optIterator = cmd.iterator();
@@ -169,12 +171,21 @@ public final class Boot {
 				case "nologo": //$NON-NLS-1$
 					noLogo = true;
 					break;
+				case "embedded": //$NON-NLS-1$
+					embedded = true;
+					break;
 				default:
 				}
 			}
 
 			// Change the verbosity
 			setVerboseLevel(verbose);
+			// Do nothing at exit
+			if (embedded) {
+				setExiter(() -> {
+					throw new ChuckNorrisException();
+				});
+			}
 			// Show the Janus logo?
 			if (noLogo || verbose == 0) {
 				setProperty(JanusConfig.JANUS_LOGO_SHOW_NAME, Boolean.FALSE.toString());
@@ -246,6 +257,9 @@ public final class Boot {
 			assert agent != null;
 
 			startJanus((Class<? extends Module>) null, (Class<? extends Agent>) agent, freeArgs);
+		} catch (ChuckNorrisException exception) {
+			// Be silent
+			return;
 		} catch (Throwable e) {
 			showError(Locale.getString(Boot.class, "LAUNCHING_ERROR", //$NON-NLS-1$
 					e.getLocalizedMessage()), e);
@@ -286,6 +300,9 @@ public final class Boot {
 	 */
 	public static Options getOptions() {
 		final Options options = new Options();
+
+		options.addOption("e", "embedded", false, //$NON-NLS-1$//$NON-NLS-2$
+				Locale.getString(Boot.class, "CLI_HELP_E")); //$NON-NLS-1$
 
 		options.addOption("B", "bootid", false, //$NON-NLS-1$//$NON-NLS-2$
 				Locale.getString(Boot.class, "CLI_HELP_B", //$NON-NLS-1$
@@ -659,7 +676,7 @@ public final class Boot {
 	 * @return the tool for exiting the application.
 	 */
 	public static Exiter getExiter() {
-		return applicationExiter == null ? new StandardExiter() : applicationExiter;
+		return applicationExiter == null ? () -> System.exit(ERROR_EXIT_CODE) : applicationExiter;
 	}
 
 	/**
@@ -679,33 +696,13 @@ public final class Boot {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@FunctionalInterface
 	public interface Exiter {
 
 		/**
 		 * Exit the application.
 		 */
 		void exit();
-
-	}
-
-	/**
-	 * Tool for exiting from the application.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private static class StandardExiter implements Exiter {
-
-		StandardExiter() {
-			//
-		}
-
-		@Override
-		public void exit() {
-			System.exit(ERROR_EXIT_CODE);
-		}
 
 	}
 

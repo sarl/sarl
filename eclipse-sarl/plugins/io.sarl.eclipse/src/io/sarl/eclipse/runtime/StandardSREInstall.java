@@ -112,6 +112,8 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 	private String cliNoMoreOption;
 
+	private String cliEmbedded;
+
 	private String manifestMainClass;
 
 	private String manifestName;
@@ -275,6 +277,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 				this.cliBootAgentContextID = sarlSection.getValue(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID);
 				this.cliSreOffline = sarlSection.getValue(SREConstants.MANIFEST_CLI_SRE_OFFLINE);
 				this.cliNoMoreOption = sarlSection.getValue(SREConstants.MANIFEST_CLI_NO_MORE_OPTION);
+				this.cliEmbedded = sarlSection.getValue(SREConstants.MANIFEST_CLI_EMBEDDED);
 				//
 				// Program arguments
 				final String programArgs = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_PROGRAM_ARGUMENTS));
@@ -535,6 +538,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 			putIfNotempty(options, SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID, this.cliBootAgentContextID);
 			putIfNotempty(options, SREConstants.MANIFEST_CLI_SRE_OFFLINE, this.cliSreOffline);
 			putIfNotempty(options, SREConstants.MANIFEST_CLI_NO_MORE_OPTION, this.cliNoMoreOption);
+			putIfNotempty(options, SREConstants.MANIFEST_CLI_EMBEDDED, this.cliEmbedded);
 			this.optionBuffer = new SoftReference<>(options);
 		}
 		return Collections.unmodifiableMap(options);
