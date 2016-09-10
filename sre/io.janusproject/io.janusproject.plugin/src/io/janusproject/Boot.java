@@ -246,7 +246,7 @@ public final class Boot {
 			assert agent != null;
 
 			startJanus((Class<? extends Module>) null, (Class<? extends Agent>) agent, freeArgs);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			showError(Locale.getString(Boot.class, "LAUNCHING_ERROR", //$NON-NLS-1$
 					e.getLocalizedMessage()), e);
 			// Event if showError never returns, add the return statement for

@@ -43,7 +43,6 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import io.sarl.core.AgentTask;
 import io.sarl.core.Schedules;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.Skill;
 
 /**
  * Skill that permits to execute tasks with an executor service.
@@ -53,7 +52,9 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SchedulesSkill extends Skill implements Schedules {
+public class SchedulesSkill extends BuiltinSkill implements Schedules {
+
+	private static int installationOrder = -1;
 
 	@Inject
 	private ExecutorService executorService;
@@ -70,6 +71,14 @@ public class SchedulesSkill extends Skill implements Schedules {
 	 */
 	SchedulesSkill(Agent agent) {
 		super(agent);
+	}
+
+	@Override
+	public int getInstallationOrder() {
+		if (installationOrder < 0) {
+			installationOrder = installationOrder(this);
+		}
+		return installationOrder;
 	}
 
 	@Override

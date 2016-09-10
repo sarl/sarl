@@ -30,7 +30,6 @@ import io.janusproject.services.spawn.SpawnService;
 import io.sarl.core.Lifecycle;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
-import io.sarl.lang.core.Skill;
 
 /**
  * Skill that permits to manage the life cycle of the agents.
@@ -42,7 +41,9 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class LifecycleSkill extends Skill implements Lifecycle {
+public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
+
+	private static int installationOrder = -1;
 
 	@Inject
 	private SpawnService spawnService;
@@ -54,6 +55,14 @@ public class LifecycleSkill extends Skill implements Lifecycle {
 	 */
 	LifecycleSkill(Agent agent) {
 		super(agent);
+	}
+
+	@Override
+	public int getInstallationOrder() {
+		if (installationOrder < 0) {
+			installationOrder = installationOrder(this);
+		}
+		return installationOrder;
 	}
 
 	@Override

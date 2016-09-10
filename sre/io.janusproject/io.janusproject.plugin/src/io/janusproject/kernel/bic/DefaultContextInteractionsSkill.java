@@ -31,7 +31,6 @@ import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
-import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.util.Scopes;
@@ -44,7 +43,9 @@ import io.sarl.util.Scopes;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class DefaultContextInteractionsSkill extends Skill implements DefaultContextInteractions {
+public class DefaultContextInteractionsSkill extends BuiltinSkill implements DefaultContextInteractions {
+
+	private static int installationOrder = -1;
 
 	private AgentContext parentContext;
 
@@ -61,6 +62,14 @@ public class DefaultContextInteractionsSkill extends Skill implements DefaultCon
 	DefaultContextInteractionsSkill(Agent agent, AgentContext parentContext) {
 		super(agent);
 		this.parentContext = parentContext;
+	}
+
+	@Override
+	public int getInstallationOrder() {
+		if (installationOrder < 0) {
+			installationOrder = installationOrder(this);
+		}
+		return installationOrder;
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public class Agent implements Identifiable {
 
 	private final UUID id;
 
-	private final Map<Class<? extends Capacity>, Skill> capacities = new ConcurrentHashMap<>();
+	private final Map<Class<? extends Capacity>, Skill> skills = new ConcurrentHashMap<>();
 
 	private final UUID parentID;
 
@@ -70,7 +70,7 @@ public class Agent implements Identifiable {
 		if (provider != null) {
 			final Map<Class<? extends Capacity>, Skill> builtinCapacities = provider.getBuiltinCapacities(this);
 			if (builtinCapacities != null && !builtinCapacities.isEmpty()) {
-				this.capacities.putAll(builtinCapacities);
+				this.skills.putAll(builtinCapacities);
 			}
 		}
 	}
@@ -164,7 +164,7 @@ public class Agent implements Identifiable {
 						"the skill must implement the given capacity " //$NON-NLS-1$
 						+ capacity.getName());
 			}
-			final Skill oldS = this.capacities.put(capacity, skill);
+			final Skill oldS = this.skills.put(capacity, skill);
 			if (oldS != null) {
 				oldS.uninstall();
 			}
@@ -192,7 +192,7 @@ public class Agent implements Identifiable {
 	 */
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		assert capacity != null;
-		final Skill skill = this.capacities.remove(capacity);
+		final Skill skill = this.skills.remove(capacity);
 		if (skill != null) {
 			skill.uninstall();
 		}
@@ -215,7 +215,7 @@ public class Agent implements Identifiable {
 	@Pure
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
-		final S skill = capacity.cast(this.capacities.get(capacity));
+		final S skill = capacity.cast(this.skills.get(capacity));
 		if (skill == null) {
 			throw new UnimplementedCapacityException(capacity, this.getID());
 		}
@@ -233,7 +233,7 @@ public class Agent implements Identifiable {
 	@Pure
 	protected boolean hasSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
-		return this.capacities.containsKey(capacity);
+		return this.skills.containsKey(capacity);
 	}
 
 	/** Replies if the given address is one of the addresses of this agent.

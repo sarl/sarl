@@ -34,7 +34,6 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
-import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedSet;
@@ -51,7 +50,9 @@ import io.sarl.util.OpenEventSpace;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class InnerContextSkill extends Skill implements InnerContextAccess {
+public class InnerContextSkill extends BuiltinSkill implements InnerContextAccess {
+
+	private static int installationOrder = -1;
 
 	private final Address agentAddressInInnerDefaultSpace;
 
@@ -70,6 +71,14 @@ public class InnerContextSkill extends Skill implements InnerContextAccess {
 	InnerContextSkill(Agent agent, Address agentAddressInInnerDefaultSpace) {
 		super(agent);
 		this.agentAddressInInnerDefaultSpace = agentAddressInInnerDefaultSpace;
+	}
+
+	@Override
+	public int getInstallationOrder() {
+		if (installationOrder < 0) {
+			installationOrder = installationOrder(this);
+		}
+		return installationOrder;
 	}
 
 	/**

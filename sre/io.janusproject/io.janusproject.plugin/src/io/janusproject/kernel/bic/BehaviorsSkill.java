@@ -29,7 +29,6 @@ import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpace;
-import io.sarl.lang.core.Skill;
 
 /**
  * Janus implementation of SARL's {@link Behaviors} built-in capacity.
@@ -41,7 +40,9 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class BehaviorsSkill extends Skill implements Behaviors {
+public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
+
+	private static int installationOrder = -1;
 
 	private final Address agentAddressInInnerDefaultSpace;
 
@@ -52,6 +53,14 @@ public class BehaviorsSkill extends Skill implements Behaviors {
 	BehaviorsSkill(Agent agent, Address agentAddressInInnerDefaultSpace) {
 		super(agent);
 		this.agentAddressInInnerDefaultSpace = agentAddressInInnerDefaultSpace;
+	}
+
+	@Override
+	public int getInstallationOrder() {
+		if (installationOrder < 0) {
+			installationOrder = installationOrder(this);
+		}
+		return installationOrder;
 	}
 
 	@Override

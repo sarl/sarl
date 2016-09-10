@@ -40,7 +40,6 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
-import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedCollection;
@@ -56,7 +55,9 @@ import io.sarl.util.OpenEventSpace;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class ExternalContextAccessSkill extends Skill implements ExternalContextAccess {
+public class ExternalContextAccessSkill extends BuiltinSkill implements ExternalContextAccess {
+
+	private static int installationOrder = -1;
 
 	private final Set<UUID> contexts = Sets.newConcurrentHashSet();
 
@@ -68,6 +69,14 @@ public class ExternalContextAccessSkill extends Skill implements ExternalContext
 	 */
 	ExternalContextAccessSkill(Agent agent) {
 		super(agent);
+	}
+
+	@Override
+	public int getInstallationOrder() {
+		if (installationOrder < 0) {
+			installationOrder = installationOrder(this);
+		}
+		return installationOrder;
 	}
 
 	@Override

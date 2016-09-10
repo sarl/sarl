@@ -42,7 +42,6 @@ import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
-import io.sarl.lang.core.Skill;
 
 /**
  * Janus implementation of an internal skill that provides an event dispatcher to notify the different components/behaviors of an
@@ -55,7 +54,9 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
+public class InternalEventBusSkill extends BuiltinSkill implements InternalEventBusCapacity {
+
+	private static int installationOrder = -1;
 
 	/**
 	 * State of the owner.
@@ -98,6 +99,14 @@ public class InternalEventBusSkill extends Skill implements InternalEventBusCapa
 		super(agent);
 		this.agentAsEventListener = new AgentEventListener();
 		this.agentAddressInInnerDefaultSpace = addressInInnerDefaultSpace;
+	}
+
+	@Override
+	public int getInstallationOrder() {
+		if (installationOrder < 0) {
+			installationOrder = installationOrder(this);
+		}
+		return installationOrder;
 	}
 
 	@Override

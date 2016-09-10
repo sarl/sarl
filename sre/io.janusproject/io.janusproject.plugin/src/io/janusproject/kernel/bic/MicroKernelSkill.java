@@ -27,7 +27,6 @@ import com.google.common.util.concurrent.Service;
 import io.janusproject.kernel.Kernel;
 
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.Skill;
 
 /**
  * Janus implementation of an internal skill that provides access to the micro kernel.
@@ -37,7 +36,9 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class MicroKernelSkill extends Skill implements MicroKernelCapacity {
+public class MicroKernelSkill extends BuiltinSkill implements MicroKernelCapacity {
+
+	private static int installationOrder = -1;
 
 	private WeakReference<Kernel> kernel;
 
@@ -48,6 +49,14 @@ public class MicroKernelSkill extends Skill implements MicroKernelCapacity {
 	MicroKernelSkill(Agent agent, Kernel kernel) {
 		super(agent);
 		this.kernel = new WeakReference<>(kernel);
+	}
+
+	@Override
+	public int getInstallationOrder() {
+		if (installationOrder < 0) {
+			installationOrder = installationOrder(this);
+		}
+		return installationOrder;
 	}
 
 	@Override

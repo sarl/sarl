@@ -33,7 +33,6 @@ import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.core.Logging;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.Skill;
 
 /**
  * Janus implementation of SARL's {@link Logging} built-in capacity.
@@ -45,7 +44,9 @@ import io.sarl.lang.core.Skill;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class LoggingSkill extends Skill implements Logging {
+public class LoggingSkill extends BuiltinSkill implements Logging {
+
+	private static int installationOrder = -1;
 
 	@Inject
 	private LogService logService;
@@ -57,6 +58,14 @@ public class LoggingSkill extends Skill implements Logging {
 	 */
 	LoggingSkill(Agent agent) {
 		super(agent);
+	}
+
+	@Override
+	public int getInstallationOrder() {
+		if (installationOrder < 0) {
+			installationOrder = installationOrder(this);
+		}
+		return installationOrder;
 	}
 
 	/**
