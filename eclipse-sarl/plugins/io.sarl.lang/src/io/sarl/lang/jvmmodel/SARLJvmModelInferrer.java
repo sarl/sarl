@@ -112,7 +112,6 @@ import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.InferredTypeIndicator;
-import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
@@ -158,8 +157,10 @@ import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
+import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
 
@@ -284,6 +285,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Inject
 	private IInlineExpressionCompiler inlineExpressionCompiler;
+
+	@Inject
+	private InheritanceHelper inheritanceHelper;
 
 	/** Generation contexts.
 	 */
@@ -658,7 +662,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			translateAnnotationsTo(source.getAnnotations(), inferredJvmType);
 
 			// Generate the extended types.
-			appendConstrainedExtends(context, inferredJvmType, Agent.class, source.getExtends());
+			appendConstrainedExtends(context, inferredJvmType, Agent.class, SarlAgent.class, source.getExtends());
 
 			// Issue #363: do not generate the agent if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
@@ -748,7 +752,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			translateAnnotationsTo(source.getAnnotations(), inferredJvmType);
 
 			// Generate the extended types.
-			appendConstrainedExtends(context, inferredJvmType, Behavior.class, source.getExtends());
+			appendConstrainedExtends(context, inferredJvmType, Behavior.class, SarlBehavior.class, source.getExtends());
 
 			// Issue #363: do not generate the behavior if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
@@ -825,7 +829,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			translateAnnotationsTo(source.getAnnotations(), inferredJvmType);
 
 			// Generate the extended types.
-			appendConstrainedExtends(context, inferredJvmType, Event.class, source.getExtends());
+			appendConstrainedExtends(context, inferredJvmType, Event.class, SarlEvent.class, source.getExtends());
 
 			// Issue #363: do not generate the event if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
@@ -920,8 +924,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			translateAnnotationsTo(source.getAnnotations(), inferredJvmType);
 
 			// Generate the extended types.
-			appendConstrainedExtends(context, inferredJvmType, Skill.class, source.getExtends());
-			appendConstrainedImplements(context, inferredJvmType, Capacity.class, source.getImplements());
+			appendConstrainedExtends(context, inferredJvmType, Skill.class, SarlSkill.class, source.getExtends());
+			appendConstrainedImplements(context, inferredJvmType, Capacity.class, SarlCapacity.class, source.getImplements());
 
 			// Issue #363: do not generate the skill if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
@@ -1007,7 +1011,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			translateAnnotationsTo(source.getAnnotations(), inferredJvmType);
 
 			// Generate the extended types.
-			appendConstrainedExtends(context, inferredJvmType, Capacity.class, source.getExtends());
+			appendConstrainedExtends(context, inferredJvmType, Capacity.class, SarlCapacity.class, source.getExtends());
 
 			// Issue #363: do not generate the capacity if the SARL library is incompatible.
 			if (Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
@@ -1576,12 +1580,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Synthetic flag
 			this.typeExtensions.setSynthetic(bodyOperation, true);
 
-
-			//----------------
-			// Body function
-			//----------------
-
-
 			final Collection<Procedure1<ITreeAppendable>> evaluators = context.getGuardEvalationCodeFor(source);
 			assert evaluators != null;
 
@@ -1670,6 +1668,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Transform the uses of SARL capacities.
 	 *
+	 * <p>Resolving the calls to the capacities' functions is done in {@link SARLReentrantTypeResolver}.
+	 *
 	 * @param source the feature to transform.
 	 * @param container the target container of the transformation result.
 	 */
@@ -1680,68 +1680,65 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 		for (final JvmTypeReference capacityType : source.getCapacities()) {
 			final JvmType type = capacityType.getType();
-			if (type instanceof JvmGenericType) {
-				final LightweightTypeReference reference = Utils.toLightweightTypeReference(capacityType, this.services);
-				if (reference.isSubtypeOf(Capacity.class)
-						&& !context.getGeneratedCapacityUseFields().contains(reference.getIdentifier())) {
+			if (type instanceof JvmGenericType
+					&& this.inheritanceHelper.isSubTypeOf(capacityType, Capacity.class, SarlCapacity.class)
+					&& !context.getGeneratedCapacityUseFields().contains(capacityType.getIdentifier())) {
+				// Generate the extension field
+				final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacityType.getIdentifier());
+				final JvmField field = this.typesFactory.createJvmField();
+				field.setVisibility(JvmVisibility.PRIVATE);
+				field.setSimpleName(fieldName);
+				field.setTransient(true);
+				field.setType(this.typeBuilder.cloneWithProxies(capacityType));
 
-					// Generate the extension field
-					final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(reference.getIdentifier());
-					final JvmField field = this.typesFactory.createJvmField();
-					field.setVisibility(JvmVisibility.PRIVATE);
-					field.setSimpleName(fieldName);
-					field.setTransient(true);
-					field.setType(this.typeBuilder.cloneWithProxies(capacityType));
+				this.associator.associatePrimary(source, field);
 
-					this.associator.associatePrimary(source, field);
+				field.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Extension.class));
+				field.getAnnotations().add(annotationClassRef(ImportedCapacityFeature.class,
+						Collections.singletonList(capacityType)));
 
-					field.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Extension.class));
-					field.getAnnotations().add(annotationClassRef(ImportedCapacityFeature.class,
-							Collections.singletonList(capacityType)));
+				// Add the annotation dedicated to this particular method
+				appendGeneratedAnnotation(field, getContext(container));
 
-					// Add the annotation dedicated to this particular method
-					appendGeneratedAnnotation(field, getContext(container));
+				container.getMembers().add(field);
 
-					container.getMembers().add(field);
+				// Generate the calling function
+				final String methodName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(
+						fieldName);
+				final JvmOperation operation = this.typesFactory.createJvmOperation();
+				operation.setVisibility(JvmVisibility.PRIVATE);
+				operation.setReturnType(cloneWithTypeParametersAndProxies(capacityType, operation));
+				operation.setSimpleName(methodName);
 
-					// Generate the calling function
-					final String methodName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(
-							fieldName);
-					final JvmOperation operation = this.typesFactory.createJvmOperation();
-					operation.setVisibility(JvmVisibility.PRIVATE);
-					operation.setReturnType(cloneWithTypeParametersAndProxies(capacityType, operation));
-					operation.setSimpleName(methodName);
+				this.associator.associatePrimary(source, operation);
 
-					this.associator.associatePrimary(source, operation);
+				setBody(operation, (it) -> {
+					it.append("if (this.").append(fieldName).append(" == null) {"); //$NON-NLS-1$ //$NON-NLS-2$
+					it.increaseIndentation();
+					it.newLine();
+					it.append("this.").append(fieldName).append(" = getSkill("); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append(capacityType.getType()).append(".class);"); //$NON-NLS-1$
+					it.decreaseIndentation();
+					it.newLine();
+					it.append("}"); //$NON-NLS-1$
+					it.newLine();
+					it.append("return this.").append(fieldName).append(";"); //$NON-NLS-1$ //$NON-NLS-2$
+				});
 
-					setBody(operation, (it) -> {
-						it.append("if (this.").append(fieldName).append(" == null) {"); //$NON-NLS-1$ //$NON-NLS-2$
-						it.increaseIndentation();
-						it.newLine();
-						it.append("this.").append(fieldName).append(" = getSkill("); //$NON-NLS-1$ //$NON-NLS-2$
-						it.append(capacityType.getType()).append(".class);"); //$NON-NLS-1$
-						it.decreaseIndentation();
-						it.newLine();
-						it.append("}"); //$NON-NLS-1$
-						it.newLine();
-						it.append("return this.").append(fieldName).append(";"); //$NON-NLS-1$ //$NON-NLS-2$
-					});
-
-					// Add the annotation dedicated to this particular method
-					if (context.isAtLeastJava8()) {
-						this.inlineExpressionCompiler.appendInlineAnnotation(
-								operation, source.eResource().getResourceSet(), fieldName
-								+ " == null ? (this." + fieldName //$NON-NLS-1$
-								+ " = getSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
-								+ ".class)) : this." + fieldName); //$NON-NLS-1$
-					}
-					appendGeneratedAnnotation(operation, context);
-
-					container.getMembers().add(operation);
-
-					context.addGeneratedCapacityUseField(reference.getIdentifier());
-					context.incrementSerial(capacityType.getIdentifier().hashCode());
+				// Add the annotation dedicated to this particular method
+				if (context.isAtLeastJava8()) {
+					this.inlineExpressionCompiler.appendInlineAnnotation(
+							operation, source.eResource().getResourceSet(), fieldName
+							+ " == null ? (this." + fieldName //$NON-NLS-1$
+							+ " = getSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
+							+ ".class)) : this." + fieldName); //$NON-NLS-1$
 				}
+				appendGeneratedAnnotation(operation, context);
+
+				container.getMembers().add(operation);
+
+				context.addGeneratedCapacityUseField(capacityType.getIdentifier());
+				context.incrementSerial(capacityType.getIdentifier().hashCode());
 			}
 		}
 	}
@@ -2054,12 +2051,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 *
 	 * @param context - the context of the generation.
 	 * @param owner - the JVM element to change.
-	 * @param defaultType - the default type.
+	 * @param defaultJvmType - the default JVM type.
+	 * @param defaultSarlType - the default SARL type.
 	 * @param supertype - the supertype.
 	 */
 	protected void appendConstrainedExtends(
 			GenerationContext context,
-			JvmGenericType owner, Class<?> defaultType,
+			JvmGenericType owner, Class<?> defaultJvmType,
+			Class<? extends XtendTypeDeclaration> defaultSarlType,
 			JvmParameterizedTypeReference supertype) {
 		final List<? extends JvmParameterizedTypeReference> supertypes;
 		if (supertype == null) {
@@ -2067,34 +2066,33 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		} else {
 			supertypes = Collections.singletonList(supertype);
 		}
-		appendConstrainedExtends(context, owner, defaultType, supertypes);
+		appendConstrainedExtends(context, owner, defaultJvmType, defaultSarlType, supertypes);
 	}
 
 	/** Generate the extended types for the given SARL statement.
 	 *
 	 * @param context - the context of the generation.
 	 * @param owner - the JVM element to change.
-	 * @param defaultType - the default type.
+	 * @param defaultJvmType - the default JVM type.
+	 * @param defaultSarlType - the default Sarl type.
 	 * @param supertypes - the supertypes.
 	 */
 	protected void appendConstrainedExtends(
 			GenerationContext context,
-			JvmGenericType owner, Class<?> defaultType,
+			JvmGenericType owner, Class<?> defaultJvmType, Class<? extends XtendTypeDeclaration> defaultSarlType,
 			List<? extends JvmParameterizedTypeReference> supertypes) {
 		final boolean isInterface = owner.isInterface();
 		boolean explicitType = false;
 		for (final JvmParameterizedTypeReference superType : supertypes) {
-			if (superType.getType() instanceof JvmGenericType) {
-				final LightweightTypeReference reference = Utils.toLightweightTypeReference(superType, this.services);
-				if (reference.isInterfaceType() == isInterface && reference.isSubtypeOf(defaultType)) {
-					owner.getSuperTypes().add(this.typeBuilder.cloneWithProxies(superType));
-					context.incrementSerial(superType.getIdentifier().hashCode());
-					explicitType = true;
-				}
+			if (superType.getType() instanceof JvmGenericType
+					&& this.inheritanceHelper.isSubTypeOf(superType, defaultJvmType, defaultSarlType, isInterface)) {
+				owner.getSuperTypes().add(this.typeBuilder.cloneWithProxies(superType));
+				context.incrementSerial(superType.getIdentifier().hashCode());
+				explicitType = true;
 			}
 		}
 		if (!explicitType) {
-			final JvmTypeReference type = this._typeReferenceBuilder.typeRef(defaultType);
+			final JvmTypeReference type = this._typeReferenceBuilder.typeRef(defaultJvmType);
 			owner.getSuperTypes().add(type);
 			context.incrementSerial(type.getIdentifier().hashCode());
 		}
@@ -2104,26 +2102,26 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 *
 	 * @param context - the context of the generation.
 	 * @param owner - the JVM element to change.
-	 * @param defaultType - the default type.
+	 * @param defaultJvmType - the default JVM type.
+	 * @param defaultSarlType - the default SARL type.
 	 * @param implementedtypes - the implemented types.
 	 */
 	protected void appendConstrainedImplements(
 			GenerationContext context,
-			JvmGenericType owner, Class<?> defaultType,
+			JvmGenericType owner, Class<?> defaultJvmType,
+			Class<? extends XtendTypeDeclaration> defaultSarlType,
 			List<? extends JvmParameterizedTypeReference> implementedtypes) {
 		boolean explicitType = false;
 		for (final JvmParameterizedTypeReference superType : implementedtypes) {
-			if (superType.getType() instanceof JvmGenericType) {
-				final LightweightTypeReference reference = Utils.toLightweightTypeReference(superType, this.services);
-				if (reference.isInterfaceType() && reference.isSubtypeOf(defaultType)) {
-					owner.getSuperTypes().add(this.typeBuilder.cloneWithProxies(superType));
-					context.incrementSerial(superType.getIdentifier().hashCode());
-					explicitType = true;
-				}
+			if (superType.getType() instanceof JvmGenericType
+					&& this.inheritanceHelper.isSubTypeOf(superType, defaultJvmType, defaultSarlType, true)) {
+				owner.getSuperTypes().add(this.typeBuilder.cloneWithProxies(superType));
+				context.incrementSerial(superType.getIdentifier().hashCode());
+				explicitType = true;
 			}
 		}
 		if (!explicitType) {
-			final JvmTypeReference type = this._typeReferenceBuilder.typeRef(defaultType);
+			final JvmTypeReference type = this._typeReferenceBuilder.typeRef(defaultJvmType);
 			owner.getSuperTypes().add(type);
 			context.incrementSerial(type.getIdentifier().hashCode());
 		}
