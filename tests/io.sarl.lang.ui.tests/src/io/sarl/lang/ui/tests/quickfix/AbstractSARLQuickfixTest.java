@@ -31,6 +31,7 @@ import java.util.regex.Matcher;
 
 import javax.inject.Inject;
 
+import org.arakhne.afc.text.TextUtil;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -241,7 +242,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			while (iterator.hasNext()) {
 				IssueResolution resolution = iterator.next();
 				String resolutionLabel = resolution.getLabel();
-				int d = levenshteinDistance(resolutionLabel, label);
+				int d = TextUtil.getLevenshteinDistance(resolutionLabel, label);
 				if (d == 0) {
 					if (removeWhenFound) {
 						iterator.remove();
@@ -332,7 +333,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 				String closeResolution = null;
 				int distance = Integer.MAX_VALUE;
 				for (String expectedResolution : expected) {
-					int d = levenshteinDistance(expectedResolution, newContent);
+					int d = TextUtil.getLevenshteinDistance(expectedResolution, newContent);
 					if (d == 0) {
 						return newContent;
 					}

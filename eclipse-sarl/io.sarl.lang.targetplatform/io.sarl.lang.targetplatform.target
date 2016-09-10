@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="96">
+<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="97">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.xtend.sdk.feature.group" version="2.10.0.v201605250459"/>
@@ -45,10 +45,11 @@
 <repository location="http://dependencies.sarl.io"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.arakhne.afc.core.text" version="14.0.0.20160829082847"/>
+<unit id="org.arakhne.afc.core.util" version="14.0.0.20160829082847"/>
 <unit id="org.arakhne.afc.core.vmutils" version="14.0.0.20160829082847"/>
 <unit id="net.bytebuddy.byte-buddy" version="1.4.17"/>
 <unit id="org.objenesis" version="2.4.0"/>
-<unit id="org.arakhne.afc.core.util" version="14.0.0.20160829082847"/>
 <unit id="org.mockito.mockito-core" version="2.0.111.beta"/>
 <unit id="org.arakhne.afc.core.references" version="14.0.0.20160829082847"/>
 <repository location="http://download.tuxfamily.org/arakhne/p2/"/>
