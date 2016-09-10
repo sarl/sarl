@@ -131,7 +131,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'A1' is inconsistent");
+					"The inheritance hierarchy of 'A2' is inconsistent");
 		}
 
 		@Test
@@ -148,11 +148,11 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'A1' is inconsistent");
+					"The inheritance hierarchy of 'A2' is inconsistent");
 		}
 
 		@Test
-		public void sequenceAgentDefinition_invalid() throws Exception {
+		public void sequenceAgentDefinition_valid00() throws Exception {
 			SarlScript mas = file(multilineString(
 					"agent A1 extends A2 {",
 					"}",
@@ -161,19 +161,28 @@ public class AgentParsingTest {
 					"agent A3 {",
 					"}"
 					));
-
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAgent(),
-					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'A1' is inconsistent");
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlAgent(),
-					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'A2' is inconsistent");
+			assertEquals(3, mas.getXtendTypes().size());
+			//
+			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
+			//
+			SarlAgent agent3 = (SarlAgent) mas.getXtendTypes().get(0);
+			assertEquals("A1", agent3.getName());
+			assertTypeReferenceIdentifier(agent3.getExtends(), "A2");
+			assertTrue(agent3.getMembers().isEmpty());
+			//
+			SarlAgent agent2 = (SarlAgent) mas.getXtendTypes().get(1);
+			assertEquals("A2", agent2.getName());
+			assertTypeReferenceIdentifier(agent2.getExtends(), "A3");
+			assertTrue(agent2.getMembers().isEmpty());
+			//
+			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(2);
+			assertEquals("A3", agent1.getName());
+			assertNull(agent1.getExtends());
+			assertTrue(agent1.getMembers().isEmpty());
 		}
 
 		@Test
-		public void sequenceAgentDefinition_valid() throws Exception {
+		public void sequenceAgentDefinition_valid01() throws Exception {
 			SarlScript mas = file(multilineString(
 					"agent A3 {",
 					"}",

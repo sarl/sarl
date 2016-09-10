@@ -2084,7 +2084,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		final boolean isInterface = owner.isInterface();
 		boolean explicitType = false;
 		for (final JvmParameterizedTypeReference superType : supertypes) {
-			if (superType.getType() instanceof JvmGenericType
+			if (!Objects.equal(owner.getIdentifier(), superType.getIdentifier())
+					&& superType.getType() instanceof JvmGenericType
 					&& this.inheritanceHelper.isSubTypeOf(superType, defaultJvmType, defaultSarlType, isInterface)) {
 				owner.getSuperTypes().add(this.typeBuilder.cloneWithProxies(superType));
 				context.incrementSerial(superType.getIdentifier().hashCode());
@@ -2113,7 +2114,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			List<? extends JvmParameterizedTypeReference> implementedtypes) {
 		boolean explicitType = false;
 		for (final JvmParameterizedTypeReference superType : implementedtypes) {
-			if (superType.getType() instanceof JvmGenericType
+			if (!Objects.equal(owner.getIdentifier(), superType.getIdentifier())
+					&& superType.getType() instanceof JvmGenericType
 					&& this.inheritanceHelper.isSubTypeOf(superType, defaultJvmType, defaultSarlType, true)) {
 				owner.getSuperTypes().add(this.typeBuilder.cloneWithProxies(superType));
 				context.incrementSerial(superType.getIdentifier().hashCode());

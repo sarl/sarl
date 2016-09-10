@@ -99,13 +99,16 @@ public class InheritanceHelper {
 		if (candidate.isSubtypeOf(jvmSuperType)) {
 			return true;
 		}
-		final JvmType type = candidate.getType();
-		if (sarlSuperType != null
-				&& type instanceof JvmGenericType
-				&& ((JvmGenericType) type).getSuperTypes().isEmpty()) {
-			for (final EObject sarlObject : this.sarlAssociations.getSourceElements(type)) {
-				if (sarlSuperType.isInstance(sarlObject)) {
-					return true;
+		if (sarlSuperType != null) {
+			final JvmType type = candidate.getType();
+			if (type instanceof JvmGenericType) {
+				final JvmGenericType genType = (JvmGenericType) type;
+				if (genType.getSuperTypes().isEmpty()) {
+					for (final EObject sarlObject : this.sarlAssociations.getSourceElements(type)) {
+						if (sarlSuperType.isInstance(sarlObject)) {
+							return true;
+						}
+					}
 				}
 			}
 		}

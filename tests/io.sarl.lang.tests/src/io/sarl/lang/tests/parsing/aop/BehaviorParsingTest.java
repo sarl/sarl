@@ -121,7 +121,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-				"The inheritance hierarchy of 'B1' is inconsistent");
+				"The inheritance hierarchy of 'B2' is inconsistent");
 		}
 
 		@Test
@@ -137,7 +137,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-				"The inheritance hierarchy of 'B1' is inconsistent");
+				"The inheritance hierarchy of 'B2' is inconsistent");
 		}
 
 		@Test
@@ -153,7 +153,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-				"The inheritance hierarchy of 'B3' is inconsistent");
+				"The inheritance hierarchy of 'B1' is inconsistent");
 		}
 
 		@Test
