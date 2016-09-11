@@ -194,7 +194,7 @@ public class Agent implements Identifiable {
 	private static void runOnImplementedCapacities(Skill skill, Procedure1<Class<? extends Capacity>> callback) {
 		TypeToken.of(skill.getClass()).getTypes().interfaces().stream().parallel().forEach((it) -> {
 			final Class<?> type = it.getRawType();
-			if (Capacity.class.isAssignableFrom(type)) {
+			if (Capacity.class.isAssignableFrom(type) && !Capacity.class.equals(type)) {
 				callback.apply(type.asSubclass(Capacity.class));
 			}
 		});

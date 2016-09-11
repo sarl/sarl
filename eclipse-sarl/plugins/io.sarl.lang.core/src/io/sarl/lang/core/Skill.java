@@ -73,7 +73,7 @@ public abstract class Skill extends AgentTrait {
 	/** Mark this skill as release by one user.
 	 */
 	void unregisterUse() {
-		final int value = this.uses.getAndDecrement();
+		final int value = this.uses.decrementAndGet();
 		if (value <= 0) {
 			uninstall();
 		}

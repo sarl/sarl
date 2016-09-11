@@ -30,6 +30,7 @@ import static org.mockito.Mockito.*;
 
 import java.security.InvalidParameterException;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
@@ -91,16 +92,12 @@ public class AgentTest extends AbstractSarlTest {
 		assertNotNull(r);
 	}
 
-	/**
-	 */
 	@Before
 	public void setUp() {
 		this.id = UUID.randomUUID();
 		this.agent = spy(new AgentMock(this.id));
 	}
 
-	/**
-	 */
 	@Test
 	public void getID() {
 		UUID aid = this.agent.getID();
@@ -108,15 +105,11 @@ public class AgentTest extends AbstractSarlTest {
 		assertNotEquals(this.id, aid);
 	}
 
-	/**
-	 */
 	@Test
 	public void getParentID() {
 		assertSame(this.id, this.agent.getParentID());
 	}
 
-	/**
-	 */
 	@Test
 	public void setSkill() {
 		Skill s1, s2, r;
@@ -175,8 +168,63 @@ public class AgentTest extends AbstractSarlTest {
 		}
 	}
 
-	/**
-	 */
+	@Test
+	public void setSkill_withoutCapacity() {
+		Skill s4, r;
+
+		assertNoSkill(Capacity1.class);
+		assertNoSkill(Capacity2.class);
+		assertNoSkill(Skill1.class);
+		assertNoSkill(Skill2.class);
+		assertNoSkill(Skill4.class);
+
+		s4 = new Skill4();
+		r = this.agent.setSkill_Fake(s4);
+		
+		assertSame(s4, r);
+		assertSkill(Capacity1.class, s4);
+		assertSkill(Capacity2.class, s4);
+		assertNoSkill(Skill1.class);
+		assertNoSkill(Skill2.class);
+	}
+
+	@Test
+	public void clearSkill_multipleCapacityImplementation() {
+		assertNoSkill(Capacity1.class);
+		assertNoSkill(Capacity2.class);
+		assertNoSkill(Skill1.class);
+		assertNoSkill(Skill2.class);
+		assertNoSkill(Skill4.class);
+		Skill s4 = new Skill4();
+		this.agent.setSkill_Fake(s4);
+		assertSkill(Capacity1.class, s4);
+		assertSkill(Capacity2.class, s4);
+		assertNoSkill(Skill1.class);
+		assertNoSkill(Skill2.class);
+
+		this.agent.clearSkill(Capacity1.class);
+
+		assertNoSkill(Capacity1.class);
+		assertSkill(Capacity2.class, s4);
+		assertNoSkill(Skill1.class);
+		assertNoSkill(Skill2.class);
+
+		// again
+		this.agent.clearSkill(Capacity1.class);
+
+		assertNoSkill(Capacity1.class);
+		assertSkill(Capacity2.class, s4);
+		assertNoSkill(Skill1.class);
+		assertNoSkill(Skill2.class);
+
+		this.agent.clearSkill(Capacity2.class);
+
+		assertNoSkill(Capacity1.class);
+		assertNoSkill(Capacity2.class);
+		assertNoSkill(Skill1.class);
+		assertNoSkill(Skill2.class);
+	}
+
 	@Test
 	public void clearSkill() {
 		this.agent.setSkill_Fake(new Skill1(), Capacity1.class);
@@ -209,8 +257,6 @@ public class AgentTest extends AbstractSarlTest {
 		assertNoSkill(Skill2.class);
 	}
 
-	/**
-	 */
 	@Test
 	public void hasSkill() {
 		this.agent.setSkill_Fake(new Skill1(), Capacity1.class);
@@ -241,8 +287,6 @@ public class AgentTest extends AbstractSarlTest {
 		assertFalse(this.agent.hasSkill(Skill2.class));
 	}
 
-	/**
-	 */
 	@Test
 	public void operator_mappedTo() {
 		Skill s1, s2;
@@ -299,8 +343,6 @@ public class AgentTest extends AbstractSarlTest {
 		}
 	}
 
-	/**
-	 */
 	@Test
 	public void isMeAddress() {
 		Address adr;
@@ -315,8 +357,6 @@ public class AgentTest extends AbstractSarlTest {
 		assertFalse(this.agent.isMe(adr));
 	}
 
-	/**
-	 */
 	@Test
 	public void isMeUUID() {
 		assertTrue(this.agent.isMe(this.agent.getID()));
@@ -324,8 +364,6 @@ public class AgentTest extends AbstractSarlTest {
 		assertFalse(this.agent.isMe(UUID.randomUUID()));
 	}
 
-	/**
-	 */
 	@Test
 	public void isFromMeEvent() {
 		Event evt;
@@ -338,6 +376,37 @@ public class AgentTest extends AbstractSarlTest {
 
 		evt = mockEvent(UUID.randomUUID());
 		assertFalse(this.agent.isFromMe(evt));
+	}
+
+	@Test
+	public void skillInstallation_withMultipleSetSkill() {
+		Skill4 s4 = new Skill4();
+		this.agent.setSkill_Fake(s4, Capacity1.class);
+		
+		assertEquals(1, s4.installCalls());
+		
+		this.agent.setSkill_Fake(s4, Capacity1.class);
+
+		assertEquals(0, s4.installCalls());
+	}
+
+	@Test
+	public void skillInstallation_withSingleSetSkill() {
+		Skill4 s4 = new Skill4();
+		this.agent.setSkill_Fake(s4);
+		assertEquals(1, s4.installCalls());
+	}
+
+	@Test
+	public void skillUninstallation_withClearSkill() {
+		Skill4 s4 = new Skill4();
+		this.agent.setSkill_Fake(s4);
+
+		this.agent.clearSkill(Capacity1.class);
+		assertEquals(0, s4.uninstallCalls());
+
+		this.agent.clearSkill(Capacity2.class);
+		assertEquals(1, s4.uninstallCalls());
 	}
 
 	/** Only for making public several protected methods.
@@ -358,6 +427,10 @@ public class AgentTest extends AbstractSarlTest {
 
 		public <S extends Skill> S setSkill_Fake(S skill, Class<? extends Capacity>... capacity) {
 			return setSkill(skill, capacity);
+		}
+
+		public <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... capacity) {
+			return super.$setSkill(skill, capacity);
 		}
 
 		@Override
@@ -451,6 +524,36 @@ public class AgentTest extends AbstractSarlTest {
 	private static class Skill3 extends Skill {
 		public Skill3() {
 			//
+		}
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class Skill4 extends Skill1 implements Capacity2 {
+		private final AtomicInteger installCalls = new AtomicInteger();
+		private final AtomicInteger uninstallCalls = new AtomicInteger();
+		public Skill4() {
+			//
+		}
+		@Override
+		protected void install() {
+			super.install();
+			this.installCalls.incrementAndGet();
+		}
+		@Override
+		protected void uninstall() {
+			super.uninstall();
+			this.uninstallCalls.incrementAndGet();
+		}
+		public int installCalls() {
+			return this.installCalls.getAndSet(0);
+		}
+		public int uninstallCalls() {
+			return this.uninstallCalls.getAndSet(0);
 		}
 	}
 
