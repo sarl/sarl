@@ -45,6 +45,7 @@
 						<randomContextId>--randomid</randomContextId>
 						<bootAgentContextId>--bootid</bootAgentContextId>
 						<offline>--offline</offline>
+						<embedded>--embedded</embedded>
 						<noMoreOption>--</noMoreOption>
 					</commandLineOptions>
 					<mainClass>io.janusproject.Boot</mainClass>

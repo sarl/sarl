@@ -279,6 +279,7 @@ public class CommandLineOptions {
 		buffer.append("randomContextId = ").append(this.randomContextId).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("bootAgentContextId = ").append(this.bootAgentContextId).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("offline = ").append(this.offline).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+		buffer.append("embedded = ").append(this.embedded).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("noMoreOption = ").append(this.noMoreOption).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 	}
 
