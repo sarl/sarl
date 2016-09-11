@@ -50,7 +50,16 @@ public interface ExecutorService extends DependentService {
 	 * Submit a task to the executor service.
 	 *
 	 * @param task - the task to submit.
+	 * @see #submit(Runnable) if you want a future.
+	 */
+	void execute(Runnable task);
+
+	/**
+	 * Submit a task to the executor service.
+	 *
+	 * @param task - the task to submit.
 	 * @return a Future representing the pending execution task.
+	 * @see #execute(Runnable) if you don't want a future.
 	 */
 	Future<?> submit(Runnable task);
 

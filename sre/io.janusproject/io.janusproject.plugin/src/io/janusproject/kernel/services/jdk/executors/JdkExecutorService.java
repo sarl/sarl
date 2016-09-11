@@ -124,6 +124,11 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	}
 
 	@Override
+	public void execute(Runnable task) {
+		this.exec.execute(task);
+	}
+
+	@Override
 	public Future<?> submit(Runnable task) {
 		return this.exec.submit(task);
 	}

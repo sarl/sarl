@@ -27,10 +27,12 @@ import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
+
+import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
+import io.janusproject.services.executor.ExecutorService;
 import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.OutputParameter;
 import org.eclipse.xtext.xbase.lib.Pair;
@@ -58,11 +60,6 @@ public class AgentInternalEventsDispatcher {
 	private final BehaviorGuardEvaluatorRegistry behaviorGuardEvaluatorRegistry;
 
 	/**
-	 * The executor used to execute behavior methods in dedicated thread.
-	 */
-	private final ExecutorService executor;
-
-	/**
 	 * Per-thread queue of events to dispatch.
 	 */
 	private final ThreadLocal<Queue<Pair<Event, Collection<Runnable>>>> queue = new ThreadLocal<Queue<Pair<Event, Collection<Runnable>>>>() {
@@ -83,16 +80,19 @@ public class AgentInternalEventsDispatcher {
 	};
 
 	/**
+	 * The executor used to execute behavior methods in dedicated thread.
+	 */
+	@Inject
+	private ExecutorService executor;
+
+	/**
 	 * Instantiates a dispatcher.
 	 *
-	 * @param executor - the executor used to execute behavior methods in dedicated thread.
 	 * @param perceptGuardEvaluatorAnnotation - The annotation used to identify methods considered as the evaluator of the guard
 	 *        of a given behavior (on clause in SARL behavior) If class has a such method, it is considered as a
 	 *        {@code BehaviorGuardEvaluator}.
 	 */
-	public AgentInternalEventsDispatcher(ExecutorService executor, Class<? extends Annotation> perceptGuardEvaluatorAnnotation) {
-		assert executor != null;
-		this.executor = executor;
+	public AgentInternalEventsDispatcher(Class<? extends Annotation> perceptGuardEvaluatorAnnotation) {
 		this.behaviorGuardEvaluatorRegistry = new BehaviorGuardEvaluatorRegistry(perceptGuardEvaluatorAnnotation);
 	}
 

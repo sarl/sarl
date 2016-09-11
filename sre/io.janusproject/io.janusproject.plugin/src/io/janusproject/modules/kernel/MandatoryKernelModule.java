@@ -87,10 +87,9 @@ public class MandatoryKernelModule extends AbstractModule {
 	}
 
 	@Provides
-	private static AgentInternalEventsDispatcher createAgentInternalEventsDispatcher(Injector injector,
-			java.util.concurrent.ExecutorService service) {
-		final AgentInternalEventsDispatcher aeb = new AgentInternalEventsDispatcher(service, PerceptGuardEvaluator.class);
-		// to be able to inject the SubscriberFindingStrategy
+	private static AgentInternalEventsDispatcher createAgentInternalEventsDispatcher(Injector injector) {
+		final AgentInternalEventsDispatcher aeb = new AgentInternalEventsDispatcher(PerceptGuardEvaluator.class);
+		// to be able to inject the ExecutorService and SubscriberFindingStrategy
 		injector.injectMembers(aeb);
 		return aeb;
 	}
