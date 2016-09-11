@@ -22,7 +22,7 @@ package io.janusproject.tests.kernel.services.jdk.kerneldiscovery;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 import java.net.InetAddress;
 import java.net.URI;
@@ -84,7 +84,7 @@ public final class StandardKernelDiscoveryServiceTest extends AbstractDependentS
 				StandardKernelDiscoveryServiceTest.this.networkServiceListener = invocation.getArgument(0);
 				return null;
 			}
-		}).when(this.network).addListener(ArgumentMatchers.any(Listener.class), ArgumentMatchers.any(Executor.class));
+		}).when(this.network).addListener(ArgumentMatchers.any(), ArgumentMatchers.any());
 		this.reflect.invoke(this.service, "postConstruction", this.network, this.executor);
 	}
 

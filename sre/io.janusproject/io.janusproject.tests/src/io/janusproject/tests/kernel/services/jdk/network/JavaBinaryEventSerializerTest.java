@@ -32,6 +32,8 @@ import io.janusproject.kernel.services.jdk.network.PlainTextEventEncrypter;
 import io.janusproject.services.network.EventDispatch;
 import io.janusproject.services.network.EventEnvelope;
 import io.janusproject.tests.testutils.AbstractJanusTest;
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -88,6 +90,7 @@ public class JavaBinaryEventSerializerTest extends AbstractJanusTest {
 
 	@Before
 	public void setUp() throws Exception {
+		ClassLoaderFinder.setPreferredClassLoader(getClass().getClassLoader());
 		this.serializer = new JavaBinaryEventSerializer(new PlainTextEventEncrypter());
 
 		this.rawContextId = UUID.fromString("005dd043-8553-40d2-8094-ad159bfabf86"); //$NON-NLS-1$
@@ -97,11 +100,12 @@ public class JavaBinaryEventSerializerTest extends AbstractJanusTest {
 		this.serializedSpaceId = "76595ddf-bc40-479d-b92a-7c1785642f9c".getBytes(Charset.forName("UTF-8")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		this.rawScope = new ScopeMock();
-		this.serializedScope = new byte[] {-84, -19, 0, 5, 115, 114, 0, 83, 105, 111, 46, 106, 97, 110, 117, 115, 112, 114, 111,
-				106, 101, 99, 116, 46, 107, 101, 114, 110, 101, 108, 46, 115, 101, 114, 118, 105, 99, 101, 115, 46, 106, 100, 107,
-				46, 110, 101, 116, 119, 111, 114, 107, 46, 74, 97, 118, 97, 66, 105, 110, 97, 114, 121, 69, 118, 101, 110, 116,
-				83, 101, 114, 105, 97, 108, 105, 122, 101, 114, 84, 101, 115, 116, 36, 83, 99, 111, 112, 101, 77, 111, 99, 107,
-				-46, -8, -41, 2, 51, 82, -99, -22, 2, 0, 0, 120, 112, };
+		this.serializedScope = new byte[] {-84, -19, 0, 5, 115, 114, 0, 89, 105, 111, 46, 106, 97, 110, 117,
+				115, 112, 114, 111, 106, 101, 99, 116, 46, 116, 101, 115, 116, 115, 46, 107, 101, 114, 110,
+				101, 108, 46, 115, 101, 114, 118, 105, 99, 101, 115, 46, 106, 100, 107, 46, 110, 101, 116,
+				119, 111, 114, 107, 46, 74, 97, 118, 97, 66, 105, 110, 97, 114, 121, 69, 118, 101, 110, 116,
+				83, 101, 114, 105, 97, 108, 105, 122, 101, 114, 84, 101, 115, 116, 36, 83, 99, 111, 112, 101,
+				77, 111, 99, 107, -46, -8, -41, 2, 51, 82, -99, -22, 2, 0, 0, 120, 112};
 
 		this.rawSimpleHeader = new HashMap<>();
 		this.rawSimpleHeader.put("a", "b"); //$NON-NLS-1$//$NON-NLS-2$
@@ -118,22 +122,20 @@ public class JavaBinaryEventSerializerTest extends AbstractJanusTest {
 				116, 105, 111, 110, 120, };
 
 		this.rawEvent = new EventMock();
-		this.serializedEvent = new byte[] {-84, -19, 0, 5, 115, 114, 0, 83, 105, 111, 46, 106, 97, 110, 117, 115, 112, 114, 111,
-				106, 101, 99, 116, 46, 107, 101, 114, 110, 101, 108, 46, 115, 101, 114, 118, 105, 99, 101, 115, 46, 106, 100, 107,
-				46, 110, 101, 116, 119, 111, 114, 107, 46, 74, 97, 118, 97, 66, 105, 110, 97, 114, 121, 69, 118, 101, 110, 116,
-				83, 101, 114, 105, 97, 108, 105, 122, 101, 114, 84, 101, 115, 116, 36, 69, 118, 101, 110, 116, 77, 111, 99, 107,
-				118, 53, 99, -95, 11, -80, -90, 102, 2, 0, 0, 120, 114, 0, 23, 105, 111, 46, 115, 97, 114, 108, 46, 108, 97, 110,
-				103, 46, 99, 111, 114, 101, 46, 69, 118, 101, 110, 116, -60, 32, 18, 125, -41, 61, 90, -122, 2, 0, 1, 76, 0, 6,
-				115, 111, 117, 114, 99, 101, 116, 0, 27, 76, 105, 111, 47, 115, 97, 114, 108, 47, 108, 97, 110, 103, 47, 99, 111,
-				114, 101, 47, 65, 100, 100, 114, 101, 115, 115, 59, 120, 112, 112, };
+		this.serializedEvent = new byte[] {-84, -19, 0, 5, 115, 114, 0, 89, 105, 111, 46, 106, 97, 110, 117, 115, 112, 114, 111, 106, 101, 99, 116, 46, 116, 101, 115, 116, 115, 46, 107, 101, 114, 110, 101, 108, 46, 115, 101, 114, 118, 105, 99, 101, 115, 46, 106, 100, 107, 46, 110, 101, 116, 119, 111, 114, 107, 46, 74, 97, 118, 97, 66, 105, 110, 97, 114, 121, 69, 118, 101, 110, 116, 83, 101, 114, 105, 97, 108, 105, 122, 101, 114, 84, 101, 115, 116, 36, 69, 118, 101, 110, 116, 77, 111, 99, 107, 118, 53, 99, -95, 11, -80, -90, 102, 2, 0, 0, 120, 114, 0, 23, 105, 111, 46, 115, 97, 114, 108, 46, 108, 97, 110, 103, 46, 99, 111, 114, 101, 46, 69, 118, 101, 110, 116, -60, 32, 18, 125, -41, 61, 90, -122, 2, 0, 1, 76, 0, 6, 115, 111, 117, 114, 99, 101, 116, 0, 27, 76, 105, 111, 47, 115, 97, 114, 108, 47, 108, 97, 110, 103, 47, 99, 111, 114, 101, 47, 65, 100, 100, 114, 101, 115, 115, 59, 120, 112, 112};
 
-		// {
-		// ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		// ObjectOutputStream oos = new ObjectOutputStream(baos);
-		// oos.writeObject(this.rawAutofilledHeader);
-		// oos.close();
-		// System.out.println(Arrays.toString(baos.toByteArray()));
-		// }
+//		 {
+//		 ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//		 ObjectOutputStream oos = new ObjectOutputStream(baos);
+//		 oos.writeObject(this.rawEvent);
+//		 oos.close();
+//		 System.out.println(Arrays.toString(baos.toByteArray()));
+//		 }
+	}
+
+	@After
+	public void tearDown() {
+		ClassLoaderFinder.popPreferredClassLoader();
 	}
 
 	@Test
@@ -180,7 +182,7 @@ public class JavaBinaryEventSerializerTest extends AbstractJanusTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class EventMock extends Event {
+	public static class EventMock extends Event {
 
 		private static final long serialVersionUID = 8517823813578172006L;
 
@@ -214,7 +216,7 @@ public class JavaBinaryEventSerializerTest extends AbstractJanusTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class ScopeMock implements Scope<String> {
+	public static class ScopeMock implements Scope<String> {
 
 		private static final long serialVersionUID = -3244607127069483542L;
 

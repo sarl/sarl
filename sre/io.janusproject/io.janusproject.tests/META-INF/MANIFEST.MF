@@ -16,7 +16,9 @@ Require-Bundle: io.sarl.core;bundle-version="0.4.0",
  com.google.guava.testlib;bundle-version="18.0.0",
  org.mockito.mockito-core;bundle-version="2.0.111",
  org.arakhne.afc.core.vmutils;bundle-version="14.0.0",
- javassist;bundle-version="3.20.0"
+ javassist;bundle-version="3.20.0",
+ com.google.truth;bundle-version="0.23.0",
+ javax.cache.api;bundle-version="1.0.0"
 Export-Package: io.janusproject.tests,
  io.janusproject.tests.bugs,
  io.janusproject.tests.kernel,

@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutorService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import org.arakhne.afc.util.MultiCollection;
+import org.arakhne.afc.util.OutputParameter;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.lang.core.DeadEvent;
@@ -142,6 +143,8 @@ public class AgentInternalEventsDispatcher {
 			try {
 				behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
 				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(event, behaviorsMethodsToExecute);
+			} catch (RuntimeException exception) {
+				throw exception;
 			} catch (InterruptedException | ExecutionException | InvocationTargetException e) {
 				throw new RuntimeException(e);
 			}
@@ -229,22 +232,36 @@ public class AgentInternalEventsDispatcher {
 	/**
 	 * Execute every single Behaviors runnable, a dedicated thread will created by the executor local to this class and be used to
 	 * execute each runnable in parallel, and this method waits until its future has been completed before leaving.
+	 *
+	 * <p>This function may fail if one of the called handlers has failed. Errors are logged by the executor service too.
+	 *
 	 * @param event - the event occurrence that has activated the specified behaviors, used just for indexing purpose but not
 	 *        passed to runnable here, they were created according to this occurrence
 	 * @param behaviorsMethodsToExecute - the collection of Behaviors runnable that must be executed.
-	 * @throws InterruptedException - exception
-	 * @throws ExecutionException - exception
+	 * @throws InterruptedException - something interrupt the waiting of the event handler terminations.
+	 * @throws ExecutionException - when the event handlers cannot be called; or when one of the event handler has failed during
+	 *     its run.
 	 */
 	private void executeBehaviorMethodsInParalellWithSynchroAtTheEnd(Event event, Collection<Runnable> behaviorsMethodsToExecute)
 			throws InterruptedException, ExecutionException {
 
 		final CountDownLatch doneSignal = new CountDownLatch(behaviorsMethodsToExecute.size());
 
+		final OutputParameter<Throwable> runException = new OutputParameter<>();
+
 		for (final Runnable runnable : behaviorsMethodsToExecute) {
 			this.executor.execute(() -> {
 				try {
 					runnable.run();
+				} catch (RuntimeException e) {
+					// Catch exception for notifying the caller
+					runException.set(e);
+					// Do the standard behavior too -> logging
+					throw e;
 				} catch (Exception e) {
+					// Catch exception for notifying the caller
+					runException.set(e);
+					// Do the standard behavior too -> logging
 					throw new RuntimeException(e);
 				} finally {
 					doneSignal.countDown();
@@ -254,11 +271,19 @@ public class AgentInternalEventsDispatcher {
 
 		// Wait for all Behaviors runnable to complete before continuing
 		doneSignal.await();
+
+		// Re-throw the run-time exception
+		if (runException.get() != null) {
+			throw new ExecutionException(runException.get());
+		}
 	}
 
 	/**
 	 * Execute every single Behaviors runnable, a dedicated thread will created by the executor local to this class and be used to
 	 * execute each runnable in parallel.
+	 *
+	 * <p>This function never fails. Errors in the event handlers are logged by the executor service.
+	 *
 	 * @param event - the event occurrence that has activated the specified behaviors, used just for indexing purpose but not
 	 *        passed to runnable here, they were created according to this occurrence
 	 * @param behaviorsMethodsToExecute - the collection of Behaviors runnable that must be executed.
@@ -277,7 +302,6 @@ public class AgentInternalEventsDispatcher {
 						this.executor.execute(runnable);
 					}
 				}
-
 			} finally {
 				this.dispatching.remove();
 				this.queue.remove();

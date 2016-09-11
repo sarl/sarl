@@ -82,7 +82,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 */
 	public AbstractEventSpace(SpaceID id, DistributedDataStructureService factory) {
 		super(id);
-		this.participants = new UniqueAddressParticipantRepository<>(getID().getID().toString() + "-participants", //$NON-NLS-1$
+		this.participants = new UniqueAddressParticipantRepository<>(getSpaceID().getID().toString() + "-participants", //$NON-NLS-1$
 				factory);
 	}
 
@@ -120,7 +120,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	public final void emit(Event event, Scope<Address> scope) {
 		assert event != null;
 		assert event.getSource() != null : "Every event must have a source"; //$NON-NLS-1$
-		assert this.getID().equals(event.getSource().getSpaceId()) : "The source address must belong to this space"; //$NON-NLS-1$
+		assert this.getSpaceID().equals(event.getSource().getSpaceId()) : "The source address must belong to this space"; //$NON-NLS-1$
 
 		try {
 			this.network.publish(scope, event);
@@ -171,7 +171,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 
 	@Override
 	public String toString() {
-		return getID().toString();
+		return getSpaceID().toString();
 	}
 
 	@SuppressWarnings("unchecked")

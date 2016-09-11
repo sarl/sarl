@@ -21,6 +21,8 @@
 
 package io.janusproject.kernel.space;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+
 import io.sarl.lang.core.SpaceID;
 
 /**
@@ -45,8 +47,9 @@ public abstract class SpaceBase implements DistributedSpace {
 	}
 
 	@Override
+	@Inline("getSpaceID()")
 	public final SpaceID getID() {
-		return this.id;
+		return getSpaceID();
 	}
 
 	@Override

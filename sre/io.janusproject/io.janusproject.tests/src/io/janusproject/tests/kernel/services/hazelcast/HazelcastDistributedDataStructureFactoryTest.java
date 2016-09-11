@@ -34,6 +34,7 @@ import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.tests.testutils.AbstractDependentServiceTest;
 import io.janusproject.tests.testutils.StartServiceForTest;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -77,8 +78,8 @@ public class HazelcastDistributedDataStructureFactoryTest
 		this.imap = Mockito.mock(IMap.class);
 		this.multimap = Mockito.mock(com.hazelcast.core.MultiMap.class);
 		this.hz = Mockito.mock(HazelcastInstance.class);
-		Mockito.when(this.hz.getMap(Mockito.any(String.class))).thenReturn(this.imap);
-		Mockito.when(this.hz.getMultiMap(Mockito.any(String.class))).thenReturn(this.multimap);
+		Mockito.when(this.hz.getMap(Mockito.any())).thenReturn(this.imap);
+		Mockito.when(this.hz.getMultiMap(Mockito.any())).thenReturn(this.multimap);
 		this.factory = new HazelcastDistributedDataStructureService();
 		this.reflect.invoke(this.factory, "setHazelcastInstance", this.hz);
 	}

@@ -100,8 +100,8 @@ public class EventSpaceImplTest extends AbstractJanusTest {
 
 		this.service = Mockito.mock(DistributedDataStructureService.class);
 		DMap<Object, Object> mapMock = new DMapView<>(UUID.randomUUID().toString(), new HashMap<>());
-		Mockito.when(this.service.getMap(ArgumentMatchers.anyString(), ArgumentMatchers.any(Comparator.class))).thenReturn(mapMock);
-		Mockito.when(this.service.getMap(ArgumentMatchers.anyString())).thenReturn(mapMock);
+		Mockito.when(this.service.getMap(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mapMock);
+		Mockito.when(this.service.getMap(ArgumentMatchers.any())).thenReturn(mapMock);
 
 		this.spaceId = new SpaceID(UUID.randomUUID(), UUID.randomUUID(), OpenEventSpaceSpecification.class);
 

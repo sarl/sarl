@@ -86,7 +86,7 @@ public class RestrictedAccessEventSpaceImpl extends AbstractEventSpace implement
 	@Override
 	public Address register(EventListener entity, Principal principal) {
 		if (this.acl.checkPermission(principal, this.accessPermission)) {
-			final Address a = new Address(getID(), entity.getID());
+			final Address a = new Address(getSpaceID(), entity.getID());
 			synchronized (this.participants) {
 				return this.participants.registerParticipant(a, entity);
 			}

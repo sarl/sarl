@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
@@ -175,8 +176,11 @@ public final class JdkExecutorServiceTest extends AbstractDependentServiceTest<J
 		try {
 			this.reflect.invoke(this.service, "doStop");
 			fail("IllegalStateException is expected"); //$NON-NLS-1$
-		} catch (IllegalStateException exception) {
-			// This exception is fired by notifyStopped()
+		} catch (InvocationTargetException exception) {
+			final Throwable ex = exception.getCause();
+			if (!(ex instanceof IllegalStateException)) {
+				fail("IllegalStateException is expected"); //$NON-NLS-1$
+			}
 		}
 		Mockito.verify(this.scheduledExecutorService, new Times(1)).shutdown();
 		Mockito.verify(this.executorService, new Times(1)).shutdown();

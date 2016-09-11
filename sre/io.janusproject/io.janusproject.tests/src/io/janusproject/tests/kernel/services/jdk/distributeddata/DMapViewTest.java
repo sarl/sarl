@@ -42,6 +42,7 @@ import io.janusproject.tests.testutils.AbstractJanusTest;
 import junit.framework.TestSuite;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -123,6 +124,7 @@ public class DMapViewTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@Ignore("Cannot run Guava testlib in different bundles")
 	public static class GuavaMapOperationTests {
 
 		public static TestSuite suite() {

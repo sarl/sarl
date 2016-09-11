@@ -22,6 +22,9 @@ package io.janusproject.tests.modules.hazelcast;
 import java.util.UUID;
 
 import com.hazelcast.nio.serialization.StreamSerializer;
+import io.janusproject.modules.hazelcast.SpaceIDSerializer;
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,22 +42,24 @@ import io.sarl.util.OpenEventSpaceSpecification;
 public class SpaceIDSerializerTest extends AbstractSerializerTest {
 
 	@Nullable
-	private Class<?> type;
-
-	@Nullable
 	private StreamSerializer serializer;
 
 	@Before
 	public void setUp() throws Exception {
-		this.type = this.reflect.forName("io.janusproject.tests.modules.hazelcast.SpaceIDSerializer");
-		this.serializer = (StreamSerializer) this.reflect.newInstance(this.type);
+		ClassLoaderFinder.setPreferredClassLoader(getClass().getClassLoader());
+		this.serializer = new SpaceIDSerializer();
+	}
+	
+	@After
+	public void tearDown() {
+		ClassLoaderFinder.popPreferredClassLoader();
 	}
 
 	@Test
 	public void getTypeId() throws Exception {
 		assertEquals(
-				this.reflect.getStatic(this.type, "SPACE_ID_CLASS_TYPE"),
-				this.reflect.invoke(this.serializer, "getTypeId"));
+				SpaceIDSerializer.SPACE_ID_CLASS_TYPE,
+				this.serializer.getTypeId());
 	}
 
 	@Test

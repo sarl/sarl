@@ -48,7 +48,7 @@ public class AddressSerializerTest extends AbstractSerializerTest {
 	@Before
 	public void setUp() throws Exception {
 		this.type = this.reflect.forName("io.janusproject.modules.hazelcast.AddressSerializer");
-		this.serializer = (StreamSerializer) this.reflect.newInstance(this.type, "io.janusproject.modules.hazelcast.AddressSerializer");
+		this.serializer = (StreamSerializer) this.reflect.newInstance(this.type);
 	}
 
 	@Test

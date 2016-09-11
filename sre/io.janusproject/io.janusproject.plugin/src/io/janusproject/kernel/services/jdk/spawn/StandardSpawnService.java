@@ -310,9 +310,10 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
         final EventSpace defSpace = context.getDefaultSpace();
         assert defSpace != null : "A context does not contain a default space"; //$NON-NLS-1$
         final Address agentAddress = defSpace.getAddress(agentID);
-        assert agentAddress != null : "Cannot find an address in the default space for " + agentID; //$NON-NLS-1$
-
-        defSpace.emit(new AgentSpawned(agentAddress, agentID, agent.getClass().getName()));
+        // The address may be null is the agent has failed to be launched.
+        if (agentAddress != null) {
+        	defSpace.emit(new AgentSpawned(agentAddress, agentID, agent.getClass().getName()));
+        }
     }
 
     /**

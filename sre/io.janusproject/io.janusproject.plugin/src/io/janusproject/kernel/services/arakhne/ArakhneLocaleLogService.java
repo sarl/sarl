@@ -32,6 +32,7 @@ import com.google.inject.Inject;
 import io.janusproject.JanusConfig;
 import io.janusproject.services.AbstractDependentService;
 import io.janusproject.services.logging.LogService;
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -281,6 +282,33 @@ public class ArakhneLocaleLogService extends AbstractDependentService implements
 		notifyStopped();
 	}
 
+	/** Find a class.
+	 *
+	 * @param className the name of the class.
+	 * @return the class, or <code>null</code>.
+	 */
+	protected static Class<?> findClass(String className) {
+		final ClassLoader loader = ClassLoaderFinder.findClassLoader();
+		Class<?> type = null;
+		try {
+			type = Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			//
+		}
+		if (type == null && loader != null) {
+			try {
+				type = loader.loadClass(className);
+			} catch (ClassNotFoundException e) {
+				//
+			}
+		}
+		if (type != null && !LogService.class.isAssignableFrom(type)
+				&& !LoggerCallerProvider.class.isAssignableFrom(type)) {
+			return type;
+		}
+		return null;
+	}
+
 	/**
 	 * Provides the type of the caller of the logger.
 	 *
@@ -310,14 +338,22 @@ public class ArakhneLocaleLogService extends AbstractDependentService implements
 	 */
 	public static class LoggerCaller {
 
-		private final Class<?> type;
+		private Class<?> type;
 
 		private final String methodName;
 
 		private final String className;
 
 		/**
-		 * @param propertyType - the type associated to the property file to be read by the logger.
+		 * @param className - the type of the caller.
+		 * @param methodName - the name of the called method.
+		 */
+		public LoggerCaller(String className, String methodName) {
+			this(null, className, methodName);
+		}
+
+		/**
+		 * @param propertyType - the type for which property file must be retreived.
 		 * @param className - the type of the caller.
 		 * @param methodName - the name of the called method.
 		 */
@@ -333,6 +369,12 @@ public class ArakhneLocaleLogService extends AbstractDependentService implements
 		 * @return the type of the logger caller.
 		 */
 		public Class<?> getPropertyType() {
+			if (this.type == null) {
+				this.type = findClass(getTypeName());
+				if (this.type == null) {
+					this.type = Object.class;
+				}
+			}
 			return this.type;
 		}
 
@@ -375,17 +417,12 @@ public class ArakhneLocaleLogService extends AbstractDependentService implements
 
 		private static StackTraceElement getStackTraceElement() {
 			final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-			Class<?> type;
 			// Start at 1 because the top of the stack corresponds to getStackTrace.
-			for (int i = 3; i < stackTrace.length; ++i) {
-				try {
-					type = Class.forName(stackTrace[i].getClassName());
-					if (type != null && !LogService.class.isAssignableFrom(type)
-							&& !LoggerCallerProvider.class.isAssignableFrom(type)) {
-						return stackTrace[i];
-					}
-				} catch (ClassNotFoundException e) {
-					//
+			for (int i = 1; i < stackTrace.length; ++i) {
+				final String className = stackTrace[i].getClassName();
+				final Class<?> type = findClass(className);
+				if (type != null) {
+					return stackTrace[i];
 				}
 			}
 			return null;
@@ -395,12 +432,7 @@ public class ArakhneLocaleLogService extends AbstractDependentService implements
 		public LoggerCaller getLoggerCaller() {
 			final StackTraceElement element = getStackTraceElement();
 			if (element != null) {
-				try {
-					return new LoggerCaller(Class.forName(element.getClassName()), element.getClassName(),
-							element.getMethodName());
-				} catch (ClassNotFoundException e1) {
-					//
-				}
+				return new LoggerCaller(element.getClassName(), element.getMethodName());
 			}
 			return null;
 		}

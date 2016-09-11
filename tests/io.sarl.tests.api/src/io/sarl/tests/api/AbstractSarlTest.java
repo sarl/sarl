@@ -31,6 +31,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLConnection;
@@ -42,7 +43,6 @@ import java.util.List;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
@@ -70,7 +70,6 @@ import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.AssumptionViolatedException;
@@ -84,6 +83,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.util.Primitives;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
@@ -144,7 +144,7 @@ public abstract class AbstractSarlTest {
 	/** Utility for reflection.
 	 */
 	@Inject
-	public ExtendedReflectExtensions reflect;
+	public ReflectExtensions reflect;
 
 	/** Temporary fixing a bug in the class loading of Mockito 2.
 	 * 
@@ -1439,7 +1439,7 @@ public abstract class AbstractSarlTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class ExtendedReflectExtensions extends ReflectExtensions {
+	public static class ReflectExtensions {
 
 		/**
 		 * Retrieves the value of the given accessible static field of the given type.
@@ -1481,6 +1481,57 @@ public abstract class AbstractSarlTest {
 				f.setAccessible(true);
 			}
 			f.set(null, value);
+		}
+
+		/**
+		 * Set the value of the given accessible field of the given instance.
+		 * 
+		 * @param instance the container of the field, not <code>null</code>
+		 * @param fieldName the field's name, not <code>null</code>
+		 * @return the value of the field
+		 */
+		@SuppressWarnings("unchecked")
+		public <T> void set(Object instance, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+			Class<?> type = instance.getClass();
+			while (type != null) {
+				try {
+					Field f = getDeclaredField(type, fieldName);
+					if (!f.isAccessible()) {
+						f.setAccessible(true);
+					}
+					f.set(instance, value);
+					return;
+				} catch (NoSuchFieldException exception) {
+					//
+				}
+				type = type.getSuperclass();
+			}
+			throw new NoSuchFieldException(fieldName);
+		}
+
+		/**
+		 * Replies the value of the given accessible field of the given instance.
+		 * 
+		 * @param instance the container of the field, not <code>null</code>
+		 * @param fieldName the field's name, not <code>null</code>
+		 * @return the value of the field
+		 */
+		@SuppressWarnings("unchecked")
+		public <T> T get(Object instance, String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+			Class<?> type = instance.getClass();
+			while (type != null) {
+				try {
+					Field f = getDeclaredField(type, fieldName);
+					if (!f.isAccessible()) {
+						f.setAccessible(true);
+					}
+					return (T) f.get(instance);
+				} catch (NoSuchFieldException exception) {
+					//
+				}
+				type = type.getSuperclass();
+			}
+			throw new NoSuchFieldException(fieldName);
 		}
 
 		/**
@@ -1543,7 +1594,7 @@ public abstract class AbstractSarlTest {
 		}
 
 		protected static Class<?> wrapperTypeFor(Class<?> primitive) {
-			Preconditions.checkNotNull(primitive);
+			assert primitive != null;
 			if (primitive == Boolean.TYPE) return Boolean.class;
 			if (primitive == Byte.TYPE) return Byte.class;
 			if (primitive == Character.TYPE) return Character.class;
@@ -1622,6 +1673,102 @@ public abstract class AbstractSarlTest {
 			throw new ClassNotFoundException(name);
 		}
 		
+		/**
+		 * Invokes the first accessible method defined on the receiver'c class with the given name and
+		 * a parameter list compatible to the given arguments.
+		 * 
+		 * @param receiver the method call receiver, not <code>null</code>
+		 * @param methodName the method name, not <code>null</code>
+		 * @return the result of the method invocation. <code>null</code> if the method was of type void.
+		 */
+		public Object invoke(Object receiver, String methodName) throws SecurityException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+			assert receiver != null;
+			assert methodName != null;
+			
+			Class<? extends Object> clazz = receiver.getClass();
+			Method compatible = null;
+			do {
+				for (Method candidate : clazz.getDeclaredMethods()) {
+					if (candidate != null && !candidate.isBridge() && Objects.equal(methodName, candidate.getName())
+						&& candidate.getParameterCount() == 0) {
+						if (compatible != null) 
+							throw new IllegalStateException("Ambiguous methods to invoke. Both "+compatible+" and  "+candidate+" would be compatible choices.");
+						compatible = candidate;
+					}
+				}
+			} while(compatible == null && (clazz = clazz.getSuperclass()) != null);
+			if (compatible != null) {
+				if (!compatible.isAccessible())
+					compatible.setAccessible(true);
+				return compatible.invoke(receiver);
+			}
+			// not found provoke method not found exception
+			Method method = receiver.getClass().getMethod(methodName);
+			return method.invoke(receiver);
+		}
+		
+		/**
+		 * Invokes the first accessible method defined on the receiver'c class with the given name and
+		 * a parameter list compatible to the given arguments.
+		 * 
+		 * @param receiver the method call receiver, not <code>null</code>
+		 * @param methodName the method name, not <code>null</code>
+		 * @return the result of the method invocation. <code>null</code> if the method was of type void.
+		 */
+		public Object invoke(Object receiver, String methodName, Object... args) throws Exception, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+			assert receiver != null;
+			assert methodName != null;
+			
+			if (args == null) {
+				args = new Object[] {null};
+			}
+			
+			Class<? extends Object> clazz = receiver.getClass();
+			Method compatible = null;
+			do {
+				for (Method candidate : clazz.getDeclaredMethods()) {
+					if (candidate != null && !candidate.isBridge() && Objects.equal(methodName, candidate.getName())
+						&& isValidArgs(args, candidate.getParameterTypes())) {
+						if (compatible != null) 
+							throw new IllegalStateException("Ambiguous methods to invoke. Both "+compatible+" and  "+candidate+" would be compatible choices.");
+						compatible = candidate;
+					}
+				}
+			} while(compatible == null && (clazz = clazz.getSuperclass()) != null);
+			if (compatible != null) {
+				if (!compatible.isAccessible())
+					compatible.setAccessible(true);
+				return compatible.invoke(compatible.getDeclaringClass().cast(receiver), (Object[]) args);
+			}
+			// not found provoke method not found exception
+			Method method = receiver.getClass().getMethod(methodName);
+			return method.invoke(receiver);
+		}
+		
+		private static boolean isValidArgs(Object[] args, Class<?>[] params) {
+			if (args.length != params.length) {
+				return false;
+			}
+			for (int i = 0; i < args.length; ++i) {
+				if (args[i] == null) {
+					if (params[i].isPrimitive()) {
+						return false;
+					}
+				} else if (!(params[i].isInstance(args[i]))) {
+					if (Primitives.isPrimitiveOrWrapper(params[i])) {
+						if (!Objects.equal(
+								Primitives.primitiveTypeOf(params[i]),
+								Primitives.primitiveTypeOf(args[i].getClass()))) {
+							return false;
+						}
+					} else {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
 	}
 
 }

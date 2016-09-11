@@ -56,7 +56,7 @@ public class SpaceBaseTest extends AbstractJanusTest {
 				throw new UnsupportedOperationException();
 			}
 		};
-		assertEquals(spaceId, base.getID());
+		assertEquals(spaceId, base.getSpaceID());
 	}
 
 }

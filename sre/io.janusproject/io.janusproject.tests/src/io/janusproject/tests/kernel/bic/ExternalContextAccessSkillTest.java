@@ -120,20 +120,13 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 			if (i == 0) {
 				this.defaultSpace = defaultSpace;
 			}
-			when(defaultSpace.getID()).thenReturn(new SpaceID(contextId, UUID.randomUUID(), EventSpaceSpecification.class));
+			when(defaultSpace.getSpaceID()).thenReturn(new SpaceID(contextId, UUID.randomUUID(), EventSpaceSpecification.class));
 			AgentContext c = mock(AgentContext.class);
 			when(c.getID()).thenReturn(contextId);
 			when(c.getDefaultSpace()).thenReturn(defaultSpace);
 			this.contexts.add(c);
 		}
-		this.agent = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null) {
-			@Override
-			protected <S extends Capacity> S getSkill(Class<S> capacity) {
-				if (Behaviors.class.equals(capacity))
-					return capacity.cast(ExternalContextAccessSkillTest.this.behaviorCapacity);
-				return capacity.cast(ExternalContextAccessSkillTest.this.busCapacity);
-			}
-		};
+		this.agent = new TestAgent(this);
 		this.agent = spy(this.agent);
 		when(this.agent.getParentID()).thenReturn(parentId);
 
@@ -187,7 +180,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 	public void join() {
 		int nb = 0;
 		for (AgentContext c : this.contexts) {
-			this.skill.join(c.getID(), c.getDefaultSpace().getID().getID());
+			this.skill.join(c.getID(), c.getDefaultSpace().getSpaceID().getID());
 			//
 			AgentContext ctx = this.skill.getContext(c.getID());
 			assertSame(c, ctx);
@@ -207,7 +200,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 			assertNotNull(evt);
 			assertTrue(evt instanceof ContextJoined);
 			assertEquals(c.getID(), ((ContextJoined) evt).holonContextID);
-			assertEquals(c.getDefaultSpace().getID().getID(), ((ContextJoined) evt).defaultSpaceID);
+			assertEquals(c.getDefaultSpace().getSpaceID().getID(), ((ContextJoined) evt).defaultSpaceID);
 		}
 		Collection<AgentContext> c = this.skill.getAllContexts();
 		assertEquals(this.contexts.size(), c.size());
@@ -220,7 +213,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 	public void leave() {
 		int nb = 0;
 		for (AgentContext c : this.contexts) {
-			this.skill.join(c.getID(), c.getDefaultSpace().getID().getID());
+			this.skill.join(c.getID(), c.getDefaultSpace().getSpaceID().getID());
 			++nb;
 		}
 		//
@@ -298,7 +291,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		SpaceID spaceID = mock(SpaceID.class);
 		when(spaceID.getID()).thenReturn(id);
 		Space space = mock(Space.class);
-		when(space.getID()).thenReturn(spaceID);
+		when(space.getSpaceID()).thenReturn(spaceID);
 		Event event = mock(Event.class);
 		Address address = mock(Address.class);
 		when(address.getSpaceId()).thenReturn(spaceID);
@@ -314,7 +307,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		SpaceID spaceID = mock(SpaceID.class);
 		when(spaceID.getID()).thenReturn(id);
 		Space space = mock(Space.class);
-		when(space.getID()).thenReturn(spaceID);
+		when(space.getSpaceID()).thenReturn(spaceID);
 		Event event = mock(Event.class);
 		SpaceID spaceID2 = mock(SpaceID.class);
 		when(spaceID2.getID()).thenReturn(UUID.randomUUID());
@@ -419,4 +412,21 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		assertFalse(this.skill.isInSpace(event, id));
 	}
 
+	public static class TestAgent extends Agent {
+
+		private final ExternalContextAccessSkillTest test;
+
+		public TestAgent(ExternalContextAccessSkillTest test) {
+			super(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null);
+			this.test = test;
+		}
+
+		@Override
+		protected <S extends Capacity> S getSkill(Class<S> capacity) {
+			if (Behaviors.class.equals(capacity))
+				return capacity.cast(this.test.behaviorCapacity);
+			return capacity.cast(this.test.busCapacity);
+		}
+
+	}
 }

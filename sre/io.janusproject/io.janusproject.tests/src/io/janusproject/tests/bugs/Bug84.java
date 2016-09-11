@@ -61,7 +61,7 @@ public class Bug84 extends AbstractJanusRunTest {
 		assumeTrue("Cannot unit test the Bug84 when the network is down.", adr != null && !adr.isLoopbackAddress());
 		//
 		runJanus(KilledInInitAgent.class, true);
-		assertEquals(-1, indexOfResult(Throwable.class));
+		assertEquals(0, getNumberOfResults());
 	}
 
 	/**

@@ -49,9 +49,6 @@ import io.sarl.lang.core.BuiltinCapacitiesProvider;
 @SuppressWarnings("all")
 public class Bug91 extends AbstractJanusRunTest {
 
-	@Inject
-	private SubscriberExceptionHandler uncaughtEventBusExceptionHandler;
-
 	@Before
 	public void setUp() {
 		Boot.setOffline(true);
@@ -59,7 +56,7 @@ public class Bug91 extends AbstractJanusRunTest {
 
 	@Test
 	public void ExceptionInInit() throws Exception {
-		runJanus(ExceptionInInitAgent.class);
+		runJanus(ExceptionInInitAgent.class, false, true, 10);
 		assertNumberOfResults(1);
 		Exception ex = getResult(Exception.class, 0);
 		assertNotNull(ex);

@@ -73,7 +73,7 @@ public class Context implements AgentContext {
 	 * @param startUpListener - repository listener which is added just after the creation of the repository, but before the
 	 *        creation of the default space.
 	 */
-	Context(UUID id, UUID defaultSpaceID, SpaceRepositoryFactory factory, SpaceRepositoryListener startUpListener) {
+	public Context(UUID id, UUID defaultSpaceID, SpaceRepositoryFactory factory, SpaceRepositoryListener startUpListener) {
 		assert factory != null;
 		this.id = id;
 		this.defaultSpaceID = defaultSpaceID;
@@ -91,7 +91,7 @@ public class Context implements AgentContext {
 	 *
 	 * @return the created space.
 	 */
-	EventSpace postConstruction() {
+	public EventSpace postConstruction() {
 		this.spaceRepository.postConstruction();
 		this.defaultSpace = createSpace(OpenEventSpaceSpecification.class, this.defaultSpaceID);
 		if (this.defaultSpace == null) {

@@ -19,7 +19,7 @@
  */
 package io.janusproject.tests;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -411,7 +411,7 @@ public class BootTest {
 			assertNullProperty("io.janusproject.tests.MY_PROPERTY_1");
 			assertNullProperty("io.janusproject.tests.MY_PROPERTY_2");
 			verify(this.logger, times(2)).write(ArgumentMatchers.any(byte[].class), ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt());
-			verify(this.logger, times(1)).flush();
+			verify(this.logger, times(2)).flush();
 			verify(this.logger, times(1)).close();
 			verifyNoMoreInteractions(this.logger);
 			verify(this.exiter, only()).exit();
@@ -606,6 +606,44 @@ public class BootTest {
 		}
 
 		@Test
+		public void option_e_valid() {
+			Exiter old = Boot.getExiter();
+			Object[] freeArgs = Boot.parseCommandLine(args("-e", "--", "-x", "-y"));
+			assertNullProperty(JanusConfig.JANUS_LOGO_SHOW_NAME);
+			assertNullProperty(JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME);
+			assertNullProperty(JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME);
+			assertNullProperty(JanusConfig.OFFLINE);
+			assertNullProperty("io.janusproject.tests.MY_PROPERTY_0");
+			assertNullProperty("io.janusproject.tests.MY_PROPERTY_1");
+			assertNullProperty("io.janusproject.tests.MY_PROPERTY_2");
+			assertProperty(JanusConfig.VERBOSE_LEVEL_NAME, "3");
+			assertContains(Arrays.asList(freeArgs), "-x", "-y");
+			verifyZeroInteractions(this.logger);
+			verifyZeroInteractions(this.exiter);
+			assertNotSame(old, Boot.getExiter());
+		}
+
+		@Test
+		public void option_e_asArg() {
+			Exiter old = Boot.getExiter();
+			Object[] freeArgs = Boot.parseCommandLine(args("--", "-e", "-x", "-y"));
+			// The properties are null since resetProperties() is invoked for resetting the properties in
+			// the start-up function inherited from AbstractJanusTest
+			assertNullProperty(JanusConfig.JANUS_LOGO_SHOW_NAME);
+			assertNullProperty(JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME);
+			assertNullProperty(JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME);
+			assertNullProperty(JanusConfig.OFFLINE);
+			assertNullProperty("io.janusproject.tests.MY_PROPERTY_0");
+			assertNullProperty("io.janusproject.tests.MY_PROPERTY_1");
+			assertNullProperty("io.janusproject.tests.MY_PROPERTY_2");
+			assertProperty(JanusConfig.VERBOSE_LEVEL_NAME, "3");
+			assertContains(Arrays.asList(freeArgs), "-e", "-x", "-y");
+			verifyZeroInteractions(this.logger);
+			verifyZeroInteractions(this.exiter);
+			assertSame(old, Boot.getExiter());
+		}
+
+		@Test
 		public void option_s_valid() {
 			Object[] freeArgs = Boot.parseCommandLine(args("-s", "--", "-x", "-y"));
 			// The properties are null since resetProperties() is invoked for resetting the properties in
@@ -620,7 +658,7 @@ public class BootTest {
 			assertNullProperty(JanusConfig.VERBOSE_LEVEL_NAME);
 			assertNull(freeArgs);
 			verify(this.logger, times(1)).write(ArgumentMatchers.any(byte[].class), ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt());
-			verify(this.logger, times(2)).flush();
+			verify(this.logger, times(3)).flush();
 			verify(this.logger, times(1)).close();
 			verifyNoMoreInteractions(this.logger);
 			verify(this.exiter, only()).exit();

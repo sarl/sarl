@@ -110,12 +110,7 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 		this.agentId = UUID.randomUUID();
 		Address address = new Address(new SpaceID(UUID.randomUUID(), UUID.randomUUID(), EventSpaceSpecification.class),
 				this.agentId);
-		this.agent = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), this.agentId, null) {
-			@Override
-			protected <S extends Capacity> S getSkill(Class<S> capacity) {
-				return capacity.cast(InnerContextSkillTest.this.busCapacity);
-			}
-		};
+		this.agent = new TestAgent(this, this.agentId);
 		this.agent = spy(this.agent);
 		address = spy(address);
 		this.skill = this.reflect.newInstance(InnerContextSkill.class, this.agent, address);
@@ -129,7 +124,7 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 		when(this.innerSpace.getParticipants()).thenReturn(Collections3.<UUID> synchronizedSingleton(this.agentId));
 		this.innerSpaceUUID = UUID.randomUUID();
 		this.innerSpaceID = new SpaceID(this.innerContextUUID, this.innerSpaceUUID, EventSpaceSpecification.class);
-		when(this.innerSpace.getID()).thenReturn(this.innerSpaceID);
+		when(this.innerSpace.getSpaceID()).thenReturn(this.innerSpaceID);
 	}
 
 	@Test
@@ -225,7 +220,7 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 		SpaceID spaceId = mock(SpaceID.class);
 		when(spaceId.getID()).thenReturn(id);
 		EventSpace otherSpace = mock(EventSpace.class);
-		when(otherSpace.getID()).thenReturn(spaceId);
+		when(otherSpace.getSpaceID()).thenReturn(spaceId);
 		//
 		assertFalse(this.skill.isInnerDefaultSpace(otherSpace));
 	}
@@ -276,4 +271,19 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 		assertFalse(this.skill.isInInnerDefaultSpace(event));
 	}
 
+	public static class TestAgent extends Agent {
+		
+		private final InnerContextSkillTest test;
+
+		public TestAgent(InnerContextSkillTest test, UUID agentId) {
+			super(Mockito.mock(BuiltinCapacitiesProvider.class), agentId, null);
+			this.test = test;
+		}
+
+		@Override
+		protected <S extends Capacity> S getSkill(Class<S> capacity) {
+			return capacity.cast(this.test.busCapacity);
+		}
+
+	}
 }

@@ -25,6 +25,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -297,8 +298,11 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		try {
 			this.reflect.invoke(this.service, "doStart");
 			fail("Expecting IllegalStateException"); //$NON-NLS-1$
-		} catch (IllegalStateException exception) {
-			// Expected excpetion fired by notifyStarted()
+		} catch (InvocationTargetException exception) {
+			final Throwable ex = exception.getCause();
+			if (!(ex instanceof IllegalStateException)) {
+				fail("Expecting IllegalStateException"); //$NON-NLS-1$
+			}
 		}
 		Mockito.verify(this.kernelListener, new Times(1)).kernelAgentSpawn();
 	}
@@ -309,7 +313,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class TestModule extends AbstractModule {
+	public static class TestModule extends AbstractModule {
 
 		private final BuiltinCapacitiesProvider builtinCapacitiesProvider;
 
@@ -330,7 +334,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static abstract class InnerContextSkillMock extends Skill implements InnerContextAccess {
+	public static abstract class InnerContextSkillMock extends Skill implements InnerContextAccess {
 		//
 	}
 
@@ -340,7 +344,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static abstract class ExternalContextSkillMock extends Skill implements ExternalContextAccess {
+	public static abstract class ExternalContextSkillMock extends Skill implements ExternalContextAccess {
 		//
 	}
 

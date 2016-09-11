@@ -24,8 +24,12 @@ package io.janusproject.kernel.services.jdk.network;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
+import java.io.StreamCorruptedException;
+import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.UUID;
 
@@ -35,6 +39,7 @@ import io.janusproject.services.network.EventDispatch;
 import io.janusproject.services.network.EventEncrypter;
 import io.janusproject.services.network.EventEnvelope;
 import io.janusproject.services.network.NetworkUtil;
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.lang.core.Event;
@@ -138,14 +143,130 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 
 	private static <T> T fromBytes(byte[] data, Class<T> type) throws IOException, ClassNotFoundException {
 		try (ByteArrayInputStream bais = new ByteArrayInputStream(data)) {
-			final ObjectInputStream oos = new ObjectInputStream(bais);
-			final Object object = oos.readObject();
-			if (object != null && type.isInstance(object)) {
-				return type.cast(object);
+			try (ObjectInputStream oos = new ClassLoaderObjectInputStream(bais)) {
+				final Object object = oos.readObject();
+				if (object != null && type.isInstance(object)) {
+					return type.cast(object);
+				}
+				throw new ClassCastException(Locale.getString(JavaBinaryEventSerializer.class, "INVALID_TYPE", //$NON-NLS-1$
+						type.getName()));
 			}
-			throw new ClassCastException(Locale.getString(JavaBinaryEventSerializer.class, "INVALID_TYPE", //$NON-NLS-1$
-					type.getName()));
 		}
+	}
+
+	/** Object input stream that is aware of the Bundle class loaders.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class ClassLoaderObjectInputStream extends ObjectInputStream {
+
+		/** The class loader to use.
+		 */
+		private final ClassLoader classLoader;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param inputStream  the InputStream to work on
+		 * @throws IOException in case of an I/O error
+		 * @throws StreamCorruptedException if the stream is corrupted
+		 */
+		public ClassLoaderObjectInputStream(InputStream inputStream)
+						throws IOException, StreamCorruptedException {
+			this(null, inputStream);
+		}
+
+		/**
+		 * Constructor.
+		 *
+		 * @param classLoader  the class loader from which classes should be loaded
+		 * @param inputStream  the InputStream to work on
+		 * @throws IOException in case of an I/O error
+		 */
+		public ClassLoaderObjectInputStream(ClassLoader classLoader, InputStream inputStream)
+						throws IOException {
+			super(inputStream);
+			this.classLoader = classLoader;
+		}
+
+		/**
+		 * Resolve a class specified by the descriptor using the
+		 * specified ClassLoader or the super ClassLoader.
+		 *
+		 * @param objectStreamClass  descriptor of the class
+		 * @return the Class object described by the ObjectStreamClass
+		 * @throws IOException in case of an I/O error
+		 * @throws ClassNotFoundException if the Class cannot be found
+		 */
+		@Override
+		protected Class<?> resolveClass(ObjectStreamClass objectStreamClass)
+				throws IOException, ClassNotFoundException {
+			final Class<?> type = resolve(objectStreamClass.getName());
+			if (type != null) {
+				return type;
+			}
+			// classloader knows not of class, let the super classloader do it
+			return super.resolveClass(objectStreamClass);
+		}
+
+		private Class<?> resolve(String className) {
+			if (this.classLoader != null) {
+				try {
+					return Class.forName(className, true, this.classLoader);
+				} catch (Exception ex) {
+					//
+				}
+			}
+
+			final ClassLoader classLoader = ClassLoaderFinder.findClassLoader();
+			if (classLoader != null) {
+				try {
+					return classLoader.loadClass(className);
+				} catch (Exception ex) {
+					//
+				}
+			}
+
+			try {
+				return Class.forName(className, true, getClass().getClassLoader());
+			} catch (Exception ex) {
+				//
+			}
+			return null;
+		}
+
+		/**
+		 * Create a proxy class that implements the specified interfaces using
+		 * the specified ClassLoader or the super ClassLoader.
+		 *
+		 * @param interfaces the interfaces to implement
+		 * @return a proxy class implementing the interfaces
+		 * @throws IOException in case of an I/O error
+		 * @throws ClassNotFoundException if the Class cannot be found
+		 */
+		@Override
+		protected Class<?> resolveProxyClass(String[] interfaces) throws IOException, ClassNotFoundException {
+			final Class<?>[] interfaceClasses = new Class[interfaces.length];
+			ClassLoader cl = null;
+			for (int i = 0; i < interfaces.length; i++) {
+				final Class<?> type = resolve(interfaces[i]);
+				if (type != null) {
+					interfaceClasses[i] = type;
+					cl = type.getClassLoader();
+				} else {
+					throw new ClassNotFoundException(interfaces[i]);
+				}
+			}
+			try {
+				return Proxy.getProxyClass(cl, interfaceClasses);
+			} catch (IllegalArgumentException e) {
+				return super.resolveProxyClass(interfaces);
+			}
+		}
+
 	}
 
 }

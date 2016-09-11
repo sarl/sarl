@@ -98,7 +98,7 @@ public class DefaultContextInteractionsSkillTest extends AbstractJanusTest {
 
 		this.defaultSpace = mock(EventSpace.class);
 		when(this.defaultSpace.getAddress(ArgumentMatchers.any(UUID.class))).thenReturn(this.address);
-		when(this.defaultSpace.getID()).thenReturn(this.defaultSpaceID);
+		when(this.defaultSpace.getSpaceID()).thenReturn(this.defaultSpaceID);
 
 		this.parentContext = mock(AgentContext.class);
 		when(this.parentContext.getDefaultSpace()).thenReturn(this.defaultSpace);
@@ -201,7 +201,7 @@ public class DefaultContextInteractionsSkillTest extends AbstractJanusTest {
 		SpaceID spaceId = mock(SpaceID.class);
 		when(spaceId.getID()).thenReturn(id);
 		EventSpace otherSpace = mock(EventSpace.class);
-		when(otherSpace.getID()).thenReturn(spaceId);
+		when(otherSpace.getSpaceID()).thenReturn(spaceId);
 		//
 		assertFalse(this.skill.isDefaultSpace(otherSpace));
 	}
@@ -215,7 +215,7 @@ public class DefaultContextInteractionsSkillTest extends AbstractJanusTest {
 	@Test
 	public void isDefaultSpaceSpaceID_defaultSpace() throws Exception {
 		this.reflect.invoke(this.skill, "install");
-		assertTrue(this.skill.isDefaultSpace(this.defaultSpace.getID()));
+		assertTrue(this.skill.isDefaultSpace(this.defaultSpace.getSpaceID()));
 	}
 
 	@Test

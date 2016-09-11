@@ -21,6 +21,7 @@ package io.janusproject.tests.kernel.services.arakhne;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,6 +37,8 @@ import io.janusproject.services.logging.LogService;
 import io.janusproject.tests.testutils.AbstractDependentServiceTest;
 import io.janusproject.tests.testutils.AvoidServiceStartForTest;
 import io.janusproject.tests.testutils.StartServiceForTest;
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,7 +77,13 @@ public class ArakhneLocaleLogServiceTest {
 
 		@Before
 		public void setUp() {
-			when(this.logger.isLoggable(ArgumentMatchers.any(Level.class))).thenReturn(true);
+			ClassLoaderFinder.setPreferredClassLoader(getClass().getClassLoader());
+			doReturn(true).when(this.logger).isLoggable(ArgumentMatchers.any());
+		}
+		
+		@After
+		public void tearDown() {
+			ClassLoaderFinder.popPreferredClassLoader();
 		}
 
 		@Override
@@ -890,7 +899,7 @@ public class ArakhneLocaleLogServiceTest {
 
 		@Before
 		public void setUp() {
-			when(this.logger.isLoggable(ArgumentMatchers.any(Level.class))).thenReturn(true);
+			doReturn(true).when(this.logger).isLoggable(ArgumentMatchers.any());
 		}
 
 		@Override

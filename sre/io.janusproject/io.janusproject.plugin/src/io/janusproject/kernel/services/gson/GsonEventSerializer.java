@@ -41,6 +41,7 @@ import io.janusproject.services.network.EventEncrypter;
 import io.janusproject.services.network.EventEnvelope;
 import io.janusproject.services.network.NetworkConfig;
 import io.janusproject.services.network.NetworkUtil;
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.lang.core.Event;
@@ -157,10 +158,20 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 		final String classname = headers.get(key);
 		Class<?> type = null;
 		if (classname != null) {
-			try {
-				type = Class.forName(classname);
-			} catch (Throwable exception) {
-				//
+			final ClassLoader loader = ClassLoaderFinder.findClassLoader();
+			if (loader != null) {
+				try {
+					type = loader.loadClass(classname);
+				} catch (Throwable exception) {
+					//
+				}
+			}
+			if (type == null) {
+				try {
+					type = Class.forName(classname);
+				} catch (Throwable exception) {
+					//
+				}
 			}
 		}
 		if (type == null || !expectedType.isAssignableFrom(type)) {

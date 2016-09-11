@@ -84,7 +84,7 @@ public class RestrictedAccessEventSpaceSpecificationImplTest extends AbstractJan
 		Permission permission = Mockito.mock(Permission.class);
 		RestrictedAccessEventSpace space = this.specification.create(this.spaceId, "a", acl, "b", permission, "c"); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
 		assertNotNull(space);
-		assertSame(this.spaceId, space.getID());
+		assertSame(this.spaceId, space.getSpaceID());
 	}
 
 }

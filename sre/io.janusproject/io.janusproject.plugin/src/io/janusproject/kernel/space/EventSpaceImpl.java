@@ -52,7 +52,7 @@ public class EventSpaceImpl extends AbstractEventSpace implements OpenEventSpace
 
 	@Override
 	public Address register(EventListener entity) {
-		final Address a = new Address(getID(), entity.getID());
+		final Address a = new Address(getSpaceID(), entity.getID());
 		synchronized (this.participants) {
 			return this.participants.registerParticipant(a, entity);
 		}

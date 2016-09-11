@@ -80,12 +80,7 @@ public class LoggingSkillTest extends AbstractJanusTest {
 	@Before
 	public void setUp() throws Exception {
 		UUID agentId = UUID.randomUUID();
-		this.owner = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), agentId, null) {
-			@Override
-			protected <S extends Capacity> S getSkill(Class<S> capacity) {
-				return capacity.cast(LoggingSkillTest.this.skill);
-			}
-		};
+		this.owner = new TestAgent(agentId, this);
 		this.owner = Mockito.spy(this.owner);
 		this.skill = this.reflect.newInstance(LoggingSkill.class, this.owner);
 		MockitoAnnotations.initMocks(this);
@@ -99,7 +94,7 @@ public class LoggingSkillTest extends AbstractJanusTest {
 		this.reflect.invoke(this.skill, "install");
 		//
 		this.logger = Mockito.spy(this.skill.getLogger());
-		this.reflect.invoke(this.skill, "setLogger", this.logger);
+		this.reflect.set(this.skill, "logger", this.logger);
 	}
 
 	@Test
@@ -440,6 +435,21 @@ public class LoggingSkillTest extends AbstractJanusTest {
 		assertTrue(this.skill.isDebugLogEnabled());
 		this.skill.setLogLevel(7);
 		assertTrue(this.skill.isDebugLogEnabled());
+	}
+
+	public static class TestAgent extends Agent {
+		private final LoggingSkillTest test;
+
+		public TestAgent(UUID agentId, LoggingSkillTest test) {
+			super(Mockito.mock(BuiltinCapacitiesProvider.class), agentId, null);
+			this.test = test;
+		}
+
+		@Override
+		protected <S extends Capacity> S getSkill(Class<S> capacity) {
+			return capacity.cast(this.test.skill);
+		}
+
 	}
 
 }

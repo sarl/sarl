@@ -88,18 +88,7 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 		this.innerCapacity = Mockito.mock(InnerContextAccess.class);
 		Mockito.when(this.innerCapacity.getInnerContext()).thenReturn(innerContext);
 
-		Agent agent = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null) {
-			/**
-			 * {@inheritDoc}
-			 */
-			@Override
-			protected <S extends Capacity> S getSkill(Class<S> capacity) {
-				if (InternalEventBusCapacity.class.equals(capacity))
-					return capacity.cast(BehaviorsSkillTest.this.busCapacity);
-				return capacity.cast(BehaviorsSkillTest.this.innerCapacity);
-			}
-		};
-
+		Agent agent = new TestAgent(this);
 		this.skill = this.reflect.newInstance(BehaviorsSkill.class, agent, this.address);
 	}
 
@@ -110,7 +99,8 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 
 	@Test
 	public void registerBehavior() {
-		Behavior b = Mockito.mock(Behavior.class);
+		Behavior b = new TestBehavior();
+		b = spy(b);
 		assertSame(b, this.skill.registerBehavior(b));
 		ArgumentCaptor<Behavior> argument = ArgumentCaptor.forClass(Behavior.class);
 		Mockito.verify(this.busCapacity).registerEventListener(argument.capture());
@@ -119,7 +109,8 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 
 	@Test
 	public void unregisterBehavior() {
-		Behavior b = Mockito.mock(Behavior.class);
+		Behavior b = new TestBehavior();
+		b = spy(b);
 		this.skill.registerBehavior(b);
 		//
 		assertSame(b, this.skill.unregisterBehavior(b));
@@ -130,7 +121,7 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 
 	@Test
 	public void wake() {
-		Event event = Mockito.mock(Event.class);
+		Event event = mock(Event.class);
 		this.skill.wake(event);
 		ArgumentCaptor<Event> argument1 = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.innerSpace).emit(argument1.capture());
@@ -138,6 +129,32 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Address> argument2 = ArgumentCaptor.forClass(Address.class);
 		Mockito.verify(event).setSource(argument2.capture());
 		assertEquals(this.address, argument2.getValue());
+	}
+
+	public static class TestAgent extends Agent {
+
+		private final BehaviorsSkillTest test;
+		
+		public TestAgent(BehaviorsSkillTest test) {
+			super(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null);
+			this.test = test;
+		}
+
+		@Override
+		protected <S extends Capacity> S getSkill(Class<S> capacity) {
+			if (InternalEventBusCapacity.class.equals(capacity))
+				return capacity.cast(this.test.busCapacity);
+			return capacity.cast(this.test.innerCapacity);
+		}
+
+	}
+
+	public static class TestBehavior extends Behavior {
+
+		public TestBehavior() {
+			super(null);
+		}
+
 	}
 
 }

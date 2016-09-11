@@ -68,7 +68,7 @@ public abstract class AbstractEclipseTestPreferencesTest extends AbstractSarlUiT
 	protected BundleContext bundleContext;
 	
 	@Inject
-	private ExtendedReflectExtensions reflect;
+	private ReflectExtensions reflect;
 	
 	@Before
 	public void setUp() throws Exception {

@@ -53,7 +53,7 @@ public class MicroKernelSkillTest extends AbstractJanusTest {
 
 	@Before
 	public void setUp() throws Exception {
-		Mockito.when(this.kernel.getService(ArgumentMatchers.any(Class.class))).thenReturn(this.service);
+		Mockito.when(this.kernel.getService(ArgumentMatchers.any())).thenReturn(this.service);
 	}
 
 	@Test

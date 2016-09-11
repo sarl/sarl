@@ -40,6 +40,7 @@ import com.google.inject.util.Modules;
 import io.janusproject.Boot;
 import io.janusproject.kernel.Kernel;
 import io.janusproject.modules.StandardJanusPlatformModule;
+import io.janusproject.services.executor.ChuckNorrisException;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
@@ -306,13 +307,15 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		 */
 		private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
 			this.results = (List<Object>) occurrence.parameters[0];
-			if (runAgentTest()) {
-				getSkill(Schedules.class).in(1000, new Procedure1<Agent>() {
-					@Override
-					public void apply(Agent it) {
-						getSkill(Lifecycle.class).killMe();
-					}
-				});
+			try {
+				if (runAgentTest()) {
+					getSkill(Schedules.class).in(1000, (it) -> getSkill(Lifecycle.class).killMe());
+				}
+			} catch (Throwable exception) {
+				if (!(exception instanceof ChuckNorrisException)) {
+					addResult(exception);
+				}
+				throw exception;
 			}
 		}
 

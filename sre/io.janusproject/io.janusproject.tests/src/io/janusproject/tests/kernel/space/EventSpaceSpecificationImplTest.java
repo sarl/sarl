@@ -80,7 +80,7 @@ public class EventSpaceSpecificationImplTest extends AbstractJanusTest {
 	public void create() {
 		EventSpace space = this.specification.create(this.spaceId, "a", "b", "c"); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
 		assertNotNull(space);
-		assertSame(this.spaceId, space.getID());
+		assertSame(this.spaceId, space.getSpaceID());
 	}
 
 }

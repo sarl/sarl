@@ -115,12 +115,14 @@ public class SpaceRepository {
 	 * Finalize the initialization: ensure that the events are fired outside the scope of the SpaceRepository constructor.
 	 */
 	synchronized void postConstruction() {
-		for (final Entry<SpaceID, Object[]> e : this.spaceIDs.entrySet()) {
-			assert this.spaceIDs.containsKey(e.getKey());
-			ensureLocalSpaceDefinition(e.getKey(), e.getValue());
+		if (this.spaceIDs != null) {
+			for (final Entry<SpaceID, Object[]> e : this.spaceIDs.entrySet()) {
+				assert this.spaceIDs.containsKey(e.getKey());
+				ensureLocalSpaceDefinition(e.getKey(), e.getValue());
+			}
+			this.internalListener = new SpaceDMapListener();
+			this.spaceIDs.addDMapListener(this.internalListener);
 		}
-		this.internalListener = new SpaceDMapListener();
-		this.spaceIDs.addDMapListener(this.internalListener);
 	}
 
 	/**

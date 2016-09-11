@@ -86,7 +86,7 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	 *
 	 * @return <code>true</code> if an instance of inner context exists, otherwise <code>false</code>.
 	 */
-	synchronized boolean hasInnerContext() {
+	public synchronized boolean hasInnerContext() {
 		return this.innerContext != null;
 	}
 

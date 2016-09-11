@@ -46,6 +46,7 @@ import io.janusproject.tests.testutils.StartServiceForTest;
 import io.janusproject.util.TwoStepConstruction;
 import javassist.Modifier;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
@@ -109,7 +110,7 @@ public class HazelcastKernelDiscoveryServiceTest extends AbstractDependentServic
 		this.kernels = new HzMapMock<>();
 		this.hzInstance = Mockito.mock(HazelcastInstance.class);
 		{
-			Mockito.when(this.hzInstance.getMap(ArgumentMatchers.anyString())).thenReturn(this.kernels);
+			Mockito.when(this.hzInstance.getMap(ArgumentMatchers.any())).thenReturn(this.kernels);
 			Cluster clusterMock = Mockito.mock(Cluster.class);
 			Mockito.when(this.hzInstance.getCluster()).thenReturn(clusterMock);
 			Member memberMock = Mockito.mock(Member.class);

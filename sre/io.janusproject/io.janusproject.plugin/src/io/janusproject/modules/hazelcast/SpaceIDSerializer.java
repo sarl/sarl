@@ -41,7 +41,7 @@ import io.sarl.lang.core.SpaceSpecification;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class SpaceIDSerializer implements StreamSerializer<SpaceID> {
+public class SpaceIDSerializer implements StreamSerializer<SpaceID> {
 
 	/**
 	 * Unique identifier for the {@link SpaceID} type.

@@ -107,9 +107,9 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 		this.spaceID = new SpaceID(UUID.randomUUID(), UUID.randomUUID(), OpenEventSpaceSpecification.class);
 		this.params = new Object[] { "PARAM" }; //$NON-NLS-1$
 		//
-		Mockito.when(this.dds.<SpaceID, Object[]> getMap(ArgumentMatchers.anyString(), ArgumentMatchers.any(Comparator.class)))
+		Mockito.when(this.dds.<SpaceID, Object[]> getMap(ArgumentMatchers.any(), ArgumentMatchers.any()))
 				.thenReturn(this.spaceIDs);
-		Mockito.when(this.dds.<SpaceID, Object[]> getMap(ArgumentMatchers.anyString())).thenReturn(this.spaceIDs);
+		Mockito.when(this.dds.<SpaceID, Object[]> getMap(ArgumentMatchers.any())).thenReturn(this.spaceIDs);
 		//
 		this.repository = this.reflect.newInstance(SpaceRepository.class, "thename", //$NON-NLS-1$
 				this.dds, this.injector, this.listener);
@@ -122,7 +122,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 		Mockito.when(this.injector.getInstance(OpenEventSpaceSpecification.class)).thenReturn(this.spaceSpecification);
 		this.space = Mockito.mock(OpenEventSpace.class);
 		Mockito.when(this.spaceSpecification.create(this.spaceID, this.params)).thenReturn(this.space);
-		Mockito.when(this.space.getID()).thenReturn(this.spaceID);
+		Mockito.when(this.space.getSpaceID()).thenReturn(this.spaceID);
 	}
 
 	private void baseInit() throws Exception {
@@ -130,7 +130,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 		Mockito.when(this.injector.getInstance(OpenEventSpaceSpecification.class)).thenReturn(this.spaceSpecification);
 		this.space = Mockito.mock(OpenEventSpace.class);
 		Mockito.when(this.spaceSpecification.create(this.spaceID, this.params)).thenReturn(this.space);
-		Mockito.when(this.space.getID()).thenReturn(this.spaceID);
+		Mockito.when(this.space.getSpaceID()).thenReturn(this.spaceID);
 	}
 
 	private void initRepository() throws Exception {
@@ -447,12 +447,12 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 		initMocks();
 		//
 		final UUID contextID = UUID.randomUUID();
-		Mockito.when(this.spaceSpecification.create(ArgumentMatchers.any(SpaceID.class))).thenAnswer(new Answer<Space>() {
+		Mockito.when(this.spaceSpecification.create(ArgumentMatchers.any())).thenAnswer(new Answer<Space>() {
 			@Override
 			public Space answer(InvocationOnMock invocation) throws Throwable {
 				Space sp = Mockito.mock(OpenEventSpace.class);
 				SpaceID spId = (SpaceID) invocation.getArguments()[0];
-				Mockito.when(sp.getID()).thenReturn(spId);
+				Mockito.when(sp.getSpaceID()).thenReturn(spId);
 				Mockito.when(sp.toString()).thenReturn(spId.toString());
 				return sp;
 			}
@@ -472,7 +472,7 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 		assertNotNull(space2);
 		assertNull(space3);
 		assertNotSame(space1, space2);
-		assertNotEquals(space1.getID(), space2.getID());
+		assertNotEquals(space1.getSpaceID(), space2.getSpaceID());
 	}
 
 	@Test
@@ -480,12 +480,12 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 		initMocks();
 		//
 		final UUID contextID = UUID.randomUUID();
-		Mockito.when(this.spaceSpecification.create(ArgumentMatchers.any(SpaceID.class))).thenAnswer(new Answer<Space>() {
+		Mockito.when(this.spaceSpecification.create(ArgumentMatchers.any())).thenAnswer(new Answer<Space>() {
 			@Override
 			public Space answer(InvocationOnMock invocation) throws Throwable {
 				Space sp = Mockito.mock(OpenEventSpace.class);
 				SpaceID spId = (SpaceID) invocation.getArguments()[0];
-				Mockito.when(sp.getID()).thenReturn(spId);
+				Mockito.when(sp.getSpaceID()).thenReturn(spId);
 				Mockito.when(sp.toString()).thenReturn(spId.toString());
 				return sp;
 			}
@@ -513,12 +513,12 @@ public class SpaceRepositoryTest extends AbstractJanusTest {
 		initMocks();
 		//
 		final UUID contextID = UUID.randomUUID();
-		Mockito.when(this.spaceSpecification.create(ArgumentMatchers.any(SpaceID.class))).thenAnswer(new Answer<Space>() {
+		Mockito.when(this.spaceSpecification.create(ArgumentMatchers.any())).thenAnswer(new Answer<Space>() {
 			@Override
 			public Space answer(InvocationOnMock invocation) throws Throwable {
 				Space sp = Mockito.mock(OpenEventSpace.class);
 				SpaceID spId = (SpaceID) invocation.getArguments()[0];
-				Mockito.when(sp.getID()).thenReturn(spId);
+				Mockito.when(sp.getSpaceID()).thenReturn(spId);
 				Mockito.when(sp.toString()).thenReturn(spId.toString());
 				return sp;
 			}

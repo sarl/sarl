@@ -106,7 +106,7 @@ public class KernelTest extends AbstractJanusTest {
 		//
 		when(this.spawnService.isRunning()).thenReturn(true);
 		when(this.spawnService.state()).thenReturn(State.RUNNING);
-		when(this.spawnService.spawn(ArgumentMatchers.any(AgentContext.class), ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(Class.class),
+		when(this.spawnService.spawn(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
 				ArgumentMatchers.any())).thenReturn(this.uuid);
 		when(this.executorService.isRunning()).thenReturn(true);
 		when(this.executorService.state()).thenReturn(State.RUNNING);
@@ -127,7 +127,7 @@ public class KernelTest extends AbstractJanusTest {
 
 	@Test
 	public void spawn() throws Exception {
-		this.reflect.invoke(this.kernel, "setJanusContext", this.agentContext);
+		this.reflect.set(this.kernel, "janusContext", this.agentContext);
 		//
 		UUID id = this.kernel.spawn(Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
 		assertSame(this.uuid, id);
@@ -144,7 +144,7 @@ public class KernelTest extends AbstractJanusTest {
 
 	@Test
 	public void spawnWithAgentId() throws Exception {
-		this.reflect.invoke(this.kernel, "setJanusContext", this.agentContext);
+		this.reflect.set(this.kernel, "janusContext", this.agentContext);
 		//
 		UUID aId = UUID.fromString(this.uuid.toString());
 		UUID id = this.kernel.spawn(aId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$

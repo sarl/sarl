@@ -77,15 +77,6 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 		return this.logger;
 	}
 
-	/**
-	 * Set the logger.
-	 *
-	 * @param logger - the logger.
-	 */
-	void setLogger(Logger logger) {
-		this.logger = logger;
-	}
-
 	@Override
 	protected void install() {
 		final UUID agentId = getOwner().getID();

@@ -101,8 +101,8 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 
 		this.service = Mockito.mock(DistributedDataStructureService.class);
 		DMap<Object, Object> mapMock = new DMapView<>(UUID.randomUUID().toString(), new HashMap<>());
-		Mockito.when(this.service.getMap(ArgumentMatchers.anyString(), ArgumentMatchers.any(Comparator.class))).thenReturn(mapMock);
-		Mockito.when(this.service.getMap(ArgumentMatchers.anyString())).thenReturn(mapMock);
+		Mockito.when(this.service.getMap(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mapMock);
+		Mockito.when(this.service.getMap(ArgumentMatchers.any())).thenReturn(mapMock);
 
 		this.spaceId = new SpaceID(UUID.randomUUID(), UUID.randomUUID(), OpenEventSpaceSpecification.class);
 
@@ -245,14 +245,14 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 		event = Mockito.mock(Event.class);
 		Mockito.when(event.getSource()).thenReturn(this.address);
 		this.reflect.invoke(this.space, "doEmit", event, Scopes.addresses(otherAddress));
-		Mockito.verify(this.listener, new Times(0)).receiveEvent(Mockito.any(Event.class));
+		Mockito.verify(this.listener, new Times(0)).receiveEvent(Mockito.any());
 
 		unregister();
 
 		event = Mockito.mock(Event.class);
 		Mockito.when(event.getSource()).thenReturn(this.address);
 		this.reflect.invoke(this.space, "doEmit", event, Scopes.addresses(otherAddress));
-		Mockito.verify(this.listener, new Times(0)).receiveEvent(Mockito.any(Event.class));
+		Mockito.verify(this.listener, new Times(0)).receiveEvent(Mockito.any());
 	}
 
 	@Test
@@ -345,7 +345,7 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 		event = Mockito.mock(Event.class);
 		Mockito.when(event.getSource()).thenReturn(this.address);
 		this.space.emit(event, scope);
-		Mockito.verify(this.listener, new Times(0)).receiveEvent(Mockito.any(Event.class));
+		Mockito.verify(this.listener, new Times(0)).receiveEvent(Mockito.any());
 		{
 			ArgumentCaptor<Scope> netscope = ArgumentCaptor.forClass(Scope.class);
 			ArgumentCaptor<Event> netarg = ArgumentCaptor.forClass(Event.class);
