@@ -414,25 +414,16 @@ public class JanusSREInstall extends AbstractSREInstall {
         return outputLocation;
     }
 
-    /**
-     * {@inheritDoc}.
-     */
     @Override
     public String getNameNoDefault() {
         return Locale.getString(getClass(), "PLUGIN_NAME"); //$NON-NLS-1$
     }
 
-    /**
-     * {@inheritDoc}.
-     */
     @Override
     public String getLocation() {
         return this.location;
     }
 
-    /**
-     * {@inheritDoc}.
-     */
     @Override
     public Map<String, String> getAvailableCommandLineOptions() {
         final Map<String, String> options = Maps.newHashMap();
@@ -458,45 +449,31 @@ public class JanusSREInstall extends AbstractSREInstall {
         return true;
     }
 
-    /**
-     * {@inheritDoc}.
-     */
     @Override
     public String getSREArguments() {
         return ""; //$NON-NLS-1$
     }
 
-    /**
-     * {@inheritDoc}.
-     */
     @Override
     public String getJVMArguments() {
         return ""; //$NON-NLS-1$
     }
 
-    /**
-     * {@inheritDoc}.
-     */
     @Override
     public void getAsXML(Document document, Element element) throws IOException {
-        // TODO Auto-generated method stub
-
+    	// Ignore this function since the Janus SRE is embedded in the product.
+    	// There is no need to store the preferences and configuration into the SRE preferences.
     }
 
-    /**
-     * {@inheritDoc}.
-     */
     @Override
     public void setFromXML(Element element) throws IOException {
-        //
+    	// Ignore this function since the Janus SRE is embedded in the product.
+    	// There is no need to read the preferences and configuration into the SRE preferences.
     }
 
-    /**
-     * {@inheritDoc}.
-     */
     @Override
     protected void resolveDirtyFields(boolean forceSettings) {
-        //
+        // Assuming that all the fields have a valid value.
     }
 
 }
