@@ -36,6 +36,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.google.common.collect.Maps;
+import io.janusproject.Boot;
+import io.janusproject.JanusConfig;
 import io.janusproject.eclipse.JanusEclipsePlugin;
 import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
 import org.arakhne.afc.vmutil.locale.Locale;
@@ -68,6 +70,7 @@ import io.sarl.eclipse.util.BundleUtil;
  * Provide Janus as a SRE install.
  *
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -413,67 +416,68 @@ public class JanusSREInstall extends AbstractSREInstall {
 
         return outputLocation;
     }
+	/**
 
-    @Override
-    public String getNameNoDefault() {
-        return Locale.getString(getClass(), "PLUGIN_NAME"); //$NON-NLS-1$
-    }
+	@Override
+	public String getNameNoDefault() {
+		return Locale.getString(getClass(), "PLUGIN_NAME"); //$NON-NLS-1$
+	}
 
-    @Override
-    public String getLocation() {
-        return this.location;
-    }
+	@Override
+	public String getLocation() {
+		return this.location;
+	}
 
-    @Override
-    public Map<String, String> getAvailableCommandLineOptions() {
-        final Map<String, String> options = Maps.newHashMap();
-        options.put(SREConstants.MANIFEST_CLI_SHOW_LOGO, ""); //$NON-NLS-1$
-        options.put(SREConstants.MANIFEST_CLI_HIDE_LOGO, "--nologo"); //$NON-NLS-1$
-        options.put(SREConstants.MANIFEST_CLI_SHOW_INFO, "--log=info"); //$NON-NLS-1$
-        options.put(SREConstants.MANIFEST_CLI_HIDE_INFO, "--log=warning"); //$NON-NLS-1$
-        options.put(SREConstants.MANIFEST_CLI_DEFAULT_CONTEXT_ID, "--worldid"); //$NON-NLS-1$
-        options.put(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID, "--randomid"); //$NON-NLS-1$
-        options.put(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID, "--bootid"); //$NON-NLS-1$
-        options.put(SREConstants.MANIFEST_CLI_SRE_OFFLINE, "--offline"); //$NON-NLS-1$
-        options.put(SREConstants.MANIFEST_CLI_EMBEDDED, "--embedded"); //$NON-NLS-1$
-        options.put(SREConstants.MANIFEST_CLI_NO_MORE_OPTION, "--"); //$NON-NLS-1$
-        return Collections.unmodifiableMap(options);
-    }
+	@Override
+	public Map<String, String> getAvailableCommandLineOptions() {
+		final Map<String, String> options = Maps.newHashMap();
+		options.put(SREConstants.MANIFEST_CLI_SHOW_LOGO, ""); //$NON-NLS-1$
+		options.put(SREConstants.MANIFEST_CLI_HIDE_LOGO, formatCommandLineOption(Boot.CLI_OPTION_NOLOGO_LONG, null));
+		options.put(SREConstants.MANIFEST_CLI_SHOW_INFO, formatCommandLineOption(Boot.CLI_OPTION_LOG_LONG, "info")); //$NON-NLS-1$
+		options.put(SREConstants.MANIFEST_CLI_HIDE_INFO, formatCommandLineOption(Boot.CLI_OPTION_LOG_LONG, "warning")); //$NON-NLS-1$
+		options.put(SREConstants.MANIFEST_CLI_DEFAULT_CONTEXT_ID, formatCommandLineOption(Boot.CLI_OPTION_WORLDID_LONG, null));
+		options.put(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID, formatCommandLineOption(Boot.CLI_OPTION_RANDOMID_LONG, null));
+		options.put(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID, formatCommandLineOption(Boot.CLI_OPTION_BOOTID_LONG, null));
+		options.put(SREConstants.MANIFEST_CLI_SRE_OFFLINE, formatCommandLineOption(Boot.CLI_OPTION_OFFLINE_LONG, null));
+		options.put(SREConstants.MANIFEST_CLI_EMBEDDED, formatCommandLineOption(Boot.CLI_OPTION_EMBEDDED_LONG, null));
+		options.put(SREConstants.MANIFEST_CLI_NO_MORE_OPTION, formatCommandLineOption(null, null));
+		return Collections.unmodifiableMap(options);
+	}
 
-    @Override
-    public boolean isStandalone() {
-        // Must return true to pass the test done by the SRE
-        // AbstractSREInstall#getValidity
-        // But the jar of this plugin is not standalone that why in the manifest
-        // standalone=false
-        return true;
-    }
+	@Override
+	public boolean isStandalone() {
+		// Must return true to pass the test done by the SRE
+		// AbstractSREInstall#getValidity
+		// But the jar of this plugin is not standalone that why in the manifest
+		// standalone=false
+		return true;
+	}
 
-    @Override
-    public String getSREArguments() {
-        return ""; //$NON-NLS-1$
-    }
+	@Override
+	public String getSREArguments() {
+		return ""; //$NON-NLS-1$
+	}
 
-    @Override
-    public String getJVMArguments() {
-        return ""; //$NON-NLS-1$
-    }
+	@Override
+	public String getJVMArguments() {
+		return ""; //$NON-NLS-1$
+	}
 
-    @Override
-    public void getAsXML(Document document, Element element) throws IOException {
-    	// Ignore this function since the Janus SRE is embedded in the product.
-    	// There is no need to store the preferences and configuration into the SRE preferences.
-    }
+	@Override
+	public void getAsXML(Document document, Element element) throws IOException {
+		// Ignore this function since the Janus SRE is embedded in the product.
+		// There is no need to store the preferences and configuration into the SRE preferences.
+	}
 
-    @Override
-    public void setFromXML(Element element) throws IOException {
-    	// Ignore this function since the Janus SRE is embedded in the product.
-    	// There is no need to read the preferences and configuration into the SRE preferences.
-    }
+	@Override
+	public void setFromXML(Element element) throws IOException {
+		// Ignore this function since the Janus SRE is embedded in the product.
+		// There is no need to read the preferences and configuration into the SRE preferences.
+	}
 
-    @Override
-    protected void resolveDirtyFields(boolean forceSettings) {
-        // Assuming that all the fields have a valid value.
-    }
+	@Override
+	protected void resolveDirtyFields(boolean forceSettings) {
+		// Assuming that all the fields have a valid value.
+	}
 
 }

@@ -494,4 +494,23 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		return this.isStandalone;
 	}
 
+	/** Replies the string representation of a command-line option.
+	 *
+	 * @param name the name of the option.
+	 * @param value the value to put in the command-line.
+	 * @return the string representation of the command-line option.
+	 */
+	protected static String formatCommandLineOption(String name, String value) {
+		final StringBuilder str = new StringBuilder();
+		str.append("--"); //$NON-NLS-1$
+		if (!Strings.isNullOrEmpty(name)) {
+			str.append(name);
+			if (!Strings.isNullOrEmpty(value)) {
+				str.append("="); //$NON-NLS-1$
+				str.append(value);
+			}
+		}
+		return str.toString();
+	}
+
 }
