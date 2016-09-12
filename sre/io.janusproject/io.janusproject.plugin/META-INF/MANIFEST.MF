@@ -68,14 +68,15 @@ Export-Package: io.janusproject,
 Main-Class: io.janusproject.Boot
 
 Name: SARL-Runtime-Environment
-CLI-Offline: --offline
 SARL-Spec-Version: 0.4.0
-CLI-No-More-Option: --
 SRE-Name: JANUS
+Standalone-SRE: false
+CLI-Offline: --offline
+CLI-No-More-Option: --
 CLI-Random-Context-ID: --randomid
 CLI-Hide-Logo: --nologo
 CLI-Show-Info: --log=info
 CLI-Hide-Info: --log=warning
-Standalone-SRE: false
 CLI-Default-Context-ID: --worldid
 CLI-BootAgent-Context-ID: --bootid
+CLI-Embedded: --embedded
