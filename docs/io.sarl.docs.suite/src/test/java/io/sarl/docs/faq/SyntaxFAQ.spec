@@ -41,23 +41,51 @@ describe "SARL Syntax FAQ" {
 			 * When a decimal point is written in the literal,
 			 * the fractional part and the mantissa part must
 			 * be specify also, even if these parts are equal
-			 * to zero.
+			 * to zero.  Consequently: <ul>
+			 * <li>`123.0` is correct; </li>
+			 * <li>`123.` is incorrect; </li>
+			 * <li>`0.123` is correct; </li>
+			 * <li>`.123` is incorrect; </li>
+			 * </ul>
 			 * 
-			 * @filter(.* = '''|'''|.parseWithError.*) 
+			 * @filter(.*) 
 			 */
 			fact "Can I use the same syntax as in Java for number literals?" {
-				'''
-					var a = 123.0 // Correct syntax
-					var b = 123.  // Incorrect syntax
-					var c = 0.123 // Correct syntax
-					var d = .123  // Incorrect syntax
-				'''.parseWithError(
-						"package io.sarl.docs.faq.syntax
+				'''		package io.sarl.docs.faq.syntax
 						agent A {
 							def action : double {",
-						// TEXT
-						"} }"
-				)
+								var a = 123.0
+								return a
+							}
+						}
+				'''.parseSuccessfully
+
+				'''		package io.sarl.docs.faq.syntax
+						agent A {
+							def action : double {",
+								var a = 0.123
+								return a
+							}
+						}
+				'''.parseSuccessfully
+
+				'''		package io.sarl.docs.faq.syntax
+						agent A {
+							def action : double {",
+								var a = 123.
+								return a
+							}
+						}
+				'''.parseWithError
+
+				'''		package io.sarl.docs.faq.syntax
+						agent A {
+							def action : double {",
+								var a = .123
+								return a
+							}
+						}
+				'''.parseWithError
 			}
 			
 			/* It is not allowed to put a SARL keyword, such as
