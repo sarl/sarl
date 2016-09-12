@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import com.google.common.annotations.GwtCompatible;
 import org.eclipse.xtext.xbase.lib.Inline;
@@ -88,6 +89,12 @@ public class SARLTimeExtensionsTest {
 	public void testWeeks() {
 		assertSimilar(746323200000l, weeks(1234));
 		assertSimilar(-141523200000l, weeks(-234));
+	}
+
+	@Test
+	public void testConvertFromTo() {
+		assertSimilar(106617600000l, convertFromTo(1234, TimeUnit.DAYS, TimeUnit.MILLISECONDS));
+		assertSimilar(-20217600000l, convertFromTo(-234, TimeUnit.DAYS, TimeUnit.MILLISECONDS));
 	}
 
 }

@@ -33,6 +33,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -132,6 +133,10 @@ public abstract class AbstractSarlTest {
 	 */
 	public static final int MAVEN_CENTRAL_TIMEOUT = 15000;
 
+	/** Precision of the floating point number epsilon-tests.
+	 */
+	public static final int DEFAULT_DECIMAL_COUNT = 8;
+
 	@Inject
 	private ValidationTestHelper validationHelper;
 
@@ -193,7 +198,7 @@ public abstract class AbstractSarlTest {
 		// Assuming that the Maven launcher is providing an absolute path to the launcher.
 		return cmd != null
 				&& (cmd.startsWith("org.eclipse.equinox.launcher.Main")
-					|| cmd.startsWith("org.eclipse.jdt.internal.junit."));
+						|| cmd.startsWith("org.eclipse.jdt.internal.junit."));
 	}
 
 	/** This rule permits to clean automatically the fields
@@ -352,6 +357,75 @@ public abstract class AbstractSarlTest {
 	public static void assertEquals(float expected, float actual, float precision) {
 		Assert.assertEquals(expected, actual, precision);
 	}
+
+	/** Assert the values are equal.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param epsilon the precision.
+	 */
+	public static void assertEquals(double expected, double actual, double precision) {
+		Assert.assertEquals(expected, actual, precision);
+	}
+
+	/** Assert the values are equal.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param epsilon the precision.
+	 */
+	public static void assertEpsilonEquals(double expected, double actual) {
+		if (!isEpsilonEquals(expected, actual, true)) {
+			throw new ComparisonFailure("Values are not equal.", Double.toString(expected), Double.toString(actual));
+		}
+	}
+
+	/** Replies if two values are equals at espilon.
+	 *
+	 * @param v1 the first value.
+	 * @param v2 the second value.
+	 * @param isNaNEqual indicates if the NaN value is equals to itself.
+	 * @return <code>true</code> or <code>false</code>
+	 */
+	public static boolean isEpsilonEquals(double v1, double v2, boolean isNaNEqual) {
+		if (v1 == v2) {
+			return true;
+		}
+		final boolean nanA = Double.isNaN(v1);
+		final boolean nanB = Double.isNaN(v2);
+		if (nanA || nanB) {
+			if (isNaNEqual) {
+				return nanA == nanB;
+			}
+			return false;
+		}
+		if (!Double.isInfinite(v1) && !Double.isInfinite(v1)
+				&& !Double.isNaN(v1) && !Double.isNaN(v2)) {
+			return isEpsilonEquals(new BigDecimal(v1), new BigDecimal(v2), DEFAULT_DECIMAL_COUNT / 2);
+		}
+		return false;
+	}
+
+	/** Replies if two values are equals at espilon.
+	 *
+	 * @param v1 the first value.
+	 * @param v2 the second value.
+	 * @param precision is the number of decimal digits to test.
+	 * @return <code>true</code> or <code>false</code>
+	 */
+	public static boolean isEpsilonEquals(BigDecimal v1, BigDecimal v2, int precision) {
+		final BigDecimal ma = v1.movePointRight(precision);
+		final BigDecimal mb = v2.movePointRight(precision);
+		BigDecimal aa = ma.setScale(0, BigDecimal.ROUND_HALF_UP);
+		BigDecimal bb = mb.setScale(0, BigDecimal.ROUND_HALF_UP);
+		if (aa.compareTo(bb) == 0) {
+			return true;
+		}
+		aa = ma.setScale(0, BigDecimal.ROUND_DOWN);
+		bb = mb.setScale(0, BigDecimal.ROUND_DOWN);
+		return aa.compareTo(bb) == 0;
+	}
+
 	/**
 	 * Test if the given exception has a cause of the given type.
 	 *
@@ -1606,7 +1680,7 @@ public abstract class AbstractSarlTest {
 			if (primitive == Void.TYPE) return Void.class;
 			throw new IllegalArgumentException(primitive+ " is not a primitive"); //$NON-NLS-1$
 		}
-		
+
 		protected Field getDeclaredField(Class<?> clazz, String name) throws NoSuchFieldException {
 			NoSuchFieldException initialException = null;
 			do {
@@ -1663,16 +1737,16 @@ public abstract class AbstractSarlTest {
 			BundleContext context = TestPluginActivator.context;
 			if (context != null) {
 				for (Bundle b : context.getBundles()) {
-			        try {
-			            return b.loadClass(name);
-			        } catch (ClassNotFoundException e) {
-			            // No problem, this bundle doesn't have the class
-			        }
-			    }
+					try {
+						return b.loadClass(name);
+					} catch (ClassNotFoundException e) {
+						// No problem, this bundle doesn't have the class
+					}
+				}
 			}
 			throw new ClassNotFoundException(name);
 		}
-		
+
 		/**
 		 * Invokes the first accessible method defined on the receiver'c class with the given name and
 		 * a parameter list compatible to the given arguments.
@@ -1684,13 +1758,13 @@ public abstract class AbstractSarlTest {
 		public Object invoke(Object receiver, String methodName) throws SecurityException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 			assert receiver != null;
 			assert methodName != null;
-			
+
 			Class<? extends Object> clazz = receiver.getClass();
 			Method compatible = null;
 			do {
 				for (Method candidate : clazz.getDeclaredMethods()) {
 					if (candidate != null && !candidate.isBridge() && Objects.equal(methodName, candidate.getName())
-						&& candidate.getParameterCount() == 0) {
+							&& candidate.getParameterCount() == 0) {
 						if (compatible != null) 
 							throw new IllegalStateException("Ambiguous methods to invoke. Both "+compatible+" and  "+candidate+" would be compatible choices.");
 						compatible = candidate;
@@ -1706,7 +1780,7 @@ public abstract class AbstractSarlTest {
 			Method method = receiver.getClass().getMethod(methodName);
 			return method.invoke(receiver);
 		}
-		
+
 		/**
 		 * Invokes the first accessible method defined on the receiver'c class with the given name and
 		 * a parameter list compatible to the given arguments.
@@ -1718,17 +1792,17 @@ public abstract class AbstractSarlTest {
 		public Object invoke(Object receiver, String methodName, Object... args) throws Exception, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 			assert receiver != null;
 			assert methodName != null;
-			
+
 			if (args == null) {
 				args = new Object[] {null};
 			}
-			
+
 			Class<? extends Object> clazz = receiver.getClass();
 			Method compatible = null;
 			do {
 				for (Method candidate : clazz.getDeclaredMethods()) {
 					if (candidate != null && !candidate.isBridge() && Objects.equal(methodName, candidate.getName())
-						&& isValidArgs(args, candidate.getParameterTypes())) {
+							&& isValidArgs(args, candidate.getParameterTypes())) {
 						if (compatible != null) 
 							throw new IllegalStateException("Ambiguous methods to invoke. Both "+compatible+" and  "+candidate+" would be compatible choices.");
 						compatible = candidate;
@@ -1744,7 +1818,7 @@ public abstract class AbstractSarlTest {
 			Method method = receiver.getClass().getMethod(methodName);
 			return method.invoke(receiver);
 		}
-		
+
 		private static boolean isValidArgs(Object[] args, Class<?>[] params) {
 			if (args.length != params.length) {
 				return false;

@@ -1335,6 +1335,43 @@ describe "Built-in Capacity Reference" {
 
   		}
 
+		/* The built-in capacity `Time` provides tools for obtaining the current time
+		 * from the run-time platform.
+		 *
+		 * Time definition is application-dependent and platform-dependent. In other words,
+		 * the time values replied by this capacity depends on the run-time environment:
+		 * it may be the operating system time, or a simulator time.
+		 */
+		describe "Time" {
+			
+			/* For obtaining the current time, the `getTime` function is provides by the `Time`
+			 * capacity:
+			 * 
+			 *     def getTime(timeUnit : TimeUnit = null) : double
+			 *
+			 * 
+			 * <p>The timeUnit parameter will enable you to specify the unit of the replied
+			 * value (hours, seconds, milliseconds, etc.). If it is not provided,
+			 * the values will be expressed in seconds.
+			 *  
+			 * @filter(.*) 
+			 */
+			fact "Get the current time" {
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
+					import java.util.concurrent.TimeUnit
+					agent A {
+						uses Time
+						def myaction {
+							var ct = getTime;
+							var ct2 = getTime(null)
+							var ct3 = getTime(TimeUnit::HOURS)
+						}
+					}".parseSuccessfully
+			}
+
+		}
+
 		/* Details on the use of the built-in capacities may be found in the references of
 		 * the major behavior-based concepts of SARL:
 		 *
