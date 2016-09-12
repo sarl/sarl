@@ -39,7 +39,7 @@ public final class JanusConfig {
     /**
      * The default name of the Janus platform Mainly useful for the default logger name.
      */
-    public static final String JANUS_DEFAULT_PLATFORM_NAME = "JANUS SRE"; //$NON-NLS-1$
+    public static final String JANUS_DEFAULT_PLATFORM_NAME = "Janus SRE"; //$NON-NLS-1$
 
     /**
      * Name of the property that contains the logger factory for hazelcast.

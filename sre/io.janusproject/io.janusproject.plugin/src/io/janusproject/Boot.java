@@ -81,6 +81,110 @@ import io.sarl.lang.core.Agent;
  */
 public final class Boot {
 
+	/** Short command-line option for "embedded".
+	 */
+	public static final String CLI_OPTION_EMBEDDED_SHORT = "e"; //$NON-NLS-1$
+
+	/** Short command-line option for "embedded".
+	 */
+	public static final String CLI_OPTION_EMBEDDED_LONG = "embedded"; //$NON-NLS-1$
+
+	/** Short command-line option for "boot agent id".
+	 */
+	public static final String CLI_OPTION_BOOTID_SHORT = "B"; //$NON-NLS-1$
+
+	/** Short command-line option for "boot agent id".
+	 */
+	public static final String CLI_OPTION_BOOTID_LONG = "bootid"; //$NON-NLS-1$
+
+	/** Short command-line option for "random id".
+	 */
+	public static final String CLI_OPTION_RANDOMID_SHORT = "R"; //$NON-NLS-1$
+
+	/** Short command-line option for "random id".
+	 */
+	public static final String CLI_OPTION_RANDOMID_LONG = "randomid"; //$NON-NLS-1$
+
+	/** Short command-line option for "Janus world id".
+	 */
+	public static final String CLI_OPTION_WORLDID_SHORT = "W"; //$NON-NLS-1$
+
+	/** Short command-line option for "Janus world id".
+	 */
+	public static final String CLI_OPTION_WORLDID_LONG = "worldid"; //$NON-NLS-1$
+
+	/** Short command-line option for "file".
+	 */
+	public static final String CLI_OPTION_FILE_SHORT = "f"; //$NON-NLS-1$
+
+	/** Short command-line option for "file".
+	 */
+	public static final String CLI_OPTION_FILE_LONG = "file"; //$NON-NLS-1$
+
+	/** Short command-line option for "help".
+	 */
+	public static final String CLI_OPTION_HELP_SHORT = "h"; //$NON-NLS-1$
+
+	/** Short command-line option for "help".
+	 */
+	public static final String CLI_OPTION_HELP_LONG = "help"; //$NON-NLS-1$
+
+	/** Short command-line option for "nologo".
+	 */
+	public static final String CLI_OPTION_NOLOGO_LONG = "nologo"; //$NON-NLS-1$
+
+	/** Short command-line option for "offline".
+	 */
+	public static final String CLI_OPTION_OFFLINE_SHORT = "o"; //$NON-NLS-1$
+
+	/** Short command-line option for "offline".
+	 */
+	public static final String CLI_OPTION_OFFLINE_LONG = "offline"; //$NON-NLS-1$
+
+	/** Short command-line option for "be quiet".
+	 */
+	public static final String CLI_OPTION_QUIET_SHORT = "q"; //$NON-NLS-1$
+
+	/** Short command-line option for "be quiet".
+	 */
+	public static final String CLI_OPTION_QUIET_LONG = "quiet"; //$NON-NLS-1$
+
+	/** Short command-line option for "be more verbose".
+	 */
+	public static final String CLI_OPTION_VERBOSE_SHORT = "v"; //$NON-NLS-1$
+
+	/** Short command-line option for "be more verbose".
+	 */
+	public static final String CLI_OPTION_VERBOSE_LONG = "verbose"; //$NON-NLS-1$
+
+	/** Short command-line option for "change log level".
+	 */
+	public static final String CLI_OPTION_LOG_SHORT = "l"; //$NON-NLS-1$
+
+	/** Short command-line option for "change log level".
+	 */
+	public static final String CLI_OPTION_LOG_LONG = "log"; //$NON-NLS-1$
+
+	/** Short command-line option for "env. variable definition".
+	 */
+	public static final String CLI_OPTION_DEFINE_SHORT = "D"; //$NON-NLS-1$
+
+	/** Short command-line option for "env. variable definition".
+	 */
+	public static final String CLI_OPTION_DEFINE_LONG = "define"; //$NON-NLS-1$
+
+	/** Short command-line option for "show defaults".
+	 */
+	public static final String CLI_OPTION_SHOWDEFAULTS_SHORT = "s"; //$NON-NLS-1$
+
+	/** Short command-line option for "show defaults".
+	 */
+	public static final String CLI_OPTION_SHOWDEFAULTS_LONG = "showdefaults"; //$NON-NLS-1$
+
+	/** Short command-line option for "show CLI arguments".
+	 */
+	public static final String CLI_OPTION_SHOWCLIARGUMENTS_LONG = "cli"; //$NON-NLS-1$
+
 	private static final int ERROR_EXIT_CODE = 255;
 
 	private static PrintStream consoleLogger;
@@ -117,16 +221,16 @@ public final class Boot {
 			while (optIterator.hasNext()) {
 				final Option opt = optIterator.next();
 				switch (opt.getLongOpt()) {
-				case "help": //$NON-NLS-1$
+				case CLI_OPTION_HELP_LONG:
 					showHelp();
 					return null;
-				case "showdefaults": //$NON-NLS-1$
+				case CLI_OPTION_SHOWDEFAULTS_LONG:
 					showDefaults();
 					return null;
-				case "cli": //$NON-NLS-1$
+				case CLI_OPTION_SHOWCLIARGUMENTS_LONG:
 					showCommandLineArguments(args);
 					return null;
-				case "file": //$NON-NLS-1$
+				case CLI_OPTION_FILE_LONG:
 					final String rawFilename = opt.getValue();
 					if (rawFilename == null || "".equals(rawFilename)) { //$NON-NLS-1$
 						showHelp();
@@ -139,39 +243,39 @@ public final class Boot {
 					}
 					setPropertiesFrom(file);
 					break;
-				case "offline": //$NON-NLS-1$
+				case CLI_OPTION_OFFLINE_LONG:
 					setOffline(true);
 					break;
-				case "randomid": //$NON-NLS-1$
+				case CLI_OPTION_RANDOMID_LONG:
 					setRandomContextUUID();
 					break;
-				case "bootid": //$NON-NLS-1$
+				case CLI_OPTION_BOOTID_LONG:
 					setBootAgentTypeContextUUID();
 					break;
-				case "worldid": //$NON-NLS-1$
+				case CLI_OPTION_WORLDID_LONG:
 					setDefaultContextUUID();
 					break;
-				case "define": //$NON-NLS-1$
+				case CLI_OPTION_DEFINE_LONG:
 					final String name = opt.getValue(0);
 					if (!Strings.isNullOrEmpty(name)) {
 						setProperty(name, Strings.emptyToNull(opt.getValue(1)));
 					}
 					break;
-				case "log": //$NON-NLS-1$
+				case CLI_OPTION_LOG_LONG:
 					verbose = Math.max(LoggerCreator.toInt(opt.getValue()), 0);
 					break;
-				case "quiet": //$NON-NLS-1$
+				case CLI_OPTION_QUIET_LONG:
 					if (verbose > 0) {
 						--verbose;
 					}
 					break;
-				case "verbose": //$NON-NLS-1$
+				case CLI_OPTION_VERBOSE_LONG:
 					++verbose;
 					break;
-				case "nologo": //$NON-NLS-1$
+				case CLI_OPTION_NOLOGO_LONG:
 					noLogo = true;
 					break;
-				case "embedded": //$NON-NLS-1$
+				case CLI_OPTION_EMBEDDED_LONG:
 					embedded = true;
 					break;
 				default:
@@ -301,41 +405,42 @@ public final class Boot {
 	public static Options getOptions() {
 		final Options options = new Options();
 
-		options.addOption("e", "embedded", false, //$NON-NLS-1$//$NON-NLS-2$
+		options.addOption(CLI_OPTION_EMBEDDED_SHORT, CLI_OPTION_EMBEDDED_LONG, false,
 				Locale.getString(Boot.class, "CLI_HELP_E")); //$NON-NLS-1$
 
-		options.addOption("B", "bootid", false, //$NON-NLS-1$//$NON-NLS-2$
+		options.addOption(CLI_OPTION_BOOTID_SHORT, CLI_OPTION_BOOTID_LONG, false,
 				Locale.getString(Boot.class, "CLI_HELP_B", //$NON-NLS-1$
 						JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME, JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME));
 
-		options.addOption("f", "file", true, //$NON-NLS-1$//$NON-NLS-2$
+		options.addOption(CLI_OPTION_FILE_SHORT, CLI_OPTION_FILE_LONG, true,
 				Locale.getString(Boot.class, "CLI_HELP_F")); //$NON-NLS-1$
 
-		options.addOption("h", "help", false, //$NON-NLS-1$//$NON-NLS-2$
+		options.addOption(CLI_OPTION_HELP_SHORT, CLI_OPTION_HELP_LONG, false,
 				Locale.getString(Boot.class, "CLI_HELP_H")); //$NON-NLS-1$
 
-		options.addOption(null, "nologo", false, //$NON-NLS-1$
+		options.addOption(null, CLI_OPTION_NOLOGO_LONG, false,
 				Locale.getString(Boot.class, "CLI_HELP_NOLOGO")); //$NON-NLS-1$
 
-		options.addOption("o", "offline", false, //$NON-NLS-1$//$NON-NLS-2$
+		options.addOption(CLI_OPTION_OFFLINE_SHORT, CLI_OPTION_OFFLINE_LONG, false,
 				Locale.getString(Boot.class, "CLI_HELP_O", JanusConfig.OFFLINE)); //$NON-NLS-1$
 
-		options.addOption("q", "quiet", false, //$NON-NLS-1$//$NON-NLS-2$
+		options.addOption(CLI_OPTION_QUIET_SHORT, CLI_OPTION_QUIET_LONG, false,
 				Locale.getString(Boot.class, "CLI_HELP_Q")); //$NON-NLS-1$
 
-		options.addOption("R", "randomid", false, //$NON-NLS-1$//$NON-NLS-2$
+		options.addOption(CLI_OPTION_RANDOMID_SHORT, CLI_OPTION_RANDOMID_LONG, false,
 				Locale.getString(Boot.class, "CLI_HELP_R", //$NON-NLS-1$
 						JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME, JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME));
 
-		options.addOption("s", "showdefaults", false, //$NON-NLS-1$//$NON-NLS-2$
+		options.addOption(CLI_OPTION_SHOWDEFAULTS_SHORT, CLI_OPTION_SHOWDEFAULTS_LONG, false,
 				Locale.getString(Boot.class, "CLI_HELP_S")); //$NON-NLS-1$
-		options.addOption(null, "cli", false, //$NON-NLS-1$
+
+		options.addOption(null, CLI_OPTION_SHOWCLIARGUMENTS_LONG, false,
 				Locale.getString(Boot.class, "CLI_HELP_CLI")); //$NON-NLS-1$
 
-		options.addOption("v", "verbose", false, //$NON-NLS-1$//$NON-NLS-2$
+		options.addOption(CLI_OPTION_VERBOSE_SHORT, CLI_OPTION_VERBOSE_LONG, false,
 				Locale.getString(Boot.class, "CLI_HELP_V")); //$NON-NLS-1$
 
-		options.addOption("W", "worldid", false, //$NON-NLS-1$//$NON-NLS-2$
+		options.addOption(CLI_OPTION_WORLDID_SHORT, CLI_OPTION_WORLDID_LONG, false,
 				Locale.getString(Boot.class, "CLI_HELP_W", //$NON-NLS-1$
 						JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME, JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME));
 		final StringBuilder b = new StringBuilder();
@@ -350,11 +455,13 @@ public final class Boot {
 			b.append(")"); //$NON-NLS-1$
 			++level;
 		}
-		Option opt = new Option("l", "log", true, Locale.getString(Boot.class, "CLI_HELP_L", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+		Option opt = new Option(CLI_OPTION_LOG_SHORT, CLI_OPTION_LOG_LONG, true,
+				Locale.getString(Boot.class, "CLI_HELP_L", //$NON-NLS-1$
 				JanusConfig.VERBOSE_LEVEL_VALUE, b));
 		opt.setArgs(1);
 		options.addOption(opt);
-		opt = new Option("D", "define", true, Locale.getString(Boot.class, "CLI_HELP_D")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+		opt = new Option(CLI_OPTION_DEFINE_SHORT, CLI_OPTION_DEFINE_LONG, true,
+				Locale.getString(Boot.class, "CLI_HELP_D")); //$NON-NLS-1$
 		opt.setArgs(2);
 		opt.setValueSeparator('=');
 		opt.setArgName(Locale.getString(Boot.class, "CLI_HELP_D_ARGNAME")); //$NON-NLS-1$
