@@ -14,12 +14,6 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>src/main/sarl</directory>
-				<includes>
-					<include>**/*.sarl</include>
-				</includes>
-			</resource>
-			<resource>
 				<directory>aboutfeature</directory>
 				<filtering>false</filtering>
 				<targetPath>.</targetPath>
