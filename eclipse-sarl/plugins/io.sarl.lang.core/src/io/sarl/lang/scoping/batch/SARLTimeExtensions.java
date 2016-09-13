@@ -21,6 +21,8 @@
 
 package io.sarl.lang.scoping.batch;
 
+import java.util.concurrent.TimeUnit;
+
 import com.google.common.annotations.GwtCompatible;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -113,6 +115,69 @@ public final class SARLTimeExtensions {
 		return weeks.longValue() * TimeExtensionsConstants.MILLIS_IN_WEEK;
 	}
 
+	/** Convert the gien amount of time in the given source unit, to the given target unit.
+	 * In opposite to {@link TimeUnit#convert(long, TimeUnit)}, this function works on
+	 * double floating-point values.
+	 *
+	 * @param time the amount of time.
+	 * @param source the source unit. Never <code>null</code>.
+	 * @param target the target unit. Never <code>null</code>.
+	 * @return the amount of time in the target unit.
+	 */
+	@Pure
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
+	public static double convertFromTo(double time, TimeUnit source, TimeUnit target) {
+		assert source != null;
+		assert target != null;
+		if (source == target) {
+			return time;
+		}
+		final double millis;
+		switch (source) {
+		case DAYS:
+			millis = time * TimeExtensionsConstants.MILLIS_IN_DAY;
+			break;
+		case HOURS:
+			millis = time * TimeExtensionsConstants.MILLIS_IN_HOUR;
+			break;
+		case MINUTES:
+			millis = time * TimeExtensionsConstants.MILLIS_IN_MINUTE;
+			break;
+		case SECONDS:
+			millis = time * TimeExtensionsConstants.MILLIS_IN_SECOND;
+			break;
+		case MILLISECONDS:
+			millis = time;
+			break;
+		case NANOSECONDS:
+			millis = time * TimeExtensionsConstants.MILLIS_IN_NANOSECOND;
+			break;
+		case MICROSECONDS:
+			millis = time * TimeExtensionsConstants.MILLIS_IN_MICROSECOND;
+			break;
+		default:
+			throw new IllegalArgumentException();
+		}
+		switch (target) {
+		case DAYS:
+			return millis / TimeExtensionsConstants.MILLIS_IN_DAY;
+		case HOURS:
+			return millis / TimeExtensionsConstants.MILLIS_IN_HOUR;
+		case MINUTES:
+			return millis / TimeExtensionsConstants.MILLIS_IN_MINUTE;
+		case SECONDS:
+			return millis / TimeExtensionsConstants.MILLIS_IN_SECOND;
+		case MILLISECONDS:
+			return millis;
+		case NANOSECONDS:
+			return millis / TimeExtensionsConstants.MILLIS_IN_NANOSECOND;
+		case MICROSECONDS:
+			return millis / TimeExtensionsConstants.MILLIS_IN_MICROSECOND;
+		default:
+			throw new IllegalArgumentException();
+		}
+	}
+
 	/**
 	 * Constants for the SARL time extensions.
 	 *
@@ -143,6 +208,14 @@ public final class SARLTimeExtensions {
 		/** Number of millis in a week.
 		 */
 		public static final long MILLIS_IN_WEEK = 7 * MILLIS_IN_DAY;
+
+		/** Number of millis in a microsecond.
+		 */
+		public static final double MILLIS_IN_MICROSECOND = 10e-6;
+
+		/** Number of millis in a nanosecond.
+		 */
+		public static final double MILLIS_IN_NANOSECOND = 10e-9;
 
 		private TimeExtensionsConstants() {
 			//

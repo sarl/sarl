@@ -20,6 +20,9 @@
  */
 package io.sarl.core
 
+import java.util.UUID
+import java.util.concurrent.TimeUnit
+
 import io.sarl.core.AgentTask
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Address
@@ -33,7 +36,6 @@ import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.util.SynchronizedCollection
 import io.sarl.lang.util.SynchronizedSet
-import java.util.UUID
 
 capacity ExternalContextAccess {
 	/**
@@ -614,5 +616,30 @@ capacity Logging {
 	 *         <code>5</code> for debug.
 	 */
 	def setLogLevel(level : int)
+
+}
+
+/**
+* Gives access to the time in the agent application.
+* Time management is application-dependent. This capacity does not make any assumption
+* on neither time evolution nor time refresh rate.
+*/
+capacity Time {
+
+	/** Replies the current time.
+	 *
+	 * @param timeUnit if present, specifies the time unit of the value to reply. By default is it seconds. 
+	 */
+ 	def getTime(timeUnit : TimeUnit = null) : double
+
+	/** Replies the scaling factor between the agent time and the operating system time.
+	 * <p>Consider time in the agent application. It may evolves at a different rate than
+	 * the operating system time. The value that is replied by this function permits to
+	 * determine the proportionally between the agent application time and the operating system time.
+	 * A typical equation for representing this relation is: os time = OSTimeFactor * agent time.
+	 *
+	 * @return the factor between agent time and operating system time.
+	 */
+	def getOSTimeFactor : double
 
 }

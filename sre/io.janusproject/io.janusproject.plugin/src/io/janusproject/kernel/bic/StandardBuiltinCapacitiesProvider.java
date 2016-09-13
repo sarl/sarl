@@ -38,6 +38,7 @@ import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
 import io.sarl.core.Schedules;
+import io.sarl.core.Time;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
@@ -65,7 +66,7 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 		InternalEventBusSkill.class, MicroKernelSkill.class, InnerContextSkill.class,
 		BehaviorsSkill.class, LifecycleSkill.class,
 		ExternalContextAccessSkill.class, DefaultContextInteractionsSkill.class,
-		SchedulesSkill.class, LoggingSkill.class,
+		SchedulesSkill.class, LoggingSkill.class, TimeSkill.class,
 	};
 
 	@Inject
@@ -93,6 +94,7 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 				this.contextRepository.getContext(agent.getParentID()));
 		final SchedulesSkill scheduleSkill = new SchedulesSkill(agent);
 		final LoggingSkill loggingSkill = new LoggingSkill(agent);
+		final TimeSkill timeSkill = new TimeSkill(agent);
 
 		this.injector.injectMembers(eventBusSkill);
 		this.injector.injectMembers(innerContextSkill);
@@ -102,6 +104,7 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 		this.injector.injectMembers(interactionSkill);
 		this.injector.injectMembers(scheduleSkill);
 		this.injector.injectMembers(loggingSkill);
+		this.injector.injectMembers(timeSkill);
 
 		final MicroKernelSkill microKernelSkill = new MicroKernelSkill(agent, k);
 
@@ -116,6 +119,7 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 		result.put(DefaultContextInteractions.class, interactionSkill);
 		result.put(Schedules.class, scheduleSkill);
 		result.put(Logging.class, loggingSkill);
+		result.put(Time.class, timeSkill);
 
 		this.spawnService.addSpawnServiceListener(agent.getID(),
 				new AgentLifeCycleSupport(agent.getID(), this.spawnService, eventBusSkill));
@@ -130,6 +134,7 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 		assert result.get(Schedules.class) != null;
 		assert result.get(MicroKernelCapacity.class) != null;
 		assert result.get(Logging.class) != null;
+		assert result.get(Time.class) != null;
 
 		return result;
 	}
