@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2015 the original authors or authors.
+ * Copyright (C) 2014-2016 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ describe "SARL Syntax FAQ" {
 			fact "Can I use the same syntax as in Java for number literals?" {
 				'''		package io.sarl.docs.faq.syntax
 						agent A {
-							def action : double {",
+							def action : double {,
 								var a = 123.0
 								return a
 							}
@@ -62,7 +62,7 @@ describe "SARL Syntax FAQ" {
 
 				'''		package io.sarl.docs.faq.syntax
 						agent A {
-							def action : double {",
+							def action : double {,
 								var a = 0.123
 								return a
 							}
@@ -71,7 +71,7 @@ describe "SARL Syntax FAQ" {
 
 				'''		package io.sarl.docs.faq.syntax
 						agent A {
-							def action : double {",
+							def action : double {,
 								var a = 123.
 								return a
 							}
@@ -80,7 +80,7 @@ describe "SARL Syntax FAQ" {
 
 				'''		package io.sarl.docs.faq.syntax
 						agent A {
-							def action : double {",
+							def action : double {,
 								var a = .123
 								return a
 							}

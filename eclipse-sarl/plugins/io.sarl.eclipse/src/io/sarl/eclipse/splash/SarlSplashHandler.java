@@ -67,6 +67,15 @@ public class SarlSplashHandler extends EclipseSplashHandler {
 				betaCtrl.setBounds(betaRectangle);
 			}
 		}
+		// Do the event until. Ensure that the RCP is stopped until the splash UI has done.
+		doEventLoop();
+	}
+
+	private void doEventLoop() {
+		final Shell splash = getSplash();
+		if (!splash.getDisplay().readAndDispatch()) {
+			splash.getDisplay().sleep();
+		}
 	}
 
 	@Override
