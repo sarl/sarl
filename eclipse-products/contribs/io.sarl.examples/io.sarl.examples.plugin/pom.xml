@@ -56,42 +56,37 @@
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<basedir>${project.basedir}</basedir>
-							<outputBasedir>${project.basedir}/aboutfeature</outputBasedir>
-							<includes>
-								<include>*.mappings</include>
-							</includes>
+							<file>${project.basedir}/src-templates/about.mappings</file>
+							<outputFile>${project.basedir}/about.mappings</outputFile>
+							<replacements>
+								<replacement>
+									<token>%website%</token>
+									<value>${sarlUrl}</value>
+								</replacement>
+								<replacement>
+									<token>%sarlBuildId%</token>
+									<value>${buildId}</value>
+								</replacement>
+								<replacement>
+									<token>%copyrightdate%</token>
+									<value>${project.inceptionYear}-${year}</value>
+								</replacement>
+								<replacement>
+									<token>%copyrighters%</token>
+									<value>${copyrighters}</value>
+								</replacement>
+								<replacement>
+									<token>%sarlreleaseversion%</token>
+									<value>${sarl.release_version}</value>
+								</replacement>
+								<replacement>
+									<token>%sarlspecificationreleasedate%</token>
+									<value>${sarl.specification.release_date}</value>
+								</replacement>
+							</replacements>
 						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<replacements>
-						<replacement>
-							<token>%website%</token>
-							<value>${sarlUrl}</value>
-						</replacement>
-						<replacement>
-							<token>%sarlBuildId%</token>
-							<value>${buildId}</value>
-						</replacement>
-						<replacement>
-							<token>%copyrightdate%</token>
-							<value>${project.inceptionYear}-${year}</value>
-						</replacement>
-						<replacement>
-							<token>%copyrighters%</token>
-							<value>${copyrighters}</value>
-						</replacement>
-						<replacement>
-							<token>%sarlreleaseversion%</token>
-							<value>${sarl.release_version}</value>
-						</replacement>
-						<replacement>
-							<token>%sarlspecificationreleasedate%</token>
-							<value>${sarl.specification.release_date}</value>
-						</replacement>
-					</replacements>
-				</configuration>
 			</plugin>
 
 			<plugin>

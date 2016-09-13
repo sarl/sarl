@@ -642,7 +642,6 @@
 							def now = session.getStartTime();
 							//************************
 							// Detect root directory
-							//
 							def currentDirectory = project.basedir;
 							def previousDirectory = null;
 				            def fileObj = new File(currentDirectory, "pom.xml");
@@ -659,7 +658,6 @@
 						    log.info("set mainbasedir to: " + project.properties["mainbasedir"]);
 							//************************
 							// Compute version and snapshot tag
-							//
 							def snapshotTag = "-SNAPSHOT";
 							def version;
 							def releaseStatus;
@@ -685,7 +683,6 @@
 							versionFields = version.split("\\.");
 							//************************
 							// Set SARL properties
-							//
 							project.properties["sarl.specification.release_version"] = versionFields[0] + "." + versionFields[1];
 							project.properties["sarl.release_version"] = project.properties["sarl.specification.release_version"] + "." + versionFields[2];
 							project.properties["sarl.specification.release_date"] = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
@@ -701,10 +698,8 @@
 							log.info("set janus.version to: " + project.properties["janus.version"]);
 							//************************
 							// Bug in Jenkins/Hudson
-							//
 							// The buildId property is not correctly set since
 							// "maven.build.timestamp" is skipped by Jenkins/Hudson.
-							//
 							if (project.properties["buildId"] == "\${maven.build.timestamp}"
 								|| project.properties["buildId"] == "\$maven.build.timestamp") {
 								project.properties["buildId"] = (new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now);
@@ -712,12 +707,10 @@
 							}
 							//************************
 							// P2 properties
-							//
 							project.properties["p2UploadToDir"] = p2UploadToDir;
 							log.info("set p2UploadToDir to: " + project.properties["p2UploadToDir"]);
 							//************************
 							// Set Checkstyle properties
-							//
 						    def config_loc = project.properties["mainbasedir"];
 						    ["build-tools", "src", "main", "resources", "checkstyle", "sarl"].each {
 						    	config_loc = new File(config_loc, it);
