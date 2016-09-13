@@ -50,6 +50,7 @@ public class JanusClasspathContainer extends SARLClasspathContainer {
 		"org.zeromq.jeromq", //$NON-NLS-1$
 		"com.google.inject", //$NON-NLS-1$
 		"org.apache.commons.cli", //$NON-NLS-1$
+		"io.janusproject.plugin", //$NON-NLS-1$
 	};
 
 	/** Constructor.
