@@ -19,13 +19,6 @@
 	</properties>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>aboutfeature</directory>
-				<filtering>false</filtering>
-				<targetPath>.</targetPath>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
@@ -39,8 +32,8 @@
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<basedir>${project.build.outputDirectory}</basedir>
-							<outputBasedir>.</outputBasedir>
+							<basedir>${project.basedir}</basedir>
+							<outputBasedir>${project.basedir}/src-templates</outputBasedir>
 							<includes>
 								<include>*.mappings</include>
 							</includes>

@@ -1,3 +1,10 @@
+# Specific files
+/eclipse-products/contribs/io.sarl.examples/io.sarl.examples.plugin/about.mappings
+/eclipse-sarl/plugins/io.sarl.eclipse/about.mappings
+/eclipse-sarl/plugins/io.sarl.lang.core/about.mappings
+/eclipse-sarl/plugins/io.sarl.lang.ui/about.mappings
+/sre/io.janusproject/io.janusproject.plugin/about.mappings
+
 # Xtext generated files
 eclipse-sarl/plugins/io.sarl.core/xtend-gen/
 eclipse-sarl/plugins/io.sarl.core/src-gen/

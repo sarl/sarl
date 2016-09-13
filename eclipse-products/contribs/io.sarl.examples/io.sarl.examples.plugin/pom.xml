@@ -12,14 +12,6 @@
 	<name>SARL Examples Plugin</name>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>aboutfeature</directory>
-				<filtering>false</filtering>
-				<targetPath>.</targetPath>
-			</resource>
-		</resources>
-
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -58,14 +50,14 @@
 				<executions>
 					<execution>
 						<id>prepare-eclipse-aboutbox</id>
-						<phase>process-resources</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>replace</goal>
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<basedir>${project.build.outputDirectory}</basedir>
-							<outputBasedir>.</outputBasedir>
+							<basedir>${project.basedir}</basedir>
+							<outputBasedir>${project.basedir}/aboutfeature</outputBasedir>
 							<includes>
 								<include>*.mappings</include>
 							</includes>

@@ -2,11 +2,11 @@
 <project name="project" default="zip_all_examples">
 
 	<property name="source" location="projects" />
-	<property name="target_xtend" location="contents" />
+	<property name="target_sarl" location="contents" />
 
 	<macrodef name="zip_example">
 		<attribute name="name" default="default" />
-		<attribute name="target" default="${target_xtend}" />
+		<attribute name="target" default="${target_sarl}" />
 		<attribute name="excludes" default="bin,bin/**,**/*._trace,.antlr-generator*.jar,component.def" />
 		<sequential>
 			<delete file="@{target}/@{name}.zip" />

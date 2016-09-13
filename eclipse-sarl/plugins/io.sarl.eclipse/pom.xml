@@ -14,11 +14,6 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>aboutfeature</directory>
-				<filtering>false</filtering>
-				<targetPath>.</targetPath>
-			</resource>
-			<resource>
 				<directory>OSGI-INF</directory>
 				<filtering>false</filtering>
 				<targetPath>OSGI-INF</targetPath>
@@ -38,8 +33,8 @@
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<basedir>${project.build.outputDirectory}</basedir>
-							<outputBasedir>.</outputBasedir>
+							<basedir>${project.basedir}</basedir>
+							<outputBasedir>${project.basedir}/src-templates</outputBasedir>
 							<includes>
 								<include>*.mappings</include>
 							</includes>
