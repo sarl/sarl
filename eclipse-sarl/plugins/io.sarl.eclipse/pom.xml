@@ -15,10 +15,82 @@
 		<resources>
 			<resource>
 				<directory>aboutfeature</directory>
-				<filtering>true</filtering>
+				<filtering>false</filtering>
 				<targetPath>.</targetPath>
 			</resource>
+			<resource>
+				<directory>OSGI-INF</directory>
+				<filtering>false</filtering>
+				<targetPath>OSGI-INF</targetPath>
+			</resource>
 		</resources>
+	
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<executions>
+					<execution>
+						<id>prepare-eclipse-aboutbox</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<basedir>${project.build.outputDirectory}</basedir>
+							<outputBasedir>.</outputBasedir>
+							<includes>
+								<include>*.mappings</include>
+							</includes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-osgi-nls</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<basedir>${project.build.outputDirectory}/OSGI-INF/l10n</basedir>
+							<outputBasedir>.</outputBasedir>
+							<includes>
+								<include>*.properties</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<replacements>
+						<replacement>
+							<token>%website%</token>
+							<value>${sarlUrl}</value>
+						</replacement>
+						<replacement>
+							<token>%sarlBuildId%</token>
+							<value>${buildId}</value>
+						</replacement>
+						<replacement>
+							<token>%copyrightdate%</token>
+							<value>${project.inceptionYear}-${year}</value>
+						</replacement>
+						<replacement>
+							<token>%copyrighters%</token>
+							<value>${copyrighters}</value>
+						</replacement>
+						<replacement>
+							<token>%sarlreleaseversion%</token>
+							<value>${sarl.release_version}</value>
+						</replacement>
+						<replacement>
+							<token>%sarlspecificationreleasedate%</token>
+							<value>${sarl.specification.release_date}</value>
+						</replacement>
+					</replacements>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>

@@ -221,7 +221,7 @@
 						</replacement>
 						<replacement>
 							<token>%copyrightdate%</token>
-							<value>${year}</value>
+							<value>${project.inceptionYear}-${year}</value>
 						</replacement>
 						<replacement>
 							<token>%copyrighters%</token>

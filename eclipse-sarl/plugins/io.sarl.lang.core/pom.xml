@@ -17,16 +17,18 @@
 		<resources>
 			<resource>
 				<directory>aboutfeature</directory>
-				<filtering>true</filtering>
+				<filtering>false</filtering>
 				<targetPath>.</targetPath>
 			</resource>
 		</resources>
+		
 		<plugins>
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>replacer</artifactId>
 				<executions>
 					<execution>
+						<id>generate-javaversion-class</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>replace</goal>
@@ -66,6 +68,47 @@
 								<replacement>
 									<token>@minimalxtextversion@</token>
 									<value>${xtext.version}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-eclipse-aboutbox</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<basedir>${project.build.outputDirectory}</basedir>
+							<outputBasedir>.</outputBasedir>
+							<includes>
+								<include>*.mappings</include>
+							</includes>
+							<replacements>
+								<replacement>
+									<token>%website%</token>
+									<value>${sarlUrl}</value>
+								</replacement>
+								<replacement>
+									<token>%sarlBuildId%</token>
+									<value>${buildId}</value>
+								</replacement>
+								<replacement>
+									<token>%copyrightdate%</token>
+									<value>${project.inceptionYear}-${year}</value>
+								</replacement>
+								<replacement>
+									<token>%copyrighters%</token>
+									<value>${copyrighters}</value>
+								</replacement>
+								<replacement>
+									<token>%sarlreleaseversion%</token>
+									<value>${sarl.release_version}</value>
+								</replacement>
+								<replacement>
+									<token>%sarlspecificationreleasedate%</token>
+									<value>${sarl.specification.release_date}</value>
 								</replacement>
 							</replacements>
 						</configuration>
