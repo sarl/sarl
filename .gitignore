@@ -38,6 +38,11 @@ bin/
 .settings
 .metadata
 
+#Specific cases of SARL Samples projects
+!eclipse-products/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/**/.project
+!eclipse-products/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/**/.classpath
+
+
 # Subversion and CVS
 .svn/
 .cvs/
