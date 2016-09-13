@@ -138,7 +138,7 @@
 		</example>
 	</extension>	
 
-	<!-- ========= io.sarl.demos.basic.countdown Example ========= -->
+	<!-- ========= io.sarl.demos.basic.holarchy Example ========= -->
 	
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.demos.basic.holarchy"
@@ -168,7 +168,69 @@
 			<fileToOpen location="io-sarl-demos-basic-behaviorinheritance/src/main/sarl/io/sarl/demos/basic/holarchy/holarchy.sarl"/>
 		</example>
 	</extension>
-		
+	
+	<!-- ========= io.sarl.demos.counter Example ========= -->
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.demos.counter"
+			name="%CounterExample_Name"
+			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			category="org.eclipse.ui.Examples/io.sarl.Examples"
+			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			project="true">
+			<description>%CounterExample_Description</description>
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.demos.counter"
+			name="%CounterExample_Name"
+			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
+			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			project="true">
+			<description>%CounterExample_Description</description>
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.emf.common.ui.examples">
+		<example wizardID="io.sarl.demos.counter" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+			<projectDescriptor name="io-sarl-demos-counter" contentURI="contents/io-sarl-demos-counter.zip" description="%CounterExample_Description"/>
+			<fileToOpen location="io-sarl-demos-counter/src/main/sarl/io/sarl/demos/counter/counteragent.sarl"/>
+		</example>
+	</extension>
+	
+	<!-- ========= io.sarl.demos.factorial Example ========= -->
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.demos.factorial"
+			name="%FactorialExample_Name"
+			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			category="org.eclipse.ui.Examples/io.sarl.Examples"
+			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			project="true">
+			<description>%FactorialExample_Description</description>
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.demos.factorial"
+			name="%FactorialExample_Name"
+			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
+			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+			project="true">
+			<description>%FactorialExample_Description</description>
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.emf.common.ui.examples">
+		<example wizardID="io.sarl.demos.factorial" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+			<projectDescriptor name="io-sarl-demos-factorial" contentURI="contents/io-sarl-demos-factorial.zip" description="%FactorialExample_Description"/>
+			<fileToOpen location="io-sarl-demos-factorial/src/main/sarl/io/sarl/demos/factorial/basic/basicfactorial.sarl"/>
+		</example>
+	</extension>	
+				
 	<!-- ========= Intro (welcome page) Extensions ========= -->	
 	
 	<extension

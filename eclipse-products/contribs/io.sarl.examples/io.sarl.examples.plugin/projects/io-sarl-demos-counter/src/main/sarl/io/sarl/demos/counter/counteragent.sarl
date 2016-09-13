@@ -1,0 +1,91 @@
+package io.sarl.demos.counter
+
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+import java.util.concurrent.atomic.AtomicInteger
+
+event Hello
+
+event Count
+
+event Die
+
+/* A simple agent launching the two application agents */
+agent CounterBootAgent {
+
+	uses DefaultContextInteractions, Lifecycle
+
+	on Initialize {
+		spawn(CounterAgent)
+		spawn(SecondAgent)
+		killMe
+	}
+
+}
+
+
+agent CounterAgent {
+
+	uses Lifecycle, Schedules, DefaultContextInteractions, Behaviors, Logging
+
+	val count = new AtomicInteger
+
+	var started = false
+ 
+	on Initialize {
+		loggingName = "COUNTER"
+		info("Starting")
+		task("discovery").every(1000) [ 
+			emit(new Hello)
+		]
+	}
+
+	on Hello [ occurrence.source != defaultAddress && !started ] {
+		info("Found another agent => " + occurrence.source)
+		info("I'm " + defaultAddress)
+		started = true
+		task("discovery").cancel /* cancel the task launch in the Initialize */
+		info("Starting to count")
+		wake(new Count) /* send itself the first Count event */
+	}
+
+	on Count {
+		info("count => " + count.get) 
+		if(count.get == 3) {
+			info("orders Partner to die") 
+			emit(new Die) 
+			killMe
+		} else {
+			in(1000) [ 
+				count.incrementAndGet 
+				wake(new Count) 
+			]
+		}
+	}
+
+}
+
+agent SecondAgent {
+
+	uses Lifecycle, DefaultContextInteractions, Logging
+	
+	on Initialize {
+		loggingName = "PARTNER"
+		info("Starting")
+	}
+
+	on Hello [ occurrence.source != defaultAddress ] {/* test the emitter address to be sure it is not a self message */
+		info("Say hello!")
+		emit(new Hello) 
+	}
+
+	on Die {
+		info("is dying")
+		killMe
+	}
+
+}
