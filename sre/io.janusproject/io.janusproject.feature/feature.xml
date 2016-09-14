@@ -2,7 +2,7 @@
 <feature
       id="io.janusproject.feature"
       label="Janus SARL Runtime Environment"
-      version="0.4.0"
+      version="0.5.0.qualifier"
       plugin="io.janusproject.plugin">
 
    <description url="http://www.sarl.io/about/">
@@ -222,9 +222,9 @@
    </url>
 
    <requires>
-      <import plugin="io.sarl.core" version="0.4.0" match="greaterOrEqual"/>
-      <import plugin="io.sarl.util" version="0.4.0" match="greaterOrEqual"/>
-      <import plugin="io.sarl.eclipse" version="0.4.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.core" version="0.5.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.util" version="0.5.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.eclipse" version="0.5.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.vmutils" version="14.0.0" match="greaterOrEqual"/>
       <import plugin="com.hazelcast" version="3.7.0" match="greaterOrEqual"/>
       <import plugin="com.google.gson" version="2.4.0" match="greaterOrEqual"/>
