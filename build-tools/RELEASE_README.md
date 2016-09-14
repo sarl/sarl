@@ -30,12 +30,12 @@ A.5) If a manual test is failing: fix the problem, and go to step A.2.
 
 A.6) Test the generation of the  bundles for Maven Central:
 
-     $> ./scripts/prepare-bundles-for-central.sh
+     $> ./build-tools/scripts/prepare-bundles-for-central.sh
 
-A.7) Test the generation of the Javadoc for the plublic API
+A.7) Test the generation of the Javadoc for the public API
      (the real generation will be done by the Rake script of the website):
 
-     $> ./scripts/generate-aggregate-javadoc.sh
+     $> ./build-tools/scripts/generate-aggregate-javadoc.sh
 
 B) PHASE 2: RELEASE VERSION
 
@@ -67,25 +67,28 @@ B.5) Compiling locally without error.
      $> cd docs/io.sarl.docs.suite
      $> mvn clean install
 
-B.6) Prepare the bundles for Maven Central:
+B.6) Check if the about.mappings files and the SarlVersion.java file are containing
+     the correct version numbers.
+
+B.7) Prepare the bundles for Maven Central:
 
      $> ./scripts/prepare-bundles-for-central.sh
 
      Copy the bundles inside a safe folder for the Phase 3.
 
-B.7) Commit and push to Github:
+B.8) Commit and push to Github:
 
      $> git commit
      $> git push --all
 
-B.8) Tag the Git with the version number.
+B.9) Tag the Git with the version number.
 
      $> git tag "vX.Y.Z"
      $> git push --tags
 
-B.9) On Hudson, launch a build for updating the maven repositories and
+B.10) On Hudson, launch a build for updating the maven repositories and
      the Eclipse update sites.
-     If failing, revert B.8, fix the problem, and go back to B.5.
+     If failing, revert B.9, fix the problem, and go back to B.5.
 
 C) PHASE 3: DISSEMINATION OF THE RELEASE VERSION
 
