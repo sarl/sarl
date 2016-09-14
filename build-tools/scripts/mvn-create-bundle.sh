@@ -70,6 +70,7 @@ then
 		
 		CDIR=`pwd`
 
+		NBBUNDLES=0
 		for TARGET in `find -type d -name "target"`
 		do
 			cd "$TARGET"
@@ -97,10 +98,12 @@ then
 					done
 					jar cf "$BUNDLENAME" $FILES
 					echo "done"
+					NBBUNDLES=$[$NBBUNDLES + 1]
 				fi
 			fi
 			cd "$CDIR"
 		done
+		echo "$NBBUNDLES were created."
 
 	else
 		exit 255

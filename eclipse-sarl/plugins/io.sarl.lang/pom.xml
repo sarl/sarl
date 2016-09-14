@@ -19,10 +19,10 @@
 	<!-- ======================================= -->
 	<profiles>
 		<profile>
-			<id>maven-release-of-lang-core-plugin</id>
+			<id>maven-release-of-lang-plugin</id>
 			<activation>
 				<property>
-					<name>publicSarlApiModuleSet</name>
+					<name>performRelease</name>
 					<value>true</value>
 				</property>
 			</activation>

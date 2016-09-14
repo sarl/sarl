@@ -43,6 +43,18 @@
 				<module>io.sarl.util</module>
 			</modules>
 		</profile>
+		<profile>
+			<id>maven-central-release-module-set</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<modules>
+				<module>io.sarl.lang</module>
+			</modules>
+		</profile>
 	</profiles>
 
 	<build>
