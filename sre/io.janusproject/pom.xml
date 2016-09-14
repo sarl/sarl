@@ -12,6 +12,10 @@
 	<packaging>pom</packaging>
 	<name>Janus SARL SRE Parent</name>
 
+	<properties>
+		<janusUrl>http://www.janusproject.io</janusUrl>
+	</properties>
+
 	<profiles>
 		<profile>
 			<id>default</id>
@@ -34,6 +38,7 @@
 			</activation>
 			<modules>
 				<module>io.janusproject.plugin</module>
+				<module>io.janusproject.kernel</module>
 			</modules>
 		</profile>
 	</profiles>

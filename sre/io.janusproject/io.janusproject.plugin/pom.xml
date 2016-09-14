@@ -15,7 +15,7 @@
 	<inceptionYear>2008</inceptionYear>
 
 	<properties>
-		<janusUrl>http://www.janusproject.io</janusUrl>
+		<jkernel.version>2.${project.version}</jkernel.version>
 	</properties>
 
 	<build>
@@ -121,6 +121,7 @@
 				</property>
 			</activation>
 			<build>
+
 				<pluginManagement>
 					<plugins>
 						<plugin>

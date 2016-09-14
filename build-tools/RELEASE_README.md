@@ -7,6 +7,9 @@ The steps for releasing SARL are:
 A) PHASE 1: RELEASE CANDIDATE VERSION
 
 A.1) Upgrade all the versions in the pom files and the Eclipse platform.
+     a) Upgrade the Eclipse target platform
+     b) Synchronize the versions in the pom files (plugins and dependencies) with
+        the same version numbers as in the Eclipse target platform.
 
 A.2) Compiling locally without error.
 
