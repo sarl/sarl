@@ -49,7 +49,7 @@ B.2) Update the versions in the Eclipse configurations:
      a) Remove ".qualifier" in the MANIFEST.MF files
         (in Bundle-Version).
      b) Remove ".qualifier" in the feature.xml files
-        (in root tag).
+        (in root tag and in the "sarl" and "janus"" plugins references).
      c) Remove ".qualifier" in the *.product files
         (in root tag and feature tag).
      d) Remove ".qualifier" in the category.xml files
@@ -57,9 +57,11 @@ B.2) Update the versions in the Eclipse configurations:
 
 B.3) Comment any reference to the Snapshot Maven repository.
 
-B.4) Update the graphical resources (splash screen, icons...)
+B.4) Update the versions in README.adoc.
 
-B.5) Compiling locally without error.
+B.5) Update the graphical resources (splash screen, icons...)
+
+B.6) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
      $> mvn clean install
@@ -70,28 +72,28 @@ B.5) Compiling locally without error.
      $> cd docs/io.sarl.docs.suite
      $> mvn clean install
 
-B.6) Check if the about.mappings files and the SarlVersion.java file are containing
+B.7) Check if the about.mappings files and the SarlVersion.java file are containing
      the correct version numbers.
 
-B.7) Prepare the bundles for Maven Central:
+B.8) Prepare the bundles for Maven Central:
 
-     $> ./scripts/prepare-bundles-for-central.sh
+     $> ./build-tools/scripts/prepare-bundles-for-central.sh
 
      Copy the bundles inside a safe folder for the Phase 3.
 
-B.8) Commit and push to Github:
+B.9) Commit and push to Github:
 
      $> git commit
      $> git push --all
 
-B.9) Tag the Git with the version number.
+B.10) Tag the Git with the version number.
 
      $> git tag "vX.Y.Z"
      $> git push --tags
 
-B.10) On Hudson, launch a build for updating the maven repositories and
+B.11) On Hudson, launch a build for updating the maven repositories and
      the Eclipse update sites.
-     If failing, revert B.9, fix the problem, and go back to B.5.
+     If failing, revert B.10, fix the problem, and go back to B.6.
 
 C) PHASE 3: DISSEMINATION OF THE RELEASE VERSION
 
@@ -128,7 +130,7 @@ C.10) Announce the new version of SARL on the mailing lists.
 
 D) PHASE 4: DEVELOPMENT VERSION
 
-D.1) Revert steps B.1 to B.4; and change the following:
+D.1) Revert steps B.1 to B.5; and change the following:
      * Version ranges in the Required-Bundles of MANIFEST.MF.
      * Versions in the requirements of feature.xml.
      * Versions in the *.product.
