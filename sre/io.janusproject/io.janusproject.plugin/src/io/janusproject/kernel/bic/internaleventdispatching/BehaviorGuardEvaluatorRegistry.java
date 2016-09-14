@@ -177,7 +177,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	 *            -the event to process
 	 * @return the set of guard evaluators associated to the specified event
 	 */
-	Collection<BehaviorGuardEvaluator> getBehaviorGuardEvaluators(Object event) {
+	Collection<BehaviorGuardEvaluator> getBehaviorGuardEvaluators(Event event) {
 		final ImmutableSet<Class<?>> eventTypes = flattenHierarchy(event.getClass());
 
 		final List<BehaviorGuardEvaluator> iBehaviorGuardEvaluators = Lists.newArrayListWithCapacity(eventTypes.size());
