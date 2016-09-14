@@ -59,18 +59,18 @@ public final class SARLVersion {
 	 * <p>Usually, this status is also displayed in the
 	 * <a href="http://www.sarl.io/docs/suite/io/sarl/docs/SARLDocumentationSuite.html">reference documentation of SARL</a>.
 	 */
-	public static final String RELEASE_STATUS = "Draft Release"; //$NON-NLS-1$
+	public static final String RELEASE_STATUS = "Stable Release"; //$NON-NLS-1$
 
 	/** Flag that indicates if the current SARL libbrary is a stable release.
 	 *
 	 * <p>A stable release is collection of libraries that will be not more compiled and generated.
 	 */
-	public static final boolean IS_STABLE = false;
+	public static final boolean IS_STABLE = true;
 
 	/** The version number of the Janus platform that should support the current version
 	 * of the SARL tools.
 	 */
-	public static final String PRECONIZED_JANUS_VERSION = "0.4.0-SNAPSHOT"; //$NON-NLS-1$
+	public static final String PRECONIZED_JANUS_VERSION = "0.4.0"; //$NON-NLS-1$
 
 	/** The minimal JDK version to use SARL features.
 	 */

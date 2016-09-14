@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.ide"
       label="SARL Development Environment"
-      version="0.4.0.qualifier"
+      version="0.4.0"
       plugin="io.sarl.eclipse">
 
    <description url="http://www.sarl.io/about/">
@@ -268,14 +268,14 @@ tools upon the Eclipse IDE.
          id="io.sarl.eclipse"
          download-size="0"
          install-size="0"
-         version="0.4.0.qualifier"
+         version="0.4.0"
          unpack="false"/>
 
    <plugin
          id="io.sarl.m2e"
          download-size="0"
          install-size="0"
-         version="0.4.0.qualifier"
+         version="0.4.0"
          unpack="false"/>
 
    <plugin
