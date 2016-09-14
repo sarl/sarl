@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/io.sarl.lib_0.4.0.qualifier.jar" id="io.sarl.lib" version="0.4.0.qualifier">
+   <feature url="features/io.sarl.baseplatform_0.4.0.jar" id="io.sarl.baseplatform" version="0.4.0">
       <category name="io.sarl"/>
    </feature>
-   <feature url="features/io.sarl.compiler_0.4.0.qualifier.jar" id="io.sarl.compiler" version="0.4.0.qualifier">
+   <feature url="features/io.sarl.lib_0.4.0.jar" id="io.sarl.lib" version="0.4.0">
       <category name="io.sarl"/>
    </feature>
-   <feature url="features/io.sarl.ide_0.4.0.qualifier.jar" id="io.sarl.ide" version="0.4.0.qualifier">
+   <feature url="features/io.sarl.compiler_0.4.0.jar" id="io.sarl.compiler" version="0.4.0">
       <category name="io.sarl"/>
    </feature>
+   <feature url="features/io.sarl.ide_0.4.0.jar" id="io.sarl.ide" version="0.4.0">
+      <category name="io.sarl"/>
+   </feature>
+   <feature url="features/io.sarl.examples.feature_0.4.0.jar" id="io.sarl.examples.feature" version="0.4.0">
+      <category name="io.sarl"/>
+   </feature>
+
    <category-def name="io.sarl" label="SARL Language">
       <description>
          SARL is a general-purpose agent-oriented language. 
 SARL aims at providing the fundamental abstractions for dealing with concurrency, distribution, interaction, decentralization, reactivity, autonomy and dynamic reconfiguration.
+      </description>
+   </category-def>
+
+   <feature url="features/io.janusproject.feature_0.4.0.jar" id="io.janusproject.feature" version="0.4.0">
+      <category name="io.janusproject"/>
+   </feature>
+
+   <category-def name="io.janusproject" label="Janus Run-time Platform">
+      <description>
+         Janus is an open-source multi-agent platform, which is reimplemented to support the SARL Agent-Oriented Programming Language.
       </description>
    </category-def>
 </site>
