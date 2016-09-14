@@ -863,6 +863,7 @@
 				<module>tycho-parent</module>
 				<module>eclipse-sarl</module>
 				<module>maven</module>
+				<module>sre</module>
 			</modules>
 		</profile>
 		<profile>
