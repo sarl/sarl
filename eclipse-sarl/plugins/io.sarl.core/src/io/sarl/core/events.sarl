@@ -21,136 +21,269 @@
 package io.sarl.core
 
 import java.util.UUID
-import io.sarl.lang.annotation.EarlyExit
+import io.sarl.lang.^annotation.EarlyExit
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.Address
 
 /**
-* Initialization event for an Agent.
-* The source of this event is the agent itself.
-* This event is only received by the agent's native behavior.
-*/
+ * Initialization event for an Agent.
+ * The source of this event is the agent itself.
+ * This event is only received by the agent's native behavior.
+ * The other agent behaviors cannot receive this event because they are associated to the agent too late in the agent lifecycle.
+ */
 event Initialize {
+
+	/** The initialization parameters.
+	 * Usually, they are the arguments passed to the agent spawning function.
+	 */
 	var parameters : Object[]
+
 }
 
 /**
-* Notifies the Destruction of the agent.
-* The source of this event is the agent itself.
-* This event is fired after the agent has called the killMe action.
-* This event is only received by the agent's internal behaviors, not the member since to call killMe action it must remain any member.
-*/
+ * Notifies the Destruction of the agent.
+ * The source of this event is the agent itself.
+ * Usually, this event is fired after the agent has called the <code>killMe</code> action.
+ * This event is only received by the agent's internal behaviors, not the member since to call <code>killMe</code> action it must remain any member.
+ * <p>This event is marked as an early exit event. It means that any action that is firing this event is supposed to never return, e.g.
+ * the <code>killMe</code> action.
+ */
 @EarlyExit
 event Destroy
 
 /**
-* Informs the creation of a new agent in a given context.
-* The context Id can be retrieved via ev.getSource().getSpaceID().getContextID()
-*/
+ * Informs the creation of a new agent in a given context.
+ * The context Id can be retrieved via <code>ev.getSource().getSpaceID().getContextID()</code>.
+ */
 event AgentSpawned {
+
+	/** Identifier of the spawned agent.
+	 */
 	val agentID : UUID
+
+	/** Fully qualifiedname of the type of the agent.
+	 */
 	val agentType : String
-	new (src : Address, aid : UUID, at : String) {
-		setSource(src)
-		this.agentID = aid
-		this.agentType = at
+
+	/** Constuct the event.
+	 *
+	 * @param source the address of the emitter.
+	 * @param agentID : the identifier of the spawned agent.
+	 * @param agentType fully qualified name of the type of the agent.
+	 */
+	new (source : Address, agentID : UUID, agentType : String) {
+		setSource(source)
+		this.agentID = agentID
+		this.agentType = agentType
 	}
+
 }
 
 /**
-* Informs an agent has been killed
-* The context Id can be retrieved via ev.getSource().getSpaceID().getContextID()
-*/
+ * Informs an agent has been killed.
+ * The context Id can be retrieved via <code>ev.getSource().getSpaceID().getContextID()</code>.
+ */
 event AgentKilled {
+
+	/** The identifier of the killed agent.
+	 */
+
 	val agentID : UUID
+
+	/** The fully qualified name of the type of the killed agent.
+	 */
 	val agentType : String
-	new (src : Address, aid : UUID, at : String) {
-		setSource(src)
-		this.agentID = aid
-		this.agentType = at
+
+	/** Construct the event.
+	 *
+	 * @param source the address of the emitter.
+	 * @param agentID the identifier of the killed agent.
+	 * @param agentType fully qualified name of the type of the agent.
+	 */
+	new (source : Address, agentID : UUID, agentType : String) {
+		setSource(source)
+		this.agentID = agentID
+		this.agentType = agentType
 	}
+
 }
 
 /**
-* Informs the creation of a new space in a given context.
-*/
+ * Informs the creation of a new space in a given context.
+ */
 event SpaceCreated {
+
+	/** Identifier of the created space.
+	 */
 	val spaceID : SpaceID
-	new (src : Address, sid : SpaceID) {
-		setSource(src)
-		this.spaceID = sid
+
+	/** Construct the event.
+	 *
+	 * @param source the address of the emitter.
+	 * @param spaceID the identifier of the space.
+	 */
+	new (source : Address, spaceID : SpaceID) {
+		setSource(source)
+		this.spaceID = spaceID
 	}
+
 }
 
-/**
-* Informs the destruction of a space in a given context.
-*/
+/** Informs the destruction of a space in a given context.
+ */
 event SpaceDestroyed {
+
+	/** The identifier of the destroyed space.
+	 */
 	val spaceID : SpaceID
-	new (src : Address, sid : SpaceID) {
-		setSource(src)
-		this.spaceID = sid
+
+	/** Construct the event.
+	 *
+	 * @param source the address of the emitter.
+	 * @param spaceID the identifier of the space.
+	 */
+	new (source : Address, spaceID : SpaceID) {
+		setSource(source)
+		this.spaceID = spaceID
 	}
+
 }
 
-/**  Notifies other members the member with agentID has effectively 
- * integrated the holon context.*/
+/** Notifies other members the member with agentID has effectively 
+ * integrated the holon context.
+ */
 event MemberJoined {
+
+	/** The identifier of the context that the member joined.
+	 */
 	val parentContextID : UUID
+
+	/** The identifier of the agent that has joined the context.
+	 */
 	val agentID : UUID
+
+	/** The fully qualified name of the type of the agent.
+	 */
 	val agentType : String
-	new (src : Address, pid : UUID, aid : UUID, at : String) {
-		setSource(src)
-		this.parentContextID = pid
-		this.agentID = aid
-		this.agentType = at
+
+	/** Construct the event.
+	 *
+	 * @param source the address of the emitter.
+	 * @param contextID the identifier of the context.
+	 * @param agentID the identifier of the agent.
+	 * @param agentType fully qualified name of the type of the agent.
+	 */
+	new (source : Address, contextID : UUID, agentID : UUID, agentType : String) {
+		setSource(source)
+		this.parentContextID = contextID
+		this.agentID = agentID
+		this.agentType = agentType
 	}
+
 }
 
 /** Notifies other members the member with agentID was 
  * excluded (forced to leave) the holon context
- * parentContextID */
+ * parentContextID.
+ */
 event MemberExcluded {
+
+	/** The identifier of the context from which the member was excluded.
+	 */
 	val parentContextID : UUID
+
+	/** The identifier of the agent that was excluded from the context.
+	 */
 	val agentID : UUID
+
+	/** The fully qualified name of the type of the agent.
+	 */
 	val agentType : String
-	new (src : Address, pid : UUID, aid : UUID, at : String) {
-		setSource(src)
-		this.parentContextID = pid
-		this.agentID = aid
-		this.agentType = at
+
+	/** Construct the event.
+	 *
+	 * @param source the address of the emitter.
+	 * @param contextID the identifier of the context.
+	 * @param agentID the identifier of the agent.
+	 * @param agentType fully qualified name of the type of the agent.
+	 */
+	new (source : Address, contextID : UUID, agentID : UUID, agentType : String) {
+		setSource(source)
+		this.parentContextID = contextID
+		this.agentID = agentID
+		this.agentType = agentType
 	}
+
 }
 
-/** Notifies other members the member with agentID has left the holon context */
+/** Notifies other members the member with agentID has left the holon context.
+ */
 event MemberLeft {
+
+	/** The identifier of the agent that has left the holon context.
+	 */
 	val agentID : UUID
+
+	/** The fully qualified name of the type of the agent.
+	 */
 	val agentType : String
-	new (src : Address, aid : UUID, at : String) {
-		setSource(src)
-		this.agentID = aid
-		this.agentType = at
+
+	/** Construct the event.
+	 *
+	 * @param source the address of the emitter.
+	 * @param agentID the identifier of the agent.
+	 * @param agentType fully qualified name of the type of the agent.
+	 */
+	new (source : Address, agentID : UUID, agentType : String) {
+		setSource(source)
+		this.agentID = agentID
+		this.agentType = agentType
 	}
+
 }
 
-/**
- * Notifies behaviors the agent has joined a new superholon
+/** Notifies behaviors the agent has joined a new superholon.
+ * This event is received only by the agent which has joined the superholon.
  */
 event ContextJoined {
+
+	/** The identifier of the context in the super holon.
+	 */
 	val holonContextID : UUID
+
+	/** The identifier of the default space in the super-holon context.
+	 */
 	val defaultSpaceID : UUID
-	new (pid : UUID, sid : UUID) {
-		this.holonContextID = pid
-		this.defaultSpaceID = sid
+
+	/** Construct the event.
+	 *
+	 * @param contextID the identifier of the context.
+	 * @param defaultSpaceID the identifier of the default space.
+	 */
+	new (contextID : UUID, defaultSpaceID : UUID) {
+		this.holonContextID = contextID
+		this.defaultSpaceID = defaultSpaceID
 	}
+
 }
 
 /**
- * Notifies behaviors the agent has left a superholon
+ * Notifies behaviors the agent has left a superholon.
+ * This event is received only by the agent which has left the superholon.
  */
 event ContextLeft {
+
+	/** The identifier of the context in the super holon.
+	 */
 	val holonContextID : UUID
-	new (pid : UUID) {
-		this.holonContextID = pid
+
+	/** Construct the event.
+	 *
+	 * @param contextID the identifier of the context.
+	 */
+	new (contextID : UUID) {
+		this.holonContextID = contextID
 	}
+
 }
+
