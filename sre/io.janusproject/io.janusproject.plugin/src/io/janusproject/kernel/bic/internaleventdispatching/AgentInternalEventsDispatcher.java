@@ -201,7 +201,7 @@ public class AgentInternalEventsDispatcher {
 	 * @return the collection of couple associating a object and its collection of behavior methods that must be executed
 	 * @throws InvocationTargetException - exception when you try to execute a method by reflection and this method doesn't exist.
 	 */
-	private static Collection<Runnable> evaluateGuards(final Object event,
+	private static Collection<Runnable> evaluateGuards(final Event event,
 			final Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators) throws InvocationTargetException {
 
 		final MultiCollection<Runnable> behaviorsMethodsToExecute = new MultiCollection<>();
