@@ -12,4 +12,14 @@
 	<packaging>eclipse-target-definition</packaging>
 	<name>Target Platform Definition</name>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>target-platform-validation-plugin</artifactId>
+				<version>${tycho.version}</version>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
