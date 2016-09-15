@@ -6,8 +6,8 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Require-Bundle: io.sarl.lang;bundle-version="0.5.0.qualifier",
- io.sarl.lang.ui;bundle-version="0.5.0.qualifier";visibility:=reexport,
+Require-Bundle: io.sarl.lang;bundle-version="0.5.0",
+ io.sarl.lang.ui;bundle-version="0.5.0";visibility:=reexport,
  org.junit;bundle-version="4.12.0";visibility:=reexport,
  org.mockito.mockito-core;bundle-version="2.0.111",
  org.eclipse.xtext.junit4;bundle-version="2.10.0";visibility:=reexport,
