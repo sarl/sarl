@@ -262,6 +262,8 @@
       <feature id="io.sarl.baseplatform" version="0.4.0"/>
       <feature id="io.sarl.examples.feature" version="0.4.0"/>
       <feature id="io.janusproject.feature" version="0.4.0"/>
+      <feature id="io.sarl.lib.source" version="0.4.1"/>
+      <feature id="io.janusproject.feature.source" version="0.4.1"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.jboss.tools.m2e.jdt.feature"/>
       <feature id="org.eclipse.help"/>
@@ -303,8 +305,8 @@
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
-      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="false" startLevel="5" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="false" startLevel="1" />
    </configurations>
 
    <repositories>

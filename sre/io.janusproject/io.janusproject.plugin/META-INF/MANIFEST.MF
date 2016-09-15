@@ -68,7 +68,7 @@ Export-Package: io.janusproject,
 Main-Class: io.janusproject.Boot
 
 Name: SARL-Runtime-Environment
-SARL-Spec-Version: 0.4.0
+SARL-Spec-Version: 0.4
 SRE-Name: JANUS
 Standalone-SRE: false
 CLI-Offline: --offline
