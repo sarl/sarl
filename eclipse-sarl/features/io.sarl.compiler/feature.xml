@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.compiler"
       label="SARL Compiler"
-      version="0.4.0"
+      version="0.4.1"
       plugin="io.sarl.lang.ui">
 
    <description url="http://www.sarl.io/about/">
@@ -222,7 +222,7 @@
    </url>
 
    <requires>
-      <import plugin="io.sarl.lang.core" version="0.4.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang.core" version="0.4.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.core" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.11.0" match="greaterOrEqual"/>
@@ -234,7 +234,7 @@
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.util" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j"/>
-      <import plugin="io.sarl.lang" version="0.4.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang" version="0.4.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui.shared" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui.codetemplates.ui" version="2.10.0" match="greaterOrEqual"/>
@@ -282,7 +282,7 @@
       <import plugin="org.eclipse.jdt.debug" version="3.6.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.expressions" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.ide" version="2.10.0" match="compatible"/>
-      <import feature="io.sarl.lib" version="0.4.0"/>
+      <import feature="io.sarl.lib" version="0.4.1"/>
       <import feature="org.eclipse.xtend.sdk" version="2.10.0.v201605250459"/>
    </requires>
 

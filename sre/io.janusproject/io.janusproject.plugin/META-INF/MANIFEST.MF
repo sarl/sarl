@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: io.janusproject.plugin;singleton:=true
-Bundle-Version: 0.4.0
+Bundle-Version: 0.4.1
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: io.sarl.core;bundle-version="0.4.0",
- io.sarl.util;bundle-version="0.4.0",
- io.sarl.eclipse;bundle-version="0.4.0",
+Require-Bundle: io.sarl.core;bundle-version="0.4.1",
+ io.sarl.util;bundle-version="0.4.1",
+ io.sarl.eclipse;bundle-version="0.4.1",
  org.arakhne.afc.core.vmutils;bundle-version="14.0.0",
  org.arakhne.afc.core.util;bundle-version="14.0.0",
  com.hazelcast;bundle-version="3.7.0",

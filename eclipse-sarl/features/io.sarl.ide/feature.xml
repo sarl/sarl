@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.ide"
       label="SARL Development Environment"
-      version="0.4.0"
+      version="0.4.1"
       plugin="io.sarl.eclipse">
 
    <description url="http://www.sarl.io/about/">
@@ -223,7 +223,7 @@ tools upon the Eclipse IDE.
    </url>
 
    <requires>
-      <import plugin="io.sarl.lang.ui" version="0.4.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang.ui" version="0.4.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.core" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.common.types.ui" version="2.10.0" match="greaterOrEqual"/>
