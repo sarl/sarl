@@ -135,15 +135,16 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	@Override
 	public AgentTask in(long delay, Procedure1<? super Agent> procedure) {
-		return in(task("task-" + UUID.randomUUID()), delay, procedure); //$NON-NLS-1$
+		return in(Schedules.$DEFAULT_VALUE$IN_0, delay, procedure);
 	}
 
 	@Override
 	public synchronized AgentTask in(AgentTask task, long delay, Procedure1<? super Agent> procedure) {
-		task.setProcedure(procedure);
-		final ScheduledFuture<?> sf = this.executorService.schedule(new AgentRunnableTask(task, false), delay, TimeUnit.MILLISECONDS);
-		this.futures.put(task.getName(), sf);
-		return task;
+		final AgentTask rtask = task == null ? task("task-" + UUID.randomUUID()) : task; //$NON-NLS-1$
+		rtask.setProcedure(procedure);
+		final ScheduledFuture<?> sf = this.executorService.schedule(new AgentRunnableTask(rtask, false), delay, TimeUnit.MILLISECONDS);
+		this.futures.put(rtask.getName(), sf);
+		return rtask;
 	}
 
 	@Override
@@ -166,7 +167,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	@Override
 	public final boolean cancel(AgentTask task) {
-		return cancel(task, true);
+		return cancel(task, Schedules.$DEFAULT_VALUE$CANCEL_0);
 	}
 
 	@Override
@@ -183,16 +184,17 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	@Override
 	public AgentTask every(long period, Procedure1<? super Agent> procedure) {
-		return every(task("task-" + UUID.randomUUID()), period, procedure); //$NON-NLS-1$
+		return every(Schedules.$DEFAULT_VALUE$EVERY_0, period, procedure);
 	}
 
 	@Override
 	public synchronized AgentTask every(AgentTask task, long period, Procedure1<? super Agent> procedure) {
-		task.setProcedure(procedure);
-		final ScheduledFuture<?> sf = this.executorService.scheduleAtFixedRate(new AgentRunnableTask(task, true), 0, period,
+		final AgentTask rtask = task == null ? task("task-" + UUID.randomUUID()) : task; //$NON-NLS-1$
+		rtask.setProcedure(procedure);
+		final ScheduledFuture<?> sf = this.executorService.scheduleAtFixedRate(new AgentRunnableTask(rtask, true), 0, period,
 				TimeUnit.MILLISECONDS);
-		this.futures.put(task.getName(), sf);
-		return task;
+		this.futures.put(rtask.getName(), sf);
+		return rtask;
 	}
 
 	/**

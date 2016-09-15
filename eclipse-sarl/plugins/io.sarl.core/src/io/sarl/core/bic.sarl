@@ -310,27 +310,16 @@ capacity Lifecycle {
 capacity Schedules {
 
 	/**
-	 * Creates an anonymous task to execute the procedure that will be triggered after the specified delay.
-	 *
-	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
-	 *
-	 * @param delay time in milliseconds to delay the procedure execution.
-	 * @param procedure the closure to execute.
-	 * @return the generated task.
-	 */
-	def in(delay : long, procedure : (Agent) => void ) : AgentTask
-
-	/**
 	 * Schedule a given task to be executed after the specified delay.
 	 *
 	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
 	 *
-	 * @param task the task that will run the given closure.
+	 * @param task the task that will run the given closure. If <code>null</code>, a new task is created.
 	 * @param delay time in milliseconds to delay the procedure execution.
 	 * @param procedure the closure to execute.
 	 * @return the generated task.
 	 */
-	def in(task : AgentTask, delay : long, procedure : (Agent) => void) : AgentTask
+	def in(task : AgentTask = null, delay : long, procedure : (Agent) => void) : AgentTask
 
 	/**
 	 * Create a named task that can be retrieved and schedule later.
@@ -351,28 +340,6 @@ capacity Schedules {
 	 * whether the thread executing this task should be interrupted in
 	 * an attempt to stop the task.
 	 *
-	 * <p>This function interrupts ongoing tasks. So, it is
-	 * equivalent to passing <code>true</code> as the
-	 * value for the parameter <code>mayInterruptIfRunning</code>
-	 * to the function {@link #cancel(AgentTask, boolean)}.
-	 *
-	 * @param task the task to cancel.
-	 * @return <code>false</code> if the task could not be cancelled,
-	 *     typically because it has already completed normally;
-	 *     <code>true</code> otherwise
-	 */
-	def cancel(task : AgentTask) : boolean
-
-	/**
-	 * Attempts to cancel execution of this task.  This attempt will
-	 * fail if the task has already completed, has already been cancelled,
-	 * or could not be cancelled for some other reason. If successful,
-	 * and this task has not started when <code>cancel</code> is called,
-	 * this task should never run.  If the task has already started,
-	 * then the <code>mayInterruptIfRunning</code> parameter determines
-	 * whether the thread executing this task should be interrupted in
-	 * an attempt to stop the task.
-	 *
 	 * @param task the task to cancel.
 	 * @param mayInterruptIfRunning <code>true</code> if the thread executing this
 	 *     task should be interrupted; otherwise, in-progress tasks are allowed
@@ -381,34 +348,7 @@ capacity Schedules {
 	 *     typically because it has already completed normally;
 	 *     <code>true</code> otherwise
 	 */
-	def cancel(task : AgentTask, mayInterruptIfRunning : boolean) : boolean
-
-	/**
-	 * Create an anonymous task and schedules a periodic execution of its behavior.
-	 * <p>
-	 * If the duration of the task is greater to the given period length, then
-	 * multiple task's instances will be run in parallel.
-	 * For example, consider the following code:
-	 * <pre><code>
-	 * every(500) [ sleep(2000) ]
-	 * </code></pre>
-	 * At a given time, 4 instances (A, B, C, D) of the task may be run in parallel:
-	 * <pre><code>
-	 * t=0   0500   1000   1500   2000   2500   3000   3500   4000   4500
-	 *   |    |      |      |      |      |      |      |      |      |
-	 *   [-A-----------------------]
-	 *        [-B-------------------------]
-	 *               [-C-------------------------]
-	 *                      [-D-------------------------]
-	 *                             [-E-------------------------]
-	 *                                    [-F-------------------------]
-	 * </code></pre>
-	 *
-	 * @param period the number of milliseconds between two launches of the given procedure.
-	 * @param procedure the procedure to launch. The parameter of the procedure is the agent.
-	 * @return the created task.
-	 */
-	def every(period : long, procedure : (Agent) => void) : AgentTask
+	def cancel(task : AgentTask, mayInterruptIfRunning : boolean = true) : boolean
 
 	/**
 	 * Schedule a periodic execution of the given task.
@@ -433,12 +373,12 @@ capacity Schedules {
 	 *
 	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
 	 *
-	 * @param task the task to associate to the procedure.
+	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
 	 * @param period the number of milliseconds between two launches of the given procedure.
 	 * @param procedure the procedure to launch. The parameter of the procedure is the agent.
 	 * @return the given task.
 	 */
-	def every(task : AgentTask, period : long, procedure : (Agent) => void ) : AgentTask
+	def every(task : AgentTask = null, period : long, procedure : (Agent) => void ) : AgentTask
 
 }
 
