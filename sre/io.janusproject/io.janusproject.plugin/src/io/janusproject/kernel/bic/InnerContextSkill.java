@@ -181,12 +181,14 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 
 	@Override
 	public boolean isInnerDefaultSpace(SpaceID spaceID) {
-		return spaceID.equals(this.innerContext.getDefaultSpace().getSpaceID());
+		final AgentContext context = this.innerContext;
+		return context != null && spaceID.equals(context.getDefaultSpace().getSpaceID());
 	}
 
 	@Override
 	public boolean isInnerDefaultSpace(UUID spaceID) {
-		return spaceID.equals(this.innerContext.getDefaultSpace().getSpaceID().getID());
+		final AgentContext context = this.innerContext;
+		return context != null && spaceID.equals(context.getDefaultSpace().getSpaceID().getID());
 	}
 
 	@Override

@@ -71,12 +71,12 @@ Consequently, you could directly include the SARL module into the Maven dependen
 	<dependency>
 	  <groupId>io.sarl.maven</groupId>
 	  <artifactId>io.sarl.maven.sdk</artifactId>
-	  <version>0.4.0</version>
+	  <version>0.4.1</version>
 	</dependency>
 	...
 ```
 
-Please, replace Version `0.4.0` in the previous snipset by the number of the version you want to use.
+Please, replace Version `0.4.1` in the previous snipset by the number of the version you want to use.
 
 === 3.3. Use of the development version with Maven
 
