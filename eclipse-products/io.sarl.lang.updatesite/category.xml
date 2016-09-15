@@ -32,18 +32,4 @@ SARL aims at providing the fundamental abstractions for dealing with concurrency
          Janus is an open-source multi-agent platform, which is reimplemented to support the SARL Agent-Oriented Programming Language.
       </description>
    </category-def>
-
-   <feature url="features/io.sarl.lib_0.4.1-sources.jar" id="io.sarl.lib.source" version="0.4.1">
-      <category name="io.sarl.sources"/>
-   </feature>
-   <feature url="features/io.janusproject.feature_0.4.1-sources.jar" id="io.janusproject.feature.source" version="0.4.1">
-      <category name="io.sarl.sources"/>
-   </feature>
-
-   <category-def name="io.sarl.sources" label="SARL Developper Resources">
-      <description>
-         Developper resources (sources, etc.) of the SARL project, and related projects (Janus, etc.) 
-      </description>
-   </category-def>
-   
 </site>
