@@ -103,7 +103,11 @@ abstract class AgentTrait {
 	 */
 	@Pure
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
-		return getOwner().getSkill(capacity);
+		final Agent owner = getOwner();
+		if (owner == null) {
+			return null;
+		}
+		return owner.getSkill(capacity);
 	}
 
 	/** Defines the implementation of the "capacity maps-to skill" operator.
@@ -143,7 +147,11 @@ abstract class AgentTrait {
 	 */
 	@SuppressWarnings("unchecked")
     protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... capacities) {
-		return getOwner().$setSkill(skill, capacities);
+		final Agent owner = getOwner();
+		if (owner == null) {
+			return skill;
+		}
+		return owner.$setSkill(skill, capacities);
 	}
 
 	/**
@@ -155,7 +163,11 @@ abstract class AgentTrait {
 	 * @since 0.4
 	 */
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
-		return getOwner().clearSkill(capacity);
+		final Agent owner = getOwner();
+		if (owner == null) {
+			return null;
+		}
+		return owner.clearSkill(capacity);
 	}
 
 }
