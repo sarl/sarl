@@ -162,6 +162,31 @@ describe "SARL Syntax FAQ" {
 				)
 			}
 
+			/* In SARL, the empty generic parameter list, written <code>&lt,&gt;</code> is
+			 * not supported: a generic type expression must be written between them.
+			 * 
+			 * <p>For solving this problem, two choices: i) add a type expression between
+			 * <code>&lt;</code> and <code>&gt;</code>; ii) remove the generic parameter
+			 * list.
+			 *
+			 * <pre><code>
+			 * var firstSolution : List<Integer> = new ArrayList<Integer>()
+			 * var secondSolution : List<Integer> = new ArrayList()
+			 * </code></pre>
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Why can I not use the '&lt;&gt;' notation for generic parameters?" {
+				'''
+					package io.sarl.docs.faq.syntax
+					import java.util.List
+					import java.util.ArrayList
+					agent A {
+						var a : List<Integer> = new ArrayList<>()
+					}
+				'''.parseWithError
+			}
+
 		}
 		
 }
