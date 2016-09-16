@@ -137,7 +137,10 @@ D.1) Revert steps B.1 to B.5; and change the following:
      * Versions in the category.xml.
      * Uncomment the Snapshot Maven repository.
 
-D.2) Compiling locally without error.
+D.2) Change the version numbers into the archive files stored in
+     the io.sarl.tests.testdata project.
+
+D.3) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
      $> mvn clean install
@@ -148,12 +151,12 @@ D.2) Compiling locally without error.
      $> cd docs/io.sarl.docs.suite
      $> mvn clean install
 
-D.3) Commit and push to Github:
+D.4) Commit and push to Github:
 
      $> git commit
      $> git push --all
 
-D.4) On Hudson, launch a build for updating the maven repositories and
+D.5) On Hudson, launch a build for updating the maven repositories and
      the Eclipse update sites.
 
 
