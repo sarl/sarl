@@ -649,6 +649,11 @@ Workflow {
     				to = "io.sarl.lang.ui.preferences.SARLBuilderConfigurationBlock"
     				override = true
    				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.model.IResourceForEditorInputFactory"
+    				to = "org.eclipse.xtext.xbase.ui.editor.XbaseResourceForEditorInputFactory"
+   				}
+   				
 
     			both = {
     				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"
