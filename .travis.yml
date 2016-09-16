@@ -38,7 +38,7 @@ install: true
 
 script: "mvn -B -e -P!generateproduct clean install"
 
-after_failure: "sh -e ./build-tools/scripts/print-surefire-reports.sh"
+#after_failure: "sh -e ./build-tools/scripts/print-surefire-reports.sh"
 
 cache:
   directories:
