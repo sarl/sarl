@@ -101,13 +101,12 @@
 
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>${compiler.level}</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
 						<configuration>
 							<target>
-								<ant antfile="${basedir}/build.xml" target="zip_all_examples" />
+								<ant antfile="${project.basedir}/build.xml" target="zip_all_examples" />
 							</target>
 						</configuration>
 						<goals>
