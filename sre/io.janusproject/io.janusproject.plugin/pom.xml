@@ -20,6 +20,11 @@
 
 	<build>
 		<plugins>
+ 			<plugin>
+ 				<groupId>org.eclipse.tycho</groupId>
+ 				<artifactId>tycho-source-plugin</artifactId>
+ 			</plugin>
+
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>replacer</artifactId>

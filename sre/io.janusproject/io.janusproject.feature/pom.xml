@@ -11,4 +11,27 @@
 	<packaging>eclipse-feature</packaging>
 	<name>SARL Examples Feature</name>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-source-feature-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<plugin id="org.arakhne.afc.core.vmutils"/>
+						<plugin id="org.arakhne.afc.core.util"/>
+						<plugin id="com.hazelcast"/>
+						<plugin id="com.google.gson"/>
+						<plugin id="org.zeromq.jeromq"/>
+						<plugin id="com.google.inject"/>
+						<plugin id="org.apache.commons.cli"/>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>

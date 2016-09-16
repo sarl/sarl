@@ -13,4 +13,22 @@
 	<packaging>eclipse-feature</packaging>
 	<name>SARL Application-Library Feature</name>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-source-feature-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<plugin id="com.google.guava" />
+						<plugin id="javax.inject" />
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>
