@@ -21,7 +21,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* Style for SARL 0.4 */
+/* Style for SARL 0.5 */
 PR['registerLangHandler'](
    PR['createSimpleLexer'](
       [
