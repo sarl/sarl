@@ -43,6 +43,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.google.common.base.Throwables;
 import com.google.common.io.Resources;
 import foo.Foo;
 import org.eclipse.core.filesystem.URIUtil;
@@ -310,25 +311,32 @@ public class StandardSREInstallTest {
 		public void revalidate() {
 			IStatus s = this.sre.getValidity();
 			assertNotNull(s);
-			assertTrue(s.isOK());
+			assertTrue(s.toString(), s.isOK());
 			this.sre.revalidate();
 			s = this.sre.getValidity();
 			assertNotNull(s);
-			assertTrue(s.isOK());
+			assertTrue(toString(s), s.isOK());
 		}
 
 		@Test
 		public void getValidity() {
 			IStatus s = this.sre.getValidity();
 			assertNotNull(s);
-			assertTrue(s.isOK());
+			assertTrue(toString(s), s.isOK());
 		}
 
 		@Test
 		public void getValidityInt() {
 			IStatus s = this.sre.getValidity(0);
 			assertNotNull(s);
-			assertTrue(s.isOK());
+			assertTrue(toString(s), s.isOK());
+		}
+
+		private static String toString(IStatus s) {
+			if (s.getException() != null) {
+				return s.getMessage() + "\n" + Throwables.getStackTraceAsString(s.getException());
+			}
+			return s.getMessage();
 		}
 
 	}
