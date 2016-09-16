@@ -4,6 +4,7 @@
 /eclipse-sarl/plugins/io.sarl.lang.core/about.mappings
 /eclipse-sarl/plugins/io.sarl.lang.ui/about.mappings
 /sre/io.janusproject/io.janusproject.plugin/about.mappings
+/eclipse-products/io.sarl.lang.updatesite/io.sarl.lang.product.copy
 
 # Xtext generated files
 eclipse-sarl/plugins/io.sarl.core/xtend-gen/

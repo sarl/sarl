@@ -11,15 +11,6 @@
 	<name>SDK Core Library</name>
 
 	<build>
-		<resources>
-			<!-- Embed the SARL source code into the binary jar. It should be replaced by the generated source bundle. -->
-			<resource>
-				<directory>src</directory>
-				<includes>
-					<include>**/*.sarl</include>
-				</includes>
-			</resource>
-		</resources>
 		<plugins>
  			<plugin>
  				<groupId>org.eclipse.tycho</groupId>
