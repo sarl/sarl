@@ -1219,7 +1219,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Create the main function
 			final JvmOperation operation = this.typesFactory.createJvmOperation();
 			container.getMembers().add(operation);
-			operation.setAbstract(source.isAbstract() || container.isAbstract() || container.isInterface());
+			final boolean isAbstractOperation = source.isAbstract() || container.isInterface();
+			operation.setAbstract(isAbstractOperation);
 			operation.setNative(source.isNative());
 			operation.setSynchronized(source.isSynchonized());
 			operation.setStrictFloatingPoint(source.isStrictFloatingPoint());
