@@ -27,6 +27,7 @@ import org.eclipse.xtext.common.types.JvmTypeParameter;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlField;
@@ -223,8 +224,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 7,
-					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
+					32, 7);
 		}
 
 		@Test
@@ -236,8 +236,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 9,
-					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
+					32, 9);
 		}
 
 		@Test
@@ -289,8 +288,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 6,
-					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
+					32, 6);
 		}
 
 		@Test
@@ -302,8 +300,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8,
-					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
+					32, 8);
 		}
 
 		@Test
@@ -331,19 +328,11 @@ public class BehaviorParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"strictfp behavior B1 {}"
-					), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
-			assertEquals("B1", beh.getName());
-			assertNull(beh.getExtends());
-			assertEquals(JvmVisibility.PUBLIC, beh.getVisibility());
-			assertEquals(0, beh.getMembers().size());
-			assertFalse(beh.isAbstract());
-			assertFalse(beh.isFinal());
-			assertTrue(beh.isStrictFloatingPoint());
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlBehavior(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8);
 		}
 
 		@Test
@@ -355,8 +344,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 6,
-					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
+					32, 6);
 		}
 
 		@Test
@@ -368,8 +356,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8,
-					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
+					32, 8);
 		}
 
 		@Test
@@ -381,8 +368,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 12,
-					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
+					32, 12);
 		}
 
 		@Test
@@ -394,8 +380,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 9,
-					"Illegal modifier for the behavior B1; only public, package, abstract, final & strictfp are permitted");
+					32, 9);
 		}
 
 		@Test
@@ -508,7 +493,7 @@ public class BehaviorParsingTest {
 	public static class ActionTest extends AbstractSarlTest {
 
 		@Test
-		public void modifier_override_recommended() throws Exception {
+		public void modifier_override_notRecommended() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract behavior B1 {",
@@ -517,10 +502,9 @@ public class BehaviorParsingTest {
 					"behavior B2 extends B1 {",
 					"	def name { }",
 					"}"), false);
-			validate(mas).assertWarning(
+			validate(mas).assertNoWarnings(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-					106, 4);
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
 		}
 
 		@Test
@@ -1036,25 +1020,11 @@ public class BehaviorParsingTest {
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	strictfp def name { }",
-					"}"), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
-			assertEquals("B1", beh.getName());
-			assertNull(beh.getExtends());
-			assertEquals(1, beh.getMembers().size());
-			//
-			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
-			assertEquals("name", act1.getName());
-			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
-			assertFalse(act1.isAbstract());
-			assertFalse(act1.isStatic());
-			assertFalse(act1.isDispatch());
-			assertFalse(act1.isFinal());
-			assertFalse(act1.isSynchonized());
-			assertTrue(act1.isStrictFloatingPoint());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8);
 		}
 
 		@Test
@@ -1551,26 +1521,11 @@ public class BehaviorParsingTest {
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	volatile var field : int",
-					"}"), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
-			assertEquals("B1", beh.getName());
-			assertNull(beh.getExtends());
-			assertEquals(1, beh.getMembers().size());
-			//
-			SarlField attr1 = (SarlField) beh.getMembers().get(0);
-			assertEquals("field", attr1.getName());
-			assertTypeReferenceIdentifier(attr1.getType(), "int");
-			assertNull(attr1.getInitialValue());
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
-			assertFalse(attr1.isExtension());
-			assertFalse(attr1.isFinal());
-			assertFalse(attr1.isStatic());
-			assertFalse(attr1.isTransient());
-			assertTrue(attr1.isVolatile());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8);
 		}
 
 		@Test
@@ -1592,26 +1547,11 @@ public class BehaviorParsingTest {
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	transient var field : int",
-					"}"), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
-			assertEquals("B1", beh.getName());
-			assertNull(beh.getExtends());
-			assertEquals(1, beh.getMembers().size());
-			//
-			SarlField attr1 = (SarlField) beh.getMembers().get(0);
-			assertEquals("field", attr1.getName());
-			assertTypeReferenceIdentifier(attr1.getType(), "int");
-			assertNull(attr1.getInitialValue());
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
-			assertFalse(attr1.isExtension());
-			assertFalse(attr1.isFinal());
-			assertFalse(attr1.isStatic());
-			assertTrue(attr1.isTransient());
-			assertFalse(attr1.isVolatile());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 9);
 		}
 
 		@Test

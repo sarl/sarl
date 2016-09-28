@@ -16,11 +16,11 @@
 package io.sarl.lang.tests.parsing.general;
 
 import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -36,210 +36,85 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 	public void noAnnotation() throws Exception {
 		SarlScript mas = file(multilineString(
 				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
-				"agent A2 extends A1 {",
-				"	def name { }",
+				"capacity C1 {",
 				"}"), false);
 		validate(mas).assertWarning(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
+				SarlPackage.eINSTANCE.getSarlCapacity(),
+				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
-	public void methodAnnotation_all() throws Exception {
+	public void annotation_all() throws Exception {
 		SarlScript mas = file(multilineString(
 				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
-				"agent A2 extends A1 {",
-				"   @SuppressWarnings(\"all\")",
-				"	def name { }",
-				"}"), false);
-		validate(mas).assertNoWarnings(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
-	}
-
-	@Test
-	public void methodAnnotation_correctId() throws Exception {
-		SarlScript mas = file(multilineString(
-				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
-				"agent A2 extends A1 {",
-				"   @SuppressWarnings(\"" + org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE + "\")",
-				"	def name { }",
-				"}"), false);
-		validate(mas).assertNoWarnings(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
-	}
-
-	@Test
-	public void methodAnnotation_invalidId() throws Exception {
-		SarlScript mas = file(multilineString(
-				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
-				"agent A2 extends A1 {",
-				"   @SuppressWarnings(\"x.y.z\")",
-				"	def name { }",
-				"}"), false);
-		validate(mas).assertWarning(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
-	}
-
-	@Test
-	public void methodAnnotation_all_inlist() throws Exception {
-		SarlScript mas = file(multilineString(
-				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
-				"agent A2 extends A1 {",
-				"   @SuppressWarnings(\"a\", \"b\", \"c\", \"all\")",
-				"	def name { }",
-				"}"), false);
-		validate(mas).assertNoWarnings(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
-	}
-
-	@Test
-	public void methodAnnotation_correctId_inlist() throws Exception {
-		SarlScript mas = file(multilineString(
-				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
-				"agent A2 extends A1 {",
-				"   @SuppressWarnings(\"a\", \"b\", \"c\", \""
-						+ org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE + "\")",
-				"	def name { }",
-				"}"), false);
-		validate(mas).assertNoWarnings(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
-	}
-
-	@Test
-	public void methodAnnotation_invalidId_inlist() throws Exception {
-		SarlScript mas = file(multilineString(
-				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
-				"agent A2 extends A1 {",
-				"   @SuppressWarnings(\"a\", \"b\", \"c\", \"x.y.z\")",
-				"	def name { }",
-				"}"), false);
-		validate(mas).assertWarning(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
-	}
-
-	@Test
-	public void typeAnnotation_all() throws Exception {
-		SarlScript mas = file(multilineString(
-				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
 				"@SuppressWarnings(\"all\")",
-				"agent A2 extends A1 {",
-				"	def name { }",
+				"capacity C1 {",
 				"}"), false);
 		validate(mas).assertNoWarnings(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
+				SarlPackage.eINSTANCE.getSarlCapacity(),
+				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
-	public void typeAnnotation_correctId() throws Exception {
+	public void annotation_correctId() throws Exception {
 		SarlScript mas = file(multilineString(
 				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
-				"@SuppressWarnings(\"" + org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE + "\")",
-				"agent A2 extends A1 {",
-				"	def name { }",
+				"@SuppressWarnings(\"" + IssueCodes.DISCOURAGED_CAPACITY_DEFINITION + "\")",
+				"capacity C1 {",
 				"}"), false);
 		validate(mas).assertNoWarnings(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
+				SarlPackage.eINSTANCE.getSarlCapacity(),
+				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
-	public void typeAnnotation_invalidId() throws Exception {
+	public void annotation_invalidId() throws Exception {
 		SarlScript mas = file(multilineString(
 				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
 				"@SuppressWarnings(\"x.y.z\")",
-				"agent A2 extends A1 {",
-				"	def name { }",
+				"capacity C1 {",
 				"}"), false);
 		validate(mas).assertWarning(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
+				SarlPackage.eINSTANCE.getSarlCapacity(),
+				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
-	public void typeAnnotation_all_inlist() throws Exception {
+	public void annotation_all_inlist() throws Exception {
 		SarlScript mas = file(multilineString(
 				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
 				"@SuppressWarnings(\"a\", \"b\", \"c\", \"all\")",
-				"agent A2 extends A1 {",
-				"	def name { }",
+				"capacity C1 {",
 				"}"), false);
 		validate(mas).assertNoWarnings(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
+				SarlPackage.eINSTANCE.getSarlCapacity(),
+				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
-	public void typeAnnotation_correctId_inlist() throws Exception {
+	public void annotation_correctId_inlist() throws Exception {
 		SarlScript mas = file(multilineString(
 				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
-				"@SuppressWarnings(\"a\", \"b\", \"c\", \""
-					+ org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE + "\")",
-				"agent A2 extends A1 {",
-				"	def name { }",
+				"@SuppressWarnings(\"a\", \"b\", \"c\", \"" + IssueCodes.DISCOURAGED_CAPACITY_DEFINITION + "\")",
+				"capacity C1 {",
 				"}"), false);
 		validate(mas).assertNoWarnings(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
+				SarlPackage.eINSTANCE.getSarlCapacity(),
+				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
-	public void typeAnnotation_invalidId_inlist() throws Exception {
+	public void annotation_invalidId_inlist() throws Exception {
 		SarlScript mas = file(multilineString(
 				"package io.sarl.lang.tests.test",
-				"abstract agent A1 {",
-				"	abstract def name",
-				"}",
 				"@SuppressWarnings(\"a\", \"b\", \"c\", \"x.y.z\")",
-				"agent A2 extends A1 {",
-				"	def name { }",
+				"capacity C1 {",
 				"}"), false);
 		validate(mas).assertWarning(
-				SarlPackage.eINSTANCE.getSarlAction(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
+				SarlPackage.eINSTANCE.getSarlCapacity(),
+				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
+
 
 	@Test
 	public void expression_noSuppression() throws Exception {

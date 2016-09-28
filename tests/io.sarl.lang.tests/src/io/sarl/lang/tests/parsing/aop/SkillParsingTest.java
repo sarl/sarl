@@ -15,7 +15,6 @@
  */
 package io.sarl.lang.tests.parsing.aop;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -25,14 +24,13 @@ import static org.junit.Assert.fail;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.xtext.common.types.JvmTypeConstraint;
-import org.eclipse.xtext.common.types.JvmTypeParameter;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.common.types.JvmTypeConstraint;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Severity;
@@ -47,7 +45,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlField;
@@ -668,20 +665,11 @@ public class SkillParsingTest {
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"strictfp skill S1 implements C1 {}"
-					), true);
-			assertEquals(2, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			assertEquals("S1", skill.getName());
-			assertNull(skill.getExtends());
-			assertEquals(JvmVisibility.PUBLIC, skill.getVisibility());
-			assertEquals(0, skill.getMembers().size());
-			assertFalse(skill.isAbstract());
-			assertFalse(skill.isFinal());
-			assertFalse(skill.isStatic());
-			assertTrue(skill.isStrictFloatingPoint());
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlSkill(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					47, 8);
 		}
 
 		@Test
@@ -769,7 +757,7 @@ public class SkillParsingTest {
 	public static class ActionTest extends AbstractSarlTest {
 
 		@Test
-		public void modifier_override_recommended() throws Exception {
+		public void modifier_override_possible_but_no_warning() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { def fakefct() }",
@@ -780,10 +768,9 @@ public class SkillParsingTest {
 					"skill S2 extends S1 {",
 					"	def name { }",
 					"}"), false);
-			validate(mas).assertWarning(
+			validate(mas).assertNoWarnings(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-					170, 4);
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
 		}
 
 		@Test
@@ -1098,25 +1085,11 @@ public class SkillParsingTest {
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	strictfp def name { }",
-					"}"), true);
-			assertEquals(2, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			assertEquals("S1", skill.getName());
-			assertNull(skill.getExtends());
-			assertEquals(1, skill.getMembers().size());
-			//
-			SarlAction act1 = (SarlAction) skill.getMembers().get(0);
-			assertEquals("name", act1.getName());
-			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
-			assertFalse(act1.isAbstract());
-			assertFalse(act1.isStatic());
-			assertFalse(act1.isDispatch());
-			assertFalse(act1.isFinal());
-			assertFalse(act1.isSynchonized());
-			assertTrue(act1.isStrictFloatingPoint());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 8);
 		}
 
 		@Test
@@ -2039,26 +2012,11 @@ public class SkillParsingTest {
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	volatile var field : int",
-					"}"), true);
-			assertEquals(2, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			assertEquals("S1", skill.getName());
-			assertNull(skill.getExtends());
-			assertEquals(1, skill.getMembers().size());
-			//
-			SarlField attr1 = (SarlField) skill.getMembers().get(0);
-			assertEquals("field", attr1.getName());
-			assertTypeReferenceIdentifier(attr1.getType(), "int");
-			assertNull(attr1.getInitialValue());
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
-			assertFalse(attr1.isFinal());
-			assertFalse(attr1.isStatic());
-			assertFalse(attr1.isTransient());
-			assertTrue(attr1.isVolatile());
-			assertFalse(attr1.isExtension());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 8);
 		}
 
 		@Test
@@ -2082,26 +2040,11 @@ public class SkillParsingTest {
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	transient var field : int",
-					"}"), true);
-			assertEquals(2, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
-			assertEquals("S1", skill.getName());
-			assertNull(skill.getExtends());
-			assertEquals(1, skill.getMembers().size());
-			//
-			SarlField attr1 = (SarlField) skill.getMembers().get(0);
-			assertEquals("field", attr1.getName());
-			assertTypeReferenceIdentifier(attr1.getType(), "int");
-			assertNull(attr1.getInitialValue());
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
-			assertFalse(attr1.isFinal());
-			assertFalse(attr1.isStatic());
-			assertTrue(attr1.isTransient());
-			assertFalse(attr1.isVolatile());
-			assertFalse(attr1.isExtension());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					74, 9);
 		}
 
 		@Test

@@ -267,7 +267,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 7,
-					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -280,7 +280,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -339,7 +339,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -351,8 +351,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8,
-					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
+					32, 8);
 		}
 
 		@Test
@@ -383,22 +382,11 @@ public class AgentParsingTest {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"strictfp agent A1 {}"
-					), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
-			assertEquals("A1", agent1.getName());
-			assertNull(agent1.getExtends());
-			assertEquals(JvmVisibility.PUBLIC, agent1.getVisibility());
-			assertEquals(0, agent1.getMembers().size());
-			assertFalse(agent1.isAbstract());
-			assertFalse(agent1.isAnonymous());
-			assertFalse(agent1.isFinal());
-			assertFalse(agent1.isLocal());
-			assertFalse(agent1.isStatic());
-			assertTrue(agent1.isStrictFloatingPoint());
+					), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAgent(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					32, 8);
 		}
 
 		@Test
@@ -411,7 +399,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -424,7 +412,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
+					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -436,8 +424,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 12,
-					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
+					32, 12);
 		}
 
 		@Test
@@ -449,8 +436,7 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 9,
-					"Illegal modifier for the agent A1; only public, package, abstract, final & strictfp are permitted");
+					32, 9);
 		}
 
 		@Test
@@ -1244,26 +1230,11 @@ public class AgentParsingTest {
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	volatile var field : int",
-					"}"), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
-			assertEquals("A1", agent1.getName());
-			assertNull(agent1.getExtends());
-			assertEquals(1, agent1.getMembers().size());
-			//
-			SarlField attr1 = (SarlField) agent1.getMembers().get(0);
-			assertEquals("field", attr1.getName());
-			assertTypeReferenceIdentifier(attr1.getType(), "int");
-			assertNull(attr1.getInitialValue());
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
-			assertFalse(attr1.isExtension());
-			assertFalse(attr1.isFinal());
-			assertFalse(attr1.isStatic());
-			assertFalse(attr1.isTransient());
-			assertTrue(attr1.isVolatile());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 8);
 		}
 
 		@Test
@@ -1285,26 +1256,11 @@ public class AgentParsingTest {
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	transient var field : int",
-					"}"), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
-			assertEquals("A1", agent1.getName());
-			assertNull(agent1.getExtends());
-			assertEquals(1, agent1.getMembers().size());
-			//
-			SarlField attr1 = (SarlField) agent1.getMembers().get(0);
-			assertEquals("field", attr1.getName());
-			assertTypeReferenceIdentifier(attr1.getType(), "int");
-			assertNull(attr1.getInitialValue());
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
-			assertFalse(attr1.isExtension());
-			assertFalse(attr1.isFinal());
-			assertFalse(attr1.isStatic());
-			assertTrue(attr1.isTransient());
-			assertFalse(attr1.isVolatile());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlField(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 9);
 		}
 
 		@Test
@@ -1728,7 +1684,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
-		public void modifier_override_recommended() throws Exception {
+		public void modifier_override_notRecommended() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract agent A1 {",
@@ -1737,10 +1693,9 @@ public class AgentParsingTest {
 					"agent A2 extends A1 {",
 					"	def name { }",
 					"}"), false);
-			validate(mas).assertWarning(
+			validate(mas).assertNoWarnings(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-					100, 4);
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
 		}
 
 		@Test
@@ -1945,25 +1900,11 @@ public class AgentParsingTest {
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	strictfp def name { }",
-					"}"), true);
-			assertEquals(1, mas.getXtendTypes().size());
-			//
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			//
-			SarlAgent agent1 = (SarlAgent) mas.getXtendTypes().get(0);
-			assertEquals("A1", agent1.getName());
-			assertNull(agent1.getExtends());
-			assertEquals(1, agent1.getMembers().size());
-			//
-			SarlAction act1 = (SarlAction) agent1.getMembers().get(0);
-			assertEquals("name", act1.getName());
-			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
-			assertFalse(act1.isAbstract());
-			assertFalse(act1.isStatic());
-			assertFalse(act1.isDispatch());
-			assertFalse(act1.isFinal());
-			assertFalse(act1.isSynchonized());
-			assertTrue(act1.isStrictFloatingPoint());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlAction(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					44, 8);
 		}
 
 		@Test

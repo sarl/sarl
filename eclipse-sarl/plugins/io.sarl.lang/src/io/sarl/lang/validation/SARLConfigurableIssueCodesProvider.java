@@ -21,6 +21,8 @@
 
 package io.sarl.lang.validation;
 
+import javax.inject.Singleton;
+
 import org.eclipse.xtend.core.validation.XtendConfigurableIssueCodes;
 import org.eclipse.xtext.preferences.PreferenceKey;
 import org.eclipse.xtext.util.IAcceptor;
@@ -34,6 +36,7 @@ import org.eclipse.xtext.validation.SeverityConverter;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@Singleton
 public class SARLConfigurableIssueCodesProvider extends XtendConfigurableIssueCodes {
 
 	/** Construct a provider of issue codes for Xtext tools.

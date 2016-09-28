@@ -208,7 +208,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator agentModifierValidator = new SARLModifierValidator(
 			newArrayList("public", "package", "abstract", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"final", "strictfp")); //$NON-NLS-1$//$NON-NLS-2$
+			"final")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInAgentModifierValidator = new SARLModifierValidator(
@@ -216,21 +216,19 @@ public class SARLValidator extends AbstractSARLValidator {
 			"package",  //$NON-NLS-1$
 			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"def", "override", "synchronized", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"strictfp")); //$NON-NLS-1$
+			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"package",  //$NON-NLS-1$
 			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-			"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"transient", "volatile")); //$NON-NLS-1$//$NON-NLS-2$
+			"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator behaviorModifierValidator = new SARLModifierValidator(
 			newArrayList("public", "package", "abstract", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"final", "strictfp")); //$NON-NLS-1$//$NON-NLS-2$
+			"final")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInBehaviorModifierValidator = new SARLModifierValidator(
@@ -238,16 +236,14 @@ public class SARLValidator extends AbstractSARLValidator {
 			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
 			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
 			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"def", "override", "synchronized", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"strictfp")); //$NON-NLS-1$
+			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInBehaviorModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"package",  //$NON-NLS-1$
 			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-			"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"transient", "volatile")); //$NON-NLS-1$//$NON-NLS-2$
+			"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator capacityModifierValidator = new SARLModifierValidator(
@@ -271,7 +267,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator skillModifierValidator = new SARLModifierValidator(
 			newArrayList("public", "package", "abstract", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"final", "strictfp")); //$NON-NLS-1$//$NON-NLS-2$
+			"final")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInSkillModifierValidator = new SARLModifierValidator(
@@ -279,29 +275,27 @@ public class SARLValidator extends AbstractSARLValidator {
 			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
 			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
 			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"def", "override", "synchronized", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"strictfp")); //$NON-NLS-1$
+			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInSkillModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
 			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-			"final", "val", "var", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"volatile", "transient")); //$NON-NLS-1$//$NON-NLS-2$
+			"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator nestedClassInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"package", "protected", //$NON-NLS-1$ //$NON-NLS-2$
 			"private", "static", "final", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			"abstract", "strictfp")); //$NON-NLS-1$ //$NON-NLS-2$
+			"abstract")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator nestedInterfaceInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
 			"package", "protected", "private", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			"static", "abstract", "strictfp")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"static", "abstract")); //$NON-NLS-1$ //$NON-NLS-2$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator nestedEnumerationInAgentModifierValidator = new SARLModifierValidator(

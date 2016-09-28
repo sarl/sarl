@@ -848,21 +848,11 @@ public class ClassParsingTest {
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  strictfp static class C1 { }",
-					"}"), true);
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			SarlClass clazz = getClazz(mas);
-			assertNotNull(clazz);
-			//
-			assertEquals("C1", clazz.getName());
-			assertNull(clazz.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, clazz.getVisibility());
-			assertEquals(0, clazz.getMembers().size());
-			assertFalse(clazz.isAbstract());
-			assertFalse(clazz.isAnonymous());
-			assertFalse(clazz.isFinal());
-			assertFalse(clazz.isLocal());
-			assertTrue(clazz.isStatic());
-			assertTrue(clazz.isStrictFloatingPoint());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlClass(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 8);
 		}
 
 		@Test

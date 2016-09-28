@@ -794,20 +794,11 @@ public class InterfaceParsingTest {
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  strictfp interface I1 { }",
-					"}"), true);
-			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
-			SarlInterface interf = getInterface(mas);
-			assertNotNull(interf);
-			//
-			assertEquals("I1", interf.getName());
-			assertNullOrEmpty(interf.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, interf.getVisibility());
-			assertEquals(0, interf.getMembers().size());
-			assertFalse(interf.isAnonymous());
-			assertFalse(interf.isFinal());
-			assertFalse(interf.isLocal());
-			assertTrue(interf.isStatic());
-			assertTrue(interf.isStrictFloatingPoint());
+					"}"), false);
+			validate(mas).assertError(
+					SarlPackage.eINSTANCE.getSarlInterface(),
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
+					64, 8);
 		}
 
 		@Test

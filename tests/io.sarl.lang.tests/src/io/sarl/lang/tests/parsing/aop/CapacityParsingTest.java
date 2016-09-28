@@ -688,7 +688,7 @@ public class CapacityParsingTest {
 	public static class ActionTest extends AbstractSarlTest {
 
 		@Test
-		public void modifier_override_recommended() throws Exception {
+		public void modifier_override_notRecommended() throws Exception {
 			SarlScript mas = file(multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
@@ -697,10 +697,9 @@ public class CapacityParsingTest {
 					"capacity C2 extends C1 {",
 					"	def name { }",
 					"}"), false);
-			validate(mas).assertWarning(
+			validate(mas).assertNoWarnings(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE,
-					88, 4);
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
 		}
 
 		@Test

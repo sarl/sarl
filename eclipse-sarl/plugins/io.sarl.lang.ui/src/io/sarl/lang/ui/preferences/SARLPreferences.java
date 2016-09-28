@@ -89,7 +89,7 @@ public final class SARLPreferences {
 	 * @param project - the project.
 	 */
 	public static void setSystemSARLConfigurationFor(IProject project) {
-		final IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
+		final IPreferenceStore preferenceStore = getSARLPreferencesFor(project);
 		preferenceStore.setValue(IS_PROJECT_SPECIFIC, false);
 	}
 
@@ -102,14 +102,13 @@ public final class SARLPreferences {
 	public static void setSpecificSARLConfigurationFor(
 			IProject project,
 			IPath outputPath) {
-		final IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
+		final IPreferenceStore preferenceStore = getSARLPreferencesFor(project);
 		// Force to use a specific configuration for the SARL
 		preferenceStore.setValue(IS_PROJECT_SPECIFIC, true);
 
 		// Loop on the Xtext configurations embeded in the SARL compiler.
 		String key;
-		for (final OutputConfiguration projectConfiguration
-				: SARLPreferences.getXtextConfigurationsFor(project)) {
+		for (final OutputConfiguration projectConfiguration : getXtextConfigurationsFor(project)) {
 			//
 			// OUTPUT PATH
 			key = BuilderPreferenceAccess.getKey(
@@ -164,11 +163,10 @@ public final class SARLPreferences {
 	public static IPath getSARLOutputPathFor(
 			IProject project) {
 		assert project != null;
-		final IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(project);
+		final IPreferenceStore preferenceStore = getSARLPreferencesFor(project);
 		if (preferenceStore.getBoolean(IS_PROJECT_SPECIFIC)) {
 			String key;
-			for (final OutputConfiguration projectConfiguration
-					: SARLPreferences.getXtextConfigurationsFor(project)) {
+			for (final OutputConfiguration projectConfiguration : getXtextConfigurationsFor(project)) {
 				key = BuilderPreferenceAccess.getKey(
 						projectConfiguration,
 						EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);

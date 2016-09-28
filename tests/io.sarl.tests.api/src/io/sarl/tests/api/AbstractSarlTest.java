@@ -41,6 +41,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
@@ -49,6 +51,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -64,6 +67,7 @@ import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.XExpression;
@@ -139,6 +143,9 @@ public abstract class AbstractSarlTest {
 
 	@Inject
 	private ValidationTestHelper validationHelper;
+
+	@Inject
+	private Injector injector;
 
 	@Inject
 	private ParseHelper<SarlScript> parser;
@@ -1116,7 +1123,9 @@ public abstract class AbstractSarlTest {
 	/** Validate the given resource and reply the validator.
 	 */
 	protected Validator validate(Resource resource) {
-		return new XtextValidator(resource);
+		Validator validator = new XtextValidator(resource);
+		this.injector.injectMembers(validator);
+		return validator;
 	}
 
 	/** Create an instance of annotation type.
@@ -1358,41 +1367,41 @@ public abstract class AbstractSarlTest {
 	 */
 	public interface Validator {
 
-		public List<Issue> validate();
+		List<Issue> getIssues();
 
-		public Validator assertNoIssues();
+		Validator assertNoIssues();
 
-		public Validator assertNoErrors();
+		Validator assertNoErrors();
 
-		public Validator assertNoError(String issuecode);
+		Validator assertNoError(String issuecode);
 
-		public Validator assertNoErrors(EClass objectType, String code, String... messageParts);
+		Validator assertNoErrors(EClass objectType, String code, String... messageParts);
 
-		public Validator assertNoErrors(String code);
+		Validator assertNoErrors(String code);
 
-		public Validator assertNoIssues(EClass objectType);
+		Validator assertNoIssues(EClass objectType);
 
-		public Validator assertNoIssue(EClass objectType, String issuecode);
+		Validator assertNoIssue(EClass objectType, String issuecode);
 
-		public Validator assertError(EClass objectType, String code, int offset, int length, String... messageParts);
+		Validator assertError(EClass objectType, String code, int offset, int length, String... messageParts);
 
-		public Validator assertError(EClass objectType, String code, String... messageParts);
+		Validator assertError(EClass objectType, String code, String... messageParts);
 
-		public Validator assertIssue(EClass objectType, String code, Severity severity, String... messageParts);
+		Validator assertIssue(EClass objectType, String code, Severity severity, String... messageParts);
 
-		public Validator assertIssue(EClass objectType, String code, int offset, int length,  Severity severity,
+		Validator assertIssue(EClass objectType, String code, int offset, int length,  Severity severity,
 				String... messageParts);
 
-		public Validator assertNoIssues(EClass objectType, String code, Severity severity, String... messageParts);
+		Validator assertNoIssues(EClass objectType, String code, Severity severity, String... messageParts);
 
-		public Validator assertNoIssues(EClass objectType, String code, int offset, int length, Severity severity,
+		Validator assertNoIssues(EClass objectType, String code, int offset, int length, Severity severity,
 				String... messageParts);
 
-		public Validator assertWarning(EClass objectType, String code, String... messageParts);
+		Validator assertWarning(EClass objectType, String code, String... messageParts);
 
-		public Validator assertNoWarnings(EClass objectType, String code, String... messageParts);
+		Validator assertNoWarnings(EClass objectType, String code, String... messageParts);
 
-		public Validator assertWarning(EClass objectType, String code, int offset, int length, String... messageParts);
+		Validator assertWarning(EClass objectType, String code, int offset, int length, String... messageParts);
 
 	}
 
@@ -1414,7 +1423,7 @@ public abstract class AbstractSarlTest {
 			this.resource = resource;
 		}
 
-		public List<Issue> validate() {
+		public List<Issue> getIssues() {
 			return AbstractSarlTest.this.validationHelper.validate(this.resource);
 		}
 
@@ -1502,7 +1511,7 @@ public abstract class AbstractSarlTest {
 					length, messageParts);
 			return this;
 		}
-
+		
 	}
 
 	/**
