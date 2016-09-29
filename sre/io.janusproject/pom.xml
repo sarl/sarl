@@ -24,6 +24,7 @@
 			</activation>
 			<modules>
 				<module>io.janusproject.plugin</module>
+				<module>io.janusproject.kernel</module>
 				<module>io.janusproject.feature</module>
 				<module>io.janusproject.tests</module>
 			</modules>
