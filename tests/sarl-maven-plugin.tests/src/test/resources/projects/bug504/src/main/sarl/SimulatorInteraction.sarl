@@ -1,0 +1,26 @@
+package io.sarl.elevatorsim
+
+import io.sarl.elevatorsim.events.SendCarAction
+import io.sarl.lang.core.EventSpace
+import java.io.IOException
+
+skill SimulatorInteraction 
+    implements SimulatorPush
+{
+
+	def sendCar(a : int, b : int, c : int, d : Object, e : Object) {
+	}
+
+    override pushSendCarAction(action : SendCarAction)
+    {
+        try 
+        {
+            sendCar(action.car, action.floor, action.nextDirection,
+                null, null);
+        } 
+        catch (e : IOException) 
+        {
+            e.printStackTrace();
+        }
+    }
+}

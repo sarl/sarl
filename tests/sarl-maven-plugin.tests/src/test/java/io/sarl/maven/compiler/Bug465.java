@@ -30,6 +30,8 @@ import org.apache.maven.it.Verifier;
 import org.apache.maven.shared.utils.io.FileUtils;
 import org.junit.Test;
 
+import io.sarl.lang.SARLVersion;
+
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -72,7 +74,7 @@ public class Bug465 extends AbstractMojoTest {
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;",
 				"",
-				"@SarlSpecification(\"0.4\")",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgent extends Agent {",
 				"  @SyntheticMember",
