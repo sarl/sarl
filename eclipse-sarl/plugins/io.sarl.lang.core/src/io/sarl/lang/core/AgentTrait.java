@@ -22,6 +22,7 @@
 package io.sarl.lang.core;
 
 import java.lang.ref.WeakReference;
+import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -33,7 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class AgentTrait {
+abstract class AgentTrait extends AgentProtectedAPIObject {
 
 	private WeakReference<Agent> agentRef;
 
@@ -51,11 +52,7 @@ abstract class AgentTrait {
 		this.agentRef = new WeakReference<>(null);
 	}
 
-	/**
-	 * Returns a String representation of the Event E1 attributes only.
-	 *
-	 * @return the string representation of the attributes of this Event.
-	 */
+	@Override
 	@Pure
 	protected String attributesToString() {
 		final StringBuilder result = new StringBuilder();
@@ -89,18 +86,7 @@ abstract class AgentTrait {
 		return this.agentRef.get();
 	}
 
-	/** Replies the skill corresponding to the given capacity.
-	 *
-	 * <p>The return may never be <code>null</code>. If not capacity
-	 * was set, the exception {@link UnimplementedCapacityException}
-	 * is thrown.
-	 *
-	 * @param <S> - type of the capacity.
-	 * @param capacity - the capacity to search for the implementation.
-	 * @return the skill, never <code>null</code>
-	 * @see Agent#getSkill(Class)
-	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
-	 */
+	@Override
 	@Pure
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		final Agent owner = getOwner();
@@ -110,41 +96,20 @@ abstract class AgentTrait {
 		return owner.getSkill(capacity);
 	}
 
-	/** Defines the implementation of the "capacity maps-to skill" operator.
-	 *
-	 * @param <S> - type of skill to be mapped to.
-	 * @param capacity - the implemented capacity.
-	 * @param skill - the skill to associate to the capacity.
-	 */
+	@Override
 	@Inline("$setSkill($2, $1)")
-	protected <S extends Skill & Capacity> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
+	protected <S extends Skill> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
 		setSkill(skill, capacity);
 	}
 
-	/**
-	 * Set the skill for the {@link Capacity} <code>capacity</code>.
-	 *
-	 * @param <S> - type of the skill.
-	 * @param capacities the capacity or the capacities to set.
-	 * @param skill implementaion of <code>capacity</code>.
-	 * @return the skill that was set.
-	 * @since 0.4
-	 */
+	@Override
 	@SafeVarargs
 	@Inline("$setSkill($1, $2)")
 	protected final <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities) {
 		return $setSkill(skill, capacities);
 	}
 
-	/**
-	 * Set the skill for the {@link Capacity} <code>capacity</code>.
-	 *
-	 * @param <S> - type of the skill.
-	 * @param capacities the capacity or the capacities to set.
-	 * @param skill implementaion of <code>capacity</code>.
-	 * @return the skill that was set.
-	 * @since 0.4
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
     protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... capacities) {
 		final Agent owner = getOwner();
@@ -154,20 +119,53 @@ abstract class AgentTrait {
 		return owner.$setSkill(skill, capacities);
 	}
 
-	/**
-	 * Clears the Skill associated with the capacity.
-	 *
-	 * @param <S> - the type of the capacity.
-	 * @param capacity - the capacity for which the skill must be cleared.
-	 * @return the skill that was removed
-	 * @since 0.4
-	 */
+	@Override
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		final Agent owner = getOwner();
 		if (owner == null) {
 			return null;
 		}
 		return owner.clearSkill(capacity);
+	}
+
+	@Override
+	@Pure
+	protected boolean hasSkill(Class<? extends Capacity> capacity) {
+		final Agent owner = getOwner();
+		if (owner == null) {
+			return false;
+		}
+		return owner.hasSkill(capacity);
+	}
+
+	@Override
+	@Pure
+	protected boolean isMe(Address address) {
+		final Agent owner = getOwner();
+		if (owner == null) {
+			return false;
+		}
+		return owner.isMe(address);
+	}
+
+	@Override
+	@Pure
+	protected boolean isMe(UUID uID) {
+		final Agent owner = getOwner();
+		if (owner == null) {
+			return false;
+		}
+		return owner.isMe(uID);
+	}
+
+	@Override
+	@Pure
+	protected boolean isFromMe(Event event) {
+		final Agent owner = getOwner();
+		if (owner == null) {
+			return false;
+		}
+		return owner.isFromMe(event);
 	}
 
 }
