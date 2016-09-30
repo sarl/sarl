@@ -47,7 +47,7 @@ import io.sarl.lang.annotation.SarlSpecification;
  * @mavenartifactid $ArtifactId$
  */
 @SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
-public class Agent implements Identifiable {
+public class Agent extends AgentProtectedAPIObject implements Identifiable {
 
 	private final UUID id;
 
@@ -77,11 +77,7 @@ public class Agent implements Identifiable {
 		}
 	}
 
-	/**
-	 * Returns a String representation of the Event E1 attributes only.
-	 *
-	 * @return the string representation of the attributes of this Event.
-	 */
+	@Override
 	protected String attributesToString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("id = "); //$NON-NLS-1$
@@ -130,36 +126,14 @@ public class Agent implements Identifiable {
 		return setSkill(skill, capacity);
 	}
 
-	/**
-	 * Set the skill for the {@link Capacity} <code>capacity</code>.
-	 *
-	 * <p>If no capacity is provided as argument, this function will associate the skill to all the capacities
-	 * it is implementing.
-	 *
-	 * @param <S> - type of the skill.
-	 * @param capacities the capacity or the capacities to set.
-	 * @param skill implementaion of <code>capacity</code>.
-	 * @return the skill that was set.
-	 * @since 0.4
-	 */
+	@Override
 	@SafeVarargs
 	@Inline("$setSkill($1, $2)")
 	protected final <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities) {
 		return $setSkill(skill, capacities);
 	}
 
-	/**
-	 * Set the skill for the {@link Capacity} <code>capacity</code>.
-	 *
-	 * <p>If no capacity is provided as argument, this function will associate the skill to all the capacities
-	 * it is implementing.
-	 *
-	 * @param <S> - type of the skill.
-	 * @param iCapacities the capacity or the capacities to set.
-	 * @param skill implementaion of <code>capacity</code>.
-	 * @return the skill that was set.
-	 * @since 0.4
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... iCapacities) {
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
@@ -200,25 +174,14 @@ public class Agent implements Identifiable {
 		});
 	}
 
-	/** Implementation of the operator "capacity maps-to skill".
-	 *
-	 * @param <S> - type of the skill.
-	 * @param capacity - the capacity to map.
-	 * @param skill - the skill to be mapped to.
-	 */
 	@SuppressWarnings("unchecked")
+	@Override
 	@Inline("$setSkill($2, $1)")
 	protected <S extends Skill> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
 		$setSkill(skill, capacity);
 	}
 
-	/**
-	 * Clears the Skill associated with the capacity.
-	 *
-	 * @param <S> - the type of the capacity.
-	 * @param capacity - the capacity for which the skill must be cleared.
-	 * @return the skill that was removed
-	 */
+	@Override
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		assert capacity != null;
 		final Skill skill = this.skills.remove(capacity);
@@ -228,19 +191,7 @@ public class Agent implements Identifiable {
 		return capacity.cast(skill);
 	}
 
-	/**
-	 * Replies with the skill associated to the {@link Capacity}
-	 * <code>capacity</code>.
-	 *
-	 * <p>The return may never be <code>null</code>. If not capacity
-	 * was set, the exception {@link UnimplementedCapacityException}
-	 * is thrown.
-	 *
-	 * @param <S> - the type of the capacity.
-	 * @param capacity - the capacity to retreive.
-	 * @return the skill, never <code>null</code>
-	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
-	 */
+	@Override
 	@Pure
 	protected <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
@@ -251,54 +202,26 @@ public class Agent implements Identifiable {
 		return skill;
 	}
 
-	/**
-	 * Checks if this agent has a Skill that implements the {@link Capacity}
-	 * <code>capacity</code>.
-	 *
-	 * @param capacity - capacity to check
-	 * @return <code>true</code> if it has a skill associate to this capacity,
-	 * <code>false</code> otherwise
-	 */
+	@Override
 	@Pure
 	protected boolean hasSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
 		return this.skills.containsKey(capacity);
 	}
 
-	/** Replies if the given address is one of the addresses of this agent.
-	 * The test is done on the identifier replied by {@link Address#getUUID()}.
-	 *
-	 * @param address - the address to test.
-	 * @return <code>true</code> if the given address is one of this agent,
-	 *     otherwise <code>false</code>.
-	 */
+	@Override
 	@Pure
 	protected boolean isMe(Address address) {
 		return (address != null) && (this.id.equals(address.getUUID()));
 	}
 
-	/** Replies if the given identifier corresponds to the identifier
-	 * of this agent.
-	 *
-	 * <p>This function is equivalent to:<pre><code>
-	 * id.equals( agent.getID() )
-	 * </code></pre>
-	 *
-	 * @param uID - the identifier to test.
-	 * @return <code>true</code> if the given identifier is the one of this agent,
-	 *     otherwise <code>false</code>.
-	 */
+	@Override
 	@Pure
 	protected boolean isMe(UUID uID) {
 		return (uID != null) && (this.id.equals(uID));
 	}
 
-	/** Replies if the given event was emitted by this agent.
-	 *
-	 * @param event - the event to test.
-	 * @return <code>true</code> if the given event was emitted by
-	 *     this agent; otherwise <code>false</code>.
-	 */
+	@Override
 	@Pure
 	protected boolean isFromMe(Event event) {
 		return (event != null) && isMe(event.getSource());

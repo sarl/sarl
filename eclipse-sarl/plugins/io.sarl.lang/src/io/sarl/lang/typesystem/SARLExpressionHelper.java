@@ -63,7 +63,7 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 	 * considered as pure.
 	 */
 	public static final String SPECIAL_PURE_FUNCTION_NAME_PATTERN =
-			"^(((is)|(get)|(has))[A-Z].*)|(equals)|(hashCode)|(clone)|(toString)$"; //$NON-NLS-1$;
+			"^(((is)|(get)|(has))[A-Z].*)|(get)|(equals)|(hashCode)|(clone)|(toString)$"; //$NON-NLS-1$;
 
 	private final Pattern pattern;
 
@@ -80,11 +80,12 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 	public boolean hasSideEffects(XAbstractFeatureCall featureCall, boolean inspectContents) {
 		if (super.hasSideEffects(featureCall, inspectContents)) {
 			final JvmIdentifiableElement feature = featureCall.getFeature();
-			if ((feature != null) && (!feature.eIsProxy()) && (feature instanceof JvmOperation)) {
+			// Several operations are not marked with @Pure but they have a clear semantic without border effects,
+			// e.g. the "is", "get" functions.
+			if (feature != null && !feature.eIsProxy() && feature instanceof JvmOperation) {
 				final JvmOperation op = (JvmOperation) feature;
 				final String name = op.getSimpleName();
-				if (name != null && this.pattern.matcher(name).find()
-						&& hasPrimitiveParameters(op)) {
+				if (name != null && this.pattern.matcher(name).find() && hasPrimitiveParameters(op)) {
 					return false;
 				}
 			}
