@@ -113,7 +113,39 @@ For using this version, you must add the Maven Repository Server of SARL in your
 	...
 ```
 
-=== 3.4 Syntax highlighting with other tools
+=== 3.4. Compile SARL code with Maven
+
+For compiling SARL source files with Maven, you should use the provided plugin: `sarl-maven-plugin`.
+It invokes the SARL and Java compilers with a simpler interface than the standard Xtext maven plugin.
+For using the `sarl-maven-plugin`, you should add in your pom file:
+
+```xml
+	...
+	<build>
+	  <plugins>
+	    <plugin>
+	      <groupId>io.sarl.maven</groupId>
+	      <artifactId>sarl-maven-plugin</artifactId>
+	      <version>0.4.1</version>
+	      <extensions>true</extensions>
+	      <configuration>
+	        <source>1.8</source>
+	        <target>1.8</target>
+	        <encoding>UTF-8</encoding>
+	      </configuration>
+	    </plugin>
+	    ...
+	  </plugins>
+	  ...
+	</build>
+	...
+```
+
+Please, replace Version `0.4.1` in the previous snipset by the number of the version you want to use.
+
+CAUTION: Do not forget to set the `extensions` flag to `true`.
+
+=== 3.5. Syntax highlighting with other tools
 
 Several style specifications are provided for syntax highlighting in third party tools.
 Style specifications are provided for:
