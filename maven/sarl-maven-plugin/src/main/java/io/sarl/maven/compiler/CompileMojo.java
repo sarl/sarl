@@ -142,7 +142,7 @@ public class CompileMojo extends AbstractSarlMojo {
 	}
 
 	private void compileSARL() throws MojoExecutionException, MojoFailureException {
-		getLog().info(Locale.getString(CompileMojo.class, "COMPILING_SARL")); //$NON-NLS-1$
+		getLog().info(Locale.getString(CompileMojo.class, "COMPILING_SARL", getOutput())); //$NON-NLS-1$
 		// Get the Maven plugin that is embedding the Xtext compiler
 		final String xtextGroupId = this.mavenHelper.getConfig("xtext-compiler.groupId"); //$NON-NLS-1$
 		final String xtextArtifactId = this.mavenHelper.getConfig("xtext-compiler.artifactId"); //$NON-NLS-1$

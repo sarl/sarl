@@ -77,12 +77,25 @@
 						</goals>
 					</execution>
 					<execution>
-						<id>restoring-default-product</id>
+						<id>restoring-default-product-on-verify</id>
 						<phase>verify</phase>
 						<configuration>
 							<target>
 								<property name="sarl.product.definition.file" value="${project.basedir}/io.sarl.lang.product"/>
-								<copy overwrite="true" file="${sarl.product.definition.file}.copy" tofile="${sarl.product.definition.file}"/>
+								<copy failonerror="false" quiet="true" overwrite="true" file="${sarl.product.definition.file}.copy" tofile="${sarl.product.definition.file}"/>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>restoring-default-product-on-clean</id>
+						<phase>clean</phase>
+						<configuration>
+							<target>
+								<property name="sarl.product.definition.file" value="${project.basedir}/io.sarl.lang.product"/>
+								<copy failonerror="false" quiet="true" overwrite="true" file="${sarl.product.definition.file}.copy" tofile="${sarl.product.definition.file}"/>
 							</target>
 						</configuration>
 						<goals>
