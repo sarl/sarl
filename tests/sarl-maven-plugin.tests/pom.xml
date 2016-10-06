@@ -12,6 +12,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>io.sarl.lang.core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>

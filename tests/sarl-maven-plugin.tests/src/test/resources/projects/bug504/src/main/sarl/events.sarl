@@ -1,0 +1,7 @@
+package io.sarl.elevatorsim.events
+
+event SendCarAction {
+	var car : int
+	var floor : int
+	var nextDirection : int
+}

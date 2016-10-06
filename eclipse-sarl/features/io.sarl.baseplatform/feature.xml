@@ -220,6 +220,14 @@
       <update label="SARL Snapshots" url="http://updates.sarl.io/snapshots/"/>
    </url>
 
+   <includes
+         id="org.eclipse.e4.rcp"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.rcp"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.xtext.ide" version="2.10.0" match="compatible"/>
       <import plugin="org.eclipse.xtext.xbase" version="2.10.0" match="compatible"/>
@@ -241,7 +249,7 @@
       <import plugin="org.eclipse.emf.mwe2.runtime" version="2.9.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext" version="2.10.0" match="compatible"/>
       <import plugin="org.eclipse.xtext.builder.standalone" version="2.10.0" match="compatible"/>
-      <import plugin="com.google.guava" version="14.0.0"/>
+      <import plugin="com.google.guava" version="14.0.0" match="greaterOrEqual"/>
       <import plugin="com.google.inject" version="3.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.junit4" version="2.10.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.5.0" match="compatible"/>
@@ -297,6 +305,7 @@
       <import plugin="org.apache.commons.codec" version="1.6.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.0.0" match="compatible"/>
       <import plugin="org.eclipse.userstorage" version="1.0.0" match="compatible"/>
+      <import plugin="org.eclipse.ui" version="3.3.0" match="compatible"/>
       <import feature="org.eclipse.rcp" version="4.6.0.v20160606-1342"/>
       <import feature="org.eclipse.jdt" version="3.12.0.v20160606-1100"/>
       <import feature="org.eclipse.egit" version="4.4.0.201606070830-r"/>
@@ -497,6 +506,13 @@
          download-size="0"
          install-size="0"
          version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.guava"
+         download-size="0"
+         install-size="0"
+         version="15.0.0.v201403281430"
          unpack="false"/>
 
 </feature>
