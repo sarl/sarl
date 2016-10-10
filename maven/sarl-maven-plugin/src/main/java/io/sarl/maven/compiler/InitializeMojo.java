@@ -30,7 +30,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.arakhne.afc.vmutil.locale.Locale;
 
-/** Initialization mojo for compiling SARL.
+/** Initialization mojo for the SARL Maven compiler.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

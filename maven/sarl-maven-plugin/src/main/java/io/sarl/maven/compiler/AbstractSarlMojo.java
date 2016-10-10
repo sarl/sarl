@@ -56,7 +56,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import io.sarl.lang.SARLConfig;
 
-/** Abstract mojo for compiling SARL.
+/** Abstract mojo for SARL.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -116,9 +116,10 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 			this.mavenHelper = new MavenHelper(this.session, this.buildPluginManager, this.repositorySystem,
 					this.resolutionErrorHandler, getLog());
 			ensureDefaultParameterValues();
+			prepareExecution();
 			executeMojo();
 		} catch (Exception e) {
-			getLog().error(e.getLocalizedMessage());
+			getLog().error(e.getLocalizedMessage(), e);
 			throw e;
 		}
 	}
@@ -127,6 +128,30 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 */
 	protected void ensureDefaultParameterValues() {
 		//
+	}
+
+	/** Prepare the execution of the Mojo.
+	 * @throws MojoExecutionException on failure.
+	 */
+	protected void prepareExecution() throws MojoExecutionException {
+		//
+	}
+
+	/** Create a file from a unix-like representation of the filename.
+	 *
+	 * @param filename the unix-like filename.
+	 * @return the file.
+	 */
+	protected static File unix2os(String filename) {
+		File file = null;
+		for (final String base : filename.split(Pattern.quote("/"))) { //$NON-NLS-1$
+			if (file == null) {
+				file = new File(base);
+			} else {
+				file = new File(file, base);
+			}
+		}
+		return file;
 	}
 
 	/** Make absolute the given filename, relatively to the project's folder.
@@ -147,7 +172,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the input folder.
 	 */
 	protected File getInput() {
-		return makeAbsolute((this.input == null) ? new File(SARLConfig.FOLDER_SOURCE_SARL) : this.input);
+		return makeAbsolute((this.input == null) ? unix2os(SARLConfig.FOLDER_SOURCE_SARL) : this.input);
 	}
 
 	/** Replies the output folder.
@@ -155,7 +180,15 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the output folder.
 	 */
 	protected File getOutput() {
-		return makeAbsolute((this.output == null) ? new File(SARLConfig.FOLDER_SOURCE_GENERATED) : this.output);
+		return this.output == null ? getDefaultOutput() : makeAbsolute(this.output);
+	}
+
+	/** Replies the default output folder.
+	 *
+	 * @return the default output folder.
+	 */
+	protected File getDefaultOutput() {
+		return makeAbsolute(unix2os(SARLConfig.FOLDER_SOURCE_GENERATED));
 	}
 
 	/** Replies the test input folder.
@@ -163,7 +196,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the test input folder.
 	 */
 	protected File getTestInput() {
-		return makeAbsolute((this.testInput == null) ? new File(SARLConfig.FOLDER_TEST_SOURCE_SARL) : this.testInput);
+		return makeAbsolute((this.testInput == null) ? unix2os(SARLConfig.FOLDER_TEST_SOURCE_SARL) : this.testInput);
 	}
 
 	/** Replies the test output folder.
@@ -171,7 +204,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * @return the test output folder.
 	 */
 	protected File getTestOutput() {
-		return makeAbsolute((this.testOutput == null) ? new File(SARLConfig.FOLDER_TEST_SOURCE_GENERATED) : this.testOutput);
+		return makeAbsolute((this.testOutput == null) ? unix2os(SARLConfig.FOLDER_TEST_SOURCE_GENERATED) : this.testOutput);
 	}
 
 	/** Execute the mojo.

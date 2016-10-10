@@ -18,41 +18,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.maven.compiler;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import javax.inject.Provider;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
+import org.apache.maven.project.MavenProject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtext.resource.XtextResourceSet;
 
-import org.apache.maven.it.VerificationException;
-
-import org.apache.maven.it.Verifier;
-import org.apache.maven.plugin.MojoFailureException;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-/**
+/** provider of resource sets when comilig with Maven.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("all")
-public class CompileMojoTest extends AbstractMojoTest {
+class MavenProjectResourceSetProvider implements Provider<ResourceSet> {
 
-	public void invalidXtext() throws Exception {
-		executeMojo("prj1", "compile");
+	private MavenProject project;
+
+	/** Constructor.
+	 *
+	 * @param project the compiled project.
+	 */
+	MavenProjectResourceSetProvider(MavenProject project) {
+		super();
+		this.project = project;
 	}
 
-	@Test(expected = VerificationException.class)
-	public void invalidSdk() throws Exception {
-		executeMojo("prj2", "compile");
+	@Override
+	public ResourceSet get() {
+		final ResourceSet rs = new XtextResourceSet();
+		MavenProjectAdapter.install(rs, this.project);
+		return rs;
 	}
 
 }

@@ -115,4 +115,49 @@ public class InheritanceHelper {
 		return false;
 	}
 
+	/** Replies if the type candidate is a subtype of the given super type.
+	 *
+	 * @param candidate the type to test.
+	 * @param jvmSuperType the expected JVM super-type.
+	 * @param sarlSuperType the expected SARL super-type.
+	 * @return <code>true</code> if the candidate is a sub-type of the super-type.
+	 */
+	public boolean isProxyOrSubTypeOf(JvmTypeReference candidate, Class<?> jvmSuperType,
+			Class<? extends XtendTypeDeclaration> sarlSuperType) {
+		final LightweightTypeReference reference = Utils.toLightweightTypeReference(candidate, this.services);
+		return isSubTypeOf(reference, jvmSuperType, sarlSuperType);
+	}
+
+	/** Replies if the type candidate is a proxy (unresolved type) or a subtype of the given super type.
+	 *
+	 * @param candidate the type to test.
+	 * @param jvmSuperType the expected JVM super-type.
+	 * @param sarlSuperType the expected SARL super-type.
+	 * @param onlyInterface <code>true</code> if only interface types are matching; <code>false</code> if
+	 *     not-interface types are matching.
+	 * @return <code>true</code> if the candidate is a sub-type of the super-type.
+	 */
+	public boolean isProxyOrSubTypeOf(JvmTypeReference candidate, Class<?> jvmSuperType,
+			Class<? extends XtendTypeDeclaration> sarlSuperType, boolean onlyInterface) {
+		if (candidate.eIsProxy()) {
+			return true;
+		}
+		return isSubTypeOf(candidate, jvmSuperType, sarlSuperType, onlyInterface);
+	}
+
+	/** Replies if the type candidate is a proxy (unresolved type) or a subtype of the given super type.
+	 *
+	 * @param candidate the type to test.
+	 * @param jvmSuperType the expected JVM super-type.
+	 * @param sarlSuperType the expected SARL super-type.
+	 * @return <code>true</code> if the candidate is a sub-type of the super-type.
+	 */
+	public boolean isProxyOrSubTypeOf(LightweightTypeReference candidate, Class<?> jvmSuperType,
+			Class<? extends XtendTypeDeclaration> sarlSuperType) {
+		if (!candidate.isResolved()) {
+			return true;
+		}
+		return isSubTypeOf(candidate, jvmSuperType, sarlSuperType);
+	}
+
 }
