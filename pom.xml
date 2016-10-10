@@ -215,6 +215,11 @@
 				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>io.sarl.maven</groupId>
+				<artifactId>io.sarl.maven.batchcompiler</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>io.sarl</groupId>
 				<artifactId>io.sarl.tests.api</artifactId>
 				<version>${sarl.version}</version>
