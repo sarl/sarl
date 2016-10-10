@@ -35,6 +35,8 @@ public final class Messages extends NLS {
 
 	private static final String BUNDLE_NAME = "io.sarl.lang.generator.messages";
 
+	public static String GeneratorConfigProvider2_0;
+
 	public static String SarlOutputConfigurationProvider_0;
 
 	static {

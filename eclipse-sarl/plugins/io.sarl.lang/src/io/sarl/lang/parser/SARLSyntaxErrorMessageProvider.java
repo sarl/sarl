@@ -21,9 +21,10 @@
 
 package io.sarl.lang.parser;
 
+import java.text.MessageFormat;
+
 import javax.inject.Inject;
 
-import com.ibm.icu.text.MessageFormat;
 import org.antlr.runtime.RecognitionException;
 import org.eclipse.xtext.nodemodel.SyntaxErrorMessage;
 import org.eclipse.xtext.util.Strings;

@@ -36,7 +36,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
-import com.ibm.icu.util.VersionInfo;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
@@ -71,6 +70,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
+import org.osgi.framework.Version;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
@@ -540,10 +540,12 @@ public final class Utils {
 	 *     positive integer of <code>v1</code> is greater than <code>v2</code>;
 	 *     {@code 0} if they are strictly equal.
 	 */
-	@Inline(value = "VersionInfo.getInstance($1).compareTo(VersionInfo.getInstance($2))",
-			imported = {VersionInfo.class})
+	@Inline(value = "Version.parseVersion($1).compareTo(Version.parseVersion($2))",
+			imported = {Version.class})
 	public static int compareVersions(String v1, String v2) {
-		return VersionInfo.getInstance(v1).compareTo(VersionInfo.getInstance(v2));
+		final Version vobject1 = Version.parseVersion(v1);
+		final Version vobject2 = Version.parseVersion(v2);
+		return vobject1.compareTo(vobject2);
 	}
 
 	private static void addAnnotationToSignature(StringBuilder textRepresentation, SARLGrammarKeywordAccess elements,

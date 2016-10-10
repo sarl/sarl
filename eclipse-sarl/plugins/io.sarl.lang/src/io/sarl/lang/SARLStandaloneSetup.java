@@ -21,6 +21,7 @@
 
 package io.sarl.lang;
 
+import com.google.inject.Injector;
 
 /**
  * Initialization support for running Xtext languages
@@ -35,9 +36,11 @@ package io.sarl.lang;
 public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated {
 
 	/** Set up the EMF modules for the SARL language.
+	 *
+	 * @return the injector.
 	 */
-	public static void doSetup() {
-		new SARLStandaloneSetup().createInjectorAndDoEMFRegistration();
+	public static Injector doSetup() {
+		return new SARLStandaloneSetup().createInjectorAndDoEMFRegistration();
 	}
 
 }
