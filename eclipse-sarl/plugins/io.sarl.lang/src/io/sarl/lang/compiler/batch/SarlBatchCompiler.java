@@ -157,7 +157,7 @@ public class SarlBatchCompiler {
 
 	private boolean useCurrentClassLoaderAsParent;
 
-	private org.eclipse.emf.common.util.URI baseURI;
+	private org.eclipse.emf.common.util.URI baseUri;
 
 	private FileProjectConfig projectConfig;
 
@@ -403,7 +403,7 @@ public class SarlBatchCompiler {
 	 * @param basePath the base path.
 	 */
 	public void setBaseURI(org.eclipse.emf.common.util.URI basePath) {
-		this.baseURI = basePath;
+		this.baseUri = basePath;
 	}
 
 	/** Change the path where the Java files are generated.
@@ -1410,44 +1410,79 @@ public class SarlBatchCompiler {
 		return false;
 	}
 
-	private File determineCommonRoot(File outputFile, List<File> sourceFileList) {
-		if (this.baseURI != null && this.baseURI.isFile()) {
-			return new File(this.baseURI.toFileString());
-		}
-		final List<File> pathList = new ArrayList<>(sourceFileList);
-		pathList.add(outputFile);
-
-		final List<List<File>> pathParts = new ArrayList<>();
-
-		for (final File path : pathList) {
-			final List<File> partsList = new ArrayList<>();
-			File subdir = path;
-			while (subdir != null) {
-				partsList.add(subdir);
-				subdir = subdir.getParentFile();
+	private static LinkedList<String> splitFile(File file, CancelIndicator cancelIndicator) {
+		assert cancelIndicator != null;
+		final LinkedList<String> elements = new LinkedList<>();
+		File current = file;
+		do {
+			if (cancelIndicator.isCanceled()) {
+				return null;
 			}
-			pathParts.add(partsList);
+			elements.addFirst(current.getName());
+			current = current.getParentFile();
+		} while (current != null);
+		return elements;
+	}
+
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	private File determineCommonRoot(File outputFile, List<File> sourceFileList, CancelIndicator cancelIndicator) {
+		assert cancelIndicator != null;
+
+		if (this.baseUri != null) {
+			if (this.baseUri.isFile()) {
+				this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_32, this.baseUri));
+				return new File(this.baseUri.toFileString());
+			}
+			this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_33, this.baseUri));
 		}
-		int i = 1;
-		File result = null;
-		while (true) {
-			File compareWith = null;
-			for (final List<File> parts : pathParts) {
-				if (parts.size() < i) {
-					return result;
-				}
-				final File part = parts.get(parts.size() - i);
-				if (compareWith == null) {
-					compareWith = part;
-				} else {
-					if (!compareWith.equals(part)) {
-						return result;
+
+		LinkedList<String> longuestPrefix = null;
+
+		for (final File file : Iterables.concat(sourceFileList, Collections.singleton(outputFile))) {
+			if (cancelIndicator.isCanceled()) {
+				return null;
+			}
+			final LinkedList<String> components = splitFile(file, cancelIndicator);
+			if (longuestPrefix == null) {
+				longuestPrefix = components;
+			} else {
+				int i = 0;
+				while (i < longuestPrefix.size() && i < components.size()
+						&& Strings.equal(longuestPrefix.get(i), components.get(i))) {
+					if (cancelIndicator.isCanceled()) {
+						return null;
 					}
+					++i;
+				}
+				while (i < longuestPrefix.size()) {
+					if (cancelIndicator.isCanceled()) {
+						return null;
+					}
+					longuestPrefix.removeLast();
+				}
+				if (longuestPrefix.isEmpty()) {
+					return null;
 				}
 			}
-			result = compareWith;
-			i++;
 		}
+
+		if (longuestPrefix == null || cancelIndicator.isCanceled()) {
+			return null;
+		}
+
+		File prefix = null;
+		for (final String component : longuestPrefix) {
+			if (cancelIndicator.isCanceled()) {
+				return null;
+			}
+			if (prefix == null) {
+				prefix = new File(component);
+			} else {
+				prefix = new File(prefix, component);
+			}
+		}
+
+		return prefix;
 	}
 
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
@@ -1459,13 +1494,15 @@ public class SarlBatchCompiler {
 			return false;
 		}
 
-		final File commonRoot = determineCommonRoot(outputFile, sourceFolders);
+		this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_31, this.baseUri));
+
+		final File commonRoot = determineCommonRoot(outputFile, sourceFolders, cancelIndicator);
 		if (cancelIndicator.isCanceled()) {
 			return false;
 		}
 
-		// We don't want to use root ("/") as a workspace folder, didn't we?
-		if (commonRoot == null || commonRoot.getParent() == null || commonRoot.getParentFile().getParent() == null) {
+		this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_34, commonRoot));
+		if (commonRoot == null) {
 			this.log.error(Messages.SarlBatchCompiler_12);
 			for (final File sourceFile : sourceFolders) {
 				this.log.error(MessageFormat.format(Messages.SarlBatchCompiler_13, sourceFile));

@@ -75,6 +75,10 @@ public class Messages extends NLS {
 	public static String SarlBatchCompiler_29;
 	public static String SarlBatchCompiler_3;
 	public static String SarlBatchCompiler_30;
+	public static String SarlBatchCompiler_31;
+	public static String SarlBatchCompiler_32;
+	public static String SarlBatchCompiler_33;
+	public static String SarlBatchCompiler_34;
 	public static String SarlBatchCompiler_4;
 	public static String SarlBatchCompiler_5;
 	public static String SarlBatchCompiler_6;
