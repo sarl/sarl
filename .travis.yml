@@ -17,6 +17,7 @@ matrix:
           - xvfb
           - lib32z1
           - lib32ncurses5
+          - genisoimage
       before_install:
       - "sh -e ./build-tools/scripts/travis-download-maven.sh"
       - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
