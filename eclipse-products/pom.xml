@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>contribs</module>
+		<module>io.sarl.lang.sarlc</module>
 	</modules>
 
 	<profiles>

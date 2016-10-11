@@ -22,6 +22,7 @@
 package io.sarl.lang.compiler.batch;
 
 import java.io.PrintWriter;
+import java.text.MessageFormat;
 import java.util.Iterator;
 
 import com.google.inject.Injector;
@@ -32,7 +33,10 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.SARLVersion;
@@ -46,6 +50,10 @@ import io.sarl.lang.SARLVersion;
  * @since 0.5
  */
 public final class Main {
+
+	/** A conversion pattern for the logger.
+	 */
+	public static final String LOGGER_PATTERN = "%-5p %m%n"; //$NON-NLS-1$
 
 	private static final String CLI_OPTION_OUTPUT_DIRECTORY_SHORT = "d"; //$NON-NLS-1$
 
@@ -74,6 +82,14 @@ public final class Main {
 	private static final String CLI_OPTION_VERBOSE_SHORT = "v"; //$NON-NLS-1$
 
 	private static final String CLI_OPTION_VERBOSE_LONG = "verbose"; //$NON-NLS-1$
+
+	private static final String CLI_OPTION_QUIET_SHORT = "q"; //$NON-NLS-1$
+
+	private static final String CLI_OPTION_QUIET_LONG = "quiet"; //$NON-NLS-1$
+
+	private static final String CLI_OPTION_DEBUG_SHORT = "X"; //$NON-NLS-1$
+
+	private static final String CLI_OPTION_DEBUG_LONG = "debug"; //$NON-NLS-1$
 
 	private static final String CLI_OPTION_VERSION = "version"; //$NON-NLS-1$
 
@@ -104,7 +120,7 @@ public final class Main {
 	 * @param args the command line arguments.
 	 */
 	public static void main(String[] args) {
-		BasicConfigurator.configure();
+		configureLogger();
 		final Injector injector = SARLStandaloneSetup.doSetup();
 		final SarlBatchCompiler compiler = injector.getInstance(SarlBatchCompiler.class);
 		parseCommandLine(args, compiler);
@@ -112,6 +128,17 @@ public final class Main {
 			System.exit(ERROR_CODE);
 		}
 		System.exit(SUCCESS_CODE);
+	}
+
+	private static void configureLogger() {
+		final Logger root = Logger.getRootLogger();
+		root.removeAllAppenders();
+		root.addAppender(new ConsoleAppender(
+				new PatternLayout(LOGGER_PATTERN)));
+	}
+
+	private static CommandLineParser createCommandLineParser() {
+		return new DefaultParser();
 	}
 
 	/**
@@ -122,29 +149,35 @@ public final class Main {
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static void parseCommandLine(String[] args, SarlBatchCompiler compiler) {
-		final CommandLineParser parser = new DefaultParser();
+		final CommandLineParser parser = createCommandLineParser();
 		try {
 			final CommandLine cmd = parser.parse(getOptions(), args);
-
-			// Show the help when there is no argument.
-			if (cmd.getArgs().length == 0) {
-				printUsage();
-				return;
-			}
 
 			final Iterator<Option> optIterator = cmd.iterator();
 			while (optIterator.hasNext()) {
 				final Option opt = optIterator.next();
+				String optLabel = opt.getLongOpt();
+				if (optLabel == null) {
+					optLabel = opt.getOpt();
+				}
 				final String strvalue;
-				switch (opt.getLongOpt()) {
+				switch (optLabel) {
 				case CLI_OPTION_HELP:
 					printUsage();
 					return;
 				case CLI_OPTION_VERSION:
 					printVersion();
-					break;
+					return;
 				case CLI_OPTION_VERBOSE_LONG:
+					compiler.getLogger().setLevel(Level.toLevel(
+							compiler.getLogger().getLevel().toInt() + 1));
+					break;
+				case CLI_OPTION_QUIET_LONG:
+					compiler.getLogger().setLevel(Level.ERROR);
+					break;
+				case CLI_OPTION_DEBUG_LONG:
 					compiler.setJavaCompilerVerbose(true);
+					compiler.getLogger().setLevel(Level.DEBUG);
 					break;
 				case CLI_OPTION_OUTPUT_DIRECTORY_LONG:
 					strvalue = getStringValue(opt);
@@ -209,11 +242,18 @@ public final class Main {
 				default:
 				}
 			}
+
+			// Show the help when there is no argument.
+			if (cmd.getArgs().length == 0) {
+				printUsage();
+				return;
+			}
+
 			for (final String cliArg : cmd.getArgs()) {
 				compiler.addSourcePath(cliArg);
 			}
 		} catch (ParseException e) {
-			showError(e.getLocalizedMessage(), e);
+			showError(e);
 		}
 	}
 
@@ -262,6 +302,10 @@ public final class Main {
 				Messages.Main_16);
 		options.addOption(CLI_OPTION_VERBOSE_SHORT, CLI_OPTION_VERBOSE_LONG, false,
 				Messages.Main_7);
+		options.addOption(CLI_OPTION_QUIET_SHORT, CLI_OPTION_QUIET_LONG, false,
+				Messages.Main_18);
+		options.addOption(CLI_OPTION_DEBUG_SHORT, CLI_OPTION_DEBUG_LONG, false,
+				Messages.Main_17);
 		options.addOption(CLI_OPTION_VERSION, false,
 				Messages.Main_8);
 		options.addOption(CLI_OPTION_HELP, false,
@@ -274,33 +318,40 @@ public final class Main {
 	 *
 	 * <p>This function never returns.
 	 *
-	 * @param message - the description of the error.
 	 * @param exception - the cause of the error.
 	 */
 	@SuppressWarnings("checkstyle:regexp")
-	protected static void showError(String message, Throwable exception) {
+	protected static void showError(Throwable exception) {
+		Throwable ex = exception;
+		while (ex != null && ex.getCause() != null && ex.getCause() != ex) {
+			ex = ex.getCause();
+		}
+		if (ex == null) {
+			ex = exception;
+		}
 		try (PrintWriter logger = new PrintWriter(System.err)) {
+			final String message = ex.getLocalizedMessage();
 			if (message != null && !message.isEmpty()) {
 				logger.println(message);
-			}
-			if (exception != null) {
-				exception.printStackTrace(logger);
+			} else {
+				logger.println(ex.getClass().getName());
+				ex.printStackTrace(logger);
 			}
 			logger.flush();
-			System.exit(ERROR_CODE);
 		}
+		System.exit(ERROR_CODE);
 	}
 
 	private static void printUsage() {
 		try (PrintWriter stream = new PrintWriter(System.err)) {
 			final HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp(stream, HelpFormatter.DEFAULT_WIDTH,
-					SARL_COMPILER_NAME + Messages.Main_10,
+					MessageFormat.format(Messages.Main_10, SARL_COMPILER_NAME, CLI_OPTION_OUTPUT_DIRECTORY_LONG),
 					"", //$NON-NLS-1$
 					getOptions(), HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, ""); //$NON-NLS-1$
 			stream.flush();
-			System.exit(ERROR_CODE);
 		}
+		System.exit(ERROR_CODE);
 	}
 
 	private static void printVersion() {
@@ -310,8 +361,8 @@ public final class Main {
 			stream.println(Messages.Main_13
 					+ System.getProperty("java.version")); //$NON-NLS-1$
 			stream.flush();
-			System.exit(SUCCESS_CODE);
 		}
+		System.exit(SUCCESS_CODE);
 	}
 
 }

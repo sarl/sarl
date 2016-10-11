@@ -280,11 +280,6 @@
 				<version>${afc.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>commons-cli</groupId>
-				<artifactId>commons-cli</artifactId>
-				<version>1.3.1</version>
-			</dependency>
-			<dependency>
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
 				<version>4.0</version>
@@ -293,6 +288,11 @@
 				<groupId>com.google.inject.extensions</groupId>
 				<artifactId>guice-multibindings</artifactId>
 				<version>4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-cli</groupId>
+				<artifactId>commons-cli</artifactId>
+				<version>1.3.1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.hazelcast</groupId>
@@ -446,6 +446,12 @@
 				</plugin>
 
 				<plugin>
+					<groupId>sh.tak.appbundler</groupId>
+					<artifactId>appbundle-maven-plugin</artifactId>
+					<version>1.2.0</version>
+				</plugin>
+
+				<plugin>
 					<groupId>org.arakhne.afc.maven</groupId>
 					<artifactId>tag-replacer</artifactId>
 					<version>${afc.version}</version>
@@ -475,6 +481,12 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>com.akathist.maven.plugins.launch4j</groupId>
+					<artifactId>launch4j-maven-plugin</artifactId>
+					<version>1.7.12</version>
 				</plugin>
 
 				<plugin>
@@ -735,6 +747,7 @@
 							project.properties["sarl.specification.release_status"] = releaseStatus;
 							project.properties["sarl.is_stable_version"] = Boolean.toString(!isSnapshot);
 							project.properties["janus.version"] = versionFields[0]+"."+versionFields[1]+"."+versionFields[2]+endOfVersion;
+							project.properties["janus.release_version"] = "2."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2];
 
 							log.info("set sarl.specification.release_version to: " + project.properties["sarl.specification.release_version"]);
 							log.info("set sarl.release_version to: " + project.properties["sarl.release_version"]);
@@ -742,6 +755,7 @@
 							log.info("set sarl.specification.release_status to: " + project.properties["sarl.specification.release_status"]);
 							log.info("set sarl.is_stable_version to: " + project.properties["sarl.is_stable_version"]);
 							log.info("set janus.version to: " + project.properties["janus.version"]);
+							log.info("set janus.release_version to: " + project.properties["janus.release_version"]);
 							//************************
 							// Bug in Jenkins/Hudson
 							// The buildId property is not correctly set since

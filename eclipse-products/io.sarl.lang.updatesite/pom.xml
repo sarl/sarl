@@ -67,9 +67,12 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<target>
-								<property name="sarl.product.definition.file" value="${project.basedir}/io.sarl.lang.product"/>
-								<copy overwrite="true" file="${sarl.product.definition.file}" tofile="${sarl.product.definition.file}.copy"/>
-								<replace file="${sarl.product.definition.file}" token="&lt;/features&gt;" value="&lt;feature id=&quot;io.sarl.lib.source&quot;/&gt;&lt;feature id=&quot;io.janusproject.feature.source&quot;/&gt;&lt;/features&gt;"/>
+								<property name="sarl.product.definition.file"
+									value="${project.basedir}/io.sarl.lang.product" />
+								<copy overwrite="true" file="${sarl.product.definition.file}"
+									tofile="${sarl.product.definition.file}.copy" />
+								<replace file="${sarl.product.definition.file}" token="&lt;/features&gt;"
+									value="&lt;feature id=&quot;io.sarl.lib.source&quot;/&gt;&lt;feature id=&quot;io.janusproject.feature.source&quot;/&gt;&lt;/features&gt;" />
 							</target>
 						</configuration>
 						<goals>
@@ -81,8 +84,10 @@
 						<phase>verify</phase>
 						<configuration>
 							<target>
-								<property name="sarl.product.definition.file" value="${project.basedir}/io.sarl.lang.product"/>
-								<copy failonerror="false" quiet="true" overwrite="true" file="${sarl.product.definition.file}.copy" tofile="${sarl.product.definition.file}"/>
+								<property name="sarl.product.definition.file"
+									value="${project.basedir}/io.sarl.lang.product" />
+								<copy failonerror="false" quiet="true" overwrite="true"
+									file="${sarl.product.definition.file}.copy" tofile="${sarl.product.definition.file}" />
 							</target>
 						</configuration>
 						<goals>
@@ -94,8 +99,10 @@
 						<phase>clean</phase>
 						<configuration>
 							<target>
-								<property name="sarl.product.definition.file" value="${project.basedir}/io.sarl.lang.product"/>
-								<copy failonerror="false" quiet="true" overwrite="true" file="${sarl.product.definition.file}.copy" tofile="${sarl.product.definition.file}"/>
+								<property name="sarl.product.definition.file"
+									value="${project.basedir}/io.sarl.lang.product" />
+								<copy failonerror="false" quiet="true" overwrite="true"
+									file="${sarl.product.definition.file}.copy" tofile="${sarl.product.definition.file}" />
 							</target>
 						</configuration>
 						<goals>
