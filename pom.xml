@@ -235,6 +235,11 @@
 				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.lang.sarlc</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
 				<version>${xtext.version}</version>
@@ -748,6 +753,7 @@
 							project.properties["sarl.is_stable_version"] = Boolean.toString(!isSnapshot);
 							project.properties["janus.version"] = versionFields[0]+"."+versionFields[1]+"."+versionFields[2]+endOfVersion;
 							project.properties["janus.release_version"] = "2."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2];
+							project.properties["janus.version2"] = "2."+project.properties["janus.version"];
 
 							log.info("set sarl.specification.release_version to: " + project.properties["sarl.specification.release_version"]);
 							log.info("set sarl.release_version to: " + project.properties["sarl.release_version"]);
@@ -756,6 +762,7 @@
 							log.info("set sarl.is_stable_version to: " + project.properties["sarl.is_stable_version"]);
 							log.info("set janus.version to: " + project.properties["janus.version"]);
 							log.info("set janus.release_version to: " + project.properties["janus.release_version"]);
+							log.info("set janus.version2 to: " + project.properties["janus.version2"]);
 							//************************
 							// Bug in Jenkins/Hudson
 							// The buildId property is not correctly set since
