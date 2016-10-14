@@ -1381,15 +1381,21 @@ public class SarlBatchCompiler {
 	protected boolean checkConfiguration(CancelIndicator cancelIndicator) {
 		assert cancelIndicator != null;
 		final File output = getOutputPath();
+		this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_35, output));
+		if (output == null) {
+			this.log.error(Messages.SarlBatchCompiler_36);
+			return false;
+		}
 		for (final File sourcePath : getSourcePaths()) {
 			if (cancelIndicator.isCanceled()) {
 				return false;
 			}
 			try {
+				this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_37, sourcePath));
 				if (isContainedIn(output.getCanonicalFile(), sourcePath.getCanonicalFile())) {
 					this.log.error(MessageFormat.format(
 							Messages.SarlBatchCompiler_10,
-							getOutputPath(), sourcePath));
+							output, sourcePath));
 					return false;
 				}
 			} catch (IOException e) {

@@ -42,6 +42,8 @@ public class Messages extends NLS {
 	public static String Main_14;
 	public static String Main_15;
 	public static String Main_16;
+	public static String Main_17;
+	public static String Main_18;
 	public static String Main_2;
 	public static String Main_3;
 	public static String Main_4;
@@ -79,6 +81,9 @@ public class Messages extends NLS {
 	public static String SarlBatchCompiler_32;
 	public static String SarlBatchCompiler_33;
 	public static String SarlBatchCompiler_34;
+	public static String SarlBatchCompiler_35;
+	public static String SarlBatchCompiler_36;
+	public static String SarlBatchCompiler_37;
 	public static String SarlBatchCompiler_4;
 	public static String SarlBatchCompiler_5;
 	public static String SarlBatchCompiler_6;

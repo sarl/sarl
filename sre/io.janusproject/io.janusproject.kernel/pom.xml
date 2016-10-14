@@ -11,6 +11,11 @@
 	<artifactId>io.janusproject.kernel</artifactId>
 	<name>Janus Platform for Maven</name>
 	<version>2.0.4.2</version>
+	
+	<properties>
+		<cliRunnerName>janus</cliRunnerName>
+		<cliRunnerMainClass>io.janusproject.Boot</cliRunnerMainClass>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -75,6 +80,11 @@
 					<descriptors>
 						<descriptor>with-dependencies.xml</descriptor>
 					</descriptors>
+					<archive>
+						<manifest>
+							<mainClass>${cliRunnerMainClass}</mainClass>
+						</manifest>
+					</archive>
 				</configuration>
 				<executions>
 					<execution>
@@ -86,6 +96,137 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>com.akathist.maven.plugins.launch4j</groupId>
+				<artifactId>launch4j-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-janus-win</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+						<configuration>
+							<headerType>console</headerType>
+							<outfile>${project.build.directory}/${cliRunnerName}.exe</outfile>
+							<jar>${project.build.directory}/${project.build.finalName}-with-dependencies.jar</jar>
+							<icon>${project.basedir}/icons/janus.ico</icon>
+							<classPath>
+								<mainClass>${cliRunnerMainClass}</mainClass>
+								<addDependencies>false</addDependencies>
+							</classPath>
+							<jre>
+								<minVersion>${compiler.level}.0</minVersion>
+								<jdkPreference>preferJre</jdkPreference>
+								<runtimeBits>64/32</runtimeBits>
+							</jre>
+							<versionInfo>
+								<fileVersion>${janus.release_version}</fileVersion>
+								<txtFileVersion>${project.version}</txtFileVersion>
+								<fileDescription>${cliRunnerName}</fileDescription>
+								<copyright>${copyrighters}</copyright>
+								<productVersion>${janus.release_version}</productVersion>
+								<txtProductVersion>${project.version}</txtProductVersion>
+								<productName>${cliRunnerName}</productName>
+								<internalName>${cliRunnerName}</internalName>
+								<originalFilename>${cliRunnerName}.exe</originalFilename>
+							</versionInfo>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-janus-linux</id>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<property name="janus.linux.input"
+									value="${project.basedir}/src-templates/janus.sh" />
+								<property name="janus.linux.output" value="${project.build.directory}/janus.tmp" />
+								<property name="janus.linux.output.full" value="${project.build.directory}/janus" />
+								<copy overwrite="true" file="${janus.linux.input}" tofile="${janus.linux.output}" />
+								<replace file="${janus.linux.output}" token="{cliRunnerMainClass}"
+									value="${cliRunnerMainClass}" />
+								<replace file="${janus.linux.output}" token="{project.build.finalName}"
+									value="${project.build.finalName}" />
+								<concat dest="${janus.linux.output.full}" binary="yes">
+									<fileset file="${janus.linux.output}" />
+									<fileset
+										file="${project.build.directory}/${project.build.finalName}-with-dependencies.jar" />
+								</concat>
+								<chmod perm="ugo+x">
+									<fileset file="${janus.linux.output.full}" />
+								</chmod>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>sh.tak.appbundler</groupId>
+				<artifactId>appbundle-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-janus-osx</id>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+						<configuration>
+							<mainClass>${cliRunnerMainClass}</mainClass>
+							<iconFile>/icons/janus.icns</iconFile>
+							<generateDiskImageFile>true</generateDiskImageFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>remove-default-project-artifact</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>remove-project-artifact</goal>
+						</goals>
+						<configuration>
+							<removeAll>true</removeAll>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-native-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>${project.build.directory}/${cliRunnerName}.exe</file>
+									<type>exe</type>
+									<classifier></classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/${cliRunnerName}</file>
+									<type>sh</type>
+									<classifier></classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 
 	</build>

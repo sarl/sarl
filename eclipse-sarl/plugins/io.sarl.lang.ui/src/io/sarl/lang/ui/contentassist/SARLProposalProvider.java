@@ -43,6 +43,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.Keyword;
@@ -59,7 +60,9 @@ import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 import org.eclipse.xtext.util.Pair;
+import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.conversion.XbaseValueConverterService;
+import org.eclipse.xtext.xbase.typesystem.IExpressionScope;
 import org.eclipse.xtext.xbase.ui.contentassist.XbaseReferenceProposalCreator;
 
 import io.sarl.lang.core.Agent;
@@ -94,7 +97,14 @@ import io.sarl.lang.util.Utils;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SARLProposalProvider extends AbstractSARLProposalProvider {
+
+	/** High priority for proposals.
+	 *
+	 * <p>TODO: Replace by any constants defined in Xtext, if exist.
+	 */
+	private static final int HIGH_PRIORITY = 1000;
 
 	@Inject
 	private TypeReferences typeReferences;
@@ -130,11 +140,11 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 	protected void completeJavaTypes(ContentAssistContext context,
 			ITypesProposalProvider.Filter filter, ICompletionProposalAcceptor acceptor) {
 		completeJavaTypes(context,
-			TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
-			true,
-			getQualifiedNameValueConverter(),
-			filter,
-			acceptor);
+				TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
+				true,
+				getQualifiedNameValueConverter(),
+				filter,
+				acceptor);
 	}
 
 	/** Complete for obtaining SARL events if the proposals are enabled.
@@ -152,7 +162,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 					TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
 					getQualifiedNameValueConverter(),
 					isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
-					: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+							: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
 		}
 	}
 
@@ -171,7 +181,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 					TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
 					getQualifiedNameValueConverter(),
 					isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.INSTANCEOF_TYPE_REFERENCE)
-					: createVisibilityFilter(context, IJavaSearchConstants.INTERFACE), acceptor);
+							: createVisibilityFilter(context, IJavaSearchConstants.INTERFACE), acceptor);
 		}
 	}
 
@@ -190,7 +200,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 					TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
 					getQualifiedNameValueConverter(),
 					isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
-					: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+							: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
 		}
 	}
 
@@ -209,7 +219,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 					TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
 					getQualifiedNameValueConverter(),
 					isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
-					: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+							: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
 		}
 	}
 
@@ -228,7 +238,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 					TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE,
 					getQualifiedNameValueConverter(),
 					isExtensionFilter ? createExtensionFilter(context, IJavaSearchConstants.CLASS)
-					: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
+							: createVisibilityFilter(context, IJavaSearchConstants.CLASS), acceptor);
 		}
 	}
 
@@ -547,6 +557,31 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 	public final void completeAnnotationField_Implements(EObject model, Assignment assignment, ContentAssistContext context,
 			ICompletionProposalAcceptor acceptor) {
 		// Do not propose because it is supported by the type reference completion.
+	}
+
+	@Override
+	public void completeAOPMember_Guard(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		if (model instanceof SarlBehaviorUnit) {
+			final SarlBehaviorUnit behaviorUnit = (SarlBehaviorUnit) model;
+			final XExpression guardExpr = behaviorUnit.getGuard();
+			if (guardExpr != null) {
+				// Generate the proposals by considering the guard expression as an anchor.
+				createLocalVariableAndImplicitProposals(guardExpr, IExpressionScope.Anchor.BEFORE, context, acceptor);
+				return;
+			}
+			final XExpression body = behaviorUnit.getExpression();
+			if (body != null) {
+				// Generate the proposals by considering that all elements that accessible from the body are accessible from the guard to.
+				// "it" is missed => it is manually added.
+				final ICompletionProposal itProposal = createCompletionProposal(
+						this.keywords.getItKeyword(),
+						new StyledString(this.keywords.getItKeyword()),
+						this.imageHelper.getImage(this.images.forLocalVariable(0)),
+						HIGH_PRIORITY, context.getPrefix(), context);
+				acceptor.accept(itProposal);
+				createLocalVariableAndImplicitProposals(body, context, acceptor);
+			}
+		}
 	}
 
 	/** Filter for "extends".

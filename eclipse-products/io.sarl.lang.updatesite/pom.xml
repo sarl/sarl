@@ -12,6 +12,13 @@
 	<packaging>eclipse-repository</packaging>
 	<name>Update Site and Products</name>
 
+	<properties>
+		<productPath.linux.32>${project.basedir}/target/products/io.sarl.lang.product/linux/gtk/x86</productPath.linux.32>
+		<productPath.linux.64>${project.basedir}/target/products/io.sarl.lang.product/linux/gtk/x86_64</productPath.linux.64>
+		<productPath.win.32>${project.basedir}/target/products/io.sarl.lang.product/win32/win32/x86</productPath.win.32>
+		<productPath.win.64>${project.basedir}/target/products/io.sarl.lang.product/win32/win32/x86_64</productPath.win.64>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -29,7 +36,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.basedir}/target/products/io.sarl.lang.product/linux/gtk/x86_64</outputDirectory>
+							<outputDirectory>${productPath.linux.32}</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${project.basedir}/rootfiles/linux</directory>
@@ -46,7 +53,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.basedir}/target/products/io.sarl.lang.product/linux/gtk/x86</outputDirectory>
+							<outputDirectory>${productPath.linux.64}</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${project.basedir}/rootfiles/linux</directory>
@@ -58,49 +65,93 @@
 					</execution>
 				</executions>
 			</plugin>
-
 			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
 				<executions>
 					<execution>
-						<id>expanding-product-with-sources</id>
+						<id>copy-sarlc-and-janus</id>
 						<phase>prepare-package</phase>
-						<configuration>
-							<target>
-								<property name="sarl.product.definition.file" value="${project.basedir}/io.sarl.lang.product"/>
-								<copy overwrite="true" file="${sarl.product.definition.file}" tofile="${sarl.product.definition.file}.copy"/>
-								<replace file="${sarl.product.definition.file}" token="&lt;/features&gt;" value="&lt;feature id=&quot;io.sarl.lib.source&quot;/&gt;&lt;feature id=&quot;io.janusproject.feature.source&quot;/&gt;&lt;/features&gt;"/>
-							</target>
-						</configuration>
 						<goals>
-							<goal>run</goal>
+							<goal>copy</goal>
 						</goals>
-					</execution>
-					<execution>
-						<id>restoring-default-product-on-verify</id>
-						<phase>verify</phase>
 						<configuration>
-							<target>
-								<property name="sarl.product.definition.file" value="${project.basedir}/io.sarl.lang.product"/>
-								<copy failonerror="false" quiet="true" overwrite="true" file="${sarl.product.definition.file}.copy" tofile="${sarl.product.definition.file}"/>
-							</target>
+							<artifactItems>
+								<artifactItem>
+									<groupId>io.sarl</groupId>
+									<artifactId>io.sarl.lang.sarlc</artifactId>
+									<version>${sarl.version}</version>
+									<type>sh</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.linux.32}</outputDirectory>
+									<destFileName>sarlc</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.sarl</groupId>
+									<artifactId>io.sarl.lang.sarlc</artifactId>
+									<version>${sarl.version}</version>
+									<type>sh</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.linux.64}</outputDirectory>
+									<destFileName>sarlc</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.sarl</groupId>
+									<artifactId>io.sarl.lang.sarlc</artifactId>
+									<version>${sarl.version}</version>
+									<type>exe</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.win.32}</outputDirectory>
+									<destFileName>sarlc.exe</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.sarl</groupId>
+									<artifactId>io.sarl.lang.sarlc</artifactId>
+									<version>${sarl.version}</version>
+									<type>exe</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.win.64}</outputDirectory>
+									<destFileName>sarlc.exe</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.janusproject</groupId>
+									<artifactId>io.janusproject.kernel</artifactId>
+									<version>${janus.version2}</version>
+									<type>sh</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.linux.32}</outputDirectory>
+									<destFileName>janus</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.janusproject</groupId>
+									<artifactId>io.janusproject.kernel</artifactId>
+									<version>${janus.version2}</version>
+									<type>sh</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.linux.64}</outputDirectory>
+									<destFileName>janus</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.janusproject</groupId>
+									<artifactId>io.janusproject.kernel</artifactId>
+									<version>${janus.version2}</version>
+									<type>exe</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.win.32}</outputDirectory>
+									<destFileName>janus.exe</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.janusproject</groupId>
+									<artifactId>io.janusproject.kernel</artifactId>
+									<version>${janus.version2}</version>
+									<type>exe</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.win.64}</outputDirectory>
+									<destFileName>janus.exe</destFileName>
+								</artifactItem>
+							</artifactItems>
 						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>restoring-default-product-on-clean</id>
-						<phase>clean</phase>
-						<configuration>
-							<target>
-								<property name="sarl.product.definition.file" value="${project.basedir}/io.sarl.lang.product"/>
-								<copy failonerror="false" quiet="true" overwrite="true" file="${sarl.product.definition.file}.copy" tofile="${sarl.product.definition.file}"/>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
 					</execution>
 				</executions>
 			</plugin>

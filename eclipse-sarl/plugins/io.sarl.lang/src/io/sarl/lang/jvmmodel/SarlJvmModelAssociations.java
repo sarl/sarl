@@ -27,9 +27,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtext.common.types.JvmGenericType;
+import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.xbase.XExpression;
 
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlSkill;
@@ -108,6 +111,22 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 * @return the inferred type.
 	 */
 	JvmGenericType getInferredType(SarlSkill obj);
+
+	/**
+	 * Returns the inferred operation for the guard of the given behavior unit.
+	 *
+	 * @param behaviorUnit the behavior unit.
+	 * @return the inferred operation.
+	 */
+	JvmOperation getInferredGuardOperation(SarlBehaviorUnit behaviorUnit);
+
+	/**
+	 * Returns the inferred operation for the body of the given behavior unit.
+	 *
+	 * @param behaviorUnit the behavior unit.
+	 * @return the inferred operation.
+	 */
+	JvmOperation getInferredBodyOperation(SarlBehaviorUnit behaviorUnit);
 
 	/** Associations between the SARL elements and the JVM elements.
 	 *
@@ -191,6 +210,27 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
 			if (primarySourceElement instanceof SarlSkill) {
 				return (SarlSkill) primarySourceElement;
+			}
+			return null;
+		}
+
+		@Override
+		public JvmOperation getInferredGuardOperation(SarlBehaviorUnit behaviorUnit) {
+			final XExpression guard = behaviorUnit.getGuard();
+			if (guard != null) {
+				final EObject primaryJvmElement = getPrimaryJvmElement(guard);
+				if (primaryJvmElement instanceof JvmOperation) {
+					return (JvmOperation) primaryJvmElement;
+				}
+			}
+			return null;
+		}
+
+		@Override
+		public JvmOperation getInferredBodyOperation(SarlBehaviorUnit behaviorUnit) {
+			final EObject primaryJvmElement = getPrimaryJvmElement(behaviorUnit);
+			if (primaryJvmElement instanceof JvmOperation) {
+				return (JvmOperation) primaryJvmElement;
 			}
 			return null;
 		}
