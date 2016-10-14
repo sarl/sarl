@@ -1219,7 +1219,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			final SarlAction function = (SarlAction) sourceElement;
 			if (!overrideProblems && !function.isOverride() && !function.isStatic()
 					&& !isIgnored(MISSING_OVERRIDE, sourceElement)) {
-				warning(MessageFormat.format(Messages.SARLValidator_15,
+				warning(MessageFormat.format(Messages.SARLJavaValidator_15,
 						resolved.getSimpleSignature(),
 						getDeclaratorName(resolved)),
 						function,
