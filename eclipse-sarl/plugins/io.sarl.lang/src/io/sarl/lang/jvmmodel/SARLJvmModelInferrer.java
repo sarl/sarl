@@ -702,9 +702,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				constructor.getParameters().add(jvmParam);
 				setBody(constructor,
 						toStringConcatenation("super(builtinCapacityProvider, parentID, agentID);")); //$NON-NLS-1$
-				final JvmAnnotationReference injectAnnotationRef = this._annotationTypesBuilder.annotationRef(
-						javax.inject.Inject.class);
-				constructor.getAnnotations().add(injectAnnotationRef);
+				addAnnotationSafe(constructor, javax.inject.Inject.class);
 				appendGeneratedAnnotation(constructor, context);
 			}
 
@@ -1141,9 +1139,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						final List<String> args = translateSarlFormalParametersForSyntheticOperation(
 								constructor2, container, isVarArgs, otherSignature);
 
-						constructor2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
-								DefaultValueUse.class,
-								constructorSignatures.getFormalParameterTypes().toString()));
+						addAnnotationSafe(constructor2, DefaultValueUse.class,
+								constructorSignatures.getFormalParameterTypes().toString());
 						appendGeneratedAnnotation(constructor2, context);
 
 						setBody(constructor2, toStringConcatenation(
@@ -1326,13 +1323,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (source.isOverride()
 					&& this.annotationFinder.findAnnotation(operation, Override.class) == null
 					&& this.typeReferences.findDeclaredType(Override.class, source) != null) {
-				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
+				addAnnotationSafe(operation, Override.class);
 			}
 			if (this.expressionHelper.isPurableOperation(operation, expression)
 					&& this.annotationFinder.findAnnotation(operation, Pure.class) == null
 					&& this.typeReferences.findDeclaredType(Pure.class, source) != null) {
 				// The function is pure
-				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
+				addAnnotationSafe(operation, Pure.class);
 			}
 
 			final List<JvmTypeReference> firedEvents;
@@ -1349,7 +1346,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final Iterator<JvmTypeReference> eventIterator = firedEvents.iterator();
 			while (!isEarlyExitTmp && eventIterator.hasNext()) {
 				if (this.earlyExitComputer.isEarlyExitEvent(eventIterator.next())) {
-					operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(EarlyExit.class));
+					addAnnotationSafe(operation, EarlyExit.class);
 					isEarlyExitTmp = true;
 				}
 			}
@@ -1370,8 +1367,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				if (implementedOperation != null) {
 					if (this.annotationFinder.findAnnotation(implementedOperation, DefaultValueSource.class) != null
 							&& this.annotationFinder.findAnnotation(operation, DefaultValueSource.class) == null) {
-						operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
-								DefaultValueSource.class));
+						addAnnotationSafe(operation, DefaultValueSource.class);
 					}
 					// Reinject the @DefaultValue annotations
 					final List<JvmFormalParameter> oparams = implementedOperation.getParameters();
@@ -1383,11 +1379,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						final String ovalue = this.annotationUtils.findStringValue(op, DefaultValue.class);
 						if (ovalue != null
 								&& this.annotationFinder.findAnnotation(cp, DefaultValue.class) == null) {
-							cp.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
+							addAnnotationSafe(cp,
 									DefaultValue.class,
 									this.sarlSignatureProvider.qualifyDefaultValueID(
 											implementedOperation.getDeclaringType().getIdentifier(),
-											ovalue)));
+											ovalue));
 						}
 					}
 				}
@@ -1437,8 +1433,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									Override.class) == null
 									&& SARLJvmModelInferrer.this.typeReferences.findDeclaredType(
 											Override.class, source) != null) {
-								operation.getAnnotations().add(
-										SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Override.class));
+								addAnnotationSafe(operation, Override.class);
 							}
 
 							final List<String> args = translateSarlFormalParametersForSyntheticOperation(
@@ -1457,17 +1452,15 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								});
 							}
 
-							operation2.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(
-									DefaultValueUse.class,
-									actionSignatures.getFormalParameterTypes().toString()));
+							addAnnotationSafe(operation2, DefaultValueUse.class,
+									actionSignatures.getFormalParameterTypes().toString());
 							appendGeneratedAnnotation(operation2, context);
 
 							// If the main action is an early-exit action, the additional operation
 							// is also an early-exit operation.
 							//TODO: Generalize the detection of the EarlyExit
 							if (isEarlyExit) {
-								operation2.getAnnotations().add(
-										SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(EarlyExit.class));
+								addAnnotationSafe(operation2, EarlyExit.class);
 							}
 
 							// Put the fired SARL events as Java annotations for beeing usable by the SARL validator.
@@ -1483,12 +1476,16 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 										&& (!FiredEvent.class.getName().equals(id))
 										&& (!Inline.class.getName().equals(id))
 										&& (!Generated.class.getName().equals(id))) {
-									final JvmAnnotationReference clone = SARLJvmModelInferrer.this._annotationTypesBuilder
-											.annotationRef(id);
-									for (final JvmAnnotationValue annotationValue : annotation.getExplicitValues()) {
-										clone.getExplicitValues().add(EcoreUtil.copy(annotationValue));
+									try {
+										final JvmAnnotationReference clone = SARLJvmModelInferrer.this._annotationTypesBuilder
+												.annotationRef(id);
+										for (final JvmAnnotationValue annotationValue : annotation.getExplicitValues()) {
+											clone.getExplicitValues().add(EcoreUtil.copy(annotationValue));
+										}
+										operation2.getAnnotations().add(clone);
+									} catch (IllegalArgumentException exception) {
+										// ignore
 									}
-									operation2.getAnnotations().add(clone);
 								}
 							}
 
@@ -1576,7 +1573,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			translateAnnotationsTo(source.getAnnotations(), bodyOperation);
 			appendGeneratedAnnotation(bodyOperation, context);
 			if (!this.services.getExpressionHelper().hasSideEffects(source.getExpression())) {
-				bodyOperation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
+				addAnnotationSafe(bodyOperation, Pure.class);
 			}
 			// Synthetic flag
 			this.typeExtensions.setSynthetic(bodyOperation, true);
@@ -1633,7 +1630,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				setBody(guardOperation, guard);
 				// Annotations
 				appendGeneratedAnnotation(guardOperation, context);
-				guardOperation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
+				addAnnotationSafe(guardOperation, Pure.class);
 				// Synthetic flag
 				this.typeExtensions.setSynthetic(guardOperation, true);
 
@@ -1664,8 +1661,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			context.setBehaviorUnitIndex(context.getBehaviorUnitIndex() + 1);
 			context.incrementSerial(bodyMethodName.hashCode());
+		} else {
+			this.log.fine(Messages.SARLJvmModelInferrer_10);
 		}
-		this.log.fine(Messages.SARLJvmModelInferrer_10);
 	}
 
 	/** Transform the uses of SARL capacities.
@@ -1695,7 +1693,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 				this.associator.associatePrimary(source, field);
 
-				field.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Extension.class));
+				addAnnotationSafe(field, Extension.class);
 				field.getAnnotations().add(annotationClassRef(ImportedCapacityFeature.class,
 						Collections.singletonList(capacityType)));
 
@@ -1736,7 +1734,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							+ ".class)) : this." + fieldName); //$NON-NLS-1$
 				}
 				appendGeneratedAnnotation(operation, context);
-				operation.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Pure.class));
+				addAnnotationSafe(operation, Pure.class);
 
 				container.getMembers().add(operation);
 
@@ -1803,7 +1801,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		});
 
 		appendGeneratedAnnotation(clearer, getContext(target));
-		clearer.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
+		addAnnotationSafe(clearer, Override.class);
 	}
 
 	private void appendSetSkillOperation(Set<String> usedCapacities, JvmGenericType target) {
@@ -1849,7 +1847,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		});
 
 		appendGeneratedAnnotation(setter, getContext(target));
-		setter.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
+		addAnnotationSafe(setter, Override.class);
 	}
 
 	/** Generate the code for the given SARL members in a agent-oriented container.
@@ -2020,8 +2018,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					});
 
 					// Add the annotations.
-					op.getAnnotations().add(this._annotationTypesBuilder.annotationRef(
-							DefaultValueUse.class, originalSignature));
+					addAnnotationSafe(op, DefaultValueUse.class, originalSignature);
 					appendGeneratedAnnotation(op, context);
 
 					// Add the operation in the container.
@@ -2151,24 +2148,62 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	protected void appendGeneratedAnnotation(JvmAnnotationTarget target, GenerationContext context, String sarlCode) {
 		final GeneratorConfig config = context.getGeneratorConfig();
 		if (config.isGenerateGeneratedAnnotation()) {
-			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(
-					Generated.class,
-					getClass().getName());
-			target.getAnnotations().add(annotationRef);
+			addAnnotationSafe(target, Generated.class, getClass().getName());
 		}
 
 		if (target instanceof JvmFeature) {
-			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(
-					SyntheticMember.class);
-			target.getAnnotations().add(annotationRef);
+			addAnnotationSafe(target, SyntheticMember.class);
 		}
 
 		if (!Strings.isNullOrEmpty(sarlCode)) {
-			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(
-					SarlSourceCode.class,
-					sarlCode);
-			target.getAnnotations().add(annotationRef);
+			addAnnotationSafe(target, SarlSourceCode.class, sarlCode);
 		}
+	}
+
+	/** Add annotation safely.
+	 *
+	 * <p>This function creates an annotation reference. If the type for the annotation is not found;
+	 * no annotation is added.
+	 *
+	 * @param target the receiver of the annotation.
+	 * @param annotationType the type of the annotation.
+	 * @param values the annotations values.
+	 * @return the annotation reference or <code>null</code> if the annotation cannot be added.
+	 */
+	protected JvmAnnotationReference addAnnotationSafe(JvmAnnotationTarget target, Class<?> annotationType, String... values) {
+		assert target != null;
+		assert annotationType != null;
+		try {
+			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(annotationType, values);
+			if (annotationRef != null) {
+				target.getAnnotations().add(annotationRef);
+			}
+		} catch (IllegalArgumentException exception) {
+			// Ignore
+		}
+		return null;
+	}
+
+	/** Create an annotation with classes as values.
+	 *
+	 * @param type - the type of the annotation.
+	 * @param values - the values.
+	 * @return the reference to the JVM annotation.
+	 */
+	private JvmAnnotationReference annotationClassRef(Class<? extends Annotation> type,
+			List<? extends JvmTypeReference> values) {
+		try {
+			final JvmAnnotationReference annot = this._annotationTypesBuilder.annotationRef(type);
+			final JvmTypeAnnotationValue annotationValue = this.services.getTypesFactory().createJvmTypeAnnotationValue();
+			for (final JvmTypeReference value : values) {
+				annotationValue.getValues().add(this.typeBuilder.cloneWithProxies(value));
+			}
+			annot.getExplicitValues().add(annotationValue);
+			return annot;
+		} catch (IllegalArgumentException exception) {
+			// ignore
+		}
+		return null;
 	}
 
 	/** Append the guard evaluators.
@@ -2198,7 +2233,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Annotation for the event bus
 
 				appendGeneratedAnnotation(operation, context);
-				operation.getAnnotations().add(this._annotationTypesBuilder.annotationRef(PerceptGuardEvaluator.class));
+				addAnnotationSafe(operation, PerceptGuardEvaluator.class);
 
 				// Guard evaluator unit parameters
 				// - Event occurrence
@@ -2253,9 +2288,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	protected void appendFunctionalInterfaceAnnotation(JvmGenericType type) {
 		if (type != null && Utils.isFunctionalInterface(type, this.sarlSignatureProvider)
 				&& this.annotationFinder.findAnnotation(type, FunctionalInterface.class) == null) {
-			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(
-					FunctionalInterface.class);
-			type.getAnnotations().add(annotationRef);
+			addAnnotationSafe(type, FunctionalInterface.class);
 		}
 	}
 
@@ -2329,7 +2362,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				});
 			if (op != null) {
 				appendGeneratedAnnotation(op, context);
-				op.getAnnotations().add(SARLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Pure.class));
+				addAnnotationSafe(op, Pure.class);
 				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
 				target.getMembers().add(op);
 			}
@@ -2380,25 +2413,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void appendSARLSpecificationVersion(GenerationContext context, XtendTypeDeclaration source,
 			JvmDeclaredType target) {
-		target.getAnnotations().add(this._annotationTypesBuilder.annotationRef(SarlSpecification.class,
-				SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING));
-	}
-
-	/** Create an annotation with classes as values.
-	 *
-	 * @param type - the type of the annotation.
-	 * @param values - the values.
-	 * @return the reference to the JVM annotation.
-	 */
-	private JvmAnnotationReference annotationClassRef(Class<? extends Annotation> type,
-			List<? extends JvmTypeReference> values) {
-		final JvmAnnotationReference annot = this._annotationTypesBuilder.annotationRef(type);
-		final JvmTypeAnnotationValue annotationValue = this.services.getTypesFactory().createJvmTypeAnnotationValue();
-		for (final JvmTypeReference value : values) {
-			annotationValue.getValues().add(this.typeBuilder.cloneWithProxies(value));
-		}
-		annot.getExplicitValues().add(annotationValue);
-		return annot;
+		addAnnotationSafe(target, SarlSpecification.class, SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
 	}
 
 	/** Generate a list of formal parameters with annotations for the default values.
@@ -2457,9 +2472,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					} else {
 						this.readAndWriteTracking.markInitialized(field, null);
 					}
-					final JvmAnnotationReference annot = this._annotationTypesBuilder.annotationRef(DefaultValue.class,
-							namePostPart);
-					lastParam.getAnnotations().add(annot);
+					addAnnotationSafe(lastParam, DefaultValue.class, namePostPart);
 
 					final String rawCode = reentrantSerialize(defaultValue);
 					appendGeneratedAnnotation(field, context, rawCode);
@@ -2468,7 +2481,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 
 		if (hasDefaultValue) {
-			owner.getAnnotations().add(this._annotationTypesBuilder.annotationRef(DefaultValueSource.class));
+			addAnnotationSafe(owner, DefaultValueSource.class);
 		}
 	}
 
@@ -2552,8 +2565,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (result == null) {
 			return null;
 		}
-		result.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
-		result.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
+		addAnnotationSafe(result, Override.class);
+		addAnnotationSafe(result, Pure.class);
 
 		final JvmFormalParameter param = this.typesFactory.createJvmFormalParameter();
 		param.setName("obj"); //$NON-NLS-1$
@@ -2644,8 +2657,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (result == null) {
 			return null;
 		}
-		result.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Override.class));
-		result.getAnnotations().add(this._annotationTypesBuilder.annotationRef(Pure.class));
+		addAnnotationSafe(result, Override.class);
+		addAnnotationSafe(result, Pure.class);
 		setBody(result, (it) -> {
 			it.append("final int prime = 31;"); //$NON-NLS-1$
 			it.newLine().append("int result = super.hashCode();"); //$NON-NLS-1$
