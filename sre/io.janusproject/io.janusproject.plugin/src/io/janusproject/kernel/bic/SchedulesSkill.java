@@ -36,7 +36,6 @@ import com.google.inject.Inject;
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.executor.JanusScheduledFutureTask;
 import io.janusproject.services.logging.LogService;
-import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
@@ -122,11 +121,11 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			if ((future instanceof JanusScheduledFutureTask<?>) && ((JanusScheduledFutureTask<?>) future).isCurrentThread()) {
 				// Ignore the cancelation of the future.
 				// It is assumed that a ChuckNorrisException will be thrown later.
-				this.logger.fineInfo(SchedulesSkill.class, "SKIP_CANCELED_TASK_ON_CURRENT_THREAD", //$NON-NLS-1$
+				this.logger.fineInfo(Messages.SchedulesSkill_0,
 						futureDescription.getKey(), future);
 			} else {
 				future.cancel(true);
-				this.logger.fineInfo(SchedulesSkill.class, "CANCELED_TASK", futureDescription.getKey(), future); //$NON-NLS-1$
+				this.logger.fineInfo(Messages.SchedulesSkill_1, futureDescription.getKey(), future);
 			}
 		}
 		this.futures.clear();
@@ -220,7 +219,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		public void run() {
 			final AgentTask task = this.agentTaskRef.get();
 			if (task == null) {
-				throw new RuntimeException(Locale.getString(SchedulesSkill.class, "NULL_AGENT_TASK")); //$NON-NLS-1$
+				throw new RuntimeException(Messages.SchedulesSkill_2);
 			}
 			try {
 				final Agent owner = getOwner();

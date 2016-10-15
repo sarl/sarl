@@ -23,6 +23,7 @@ package io.janusproject.kernel.bic.internaleventdispatching;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -45,7 +46,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.reflect.TypeToken;
 import com.google.common.util.concurrent.UncheckedExecutionException;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.lang.core.Event;
 
@@ -162,7 +162,7 @@ public class BehaviorGuardEvaluatorRegistry {
 				// removed... however, barring something very strange we can assume that if at least one
 				// subscriber was removed, all subscribers on listener for that event type were... after
 				// all, the definition of subscribers on a particular class is totally static
-				throw new IllegalArgumentException(Locale.getString(getClass(), "ANNOTATION_MISSED", listener)); //$NON-NLS-1$
+				throw new IllegalArgumentException(MessageFormat.format(Messages.BehaviorGuardEvaluatorRegistry_0, listener));
 			}
 
 			// don't try to remove the set if it's empty; that can't be done safely without a lock
@@ -234,7 +234,7 @@ public class BehaviorGuardEvaluatorRegistry {
 								|| parameterTypes[1] == null) {
 							//|| parameterTypes[1].getClassLoader().loadClass(Collection.class.getName()).isAssignableFrom(parameterTypes[0])) {
 							throw new IllegalArgumentException(
-									Locale.getString(getClass(), "INVALID_PROTOTYPE", //$NON-NLS-1$
+									MessageFormat.format(Messages.BehaviorGuardEvaluatorRegistry_1,
 											method, this.perceptGuardEvaluatorAnnotation.toString(),
 											Integer.valueOf(parameterTypes.length),
 											Arrays.toString(parameterTypes)));

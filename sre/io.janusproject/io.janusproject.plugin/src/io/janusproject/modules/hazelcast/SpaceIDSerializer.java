@@ -22,12 +22,12 @@
 package io.janusproject.modules.hazelcast;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.UUID;
 
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.StreamSerializer;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
@@ -79,9 +79,9 @@ public class SpaceIDSerializer implements StreamSerializer<SpaceID> {
 					return new SpaceID(cid, id, (Class<? extends SpaceSpecification<?>>) type);
 				}
 			}
-			throw new IOException(Locale.getString(SpaceIDSerializer.class, "BUILD_ERROR", cid, id, specCls)); //$NON-NLS-1$
+			throw new IOException(MessageFormat.format(Messages.SpaceIDSerializer_0, cid, id, specCls));
 		} catch (ClassNotFoundException e) {
-			throw new IOException(Locale.getString(SpaceIDSerializer.class, "SPECIFICATION_CLASS_NOT_FOUND"), e); //$NON-NLS-1$
+			throw new IOException(Messages.SpaceIDSerializer_1, e);
 		}
 
 	}

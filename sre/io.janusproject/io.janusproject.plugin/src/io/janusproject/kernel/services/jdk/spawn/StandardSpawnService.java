@@ -23,6 +23,7 @@ package io.janusproject.kernel.services.jdk.spawn;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -47,7 +48,6 @@ import io.janusproject.services.spawn.KernelAgentSpawnListener;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.services.spawn.SpawnServiceListener;
 import io.janusproject.util.ListenerCollection;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.core.AgentKilled;
 import io.sarl.core.AgentSpawned;
@@ -411,7 +411,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
          *            - the type of the agent to spawn.
          */
         public SpawnDisabledException(UUID parentID, Class<? extends Agent> agentClazz) {
-            super(Locale.getString(StandardSpawnService.class, "SPAWN_DISABLED", parentID, agentClazz)); //$NON-NLS-1$
+            super(MessageFormat.format(Messages.StandardSpawnService_0, parentID, agentClazz));
         }
 
     }
@@ -433,7 +433,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
          *            - the identifier of the agent.
          */
         public SpawnServiceStopException(UUID agentID) {
-            super(Locale.getString(StandardSpawnService.class, "KILL_DISABLED", agentID)); //$NON-NLS-1$
+            super(MessageFormat.format(Messages.StandardSpawnService_1, agentID));
         }
 
     }
@@ -455,7 +455,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
          *            the invalid type of agent.
          */
         public InvalidSarlSpecificationException(Class<? extends Agent> agentType) {
-            super(Locale.getString(StandardSpawnService.class, "INVALID_SARL_SPECIFICATION", agentType.getName())); //$NON-NLS-1$
+            super(MessageFormat.format(Messages.StandardSpawnService_2, agentType.getName()));
         }
 
     }
@@ -479,7 +479,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
          *            - the cause of the exception.
          */
         public CannotSpawnException(Class<? extends Agent> agentClazz, Throwable cause) {
-            super(Locale.getString(StandardSpawnService.class, "CANNOT_INSTANCIATE_AGENT", agentClazz, //$NON-NLS-1$
+            super(MessageFormat.format(Messages.StandardSpawnService_3, agentClazz,
                     (cause == null) ? null : cause.getLocalizedMessage()), cause);
         }
 

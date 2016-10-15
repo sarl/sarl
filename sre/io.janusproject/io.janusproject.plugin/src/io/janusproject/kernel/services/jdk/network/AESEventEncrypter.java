@@ -33,7 +33,6 @@ import com.google.inject.Inject;
 import io.janusproject.services.network.AbstractEventEncrypter;
 import io.janusproject.services.network.EventEnvelope;
 import io.janusproject.services.network.NetworkConfig;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * Encrypts the {@link EventEnvelope} content using the AES algorithm.
@@ -67,7 +66,7 @@ public class AESEventEncrypter extends AbstractEventEncrypter {
 			this.skeySpec = new SecretKeySpec(raw, "AES"); //$NON-NLS-1$
 			// this.cipher = Cipher.getInstance(ALGORITHM);
 		} else {
-			throw new IllegalArgumentException(Locale.getString(AESEventEncrypter.class, "INVALID_KEY_SIZE")); //$NON-NLS-1$
+			throw new IllegalArgumentException(Messages.AESEventEncrypter_0);
 		}
 
 	}

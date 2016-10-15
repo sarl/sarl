@@ -7,8 +7,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.sarl.core;bundle-version="0.4.2",
  io.sarl.util;bundle-version="0.4.2",
  io.sarl.eclipse;bundle-version="0.4.2",
- org.arakhne.afc.core.vmutils;bundle-version="14.0.0",
- org.arakhne.afc.core.util;bundle-version="14.0.0",
  com.hazelcast;bundle-version="3.7.0",
  com.google.gson;bundle-version="2.4.0",
  org.zeromq.jeromq;bundle-version="0.3.5",
@@ -21,7 +19,9 @@ Require-Bundle: io.sarl.core;bundle-version="0.4.2",
  org.eclipse.core.resources;bundle-version="3.11.0",
  org.eclipse.jdt.ui;bundle-version="3.12.1",
  org.eclipse.swt;bundle-version="3.105.1",
- org.eclipse.jface;bundle-version="3.12.0"
+ org.eclipse.jface;bundle-version="3.12.0",
+ org.arakhne.afc.core.util;bundle-version="14.0.0",
+ org.arakhne.afc.core.vmutils;bundle-version="14.0.0"
 Bundle-Activator: io.janusproject.eclipse.JanusEclipsePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
@@ -34,7 +34,6 @@ Export-Package: io.janusproject,
  io.janusproject.kernel.bic,
  io.janusproject.kernel.bic.internaleventdispatching,
  io.janusproject.kernel.repository,
- io.janusproject.kernel.services.arakhne,
  io.janusproject.kernel.services.gson,
  io.janusproject.kernel.services.guava,
  io.janusproject.kernel.services.hazelcast,

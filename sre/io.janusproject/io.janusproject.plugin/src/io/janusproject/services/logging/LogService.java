@@ -57,116 +57,56 @@ public interface LogService extends DependentService {
 	/**
 	 * Log an information message.
 	 *
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message - the message.
+	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 * @see #fineInfo(String, Object...)
 	 * @see #finerInfo(String, Object...)
 	 */
-	void info(String messageKey, Object... message);
-
-	/**
-	 * Log an information message.
-	 *
-	 * @param propertyType - type that is used to retreive the property file.
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
-	 * @see #fineInfo(Class, String, Object...)
-	 * @see #finerInfo(Class, String, Object...)
-	 */
-	void info(Class<?> propertyType, String messageKey, Object... message);
+	void info(String message, Object... params);
 
 	/**
 	 * Log a fine information message.
 	 *
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message - the message in the properties.
+	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 * @see #info(String, Object...)
 	 * @see #finerInfo(String, Object...)
 	 */
-	void fineInfo(String messageKey, Object... message);
-
-	/**
-	 * Log an information message.
-	 *
-	 * @param propertyType - type that is used to retreive the property file.
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
-	 * @see #info(Class, String, Object...)
-	 * @see #finerInfo(Class, String, Object...)
-	 */
-	void fineInfo(Class<?> propertyType, String messageKey, Object... message);
+	void fineInfo(String message, Object... params);
 
 	/**
 	 * Log a finer information message.
 	 *
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message - the message in the properties.
+	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 * @see #info(String, Object...)
 	 * @see #fineInfo(String, Object...)
 	 */
-	void finerInfo(String messageKey, Object... message);
-
-	/**
-	 * Log a finer information message.
-	 *
-	 * @param propertyType - type that is used to retreive the property file.
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
-	 * @see #info(Class, String, Object...)
-	 * @see #fineInfo(Class, String, Object...)
-	 */
-	void finerInfo(Class<?> propertyType, String messageKey, Object... message);
+	void finerInfo(String message, Object... params);
 
 	/**
 	 * Log a debug message.
 	 *
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message - the message in the properties.
+	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 */
-	void debug(String messageKey, Object... message);
-
-	/**
-	 * Log a debug message.
-	 *
-	 * @param propertyType - type that is used to retreive the property file.
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
-	 */
-	void debug(Class<?> propertyType, String messageKey, Object... message);
+	void debug(String message, Object... params);
 
 	/**
 	 * Log a warning message.
 	 *
-	 * @param propertyType - type that is used to retreive the property file.
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message - the message in the properties.
+	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 */
-	void warning(Class<?> propertyType, String messageKey, Object... message);
-
-	/**
-	 * Log a warning message.
-	 *
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
-	 */
-	void warning(String messageKey, Object... message);
+	void warning(String message, Object... params);
 
 	/**
 	 * Log an error message.
 	 *
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message - the message in the properties.
+	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 */
-	void error(String messageKey, Object... message);
-
-	/**
-	 * Log an error message.
-	 *
-	 * @param propertyType - type that is used to retreive the property file.
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
-	 */
-	void error(Class<?> propertyType, String messageKey, Object... message);
+	void error(String message, Object... params);
 
 	/**
 	 * Log the given record.
@@ -176,23 +116,13 @@ public interface LogService extends DependentService {
 	void log(LogRecord record);
 
 	/**
-	 * Log a message.
-	 *
-	 * @param level - level of logging for the message.
-	 * @param propertyType - type that is used to retreive the property file.
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
-	 */
-	void log(Level level, Class<?> propertyType, String messageKey, Object... message);
-
-	/**
 	 * Log a warning message.
 	 *
 	 * @param level - level of logging for the message.
-	 * @param messageKey - key of the message in the properties.
-	 * @param message - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message - the message in the properties.
+	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 */
-	void log(Level level, String messageKey, Object... message);
+	void log(Level level, String message, Object... params);
 
 	/**
 	 * Replies the logger.

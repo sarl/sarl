@@ -197,7 +197,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 			// Asynchronous parallel dispatching of this event
 			this.agentAsEventListener.receiveEvent(event);
 		}
-		this.logger.debug("SELF_EVENT", event); //$NON-NLS-1$
+		this.logger.debug(Messages.InternalEventBusSkill_0, event);
 	}
 
 	@Override
@@ -258,7 +258,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 				break;
 			case DESTROYED:
 				// Dropping messages since agent is dying
-				InternalEventBusSkill.this.logger.debug(InternalEventBusSkill.class, "EVENT_DROP_WARNING", event); //$NON-NLS-1$
+				InternalEventBusSkill.this.logger.debug(Messages.InternalEventBusSkill_1, event);
 				break;
 			default:
 				throw new IllegalStateException();
@@ -282,7 +282,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 			try {
 				skill.spawnService.killAgent(this.aid);
 			} catch (AgentKillException e) {
-				skill.logger.error(InternalEventBusSkill.class, "CANNOT_KILL_AGENT", this.aid, e); //$NON-NLS-1$
+				skill.logger.error(Messages.InternalEventBusSkill_2, this.aid, e);
 			}
 		}
 

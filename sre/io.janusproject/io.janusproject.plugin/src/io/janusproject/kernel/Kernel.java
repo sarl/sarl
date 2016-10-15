@@ -44,7 +44,6 @@ import io.janusproject.services.spawn.KernelAgentSpawnListener;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.util.LoggerCreator;
 import io.janusproject.util.TwoStepConstruction;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
@@ -262,9 +261,9 @@ public class Kernel {
 		@Override
 		public void run() {
 			final Logger logger = getLogger();
-			logger.info(Locale.getString(Kernel.class, "STOP_KERNEL_SERVICES")); //$NON-NLS-1$
+			logger.info(Messages.Kernel_0);
 			Services.stopServices(Kernel.this.serviceManager);
-			logger.info(Locale.getString(Kernel.class, "KERNEL_SERVICES_STOPPED")); //$NON-NLS-1$
+			logger.info(Messages.Kernel_1);
 			Kernel.this.isRunning.set(false);
 		}
 

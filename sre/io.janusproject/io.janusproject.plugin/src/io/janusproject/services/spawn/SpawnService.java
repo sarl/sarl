@@ -21,10 +21,10 @@
 
 package io.janusproject.services.spawn;
 
+import java.text.MessageFormat;
 import java.util.UUID;
 
 import io.janusproject.services.DependentService;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
@@ -121,7 +121,7 @@ public interface SpawnService extends DependentService {
 		 * @param agent - id of the agent that cannot be killed.
 		 */
 		public AgentKillException(UUID agent) {
-			super(Locale.getString(SpawnService.class, "AGENT_KILL_EXCEPTION", agent)); //$NON-NLS-1$
+			super(MessageFormat.format(Messages.SpawnService_0, agent));
 			this.agent = agent;
 			fillInStackTrace();
 		}
@@ -131,8 +131,7 @@ public interface SpawnService extends DependentService {
 		 * @param cause - the exception that is the cause of the killing discarding.
 		 */
 		public AgentKillException(UUID agent, Throwable cause) {
-			super(Locale.getString(SpawnService.class, "AGENT_KILL_EXCEPTION_WITH_CAUSE", //$NON-NLS-1$
-					agent, cause), cause);
+			super(MessageFormat.format(Messages.SpawnService_1, agent, cause), cause);
 			this.agent = agent;
 		}
 

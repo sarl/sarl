@@ -41,7 +41,6 @@ import io.janusproject.Boot;
 import io.janusproject.JanusConfig;
 import io.janusproject.eclipse.JanusEclipsePlugin;
 import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
-import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -443,7 +442,7 @@ public class JanusSREInstall extends AbstractSREInstall {
 
 	@Override
 	public String getNameNoDefault() {
-		return Locale.getString(getClass(), "PLUGIN_NAME"); //$NON-NLS-1$
+		return Messages.JanusSREInstall_0;
 	}
 
 	@Override

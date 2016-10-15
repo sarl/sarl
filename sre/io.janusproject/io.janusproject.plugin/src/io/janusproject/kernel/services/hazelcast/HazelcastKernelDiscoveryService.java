@@ -167,7 +167,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 	 * @param uri - URI of the discovered kernel.
 	 */
 	protected void fireKernelDiscovered(URI uri) {
-		this.logger.info(HazelcastKernelDiscoveryService.class, "KERNEL_DISCOVERY", uri, getCurrentKernel()); //$NON-NLS-1$
+		this.logger.info(Messages.HazelcastKernelDiscoveryService_0, uri, getCurrentKernel());
 		for (final KernelDiscoveryServiceListener listener : this.listeners.getListeners(KernelDiscoveryServiceListener.class)) {
 			listener.kernelDiscovered(uri);
 		}
@@ -179,7 +179,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 	 * @param uri - URI of the disconnected kernel.
 	 */
 	protected void fireKernelDisconnected(URI uri) {
-		this.logger.info(HazelcastKernelDiscoveryService.class, "KERNEL_DISCONNECTION", uri, getCurrentKernel()); //$NON-NLS-1$
+		this.logger.info(Messages.HazelcastKernelDiscoveryService_1, uri, getCurrentKernel());
 		for (final KernelDiscoveryServiceListener listener : this.listeners.getListeners(KernelDiscoveryServiceListener.class)) {
 			listener.kernelDisconnected(uri);
 		}

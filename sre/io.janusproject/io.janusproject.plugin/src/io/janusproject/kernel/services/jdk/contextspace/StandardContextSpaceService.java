@@ -273,7 +273,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	protected void fireContextCreated(AgentContext context) {
 		final ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
-		this.logger.info(StandardContextSpaceService.class, "CONTEXT_CREATED", context.getID()); //$NON-NLS-1$
+		this.logger.info(Messages.StandardContextSpaceService_0, context.getID());
 		for (final ContextRepositoryListener listener : ilisteners) {
 			listener.contextCreated(context);
 		}
@@ -286,7 +286,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	protected void fireContextDestroyed(AgentContext context) {
 		final ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
-		this.logger.info(StandardContextSpaceService.class, "CONTEXT_DESTROYED", context.getID()); //$NON-NLS-1$
+		this.logger.info(Messages.StandardContextSpaceService_1, context.getID());
 		for (final ContextRepositoryListener listener : ilisteners) {
 			listener.contextDestroyed(context);
 		}

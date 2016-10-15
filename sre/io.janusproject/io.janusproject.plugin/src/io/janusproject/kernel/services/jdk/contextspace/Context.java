@@ -203,7 +203,7 @@ public class Context implements AgentContext {
 
 		@Override
 		public void spaceCreated(Space space, boolean isLocalCreation) {
-			this.logger.info(Context.class, "SPACE_CREATED", space.getSpaceID()); //$NON-NLS-1$
+			this.logger.info(Messages.Context_0, space.getSpaceID());
 			// Notify the relays (other services)
 			this.relay.spaceCreated(space, isLocalCreation);
 			// Send the event in the default space of the context.
@@ -218,7 +218,7 @@ public class Context implements AgentContext {
 
 		@Override
 		public void spaceDestroyed(Space space, boolean isLocalDestruction) {
-			this.logger.info(Context.class, "SPACE_DESTROYED", space.getSpaceID()); //$NON-NLS-1$
+			this.logger.info(Messages.Context_1, space.getSpaceID());
 			// Send the event in the default space of the context.
 			if (isLocalDestruction) {
 				final EventSpace defSpace = this.context.getDefaultSpace();

@@ -30,6 +30,7 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
 import java.io.StreamCorruptedException;
 import java.lang.reflect.Proxy;
+import java.text.MessageFormat;
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,8 +40,7 @@ import io.janusproject.services.network.EventDispatch;
 import io.janusproject.services.network.EventEncrypter;
 import io.janusproject.services.network.EventEnvelope;
 import io.janusproject.services.network.NetworkUtil;
-import org.arakhne.afc.vmutil.ClassLoaderFinder;
-import org.arakhne.afc.vmutil.locale.Locale;
+import io.janusproject.util.ClassFinder;
 
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Scope;
@@ -126,7 +126,7 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 		}
 
 		if (spaceSpec == null || !SpaceSpecification.class.isAssignableFrom(spaceSpec)) {
-			throw new ClassCastException(Locale.getString(JavaBinaryEventSerializer.class, "INVALID_TYPE", spaceSpec)); //$NON-NLS-1$
+			throw new ClassCastException(MessageFormat.format(Messages.JavaBinaryEventSerializer_0, spaceSpec));
 		}
 
 		final UUID contextId = NetworkUtil.fromByteArray(envelope.getContextId());
@@ -148,8 +148,7 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 				if (object != null && type.isInstance(object)) {
 					return type.cast(object);
 				}
-				throw new ClassCastException(Locale.getString(JavaBinaryEventSerializer.class, "INVALID_TYPE", //$NON-NLS-1$
-						type.getName()));
+				throw new ClassCastException(MessageFormat.format(Messages.JavaBinaryEventSerializer_0, type.getName()));
 			}
 		}
 	}
@@ -163,10 +162,6 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 	 */
 	public static class ClassLoaderObjectInputStream extends ObjectInputStream {
 
-		/** The class loader to use.
-		 */
-		private final ClassLoader classLoader;
-
 		/**
 		 * Constructor.
 		 *
@@ -176,20 +171,7 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 		 */
 		public ClassLoaderObjectInputStream(InputStream inputStream)
 						throws IOException, StreamCorruptedException {
-			this(null, inputStream);
-		}
-
-		/**
-		 * Constructor.
-		 *
-		 * @param classLoader  the class loader from which classes should be loaded
-		 * @param inputStream  the InputStream to work on
-		 * @throws IOException in case of an I/O error
-		 */
-		public ClassLoaderObjectInputStream(ClassLoader classLoader, InputStream inputStream)
-						throws IOException {
 			super(inputStream);
-			this.classLoader = classLoader;
 		}
 
 		/**
@@ -204,38 +186,12 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 		@Override
 		protected Class<?> resolveClass(ObjectStreamClass objectStreamClass)
 				throws IOException, ClassNotFoundException {
-			final Class<?> type = resolve(objectStreamClass.getName());
+			final Class<?> type = ClassFinder.findClass(objectStreamClass.getName());
 			if (type != null) {
 				return type;
 			}
 			// classloader knows not of class, let the super classloader do it
 			return super.resolveClass(objectStreamClass);
-		}
-
-		private Class<?> resolve(String className) {
-			if (this.classLoader != null) {
-				try {
-					return Class.forName(className, true, this.classLoader);
-				} catch (Exception ex) {
-					//
-				}
-			}
-
-			final ClassLoader classLoader = ClassLoaderFinder.findClassLoader();
-			if (classLoader != null) {
-				try {
-					return classLoader.loadClass(className);
-				} catch (Exception ex) {
-					//
-				}
-			}
-
-			try {
-				return Class.forName(className, true, getClass().getClassLoader());
-			} catch (Exception ex) {
-				//
-			}
-			return null;
 		}
 
 		/**
@@ -252,7 +208,7 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 			final Class<?>[] interfaceClasses = new Class[interfaces.length];
 			ClassLoader cl = null;
 			for (int i = 0; i < interfaces.length; i++) {
-				final Class<?> type = resolve(interfaces[i]);
+				final Class<?> type = ClassFinder.findClass(interfaces[i]);
 				if (type != null) {
 					interfaceClasses[i] = type;
 					cl = type.getClassLoader();

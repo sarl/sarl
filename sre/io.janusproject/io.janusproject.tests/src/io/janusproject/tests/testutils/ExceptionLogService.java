@@ -69,63 +69,33 @@ public class ExceptionLogService extends AbstractService implements LogService {
 	}
 
 	@Override
-	public void info(String messageKey, Object... message) {
+	public void info(String message, Object... params) {
 		//
 	}
 
 	@Override
-	public void info(Class<?> propertyType, String messageKey, Object... message) {
+	public void fineInfo(String message, Object... params) {
 		//
 	}
 
 	@Override
-	public void fineInfo(String messageKey, Object... message) {
+	public void finerInfo(String message, Object... params) {
 		//
 	}
 
 	@Override
-	public void fineInfo(Class<?> propertyType, String messageKey, Object... message) {
+	public void debug(String message, Object... params) {
 		//
 	}
 
 	@Override
-	public void finerInfo(String messageKey, Object... message) {
+	public void warning(String message, Object... params) {
 		//
 	}
 
 	@Override
-	public void finerInfo(Class<?> propertyType, String messageKey, Object... message) {
-		//
-	}
-
-	@Override
-	public void debug(String messageKey, Object... message) {
-		//
-	}
-
-	@Override
-	public void debug(Class<?> propertyType, String messageKey, Object... message) {
-		//
-	}
-
-	@Override
-	public void warning(Class<?> propertyType, String messageKey, Object... message) {
-		//
-	}
-
-	@Override
-	public void warning(String messageKey, Object... message) {
-		//
-	}
-
-	@Override
-	public void error(String messageKey, Object... message) {
-		this.results.add(new LoggedException(messageKey));
-	}
-
-	@Override
-	public void error(Class<?> propertyType, String messageKey, Object... message) {
-		this.results.add(new LoggedException(messageKey));
+	public void error(String message, Object... params) {
+		this.results.add(new LoggedException(message));
 	}
 
 	@Override
@@ -136,16 +106,9 @@ public class ExceptionLogService extends AbstractService implements LogService {
 	}
 
 	@Override
-	public void log(Level level, Class<?> propertyType, String messageKey, Object... message) {
+	public void log(Level level, String message, Object... params) {
 		if (level == Level.SEVERE) {
-			this.results.add(new LoggedException(messageKey));
-		}
-	}
-
-	@Override
-	public void log(Level level, String messageKey, Object... message) {
-		if (level == Level.SEVERE) {
-			this.results.add(new LoggedException(messageKey));
+			this.results.add(new LoggedException(message));
 		}
 	}
 

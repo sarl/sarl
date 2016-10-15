@@ -22,6 +22,7 @@
 package io.janusproject.kernel.services.gson;
 
 import java.lang.reflect.Type;
+import java.text.MessageFormat;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,8 +42,7 @@ import io.janusproject.services.network.EventEncrypter;
 import io.janusproject.services.network.EventEnvelope;
 import io.janusproject.services.network.NetworkConfig;
 import io.janusproject.services.network.NetworkUtil;
-import org.arakhne.afc.vmutil.ClassLoaderFinder;
-import org.arakhne.afc.vmutil.locale.Locale;
+import io.janusproject.util.ClassFinder;
 
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Scope;
@@ -158,24 +158,10 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 		final String classname = headers.get(key);
 		Class<?> type = null;
 		if (classname != null) {
-			final ClassLoader loader = ClassLoaderFinder.findClassLoader();
-			if (loader != null) {
-				try {
-					type = loader.loadClass(classname);
-				} catch (Throwable exception) {
-					//
-				}
-			}
-			if (type == null) {
-				try {
-					type = Class.forName(classname);
-				} catch (Throwable exception) {
-					//
-				}
-			}
+			type = ClassFinder.findClass(classname);
 		}
 		if (type == null || !expectedType.isAssignableFrom(type)) {
-			throw new ClassCastException(Locale.getString(GsonEventSerializer.class, "INVALID_TYPE", type)); //$NON-NLS-1$
+			throw new ClassCastException(MessageFormat.format(Messages.GsonEventSerializer_0, type));
 		}
 		assert type != null;
 		return type.asSubclass(expectedType);

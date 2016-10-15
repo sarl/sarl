@@ -30,7 +30,6 @@ import io.janusproject.modules.kernel.LocalInfrastructureServiceModule;
 import io.janusproject.modules.kernel.LocalKernelDiscoveryServiceModule;
 import io.janusproject.modules.nonetwork.NoNetworkModule;
 import io.janusproject.modules.zeromq.ZeroMQNetworkModule;
-import org.arakhne.afc.vmutil.OperatingSystem;
 
 /**
  * The module configures Janus to run using the standard core modules and a ZeroMQ based network.
@@ -44,8 +43,7 @@ public class StandardJanusPlatformModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		final boolean isNetworkEnabled = !JanusConfig.getSystemPropertyAsBoolean(JanusConfig.OFFLINE, false)
-				&& !OperatingSystem.ANDROID.isCurrentOS();
+		final boolean isNetworkEnabled = !JanusConfig.getSystemPropertyAsBoolean(JanusConfig.OFFLINE, false);
 
 		// install the module for the Janus boot loader
 		install(new BootModule());

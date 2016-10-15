@@ -40,9 +40,8 @@ import io.janusproject.services.contextspace.SpaceRepositoryListener;
 import io.janusproject.services.distributeddata.DMap;
 import io.janusproject.services.distributeddata.DMapListener;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
+import io.janusproject.util.Comparators;
 import io.janusproject.util.TwoStepConstruction;
-import org.arakhne.afc.vmutil.ClassComparator;
-import org.arakhne.afc.vmutil.ObjectReferenceComparator;
 
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
@@ -107,7 +106,7 @@ public class SpaceRepository {
 		this.injector = injector;
 		this.externalListener = listener;
 		this.spaces = new TreeMap<>();
-		this.spacesBySpec = TreeMultimap.create(ClassComparator.SINGLETON, ObjectReferenceComparator.SINGLETON);
+		this.spacesBySpec = TreeMultimap.create(Comparators.CLASS_COMPARATOR, Comparators.OBJECT_COMPARATOR);
 		this.spaceIDs = distributedDataStructureService.getMap(this.distributedSpaceSetName, null);
 	}
 

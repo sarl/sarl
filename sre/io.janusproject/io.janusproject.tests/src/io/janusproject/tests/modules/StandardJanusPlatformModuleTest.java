@@ -117,13 +117,12 @@ public class StandardJanusPlatformModuleTest {
 			this.reflect.invoke(this.module, "configure");
 			//
 			ArgumentCaptor<Module> arg = ArgumentCaptor.forClass(Module.class);
-			verify(this.binder, times(6)).install(arg.capture());
+			verify(this.binder, times(5)).install(arg.capture());
 			assertContainsModules(arg.getAllValues(),
 					// Mandatory modules
 					BootModule.class, StandardCoreModule.class,
 					// Offline modules
-					LocalInfrastructureServiceModule.class, LocalDistributedDataStructureServiceModule.class,
-					LocalKernelDiscoveryServiceModule.class, NoNetworkModule.class);
+					HazelcastModule.class, NetworkEventModule.class, ZeroMQNetworkModule.class);
 		}
 
 	}

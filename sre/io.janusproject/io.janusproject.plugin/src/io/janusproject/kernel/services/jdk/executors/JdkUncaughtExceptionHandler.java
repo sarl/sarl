@@ -22,6 +22,7 @@
 package io.janusproject.kernel.services.jdk.executors;
 
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.text.MessageFormat;
 import java.util.concurrent.CancellationException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -30,7 +31,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.services.logging.LogService;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.core.Initialize;
 
@@ -72,20 +72,19 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 			if (!this.logger.isLoggeable(Level.FINEST)) {
 				return;
 			}
-			record = new LogRecord(Level.FINEST, Locale.getString(JdkUncaughtExceptionHandler.class, "CANCEL_TASK", taskId, taskName)); //$NON-NLS-1$
+			record = new LogRecord(Level.FINEST, MessageFormat.format(Messages.JdkUncaughtExceptionHandler_0, taskId, taskName));
 		} else if (cause instanceof InterruptedException || exception instanceof InterruptedException) {
 			// Avoid too much processing if the error is not loggeable
 			if (!this.logger.isLoggeable(Level.FINEST)) {
 				return;
 			}
-			record = new LogRecord(Level.FINEST, Locale.getString(JdkUncaughtExceptionHandler.class,
-			        "INTERRUPT_TASK", taskId, taskName)); //$NON-NLS-1$
+			record = new LogRecord(Level.FINEST, MessageFormat.format(Messages.JdkUncaughtExceptionHandler_1, taskId, taskName));
 		} else {
 			// Avoid too much processing if the error is not loggeable
 			if (!this.logger.isLoggeable(Level.SEVERE)) {
 				return;
 			}
-			record = new LogRecord(Level.SEVERE, Locale.getString(JdkUncaughtExceptionHandler.class, "UNCAUGHT_EXCEPTION", //$NON-NLS-1$
+			record = new LogRecord(Level.SEVERE, MessageFormat.format(Messages.JdkUncaughtExceptionHandler_2,
 					cause.getLocalizedMessage(), taskId, taskName));
 		}
 

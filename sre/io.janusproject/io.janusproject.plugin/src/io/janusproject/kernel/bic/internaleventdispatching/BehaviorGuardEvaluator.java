@@ -23,9 +23,8 @@ package io.janusproject.kernel.bic.internaleventdispatching;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.Collection;
-
-import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * Describes each class having one of its methods annotated with {@code PerceptGuardEvaluator} annotation corresponding to the
@@ -89,9 +88,9 @@ public final class BehaviorGuardEvaluator {
 			this.method.setAccessible(true);
 			this.method.invoke(this.target, event, behaviorsMethodsToExecute);
 		} catch (IllegalArgumentException e) {
-			throw new Error(Locale.getString(getClass(), "EVALUATOR_REJECTION", event), e); //$NON-NLS-1$
+			throw new Error(MessageFormat.format(Messages.BehaviorGuardEvaluator_0, event), e);
 		} catch (IllegalAccessException e) {
-			throw new Error(Locale.getString(getClass(), "INACCESSIBLE_EVALUATOR", event), e); //$NON-NLS-1$
+			throw new Error(MessageFormat.format(Messages.BehaviorGuardEvaluator_1, event), e);
 		} catch (InvocationTargetException e) {
 			if (e.getCause() instanceof Error) {
 				throw (Error) e.getCause();

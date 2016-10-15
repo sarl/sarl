@@ -37,7 +37,7 @@ import com.google.common.util.concurrent.Service;
 import com.google.common.util.concurrent.Service.State;
 import com.google.common.util.concurrent.ServiceManager;
 import io.janusproject.services.infrastructure.InfrastructureService;
-import org.arakhne.afc.vmutil.ClassComparator;
+import io.janusproject.util.Comparators;
 
 /**
  * Tools for launching and stopping services.
@@ -172,7 +172,7 @@ public final class Services {
 	 */
 	private static void buildDependencyGraph(IServiceManager manager, List<DependencyNode> roots, List<Service> infraServices,
 			List<Service> freeServices, Accessors accessors) {
-		final Map<Class<? extends Service>, DependencyNode> dependentServices = new TreeMap<>(ClassComparator.SINGLETON);
+		final Map<Class<? extends Service>, DependencyNode> dependentServices = new TreeMap<>(Comparators.CLASS_COMPARATOR);
 
 		Service service;
 		for (final Entry<State, Service> entry : manager.servicesByState().entries()) {
@@ -211,8 +211,8 @@ public final class Services {
 	 */
 	private static void buildInvertedDependencyGraph(IServiceManager manager, List<DependencyNode> roots,
 			List<Service> infraServices, List<Service> freeServices, Accessors accessors) {
-		final Map<Class<? extends Service>, DependencyNode> dependentServices = new TreeMap<>(ClassComparator.SINGLETON);
-		final Map<Class<? extends Service>, DependencyNode> rootServices = new TreeMap<>(ClassComparator.SINGLETON);
+		final Map<Class<? extends Service>, DependencyNode> dependentServices = new TreeMap<>(Comparators.CLASS_COMPARATOR);
+		final Map<Class<? extends Service>, DependencyNode> rootServices = new TreeMap<>(Comparators.CLASS_COMPARATOR);
 
 		Service service;
 		for (final Entry<State, Service> entry : manager.servicesByState().entries()) {
@@ -276,10 +276,11 @@ public final class Services {
 	 * @param freeServices - filled with the services that are executed before/after all the dependent services.
 	 * @param accessors - permits to retreive information on the services.
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	private static void runDependencyGraph(Queue<DependencyNode> roots, List<Service> infraServices, List<Service> freeServices,
 			Accessors accessors) {
 		final boolean async = accessors.isAsyncStateWaitingEnabled();
-		final Set<Class<? extends Service>> executed = new TreeSet<>(ClassComparator.SINGLETON);
+		final Set<Class<? extends Service>> executed = new TreeSet<>(Comparators.CLASS_COMPARATOR);
 		accessors.runInfrastructureServicesBefore(infraServices);
 		accessors.runFreeServicesBefore(freeServices);
 		while (!roots.isEmpty()) {

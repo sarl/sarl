@@ -21,6 +21,7 @@
 
 package io.janusproject.kernel.bic;
 
+import java.text.MessageFormat;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +30,6 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.util.LoggerCreator;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.core.Logging;
 import io.sarl.lang.core.Agent;
@@ -80,7 +80,7 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 	@Override
 	protected void install() {
 		final UUID agentId = getOwner().getID();
-		final String loggerName = Locale.getString(LoggingSkill.class, "AGENT_NAME", agentId); //$NON-NLS-1$
+		final String loggerName = MessageFormat.format(Messages.LoggingSkill_0, agentId);
 		this.logger = LoggerCreator.createLogger(loggerName, this.logService.getLogger());
 	}
 
@@ -88,7 +88,7 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 	public void setLoggingName(String name) {
 		String loggingName = name;
 		if (loggingName == null || loggingName.isEmpty()) {
-			loggingName = Locale.getString(LoggingSkill.class, "AGENT_NAME", getOwner().getID()); //$NON-NLS-1$
+			loggingName = MessageFormat.format(Messages.LoggingSkill_0, getOwner().getID());
 		}
 		final Level level = this.logger.getLevel();
 		this.logger = LoggerCreator.createLogger(loggingName, this.logService.getLogger());

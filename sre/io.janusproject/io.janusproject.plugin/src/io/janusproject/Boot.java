@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Properties;
@@ -49,7 +50,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.lang.core.Agent;
 
@@ -237,7 +237,7 @@ public final class Boot {
 					}
 					final File file = new File(rawFilename);
 					if (!file.canRead()) {
-						showError(Locale.getString(Boot.class, "INVALID_PROPERTY_FILENAME", //$NON-NLS-1$
+						showError(MessageFormat.format(Messages.Boot_0,
 								rawFilename), null);
 						return null;
 					}
@@ -308,9 +308,9 @@ public final class Boot {
 		try {
 			type = Class.forName(fullyQualifiedName);
 		} catch (Exception e) {
-			showError(
-					Locale.getString(Boot.class, "INVALID_AGENT_QUALIFIED_NAME", //$NON-NLS-1$
-							fullyQualifiedName, System.getProperty("java.class.path")), //$NON-NLS-1$
+			showError(MessageFormat.format(
+					Messages.Boot_1,
+					fullyQualifiedName, System.getProperty("java.class.path")), //$NON-NLS-1$
 					e);
 			// Event if showError never returns, add the return statement for
 			// avoiding compilation error.
@@ -324,7 +324,7 @@ public final class Boot {
 			return type.asSubclass(Agent.class);
 		}
 
-		showError(Locale.getString(Boot.class, "INVALID_AGENT_TYPE", //$NON-NLS-1$
+		showError(MessageFormat.format(Messages.Boot_2,
 				fullyQualifiedName), null);
 		// Event if showError never returns, add the return statement for
 		// avoiding compilation error.
@@ -346,8 +346,7 @@ public final class Boot {
 			}
 
 			if (freeArgs.length == 0) {
-				showError(Locale.getString(Boot.class, "NO_AGENT_QUALIFIED_NAME"), //$NON-NLS-1$
-						null);
+				showError(Messages.Boot_3, null);
 				// Event if showError never returns, add the return statement for
 				// avoiding compilation error.
 				return;
@@ -365,7 +364,7 @@ public final class Boot {
 			// Be silent
 			return;
 		} catch (Throwable e) {
-			showError(Locale.getString(Boot.class, "LAUNCHING_ERROR", //$NON-NLS-1$
+			showError(MessageFormat.format(Messages.Boot_4,
 					e.getLocalizedMessage()), e);
 			// Event if showError never returns, add the return statement for
 			// avoiding compilation error.
@@ -406,42 +405,42 @@ public final class Boot {
 		final Options options = new Options();
 
 		options.addOption(CLI_OPTION_EMBEDDED_SHORT, CLI_OPTION_EMBEDDED_LONG, false,
-				Locale.getString(Boot.class, "CLI_HELP_E")); //$NON-NLS-1$
+				Messages.Boot_5);
 
 		options.addOption(CLI_OPTION_BOOTID_SHORT, CLI_OPTION_BOOTID_LONG, false,
-				Locale.getString(Boot.class, "CLI_HELP_B", //$NON-NLS-1$
+				MessageFormat.format(Messages.Boot_6,
 						JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME, JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME));
 
 		options.addOption(CLI_OPTION_FILE_SHORT, CLI_OPTION_FILE_LONG, true,
-				Locale.getString(Boot.class, "CLI_HELP_F")); //$NON-NLS-1$
+				Messages.Boot_7);
 
 		options.addOption(CLI_OPTION_HELP_SHORT, CLI_OPTION_HELP_LONG, false,
-				Locale.getString(Boot.class, "CLI_HELP_H")); //$NON-NLS-1$
+				Messages.Boot_8);
 
 		options.addOption(null, CLI_OPTION_NOLOGO_LONG, false,
-				Locale.getString(Boot.class, "CLI_HELP_NOLOGO")); //$NON-NLS-1$
+				Messages.Boot_9);
 
 		options.addOption(CLI_OPTION_OFFLINE_SHORT, CLI_OPTION_OFFLINE_LONG, false,
-				Locale.getString(Boot.class, "CLI_HELP_O", JanusConfig.OFFLINE)); //$NON-NLS-1$
+				MessageFormat.format(Messages.Boot_10, JanusConfig.OFFLINE));
 
 		options.addOption(CLI_OPTION_QUIET_SHORT, CLI_OPTION_QUIET_LONG, false,
-				Locale.getString(Boot.class, "CLI_HELP_Q")); //$NON-NLS-1$
+				Messages.Boot_11);
 
 		options.addOption(CLI_OPTION_RANDOMID_SHORT, CLI_OPTION_RANDOMID_LONG, false,
-				Locale.getString(Boot.class, "CLI_HELP_R", //$NON-NLS-1$
+				MessageFormat.format(Messages.Boot_12,
 						JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME, JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME));
 
 		options.addOption(CLI_OPTION_SHOWDEFAULTS_SHORT, CLI_OPTION_SHOWDEFAULTS_LONG, false,
-				Locale.getString(Boot.class, "CLI_HELP_S")); //$NON-NLS-1$
+				Messages.Boot_13);
 
 		options.addOption(null, CLI_OPTION_SHOWCLIARGUMENTS_LONG, false,
-				Locale.getString(Boot.class, "CLI_HELP_CLI")); //$NON-NLS-1$
+				Messages.Boot_14);
 
 		options.addOption(CLI_OPTION_VERBOSE_SHORT, CLI_OPTION_VERBOSE_LONG, false,
-				Locale.getString(Boot.class, "CLI_HELP_V")); //$NON-NLS-1$
+				Messages.Boot_15);
 
 		options.addOption(CLI_OPTION_WORLDID_SHORT, CLI_OPTION_WORLDID_LONG, false,
-				Locale.getString(Boot.class, "CLI_HELP_W", //$NON-NLS-1$
+				MessageFormat.format(Messages.Boot_16,
 						JanusConfig.BOOT_DEFAULT_CONTEXT_ID_NAME, JanusConfig.RANDOM_DEFAULT_CONTEXT_ID_NAME));
 		final StringBuilder b = new StringBuilder();
 		int level = 0;
@@ -456,15 +455,15 @@ public final class Boot {
 			++level;
 		}
 		Option opt = new Option(CLI_OPTION_LOG_SHORT, CLI_OPTION_LOG_LONG, true,
-				Locale.getString(Boot.class, "CLI_HELP_L", //$NON-NLS-1$
+				MessageFormat.format(Messages.Boot_17,
 				JanusConfig.VERBOSE_LEVEL_VALUE, b));
 		opt.setArgs(1);
 		options.addOption(opt);
 		opt = new Option(CLI_OPTION_DEFINE_SHORT, CLI_OPTION_DEFINE_LONG, true,
-				Locale.getString(Boot.class, "CLI_HELP_D")); //$NON-NLS-1$
+				Messages.Boot_18);
 		opt.setArgs(2);
 		opt.setValueSeparator('=');
-		opt.setArgName(Locale.getString(Boot.class, "CLI_HELP_D_ARGNAME")); //$NON-NLS-1$
+		opt.setArgName(Messages.Boot_19);
 		options.addOption(opt);
 		return options;
 	}
@@ -502,7 +501,7 @@ public final class Boot {
 		final HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp(logger, HelpFormatter.DEFAULT_WIDTH,
 				Boot.class.getName() + " " //$NON-NLS-1$
-						+ Locale.getString(Boot.class, "CLI_PARAM_SYNOPTIC"), //$NON-NLS-1$
+						+ Messages.Boot_20,
 				"", //$NON-NLS-1$
 				getOptions(), HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, ""); //$NON-NLS-1$
 		logger.flush();
@@ -550,7 +549,7 @@ public final class Boot {
 	 */
 	@SuppressWarnings("checkstyle:regexp")
 	public static void showJanusLogo() {
-		System.out.println(Locale.getString(Boot.class, "JANUS_TEXT_LOGO")); //$NON-NLS-1$
+		System.out.println(Messages.Boot_21);
 	}
 
 	/**
@@ -766,7 +765,7 @@ public final class Boot {
 		final Kernel k = Kernel.create(startupModule);
 		final Logger logger = k.getLogger();
 		if (logger != null) {
-			logger.info(Locale.getString(Boot.class, "LAUNCHING_AGENT", agentCls.getName())); //$NON-NLS-1$
+			logger.info(MessageFormat.format(Messages.Boot_22, agentCls.getName()));
 		}
 		final UUID id = k.spawn(agentCls, params);
 		if (id != null) {

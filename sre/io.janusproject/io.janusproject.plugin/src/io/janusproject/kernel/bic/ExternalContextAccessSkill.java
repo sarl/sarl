@@ -21,6 +21,7 @@
 
 package io.janusproject.kernel.bic;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
@@ -28,7 +29,6 @@ import java.util.UUID;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import io.janusproject.services.contextspace.ContextSpaceService;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.core.Behaviors;
 import io.sarl.core.ContextJoined;
@@ -109,7 +109,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	public AgentContext getContext(UUID contextID) {
 		assert contextID != null;
 		if (!this.contexts.contains(contextID)) {
-			throw new IllegalArgumentException(Locale.getString(ExternalContextAccessSkill.class, "UNKNOWN_CONTEXT_ID", contextID)); //$NON-NLS-1$
+			throw new IllegalArgumentException(MessageFormat.format(Messages.ExternalContextAccessSkill_0, contextID));
 		}
 		return this.contextRepository.getContext(contextID);
 	}
@@ -127,7 +127,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 		assert ac != null : "Unknown Context"; //$NON-NLS-1$
 
 		if (!futureContextDefaultSpaceID.equals(ac.getDefaultSpace().getSpaceID().getID())) {
-			throw new IllegalArgumentException(Locale.getString(ExternalContextAccessSkill.class, "INVALID_DEFAULT_SPACE_MATCHING", //$NON-NLS-1$
+			throw new IllegalArgumentException(MessageFormat.format(Messages.ExternalContextAccessSkill_1,
 					futureContextDefaultSpaceID));
 		}
 

@@ -126,7 +126,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 			this.network.publish(scope, event);
 			doEmit(event, scope);
 		} catch (Throwable e) {
-			this.logger.error(AbstractEventSpace.class, "CANNOT_EMIT_EVENT", event, scope, e); //$NON-NLS-1$
+			this.logger.error(Messages.AbstractEventSpace_0, event, scope, e);
 		}
 
 	}
@@ -180,7 +180,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 		try {
 			AbstractEventSpace.this.doEmit(event, (Scope<Address>) scope);
 		} catch (Exception e) {
-			this.logger.error(AbstractEventSpace.class, "INVALID_EMIT", e); //$NON-NLS-1$
+			this.logger.error(Messages.AbstractEventSpace_1, e);
 		}
 	}
 

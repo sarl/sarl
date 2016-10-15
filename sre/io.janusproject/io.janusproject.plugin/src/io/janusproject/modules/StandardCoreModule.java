@@ -25,8 +25,8 @@ import com.google.common.util.concurrent.Service;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
-import io.janusproject.kernel.services.arakhne.ArakhneLocaleLogService;
 import io.janusproject.kernel.services.jdk.contextspace.StandardContextSpaceService;
+import io.janusproject.kernel.services.jdk.logging.StandardLogService;
 import io.janusproject.kernel.services.jdk.spawn.StandardSpawnService;
 import io.janusproject.modules.executors.JdkExecutorModule;
 import io.janusproject.modules.kernel.MandatoryKernelModule;
@@ -52,7 +52,7 @@ public class StandardCoreModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(LogService.class).to(ArakhneLocaleLogService.class).in(Singleton.class);
+		bind(LogService.class).to(StandardLogService.class).in(Singleton.class);
 		bind(ContextSpaceService.class).to(StandardContextSpaceService.class).in(Singleton.class);
 		bind(SpawnService.class).to(StandardSpawnService.class).in(Singleton.class);
 
