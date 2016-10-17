@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.products.contribs</artifactId>
-		<version>0.4.2</version>
+		<version>0.5.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>io.sarl.examples</groupId>
@@ -16,7 +16,6 @@
 	<modules>
 		<module>io.sarl.examples.plugin</module>
 		<module>io.sarl.examples.feature</module>
-		<module>io.sarl.examples.tests</module>
 	</modules>
 
 </project>

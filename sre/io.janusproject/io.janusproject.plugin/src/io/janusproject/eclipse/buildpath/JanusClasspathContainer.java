@@ -43,13 +43,14 @@ public class JanusClasspathContainer extends SARLClasspathContainer {
 	 * code and the generated Java code.
 	 */
 	public static final String[] JANUS_REFERENCE_LIBRARIES = {
+		"com.google.gson", //$NON-NLS-1$
+		"com.google.inject", //$NON-NLS-1$
+		"com.hazelcast", //$NON-NLS-1$
+		"org.apache.commons.cli", //$NON-NLS-1$
 		"org.arakhne.afc.core.vmutils", //$NON-NLS-1$
 		"org.arakhne.afc.core.util", //$NON-NLS-1$
-		"com.hazelcast", //$NON-NLS-1$
-		"com.google.gson", //$NON-NLS-1$
+		"org.eclipse.osgi", //$NON-NLS-1$
 		"org.zeromq.jeromq", //$NON-NLS-1$
-		"com.google.inject", //$NON-NLS-1$
-		"org.apache.commons.cli", //$NON-NLS-1$
 		"io.janusproject.plugin", //$NON-NLS-1$
 	};
 

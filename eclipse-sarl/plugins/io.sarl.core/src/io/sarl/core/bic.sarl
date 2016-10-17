@@ -20,6 +20,7 @@
  */
 package io.sarl.core
 
+import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
@@ -571,29 +572,33 @@ capacity Logging {
 	
 	/** Print the given message at error logging level.
 	 *
-	 * @param message - the elements to display.
+	 * @param message - the elements to display. The format of the message must follow {@link MessageFormat}.
 	 * @param exception - the exception that is the cause of the error.
+	 * @param parameters - the values to dynamically insert into the message.
 	 */
-	def error(message : Object, exception : Throwable=null)
+	def error(message : Object, exception : Throwable=null, parameters : Object*)
 
 	/** Print the given message at warning logging level.
 	 *
-	 * @param message - the elements to display.
+	 * @param message - the elements to display. The format of the message must follow {@link MessageFormat}.
 	 * @param exception - the exception that is the cause of the error.
+	 * @param parameters - the values to dynamically insert into the message.
 	 */
-	def warning(message : Object, exception : Throwable=null)
+	def warning(message : Object, exception : Throwable=null, parameters : Object*)
 
 	/** Print the given message at information logging level.
 	 *
-	 * @param message - the elements to display.
+	 * @param message - the elements to display. The format of the message must follow {@link MessageFormat}.
+	 * @param parameters - the values to dynamically insert into the message.
 	 */
-	def info(message : Object)
+	def info(message : Object, parameters : Object*)
 
 	/** Print the given message at debug logging level.
 	 *
-	 * @param message - the elements to display.
+	 * @param message - the elements to display. The format of the message must follow {@link MessageFormat}.
+	 * @param parameters - the values to dynamically insert into the message.
 	 */
-	def debug(message : Object)
+	def debug(message : Object, parameters : Object*)
 
 	/** Replies if the logging system is displaying the errors.
 	 *

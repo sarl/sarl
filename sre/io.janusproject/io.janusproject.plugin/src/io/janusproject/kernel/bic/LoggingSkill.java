@@ -24,9 +24,9 @@ package io.janusproject.kernel.bic;
 import java.text.MessageFormat;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.util.LoggerCreator;
@@ -101,58 +101,72 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 	}
 
 	@Override
-	public void error(Object message, Throwable exception) {
-		if (this.logger.isLoggable(Level.SEVERE)) {
-			final String loggableMessage = Strings.nullToEmpty(message == null ? null : message.toString());
+	public void error(Object message, Throwable exception, Object... parameters) {
+		if (this.logger.isLoggable(Level.SEVERE) && message != null) {
+			final String loggeableMessage = message.toString();
 			if (exception != null) {
-				this.logger.log(Level.SEVERE, loggableMessage, exception);
+				final LogRecord lr = new LogRecord(Level.SEVERE, loggeableMessage);
+		        lr.setParameters(parameters);
+		        lr.setThrown(exception);
+				this.logger.log(lr);
 			} else {
-				this.logger.log(Level.SEVERE, loggableMessage);
+				this.logger.log(Level.SEVERE, loggeableMessage, parameters);
 			}
 		}
 	}
 
 	@Override
-	public void error(Object message) {
-		if (this.logger.isLoggable(Level.SEVERE)) {
-			final String loggeableMessage = Strings.nullToEmpty(message == null ? null : message.toString());
-			this.logger.log(Level.SEVERE, loggeableMessage);
+	public void error(Object message, Object... parameters) {
+		if (this.logger.isLoggable(Level.SEVERE) && message != null) {
+			final String loggeableMessage = message.toString();
+			this.logger.log(Level.SEVERE, loggeableMessage, parameters);
 		}
 	}
 
 	@Override
-	public void warning(Object message, Throwable exception) {
-		if (this.logger.isLoggable(Level.WARNING)) {
-			final String loggeableMessage = Strings.nullToEmpty(message == null ? null : message.toString());
-			if (exception != null) {
-				this.logger.log(Level.WARNING, loggeableMessage, exception);
-			} else {
-				this.logger.log(Level.WARNING, loggeableMessage);
+	public void warning(Object message, Throwable exception, Object... parameters) {
+		if (this.logger.isLoggable(Level.WARNING) && message != null) {
+			final String loggeableMessage = message.toString();
+			if (!loggeableMessage.isEmpty()) {
+				if (exception != null) {
+					final LogRecord lr = new LogRecord(Level.SEVERE, loggeableMessage);
+			        lr.setParameters(parameters);
+			        lr.setThrown(exception);
+					this.logger.log(lr);
+				} else {
+					this.logger.log(Level.WARNING, loggeableMessage, parameters);
+				}
 			}
 		}
 	}
 
 	@Override
-	public void warning(Object message) {
-		if (this.logger.isLoggable(Level.WARNING)) {
-			final String loggeableMessage = Strings.nullToEmpty(message == null ? null : message.toString());
-			this.logger.log(Level.WARNING, loggeableMessage);
+	public void warning(Object message, Object... parameters) {
+		if (this.logger.isLoggable(Level.WARNING) && message != null) {
+			final String loggeableMessage = message.toString();
+			if (!loggeableMessage.isEmpty()) {
+				this.logger.log(Level.WARNING, loggeableMessage, parameters);
+			}
 		}
 	}
 
 	@Override
-	public void info(Object message) {
-		if (this.logger.isLoggable(Level.INFO)) {
-			final String loggeableMessage = Strings.nullToEmpty(message == null ? null : message.toString());
-			this.logger.log(Level.INFO, loggeableMessage);
+	public void info(Object message, Object... parameters) {
+		if (this.logger.isLoggable(Level.INFO) && message != null) {
+			final String loggeableMessage = message.toString();
+			if (!loggeableMessage.isEmpty()) {
+				this.logger.log(Level.INFO, loggeableMessage, parameters);
+			}
 		}
 	}
 
 	@Override
-	public void debug(Object message) {
-		if (this.logger.isLoggable(Level.CONFIG)) {
-			final String loggeableMessage = Strings.nullToEmpty(message == null ? null : message.toString());
-			this.logger.log(Level.CONFIG, loggeableMessage);
+	public void debug(Object message, Object... parameters) {
+		if (this.logger.isLoggable(Level.CONFIG) && message != null) {
+			final String loggeableMessage = message.toString();
+			if (!loggeableMessage.isEmpty()) {
+				this.logger.log(Level.CONFIG, loggeableMessage, parameters);
+			}
 		}
 	}
 
