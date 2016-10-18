@@ -20,16 +20,33 @@
  */
 package io.sarl.eclipse.tests.util;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNull;
-import io.sarl.eclipse.util.Utilities;
-import io.sarl.tests.api.AbstractSarlTest;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jdt.core.IClasspathAttribute;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ITypeParameter;
+import org.eclipse.jdt.core.JavaCore;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
+
+import io.sarl.eclipse.util.BundleUtil;
+import io.sarl.eclipse.util.Utilities;
+import io.sarl.eclipse.util.Utilities.SARLBundleJavadocURLMappings;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -39,7 +56,8 @@ import org.osgi.framework.Version;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	UtilitiesTest.ComparisonTests.class,
+	UtilitiesTest.VersionTests.class,
+	UtilitiesTest.JdtTests.class,
 })
 @SuppressWarnings("all")
 public final class UtilitiesTest {
@@ -50,7 +68,7 @@ public final class UtilitiesTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class ComparisonTests extends AbstractSarlTest {
+	public static class VersionTests extends AbstractSarlTest {
 
 		@Test
 		public void compareTo_null_null() {
@@ -420,6 +438,154 @@ public final class UtilitiesTest {
 		public void compareVersionToRange_3_3_3() {
 			Version v3 = new Version(0, 10, 0);
 			Utilities.compareVersionToRange(v3, v3, v3);
+		}
+
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class JdtTests extends AbstractSarlTest {
+
+		@Test
+		public void getNameWithTypeParameters_nullTypeParameter() throws Exception {
+			IJavaProject project = Mockito.mock(IJavaProject.class);
+			Mockito.when(project.getOption(ArgumentMatchers.anyString(), ArgumentMatchers.anyBoolean())).thenReturn(JavaCore.VERSION_1_8);
+			//
+			IType type = Mockito.mock(IType.class);
+			Mockito.when(type.getJavaProject()).thenReturn(project);
+			Mockito.when(type.getFullyQualifiedName(ArgumentMatchers.anyChar())).thenReturn("io.sarl.eclipse.tests.FakeObject");
+			//
+			String name = Utilities.getNameWithTypeParameters(type);
+			assertNotNull(name);
+			assertEquals("io.sarl.eclipse.tests.FakeObject", name);
+		}
+
+		@Test
+		public void getNameWithTypeParameters_noTypeParameter() throws Exception {
+			IJavaProject project = Mockito.mock(IJavaProject.class);
+			Mockito.when(project.getOption(ArgumentMatchers.anyString(), ArgumentMatchers.anyBoolean())).thenReturn(JavaCore.VERSION_1_8);
+			//
+			IType type = Mockito.mock(IType.class);
+			Mockito.when(type.getJavaProject()).thenReturn(project);
+			Mockito.when(type.getFullyQualifiedName(ArgumentMatchers.anyChar())).thenReturn("io.sarl.eclipse.tests.FakeObject");
+			Mockito.when(type.getTypeParameters()).thenReturn(new ITypeParameter[0]);
+			//
+			String name = Utilities.getNameWithTypeParameters(type);
+			assertNotNull(name);
+			assertEquals("io.sarl.eclipse.tests.FakeObject", name);
+		}
+
+		@Test
+		public void getNameWithTypeParameters_oneTypeParameter() throws Exception {
+			IJavaProject project = Mockito.mock(IJavaProject.class);
+			Mockito.when(project.getOption(ArgumentMatchers.anyString(), ArgumentMatchers.anyBoolean())).thenReturn(JavaCore.VERSION_1_8);
+			//
+			ITypeParameter typeParameter = Mockito.mock(ITypeParameter.class);
+			Mockito.when(typeParameter.getElementName()).thenReturn("io.sarl.eclipse.tests.FakeObjectParameter");
+			//
+			IType type = Mockito.mock(IType.class);
+			Mockito.when(type.getJavaProject()).thenReturn(project);
+			Mockito.when(type.getFullyQualifiedName(ArgumentMatchers.anyChar())).thenReturn("io.sarl.eclipse.tests.FakeObject");
+			Mockito.when(type.getTypeParameters()).thenReturn(new ITypeParameter[] {typeParameter});
+			//
+			String name = Utilities.getNameWithTypeParameters(type);
+			assertNotNull(name);
+			assertEquals("io.sarl.eclipse.tests.FakeObject<io.sarl.eclipse.tests.FakeObjectParameter>", name);
+		}
+
+		@Test
+		public void getNameWithTypeParameters_twoTypeParameters() throws Exception {
+			IJavaProject project = Mockito.mock(IJavaProject.class);
+			Mockito.when(project.getOption(ArgumentMatchers.anyString(), ArgumentMatchers.anyBoolean())).thenReturn(JavaCore.VERSION_1_8);
+			//
+			ITypeParameter typeParameter1 = Mockito.mock(ITypeParameter.class);
+			Mockito.when(typeParameter1.getElementName()).thenReturn("io.sarl.eclipse.tests.FakeObjectParameter1");
+			//
+			ITypeParameter typeParameter2 = Mockito.mock(ITypeParameter.class);
+			Mockito.when(typeParameter2.getElementName()).thenReturn("io.sarl.eclipse.tests.FakeObjectParameter2");
+			//
+			IType type = Mockito.mock(IType.class);
+			Mockito.when(type.getJavaProject()).thenReturn(project);
+			Mockito.when(type.getFullyQualifiedName(ArgumentMatchers.anyChar())).thenReturn("io.sarl.eclipse.tests.FakeObject");
+			Mockito.when(type.getTypeParameters()).thenReturn(new ITypeParameter[] {typeParameter1, typeParameter2});
+			//
+			String name = Utilities.getNameWithTypeParameters(type);
+			assertNotNull(name);
+			assertEquals("io.sarl.eclipse.tests.FakeObject<io.sarl.eclipse.tests.FakeObjectParameter1, io.sarl.eclipse.tests.FakeObjectParameter2>", name);
+		}
+
+		@Test
+		public void newLibraryEntry_nullPath_nullJavadocMapping() {
+			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
+			Assume.assumeNotNull(bundle);
+			//
+			IClasspathEntry entry = Utilities.newLibraryEntry(bundle, null, null);
+			assertNotNull(entry);
+			assertEquals(IClasspathEntry.CPE_LIBRARY, entry.getEntryKind());
+			assertEquals(IPackageFragmentRoot.K_BINARY, entry.getContentKind());
+			assertEquals(BundleUtil.getBundlePath(bundle), entry.getPath());
+			assertEquals(BundleUtil.getSourceBundlePath(bundle, BundleUtil.getBundlePath(bundle)), entry.getSourceAttachmentPath());
+			IClasspathAttribute[] extras = entry.getExtraAttributes();
+			assertNotNull(extras);
+			assertEquals(1, extras.length);
+		}
+
+		@Test
+		public void newLibraryEntry_precomputedPath_nullJavadocMapping() {
+			//
+			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
+			Assume.assumeNotNull(bundle);
+			//
+			IPath precomputedPath = BundleUtil.getBundlePath(bundle);
+			//
+			IClasspathEntry entry = Utilities.newLibraryEntry(bundle, precomputedPath, null);
+			assertNotNull(entry);
+			assertEquals(IClasspathEntry.CPE_LIBRARY, entry.getEntryKind());
+			assertEquals(IPackageFragmentRoot.K_BINARY, entry.getContentKind());
+			assertEquals(precomputedPath, entry.getPath());
+			assertEquals(BundleUtil.getSourceBundlePath(bundle, BundleUtil.getBundlePath(bundle)), entry.getSourceAttachmentPath());
+			IClasspathAttribute[] extras = entry.getExtraAttributes();
+			assertNotNull(extras);
+			assertEquals(1, extras.length);
+		}
+
+		@Test
+		public void newLibraryEntry_nullPath_javadocMapping() {
+			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
+			Assume.assumeNotNull(bundle);
+			//
+			IClasspathEntry entry = Utilities.newLibraryEntry(bundle, null, (b) -> "http://fake.org");
+			assertNotNull(entry);
+			assertEquals(IClasspathEntry.CPE_LIBRARY, entry.getEntryKind());
+			assertEquals(IPackageFragmentRoot.K_BINARY, entry.getContentKind());
+			assertEquals(BundleUtil.getBundlePath(bundle), entry.getPath());
+			assertEquals(BundleUtil.getSourceBundlePath(bundle, BundleUtil.getBundlePath(bundle)), entry.getSourceAttachmentPath());
+			IClasspathAttribute[] extras = entry.getExtraAttributes();
+			assertNotNull(extras);
+			assertEquals(1, extras.length);
+		}
+
+		@Test
+		public void newLibraryEntry_precomputedPath_javadocMapping() {
+			//
+			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
+			Assume.assumeNotNull(bundle);
+			//
+			IPath precomputedPath = BundleUtil.getBundlePath(bundle);
+			//
+			IClasspathEntry entry = Utilities.newLibraryEntry(bundle, precomputedPath, (b) -> "http://fake.org");
+			assertNotNull(entry);
+			assertEquals(IClasspathEntry.CPE_LIBRARY, entry.getEntryKind());
+			assertEquals(IPackageFragmentRoot.K_BINARY, entry.getContentKind());
+			assertEquals(precomputedPath, entry.getPath());
+			assertEquals(BundleUtil.getSourceBundlePath(bundle, BundleUtil.getBundlePath(bundle)), entry.getSourceAttachmentPath());
+			IClasspathAttribute[] extras = entry.getExtraAttributes();
+			assertNotNull(extras);
+			assertEquals(1, extras.length);
 		}
 
 	}

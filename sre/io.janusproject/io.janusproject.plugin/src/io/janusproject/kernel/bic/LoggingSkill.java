@@ -129,7 +129,7 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 			final String loggeableMessage = message.toString();
 			if (!loggeableMessage.isEmpty()) {
 				if (exception != null) {
-					final LogRecord lr = new LogRecord(Level.SEVERE, loggeableMessage);
+					final LogRecord lr = new LogRecord(Level.WARNING, loggeableMessage);
 			        lr.setParameters(parameters);
 			        lr.setThrown(exception);
 					this.logger.log(lr);

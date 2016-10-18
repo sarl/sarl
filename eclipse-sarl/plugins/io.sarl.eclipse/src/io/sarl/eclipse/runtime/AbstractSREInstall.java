@@ -183,11 +183,6 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	}
 
 	@Override
-	public final IStatus getValidity() {
-		return getValidity(0);
-	}
-
-	@Override
 	public IStatus getValidity(int ignoreCauses) {
 		if (isDirty()) {
 			return revalidate(ignoreCauses);

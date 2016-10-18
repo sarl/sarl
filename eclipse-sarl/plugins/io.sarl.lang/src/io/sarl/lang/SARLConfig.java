@@ -65,6 +65,10 @@ public final class SARLConfig {
 	 */
 	public static final String FOLDER_BIN = "target/classes"; //$NON-NLS-1$
 
+	/** URL of the Javadoc for SARL API.
+	 */
+	public static final String JAVADOC_URL = "http://www.sarl.io/docs/api/"; //$NON-NLS-1$
+
 	private SARLConfig() {
 		//
 	}

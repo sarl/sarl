@@ -748,6 +748,12 @@
 							// Set SARL properties
 							project.properties["sarl.specification.release_version"] = versionFields[0] + "." + versionFields[1];
 							project.properties["sarl.release_version"] = project.properties["sarl.specification.release_version"] + "." + versionFields[2];
+							if (isDevelVersion) {
+								project.properties["sarl.release_version.osgi"] = project.properties["sarl.release_version"]+".qualifier";
+							} else {
+								project.properties["sarl.release_version.osgi"] = project.properties["sarl.release_version"];
+							}
+							project.properties["sarl.release_version.maven"] = project.properties["sarl.release_version"]+endOfVersion;
 							project.properties["sarl.specification.release_date"] = (new java.text.SimpleDateFormat("yyyy-MM-dd")).format(now);
 							project.properties["sarl.specification.release_status"] = releaseStatus;
 							project.properties["sarl.is_stable_version"] = Boolean.toString(!isSnapshot);
@@ -757,6 +763,8 @@
 
 							log.info("set sarl.specification.release_version to: " + project.properties["sarl.specification.release_version"]);
 							log.info("set sarl.release_version to: " + project.properties["sarl.release_version"]);
+							log.info("set sarl.release_version.osgi to: " + project.properties["sarl.release_version.osgi"]);
+							log.info("set sarl.release_version.maven to: " + project.properties["sarl.release_version.maven"]);
 							log.info("set sarl.specification.release_date to: " + project.properties["sarl.specification.release_date"]);
 							log.info("set sarl.specification.release_status to: " + project.properties["sarl.specification.release_status"]);
 							log.info("set sarl.is_stable_version to: " + project.properties["sarl.is_stable_version"]);

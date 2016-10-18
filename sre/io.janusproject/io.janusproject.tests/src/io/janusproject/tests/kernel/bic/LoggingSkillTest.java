@@ -117,6 +117,7 @@ public class LoggingSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Level> argument2 = ArgumentCaptor.forClass(Level.class);
 		ArgumentCaptor<String> argument3 = ArgumentCaptor.forClass(String.class);
 		ArgumentCaptor<LogRecord> argument4 = ArgumentCaptor.forClass(LogRecord.class);
+		ArgumentCaptor<Object[]> argument5 = ArgumentCaptor.forClass(Object[].class);
 		//
 		this.logger.setLevel(Level.ALL);
 		this.skill.error(message);
@@ -124,7 +125,7 @@ public class LoggingSkillTest extends AbstractJanusTest {
 		Mockito.verify(this.logger, new Times(3)).isLoggable(argument1.capture());
 		assertSame(Level.SEVERE, argument1.getValue());
 		//
-		Mockito.verify(this.logger, new Times(1)).log(argument2.capture(), argument3.capture());
+		Mockito.verify(this.logger, new Times(1)).log(argument2.capture(), argument3.capture(), argument5.capture());
 		assertSame(Level.SEVERE, argument2.getValue());
 		assertEquals(message, argument3.getValue());
 		//
@@ -154,21 +155,19 @@ public class LoggingSkillTest extends AbstractJanusTest {
 		Throwable ex = new Exception();
 		String message = UUID.randomUUID().toString();
 		ArgumentCaptor<Level> argument1 = ArgumentCaptor.forClass(Level.class);
-		ArgumentCaptor<Level> argument2 = ArgumentCaptor.forClass(Level.class);
-		ArgumentCaptor<String> argument3 = ArgumentCaptor.forClass(String.class);
 		ArgumentCaptor<LogRecord> argument4 = ArgumentCaptor.forClass(LogRecord.class);
 		ArgumentCaptor<Throwable> argument5 = ArgumentCaptor.forClass(Throwable.class);
 		//
 		this.logger.setLevel(Level.ALL);
 		this.skill.error(message, ex);
 		//
-		Mockito.verify(this.logger, new Times(3)).isLoggable(argument1.capture());
+		Mockito.verify(this.logger, new Times(2)).isLoggable(argument1.capture());
 		assertSame(Level.SEVERE, argument1.getValue());
 		//
-		Mockito.verify(this.logger, new Times(1)).log(argument2.capture(), argument3.capture(), argument5.capture());
-		assertSame(Level.SEVERE, argument2.getValue());
-		assertEquals(message, argument3.getValue());
-		assertSame(ex, argument5.getValue());
+		Mockito.verify(this.logger, new Times(1)).log(argument4.capture());
+		assertSame(Level.SEVERE, argument4.getValue().getLevel());
+		assertEquals(message, argument4.getValue().getMessage());
+		assertSame(ex, argument4.getValue().getThrown());
 		//
 		Mockito.verify(this.handler).publish(argument4.capture());
 		assertNotNull(argument4.getValue());
@@ -197,6 +196,7 @@ public class LoggingSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Level> argument2 = ArgumentCaptor.forClass(Level.class);
 		ArgumentCaptor<String> argument3 = ArgumentCaptor.forClass(String.class);
 		ArgumentCaptor<LogRecord> argument4 = ArgumentCaptor.forClass(LogRecord.class);
+		ArgumentCaptor<Object[]> argument5 = ArgumentCaptor.forClass(Object[].class);
 		//
 		this.logger.setLevel(Level.ALL);
 		this.skill.warning(message);
@@ -204,7 +204,7 @@ public class LoggingSkillTest extends AbstractJanusTest {
 		Mockito.verify(this.logger, new Times(3)).isLoggable(argument1.capture());
 		assertSame(Level.WARNING, argument1.getValue());
 		//
-		Mockito.verify(this.logger, new Times(1)).log(argument2.capture(), argument3.capture());
+		Mockito.verify(this.logger, new Times(1)).log(argument2.capture(), argument3.capture(), argument5.capture());
 		assertSame(Level.WARNING, argument2.getValue());
 		assertEquals(message, argument3.getValue());
 		//
@@ -234,21 +234,18 @@ public class LoggingSkillTest extends AbstractJanusTest {
 		Throwable ex = new Exception();
 		String message = UUID.randomUUID().toString();
 		ArgumentCaptor<Level> argument1 = ArgumentCaptor.forClass(Level.class);
-		ArgumentCaptor<Level> argument2 = ArgumentCaptor.forClass(Level.class);
-		ArgumentCaptor<String> argument3 = ArgumentCaptor.forClass(String.class);
 		ArgumentCaptor<LogRecord> argument4 = ArgumentCaptor.forClass(LogRecord.class);
-		ArgumentCaptor<Throwable> argument5 = ArgumentCaptor.forClass(Throwable.class);
 		//
 		this.logger.setLevel(Level.ALL);
 		this.skill.warning(message, ex);
 		//
-		Mockito.verify(this.logger, new Times(3)).isLoggable(argument1.capture());
+		Mockito.verify(this.logger, new Times(2)).isLoggable(argument1.capture());
 		assertSame(Level.WARNING, argument1.getValue());
 		//
-		Mockito.verify(this.logger, new Times(1)).log(argument2.capture(), argument3.capture(), argument5.capture());
-		assertSame(Level.WARNING, argument2.getValue());
-		assertEquals(message, argument3.getValue());
-		assertSame(ex, argument5.getValue());
+		Mockito.verify(this.logger, new Times(1)).log(argument4.capture());
+		assertSame(Level.WARNING, argument4.getValue().getLevel());
+		assertEquals(message, argument4.getValue().getMessage());
+		assertSame(ex, argument4.getValue().getThrown());
 		//
 		Mockito.verify(this.handler).publish(argument4.capture());
 		assertNotNull(argument4.getValue());
@@ -274,8 +271,6 @@ public class LoggingSkillTest extends AbstractJanusTest {
 	public void info_on() {
 		String message = UUID.randomUUID().toString();
 		ArgumentCaptor<Level> argument1 = ArgumentCaptor.forClass(Level.class);
-		ArgumentCaptor<Level> argument2 = ArgumentCaptor.forClass(Level.class);
-		ArgumentCaptor<String> argument3 = ArgumentCaptor.forClass(String.class);
 		ArgumentCaptor<LogRecord> argument4 = ArgumentCaptor.forClass(LogRecord.class);
 		//
 		this.logger.setLevel(Level.ALL);
@@ -284,9 +279,9 @@ public class LoggingSkillTest extends AbstractJanusTest {
 		Mockito.verify(this.logger, new Times(3)).isLoggable(argument1.capture());
 		assertSame(Level.INFO, argument1.getValue());
 		//
-		Mockito.verify(this.logger, new Times(1)).log(argument2.capture(), argument3.capture());
-		assertSame(Level.INFO, argument2.getValue());
-		assertEquals(message, argument3.getValue());
+		Mockito.verify(this.logger, new Times(1)).log(argument4.capture());
+		assertSame(Level.INFO, argument4.getValue().getLevel());
+		assertEquals(message, argument4.getValue().getMessage());
 		//
 		Mockito.verify(this.handler).publish(argument4.capture());
 		assertNotNull(argument4.getValue());
@@ -325,6 +320,7 @@ public class LoggingSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Level> argument2 = ArgumentCaptor.forClass(Level.class);
 		ArgumentCaptor<String> argument3 = ArgumentCaptor.forClass(String.class);
 		ArgumentCaptor<LogRecord> argument4 = ArgumentCaptor.forClass(LogRecord.class);
+		ArgumentCaptor<Object[]> argument5 = ArgumentCaptor.forClass(Object[].class);
 		//
 		this.logger.setLevel(Level.ALL);
 		this.skill.debug(message);
@@ -332,7 +328,7 @@ public class LoggingSkillTest extends AbstractJanusTest {
 		Mockito.verify(this.logger, new Times(3)).isLoggable(argument1.capture());
 		assertSame(Level.CONFIG, argument1.getValue());
 		//
-		Mockito.verify(this.logger, new Times(1)).log(argument2.capture(), argument3.capture());
+		Mockito.verify(this.logger, new Times(1)).log(argument2.capture(), argument3.capture(), argument5.capture());
 		assertSame(Level.CONFIG, argument2.getValue());
 		assertEquals(message, argument3.getValue());
 		//

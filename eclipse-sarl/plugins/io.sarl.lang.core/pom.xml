@@ -47,16 +47,20 @@
 									<value>${sarl.release_version}</value>
 								</replacement>
 								<replacement>
+									<token>@sarlreleaseversion.osgi@</token>
+									<value>${sarl.release_version.osgi}</value>
+								</replacement>
+								<replacement>
+									<token>@sarlreleaseversion.maven@</token>
+									<value>${sarl.release_version.maven}</value>
+								</replacement>
+								<replacement>
 									<token>@sarlspecificationreleasestatus@</token>
 									<value>${sarl.specification.release_status}</value>
 								</replacement>
 								<replacement>
 									<token>@sarlisstableversion@</token>
 									<value>${sarl.is_stable_version}</value>
-								</replacement>
-								<replacement>
-									<token>@janusversion@</token>
-									<value>${janus.version}</value>
 								</replacement>
 								<replacement>
 									<token>@minimaljdkversion@</token>

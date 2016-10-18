@@ -51,8 +51,29 @@ public final class SARLVersion {
 	/** The version number of the current release of the SARL library.
 	 *
 	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION}.
+	 *
+	 * @see #SARL_RELEASE_VERSION_OSGI
+	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
 	public static final String SARL_RELEASE_VERSION = "@sarlreleaseversion@"; //$NON-NLS-1$
+
+	/** The version number in OSGI format of the current release of the SARL library.
+	 *
+	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION}.
+	 *
+	 * @see #SARL_RELEASE_VERSION
+	 * @see #SARL_RELEASE_VERSION_MAVEN
+	 */
+	public static final String SARL_RELEASE_VERSION_OSGI = "@sarlreleaseversion.osgi@"; //$NON-NLS-1$
+
+	/** The version number in Maven format of the current release of the SARL library.
+	 *
+	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION}.
+	 *
+	 * @see #SARL_RELEASE_VERSION
+	 * @see #SARL_RELEASE_VERSION_OSGI
+	 */
+	public static final String SARL_RELEASE_VERSION_MAVEN = "@sarlreleaseversion.maven@"; //$NON-NLS-1$
 
 	/** The status of the SARL specification.
 	 *
@@ -66,11 +87,6 @@ public final class SARLVersion {
 	 * <p>A stable release is collection of libraries that will be not more compiled and generated.
 	 */
 	public static final boolean IS_STABLE = @sarlisstableversion@;
-
-	/** The version number of the Janus platform that should support the current version
-	 * of the SARL tools.
-	 */
-	public static final String PRECONIZED_JANUS_VERSION = "@janusversion@"; //$NON-NLS-1$
 
 	/** The minimal JDK version to use SARL features.
 	 */

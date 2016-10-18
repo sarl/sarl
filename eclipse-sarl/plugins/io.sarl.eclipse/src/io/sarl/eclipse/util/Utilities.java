@@ -22,11 +22,19 @@
 package io.sarl.eclipse.util;
 
 import com.google.common.base.Strings;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IAccessRule;
+import org.eclipse.jdt.core.IClasspathAttribute;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeParameter;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
+
+import io.sarl.lang.SARLConfig;
 
 
 /** Utilities.
@@ -131,17 +139,18 @@ public final class Utilities {
 
 	/** Replies the fully qualified name with generic parameters.
 	 *
-	 * @param type the type.
+	 * @param type the type. Never <code>null</code>.
 	 * @return the qualified name.
 	 */
 	public static String getNameWithTypeParameters(IType type) {
+		assert type != null;
 		final String superName = type.getFullyQualifiedName('.');
 		if (!JavaModelUtil.is50OrHigher(type.getJavaProject())) {
 			return superName;
 		}
 		try {
 			final ITypeParameter[] typeParameters = type.getTypeParameters();
-			if (typeParameters.length > 0) {
+			if (typeParameters != null && typeParameters.length > 0) {
 				final StringBuffer buf = new StringBuffer(superName);
 				buf.append('<');
 				for (int k = 0; k < typeParameters.length; ++k) {
@@ -157,6 +166,97 @@ public final class Utilities {
 			// ignore
 		}
 		return superName;
+
+	}
+
+	/** Create the classpath library linked to the bundle with the given name.
+	 *
+	 * @param bundle the bundle to point to. Never <code>null</code>.
+	 * @param precomputedBundlePath the path to the bundle that is already available. If <code>null</code>,
+	 *      the path is computed from the bundle with {@link BundleUtil}.
+	 * @param javadocURLs the mappings from the bundle to the javadoc URL. It is used for linking the javadoc to the bundle if
+	 *      the bundle platform does not know the Javadoc file. If <code>null</code>, no mapping is defined.
+	 * @return the classpath entry.
+	 */
+	public static IClasspathEntry newLibraryEntry(Bundle bundle, IPath precomputedBundlePath, BundleURLMappings javadocURLs) {
+		assert bundle != null;
+		final IPath bundlePath;
+		if (precomputedBundlePath == null) {
+			bundlePath = BundleUtil.getBundlePath(bundle);
+		} else {
+			bundlePath = precomputedBundlePath;
+		}
+		final IPath sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
+		final IPath javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
+
+		final IClasspathAttribute[] extraAttributes;
+		if (javadocPath == null) {
+			if (javadocURLs != null) {
+				final String url = javadocURLs.getURLForBundle(bundle);
+				if (!Strings.isNullOrEmpty(url)) {
+					final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+							IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
+							url);
+					extraAttributes = new IClasspathAttribute[] {attr};
+				} else {
+					extraAttributes = new IClasspathAttribute[0];
+				}
+			} else {
+				extraAttributes = new IClasspathAttribute[0];
+			}
+		} else {
+			final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+					IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
+					javadocPath.makeAbsolute().toOSString());
+			extraAttributes = new IClasspathAttribute[] {attr};
+		}
+
+		return JavaCore.newLibraryEntry(
+				bundlePath,
+				sourceBundlePath,
+				null,
+				new IAccessRule[] {},
+				extraAttributes,
+				false);
+	}
+
+	/** Define a mapping from bundles to URLs.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@FunctionalInterface
+	public interface BundleURLMappings {
+
+		/** Replies the URL for the given bundle.
+		 *
+		 * @param bundle the bundle, never <code>null</code>.
+		 * @return the URL, or <code>null</code> if no URL is defined.
+		 */
+		String getURLForBundle(Bundle bundle);
+
+	}
+
+	/** Define a mapping from bundles to URLs.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class SARLBundleJavadocURLMappings implements BundleURLMappings {
+
+		private static final String SARL_PREFIX = "io.sarl."; //$NON-NLS-1$
+
+		@Override
+		public String getURLForBundle(Bundle bundle) {
+			if (bundle.getSymbolicName().startsWith(SARL_PREFIX)) {
+				return SARLConfig.JAVADOC_URL;
+			}
+			return null;
+		}
 
 	}
 

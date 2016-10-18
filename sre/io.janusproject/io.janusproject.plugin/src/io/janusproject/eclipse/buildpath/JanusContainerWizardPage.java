@@ -21,8 +21,6 @@
 
 package io.janusproject.eclipse.buildpath;
 
-import java.text.MessageFormat;
-
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
@@ -32,8 +30,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-
-import io.sarl.eclipse.buildpath.SARLClasspathContainer;
 
 /** Wizard page that permits to add the Janus libraries into a project.
  *
@@ -62,16 +58,7 @@ public class JanusContainerWizardPage extends NewElementWizardPage implements IC
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout());
 		final Label label = new Label(composite, SWT.NONE);
-		final StringBuilder builder = new StringBuilder();
-		for (final String bundleId : SARLClasspathContainer.SARL_REFERENCE_LIBRARIES) {
-			builder.append("\t").append(bundleId).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
-		}
-		for (final String bundleId : JanusClasspathContainer.JANUS_REFERENCE_LIBRARIES) {
-			builder.append("\t").append(bundleId).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
-		}
-		label.setText(MessageFormat.format(
-				Messages.JanusContainerWizardPage_1,
-				builder.toString()));
+		label.setText(Messages.JanusContainerWizardPage_1);
 		setControl(composite);
 	}
 

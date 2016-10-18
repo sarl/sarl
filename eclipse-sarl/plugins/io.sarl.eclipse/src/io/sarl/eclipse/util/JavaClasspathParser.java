@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.janusproject.eclipse.sre;
+package io.sarl.eclipse.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

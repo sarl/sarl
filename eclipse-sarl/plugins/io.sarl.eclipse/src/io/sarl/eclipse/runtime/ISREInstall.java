@@ -22,6 +22,7 @@
 package io.sarl.eclipse.runtime;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -113,15 +114,14 @@ public interface ISREInstall extends Cloneable {
 	String getName();
 
 	/**
-	 * Returns the display name of this SRE by not
-	 * any default value.
+	 * Returns the display name of this SRE without considering to reply a default value for the name.
 	 *
 	 * <p>This function replies the name of the SRE but never
 	 * any default value replied by {@link #getName()}.
 	 * Consequently, this function could reply <code>null</code>.
 	 *
 	 * @return the display name of this SRE. May return <code>null</code>.
-	 * @see #getNameNoDefault()
+	 * @see #getName()
 	 */
 	String getNameNoDefault();
 
@@ -217,6 +217,27 @@ public interface ISREInstall extends Cloneable {
 	void setClassPathEntries(List<IRuntimeClasspathEntry> libraries);
 
 	/**
+	 * Change the library locations of this ISREInstall.
+	 *
+	 * @param libraries - The library locations of this ISREInstall.
+	 *     Must not be <code>null</code>.
+	 */
+	default void setClassPathEntries(Iterable<IRuntimeClasspathEntry> libraries) {
+		final List<IRuntimeClasspathEntry> list;
+		if (libraries == null) {
+			list = null;
+		} else if (libraries instanceof List<?>) {
+			list = (List<IRuntimeClasspathEntry>) libraries;
+		} else {
+			list = new ArrayList<>();
+			for (final IRuntimeClasspathEntry cpe : libraries) {
+				list.add(cpe);
+			}
+		}
+		setClassPathEntries(list);
+	}
+
+	/**
 	 * Change the minimal version number of the SARL specification
 	 * that is supported by the SRE.
 	 *
@@ -271,7 +292,9 @@ public interface ISREInstall extends Cloneable {
 	 * @return the validation status.
 	 * @see #getValidity(int)
 	 */
-	IStatus getValidity();
+	default IStatus getValidity() {
+		return getValidity(0);
+	}
 
 	/** Validate the SRE.
 	 * The validation does not ignore any invalidity cause.

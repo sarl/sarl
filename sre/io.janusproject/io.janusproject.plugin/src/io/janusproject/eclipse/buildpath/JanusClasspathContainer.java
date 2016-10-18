@@ -21,14 +21,19 @@
 
 package io.janusproject.eclipse.buildpath;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
+import io.janusproject.eclipse.JanusEclipsePlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.osgi.framework.Bundle;
 
+import io.sarl.eclipse.buildpath.AbstractSARLBasedClasspathContainer;
 import io.sarl.eclipse.buildpath.SARLClasspathContainer;
+import io.sarl.eclipse.util.BundleUtil;
+import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
+import io.sarl.eclipse.util.Utilities.SARLBundleJavadocURLMappings;
 
 /** Classpath container dedicated to the Janus platform.
  *
@@ -37,22 +42,30 @@ import io.sarl.eclipse.buildpath.SARLClasspathContainer;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class JanusClasspathContainer extends SARLClasspathContainer {
+public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer {
 
 	/** Names of the reference libraries that are required to compile the Janus
 	 * code and the generated Java code.
 	 */
-	public static final String[] JANUS_REFERENCE_LIBRARIES = {
-		"com.google.gson", //$NON-NLS-1$
-		"com.google.inject", //$NON-NLS-1$
-		"com.hazelcast", //$NON-NLS-1$
-		"org.apache.commons.cli", //$NON-NLS-1$
-		"org.arakhne.afc.core.vmutils", //$NON-NLS-1$
-		"org.arakhne.afc.core.util", //$NON-NLS-1$
-		"org.eclipse.osgi", //$NON-NLS-1$
-		"org.zeromq.jeromq", //$NON-NLS-1$
-		"io.janusproject.plugin", //$NON-NLS-1$
-	};
+	public static final String[] JANUS_ROOT_BUNDLE_NAMES;
+
+	static {
+		final String[] array1 = new String[] {
+			"com.google.gson", //$NON-NLS-1$
+			"com.google.inject", //$NON-NLS-1$
+			"com.hazelcast", //$NON-NLS-1$
+			"org.apache.commons.cli", //$NON-NLS-1$
+			"org.arakhne.afc.core.vmutils", //$NON-NLS-1$
+			"org.arakhne.afc.core.util", //$NON-NLS-1$
+			"org.zeromq.jeromq", //$NON-NLS-1$
+		};
+		final String[] array = new String[SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length + array1.length];
+		System.arraycopy(SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES, 0, array, 0, SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length);
+		System.arraycopy(array1, 0, array, SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length, array1.length);
+		JANUS_ROOT_BUNDLE_NAMES = array;
+	}
+
+	private static final String JAVADOC_URL = "http://www.janusproject.io/apidocs/"; //$NON-NLS-1$
 
 	/** Constructor.
 	 *
@@ -62,26 +75,55 @@ public class JanusClasspathContainer extends SARLClasspathContainer {
 		super(containerPath);
 	}
 
-	@Override
-	public Set<String> getBundleDependencies() {
-		final Set<String> deps = super.getBundleDependencies();
-		deps.addAll(Arrays.asList(JANUS_REFERENCE_LIBRARIES));
-		return deps;
+	/** Replies the standard classpath for running the Janus platform.
+	 *
+	 * @return the classpath.
+	 */
+	public static IBundleDependencies getJanusPlatformClasspath() {
+		final Bundle bundle = Platform.getBundle(JanusEclipsePlugin.PLUGIN_ID);
+		return BundleUtil.resolveBundleDependencies(bundle,
+				new JanusBundleJavadocURLMappings(),
+				JANUS_ROOT_BUNDLE_NAMES);
 	}
 
 	@Override
-	protected void updateEntries(List<IClasspathEntry> entries) throws Exception {
-		// Add the SARL dependencies.
-		super.updateEntries(entries);
-		// Add the Janus dependencies.
-		for (final String referenceLibrary : JANUS_REFERENCE_LIBRARIES) {
-			entries.add(newLibrary(referenceLibrary));
+	protected void updateBundleList(Set<String> entries) {
+		for (final String symbolicName : getJanusPlatformClasspath().getTransitiveSymbolicNames(true)) {
+			entries.add(symbolicName);
+		}
+	}
+
+	@Override
+	protected void updateClasspathEntries(Set<IClasspathEntry> entries) {
+		for (final IClasspathEntry cpe : getJanusPlatformClasspath().getTransitiveClasspathEntries(true)) {
+			entries.add(cpe);
 		}
 	}
 
 	@Override
 	public String getDescription() {
 		return Messages.JanusClasspathContainer_0;
+	}
+
+	/** Define a mapping from bundles to URLs.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class JanusBundleJavadocURLMappings extends SARLBundleJavadocURLMappings {
+
+		private static final String JANUS_PREFIX = "io.janusproject."; //$NON-NLS-1$
+
+		@Override
+		public String getURLForBundle(Bundle bundle) {
+			if (bundle.getSymbolicName().startsWith(JANUS_PREFIX)) {
+				return JAVADOC_URL;
+			}
+			return super.getURLForBundle(bundle);
+		}
+
 	}
 
 }

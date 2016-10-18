@@ -547,6 +547,40 @@ public abstract class AbstractSarlTest {
 		}
 	}
 
+	/** Test if the actual collection/iterable contains at least all the expected objects.
+	 *
+	 * @param actual - the collection to test.
+	 * @param expected - the expected objects.
+	 */
+	public static void assertPartlyContains(Iterable<?> actual, Object... expected) {
+		assertPartlyContainsCollection(actual, Arrays.asList(expected));
+	}
+
+	/** Test if the actual collection/iterable contains at least all the expected objects.
+	 *
+	 * @param actual - the collection to test.
+	 * @param expected - the expected objects.
+	 */
+	public static void assertPartlyContainsCollection(Iterable<?> actual, Iterable<?> expected) {
+		assertNotNull(actual);
+		Collection<Object> la = new ArrayList<>();
+		Iterables.addAll(la, actual);
+		Collection<Object> le = new ArrayList<>();
+		Iterables.addAll(le, expected);
+
+		Iterator<?> it1 = la.iterator();
+		while (it1.hasNext()) {
+			Object ac = it1.next();
+			it1.remove();
+			le.remove(ac);
+		}
+
+		if (!le.isEmpty()) {
+			fail("Expecting the following elements:\n" + le.toString() + "\nbut was:\n" +
+					Iterables.toString(actual));
+		}
+	}
+
 	/** Test if the actual collection/iterable contains all the expected objects.
 	 *
 	 * @param actual - the collection to test.
