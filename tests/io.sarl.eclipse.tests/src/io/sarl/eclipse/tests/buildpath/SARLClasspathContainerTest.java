@@ -39,6 +39,8 @@ import org.junit.Test;
 import io.sarl.eclipse.buildpath.Messages;
 import io.sarl.eclipse.buildpath.SARLClasspathContainer;
 import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.AbstractSarlUiTest;
+import io.sarl.tests.api.TestScope;
 
 /**
  * @author $Author: sgalland$
@@ -47,7 +49,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class SARLClasspathContainerTest extends AbstractSarlTest {
+public class SARLClasspathContainerTest extends AbstractSarlUiTest {
 
 	@NonNullByDefault
 	private IPath containerPath;
@@ -87,7 +89,8 @@ public class SARLClasspathContainerTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void getBundleDependencies() {
+	@TestScope(eclipse = true, tycho = false)
+	public void getBundleDependencies_withEclipse() {
 		Iterable<String> iterable = this.container.getBundleDependencies();
 		assertNotNull(iterable);
 		assertContains(iterable,
@@ -104,7 +107,34 @@ public class SARLClasspathContainerTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void getClasspathEntries() {
+	@TestScope(eclipse = false, tycho = true)
+	public void getBundleDependencies_withTycho() {
+		Iterable<String> iterable = this.container.getBundleDependencies();
+		assertNotNull(iterable);
+		assertContains(iterable,
+				"io.sarl.lang.core",
+				"javax.inject",
+				"org.eclipse.xtext.xbase.lib",
+				"com.google.guava",
+				"org.eclipse.osgi",
+				"org.eclipse.osgi.compatibility.state",
+				//
+				"io.sarl.util",
+				//
+				"io.sarl.core");
+	}
+
+	@Test
+	@TestScope(eclipse = true, tycho = false)
+	public void getClasspathEntries_withEclipse() {
+		IClasspathEntry[] iterable = this.container.getClasspathEntries();
+		assertNotNull(iterable);
+		assertEquals(8, iterable.length);
+	}
+
+	@Test
+	@TestScope(eclipse = false, tycho = true)
+	public void getClasspathEntries_withTycho() {
 		IClasspathEntry[] iterable = this.container.getClasspathEntries();
 		assertNotNull(iterable);
 		assertEquals(8, iterable.length);

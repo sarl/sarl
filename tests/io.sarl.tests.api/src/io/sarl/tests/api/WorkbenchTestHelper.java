@@ -255,6 +255,15 @@ public class WorkbenchTestHelper {
 		return JavaCore.create(getProject());
 	}
 
+	/** Replies the Java project for the given resource.
+	 *
+	 * @param resource the resource to search for.
+	 * @return the Java project.
+	 */
+	public IJavaProject getJavaProject(Resource resource) {
+		return JavaCore.create(getProject(resource, true));
+	}
+
 	/** Replies the current project.
 	 * 
 	 * @param createOnDemand - create the project if it does not exist yet.
@@ -275,6 +284,28 @@ public class WorkbenchTestHelper {
 			}
 		}
 		return project;
+	}
+
+	/** Replies the project for the given resource.
+	 * 
+	 * @param resource the resource to search for.
+	 * @param createOnDemand - create the project if it does not exist yet.
+	 * @return the project.
+	 */
+	protected IProject getProject(Resource resource, boolean createOnDemand) {
+		if (resource != null) {
+			final URI uri = resource.getURI();
+			final String platformString = uri.toPlatformString(true);
+			final IPath resourcePath = new Path(platformString);
+			final IFile file = this.workspace.getRoot().getFile(resourcePath);
+			if (file != null) {
+				final IProject project = file.getProject();
+				if (project != null && project.exists()) {
+					return project;
+				}
+			}
+		}
+		return getProject(createOnDemand);
 	}
 
 	/** Open the Xtext editor.

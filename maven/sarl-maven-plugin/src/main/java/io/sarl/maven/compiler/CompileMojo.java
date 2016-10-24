@@ -110,7 +110,7 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 	}
 
 	@Override
-	protected boolean getPostRunningOfJavaCompoler() {
+	protected boolean getPostRunningOfJavaCompiler() {
 		return this.runJavaCompiler;
 	}
 

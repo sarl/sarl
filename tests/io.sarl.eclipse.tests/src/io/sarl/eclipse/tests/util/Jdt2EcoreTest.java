@@ -54,6 +54,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -67,6 +68,7 @@ import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.actionprototype.FormalParameterProvider;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
@@ -1059,11 +1061,16 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			this.superConstructors = Maps.newHashMap();
 			ensureEclipsePlugin();
 		}
+		
+		@After
+		public void tearDown() throws Exception {
+			helper().clearWorkspace();
+		}
 
 		@Test
 		public void populateInheritanceContext_0() throws Exception {
 			// Create the SARL scripts
-			helper().sarlScript("populateInheritanceContext0.sarl", multilineString(
+			SarlScript script = helper().sarlScript("populateInheritanceContext0.sarl", multilineString(
 						"package io.sarl.eclipse.tests.p0",
 						"capacity Capacity1 {",
 						"    def myFct1 : boolean",
@@ -1100,7 +1107,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			List<String> superInterfaces
 			 */
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1123,7 +1130,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		@Test
 		public void populateInheritanceContext_1() throws Exception {
 			// Create the SARL scripts
-			helper().sarlScript("populateInheritanceContext0.sarl", multilineString(
+			SarlScript script = helper().sarlScript("populateInheritanceContext0.sarl", multilineString(
 						"package io.sarl.eclipse.tests.p0",
 						"capacity Capacity1 {",
 						"    def myFct1 : boolean",
@@ -1150,7 +1157,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().awaitAutoBuild();
 			//
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1173,7 +1180,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		@Test
 		public void populateInheritanceContext_2() throws Exception {
 			// Create the SARL scripts
-			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
+			SarlScript script = helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
 				"package io.sarl.eclipse.tests.p1",
 				"capacity Capacity1 {",
 				"    def myFct1(a : int = 4) : boolean",
@@ -1200,7 +1207,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().awaitAutoBuild();
 			//
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1224,7 +1231,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		@Test
 		public void populateInheritanceContext_3() throws Exception {
 			// Create the SARL scripts
-			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
+			SarlScript script = helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
 				"package io.sarl.eclipse.tests.p1",
 				"capacity Capacity1 {",
 				"    def myFct1(a : int = 4) : boolean",
@@ -1251,7 +1258,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().awaitAutoBuild();
 			//
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1275,7 +1282,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		@Test
 		public void populateInheritanceContext_4() throws Exception {
 			// Create the SARL scripts
-			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
+			SarlScript script = helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
 					"package io.sarl.eclipse.tests.p2",
 					"capacity Capacity1 {",
 					"    def myFct1(a : int*) : boolean",
@@ -1302,7 +1309,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().awaitAutoBuild();
 			//
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1325,7 +1332,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		@Test
 		public void populateInheritanceContext_5() throws Exception {
 			// Create the SARL scripts
-			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
+			SarlScript script = helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
 					"package io.sarl.eclipse.tests.p2",
 					"capacity Capacity1 {",
 					"    def myFct1(a : int*) : boolean",
@@ -1352,7 +1359,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().awaitAutoBuild();
 			//
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1375,7 +1382,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		@Test
 		public void populateInheritanceContext_6() throws Exception {
 			// Create the SARL scripts
-			helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
+			SarlScript script = helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
 					"package io.sarl.eclipse.tests.p3",
 					"capacity Capacity1 {",
 					"    def myFct1(a : int*) : boolean",
@@ -1390,7 +1397,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().awaitAutoBuild();
 			//
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject()),
+					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
 					finalOperations,
 					overridableOperations,
 					inheritedFields,

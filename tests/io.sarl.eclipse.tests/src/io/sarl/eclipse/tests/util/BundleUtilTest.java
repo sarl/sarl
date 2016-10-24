@@ -44,6 +44,7 @@ import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
 import io.sarl.eclipse.util.Utilities.BundleURLMappings;
 import io.sarl.lang.SARLVersion;
 import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.TestScope;
 
 /**
  * @author $Author: sgalland$
@@ -74,7 +75,8 @@ public class BundleUtilTest {
 		}
 		
 		@Test
-		public void getBundlePath() {
+		@TestScope(eclipse = true, tycho = false)
+		public void getBundlePath_withEclipse() {
 			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
 			Assume.assumeNotNull(bundle);
 			//
@@ -84,7 +86,19 @@ public class BundleUtilTest {
 		}
 
 		@Test
-		public void getJavadocBundlePath() {
+		@TestScope(eclipse = false, tycho = true)
+		public void getBundlePath_withTycho() {
+			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
+			Assume.assumeNotNull(bundle);
+			//
+			IPath path = BundleUtil.getBundlePath(bundle);
+			assertNotNull(path);
+			assertEndsWith("io.sarl.lang.core/target/classes/", path.toPortableString());
+		}
+
+		@Test
+		@TestScope(eclipse = true, tycho = false)
+		public void getJavadocBundlePath_withEclipse() {
 			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
 			Assume.assumeNotNull(bundle);
 			IPath bundlePath = BundleUtil.getBundlePath(bundle);
@@ -96,7 +110,34 @@ public class BundleUtilTest {
 		}
 
 		@Test
-		public void getSourceBundlePath() {
+		@TestScope(eclipse = false, tycho = true)
+		public void getJavadocBundlePath_withTycho() {
+			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
+			Assume.assumeNotNull(bundle);
+			IPath bundlePath = BundleUtil.getBundlePath(bundle);
+			Assume.assumeNotNull(bundlePath);
+			//
+			IPath path = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
+			assertNotNull(path);
+			assertEndsWith("io.sarl.lang.core/", path.toPortableString());
+		}
+
+		@Test
+		@TestScope(eclipse = true, tycho = false)
+		public void getSourceBundlePath_withEclipse() {
+			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
+			Assume.assumeNotNull(bundle);
+			IPath bundlePath = BundleUtil.getBundlePath(bundle);
+			Assume.assumeNotNull(bundlePath);
+			//
+			IPath path = BundleUtil.getSourceBundlePath(bundle, bundlePath);
+			assertNotNull(path);
+			assertEndsWith("io.sarl.lang.core/", path.toPortableString());
+		}
+
+		@Test
+		@TestScope(eclipse = false, tycho = true)
+		public void getSourceBundlePath_withTycho() {
 			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
 			Assume.assumeNotNull(bundle);
 			IPath bundlePath = BundleUtil.getBundlePath(bundle);
@@ -122,14 +163,15 @@ public class BundleUtilTest {
 		}
 		
 		@Test
-		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_noRootDependencies() {
+		@TestScope(eclipse = true, tycho = false)
+		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_noRootDependencies_withEclipse() {
 			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
 			Assume.assumeNotNull(bundle);
 			//
 			IBundleDependencies dependencies = BundleUtil.resolveBundleDependencies(bundle, (BundleURLMappings) null);
 			assertNotNull(dependencies);
 			assertEquals("io.sarl.lang.core", dependencies.getBundleSymbolicName());
-			assertEquals(Version.parseVersion(SARLVersion.SARL_RELEASE_VERSION_OSGI), dependencies.getBundleVersion());
+			assertOsgiVersionEquals(Version.parseVersion(SARLVersion.SARL_RELEASE_VERSION_OSGI), dependencies.getBundleVersion());
 			assertContains(dependencies.getDirectSymbolicNames(),
 					"io.sarl.lang.core",
 					"javax.inject",
@@ -150,7 +192,37 @@ public class BundleUtilTest {
 		}
 
 		@Test
-		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_rootDependencies() {
+		@TestScope(eclipse = false, tycho = true)
+		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_noRootDependencies_withTycho() {
+			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
+			Assume.assumeNotNull(bundle);
+			//
+			IBundleDependencies dependencies = BundleUtil.resolveBundleDependencies(bundle, (BundleURLMappings) null);
+			assertNotNull(dependencies);
+			assertEquals("io.sarl.lang.core", dependencies.getBundleSymbolicName());
+			assertOsgiVersionEquals(Version.parseVersion(SARLVersion.SARL_RELEASE_VERSION_OSGI), dependencies.getBundleVersion());
+			assertContains(dependencies.getDirectSymbolicNames(),
+					"io.sarl.lang.core",
+					"javax.inject",
+					"org.eclipse.xtext.xbase.lib");
+			assertContains(dependencies.getTransitiveSymbolicNames(false),
+					"io.sarl.lang.core",
+					"javax.inject",
+					"org.eclipse.xtext.xbase.lib",
+					"com.google.guava",
+					"org.eclipse.osgi");
+			assertContains(dependencies.getTransitiveSymbolicNames(true),
+					"io.sarl.lang.core",
+					"javax.inject",
+					"org.eclipse.xtext.xbase.lib",
+					"com.google.guava",
+					"org.eclipse.osgi",
+					"org.eclipse.osgi.compatibility.state");
+		}
+
+		@Test
+		@TestScope(eclipse = true, tycho = false)
+		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_rootDependencies_withEclipse() {
 			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
 			Assume.assumeNotNull(bundle);
 			//
@@ -158,7 +230,34 @@ public class BundleUtilTest {
 					"org.eclipse.xtext.xbase.lib");
 			assertNotNull(dependencies);
 			assertEquals("io.sarl.lang.core", dependencies.getBundleSymbolicName());
-			assertEquals(Version.parseVersion(SARLVersion.SARL_RELEASE_VERSION_OSGI), dependencies.getBundleVersion());
+			assertOsgiVersionEquals(Version.parseVersion(SARLVersion.SARL_RELEASE_VERSION_OSGI), dependencies.getBundleVersion());
+			assertContains(dependencies.getDirectSymbolicNames(),
+					"io.sarl.lang.core",
+					"org.eclipse.xtext.xbase.lib");
+			assertContains(dependencies.getTransitiveSymbolicNames(false),
+					"io.sarl.lang.core",
+					"org.eclipse.xtext.xbase.lib",
+					"com.google.guava",
+					"org.eclipse.osgi");
+			assertContains(dependencies.getTransitiveSymbolicNames(true),
+					"io.sarl.lang.core",
+					"org.eclipse.xtext.xbase.lib",
+					"com.google.guava",
+					"org.eclipse.osgi",
+					"org.eclipse.osgi.compatibility.state");
+		}
+
+		@Test
+		@TestScope(eclipse = false, tycho = true)
+		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_rootDependencies_withTycho() {
+			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
+			Assume.assumeNotNull(bundle);
+			//
+			IBundleDependencies dependencies = BundleUtil.resolveBundleDependencies(bundle, (BundleURLMappings) null,
+					"org.eclipse.xtext.xbase.lib");
+			assertNotNull(dependencies);
+			assertEquals("io.sarl.lang.core", dependencies.getBundleSymbolicName());
+			assertOsgiVersionEquals(Version.parseVersion(SARLVersion.SARL_RELEASE_VERSION_OSGI), dependencies.getBundleVersion());
 			assertContains(dependencies.getDirectSymbolicNames(),
 					"io.sarl.lang.core",
 					"org.eclipse.xtext.xbase.lib");

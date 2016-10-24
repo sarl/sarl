@@ -91,6 +91,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.Primitives;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
@@ -1390,6 +1391,36 @@ public abstract class AbstractSarlTest {
 			types.toArray(array);
 			return array;
 		}
+	}
+
+	protected static void assertOsgiVersionEquals(Version expected, Version actual) {
+		if (Objects.equal(expected, actual)) {
+			return;
+		}
+		if (expected == null) {
+			fail("Version not null");
+		}
+		if (actual == null) {
+			fail("Unexpected null value");
+		}
+		if (expected.getMajor() == actual.getMajor()
+			&& expected.getMinor() == actual.getMinor()
+			&& expected.getMicro() == actual.getMicro()) {
+			if (!Strings.isNullOrEmpty(expected.getQualifier())) {
+				final String expectedQualifier = expected.getQualifier();
+				if ("qualifier".equals(expectedQualifier)) {
+					if (!Strings.isNullOrEmpty(actual.getQualifier())) {
+						return;
+					}
+				}
+				if (Objects.equal(expected, actual.getQualifier())) {
+					return;
+				}
+			} else {
+				return;
+			}
+		}
+		throw new ComparisonFailure("Not same versions", expected.toString(), actual.toString());
 	}
 
 	/** Validation helper on a specific resource.
