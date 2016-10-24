@@ -117,17 +117,34 @@ public final class Main {
 
 	/** Main programm of the batch compiler.
 	 *
+	 * <p>This function never returns. It invokes {@link #runCompiler(String...)}
+	 * and stop the JVM with the replied exist code.
+	 *
 	 * @param args the command line arguments.
+	 * @see #runCompiler(String...)
 	 */
 	public static void main(String[] args) {
+		final int retCode = runCompiler(args);
+		System.exit(retCode);
+	}
+
+	/** Run the batch compiler.
+	 *
+	 * <p>This function runs the compiler and exits with the return code.
+	 *
+	 * @param args the command line arguments.
+	 * @return the exit code.
+	 * @see #main(String[])
+	 */
+	public static int runCompiler(String... args) {
 		configureLogger();
 		final Injector injector = SARLStandaloneSetup.doSetup();
 		final SarlBatchCompiler compiler = injector.getInstance(SarlBatchCompiler.class);
 		parseCommandLine(args, compiler);
 		if (!compiler.compile()) {
-			System.exit(ERROR_CODE);
+			return ERROR_CODE;
 		}
-		System.exit(SUCCESS_CODE);
+		return SUCCESS_CODE;
 	}
 
 	private static void configureLogger() {

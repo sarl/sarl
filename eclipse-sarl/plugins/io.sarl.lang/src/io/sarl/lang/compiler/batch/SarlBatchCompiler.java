@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -95,6 +96,7 @@ import org.eclipse.xtext.workspace.FileProjectConfig;
 import org.eclipse.xtext.workspace.ProjectConfigAdapter;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfigProvider;
+import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.resource.BatchLinkableResource;
@@ -102,6 +104,7 @@ import org.eclipse.xtext.xbase.resource.BatchLinkableResource;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.generator.GeneratorConfig2;
 import io.sarl.lang.generator.GeneratorConfigProvider2;
+import io.sarl.lang.generator.IGeneratorConfigProvider2;
 
 /** The compiler from SARL that could be used for batch tasks (Maven, CLI).
  *
@@ -170,10 +173,10 @@ public class SarlBatchCompiler {
 	private ClassLoader annotationProcessingClassLoader;
 
 	@Inject
-	private GeneratorConfigProvider generatorConfigProvider;
+	private IGeneratorConfigProvider generatorConfigProvider;
 
 	@Inject
-	private GeneratorConfigProvider2 generatorConfigProvider2;
+	private IGeneratorConfigProvider2 generatorConfigProvider2;
 
 	@Inject
 	private IOutputConfigurationProvider outputConfigurationProvider;
@@ -206,10 +209,6 @@ public class SarlBatchCompiler {
 	@Named(Constants.LANGUAGE_NAME)
 	private String languageName;
 
-	private final GeneratorConfig generatorConfig = new GeneratorConfig();
-
-	private final GeneratorConfig2 generatorConfig2 = new GeneratorConfig2();
-
 	private Logger log;
 
 	private IssueMessageFormatter messageFormatter;
@@ -217,6 +216,10 @@ public class SarlBatchCompiler {
 	private final List<File> tempFolders = new ArrayList<>();
 
 	private Comparator<Issue> issueComparator = new DefaultIssueComparator();
+
+	private GeneratorConfig currentGeneratorConfiguration;
+
+	private GeneratorConfig2 currentGeneratorConfiguration2;
 
 	/** Constructor the batch compiler.
 	 */
@@ -578,6 +581,28 @@ public class SarlBatchCompiler {
 		return this.encoding;
 	}
 
+	/** Replies the current generator config.
+	 *
+	 * @return the generator config.
+	 */
+	protected GeneratorConfig getGeneratorConfig() {
+		if (this.currentGeneratorConfiguration == null) {
+			this.currentGeneratorConfiguration = this.generatorConfigProvider.get(null);
+		}
+		return this.currentGeneratorConfiguration;
+	}
+
+	/** Replies the current generator config v2.
+	 *
+	 * @return the generator config v2.
+	 */
+	protected GeneratorConfig2 getGeneratorConfig2() {
+		if (this.currentGeneratorConfiguration2 == null) {
+			this.currentGeneratorConfiguration2 = this.generatorConfigProvider2.get(null);
+		}
+		return this.currentGeneratorConfiguration2;
+	}
+
 	/** Change the version of the Java source to be used for the generated Java files.
 	 *
 	 * @param version the Java version.
@@ -593,7 +618,7 @@ public class SarlBatchCompiler {
 			throw new RuntimeException(MessageFormat.format(
 					Messages.SarlBatchCompiler_0, version, Joiner.on(Messages.SarlBatchCompiler_1).join(qualifiers)));
 		}
-		this.generatorConfig.setJavaSourceVersion(javaVersion);
+		getGeneratorConfig().setJavaSourceVersion(javaVersion);
 	}
 
 	/** Replies the version of the Java source to be used for the generated Java files.
@@ -602,7 +627,7 @@ public class SarlBatchCompiler {
 	 */
 	@Pure
 	public String getJavaSourceVersion() {
-		return this.generatorConfig.getJavaSourceVersion().getQualifier();
+		return getGeneratorConfig().getJavaSourceVersion().getQualifier();
 	}
 
 	/** Replies the compiler generate the Xbase expressions.
@@ -611,7 +636,7 @@ public class SarlBatchCompiler {
 	 */
 	@Pure
 	public boolean isGenerateExpressions() {
-		return this.generatorConfig.isGenerateExpressions();
+		return getGeneratorConfig().isGenerateExpressions();
 	}
 
 	/** Set if the compiler generate the Xbase expressions.
@@ -619,7 +644,7 @@ public class SarlBatchCompiler {
 	 * @param generateExpressions <code>true</code> if the compiler generates the expressions
 	 */
 	public void setGenerateExpressions(boolean generateExpressions) {
-		this.generatorConfig.setGenerateExpressions(generateExpressions);
+		getGeneratorConfig().setGenerateExpressions(generateExpressions);
 	}
 
 	/** Replies the <code>@SuppressWarnings</code> is generated.
@@ -628,7 +653,7 @@ public class SarlBatchCompiler {
 	 */
 	@Pure
 	public boolean isGenerateSyntheticSuppressWarnings() {
-		return this.generatorConfig.isGenerateSyntheticSuppressWarnings();
+		return getGeneratorConfig().isGenerateSyntheticSuppressWarnings();
 	}
 
 	/** Set if the <code>@SuppressWarnings</code> is generated.
@@ -636,7 +661,7 @@ public class SarlBatchCompiler {
 	 * @param generateAnnotations <code>true</code> if the compiler generates the warning supression annotations.
 	 */
 	public void setGenerateSyntheticSuppressWarnings(boolean generateAnnotations) {
-		this.generatorConfig.setGenerateSyntheticSuppressWarnings(generateAnnotations);
+		getGeneratorConfig().setGenerateSyntheticSuppressWarnings(generateAnnotations);
 	}
 
 	/** Replies the <code>@Generated</code> is generated.
@@ -645,7 +670,7 @@ public class SarlBatchCompiler {
 	 */
 	@Pure
 	public boolean isGenerateGeneratedAnnotation() {
-		return this.generatorConfig.isGenerateGeneratedAnnotation();
+		return getGeneratorConfig().isGenerateGeneratedAnnotation();
 	}
 
 	/** Set if the <code>@Generated</code> is generated.
@@ -653,7 +678,7 @@ public class SarlBatchCompiler {
 	 * @param generateAnnotations <code>true</code> if the compiler generates the generated annotations.
 	 */
 	public void setGenerateGeneratedAnnotation(boolean generateAnnotations) {
-		this.generatorConfig.setGenerateGeneratedAnnotation(generateAnnotations);
+		getGeneratorConfig().setGenerateGeneratedAnnotation(generateAnnotations);
 	}
 
 	/** Replies if the generation date is included in the <code>@Generated</code> annotations.
@@ -662,7 +687,7 @@ public class SarlBatchCompiler {
 	 */
 	@Pure
 	public boolean isIncludeDateInGeneratedAnnotation() {
-		return this.generatorConfig.isIncludeDateInGeneratedAnnotation();
+		return getGeneratorConfig().isIncludeDateInGeneratedAnnotation();
 	}
 
 	/** Set if the generation date is included in the <code>@Generated</code> annotations.
@@ -670,7 +695,7 @@ public class SarlBatchCompiler {
 	 * @param includeDateInGeneratedAnnotation <code>true</code> if the generation date is added.
 	 */
 	public void setIncludeDateInGeneratedAnnotation(boolean includeDateInGeneratedAnnotation) {
-		this.generatorConfig.setIncludeDateInGeneratedAnnotation(includeDateInGeneratedAnnotation);
+		getGeneratorConfig().setIncludeDateInGeneratedAnnotation(includeDateInGeneratedAnnotation);
 	}
 
 	/** Replies the comment in the <code>@Generated</code> annnotations.
@@ -679,7 +704,7 @@ public class SarlBatchCompiler {
 	 */
 	@Pure
 	public String getGeneratedAnnotationComment() {
-		return this.generatorConfig.getGeneratedAnnotationComment();
+		return getGeneratorConfig().getGeneratedAnnotationComment();
 	}
 
 	/** Set the comment in the <code>@Generated</code> annnotations.
@@ -687,7 +712,7 @@ public class SarlBatchCompiler {
 	 * @param comment the comment.
 	 */
 	public void setGeneratedAnnotationComment(String comment) {
-		this.generatorConfig.setGeneratedAnnotationComment(comment);
+		getGeneratorConfig().setGeneratedAnnotationComment(comment);
 	}
 
 	/** Replies if the <code>@Inline</code> shall be generated.
@@ -696,7 +721,7 @@ public class SarlBatchCompiler {
 	 */
 	@Pure
 	public boolean isGenerateInlineAnnotation() {
-		return this.generatorConfig2.isGenerateInlineAnnotation();
+		return getGeneratorConfig2().isGenerateInlineAnnotation();
 	}
 
 	/** Set if the <code>@Inline</code> shall be generated.
@@ -704,7 +729,7 @@ public class SarlBatchCompiler {
 	 * @param generateInlineAnnotation <code>true</code> if annotation shall be generated.
 	 */
 	public void setGenerateInlineAnnotation(final boolean generateInlineAnnotation) {
-		this.generatorConfig2.setGenerateInlineAnnotation(generateInlineAnnotation);
+		getGeneratorConfig2().setGenerateInlineAnnotation(generateInlineAnnotation);
 	}
 
 	/** Replies if constant expression interpreter shall be called for generated <code>@Inline</code>.
@@ -713,7 +738,7 @@ public class SarlBatchCompiler {
 	 */
 	@Pure
 	public boolean isUseExpressionInterpreterForInlineAnnotation() {
-		return this.generatorConfig2.isUseExpressionInterpreterForInlineAnnotation();
+		return getGeneratorConfig2().isUseExpressionInterpreterForInlineAnnotation();
 	}
 
 	/** Set if the constant expression interpreter shall be called for generated <code>@Inline</code>.
@@ -721,7 +746,7 @@ public class SarlBatchCompiler {
 	 * @param generateInlineAnnotation <code>true</code> if annotation shall be generated.
 	 */
 	public void setUseExpressionInterpreterForInlineAnnotation(final boolean generateInlineAnnotation) {
-		this.generatorConfig2.setUseExpressionInterpreterForInlineAnnotation(generateInlineAnnotation);
+		getGeneratorConfig2().setUseExpressionInterpreterForInlineAnnotation(generateInlineAnnotation);
 	}
 
 	/** Change the source path.
@@ -815,11 +840,21 @@ public class SarlBatchCompiler {
 			if (!configureWorkspace(resourceSet, cancel)) {
 				return false;
 			}
-			this.generatorConfigProvider.install(resourceSet, this.generatorConfig);
+			if (this.log.isDebugEnabled()) {
+				this.log.debug(dump(getGeneratorConfig()));
+			}
+			if (this.generatorConfigProvider instanceof GeneratorConfigProvider) {
+				((GeneratorConfigProvider) this.generatorConfigProvider).install(resourceSet, getGeneratorConfig());
+			}
 			if (cancel.isCanceled()) {
 				return false;
 			}
-			this.generatorConfigProvider2.install(resourceSet, this.generatorConfig2);
+			if (this.generatorConfigProvider2 instanceof GeneratorConfigProvider2) {
+				((GeneratorConfigProvider2) this.generatorConfigProvider2).install(resourceSet, getGeneratorConfig2());
+			}
+			if (this.log.isDebugEnabled()) {
+				this.log.debug(dump(getGeneratorConfig2()));
+			}
 			if (cancel.isCanceled()) {
 				return false;
 			}
@@ -899,6 +934,57 @@ public class SarlBatchCompiler {
 		return true;
 	}
 
+	/** Dump the object.
+	 *
+	 * @param object the object.
+	 * @return the string representation of the object.
+	 */
+	protected static String dump(Object object) {
+		if (object == null) {
+			return new String();
+		}
+		final StringBuilder buffer = new StringBuilder();
+		final LinkedList<Class<?>> types = new LinkedList<>();
+		types.add(object.getClass());
+		while (types.isEmpty()) {
+			final Class<?> type = types.removeFirst();
+
+			final Class<?> supertype = type.getSuperclass();
+			if (supertype != null && supertype.equals(Object.class)) {
+				types.add(supertype);
+			}
+
+			final Field[] fields = type.getDeclaredFields();
+			buffer.append(object.getClass().getSimpleName()).append(" {"); //$NON-NLS-1$
+
+			boolean firstRound = true;
+
+			for (final Field field : fields) {
+				if (!firstRound) {
+					buffer.append(", "); //$NON-NLS-1$
+				}
+				firstRound = false;
+				field.setAccessible(true);
+				try {
+					final Object fieldObj = field.get(object);
+					final String value;
+					if (null == fieldObj) {
+						value = "null"; //$NON-NLS-1$
+					} else {
+						value = fieldObj.toString();
+					}
+					buffer.append(field.getName()).append('=').append('\'').append(value).append('\'');
+				} catch (IllegalAccessException ignore) {
+					//this should never happen
+				}
+
+			}
+
+			buffer.append('}');
+		}
+		return buffer.toString();
+	}
+
 	/** Create a message for the issue.
 	 *
 	 * @param issue the issue.
@@ -927,11 +1013,20 @@ public class SarlBatchCompiler {
 	 */
 	protected void reportIssues(Iterable<Issue> issues) {
 		for (final Issue issue : issues) {
-			final String issueBuilder = createIssueMessage(issue);
-			if (Severity.ERROR == issue.getSeverity()) {
-				this.log.error(issueBuilder);
-			} else if (Severity.WARNING == issue.getSeverity()) {
-				this.log.warn(issueBuilder);
+			final String issueMessage = createIssueMessage(issue);
+			switch (issue.getSeverity()) {
+			case ERROR:
+				this.log.error(issueMessage);
+				break;
+			case WARNING:
+				this.log.warn(issueMessage);
+				break;
+			case INFO:
+				this.log.info(issueMessage);
+				break;
+			case IGNORE:
+			default:
+				break;
 			}
 		}
 	}
@@ -1644,7 +1739,7 @@ public class SarlBatchCompiler {
 		}
 	}
 
-	/** Filtering the severities.
+	/** Formatter for the issue messages.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -1661,6 +1756,26 @@ public class SarlBatchCompiler {
 		 * @return the message.
 		 */
 		String format(Issue issue, org.eclipse.emf.common.util.URI uri);
+
+	}
+
+	/** Listener for the issue messages.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@FunctionalInterface
+	public interface IssueMessageListener {
+
+		/** Replies the message for the given issue.
+		 *
+		 * @param issue the issue.
+		 * @param uri URI to the problem.
+		 * @param message the formatted message.
+		 */
+		void onIssue(Issue issue, org.eclipse.emf.common.util.URI uri, String message);
 
 	}
 

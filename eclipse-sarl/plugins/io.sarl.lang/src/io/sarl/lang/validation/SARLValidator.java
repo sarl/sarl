@@ -481,11 +481,13 @@ public class SARLValidator extends AbstractSARLValidator {
 		} else {
 			final GeneratorConfig generatorConfiguration = getGeneratorConfig(sarlScript);
 			final JavaVersion javaVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION);
-			if (javaVersion == null
-					|| !generatorConfiguration.getJavaSourceVersion().isAtLeast(javaVersion)) {
+			final JavaVersion generatorVersion = generatorConfiguration.getJavaSourceVersion();
+			if (generatorVersion == null
+				|| javaVersion == null
+				|| !generatorVersion.isAtLeast(javaVersion)) {
 				error(
 						MessageFormat.format(Messages.SARLValidator_0,
-								javaVersion,
+								generatorVersion,
 								SARLVersion.MINIMAL_JDK_VERSION),
 						sarlScript,
 						XtendPackage.Literals.XTEND_FILE__PACKAGE,

@@ -50,6 +50,7 @@ public class SARLGeneratorConfigProvider extends GeneratorConfigProvider {
 
 	@Override
 	public GeneratorConfig get(EObject context) {
+		// Search for the Eclipse configuration
 		final ResourceSet resourceSet = EcoreUtil2.getResourceSet(context);
 		if (resourceSet != null) {
 			final GeneratorConfigProvider.GeneratorConfigAdapter adapter =
@@ -58,6 +59,7 @@ public class SARLGeneratorConfigProvider extends GeneratorConfigProvider {
 				return adapter.getLanguage2GeneratorConfig().get(this.languageId);
 			}
 		}
+		// Create the default configuration
 		final GeneratorConfig config = createDefaultGeneratorConfig();
 		return config;
 	}

@@ -32,6 +32,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.util.internal.EmfAdaptable;
@@ -56,6 +57,24 @@ public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 
 	@Override
 	public GeneratorConfig2 get(EObject context) {
+		final Resource eResource;
+		if (context != null) {
+			eResource = context.eResource();
+		} else {
+			eResource = null;
+		}
+		final ResourceSet resourceSet;
+		if (eResource != null) {
+			resourceSet = eResource.getResourceSet();
+		} else {
+			resourceSet = null;
+		}
+		if (resourceSet != null) {
+			final GeneratorConfigAdapter adapter = GeneratorConfigAdapter.findInEmfObject(resourceSet);
+			if (adapter != null && adapter.getLanguage2GeneratorConfig().containsKey(this.languageId)) {
+				return adapter.getLanguage2GeneratorConfig().get(this.languageId);
+			}
+		}
 		final GeneratorConfig2 config = new GeneratorConfig2();
 		return config;
 	}
