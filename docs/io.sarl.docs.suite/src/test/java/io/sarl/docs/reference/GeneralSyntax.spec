@@ -1278,9 +1278,9 @@ describe "General Syntax Reference" {
 		 * <tr><td>a != b</td><td>operator_notEquals</td><td>Determine if a and b are not equal. If a is Comparable then it is
 		 *                        equivalent to `a.compareTo(b) != 0` else `!a.equals(b)` This operator is null-safe.</td></tr>
 		 * <tr><td>a === b</td><td>operator_tripleEquals</td><td>Test if a and b are the same object reference. This operator
-		 *                        is not null-safe.</td></tr>
+		 *                        is null-safe.</td></tr>
 		 * <tr><td>a !== b</td><td>operator_tripleNotEquals</td><td>Test if a and b are not the same object reference. This
-		 *                        operator is not null-safe.</td></tr>
+		 *                        operator is null-safe.</td></tr>
 		 * <tr><td>a &lt; b</td><td>operator_lessThan</td><td>Test if a is lower than b (a must be Comparable).</td></tr>
 		 * <tr><td>a &gt; b</td><td>operator_greaterThan</td><td>Test if a is greater than b (a must be Comparable).</td></tr>
 		 * <tr><td>a &lt;= b</td><td>operator_lessEqualsThan</td><td>Test if a is lower than or equal to b (a must be
