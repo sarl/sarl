@@ -5,6 +5,8 @@ package io.sarl.demos.gameoflife.environment.^agent
 
 import java.util.UUID
 import java.util.List
+import java.util.Set
+import org.arakhne.afc.math.geometry.d2.i.Vector2i
 
 /** 
  * @author Jérôme Boulmier
@@ -15,7 +17,7 @@ capacity GridManager {
 	 * Replies the agents perceptions
 	 *
 	 */
-	def getPerceptions : List<List<Pair<UUID, Boolean>>>
+	def getPerceptions : List<Pair<UUID, Set<Vector2i>>>
 	
 	/**
 	 * Replies the width of the grid.
