@@ -1,0 +1,12 @@
+/** 
+ * 
+ */
+package io.sarl.demos.gameoflife.environment.^agent
+/** 
+ * @author Maxime PINARD
+ * 
+ */
+agent Boot {
+	
+	
+}

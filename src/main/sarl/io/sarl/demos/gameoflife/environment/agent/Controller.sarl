@@ -1,0 +1,50 @@
+package io.sarl.demos.gameoflife.environment.^agent
+
+import io.sarl.demos.gameoflife.environment.^agent.events.PauseEvent
+import io.sarl.demos.gameoflife.environment.^agent.events.PlayEvent
+import io.sarl.demos.gameoflife.environment.^agent.events.StopEvent
+import io.sarl.demos.gameoflife.gui.GUIListener
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.EventSpace
+import io.sarl.util.Scopes
+import java.util.UUID
+
+/**
+ * @author Maxime PINARD
+ */
+public class Controller implements GUIListener {
+	
+	val environmentUUID : UUID;
+	
+	val eventSpace : EventSpace;
+	
+	val address : Address;
+	
+	new(eventSpace : EventSpace, address : Address, environmentUUID : UUID){
+		
+		this.eventSpace = eventSpace;
+		this.address = address;
+		this.environmentUUID = environmentUUID;
+	}
+	
+	override play : void {
+		
+		val evt : PlayEvent = new PlayEvent();
+		evt.source = address;
+		this.eventSpace.emit(evt, Scopes.addresses(this.address));		
+	}
+
+	override pause : void {
+
+		val evt : PauseEvent = new PauseEvent();
+		evt.source = address;
+		this.eventSpace.emit(evt, Scopes.addresses(this.address));	
+	}
+
+	override stop : void {
+
+		val evt : StopEvent = new StopEvent();
+		evt.source = address;
+		this.eventSpace.emit(evt, Scopes.addresses(this.address));	
+	}
+}
