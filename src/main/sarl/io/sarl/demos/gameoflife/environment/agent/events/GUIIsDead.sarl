@@ -1,0 +1,11 @@
+/** 
+ * 
+ */
+package io.sarl.demos.gameoflife.environment.^agent.events
+
+/**
+ * Event fired when the GUI is closed by the user. 
+ * @author Jérôme BOULMIER
+ * 
+ */
+event GUIIsDead

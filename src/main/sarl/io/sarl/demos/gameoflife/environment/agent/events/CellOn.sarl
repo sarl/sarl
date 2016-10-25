@@ -13,5 +13,10 @@ import java.util.UUID
  */
 event CellOn {
 	var position : Vector2i
-	var uuid : UUID
+	var emitter : UUID
+
+	new(uuid : UUID, position : Vector2i) {
+		this.emitter = uuid
+		this.position = position;
+	}
 }
