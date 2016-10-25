@@ -3,8 +3,8 @@
  */
 package io.sarl.demos.gameoflife.environment.^agent.events
 
-import org.arakhne.afc.math.geometry.d2.i.Vector2i
 import java.util.UUID
+import org.arakhne.afc.math.geometry.d2.i.Point2i
 
 /** 
  * Event fired when a cell is created.
@@ -12,10 +12,10 @@ import java.util.UUID
  * 
  */
 event CellOn {
-	var position : Vector2i
+	var position : Point2i
 	var emitter : UUID
 
-	new(uuid : UUID, position : Vector2i) {
+	new(uuid : UUID, position : Point2i) {
 		this.emitter = uuid
 		this.position = position;
 	}
