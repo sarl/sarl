@@ -6,8 +6,13 @@ import org.arakhne.afc.math.geometry.d2.i.Vector2i;
 
 public class Action {
 	public enum Type {
-		CREATED,
-		DESTROYED
+		CREATE(true),
+		DESTROY(false);
+		
+		public final boolean value;
+		Type(boolean val) {
+			this.value = val;
+		}
 	}
 	
 	private final UUID emitter;
