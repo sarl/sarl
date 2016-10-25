@@ -1,0 +1,42 @@
+/** 
+ * 
+ */
+package io.sarl.demos.gameoflife.environment.^agent
+
+import java.util.UUID
+import org.arakhne.afc.math.geometry.d2.i.Vector2i
+import io.sarl.demos.gameoflife.environment.^agent.events.CellOff
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.demos.gameoflife.environment.^agent.events.CellOn
+
+/** 
+ * @author Jérôme BOULMIER
+ * 
+ */
+agent CellAgent {
+	uses DefaultContextInteractions;
+	private enum State {
+		ALIVE,
+		DEAD
+	}
+	
+	var uuid : UUID
+	var position : Vector2i
+	
+	var state = State.DEAD
+	// TODO : Init uuid && position
+	
+	on Perception {
+		if (state == State.ALIVE) {
+			if (occurrence.neighbors.size() != 2 && occurrence.neighbors.size() != 3) {
+				state = State.DEAD
+				emit(new CellOff(uuid, position))
+			}
+		} else {
+			if (occurrence.neighbors.size() == 3) {
+				state = State.ALIVE
+				emit(new CellOn(uuid, position))
+			}
+		}
+	}
+}
