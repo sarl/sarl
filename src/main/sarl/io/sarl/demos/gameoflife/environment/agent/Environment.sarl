@@ -4,22 +4,54 @@
 package io.sarl.demos.gameoflife.environment.^agent
 
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Lifecycle
 import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.demos.gameoflife.environment.^agent.events.CellOff
+import io.sarl.demos.gameoflife.environment.^agent.events.CellOn
+import io.sarl.demos.gameoflife.environment.^agent.events.RunBeginingOfStep
+import io.sarl.demos.gameoflife.environment.^agent.events.RunEndOfStep
 
 /** 
- * @author Jérôme BoULMIER
+ * @author Jérôme BOULMIER
  * 
  */
 agent Environment {
-	uses DefaultContextInteractions, Lifecycle;
+	uses DefaultContextInteractions, Lifecycle, GridManager;
 
 	val listeners = <EnvironmentListener>newArrayList
-	
+	val actions = <Action>newArrayList
+
 	on Initialize {
 		var width = occurrence.parameters.get(0) as Integer
 		var height = occurrence.parameters.get(1) as Integer
 		
 		setSkill(new DefaultGridManagerSkill(width, height), typeof(GridManager))
+	}
+
+	on CellOff {
+		setCellActivation(Boolean.FALSE, occurrence.uuid, occurrence.position)
+	}
+
+	on CellOn {
+		setCellActivation(Boolean.TRUE, occurrence.uuid, occurrence.position)
+	}
+
+	on RunBeginingOfStep {
+		synchronized (this) {
+			this.actions.clear
+
+			// TODO: Send perceptions
+		}
+	}
+	
+	on RunEndOfStep {
+		synchronized (this) {
+			// Apply actions
+			
+			// Fire update
+			
+			// Go to the next step
+			emit(new RunBeginingOfStep)
+		}
 	}
 }
