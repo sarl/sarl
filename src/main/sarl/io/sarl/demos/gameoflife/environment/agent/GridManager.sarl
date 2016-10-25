@@ -29,5 +29,8 @@ capacity GridManager {
 	 */
 	def getHeight : int
 	
-	def setCellActivation(state : Boolean, uuid : UUID, position : Vector2i)
+	/**
+	 * Applies the changes of state of the cells
+	 */
+	def applyActions(actions : List<Action>)
 }

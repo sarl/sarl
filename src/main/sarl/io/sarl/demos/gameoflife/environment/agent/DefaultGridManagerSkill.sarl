@@ -57,8 +57,14 @@ skill DefaultGridManagerSkill implements GridManager {
 	override getHeight : int {
 		height
 	}
-
-	override setCellActivation(state : Boolean, uuid : UUID, position : Vector2i) {
-		// TODO
+	
+	override applyActions(actions : List<Action>) {
+		for (action : actions) {
+			grid.get(action.getPosition().ix()).
+				set(action.getPosition().iy(),
+					Pair.of(grid.get(action.getPosition().ix()).get(action.getPosition().iy()).getKey(),
+						action.getType().value
+					));
+		}
 	}
 }
