@@ -28,7 +28,7 @@ public class SquareGridDisplayer extends DraggableZoomableParent {
 
 		this.gridSquares = new GridSquare[this.gridWidth][this.grisheight];
 		for(int i = 0; i < this.gridSquares.length; ++i) {
-			for(int j = 0; j < this.gridSquares[i].length; ++œj) {
+			for(int j = 0; j < this.gridSquares[i].length; ++j) {
 				this.gridSquares[i][j] = new GridSquare(i, j, false);
 				getChildren().add(this.gridSquares[i][j]);
 			}
