@@ -8,6 +8,7 @@ import java.util.List
 
 import java.util.UUID
 import java.util.Random
+import org.arakhne.afc.math.geometry.d2.i.Vector2i
 
 /** 
  * @author Jérôme BOULMIER
@@ -39,5 +40,9 @@ skill DefaultGridManagerSkill implements GridManager {
 
 	override getHeight : int {
 		height
+	}
+
+	override setCellActivation(state : Boolean, uuid : UUID, position : Vector2i) {
+		// TODO
 	}
 }
