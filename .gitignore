@@ -51,3 +51,7 @@ local.properties
 
 # Maven target
 target/
+
+# IntellijIDEA
+.idea/
+gameoflife.iml
