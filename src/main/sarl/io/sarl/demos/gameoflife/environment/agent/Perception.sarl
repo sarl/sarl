@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package io.sarl.demos.gameoflife.environment.^agent
+
+import org.arakhne.afc.math.geometry.d2.i.Vector2i
+import java.util.Set
+
+/** 
+ * @author Maxime PINARD
+ * 
+ */
+event Perception{
+	
+	val neighbors : Set<Vector2i>;
+	
+	new(neighbors : Set<Vector2i>){
+		this.neighbors = neighbors;
+	}
+}

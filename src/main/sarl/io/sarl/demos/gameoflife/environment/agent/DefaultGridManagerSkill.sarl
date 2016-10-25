@@ -7,31 +7,47 @@ import io.sarl.demos.gameoflife.environment.^agent.GridManager
 import java.util.List
 
 import java.util.UUID
-import java.util.Random
+import java.util.Set
 import org.arakhne.afc.math.geometry.d2.i.Vector2i
+import java.util.HashSet
+import org.arakhne.afc.math.MathUtil
 
 /** 
  * @author Jérôme BOULMIER
  * 
  */
 skill DefaultGridManagerSkill implements GridManager {
-	val random = new Random
 	
 	val width : int
 	val height : int
 		
-	val grid : List<List<UUID>> = newArrayList	
+	val grid : List<List<Pair<UUID, Boolean>>> = newArrayList	
 	
 	new(width : int, height : int) {
 		this.width = width
 		this.height = height	
 	}
 
-	override getPerceptions : List<List<Pair<UUID, Boolean>>> {
-		val perceptions = newArrayList
-		var perception = newArrayList
+	override getPerceptions : List<Pair<UUID, Set<Vector2i>>> {
+		val perceptions = <Pair<UUID, Set<Vector2i>>>newArrayList();
 		
-		null
+		for(i : 0 .. width - 1){
+			for(j : 0 .. height - 1){
+				val set = new HashSet<Vector2i>();
+				for(k : MathUtil.max(i - 1, 0) .. MathUtil.min(i + 1, width - 1)){
+					for(l : MathUtil.max(j - 1, 0) .. MathUtil.min(j + 1, height - 1)){
+						if(k != i && l != j){
+							if(grid.get(k).get(l).getValue().equals(Boolean.TRUE)){
+								set.add(new Vector2i(k - i, l - j));
+							}
+						}
+					}
+				}
+				perceptions.add(new Pair<UUID, Set<Vector2i>>(grid.get(i).get(j).getKey(), set));
+			}
+		}
+		
+		return perceptions;
 	}
 
 	override getWidth : int {
