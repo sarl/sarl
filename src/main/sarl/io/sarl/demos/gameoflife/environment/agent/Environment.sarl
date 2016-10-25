@@ -10,6 +10,7 @@ import io.sarl.demos.gameoflife.environment.^agent.events.CellOff
 import io.sarl.demos.gameoflife.environment.^agent.events.CellOn
 import io.sarl.demos.gameoflife.environment.^agent.events.RunBeginingOfStep
 import io.sarl.demos.gameoflife.environment.^agent.events.RunEndOfStep
+import io.sarl.demos.gameoflife.environment.^agent.events.GUIIsDead
 
 /** 
  * @author Jérôme BOULMIER
@@ -20,20 +21,21 @@ agent Environment {
 
 	val listeners = <EnvironmentListener>newArrayList
 	val actions = <Action>newArrayList
+	var guiAlive = true;
 
 	on Initialize {
 		var width = occurrence.parameters.get(0) as Integer
 		var height = occurrence.parameters.get(1) as Integer
 		
-		setSkill(new DefaultGridManagerSkill(width, height), typeof(GridManager))
+		setSkill(new DefaultGridManagerSkill(width, height), GridManager);
 	}
 
 	on CellOff {
-		setCellActivation(Boolean.FALSE, occurrence.uuid, occurrence.position)
+		actions.add(new Action(occurrence.emitter, occurrence.position, Action.Type.DESTROY))
 	}
 
 	on CellOn {
-		setCellActivation(Boolean.TRUE, occurrence.uuid, occurrence.position)
+		actions.add(new Action(occurrence.emitter, occurrence.position, Action.Type.CREATE))
 	}
 
 	on RunBeginingOfStep {
@@ -46,12 +48,25 @@ agent Environment {
 	
 	on RunEndOfStep {
 		synchronized (this) {
-			// Apply actions
+			applyActions(actions)
 			
-			// Fire update
+			fireUpdate
 			
 			// Go to the next step
-			emit(new RunBeginingOfStep)
+			if (guiAlive) {
+				emit(new RunBeginingOfStep)
+			} else {
+				emit(new GUIIsDead)
+				killMe
+			}
+		}
+	}
+	
+	def fireUpdate {
+		for (listener : listeners) {
+			// TODO
+			// listener.handleGridUpdate(…)
 		}
 	}
 }
+
