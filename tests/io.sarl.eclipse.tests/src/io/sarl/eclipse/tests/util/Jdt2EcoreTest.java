@@ -1096,16 +1096,6 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			helper().fullBuild();
 			helper().awaitAutoBuild();
 			//
-			/*
-			TypeFinder typeFinder,
-			Map<ActionPrototype, IMethod> finalOperations,
-			Map<ActionPrototype, IMethod> overridableOperations,
-			Map<String, IField> inheritedFields,
-			Map<ActionPrototype, IMethod> operationsToImplement,
-			Map<ActionParameterTypes, IMethod> superConstructors,
-			String superClass,
-			List<String> superInterfaces
-			 */
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
 					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
 					finalOperations,

@@ -45,7 +45,7 @@ import io.sarl.eclipse.util.Utilities.SARLBundleJavadocURLMappings;
 public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer {
 
 	/** Names of the reference libraries that are required to compile the Janus
-	 * code and the generated Java code.
+	 * code and run any SARL-based Java code.
 	 */
 	public static final String[] JANUS_ROOT_BUNDLE_NAMES;
 
