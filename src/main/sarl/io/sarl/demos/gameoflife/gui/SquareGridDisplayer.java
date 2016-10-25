@@ -19,17 +19,33 @@ public class SquareGridDisplayer extends DraggableZoomableParent {
 	 */
 	public SquareGridDisplayer(int gridWidth, int gridheight) {
 
+		if(gridWidth == 0 || gridheight == 0) {
+			throw new IllegalArgumentException("gridWidth or gridHeight is equal to 0");
+		}
+
 		this.gridWidth = gridWidth;
 		this.grisheight = gridheight;
 
 		this.gridSquares = new GridSquare[this.gridWidth][this.grisheight];
-		GridSquare[][] gridSquares1 = this.gridSquares;
-		for(int i = 0; i < gridSquares1.length; i++) {
-			GridSquare[] squares = gridSquares1[i];
-			for(int j = 0; j < squares.length; j++) {
-				GridSquare square = squares[j];
-				square = new GridSquare(i, j, false);
-				getChildren().add(square);
+		for(int i = 0; i < this.gridSquares.length; ++i) {
+			for(int j = 0; j < this.gridSquares[i].length; ++œj) {
+				this.gridSquares[i][j] = new GridSquare(i, j, false);
+				getChildren().add(this.gridSquares[i][j]);
+			}
+		}
+	}
+
+	/**
+	 * Sets the grid.
+	 *
+	 * @param grid the grid
+	 */
+	void setGrid(boolean[][] grid) {
+		if(grid.length == this.gridSquares.length && grid[0].length == this.gridSquares[0].length) {
+			for(int i = 0; i < this.gridSquares.length; i++) {
+				for(int j = 0; j < this.gridSquares[i].length; j++) {
+					this.gridSquares[i][j].setActivated(grid[i][j]);
+				}
 			}
 		}
 	}
