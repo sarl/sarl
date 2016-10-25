@@ -1,0 +1,29 @@
+/** 
+ * 
+ */
+package io.sarl.demos.gameoflife.environment.^agent
+
+import java.util.UUID
+import java.util.List
+
+/** 
+ * @author Jérôme Boulmier
+ * 
+ */
+capacity GridManager {
+	/**
+	 * Replies the agents perceptions
+	 *
+	 */
+	def getPerceptions : List<List<Pair<UUID, Boolean>>>
+	
+	/**
+	 * Replies the width of the grid.
+	 */
+	def getWidth : int
+	
+	/**
+	 * Replies the height of the grid.
+	 */
+	def getHeight : int
+}

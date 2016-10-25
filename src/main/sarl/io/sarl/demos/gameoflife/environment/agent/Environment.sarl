@@ -1,0 +1,25 @@
+/** 
+ * 
+ */
+package io.sarl.demos.gameoflife.environment.^agent
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Lifecycle
+import io.sarl.core.Initialize
+
+/** 
+ * @author Jérôme BoULMIER
+ * 
+ */
+agent Environment {
+	uses DefaultContextInteractions, Lifecycle;
+
+	val listeners = <EnvironmentListener>newArrayList
+	
+	on Initialize {
+		var width = occurrence.parameters.get(0) as Integer
+		var height = occurrence.parameters.get(1) as Integer
+		
+		setSkill(new DefaultGridManagerSkill(width, height), typeof(GridManager))
+	}
+}

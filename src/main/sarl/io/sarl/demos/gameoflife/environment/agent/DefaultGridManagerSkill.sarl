@@ -1,0 +1,43 @@
+/** 
+ * 
+ */
+package io.sarl.demos.gameoflife.environment.^agent
+
+import io.sarl.demos.gameoflife.environment.^agent.GridManager
+import java.util.List
+
+import java.util.UUID
+import java.util.Random
+
+/** 
+ * @author Jérôme BOULMIER
+ * 
+ */
+skill DefaultGridManagerSkill implements GridManager {
+	val random = new Random
+	
+	val width : int
+	val height : int
+		
+	val grid : List<List<UUID>> = newArrayList	
+	
+	new(width : int, height : int) {
+		this.width = width
+		this.height = height	
+	}
+
+	override getPerceptions : List<List<Pair<UUID, Boolean>>> {
+		val perceptions = newArrayList
+		var perception = newArrayList
+		
+		null
+	}
+
+	override getWidth : int {
+		width
+	}
+
+	override getHeight : int {
+		height
+	}
+}
