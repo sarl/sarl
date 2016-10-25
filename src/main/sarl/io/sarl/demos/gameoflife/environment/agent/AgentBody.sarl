@@ -1,0 +1,25 @@
+package io.sarl.demos.gameoflife.environment.^agent
+
+import org.arakhne.afc.math.geometry.d2.i.Point2i
+
+class AgentBody {
+	var alive : boolean
+	val position : Point2i
+	
+	new(position : Point2i, alive : boolean) {
+		this.position = position
+		this.alive = alive
+	}
+	
+	def isAlive : boolean {
+		alive
+	}
+	
+	def getPosition : Point2i {
+		position
+	}
+	
+	def setAlive(alive : boolean) {
+		this.alive = alive
+	}
+}

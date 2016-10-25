@@ -3,10 +3,10 @@
  */
 package io.sarl.demos.gameoflife.environment.^agent
 
-import java.util.UUID
 import java.util.List
 import java.util.Set
-import org.arakhne.afc.math.geometry.d2.i.Vector2i
+import java.util.UUID
+import org.arakhne.afc.math.geometry.d2.i.Point2i
 
 /** 
  * @author Jérôme Boulmier
@@ -17,7 +17,7 @@ capacity GridManager {
 	 * Replies the agents perceptions
 	 *
 	 */
-	def getPerceptions : List<Pair<UUID, Set<Vector2i>>>
+	def getPerceptions : List<Pair<UUID, Set<Point2i>>>
 	
 	/**
 	 * Replies the width of the grid.
@@ -33,4 +33,14 @@ capacity GridManager {
 	 * Applies the changes of state of the cells
 	 */
 	def applyActions(actions : List<Action>)
+	
+	/**
+	 * Replies true if the cell is alive.
+	 */
+	def isAlive(uuid : UUID) : boolean
+	
+	/**
+	 * Replies the position of the cell
+	 */
+	def getPosition(uuid : UUID) : Point2i
 }

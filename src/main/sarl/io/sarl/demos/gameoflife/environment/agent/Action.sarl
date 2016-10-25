@@ -1,0 +1,45 @@
+package io.sarl.demos.gameoflife.environment.^agent;
+
+import java.util.UUID
+import org.arakhne.afc.math.geometry.d2.i.Point2i
+
+class Action {
+	public enum Type {
+		CREATE,
+		DESTROY
+	}
+	
+	val emitter : UUID;
+	val position : Point2i;
+	val type : Type;
+	
+	new(emitter : UUID, position : Point2i, type : Type) {
+		this.emitter = emitter;
+		this.position = position;
+		this.type = type;
+	}
+	
+	/**
+	 * Replies the emitter.
+	 * @return
+	 */
+	 def getEmitter : UUID {
+		return this.emitter;
+	}
+	
+	/**
+	 * Replies the position of the emitter.
+	 * @return
+	 */
+	def getPosition : Point2i {
+		return this.position;
+	}
+
+	/**
+	 * Replies the type of the event.
+	 * @return
+	 */
+	def getType : Type {
+		return type;
+	}
+}
