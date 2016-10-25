@@ -1,0 +1,11 @@
+/** 
+ * 
+ */
+package io.sarl.demos.gameoflife.environment.^agent.events
+
+/** 
+ * EVent fired when the simulator start a step
+ * @author Jérôme BOULMIER
+ * 
+ */
+event RunBeginingOfStep

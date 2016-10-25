@@ -1,0 +1,17 @@
+/** 
+ * 
+ */
+package io.sarl.demos.gameoflife.environment.^agent.events
+
+import org.arakhne.afc.math.geometry.d2.i.Vector2i
+import java.util.UUID
+
+/** 
+ * Event fired when a cell is created.
+ * @author Jérôme BOULMIER
+ * 
+ */
+event CellOn {
+	var position : Vector2i
+	var uuid : UUID
+}

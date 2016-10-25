@@ -1,0 +1,18 @@
+/** 
+ * 
+ */
+package io.sarl.demos.gameoflife.environment.^agent.events
+
+import org.arakhne.afc.math.geometry.d2.i.Vector2i
+import java.util.UUID
+
+/** 
+ * Event fired when a cell died.
+ * 
+ * @author Jérôme OULMIER
+ * 
+ */
+event CellOff {
+	var position : Vector2i
+	var uuid : UUID
+}
