@@ -7,8 +7,9 @@ package io.sarl.demos.gameoflife.gui;
  */
 public interface GUIListener {
 
-	/**
-	 * Function called by the GUI when user terminate the program.
-	 */
-	void endProgram();
+	void play();
+	
+	void pause();
+	
+	void stop();
 }
