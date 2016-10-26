@@ -94,4 +94,8 @@ skill DefaultGridManagerSkill implements GridManager {
 	override getPosition(uuid : UUID) : Point2i {
 		bodies.get(uuid).position
 	}
+
+	override getGrid : List<List<Pair<UUID, Boolean>>> {
+		return grid;
+	}
 }

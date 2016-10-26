@@ -14,6 +14,7 @@ import io.sarl.demos.gameoflife.environment.^agent.events.RunBeginingOfStep
 import io.sarl.demos.gameoflife.environment.^agent.events.RunEndOfStep
 import io.sarl.lang.core.Address
 import io.sarl.util.Scopes
+import io.sarl.demos.gameoflife.environment.^agent.events.RegisterEnvironmentListener
 
 /** 
  * @author Jérôme BOULMIER
@@ -91,10 +92,15 @@ agent Environment {
 	}
 	
 	def fireUpdate {
+		
 		for (listener : listeners) {
-			// TODO
-			// listener.handleGridUpdate(…)
+			
+			listener.handleGridUpdate(getGrid());
 		}
+	}
+	
+	on RegisterEnvironmentListener {
+		listeners.add(occurrence.environmentListener);
 	}
 }
 

@@ -47,7 +47,7 @@ public class GUI extends Application implements EnvironmentListener {
 			@Override
 			public void handle(WindowEvent event) {
 				for(GUIListener guiListener : GUI.this.listeners) {
-					guiListener.endProgram();
+					guiListener.stop();
 				}
 			}
 		});
