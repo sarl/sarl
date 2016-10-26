@@ -26,8 +26,8 @@ agent Boot {
 	var agentCounter = 0
 	var numberOfAgent : int
 	var gui : GUI
-	val width = 1
-	val height = 1
+	val width = 3
+	val height = 3
 	
 	on Initialize {
 		val environmentUUID = UUID.randomUUID
