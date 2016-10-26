@@ -1,7 +1,7 @@
 /** 
  * 
  */
-package io.sarl.demos.gameoflife.environment.^agent
+package io.sarl.demos.gameoflife.environment.^agent.events
 
 /** 
  * @author Jérôme BOULMIER
