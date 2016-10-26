@@ -1,7 +1,0 @@
-package io.sarl.demos.gameoflife.environment.^agent;
-
-import java.util.EventListener;
-
-interface EnvironmentListener extends EventListener {
-
-}
