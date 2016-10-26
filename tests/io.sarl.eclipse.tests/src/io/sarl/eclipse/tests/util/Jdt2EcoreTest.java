@@ -29,13 +29,20 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.annotation.Generated;
+import javax.naming.InitialContext;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
@@ -54,13 +61,15 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.junit.After;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.ComparisonFailure;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+import org.mockito.ArgumentMatcher;
+import org.mockito.ArgumentMatchers;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
@@ -68,7 +77,6 @@ import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.actionprototype.FormalParameterProvider;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
@@ -88,7 +96,7 @@ import io.sarl.tests.api.AbstractSarlUiTest;
 	Jdt2EcoreTest.PopulateInheritanceContext.class,
 })
 @SuppressWarnings("all")
-public class Jdt2EcoreTest extends AbstractSarlTest {
+public class Jdt2EcoreTest {
 
 	protected static String getResourceText(String id) {
 		ResourceBundle bundle = ResourceBundle.getBundle(Jdt2EcoreTest.class.getName().replace(".", "/"));
@@ -100,35 +108,156 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 	/** Replies a mock of a IType.
 	 *
-	 * @param fullyQualifiedName - fully qualified name of the type.
-	 * @param superClass - fully qualified name of the super class.
-	 * @throws JavaModelException
+	 * <table>
+	 * <tr><td>Z</td><td>boolean</td></tr>
+	 * <tr><td>B</td><td>byte</td></tr>
+	 * <tr><td>C</td><td>char</td></tr>
+	 * <tr><td>S</td><td>short</td></tr>
+	 * <tr><td>I</td><td>int</td></tr>
+	 * <tr><td>J</td><td>long</td></tr>
+	 * <tr><td>F</td><td>float</td></tr>
+	 * <tr><td>D</td><td>double</td></tr>
+	 * <tr><td>V</td><td>void</td></tr>
+	 * <tr><td>L fully-qualified-class ;</td><td>fully-qualified-class</td></tr>
+	 * <tr><td>[ type</td><td>type[]</td></tr>
+	 * </table>
 	 */
-	protected static IType createITypeMock(String fullyQualifiedName, String superClass) throws JavaModelException {
-		IType type = mock(IType.class);
-		when(type.getFullyQualifiedName()).thenReturn(fullyQualifiedName);
-		IPackageFragment packageFragment = mock(IPackageFragment.class);
-		int idx = fullyQualifiedName.lastIndexOf('.');
-		if (idx >= 0) {
-			when(packageFragment.getElementName()).thenReturn(fullyQualifiedName.substring(0, idx));
-			when(packageFragment.getElementType()).thenReturn(IJavaElement.PACKAGE_FRAGMENT);
-			when(packageFragment.isDefaultPackage()).thenReturn(false);
-			when(type.getElementName()).thenReturn(fullyQualifiedName.substring(idx + 1));
-		} else {
-			when(packageFragment.getElementName()).thenReturn("");
-			when(packageFragment.getElementType()).thenReturn(IJavaElement.PACKAGE_FRAGMENT);
-			when(packageFragment.isDefaultPackage()).thenReturn(true);
-			when(type.getElementName()).thenReturn(fullyQualifiedName);
+	protected static IType createITypeMock(boolean isInterface, String fullyQualifiedName, String superClass) {
+		return createITypeMock(isInterface, fullyQualifiedName, superClass, null, null, null, null);
+	}
+
+	/** Replies a mock of a IType.
+	 *
+	 * <table>
+	 * <tr><td>Z</td><td>boolean</td></tr>
+	 * <tr><td>B</td><td>byte</td></tr>
+	 * <tr><td>C</td><td>char</td></tr>
+	 * <tr><td>S</td><td>short</td></tr>
+	 * <tr><td>I</td><td>int</td></tr>
+	 * <tr><td>J</td><td>long</td></tr>
+	 * <tr><td>F</td><td>float</td></tr>
+	 * <tr><td>D</td><td>double</td></tr>
+	 * <tr><td>V</td><td>void</td></tr>
+	 * <tr><td>L fully-qualified-class ;</td><td>fully-qualified-class</td></tr>
+	 * <tr><td>[ type</td><td>type[]</td></tr>
+	 * </table>
+	 */
+	protected static IType createITypeMock(
+			boolean isInterface,
+			String fullyQualifiedName,
+			String superType,
+			String[] superInterfaces,
+			Procedure2<IType, List<IField>> fieldInitializer,
+			Procedure2<IType, List<IMethod>> methodInitializer,
+			TypeFinder typeFinder) {
+		try {
+			IType type = AbstractSarlTest.mock(IType.class);
+			when(type.getFullyQualifiedName()).thenReturn(fullyQualifiedName);
+			IPackageFragment packageFragment = AbstractSarlTest.mock(IPackageFragment.class);
+			int idx = fullyQualifiedName.lastIndexOf('.');
+			if (idx >= 0) {
+				when(packageFragment.getElementName()).thenReturn(fullyQualifiedName.substring(0, idx));
+				when(packageFragment.getElementType()).thenReturn(IJavaElement.PACKAGE_FRAGMENT);
+				when(packageFragment.isDefaultPackage()).thenReturn(false);
+				when(type.getElementName()).thenReturn(fullyQualifiedName.substring(idx + 1));
+			} else {
+				when(packageFragment.getElementName()).thenReturn("");
+				when(packageFragment.getElementType()).thenReturn(IJavaElement.PACKAGE_FRAGMENT);
+				when(packageFragment.isDefaultPackage()).thenReturn(true);
+				when(type.getElementName()).thenReturn(fullyQualifiedName);
+			}
+			when(type.getPackageFragment()).thenReturn(packageFragment);
+			when(type.getElementType()).thenReturn(IJavaElement.TYPE);
+			if (isInterface) {
+				final List<String> superNames = new ArrayList<>();
+				final List<String> superSignatures = new ArrayList<>();
+				if (!Strings.isNullOrEmpty(superType)) {
+					superNames.add(superType);
+					superSignatures.add("L" + superType + ";");
+				}
+				if (superInterfaces != null) {
+					for (String superInterface : superInterfaces) {
+						superNames.add(superInterface);
+						superSignatures.add("L" + superInterface + ";");
+					}
+				}
+				String[] array = new String[superNames.size()];
+				superNames.toArray(array);
+				doReturn(array).when(type).getSuperInterfaceNames();
+				array = new String[superSignatures.size()];
+				superSignatures.toArray(array);
+				doReturn(array).when(type).getSuperInterfaceTypeSignatures();
+			} else {
+				if (Strings.isNullOrEmpty(superType)) {
+					when(type.getSuperclassName()).thenReturn("java.lang.Object");
+					when(type.getSuperclassTypeSignature()).thenReturn("Ljava.lang.Object;");
+				} else {
+					when(type.getSuperclassName()).thenReturn(superType);
+					when(type.getSuperclassTypeSignature()).thenReturn("L" + superType + ";");
+				}
+			}
+			List<IField> fields = new ArrayList<>();
+			if (fieldInitializer != null) {
+				fieldInitializer.apply(type, fields);
+			}
+			IField[] fieldArray = new IField[fields.size()];
+			fields.toArray(fieldArray);
+			doReturn(fieldArray).when(type).getFields();
+			List<IMethod> methods = new ArrayList<>();
+			if (methodInitializer != null) {
+				methodInitializer.apply(type, methods);
+			}
+			IMethod[] methodArray = new IMethod[methods.size()];
+			methods.toArray(methodArray);
+			doReturn(methodArray).when(type).getMethods();
+			if (!isInterface) {
+				if (superInterfaces != null && superInterfaces.length > 0) {
+					String[] interSigs = new String[superInterfaces.length];
+					for (int i = 0; i < superInterfaces.length; ++i) {
+						interSigs[i] = "L" + superInterfaces[i] + ";";
+					}
+					doReturn(superInterfaces).when(type).getSuperInterfaceNames();
+					doReturn(interSigs).when(type).getSuperInterfaceTypeSignatures();
+				} else {
+					doReturn(new String[0]).when(type).getSuperInterfaceNames();
+					doReturn(new String[0]).when(type).getSuperInterfaceTypeSignatures();
+				}
+			}
+			if (typeFinder != null) {
+				when(type.resolveType(ArgumentMatchers.anyString())).thenAnswer((it) -> {
+					final IType itype = typeFinder.findType(it.getArgument(0));
+					if (itype != null) {
+						return new String[][] {
+							new String[] {
+								itype.getPackageFragment().getElementName(),
+								itype.getElementName()
+							},
+						};
+					}
+					return null;
+				});
+			}
+			return type;
+		} catch (JavaModelException exception) {
+			throw new RuntimeException(exception);
 		}
-		when(type.getPackageFragment()).thenReturn(packageFragment);
-		when(type.getElementType()).thenReturn(IJavaElement.TYPE);
-		if (!Strings.isNullOrEmpty(superClass)) {
-			when(type.getSuperclassName()).thenReturn(superClass);
-		}
-		return type;
 	}
 
 	/** Replies a mock of a IMethod.
+	 *
+	 * <table>
+	 * <tr><td>Z</td><td>boolean</td></tr>
+	 * <tr><td>B</td><td>byte</td></tr>
+	 * <tr><td>C</td><td>char</td></tr>
+	 * <tr><td>S</td><td>short</td></tr>
+	 * <tr><td>I</td><td>int</td></tr>
+	 * <tr><td>J</td><td>long</td></tr>
+	 * <tr><td>F</td><td>float</td></tr>
+	 * <tr><td>D</td><td>double</td></tr>
+	 * <tr><td>V</td><td>void</td></tr>
+	 * <tr><td>L fully-qualified-class ;</td><td>fully-qualified-class</td></tr>
+	 * <tr><td>[ type</td><td>type[]</td></tr>
+	 * </table>
 	 *
 	 * @param type - the enclosing type of the method.
 	 * @param methodName - the name of the method.
@@ -136,55 +265,180 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 	 * @throws JavaModelException
 	 */
 	protected static IMethod createIMethodMock(IType type, String methodName, String returnType,
-			String[] parameterNames, String[] parameterTypes, int flags) throws JavaModelException {
+			String[] parameterNames, String[] parameterTypes, int flags) {
 		return createIMethodMock(type, methodName, returnType, parameterNames, parameterTypes,
 				new IAnnotation[parameterNames.length], new IAnnotation[0], flags);
 	}
 
 	/** Replies a mock of a IMethod.
 	 *
+	 * <table>
+	 * <tr><td>Z</td><td>boolean</td></tr>
+	 * <tr><td>B</td><td>byte</td></tr>
+	 * <tr><td>C</td><td>char</td></tr>
+	 * <tr><td>S</td><td>short</td></tr>
+	 * <tr><td>I</td><td>int</td></tr>
+	 * <tr><td>J</td><td>long</td></tr>
+	 * <tr><td>F</td><td>float</td></tr>
+	 * <tr><td>D</td><td>double</td></tr>
+	 * <tr><td>V</td><td>void</td></tr>
+	 * <tr><td>L fully-qualified-class ;</td><td>fully-qualified-class</td></tr>
+	 * <tr><td>[ type</td><td>type[]</td></tr>
+	 * </table>
+	 *
 	 * @param type - the enclosing type of the method.
 	 * @param methodName - the name of the method.
 	 * @param returnType - the type of the returned value.
 	 * @throws JavaModelException
 	 */
 	protected static IMethod createIMethodMock(IType type, String methodName, String returnType,
+			int flags) {
+		return createIMethodMock(type, methodName, returnType,
+				new String[0], new String[0], flags);
+	}
+
+	/** Replies a mock of a IMethod method.
+	 *
+	 * <table>
+	 * <tr><td>Z</td><td>boolean</td></tr>
+	 * <tr><td>B</td><td>byte</td></tr>
+	 * <tr><td>C</td><td>char</td></tr>
+	 * <tr><td>S</td><td>short</td></tr>
+	 * <tr><td>I</td><td>int</td></tr>
+	 * <tr><td>J</td><td>long</td></tr>
+	 * <tr><td>F</td><td>float</td></tr>
+	 * <tr><td>D</td><td>double</td></tr>
+	 * <tr><td>V</td><td>void</td></tr>
+	 * <tr><td>L fully-qualified-class ;</td><td>fully-qualified-class</td></tr>
+	 * <tr><td>[ type</td><td>type[]</td></tr>
+	 * </table>
+	 */
+	protected static IMethod createIMethodMock(IType type, String methodName, String returnType,
 			String[] parameterNames, String[] parameterTypes,
 			IAnnotation[] parameterAnnotations, IAnnotation[] methodAnnotations,
-			int flags) throws JavaModelException {
-		IMethod method = mock(IMethod.class);
-		when(method.getDeclaringType()).thenReturn(type);
-		when(method.getElementName()).thenReturn(methodName);
-		IAnnotation[] ma = methodAnnotations;
-		if (ma == null) {
-			ma = new IAnnotation[0];
-		}
-		when(method.getAnnotations()).thenReturn(ma);
-		if (Strings.isNullOrEmpty(returnType)) {
-			when(method.getReturnType()).thenReturn("void");
-		} else {
-			when(method.getReturnType()).thenReturn(returnType);
-		}
-		when(method.getNumberOfParameters()).thenReturn(parameterNames.length);
-		when(method.getParameterNames()).thenReturn(parameterNames);
-		when(method.getParameterTypes()).thenReturn(parameterTypes);
-		ILocalVariable[] parameters = new ILocalVariable[parameterNames.length];
-		for (int i = 0; i < parameterNames.length; ++i) {
-			ILocalVariable var = mock(ILocalVariable.class);
-			when(var.getElementName()).thenReturn(parameterNames[i]);
-			when(var.getTypeSignature()).thenReturn(parameterTypes[i]);
-			when(var.getDeclaringMember()).thenReturn(method);
-			IAnnotation a = parameterAnnotations[i];
-			if (a == null) {
-				when(var.getAnnotations()).thenReturn(new IAnnotation[0]);
-			} else {
-				when(var.getAnnotations()).thenReturn(new IAnnotation[] { a });
+			int flags) {
+		return createIMethodMock(false, type, methodName, returnType, parameterNames,
+				parameterTypes, parameterAnnotations, methodAnnotations, flags);
+	}
+
+	/** Replies a mock of a IMethod constructor.
+	 *
+	 * <table>
+	 * <tr><td>Z</td><td>boolean</td></tr>
+	 * <tr><td>B</td><td>byte</td></tr>
+	 * <tr><td>C</td><td>char</td></tr>
+	 * <tr><td>S</td><td>short</td></tr>
+	 * <tr><td>I</td><td>int</td></tr>
+	 * <tr><td>J</td><td>long</td></tr>
+	 * <tr><td>F</td><td>float</td></tr>
+	 * <tr><td>D</td><td>double</td></tr>
+	 * <tr><td>V</td><td>void</td></tr>
+	 * <tr><td>L fully-qualified-class ;</td><td>fully-qualified-class</td></tr>
+	 * <tr><td>[ type</td><td>type[]</td></tr>
+	 * </table>
+	 */
+	protected static IMethod createIConstructorMock(IType type, String[] parameterNames, String[] parameterTypes,
+			int flags) {
+		return createIMethodMock(true, type,
+				type.getElementName(), "L" + type.getFullyQualifiedName() + ";", parameterNames,
+				parameterTypes, new IAnnotation[parameterNames.length], new IAnnotation[0], flags);
+	}
+
+	/** Replies a mock of a IMethod (method or constructor).
+	 *
+	 * <table>
+	 * <tr><td>Z</td><td>boolean</td></tr>
+	 * <tr><td>B</td><td>byte</td></tr>
+	 * <tr><td>C</td><td>char</td></tr>
+	 * <tr><td>S</td><td>short</td></tr>
+	 * <tr><td>I</td><td>int</td></tr>
+	 * <tr><td>J</td><td>long</td></tr>
+	 * <tr><td>F</td><td>float</td></tr>
+	 * <tr><td>D</td><td>double</td></tr>
+	 * <tr><td>V</td><td>void</td></tr>
+	 * <tr><td>L fully-qualified-class ;</td><td>fully-qualified-class</td></tr>
+	 * <tr><td>[ type</td><td>type[]</td></tr>
+	 * </table>
+	 */
+	private static IMethod createIMethodMock(boolean isConstructor, IType type, String methodName, String returnType,
+			String[] parameterNames, String[] parameterTypes,
+			IAnnotation[] parameterAnnotations, IAnnotation[] methodAnnotations,
+			int flags) {
+		try {
+			IMethod method = AbstractSarlTest.mock(IMethod.class);
+			when(method.getDeclaringType()).thenReturn(type);
+			when(method.getElementName()).thenReturn(methodName);
+			when(method.getElementType()).thenReturn(IJavaElement.METHOD);
+			when(method.isConstructor()).thenReturn(isConstructor);
+			IAnnotation[] ma = methodAnnotations;
+			if (ma == null) {
+				ma = new IAnnotation[0];
 			}
-			parameters[i] = var;
+			when(method.getAnnotations()).thenReturn(ma);
+			if (Strings.isNullOrEmpty(returnType)) {
+				when(method.getReturnType()).thenReturn("V");
+			} else {
+				when(method.getReturnType()).thenReturn(returnType);
+			}
+			when(method.getNumberOfParameters()).thenReturn(parameterNames.length);
+			when(method.getParameterNames()).thenReturn(parameterNames);
+			when(method.getParameterTypes()).thenReturn(parameterTypes);
+			ILocalVariable[] parameters = new ILocalVariable[parameterNames.length];
+			for (int i = 0; i < parameterNames.length; ++i) {
+				ILocalVariable var = AbstractSarlTest.mock(ILocalVariable.class);
+				when(var.getElementName()).thenReturn(parameterNames[i]);
+				when(var.getTypeSignature()).thenReturn(parameterTypes[i]);
+				when(var.getDeclaringMember()).thenReturn(method);
+				IAnnotation a = parameterAnnotations[i];
+				if (a == null) {
+					when(var.getAnnotations()).thenReturn(new IAnnotation[0]);
+				} else {
+					when(var.getAnnotations()).thenReturn(new IAnnotation[] { a });
+				}
+				parameters[i] = var;
+			}
+			when(method.getParameters()).thenReturn(parameters);
+			when(method.getFlags()).thenReturn(flags);
+			return method;
+		} catch (JavaModelException exception) {
+			throw new RuntimeException(exception);
 		}
-		when(method.getParameters()).thenReturn(parameters);
-		when(method.getFlags()).thenReturn(flags);
-		return method;
+	}
+
+	/** Replies a mock of a IField.
+	 *
+	 * <table>
+	 * <tr><td>Z</td><td>boolean</td></tr>
+	 * <tr><td>B</td><td>byte</td></tr>
+	 * <tr><td>C</td><td>char</td></tr>
+	 * <tr><td>S</td><td>short</td></tr>
+	 * <tr><td>I</td><td>int</td></tr>
+	 * <tr><td>J</td><td>long</td></tr>
+	 * <tr><td>F</td><td>float</td></tr>
+	 * <tr><td>D</td><td>double</td></tr>
+	 * <tr><td>V</td><td>void</td></tr>
+	 * <tr><td>L fully-qualified-class ;</td><td>fully-qualified-class</td></tr>
+	 * <tr><td>[ type</td><td>type[]</td></tr>
+	 * </table>
+	 */
+	protected static IField createIFieldMock(IType type, String fieldName, String typeSignature,
+			int flags) {
+		try {
+			IField field = AbstractSarlTest.mock(IField.class);
+			when(field.getDeclaringType()).thenReturn(type);
+			when(field.getElementName()).thenReturn(fieldName);
+			when(field.getElementName()).thenReturn(fieldName);
+			when(field.getElementType()).thenReturn(IJavaElement.FIELD);
+			if (Strings.isNullOrEmpty(typeSignature)) {
+				when(field.getTypeSignature()).thenReturn("V");
+			} else {
+				when(field.getTypeSignature()).thenReturn(typeSignature);
+			}
+			when(field.getFlags()).thenReturn(flags);
+			return field;
+		} catch (JavaModelException exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 
 	/** Replies a mock of a IJavaProject.
@@ -193,15 +447,15 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 	 * @throws JavaModelException
 	 */
 	protected static IJavaProject createIJavaProjectMock() throws JavaModelException {
-		final IJavaProject project = mock(IJavaProject.class);
+		final IJavaProject project = AbstractSarlTest.mock(IJavaProject.class);
 		when(project.findType(anyString())).thenAnswer((invocation) -> {
-				String fqn = (String) invocation.getArguments()[0];
-				IType type = mock(IType.class);
-				when(type.getJavaProject()).thenReturn(project);
-				when(type.getFullyQualifiedName()).thenReturn(fqn);
-				when(type.getElementName()).thenReturn(fqn);
-				return type;
-			});
+			String fqn = (String) invocation.getArguments()[0];
+			IType type = AbstractSarlTest.mock(IType.class);
+			when(type.getJavaProject()).thenReturn(project);
+			when(type.getFullyQualifiedName()).thenReturn(fqn);
+			when(type.getElementName()).thenReturn(fqn);
+			return type;
+		});
 		return project;
 	}
 
@@ -223,12 +477,23 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 				}
 			}
 			if (cont) {
-				fail("Action key not expected: " + actualKey.toString());
+				final SortedSet<String> expectedSetToOutput = new TreeSet<>(Arrays.asList(expectedKeys));
+				final SortedSet<String> actualSetToOutput = new TreeSet<>();
+				for (ActionPrototype proto : actualKeys) {
+					actualSetToOutput.add(proto.toString());
+				}
+				throw new ComparisonFailure("Action key not expected: " + actualKey.toString(),
+						expectedSetToOutput.toString(), actualSetToOutput.toString());
 			}
 		}
 		if (!expected.isEmpty()) {
-			fail("Not enough action keys. Expected: " + Arrays.toString(expectedKeys)
-					+ ". Actual: " + Iterables.toString(actualKeys));
+			final SortedSet<String> expectedSetToOutput = new TreeSet<>(Arrays.asList(expectedKeys));
+			final SortedSet<String> actualSetToOutput = new TreeSet<>();
+			for (ActionPrototype proto : actualKeys) {
+				actualSetToOutput.add(proto.toString());
+			}
+			throw new ComparisonFailure("Not enough action keys.",
+					expectedSetToOutput.toString(), actualSetToOutput.toString());
 		}
 	}
 
@@ -255,7 +520,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		}
 		if (!expected.isEmpty()) {
 			fail("Not enough signature keys. Expected: " + Arrays.toString(expectedKeys)
-					+ ". Actual: " + Iterables.toString(actualKeys));
+			+ ". Actual: " + Iterables.toString(actualKeys));
 		}
 	}
 
@@ -269,7 +534,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 		@Inject
 		private Jdt2Ecore jdt2ecore;
-		
+
 		@Test
 		public void isGeneratedOperation_noAnnotation() throws JavaModelException {
 			IMethod m = mock(IMethod.class);
@@ -312,7 +577,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 		@Inject
 		private Jdt2Ecore jdt2ecore;
-		
+
 		@Test
 		public void getAnnotation_noAnnotation() throws JavaModelException {
 			IMethod m = mock(IMethod.class);
@@ -412,48 +677,48 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 			@Test
 			public void publicMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPublic);
 
-				IType type = createITypeMock("Type2", null);
+				IType type = createITypeMock(false, "Type2", null);
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void protectedMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccProtected);
 
-				IType type = createITypeMock("Type2", null);
+				IType type = createITypeMock(false, "Type2", null);
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void packageMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						0);
 
-				IType type = createITypeMock("Type2", null);
+				IType type = createITypeMock(false, "Type2", null);
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void privateMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPrivate);
 
-				IType type = createITypeMock("Type2", null);
+				IType type = createITypeMock(false, "Type2", null);
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
@@ -481,48 +746,48 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 			@Test
 			public void publicMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPublic);
 
-				IType type = createITypeMock("Type2", "Type1");
+				IType type = createITypeMock(false, "Type2", "Type1");
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void protectedMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccProtected);
 
-				IType type = createITypeMock("Type2", "Type1");
+				IType type = createITypeMock(false, "Type2", "Type1");
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void packageMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						0);
 
-				IType type = createITypeMock("Type2", "Type1");
+				IType type = createITypeMock(false, "Type2", "Type1");
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void privateMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPrivate);
 
-				IType type = createITypeMock("Type2", "Type1");
+				IType type = createITypeMock(false, "Type2", "Type1");
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
@@ -550,48 +815,48 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 			@Test
 			public void publicMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPublic);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", null);
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void protectedMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccProtected);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", null);
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void packageMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						0);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", null);
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void privateMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPrivate);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", null);
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
@@ -619,48 +884,48 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 			@Test
 			public void publicMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPublic);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", "Type1");
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void protectedMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccProtected);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", "Type1");
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void packageMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						0);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", "Type1");
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void privateMethod() throws JavaModelException {
-				IType parentType = createITypeMock("Type1", null);
+				IType parentType = createITypeMock(false, "Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPrivate);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", "Type1");
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
@@ -688,48 +953,48 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 			@Test
 			public void publicMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPublic);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", null);
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void protectedMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccProtected);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", null);
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void packageMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						0);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", null);
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void privateMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPrivate);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", null);
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
@@ -757,48 +1022,48 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 			@Test
 			public void publicMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPublic);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void protectedMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccProtected);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void packageMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						0);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void privateMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPrivate);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
@@ -826,48 +1091,48 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 			@Test
 			public void publicMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPublic);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package2.Type2", null);
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void protectedMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccProtected);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package2.Type2", null);
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void packageMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						0);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package2.Type2", null);
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void privateMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPrivate);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", null);
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package2.Type2", null);
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
@@ -895,48 +1160,48 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 			@Test
 			public void publicMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPublic);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void protectedMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccProtected);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
 				assertTrue(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void packageMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						0);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
 
 			@Test
 			public void privateMethod() throws JavaModelException {
-				IType parentType = createITypeMock("io.sarl.eclipse.tests.package1.Type1", null);
+				IType parentType = createITypeMock(false, "io.sarl.eclipse.tests.package1.Type1", null);
 				IMethod method = createIMethodMock(parentType, "myFct", "boolean",
 						new String[0], new String[0],
 						Flags.AccPrivate);
 
-				IType type = createITypeMock("io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
+				IType type = createITypeMock(false, "io.sarl.eclipse.tests.package2.Type2", "io.sarl.eclipse.tests.package1.Type1");
 
 				assertFalse(this.jdt2ecore.isVisible(this.jdt2ecore.toTypeFinder(this.project), type, method));
 			}
@@ -958,7 +1223,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 		@Test
 		public void getFormalParameterProvider_noVarargs() throws JavaModelException {
-			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
+			IType declaringType = createITypeMock(false, "io.sarl.eclipse.tests.p1.Type1", null);
 			IMethod method = createIMethodMock(
 					declaringType, "myFct", null,
 					new String[] { "param1", "param2", "param3" },
@@ -977,7 +1242,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 		@Test
 		public void getFormalParameterProvider_noVarargs_lastIsArray() throws JavaModelException {
-			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
+			IType declaringType = createITypeMock(false, "io.sarl.eclipse.tests.p1.Type1", null);
 			IMethod method = createIMethodMock(
 					declaringType, "myFct", null,
 					new String[] { "param1", "param2", "param3" },
@@ -996,7 +1261,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 		@Test
 		public void getFormalParameterProvider_varargs() throws JavaModelException {
-			IType declaringType = createITypeMock("io.sarl.eclipse.tests.p1.Type1", null);
+			IType declaringType = createITypeMock(false, "io.sarl.eclipse.tests.p1.Type1", null);
 			IMethod method = createIMethodMock(
 					declaringType, "myFct", null,
 					new String[] { "param1", "param2", "param3" },
@@ -1021,11 +1286,11 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class PopulateInheritanceContext extends AbstractSarlUiTest {
+	public static class PopulateInheritanceContext extends AbstractSarlTest {
 
 		@NonNullByDefault
 		private SARLEclipsePlugin plugin;
-		
+
 		@Inject
 		private Jdt2Ecore jdt2ecore;
 
@@ -1051,7 +1316,7 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 				SARLEclipsePlugin.setDefault(this.plugin);
 			}
 		}
-		
+
 		@Before
 		public void setUp() throws Exception {
 			this.finalOperations = Maps.newHashMap();
@@ -1061,43 +1326,45 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			this.superConstructors = Maps.newHashMap();
 			ensureEclipsePlugin();
 		}
-		
-		@After
-		public void tearDown() throws Exception {
-			helper().clearWorkspace();
-		}
 
 		@Test
 		public void populateInheritanceContext_0() throws Exception {
-			// Create the SARL scripts
-			SarlScript script = helper().sarlScript("populateInheritanceContext0.sarl", multilineString(
-						"package io.sarl.eclipse.tests.p0",
-						"capacity Capacity1 {",
-						"    def myFct1 : boolean",
-						"}",
-						"capacity Capacity2 extends Capacity1 {",
-						"    def myFct2 : boolean",
-						"}",
-						"capacity Capacity3 {",
-						"    def myFct3",
-						"}",
-						"skill Skill1 implements Capacity1 {",
-						"	protected var attr1 : int",
-						"	new(attr : int) {",
-						"		this.attr1 = attr",
-						"	}",
-						"	def myFct1 : boolean {",
-						"		return true",
-						"	}",
-						"	def skilFct(a : char) {",
-						"		System.out.println(a)",
-						"	}",
-						"}"));
-			helper().fullBuild();
-			helper().awaitAutoBuild();
+			IType capacity1 = createITypeMock(true, "io.sarl.eclipse.tests.p0.Capacity1", "io.sarl.lang.core.Capacity",
+					null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct1", "Z", Flags.AccPublic));
+					},
+					null);
+			IType capacity2 = createITypeMock(true, "io.sarl.eclipse.tests.p0.Capacity2", "io.sarl.eclipse.tests.p0.Capacity1",
+					null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct2", "Z", Flags.AccPublic));
+					},
+					null);
+			IType capacity3 = createITypeMock(true, "io.sarl.eclipse.tests.p0.Capacity3", "io.sarl.lang.core.Capacity",
+					null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct3", "V", Flags.AccPublic));
+					},
+					null);
+			IType skill1 = createITypeMock(false, "io.sarl.eclipse.tests.p0.Skill1",
+					"io.sarl.lang.core.Skill",
+					new String[] {"io.sarl.eclipse.tests.p0.Capacity1"},
+					(type, it) -> {
+						it.add(createIFieldMock(type, "attr1", "I", Flags.AccProtected));
+					},
+					(type, it) -> {
+						it.add(createIConstructorMock(type, new String[] {"attr"}, 
+								new String[] {"I"}, Flags.AccPublic));
+						it.add(createIMethodMock(type, "myFct1", "Z", Flags.AccPublic));
+						it.add(createIMethodMock(type, "skilFct", "B", new String[] {"a"}, 
+								new String[] {"C"}, Flags.AccPublic));
+					},
+					null);
+			UnitTestTypeFinder finder = new UnitTestTypeFinder(capacity1, capacity2, capacity3, skill1);
 			//
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
+					finder,
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1119,49 +1386,57 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 		@Test
 		public void populateInheritanceContext_1() throws Exception {
-			// Create the SARL scripts
-			SarlScript script = helper().sarlScript("populateInheritanceContext0.sarl", multilineString(
-						"package io.sarl.eclipse.tests.p0",
-						"capacity Capacity1 {",
-						"    def myFct1 : boolean",
-						"}",
-						"capacity Capacity2 extends Capacity1 {",
-						"    def myFct2 : boolean",
-						"}",
-						"capacity Capacity3 {",
-						"    def myFct3",
-						"}",
-						"skill Skill1 implements Capacity1 {",
-						"	var attr1 : int",
-						"	new(attr : int) {",
-						"		this.attr1 = attr",
-						"	}",
-						"	def myFct1 : boolean {",
-						"		return true",
-						"	}",
-						"	def skilFct(a : char) {",
-						"		System.out.println(a)",
-						"	}",
-						"}"));
-			helper().fullBuild();
-			helper().awaitAutoBuild();
+			IType capacity1 = createITypeMock(true, "io.sarl.eclipse.tests.p1.Capacity1", "io.sarl.lang.core.Capacity", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct1", "Z", Flags.AccPublic));
+						it.add(createIMethodMock(type, "myFct1", "Z",
+								new String[] {"a"}, new String[]{"I"}, Flags.AccPublic));
+					},
+					null);
+			IType capacity2 = createITypeMock(true, "io.sarl.eclipse.tests.p1.Capacity2", "io.sarl.eclipse.tests.p1.Capacity1", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct2", "Z", Flags.AccPublic));
+					},
+					null);
+			IType capacity3 = createITypeMock(true, "io.sarl.eclipse.tests.p1.Capacity3", "io.sarl.lang.core.Capacity", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct3", "V", Flags.AccPublic));
+					},
+					null);
+			IType skill1 = createITypeMock(false, "io.sarl.eclipse.tests.p1.Skill1",
+					"io.sarl.lang.core.Skill",
+					new String[] {"io.sarl.eclipse.tests.p1.Capacity1"},
+					(type, it) -> {
+						it.add(createIFieldMock(type, "attr1", "I", Flags.AccProtected));
+					},
+					(type, it) -> {
+						it.add(createIConstructorMock(type, new String[] {"attr"}, 
+								new String[] {"I"}, Flags.AccPublic));
+						it.add(createIMethodMock(type, "myFct1", "Z", Flags.AccPublic | Flags.AccFinal));
+						it.add(createIMethodMock(type, "myFct1", "Z", new String[] {"a"}, new String[]{"I"}, Flags.AccPublic));
+						it.add(createIMethodMock(type, "skilFct", "B", new String[] {"a"}, 
+								new String[] {"C"}, Flags.AccPublic));
+					},
+					null);
+			UnitTestTypeFinder finder = new UnitTestTypeFinder(capacity1, capacity2, capacity3, skill1);
 			//
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
+					finder,
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
 					operationsToImplement,
 					superConstructors,
-					"io.sarl.eclipse.tests.p0.Skill1",
-					Arrays.asList("io.sarl.eclipse.tests.p0.Capacity3", "io.sarl.eclipse.tests.p0.Capacity2"));
+					"io.sarl.eclipse.tests.p1.Skill1",
+					Arrays.asList("io.sarl.eclipse.tests.p1.Capacity3", "io.sarl.eclipse.tests.p1.Capacity2"));
 			//
 			assertNotNull(s);
 			assertTrue(s.toString(), s.isOK());
 			//
-			assertTrue(this.finalOperations.isEmpty());
+			assertActionKeys(this.finalOperations.keySet(),
+					"myFct1()");
 			assertActionKeys(this.overridableOperations.keySet(),
-					"skilFct(char)", "myFct1()");
+					"skilFct(char)", "myFct1(int)");
 			assertContains(this.inheritedFields.keySet(), "attr1");
 			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
 			assertSignatureKeys(this.superConstructors.keySet(), "int");
@@ -1169,50 +1444,55 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 		@Test
 		public void populateInheritanceContext_2() throws Exception {
-			// Create the SARL scripts
-			SarlScript script = helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
-				"package io.sarl.eclipse.tests.p1",
-				"capacity Capacity1 {",
-				"    def myFct1(a : int = 4) : boolean",
-				"}",
-				"capacity Capacity2 extends Capacity1 {",
-				"    def myFct2 : boolean",
-				"}",
-				"capacity Capacity3 {",
-				"    def myFct3",
-				"}",
-				"skill Skill1 implements Capacity1 {",
-				"	protected var attr1 : int",
-				"	new(attr : int) {",
-				"		this.attr1 = attr",
-				"	}",
-				"	def myFct1(a : int = 4) : boolean {",
-				"		return true",
-				"	}",
-				"	def skilFct(a : char) {",
-				"		System.out.println(a)",
-				"	}",
-				"}"));
-			helper().fullBuild();
-			helper().awaitAutoBuild();
+			IType capacity1 = createITypeMock(true, "io.sarl.eclipse.tests.p2.Capacity1", "io.sarl.lang.core.Capacity", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct1", "Z",
+								new String[] {"a"}, new String[]{"[I"}, Flags.AccPublic | Flags.AccVarargs));
+					},
+					null);
+			IType capacity2 = createITypeMock(true, "io.sarl.eclipse.tests.p2.Capacity2", "io.sarl.eclipse.tests.p2.Capacity1", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct2", "Z", Flags.AccPublic));
+					},
+					null);
+			IType capacity3 = createITypeMock(true, "io.sarl.eclipse.tests.p2.Capacity3", "io.sarl.lang.core.Capacity", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct3", "V", Flags.AccPublic));
+					},
+					null);
+			IType skill1 = createITypeMock(false, "io.sarl.eclipse.tests.p2.Skill1",
+					"io.sarl.lang.core.Skill",
+					new String[] {"io.sarl.eclipse.tests.p2.Capacity1"},
+					(type, it) -> {
+						it.add(createIFieldMock(type, "attr1", "I", Flags.AccProtected));
+					},
+					(type, it) -> {
+						it.add(createIConstructorMock(type, new String[] {"attr"}, 
+								new String[] {"I"}, Flags.AccPublic));
+						it.add(createIMethodMock(type, "myFct1", "Z", new String[] {"a"}, new String[]{"[I"},
+								Flags.AccPublic | Flags.AccVarargs));
+						it.add(createIMethodMock(type, "skilFct", "B", new String[] {"a"}, 
+								new String[] {"C"}, Flags.AccPublic));
+					},
+					null);
+			UnitTestTypeFinder finder = new UnitTestTypeFinder(capacity1, capacity2, capacity3, skill1);
 			//
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
+					finder,
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
 					operationsToImplement,
 					superConstructors,
-					"io.sarl.eclipse.tests.p1.Skill1",
-					Arrays.asList("io.sarl.eclipse.tests.p1.Capacity3", "io.sarl.eclipse.tests.p1.Capacity2"));
+					"io.sarl.eclipse.tests.p2.Skill1",
+					Arrays.asList("io.sarl.eclipse.tests.p2.Capacity3", "io.sarl.eclipse.tests.p2.Capacity2"));
 			//
 			assertNotNull(s);
 			assertTrue(s.toString(), s.isOK());
 			//
-			assertActionKeys(this.finalOperations.keySet(),
-					"myFct1()");
+			assertTrue(this.finalOperations.isEmpty());
 			assertActionKeys(this.overridableOperations.keySet(),
-					"skilFct(char)", "myFct1(int)");
+					"skilFct(char)", "myFct1(int*)");
 			assertContains(this.inheritedFields.keySet(), "attr1");
 			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
 			assertSignatureKeys(this.superConstructors.keySet(), "int");
@@ -1220,174 +1500,26 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 
 		@Test
 		public void populateInheritanceContext_3() throws Exception {
-			// Create the SARL scripts
-			SarlScript script = helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
-				"package io.sarl.eclipse.tests.p1",
-				"capacity Capacity1 {",
-				"    def myFct1(a : int = 4) : boolean",
-				"}",
-				"capacity Capacity2 extends Capacity1 {",
-				"    def myFct2 : boolean",
-				"}",
-				"capacity Capacity3 {",
-				"    def myFct3",
-				"}",
-				"skill Skill1 implements Capacity1 {",
-				"	var attr1 : int",
-				"	new(attr : int) {",
-				"		this.attr1 = attr",
-				"	}",
-				"	def myFct1(a : int = 4) : boolean {",
-				"		return true",
-				"	}",
-				"	def skilFct(a : char) {",
-				"		System.out.println(a)",
-				"	}",
-				"}"));
-			helper().fullBuild();
-			helper().awaitAutoBuild();
+			IType capacity1 = createITypeMock(true, "io.sarl.eclipse.tests.p3.Capacity1", "io.sarl.lang.core.Capacity", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct1", "Z",
+								new String[] {"a"}, new String[]{"[I"}, Flags.AccPublic | Flags.AccVarargs));
+					},
+					null);
+			IType capacity2 = createITypeMock(true, "io.sarl.eclipse.tests.p3.Capacity2", "io.sarl.eclipse.tests.p3.Capacity1", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct2", "Z", Flags.AccPublic));
+					},
+					null);
+			IType capacity3 = createITypeMock(true, "io.sarl.eclipse.tests.p3.Capacity3", "io.sarl.lang.core.Capacity", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct3", "V", Flags.AccPublic));
+					},
+					null);
+			UnitTestTypeFinder finder = new UnitTestTypeFinder(capacity1, capacity2, capacity3);
 			//
 			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
-					finalOperations,
-					overridableOperations,
-					inheritedFields,
-					operationsToImplement,
-					superConstructors,
-					"io.sarl.eclipse.tests.p1.Skill1",
-					Arrays.asList("io.sarl.eclipse.tests.p1.Capacity3", "io.sarl.eclipse.tests.p1.Capacity2"));
-			//
-			assertNotNull(s);
-			assertTrue(s.toString(), s.isOK());
-			//
-			assertActionKeys(this.finalOperations.keySet(),
-					"myFct1()");
-			assertActionKeys(this.overridableOperations.keySet(),
-					"skilFct(char)", "myFct1(int)");
-			assertContains(this.inheritedFields.keySet(), "attr1");
-			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
-			assertSignatureKeys(this.superConstructors.keySet(), "int");
-		}
-
-		@Test
-		public void populateInheritanceContext_4() throws Exception {
-			// Create the SARL scripts
-			SarlScript script = helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
-					"package io.sarl.eclipse.tests.p2",
-					"capacity Capacity1 {",
-					"    def myFct1(a : int*) : boolean",
-					"}",
-					"capacity Capacity2 extends Capacity1 {",
-					"    def myFct2 : boolean",
-					"}",
-					"capacity Capacity3 {",
-					"    def myFct3",
-					"}",
-					"skill Skill1 implements Capacity1 {",
-					"	protected var attr1 : int",
-					"	new(attr : int) {",
-					"		this.attr1 = attr",
-					"	}",
-					"	def myFct1(a : int*) : boolean {",
-					"		return true",
-					"	}",
-					"	def skilFct(a : char) {",
-					"		System.out.println(a)",
-					"	}",
-					"}"));
-			helper().fullBuild();
-			helper().awaitAutoBuild();
-			//
-			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
-					finalOperations,
-					overridableOperations,
-					inheritedFields,
-					operationsToImplement,
-					superConstructors,
-					"io.sarl.eclipse.tests.p2.Skill1",
-					Arrays.asList("io.sarl.eclipse.tests.p2.Capacity3", "io.sarl.eclipse.tests.p2.Capacity2"));
-			//
-			assertNotNull(s);
-			assertTrue(s.toString(), s.isOK());
-			//
-			assertTrue(this.finalOperations.isEmpty());
-			assertActionKeys(this.overridableOperations.keySet(),
-					"skilFct(char)", "myFct1(int*)");
-			assertContains(this.inheritedFields.keySet(), "attr1");
-			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
-			assertSignatureKeys(this.superConstructors.keySet(), "int");
-		}
-
-		@Test
-		public void populateInheritanceContext_5() throws Exception {
-			// Create the SARL scripts
-			SarlScript script = helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
-					"package io.sarl.eclipse.tests.p2",
-					"capacity Capacity1 {",
-					"    def myFct1(a : int*) : boolean",
-					"}",
-					"capacity Capacity2 extends Capacity1 {",
-					"    def myFct2 : boolean",
-					"}",
-					"capacity Capacity3 {",
-					"    def myFct3",
-					"}",
-					"skill Skill1 implements Capacity1 {",
-					"	var attr1 : int",
-					"	new(attr : int) {",
-					"		this.attr1 = attr",
-					"	}",
-					"	def myFct1(a : int*) : boolean {",
-					"		return true",
-					"	}",
-					"	def skilFct(a : char) {",
-					"		System.out.println(a)",
-					"	}",
-					"}"));
-			helper().fullBuild();
-			helper().awaitAutoBuild();
-			//
-			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
-					finalOperations,
-					overridableOperations,
-					inheritedFields,
-					operationsToImplement,
-					superConstructors,
-					"io.sarl.eclipse.tests.p2.Skill1",
-					Arrays.asList("io.sarl.eclipse.tests.p2.Capacity3", "io.sarl.eclipse.tests.p2.Capacity2"));
-			//
-			assertNotNull(s);
-			assertTrue(s.toString(), s.isOK());
-			//
-			assertTrue(this.finalOperations.isEmpty());
-			assertActionKeys(this.overridableOperations.keySet(),
-					"skilFct(char)", "myFct1(int*)");
-			assertContains(this.inheritedFields.keySet(), "attr1");
-			assertActionKeys(this.operationsToImplement.keySet(), "myFct2()", "myFct3()");
-			assertSignatureKeys(this.superConstructors.keySet(), "int");
-		}
-
-		@Test
-		public void populateInheritanceContext_6() throws Exception {
-			// Create the SARL scripts
-			SarlScript script = helper().sarlScript("populateInheritanceContext1.sarl", multilineString(
-					"package io.sarl.eclipse.tests.p3",
-					"capacity Capacity1 {",
-					"    def myFct1(a : int*) : boolean",
-					"}",
-					"capacity Capacity2 extends Capacity1 {",
-					"    def myFct2 : boolean",
-					"}",
-					"capacity Capacity3 {",
-					"    def myFct3",
-					"}"));
-			helper().fullBuild();
-			helper().awaitAutoBuild();
-			//
-			IStatus s = this.jdt2ecore.populateInheritanceContext(
-					new UnitTestTypeFinder(helper().getJavaProject(script.eResource())),
+					finder,
 					finalOperations,
 					overridableOperations,
 					inheritedFields,
@@ -1400,6 +1532,41 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 			assertFalse(s.toString(), s.isOK());
 			assertFalse(s.toString(), s.isMultiStatus());
 			assertEquals("io.sarl.eclipse.tests.p3.Skill1", s.getMessage());
+		}
+
+		@Test
+		public void populateInheritanceContext_4() throws Exception {
+			UnitTestTypeFinder finder = new UnitTestTypeFinder();
+			IType capacity1 = createITypeMock(true, "io.sarl.eclipse.tests.p4.Capacity1", "io.sarl.lang.core.Capacity", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct1", "Z",
+								new String[] {"a"}, new String[]{"[I"}, Flags.AccPublic | Flags.AccVarargs));
+					},
+					finder);
+			IType capacity2 = createITypeMock(true, "io.sarl.eclipse.tests.p4.Capacity2", "io.sarl.eclipse.tests.p4.Capacity1", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct2", "Z", Flags.AccPublic));
+					},
+					finder);
+			IType capacity3 = createITypeMock(true, "io.sarl.eclipse.tests.p4.Capacity3", "io.sarl.lang.core.Capacity", null, null,
+					(type, it) -> {
+						it.add(createIMethodMock(type, "myFct3", "V", Flags.AccPublic));
+					},
+					finder);
+			finder.setTypes(capacity1, capacity2, capacity3);
+			//
+			IStatus s = this.jdt2ecore.populateInheritanceContext(
+					finder,
+					finalOperations,
+					overridableOperations,
+					inheritedFields,
+					operationsToImplement,
+					superConstructors,
+					"io.sarl.lang.core.Skill",
+					Arrays.asList("io.sarl.eclipse.tests.p4.Capacity3", "io.sarl.eclipse.tests.p4.Capacity2"));
+			//
+			assertNotNull(s);
+			assertTrue(s.toString(), s.isOK());
 			//
 			assertTrue(this.finalOperations.isEmpty());
 			assertTrue(this.overridableOperations.isEmpty());
@@ -1416,34 +1583,29 @@ public class Jdt2EcoreTest extends AbstractSarlTest {
 		 */
 		private static class UnitTestTypeFinder implements TypeFinder {
 
-			private final IJavaProject project;
+			private Collection<IType> types;
 
-			public UnitTestTypeFinder(IJavaProject project) {
-				this.project = project;
+			public UnitTestTypeFinder(IType... types) {
+				this.types = Arrays.asList(types);
 			}
 
-			private IType createType(String fullyQualifiedName, String simpleName) throws JavaModelException {
-				IType type = mock(IType.class);
-				when(type.getFullyQualifiedName()).thenReturn(fullyQualifiedName);
-				when(type.getJavaProject()).thenReturn(this.project);
-				when(type.getElementName()).thenReturn(simpleName);
-				when(type.getSuperclassName()).thenReturn("java.lang.Object");
-				when(type.getSuperclassTypeSignature()).thenReturn("Ljava.lang.Object;");
-				doReturn(new IField[0]).when(type).getFields();
-				doReturn(new IMethod[0]).when(type).getMethods();
-				doReturn(new String[0]).when(type).getSuperInterfaceNames();
-				doReturn(new String[0]).when(type).getSuperInterfaceTypeSignatures();
-				return type;
+			public void setTypes(IType... types) {
+				this.types = Arrays.asList(types);
 			}
 
 			@Override
 			public IType findType(String typeName) throws JavaModelException {
 				if ("io.sarl.lang.core.Capacity".equals(typeName)) {
-					return createType(typeName, "Capacity");
+					return createITypeMock(true, typeName, null, null, null, null, null);
 				} else if ("io.sarl.lang.core.Skill".equals(typeName)) {
-					return createType(typeName, "Skill");
+					return createITypeMock(false, typeName, null, null, null, null, null);
 				}
-				return this.project.findType(typeName);
+				for (IType type : this.types) {
+					if (Objects.equals(typeName, type.getFullyQualifiedName())) {
+						return type;
+					}
+				}
+				return null;
 			}
 
 		}

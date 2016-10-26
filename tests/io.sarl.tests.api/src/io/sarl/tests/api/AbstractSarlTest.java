@@ -41,7 +41,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.google.common.base.Joiner;
@@ -67,7 +67,6 @@ import org.eclipse.xtext.junit4.XtextRunner;
 import org.eclipse.xtext.junit4.util.ParseHelper;
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.resource.XtextResourceSet;
-import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.XExpression;
@@ -532,17 +531,21 @@ public abstract class AbstractSarlTest {
 		Collection<Object> le = new ArrayList<>();
 		Iterables.addAll(le, expected);
 
+		final SortedSet<String> unexpectedElements = new TreeSet<>();
+		
 		Iterator<?> it1 = la.iterator();
 		while (it1.hasNext()) {
 			Object ac = it1.next();
 			it1.remove();
 			if (!le.remove(ac)) {
-				fail("Unexpecting element: " + ac);
-				return;
+				unexpectedElements.add(ac.toString());
 			}
 		}
 
-		if (!le.isEmpty()) {
+		if (!unexpectedElements.isEmpty()) {
+			fail("Unexpected elements:\n" + unexpectedElements.toString() + "\nExpected elements are:\n" +
+					Iterables.toString(actual));
+		} else if (!le.isEmpty()) {
 			fail("Expecting the following elements:\n" + le.toString() + "\nbut was:\n" +
 					Iterables.toString(actual));
 		}

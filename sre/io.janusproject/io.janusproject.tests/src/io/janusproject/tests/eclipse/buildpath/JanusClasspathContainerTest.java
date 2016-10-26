@@ -50,6 +50,63 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class JanusClasspathContainerTest extends AbstractSarlTest {
 
+	private static final String[] ECLIPSE_DEPENDENCIES = {
+			"aopalliance",
+			"com.google.gson",
+			"com.google.guava",
+			"com.google.inject",
+			"com.google.inject.multibindings",
+			"com.hazelcast",
+			"io.janusproject.plugin",
+			"io.sarl.core",
+			"io.sarl.lang.core",
+			"io.sarl.util",
+			"javax.cache.api",
+			"javax.inject",
+			"javax.servlet",
+			"org.apache.commons.cli",
+			"org.apache.log4j",
+			"org.arakhne.afc.core.util",
+			"org.arakhne.afc.core.vmutils",
+			"org.eclipse.core.contenttype",
+			"org.eclipse.core.jobs",
+			"org.eclipse.core.runtime",
+			"org.eclipse.equinox.app",
+			"org.eclipse.equinox.common",
+			"org.eclipse.equinox.preferences",
+			"org.eclipse.equinox.registry",
+			"org.eclipse.osgi",
+			"org.eclipse.osgi.compatibility.state",
+			"org.eclipse.osgi.services",
+			"org.eclipse.xtext.logging",
+			"org.eclipse.xtext.xbase.lib",
+			"org.slf4j.api",
+			"org.slf4j.impl.log4j12",
+			"org.zeromq.jeromq",
+	};
+	
+	private static final String[] TYCHO_DEPENDENCIES = {
+			"aopalliance",
+			"com.google.gson",
+			"com.google.guava",
+			"com.google.inject",
+			"com.google.inject.multibindings",
+			"com.hazelcast",
+			"io.janusproject.plugin",
+			"io.sarl.core",
+			"io.sarl.lang.core",
+			"io.sarl.util",
+			"javax.cache.api",
+			"javax.inject",
+			"org.apache.commons.cli",
+			"org.apache.log4j",
+			"org.arakhne.afc.core.util",
+			"org.arakhne.afc.core.vmutils",
+			"org.eclipse.osgi",
+			"org.eclipse.xtext.xbase.lib",
+			"org.zeromq.jeromq",
+	};
+
 	@NonNullByDefault
 	private IPath containerPath;
 
@@ -98,33 +155,22 @@ public class JanusClasspathContainerTest extends AbstractSarlTest {
 	public void getBundleDependencies() {
 		Iterable<String> iterable = this.container.getBundleDependencies();
 		assertNotNull(iterable);
-		assertPartlyContains(iterable,
-				"io.sarl.lang.core",
-				"javax.inject",
-				"org.eclipse.xtext.xbase.lib",
-				"com.google.guava",
-				"org.eclipse.osgi",
-				"org.eclipse.osgi.compatibility.state",
-				"io.sarl.util",
-				"io.sarl.core",
-				//
-				"io.janusproject.plugin",
-				"com.google.gson",
-				"com.google.inject",
-				"com.google.inject.multibindings",
-				"com.hazelcast",
-				"org.apache.commons.cli",
-				"org.arakhne.afc.core.vmutils",
-				"org.arakhne.afc.core.util",
-				"org.zeromq.jeromq",
-				"aopalliance");
+		if (isEclipseRuntimeEnvironment()) {
+			assertContains(iterable, ECLIPSE_DEPENDENCIES);
+		} else {
+			assertContains(iterable, TYCHO_DEPENDENCIES);
+		}
 	}
 
 	@Test
 	public void getClasspathEntries() {
 		IClasspathEntry[] iterable = this.container.getClasspathEntries();
 		assertNotNull(iterable);
-		assertEquals(32, iterable.length);
+		if (isEclipseRuntimeEnvironment()) {
+			assertEquals(ECLIPSE_DEPENDENCIES.length, iterable.length);
+		} else {
+			assertEquals(TYCHO_DEPENDENCIES.length, iterable.length);
+		}
 	}
 
 }

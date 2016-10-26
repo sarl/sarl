@@ -66,7 +66,7 @@ public class BundleUtilTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class PathTests {
+	public static class PathTests extends AbstractSarlTest {
 
 		private static void assertEndsWith(String expected, String actual) {
 			if (actual == null || !actual.endsWith(expected)) {
@@ -75,78 +75,51 @@ public class BundleUtilTest {
 		}
 		
 		@Test
-		@TestScope(eclipse = true, tycho = false)
-		public void getBundlePath_withEclipse() {
+		public void getBundlePath() {
 			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
 			Assume.assumeNotNull(bundle);
 			//
 			IPath path = BundleUtil.getBundlePath(bundle);
 			assertNotNull(path);
-			assertEndsWith("io.sarl.lang.core/target/classes/", path.toPortableString());
+			if (isEclipseRuntimeEnvironment()) {
+				assertEndsWith("io.sarl.lang.core/target/classes/", path.toPortableString());
+			} else {
+				assertEquals("io.sarl.lang.core-" + SARLVersion.SARL_RELEASE_VERSION_MAVEN + ".jar", path.lastSegment());
+			}
 		}
 
 		@Test
-		@TestScope(eclipse = false, tycho = true)
-		public void getBundlePath_withTycho() {
-			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
-			Assume.assumeNotNull(bundle);
-			//
-			IPath path = BundleUtil.getBundlePath(bundle);
-			assertNotNull(path);
-			assertEndsWith("io.sarl.lang.core/target/classes/", path.toPortableString());
-		}
-
-		@Test
-		@TestScope(eclipse = true, tycho = false)
-		public void getJavadocBundlePath_withEclipse() {
+		public void getJavadocBundlePath() {
 			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
 			Assume.assumeNotNull(bundle);
 			IPath bundlePath = BundleUtil.getBundlePath(bundle);
 			Assume.assumeNotNull(bundlePath);
 			//
 			IPath path = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
-			assertNotNull(path);
-			assertEndsWith("io.sarl.lang.core/", path.toPortableString());
+			if (isEclipseRuntimeEnvironment()) {
+				assertNotNull(path);
+				assertEndsWith("io.sarl.lang.core/", path.toPortableString());
+			} else {
+				assertNull(path);
+			}
 		}
 
 		@Test
-		@TestScope(eclipse = false, tycho = true)
-		public void getJavadocBundlePath_withTycho() {
-			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
-			Assume.assumeNotNull(bundle);
-			IPath bundlePath = BundleUtil.getBundlePath(bundle);
-			Assume.assumeNotNull(bundlePath);
-			//
-			IPath path = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
-			assertNotNull(path);
-			assertEndsWith("io.sarl.lang.core/", path.toPortableString());
-		}
-
-		@Test
-		@TestScope(eclipse = true, tycho = false)
-		public void getSourceBundlePath_withEclipse() {
+		public void getSourceBundlePath() {
 			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
 			Assume.assumeNotNull(bundle);
 			IPath bundlePath = BundleUtil.getBundlePath(bundle);
 			Assume.assumeNotNull(bundlePath);
 			//
 			IPath path = BundleUtil.getSourceBundlePath(bundle, bundlePath);
-			assertNotNull(path);
-			assertEndsWith("io.sarl.lang.core/", path.toPortableString());
+			if (isEclipseRuntimeEnvironment()) {
+				assertNotNull(path);
+				assertEndsWith("io.sarl.lang.core/", path.toPortableString());
+			} else {
+				assertNull(path);
+			}
 		}
 
-		@Test
-		@TestScope(eclipse = false, tycho = true)
-		public void getSourceBundlePath_withTycho() {
-			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
-			Assume.assumeNotNull(bundle);
-			IPath bundlePath = BundleUtil.getBundlePath(bundle);
-			Assume.assumeNotNull(bundlePath);
-			//
-			IPath path = BundleUtil.getSourceBundlePath(bundle, bundlePath);
-			assertNotNull(path);
-			assertEndsWith("io.sarl.lang.core/", path.toPortableString());
-		}
 	}
 
 	/**
@@ -163,8 +136,7 @@ public class BundleUtilTest {
 		}
 		
 		@Test
-		@TestScope(eclipse = true, tycho = false)
-		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_noRootDependencies_withEclipse() {
+		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_noRootDependencies() {
 			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
 			Assume.assumeNotNull(bundle);
 			//
@@ -182,47 +154,26 @@ public class BundleUtilTest {
 					"org.eclipse.xtext.xbase.lib",
 					"com.google.guava",
 					"org.eclipse.osgi");
-			assertContains(dependencies.getTransitiveSymbolicNames(true),
-					"io.sarl.lang.core",
-					"javax.inject",
-					"org.eclipse.xtext.xbase.lib",
-					"com.google.guava",
-					"org.eclipse.osgi",
-					"org.eclipse.osgi.compatibility.state");
+			if (isEclipseRuntimeEnvironment()) {
+				assertContains(dependencies.getTransitiveSymbolicNames(true),
+						"io.sarl.lang.core",
+						"javax.inject",
+						"org.eclipse.xtext.xbase.lib",
+						"com.google.guava",
+						"org.eclipse.osgi",
+						"org.eclipse.osgi.compatibility.state");
+			} else {
+				assertContains(dependencies.getTransitiveSymbolicNames(true),
+						"io.sarl.lang.core",
+						"javax.inject",
+						"org.eclipse.xtext.xbase.lib",
+						"com.google.guava",
+						"org.eclipse.osgi");
+			}
 		}
 
 		@Test
-		@TestScope(eclipse = false, tycho = true)
-		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_noRootDependencies_withTycho() {
-			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
-			Assume.assumeNotNull(bundle);
-			//
-			IBundleDependencies dependencies = BundleUtil.resolveBundleDependencies(bundle, (BundleURLMappings) null);
-			assertNotNull(dependencies);
-			assertEquals("io.sarl.lang.core", dependencies.getBundleSymbolicName());
-			assertOsgiVersionEquals(Version.parseVersion(SARLVersion.SARL_RELEASE_VERSION_OSGI), dependencies.getBundleVersion());
-			assertContains(dependencies.getDirectSymbolicNames(),
-					"io.sarl.lang.core",
-					"javax.inject",
-					"org.eclipse.xtext.xbase.lib");
-			assertContains(dependencies.getTransitiveSymbolicNames(false),
-					"io.sarl.lang.core",
-					"javax.inject",
-					"org.eclipse.xtext.xbase.lib",
-					"com.google.guava",
-					"org.eclipse.osgi");
-			assertContains(dependencies.getTransitiveSymbolicNames(true),
-					"io.sarl.lang.core",
-					"javax.inject",
-					"org.eclipse.xtext.xbase.lib",
-					"com.google.guava",
-					"org.eclipse.osgi",
-					"org.eclipse.osgi.compatibility.state");
-		}
-
-		@Test
-		@TestScope(eclipse = true, tycho = false)
-		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_rootDependencies_withEclipse() {
+		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_rootDependencies() {
 			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
 			Assume.assumeNotNull(bundle);
 			//
@@ -239,39 +190,20 @@ public class BundleUtilTest {
 					"org.eclipse.xtext.xbase.lib",
 					"com.google.guava",
 					"org.eclipse.osgi");
-			assertContains(dependencies.getTransitiveSymbolicNames(true),
-					"io.sarl.lang.core",
-					"org.eclipse.xtext.xbase.lib",
-					"com.google.guava",
-					"org.eclipse.osgi",
-					"org.eclipse.osgi.compatibility.state");
-		}
-
-		@Test
-		@TestScope(eclipse = false, tycho = true)
-		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_rootDependencies_withTycho() {
-			Bundle bundle = Platform.getBundle("io.sarl.lang.core");
-			Assume.assumeNotNull(bundle);
-			//
-			IBundleDependencies dependencies = BundleUtil.resolveBundleDependencies(bundle, (BundleURLMappings) null,
-					"org.eclipse.xtext.xbase.lib");
-			assertNotNull(dependencies);
-			assertEquals("io.sarl.lang.core", dependencies.getBundleSymbolicName());
-			assertOsgiVersionEquals(Version.parseVersion(SARLVersion.SARL_RELEASE_VERSION_OSGI), dependencies.getBundleVersion());
-			assertContains(dependencies.getDirectSymbolicNames(),
-					"io.sarl.lang.core",
-					"org.eclipse.xtext.xbase.lib");
-			assertContains(dependencies.getTransitiveSymbolicNames(false),
-					"io.sarl.lang.core",
-					"org.eclipse.xtext.xbase.lib",
-					"com.google.guava",
-					"org.eclipse.osgi");
-			assertContains(dependencies.getTransitiveSymbolicNames(true),
-					"io.sarl.lang.core",
-					"org.eclipse.xtext.xbase.lib",
-					"com.google.guava",
-					"org.eclipse.osgi",
-					"org.eclipse.osgi.compatibility.state");
+			if (isEclipseRuntimeEnvironment()) {
+				assertContains(dependencies.getTransitiveSymbolicNames(true),
+						"io.sarl.lang.core",
+						"org.eclipse.xtext.xbase.lib",
+						"com.google.guava",
+						"org.eclipse.osgi",
+						"org.eclipse.osgi.compatibility.state");
+			} else {
+				assertContains(dependencies.getTransitiveSymbolicNames(true),
+						"io.sarl.lang.core",
+						"org.eclipse.xtext.xbase.lib",
+						"com.google.guava",
+						"org.eclipse.osgi");
+			}
 		}
 
 	}

@@ -982,10 +982,16 @@ public class WorkbenchTestHelper {
 	}
 
 	/** Do a full build.
-	 * 
+	 *
+	 * @param resources the resources that should be build before launching ann Eclipse full build.
 	 * @throws CoreException if the build cannot be done.
 	 */
-	public void fullBuild() throws CoreException {
+	public void fullBuild(Resource... resources) throws CoreException {
+		if (resources != null) {
+			for (final Resource resource : resources) {
+				resource.getContents();
+			}
+		}
 		IResourcesSetupUtil.fullBuild();
 	}
 

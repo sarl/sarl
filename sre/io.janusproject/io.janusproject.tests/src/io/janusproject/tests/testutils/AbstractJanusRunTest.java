@@ -34,6 +34,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
@@ -209,6 +211,14 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			public void write(int b) throws IOException {
 				//
 			}
+			@Override
+			public void write(byte[] b) throws IOException {
+				//
+			}
+			@Override
+			public void write(byte[] b, int off, int len) throws IOException {
+				//
+			}
 		}));
 		this.results = new ArrayList<>();
 		if (!enableLogging) {
@@ -218,6 +228,13 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		}
 		Boot.setOffline(offline);
 		this.janusKernel = Boot.startJanus(module, type, results);
+		Logger current = this.janusKernel.getLogger();
+		while (current.getParent() != null && current.getParent() != current) {
+			current = current.getParent();
+		}
+		if (current != null) {
+			current.setLevel(Level.OFF);
+		}
 		long endTime;
 		if (timeout >= 0) {
 			endTime = System.currentTimeMillis() + timeout * 1000;

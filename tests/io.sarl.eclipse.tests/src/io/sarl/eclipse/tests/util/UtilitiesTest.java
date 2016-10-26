@@ -531,7 +531,13 @@ public final class UtilitiesTest {
 			assertEquals(BundleUtil.getSourceBundlePath(bundle, BundleUtil.getBundlePath(bundle)), entry.getSourceAttachmentPath());
 			IClasspathAttribute[] extras = entry.getExtraAttributes();
 			assertNotNull(extras);
-			assertEquals(1, extras.length);
+			if (isEclipseRuntimeEnvironment()) {
+				assertEquals(1, extras.length);
+				assertEquals("javadoc_location", extras[0].getName());
+				assertTrue(extras[0].getValue().endsWith("io.sarl.lang.core/"));
+			} else {
+				assertEquals(0, extras.length);
+			}
 		}
 
 		@Test
@@ -550,7 +556,13 @@ public final class UtilitiesTest {
 			assertEquals(BundleUtil.getSourceBundlePath(bundle, BundleUtil.getBundlePath(bundle)), entry.getSourceAttachmentPath());
 			IClasspathAttribute[] extras = entry.getExtraAttributes();
 			assertNotNull(extras);
-			assertEquals(1, extras.length);
+			if (isEclipseRuntimeEnvironment()) {
+				assertEquals(1, extras.length);
+				assertEquals("javadoc_location", extras[0].getName());
+				assertTrue(extras[0].getValue().endsWith("io.sarl.lang.core/"));
+			} else {
+				assertEquals(0, extras.length);
+			}
 		}
 
 		@Test
@@ -567,6 +579,12 @@ public final class UtilitiesTest {
 			IClasspathAttribute[] extras = entry.getExtraAttributes();
 			assertNotNull(extras);
 			assertEquals(1, extras.length);
+			assertEquals("javadoc_location", extras[0].getName());
+			if (isEclipseRuntimeEnvironment()) {
+				assertTrue(extras[0].getValue().endsWith("io.sarl.lang.core/"));
+			} else {
+				assertEquals("http://fake.org", extras[0].getValue());
+			}
 		}
 
 		@Test
@@ -586,6 +604,12 @@ public final class UtilitiesTest {
 			IClasspathAttribute[] extras = entry.getExtraAttributes();
 			assertNotNull(extras);
 			assertEquals(1, extras.length);
+			assertEquals("javadoc_location", extras[0].getName());
+			if (isEclipseRuntimeEnvironment()) {
+				assertTrue(extras[0].getValue().endsWith("io.sarl.lang.core/"));
+			} else {
+				assertEquals("http://fake.org", extras[0].getValue());
+			}
 		}
 
 	}
