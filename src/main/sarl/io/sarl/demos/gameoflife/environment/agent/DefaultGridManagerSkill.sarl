@@ -94,9 +94,9 @@ skill DefaultGridManagerSkill implements GridManager {
 
 	override applyActions(actions : List<Action>) {
 		for (action : actions) {
-			grid.get(action.getPosition().ix()).
-				set(action.getPosition().iy(),
-					Pair.of(grid.get(action.getPosition().ix()).get(action.getPosition().iy()).getKey(),
+			grid.get(action.getPosition().ix() - 1).
+				set(action.getPosition().iy() - 1,
+					Pair.of(grid.get(action.getPosition().ix() - 1).get(action.getPosition().iy() - 1).getKey(),
 						action.getType() == Action.Type.CREATE
 					))
 

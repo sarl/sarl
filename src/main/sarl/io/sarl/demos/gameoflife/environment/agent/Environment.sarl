@@ -17,6 +17,7 @@ import io.sarl.demos.gameoflife.environment.^agent.events.RunEndOfStep
 import io.sarl.lang.core.Address
 import io.sarl.util.Scopes
 import io.sarl.core.Logging
+import io.sarl.demos.gameoflife.environment.^agent.events.PlayEvent
 
 /**
  * @author Jérôme BOULMIER
@@ -53,13 +54,19 @@ agent Environment {
 
 	on CellAgentUpdated {
 		agentCounter++
-		info("Updated")
+
 		if (agentCounter == numberOfAgent) {
 			agentCounter = 0
 			emit(new RunEndOfStep)
 		}
 	}
 
+	on PlayEvent {
+		info("Starting the game")
+		
+		emit(new RunBeginingOfStep)
+	}
+	
 	on RunBeginingOfStep {
 		synchronized (this) {
 			this.actions.clear

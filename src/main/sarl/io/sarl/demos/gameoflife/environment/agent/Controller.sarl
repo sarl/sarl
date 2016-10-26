@@ -29,7 +29,7 @@ public class Controller implements GUIListener {
 	override play : void {
 		val evt : PlayEvent = new PlayEvent();
 		evt.source = address;
-		this.eventSpace.emit(evt, Scopes.addresses(this.address));
+		this.eventSpace.emit(evt/*, Scopes.addresses(this.address)*/);
 	}
 
 	override pause : void {
