@@ -23,13 +23,14 @@ agent Boot {
 	var controller : Controller
 	var agentCounter = 0
 	var numberOfAgent : int
+	var gui : GUI
 	val width = 1
 	val height = 1
 	
 	on Initialize{
 		val environmentUUID = UUID.randomUUID
 
-		val gui = GUI.getGUI();
+		gui = GUI.getGUI();
 		controller = new Controller(defaultSpace, new Address(defaultSpace.spaceID, getID()),
 			environmentUUID);
 		gui.addGUIListener(controller);
@@ -44,9 +45,8 @@ agent Boot {
 		if (agentCounter == numberOfAgent) {
 			agentCounter = 0
 			controller.play
+			gui.launchGUI(width, height)
 			killMe;
 		}
 	}
-
-
 }
