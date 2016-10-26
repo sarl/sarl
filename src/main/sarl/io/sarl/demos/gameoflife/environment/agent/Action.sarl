@@ -8,17 +8,17 @@ class Action {
 		CREATE,
 		DESTROY
 	}
-	
+
 	val emitter : UUID;
 	val position : Point2i;
 	val type : Type;
-	
+
 	new(emitter : UUID, position : Point2i, type : Type) {
 		this.emitter = emitter;
 		this.position = position;
 		this.type = type;
 	}
-	
+
 	/**
 	 * Replies the emitter.
 	 * @return
@@ -26,7 +26,7 @@ class Action {
 	 def getEmitter : UUID {
 		return this.emitter;
 	}
-	
+
 	/**
 	 * Replies the position of the emitter.
 	 * @return

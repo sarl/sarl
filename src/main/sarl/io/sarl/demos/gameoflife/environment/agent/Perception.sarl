@@ -1,21 +1,21 @@
-/** 
- * 
+/**
+ *
  */
 package io.sarl.demos.gameoflife.environment.^agent
 
 import java.util.Set
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
-/** 
+/**
  * @author Maxime PINARD
- * 
+ *
  */
 event Perception{
-	
+
 	val neighbors : Set<Point2i>
 	val alive : boolean
 	val position : Point2i
-	
+
 	new(neighbors : Set<Point2i>, alive : boolean, position : Point2i) {
 		this.neighbors = neighbors
 		this.alive = alive
