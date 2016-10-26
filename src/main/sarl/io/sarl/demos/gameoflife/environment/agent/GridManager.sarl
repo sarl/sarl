@@ -43,4 +43,9 @@ capacity GridManager {
 	 * Replies the position of the cell
 	 */
 	def getPosition(uuid : UUID) : Point2i
+	
+	/**
+	 * Replies the grid
+	 */
+	def getGrid : List<List<Pair<UUID, Boolean>>>
 }
