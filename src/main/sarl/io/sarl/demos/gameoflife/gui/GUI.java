@@ -1,19 +1,19 @@
 package io.sarl.demos.gameoflife.gui;
 
+import io.sarl.demos.gameoflife.environment.agent.EnvironmentListener;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import org.eclipse.xtext.xbase.lib.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.eclipse.xtext.xbase.lib.Pair;
-
-import io.sarl.demos.gameoflife.environment.agent.EnvironmentListener;
-import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * The type GUI.
@@ -26,6 +26,7 @@ public class GUI extends Application implements EnvironmentListener {
 	private final List<GUIListener> listeners = new ArrayList<>();
 	private SquareGridDisplayer squareGridDisplayer;
 	private Stage primaryStage;
+	private boolean launched = false;
 
 	/**
 	 * Gets gui.
@@ -35,15 +36,13 @@ public class GUI extends Application implements EnvironmentListener {
 	public static GUI getGUI() {
 		if(gui == null) {
 			ExecutorService executorService = Executors.newSingleThreadExecutor();
-			executorService.submit(() -> {
-				launch();
-			});
-			
-			while (gui == null) {
+			executorService.submit((Runnable) Application::launch);
+
+			while(gui == null) {
 				Thread.yield();
 			}
 		}
-		
+
 		return gui;
 	}
 
@@ -54,21 +53,25 @@ public class GUI extends Application implements EnvironmentListener {
 	 * @param height the height
 	 */
 	public void launchGUI(int width, int height) {
-		this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent event) {
-				for(GUIListener guiListener : GUI.this.listeners) {
-					guiListener.stop();
-				}
+
+		Platform.runLater(() -> {
+			if(!this.launched) {
+				this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent event) {
+						GUI.this.listeners.forEach(GUIListener::stop);
+					}
+				});
+				this.primaryStage.setTitle("Sarl game of life demo");
+
+				this.squareGridDisplayer = new SquareGridDisplayer(width, height);
+				Scene scene = new Scene(this.squareGridDisplayer);
+
+				this.primaryStage.setScene(scene);
+				this.primaryStage.show();
+				this.launched = true;
 			}
 		});
-		this.primaryStage.setTitle("Sarl game of life demo");
-
-		this.squareGridDisplayer = new SquareGridDisplayer(width, height);
-		Scene scene = new Scene(this.squareGridDisplayer);
-
-		this.primaryStage.setScene(scene);
-		this.primaryStage.show();
 	}
 
 	@Override
@@ -92,6 +95,10 @@ public class GUI extends Application implements EnvironmentListener {
 			throw new IllegalArgumentException("grid width or grid height is equal to 0");
 		}
 
+		if(!this.launched) {
+			launchGUI(grid.size(), grid.get(0).size());
+		}
+
 		boolean[][] booleenGrid = new boolean[grid.size()][grid.get(0).size()];
 		for(int i = 0; i < grid.size(); ++i) {
 			for(int j = 0; j < grid.get(i).size(); ++j) {
@@ -99,6 +106,6 @@ public class GUI extends Application implements EnvironmentListener {
 			}
 		}
 
-		this.squareGridDisplayer.setGrid(booleenGrid);
+		Platform.runLater(() -> this.squareGridDisplayer.setGrid(booleenGrid));
 	}
 }
