@@ -11,11 +11,11 @@ import io.sarl.demos.gameoflife.environment.^agent.events.CellAgentUpdated
 import io.sarl.demos.gameoflife.environment.^agent.events.CellOff
 import io.sarl.demos.gameoflife.environment.^agent.events.CellOn
 import io.sarl.demos.gameoflife.environment.^agent.events.GameIsDead
+import io.sarl.demos.gameoflife.environment.^agent.events.RegisterEnvironmentListener
 import io.sarl.demos.gameoflife.environment.^agent.events.RunBeginingOfStep
 import io.sarl.demos.gameoflife.environment.^agent.events.RunEndOfStep
 import io.sarl.lang.core.Address
 import io.sarl.util.Scopes
-import io.sarl.demos.gameoflife.environment.^agent.events.RegisterEnvironmentListener
 
 /** 
  * @author Jérôme BOULMIER
@@ -37,7 +37,7 @@ agent Environment {
 		
 		setSkill(new DefaultGridManagerSkill(width, height), GridManager);
 	}
-
+	
 	on CellOff {
 		actions.add(new Action(occurrence.emitter, occurrence.position, Action.Type.DESTROY))
 	}

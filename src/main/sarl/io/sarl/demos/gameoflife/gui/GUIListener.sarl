@@ -5,11 +5,11 @@ package io.sarl.demos.gameoflife.gui;
  *
  * @author Maxime PINARD
  */
-public interface GUIListener {
+interface GUIListener {
 
-	void play();
+	def play();
 	
-	void pause();
+	def pause();
 	
-	void stop();
+	def stop();
 }

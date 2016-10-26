@@ -1,16 +1,17 @@
 package io.sarl.demos.gameoflife.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.eclipse.xtext.xbase.lib.Pair;
+
 import io.sarl.demos.gameoflife.environment.agent.EnvironmentListener;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import org.eclipse.xtext.xbase.lib.Pair;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * The type GUI.

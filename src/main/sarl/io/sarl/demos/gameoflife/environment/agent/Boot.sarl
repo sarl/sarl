@@ -20,7 +20,7 @@ agent Boot {
 	on Initialize{
 		
 		val gui = GUI.getGUI();
-		val environmentUUID = spawn(Environment, 100, 100);
+		val environmentUUID = spawn(Environment, 3, 3);
 		val controller = new Controller(defaultSpace, new Address(defaultSpace.spaceID, getID()),
 			environmentUUID);
 		

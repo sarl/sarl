@@ -1,4 +1,4 @@
-package io.sarl.demos.gameoflife.environment.agent;
+package io.sarl.demos.gameoflife.environment.^agent;
 
 import org.eclipse.xtext.xbase.lib.Pair;
 
@@ -11,13 +11,12 @@ import java.util.UUID;
  *
  * @author Maxime PINARD
  */
-public interface EnvironmentListener extends EventListener {
-
+interface EnvironmentListener extends EventListener {
 	/**
 	 * Handle grid update.
 	 *
 	 * @param grid the grid
 	 */
-	void handleGridUpdate(List<List<Pair<UUID, Boolean>>> grid);
+	def handleGridUpdate(grid : List<List<Pair<UUID, Boolean>>>);
 
 }
