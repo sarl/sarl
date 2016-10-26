@@ -14,6 +14,7 @@ import io.sarl.lang.core.Address
 import java.util.UUID
 import io.sarl.core.Logging
 import javafx.application.Platform
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author Maxime PINARD
@@ -23,12 +24,12 @@ agent Boot {
 	uses DefaultContextInteractions, Lifecycle, Logging;
 
 	var controller : Controller
-	var agentCounter = 0
+	val agentCounter = new AtomicInteger
 	var numberOfAgent : int
 	var gui : GUI
-	val width = 3
-	val height = 3
-	
+	val width = 30
+	val height = 30
+
 	on Initialize {
 		val environmentUUID = UUID.randomUUID
 
@@ -43,12 +44,14 @@ agent Boot {
 	}
 
 	on AgentReadyForGame {
-		agentCounter++
+		var tmp = agentCounter.incrementAndGet
+		
+		info("Entity loaded: " + tmp)
 		//info("Updated: " + agentCounter);
 
-		if (agentCounter == numberOfAgent) {
-			controller.play
+		if (tmp == numberOfAgent) {
 			Platform.runLater([gui.launchGUI(width, height)])
+			controller.play
 			killMe;
 		}
 	}

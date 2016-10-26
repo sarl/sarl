@@ -58,11 +58,6 @@
 					<descriptors>
 						<descriptor>with-dependencies.xml</descriptor>
 					</descriptors>
-					<archive>
-						<manifest>
-							<mainClass>fr.utbm.info.ia54.PacManSimulator</mainClass>
-						</manifest>
-					</archive>
 				</configuration>
 				<executions>
 					<execution>

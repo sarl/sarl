@@ -42,4 +42,8 @@ class Action {
 	def getType : Type {
 		return type;
 	}
+	
+	override toString() : String {
+		return "Action={" + position + ", " + type + "}"
+	}
 }

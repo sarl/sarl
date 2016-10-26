@@ -3,7 +3,9 @@
  */
 package io.sarl.demos.gameoflife.environment.^agent
 
+import com.google.common.base.Preconditions
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Logging
 import java.util.HashSet
 import java.util.List
 import java.util.Map
@@ -18,7 +20,7 @@ import org.arakhne.afc.math.geometry.d2.i.Point2i
  * @author Maxime PINARD
  */
 skill DefaultGridManagerSkill implements GridManager {
-	uses DefaultContextInteractions
+	uses DefaultContextInteractions, Logging
 
 	val random = new Random
 	val width : int
@@ -34,7 +36,7 @@ skill DefaultGridManagerSkill implements GridManager {
 	
 	def install {
 		super.install
-		for (i : 0 ..< width) {
+		/*for (i : 0 ..< width) {
 			val line = newArrayList
 			for (j : 0 ..< height) {
 				val uuid = spawn(CellAgent, defaultContext.ID)
@@ -44,8 +46,8 @@ skill DefaultGridManagerSkill implements GridManager {
 				bodies.put(uuid, agentBody)
 			}
 			grid.add(line)
-		}
-		/*for (i : 0 ..< height) {
+		}*/
+		for (i : 0 ..< height) {
 			val line = newArrayList
 			for (j : 0 ..< width) {
 				val uuid = spawn(CellAgent, defaultContext.ID)
@@ -55,14 +57,24 @@ skill DefaultGridManagerSkill implements GridManager {
 					line.add(Pair.of(uuid, false));
 				}
 
-				val agentBody = new AgentBody(new Point2i(width, height), line.last.value)
+				val agentBody = new AgentBody(new Point2i(i, j), line.last.value)
 				bodies.put(uuid, agentBody)
 			}
 			grid.add(line)
-		}*/
+		}
 	}
 
 	override getPerceptions : List<Pair<UUID, Set<Point2i>>> {
+		val sb = new StringBuilder('\n')
+		for(i : 0..<height){
+			for(j : 0..<width){
+				sb.append(if (grid.get(i).get(j).value) "1" else "0")
+			}
+
+			sb.append('\n')
+		}
+		info(sb.toString)
+
 		val perceptions = <Pair<UUID, Set<Point2i>>>newArrayList();
 
 		for(i : 0..<width){
@@ -93,10 +105,12 @@ skill DefaultGridManagerSkill implements GridManager {
 	}
 
 	override applyActions(actions : List<Action>) {
+		info("Actions:" + actions)
 		for (action : actions) {
-			grid.get(action.getPosition().ix() - 1).
-				set(action.getPosition().iy() - 1,
-					Pair.of(grid.get(action.getPosition().ix() - 1).get(action.getPosition().iy() - 1).getKey(),
+			Preconditions::checkArgument(action.getType() != null)
+			grid.get(action.getPosition().ix()).
+				set(action.getPosition().iy(),
+					Pair.of(grid.get(action.getPosition().ix()).get(action.getPosition().iy()).getKey(),
 						action.getType() == Action.Type.CREATE
 					))
 

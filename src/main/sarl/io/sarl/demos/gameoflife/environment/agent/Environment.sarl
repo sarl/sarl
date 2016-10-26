@@ -6,18 +6,18 @@ package io.sarl.demos.gameoflife.environment.^agent
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
 import io.sarl.demos.gameoflife.environment.^agent.events.AgentReadyForGame
 import io.sarl.demos.gameoflife.environment.^agent.events.CellAgentUpdated
-import io.sarl.demos.gameoflife.environment.^agent.events.CellOff
-import io.sarl.demos.gameoflife.environment.^agent.events.CellOn
 import io.sarl.demos.gameoflife.environment.^agent.events.GameIsDead
+import io.sarl.demos.gameoflife.environment.^agent.events.PlayEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.RegisterEnvironmentListener
 import io.sarl.demos.gameoflife.environment.^agent.events.RunBeginingOfStep
 import io.sarl.demos.gameoflife.environment.^agent.events.RunEndOfStep
 import io.sarl.lang.core.Address
 import io.sarl.util.Scopes
-import io.sarl.core.Logging
-import io.sarl.demos.gameoflife.environment.^agent.events.PlayEvent
+import java.util.Collections
+import java.util.concurrent.locks.ReentrantLock
 
 /**
  * @author Jérôme BOULMIER
@@ -27,10 +27,11 @@ agent Environment {
 	uses DefaultContextInteractions, Lifecycle, GridManager, Logging;
 
 	val listeners = <EnvironmentListener>newArrayList
-	val actions = <Action>newArrayList
+	val actions = Collections.synchronizedList(<Action>newArrayList)
 	var guiAlive = true; // FIXME: Replace this with the controller
 	var numberOfAgent : int
 	var agentCounter : int
+	var lock = new ReentrantLock
 
 	on Initialize {
 		var width = occurrence.parameters.get(0) as Integer
@@ -43,20 +44,23 @@ agent Environment {
 
 		emit(new AgentReadyForGame)
 	}
-	
-	on CellOff {
-		actions.add(new Action(occurrence.emitter, occurrence.position, Action.Type.DESTROY))
-	}
-
-	on CellOn {
-		actions.add(new Action(occurrence.emitter, occurrence.position, Action.Type.CREATE))
-	}
 
 	on CellAgentUpdated {
-		agentCounter++
+		info("RECEIVE: " + occurrence.position + ";" + occurrence.type)
+		var tmp : int
+		
+		lock.lock
+		try {
+			if (occurrence.type != null) {
+				actions.add(new Action(occurrence.source.UUID, occurrence.position, occurrence.type))
+			}
+			agentCounter++
+			tmp = agentCounter
+		} finally {
+			lock.unlock
+		}
 
-		if (agentCounter == numberOfAgent) {
-			agentCounter = 0
+		if (tmp == numberOfAgent) {
 			emit(new RunEndOfStep)
 		}
 	}
@@ -64,35 +68,42 @@ agent Environment {
 	on PlayEvent {
 		info("Starting the game")
 		
-		emit(new RunBeginingOfStep)
+		emit(new RunBeginingOfStep, Scopes::addresses(defaultAddress))
 	}
-	
-	on RunBeginingOfStep {
-		synchronized (this) {
-			this.actions.clear
 
-			// Send perceptions
-			for (p : getPerceptions) {
-				val adr = new Address(defaultSpace.spaceID, p.key)
-				emit(new Perception(p.value, isAlive(p.key), getPosition(p.key)), Scopes::addresses(adr))
-			}
+	on RunBeginingOfStep {
+		info("Begin")
+		lock.lock
+		try {
+			this.actions.clear
+			agentCounter = 0
+		} finally {
+			lock.unlock
+		}
+
+		// Send perceptions
+		for (p : getPerceptions) {
+			val adr = new Address(defaultSpace.spaceID, p.key)
+			emit(new Perception(p.value, isAlive(p.key), getPosition(p.key)), Scopes::addresses(adr))
 		}
 	}
 
 	on RunEndOfStep {
-		synchronized (this) {
-			applyActions(actions)
+		info("End")
 
-			fireUpdate
+		applyActions(actions)
+		fireUpdate
 
-			// Go to the next step
-			if (guiAlive) {
-				emit(new RunBeginingOfStep, Scopes.addresses(defaultAddress))
-			} else {
-				emit(new GameIsDead)
-				killMe
-			}
+		// Go to the next step
+		if (guiAlive) {
+			Thread.sleep(1000)
+			emit(new RunBeginingOfStep, Scopes.addresses(defaultAddress))
+		} else {
+			emit(new GameIsDead)
+			killMe
 		}
+
+		info("EndEnd")
 	}
 
 	def fireUpdate {
