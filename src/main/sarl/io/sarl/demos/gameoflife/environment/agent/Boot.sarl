@@ -1,5 +1,5 @@
-/** 
- * 
+/**
+ *
  */
 package io.sarl.demos.gameoflife.environment.^agent
 
@@ -11,24 +11,24 @@ import io.sarl.lang.core.Address
 import io.sarl.util.Scopes
 import io.sarl.core.Lifecycle
 
-/** 
+/**
  * @author Maxime PINARD
- * 
+ *
  */
 agent Boot {
 	uses DefaultContextInteractions, Lifecycle;
-	
+
 	on Initialize{
-		
+
 		val gui = GUI.getGUI();
 		val environmentUUID = spawn(Environment, 100, 100);
 		val controller = new Controller(defaultSpace, new Address(defaultSpace.spaceID, getID()),
 			environmentUUID);
-		
+
 		gui.addGUIListener(controller);
 		val address = new Address(defaultSpace.spaceID, environmentUUID);
 		emit(new RegisterEnvironmentListener(gui), Scopes::addresses(address));
-		
+
 		killMe;
 	}
 }

@@ -1,5 +1,5 @@
-/** 
- * 
+/**
+ *
  */
 package io.sarl.demos.gameoflife.environment.^agent
 
@@ -14,17 +14,17 @@ import java.util.Random
 import org.arakhne.afc.math.MathUtil
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
-/** 
+/**
  * @author Jérôme BOULMIER
- * 
+ * @author Maxime PINARD
  */
 skill DefaultGridManagerSkill implements GridManager {
 	uses DefaultContextInteractions
-	
+
 	val random = new Random
 	val width : int
 	val height : int
-		
+
 	val grid : List<List<Pair<UUID, Boolean>>> = newArrayList
 	val bodies : Map<UUID, AgentBody> = newTreeMap(null)
 
@@ -37,7 +37,7 @@ skill DefaultGridManagerSkill implements GridManager {
 			for (j : 0..<height) {
 				val uuid = spawn(CellAgent, defaultContext.ID)
 				line.add(Pair.of(uuid, random.nextInt(4) == 0));
-				
+
 				val agentBody = new AgentBody(new Point2i(width, height), line.last.value)
 				bodies.put(uuid, agentBody)
 			}
@@ -47,7 +47,7 @@ skill DefaultGridManagerSkill implements GridManager {
 
 	override getPerceptions : List<Pair<UUID, Set<Point2i>>> {
 		val perceptions = <Pair<UUID, Set<Point2i>>>newArrayList();
-		
+
 		for(i : 0..<width){
 			for(j : 0..<height){
 				val set = new HashSet<Point2i>();
@@ -74,7 +74,7 @@ skill DefaultGridManagerSkill implements GridManager {
 	override getHeight : int {
 		height
 	}
-	
+
 	override applyActions(actions : List<Action>) {
 		for (action : actions) {
 			grid.get(action.getPosition().ix()).
@@ -82,15 +82,15 @@ skill DefaultGridManagerSkill implements GridManager {
 					Pair.of(grid.get(action.getPosition().ix()).get(action.getPosition().iy()).getKey(),
 						action.getType() == Action.Type.CREATE
 					))
-					
+
 			bodies.get(action.emitter).alive = (action.getType() == Action.Type.CREATE)
 		}
 	}
-	
+
 	override isAlive(uuid : UUID) : boolean {
 		bodies.get(uuid).alive;
 	}
-	
+
 	override getPosition(uuid : UUID) : Point2i {
 		bodies.get(uuid).position
 	}

@@ -1,5 +1,5 @@
-/** 
- * 
+/**
+ *
  */
 package io.sarl.demos.gameoflife.environment.^agent
 
@@ -17,9 +17,9 @@ import io.sarl.lang.core.Address
 import io.sarl.util.Scopes
 import io.sarl.demos.gameoflife.environment.^agent.events.RegisterEnvironmentListener
 
-/** 
+/**
  * @author Jérôme BOULMIER
- * 
+ * @author Maxime PINARD
  */
 agent Environment {
 	uses DefaultContextInteractions, Lifecycle, GridManager;
@@ -29,12 +29,12 @@ agent Environment {
 	var guiAlive = true; // FIXME: Replace this with the controller
 	var numberOfAgent : int
 	var agentCounter : int
-	
+
 	on Initialize {
 		var width = occurrence.parameters.get(0) as Integer
 		var height = occurrence.parameters.get(1) as Integer
 		numberOfAgent = width * height
-		
+
 		setSkill(new DefaultGridManagerSkill(width, height), GridManager);
 	}
 
@@ -48,16 +48,16 @@ agent Environment {
 
 	on CellAgentReady {
 		agentCounter++
-		
-		if (agentCounter == numberOfAgent) {	
+
+		if (agentCounter == numberOfAgent) {
 			agentCounter = 0
 			emit(new RunBeginingOfStep)
 		}
 	}
-	
+
 	on CellAgentUpdated {
 		agentCounter++
-		
+
 		if (agentCounter == numberOfAgent) {
 			agentCounter = 0
 			emit(new RunEndOfStep)
@@ -75,13 +75,13 @@ agent Environment {
 			}
 		}
 	}
-	
+
 	on RunEndOfStep {
 		synchronized (this) {
 			applyActions(actions)
-			
+
 			fireUpdate
-			
+
 			// Go to the next step
 			if (guiAlive) {
 				emit(new RunBeginingOfStep, Scopes.addresses(defaultAddress))
@@ -91,15 +91,15 @@ agent Environment {
 			}
 		}
 	}
-	
+
 	def fireUpdate {
-		
+
 		for (listener : listeners) {
-			
+
 			listener.handleGridUpdate(getGrid());
 		}
 	}
-	
+
 	on RegisterEnvironmentListener {
 		listeners.add(occurrence.environmentListener);
 	}

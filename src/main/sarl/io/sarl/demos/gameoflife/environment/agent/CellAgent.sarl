@@ -1,5 +1,5 @@
-/** 
- * 
+/**
+ *
  */
 package io.sarl.demos.gameoflife.environment.^agent
 
@@ -12,13 +12,13 @@ import io.sarl.demos.gameoflife.environment.^agent.events.CellOff
 import io.sarl.demos.gameoflife.environment.^agent.events.CellOn
 import io.sarl.demos.gameoflife.environment.^agent.events.GameIsDead
 
-/** 
+/**
  * @author Jérôme BOULMIER
- * 
+ *
  */
 agent CellAgent {
 	uses DefaultContextInteractions, Lifecycle;
-	
+
 	on Initialize {
 		emit(new CellAgentReady)
 	}
@@ -33,10 +33,10 @@ agent CellAgent {
 				emit(new CellOn(ID, occurrence.position))
 			}
 		}
-		
+
 		emit(new CellAgentUpdated)
 	}
-	
+
 	on GameIsDead {
 		killMe
 	}

@@ -1,21 +1,21 @@
-/** 
- * 
+/**
+ *
  */
 package io.sarl.demos.gameoflife.environment.^agent.events
 
 import java.util.UUID
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
-/** 
+/**
  * Event fired when a cell died.
- * 
+ *
  * @author Jérôme OULMIER
- * 
+ *
  */
 event CellOff {
 	var position : Point2i
 	var emitter : UUID
-	
+
 	new(uuid : UUID, position : Point2i) {
 		this.emitter = uuid
 		this.position = position;
