@@ -9,13 +9,14 @@ import io.sarl.demos.gameoflife.environment.^agent.events.RegisterEnvironmentLis
 import io.sarl.demos.gameoflife.gui.GUI
 import io.sarl.lang.core.Address
 import io.sarl.util.Scopes
+import io.sarl.core.Lifecycle
 
 /** 
  * @author Maxime PINARD
  * 
  */
 agent Boot {
-	uses DefaultContextInteractions;
+	uses DefaultContextInteractions, Lifecycle;
 	
 	on Initialize{
 		
@@ -27,5 +28,7 @@ agent Boot {
 		gui.addGUIListener(controller);
 		val address = new Address(defaultSpace.spaceID, environmentUUID);
 		emit(new RegisterEnvironmentListener(gui), Scopes::addresses(address));
+		
+		killMe;
 	}
 }
