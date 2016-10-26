@@ -38,13 +38,28 @@ skill DefaultGridManagerSkill implements GridManager {
 			val line = newArrayList
 			for (j : 0 ..< height) {
 				val uuid = spawn(CellAgent, defaultContext.ID)
-				line.add(Pair.of(uuid, random.nextInt(4) == 0));
+				line.add(Pair.of(uuid, true));
 
 				val agentBody = new AgentBody(new Point2i(width, height), line.last.value)
 				bodies.put(uuid, agentBody)
 			}
 			grid.add(line)
 		}
+		/*for (i : 0 ..< width) {
+			val line = newArrayList
+			for (j : 0 ..< height) {
+				val uuid = spawn(CellAgent, defaultContext.ID)
+				if (j == 2) {
+					line.add(Pair.of(uuid, true));
+				} else {
+					line.add(Pair.of(uuid, false));
+				}
+
+				val agentBody = new AgentBody(new Point2i(width, height), line.last.value)
+				bodies.put(uuid, agentBody)
+			}
+			grid.add(line)
+		}*/
 	}
 
 	override getPerceptions : List<Pair<UUID, Set<Point2i>>> {

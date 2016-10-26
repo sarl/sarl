@@ -3,6 +3,8 @@ package io.sarl.demos.gameoflife.gui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.eclipse.xtext.xbase.lib.Pair;
 
@@ -32,8 +34,16 @@ public class GUI extends Application implements EnvironmentListener {
 	 */
 	public static GUI getGUI() {
 		if(gui == null) {
-			launch();
+			ExecutorService executorService = Executors.newSingleThreadExecutor();
+			executorService.submit(() -> {
+				launch();
+			});
+			
+			while (gui == null) {
+				Thread.yield();
+			}
 		}
+		
 		return gui;
 	}
 
@@ -73,13 +83,11 @@ public class GUI extends Application implements EnvironmentListener {
 	 * @param listener the listener
 	 */
 	public void addGUIListener(GUIListener listener) {
-
 		this.listeners.add(listener);
 	}
 
 	@Override
 	public void handleGridUpdate(List<List<Pair<UUID, Boolean>>> grid) {
-
 		if(grid.size() == 0 || grid.get(0).size() == 0) {
 			throw new IllegalArgumentException("grid width or grid height is equal to 0");
 		}

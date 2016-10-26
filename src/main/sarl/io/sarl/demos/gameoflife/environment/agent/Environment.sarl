@@ -16,13 +16,14 @@ import io.sarl.demos.gameoflife.environment.^agent.events.RunBeginingOfStep
 import io.sarl.demos.gameoflife.environment.^agent.events.RunEndOfStep
 import io.sarl.lang.core.Address
 import io.sarl.util.Scopes
+import io.sarl.core.Logging
 
 /**
  * @author Jérôme BOULMIER
  * @author Maxime PINARD
  */
 agent Environment {
-	uses DefaultContextInteractions, Lifecycle, GridManager;
+	uses DefaultContextInteractions, Lifecycle, GridManager, Logging;
 
 	val listeners = <EnvironmentListener>newArrayList
 	val actions = <Action>newArrayList
@@ -33,6 +34,8 @@ agent Environment {
 	on Initialize {
 		var width = occurrence.parameters.get(0) as Integer
 		var height = occurrence.parameters.get(1) as Integer
+		listeners.add(occurrence.parameters.get(2) as EnvironmentListener)
+		
 		numberOfAgent = width * height
 
 		setSkill(new DefaultGridManagerSkill(width, height), GridManager);
@@ -48,11 +51,9 @@ agent Environment {
 		actions.add(new Action(occurrence.emitter, occurrence.position, Action.Type.CREATE))
 	}
 
-	
-
 	on CellAgentUpdated {
 		agentCounter++
-
+		info("Updated")
 		if (agentCounter == numberOfAgent) {
 			agentCounter = 0
 			emit(new RunEndOfStep)
@@ -88,9 +89,7 @@ agent Environment {
 	}
 
 	def fireUpdate {
-
 		for (listener : listeners) {
-
 			listener.handleGridUpdate(getGrid());
 		}
 	}

@@ -21,14 +21,12 @@ public class Controller implements GUIListener {
 	val address : Address;
 
 	new(eventSpace : EventSpace, address : Address, environmentUUID : UUID){
-
 		this.eventSpace = eventSpace;
 		this.address = address;
 		this.environmentUUID = environmentUUID;
 	}
 
 	override play : void {
-
 		val evt : PlayEvent = new PlayEvent();
 		evt.source = address;
 		this.eventSpace.emit(evt, Scopes.addresses(this.address));

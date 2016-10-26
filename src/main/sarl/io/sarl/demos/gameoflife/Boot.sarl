@@ -12,13 +12,15 @@ import io.sarl.demos.gameoflife.environment.^agent.events.AgentReadyForGame
 import io.sarl.demos.gameoflife.gui.GUI
 import io.sarl.lang.core.Address
 import java.util.UUID
+import io.sarl.core.Logging
+import javafx.application.Platform
 
 /**
  * @author Maxime PINARD
  *
  */
 agent Boot {
-	uses DefaultContextInteractions, Lifecycle;
+	uses DefaultContextInteractions, Lifecycle, Logging;
 
 	var controller : Controller
 	var agentCounter = 0
@@ -27,7 +29,7 @@ agent Boot {
 	val width = 1
 	val height = 1
 	
-	on Initialize{
+	on Initialize {
 		val environmentUUID = UUID.randomUUID
 
 		gui = GUI.getGUI();
@@ -36,16 +38,17 @@ agent Boot {
 		gui.addGUIListener(controller);
 
 		numberOfAgent = width * height + 1;
+		info("There is " + numberOfAgent + " agents.")
 		spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui);
 	}
 
 	on AgentReadyForGame {
 		agentCounter++
+		//info("Updated: " + agentCounter);
 
 		if (agentCounter == numberOfAgent) {
-			agentCounter = 0
 			controller.play
-			gui.launchGUI(width, height)
+			Platform.runLater([gui.launchGUI(width, height)])
 			killMe;
 		}
 	}
