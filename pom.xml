@@ -78,14 +78,20 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>io.janusproject</groupId>
-			<artifactId>io.janusproject.kernel</artifactId>
-			<version>${janus.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>math</artifactId>
 			<version>13.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.janusproject</groupId>
+			<artifactId>io.janusproject.kernel</artifactId>
+			<version>${janus.version}</version>
 		</dependency>
 	</dependencies>
 	<groupId>io.sarl.demos</groupId>

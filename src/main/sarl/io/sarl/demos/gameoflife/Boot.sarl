@@ -1,0 +1,52 @@
+/**
+ *
+ */
+package io.sarl.demos.gameoflife
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.demos.gameoflife.environment.^agent.Controller
+import io.sarl.demos.gameoflife.environment.^agent.Environment
+import io.sarl.demos.gameoflife.environment.^agent.events.AgentReadyForGame
+import io.sarl.demos.gameoflife.gui.GUI
+import io.sarl.lang.core.Address
+import java.util.UUID
+
+/**
+ * @author Maxime PINARD
+ *
+ */
+agent Boot {
+	uses DefaultContextInteractions, Lifecycle;
+
+	var controller : Controller
+	var agentCounter = 0
+	var numberOfAgent : int
+	val width = 1
+	val height = 1
+	
+	on Initialize{
+		val environmentUUID = UUID.randomUUID
+
+		val gui = GUI.getGUI();
+		controller = new Controller(defaultSpace, new Address(defaultSpace.spaceID, getID()),
+			environmentUUID);
+		gui.addGUIListener(controller);
+
+		numberOfAgent = width * height + 1;
+		spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui);
+	}
+
+	on AgentReadyForGame {
+		agentCounter++
+
+		if (agentCounter == numberOfAgent) {
+			agentCounter = 0
+			controller.play
+			killMe;
+		}
+	}
+
+
+}

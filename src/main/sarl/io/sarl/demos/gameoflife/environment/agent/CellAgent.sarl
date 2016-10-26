@@ -6,7 +6,7 @@ package io.sarl.demos.gameoflife.environment.^agent
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.demos.gameoflife.environment.^agent.events.CellAgentReady
+import io.sarl.demos.gameoflife.environment.^agent.events.AgentReadyForGame
 import io.sarl.demos.gameoflife.environment.^agent.events.CellAgentUpdated
 import io.sarl.demos.gameoflife.environment.^agent.events.CellOff
 import io.sarl.demos.gameoflife.environment.^agent.events.CellOn
@@ -20,7 +20,7 @@ agent CellAgent {
 	uses DefaultContextInteractions, Lifecycle;
 
 	on Initialize {
-		emit(new CellAgentReady)
+		emit(new AgentReadyForGame)
 	}
 
 	on Perception {

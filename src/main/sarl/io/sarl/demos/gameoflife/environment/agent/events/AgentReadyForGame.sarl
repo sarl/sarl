@@ -7,4 +7,4 @@ package io.sarl.demos.gameoflife.environment.^agent.events
  * @author Jérôme Boulmier
  *
  */
-event CellAgentReady
+event AgentReadyForGame

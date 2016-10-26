@@ -6,7 +6,7 @@ package io.sarl.demos.gameoflife.environment.^agent
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.demos.gameoflife.environment.^agent.events.CellAgentReady
+import io.sarl.demos.gameoflife.environment.^agent.events.AgentReadyForGame
 import io.sarl.demos.gameoflife.environment.^agent.events.CellAgentUpdated
 import io.sarl.demos.gameoflife.environment.^agent.events.CellOff
 import io.sarl.demos.gameoflife.environment.^agent.events.CellOn
@@ -36,6 +36,8 @@ agent Environment {
 		numberOfAgent = width * height
 
 		setSkill(new DefaultGridManagerSkill(width, height), GridManager);
+
+		emit(new AgentReadyForGame)
 	}
 	
 	on CellOff {
@@ -46,14 +48,7 @@ agent Environment {
 		actions.add(new Action(occurrence.emitter, occurrence.position, Action.Type.CREATE))
 	}
 
-	on CellAgentReady {
-		agentCounter++
-
-		if (agentCounter == numberOfAgent) {
-			agentCounter = 0
-			emit(new RunBeginingOfStep)
-		}
-	}
+	
 
 	on CellAgentUpdated {
 		agentCounter++

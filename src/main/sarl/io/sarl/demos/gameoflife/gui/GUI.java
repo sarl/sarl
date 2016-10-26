@@ -31,7 +31,7 @@ public class GUI extends Application implements EnvironmentListener {
 	 * @return the gui
 	 */
 	public static GUI getGUI() {
-		if(gui != null) {
+		if(gui == null) {
 			launch();
 		}
 		return gui;
