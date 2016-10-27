@@ -193,7 +193,7 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 			throw new IllegalArgumentException("grid width or grid height is equal to 0");
 		}
 
-		if(grid.size() != this.gridWidth || grid.get(0).size() != this.gridHeight) {
+		if(squareGridDisplayer == null || grid.size() != this.gridWidth || grid.get(0).size() != this.gridHeight) {
 			setupGUI(grid.size(), grid.get(0).size());
 		}
 
