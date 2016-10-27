@@ -3,6 +3,8 @@ package io.sarl.demos.gameoflife.gui;
 import io.sarl.demos.gameoflife.environment.agent.EnvironmentListener;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -26,7 +28,7 @@ import java.util.concurrent.Executors;
  *
  * @author Maxime PINARD
  */
-public class GUI extends Application implements EnvironmentListener {
+public class GUI extends Application implements EnvironmentListener, ControllerListener {
 
 	private static GUI gui;
 	private final List<GUIListener> listeners = new ArrayList<>();
@@ -52,6 +54,9 @@ public class GUI extends Application implements EnvironmentListener {
 	private boolean inited = false;
 	private int gridWidth;
 	private int gridHeight;
+	private SimpleBooleanProperty readyToPlay = new SimpleBooleanProperty(true);
+	private SimpleBooleanProperty readyToPause = new SimpleBooleanProperty(true);
+	private SimpleBooleanProperty readyToSetup = new SimpleBooleanProperty(true);
 
 	/**
 	 * Gets gui.
@@ -82,6 +87,7 @@ public class GUI extends Application implements EnvironmentListener {
 	private void initGUI() {
 		if(!this.inited) {
 
+			this.setupButton.disableProperty().bind(Bindings.not(this.readyToSetup));
 			this.setupButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -103,6 +109,7 @@ public class GUI extends Application implements EnvironmentListener {
 				}
 			});
 
+			this.playButton.disableProperty().bind(Bindings.not(this.readyToPlay));
 			this.playButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -110,6 +117,7 @@ public class GUI extends Application implements EnvironmentListener {
 				}
 			});
 
+			this.pauseButton.disableProperty().bind(Bindings.not(this.readyToPause));
 			this.pauseButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -197,5 +205,20 @@ public class GUI extends Application implements EnvironmentListener {
 		}
 
 		Platform.runLater(() -> this.squareGridDisplayer.setGrid(booleenGrid));
+	}
+
+	@Override
+	public void setReadyToSetup(boolean state) {
+		this.readyToSetup.set(state);
+	}
+
+	@Override
+	public void setReadyToPlay(boolean state) {
+		this.readyToPlay.set(state);
+	}
+
+	@Override
+	public void setReadyToPause(boolean state) {
+		this.readyToPause.set(state);
 	}
 }
