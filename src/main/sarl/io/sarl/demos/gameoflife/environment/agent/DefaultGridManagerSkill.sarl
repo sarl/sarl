@@ -33,34 +33,33 @@ skill DefaultGridManagerSkill implements GridManager {
 		this.width = width
 		this.height = height	
 	}
-	
-	def install {
-		super.install
-		/*for (i : 0 ..< width) {
-			val line = newArrayList
-			for (j : 0 ..< height) {
-				val uuid = spawn(CellAgent, defaultContext.ID)
-				line.add(Pair.of(uuid, true));
 
-				val agentBody = new AgentBody(new Point2i(width, height), line.last.value)
-				bodies.put(uuid, agentBody)
-			}
-			grid.add(line)
-		}*/
+	override install {
+		super.install
+
 		for (i : 0 ..< height) {
 			val line = newArrayList
 			for (j : 0 ..< width) {
 				val uuid = spawn(CellAgent, defaultContext.ID)
-				if (j == 1) {
-					line.add(Pair.of(uuid, true));
-				} else {
-					line.add(Pair.of(uuid, false));
-				}
+				line.add(Pair.of(uuid, false))
 
-				val agentBody = new AgentBody(new Point2i(i, j), line.last.value)
+				val agentBody = new AgentBody(new Point2i(i, j), false)
 				bodies.put(uuid, agentBody)
 			}
 			grid.add(line)
+		}
+
+		setup
+	}
+
+	override setup {
+		for (i : 0 ..< width) {
+			for (j : 0 ..< height) {
+				val uuid = grid.get(i).get(j).key
+				val rand = (random.nextInt(4) == 0)
+				grid.get(i).set(j, Pair.of(uuid, rand))
+				bodies.get(uuid).alive = rand
+			}
 		}
 	}
 
