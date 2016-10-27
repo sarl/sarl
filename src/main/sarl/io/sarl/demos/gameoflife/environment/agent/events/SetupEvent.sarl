@@ -3,7 +3,7 @@
  */
 package io.sarl.demos.gameoflife.environment.^agent.events
 /** 
- * @author lomadriel
+ * @author Jérôme BoULMIER
  * 
  */
 event SetupEvent {

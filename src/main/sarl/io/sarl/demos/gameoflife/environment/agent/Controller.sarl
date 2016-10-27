@@ -1,6 +1,7 @@
 package io.sarl.demos.gameoflife.environment.^agent
 
 import io.sarl.demos.gameoflife.environment.^agent.events.PauseEvent
+import io.sarl.demos.gameoflife.environment.^agent.events.PeriodUpdatedEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.PlayEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.SetupEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.StopEvent
@@ -52,7 +53,9 @@ public class Controller implements GUIListener {
 	}
 
 	override periodUpdated(period : int) {
-		// TODO Auto-generated code.
+		val evt : PeriodUpdatedEvent = new PeriodUpdatedEvent(period);
+		evt.source = address;
+		this.eventSpace.emit(evt, Scopes.addresses(this.address));
 	}
 	
 	}

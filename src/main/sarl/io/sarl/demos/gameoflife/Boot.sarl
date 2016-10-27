@@ -23,6 +23,7 @@ import java.util.concurrent.locks.ReentrantLock
 import javafx.application.Platform
 import io.sarl.demos.gameoflife.environment.^agent.events.GameIsDead
 import io.sarl.demos.gameoflife.environment.^agent.events.SetupEvent
+import io.sarl.demos.gameoflife.environment.^agent.events.PeriodUpdatedEvent
 
 /**
  * @author Maxime PINARD
@@ -35,8 +36,9 @@ agent Boot {
 	var agentCounter : int
 	var numberOfAgent : int
 	var gui : GUI
-	val width = 10
-	val height = 10
+	var width = 10
+	var height = 10
+	var period = 1000
 
 	var guiReady = true
 	var environmentReady = false
@@ -121,7 +123,7 @@ agent Boot {
 			info("Step Finished: running:" + gameRunning + ", paused:" + paused)
 	
 			if (gameRunning && !paused) {
-				Thread.sleep(1000) //FIXME : Remove hard coded value
+				Thread.sleep(period)
 				emit(new RunBeginingOfStep, Scopes::addresses(new Address(defaultSpace.spaceID, environmentUUID)))
 			} else if (!gameRunning) {
 				emit(new GameIsDead)
@@ -139,10 +141,20 @@ agent Boot {
 			error("Try to setup a new grid without pausing the game.")
 		}
 
+		width = occurrence.width
+		height = occurrence.height
 		numberOfAgent = occurrence.width * occurrence.height + 1
 		emit(new GameIsDead)
 		info("There is " + numberOfAgent + " agents.")
 		spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui, defaultAddress)
+
+		lock.unlock
+	}
+	
+	on PeriodUpdatedEvent {
+		lock.lock
+		info("Period updated")
+		period = occurrence.period
 
 		lock.unlock
 	}
