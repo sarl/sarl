@@ -19,6 +19,7 @@ import io.sarl.util.Scopes
 import java.util.Collections
 import java.util.concurrent.locks.ReentrantLock
 import io.sarl.demos.gameoflife.environment.^agent.events.StopEvent
+import io.sarl.demos.gameoflife.environment.^agent.events.PauseEvent
 
 /**
  * @author Jérôme BOULMIER
@@ -30,6 +31,7 @@ agent Environment {
 	val listeners = <EnvironmentListener>newArrayList
 	val actions = Collections.synchronizedList(<Action>newArrayList)
 	var guiAlive = true; // FIXME: Replace this with the controller
+	var paused = true;
 	var numberOfAgent : int
 	var agentCounter : int
 	var lock = new ReentrantLock
@@ -68,8 +70,24 @@ agent Environment {
 
 	on PlayEvent {
 		info("Starting the game.")
+
+		lock.lock
+		try {
+			paused = false
+		} finally {
+			lock.unlock
+		}
 		
 		emit(new RunBeginingOfStep, Scopes::addresses(defaultAddress))
+	}
+	
+	on PauseEvent {
+		lock.lock
+		try {
+			paused = true
+		} finally {
+			lock.unlock
+		}
 	}
 	
 	on StopEvent {
@@ -101,20 +119,28 @@ agent Environment {
 	on RunEndOfStep {
 		info("End")
 
-		applyActions(actions)
-		fireUpdate
-
-		// Go to the next step
-		if (guiAlive) {
-			Thread.sleep(1000)
-			emit(new RunBeginingOfStep, Scopes.addresses(defaultAddress))
-		} else {
-			info("Ending the game.")
+		if (actions.size == 0) {
 			emit(new GameIsDead)
 			killMe
+		} else {
+			applyActions(actions)
+			fireUpdate
+	
+			// Go to the next step
+			if (guiAlive && !paused) {
+				Thread.sleep(1000)
+				emit(new RunBeginingOfStep, Scopes.addresses(defaultAddress))
+			} else if (!paused) {
+				info("Ending the game.")
+				emit(new GameIsDead)
+				killMe
+			} else {
+				info("Pausing the game.")
+				Thread.yield
+			}
+	
+			info("EndEnd")
 		}
-
-		info("EndEnd")
 	}
 
 	def fireUpdate {
