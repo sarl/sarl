@@ -18,6 +18,7 @@ import io.sarl.lang.core.Address
 import io.sarl.util.Scopes
 import java.util.Collections
 import java.util.concurrent.locks.ReentrantLock
+import io.sarl.demos.gameoflife.environment.^agent.events.StopEvent
 
 /**
  * @author Jérôme BOULMIER
@@ -66,9 +67,18 @@ agent Environment {
 	}
 
 	on PlayEvent {
-		info("Starting the game")
+		info("Starting the game.")
 		
 		emit(new RunBeginingOfStep, Scopes::addresses(defaultAddress))
+	}
+	
+	on StopEvent {
+		lock.lock
+		try {
+			guiAlive = false
+		} finally {
+			lock.unlock
+		}
 	}
 
 	on RunBeginingOfStep {
@@ -99,6 +109,7 @@ agent Environment {
 			Thread.sleep(1000)
 			emit(new RunBeginingOfStep, Scopes.addresses(defaultAddress))
 		} else {
+			info("Ending the game.")
 			emit(new GameIsDead)
 			killMe
 		}

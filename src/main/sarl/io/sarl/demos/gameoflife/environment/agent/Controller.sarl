@@ -43,6 +43,6 @@ public class Controller implements GUIListener {
 
 		val evt : StopEvent = new StopEvent();
 		evt.source = address;
-		this.eventSpace.emit(evt, Scopes.addresses(this.address));
+		this.eventSpace.emit(evt/*, Scopes.addresses(this.address)*/);
 	}
 }
