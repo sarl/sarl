@@ -6,15 +6,15 @@ package io.sarl.demos.gameoflife
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
 import io.sarl.demos.gameoflife.environment.^agent.Controller
 import io.sarl.demos.gameoflife.environment.^agent.Environment
 import io.sarl.demos.gameoflife.environment.^agent.events.AgentReadyForGame
 import io.sarl.demos.gameoflife.gui.GUI
 import io.sarl.lang.core.Address
 import java.util.UUID
-import io.sarl.core.Logging
+import java.util.concurrent.locks.ReentrantLock
 import javafx.application.Platform
-import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author Maxime PINARD
@@ -24,11 +24,12 @@ agent Boot {
 	uses DefaultContextInteractions, Lifecycle, Logging;
 
 	var controller : Controller
-	val agentCounter = new AtomicInteger
+	var agentCounter : int
 	var numberOfAgent : int
 	var gui : GUI
-	val width = 30
-	val height = 30
+	val width = 10
+	val height = 10
+	val lock = new ReentrantLock
 
 	on Initialize {
 		val environmentUUID = UUID.randomUUID
@@ -44,10 +45,17 @@ agent Boot {
 	}
 
 	on AgentReadyForGame {
-		var tmp = agentCounter.incrementAndGet
+		var tmp : int
+		
+		lock.lock
+		try {
+			agentCounter++
+			tmp = agentCounter
+		} finally {
+			lock.unlock
+		}
 		
 		info("Entity loaded: " + tmp)
-		//info("Updated: " + agentCounter);
 
 		if (tmp == numberOfAgent) {
 			Platform.runLater([gui.launchGUI(width, height)])
