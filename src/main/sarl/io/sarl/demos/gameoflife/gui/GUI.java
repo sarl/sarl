@@ -3,6 +3,7 @@ package io.sarl.demos.gameoflife.gui;
 import io.sarl.demos.gameoflife.environment.agent.EnvironmentListener;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -80,6 +81,50 @@ public class GUI extends Application implements EnvironmentListener {
 
 	private void initGUI() {
 		if(!this.inited) {
+
+			this.setupButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					GUI.this.gridWidth = Integer.parseInt(GUI.this.widthLabel.getText());
+					GUI.this.gridHeight = Integer.parseInt(GUI.this.heightLabel.getText());
+					for(GUIListener listener : GUI.this.listeners) {
+						listener.setup(GUI.this.gridWidth, GUI.this.gridHeight);
+					}
+				}
+			});
+
+			//TODO: check if textfield update are cheched with onAction
+			this.periodTextField.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					for(GUIListener listener : GUI.this.listeners) {
+						listener.periodUpdated(Integer.parseInt(GUI.this.periodTextField.getText()));
+					}
+				}
+			});
+
+			this.playButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					GUI.this.listeners.forEach(GUIListener::play);
+				}
+			});
+
+			this.pauseButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					GUI.this.listeners.forEach(GUIListener::pause);
+				}
+			});
+
+			this.exitButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					GUI.this.primaryStage.close();
+					GUI.this.listeners.forEach(GUIListener::stop);
+				}
+			});
+
 			this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override
 				public void handle(WindowEvent event) {
