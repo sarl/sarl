@@ -77,7 +77,6 @@ agent Boot {
 			Platform.runLater([gui.launchGUI()])
 			Platform.runLater([gui.setupGUI(width, height)])
 			environmentReady = true
-			controller.play
 		}
 	}
 
@@ -111,7 +110,12 @@ agent Boot {
 
 		lock.lock
 		try {
-			gameRunning = false
+			if (!gameRunning || paused) {
+				emit(new GameIsDead)
+				killMe
+			} else {
+				gameRunning = false	
+			}
 		} finally {
 			lock.unlock
 		}
