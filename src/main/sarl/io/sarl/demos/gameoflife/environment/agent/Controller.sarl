@@ -5,6 +5,7 @@ import io.sarl.demos.gameoflife.environment.^agent.events.PeriodUpdatedEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.PlayEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.SetupEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.StopEvent
+import io.sarl.demos.gameoflife.gui.ControllerListener
 import io.sarl.demos.gameoflife.gui.GUIListener
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.EventSpace
@@ -15,6 +16,8 @@ import java.util.UUID
  * @author Maxime PINARD
  */
 public class Controller implements GUIListener {
+	
+	val listeners = <ControllerListener>newArrayList
 
 	val environmentUUID : UUID;
 
@@ -58,4 +61,26 @@ public class Controller implements GUIListener {
 		this.eventSpace.emit(evt, Scopes.addresses(this.address));
 	}
 	
+	def addControllerListener(listener : ControllerListener){
+		listeners.add(listener);
 	}
+
+	def setReadyToSetup(state : boolean){
+		for(listener : listeners){
+			listener.setReadyToSetup(state);
+		}
+	}
+
+	def setReadyToPlay(state : boolean) {
+		for (listener : listeners) {
+			listener.setReadyToPlay(state);
+		}
+	}
+
+	def setReadyToPause(state : boolean) {
+		for (listener : listeners) {
+			listener.setReadyToPause(state);
+		}
+	}
+	
+}
