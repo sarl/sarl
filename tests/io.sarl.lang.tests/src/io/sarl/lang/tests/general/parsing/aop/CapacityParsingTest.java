@@ -366,8 +366,8 @@ public class CapacityParsingTest {
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
-					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'C1' is inconsistent");
+					IssueCodes.INVALID_EXTENDED_TYPE,
+					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
 		}
 
 		@Test
@@ -382,8 +382,8 @@ public class CapacityParsingTest {
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
-					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'C1' is inconsistent");
+					IssueCodes.INVALID_EXTENDED_TYPE,
+					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
 		}
 
 		@Test

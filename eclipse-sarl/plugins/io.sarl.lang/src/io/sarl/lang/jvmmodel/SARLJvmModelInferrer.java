@@ -157,7 +157,6 @@ import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
-import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
@@ -285,9 +284,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Inject
 	private IInlineExpressionCompiler inlineExpressionCompiler;
-
-	@Inject
-	private InheritanceHelper inheritanceHelper;
 
 	/** Generation contexts.
 	 */
@@ -1681,7 +1677,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		for (final JvmTypeReference capacityType : source.getCapacities()) {
 			final JvmType type = capacityType.getType();
 			if (type instanceof JvmGenericType
-					&& this.inheritanceHelper.isSubTypeOf(capacityType, Capacity.class, SarlCapacity.class)
+					/*&& this.inheritanceHelper.isSubTypeOf(capacityType, Capacity.class, SarlCapacity.class)*/
 					&& !context.getGeneratedCapacityUseFields().contains(capacityType.getIdentifier())) {
 				// Generate the extension field
 				final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacityType.getIdentifier());
@@ -2081,12 +2077,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			GenerationContext context,
 			JvmGenericType owner, Class<?> defaultJvmType, Class<? extends XtendTypeDeclaration> defaultSarlType,
 			List<? extends JvmParameterizedTypeReference> supertypes) {
-		final boolean isInterface = owner.isInterface();
 		boolean explicitType = false;
 		for (final JvmParameterizedTypeReference superType : supertypes) {
 			if (!Objects.equal(owner.getIdentifier(), superType.getIdentifier())
 					&& superType.getType() instanceof JvmGenericType
-					&& this.inheritanceHelper.isProxyOrSubTypeOf(superType, defaultJvmType, defaultSarlType, isInterface)) {
+					/*&& this.inheritanceHelper.isProxyOrSubTypeOf(superType, defaultJvmType, defaultSarlType, isInterface)*/) {
 				owner.getSuperTypes().add(this.typeBuilder.cloneWithProxies(superType));
 				context.incrementSerial(superType.getIdentifier().hashCode());
 				explicitType = true;
@@ -2116,7 +2111,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		for (final JvmParameterizedTypeReference superType : implementedtypes) {
 			if (!Objects.equal(owner.getIdentifier(), superType.getIdentifier())
 					&& superType.getType() instanceof JvmGenericType
-					&& this.inheritanceHelper.isProxyOrSubTypeOf(superType, defaultJvmType, defaultSarlType, true)) {
+					/*&& this.inheritanceHelper.isProxyOrSubTypeOf(superType, defaultJvmType, defaultSarlType, true)*/) {
 				owner.getSuperTypes().add(this.typeBuilder.cloneWithProxies(superType));
 				context.incrementSerial(superType.getIdentifier().hashCode());
 				explicitType = true;

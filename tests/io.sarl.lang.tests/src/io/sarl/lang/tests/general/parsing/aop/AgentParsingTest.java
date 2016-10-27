@@ -130,8 +130,8 @@ public class AgentParsingTest {
 
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
-					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'A2' is inconsistent");
+					IssueCodes.INVALID_EXTENDED_TYPE,
+					"Supertype must be of type 'io.sarl.lang.core.Agent'");
 		}
 
 		@Test
@@ -147,8 +147,8 @@ public class AgentParsingTest {
 
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
-					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'A2' is inconsistent");
+					IssueCodes.INVALID_EXTENDED_TYPE,
+					"Supertype must be of type 'io.sarl.lang.core.Agent'");
 		}
 
 		@Test
