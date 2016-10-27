@@ -37,6 +37,8 @@ import io.sarl.eclipse.util.Utilities.SARLBundleJavadocURLMappings;
 
 /** Classpath container dedicated to the Janus platform.
  *
+ * <p>The Janus classpath library is an application library, i.e. it is included into the run-time classpath.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -73,6 +75,11 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	 */
 	public JanusClasspathContainer(IPath containerPath) {
 		super(containerPath);
+	}
+
+	@Override
+	public int getKind() {
+		return K_APPLICATION;
 	}
 
 	/** Replies the standard classpath for running the Janus platform.

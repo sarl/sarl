@@ -32,6 +32,9 @@ import io.sarl.eclipse.util.BundleUtil;
 
 /** Classpath container dedicated to the SARL environment.
  *
+ * <p>The SARL classpath container is a system library, i.e. it will not be included into the run-time
+ * classpath.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -53,6 +56,11 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 	 */
 	public SARLClasspathContainer(IPath containerPath) {
 		super(containerPath);
+	}
+
+	@Override
+	public int getKind() {
+		return K_SYSTEM;
 	}
 
 	@Override

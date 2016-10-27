@@ -143,7 +143,7 @@ public class JanusClasspathContainerTest extends AbstractSarlTest {
 
 	@Test
 	public void getKind() {
-		assertEquals(IClasspathContainer.K_SYSTEM, this.container.getKind());
+		assertEquals(IClasspathContainer.K_APPLICATION, this.container.getKind());
 	}
 
 	@Test

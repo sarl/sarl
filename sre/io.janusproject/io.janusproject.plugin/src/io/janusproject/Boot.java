@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
 import com.google.inject.Module;
@@ -181,6 +182,10 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_SHOWDEFAULTS_LONG = "showdefaults"; //$NON-NLS-1$
 
+	/** Short command-line option for "show the classpath".
+	 */
+	public static final String CLI_OPTION_SHOWCLASSPATH = "showclasspath"; //$NON-NLS-1$
+
 	/** Short command-line option for "show CLI arguments".
 	 */
 	public static final String CLI_OPTION_SHOWCLIARGUMENTS_LONG = "cli"; //$NON-NLS-1$
@@ -226,6 +231,9 @@ public final class Boot {
 					return null;
 				case CLI_OPTION_SHOWDEFAULTS_LONG:
 					showDefaults();
+					return null;
+				case CLI_OPTION_SHOWCLASSPATH:
+					showClasspath();
 					return null;
 				case CLI_OPTION_SHOWCLIARGUMENTS_LONG:
 					showCommandLineArguments(args);
@@ -433,6 +441,9 @@ public final class Boot {
 		options.addOption(CLI_OPTION_SHOWDEFAULTS_SHORT, CLI_OPTION_SHOWDEFAULTS_LONG, false,
 				Messages.Boot_13);
 
+		options.addOption(CLI_OPTION_SHOWCLASSPATH, false,
+				Messages.Boot_23);
+
 		options.addOption(null, CLI_OPTION_SHOWCLIARGUMENTS_LONG, false,
 				Messages.Boot_14);
 
@@ -521,6 +532,22 @@ public final class Boot {
 			os.flush();
 		} catch (Throwable e) {
 			e.printStackTrace();
+		}
+		getExiter().exit();
+	}
+
+	/**
+	 * Show the classpath of the system properties. This function never returns.
+	 */
+	@SuppressWarnings({ "checkstyle:regexp", "resource" })
+	public static void showClasspath() {
+		final String cp = System.getProperty("java.class.path"); //$NON-NLS-1$
+		if (!Strings.isNullOrEmpty(cp)) {
+			final PrintStream ps = getConsoleLogger();
+			for (final String entry : cp.split(Pattern.quote(File.pathSeparator))) {
+				ps.println(entry);
+			}
+			ps.flush();
 		}
 		getExiter().exit();
 	}

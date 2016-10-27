@@ -23,7 +23,6 @@ package io.sarl.eclipse.util;
 
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jdt.core.IAccessRule;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IType;
@@ -215,7 +214,7 @@ public final class Utilities {
 				bundlePath,
 				sourceBundlePath,
 				null,
-				new IAccessRule[] {},
+				null,
 				extraAttributes,
 				false);
 	}

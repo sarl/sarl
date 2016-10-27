@@ -21,6 +21,8 @@
 
 package io.sarl.eclipse.buildpath;
 
+import java.text.MessageFormat;
+
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
@@ -58,7 +60,12 @@ public class SARLContainerWizardPage extends NewElementWizardPage implements ICl
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout());
 		final Label label = new Label(composite, SWT.NONE);
-		label.setText(Messages.SARLContainerWizardPage_1);
+		final StringBuilder text = new StringBuilder();
+		for (final String entry : SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES) {
+			text.append(entry);
+			text.append("\n"); //$NON-NLS-1$
+		}
+		label.setText(MessageFormat.format(Messages.SARLContainerWizardPage_1, text.toString()));
 		setControl(composite);
 	}
 

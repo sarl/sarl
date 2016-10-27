@@ -23,7 +23,6 @@ package io.sarl.eclipse.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.SoftReference;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -101,9 +100,6 @@ public final class BundleUtil {
 	private static final String ROOT_NAME = "/"; //$NON-NLS-1$
 
 	private static final String DEFAULT_PATH_TO_CLASSES_IN_MAVEN_PROJECT = "target/classes"; //$NON-NLS-1$
-
-	private static SoftReference<Map<Bundle, Pair<Version, List<BundleDependency>>>> bundleDependencies =
-			new SoftReference<>(null);
 
 	private BundleUtil() {
 		//
@@ -232,54 +228,6 @@ public final class BundleUtil {
 			throw new RuntimeException(t);
 		}
 		return sourcesPath;
-	}
-
-	private static Map<Bundle, Pair<Version, List<BundleDependency>>> getBundleDependencies() {
-		Map<Bundle, Pair<Version, List<BundleDependency>>> repository = bundleDependencies.get();
-		if (repository == null) {
-			repository = new TreeMap<>(new Comparator<Bundle>() {
-				@Override
-				public int compare(Bundle o1, Bundle o2) {
-					return o1.getSymbolicName().compareTo(o2.getSymbolicName());
-				}
-			});
-			bundleDependencies = new SoftReference<>(repository);
-		}
-		return repository;
-	}
-
-	private static Pair<Version, List<BundleDependency>> getBundleDependencies(Bundle bundle) {
-		final Map<Bundle, Pair<Version, List<BundleDependency>>> repository = getBundleDependencies();
-		synchronized (repository) {
-			return repository.get(bundle);
-		}
-	}
-
-	private static void setBundleDependencies(Bundle bundle, List<BundleDependency> cpEntries) {
-		final Map<Bundle, Pair<Version, List<BundleDependency>>> repository = getBundleDependencies();
-		synchronized (repository) {
-			repository.put(bundle, new Pair<>(bundle.getVersion(), cpEntries));
-		}
-	}
-
-	private static void addToBundleDependencies(Bundle bundle, BundleDependency dependency) {
-		final Map<Bundle, Pair<Version, List<BundleDependency>>> repository = getBundleDependencies();
-		synchronized (repository) {
-			final Pair<Version, List<BundleDependency>> pair = repository.get(bundle);
-			if (pair == null || pair.getValue() == null) {
-				final List<BundleDependency> cpEntries = new ArrayList<>();
-				cpEntries.add(dependency);
-				repository.put(bundle, new Pair<>(bundle.getVersion(), cpEntries));
-			} else {
-				pair.getValue().add(dependency);
-			}
-		}
-	}
-
-	/** Clear any cached information by the {@link BundleUtil} functions.
-	 */
-	public static void clearCaches() {
-		bundleDependencies.clear();
 	}
 
 	/** Replies the dependencies for the given bundle.
@@ -488,6 +436,8 @@ public final class BundleUtil {
 
 		private IPath binaryBundlePath;
 
+		private Map<Bundle, Pair<Version, List<BundleDependency>>> bundleDependencies;
+
 		/** Constructor.
 		 *
 		 * @param bundle the bundle.
@@ -501,6 +451,46 @@ public final class BundleUtil {
 			this.bundle = bundle;
 			this.directDependencies = directDependencies;
 			this.javadocURLs = javadocURLs;
+		}
+
+		private Map<Bundle, Pair<Version, List<BundleDependency>>> getBundleDependencies() {
+			if (this.bundleDependencies == null) {
+				this.bundleDependencies = new TreeMap<>(new Comparator<Bundle>() {
+					@Override
+					public int compare(Bundle o1, Bundle o2) {
+						return o1.getSymbolicName().compareTo(o2.getSymbolicName());
+					}
+				});
+			}
+			return this.bundleDependencies;
+		}
+
+		private Pair<Version, List<BundleDependency>> getBundleDependencies(Bundle bundle) {
+			final Map<Bundle, Pair<Version, List<BundleDependency>>> repository = getBundleDependencies();
+			synchronized (repository) {
+				return repository.get(bundle);
+			}
+		}
+
+		private void setBundleDependencies(Bundle bundle, List<BundleDependency> cpEntries) {
+			final Map<Bundle, Pair<Version, List<BundleDependency>>> repository = getBundleDependencies();
+			synchronized (repository) {
+				repository.put(bundle, new Pair<>(bundle.getVersion(), cpEntries));
+			}
+		}
+
+		private void addToBundleDependencies(Bundle bundle, BundleDependency dependency) {
+			final Map<Bundle, Pair<Version, List<BundleDependency>>> repository = getBundleDependencies();
+			synchronized (repository) {
+				final Pair<Version, List<BundleDependency>> pair = repository.get(bundle);
+				if (pair == null || pair.getValue() == null) {
+					final List<BundleDependency> cpEntries = new ArrayList<>();
+					cpEntries.add(dependency);
+					repository.put(bundle, new Pair<>(bundle.getVersion(), cpEntries));
+				} else {
+					pair.getValue().add(dependency);
+				}
+			}
 		}
 
 		@Override
@@ -518,8 +508,7 @@ public final class BundleUtil {
 			return buf.toString();
 		}
 
-		@SuppressWarnings("synthetic-access")
-		private static void toDependencyTree(StringBuilder builder, String indent1, String indent2, Bundle current,
+		private void toDependencyTree(StringBuilder builder, String indent1, String indent2, Bundle current,
 				boolean isFragment, List<BundleDependency> dependencies) {
 			builder.append(indent1);
 			builder.append(current.getSymbolicName());
@@ -581,7 +570,6 @@ public final class BundleUtil {
 			return () -> new RuntimeClasspathEntryIterator(getTransitiveDependencies(includeFragments));
 		}
 
-		@SuppressWarnings("synthetic-access")
 		private Pair<Version, List<BundleDependency>> getDependencyDefinition() {
 			Pair<Version, List<BundleDependency>> dependencies = getBundleDependencies(this.bundle);
 			if (dependencies == null) {
@@ -687,7 +675,7 @@ public final class BundleUtil {
 		 * 		boolean specifying if we are at the first recursive call, in this case we use the {@link #directDependencies}
 		 *      collections to filter the dependencies that are really useful.
 		 */
-		@SuppressWarnings({ "checkstyle:nestedifdepth", "synthetic-access" })
+		@SuppressWarnings({"checkstyle:nestedifdepth"})
 		private void extractAllBundleDependencies(Bundle bundle, boolean firstCall) {
 			final BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 			final List<BundleWire> bundleWires = bundleWiring.getRequiredWires(null);
@@ -736,7 +724,7 @@ public final class BundleUtil {
 		 * @param bundleInstallURL the URL where the specified bundle is stored
 		 * @return the Path to the output folder used to store .class file if any (if we are in an eclipse project (debug mode))
 		 */
-		@SuppressWarnings({"synthetic-access", "checkstyle:cyclomaticcomplexity"})
+		@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 		private IPath readDotClasspathAndReferencestoClasspath(Bundle parent, Bundle bundle, URL bundleInstallURL) {
 			IPath outputLocation = null;
 			BundleDependency mainDependency = null;
@@ -939,7 +927,7 @@ public final class BundleUtil {
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
 		 */
-		private static class TransitiveDependencyIterator implements Iterator<BundleDependency> {
+		private class TransitiveDependencyIterator implements Iterator<BundleDependency> {
 
 			private final boolean includeFragments;
 

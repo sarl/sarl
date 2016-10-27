@@ -130,11 +130,6 @@ public class BundleUtilTest {
 	 */
 	public static class ResolverTests extends AbstractSarlTest {
 
-		@Before
-		public void setUp() {
-			BundleUtil.clearCaches();
-		}
-		
 		@Test
 		public void resolveBundleDependenciesBundleBundleURLMappingsStringArray_noRootDependencies() {
 			Bundle bundle = Platform.getBundle("io.sarl.lang.core");

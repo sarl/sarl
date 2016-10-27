@@ -109,11 +109,6 @@ public abstract class AbstractSARLBasedClasspathContainer implements IClasspathC
 	}
 
 	@Override
-	public int getKind() {
-		return K_SYSTEM;
-	}
-
-	@Override
 	public IPath getPath() {
 		return this.containerPath;
 	}

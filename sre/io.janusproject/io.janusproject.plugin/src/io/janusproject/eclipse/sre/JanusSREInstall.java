@@ -71,6 +71,7 @@ public class JanusSREInstall extends AbstractSREInstall {
 		final IBundleDependencies dependencies = JanusClasspathContainer.getJanusPlatformClasspath();
 		//
 		this.janusSREInstallPath = dependencies.getBundleBinaryPath();
+		assert this.janusSREInstallPath != null;
 		this.location = this.janusSREInstallPath.toPortableString();
 		setName(JanusConfig.JANUS_DEFAULT_PLATFORM_NAME);
 		setMainClass(Boot.class.getName());
