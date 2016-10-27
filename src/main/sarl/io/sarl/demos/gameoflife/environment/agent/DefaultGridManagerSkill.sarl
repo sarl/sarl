@@ -37,9 +37,9 @@ skill DefaultGridManagerSkill implements GridManager {
 	override install {
 		super.install
 
-		for (i : 0 ..< height) {
+		for (i : 0 ..< width) {
 			val line = newArrayList
-			for (j : 0 ..< width) {
+			for (j : 0 ..< height) {
 				val uuid = spawn(CellAgent, defaultContext.ID)
 				line.add(Pair.of(uuid, false))
 
@@ -65,14 +65,14 @@ skill DefaultGridManagerSkill implements GridManager {
 
 	override getPerceptions : List<Pair<UUID, Set<Point2i>>> {
 		val sb = new StringBuilder('\n')
-		for(i : 0..<height){
-			for(j : 0..<width){
+		for (i : 0 ..< width) {
+			for(j : 0 ..< height){
 				sb.append(if (grid.get(i).get(j).value) "1" else "0")
 			}
 
 			sb.append('\n')
 		}
-		info(sb.toString)
+		//info(sb.toString)
 
 		val perceptions = <Pair<UUID, Set<Point2i>>>newArrayList();
 
@@ -104,7 +104,7 @@ skill DefaultGridManagerSkill implements GridManager {
 	}
 
 	override applyActions(actions : List<Action>) {
-		info("Actions:" + actions)
+		//info("Actions:" + actions)
 		for (action : actions) {
 			Preconditions::checkArgument(action.getType() != null)
 			grid.get(action.getPosition().ix()).
