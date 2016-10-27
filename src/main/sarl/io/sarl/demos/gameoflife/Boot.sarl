@@ -40,7 +40,6 @@ agent Boot {
 	var height = 10
 	var period = 1000
 
-	var guiReady = true
 	var environmentReady = false
 	var paused = false
 	var gameRunning = false
@@ -54,10 +53,13 @@ agent Boot {
 		controller = new Controller(defaultSpace, new Address(defaultSpace.spaceID, getID()),
 			environmentUUID);
 		gui.addGUIListener(controller);
+		controller.addControllerListener(gui);
 
-		numberOfAgent = width * height + 1;
+		Platform.runLater([gui.launchGUI()])
+		controller.setReadyToSetup(true);
+		/*numberOfAgent = width * height + 1;
 		info("There is " + numberOfAgent + " agents.")
-		spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui, defaultAddress);
+		spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui, defaultAddress);*/
 	}
 
 	on AgentReadyForGame {
@@ -74,16 +76,20 @@ agent Boot {
 		info("Entity loaded: " + tmp)
 
 		if (tmp == numberOfAgent) {
-			Platform.runLater([gui.launchGUI()])
+			info("Running GUI")
 			Platform.runLater([gui.setupGUI(width, height)])
 			environmentReady = true
+			controller.setReadyToPlay(true);
 		}
 	}
 
 	on PlayEvent {
 		lock.lock
 		try {
-			if (environmentReady && guiReady) {
+			if (environmentReady) {
+				controller.setReadyToPause(true);
+				controller.setReadyToSetup(false);
+				controller.setReadyToPlay(false);
 				info("Starting the game.")
 				paused = false
 				gameRunning = true
@@ -99,6 +105,9 @@ agent Boot {
 
 		lock.lock
 		try {
+			controller.setReadyToPlay(true);
+			controller.setReadyToPause(false);
+			controller.setReadyToSetup(true);
 			paused = true
 		} finally {
 			lock.unlock
@@ -164,6 +173,9 @@ agent Boot {
 	}
 	
 	on GameIsDead {
+		controller.setReadyToPlay(false)
+		controller.setReadyToPause(false);
+		controller.setReadyToSetup(true);
 		paused = true
 	}
 }
