@@ -91,8 +91,8 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 			this.setupButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					GUI.this.gridWidth = Integer.parseInt(GUI.this.widthTextField.getText());
-					GUI.this.gridHeight = Integer.parseInt(GUI.this.heightTextField.getText());
+					GUI.this.gridWidth = toInt(GUI.this.widthTextField.getText());
+					GUI.this.gridHeight = toInt(GUI.this.heightTextField.getText());
 					for(GUIListener listener : GUI.this.listeners) {
 						listener.setup(GUI.this.gridWidth, GUI.this.gridHeight);
 					}
@@ -104,7 +104,7 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 				@Override
 				public void handle(ActionEvent event) {
 					for(GUIListener listener : GUI.this.listeners) {
-						listener.periodUpdated(Integer.parseInt(GUI.this.periodTextField.getText()));
+						listener.periodUpdated(toInt(GUI.this.periodTextField.getText()));
 					}
 				}
 			});
@@ -220,5 +220,9 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 	@Override
 	public void setReadyToPause(boolean state) {
 		this.readyToPause.set(state);
+	}
+
+	int toInt(String string) {
+		return string.equals("") ? 1 : Integer.parseInt(string);
 	}
 }
