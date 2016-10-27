@@ -21,11 +21,16 @@ public class RestrictedNumberTextField extends TextField {
 		textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if(newValue.matches("[0-9]*") && validateValue(Integer.parseInt(newValue))) {
-					setText(newValue);
+				if(!newValue.equals("")){
+					if(newValue.matches("[0-9]*") && validateValue(Integer.parseInt(newValue))) {
+						setText(newValue);
+					}
+					else {
+						setText(oldValue);
+					}
 				}
-				else {
-					setText(oldValue);
+				else{
+					setText(newValue);
 				}
 			}
 		});
