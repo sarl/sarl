@@ -10,8 +10,6 @@ import io.sarl.core.Logging
 import io.sarl.demos.gameoflife.environment.^agent.events.AgentReadyForGame
 import io.sarl.demos.gameoflife.environment.^agent.events.CellAgentUpdated
 import io.sarl.demos.gameoflife.environment.^agent.events.GameIsDead
-import io.sarl.demos.gameoflife.gui.GUI
-import org.arakhne.afc.math.geometry.d2.i.Point2i
 
 /**
  * @author Jérôme BOULMIER
