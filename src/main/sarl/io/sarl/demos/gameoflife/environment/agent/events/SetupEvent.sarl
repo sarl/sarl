@@ -1,0 +1,17 @@
+/** 
+ * 
+ */
+package io.sarl.demos.gameoflife.environment.^agent.events
+/** 
+ * @author lomadriel
+ * 
+ */
+event SetupEvent {
+	val width : int
+	val height : int
+
+	new(width : int, height : int) {
+		this.width = width;
+		this.height = height;
+	}
+}

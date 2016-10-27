@@ -2,6 +2,7 @@ package io.sarl.demos.gameoflife.environment.^agent
 
 import io.sarl.demos.gameoflife.environment.^agent.events.PauseEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.PlayEvent
+import io.sarl.demos.gameoflife.environment.^agent.events.SetupEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.StopEvent
 import io.sarl.demos.gameoflife.gui.GUIListener
 import io.sarl.lang.core.Address
@@ -33,16 +34,25 @@ public class Controller implements GUIListener {
 	}
 
 	override pause : void {
-
 		val evt : PauseEvent = new PauseEvent();
 		evt.source = address;
 		this.eventSpace.emit(evt, Scopes.addresses(this.address));
 	}
 
 	override stop : void {
-
 		val evt : StopEvent = new StopEvent();
 		evt.source = address;
 		this.eventSpace.emit(evt, Scopes.addresses(this.address));
 	}
-}
+
+	override setup(width : int, height : int) {
+		val evt : SetupEvent = new SetupEvent(width, height);
+		evt.source = address;
+		this.eventSpace.emit(evt, Scopes.addresses(this.address));
+	}
+
+	override periodUpdated(period : int) {
+		// TODO Auto-generated code.
+	}
+	
+	}

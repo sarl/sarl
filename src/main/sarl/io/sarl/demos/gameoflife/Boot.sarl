@@ -22,6 +22,7 @@ import java.util.UUID
 import java.util.concurrent.locks.ReentrantLock
 import javafx.application.Platform
 import io.sarl.demos.gameoflife.environment.^agent.events.GameIsDead
+import io.sarl.demos.gameoflife.environment.^agent.events.SetupEvent
 
 /**
  * @author Maxime PINARD
@@ -38,9 +39,10 @@ agent Boot {
 	val height = 10
 
 	var guiReady = true
-	var environmentReady = true
+	var environmentReady = false
 	var paused = false
 	var gameRunning = false
+	var newSetup = false
 
 	val lock = new ReentrantLock
 	val environmentUUID = UUID.randomUUID
@@ -112,7 +114,7 @@ agent Boot {
 			lock.unlock
 		}
 	}
-	
+
 	on StepFinished {
 		lock.lock
 		try {
@@ -128,5 +130,24 @@ agent Boot {
 		} finally {
 			lock.unlock
 		}
+	}
+	
+	on SetupEvent {
+		lock.lock
+
+		if (gameRunning && !paused) {
+			error("Try to setup a new grid without pausing the game.")
+		}
+
+		numberOfAgent = occurrence.width * occurrence.height + 1
+		emit(new GameIsDead)
+		info("There is " + numberOfAgent + " agents.")
+		spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui, defaultAddress)
+
+		lock.unlock
+	}
+	
+	on GameIsDead {
+		paused = true
 	}
 }
