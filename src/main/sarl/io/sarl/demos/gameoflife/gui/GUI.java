@@ -91,8 +91,8 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 			this.setupButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					GUI.this.gridWidth = Integer.parseInt(GUI.this.widthLabel.getText());
-					GUI.this.gridHeight = Integer.parseInt(GUI.this.heightLabel.getText());
+					GUI.this.gridWidth = Integer.parseInt(GUI.this.widthTextField.getText());
+					GUI.this.gridHeight = Integer.parseInt(GUI.this.heightTextField.getText());
 					for(GUIListener listener : GUI.this.listeners) {
 						listener.setup(GUI.this.gridWidth, GUI.this.gridHeight);
 					}
