@@ -58,7 +58,8 @@ agent Boot {
 		info("Entity loaded: " + tmp)
 
 		if (tmp == numberOfAgent) {
-			Platform.runLater([gui.launchGUI(width, height)])
+			Platform.runLater([gui.launchGUI()])
+			Platform.runLater([gui.setupGUI(width, height)])
 			controller.play
 			killMe;
 		}
