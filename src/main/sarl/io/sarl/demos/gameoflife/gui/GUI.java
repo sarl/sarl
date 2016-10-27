@@ -54,9 +54,9 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 	private boolean inited = false;
 	private int gridWidth;
 	private int gridHeight;
-	private SimpleBooleanProperty readyToPlay = new SimpleBooleanProperty(true);
-	private SimpleBooleanProperty readyToPause = new SimpleBooleanProperty(true);
-	private SimpleBooleanProperty readyToSetup = new SimpleBooleanProperty(true);
+	private SimpleBooleanProperty readyToPlay = new SimpleBooleanProperty(false);
+	private SimpleBooleanProperty readyToPause = new SimpleBooleanProperty(false);
+	private SimpleBooleanProperty readyToSetup = new SimpleBooleanProperty(false);
 
 	/**
 	 * Gets gui.
