@@ -86,7 +86,6 @@ public class JanusClasspathContainerTest extends AbstractSarlTest {
 	};
 	
 	private static final String[] TYCHO_DEPENDENCIES = {
-			"aopalliance",
 			"com.google.gson",
 			"com.google.guava",
 			"com.google.inject",
@@ -98,6 +97,7 @@ public class JanusClasspathContainerTest extends AbstractSarlTest {
 			"io.sarl.util",
 			"javax.cache.api",
 			"javax.inject",
+			"org.aopalliance",
 			"org.apache.commons.cli",
 			"org.apache.log4j",
 			"org.arakhne.afc.core.util",
