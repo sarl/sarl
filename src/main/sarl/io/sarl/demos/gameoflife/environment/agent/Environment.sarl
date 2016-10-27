@@ -10,7 +10,6 @@ import io.sarl.core.Logging
 import io.sarl.demos.gameoflife.environment.^agent.events.AgentReadyForGame
 import io.sarl.demos.gameoflife.environment.^agent.events.CellAgentUpdated
 import io.sarl.demos.gameoflife.environment.^agent.events.GameIsDead
-import io.sarl.demos.gameoflife.environment.^agent.events.PlayEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.RegisterEnvironmentListener
 import io.sarl.demos.gameoflife.environment.^agent.events.RunBeginingOfStep
 import io.sarl.demos.gameoflife.environment.^agent.events.RunEndOfStep
@@ -18,8 +17,7 @@ import io.sarl.lang.core.Address
 import io.sarl.util.Scopes
 import java.util.Collections
 import java.util.concurrent.locks.ReentrantLock
-import io.sarl.demos.gameoflife.environment.^agent.events.StopEvent
-import io.sarl.demos.gameoflife.environment.^agent.events.PauseEvent
+import io.sarl.demos.gameoflife.environment.^agent.events.StepFinished
 
 /**
  * @author Jérôme BOULMIER
@@ -30,17 +28,19 @@ agent Environment {
 
 	val listeners = <EnvironmentListener>newArrayList
 	val actions = Collections.synchronizedList(<Action>newArrayList)
-	var guiAlive = true; // FIXME: Replace this with the controller
-	var paused = true;
+	var controller : Address
+
 	var numberOfAgent : int
 	var agentCounter : int
-	var lock = new ReentrantLock
+
+	val lock = new ReentrantLock
 
 	on Initialize {		
 		var width = occurrence.parameters.get(0) as Integer
 		var height = occurrence.parameters.get(1) as Integer
 		listeners.add(occurrence.parameters.get(2) as EnvironmentListener)
-		
+		controller = occurrence.parameters.get(3) as Address
+
 		numberOfAgent = width * height
 
 		setSkill(new DefaultGridManagerSkill(width, height), GridManager);
@@ -68,39 +68,8 @@ agent Environment {
 		}
 	}
 
-	on PlayEvent {
-		info("Starting the game.")
-
-		lock.lock
-		try {
-			paused = false
-		} finally {
-			lock.unlock
-		}
-		
-		emit(new RunBeginingOfStep, Scopes::addresses(defaultAddress))
-	}
-	
-	on PauseEvent {
-		lock.lock
-		try {
-			paused = true
-		} finally {
-			lock.unlock
-		}
-	}
-	
-	on StopEvent {
-		lock.lock
-		try {
-			guiAlive = false
-		} finally {
-			lock.unlock
-		}
-	}
-
 	on RunBeginingOfStep {
-		info("Begin")
+		info("BeginOfStep")
 		lock.lock
 		try {
 			this.actions.clear
@@ -117,29 +86,17 @@ agent Environment {
 	}
 
 	on RunEndOfStep {
-		info("End")
+		info("EndOfStep")
 
 		if (actions.size == 0) {
+			info("Suicide")
 			emit(new GameIsDead)
-			killMe
 		} else {
 			applyActions(actions)
 			fireUpdate
 	
-			// Go to the next step
-			if (guiAlive && !paused) {
-				Thread.sleep(1000)
-				emit(new RunBeginingOfStep, Scopes.addresses(defaultAddress))
-			} else if (!paused) {
-				info("Ending the game.")
-				emit(new GameIsDead)
-				killMe
-			} else {
-				info("Pausing the game.")
-				Thread.yield
-			}
-	
-			info("EndEnd")
+			info("Step Fisnished (Environment)")
+			emit(new StepFinished, Scopes.addresses(controller))
 		}
 	}
 
@@ -151,6 +108,10 @@ agent Environment {
 
 	on RegisterEnvironmentListener {
 		listeners.add(occurrence.environmentListener);
+	}
+	
+	on GameIsDead {
+		killMe
 	}
 }
 

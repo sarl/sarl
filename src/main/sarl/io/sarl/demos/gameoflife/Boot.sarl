@@ -10,11 +10,18 @@ import io.sarl.core.Logging
 import io.sarl.demos.gameoflife.environment.^agent.Controller
 import io.sarl.demos.gameoflife.environment.^agent.Environment
 import io.sarl.demos.gameoflife.environment.^agent.events.AgentReadyForGame
+import io.sarl.demos.gameoflife.environment.^agent.events.PauseEvent
+import io.sarl.demos.gameoflife.environment.^agent.events.PlayEvent
+import io.sarl.demos.gameoflife.environment.^agent.events.RunBeginingOfStep
+import io.sarl.demos.gameoflife.environment.^agent.events.StepFinished
+import io.sarl.demos.gameoflife.environment.^agent.events.StopEvent
 import io.sarl.demos.gameoflife.gui.GUI
 import io.sarl.lang.core.Address
+import io.sarl.util.Scopes
 import java.util.UUID
 import java.util.concurrent.locks.ReentrantLock
 import javafx.application.Platform
+import io.sarl.demos.gameoflife.environment.^agent.events.GameIsDead
 
 /**
  * @author Maxime PINARD
@@ -29,11 +36,16 @@ agent Boot {
 	var gui : GUI
 	val width = 10
 	val height = 10
+
+	var guiReady = true
+	var environmentReady = true
+	var paused = false
+	var gameRunning = false
+
 	val lock = new ReentrantLock
+	val environmentUUID = UUID.randomUUID
 
 	on Initialize {
-		val environmentUUID = UUID.randomUUID
-
 		gui = GUI.getGUI();
 		controller = new Controller(defaultSpace, new Address(defaultSpace.spaceID, getID()),
 			environmentUUID);
@@ -41,7 +53,7 @@ agent Boot {
 
 		numberOfAgent = width * height + 1;
 		info("There is " + numberOfAgent + " agents.")
-		spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui);
+		spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui, defaultAddress);
 	}
 
 	on AgentReadyForGame {
@@ -59,8 +71,61 @@ agent Boot {
 
 		if (tmp == numberOfAgent) {
 			Platform.runLater([gui.launchGUI(width, height)])
+			environmentReady = true
 			controller.play
-			killMe;
+		}
+	}
+
+	on PlayEvent {
+		lock.lock
+		try {
+			if (environmentReady && guiReady) {
+				info("Starting the game.")
+				paused = false
+				gameRunning = true
+				emit(new RunBeginingOfStep, Scopes::addresses(new Address(defaultSpace.spaceID, environmentUUID)))
+			}
+		} finally {
+			lock.unlock
+		}
+	}
+
+	on PauseEvent {
+		info("Pause Event handled")
+
+		lock.lock
+		try {
+			paused = true
+		} finally {
+			lock.unlock
+		}
+	}
+
+	on StopEvent {
+		info("Stop Event handled")
+
+		lock.lock
+		try {
+			gameRunning = false
+		} finally {
+			lock.unlock
+		}
+	}
+	
+	on StepFinished {
+		lock.lock
+		try {
+			info("Step Finished: running:" + gameRunning + ", paused:" + paused)
+	
+			if (gameRunning && !paused) {
+				Thread.sleep(1000) //FIXME : Remove hard coded value
+				emit(new RunBeginingOfStep, Scopes::addresses(new Address(defaultSpace.spaceID, environmentUUID)))
+			} else if (!gameRunning) {
+				emit(new GameIsDead)
+				killMe
+			}
+		} finally {
+			lock.unlock
 		}
 	}
 }
