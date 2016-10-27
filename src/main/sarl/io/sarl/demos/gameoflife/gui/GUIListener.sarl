@@ -7,9 +7,31 @@ package io.sarl.demos.gameoflife.gui;
  */
 interface GUIListener {
 
+	/**
+	 * Play button pushed.
+	 */
 	def play();
 	
+	/** 
+	 * Pause button pushed.
+	 */
 	def pause();
 	
+	/**
+	 * GUI stopped.
+	 */
 	def stop();
+	
+	/**
+	 * Setup button pushed.
+	 * 
+	 * @param width value of the width field
+	 * @param height value of the height field
+	 */
+	def setup(width : int, height : int);
+	
+	/**
+	 * Period was updated
+	 */
+	def periodUpdated(period : int);
 }
