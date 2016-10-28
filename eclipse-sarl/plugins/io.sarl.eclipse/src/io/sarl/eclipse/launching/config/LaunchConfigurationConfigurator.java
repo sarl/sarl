@@ -112,6 +112,18 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	 */
 	public static final String ATTR_EMBEDDED_SRE = SARLEclipsePlugin.PLUGIN_ID + ".EMBEDDED_SRE"; //$NON-NLS-1$
 
+	/**
+	 * Launch configuration attribute key. The value indicates if the assertions are enabled in the virtual machine
+	 * when it is launched in debug mode.
+	 */
+	public static final String ATTR_ENABLE_ASSERTIONS_IN_DEBUG_MODE = SARLEclipsePlugin.PLUGIN_ID + ".ENABLE_ASSERTIONS_DEBUG"; //$NON-NLS-1$
+
+	/**
+	 * Launch configuration attribute key. The value indicates if the assertions are enabled in the virtual machine
+	 * when it is launched in run mode.
+	 */
+	public static final String ATTR_ENABLE_ASSERTIONS_IN_RUN_MODE = SARLEclipsePlugin.PLUGIN_ID + ".ENABLE_ASSERTIONS_RUN"; //$NON-NLS-1$
+
 	/** Identifier of the type of launch configuration dedicated to SARL
 	 * (value <code>io.sarl.eclipse.debug.LaunchConfigType</code>).
 	 */
@@ -128,6 +140,10 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	private static final boolean DEFAULT_USE_PROJECT_SRE = false;
 
 	private static final boolean DEFAULT_EMBEDDED_SRE = false;
+
+	private static final boolean DEFAULT_ENABLE_ASSERTIONS_IN_DEBUG_MODE = true;
+
+	private static final boolean DEFAULT_ENABLE_ASSERTIONS_IN_RUN_MODE = false;
 
 	@Override
 	public String getLaunchConfigurationType() {
@@ -398,8 +414,6 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean isEmbeddedSRE(ILaunchConfiguration configuration) {
 		try {
@@ -409,11 +423,37 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void setEmbeddedSRE(ILaunchConfigurationWorkingCopy configuration, boolean embedded) {
 		configuration.setAttribute(ATTR_EMBEDDED_SRE, embedded);
+	}
+
+	@Override
+	public boolean isAssertionEnabledInDebugMode(ILaunchConfiguration configuration) {
+		try {
+			return configuration.getAttribute(ATTR_ENABLE_ASSERTIONS_IN_DEBUG_MODE, DEFAULT_ENABLE_ASSERTIONS_IN_DEBUG_MODE);
+		} catch (CoreException e) {
+			return DEFAULT_ENABLE_ASSERTIONS_IN_DEBUG_MODE;
+		}
+	}
+
+	@Override
+	public void setAssertionEnabledInDebugMode(ILaunchConfigurationWorkingCopy configuration, boolean enable) {
+		configuration.setAttribute(ATTR_ENABLE_ASSERTIONS_IN_DEBUG_MODE, enable);
+	}
+
+	@Override
+	public boolean isAssertionEnabledInRunMode(ILaunchConfiguration configuration) {
+		try {
+			return configuration.getAttribute(ATTR_ENABLE_ASSERTIONS_IN_RUN_MODE, DEFAULT_ENABLE_ASSERTIONS_IN_RUN_MODE);
+		} catch (CoreException e) {
+			return DEFAULT_ENABLE_ASSERTIONS_IN_RUN_MODE;
+		}
+	}
+
+	@Override
+	public void setAssertionEnabledInRunMode(ILaunchConfigurationWorkingCopy configuration, boolean enable) {
+		configuration.setAttribute(ATTR_ENABLE_ASSERTIONS_IN_RUN_MODE, enable);
 	}
 
 }

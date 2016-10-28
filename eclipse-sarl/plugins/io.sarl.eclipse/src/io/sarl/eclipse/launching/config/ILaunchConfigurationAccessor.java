@@ -140,4 +140,24 @@ public interface ILaunchConfigurationAccessor {
 	 */
 	boolean isEmbeddedSRE(ILaunchConfiguration configuration);
 
+	/** Replies if the assertions are automatically enabled in debug mode.
+	 *
+	 * <p>When assertions are enabled, the <code>-ea</code> command line option will be given to the virtual machine.
+	 *
+	 * @param configuration the configuration.
+	 * @return <code>true</code> if the assertions are enabled.
+	 * @since 0.5
+	 */
+	boolean isAssertionEnabledInDebugMode(ILaunchConfiguration configuration);
+
+	/** Replies if the assertions are automatically enabled in run mode.
+	 *
+	 * <p>When assertions are enabled, the <code>-ea</code> command line option will be given to the virtual machine.
+	 *
+	 * @param configuration the configuration.
+	 * @return <code>true</code> if the assertions are enabled.
+	 * @since 0.5
+	 */
+	boolean isAssertionEnabledInRunMode(ILaunchConfiguration configuration);
+
 }

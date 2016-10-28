@@ -97,6 +97,10 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 	private Button runInEclipseButton;
 
+	private Button enableAssertionsInDebugModeButton;
+
+	private Button enableAssertionsInRunModeButton;
+
 	private Button defaultContextIdentifierButton;
 
 	private Button randomContextIdentifierButton;
@@ -227,6 +231,10 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		this.showLogInfoButton.addSelectionListener(this.defaultListener);
 		this.offlineButton = createCheckButton(group, Messages.MainLaunchConfigurationTab_16);
 		this.offlineButton.addSelectionListener(this.defaultListener);
+		this.enableAssertionsInRunModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_2);
+		this.enableAssertionsInRunModeButton.addSelectionListener(this.defaultListener);
+		this.enableAssertionsInDebugModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_1);
+		this.enableAssertionsInDebugModeButton.addSelectionListener(this.defaultListener);
 		this.runInEclipseButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_0);
 		this.runInEclipseButton.addSelectionListener(this.defaultListener);
 	}
@@ -271,9 +279,13 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 		final boolean showLogInfo = this.accessor.getShowLogInfoFlag(config);
 		final boolean offline = this.accessor.getOfflineFlag(config);
 		final boolean runInEclipse = this.accessor.isEmbeddedSRE(config);
+		final boolean enableAssertionsRun = this.accessor.isAssertionEnabledInRunMode(config);
+		final boolean enableAssertionsDebug = this.accessor.isAssertionEnabledInDebugMode(config);
 		this.showLogoOptionButton.setSelection(showLogo);
 		this.showLogInfoButton.setSelection(showLogInfo);
 		this.offlineButton.setSelection(offline);
+		this.enableAssertionsInRunModeButton.setSelection(enableAssertionsRun);
+		this.enableAssertionsInDebugModeButton.setSelection(enableAssertionsDebug);
 		this.runInEclipseButton.setSelection(runInEclipse);
 	}
 
@@ -383,6 +395,8 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 				this.showLogoOptionButton.getSelection(),
 				this.showLogInfoButton.getSelection(),
 				this.offlineButton.getSelection());
+		this.configurator.setAssertionEnabledInRunMode(config, this.enableAssertionsInRunModeButton.getSelection());
+		this.configurator.setAssertionEnabledInDebugMode(config, this.enableAssertionsInDebugModeButton.getSelection());
 		this.configurator.setEmbeddedSRE(config, this.runInEclipseButton.getSelection());
 		mapResources(config);
 	}

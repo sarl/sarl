@@ -27,6 +27,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -45,6 +46,7 @@ import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.launching.JRERuntimeClasspathEntryResolver;
 import org.eclipse.jdt.internal.launching.LaunchingMessages;
@@ -82,6 +84,8 @@ import io.sarl.eclipse.runtime.SREConstants;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigurationDelegate {
+
+	private static final String OPTION_ENABLEASSERTIONS = "-ea"; //$NON-NLS-1$
 
 	private SoftReference<IRuntimeClasspathEntry[]> unresolvedClasspathEntries;
 
@@ -742,14 +746,27 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			this.envp = getEnvironment(this.configuration);
 		}
 
+		@SuppressWarnings("synthetic-access")
 		private void readLaunchingArguments(IProgressMonitor monitor) throws CoreException {
 			monitor.subTask(
 					Messages.SARLLaunchConfigurationDelegate_2);
 
 			// Program & VM arguments
 			final String pgmArgs = getProgramArguments(this.configuration);
-			final String vmArgs = getVMArguments(this.configuration);
-			this.execArgs = new ExecutionArguments(vmArgs, pgmArgs);
+			final StringBuilder vmArgs = new StringBuilder(getVMArguments(this.configuration));
+
+			// Add -ea option if in debug mode
+			if ((Objects.equals(this.mode,  ILaunchManager.RUN_MODE)
+					&& SARLLaunchConfigurationDelegate.this.accessor.isAssertionEnabledInRunMode(this.configuration))
+				|| (Objects.equals(this.mode,  ILaunchManager.DEBUG_MODE)
+					&& SARLLaunchConfigurationDelegate.this.accessor.isAssertionEnabledInDebugMode(this.configuration))) {
+				if (vmArgs.length() > 0) {
+					vmArgs.append(" "); //$NON-NLS-1$
+				}
+				vmArgs.append(OPTION_ENABLEASSERTIONS);
+			}
+
+			this.execArgs = new ExecutionArguments(vmArgs.toString(), pgmArgs);
 
 			// VM-specific attributes
 			this.vmAttributesMap = getVMSpecificAttributesMap(this.configuration);

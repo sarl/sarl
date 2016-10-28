@@ -150,4 +150,24 @@ public interface ILaunchConfigurationConfigurator {
 	 */
 	void setEmbeddedSRE(ILaunchConfigurationWorkingCopy configuration, boolean embedded);
 
+	/** Set if the assertions are automatically enabled in debug mode.
+	 *
+	 * <p>When assertions are enabled, the <code>-ea</code> command line option will be given to the virtual machine.
+	 *
+	 * @param configuration the configuration.
+	 * @param enable <code>true</code> if the assertions are enabled.
+	 * @since 0.5
+	 */
+	void setAssertionEnabledInDebugMode(ILaunchConfigurationWorkingCopy configuration, boolean enable);
+
+	/** Set if the assertions are automatically enabled in run mode.
+	 *
+	 * <p>When assertions are enabled, the <code>-ea</code> command line option will be given to the virtual machine.
+	 *
+	 * @param configuration the configuration.
+	 * @param enable <code>true</code> if the assertions are enabled.
+	 * @since 0.5
+	 */
+	void setAssertionEnabledInRunMode(ILaunchConfigurationWorkingCopy configuration, boolean enable);
+
 }
