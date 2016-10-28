@@ -24,22 +24,6 @@ public abstract class DraggableZoomableParent extends Parent {
 	private double translateAnchorX;
 	private double translateAnchorY;
 
-	private void setPivot(double x, double y) {
-		setTranslateX(getTranslateX() - x);
-		setTranslateY(getTranslateY() - y);
-	}
-
-	private double clamp(double value, double min, double max) {
-
-		if(Double.compare(value, min) < 0)
-			return min;
-
-		if(Double.compare(value, max) > 0)
-			return max;
-
-		return value;
-	}
-
 	/**
 	 * Instantiates a new DraggableZoomableParent.
 	 */
@@ -110,5 +94,21 @@ public abstract class DraggableZoomableParent extends Parent {
 				event.consume();
 			}
 		});
+	}
+
+	private void setPivot(double x, double y) {
+		setTranslateX(getTranslateX() - x);
+		setTranslateY(getTranslateY() - y);
+	}
+
+	private double clamp(double value, double min, double max) {
+
+		if(Double.compare(value, min) < 0)
+			return min;
+
+		if(Double.compare(value, max) > 0)
+			return max;
+
+		return value;
 	}
 }

@@ -21,15 +21,6 @@ public class GridSquare extends Parent {
 	private boolean activated;
 
 	/**
-	 * Gets square size.
-	 *
-	 * @return the square size
-	 */
-	public static int getSquareSize() {
-		return SQUARE_SIZE;
-	}
-
-	/**
 	 * Instantiates a new GridSquare.
 	 *
 	 * @param xPosition the x position
@@ -43,6 +34,15 @@ public class GridSquare extends Parent {
 		this.rectangle = new Rectangle(this.xPosition * SQUARE_SIZE, this.yPosition * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
 		this.rectangle.setFill(this.activated ? ON_COLOR : OFF_COLOR);
 		getChildren().add(this.rectangle);
+	}
+
+	/**
+	 * Gets square size.
+	 *
+	 * @return the square size
+	 */
+	public static int getSquareSize() {
+		return SQUARE_SIZE;
 	}
 
 	/**
