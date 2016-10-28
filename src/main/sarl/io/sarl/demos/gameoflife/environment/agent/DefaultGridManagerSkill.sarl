@@ -50,7 +50,7 @@ skill DefaultGridManagerSkill implements GridManager {
 
 				counter++
 				val tmp = counter as double / numberOfAgents
-				Platform.runLater([fireSetupProgressUpdate(tmp)])
+				fireSetupProgressUpdate(tmp)
 				
 				line.add(Pair.of(uuid, false))
 
