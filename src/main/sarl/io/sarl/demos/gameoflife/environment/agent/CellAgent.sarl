@@ -24,22 +24,22 @@ agent CellAgent {
 
 	on Perception {
 		loggingName = occurrence.position.toString
-		info("Perception={" + occurrence.neighbors + "}")
+		//info("Perception={" + occurrence.neighbors + "}")
 
 		if (occurrence.alive == true) {
 			if (occurrence.neighbors.size() != 2 && occurrence.neighbors.size() != 3) {
-				info("Off")
+				//info("Off")
 				emit(new CellAgentUpdated(Action.Type.DESTROY, occurrence.position))
 			} else {
-				info("Nothing to do")
+				//info("Nothing to do")
 				emit(new CellAgentUpdated(null, occurrence.position))
 			}
 		} else {
 			if (occurrence.neighbors.size() == 3) {
-				info("On")
+				//info("On")
 				emit(new CellAgentUpdated(Action.Type.CREATE, occurrence.position))
 			} else {
-				info("Nothing to do")
+				//info("Nothing to do")
 				emit(new CellAgentUpdated(null, occurrence.position))
 			}
 		}

@@ -73,7 +73,7 @@ agent Boot {
 			lock.unlock
 		}
 		
-		info("Entity loaded: " + tmp)
+		//info("Entity loaded: " + tmp)
 
 		if (tmp == numberOfAgent) {
 			info("Running GUI")
@@ -133,7 +133,7 @@ agent Boot {
 	on StepFinished {
 		lock.lock
 		try {
-			info("Step Finished: running:" + gameRunning + ", paused:" + paused)
+			//info("Step Finished: running:" + gameRunning + ", paused:" + paused)
 	
 			if (gameRunning && !paused) {
 				Thread.sleep(period)
