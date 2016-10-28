@@ -222,7 +222,7 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 		this.readyToPause.set(state);
 	}
 
-	int toInt(String string) {
+	private int toInt(String string) {
 		return string.equals("") ? 1 : Integer.parseInt(string);
 	}
 }
