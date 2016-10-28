@@ -11,7 +11,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class GridSquare extends Parent {
 
-	private static final int SQUARE_SIZE = 8;
+	private static final int SQUARE_SIZE = 16;
 	private static final Color ON_COLOR = Color.RED;
 	private static final Color OFF_COLOR = Color.BLACK;
 
