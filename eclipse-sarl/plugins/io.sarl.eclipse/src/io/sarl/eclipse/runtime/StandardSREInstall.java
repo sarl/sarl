@@ -205,7 +205,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 				// Main class
 				this.manifestMainClass = manifest.getMainAttributes().getValue(SREConstants.MANIFEST_MAIN_CLASS);
 				if (Strings.isNullOrEmpty(this.manifestMainClass)) {
-					throw new SREException(Messages.StandardSREInstall_0 + getId());
+					throw new SREException(MessageFormat.format(Messages.StandardSREInstall_0, getId()));
 				}
 				if (forceSettings || Strings.isNullOrEmpty(getMainClass())) {
 					setMainClass(this.manifestMainClass);

@@ -239,7 +239,8 @@ public abstract class AbstractSREInstall implements ISREInstall {
 								Messages.AbstractSREInstall_0,
 								sarlVersion.toString(),
 								minVersion.toString()));
-			} else if (cmp > 0 && (ignoreCauses & CODE_SARL_VERSION) == 0) {
+			}
+			if (cmp > 0 && (ignoreCauses & CODE_SARL_VERSION) == 0) {
 				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 						CODE_SARL_VERSION,
 						MessageFormat.format(
