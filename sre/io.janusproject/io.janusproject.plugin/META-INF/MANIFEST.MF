@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: io.janusproject.plugin;singleton:=true
-Bundle-Version: 0.5.0.qualifier
+Bundle-Version: 0.4.2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: io.sarl.core;bundle-version="0.5.0",
- io.sarl.util;bundle-version="0.5.0",
- io.sarl.eclipse;bundle-version="0.5.0",
+Require-Bundle: io.sarl.core;bundle-version="0.4.2",
+ io.sarl.util;bundle-version="0.4.2",
+ io.sarl.eclipse;bundle-version="0.4.2",
  com.hazelcast;bundle-version="3.7.0",
  com.google.gson;bundle-version="2.4.0",
  org.zeromq.jeromq;bundle-version="0.3.5",
