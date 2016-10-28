@@ -166,6 +166,7 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 			Platform.runLater(() -> {
 				this.controller.simulationPane.getChildren().clear();
 				this.controller.simulationPane.getChildren().add(this.squareGridDisplayer);
+				this.controller.setupProgressBar.setVisible(false);
 			});
 		}
 	}
@@ -230,9 +231,6 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 	}
 
 	public void setupProgress(double progress) {
-		if(progress == 1) {
-			this.controller.setupProgressBar.setVisible(false);
-		}
 		this.controller.setupProgressBar.setProgress(progress);
 	}
 }
