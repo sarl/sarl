@@ -1,5 +1,6 @@
 package io.sarl.demos.gameoflife.gui;
 
+import javafx.beans.NamedArg;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
@@ -14,7 +15,7 @@ public class RestrictedNumberTextField extends TextField {
 	private final int minValue;
 	private final int maxValue;
 
-	public RestrictedNumberTextField(int defaultValue, int minValue, int maxValue) {
+	public RestrictedNumberTextField(@NamedArg("defaultValue") int defaultValue, @NamedArg("minValue") int minValue, @NamedArg("maxValue") int maxValue) {
 		super(Integer.toString(defaultValue));
 		this.minValue = minValue;
 		this.maxValue = maxValue;

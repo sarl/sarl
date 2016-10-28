@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.sarl.demos.gameoflife.gui.RestrictedNumberTextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.sarl.demos.gameoflife.gui.SimulationViewController">
     <children>
         <AnchorPane prefHeight="200.0" prefWidth="200.0">
@@ -25,13 +24,15 @@
                                         <HBox minHeight="30.0" prefHeight="100.0" prefWidth="200.0">
                                             <children>
                                                 <Label prefHeight="17.0" prefWidth="60.0" text="Width :" />
-                                                <TextField fx:id="widthTextField" />
+                                                <RestrictedNumberTextField fx:id="widthTextField" defaultValue="10"
+                                                                           minValue="1" maxValue="100"/>
                                             </children>
                                         </HBox>
                                         <HBox minHeight="30.0" prefHeight="100.0" prefWidth="200.0">
                                             <children>
                                                 <Label prefHeight="17.0" prefWidth="63.0" text="Height :" />
-                                                <TextField fx:id="heightTextField" />
+                                                <RestrictedNumberTextField fx:id="heightTextField" defaultValue="10"
+                                                                           minValue="1" maxValue="100"/>
                                             </children>
                                         </HBox>
                                         <StackPane maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="200.0">
