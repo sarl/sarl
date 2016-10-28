@@ -38,7 +38,7 @@ agent Boot {
 	var gui : GUI
 	var width = 10
 	var height = 10
-	var period = 1000
+	var period = 500
 
 	var environmentReady = false
 	var paused = false
