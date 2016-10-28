@@ -144,25 +144,48 @@
 						</execution>
 					</executions>
 				</plugin>
-
-				<plugin>
-					<groupId>org.eclipse.tycho</groupId>
-					<artifactId>tycho-p2-plugin</artifactId>
-					<version>${tycho.version}</version>
-					<executions>
-						<execution>
-							<id>attached-p2-metadata</id>
-							<phase>package</phase>
-							<goals>
-								<goal>p2-metadata</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 
 	</build>
+
+	<profiles>
+		<profile>
+			<id>default-profile</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.eclipse.tycho</groupId>
+							<artifactId>tycho-p2-plugin</artifactId>
+							<version>${tycho.version}</version>
+							<executions>
+								<execution>
+									<id>attached-p2-metadata</id>
+									<phase>package</phase>
+									<goals>
+										<goal>p2-metadata</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>generate-the-public-api</id>
+			<activation>
+				<property>
+					<name>publicSarlApiModuleSet</name>
+					<value>true</value>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
 
 	<!-- ===================== -->
 	<!-- ==== Repositories === -->

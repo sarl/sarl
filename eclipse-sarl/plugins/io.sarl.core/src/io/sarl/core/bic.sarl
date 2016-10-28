@@ -562,10 +562,10 @@ capacity Logging {
 	/** Print the given message at information logging level.
 	 * <p>
 	 * <strong>This function is deprecated.</strong> Please use
-	 * {@link #info(Object)} in place of <code>println</code>.
+	 * {@link #info(Object,Object...)} in place of <code>println</code>.
 	 *
 	 * @param message - the elements to display.
-	 * @deprecated Use {@link #info(Object)}.
+	 * @deprecated Use {@link #info(Object,Object...)}.
 	 */
 	@Deprecated
 	def println(message : Object)

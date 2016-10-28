@@ -1,0 +1,190 @@
+= How to Release SARL
+:toc: right
+:toc-placement!:
+:hide-uri-scheme:
+
+toc::[]
+
+The steps for releasing SARL are:
+
+== 1) PHASE 1: RELEASE CANDIDATE VERSION
+
+=== 1.1) Upgrade all the versions in the pom files and the Eclipse platform
+
+** Upgrade the Eclipse target platform
+** Synchronize the versions in the pom files (plugins and dependencies) with the same version numbers as in the Eclipse target platform.
+
+=== 1.2) Compiling locally without error
+
+     $> rm -rf $HOME/.m2/repository
+     $> mvn clean install
+
+You may compile the documentation is a different process if Maven complains to be out of memory.
+
+     $> cd docs/io.sarl.docs.suite
+     $> mvn clean install
+
+=== 1.3) Commit all the changes
+
+=== 1.4) Tag the version
+
+* Tag the version with with `vX.Y.Z-rcN`, where `N` is the release candidate number.
+* Push the tag on Github.
+
+=== 1.3) Do manual tests
+
+If a manual test is failing, fix the problem, and go to step 1.2.
+
+=== 1.6) Maven Central Bundles
+
+Test the generation of the  bundles for Maven Central:
+
+     $> ./build-tools/scripts/prepare-bundles-for-central.sh
+
+=== 1.7) Javadoc Generation
+
+Test the generation of the Javadoc for the public API (the real generation will be done by the Rake script of the website):
+
+     $> ./build-tools/scripts/generate-aggregate-javadoc.sh
+
+== 2) PHASE 2: RELEASE VERSION
+
+=== 2.1) Remove snapshot markers
+
+Remove all the occurrences of `-SNAPSHOT` in all the poms.
+
+CAUTION: Do not remove the `-SNAPSHOT` in the Groovy scripts.
+
+=== 2.2) Update the versions in the Eclipse configurations
+
+* Remove `.qualifier` in the `MANIFEST.MF` files (in `Bundle-Version`).
+* Remove `.qualifier` in the `feature.xml` files (in root tag and in the "sarl" and "janus"" plugins references).
+* Remove `.qualifier` in the `*.product` files (in root tag and feature tag).
+* Remove `.qualifier` in the `category.xml` files (in feature tags, url and version).
+
+=== 2.3) Comment any reference to the Snapshot Maven repository
+
+=== 2.4) Update Readme
+
+Update the content of the file `README.adoc` for using the new version numbers.
+
+=== 2.5) Update the graphical resources
+
+Splash screen, icons...
+
+=== 2.6) Compiling locally without error
+
+     $> rm -rf $HOME/.m2/repository
+     $> mvn clean install
+
+You may compile the documentation in a different process if Maven complains to be out of memory.
+
+     $> cd docs/io.sarl.docs.suite
+     $> mvn clean install
+
+=== 2.7) Check auto-generated files
+
+Check if the `about.mappings` files and the `SARLVersion.java` file are containing the correct version numbers.
+
+=== 2.8) Maven Central Bundles
+
+Prepare the bundles for Maven Central:
+
+     $> ./build-tools/scripts/prepare-bundles-for-central.sh
+
+Copy the bundles inside a safe folder for the Phase 3.
+
+=== 2.9) Commit and push to Github
+
+     $> git commit
+     $> git push --all
+
+=== 2.10) Tag the Git with the version number
+
+     $> git tag "vX.Y.Z"
+     $> git push --tags
+
+=== 2.11) Compilation on CI server
+
+On Hudson, launch a build for updating the maven repositories and the Eclipse update sites.
+If failing, revert 2.10, fix the problem, and go back to 2.6.
+
+== 3) PHASE 3: DISSEMINATION OF THE RELEASE VERSION
+
+=== 3.1) Maven Central Bundles
+
+Updload the Maven Bundle on Maven Central with http://oss.sonatype.org
+
+=== 3.2) Changelog
+
+Create the "Changes" page for the website, and add a link to the "Changes" page of the previous website inside.
+In this way, it will be possible to following the change history from the ealier to older changes.
+
+=== 3.3) Synchronize with other projects
+
+Synchronize the link:https://github.com/sarl/awesome-sarl[Awesome SARL project] with the "Community" page of the website.
+
+=== 3.4) News
+
+Add a "News" in the SARL website.
+
+=== 3.5) Update the SARL website
+
+     $> cd path/to/sarl-site
+     $> rake build_full
+     $> rake transfer
+
+=== 3.6) Commit and push the website Gits.
+
+=== 3.7) Clean issues
+
+Move all the remaining issues on Github to the following version.
+
+=== 3.8) Close milestones
+
+Close the released milestone on Github.
+
+=== 3.9) Release Notes
+
+Add release notes on Github (from the Changes page on the website), attached to the release tag.
+
+=== 3.10) Announcements
+
+Announce the new version of SARL on the mailing lists.
+
+== 4) PHASE 4: DEVELOPMENT VERSION
+
+=== 4.1) Revert versions
+
+Revert steps 2.1 to 2.5; and change the following:
+
+* Version ranges in the `Required-Bundles` of `MANIFEST.MF`.
+* Versions in the requirements of `feature.xml`.
+* Versions in the `*.product`.
+* Versions in the `category.xml`.
+* Uncomment the Snapshot Maven repository.
+
+=== 4.2) Upgrade versions
+
+Change the version numbers into the archive files stored in the `io.sarl.tests.testdata` project.
+
+=== 4.3) Compiling locally without error.
+
+     $> rm -rf $HOME/.m2/repository
+     $> mvn clean install
+
+You may compile the documentation in a different process if Maven complains to be out of memory.
+
+     $> cd docs/io.sarl.docs.suite
+     $> mvn clean install
+
+=== 4.4) Commit and push to Github:
+
+     $> git commit
+     $> git push --all
+
+=== 4.5) Compilation on CI server
+
+On Hudson, launch a build for updating the maven repositories and the Eclipse update sites.
+
+

@@ -3,7 +3,7 @@
 :toc-placement!:
 :hide-uri-scheme:
 
-image:http://www.sarl.io/images/SARL-logo.svg[float=left]
+image:http://www.sarl.io/images/SARL-logo.png[float=left]
 
 SARL is a general-purpose agent-oriented language, http://www.sarl.io.
 
@@ -49,19 +49,19 @@ image:https://cla-assistant.io/readme/badge/sarl/sarl?style=flat-square[link=htt
 
 toc::[]
 
-== 2. Requirements
+== 1. Requirements
 
 * Java Development Toolkit (JDK) 1.8 or higher.
 
-== 3. Using SARL
+== 2. Using SARL
 
-=== 3.1. Recommendations
+=== 2.1. Recommendations
 
 For making your experience with SARL the best, we recommend you:
 
 * *to enable the assertions at development time (with the `-ea` command line option).*
 
-=== 3.2. Use the stable version with Maven
+=== 2.2. Use the stable version with Maven
 
 The lastest stable version of SARL is available on link:http://search.maven.org/[Maven Central].
 Consequently, you could directly include the SARL module into the Maven dependencies of your project:
@@ -78,7 +78,7 @@ Consequently, you could directly include the SARL module into the Maven dependen
 
 Please, replace Version `0.4.1` in the previous snipset by the number of the version you want to use.
 
-=== 3.3. Use of the development version with Maven
+=== 2.3. Use of the development version with Maven
 
 New features, enhancements and bug fixes are available in the SNAPSHOT (development) version of SARL.
 For using this version, you must add the Maven Repository Server of SARL in your pom file:
@@ -113,7 +113,7 @@ For using this version, you must add the Maven Repository Server of SARL in your
 	...
 ```
 
-=== 3.4. Compile SARL code with Maven
+=== 2.4. Compile SARL code with Maven
 
 For compiling SARL source files with Maven, you should use the provided plugin: `sarl-maven-plugin`.
 It invokes the SARL and Java compilers with a simpler interface than the standard Xtext maven plugin.
@@ -145,7 +145,7 @@ Please, replace Version `0.4.1` in the previous snipset by the number of the ver
 
 CAUTION: Do not forget to set the `extensions` flag to `true`.
 
-=== 3.5. Syntax highlighting with other tools
+=== 2.5. Syntax highlighting with other tools
 
 Several style specifications are provided for syntax highlighting in third party tools.
 Style specifications are provided for:
@@ -156,26 +156,26 @@ Style specifications are provided for:
 * link:./formatting-styles/latex/sarl-beamer-listing.sty[LaTeX Beamer]
 * LaTeX listing: link:./formatting-styles/latex/sarl-listing.sty[monochrom], link:./formatting-styles/latex/sarl-colorized-listing.sty[color]
 
-== 4. P2 Repository
+== 3. P2 Repository
 
 A P2 repository is set up and accesible at the address: `http://updates.sarl.io`.
 
-== 5. Issues
+== 4. Issues
 
 Issues related to SARL are tracked on link:https://github.com/sarl/sarl/issues[GitHub]
 You must use this issue tracker to report and follow your issues.
 
-== 6. Contributions
+== 5. Contributions
 
 Any contribution to the SARL is welcome.
 
-=== 6.1. Installing the Development Environment
+=== 5.1. Installing the Development Environment
 
 For setting up the development environment, you should follow the steps:
 
 CAUTION: Coming soon.
 
-=== 6.2. Obtaining the SARL Source Code
+=== 5.2. Obtaining the SARL Source Code
 
 For obtaining the code of SARL, you must clone it from the Git:
 ```bash
@@ -184,14 +184,14 @@ git clone https://github.com/sarl/sarl
 
 CAUTION: Due to an issue in the Eclipse Checkstyle plugin, it is mandatory to install the `build-tools` module in the your `.m2` repository prior to the first launch of the Eclipse IDE: `mvn clean install -Dcheckstyle.skip=true`
 
-=== 6.3. Compiling the SARL Source Code
+=== 5.3. Compiling the SARL Source Code
 
 Maven is the standard tool for compiling SARL. It is recommended to launch the Maven compilation process on the command at least before submitting a pull request. The command line is:
 ```bash
 mvn clean install
 ```
 
-=== 6.4. Sending the Contribution
+=== 5.4. Sending the Contribution
 
 For sending your contribution to the SARL master repositoty, you must request a pull (PR) to the link:https://github.com/sarl/sarl/[GitHub repository].
 
@@ -211,7 +211,7 @@ If one point is failing, please follows the steps:
 * Push the changes on the same PR with `git push -f`, i.e. the same Git repository as the one used for the PR. *Do not create a new PR for the fix.*
 * The GitHub platform will relaunch the CI process automatically.
 
-== 7. Authors and Contributors
+== 6. Authors and Contributors
 
 * image:https://avatars.githubusercontent.com/m-ezzat[width="50px",link=https://github.com/m-ezzat] Mohamed Ezzat, code cleaning and optimization.
 * image:https://avatars.githubusercontent.com/gallandarakhneorg[width="50px",link=https://github.com/gallandarakhneorg] link:http://www.multiagent.fr/People:Galland_stephane[Stéphane GALLAND], founder, original and active author.
@@ -219,11 +219,11 @@ If one point is failing, please follows the steps:
 * image:https://avatars.githubusercontent.com/jjst[width="50px",link=https://github.com/jjst] Jeremie JOST, documentation contributor.
 * image:https://avatars.githubusercontent.com/srodriguez[width="50px",link=https://github.com/srodriguez] link:http://gitia.org/members/sebastian-rodriguez[Sebastian RODRIGUEZ], founder, original and active author.
 
-== 8. License of SARL
+== 7. License of SARL
 
 SARL is distributed under the link:./LICENSE[Apache v2 license], and is copyrigthed to the original authors and the other authors, as expressed in the link:./NOTICE[NOTICE].
 
-== 9. Success Stories
+== 8. Success Stories
 
 The following projects have sucessfully used SARL:
 
