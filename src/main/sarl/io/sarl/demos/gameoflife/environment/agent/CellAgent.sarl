@@ -1,6 +1,3 @@
-/**
- *
- */
 package io.sarl.demos.gameoflife.environment.^agent
 
 import io.sarl.core.DefaultContextInteractions

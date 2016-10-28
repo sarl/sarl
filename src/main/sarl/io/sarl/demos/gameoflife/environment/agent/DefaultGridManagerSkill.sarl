@@ -1,6 +1,3 @@
-/**
- *
- */
 package io.sarl.demos.gameoflife.environment.^agent
 
 import com.google.common.base.Preconditions
@@ -51,11 +48,11 @@ skill DefaultGridManagerSkill implements GridManager {
 				// FIXME: agents created 2 times ?
 				// FIXME: double agent spawning apparently come from: https://github.com/sarl/sarl/issues/525
 				if(counter == 0) info("Starting agent creation")
-				
+
 				counter++
 				val tmp = counter as double / numberOfAgents
 				fireSetupProgressUpdate(tmp)
-				
+
 				line.add(Pair.of(uuid, false))
 
 				val agentBody = new AgentBody(new Point2i(i, j), false)

@@ -1,6 +1,3 @@
-/**
- *
- */
 package io.sarl.demos.gameoflife
 
 import io.sarl.core.DefaultContextInteractions
@@ -26,8 +23,8 @@ import io.sarl.demos.gameoflife.environment.^agent.events.SetupEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.PeriodUpdatedEvent
 
 /**
+ * @author Jérôme BOULMIER
  * @author Maxime PINARD
- *
  */
 agent Boot {
 	uses DefaultContextInteractions, Lifecycle, Logging;
@@ -64,7 +61,7 @@ agent Boot {
 
 	on AgentReadyForGame {
 		var tmp : int
-		
+
 		lock.lock
 		try {
 			agentCounter++
@@ -72,7 +69,7 @@ agent Boot {
 		} finally {
 			lock.unlock
 		}
-		
+
 		//info("Entity loaded: " + tmp)
 
 		if (tmp == numberOfAgent) {
@@ -123,7 +120,7 @@ agent Boot {
 				emit(new GameIsDead)
 				killMe
 			} else {
-				gameRunning = false	
+				gameRunning = false
 			}
 		} finally {
 			lock.unlock
@@ -134,7 +131,7 @@ agent Boot {
 		lock.lock
 		try {
 			//info("Step Finished: running:" + gameRunning + ", paused:" + paused)
-	
+
 			if (gameRunning && !paused) {
 				Thread.sleep(period)
 				emit(new RunBeginingOfStep, Scopes::addresses(new Address(defaultSpace.spaceID, environmentUUID)))
@@ -146,7 +143,7 @@ agent Boot {
 			lock.unlock
 		}
 	}
-	
+
 	on SetupEvent {
 		lock.lock
 
@@ -163,7 +160,7 @@ agent Boot {
 
 		lock.unlock
 	}
-	
+
 	on PeriodUpdatedEvent {
 		lock.lock
 		info("Period updated")
@@ -171,7 +168,7 @@ agent Boot {
 
 		lock.unlock
 	}
-	
+
 	on GameIsDead {
 		controller.setReadyToPlay(false)
 		controller.setReadyToPause(false);

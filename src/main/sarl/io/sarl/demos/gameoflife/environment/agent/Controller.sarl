@@ -16,7 +16,7 @@ import java.util.UUID
  * @author Maxime PINARD
  */
 public class Controller implements GUIListener {
-	
+
 	val listeners = <ControllerListener>newArrayList
 
 	val environmentUUID : UUID;
@@ -60,7 +60,7 @@ public class Controller implements GUIListener {
 		evt.source = address;
 		this.eventSpace.emit(evt, Scopes.addresses(this.address));
 	}
-	
+
 	def addControllerListener(listener : ControllerListener){
 		listeners.add(listener);
 	}
@@ -82,5 +82,5 @@ public class Controller implements GUIListener {
 			listener.setReadyToPause(state);
 		}
 	}
-	
+
 }

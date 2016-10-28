@@ -1,10 +1,8 @@
-/** 
- * 
- */
 package io.sarl.demos.gameoflife.environment.^agent.events
-/** 
+
+/**
  * @author Jérôme BoULMIER
- * 
+ *
  */
 event SetupEvent {
 	val width : int

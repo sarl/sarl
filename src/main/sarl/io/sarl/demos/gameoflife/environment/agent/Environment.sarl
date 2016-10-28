@@ -1,6 +1,3 @@
-/**
- *
- */
 package io.sarl.demos.gameoflife.environment.^agent
 
 import io.sarl.core.DefaultContextInteractions
@@ -52,7 +49,7 @@ agent Environment {
 	on CellAgentUpdated {
 		//info("RECEIVE: " + occurrence.position + ";" + occurrence.type)
 		var tmp : int
-		
+
 		lock.lock
 		try {
 			if (occurrence.type != null) {
@@ -110,7 +107,7 @@ agent Environment {
 	on RegisterEnvironmentListener {
 		listeners.add(occurrence.environmentListener)
 	}
-	
+
 	on GameIsDead {
 		killMe
 	}
