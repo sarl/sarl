@@ -99,8 +99,8 @@ public abstract class DraggableZoomableParent extends Parent {
 
 				double f = (scale / oldScale) - 1;
 
-				double dx = (event.getSceneX() - (DraggableZoomableParent.this.getBoundsInParent().getWidth() / 2 + DraggableZoomableParent.this.getBoundsInParent().getMinX()));
-				double dy = (event.getSceneY() - (DraggableZoomableParent.this.getBoundsInParent().getHeight() / 2 + DraggableZoomableParent.this.getBoundsInParent().getMinY()));
+				double dx = (event.getSceneX() - (DraggableZoomableParent.this.getBoundsInParent().getWidth() / 2 + localToScene(getBoundsInLocal()).getMinX()));
+				double dy = (event.getSceneY() - (DraggableZoomableParent.this.getBoundsInParent().getHeight() / 2 + localToScene(getBoundsInLocal()).getMinY()));
 
 				DraggableZoomableParent.this.scale.set(scale);
 
