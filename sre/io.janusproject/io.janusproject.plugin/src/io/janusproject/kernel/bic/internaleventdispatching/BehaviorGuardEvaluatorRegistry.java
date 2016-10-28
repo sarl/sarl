@@ -142,8 +142,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	/**
 	 * Unregisters all BehaviorGuardEvaluators on the given listener object.
 	 *
-	 * @param listener
-	 *            - the new {@code BehaviorGuardEvaluator} to add
+	 * @param listener the new {@code BehaviorGuardEvaluator} to remove
 	 */
 	void unregister(Object listener) {
 		final Multimap<Class<? extends Event>, BehaviorGuardEvaluator> listenerMethods = findAllBehaviorGuardEvaluators(listener);
@@ -152,7 +151,10 @@ public class BehaviorGuardEvaluatorRegistry {
 			final Class<? extends Event> eventType = entry.getKey();
 			final Collection<BehaviorGuardEvaluator> listenerMethodsForType = entry.getValue();
 
+			//TODO Array-based implementation may be not efficient
 			final CopyOnWriteArraySet<BehaviorGuardEvaluator> currentSubscribers = this.behaviorGuardEvaluators.get(eventType);
+
+			/* FIXME: Issue #525 (SG) I do not understand the semantic and the behavior of the following code. Why invoking removeAll two times?
 			if (currentSubscribers == null || !currentSubscribers.removeAll(listenerMethodsForType)) {
 
 				if (currentSubscribers != null) {
@@ -163,6 +165,9 @@ public class BehaviorGuardEvaluatorRegistry {
 				// subscriber was removed, all subscribers on listener for that event type were... after
 				// all, the definition of subscribers on a particular class is totally static
 				throw new IllegalArgumentException(MessageFormat.format(Messages.BehaviorGuardEvaluatorRegistry_0, listener));
+			}*/
+			if (currentSubscribers != null && !currentSubscribers.isEmpty()) {
+				currentSubscribers.removeAll(listenerMethodsForType);
 			}
 
 			// don't try to remove the set if it's empty; that can't be done safely without a lock
