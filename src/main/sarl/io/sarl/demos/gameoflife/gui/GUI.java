@@ -92,6 +92,8 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 				for(GUIListener listener : GUI.this.listeners) {
 					listener.setup(GUI.this.gridWidth, GUI.this.gridHeight);
 				}
+				GUI.this.controller.setupProgressBar.setProgress(0);
+				GUI.this.controller.setupProgressBar.setVisible(true);
 			}
 		});
 
@@ -225,5 +227,12 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 
 	private int toInt(String string) {
 		return string.equals("") ? 1 : Integer.parseInt(string);
+	}
+
+	public void setupProgress(double progress) {
+		if(progress == 1) {
+			this.controller.setupProgressBar.setVisible(false);
+		}
+		this.controller.setupProgressBar.setProgress(progress);
 	}
 }

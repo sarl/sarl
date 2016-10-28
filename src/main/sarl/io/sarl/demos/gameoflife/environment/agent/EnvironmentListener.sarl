@@ -12,11 +12,19 @@ import java.util.UUID;
  * @author Maxime PINARD
  */
 interface EnvironmentListener extends EventListener {
+	
 	/**
 	 * Handle grid update.
 	 *
 	 * @param grid the grid
 	 */
 	def handleGridUpdate(grid : List<List<Pair<UUID, Boolean>>>);
+	
+	/** 
+	 * Setup progress information updater.
+	 * 
+	 * @param progress the progress
+	 */
+	def setupProgress(progress : double)
 
 }

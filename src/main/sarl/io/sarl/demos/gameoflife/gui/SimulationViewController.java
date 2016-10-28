@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -21,6 +22,8 @@ public class SimulationViewController {
 	public TextField heightTextField;
 	@FXML
 	public Button setupButton;
+	@FXML
+	public ProgressBar setupProgressBar;
 	@FXML
 	public Label timeIntervalLabel;
 	@FXML

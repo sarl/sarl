@@ -35,21 +35,22 @@ agent Environment {
 
 	val lock = new ReentrantLock
 
-	on Initialize {		
+	on Initialize {
 		var width = occurrence.parameters.get(0) as Integer
 		var height = occurrence.parameters.get(1) as Integer
-		listeners.add(occurrence.parameters.get(2) as EnvironmentListener)
+		var listener = occurrence.parameters.get(2) as EnvironmentListener
+		listeners.add(listener)
 		controller = occurrence.parameters.get(3) as Address
 
 		numberOfAgent = width * height
 
-		setSkill(new DefaultGridManagerSkill(width, height), GridManager);
+		setSkill(new DefaultGridManagerSkill(width, height, listener), GridManager);
 
 		emit(new AgentReadyForGame)
 	}
 
 	on CellAgentUpdated {
-		info("RECEIVE: " + occurrence.position + ";" + occurrence.type)
+		//info("RECEIVE: " + occurrence.position + ";" + occurrence.type)
 		var tmp : int
 		
 		lock.lock
@@ -69,7 +70,7 @@ agent Environment {
 	}
 
 	on RunBeginingOfStep {
-		info("BeginOfStep")
+		//info("BeginOfStep")
 		lock.lock
 		try {
 			this.actions.clear
@@ -86,28 +87,28 @@ agent Environment {
 	}
 
 	on RunEndOfStep {
-		info("EndOfStep")
+		//info("EndOfStep")
 
 		if (actions.size == 0) {
 			info("Suicide")
 			emit(new GameIsDead)
 		} else {
 			applyActions(actions)
-			fireUpdate
-	
-			info("Step Fisnished (Environment)")
+			fireGridUpdate
+
+			//info("Step Fisnished (Environment)")
 			emit(new StepFinished, Scopes.addresses(controller))
 		}
 	}
 
-	def fireUpdate {
+	def fireGridUpdate {
 		for (listener : listeners) {
-			listener.handleGridUpdate(getGrid());
+			listener.handleGridUpdate(getGrid())
 		}
 	}
 
 	on RegisterEnvironmentListener {
-		listeners.add(occurrence.environmentListener);
+		listeners.add(occurrence.environmentListener)
 	}
 	
 	on GameIsDead {

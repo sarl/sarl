@@ -12,6 +12,7 @@ import java.util.Map
 import java.util.Random
 import java.util.Set
 import java.util.UUID
+import javafx.application.Platform
 import org.arakhne.afc.math.MathUtil
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
@@ -22,6 +23,8 @@ import org.arakhne.afc.math.geometry.d2.i.Point2i
 skill DefaultGridManagerSkill implements GridManager {
 	uses DefaultContextInteractions, Logging
 
+	val listeners = <EnvironmentListener>newArrayList
+
 	val random = new Random
 	val width : int
 	val height : int
@@ -29,18 +32,26 @@ skill DefaultGridManagerSkill implements GridManager {
 	val grid : List<List<Pair<UUID, Boolean>>> = newArrayList
 	val bodies : Map<UUID, AgentBody> = newTreeMap(null)
 
-	new(width : int, height : int) {
+	new(width : int, height : int, environmentListener : EnvironmentListener) {
 		this.width = width
-		this.height = height	
+		this.height = height
+		this.listeners.add(environmentListener)
 	}
 
 	override install {
 		super.install
 
+		var counter = 0;
+		val numberOfAgents = width * height;
 		for (i : 0 ..< width) {
 			val line = newArrayList
 			for (j : 0 ..< height) {
 				val uuid = spawn(CellAgent, defaultContext.ID)
+
+				counter++
+				val tmp = counter as double / numberOfAgents
+				Platform.runLater([fireSetupProgressUpdate(tmp)])
+				
 				line.add(Pair.of(uuid, false))
 
 				val agentBody = new AgentBody(new Point2i(i, j), false)
@@ -50,6 +61,12 @@ skill DefaultGridManagerSkill implements GridManager {
 		}
 
 		setup
+	}
+
+	def fireSetupProgressUpdate(progress : double) {
+		for (listener : listeners) {
+			Platform.runLater([listener.setupProgress(progress)])
+		}
 	}
 
 	override setup {
