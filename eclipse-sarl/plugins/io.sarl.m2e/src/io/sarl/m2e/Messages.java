@@ -49,4 +49,6 @@ public class Messages extends NLS {
 	public static String SARLProjectConfigurator_4;
 	public static String SARLProjectConfigurator_5;
 	public static String SARLProjectConfigurator_6;
+	public static String SARLProjectConfigurator_7;
+	public static String SARLProjectConfigurator_8;
 }

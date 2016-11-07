@@ -23,17 +23,21 @@ package io.sarl.m2e;
 
 import java.io.File;
 import java.text.MessageFormat;
-import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeMap;
 
 import com.google.common.base.Strings;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
+import org.eclipse.aether.graph.DependencyNode;
+import org.eclipse.aether.graph.DependencyVisitor;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -46,6 +50,7 @@ import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.internal.M2EUtils;
 import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
@@ -83,15 +88,13 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	private static final String SARL_ARTIFACT_ID = "io.sarl.lang.core"; //$NON-NLS-1$
 
+	private static final String SARL_MAVENLIB_GROUP_ID = "io.sarl.maven"; //$NON-NLS-1$
+
+	private static final String SARL_MAVENLIB_ARTIFACT_ID = "io.sarl.maven.sdk"; //$NON-NLS-1$
+
 	private static final String SARL_PLUGIN_GROUP_ID = "io.sarl.maven"; //$NON-NLS-1$
 
 	private static final String SARL_PLUGIN_ARTIFACT_ID = "sarl-maven-plugin"; //$NON-NLS-1$
-
-	private static final String GROUPID_ATTR_NAME = "maven.groupId"; //$NON-NLS-1$
-
-	private static final String ARTIFACTID_ATTR_NAME = "maven.artifactId"; //$NON-NLS-1$
-
-	private static final String VERSION_ATTR_NAME = "maven.version"; //$NON-NLS-1$
 
 	/** Invoked to add the preferences dedicated to SARL, JRE, etc.
 	 *
@@ -355,19 +358,15 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		classpath.addEntry(entry);
 	}
 
-	private static int compareVersions(String v1, String v2) {
-		return Version.parseVersion(v1).compareTo(Version.parseVersion(v2));
-	}
-
 	private static void setVersion(Properties props, String propName, String value, String minValue) {
 		final String currentVersion = props.getProperty(propName);
 		String newVersion = value;
 
-		if (compareVersions(currentVersion, newVersion) > 0) {
+		if (M2EUtilities.compareOsgiVersions(currentVersion, newVersion) > 0) {
 			newVersion = currentVersion;
 		}
 
-		if (compareVersions(newVersion, minValue) < 0) {
+		if (M2EUtilities.compareOsgiVersions(newVersion, minValue) < 0) {
 			props.setProperty(propName, minValue);
 		} else {
 			props.setProperty(propName, newVersion);
@@ -409,7 +408,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	@Override
 	public void configureClasspath(IMavenProjectFacade facade,
 			IClasspathDescriptor classpath, IProgressMonitor monitor)
-			throws CoreException {
+					throws CoreException {
 		//
 	}
 
@@ -417,11 +416,16 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	public void configureRawClasspath(ProjectConfigurationRequest request,
 			IClasspathDescriptor classpath, IProgressMonitor monitor)
 					throws CoreException {
+		final SubMonitor subm = SubMonitor.convert(monitor, 4);
 		final IMavenProjectFacade facade = request.getMavenProjectFacade();
-		final SARLConfiguration config = readConfiguration(request, monitor);
+		final SARLConfiguration config = readConfiguration(request, subm.newChild(1));
+		subm.worked(1);
 		removeSarlLibraries(classpath);
-		addSourceFolders(facade, config, classpath, monitor);
-		addPreferences(facade, config, monitor);
+		subm.worked(2);
+		addSourceFolders(facade, config, classpath, subm.newChild(1));
+		subm.worked(1);
+		addPreferences(facade, config, subm.newChild(1));
+		subm.worked(1);
 	}
 
 	@Override
@@ -438,7 +442,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	protected class BuildParticipant extends AbstractBuildParticipant2 {
+	protected static class BuildParticipant extends AbstractBuildParticipant2 {
+
+		private static final int NSTEPS = 4;
 
 		/** Construct a build participant.
 		 */
@@ -448,20 +454,21 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		@Override
 		public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
-			if (kind == AbstractBuildParticipant.AUTO_BUILD
-					|| kind == AbstractBuildParticipant.FULL_BUILD) {
+			if (kind == AbstractBuildParticipant.AUTO_BUILD || kind == AbstractBuildParticipant.FULL_BUILD) {
+				final SubMonitor subm = SubMonitor.convert(monitor, Messages.SARLProjectConfigurator_7, NSTEPS);
 				getBuildContext().removeMessages(getMavenProjectFacade().getPomFile());
-				//
+				subm.worked(1);
 				validateSARLCompilerPlugin();
-				//
-				final IJavaProject javaProject = JavaCore.create(getMavenProjectFacade().getProject());
-				final IClasspathEntry[] classpath = javaProject.getResolvedClasspath(false);
-				validateSARLLibraryVersion(classpath);
+				subm.worked(2);
+				validateSARLLibraryVersion();
+				subm.worked(3);
+				validateSARLDependenciesVersions(subm.newChild(1));
+				subm.worked(NSTEPS);
 			}
 			return null;
 		}
 
-		private void validateSARLVersion(String groupId, String artifactId, String artifactVersion) {
+		private Bundle validateSARLVersion(String groupId, String artifactId, String artifactVersion) {
 			final Bundle bundle = Platform.getBundle(SARL_LANG_BUNDLE_NAME);
 			if (bundle == null) {
 				getBuildContext().addMessage(
@@ -470,7 +477,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 						MessageFormat.format(Messages.SARLProjectConfigurator_0, SARL_LANG_BUNDLE_NAME),
 						BuildContext.SEVERITY_ERROR,
 						null);
-				return;
+				return bundle;
 			}
 
 			final Version bundleVersion = bundle.getVersion();
@@ -481,7 +488,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 						MessageFormat.format(Messages.SARLProjectConfigurator_1, SARL_LANG_BUNDLE_NAME),
 						BuildContext.SEVERITY_ERROR,
 						null);
-				return;
+				return bundle;
 			}
 
 			final Version minVersion = new Version(bundleVersion.getMajor(), bundleVersion.getMinor(), 0);
@@ -495,7 +502,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 						getMavenProjectFacade().getPomFile(),
 						-1, -1,
 						MessageFormat.format(Messages.SARLProjectConfigurator_2,
-						groupId, artifactId, artifactVersion, minVersion.toString()),
+								groupId, artifactId, artifactVersion, minVersion.toString()),
 						BuildContext.SEVERITY_ERROR,
 						null);
 			} else if (compare > 0) {
@@ -503,55 +510,38 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 						getMavenProjectFacade().getPomFile(),
 						-1, -1,
 						MessageFormat.format(Messages.SARLProjectConfigurator_3,
-						groupId, artifactId, artifactVersion, maxVersion.toString()),
+								groupId, artifactId, artifactVersion, maxVersion.toString()),
+						BuildContext.SEVERITY_ERROR,
+						null);
+			}
+			return bundle;
+		}
+
+		/** Validate the version of the SARL library in the dependencies.
+		 *
+		 * @throws CoreException if internal error occurs.
+		 */
+		protected void validateSARLLibraryVersion() throws CoreException {
+			final Map<String, Artifact> artifacts = getMavenProjectFacade().getMavenProject().getArtifactMap();
+			final Artifact artifact = artifacts.get(ArtifactUtils.versionlessKey(SARL_GROUP_ID, SARL_ARTIFACT_ID));
+			if (artifact != null) {
+				validateSARLVersion(SARL_GROUP_ID, SARL_ARTIFACT_ID, artifact.getVersion());
+			} else {
+				getBuildContext().addMessage(
+						getMavenProjectFacade().getPomFile(),
+						-1, -1,
+						Messages.SARLProjectConfigurator_6,
 						BuildContext.SEVERITY_ERROR,
 						null);
 			}
 		}
 
-		/** Validate the version of the SARL library in the dependencies.
-		 *
-		 * @param classpath - the current classpath in which the SARL library is specified.
-		 * @throws CoreException if internal error occurs.
-		 */
-		protected void validateSARLLibraryVersion(IClasspathEntry[] classpath) throws CoreException {
-			for (final IClasspathEntry dep : classpath) {
-				final IClasspathAttribute[] attrs = dep.getExtraAttributes();
-				final BitSet flags = new BitSet(3);
-				String version = null;
-				for (int i = 0; version == null && flags.cardinality() != 3 && i < attrs.length; ++i) {
-					final IClasspathAttribute attr = attrs[i];
-					if (GROUPID_ATTR_NAME.equals(attr.getName())
-							&& SARL_GROUP_ID.equals(attr.getValue())) {
-						flags.set(0);
-					} else if (ARTIFACTID_ATTR_NAME.equals(attr.getName())
-							&& SARL_ARTIFACT_ID.equals(attr.getValue())) {
-						flags.set(1);
-					} else if (VERSION_ATTR_NAME.equals(attr.getName())) {
-						flags.set(2);
-						version = attr.getValue();
-					}
-				}
-				if (flags.cardinality() == 3 && version != null) {
-					validateSARLVersion(
-							SARL_GROUP_ID, SARL_ARTIFACT_ID,
-							version);
-					return;
-				}
-			}
-			getBuildContext().addMessage(
-					getMavenProjectFacade().getPomFile(),
-					-1, -1,
-					Messages.SARLProjectConfigurator_6,
-					BuildContext.SEVERITY_ERROR,
-					null);
-		}
-
 		/** Validate the version of the SARL compiler in the Maven configuration.
 		 *
+		 * @return the SARL bundle.
 		 * @throws CoreException if internal error occurs.
 		 */
-		protected void validateSARLCompilerPlugin() throws CoreException {
+		protected Bundle validateSARLCompilerPlugin() throws CoreException {
 			final Map<String, Artifact> plugins = getMavenProjectFacade().getMavenProject().getPluginArtifactMap();
 			final Artifact pluginArtifact = plugins.get(ArtifactUtils.versionlessKey(SARL_PLUGIN_GROUP_ID,
 					SARL_PLUGIN_ARTIFACT_ID));
@@ -572,13 +562,106 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 							BuildContext.SEVERITY_ERROR,
 							null);
 				} else {
-					validateSARLVersion(
+					return validateSARLVersion(
 							SARL_PLUGIN_GROUP_ID, SARL_PLUGIN_ARTIFACT_ID,
 							version);
 				}
 			}
+			return null;
 		}
 
+		/** Validate the versions of the libraries that are in the project dependencies have compatible versions
+		 * with the specific dependencies of the SARL library.
+		 *
+		 * <p>The nearest-win strategy of the dependency resolver may select invalid version selection for artifacts
+		 * that are used by the SARL libraries.
+		 *
+		 * @param monitor the progress monitor.
+		 * @throws CoreException if internal error occurs.
+		 */
+		protected void validateSARLDependenciesVersions(IProgressMonitor monitor) throws CoreException {
+			final SubMonitor subm = SubMonitor.convert(monitor, 3);
+
+			final Map<String, String> neededArtifactVersions = new TreeMap<>();
+			final DependencyNode root = MavenPlugin.getMavenModelManager().readDependencyTree(
+					getMavenProjectFacade(), getMavenProjectFacade().getMavenProject(),
+					Artifact.SCOPE_COMPILE,
+					subm.newChild(1));
+			final DependencyNode[] sarlNode = new DependencyNode[] {null};
+			root.accept(new DependencyVisitor() {
+				@Override
+				public boolean visitLeave(DependencyNode node) {
+					if (sarlNode[0] == null
+						&& node.getDependency() != null
+						&& Objects.equals(node.getDependency().getArtifact().getGroupId(), SARL_MAVENLIB_GROUP_ID)
+						&& Objects.equals(node.getDependency().getArtifact().getArtifactId(), SARL_MAVENLIB_ARTIFACT_ID)) {
+						sarlNode[0] = node;
+						return false;
+					}
+					return true;
+				}
+
+				@Override
+				public boolean visitEnter(DependencyNode node) {
+					return sarlNode[0] == null;
+				}
+			});
+
+			subm.worked(1);
+
+			if (sarlNode[0] != null) {
+				sarlNode[0].accept(new DependencyVisitor() {
+					@Override
+					public boolean visitLeave(DependencyNode node) {
+						if (node.getDependency() != null) {
+							final String grId = node.getDependency().getArtifact().getGroupId();
+							final String arId = node.getDependency().getArtifact().getArtifactId();
+							final String key = ArtifactUtils.versionlessKey(grId, arId);
+							final String vers = neededArtifactVersions.get(key);
+							if (vers == null
+								|| M2EUtilities.compareMavenVersions(vers, node.getVersion().toString()) < 0) {
+								neededArtifactVersions.put(key, node.getVersion().toString());
+							}
+						}
+						return true;
+					}
+
+					@Override
+					public boolean visitEnter(DependencyNode node) {
+						return true;
+					}
+				});
+			}
+
+			subm.worked(2);
+			final SubMonitor subm2 = SubMonitor.convert(subm, neededArtifactVersions.size());
+			int i = 0;
+			final Map<String, Artifact> artifacts = getMavenProjectFacade().getMavenProject().getArtifactMap();
+
+			for (final Entry<String, String> neededDependency : neededArtifactVersions.entrySet()) {
+				final Artifact artifact = artifacts.get(neededDependency.getKey());
+				if (artifact != null) {
+					final int cmp = M2EUtilities.compareMavenVersions(neededDependency.getValue(), artifact.getVersion());
+					if (cmp > 1) {
+						getBuildContext().addMessage(
+								getMavenProjectFacade().getPomFile(),
+								-1, -1,
+								MessageFormat.format(
+										Messages.SARLProjectConfigurator_8,
+										artifact.getGroupId(),
+										artifact.getArtifactId(),
+										artifact.getVersion(),
+										neededDependency.getValue()),
+								BuildContext.SEVERITY_ERROR,
+								null);
+					}
+				}
+				subm2.worked(i);
+				++i;
+			}
+
+			subm.worked(3);
+		}
 	}
 
 }

@@ -54,6 +54,26 @@ public final class M2EUtilities {
 		//
 	}
 
+	/** Compare two OSGI versions.
+	 *
+	 * @param v1 first OSGI version.
+	 * @param v2 second OSGI version.
+	 * @return an integer that the sign indicates if v1 is lower, equal ot greater than v2.
+	 */
+	public static int compareOsgiVersions(String v1, String v2) {
+		return Version.parseVersion(v1).compareTo(Version.parseVersion(v2));
+	}
+
+	/** Compare two Maven versions.
+	 *
+	 * @param v1 first Maven version.
+	 * @param v2 second Maven version.
+	 * @return an integer that the sign indicates if v1 is lower, equal ot greater than v2.
+	 */
+	public static int compareMavenVersions(String v1, String v2) {
+		return parseMavenVersion(v1).compareTo(parseMavenVersion(v2));
+	}
+
 	/** Maven version parser.
 	 *
 	 * @param version - the version string.
