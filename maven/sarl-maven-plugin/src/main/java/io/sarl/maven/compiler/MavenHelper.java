@@ -231,7 +231,7 @@ class MavenHelper {
 			final String artifactId = getConfig("plugin.artifactId"); //$NON-NLS-1$
 			final String pluginArtifactKey = ArtifactUtils.versionlessKey(groupId, artifactId);
 
-			final Set<Artifact> dependencies = resolveDependencies(pluginArtifactKey);
+			final Set<Artifact> dependencies = resolveDependencies(pluginArtifactKey, true);
 
 			final Map<String, Dependency> deps = new TreeMap<>();
 
@@ -248,11 +248,18 @@ class MavenHelper {
 	/** Replies the dependencies for the given artifact.
 	 *
 	 * @param artifactId - the artifact identifier.
+	 * @param plugins indicates if the map of the plugin artifacts must be explore (if true) or the dependency
+	 *     artifacts (if false).
 	 * @return the dependencies.
 	 * @throws MojoExecutionException if the resolution cannot be done.
 	 */
-	public Set<Artifact> resolveDependencies(String artifactId) throws MojoExecutionException {
-		final Artifact pluginArtifact = getSession().getCurrentProject().getPluginArtifactMap().get(artifactId);
+	public Set<Artifact> resolveDependencies(String artifactId, boolean plugins) throws MojoExecutionException {
+		final Artifact pluginArtifact;
+		if (plugins) {
+			pluginArtifact = getSession().getCurrentProject().getPluginArtifactMap().get(artifactId);
+		} else {
+			pluginArtifact = getSession().getCurrentProject().getArtifactMap().get(artifactId);
+		}
 
 		final ArtifactResolutionRequest request = new ArtifactResolutionRequest();
 		request.setResolveRoot(false);

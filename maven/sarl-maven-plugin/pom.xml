@@ -13,8 +13,10 @@
 	<packaging>maven-plugin</packaging>
 
 	<properties>
-		<dependency.sarl-sdk.groupId>io.sarl.lang</dependency.sarl-sdk.groupId>
-		<dependency.sarl-sdk.artifactId>io.sarl.lang.core</dependency.sarl-sdk.artifactId>
+		<dependency.sarl-lib.groupId>io.sarl.lang</dependency.sarl-lib.groupId>
+		<dependency.sarl-lib.artifactId>io.sarl.lang.core</dependency.sarl-lib.artifactId>
+		<dependency.sarl-sdk.groupId>io.sarl.maven</dependency.sarl-sdk.groupId>
+		<dependency.sarl-sdk.artifactId>io.sarl.maven.sdk</dependency.sarl-sdk.artifactId>
 		<dependency.cleaner.groupId>org.apache.maven.plugins</dependency.cleaner.groupId>
 		<dependency.cleaner.artifactId>maven-clean-plugin</dependency.cleaner.artifactId>
 		<dependency.cleaner.mojo>clean</dependency.cleaner.mojo>

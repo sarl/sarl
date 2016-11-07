@@ -25,8 +25,11 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.google.common.base.Strings;
@@ -150,6 +153,7 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 	@Override
 	protected void executeMojo() throws MojoExecutionException, MojoFailureException {
 		ensureSARLVersions();
+		validateDependencyVersions();
 		compileSARL();
 	}
 
@@ -167,8 +171,8 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 				+ ".0"); //$NON-NLS-1$
 		getLog().info(Locale.getString(CompileMojo.class, "CHECK_SARL_SDK", compilerVersionString, //$NON-NLS-1$
 				maxCompilerVersion));
-		final String sarlSdkGroupId = this.mavenHelper.getConfig("sarl-sdk.groupId"); //$NON-NLS-1$
-		final String sarlSdkArtifactId = this.mavenHelper.getConfig("sarl-sdk.artifactId"); //$NON-NLS-1$
+		final String sarlLibGroupId = this.mavenHelper.getConfig("sarl-lib.groupId"); //$NON-NLS-1$
+		final String sarlLibArtifactId = this.mavenHelper.getConfig("sarl-lib.artifactId"); //$NON-NLS-1$
 		final Set<String> foundVersions = new TreeSet<>();
 		final StringBuilder classpath = new StringBuilder();
 		for (final Artifact dep : this.mavenHelper.getSession().getCurrentProject().getArtifacts()) {
@@ -178,16 +182,16 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 				classpath.append(":"); //$NON-NLS-1$
 			}
 			classpath.append(ArtifactUtils.versionlessKey(dep));
-			if (sarlSdkGroupId.equals(dep.getGroupId()) && sarlSdkArtifactId.equals(dep.getArtifactId())) {
+			if (sarlLibGroupId.equals(dep.getGroupId()) && sarlLibArtifactId.equals(dep.getArtifactId())) {
 				final ArtifactVersion dependencyVersion = new DefaultArtifactVersion(dep.getVersion());
 				if (!containsVersion(dependencyVersion, compilerVersion, maxCompilerVersion)) {
 					final String shortMessage = Locale.getString(CompileMojo.class,
 							"INCOMPATIBLE_VERSION_SHORT", //$NON-NLS-1$
-							sarlSdkGroupId, sarlSdkArtifactId, dependencyVersion.toString(),
+							sarlLibGroupId, sarlLibArtifactId, dependencyVersion.toString(),
 							compilerVersion.toString(), maxCompilerVersion.toString());
 					final String longMessage = Locale.getString(CompileMojo.class,
 							"INCOMPATIBLE_VERSION_LONG", //$NON-NLS-1$
-							sarlSdkGroupId, sarlSdkArtifactId, dependencyVersion.toString(),
+							sarlLibGroupId, sarlLibArtifactId, dependencyVersion.toString(),
 							compilerVersion.toString(), maxCompilerVersion.toString());
 					throw new MojoFailureException(this, shortMessage, longMessage);
 				}
@@ -208,6 +212,50 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 			getLog().info(Locale.getString(CompileMojo.class, "TOO_MUCH_SARL_VERSIONS", versions)); //$NON-NLS-1$
 		} else {
 			getLog().info(Locale.getString(CompileMojo.class, "DETECTED_SARL_VERSION", versions)); //$NON-NLS-1$
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void validateDependencyVersions() throws MojoExecutionException, MojoFailureException {
+		getLog().info(Locale.getString(CompileMojo.class, "CHECK_DEPENDENCY_VERSIONS")); //$NON-NLS-1$
+		final String sarlSdkGroupId = this.mavenHelper.getConfig("sarl-sdk.groupId"); //$NON-NLS-1$
+		final String sarlSdkArtifactId = this.mavenHelper.getConfig("sarl-sdk.artifactId"); //$NON-NLS-1$
+
+		boolean hasError = false;
+
+		final Map<String, Artifact> artifacts = this.mavenHelper.getSession().getCurrentProject().getArtifactMap();
+		final String sdkArtifactKey = ArtifactUtils.versionlessKey(sarlSdkGroupId, sarlSdkArtifactId);
+		final Artifact sdkArtifact = artifacts.get(sdkArtifactKey);
+		if (sdkArtifact != null) {
+			final Map<String, ArtifactVersion> versions = new TreeMap<>();
+			final Set<Artifact> dependencies = this.mavenHelper.resolveDependencies(sdkArtifactKey, false);
+			for (final Artifact dependency : dependencies) {
+				final ArtifactVersion dependencyVersion = new DefaultArtifactVersion(dependency.getVersion());
+				final String dependencyKey = ArtifactUtils.versionlessKey(dependency);
+				final ArtifactVersion currentVersion = versions.get(dependencyKey);
+				if (currentVersion == null || dependencyVersion.compareTo(currentVersion) > 0) {
+					versions.put(dependencyKey, dependencyVersion);
+				}
+			}
+
+			for (final Entry<String, ArtifactVersion> entry : versions.entrySet()) {
+				final Artifact dependencyArtifact = artifacts.get(entry.getKey());
+				if (dependencyArtifact != null) {
+					final ArtifactVersion dependencyVersion = new DefaultArtifactVersion(dependencyArtifact.getVersion());
+					if (entry.getValue().compareTo(dependencyVersion) > 0) {
+						final String message = Locale.getString(CompileMojo.class,
+								"INVALID_SARL_SDK_DEPENDENCY_VERSION", //$NON-NLS-1$
+								dependencyArtifact.getGroupId(), dependencyArtifact.getArtifactId(),
+								dependencyArtifact.getVersion(), entry.getValue().toString());
+						getLog().error(message);
+						hasError = true;
+					}
+				}
+			}
+		}
+
+		if (hasError) {
+			throw new MojoFailureException(Locale.getString(CompileMojo.class, "INVALID_SARL_SDK_DEPENDENCY_VERSION_TITLE")); //$NON-NLS-1$
 		}
 	}
 
