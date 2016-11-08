@@ -372,9 +372,15 @@ public final class Boot {
 			// Be silent
 			return;
 		} catch (Throwable e) {
-			showError(MessageFormat.format(Messages.Boot_4,
-					e.getLocalizedMessage()), e);
-			// Event if showError never returns, add the return statement for
+			try {
+				showError(MessageFormat.format(Messages.Boot_4,
+						e.getLocalizedMessage()), e);
+			} catch (Throwable silent) {
+				// In some cases, the previous logging lines causes an exception that avoid to understood the
+				// original exception.
+				showError(e.getLocalizedMessage(), e);
+			}
+			// Even if showError never returns, add the return statement for
 			// avoiding compilation error.
 			return;
 		}

@@ -53,7 +53,6 @@ import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.core.util.Util;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
-import org.eclipse.xtext.xbase.lib.Pair;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.osgi.framework.wiring.BundleWire;
@@ -419,6 +418,78 @@ public final class BundleUtil {
 
 	}
 
+	/** Definition of a set of dependencies.
+	 *
+	 * <p>The set entries are sorted in the insertion order.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class DependencyDefinition {
+
+		private Version version;
+
+		private final List<BundleDependency> dependencies = new ArrayList<>();
+
+		private final Set<String> dependencyIds = new TreeSet<>();
+
+		DependencyDefinition(Version version, List<BundleDependency> dependencies) {
+			this.version = version;
+			addDependencies(dependencies);
+		}
+
+		/** Change the version of the dependency.
+		 *
+		 * @param version the new version. if <code>null</code>, the version does not change.
+		 */
+		public void setVersion(Version version) {
+			if (version != null) {
+				this.version = version;
+			}
+		}
+
+		/** Add the given dependencies.
+		 *
+		 * @param dependencies the dependencies.
+		 */
+		public void addDependencies(List<BundleDependency> dependencies) {
+			for (final BundleDependency dependency : dependencies) {
+				if (this.dependencyIds.add(dependency.getBundle().getSymbolicName())) {
+					this.dependencies.add(dependency);
+				}
+			}
+		}
+
+		/** Replies the version of the bundle.
+		 *
+		 * @return the version.
+		 */
+		public Version getVersion() {
+			return this.version;
+		}
+
+		/** Replies the dependencies.
+		 *
+		 * @return the dependencies.
+		 */
+		public List<BundleDependency> getDependencies() {
+			return Collections.unmodifiableList(this.dependencies);
+		}
+
+		@Override
+		public String toString() {
+			final StringBuilder buf = new StringBuilder();
+			buf.append("version="); //$NON-NLS-1$
+			buf.append(this.version);
+			buf.append("; dependencies="); //$NON-NLS-1$
+			buf.append(this.dependencies.toString());
+			return buf.toString();
+		}
+
+	}
+
 	/** Container of bundle dependencies. This class is an iterable on the symbolic names of the dependency bundles.
 	 *
 	 * @author $Author: sgalland$
@@ -436,7 +507,7 @@ public final class BundleUtil {
 
 		private IPath binaryBundlePath;
 
-		private Map<Bundle, Pair<Version, List<BundleDependency>>> bundleDependencies;
+		private Map<Bundle, DependencyDefinition> bundleDependencies;
 
 		/** Constructor.
 		 *
@@ -453,7 +524,7 @@ public final class BundleUtil {
 			this.javadocURLs = javadocURLs;
 		}
 
-		private Map<Bundle, Pair<Version, List<BundleDependency>>> getBundleDependencies() {
+		private Map<Bundle, DependencyDefinition> getBundleDependencies() {
 			if (this.bundleDependencies == null) {
 				this.bundleDependencies = new TreeMap<>(new Comparator<Bundle>() {
 					@Override
@@ -465,30 +536,35 @@ public final class BundleUtil {
 			return this.bundleDependencies;
 		}
 
-		private Pair<Version, List<BundleDependency>> getBundleDependencies(Bundle bundle) {
-			final Map<Bundle, Pair<Version, List<BundleDependency>>> repository = getBundleDependencies();
+		private DependencyDefinition getBundleDependencies(Bundle bundle) {
+			final Map<Bundle, DependencyDefinition> repository = getBundleDependencies();
 			synchronized (repository) {
 				return repository.get(bundle);
 			}
 		}
 
-		private void setBundleDependencies(Bundle bundle, List<BundleDependency> cpEntries) {
-			final Map<Bundle, Pair<Version, List<BundleDependency>>> repository = getBundleDependencies();
+		private void setBundleDependencies(Bundle bundle, List<BundleDependency> cpEntries, boolean overwrite) {
+			final Map<Bundle, DependencyDefinition> repository = getBundleDependencies();
 			synchronized (repository) {
-				repository.put(bundle, new Pair<>(bundle.getVersion(), cpEntries));
+				if (overwrite || !repository.containsKey(bundle)) {
+					repository.put(bundle, new DependencyDefinition(bundle.getVersion(), cpEntries));
+				} else {
+					final DependencyDefinition dependencySet = repository.get(bundle);
+					assert dependencySet != null;
+					dependencySet.setVersion(bundle.getVersion());
+					dependencySet.addDependencies(cpEntries);
+				}
 			}
 		}
 
 		private void addToBundleDependencies(Bundle bundle, BundleDependency dependency) {
-			final Map<Bundle, Pair<Version, List<BundleDependency>>> repository = getBundleDependencies();
+			final Map<Bundle, DependencyDefinition> repository = getBundleDependencies();
 			synchronized (repository) {
-				final Pair<Version, List<BundleDependency>> pair = repository.get(bundle);
-				if (pair == null || pair.getValue() == null) {
-					final List<BundleDependency> cpEntries = new ArrayList<>();
-					cpEntries.add(dependency);
-					repository.put(bundle, new Pair<>(bundle.getVersion(), cpEntries));
+				final DependencyDefinition dependencySet = repository.get(bundle);
+				if (dependencySet == null) {
+					repository.put(bundle, new DependencyDefinition(bundle.getVersion(), Collections.singletonList(dependency)));
 				} else {
-					pair.getValue().add(dependency);
+					dependencySet.addDependencies(Collections.singletonList(dependency));
 				}
 			}
 		}
@@ -496,14 +572,14 @@ public final class BundleUtil {
 		@Override
 		public String toString() {
 			final StringBuilder buf = new StringBuilder();
-			final Pair<Version, List<BundleDependency>> dependencies = getDependencyDefinition();
+			final DependencyDefinition dependencies = getDependencyDefinition();
 			if (dependencies != null) {
 				toDependencyTree(
 						buf,
 						new String(), new String(),
 						this.bundle,
 						false,
-						dependencies.getValue());
+						dependencies.getDependencies());
 			}
 			return buf.toString();
 		}
@@ -518,7 +594,7 @@ public final class BundleUtil {
 			builder.append("\n"); //$NON-NLS-1$
 			for (final BundleDependency dependency : dependencies) {
 				if (!Objects.equals(current.getSymbolicName(), dependency.getBundle().getSymbolicName())) {
-					final Pair<Version, List<BundleDependency>> subdependencies = getBundleDependencies(dependency.getBundle());
+					final DependencyDefinition subdependencies = getBundleDependencies(dependency.getBundle());
 					if (subdependencies != null) {
 						toDependencyTree(
 								builder,
@@ -526,7 +602,7 @@ public final class BundleUtil {
 								indent2 + "   ", //$NON-NLS-1$
 								dependency.getBundle(),
 								dependency.isFragment(),
-								subdependencies.getValue());
+								subdependencies.getDependencies());
 					}
 				}
 			}
@@ -570,8 +646,8 @@ public final class BundleUtil {
 			return () -> new RuntimeClasspathEntryIterator(getTransitiveDependencies(includeFragments));
 		}
 
-		private Pair<Version, List<BundleDependency>> getDependencyDefinition() {
-			Pair<Version, List<BundleDependency>> dependencies = getBundleDependencies(this.bundle);
+		private DependencyDefinition getDependencyDefinition() {
+			DependencyDefinition dependencies = getBundleDependencies(this.bundle);
 			if (dependencies == null) {
 				final IPath bundlePath = BundleUtil.getBundlePath(this.bundle);
 				if (bundlePath.toFile().isDirectory()) {
@@ -601,7 +677,7 @@ public final class BundleUtil {
 					final IClasspathEntry cpEntry = Utilities.newLibraryEntry(this.bundle, bundlePath, null);
 					final List<BundleDependency> cpEntries = new ArrayList<>();
 					updateBundleClassPath(this.bundle, cpEntry, cpEntries);
-					setBundleDependencies(this.bundle, cpEntries);
+					setBundleDependencies(this.bundle, cpEntries, true);
 				}
 				extractAllBundleDependencies(this.bundle, true);
 				dependencies = getBundleDependencies(this.bundle);
@@ -611,11 +687,11 @@ public final class BundleUtil {
 
 		@Override
 		public Version getBundleVersion() {
-			final Pair<Version, List<BundleDependency>> dependencies = getDependencyDefinition();
+			final DependencyDefinition dependencies = getDependencyDefinition();
 			if (dependencies == null) {
 				return null;
 			}
-			return dependencies.getKey();
+			return dependencies.getVersion();
 		}
 
 		@Override
@@ -625,20 +701,20 @@ public final class BundleUtil {
 
 		@Override
 		public List<BundleDependency> getDirectDependencies() {
-			final Pair<Version, List<BundleDependency>> dependencies = getDependencyDefinition();
+			final DependencyDefinition dependencies = getDependencyDefinition();
 			if (dependencies == null) {
 				return null;
 			}
-			return Collections.unmodifiableList(dependencies.getValue());
+			return Collections.unmodifiableList(dependencies.getDependencies());
 		}
 
 		@Override
 		public Iterable<BundleDependency> getTransitiveDependencies(boolean includeFragments) {
-			final Pair<Version, List<BundleDependency>> dependencies = getDependencyDefinition();
+			final DependencyDefinition dependencies = getDependencyDefinition();
 			if (dependencies == null) {
 				return Collections.emptyList();
 			}
-			return () -> new TransitiveDependencyIterator(dependencies.getValue(), includeFragments);
+			return () -> new TransitiveDependencyIterator(dependencies.getDependencies(), includeFragments);
 		}
 
 		/** Add the given bundle to the entries.
@@ -666,7 +742,7 @@ public final class BundleUtil {
 		}
 
 		/**
-		 * Recrusive function to get all the required dependencies of the given bundle and adding the corresponding elements to the
+		 * Recursive function to get all the required dependencies of the given bundle and adding the corresponding elements to the
 		 * dependency collection.
 		 *
 		 * @param bundle
@@ -681,15 +757,19 @@ public final class BundleUtil {
 			final List<BundleWire> bundleWires = bundleWiring.getRequiredWires(null);
 
 			if (bundleWires != null) {
-				Bundle dependency = null;
 				for (final BundleWire wire : bundleWires) {
 
-					dependency = wire.getProviderWiring().getBundle();
+					final Bundle dependency = wire.getProviderWiring().getBundle();
+					assert dependency != null;
 					final String dependencyInstallationPath = dependency.getLocation();
 
-					final Pair<Version, List<BundleDependency>> existingDependencyCPE = getBundleDependencies(dependency);
-					if ((existingDependencyCPE == null || dependency.getVersion().compareTo(existingDependencyCPE.getKey()) > 0)
-						&& (!firstCall || this.directDependencies == null || this.directDependencies.contains(dependency.getSymbolicName()))) {
+					final DependencyDefinition existingDependencyCPE = getBundleDependencies(dependency);
+
+					final boolean validDependency = (existingDependencyCPE == null
+							|| dependency.getVersion().compareTo(existingDependencyCPE.getVersion()) > 0)
+							&& (!firstCall || this.directDependencies == null || this.directDependencies.contains(dependency.getSymbolicName()));
+
+					if (validDependency) {
 						URL u = null;
 						try {
 							u = FileLocator.resolve(dependency.getEntry(ROOT_NAME));
@@ -702,7 +782,7 @@ public final class BundleUtil {
 							final IClasspathEntry cpEntry = Utilities.newLibraryEntry(dependency, null, this.javadocURLs);
 							final List<BundleDependency> cpEntries = new ArrayList<>();
 							final BundleDependency dep = updateBundleClassPath(dependency, cpEntry, cpEntries);
-							setBundleDependencies(dependency, cpEntries);
+							setBundleDependencies(dependency, cpEntries, false);
 							addToBundleDependencies(bundle, dep);
 						} else {
 							// Management of a project having a .classpath to get the classapth
@@ -724,7 +804,7 @@ public final class BundleUtil {
 		 * @param bundleInstallURL the URL where the specified bundle is stored
 		 * @return the Path to the output folder used to store .class file if any (if we are in an eclipse project (debug mode))
 		 */
-		@SuppressWarnings("checkstyle:cyclomaticcomplexity")
+		@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 		private IPath readDotClasspathAndReferencestoClasspath(Bundle parent, Bundle bundle, URL bundleInstallURL) {
 			IPath outputLocation = null;
 			BundleDependency mainDependency = null;
@@ -806,7 +886,7 @@ public final class BundleUtil {
 
 
 			if (cpEntries.size() > 0) {
-				setBundleDependencies(bundle, cpEntries);
+				setBundleDependencies(bundle, cpEntries, true);
 				if (parent != null && mainDependency != null) {
 					addToBundleDependencies(parent, mainDependency);
 				}
@@ -822,7 +902,7 @@ public final class BundleUtil {
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
 		 */
-		private static class SymbolicNameIterator implements Iterator<String> {
+		private class SymbolicNameIterator implements Iterator<String> {
 
 			private final Iterator<BundleDependency> iterator;
 
@@ -857,7 +937,7 @@ public final class BundleUtil {
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
 		 */
-		private static class ClasspathEntryIterator implements Iterator<IClasspathEntry> {
+		private class ClasspathEntryIterator implements Iterator<IClasspathEntry> {
 
 			private final Iterator<BundleDependency> iterator;
 
@@ -892,7 +972,7 @@ public final class BundleUtil {
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$
 		 */
-		private static class RuntimeClasspathEntryIterator implements Iterator<IRuntimeClasspathEntry> {
+		private class RuntimeClasspathEntryIterator implements Iterator<IRuntimeClasspathEntry> {
 
 			private final Iterator<BundleDependency> iterator;
 
@@ -985,9 +1065,9 @@ public final class BundleUtil {
 					throw new NoSuchElementException();
 				}
 				final BundleDependency cur = this.current;
-				final Pair<Version, List<BundleDependency>> deps = getBundleDependencies(cur.getBundle());
-				if (deps != null && deps.getValue() != null) {
-					this.iterators.add(deps.getValue().iterator());
+				final DependencyDefinition deps = getBundleDependencies(cur.getBundle());
+				if (deps != null && deps.getDependencies() != null) {
+					this.iterators.add(deps.getDependencies().iterator());
 				}
 				this.repliedBundles.add(cur.getBundle().getSymbolicName());
 				searchForNextElement();

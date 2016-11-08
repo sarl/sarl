@@ -59,6 +59,7 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 			"org.apache.commons.cli", //$NON-NLS-1$
 			"org.arakhne.afc.core.vmutils", //$NON-NLS-1$
 			"org.arakhne.afc.core.util", //$NON-NLS-1$
+			"org.eclipse.osgi", //$NON-NLS-1$
 			"org.zeromq.jeromq", //$NON-NLS-1$
 		};
 		final String[] array = new String[SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length + array1.length];
