@@ -50,6 +50,7 @@ public class Messages extends NLS {
 	public static String Boot_21;
 	public static String Boot_22;
 	public static String Boot_23;
+	public static String Boot_24;
 	public static String Boot_3;
 	public static String Boot_4;
 	public static String Boot_5;

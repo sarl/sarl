@@ -37,6 +37,7 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.eclipse.xtext.util.Strings;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.SARLVersion;
@@ -110,6 +111,8 @@ public final class Main {
 	private static final int ERROR_CODE = 255;
 
 	private static final String SARL_COMPILER_NAME = "sarlc"; //$NON-NLS-1$
+
+	private static final String COMPILER_PROGRAMNAME_PROPERTY_NAME = "sarlc.programName"; //$NON-NLS-1$
 
 	private Main() {
 		//
@@ -359,11 +362,23 @@ public final class Main {
 		System.exit(ERROR_CODE);
 	}
 
+	/** Replies the name of the SARL compiler command-line program.
+	 *
+	 * @return the name of the CLI compiler for SARL.
+	 */
+	public static String getCompilerProgramName() {
+		String programName = System.getProperty(COMPILER_PROGRAMNAME_PROPERTY_NAME, null);
+		if (Strings.isEmpty(programName)) {
+			programName = SARL_COMPILER_NAME;
+		}
+		return programName;
+	}
+
 	private static void printUsage() {
 		try (PrintWriter stream = new PrintWriter(System.err)) {
 			final HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp(stream, HelpFormatter.DEFAULT_WIDTH,
-					MessageFormat.format(Messages.Main_10, SARL_COMPILER_NAME, CLI_OPTION_OUTPUT_DIRECTORY_LONG),
+					MessageFormat.format(Messages.Main_10, getCompilerProgramName(), CLI_OPTION_OUTPUT_DIRECTORY_LONG),
 					"", //$NON-NLS-1$
 					getOptions(), HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, ""); //$NON-NLS-1$
 			stream.flush();

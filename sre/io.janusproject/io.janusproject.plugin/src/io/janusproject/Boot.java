@@ -28,7 +28,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -51,6 +53,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.arakhne.afc.vmutil.FileSystem;
 
 import io.sarl.lang.core.Agent;
 
@@ -86,7 +89,7 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_EMBEDDED_SHORT = "e"; //$NON-NLS-1$
 
-	/** Short command-line option for "embedded".
+	/** Long command-line option for "embedded".
 	 */
 	public static final String CLI_OPTION_EMBEDDED_LONG = "embedded"; //$NON-NLS-1$
 
@@ -94,7 +97,7 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_BOOTID_SHORT = "B"; //$NON-NLS-1$
 
-	/** Short command-line option for "boot agent id".
+	/** Long command-line option for "boot agent id".
 	 */
 	public static final String CLI_OPTION_BOOTID_LONG = "bootid"; //$NON-NLS-1$
 
@@ -102,7 +105,7 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_RANDOMID_SHORT = "R"; //$NON-NLS-1$
 
-	/** Short command-line option for "random id".
+	/** Long command-line option for "random id".
 	 */
 	public static final String CLI_OPTION_RANDOMID_LONG = "randomid"; //$NON-NLS-1$
 
@@ -110,7 +113,7 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_WORLDID_SHORT = "W"; //$NON-NLS-1$
 
-	/** Short command-line option for "Janus world id".
+	/** Long command-line option for "Janus world id".
 	 */
 	public static final String CLI_OPTION_WORLDID_LONG = "worldid"; //$NON-NLS-1$
 
@@ -118,7 +121,7 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_FILE_SHORT = "f"; //$NON-NLS-1$
 
-	/** Short command-line option for "file".
+	/** Long command-line option for "file".
 	 */
 	public static final String CLI_OPTION_FILE_LONG = "file"; //$NON-NLS-1$
 
@@ -126,11 +129,11 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_HELP_SHORT = "h"; //$NON-NLS-1$
 
-	/** Short command-line option for "help".
+	/** Long command-line option for "help".
 	 */
 	public static final String CLI_OPTION_HELP_LONG = "help"; //$NON-NLS-1$
 
-	/** Short command-line option for "nologo".
+	/** Long command-line option for "nologo".
 	 */
 	public static final String CLI_OPTION_NOLOGO_LONG = "nologo"; //$NON-NLS-1$
 
@@ -138,7 +141,7 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_OFFLINE_SHORT = "o"; //$NON-NLS-1$
 
-	/** Short command-line option for "offline".
+	/** Long command-line option for "offline".
 	 */
 	public static final String CLI_OPTION_OFFLINE_LONG = "offline"; //$NON-NLS-1$
 
@@ -146,7 +149,7 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_QUIET_SHORT = "q"; //$NON-NLS-1$
 
-	/** Short command-line option for "be quiet".
+	/** Long command-line option for "be quiet".
 	 */
 	public static final String CLI_OPTION_QUIET_LONG = "quiet"; //$NON-NLS-1$
 
@@ -154,7 +157,7 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_VERBOSE_SHORT = "v"; //$NON-NLS-1$
 
-	/** Short command-line option for "be more verbose".
+	/** Long command-line option for "be more verbose".
 	 */
 	public static final String CLI_OPTION_VERBOSE_LONG = "verbose"; //$NON-NLS-1$
 
@@ -162,7 +165,7 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_LOG_SHORT = "l"; //$NON-NLS-1$
 
-	/** Short command-line option for "change log level".
+	/** Long command-line option for "change log level".
 	 */
 	public static final String CLI_OPTION_LOG_LONG = "log"; //$NON-NLS-1$
 
@@ -170,7 +173,7 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_DEFINE_SHORT = "D"; //$NON-NLS-1$
 
-	/** Short command-line option for "env. variable definition".
+	/** Long command-line option for "env. variable definition".
 	 */
 	public static final String CLI_OPTION_DEFINE_LONG = "define"; //$NON-NLS-1$
 
@@ -178,7 +181,7 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_SHOWDEFAULTS_SHORT = "s"; //$NON-NLS-1$
 
-	/** Short command-line option for "show defaults".
+	/** Long command-line option for "show defaults".
 	 */
 	public static final String CLI_OPTION_SHOWDEFAULTS_LONG = "showdefaults"; //$NON-NLS-1$
 
@@ -189,6 +192,14 @@ public final class Boot {
 	/** Short command-line option for "show CLI arguments".
 	 */
 	public static final String CLI_OPTION_SHOWCLIARGUMENTS_LONG = "cli"; //$NON-NLS-1$
+
+	/** Short command-line option for "classpath".
+	 */
+	public static final String CLI_OPTION_CLASSPATH_SHORT = "cp"; //$NON-NLS-1$
+
+	/** Long command-line option for "classpath".
+	 */
+	public static final String CLI_OPTION_CLASSPATH_LONG = "classpath"; //$NON-NLS-1$
 
 	private static final int ERROR_EXIT_CODE = 255;
 
@@ -210,7 +221,7 @@ public final class Boot {
 	public static String[] parseCommandLine(String[] args) {
 		final CommandLineParser parser = new DefaultParser();
 		try {
-			final CommandLine cmd = parser.parse(getOptions(), args);
+			final CommandLine cmd = parser.parse(getOptions(), args, false);
 
 			// Show the help when there is no argument.
 			if (cmd.getArgs().length == 0) {
@@ -250,6 +261,9 @@ public final class Boot {
 						return null;
 					}
 					setPropertiesFrom(file);
+					break;
+				case CLI_OPTION_CLASSPATH_LONG:
+					addToSystemClasspath(opt.getValue());
 					break;
 				case CLI_OPTION_OFFLINE_LONG:
 					setOffline(true);
@@ -308,6 +322,40 @@ public final class Boot {
 			// Event if showError never returns, add the return statement for
 			// avoiding compilation error.
 			return null;
+		}
+	}
+
+	/** Add the given entries to the system classpath.
+	 *
+	 * @param entries the new classpath entries. The format of the value is the same as for the <code>-cp</code>
+	 *      command-line option of the <code>java</code> tool.
+	 */
+	public static void addToSystemClasspath(String entries) {
+		if (!Strings.isNullOrEmpty(entries)) {
+			final String[] individualEntries = entries.split(Pattern.quote(File.pathSeparator));
+			final ClassLoader sysloader = ClassLoader.getSystemClassLoader();
+			if (sysloader instanceof URLClassLoader) {
+				final Method method;
+				try {
+					method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class); //$NON-NLS-1$
+					method.setAccessible(true);
+				} catch (Throwable t) {
+					showError(t.getLocalizedMessage(), t);
+					return;
+				}
+				for (final String entry : individualEntries) {
+					if (!Strings.isNullOrEmpty(entry)) {
+						final URL url = FileSystem.convertStringToURL(entry, false);
+						if (url != null) {
+							try {
+								method.invoke(sysloader, url);
+							} catch (Throwable t) {
+								showError(t.getLocalizedMessage(), t);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -372,14 +420,8 @@ public final class Boot {
 			// Be silent
 			return;
 		} catch (Throwable e) {
-			try {
-				showError(MessageFormat.format(Messages.Boot_4,
-						e.getLocalizedMessage()), e);
-			} catch (Throwable silent) {
-				// In some cases, the previous logging lines causes an exception that avoid to understood the
-				// original exception.
-				showError(e.getLocalizedMessage(), e);
-			}
+			showError(MessageFormat.format(Messages.Boot_4,
+					e.getLocalizedMessage()), e);
 			// Even if showError never returns, add the return statement for
 			// avoiding compilation error.
 			return;
@@ -417,6 +459,9 @@ public final class Boot {
 	 */
 	public static Options getOptions() {
 		final Options options = new Options();
+
+		options.addOption(CLI_OPTION_CLASSPATH_SHORT, CLI_OPTION_CLASSPATH_LONG, true,
+				Messages.Boot_24);
 
 		options.addOption(CLI_OPTION_EMBEDDED_SHORT, CLI_OPTION_EMBEDDED_LONG, false,
 				Messages.Boot_5);
@@ -473,7 +518,7 @@ public final class Boot {
 		}
 		Option opt = new Option(CLI_OPTION_LOG_SHORT, CLI_OPTION_LOG_LONG, true,
 				MessageFormat.format(Messages.Boot_17,
-				JanusConfig.VERBOSE_LEVEL_VALUE, b));
+						JanusConfig.VERBOSE_LEVEL_VALUE, b));
 		opt.setArgs(1);
 		options.addOption(opt);
 		opt = new Option(CLI_OPTION_DEFINE_SHORT, CLI_OPTION_DEFINE_LONG, true,
@@ -494,14 +539,14 @@ public final class Boot {
 	 * @param exception - the cause of the error.
 	 */
 	@SuppressWarnings("checkstyle:regexp")
-	protected static void showError(String message, Throwable exception) {
+	public static void showError(String message, Throwable exception) {
 		try (PrintWriter logger = new PrintWriter(getConsoleLogger())) {
 			if (message != null && !message.isEmpty()) {
 				logger.println(message);
-			}
-			if (exception != null) {
+			} else if (exception != null) {
 				exception.printStackTrace(logger);
 			}
+			logger.println();
 			logger.flush();
 			showHelp(logger);
 		}
@@ -517,12 +562,24 @@ public final class Boot {
 	private static void showHelp(PrintWriter logger) {
 		final HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp(logger, HelpFormatter.DEFAULT_WIDTH,
-				Boot.class.getName() + " " //$NON-NLS-1$
-						+ Messages.Boot_20,
+				getProgramName() + " " //$NON-NLS-1$
+				+ Messages.Boot_20,
 				"", //$NON-NLS-1$
 				getOptions(), HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, ""); //$NON-NLS-1$
 		logger.flush();
 		getExiter().exit();
+	}
+
+	/** Replies the name of the program.
+	 *
+	 * @return the name of the program.
+	 */
+	public static String getProgramName() {
+		String programName = JanusConfig.getSystemProperty(JanusConfig.JANUS_PROGRAM_NAME, null);
+		if (Strings.isNullOrEmpty(programName)) {
+			programName = Boot.class.getName();
+		}
+		return programName;
 	}
 
 	/**
