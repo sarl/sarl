@@ -3,7 +3,7 @@
 :toc-placement!:
 :hide-uri-scheme:
 
-image:http://www.sarl.io/images/SARL-logo.png[float=left]
+image:http://www.sarl.io/images/SARL-logo.png[width=100]
 
 SARL is a general-purpose agent-oriented language, http://www.sarl.io.
 
