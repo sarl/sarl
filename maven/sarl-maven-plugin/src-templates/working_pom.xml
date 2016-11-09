@@ -4,8 +4,8 @@
 	<artifactId>artifactid</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
     <properties>
-        <janus.version>2.0.5.0-SNAPSHOT</janus.version>
-        <sarl.version>0.5.0-SNAPSHOT</sarl.version>
+        <janus.version>2.0.4.3</janus.version>
+        <sarl.version>0.4.3</sarl.version>
 	</properties>
 
 	<build>
