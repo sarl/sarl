@@ -21,13 +21,19 @@
 
 package io.sarl.lang.ui;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
+import org.eclipse.xtext.ui.editor.contentassist.XtextContentAssistProcessor;
+import org.eclipse.xtext.util.Strings;
 
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.bugfixes.Bug406ImportingTypesProposalProvider;
 
 /**
@@ -47,6 +53,14 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		super(plugin);
 	}
 
+	@Override
+	public void configure(Binder binder) {
+		super.configure(binder);
+		// Configure the automatic auto-completion on specific characters: "." and ":"
+		binder.bind(String.class).annotatedWith(com.google.inject.name.Names.named(XtextContentAssistProcessor.COMPLETION_AUTO_ACTIVATION_CHARS))
+			.toProvider(new AutoCompletionKeywordProvider()).asEagerSingleton();
+	}
+
 	public void configureDebugMode(Binder binder) {
 		if (Boolean.getBoolean("io.sarl.lang.debug") //$NON-NLS-1$
 				|| Boolean.getBoolean("org.eclipse.xtext.xtend.debug")) { //$NON-NLS-1$
@@ -54,13 +68,43 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		}
 		// matches ID of org.eclipse.ui.contexts extension registered in plugin.xml
 		binder.bindConstant().annotatedWith(Names.named(XtextEditor.KEY_BINDING_SCOPE))
-				.to("io.sarl.lang.ui.scoping.SARLEditorScope"); //$NON-NLS-1$
+		.to("io.sarl.lang.ui.scoping.SARLEditorScope"); //$NON-NLS-1$
 	}
 
 	// TODO: Remove when https://github.com/eclipse/xtext-eclipse/issues/28 is fixed.
 	@Override
 	public Class<? extends ITypesProposalProvider> bindITypesProposalProvider() {
 		return Bug406ImportingTypesProposalProvider.class;
+	}
+
+	/** Provider of the keywords at which the proposals are automatically given.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class AutoCompletionKeywordProvider implements Provider<String> {
+
+		@Inject
+		private SARLGrammarKeywordAccess access;
+
+		private String keywords;
+
+		/** Constructor.
+		 */
+		AutoCompletionKeywordProvider() {
+			//
+		}
+
+		@Override
+		public String get() {
+			if (Strings.isEmpty(this.keywords)) {
+				this.keywords = this.access.getFullStopKeyword() + this.access.getColonKeyword();
+			}
+			return this.keywords;
+		}
+
 	}
 
 }
