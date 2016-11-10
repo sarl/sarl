@@ -9,10 +9,12 @@ import io.sarl.demos.gameoflife.environment.^agent.events.CellAgentUpdated
 import io.sarl.demos.gameoflife.environment.^agent.events.GameIsDead
 
 /**
- * @author Jérôme BOULMIER
+ * TODO: doc
  *
+ * @author Jérôme BOULMIER
  */
 agent CellAgent {
+
 	uses DefaultContextInteractions, Lifecycle, Logging;
 
 	on Initialize {
@@ -45,4 +47,5 @@ agent CellAgent {
 	on GameIsDead {
 		killMe
 	}
+
 }

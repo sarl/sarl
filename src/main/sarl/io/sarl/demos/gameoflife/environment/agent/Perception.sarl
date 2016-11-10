@@ -4,8 +4,9 @@ import java.util.Set
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
 /**
- * @author Maxime PINARD
+ * TODO: doc
  *
+ * @author Maxime PINARD
  */
 event Perception{
 
@@ -18,4 +19,5 @@ event Perception{
 		this.alive = alive
 		this.position = position
 	}
+
 }

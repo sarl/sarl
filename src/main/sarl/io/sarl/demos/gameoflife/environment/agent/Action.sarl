@@ -3,7 +3,16 @@ package io.sarl.demos.gameoflife.environment.^agent;
 import java.util.UUID
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
+/**
+ * TODO: doc
+ *
+ * @author Jérôme BOULMIER
+ */
 class Action {
+
+	/**
+	 * TODO: doc
+	 */
 	public enum Type {
 		CREATE,
 		DESTROY
@@ -21,7 +30,8 @@ class Action {
 
 	/**
 	 * Replies the emitter.
-	 * @return
+	 *
+	 * @return the emitter
 	 */
 	 def getEmitter : UUID {
 		return this.emitter;
@@ -29,7 +39,8 @@ class Action {
 
 	/**
 	 * Replies the position of the emitter.
-	 * @return
+	 *
+	 * @return the emitter position
 	 */
 	def getPosition : Point2i {
 		return this.position;
@@ -37,7 +48,8 @@ class Action {
 
 	/**
 	 * Replies the type of the event.
-	 * @return
+	 *
+	 * @return the event type
 	 */
 	def getType : Type {
 		return type;
@@ -46,4 +58,6 @@ class Action {
 	override toString() : String {
 		return "Action={" + position + ", " + type + "}"
 	}
+
 }
+

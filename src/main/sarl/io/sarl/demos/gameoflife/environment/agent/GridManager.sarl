@@ -10,6 +10,7 @@ import org.arakhne.afc.math.geometry.d2.i.Point2i
  *
  */
 capacity GridManager {
+
 	/**
 	 * Initialize the grid using random.
 	 */
@@ -50,4 +51,6 @@ capacity GridManager {
 	 * Replies the grid
 	 */
 	def getGrid : List<List<Pair<UUID, Boolean>>>
+
 }
+

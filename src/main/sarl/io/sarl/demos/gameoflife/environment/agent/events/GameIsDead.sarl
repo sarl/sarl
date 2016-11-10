@@ -2,7 +2,7 @@ package io.sarl.demos.gameoflife.environment.^agent.events
 
 /**
  * Event fired when the game is over.
- * @author Jérôme BOULMIER
  *
+ * @author Jérôme BOULMIER
  */
 event GameIsDead

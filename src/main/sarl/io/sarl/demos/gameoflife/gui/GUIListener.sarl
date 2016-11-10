@@ -34,4 +34,5 @@ interface GUIListener {
 	 * Period was updated
 	 */
 	def periodUpdated(period : int);
+
 }

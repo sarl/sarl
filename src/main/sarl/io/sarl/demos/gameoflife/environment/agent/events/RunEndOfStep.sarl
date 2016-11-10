@@ -2,6 +2,7 @@ package io.sarl.demos.gameoflife.environment.^agent.events
 
 /**
  * Event fired at the end of the step.
+ *
  * @author Jérôme BOULMIER
  */
 event RunEndOfStep

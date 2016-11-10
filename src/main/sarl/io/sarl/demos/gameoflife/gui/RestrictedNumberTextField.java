@@ -40,4 +40,5 @@ public class RestrictedNumberTextField extends TextField {
 	private boolean validateValue(int value) {
 		return (value >= this.minValue && value <= this.maxValue);
 	}
+
 }

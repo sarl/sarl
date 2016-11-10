@@ -1,10 +1,12 @@
 package io.sarl.demos.gameoflife.environment.^agent.events
 
 /**
- * @author Jérôme BoULMIER
+ * TODO: doc
  *
+ * @author Jérôme BoULMIER
  */
 event SetupEvent {
+
 	val width : int
 	val height : int
 
@@ -12,4 +14,5 @@ event SetupEvent {
 		this.width = width;
 		this.height = height;
 	}
+
 }

@@ -14,10 +14,13 @@ import org.arakhne.afc.math.MathUtil
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
 /**
+ * TODO: doc
+ *
  * @author Jérôme BOULMIER
  * @author Maxime PINARD
  */
 skill DefaultGridManagerSkill implements GridManager {
+
 	uses DefaultContextInteractions, Logging
 
 	val listeners = <EnvironmentListener>newArrayList
@@ -64,6 +67,9 @@ skill DefaultGridManagerSkill implements GridManager {
 		setup
 	}
 
+	/**
+	 * TODO: doc
+	 */
 	def fireSetupProgressUpdate(progress : double) {
 		for (listener : listeners) {
 			Platform.runLater([listener.setupProgress(progress)])
@@ -146,4 +152,6 @@ skill DefaultGridManagerSkill implements GridManager {
 	override getGrid : List<List<Pair<UUID, Boolean>>> {
 		return grid;
 	}
+
 }
+

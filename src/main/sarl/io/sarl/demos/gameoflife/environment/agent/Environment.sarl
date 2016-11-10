@@ -17,10 +17,13 @@ import java.util.concurrent.locks.ReentrantLock
 import io.sarl.demos.gameoflife.environment.^agent.events.StepFinished
 
 /**
+ * TODO: doc
+ *
  * @author Jérôme BOULMIER
  * @author Maxime PINARD
  */
 agent Environment {
+
 	uses DefaultContextInteractions, Lifecycle, GridManager, Logging;
 
 	val listeners = <EnvironmentListener>newArrayList
@@ -98,6 +101,9 @@ agent Environment {
 		}
 	}
 
+	/**
+	 * TODO: doc
+	 */
 	def fireGridUpdate {
 		for (listener : listeners) {
 			listener.handleGridUpdate(getGrid())
@@ -111,5 +117,6 @@ agent Environment {
 	on GameIsDead {
 		killMe
 	}
+
 }
 

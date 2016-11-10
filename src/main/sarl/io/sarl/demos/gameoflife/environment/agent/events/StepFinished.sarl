@@ -1,7 +1,8 @@
 package io.sarl.demos.gameoflife.environment.^agent.events
 
 /**
- * @author Jérôme BOULMIER
+ * TODO: doc
  *
+ * @author Jérôme BOULMIER
  */
 event StepFinished

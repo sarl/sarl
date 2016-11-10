@@ -4,10 +4,12 @@ import io.sarl.demos.gameoflife.environment.^agent.Action
 import org.arakhne.afc.math.geometry.d2.i.Point2i
 
 /**
- * @author Jérôme BOULMIER
+ * TODO: doc
  *
+ * @author Jérôme BOULMIER
  */
 event CellAgentUpdated {
+
 	val type : Action.Type
 	val position : Point2i
 
@@ -15,4 +17,5 @@ event CellAgentUpdated {
 		this.type = type
 		this.position = position
 	}
+
 }

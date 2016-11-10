@@ -1,6 +1,8 @@
 package io.sarl.demos.gameoflife.environment.^agent.events
+
 /**
- * @author Maxime PINARD
+ * TODO: doc
  *
+ * @author Maxime PINARD
  */
 event PauseEvent

@@ -23,10 +23,13 @@ import io.sarl.demos.gameoflife.environment.^agent.events.SetupEvent
 import io.sarl.demos.gameoflife.environment.^agent.events.PeriodUpdatedEvent
 
 /**
+ * TODO: doc
+ *
  * @author Jérôme BOULMIER
  * @author Maxime PINARD
  */
 agent Boot {
+
 	uses DefaultContextInteractions, Lifecycle, Logging;
 
 	var controller : Controller
@@ -175,4 +178,6 @@ agent Boot {
 		controller.setReadyToSetup(true);
 		paused = true
 	}
+
 }
+

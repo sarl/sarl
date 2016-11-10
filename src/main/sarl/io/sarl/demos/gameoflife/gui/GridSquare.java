@@ -58,4 +58,6 @@ public class GridSquare extends Parent {
 			this.rectangle.setFill(this.activated ? ON_COLOR : OFF_COLOR);
 		}
 	}
+
 }
+

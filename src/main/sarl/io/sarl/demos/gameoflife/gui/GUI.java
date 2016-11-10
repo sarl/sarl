@@ -233,4 +233,6 @@ public class GUI extends Application implements EnvironmentListener, ControllerL
 	public void setupProgress(double progress) {
 		this.controller.setupProgressBar.setProgress(progress);
 	}
+
 }
+
