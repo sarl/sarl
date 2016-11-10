@@ -16,6 +16,7 @@
 
 	<properties>
 		<jkernel.version>2.${project.version}</jkernel.version>
+		<cliRunnerMainClass>io.janusproject.Boot</cliRunnerMainClass>
 	</properties>
 
 	<build>
@@ -89,7 +90,7 @@
 						<embedded>--embedded</embedded>
 						<noMoreOption>--</noMoreOption>
 					</commandLineOptions>
-					<mainClass>io.janusproject.Boot</mainClass>
+					<mainClass>${cliRunnerMainClass}</mainClass>
 				</configuration>
 
 				<executions>
