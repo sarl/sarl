@@ -77,6 +77,7 @@ import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
@@ -470,6 +471,9 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 					completeImplements(model, context, acceptor);
 				}
 			}
+		} else if (model instanceof SarlField) {
+			completeJavaTypes(context, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE, true,
+					getQualifiedNameValueConverter(), createVisibilityFilter(context), acceptor);
 		} else {
 			super.completeJvmParameterizedTypeReference_Type(model, assignment, context, acceptor);
 		}
