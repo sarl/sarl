@@ -228,4 +228,5 @@ SARL is distributed under the link:./LICENSE[Apache v2 license], and is copyrigt
 The following projects have sucessfully used SARL:
 
 * link:https://github.com/gallandarakhne.org/jaak[Jaak Simulation Library]
+* link:https://bitbucket.org/sarlrmit/sarl-controller/src[SARL Elevator Simulator Controller]
 
