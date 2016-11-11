@@ -99,7 +99,6 @@ public final class SARLProjectConfiguratorTest extends AbstractSarlMavenTest {
 	}
 
 	@Test
-	@TestScope(needmavencentral=true)
 	public void sarlApiVersionCompatibility_ko1() throws Exception {
 		try {
 			IMarker[] errors = createMavenProject(multilineString(
@@ -142,7 +141,6 @@ public final class SARLProjectConfiguratorTest extends AbstractSarlMavenTest {
 	}
 
 	@Test
-	@TestScope(needmavencentral=true)
 	public void sarlApiVersionCompatibility_ko2() throws Exception {
 		try {
 			IMarker[] errors = createMavenProject(multilineString(

@@ -21,9 +21,6 @@
 
 package io.sarl.lang.ui;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -31,9 +28,7 @@ import org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
 import org.eclipse.xtext.ui.editor.contentassist.XtextContentAssistProcessor;
-import org.eclipse.xtext.util.Strings;
 
-import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.bugfixes.Bug406ImportingTypesProposalProvider;
 
 /**
@@ -49,6 +44,8 @@ import io.sarl.lang.ui.bugfixes.Bug406ImportingTypesProposalProvider;
 @SuppressWarnings({"static-method", "javadoc", "checkstyle:javadocmethod"})
 public class SARLUiModule extends AbstractSARLUiModule {
 
+	private static final String AUTOMATIC_PROPOSAL_CHARACTERS = ".:"; //$NON-NLS-1$
+
 	public SARLUiModule(AbstractUIPlugin plugin) {
 		super(plugin);
 	}
@@ -58,7 +55,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		super.configure(binder);
 		// Configure the automatic auto-completion on specific characters: "." and ":"
 		binder.bind(String.class).annotatedWith(com.google.inject.name.Names.named(XtextContentAssistProcessor.COMPLETION_AUTO_ACTIVATION_CHARS))
-			.toProvider(new AutoCompletionKeywordProvider()).asEagerSingleton();
+			.toInstance(AUTOMATIC_PROPOSAL_CHARACTERS);
 	}
 
 	public void configureDebugMode(Binder binder) {
@@ -75,36 +72,6 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	@Override
 	public Class<? extends ITypesProposalProvider> bindITypesProposalProvider() {
 		return Bug406ImportingTypesProposalProvider.class;
-	}
-
-	/** Provider of the keywords at which the proposals are automatically given.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private static class AutoCompletionKeywordProvider implements Provider<String> {
-
-		@Inject
-		private SARLGrammarKeywordAccess access;
-
-		private String keywords;
-
-		/** Constructor.
-		 */
-		AutoCompletionKeywordProvider() {
-			//
-		}
-
-		@Override
-		public String get() {
-			if (Strings.isEmpty(this.keywords)) {
-				this.keywords = this.access.getFullStopKeyword() + this.access.getColonKeyword();
-			}
-			return this.keywords;
-		}
-
 	}
 
 }
