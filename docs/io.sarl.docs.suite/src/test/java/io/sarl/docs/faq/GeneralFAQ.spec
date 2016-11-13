@@ -42,9 +42,9 @@ describe "General FAQ on SARL" {
 			
 			/* SARL is a general-purpose agent-oriented language.
 			 * 
-			 * <p>SARL aims at providing the fundamental abstractions 
+			 * <p>SARL aims to provide the fundamental abstractions 
 			 * for dealing with concurrency, distribution, interaction, 
-			 * decentralization, reactivity, autonomy and dynamic 
+			 * decentralization, reactivity, autonomy, and dynamic 
 			 * reconfiguration. These high-level features are now 
 			 * considered the major requirements for an easy and 
 			 * practical implementation of modern complex software 
@@ -66,14 +66,14 @@ describe "General FAQ on SARL" {
 			}
 
 			/* __Yes__. 
-			 * <p>SARL may be used for agent based applications. 
+			 * <p>SARL may be used to build agent based applications. 
 			 * Natively, SARL provides features for agent execution and 
-			 * direct communication. The agents may be deployed
-			 * on real computers and over a computer network.
+			 * direct communication. The agents may be deployed across
+			 * multiple networked computers.
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Could I use SARL to make agent-based software?" {
+			fact "Can I use SARL to make agent-based software?" {
 				true
 			}
 
@@ -82,11 +82,11 @@ describe "General FAQ on SARL" {
 			 * Natively, SARL provides features for agent execution and 
 			 * direct communication. An extension is provided for
 			 * supporting the simulated environments (time management, 
-			 * environment model, etc.)
+			 * environment model, etc.).
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Could I use SARL to make agent-based simulation software?" {
+			fact "Can I use SARL to make agent-based simulation software?" {
 				true
 			}
 			
@@ -98,39 +98,38 @@ describe "General FAQ on SARL" {
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Could I use SARL to make holonic software?" {
+			fact "Can I use SARL to make holonic software?" {
 				true
 			}
 
 			/* __Yes__.
-			 * The SARL developers are providing the definition
-			 * of an organizational space based on the
+			 * An extension to SARL is available that defines
+			 * an organizational space based on the
 			 * [CRIO meta-model](http://www.aspecs.org/CRIO)
-			 * (Capacity-Role-Interaction-Organization) for example.
+			 * (Capacity-Role-Interaction-Organization).
 			 * This meta-model defines a system as a set of organizations 
-			 * in which roles are defined and interacting together. 
+			 * in which roles are defined and interact together. 
 			 * Agents play roles in organization instances (or groups) 
 			 * and provides embedded capacity implementations 
 			 * required by the played roles.
 			 * 
-			 * <p>Other organizational may be used, if a dedicated space
-			 * is defined for.
+			 * <p>Another organizational model may be in another space.
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Could I use SARL to make organizational software?" {
+			fact "Can I use SARL to make organizational software?" {
 				"http://www.aspecs.org/CRIO" should beURL _
 			}
 
 			/* __Yes and No__.
-			 * SARL is an agent-oriented programming language.
-			 * But, it is possible to use object-oriented concepts
-			 * for writing the code of the expressions in the agents,
-			 * the skills, etc.
+			 * While SARL is an agent-oriented programming language,
+			 * it is possible to use object-oriented concepts
+			 * when writing the agent code (skills, etc.).
 			 * A part of the grammar of SARL is inherited from the
 			 * [Xbase partial programming language](https://wiki.eclipse.org/Xbase),
 			 * provided by the [Xtext framework](http://www.eclipse.org/Xtext).
-			 * It provides statements and rules that correspond to object-oriented languages.
+			 * It provides statements and rules that correspond to 
+			 * object-oriented languages.
 			 * 
 			 * @filter(.*) 
 			 */
@@ -141,32 +140,31 @@ describe "General FAQ on SARL" {
 
 			/* __Yes__.
 			 * SARL and Java are 100% interoperable.
-			 * There are no exceptional cases and you do not have to think in two worlds.
-			 * You can invoke SARL code from Java and vice versa without any surprises or hassles.
+			 * There are no exceptional cases and you do not have to think 
+			 * in two worlds. You can invoke SARL code from Java and vice 
+			 * versa without any surprises or hassles.
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "May I use my Java classes in SARL?" {
+			fact "Can I use my Java classes in SARL?" {
 				typeof(Integer) should not be null
 			}
 
 			/* __No__.
-			 * You are able to create a SARL project inside the Eclipse environment
-			 * without Maven.
-			 * Indeed, the SARL Eclipse product provides you the feature for creating
-			 * a specific type of project for SARL.
+			 * You can create a SARL project with Eclipse without Maven.
+			 * Indeed, the SARL Eclipse product supports creation of a SARL project.
 			 *
-			 * However, the SARL developers are recommending Maven for making easier the
-			 * management of your project dependency to the SARL libraries.
+			 * However, the SARL developers recommend Maven because it simplifies the
+			 * management of your project's dependencies on the SARL libraries.
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Must I use Maven for creating a SARL project?" {
+			fact "Must I use Maven to create a SARL project?" {
 				true
 			}
 
-			/* SRE stands for "SARL Runtime Environment".
-			 * The SRE is an implementation of an agent platform, which is able to
+			/* SRE stands for "SARL Runtime Environment."
+			 * The SRE is an implementation of an agent platform which is able to
 			 * run a SARL program.
 			 * The official standard SRE supported by the SARL developers is the
 			 * [Janus platform](http://www.janusproject.io).
@@ -181,7 +179,7 @@ describe "General FAQ on SARL" {
 			 * Janus is a runtime environment (SRE) for multi-agent applications
 			 * that fully supports the concepts of SARL.
 			 * 
-			 * <p>We can make a parallel with the Java universe:
+			 * <p>We can compare the SARL universe with the Java universe:
 			 * <center>
 			 * <table>
 			 * <thead>
@@ -202,19 +200,19 @@ describe "General FAQ on SARL" {
 			}
 
 			/* The release planning of SARL is detailed on the
-			 * [milestones' page](https://github.com/sarl/sarl/milestones)
-			 * on the Github web site.
+			 * [milestones page](https://github.com/sarl/sarl/milestones)
+			 * on Github.
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Where can I found information on the release planning of SARL?" {
+			fact "Where can I find information on the release planning of SARL?" {
 				"https://github.com/sarl/sarl/milestones" should beURL _
 			}
 
-			/* If you cannot find an answer to your question in
-			 * the FAQ nor the reference documents nor
+			/* If your question is not addressed in
+			 * the FAQ, the reference documents, or
 			 * the [existing issues](https://github.com/sarl/sarl/issues), you
-			 * could ask the SARL developers on 
+			 * may ask the SARL developers on 
 			 * [this page](https://github.com/sarl/sarl/issues/new).
 			 * 
 			 * @filter(.*) 
@@ -230,7 +228,7 @@ describe "General FAQ on SARL" {
 			 * <p>This is not a catalog of all the libraries, just a starting point for
 			 * your explorations.
 			 *
-			 * <p>This list is be used by the SARL team for updating this official web site
+			 * <p>This list is used by the SARL team to update the official web site
 			 * of SARL.
 			 * 
 			 * @filter(.*) 
@@ -251,17 +249,17 @@ describe "General FAQ on SARL" {
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Does my operating system is compatible with SARL?" {
+			fact "Is my operating system compatible with SARL?" {
 				true
 			}
 
-			/* SARL requires the JRE and the JDK %compilerlevel% or higher to run and compile.
+			/* SARL requires the JRE and the JDK %compilerlevel% or higher to compile and run.
 			 * Note that if you plan to create Android applications, you should
 			 * configure your JDK to produce 1.6 class files from %compilerlevel% Java code. 
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "What is the version of the Java virtual machine to install?" {
+			fact "What version of the Java virtual machine is required?" {
 				// The checks are valid only if the macro replacements were done.
 				// The replacements are done by Maven.
 				// So, Eclipse Junit tools do not make the replacements.
@@ -271,9 +269,9 @@ describe "General FAQ on SARL" {
 				"%compilerlevel%" should beJavaRange _
 			}
 
-			/* Most of the time, the problem is due to an incompatibility of between
+			/* Most of the time the problem is due to an incompatibility between
 			 * the configuration of your operating system or Java virtual machine,
-			 * and the requirements of the SARL Eclipse product.
+			 * and the SARL Eclipse product.
 			 *
 			 * <p>If a problem occured, find the ".log" file in which Eclipse is writting
 			 * the complete error trace. Usually, it is in your home directory or in
@@ -281,12 +279,12 @@ describe "General FAQ on SARL" {
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Why is the SARL product not launching and display an error dialog box?" {
+			fact "Why does SARL display an error on startup?" {
 				true
 			}
 
-			/* This is due to a problem in your configuration. Most of the time, the log file
-			 * (see the previous question) contains an error with the label
+			/* This is due to a problem in your configuration. Most of the time the log file
+			 * (see the previous question) contains the error
 			 * "Cannot load 64-bit SWT libraries on 32-bit JVM".
 			 *
 			 * <p>It means that you're trying to run the 64-bit version of the SARL Eclipse with
@@ -297,23 +295,28 @@ describe "General FAQ on SARL" {
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Why cannot SARL Eclipse be launched on the Windows 10 operating system?" {
+			fact "Why does SARL Eclipse fail on Windows 10?" {
 				true
 			}
 
-			/* This is due to a problem in your configuration. Indeed, SARL tools need the Eclipse
+			/* This is due to a problem in your configuration. SARL tools need the Eclipse
 			 * framework to be run with a Java Development Kit %compilerlevel% or higher.
 			 * You are currently running the SARL product with a lower version of the JDK.
 			 *
 			 * <p>You must run the SARL product with a valid version of the JDK.
 			 * Two ways are available for solving this issue:<ol>
-			 * <li>installing the JDK %compilerlevel%, and configuring your operating system for using it by default; or</li>
-			 * <li>forcing the SARL product to use the JDK %compilerlevel% by editing the <code>eclipse-sarl.ini</code> file. Add the following parameter on a new line: <code>-vm &lt;path&gt;</code>, where <code>&lt;path&gt;</code> is the path to the binary file <code>javaw[.exe]</code> or <code>java[.exe]</code> of the JDK %compilerlevel%.</li>
+			 * <li>install the JDK %compilerlevel%, and configuring your operating system 
+			 * to use it by default; or</li>
+			 * <li>force the SARL product to use the JDK %compilerlevel% by editing the 
+			 * <code>eclipse-sarl.ini</code> file. Add the following parameter on a new 
+			 * line: <code>-vm &lt;path&gt;</code>, where <code>&lt;path&gt;</code> 
+			 * is the path to the binary file <code>javaw[.exe]</code> or 
+			 * <code>java[.exe]</code> of the JDK %compilerlevel%.</li>
 			 * </ol>
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "The SARL product is launched but it does not contains any feature related to SARL." {
+			fact "Why does the SARL product launch but not contain any features related to SARL?" {
 				// The checks are valid only if the macro replacements were done.
 				// The replacements are done by Maven.
 				// So, Eclipse Junit tools do not make the replacements.
@@ -329,14 +332,14 @@ describe "General FAQ on SARL" {
 		 */
 		context "Contribute to SARL" {
 
-			/* The sources of SARL are available on
+			/* The sources for SARL are available on
 			 * [Github](https://github.com/sarl/sarl).
 			 * Details for getting the source code may be found on the
 			 * [download page](%website%/download/). 
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Where are the sources of SARL?" {
+			fact "Where are the sources for SARL?" {
 				// The checks are valid only if the macro replacements were done.
 				// The replacements are done by Maven.
 				// So, Eclipse Junit tools do not make the replacements.
@@ -351,12 +354,12 @@ describe "General FAQ on SARL" {
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "How can I obtain the current issues?" {
+			fact "How can I find the current issues?" {
 				"https://github.com/sarl/sarl" should beURL _
 				"https://github.com/sarl/sarl/issues" should beURL _
 			}
 
-			/* You must submit your issue on 
+			/* You should submit your issue on 
 			 * [this page](https://github.com/sarl/sarl/issues/new).
 			 * 
 			 * @filter(.*) 

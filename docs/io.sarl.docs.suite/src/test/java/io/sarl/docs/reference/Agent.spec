@@ -37,7 +37,7 @@ import io.sarl.lang.sarl.SarlCapacity
 /** @outline
  * 
  * <p>This document describes the features related to the definition of an agent in SARL.
- * Before reading this document, it is recommended reading
+ * Before reading this document, we recommend that you read
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
  * the [Skill Reference](SkillReferenceSpec.html), and the
  * [Built-in Capacity Reference](BuiltInCapacityReferenceSpec.html).

@@ -38,7 +38,7 @@ import static extension org.junit.Assume.assumeFalse
  *
  * <p>SARL enables to declare objects with an object-oriented programming approach.
  * This document describes the basic support of object-oriented programming provided by SARL.
- * Before reading this document, it is recommended reading
+ * Before reading this document, we recommend that you read
  * the [General Syntax Reference](./GeneralSyntaxReferenceSpec.html).
  * 
  * <p>The support of the object-oriented programming (OOP) statements in SARL is less complete

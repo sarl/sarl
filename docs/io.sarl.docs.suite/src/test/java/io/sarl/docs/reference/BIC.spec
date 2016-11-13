@@ -32,7 +32,7 @@ import static extension org.junit.Assume.assumeFalse
  * @outline
  *
  * <p>This document describes the built-in capacities in SARL.
- * Before reading this document, it is recommended reading
+ * Before reading this document, we recommend that you read
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
  * the [Capacity Reference](CapacityReferenceSpec.html),
  * and the [Skill Reference](SkillReferenceSpec.html).

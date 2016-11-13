@@ -34,12 +34,12 @@ import static extension org.junit.Assume.assumeFalse
 /* @outline
  *
  * <p>This document describes how to define events in SARL.
- * Before reading this document, it is recommended reading
+ * Before reading this document, we recommend that you read
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html).
  * 
  * <p>An event is one of the core concepts in SARL.
- * It is a data structure composed of attributes.
- * Each attribute has a name, a type, and a value.
+ * It is a data structure composed of attributes where 
+ * each attribute has a name, a type, and a value.
  * 
  * <p>Events are exchanged among the agents or the behavioral units of agents,
  * inside a given [Space](SpaceReferenceSpec.html).
@@ -55,33 +55,29 @@ describe "Event Reference"{
 
 		@Inject extension SARLParser
 
-		/* In computer-science literature, there are two major concepts for defining the
-		 * data structures that are exchanged by entities:
-		 * the event, and the message.
+		/* In computer-science literature, there are two main approaches 
+		 * for communicating between entities: (1) an event and (2) a message.
 		 * 
-		 * <p>It is mandatory to specify the type, the source 
-		 * and the potential embedded data for both of them.
-		 * The difference is related to the specification of
-		 * the receiver. In one hand, the event does not
-		 * force the sender to specify the receiver identifier.
-		 * On the other hand, the message needs to have at least
-		 * on receiver identifier (even if it means "all" the 
-		 * possible identifiers).
+		 * <p>An event and a message are similar in that they each have a name 
+		 * (or type), a source, and optional data (arguments or parameters).
+		 * The difference is in whether there is a receiver:
+		 * an event does not specify a receiver,
+		 * while a message needs to have at least
+		 * one receiver (even if it is a group such as "all"  
+		 * possible receivers).
 		 * 
-		 * <p>Because the event permits to send data without being
-		 * care of the sender, this concept is privileged
+		 * <p>Because the event approach is more general, it is preferred 
 		 * by the designers of SARL.
 		 * 
-		 * <p>Consequently, for sending data to another entity,
-		 * you must create an instance of an event, and emit
-		 * this object in a [Space](SpaceReferenceSpec.html).
+		 * <p>So, to send data to another entity in SARL,
+		 * you create an instance of an event and emit
+		 * the event in a [Space](SpaceReferenceSpec.html).
 		 * The sending API is detailed in the [Built-in Capacity
 		 * Reference](BuiltInCapacityReferenceSpec.html).
 		 * 
 		 * 
-		 * <note> There is 
-		 * no message concept in SARL. All the communications are
-		 * supported by the concept of `Event`</note>
+		 * <note> There is no message concept in SARL. 
+		 * All communication is done by using an `Event`.</note>
 		 * 
 		 * @filter(.*)
 		 */
@@ -94,16 +90,15 @@ describe "Event Reference"{
 		
 		describe "Defining an Event" {
 			
-			/* An event can be defined with the `event` keyword.
-			 * It must be followed by the name of the event without the
-			 * qualified name of its package, which is inferred from the
-			 * `package` keyword, if present.
+			/* An event is defined with the `event` keyword followed by the 
+			 * name of the event (without the qualified name of its package, 
+			 * which is inferred from the `package` keyword, if present).
 			 * 
-			 * <p>When the event is empty, i.e. it does not contain any additional
-			 * data than the source of the event, it is specified by an empty
-			 * block, or by "nothing", after the event's declaration.
+			 * <p>When an event does not contain any additional data
+			 * (so is "empty"), nothing further is required (though an empty
+			 * block is allowed).
 			 * 
-			 * <p>The example below contains the definition of the events
+			 * <p>The example below contains the definition of 
 			 * `Event1` and `Event2`, which are both empty.
 			 * The first event is defined with the "empty block" syntax.
 			 * The second event is defined with the "nothing" syntax.
@@ -140,12 +135,12 @@ describe "Event Reference"{
 			}
 		
 			/**
-			 * Events can carry information.
-			 * This information is described by a set of attributes.
-			 * Each attribute is declared according to the "Field Declaration"
-			 * of the [General Syntax Reference](GeneralSyntaxReferenceSpec.html).
+			 * An Event may can carry additional information beyond its name (or type).
+			 * This information is described by a set of attributes (or typed 
+			 * key/value pairs). Each attribute is declared according to the 
+			 * "Field Declaration" of the [General Syntax Reference](GeneralSyntaxReferenceSpec.html).
 			 * 
-			 * <p>The following code example is defining the event `MyEvent` with
+			 * <p>The following code example defines the event `MyEvent` with
 			 * three attributes.
 			 * Each declaration of the attributes illustrates one possible syntax for
 			 * defining a field:
@@ -158,8 +153,8 @@ describe "Event Reference"{
 			 * <p>According to the type inference mechanism used by SARL, the attribute
 			 * `something` will have the type `Object`.
 			 * 
-			 * <note> Because of the use of 
-			 * the `var` keyword, the values of the attributes can be modified.</note>
+			 * <note> Because of the use of the `var` keyword, 
+			 * the values of these attributes can be modified.</note>
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
@@ -207,20 +202,20 @@ describe "Event Reference"{
 			}
 			
 			/**
-			 * Events in SARL can carry information that is unmodifiable using the
-			 * `val` keyword.
+			 * Events in SARL will carry data that is unmodifiable 
+			 * when an attribute is defined using the `val` keyword.
 			 * 
 			 * <importantnote> The `val`
-			 * keyword has the same semantic as the `final` modifier in
+			 * keyword has the same semantics as the `final` modifier in
 			 * the Java language. It means that an element defined with `val`
 			 * can be initialized only once. It also means that the element is read-only.
-			 * But if the element is a reference to an object, then this object is
-			 * not read-only (only the initial reference is).</importantnote>
+			 * But if the element is a reference to an object, then the referenced object 
+			 * is not read-only (only the initial reference is).</importantnote>
 			 * 
 			 * <p>Because the `val` keyword defines a single-initialization
-			 * variable, it is mandatory to specify the initialization value.
-			 * This value could be specified at the end of the `val`
-			 * directive, or by specifying a constructor.
+			 * variable, there should be a way to specify the initial value.
+			 * The initial value can be specified at the end of the `val`
+			 * directive or by specifying a constructor.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
@@ -284,20 +279,19 @@ describe "Event Reference"{
 			 * keyword.
 			 * 
 			 * <veryimportantnote> An event type
-			 * can extend __only one__ other event type.  This is close
-			 * constraint as the class extension of classes in the Java
-			 * language.</veryimportantnote>
+			 * can extend __only one__ other event type.  This is similar to the
+			 * model for class extensions in the Java language.</veryimportantnote>
 			 * 
-			 * <p>In the following code, a first event is defined with the name
+			 * <p>In the following code, the first event is defined with the name
 			 * `Event1` and an attribute named `string`.
-			 * A second event `Event2` is defined as the extension
+			 * A second event `Event2`, is defined as an extension
 			 * of the first event. It contains a new attribute named
 			 * `number`.
 			 * It is now possible to create instances of these events.
 			 * For `Event1`, only the attribute `string`
-			 * is accessible. For `Event2`, the two attributes
-			 * are accessible. Indeed, the type `Event2` inherits
-			 * the fields of `Event1`.
+			 * is available. For `Event2`, two attributes
+			 * are available (`Event2` inherits
+			 * one field from `Event1` and defines one field).
 			 */
 			describe "Extending Events"{
 
@@ -425,12 +419,12 @@ describe "Event Reference"{
 			 */
 			describe "Modifiers" {
 				
-				/** An event may be declared with one or more modifiers, which affect its runtime behavior: <ul>
+				/** An event may be declared with one or more modifiers, which affect its behavior: <ul>
 				 * <li>Access modifiers: <ul>
 				 *     <li>`public`:  the behavior is accessible from any other type;</li>
 				 *     <li>`package`: the behavior is accessible from only the types in the same package.</li>
 				 *     </ul></li>
-				 * <li>`final`: avoid to be derived.</li>
+				 * <li>`final`: cannot be extended.</li>
 				 * </ul>
 				 *
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -452,7 +446,7 @@ describe "Event Reference"{
 					"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
 				}
 	
-				/** The modifiers for the fields in a n event are: <ul>
+				/** The modifiers for the fields in an event are: <ul>
 				 * <li>Access modifiers: <ul>
 				 *     <li>`public`:  the field is accessible from everywhere.</li>
 				 *     </ul></li>
@@ -477,8 +471,8 @@ describe "Event Reference"{
 		
 		/* Several events are defined and reserved by the SARL Core
 		 * Specification.
-		 * They are composing the minimal set of events that a runtime
-		 * environment must support for running a SARL program.
+		 * They describe the minimal set of events that a runtime
+		 * environment must support to run a SARL program.
 		 *
 		 * <veryimportantnote> You must not
 		 * define an event with a fully qualified name equals to one
