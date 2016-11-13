@@ -32,26 +32,26 @@ import static extension org.junit.Assume.assumeFalse
 
 /* @outline
  *
- * <p>This document describes how to define capacities in SARL.
- * Before reading this document, it is recommended reading
+ * <p>This document describes how to define Capacities in SARL.
+ * Before reading this document, we recommend that you read
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html).
  * 
- * <p>An Action is a specification of a transformation of a part of the 
+ * <p>An *Action* is code that transforms a part of the 
  * designed system or its environment. This transformation guarantees 
  * resulting properties if the system before the transformation satisfies 
- * a set of constraints. An action is defined in terms of pre- and post-conditions.
+ * a set of constraints. An Action is defined in terms of pre- and post-conditions.
  * 
- * <p>A *Capacity* is the specification of a collection of actions. This specification 
- * makes no assumptions about its implementation. It could be used to specify 
- * what an agent can do, what a behavior requires for its execution.
+ * <p>A *Capacity* is the specification of a collection of Actions. This specification 
+ * makes no assumptions about the implementation of each Action. It is used to specify 
+ * what an Agent can do, what behavior is required for its execution.
  * 
- * <p>A *Skill* is a possible implementation of a capacity fulfilling all the 
- * constraints of this specification.
+ * <p>A *Skill* is a collections of Actions implementing a Capacity as described in
+ * this specification.
  * 
- * <p>An agent can dynamically evolve by learning/acquiring new Capacities, but it 
- * can also dynamically change the Skill associated to a given capacity.
- * Acquiring new capacities also enables an agent to get access to new 
- * behaviors requiring these capacities. This provides agents with a self-adaptation 
+ * <p>An Agent can dynamically evolve by acquiring (learning) new Capacities, and it 
+ * can also dynamically change the Skill associated with a given Capacity.
+ * Acquiring a new Capacity enables an Agent to get access to new behaviors.
+ * This provides Agents with a self-adaptation 
  * mechanism that allows them to dynamically change their architecture according to 
  * their current needs and goals.
  */
@@ -62,17 +62,17 @@ describe "Capacity Reference"{
 
 		describe "Defining a Capacity" {
 			
-			/* A capacity is the specification of a collection of actions. 
-			 * Consequently, only action's signatures can be defined inside
-			 * a capacity: no attribute nor field is allowed, and no body
-			 * for the actions.
+			/* A Capacity is the specification of a collection of Actions. 
+			 * Consequently, only Action signatures can be defined inside
+			 * a Capacity: no attribute or field is allowed, and no body (code)
+			 * for the Action may be present.
 			 * 
-			 * <p>The definition of a capacity is done with the `capacity`
-			 * keyword. Below, a capacity that permits logging messages is defined.
-			 * This capacity enables to log information and debugging messages.
+			 * <p>The definition of a Capacity is done with the `capacity`
+			 * keyword. Below, a Capacity that permits logging messages is defined.
+			 * This Capacity enables an Agent to log information and debugging messages.
 			 * 
-			 * <note> Defining a capacity 
-			 * without action inside is a symptom of a design problem.</note>
+			 * <note> Defining a Capacity 
+			 * without Actions is a symptom of a design problem.</note>
 			 *  
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
@@ -128,21 +128,21 @@ describe "Capacity Reference"{
 				]
 			}
 		
-			/* In some use cases, it is useful to specialize the definition
-			 * of a capacity. This mechanism is supported by the inheritance
-			 * feature of SARL, which has the same semantic as the inheritance
-			 * mechanism as the Java object-oriented language.
+			/* In some situations, it is useful to specialize the definition
+			 * of a Capacity. Capacity specialization is supported by the inheritance
+			 * feature of SARL, which has the same semantics as the inheritance
+			 * mechanism of the Java object-oriented language.
 			 * 
-			 * <p>The extended capacity is specified just after the `extends`
+			 * <p>The extended Capacity is specified just after the `extends`
 			 * keyword.
 			 * 
-			 * <veryimportantnote> A capacity 
-			 * type can extend __zero-to-many__ other capacity types.
-			 * This is close to the constraint on the implementation of
+			 * <veryimportantnote> A Capacity 
+			 * type can extend __zero-to-many__ other Capacity types.
+			 * This is similar to the implementation of
 			 * interfaces in the Java language.</veryimportantnote>
 			 * 
-			 * <p>In the following code, the `Logging` capacity (defined
-			 * previously) is extended for enabling the output of error messages.
+			 * <p>In the following code, the `Logging` Capacity (defined
+			 * above) is extended to enabling the output of error messages.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 			 */
@@ -216,9 +216,9 @@ describe "Capacity Reference"{
 				]
 			}
 
-			/* In some use cases, it is useful to define a capacity by
-			 * extending more than one capacity.
-			 * Below, the `Cap3` capacity is defined as an extension of the capacities
+			/* In some situations, it is useful to define a Capacity by
+			 * extending more than one Capacity.
+			 * Below, the `Cap3` Capacity is defined as an extension of the Capacities
 			 * `Cap1` and `Cap2`.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -285,18 +285,20 @@ describe "Capacity Reference"{
 			}
 
 			/** Modifiers are used to modify declarations of types and type members.
-			 * This section introduces the modifiers for the capacity.
-			 * The modifiers are usually written before the keyword for defining the capacity.
+			 * This section introduces the modifiers for Capacity.
+			 * The modifiers are usually written before the keyword defining the Capacity.
 			 * 
-			 * <p>The complete description of the modifiers' semantic is available in
+			 * <p>The complete description of the modifier semantics is available in
 			 * <a href="./BasicObjectOrientedProgrammingSupportModifiersSpec.html">this section</a>.
 			 */
 			describe "Modifiers" {
 				
-				/** A capacity may be declared with one or more modifiers, which affect its runtime behavior: <ul>
+				/** A Capacity may be declared with one or more modifiers, 
+				 * which affect its runtime behavior: <ul>
 				 * <li>Access modifiers: <ul>
-				 *     <li>`public`:  the capacity is accessible from any other type;</li>
-				 *     <li>`package`: the capacity is accessible from only the types in the same package.</li>
+				 *     <li>`public`:  the Capacity is accessible from any other type;</li>
+				 *     <li>`package`: the Capacity is accessible only from types 
+				 *          in the same package.</li>
 				 *     </ul></li>
 				 * </ul>
 				 *
@@ -317,9 +319,9 @@ describe "Capacity Reference"{
 					"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
 				}
 	
-				/** The modifiers for the methods in a capacity are: <ul>
+				/** The modifiers for the Actions (methods) in a Capacity are: <ul>
 				 * <li>Access modifiers: <ul>
-				 *     <li>`public`:  the method is accessible within any type.</li>
+				 *     <li>`public`: the Action is accessible from any type.</li>
 				 *     </ul></li>
 				 * </ul>
 				 *
@@ -341,16 +343,16 @@ describe "Capacity Reference"{
 
 		}
 		
-		/* Several capacities are defined and reserved by the SARL Core
+		/* Several Capacities are defined and reserved by the SARL Core
 		 * Specification.
-		 * They are composing the minimal set of capacities that a runtime
-		 * environment must support for running a SARL program.
+		 * They compose the minimal set of Capacities that a runtime
+		 * environment must support to run a SARL program.
 		 *
 		 * <veryimportantnote> You must not
-		 * define a capacity with a fully qualified name equals to one
-		 * of the reserved capacities.</veryimportantnote>
+		 * define a Capacity with a fully qualified name equals to one
+		 * of the reserved Capacities.</veryimportantnote>
 		 * 
-		 * <p>The built-in capacities are defined in the 
+		 * <p>The built-in Capacities are defined in the 
 		 * [Built-in Capacity Reference](BuiltInCapacityReferenceSpec.html).
 		 * 
 		 * @filter(.*)
@@ -359,19 +361,18 @@ describe "Capacity Reference"{
 			"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
 		}
 
-		/* The use of the capacity is related to the associated [skills](SkillReferenceSpec.html).
-		 * It means that a capacity cannot be called by itself since it is not providing
-		 * an implementation: this is the role of the skill.
+		/* The use of a Capacity is related to the associated [Skills](SkillReferenceSpec.html).
+		 * A Capacity cannot be called by itself since it does not provide
+		 * an implementation: this is the role of the Skill.
 		 * 
-		 * <p>When a function `fct` of the capacity `C` is called, 
-		 * it means that the agent silently does:
+		 * <p>When a function `fct` of the Capacity `C` is called, 
+		 * it means that the Agent silently does:
 		 * 
-		 *  * Find the skill `S` associated to `C`; and
+		 *  * Find the Skill `S` associated to `C`; and
 		 *  * Call `fct` on the object `S`.
 		 *  
 		 * 
-		 * <p>Details on the use of the capacities may be found in the references of
-		 * the major behavior-based concepts of SARL:
+		 * <p>Details on the use of the Capacities may be found in the following:
 		 * 
 		 *  * [Agent](AgentReferenceSpec.html)
 		 *  * [Behavior](BehaviorReferenceSpec.html)
