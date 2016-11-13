@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.core.ClasspathEntry;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
@@ -198,10 +199,10 @@ public final class Utilities {
 							url);
 					extraAttributes = new IClasspathAttribute[] {attr};
 				} else {
-					extraAttributes = new IClasspathAttribute[0];
+					extraAttributes = ClasspathEntry.NO_EXTRA_ATTRIBUTES;
 				}
 			} else {
-				extraAttributes = new IClasspathAttribute[0];
+				extraAttributes = ClasspathEntry.NO_EXTRA_ATTRIBUTES;
 			}
 		} else {
 			final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
@@ -217,6 +218,58 @@ public final class Utilities {
 				null,
 				extraAttributes,
 				false);
+	}
+
+	/** Create the classpath output location.
+	 *
+	 * @param bundle the bundle to point to. Never <code>null</code>.
+	 * @param precomputedBundlePath the path to the bundle that is already available. If <code>null</code>,
+	 *      the path is computed from the bundle with {@link BundleUtil}.
+	 * @param javadocURLs the mappings from the bundle to the javadoc URL. It is used for linking the javadoc to the bundle if
+	 *      the bundle platform does not know the Javadoc file. If <code>null</code>, no mapping is defined.
+	 * @return the classpath entry.
+	 */
+	public static IClasspathEntry newOutputClasspathEntry(Bundle bundle, IPath precomputedBundlePath, BundleURLMappings javadocURLs) {
+		assert bundle != null;
+		final IPath bundlePath;
+		if (precomputedBundlePath == null) {
+			bundlePath = BundleUtil.getBundlePath(bundle);
+		} else {
+			bundlePath = precomputedBundlePath;
+		}
+		final IPath sourceBundlePath = BundleUtil.getSourceBundlePath(bundle, bundlePath);
+		final IPath javadocPath = BundleUtil.getJavadocBundlePath(bundle, bundlePath);
+
+		final IClasspathAttribute[] extraAttributes;
+		if (javadocPath == null) {
+			if (javadocURLs != null) {
+				final String url = javadocURLs.getURLForBundle(bundle);
+				if (!Strings.isNullOrEmpty(url)) {
+					final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+							IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
+							url);
+					extraAttributes = new IClasspathAttribute[] {attr};
+				} else {
+					extraAttributes = ClasspathEntry.NO_EXTRA_ATTRIBUTES;
+				}
+			} else {
+				extraAttributes = ClasspathEntry.NO_EXTRA_ATTRIBUTES;
+			}
+		} else {
+			final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+					IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME,
+					javadocPath.makeAbsolute().toOSString());
+			extraAttributes = new IClasspathAttribute[] {attr};
+		}
+
+		return new ClasspathEntry(ClasspathEntry.K_OUTPUT, IClasspathEntry.CPE_LIBRARY,
+				bundlePath,
+				ClasspathEntry.INCLUDE_ALL,
+                ClasspathEntry.EXCLUDE_NONE,
+                sourceBundlePath,
+                null, null, false, null,
+                false,
+                extraAttributes);
 	}
 
 	/** Define a mapping from bundles to URLs.

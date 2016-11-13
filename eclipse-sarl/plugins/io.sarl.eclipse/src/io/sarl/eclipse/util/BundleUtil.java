@@ -106,6 +106,8 @@ public final class BundleUtil {
 
 	/** Replies the source location for the given bundle.
 	 *
+	 * <p>The source location is usually the root folder where the source code of the bundle is located.
+	 *
 	 * <p>We can't use P2Utils and we can't use SimpleConfiguratorManipulator because of
 	 * API breakage between 3.5 and 4.2.
 	 * So we do a bit EDV (Computer data processing) ;-)
@@ -121,7 +123,7 @@ public final class BundleUtil {
 		IPath sourcesPath = null;
 		// Not an essential functionality, make it robust
 		try {
-			final IPath srcFolderPath = getSrcFolderPath(bundle);
+			final IPath srcFolderPath = getSourceRootProjectFolderPath(bundle);
 			if (srcFolderPath == null) {
 				//common case, jar file.
 				final IPath bundlesParentFolder = bundleLocation.removeLastSegments(1);
@@ -134,7 +136,7 @@ public final class BundleUtil {
 					sourcesPath = potentialSourceJar;
 				}
 			} else {
-				sourcesPath = srcFolderPath.removeLastSegments(1);
+				sourcesPath = srcFolderPath;
 			}
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
@@ -157,15 +159,18 @@ public final class BundleUtil {
 		return null;
 	}
 
-	private static IPath getSrcFolderPath(Bundle bundle) {
+	private static IPath getSourceRootProjectFolderPath(Bundle bundle) {
 		for (final String srcFolder : SRC_FOLDERS) {
-			final URL srcFolderURL = FileLocator.find(bundle, Path.fromPortableString(srcFolder), null);
+			final IPath relPath = Path.fromPortableString(srcFolder);
+			final URL srcFolderURL = FileLocator.find(bundle, relPath, null);
 			if (srcFolderURL != null) {
 				try {
 					final URL srcFolderFileURL = FileLocator.toFileURL(srcFolderURL);
-					return new Path(srcFolderFileURL.getPath()).makeAbsolute();
+					IPath absPath = new Path(srcFolderFileURL.getPath()).makeAbsolute();
+					absPath = absPath.removeLastSegments(relPath.segmentCount());
+					return absPath;
 				} catch (IOException e) {
-					throw new RuntimeException(e);
+					//
 				}
 			}
 		}
@@ -208,7 +213,7 @@ public final class BundleUtil {
 		IPath sourcesPath = null;
 		// Not an essential functionality, make it robust
 		try {
-			final IPath srcFolderPath = getSrcFolderPath(bundle);
+			final IPath srcFolderPath = getSourceRootProjectFolderPath(bundle);
 			if (srcFolderPath == null) {
 				//common case, jar file.
 				final IPath bundlesParentFolder = bundleLocation.removeLastSegments(1);
@@ -221,7 +226,7 @@ public final class BundleUtil {
 					sourcesPath = potentialSourceJar;
 				}
 			} else {
-				sourcesPath = srcFolderPath.removeLastSegments(1);
+				sourcesPath = srcFolderPath;
 			}
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
@@ -819,29 +824,43 @@ public final class BundleUtil {
 						final IClasspathEntry[][] classpath = JavaClasspathParser.readFileEntriesWithException(bundle.getSymbolicName(),
 								bundleInstallURL);
 
-						// extract the output location
 						if (classpath[0].length > 0) {
-							final IClasspathEntry outputLocationEntry = classpath[0][classpath[0].length - 1];
-							if (outputLocationEntry.getContentKind() == ClasspathEntry.K_OUTPUT) {
-								outputLocation = outputLocationEntry.getPath();
-								mainDependency = new BundleDependency(bundle, outputLocationEntry, false);
-								cpEntries.add(mainDependency);
+							// extract the output location
+							int outputLocationEntryIndex = -1;
+							for (int i = 0; outputLocationEntryIndex < 0 && i < classpath[0].length; ++i) {
+								IClasspathEntry outputLocationEntry = classpath[0][i];
+								if (outputLocationEntry.getContentKind() == ClasspathEntry.K_OUTPUT) {
+									outputLocation = outputLocationEntry.getPath();
+									// Ensure that the classpath entry has a source attachment path
+									final IPath sourcePath = outputLocationEntry.getSourceAttachmentPath();
+									if (sourcePath == null) {
+										final IPath entryPath = outputLocationEntry.getPath();
+										outputLocationEntry = Utilities.newOutputClasspathEntry(bundle, entryPath, null);
+									}
+									mainDependency = new BundleDependency(bundle, outputLocationEntry, false);
+									cpEntries.add(mainDependency);
+									outputLocationEntryIndex = i;
+								}
 							}
-						}
 
-						// discard the output location and add others real entries
-						// to the classpath
-						IClasspathEntry[] rawClassapth = null;
-						if (classpath[0].length > 0) {
-							final IClasspathEntry otherEntries = classpath[0][classpath[0].length - 1];
-							if (otherEntries.getContentKind() == ClasspathEntry.K_OUTPUT) {
-								final IClasspathEntry[] copy = new IClasspathEntry[classpath[0].length - 1];
-								System.arraycopy(classpath[0], 0, copy, 0, copy.length);
-								rawClassapth = copy;
+							// discard the output location and add others real entries
+							// to the classpath
+							final IClasspathEntry[] copy;
+							if (outputLocationEntryIndex >= 0) {
+								copy = new IClasspathEntry[classpath[0].length - 1];
+								if (outputLocationEntryIndex > 0) {
+									System.arraycopy(classpath[0], 0, copy, 0, outputLocationEntryIndex);
+								}
+								if (outputLocationEntryIndex < (classpath[0].length - 1)) {
+									System.arraycopy(classpath[0], outputLocationEntryIndex + 1, copy,
+											outputLocationEntryIndex, classpath[0].length - outputLocationEntryIndex - 1);
+								}
+							} else {
+								copy = classpath[0];
+							}
 
-								IClasspathEntry cpentry = null;
-								for (int i = 0; i < rawClassapth.length; i++) {
-									cpentry = rawClassapth[i];
+							if (copy != null && copy.length > 0) {
+								for (final IClasspathEntry cpentry : copy) {
 									if (cpentry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
 										// FIXME do something if we have a
 										// container, usually this is the JRE
