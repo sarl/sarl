@@ -35,7 +35,7 @@ import static extension org.junit.Assume.assumeFalse
 /* @outline
  *
  * <p>This document describes how to define skills in SARL.
- * Before reading this document, it is recommended reading
+ * Before reading this document, we recommend that you read
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html),
  * and the [Capacity Reference](CapacityReferenceSpec.html).
  * 
