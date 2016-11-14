@@ -50,6 +50,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.io.Files;
+
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
@@ -666,6 +667,22 @@ public final class SpecificationTools {
 		return false;
 	}
 
+	/** Ensure that the given type has the given deprecated method.
+	 * The format of the name may be: <ul>
+	 * <li>ID</li>
+	 * <li>ID(TYPE, TYPE...)</li>
+	 * <li>ID : TYPE</li>
+	 * <li>ID(TYPE, TYPE...) : TYPE</li>
+	 * </ul>
+	 *
+	 * @param type - the type to check.
+	 * @param name - the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
+	 * @return the validation status.
+	 */
+	public static boolean should_haveDeprecatedMethod(Class<?> type, String name) {
+		return shouldHaveMethod(type, name, true);
+	}
+
 	/** Ensure that the given type has the given method.
 	 * The format of the name may be: <ul>
 	 * <li>ID</li>
@@ -678,8 +695,25 @@ public final class SpecificationTools {
 	 * @param name - the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
 	 * @return the validation status.
 	 */
-	@SuppressWarnings("rawtypes")
 	public static boolean should_haveMethod(Class<?> type, String name) {
+		return shouldHaveMethod(type, name, false);
+	}
+
+	/** Ensure that the given type has the given method.
+	 * The format of the name may be: <ul>
+	 * <li>ID</li>
+	 * <li>ID(TYPE, TYPE...)</li>
+	 * <li>ID : TYPE</li>
+	 * <li>ID(TYPE, TYPE...) : TYPE</li>
+	 * </ul>
+	 *
+	 * @param type - the type to check.
+	 * @param name - the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
+	 * @param deprecated indicates if the field must be deprecated.
+	 * @return the validation status.
+	 */
+	@SuppressWarnings({"rawtypes", "checkstyle:npathcomplexity"})
+	protected static boolean shouldHaveMethod(Class<?> type, String name, boolean deprecated) {
 		try {
 			final Pattern pattern = Pattern.compile(
 					"^([_a-zA-Z0-9]+)\\s*" //$NON-NLS-1$
@@ -715,12 +749,18 @@ public final class SpecificationTools {
 				if (method == null) {
 					return false;
 				}
+				final boolean validReturnType;
 				if (returnText == null || returnText.isEmpty()) {
-					return void.class.equals(method.getReturnType())
+					validReturnType = void.class.equals(method.getReturnType())
 							|| Void.class.equals(method.getReturnType());
+				} else {
+					final Class<?> rtype = ReflectionUtil.forName(returnText);
+					validReturnType = rtype.equals(method.getReturnType());
 				}
-				final Class<?> rtype = ReflectionUtil.forName(returnText);
-				return rtype.equals(method.getReturnType());
+				if (validReturnType) {
+					final Deprecated deprecatedAnnotation = method.getAnnotation(Deprecated.class);
+					return (deprecated && deprecatedAnnotation != null) || (!deprecated && deprecatedAnnotation == null);
+				}
 			}
 		} catch (Throwable e) {
 			//
@@ -728,7 +768,21 @@ public final class SpecificationTools {
 		return false;
 	}
 
-	/** Ensure that the given type has the given type has the given method.
+	/** Ensure that the given type has the given type has the given deprecated field.
+	 * The format of the name may be: <ul>
+	 * <li>ID</li>
+	 * <li>ID : TYPE</li>
+	 * </ul>
+	 *
+	 * @param type - the type to check.
+	 * @param name - the name and prototype, e.g. <code>x:int</code>.
+	 * @return the validation status.
+	 */
+	public static boolean should_haveDeprecatedField(Class<?> type, String name) {
+		return shouldHaveField(type, name, true);
+	}
+
+	/** Ensure that the given type has the given type has the given field.
 	 * The format of the name may be: <ul>
 	 * <li>ID</li>
 	 * <li>ID : TYPE</li>
@@ -739,6 +793,21 @@ public final class SpecificationTools {
 	 * @return the validation status.
 	 */
 	public static boolean should_haveField(Class<?> type, String name) {
+		return shouldHaveField(type, name, false);
+	}
+
+	/** Ensure that the given type has the given type has the given method.
+	 * The format of the name may be: <ul>
+	 * <li>ID</li>
+	 * <li>ID : TYPE</li>
+	 * </ul>
+	 *
+	 * @param type - the type to check.
+	 * @param name - the name and prototype, e.g. <code>x:int</code>.
+	 * @param deprecated indicates if the field must be deprecated.
+	 * @return the validation status.
+	 */
+	protected static boolean shouldHaveField(Class<?> type, String name, boolean deprecated) {
 		try {
 			final Pattern pattern = Pattern.compile(
 					"^([_a-zA-Z0-9]+)\\s*" //$NON-NLS-1$
@@ -756,11 +825,17 @@ public final class SpecificationTools {
 				if (field == null) {
 					return false;
 				}
+				final boolean validType;
 				if (fieldType != null && !fieldType.isEmpty()) {
 					final Class<?> rtype = ReflectionUtil.forName(fieldType);
-					return rtype.equals(field.getType());
+					validType = rtype.equals(field.getType());
+				} else {
+					validType = true;
 				}
-				return true;
+				if (validType) {
+					final Deprecated deprecatedAnnotation = field.getAnnotation(Deprecated.class);
+					return (deprecated && deprecatedAnnotation != null) || (!deprecated && deprecatedAnnotation == null);
+				}
 			}
 		} catch (Throwable e) {
 			//

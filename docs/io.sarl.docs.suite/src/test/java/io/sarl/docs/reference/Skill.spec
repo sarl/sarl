@@ -808,7 +808,6 @@ describe "Skill Reference" {
 				 *     </ul></li>
 				 * <li>`abstract`: the behavior is abstract and cannot be instanced.</li>
 				 * <li>`final`: avoid to be derived.</li>
-			 	 * <li>`strictfp`: avoid the methods of the behavior to use intermediate floating number formats.</li>
 				 * </ul>
 				 *
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -822,8 +821,6 @@ describe "Skill Reference" {
 						abstract skill Example3 implements CapacityExample {
 						}
 						final skill Example4 implements CapacityExample {
-						}
-						strictfp skill Example5 implements CapacityExample {
 						}
 					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.sr
@@ -842,8 +839,6 @@ describe "Skill Reference" {
 				 *     <li>`package`: the field is accessible only within the same package of its agent;</li>
 				 *     <li>`private`: the field is accessible only within its agent.</li>
 				 *     </ul></li>
-				 * <li>`transient`: the field is never serialized.</li>
-				 * <li>`volatile`: the field is modified by different threads. It is never cached thread-locally, and synchronized.</li>
 				 * </ul>
 				 *
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -854,8 +849,6 @@ describe "Skill Reference" {
 						protected var example2 : Object;
 						package var example3 : Object;
 						private var example4 : Object;
-						transient var example5 : Object;
-						volatile var example6 : Object;
 					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.sr
 						capacity C1 { }
@@ -875,8 +868,6 @@ describe "Skill Reference" {
 				 * <li>`abstract`: the method has no implementation in the class.</li>
 				 * <li>`dispatch`: the method provides an implementation for the dispatch method mechanism.</li>
 				 * <li>`final`: the method cannot be overridden in derived classes.</li>
-				 * <li>`strictfp`: avoid the method to use intermediate floating number formats.</li>
-				 * <li>`synchronized`: the method is synchronized on the class instance.</li>
 				 * </ul>
 				 *
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -895,13 +886,9 @@ describe "Skill Reference" {
 						abstract def example5
 						// Not-overridable function
 						final def example6 { }
-						// Function with strict floating point management
-						strictfp def example8 { }
-						// Synchronized function
-						synchronized def example9 { }
 						// Dispatch functions
-						dispatch def example10(p : Integer) { }
-						dispatch def example10(p : Float) { }
+						dispatch def example7(p : Integer) { }
+						dispatch def example7(p : Float) { }
 					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.sr
 						capacity C1 { }

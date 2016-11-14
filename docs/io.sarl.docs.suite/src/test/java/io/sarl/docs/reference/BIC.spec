@@ -1358,12 +1358,13 @@ describe "Built-in Capacity Reference" {
 			 */
 			fact "Get the current time" {
 				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Time
 					import io.sarl.core.Logging
 					import java.util.concurrent.TimeUnit
 					agent A {
 						uses Time
 						def myaction {
-							var ct = getTime;
+							var ct = getTime
 							var ct2 = getTime(null)
 							var ct3 = getTime(TimeUnit::HOURS)
 						}
