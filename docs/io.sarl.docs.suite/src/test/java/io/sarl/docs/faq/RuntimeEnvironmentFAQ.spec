@@ -246,44 +246,6 @@ describe "Runtime Environment FAQ" {
 
 		/*  
 		 */
-		context "Contribute to Janus" {
-
-			/* The sources of Janus are available on
-			 * [Github](https://github.com/janus-project/janusproject).
-			 * Details for getting the source code may be found on the
-			 * [official web site of Janus](http://www.janusproject.io). 
-			 * 
-			 * @filter(.*) 
-			 */
-			fact "Where are the sources of Janus?" {
-				"https://github.com/janus-project/janusproject" should beURL _
-				"http://www.janusproject.io" should beURL _
-			}
-			
-			/* Janus Core Developers use [Github](https://github.com/janus-project/janusproject)
-			 * to manage bug tracking and project workflow. 
-			 * The issues are listed on [Github](https://github.com/janus-project/janusproject/issues). 
-			 * 
-			 * @filter(.*) 
-			 */
-			fact "How can I obtain the current issues?" {
-				"https://github.com/janus-project/janusproject" should beURL _
-				"https://github.com/janus-project/janusproject/issues" should beURL _
-			}
-
-			/* You must submit your issue on 
-			 * [this page](https://github.com/janus-project/janusproject/issues/new).
-			 * 
-			 * @filter(.*) 
-			 */
-			fact "How can I report a problem or a bug in Janus components?" {
-				"https://github.com/janus-project/janusproject/issues/new" should beURL _
-			}
-
-		}
-
-		/*  
-		 */
 		context "Runtime Behavior of Janus" {
 
 			/* __No__.
@@ -315,4 +277,44 @@ describe "Runtime Environment FAQ" {
 
 		}
 		
+		/*  
+		 */
+		context "Contribute to Janus" {
+
+			/* The sources for Janus are available inside the SARL project repository on
+			 * [Github](https://github.com/sarl/sarl/sre/io.janusproject/).
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Where are the sources for SARL?" {
+				// The checks are valid only if the macro replacements were done.
+				// The replacements are done by Maven.
+				// So, Eclipse Junit tools do not make the replacements.
+				System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+				//
+				"%website%" should beURL "!file"
+			}
+			
+			/* Janus Developers use [Github](https://github.com/sarl/sarl)
+			 * to manage bug tracking and project workflow. 
+			 * The issues are listed on [Github](https://github.com/sarl/sarl/issues). 
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "How can I find the current issues?" {
+				"https://github.com/sarl/sarl" should beURL _
+				"https://github.com/sarl/sarl/issues" should beURL _
+			}
+
+			/* You should submit your issue on 
+			 * [this page](https://github.com/sarl/sarl/issues/new).
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "How can I report a problem or a bug in Janus components?" {
+				"https://github.com/sarl/sarl/issues/new" should beURL _
+			}
+
+		}
+
 }

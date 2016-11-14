@@ -213,13 +213,13 @@ describe "General FAQ on SARL" {
 			 * the FAQ, the reference documents, or
 			 * the [existing issues](https://github.com/sarl/sarl/issues), you
 			 * may ask the SARL developers on 
-			 * [this page](https://github.com/sarl/sarl/issues/new).
+			 * [the SARL forum](https://groups.google.com/forum/#!forum/sarl).
 			 * 
 			 * @filter(.*) 
 			 */
 			fact "Where can I ask my question?" {
 				"https://github.com/sarl/sarl/issues" should beURL _
-				"https://github.com/sarl/sarl/issues/new" should beURL _
+				"https://groups.google.com/forum/#!forum/sarl" should beURL _
 			}
 
 			/* A community driven list of useful SARL libraries, frameworks and software
