@@ -36,7 +36,7 @@ import static extension org.junit.Assume.assumeFalse
  * Before reading this document, we recommend that you read
  * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html).
  * 
- * <p>An *Action* is code that transforms a part of the 
+ * <p>An *Action* is code (a public method or function) that transforms a part of the 
  * designed system or its environment. This transformation guarantees 
  * resulting properties if the system before the transformation satisfies 
  * a set of constraints. An Action is defined in terms of pre- and post-conditions.
