@@ -33,10 +33,10 @@ import static extension org.junit.Assume.*
  * 
  * <p>For running an agent, you must launch this agent on the runtime 
  * environment.
- * This document explains how to launch an agent on
- * the [Janus platform](http://www.janusproject.io) inside the Eclipse IDE.
+ * In this document, we assume that the runtime environment is
+ * the [Janus platform](http://www.janusproject.io).
  *
- * <p>Two major methods are available for launching a SARL application:
+ * <p>Two major methods are available for launching a SARL application inside the SARL Eclipse IDE:
  * 
  * * Use a [SARL launch configuration](#Create_a_Sarl_Launch_Configuration).
  * * Use a [Java launch configuration](#Create_a_Java_Launch_Configuration).
@@ -48,8 +48,8 @@ describe "Run SARL Agent in the Eclipse IDE" {
 	
 	@Inject extension SARLParser
 
-	/* For launching the SARL agents on the Janus runtime environment inside
-	 * the Eclipse IDE, you must define a *Run Configuration*.
+	/* For launching the SARL agents on the runtime environment inside
+	 * the SARL Eclipse IDE, you must define a *Run Configuration*.
 	 *
 	 * <veryimportant>If your project is Maven-based, you could not use this
 	 * method for launching your application. You must use the
@@ -88,6 +88,8 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 *
 		 * <p>![Agent to Launch](./EclipseRunConfiguration_0_1.png)
 		 *
+		 * <p>At the bottom of this page, you may change configuration options for the runtime environment.
+		 *
 		 * @filter(.*) 
 		 */		
 		fact "Specify the agent to execute" {
@@ -97,13 +99,12 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		/* For running your agent, you must specify a SARL runtime environment.
 		 * In this tutorial, we assume that you want to use the [Janus platform](http://www.janusproject.io).
 		 *
-		 * <p>First, **you could download the
-		 * [Janus runtime environment](%janusmavenrepository%/last-janus-release.jar)**.
-		 *
-		 * <p>For adding the down-loaded file of Janus, you add a **SARL runtime environment** (or SRE) in
+		 * <p>If you don't want to use the Janus platform, you must download the
+		 * runtime environment that you want to use, and install it in the SARL Eclipse environment as follow.
+		 * You add a **SARL runtime environment** (or SRE) in
 		 * the *Runtime environment* tab. You should click on the **Installed SREs** button for
 		 * managing the installed runtime environments (or open the corresponding preference page).
-		 * After adding the Janus JAR file, you obtain a dialog box similar to:
+		 * After adding the SRE's JAR file, you obtain a dialog box similar to:
 		 *
 		 *
 		 * <p>![Add Janus](./EclipseRunConfiguration_0_2.png)
@@ -125,12 +126,14 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * are put in the `parameters` attribute of the `Initialize` event.
 		 * This event is fired when the launched agent is started.
 		 * 
-		 * <p>The following example gives the values `First`, `Argument`,
-		 * `Second`, and `Argument` to the launched agent:
+		 * <p>The following example gives the values `FirstArgument` and
+		 * `SecondArgument` to the launched agent:
 		 *
 		 *
 		 * <p>![Program Arguments](./EclipseRunConfiguration_0_3.png)
 		 *
+		 * <p>On this page, you could also specify the parameters to give to the SARL runtime environment or
+		 * to the Java virtual machine.
 		 * 
 		 * @filter(.*) 
 		 */		
@@ -142,6 +145,9 @@ describe "Run SARL Agent in the Eclipse IDE" {
 
 	/* For launching the SARL agents on the Janus runtime environment inside
 	 * the Eclipse IDE, you must define a *Run Configuration*.
+	 *
+	 * <p>This section is dedicated to the definition of a launcher for Java application (the standard and classical
+	 * launching configuration in the Eclipse community).
 	 */
 	describe "Create a Java Launch Configuration" {
 
@@ -165,21 +171,21 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		/* For running your agent with the Janus runtime environment,
 		 * you must add the Janus library in the class path.
 		 *
-		 * <p>First, **you must download the
-		 * [Janus runtime environment](%janusmavenrepository%/last-janus-release.jar)**.
+		 * <p>For adding the Janus library, select the **Classpath** tab, and **User Entries**.
+		 * Click on the **Advanced** button. You will be able to select the type of classpath
+		 * entry to add. Select "Add Library". 
+		 * 
+		 * <p>![Add Library in the classpath](./EclipseRunConfiguration_1_1.png)
 		 *
-		 * <p>For adding the downloaded file of Janus, you must **add an external JAR** in
-		 * the *Classpath* tab. After adding the Janus JAR file, you obtain a
-		 * dialog box similar to:
+		 * Then, you are able to select the library for the Janus runtime environment. 
 		 *
-		 *
-		 * <p>![Add Janus](./EclipseRunConfiguration_1_1.png)
-		 *
+		 * <p>![Add Janus Library](./EclipseRunConfiguration_1_2.png)
 		 *
 		 * @filter(.*) 
 		 */		
 		fact "Add the Janus runtime environment" {
 			"EclipseRunConfiguration_1_1.png" should beAccessibleFrom this
+			"EclipseRunConfiguration_1_2.png" should beAccessibleFrom this
 			// The checks are valid only if the macro replacements were done.
 			// The replacements are done by Maven.
 			// So, Eclipse Junit tools do not make the replacements.
@@ -192,13 +198,13 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * The main class **must always be** `io.janusproject.Boot`.
 		 *
 		 *
-		 * <p>![Janus Boot Class](./EclipseRunConfiguration_1_2.png)
+		 * <p>![Janus Boot Class](./EclipseRunConfiguration_1_3.png)
 		 *
 		 *
 		 * @filter(.*) 
 		 */		
 		fact "Specify the Janus Boot agent" {
-			"EclipseRunConfiguration_1_2.png" should beAccessibleFrom this
+			"EclipseRunConfiguration_1_3.png" should beAccessibleFrom this
 		}
 
 		/* The last step is the specification of the agent to launch.
@@ -211,13 +217,13 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * of the agent that must be launched. 
 		 *
 		 *
-		 * <p>![Agent to Launch](./EclipseRunConfiguration_1_3.png)
+		 * <p>![Agent to Launch](./EclipseRunConfiguration_1_4.png)
 		 *
 		 *
 		 * @filter(.*) 
 		 */		
 		fact "Specify the agent to execute" {
-			"EclipseRunConfiguration_1_3.png" should beAccessibleFrom this
+			"EclipseRunConfiguration_1_4.png" should beAccessibleFrom this
 		}
 
 		/* It is possible to give arguments to the launched agent.
@@ -229,13 +235,13 @@ describe "Run SARL Agent in the Eclipse IDE" {
 		 * `SecondParam` to the launched agent:
 		 *
 		 *
-		 * <p>![Program Arguments](./EclipseRunConfiguration_1_4.png)
+		 * <p>![Program Arguments](./EclipseRunConfiguration_1_5.png)
 		 *
 		 * 
 		 * @filter(.*) 
 		 */		
 		fact "Give parameters to the Agent" {
-			"EclipseRunConfiguration_1_4.png" should beAccessibleFrom this
+			"EclipseRunConfiguration_1_5.png" should beAccessibleFrom this
 		}
 
 	}

@@ -186,20 +186,17 @@ describe "Create First Project" {
 			"%sarlmavenrepository%" should beURL "!file"
 		}
 		
-		/* For executing your SARL program, you must select a
+		/* For executing your SARL program, you must use a
 		 * [runtime environment](%website%/runtime/index.html).
 		 * 
 		 * <p>The runtime environment that is recommended by the developers of SARL
 		 * is [Janus](http://www.janusproject.io). 
 		 * 
-		 * <p>If you want to embed the runtime environment inside the Jar files
-		 * of your SARL application, it is recommended to put it in the
-		 * Maven dependencies.
+		 * <p>In several specific cases, you may want to include the runtime environment into the Maven dependencies
+		 * of your project. In this case, you could replace the Maven dependency to the SARL sdk (as defined in
+		 * the previous section) by a Maven dependency to the runtime environment.
+		 * The
 		 * 
-		 * <note>You could remove the dependencies to the 
-		 * SARL artifacts in the previous Maven configuration. Indeed, the Janus platform depends
-		 * already on. You will obtain the SARL artifacts by transitivity.</note>
-		 *
 		 * <p>Replace the version number (`%janusversion%`) of the [Janus platform](http://www.janusproject.io)
 		 * with the one you want to use. You could search on the
 		 * [Maven Central Repository](http://search.maven.org) for
@@ -215,23 +212,29 @@ describe "Create First Project" {
 		 *           <janus.version>%janusversion%</janus.version>
 		 *        </properties>
 		 *        ...
+		 *        <build>
+		 *           <plugins>
+		 *              ...
+		 *              <plugin>
+		 *                 <groupId>io.sarl.maven</groupId>
+		 *                 <artifactId>sarl-maven-plugin</artifactId>
+		 *                 <version>${sarl.version}</version>
+		 *                 <extensions>true</extensions>
+		 *                 <configuration>
+		 *                    <source>%compilerlevel%</source>
+		 *                    <target>%compilerlevel%</target>
+		 *                    <encoding>%encoding%</encoding>
+		 *                 </configuration>
+		 *              </plugin>
+		 *           </plugins>
+		 *        </build>
+		 *        ...
 		 *        <dependencies>
 		 *           ...
 		 *           <dependency>
 		 *              <groupId>io.janusproject</groupId>
 		 *              <artifactId>io.janusproject.kernel</artifactId>
 		 *              <version>${janus.version}</version>
-		 *           </dependency>
-		 *           <dependency>
-		 *              <groupId>io.sarl.maven</groupId>
-		 *              <artifactId>io.sarl.maven.sdk</artifactId>
-		 *              <version>${sarl.version}</version>
-		 *              <exclusions>
-		 *                 <exclusion>
-		 *                    <groupId>com.google.guava</groupId>
-		 *                    <artifactId>guava</artifactId>
-		 *                 </exclusion>
-		 *              </exclusions>
 		 *           </dependency>
 		 *           ...
 		 *        </dependencies>
@@ -242,9 +245,8 @@ describe "Create First Project" {
 		 * `io.sarl.maven.sdk` and `io.janusproject.kernel` in your
 		 * POM file, you must be sure that the imported version
 		 * of the Google Guava library is the one provided by the Janus
-		 * platform. For ensuring this, you must exclude the Guava
-		 * library from the transitive dependencies of
-		 * `io.sarl.maven.sdk`</important>
+		 * platform. For ensuring this, you must specify the version of the Guava
+		 * library by defining it in the "dependencyManagement" section of your pom file.</important>
 		 * 
 		 * @filter(.*) 
 		 */
