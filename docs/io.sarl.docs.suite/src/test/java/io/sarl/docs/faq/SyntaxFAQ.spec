@@ -187,6 +187,66 @@ describe "SARL Syntax FAQ" {
 				'''.parseWithError
 			}
 
+			/* In SARL, the creation of anonymous classes (interface implementation, etc.)
+			 * must be done with a closure.
+			 *
+			 * <p>Consider the definition of the following interface:
+			 * 
+			 *      interface MyInterface {
+			 *           def myfunction(parameter : Object) : void
+			 *      }
+			 * 
+			 * The on-the-fly definition and instantiation of an instance of this interface,
+			 * a.k.a. anonymous class definition in the Java community, could be written is SARL
+			 * with the following closure:
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.* 
+			 */
+			fact "How can I create instances of anonymous classes?" {
+				'''
+					var instance : MyInterface
+					instance = [ parameter | /* The code of myfunction() */ ]
+				'''.parseSuccessfully(
+						"package io.sarl.docs.faq.syntax
+						import java.util.List
+			 			interface MyInterface {
+			 				def myfunction(parameter : Object) : void
+			 			}
+						agent A {
+							def action : void {",
+						// TEXT
+						"} }"
+				)
+			}
+
+			/* In SARL, the creation of anonymous classes (interface implementation, etc.)
+			 * must be done with a closure (see previous question).
+			 *
+			 * <p>The Java-based syntax for defining an anonymous class's instance if totally forbidden
+			 * in the SARL language. It means that the following code generates a syntax error:
+			 * 
+			 * @filter(.* = '''|'''|.parseWithError.* 
+			 */
+			fact "Java syntax for anonymous classes is forbidden" {
+				'''
+					var instance = new MyInterface() {
+							def myfunction(parameter : Object) {
+								/* The code of myfunction() */
+							}
+					}
+				'''.parseWithError(
+						"package io.sarl.docs.faq.syntax
+						import java.util.List
+			 			interface MyInterface {
+			 				def myfunction(parameter : Object)
+			 			}
+						agent A {
+							def action : boolean {",
+						// TEXT
+						"} }"
+				)
+			}
+
 		}
 		
 }
