@@ -84,7 +84,6 @@ describe "Event Creation with a Builder"{
 	 * @filter(.* = '''|'''|.parseSuccessfully.*)
 	 */
 	fact "Definition of the event builder" {
-		"https://en.wikipedia.org/wiki/Software_design_pattern" should beURL "!file"
 		'''
 		class MyEventBuilder {
 			private var id : long = 0
@@ -107,6 +106,7 @@ describe "Event Creation with a Builder"{
 			//TEXT
 			'''
 			''')
+		"https://en.wikipedia.org/wiki/Software_design_pattern" should beURL "!file"
 	}
 
 	/* For using the event builder, you have simply to create an instance of the `MyEventBuilder`
@@ -115,7 +115,6 @@ describe "Event Creation with a Builder"{
 	 * @filter(.* = '''|'''|.parseSuccessfully.*)
 	 */
 	fact "Use of the event builder" {
-		"https://en.wikipedia.org/wiki/Software_design_pattern" should beURL "!file"
 		'''
 		val builder = new MyEventBuilder
 		var event1 = builder.newInstance
@@ -138,6 +137,7 @@ describe "Event Creation with a Builder"{
 				}
 			}
 			''')
+		"https://en.wikipedia.org/wiki/Software_design_pattern" should beURL "!file"
 	}
 
 	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
