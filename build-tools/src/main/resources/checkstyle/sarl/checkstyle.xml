@@ -24,7 +24,9 @@
 	</module>
 
 	<!-- Checks whether files end with a new line. -->
-	<module name="NewlineAtEndOfFile" lineSeparator="lf_cr_crlf" />
+	<module name="NewlineAtEndOfFile">
+		<property name="lineSeparator" value="lf_cr_crlf" />
+	</module>
 
 	<!-- Checks that property files contain the same keys. -->
 	<module name="Translation" />
