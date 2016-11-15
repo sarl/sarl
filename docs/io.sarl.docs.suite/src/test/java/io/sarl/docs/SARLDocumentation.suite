@@ -20,6 +20,7 @@
  */
 package io.sarl.docs
 
+import io.sarl.docs.bestpractices.*
 import io.sarl.docs.gettingstarted.*
 import io.sarl.docs.reference.*
 import io.sarl.docs.faq.*
@@ -47,6 +48,10 @@ import io.sarl.docs.tutorials.*
 - "Agent Communication with the Ping Pong Agents"
 - "Agent Communication in Sub-Space with the Ping Pong Agents"
 - "English Auction with Holons"
+
+##Best Practices with SARL
+
+- "Event Creation with a Builder"
 
 ##Reference Documentation
 
