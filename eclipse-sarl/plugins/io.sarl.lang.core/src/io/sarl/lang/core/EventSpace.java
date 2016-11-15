@@ -51,7 +51,7 @@ public interface EventSpace extends Space {
 	 * @param event - the event to emit in the space.
 	 * @param scope - the definition of the list of receiviers of the event.
 	 */
-	void emit(Event event, final Scope<Address> scope);
+	void emit(Event event, Scope<Address> scope);
 
 	/**
 	 * Emits the event inside this space. All registered agents will receive the event.
