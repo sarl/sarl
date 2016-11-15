@@ -37,6 +37,8 @@ import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.OutputParameter;
 import org.eclipse.xtext.xbase.lib.Pair;
 
+import io.sarl.eventdispatching.BehaviorGuardEvaluator;
+import io.sarl.eventdispatching.BehaviorGuardEvaluatorRegistry;
 import io.sarl.lang.core.DeadEvent;
 import io.sarl.lang.core.Event;
 

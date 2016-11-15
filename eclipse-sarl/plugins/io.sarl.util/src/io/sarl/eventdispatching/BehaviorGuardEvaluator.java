@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.janusproject.kernel.bic.internaleventdispatching;
+package io.sarl.eventdispatching;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -69,7 +69,7 @@ public final class BehaviorGuardEvaluator {
 	 *        {@code PerceptGuardEvaluator} method is declared
 	 * @throws InvocationTargetException - exception during evaluation, can find the method to invoke
 	 */
-	void evaluateGuard(final Object event, Collection<Runnable> behaviorsMethodsToExecute)
+	public void evaluateGuard(final Object event, Collection<Runnable> behaviorsMethodsToExecute)
 			throws InvocationTargetException {
 		invokeBehaviorGuardEvaluatorMethod(event, behaviorsMethodsToExecute);
 	}

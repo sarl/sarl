@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.janusproject.kernel.bic.internaleventdispatching;
+package io.sarl.eventdispatching;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -47,6 +47,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.reflect.TypeToken;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 
+import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.core.Event;
 
 /**
@@ -110,9 +111,15 @@ public class BehaviorGuardEvaluatorRegistry {
 	 *            - The annotation used to identify methods considered as the evaluator of the guard of a given behavior (on clause in SARL behavior)
 	 *            If class has a such method, it is considered as a {@code BehaviorGuardEvaluator}.
 	 */
-	BehaviorGuardEvaluatorRegistry(Class<? extends Annotation> annotation) {
-
+	public BehaviorGuardEvaluatorRegistry(Class<? extends Annotation> annotation) {
 		this.perceptGuardEvaluatorAnnotation = annotation;
+	}
+
+	/**
+	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
+	 */
+	public BehaviorGuardEvaluatorRegistry() {
+		this(PerceptGuardEvaluator.class);
 	}
 
 	/**
@@ -121,7 +128,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * @param listener
 	 *            - the new {@code BehaviorGuardEvaluator} to add
 	 */
-	void register(Object listener) {
+	public void register(Object listener) {
 		final Multimap<Class<? extends Event>, BehaviorGuardEvaluator> listenerMethods = findAllBehaviorGuardEvaluators(listener);
 
 		for (final Map.Entry<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry : listenerMethods.asMap().entrySet()) {
@@ -144,7 +151,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	 *
 	 * @param listener the new {@code BehaviorGuardEvaluator} to remove
 	 */
-	void unregister(Object listener) {
+	public void unregister(Object listener) {
 		final Multimap<Class<? extends Event>, BehaviorGuardEvaluator> listenerMethods = findAllBehaviorGuardEvaluators(listener);
 
 		for (final Map.Entry<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry : listenerMethods.asMap().entrySet()) {
@@ -182,7 +189,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	 *            -the event to process
 	 * @return the set of guard evaluators associated to the specified event
 	 */
-	Collection<BehaviorGuardEvaluator> getBehaviorGuardEvaluators(Event event) {
+	public Collection<BehaviorGuardEvaluator> getBehaviorGuardEvaluators(Event event) {
 		final ImmutableSet<Class<?>> eventTypes = flattenHierarchy(event.getClass());
 
 		final List<BehaviorGuardEvaluator> iBehaviorGuardEvaluators = Lists.newArrayListWithCapacity(eventTypes.size());
@@ -239,7 +246,7 @@ public class BehaviorGuardEvaluatorRegistry {
 								|| parameterTypes[1] == null) {
 							//|| parameterTypes[1].getClassLoader().loadClass(Collection.class.getName()).isAssignableFrom(parameterTypes[0])) {
 							throw new IllegalArgumentException(
-									MessageFormat.format(Messages.BehaviorGuardEvaluatorRegistry_1,
+									MessageFormat.format(Messages.BehaviorGuardEvaluatorRegistry_0,
 											method, this.perceptGuardEvaluatorAnnotation.toString(),
 											Integer.valueOf(parameterTypes.length),
 											Arrays.toString(parameterTypes)));
@@ -307,17 +314,11 @@ public class BehaviorGuardEvaluatorRegistry {
 			this.parameterTypes = Arrays.asList(parameterTypes);
 		}
 
-		/**
-		 * {@inheritDoc}.
-		 */
 		@Override
 		public int hashCode() {
 			return Objects.hashCode(this.name, this.parameterTypes);
 		}
 
-		/**
-		 * {@inheritDoc}.
-		 */
 		@Override
 		public boolean equals(Object object) {
 			if (object instanceof MethodIdentifier) {

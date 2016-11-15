@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.janusproject.kernel.bic.internaleventdispatching;
+package io.sarl.eventdispatching;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -31,11 +31,10 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.janusproject.kernel.bic.internaleventdispatching.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "io.sarl.lang.eventdispatching.messages"; //$NON-NLS-1$
 	public static String BehaviorGuardEvaluator_0;
 	public static String BehaviorGuardEvaluator_1;
 	public static String BehaviorGuardEvaluatorRegistry_0;
-	public static String BehaviorGuardEvaluatorRegistry_1;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
