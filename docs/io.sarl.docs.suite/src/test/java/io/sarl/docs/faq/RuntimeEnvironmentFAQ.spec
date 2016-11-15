@@ -317,4 +317,32 @@ describe "Runtime Environment FAQ" {
 
 		}
 
+	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
+	 * Version: %sarlspecversion%<br/>
+	 * Status: %sarlspecreleasestatus%<br/>
+	 * Release: %sarlspecreleasedate%
+	 * 
+	 * 
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%.
+	 * 
+	 * <p>Licensed under the Apache License, Version 2.0;
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
+	 *
+	 * @filter(.*) 
+	 */
+	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
+		"%sarlversion%" should startWith "%sarlspecversion%"
+		("%sarlspecreleasestatus%" == "Stable Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
+		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
+		"%copyrightdate%" should beNumber "0000";
+		("%copyrighters%".empty || "%copyrighters%".startsWith("%")) should be false
+	}
+
 }
