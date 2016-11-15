@@ -55,6 +55,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.arakhne.afc.vmutil.FileSystem;
 
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.core.Agent;
 
 /**
@@ -161,6 +162,10 @@ public final class Boot {
 	 */
 	public static final String CLI_OPTION_VERBOSE_LONG = "verbose"; //$NON-NLS-1$
 
+	/** Long command-line option for "display the version".
+	 */
+	public static final String CLI_OPTION_VERSION = "version"; //$NON-NLS-1$
+
 	/** Short command-line option for "change log level".
 	 */
 	public static final String CLI_OPTION_LOG_SHORT = "l"; //$NON-NLS-1$
@@ -223,12 +228,6 @@ public final class Boot {
 		try {
 			final CommandLine cmd = parser.parse(getOptions(), args, false);
 
-			// Show the help when there is no argument.
-			if (cmd.getArgs().length == 0) {
-				showHelp();
-				return null;
-			}
-
 			boolean noLogo = false;
 			boolean embedded = false;
 			int verbose = LoggerCreator.toInt(JanusConfig.VERBOSE_LEVEL_VALUE);
@@ -236,9 +235,16 @@ public final class Boot {
 			final Iterator<Option> optIterator = cmd.iterator();
 			while (optIterator.hasNext()) {
 				final Option opt = optIterator.next();
-				switch (opt.getLongOpt()) {
+				String optName = opt.getLongOpt();
+				if (Strings.isNullOrEmpty(optName)) {
+					optName = opt.getOpt();
+				}
+				switch (optName) {
 				case CLI_OPTION_HELP_LONG:
 					showHelp();
+					return null;
+				case CLI_OPTION_VERSION:
+					showVersion();
 					return null;
 				case CLI_OPTION_SHOWDEFAULTS_LONG:
 					showDefaults();
@@ -302,6 +308,12 @@ public final class Boot {
 					break;
 				default:
 				}
+			}
+
+			// Show the help when there is no argument.
+			if (cmd.getArgs().length == 0) {
+				showHelp();
+				return null;
 			}
 
 			// Change the verbosity
@@ -437,7 +449,7 @@ public final class Boot {
 	 * @return the console logger.
 	 */
 	public static PrintStream getConsoleLogger() {
-		return consoleLogger == null ? System.err : consoleLogger;
+		return consoleLogger == null ? System.out : consoleLogger;
 	}
 
 	/**
@@ -500,6 +512,9 @@ public final class Boot {
 
 		options.addOption(CLI_OPTION_VERBOSE_SHORT, CLI_OPTION_VERBOSE_LONG, false,
 				Messages.Boot_15);
+
+		options.addOption(CLI_OPTION_VERSION, false,
+				Messages.Boot_25);
 
 		options.addOption(CLI_OPTION_WORLDID_SHORT, CLI_OPTION_WORLDID_LONG, false,
 				MessageFormat.format(Messages.Boot_16,
@@ -616,6 +631,18 @@ public final class Boot {
 	}
 
 	/**
+	 * Show the version of Janus. This function never returns.
+	 */
+	public static void showVersion() {
+		try (PrintWriter logger = new PrintWriter(getConsoleLogger())) {
+			logger.println(MessageFormat.format(Messages.Boot_26, JanusVersion.JANUS_RELEASE_VERSION));
+			logger.println(MessageFormat.format(Messages.Boot_27, SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING));
+			logger.flush();
+		}
+		getExiter().exit();
+	}
+
+	/**
 	 * Show the command line arguments. This function never returns.
 	 *
 	 * @param args - the command line arguments.
@@ -639,7 +666,7 @@ public final class Boot {
 	 */
 	@SuppressWarnings("checkstyle:regexp")
 	public static void showJanusLogo() {
-		System.out.println(Messages.Boot_21);
+		getConsoleLogger().println(Messages.Boot_21);
 	}
 
 	/**
