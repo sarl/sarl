@@ -28,7 +28,7 @@ import io.sarl.docs.tutorials.*
 
 #SARL Documentation
 
-##Getting Started
+##1. Getting Started
 
 - "Install SARL Tools"
 - "Create First Project"
@@ -37,23 +37,32 @@ import io.sarl.docs.tutorials.*
 - "Run SARL Agent from the Command Line"
 - "Run SARL Agent from a Java Program"
 
-##Frequently Asked Questions  (FAQ)
+##2. Frequently Asked Questions  (FAQ)
 
 - "General FAQ on SARL"
 - "SARL Syntax FAQ"
 - "Runtime Environment FAQ"
 
-##Tutorials
+##3. Tutorials
+
+###3.1. Event Communication
 
 - "Agent Communication with the Ping Pong Agents"
 - "Agent Communication in Sub-Space with the Ping Pong Agents"
+
+###3.2. Organizational Patterns
+
 - "English Auction with Holons"
 
-##Best Practices with SARL
+###3.3. Creating a SARL Run\-time Environment
+
+- "Creating a SARL Run-time Environment for the tinyMAS platform"
+
+##4. Best Practices with SARL
 
 - "Event Creation with a Builder"
 
-##Reference Documentation
+##5. Reference Documentation
 
 - "General Syntax Reference"
 - "Event Reference"
