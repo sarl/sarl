@@ -419,6 +419,22 @@ capacity Schedules {
 	 * @since 0.5
 	 */
 	def atFixedDelay(task : AgentTask = null, delay : long, procedure : (Agent) => void ) : AgentTask
+
+	/**
+	 * Schedule a single-execution task.
+	 *
+	 * <p>This function is the easy to use version and efficient implementation of the code
+	 * {@code in(0) [statements]}.
+	 *
+	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
+	 *
+	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
+	 * @param procedure the procedure to launch. The parameter of the procedure is the agent.
+	 * @return the given task.
+	 * @since 0.5
+	 */
+	def execute(task : AgentTask = null, procedure : (Agent) => void ) : AgentTask
+
 }
 
 

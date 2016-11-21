@@ -232,6 +232,15 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		return execute(Schedules.$DEFAULT_VALUE$EXECUTE_0, procedure);
 	}
 
+	@Override
+	public synchronized AgentTask execute(AgentTask task, Procedure1<? super Agent> procedure) {
+		final AgentTask rtask = task == null ? task(null) : task;
+		rtask.setProcedure(procedure);
+		final Future<?> future = this.executorService.submit(new AgentRunnableTask(rtask, false));
+		this.futures.put(rtask.getName(), future);
+		return rtask;
+	}
+
 	/**
 	 * Implementation of an agent task.
 	 *

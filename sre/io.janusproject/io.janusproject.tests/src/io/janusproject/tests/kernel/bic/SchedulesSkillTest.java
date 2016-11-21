@@ -368,6 +368,31 @@ public class SchedulesSkillTest {
 			assertEquals("io.janusproject.kernel.bic.SchedulesSkill$AgentInfiniteLoopTask", runnable.getClass().getName());
 		}
 
+		@Test
+		public void executeProcedure1() {
+			Procedure1 procedure = Mockito.mock(Procedure1.class);
+			AgentTask task = this.skill.execute(procedure);
+			assertNotNull(task);
+			assertSame(procedure, task.getProcedure());
+			ArgumentCaptor<Runnable> argument1 = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, new Times(1)).submit(argument1.capture());
+			assertNotNull(argument1.getValue());
+		}
+
+		@Test
+		public void executeAgentTaskLongProcedure1() {
+			AgentTask task = Mockito.mock(AgentTask.class);
+			Mockito.when(task.getName()).thenReturn("thetask"); //$NON-NLS-1$
+			Procedure1 procedure = Mockito.mock(Procedure1.class);
+			AgentTask t = this.skill.execute(task, procedure);
+			assertSame(task, t);
+			ArgumentCaptor<Procedure1> argument0 = ArgumentCaptor.forClass(Procedure1.class);
+			Mockito.verify(task, new Times(1)).setProcedure(argument0.capture());
+			assertSame(procedure, argument0.getValue());
+			ArgumentCaptor<Runnable> argument1 = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, new Times(1)).submit(argument1.capture());
+			assertNotNull(argument1.getValue());
+		}
 
 	}
 
@@ -511,6 +536,12 @@ public class SchedulesSkillTest {
 			}
 
 		}
+
+		@Test
+		public void execute() throws Exception {
+			runJanus(SchedulesRunTestAgent4.class, false);
+			assertEquals(1, getNumberOfResults());
+			assertEquals(Boolean.TRUE, getResult(Boolean.class, 0));
 		}
 
 		/**

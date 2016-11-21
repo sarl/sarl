@@ -2187,6 +2187,46 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				''')
 			}
 
+			/* It is possible to execute a task only one time by calling the `execute` function.
+			 * In the tinyMAs implementation, the `execute` function schedule the task for the
+			 * next simulation step.
+			 *
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
+			 */
+			fact "Executed an agent task once" {
+				'''
+				def execute(task : AgentTask = null, procedure : (io.sarl.lang.core.Agent) => void) : AgentTask {
+					return in(
+						task,
+						(owner as TMSarlAgent).getSimulationStepDuration(TimeUnit::MILLISECONDS) as long,
+						procedure)
+				}
+				'''.parseSuccessfully(
+				'''
+				package io.sarl.docs.tutorials.tinyMASSRE
+				import java.util.UUID
+				import java.util.Collection
+				import java.util.ArrayList
+				import java.util.Map
+				import java.util.TreeMap
+				import java.util.concurrent.TimeUnit
+				import io.sarl.lang.core.Agent
+				import io.sarl.core.AgentTask
+				import io.sarl.core.Schedules
+				class Task extends AgentTask {
+				}
+				interface TMSarlAgent {
+					def getSimulationStepDuration(u : TimeUnit) : double
+				}
+				abstract class SchedulesSkill implements Schedules {
+					def getOwner : Agent { null }
+				''',
+				// TEXT
+				'''
+				}
+				''')
+			}
+
 			/* It is possible to schedule periodic tasks by calling the `every` function.
 			 * The definition of this function is similar to the definition of
 			 * the `in` function, except that the `period` field of the `Task` is set

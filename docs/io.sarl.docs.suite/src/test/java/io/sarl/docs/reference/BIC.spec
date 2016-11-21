@@ -1039,6 +1039,49 @@ describe "Built-in Capacity Reference" {
 					}".parseSuccessfully
 			}
 
+			/* For running a task once time, the following functions are
+			 * provided:
+			 * 
+			 *     def execute(procedure : (Agent) => void) : AgentTask
+			 *     def execute(task : AgentTask,
+			 *                 procedure : (Agent) => void) : AgentTask
+			 * 
+			 * 
+			 * <p>The first function submits the given procedure (a lambda expression as defined in
+			 * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html)) to
+			 * an executor provided by the runtime platform. The execution of the procedure
+			 * will be executed once time as soon as possible.
+			 * This function replies the agent task for controlling its execution.
+			 * 
+			 * <p>The second function behaves in a similar way as the first, except that it
+			 * accepts an agent task as parameter. This task will attach to the given
+			 * procedure. The replied task is the same as the task given as parameter.
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Launching a Task for a single run"{
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				//
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
+					import io.sarl.core.Schedules
+					import io.sarl.core.AgentTask
+					import io.sarl.lang.core.Agent
+					agent A {
+						uses Schedules, Logging
+						def myaction {
+							var t1 : AgentTask
+							var t2 : AgentTask
+							t1 = execute [ a : Agent |
+								println(a)
+							]
+							t1 = t2.execute [ a : Agent |
+								println(a)
+							]
+						}
+					}".parseSuccessfully
+			}
+
 			/* For running a task in a given delay, the following functions are
 			 * provided:
 			 * 
