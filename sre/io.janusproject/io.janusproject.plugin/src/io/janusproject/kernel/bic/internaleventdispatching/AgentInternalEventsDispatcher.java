@@ -21,7 +21,6 @@
 
 package io.janusproject.kernel.bic.internaleventdispatching;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Queue;
@@ -47,6 +46,7 @@ import io.sarl.lang.core.Event;
  * agent's behavior.
  *
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -89,13 +89,9 @@ public class AgentInternalEventsDispatcher {
 
 	/**
 	 * Instantiates a dispatcher.
-	 *
-	 * @param perceptGuardEvaluatorAnnotation - The annotation used to identify methods considered as the evaluator of the guard
-	 *        of a given behavior (on clause in SARL behavior) If class has a such method, it is considered as a
-	 *        {@code BehaviorGuardEvaluator}.
 	 */
-	public AgentInternalEventsDispatcher(Class<? extends Annotation> perceptGuardEvaluatorAnnotation) {
-		this.behaviorGuardEvaluatorRegistry = new BehaviorGuardEvaluatorRegistry(perceptGuardEvaluatorAnnotation);
+	public AgentInternalEventsDispatcher() {
+		this.behaviorGuardEvaluatorRegistry = new BehaviorGuardEvaluatorRegistry();
 	}
 
 	/**
@@ -151,11 +147,12 @@ public class AgentInternalEventsDispatcher {
 				throw new RuntimeException(e);
 			}
 
-		} else if (!(event instanceof DeadEvent)) {
+		}
+		// XXX: not in the SARL specifications. Should be fire the DeadEvent?
+		/*else if (!(event instanceof DeadEvent)) {
 			// the event had no subscribers and was not itself a DeadEvent
 			immediateDispatch(new DeadEvent(event));
-		}
-
+		}*/
 	}
 
 	/**
@@ -187,10 +184,12 @@ public class AgentInternalEventsDispatcher {
 				}
 				executeAsynchronouslyBehaviorMethods(event, behaviorsMethodsToExecute);
 
-			} else if (!(event instanceof DeadEvent)) {
+			}
+			// XXX: Not in the SAR specification, should we fire the DeadEvent?
+			/*else if (!(event instanceof DeadEvent)) {
 				// the event had no subscribers and was not itself a DeadEvent
 				asyncDispatch(new DeadEvent(event));
-			}
+			}*/
 		});
 	}
 

@@ -326,7 +326,8 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			this.results = (List<Object>) occurrence.parameters[0];
 			try {
 				if (runAgentTest()) {
-					getSkill(Schedules.class).in(1000, (it) -> getSkill(Lifecycle.class).killMe());
+					getSkill(Schedules.class).in(1000, (it) -> 
+						getSkill(Lifecycle.class).killMe());
 				}
 			} catch (Throwable exception) {
 				if (!(exception instanceof ChuckNorrisException)) {

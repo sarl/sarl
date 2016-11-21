@@ -21,9 +21,7 @@
 
 package io.sarl.eventdispatching;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -44,8 +42,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
-import com.google.common.util.concurrent.UncheckedExecutionException;
 
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.core.Event;
@@ -55,6 +53,7 @@ import io.sarl.lang.core.Event;
  * This class has been inspired by the com.google.common.eventbus.SuscriberRegistry class of Google Guava library.
  *
  * @author $Author: ngaud$
+ * @author $Author: ssgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -63,35 +62,30 @@ import io.sarl.lang.core.Event;
 public class BehaviorGuardEvaluatorRegistry {
 
 	/**
-	 * Global cache of classes to their flattened hierarchy of supertypes.
+	 * Thread-safe cache of classes to their flattened hierarchy of supertypes.
 	 */
+	@SuppressWarnings("synthetic-access")
 	private static final LoadingCache<Class<?>, ImmutableSet<Class<?>>> FLATTEN_HIERARCHY_CACHE = CacheBuilder.newBuilder().weakKeys()
 			.build(new CacheLoader<Class<?>, ImmutableSet<Class<?>>>() {
 				@Override
 				public ImmutableSet<Class<?>> load(Class<?> concreteClass) {
-					return ImmutableSet.<Class<?>>copyOf(TypeToken.of(concreteClass).getTypes().rawTypes());
+					return getTypeHierarchyOnDemand(concreteClass);
 				}
 			});
 
 	/**
 	 * A thread-safe cache that contains the mapping from each class to all methods in that class and all super-classes, that are annotated with
-	 * {@code @Subscribe}. The cache is shared across all instances of this class; this greatly improves performance if multiple EventBus instances
-	 * are created and objects of the same class are registered on all of them.
+	 * the annotation given by {@link #perceptGuardEvaluatorAnnotation}. The cache is shared across all instances of this class; this greatly
+	 * improves performance if multiple EventBus instances are created and objects of the same class are registered on all of them.
 	 */
 	@SuppressWarnings("synthetic-access")
-	private final LoadingCache<Class<?>, ImmutableList<Method>> perceptGuardEvaluatorMethodsCache = CacheBuilder.newBuilder().weakKeys()
+	private static final LoadingCache<Class<?>, ImmutableList<Method>> PERCEPT_GUARD_EVALUATOR_METHOD_CACHE = CacheBuilder.newBuilder().weakKeys()
 			.build(new CacheLoader<Class<?>, ImmutableList<Method>>() {
 				@Override
 				public ImmutableList<Method> load(Class<?> concreteClass) throws Exception {
-					return getAnnotatedMethodsNotCached(concreteClass);
+					return getAnnotatedMethodsOnDemand(concreteClass);
 				}
 			});
-
-	/**
-	 * The annotation used to identify methods considered as the evaluator of the guard of a given behavior (on clause in SARL behavior) If class has
-	 * a such method, it is considered as a {@code BehaviorGuardEvaluator}.
-	 */
-	private final Class<? extends Annotation> perceptGuardEvaluatorAnnotation;
 
 	/**
 	 * All registered {@code BehaviorGuardEvaluator}s (class containing at least one PerceptGuardEvaluator method), indexed by event type.
@@ -105,21 +99,10 @@ public class BehaviorGuardEvaluatorRegistry {
 			.newConcurrentMap();
 
 	/**
-	 * Instanciates a new registry.
-	 *
-	 * @param annotation
-	 *            - The annotation used to identify methods considered as the evaluator of the guard of a given behavior (on clause in SARL behavior)
-	 *            If class has a such method, it is considered as a {@code BehaviorGuardEvaluator}.
-	 */
-	public BehaviorGuardEvaluatorRegistry(Class<? extends Annotation> annotation) {
-		this.perceptGuardEvaluatorAnnotation = annotation;
-	}
-
-	/**
 	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
 	 */
 	public BehaviorGuardEvaluatorRegistry() {
-		this(PerceptGuardEvaluator.class);
+		//
 	}
 
 	/**
@@ -212,7 +195,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * @return a map associating event classes to their guard evaluators
 	 */
 	@SuppressWarnings("unchecked")
-	private Multimap<Class<? extends Event>, BehaviorGuardEvaluator> findAllBehaviorGuardEvaluators(Object listener) {
+	private static Multimap<Class<? extends Event>, BehaviorGuardEvaluator> findAllBehaviorGuardEvaluators(Object listener) {
 		final Multimap<Class<? extends Event>, BehaviorGuardEvaluator> methodsInListener = HashMultimap.create();
 		final Class<?> clazz = listener.getClass();
 		for (final Method method : getAnnotatedMethods(clazz)) {
@@ -223,37 +206,72 @@ public class BehaviorGuardEvaluatorRegistry {
 		return methodsInListener;
 	}
 
-	private ImmutableList<Method> getAnnotatedMethods(Class<?> clazz) {
-		return this.perceptGuardEvaluatorMethodsCache.getUnchecked(clazz);
+	private static ImmutableList<Method> getAnnotatedMethods(Class<?> eventType) {
+		try {
+			return PERCEPT_GUARD_EVALUATOR_METHOD_CACHE.getUnchecked(eventType);
+		} catch (Exception ex) {
+			throw Throwables.propagate(ex);
+		}
 	}
 
-	private ImmutableList<Method> getAnnotatedMethodsNotCached(Class<?> clazz) {
+	private static Class<?> reloadClass(Class<?> context, Class<?> type) {
+		ClassLoader ld = context.getClassLoader();
+		if (ld == null) {
+			ld = type.getClassLoader();
+		}
+		try {
+			return ld.loadClass(type.getName());
+		} catch (Throwable ex) {
+			return type;
+		}
+	}
+
+	private static boolean checkEventHandlerPrototype(Class<?>[] parameterTypes) {
+		try {
+			if (parameterTypes.length == 2
+				&& parameterTypes[0] != null
+				&& reloadClass(parameterTypes[0], Event.class).isAssignableFrom(parameterTypes[0])
+				&& parameterTypes[1] != null
+				&& reloadClass(parameterTypes[1], Collection.class).isAssignableFrom(parameterTypes[1])) {
+				return true;
+			}
+		} catch (Exception ex) {
+			//
+		}
+		return false;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private static ImmutableSet<Class<?>> getTypeHierarchyOnDemand(Class<?> concreteClass) {
+		assert concreteClass != null;
+		final Set typeHierarchy = TypeToken.of(concreteClass).getTypes().rawTypes();
+		try {
+			final Class<?> eventType = reloadClass(concreteClass, Event.class);
+			if (eventType.isAssignableFrom(concreteClass)) {
+				return ImmutableSet.copyOf(Sets.filter((Set<Class>) typeHierarchy,
+						(it) -> eventType.isAssignableFrom(it)));
+			}
+		} catch (Exception ex) {
+			//
+		}
+		return ImmutableSet.copyOf(typeHierarchy);
+	}
+
+	private static ImmutableList<Method> getAnnotatedMethodsOnDemand(Class<?> concreteClass) {
+		assert concreteClass != null;
 		// TODO verify it effectively explores the whole type hierarchy
-		final Set<? extends Class<?>> supertypes = TypeToken.of(clazz).getTypes().rawTypes();
+		final Set<? extends Class<?>> supertypes = Sets.filter(TypeToken.of(concreteClass).getTypes().rawTypes(),
+				(it) -> !it.isInterface() && !Object.class.equals(it));
 
 		final Map<MethodIdentifier, Method> identifiers = Maps.newHashMap();
 
+		// Traverse all methods of the whole inheritance hierarchy
 		for (final Class<?> supertype : supertypes) {
-			// Traverse all methods of the whole inheritance hierarchy
 			for (final Method method : supertype.getDeclaredMethods()) {
-				if (method.isAnnotationPresent(this.perceptGuardEvaluatorAnnotation) && !method.isSynthetic()) {
-					// FIXME: Should check for a generic parameter type and error out
+				if (method.isAnnotationPresent(PerceptGuardEvaluator.class) && !method.isSynthetic()) {
 					final Class<?>[] parameterTypes = method.getParameterTypes();
-					try {
-						if (parameterTypes.length != 2
-								|| parameterTypes[0] == null
-								//|| parameterTypes[0].getClassLoader().loadClass(Event.class.getName()).isAssignableFrom(parameterTypes[0])
-								|| parameterTypes[1] == null) {
-							//|| parameterTypes[1].getClassLoader().loadClass(Collection.class.getName()).isAssignableFrom(parameterTypes[0])) {
-							throw new IllegalArgumentException(
-									MessageFormat.format(Messages.BehaviorGuardEvaluatorRegistry_0,
-											method, this.perceptGuardEvaluatorAnnotation.toString(),
-											Integer.valueOf(parameterTypes.length),
-											Arrays.toString(parameterTypes)));
-						}
-					} catch (Exception exception) {
-						throw new RuntimeException(exception);
-					}
+					// Check the prototype of the event handler in debug mode only
+					assert checkEventHandlerPrototype(parameterTypes);
 					final MethodIdentifier ident = new MethodIdentifier(method, parameterTypes);
 					identifiers.put(ident, method);
 				}
@@ -274,7 +292,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	private static ImmutableSet<Class<?>> flattenHierarchy(Class<?> concreteClass) {
 		try {
 			return FLATTEN_HIERARCHY_CACHE.getUnchecked(concreteClass);
-		} catch (UncheckedExecutionException e) {
+		} catch (Exception e) {
 			throw Throwables.propagate(e.getCause());
 		}
 	}
@@ -327,6 +345,12 @@ public class BehaviorGuardEvaluatorRegistry {
 			}
 			return false;
 		}
+
+		@Override
+		public String toString() {
+			return this.name;
+		}
+
 	}
 
 }
