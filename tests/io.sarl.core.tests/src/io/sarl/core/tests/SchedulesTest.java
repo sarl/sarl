@@ -33,69 +33,72 @@ import io.sarl.lang.core.Capacity;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class SchedulesTest extends AbstractSarlCoreTest<Capacity> {
 
-	/**
-	 */
 	@Before
 	public void setUp() {
 		loadSARL("io.sarl.core.Schedules", Capacity.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void memberCount() {
-		assertEquals(7, this.type.getDeclaredMethods().length);
+		assertEquals(11, this.type.getDeclaredMethods().length);
 	}
 
-	/**
-	 */
 	@Test
 	public void inLongProcedure1() {
 		assertMethod("in", AgentTask.class, long.class, Procedure1.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void inAgentTaskLongProcedure1() {
 		assertMethod("in", AgentTask.class, AgentTask.class, long.class, Procedure1.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void task() {
 		assertMethod("task", AgentTask.class, String.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void cancelAgentTask() {
 		assertMethod("cancel", boolean.class, AgentTask.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void cancelAgentTaskBoolean() {
 		assertMethod("cancel", boolean.class, AgentTask.class, boolean.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void everyLongProcedure1() {
 		assertMethod("every", AgentTask.class, long.class, Procedure1.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void everyAgentTaskLongProcedure1() {
 		assertMethod("every", AgentTask.class, AgentTask.class, long.class, Procedure1.class); //$NON-NLS-1$
+	}
+
+	@Test
+	public void atFixedDelayLongProcedure1() {
+		assertMethod("atFixedDelay", AgentTask.class, long.class, Procedure1.class); //$NON-NLS-1$
+	}
+
+	@Test
+	public void atFixedDelayAgentTaskLongProcedure1() {
+		assertMethod("atFixedDelay", AgentTask.class, AgentTask.class, long.class, Procedure1.class); //$NON-NLS-1$
+	}
+
+	@Test
+	public void executeProcedure1() {
+		assertMethod("execute", AgentTask.class, Procedure1.class); //$NON-NLS-1$
+	}
+
+	@Test
+	public void executeAgentTaskProcedure1() {
+		assertMethod("execute", AgentTask.class, AgentTask.class, Procedure1.class); //$NON-NLS-1$
 	}
 
 }
