@@ -203,6 +203,7 @@ For setting up the development environment, you should follow the steps:
 
 * Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the Xtext tools.
 * Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
+* Import the Eclipse preferences for SARL developers, which are stored into the `dev-tools` folder.
 * Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
 ** Select the folder in which you have cloned the SARL project (see Section 5.1);
 ** Click on `Finish`.
