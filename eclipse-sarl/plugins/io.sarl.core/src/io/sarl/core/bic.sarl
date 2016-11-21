@@ -353,9 +353,10 @@ capacity Schedules {
 
 	/**
 	 * Schedule a periodic execution of the given task.
-	 * <p>
-	 * If the duration of the task is greater to the given period length, then
-	 * multiple task's instances will be run in parallel.
+	 *
+	 * <p>If the duration of the task is greater to the given period length, then
+	 * multiple task's instances will be run in parallel, in opposite to the
+	 * {@code atFixedDelay()} function.
 	 * For example, consider the following code:
 	 * <pre><code>
 	 * every(500) [ sleep(2000) ]
@@ -371,6 +372,8 @@ capacity Schedules {
 	 *                             [-E-------------------------]
 	 *                                    [-F-------------------------]
 	 * </code></pre>
+	 * For executing a task with a fixed delay between the runs, and not at a fixed rate,
+	 * you should use the {@code atFixedDelay()} function.
 	 *
 	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
 	 *
@@ -381,6 +384,41 @@ capacity Schedules {
 	 */
 	def every(task : AgentTask = null, period : long, procedure : (Agent) => void ) : AgentTask
 
+	/**
+	 * Schedule a single-execution task.
+	 *
+	 * <p>If the duration of the task is greater to the given delay length, then
+	 * no multiple task's instance are run in parallel, in opposite to the
+	 * {@code every()} function.
+	 * For example, consider the following code:
+	 * <pre><code>
+	 * atFixedDelay(500) [ sleep(2000) ]
+	 * </code></pre>
+	 * At a given time, 3 instances (A, B, C) of the task are run in sequence, and
+	 * each run is separated by 500 milliseconds:
+	 * <pre><code>
+	 * t=0   0500   1000   1500   2000   2500   3000   3500   4000   4500   5000
+	 *   |    |      |      |      |      |      |      |      |      |      |
+	 *   [-A-----------------------]
+	 *                                    [-B-------------------------]
+	 *                                                                       [-C-------------------------]
+	 * </code></pre>
+	 * For executing a task with a fixed rate, and not with a fixed delay between the task runs,
+	 * you should use the {@code every()} function.
+	 *
+	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
+	 *
+	 * <p>It is recommended that the SRAL run-time environment, which is providing the implementation
+	 * of this function to provide an efficient implementation in the case the argument
+	 * {@code delay} is equal to zero. Indeed, if the {@code delay} is equal to zero, the task
+	 * should be run in an infinite loop until it is canceled, or the owning agent is killed.
+	 *
+	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
+	 * @param procedure the procedure to launch. The parameter of the procedure is the agent.
+	 * @return the given task.
+	 * @since 0.5
+	 */
+	def atFixedDelay(task : AgentTask = null, delay : long, procedure : (Agent) => void ) : AgentTask
 }
 
 

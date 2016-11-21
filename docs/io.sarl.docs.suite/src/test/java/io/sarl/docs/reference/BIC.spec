@@ -1084,7 +1084,7 @@ describe "Built-in Capacity Reference" {
 					}".parseSuccessfully
 			}
 
-			/* For running a periodic task, the following functions are
+			/* For running a periodic task with a fixed starting rate, the following functions are
 			 * provided:
 			 * 
 			 *     def every(period : long,
@@ -1130,7 +1130,7 @@ describe "Built-in Capacity Reference" {
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Launching a Periodic Task"{
+			fact "Launching a Periodic Task at a Fixed Rate"{
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				"	package io.sarl.docs.reference.bic
@@ -1147,6 +1147,73 @@ describe "Built-in Capacity Reference" {
 								println(a)
 							]
 							t1 = t2.every(1000) [ a : Agent |
+								println(a)
+							]
+						}
+					}".parseSuccessfully
+			}
+
+			/* For running a periodic task with a fixed duration between the runs, the following functions are
+			 * provided:
+			 * 
+			 *     def atFixedDelay(period : long,
+			 *               procedure : (Agent) => void) : AgentTask
+			 *     def atFixedDelay(period : AgentTask,
+			 *               delay : long,
+			 *               procedure : (Agent) => void) : AgentTask
+			 * 
+			 * 
+			 * <p>The first function submits the given procedure (a lambda expression as defined in
+			 * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html)) to
+			 * an executor provided by the runtime platform. The execution of the procedure
+			 * will be launched periodically with a duration between the runs of the given number of milliseconds.
+			 * This function replies the agent task for controlling its execution.
+			 * 
+			 * <p>The second function behaves in a similar way as the first, except that it
+			 * accepts an agent task as parameter. This task will attach to the given
+			 * procedure. The replied task is the same as the task given as parameter.
+			 * 
+			 * <p>The `atFixedDelay` function has not the same issue ass the `every` function
+			 * regarding the possibility to have several runs in parallel.
+			 * The `atFixedDelay` ensures that only one run of the procedure will be executed at a giveen time.
+			 *
+			 * <p>For example, the following code may be illustrated by the table below.
+			 *
+			 *				
+			 *     atFixedDelay(500) [ sleep(2000) ]
+			 *
+			 *
+			 *
+			 * <table>
+			 * <thead>
+			 * <tr><th>t=</th><th>0</th><th>500</th><th>1000</th><th>1500</th><th>2000</th><th>2500</th><th>3000</th><th>3500</th><th>4000</th><th>4500</th><t5>5000</th><th>5500</th><th>6000</th><th>6500</th></tr>
+			 * </thead>
+			 * <tbody>
+			 * <tr><td>A</td><td>X</td><td>X</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td><td></td></tr><td></td><td></td><td></td><td></td><td></td>
+			 * <tr><td>B</td><td></td><td></td><td></td><td></td><td></td><td>X</td><td>X</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td><td></td></tr>
+			 * <tr><td>C</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
+			 * </tbody>
+			 * </table>
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Launching a Periodic Task with a Fixed Delay between the Runs"{
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				//
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
+					import io.sarl.core.Schedules
+					import io.sarl.core.AgentTask
+					import io.sarl.lang.core.Agent
+					agent A {
+						uses Schedules, Logging
+						def myaction {
+							var t1 : AgentTask
+							var t2 : AgentTask
+							t1 = atFixedDelay(1000) [ a : Agent |
+								println(a)
+							]
+							t1 = t2.atFixedDelay(1000) [ a : Agent |
 								println(a)
 							]
 						}

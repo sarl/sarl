@@ -310,6 +310,15 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			this.results.add(result);
 		}
 		
+		/**
+		 * Replies the number of results provided by the ran platform.
+		 *
+		 * @return the number of results.
+		 */
+		protected int getNumberOfResults() {
+			return this.results.size();
+		}
+		
 		@PerceptGuardEvaluator
 		private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
 			assert occurrence != null;
@@ -326,8 +335,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			this.results = (List<Object>) occurrence.parameters[0];
 			try {
 				if (runAgentTest()) {
-					getSkill(Schedules.class).in(1000, (it) -> 
-						getSkill(Lifecycle.class).killMe());
+					getSkill(Schedules.class).in(1000, (it) -> forceKillMe());
 				}
 			} catch (Throwable exception) {
 				if (!(exception instanceof ChuckNorrisException)) {
@@ -335,6 +343,10 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 				}
 				throw exception;
 			}
+		}
+
+		protected void forceKillMe() {
+			getSkill(Lifecycle.class).killMe();
 		}
 
 		/**

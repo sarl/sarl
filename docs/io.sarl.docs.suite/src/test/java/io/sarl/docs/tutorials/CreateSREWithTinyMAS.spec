@@ -2192,6 +2192,9 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 			 * the `in` function, except that the `period` field of the `Task` is set
 			 * with the period duration, which is given as parameter. 
 			 *
+			 * <p>The `atFixedDelay` function delegates to the `every` function because the task running
+			 * algorithm implies that these two types of execution approach will be the same on tinyMAS.
+			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Scheduling a periodic agent task" {
@@ -2209,6 +2212,10 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 					}
 					scheduleTask(time, theTask)
 					return theTask
+				}
+
+				def atFixedDelay(task : AgentTask = null, delay : long, procedure : (io.sarl.lang.core.Agent) => void) : AgentTask {
+					return task.every(delay, procedure)
 				}
 				'''.parseSuccessfully(
 				'''

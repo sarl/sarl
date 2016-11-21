@@ -22,16 +22,21 @@
 package io.janusproject.kernel.bic;
 
 import java.lang.ref.WeakReference;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.executor.JanusScheduledFutureTask;
@@ -63,7 +68,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	private final Map<String, AgentTask> tasks = new HashMap<>();
 
-	private final Map<String, ScheduledFuture<?>> futures = new HashMap<>();
+	private final Map<String, Future<?>> futures = new HashMap<>();
 
 	/**
 	 * @param agent - the owner of this skill.
@@ -100,7 +105,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 *
 	 * @return the names of the active tasks.
 	 */
-	synchronized Collection<String> getActiveTasks() {
+	public synchronized Collection<String> getActiveTasks() {
 		return new ArrayList<>(this.tasks.keySet());
 	}
 
@@ -109,14 +114,24 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 *
 	 * @return the names of the active futures.
 	 */
-	synchronized Collection<ScheduledFuture<?>> getActiveFutures() {
+	synchronized Collection<Future<?>> getActiveFutures() {
 		return new ArrayList<>(this.futures.values());
+	}
+
+	/**
+	 * Replies the active future for the task with the given name.
+	 *
+	 * @param name the name of the task.
+	 * @return the active future of the task.
+	 */
+	synchronized Future<?> getActiveFuture(String name) {
+		return this.futures.get(name);
 	}
 
 	@Override
 	protected synchronized void uninstall() {
-		ScheduledFuture<?> future;
-		for (final Entry<String, ScheduledFuture<?>> futureDescription : this.futures.entrySet()) {
+		Future<?> future;
+		for (final Entry<String, Future<?>> futureDescription : this.futures.entrySet()) {
 			future = futureDescription.getValue();
 			if ((future instanceof JanusScheduledFutureTask<?>) && ((JanusScheduledFutureTask<?>) future).isCurrentThread()) {
 				// Ignore the cancelation of the future.
@@ -139,7 +154,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	@Override
 	public synchronized AgentTask in(AgentTask task, long delay, Procedure1<? super Agent> procedure) {
-		final AgentTask rtask = task == null ? task("task-" + UUID.randomUUID()) : task; //$NON-NLS-1$
+		final AgentTask rtask = task == null ? task(null) : task;
 		rtask.setProcedure(procedure);
 		final ScheduledFuture<?> sf = this.executorService.schedule(new AgentRunnableTask(rtask, false), delay, TimeUnit.MILLISECONDS);
 		this.futures.put(rtask.getName(), sf);
@@ -148,19 +163,13 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	@Override
 	public synchronized AgentTask task(String name) {
-		if (this.tasks.containsKey(name)) {
-			return this.tasks.get(name);
+		final String realName = Strings.isNullOrEmpty(name) ? "task-" + UUID.randomUUID() : name; //$NON-NLS-1$
+		if (this.tasks.containsKey(realName)) {
+			return this.tasks.get(realName);
 		}
 		final AgentTask t = new AgentTask();
-		t.setName(name);
-		t.setGuard(new Function1<Agent, Boolean>() {
-
-			@Override
-			public Boolean apply(Agent arg0) {
-				return Boolean.TRUE;
-			}
-		});
-		this.tasks.put(name, t);
+		t.setName(realName);
+		this.tasks.put(realName, t);
 		return t;
 	}
 
@@ -173,9 +182,10 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	public synchronized boolean cancel(AgentTask task, boolean mayInterruptIfRunning) {
 		if (task != null) {
 			final String name = task.getName();
-			final ScheduledFuture<?> future = this.futures.get(name);
+			final Future<?> future = this.futures.get(name);
 			if (future != null && !future.isDone() && !future.isCancelled() && future.cancel(mayInterruptIfRunning)) {
 				finishTask(name);
+				return true;
 			}
 		}
 		return false;
@@ -188,12 +198,38 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	@Override
 	public synchronized AgentTask every(AgentTask task, long period, Procedure1<? super Agent> procedure) {
-		final AgentTask rtask = task == null ? task("task-" + UUID.randomUUID()) : task; //$NON-NLS-1$
+		final AgentTask rtask = task == null ? task(null) : task;
 		rtask.setProcedure(procedure);
 		final ScheduledFuture<?> sf = this.executorService.scheduleAtFixedRate(new AgentRunnableTask(rtask, true), 0, period,
 				TimeUnit.MILLISECONDS);
 		this.futures.put(rtask.getName(), sf);
 		return rtask;
+	}
+
+	@Override
+	public AgentTask atFixedDelay(long delay, Procedure1<? super Agent> procedure) {
+		return atFixedDelay(Schedules.$DEFAULT_VALUE$ATFIXEDDELAY_0, delay, procedure);
+	}
+
+	@Override
+	public synchronized AgentTask atFixedDelay(AgentTask task, long delay, Procedure1<? super Agent> procedure) {
+		final AgentTask rtask = task == null ? task(null) : task;
+		rtask.setProcedure(procedure);
+		final Future<?> future;
+		if (delay <= 0) {
+			future = this.executorService.submit(new AgentInfiniteLoopTask(rtask));
+		} else {
+			future = this.executorService.scheduleWithFixedDelay(
+					new AgentRunnableTask(rtask, true),
+					0, delay, TimeUnit.MILLISECONDS);
+		}
+		this.futures.put(rtask.getName(), future);
+		return rtask;
+	}
+
+	@Override
+	public AgentTask execute(Procedure1<? super Agent> procedure) {
+		return execute(Schedules.$DEFAULT_VALUE$EXECUTE_0, procedure);
 	}
 
 	/**
@@ -221,13 +257,24 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			if (task == null) {
 				throw new RuntimeException(Messages.SchedulesSkill_2);
 			}
+			boolean hasError = false;
 			try {
 				final Agent owner = getOwner();
-				if (task.getGuard().apply(owner).booleanValue()) {
-					task.getProcedure().apply(owner);
+				final Function1<Agent, Boolean> guard = task.getGuard();
+				if (guard == null || guard.apply(owner).booleanValue()) {
+					final Procedure1<? super Agent> procedure = task.getProcedure();
+					if (procedure != null) {
+						procedure.apply(owner);
+					}
 				}
+			} catch (Throwable ex) {
+				final LogRecord record = new LogRecord(Level.SEVERE,
+						MessageFormat.format(Messages.SchedulesSkill_3, toString(), ex.getLocalizedMessage()));
+				record.setThrown(ex);
+				SchedulesSkill.this.logger.log(record);
+				hasError = true;
 			} finally {
-				if (!this.isPeriodic) {
+				if (hasError || !this.isPeriodic) {
 					finishTask(task.getName());
 				}
 			}
@@ -240,4 +287,81 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		}
 
 	}
+
+	/**
+	 * Implementation of an agent infinite loop task.
+	 *
+	 * @author $Author: srodriguez$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@SuppressWarnings("synthetic-access")
+	private class AgentInfiniteLoopTask implements Runnable {
+		private WeakReference<AgentTask> agentTaskRef;
+
+		AgentInfiniteLoopTask(AgentTask task) {
+			this.agentTaskRef = new WeakReference<>(task);
+		}
+
+		private boolean canRun() {
+			final AgentTask task = this.agentTaskRef.get();
+			if (task != null) {
+				final Future<?> future = getActiveFuture(task.getName());
+				return future != null && !future.isDone() && !future.isCancelled();
+			}
+			return false;
+		}
+
+		private Function1<Agent, Boolean> getGuard() {
+			final AgentTask task = this.agentTaskRef.get();
+			if (task != null) {
+				return task.getGuard();
+			}
+			return null;
+		}
+
+		private Procedure1<? super Agent> getProcedure() {
+			final AgentTask task = this.agentTaskRef.get();
+			if (task != null) {
+				return task.getProcedure();
+			}
+			return null;
+		}
+
+		@Override
+		public void run() {
+			try {
+				final Agent owner = getOwner();
+				while (canRun()) {
+					final Function1<Agent, Boolean> guard = getGuard();
+					if (guard == null || guard.apply(owner).booleanValue()) {
+						final Procedure1<? super Agent> procedure = getProcedure();
+						if (procedure != null) {
+							procedure.apply(owner);
+						}
+					}
+					Thread.yield();
+				}
+			} catch (Throwable ex) {
+				final LogRecord record = new LogRecord(Level.SEVERE,
+						MessageFormat.format(Messages.SchedulesSkill_3, toString(), ex.getLocalizedMessage()));
+				record.setThrown(ex);
+				SchedulesSkill.this.logger.log(record);
+			} finally {
+				final AgentTask task = this.agentTaskRef.get();
+				if (task != null) {
+					finishTask(task.getName());
+				}
+			}
+		}
+
+		@Override
+		public String toString() {
+			return MoreObjects.toStringHelper(this).add("name", this.agentTaskRef.get().getName()) //$NON-NLS-1$
+					.add("agent", getOwner().getID()).toString(); //$NON-NLS-1$
+		}
+
+	}
+
 }
