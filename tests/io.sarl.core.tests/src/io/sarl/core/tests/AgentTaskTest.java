@@ -111,34 +111,34 @@ public class AgentTaskTest extends AbstractSarlTest {
 
 	@Test
 	public void unless_positive() {
-		Function1<Agent,Boolean> guard = (agent) -> Boolean.TRUE;
+		Function1<? super Agent, ? extends Boolean> guard = (agent) -> Boolean.TRUE;
 
 		assertSame(this.task, this.task.unless(guard));
 
-		Function1<Agent,Boolean> negativeGuard = this.task.getGuard();
+		Function1<? super Agent, ? extends Boolean> negativeGuard = this.task.getGuard();
 		assertNotSame(guard, negativeGuard);
 		assertFalse(negativeGuard.apply(null));
 	}
 
 	@Test
 	public void unless_negative() {
-		Function1<Agent,Boolean> guard = (agent) -> Boolean.FALSE;
+		Function1<? super Agent, ? extends Boolean> guard = (agent) -> Boolean.FALSE;
 
 		assertSame(this.task, this.task.unless(guard));
 
-		Function1<Agent,Boolean> negativeGuard = this.task.getGuard();
+		Function1<? super Agent, ? extends Boolean> negativeGuard = this.task.getGuard();
 		assertNotSame(guard, negativeGuard);
 		assertTrue(negativeGuard.apply(null));
 	}
 
 	@Test
 	public void ifTrue() {
-		Function1<Agent,Boolean> guard = mock(Function1.class);
+		Function1<? super Agent, ? extends Boolean> guard = mock(Function1.class);
 		doReturn(Boolean.TRUE).when(guard).apply(ArgumentMatchers.any(Agent.class));
 
 		assertSame(this.task, this.task.ifTrue(guard));
 
-		Function1<Agent,Boolean> newGuard = this.task.getGuard();
+		Function1<? super Agent, ? extends Boolean> newGuard = this.task.getGuard();
 		assertSame(guard, newGuard);
 	}
 

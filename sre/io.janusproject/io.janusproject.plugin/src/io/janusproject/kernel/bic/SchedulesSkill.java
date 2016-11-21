@@ -266,24 +266,26 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			if (task == null) {
 				throw new RuntimeException(Messages.SchedulesSkill_2);
 			}
-			boolean hasError = false;
+			boolean mustBeCanceled = false;
 			try {
 				final Agent owner = getOwner();
-				final Function1<Agent, Boolean> guard = task.getGuard();
+				final Function1<? super Agent, ? extends Boolean> guard = task.getGuard();
 				if (guard == null || guard.apply(owner).booleanValue()) {
 					final Procedure1<? super Agent> procedure = task.getProcedure();
 					if (procedure != null) {
 						procedure.apply(owner);
 					}
+				} else {
+					mustBeCanceled = true;
 				}
 			} catch (Throwable ex) {
 				final LogRecord record = new LogRecord(Level.SEVERE,
 						MessageFormat.format(Messages.SchedulesSkill_3, toString(), ex.getLocalizedMessage()));
 				record.setThrown(ex);
 				SchedulesSkill.this.logger.log(record);
-				hasError = true;
+				mustBeCanceled = true;
 			} finally {
-				if (hasError || !this.isPeriodic) {
+				if (mustBeCanceled || !this.isPeriodic) {
 					finishTask(task.getName());
 				}
 			}
@@ -322,7 +324,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			return false;
 		}
 
-		private Function1<Agent, Boolean> getGuard() {
+		private Function1<? super Agent, ? extends Boolean> getGuard() {
 			final AgentTask task = this.agentTaskRef.get();
 			if (task != null) {
 				return task.getGuard();
@@ -343,12 +345,15 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			try {
 				final Agent owner = getOwner();
 				while (canRun()) {
-					final Function1<Agent, Boolean> guard = getGuard();
+					final Function1<? super Agent, ? extends Boolean> guard = getGuard();
 					if (guard == null || guard.apply(owner).booleanValue()) {
 						final Procedure1<? super Agent> procedure = getProcedure();
 						if (procedure != null) {
 							procedure.apply(owner);
 						}
+					} else {
+						// Break the loop without introducing a local boolean variable
+						break;
 					}
 					Thread.yield();
 				}

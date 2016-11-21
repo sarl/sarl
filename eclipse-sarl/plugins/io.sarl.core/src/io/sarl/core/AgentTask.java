@@ -40,7 +40,7 @@ public class AgentTask {
 
 	private String name;
 
-	private Function1<Agent, Boolean> guard;
+	private Function1<? super Agent, ? extends Boolean> guard;
 
 	private Procedures.Procedure1<? super Agent> procedure;
 
@@ -70,7 +70,7 @@ public class AgentTask {
 	 *
 	 * @return the guard.
 	 */
-	public Function1<Agent, Boolean> getGuard() {
+	public Function1<? super Agent, ? extends Boolean> getGuard() {
 		return this.guard;
 	}
 
@@ -80,7 +80,7 @@ public class AgentTask {
 	 * @see #unless
 	 * @see #ifTrue
 	 */
-	public void setGuard(Function1<Agent, Boolean> guard) {
+	public void setGuard(Function1<? super Agent, ? extends Boolean> guard) {
 		this.guard = guard;
 	}
 
@@ -106,7 +106,7 @@ public class AgentTask {
 	 * @return <code>this</code>.
 	 * @see #setGuard
 	 */
-	public AgentTask unless(final Function1<Agent, Boolean> predicate) {
+	public AgentTask unless(final Function1<? super Agent, ? extends Boolean> predicate) {
 		if (predicate == null) {
 			this.guard = FALSE_GUARD;
 		} else {
@@ -121,7 +121,7 @@ public class AgentTask {
 	 * @return <code>this</code>.
 	 * @see #setGuard
 	 */
-	public AgentTask ifTrue(Function1<Agent, Boolean> predicate) {
+	public AgentTask ifTrue(Function1<? super Agent, ? extends Boolean> predicate) {
 		if (predicate == null) {
 			this.guard = null;
 		} else {
