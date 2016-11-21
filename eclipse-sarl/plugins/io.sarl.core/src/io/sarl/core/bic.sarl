@@ -444,9 +444,10 @@ capacity DefaultContextInteractions {
 	 *
 	 * @param receiver the identifier of the expected receiver.
 	 * @param event the event to emit.
-	 * @deprecated see #willReceive(UUID, Event)
+	 * @deprecated see #UUID, Event)
 	 */
 	@Deprecated
+	@Inline(value = "willReceive($1, $2)")
 	def receive(receiver : UUID, ^event : Event)
 	
 	/**
