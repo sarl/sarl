@@ -34,7 +34,7 @@ import io.sarl.eclipse.runtime.SREConstants
 /* @outline
  *
  * <p>This document describes how to create a SARL Run-time Environment (SRE) with the
- * <a href="https://github.com/gallandarakhne.org/tinymas">tinyMAS platform</a>.
+ * <a href="https://github.com/gallandarakhneorg/tinymas">tinyMAS platform</a>.
  *
  * <p>SRE executes or interprets compiled SARL code on an "hardware platform."
  * The figure below illustrates the compilation process of a SARL program in which the
@@ -56,7 +56,7 @@ import io.sarl.eclipse.runtime.SREConstants
  * the [General Syntax Reference](../reference/GeneralSyntaxReferenceSpec.html).
  * 
  * <p><div class="bt-download">
- * <a href="https://github.com/gallandarakhne.org/tinymas"><img alt="Download the Source Code" src="%website%/images/download-icon.png"/></a>
+ * <a href="https://github.com/gallandarakhneorg/tinymas"><img alt="Download the Source Code" src="%website%/images/download-icon.png"/></a>
  * </div>
  * The elements that are explained in this tutorial are:
  * 
@@ -65,7 +65,7 @@ import io.sarl.eclipse.runtime.SREConstants
  *  * the update of the manifest in order to make tinyMAS recognized as a SRE.
  *
  * <p>The source code related to this tutorial may be found
- * in the [tinyMAS Git repository](https://github.com/gallandarakhne.org/tinymas).
+ * in the [tinyMAS Git repository](https://github.com/gallandarakhneorg/tinymas).
  */
 @CreateWith(SARLSpecCreator)
 describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
@@ -103,7 +103,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 			// Test the URLs in the introduction
 			"http://www.sarl.io/images/compilation-process.png" should beURL "!file" 
 			"http://www.utbm.fr" should beURL "!file"
-			"https://github.com/gallandarakhne.org/tinymas" should beURL "!file"
+			"https://github.com/gallandarakhneorg/tinymas" should beURL "!file"
 			"../reference/GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 			// The checks are valid only if the macro replacements were done.
 			// The replacements are done by Maven.
