@@ -1341,6 +1341,33 @@ describe "Built-in Capacity Reference" {
 					}".parseSuccessfully
 			}
 
+			/* Two functions are provided for accessing to the collection of the registered behaviors:
+			 * 
+			 *     def hasRegisteredBehavior : boolean
+			 *     def getRegisteredBehaviors : Collection<Behavior>
+			 * 
+			 * 
+			 * <p>The `hasRegisteredBehavior` replies a boolean value, which is indicating if
+			 * a behavior is registered.
+			 * The `getRegisteredBehaviors` replies an unmodifiable collection of the registered behaviors. 
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Accessing to the collection of the registered behaviors"{
+				"	package io.sarl.docs.reference.bic
+					import java.util.Collection
+					import io.sarl.core.Behaviors
+					import io.sarl.lang.core.Behavior
+					import io.sarl.lang.core.EventListener
+					agent A {
+						uses Behaviors
+						def myaction {
+							var b : boolean = hasRegisteredBehavior
+							var c : Collection<Behavior> = getRegisteredBehaviors
+						}
+					}".parseSuccessfully
+			}
+
   		}
 
 		/* The built-in capacity `Time` provides tools for obtaining the current time

@@ -20,6 +20,8 @@
  */
 package io.sarl.core.tests;
 
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,7 +47,17 @@ public class BehaviorsTest extends AbstractSarlCoreTest<Capacity> {
 
 	@Test
 	public void memberCount() {
-		assertEquals(5, this.type.getDeclaredMethods().length);
+		assertEquals(7, this.type.getDeclaredMethods().length);
+	}
+
+	@Test
+	public void hasRegisteredBehavior() {
+		assertMethod("hasRegisteredBehavior", boolean.class); //$NON-NLS-1$
+	}
+
+	@Test
+	public void getRegisteredBehaviors() {
+		assertMethod("getRegisteredBehaviors", Collection.class); //$NON-NLS-1$
 	}
 
 	@Test

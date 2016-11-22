@@ -21,6 +21,8 @@
 
 package io.janusproject.kernel.bic;
 
+import java.util.Collection;
+
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.lang.core.Address;
@@ -60,6 +62,24 @@ public interface InternalEventBusCapacity extends Capacity {
 	 * @param listener - the listener on the SARL events.
 	 */
 	void unregisterEventListener(Object listener);
+
+	/**
+	 * Replies if at least one event listener of the given type was registered.
+	 *
+	 * @param type the type of the expected event listener.
+	 * @return <code>true</code> if one event listener of the given type is registered; otherwise <code>false</code>.
+	 */
+	boolean hasRegisteredEventListener(Class<?> type);
+
+	/**
+	 * Fill the given collection with the events listeners of the given type.
+	 *
+	 * @param <T> the type of the expected event listener.
+	 * @param type the type of the expected event listener.
+	 * @param collection the collection to fill.
+	 * @return the number of added elements.
+	 */
+	<T> int getRegisteredEventListeners(Class<T> type, Collection<? super T> collection);
 
 	/**
 	 * Sends an event to itself using its defaultInnerAddress as source. Used for platform level event dispatching (i.e.

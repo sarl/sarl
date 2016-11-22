@@ -22,6 +22,7 @@
 package io.janusproject.kernel.bic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
@@ -162,6 +163,34 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 				this.eventListeners = null;
 			}
 		}
+	}
+
+	@Override
+	public boolean hasRegisteredEventListener(Class<?> type) {
+		final Iterable<?> collection = this.eventListeners;
+		if (collection != null) {
+			for (final Object listener : collection) {
+				if (type.isInstance(listener)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public <T> int getRegisteredEventListeners(Class<T> type, Collection<? super T> collection) {
+		final Iterable<?> listenerCollection = this.eventListeners;
+		int nb = 0;
+		if (listenerCollection != null) {
+			for (final Object listener : listenerCollection) {
+				if (type.isInstance(listener)) {
+					++nb;
+					collection.add(type.cast(listener));
+				}
+			}
+		}
+		return nb;
 	}
 
 	@Override

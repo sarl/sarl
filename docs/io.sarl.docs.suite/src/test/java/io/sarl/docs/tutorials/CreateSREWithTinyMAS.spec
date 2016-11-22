@@ -1831,6 +1831,41 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				''')
 			}
 
+			/* Two functions must be implemented for accessing to the internal list of the behaviors:
+			 * <ul>
+			 * <li>`hasRegisteredBehavior` indicates if a behavior is registered; and</li>
+			 * <li>`getRegisteredBehaviors` replies an unmodifiable collection of the registered behaviors.</li>
+			 * </ul>
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
+			 */
+			fact "Accessing to the collection of the registered behaviors" {
+				'''
+				def hasRegisteredBehavior : boolean {
+					!this.behaviors.isEmpty
+				}
+
+				def getRegisteredBehaviors : Collection<Behavior> {
+					new ArrayList(this.behaviors)
+				}
+				'''.parseSuccessfully(
+				'''
+				package io.sarl.docs.tutorials.tinyMASSRE
+				import java.util.UUID
+				import java.util.Collection
+				import java.util.List
+				import java.util.ArrayList
+				import io.sarl.lang.core.Behavior
+				import io.sarl.core.Behaviors
+				abstract class BehaviorsSkill implements Behaviors {
+					var behaviors : List<Behavior>
+				''',
+				// TEXT
+				'''
+				}
+				''')
+			}
+
 			/* There is an key difference between the SARL run-time principle, which is fully
 			 * distributed (everything is registered, run, unregistered in parallel),
 			 * and the tinyMAS run-time principle, which is fully sequential (everything is

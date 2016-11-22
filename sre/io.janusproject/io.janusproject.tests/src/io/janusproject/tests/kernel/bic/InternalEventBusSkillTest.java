@@ -19,13 +19,14 @@
  */
 package io.janusproject.tests.kernel.bic;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
-import io.janusproject.kernel.bic.InternalEventBusSkill;
-import io.janusproject.kernel.bic.internaleventdispatching.AgentInternalEventsDispatcher;
-import io.janusproject.services.logging.LogService;
-import io.janusproject.tests.testutils.AbstractJanusTest;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -33,10 +34,16 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.Times;
 
+import io.janusproject.kernel.bic.InternalEventBusSkill;
+import io.janusproject.kernel.bic.internaleventdispatching.AgentInternalEventsDispatcher;
+import io.janusproject.services.logging.LogService;
+import io.janusproject.tests.testutils.AbstractJanusTest;
+
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 
@@ -93,6 +100,41 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Object> argument = ArgumentCaptor.forClass(Object.class);
 		Mockito.verify(this.eventBus, new Times(1)).unregister(argument.capture());
 		assertSame(eventListener, argument.getValue());
+	}
+
+	@Test
+	public void hasRegisteredEventListener() {
+		assertFalse(this.skill.hasRegisteredEventListener(Object.class));
+		//
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		this.skill.registerEventListener(eventListener);
+		assertTrue(this.skill.hasRegisteredEventListener(Object.class));
+		assertTrue(this.skill.hasRegisteredEventListener(EventListener.class));
+		assertFalse(this.skill.hasRegisteredEventListener(Behavior.class));
+	}
+
+	@Test
+	public void getRegisteredEventListeners() {
+		Collection<Object> collection;
+		//
+		collection = new ArrayList<>();
+		assertEquals(0, this.skill.getRegisteredEventListeners(Object.class, collection));
+		assertContains(collection);
+		//
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		this.skill.registerEventListener(eventListener);
+		//
+		collection = new ArrayList<>();
+		assertEquals(1, this.skill.getRegisteredEventListeners(Object.class, collection));
+		assertContains(collection, eventListener);
+		//
+		collection = new ArrayList<>();
+		assertEquals(1, this.skill.getRegisteredEventListeners(EventListener.class, collection));
+		assertContains(collection, eventListener);
+		//
+		collection = new ArrayList<>();
+		assertEquals(0, this.skill.getRegisteredEventListeners(Behavior.class, collection));
+		assertContains(collection);
 	}
 
 	@Test

@@ -19,11 +19,12 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.lang.reflect.Constructor;
+import java.util.Collection;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -138,6 +139,28 @@ public class BehaviorsSkillTest {
 			assertSame(b, argument.getValue());
 		}
 	
+		@Test
+		public void hasRegisteredBehavior() {
+			Mockito.doReturn(false).when(this.busCapacity).hasRegisteredEventListener(ArgumentMatchers.any());
+			assertFalse(this.skill.hasRegisteredBehavior());
+			//
+			Mockito.doReturn(true).when(this.busCapacity).hasRegisteredEventListener(ArgumentMatchers.any());
+			assertTrue(this.skill.hasRegisteredBehavior());
+		}
+
+		@Test
+		public void getRegisteredBehaviors() {
+			Mockito.doReturn(0).when(this.busCapacity).getRegisteredEventListeners(ArgumentMatchers.any(), ArgumentMatchers.any());
+			assertContains(this.skill.getRegisteredBehaviors());
+			//
+			Object behaviorListener = new TestBehavior();
+			Mockito.doAnswer((it) -> {
+				((Collection) it.getArgument(1)).add(behaviorListener);
+				return 1;
+			}).when(this.busCapacity).getRegisteredEventListeners(ArgumentMatchers.any(), ArgumentMatchers.any());
+			assertContains(this.skill.getRegisteredBehaviors(), behaviorListener);
+		}
+
 		@Test
 		public void wake_noScope() {
 			Event event = mock(Event.class);

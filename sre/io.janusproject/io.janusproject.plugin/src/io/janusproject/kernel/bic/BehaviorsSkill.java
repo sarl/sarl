@@ -21,6 +21,9 @@
 
 package io.janusproject.kernel.bic;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import io.sarl.core.Behaviors;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.lang.core.Address;
@@ -62,6 +65,18 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 			installationOrder = installationOrder(this);
 		}
 		return installationOrder;
+	}
+
+	@Override
+	public boolean hasRegisteredBehavior() {
+		return getSkill(InternalEventBusCapacity.class).hasRegisteredEventListener(Behavior.class);
+	}
+
+	@Override
+	public Collection<Behavior> getRegisteredBehaviors() {
+		final Collection<Behavior> behaviors = new ArrayList<>();
+		getSkill(InternalEventBusCapacity.class).getRegisteredEventListeners(Behavior.class, behaviors);
+		return behaviors;
 	}
 
 	@Override

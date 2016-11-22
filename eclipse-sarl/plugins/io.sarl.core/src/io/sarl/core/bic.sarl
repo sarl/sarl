@@ -230,6 +230,24 @@ capacity InnerContextAccess {
  */
 capacity Behaviors {
 
+	/** Replies <code>true</code> if at least a behavior is registered.
+	 *
+	 * <p>A registered behavior is not necessary running. It may wait for events.
+	 *
+	 * @return <code>true</code> if a behavior is registered; otherwise <code>false</code>.
+	 * @since 0.5
+	 */
+	def hasRegisteredBehavior : boolean
+
+	/** Replies the registered behaviors.
+	 *
+	 * <p>A registered behavior is not necessary running. It may wait for events.
+	 *
+	 * @return the unmodifiable collection of the registered behavior.
+	 * @since 0.5
+	 */
+	def getRegisteredBehaviors : Collection<Behavior>
+
 	/**
 	 * Register a Behavior for the owner agent.
 	 * The new Behavior will react to all declared events received by the agent.
