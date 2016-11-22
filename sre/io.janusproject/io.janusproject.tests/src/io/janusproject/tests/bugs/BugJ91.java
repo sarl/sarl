@@ -47,7 +47,7 @@ import io.sarl.lang.core.BuiltinCapacitiesProvider;
  * @see https://github.com/janus-project/janusproject/issues/91
  */
 @SuppressWarnings("all")
-public class Bug91 extends AbstractJanusRunTest {
+public class BugJ91 extends AbstractJanusRunTest {
 
 	@Before
 	public void setUp() {
