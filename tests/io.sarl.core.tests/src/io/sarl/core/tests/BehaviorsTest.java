@@ -27,6 +27,7 @@ import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
+import io.sarl.lang.core.Scope;
 
 /**
  * @author $Author: sgalland$
@@ -34,45 +35,39 @@ import io.sarl.lang.core.EventListener;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class BehaviorsTest extends AbstractSarlCoreTest<Capacity> {
 
-	/**
-	 */
 	@Before
 	public void setUp() {
 		loadSARL("io.sarl.core.Behaviors", Capacity.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void memberCount() {
-		assertEquals(4, this.type.getDeclaredMethods().length);
+		assertEquals(5, this.type.getDeclaredMethods().length);
 	}
 
-	/**
-	 */
 	@Test
 	public void registerBehavior() {
 		assertMethod("registerBehavior", Behavior.class, Behavior.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void unregisterBehavior() {
 		assertMethod("unregisterBehavior", Behavior.class, Behavior.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
-	public void wake() {
+	public void wake_noScope() {
 		assertMethod("wake", void.class, Event.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
+	@Test
+	public void wake_scope() {
+		assertMethod("wake", void.class, Event.class, Scope.class); //$NON-NLS-1$
+	}
+
 	@Test
 	public void asEventListener() {
 		assertMethod("asEventListener", EventListener.class); //$NON-NLS-1$

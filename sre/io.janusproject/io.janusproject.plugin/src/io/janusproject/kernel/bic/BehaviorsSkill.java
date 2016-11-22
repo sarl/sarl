@@ -29,6 +29,7 @@ import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpace;
+import io.sarl.lang.core.Scope;
 
 /**
  * Janus implementation of SARL's {@link Behaviors} built-in capacity.
@@ -76,7 +77,12 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 	}
 
 	@Override
-	public synchronized void wake(Event evt) {
+	public void wake(Event evt) {
+		wake(evt, $DEFAULT_VALUE$WAKE_0);
+	}
+
+	@Override
+	public synchronized void wake(Event evt, Scope<Address> scope) {
 		// Use the inner space so all behaviors (even agents inside the holon
 		// running in distant kernels) are notified. The event will return into
 		// the agent via the inner default space add call internalReceiveEvent
@@ -87,14 +93,17 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 		if ((!(context instanceof InnerContextSkill)) || ((InnerContextSkill) context).hasInnerContext()) {
 			final EventSpace defSpace = context.getInnerContext().getDefaultSpace();
 			evt.setSource(defSpace.getAddress(getOwner().getID()));
-			defSpace.emit(evt);
+			defSpace.emit(evt, scope);
 		} else {
 			// Do not call getInnerContext(), which is creating the inner context automatically.
 			// In place, try to send the event inside the agent only (and its behaviors).
-			final EventListener listener = getSkill(InternalEventBusCapacity.class).asEventListener();
-			assert listener != null;
-			evt.setSource(this.agentAddressInInnerDefaultSpace);
-			listener.receiveEvent(evt);
+			final InternalEventBusCapacity eventBus = getSkill(InternalEventBusCapacity.class);
+			if (scope == null || scope.matches(eventBus.getInnerDefaultSpaceAddress())) {
+				final EventListener listener = eventBus.asEventListener();
+				assert listener != null;
+				evt.setSource(this.agentAddressInInnerDefaultSpace);
+				listener.receiveEvent(evt);
+			}
 		}
 
 	}

@@ -23,6 +23,7 @@ package io.sarl.core
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.TimeUnit
+import java.util.Collection
 
 import io.sarl.core.AgentTask
 import io.sarl.lang.core.EventSpace
@@ -249,9 +250,16 @@ capacity Behaviors {
 	/**
 	 * Wake the agent's behaviors reacting to the Event evt.
 	 *
+	 * <p>Note that the scope parameter could be used only for filtering the agents (the current agent and its sub-agents)
+	 * in order to determine the ones that will receive the event.
+	 * The behaviors of the current agent (registered with {@link #registerBehavior(Behavior)} will always
+	 * receive the event if the current agent is not discarded. Indeed, because the behaviors have no associated address,
+	 * they cannot be filtered individually.
+	 *
 	 * @param event the event to emit to the agent's behaviors and in the internal context.
+	 * @param scope the definition of the scope that will be used for selected the receivers of the events.
 	 */
-	def wake(^event : Event)
+	def wake(^event : Event, scope : Scope<Address> = null)
 	
 	/**
 	 * Replies the interface to dispatch an event to agent's Behaviors.
@@ -260,6 +268,7 @@ capacity Behaviors {
 	 */
 	@Pure
 	def asEventListener : EventListener
+
 }
 
 /**

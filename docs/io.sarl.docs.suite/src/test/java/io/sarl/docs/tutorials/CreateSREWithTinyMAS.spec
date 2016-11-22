@@ -1786,20 +1786,44 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 			 * Its implementation retrieves the SARL event listener of the agent by calling
 			 * the `asEventListener` function. And, it invokes the receiving function of
 			 * the listener with the event as argument.
+			 *
+			 * <p>If a scope is provided, it must be used for filtering the receivers which have
+			 * an address. In the context of the tinyMAS platform, only the agent fits this requirement.
+			 * Consequently, the scope is matched against the agent's address in its internal context
+			 * (not the agent's address in the default space of its default context).
+			 * The `getInnerAddress` function computes the agent's address in the agent internal context.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Waking the behaviors with an event" {
 				'''
-				def wake(^event : Event) {
-					asEventListener.receiveEvent(^event)
+				def wake(^event : Event, scope : Scope<Address> = null) {
+					if (scope === null || scope.matches(innerAddress)) {
+						asEventListener.receiveEvent(^event)
+					}
+				}
+
+				private def getInnerAddress : Address {
+					var id = (owner as TMSarlAgent).ID
+					return new Address(
+							new SpaceID(id, UUID.randomUUID, typeof(EventSpaceSpecification)),
+							id)
 				}
 				'''.parseSuccessfully(
 				'''
 				package io.sarl.docs.tutorials.tinyMASSRE
+				import java.util.UUID
 				import io.sarl.lang.core.Event
+				import io.sarl.lang.core.EventSpaceSpecification
+				import io.sarl.lang.core.Scope
+				import io.sarl.lang.core.Address
+				import io.sarl.lang.core.SpaceID
 				import io.sarl.core.Behaviors
+				interface TMSarlAgent {
+					def getID : UUID
+				}
 				abstract class BehaviorsSkill implements Behaviors {
+					def getOwner : io.sarl.lang.core.Agent
 				''',
 				// TEXT
 				'''

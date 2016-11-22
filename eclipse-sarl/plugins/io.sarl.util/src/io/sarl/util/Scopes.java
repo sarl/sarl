@@ -34,6 +34,8 @@ import io.sarl.lang.core.Scope;
  */
 public final class Scopes {
 
+	private static final Scope<?> ALL = new AlwaysTrueScope();
+
 	private Scopes() {
 		//
 	}
@@ -44,8 +46,9 @@ public final class Scopes {
 	 * @param <T> - type of the elements in the scope.
 	 * @return the scope that corresponds to all.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> Scope<T> allParticipants() {
-		return new AlwaysTrueScope<>();
+		return (Scope<T>) ALL;
 	}
 
 	/** Create an scope restricted to the given addresses.
@@ -59,13 +62,12 @@ public final class Scopes {
 
 	/** A scope that is matching all the elements.
 	 *
-	 * @param <T> - the type of the elements to match to.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class AlwaysTrueScope<T> implements Scope<T> {
+	private static class AlwaysTrueScope implements Scope<Object> {
 
 		private static final long serialVersionUID = -3193147362292037L;
 
@@ -79,7 +81,7 @@ public final class Scopes {
 		}
 
 		@Override
-		public boolean matches(T element) {
+		public boolean matches(Object element) {
 			return true;
 		}
 

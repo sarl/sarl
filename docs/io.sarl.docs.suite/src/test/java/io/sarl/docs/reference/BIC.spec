@@ -1279,16 +1279,19 @@ describe "Built-in Capacity Reference" {
 			 * to wake it with an event. This particular feature is
 			 * supported by:
 			 * 
-			 *     def wake(evt : Event)
+			 *     def wake(evt : Event, scope : Scope<Address> = null)
 			 *
 			 * 
 			 * <p>This function emits the given event into the inner context
 			 * of the agent (in the default space).
 			 * 
-			 * <importantnote> It is not
-			 * possible to execute a particular behavior explicitly.
-			 * All the behaviors that are waiting for a given event will 
-			 * be executed by this function.</importantnote>
+			 * <p>If a scope is provided, it is used for filtering the agents that will
+			 * receive the event. The filterable agents are the current agent itself, and
+			 * all the sub-agents (sub-holons) that were created inside the current agent.
+			 *
+			 * <importantnote>Because a behavior has no associated address, it cannot be
+			 * filtered by the scope. All the agent's behaviors that are waiting for a given event will 
+			 * be executed.</importantnote>
 			 * 
 			 * @filter(.*) 
 			 */
@@ -1296,6 +1299,8 @@ describe "Built-in Capacity Reference" {
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.Behaviors
 					import io.sarl.lang.core.Event
+					import io.sarl.lang.core.Scope
+					import io.sarl.lang.core.Address
 					event E
 					agent A {
 						uses Behaviors
@@ -1303,6 +1308,9 @@ describe "Built-in Capacity Reference" {
 							var e : Event
 							e = new E
 							wake(e)
+							wake(e, null)
+							var scope : Scope<Address> = null
+							wake(e, scope)
 						}
 					}".parseSuccessfully
 			}
