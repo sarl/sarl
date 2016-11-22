@@ -1306,6 +1306,65 @@ describe "Built-in Capacity Reference" {
 					}".parseSuccessfully
 			}
 
+			/* Sometimes, it may be useful to execute a task if a condition is true or false.
+			 * The `AgentTask` type, which is representing an instance of agent task provides
+			 * functions for assosiating a condition, named the guard, to the task:
+			 * 
+			 *     def getGuard : (Agent) => boolean
+			 *     def setGuard(condition : (Agent) => boolean)
+			 *
+			 *
+			 * <p>The first function replies the guard associated to the task, or <code>null</code> if
+			 * there is no associated guard. The second function enables you to change the associated guard.
+			 * 
+			 * <p>Additionaly, the `AgentTask` type provides utility functions for easier guard association:  
+			 * 
+			 *     def ifTrue(condition : (Agent) => boolean) : AgentTask
+			 *     def unless(condition : (Agent) => boolean) : AgentTask
+			 *
+			 *
+			 * <p>The `ifTrue` function is equivalent to `setGuard`, except that it is replying the current agent task.
+			 * The `unless` function sets the guard of the task to the negation of the given condition. It replies
+			 * the current task.
+			 *
+			 * <caution>The `ifTrue` and `unless` functions should not be used on the result of the scheduling functions.
+			 * Indeed, if you call these two function on the value replied by `execute` for example, the execution platform
+			 * could have launched the task before the guard is set. Consider the following code
+			 * 
+			 *     execute [ doSomething ].unless [ myVar > 5 ]
+			 *  
+			 * The call to `execute` is done before the call to `unless`. It means that the execution platform could have
+			 * already checked if a guard is assosiated and <code>true</code>, before the `unless` function sets the guard.
+			 * </caution>
+			 *
+			 * The best practice for setting the task guards is to create a task, set the guard, and execute the task:
+			 *
+			 *     // Create the task instance
+			 *     var myTask = task(null)
+			 *     // Set the guard
+			 *     myTask.unless [ myVar > 5 ]
+			 *     // Execute the task
+			 *     myTask.execute [ doSomething ]
+			 *
+			 *
+			 * @filter(.*) 
+			 */
+			fact "Conditional Execution of a Task"{
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Schedules
+					import io.sarl.core.AgentTask
+					agent A {
+						uses Schedules
+						def myaction {
+							var myTask = task(null)
+							var guard = myTask.guard
+							myTask.guard = [it | true ]
+							myTask.ifTrue [it | true]
+							myTask.unless [it | true]
+						}
+					}".parseSuccessfully
+			}
+
 		}
 
 		/* The built-in capacity `Behaviors` provides the tools to the agents 
