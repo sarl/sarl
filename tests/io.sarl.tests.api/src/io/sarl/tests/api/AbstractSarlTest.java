@@ -758,6 +758,86 @@ public abstract class AbstractSarlTest {
 		}
 	}
 
+	/** Assert that the given value is stricty positive.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertStrictlyPositive(float actual) {
+		if (actual <= 0f) {
+			fail("Expecting a strictly positive number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is stricty negative.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertStrictlyNegative(float actual) {
+		if (actual >= 0f) {
+			fail("Expecting a strictly negative number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is stricty positive.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertPositiveOrZero(float actual) {
+		if (actual < 0f) {
+			fail("Expecting a positive or zero number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is negative or zero.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertNegativeOrZero(float actual) {
+		if (actual > 0f) {
+			fail("Expecting a negative or zero number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is stricty positive.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertStrictlyPositive(double actual) {
+		if (actual <= 0.) {
+			fail("Expecting a strictly positive number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is stricty negative.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertStrictlyNegative(double actual) {
+		if (actual >= 0.) {
+			fail("Expecting a strictly negative number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is stricty positive.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertPositiveOrZero(double actual) {
+		if (actual < 0.) {
+			fail("Expecting a positive or zero number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is negative or zero.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertNegativeOrZero(double actual) {
+		if (actual > 0.) {
+			fail("Expecting a negative or zero number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
 	/** Assert that the given value is equal to zero.
 	 *
 	 * @param actual - the value to test.
@@ -780,6 +860,56 @@ public abstract class AbstractSarlTest {
 				msg = ""; //$NON-NLS-1$
 			}
 			fail(msg + "Expecting a zero number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is NaN.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertNaN(float actual) {
+		assertNaN(null, actual);
+	}
+
+	/** Assert that the given value is NaN.
+	 *
+	 * @param message - the error message.
+	 * @param actual - the value to test.
+	 */
+	public static void assertNaN(String message, float actual) {
+		if (!Float.isNaN(actual)) {
+			String msg;
+			if (!Strings.isNullOrEmpty(message)) {
+				msg = message + ". "; //$NON-NLS-1$
+			} else {
+				msg = ""; //$NON-NLS-1$
+			}
+			fail(msg + "Expecting NaN, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is NaN.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertNaN(double actual) {
+		assertNaN(null, actual);
+	}
+
+	/** Assert that the given value is NaN.
+	 *
+	 * @param message - the error message.
+	 * @param actual - the value to test.
+	 */
+	public static void assertNaN(String message, double actual) {
+		if (!Double.isNaN(actual)) {
+			String msg;
+			if (!Strings.isNullOrEmpty(message)) {
+				msg = message + ". "; //$NON-NLS-1$
+			} else {
+				msg = ""; //$NON-NLS-1$
+			}
+			fail(msg + "Expecting NaN, actual: " + actual); //$NON-NLS-1$
 		}
 	}
 

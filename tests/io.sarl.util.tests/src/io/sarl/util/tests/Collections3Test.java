@@ -47,7 +47,7 @@ import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.util.Collections3;
 
 /**
- * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

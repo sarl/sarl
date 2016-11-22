@@ -985,11 +985,19 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 		 *   * first parameter of type `BuiltinCapacitiesProvider`: a provider of built-in capacity. Here we pass <code>null</code> as argument to the constructor in order to ignore the default initialization of the built-in capacities. This initialization will be done manually in one of the following sections.
 		 *   * second parameter of type `UUID`: the identifier of the parent context of the created agent.
 		 *   * third parameter of type `UUID`: the identifier of the created agent.
+		 *
+		 * <p>The `createAgent` function should ensure the given agent type could be executed on the current instance of
+		 * the tinyMAS platform. For that, we introduce two tests:
+		 *
+		 *   * check if the given agent type is a sub-type of the `Agent` type provided in the SARL API; and
+		 *   * use the `SarlSpecificationChecker` provided in the SARL API for verifying that the given agent type was generated with a SARL specification version that is compatible with the version supported by tinyMAS. We use the default implementation of the checker: `StandardSarlSpecificationChecker`.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*)
 		 */
 		fact "Creating a tinyMAS agent from a SARL agent" {
 			'''
+			static val SPECIFICATION_CHECKER : SarlSpecificationChecker = new StandardSarlSpecificationChecker
+			
 			static def createAgent(
 					defaultSpace : TMDefaultSpace, 
 					agentType : Class<? extends io.sarl.lang.core.Agent>,
@@ -997,7 +1005,8 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 					agentID : UUID,
 					params : Object*)
 					: TMSarlAgent {
-				if (typeof(io.sarl.lang.core.Agent).isAssignableFrom(agentType)) {
+				if (typeof(io.sarl.lang.core.Agent).isAssignableFrom(agentType)
+					&& SPECIFICATION_CHECKER.isValidSarlElement(agentType)) {
 					var theAgentID = if (agentID === null) UUID::randomUUID else agentID
 					var theAgentType = agentType as Class<? extends io.sarl.lang.core.Agent>
 					var cons = theAgentType.getConstructor(typeof(BuiltinCapacitiesProvider), typeof(UUID), typeof(UUID))
@@ -1011,6 +1020,8 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 			'''
 			package io.sarl.docs.tutorials.tinyMASSRE
 			import java.util.UUID
+			import io.sarl.sarlspecification.SarlSpecificationChecker
+			import io.sarl.sarlspecification.StandardSarlSpecificationChecker
 			interface BuiltinCapacitiesProvider {}
 			interface TMDefaultSpace {}
 			class TMSarlAgent {
