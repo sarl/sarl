@@ -241,12 +241,13 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		} else {
 			endTime = -1;
 		}
-		while (this.janusKernel.isRunning() && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
+		boolean isJanusRunning = this.janusKernel.isRunning();
+		while (isJanusRunning && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
+			isJanusRunning = this.janusKernel.isRunning();
 			Thread.yield();
 		}
-		boolean isTimedOut = this.janusKernel.isRunning();
 		Boot.setConsoleLogger(null);
-		if (isTimedOut) {
+		if (isJanusRunning) {
 			throw new TimeoutException();
 		}
 	}
