@@ -7,5 +7,6 @@ Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.sarl.util;bundle-version="0.5.0",
  io.sarl.tests.api;bundle-version="0.5.0"
-Export-Package: io.sarl.util.tests
+Export-Package: io.sarl.sarlspecification.tests,
+ io.sarl.util.tests
 

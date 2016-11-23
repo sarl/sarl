@@ -114,7 +114,8 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
     }
 
     @Override
-    public UUID spawn(AgentContext parent, UUID agentID, Class<? extends Agent> agentClazz, Object... params) {
+    public UUID spawn(UUID spawningAgent, AgentContext parent,
+    		UUID agentID, Class<? extends Agent> agentClazz, Object... params) {
         if (isRunning()) {
             try {
                 // Check if the version of the SARL agent class is compatible.
@@ -127,7 +128,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
                 synchronized (this.agents) {
                     this.agents.put(agent.getID(), agent);
                 }
-                fireAgentSpawned(parent, agent, params);
+                fireAgentSpawned(spawningAgent, parent, agent, params);
                 return agent.getID();
             } catch (Throwable e) {
                 throw new CannotSpawnException(agentClazz, e);
@@ -274,18 +275,20 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
     /**
      * Notifies the listeners about the agent creation.
      *
+	 * @param spawningAgent the identifier of the agent which spawns the given agent.
      * @param context
      *            - context in which the agent is spawn.
-     * @param agent
+     * @param spawnedAgent
      *            - the spawn agent.
      * @param initializationParameters
      *            - list of the values to pass as initialization parameters.
      */
-    protected void fireAgentSpawned(AgentContext context, Agent agent, Object[] initializationParameters) {
+    protected void fireAgentSpawned(UUID spawningAgent, AgentContext context,
+    		Agent spawnedAgent, Object[] initializationParameters) {
         // Notify the listeners on the spawn events (not restricted to a
         // single agent)
         for (final SpawnServiceListener l : this.globalListeners.getListeners(SpawnServiceListener.class)) {
-            l.agentSpawned(context, agent, initializationParameters);
+            l.agentSpawned(spawningAgent, context, spawnedAgent, initializationParameters);
         }
 
         // Notify the listeners on the lifecycle events on
@@ -295,23 +298,23 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
         // is invoked.
         final SpawnServiceListener[] agentListeners;
         synchronized (this.agentLifecycleListeners) {
-            final Collection<SpawnServiceListener> list = this.agentLifecycleListeners.get(agent.getID());
+            final Collection<SpawnServiceListener> list = this.agentLifecycleListeners.get(spawnedAgent.getID());
             agentListeners = new SpawnServiceListener[list.size()];
             list.toArray(agentListeners);
         }
         for (final SpawnServiceListener l : agentListeners) {
-            l.agentSpawned(context, agent, initializationParameters);
+            l.agentSpawned(spawningAgent, context, spawnedAgent, initializationParameters);
         }
 
         // Send the event in the default space.
-        final UUID agentID = agent.getID();
+        final UUID agentID = spawnedAgent.getID();
         assert agentID != null : "Empty agent identifier"; //$NON-NLS-1$
         final EventSpace defSpace = context.getDefaultSpace();
         assert defSpace != null : "A context does not contain a default space"; //$NON-NLS-1$
         final Address agentAddress = defSpace.getAddress(agentID);
         // The address may be null is the agent has failed to be launched.
         if (agentAddress != null) {
-        	defSpace.emit(new AgentSpawned(agentAddress, agentID, agent.getClass().getName()));
+        	defSpace.emit(new AgentSpawned(agentAddress, agentID, spawnedAgent.getClass().getName()));
         }
     }
 

@@ -36,7 +36,38 @@ event Initialize {
 	/** The initialization parameters.
 	 * Usually, they are the arguments passed to the agent spawning function.
 	 */
-	var parameters : Object[]
+	val parameters : Object[]
+
+	/** Identifier of the agent, which has spawned the under-initialization agent.
+	 * If the under-initialization agent was spawned by the SARL run-time environment
+	 * (and not by another agent), the identifier is <code>null</code>.
+	 *
+	 * @since 0.5
+	 */
+	val spawner : UUID
+
+	/** Constructor.
+	 *
+	 * @param spawner the identifier of the spawner of the under-initialization agent.
+	 * @param params the initialization parameters to give to the under-initialization agent.
+	 * @since 0.5
+	 */
+	new(spawner : UUID, params : Object*) {
+		this(null, spawner, params)
+	}
+
+	/** Constructor.
+	 *
+	 * @param source - address of the agent that is emitting this event.
+	 * @param spawner the identifier of the spawner of the under-initialization agent.
+	 * @param params the initialization parameters to give to the under-initialization agent.
+	 * @since 0.5
+	 */
+	new(source : Address, spawner : UUID, params : Object*) {
+		super(source)
+		this.spawner = spawner
+		this.parameters = params
+	}
 
 }
 

@@ -140,7 +140,7 @@ public class Kernel {
 	 * @return the identifier of the agent, never <code>null</code>.
 	 */
 	public UUID spawn(Class<? extends Agent> agent, Object... params) {
-		return this.spawnService.spawn(this.janusContext, null, agent, params);
+		return this.spawnService.spawn(null, this.janusContext, null, agent, params);
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class Kernel {
 	 * @return the identifier of the agent, never <code>null</code>.
 	 */
 	public UUID spawn(UUID agentID, Class<? extends Agent> agent, Object... params) {
-		return this.spawnService.spawn(this.janusContext, agentID, agent, params);
+		return this.spawnService.spawn(null, this.janusContext, agentID, agent, params);
 	}
 
 	/**
