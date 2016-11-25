@@ -28,6 +28,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.google.inject.Inject;
+
 import io.janusproject.services.logging.LogService;
 import io.janusproject.util.LoggerCreator;
 

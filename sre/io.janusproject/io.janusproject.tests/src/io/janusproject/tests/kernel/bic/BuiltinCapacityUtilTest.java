@@ -29,12 +29,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
-import io.janusproject.kernel.bic.BuiltinCapacityUtil;
-import io.janusproject.kernel.bic.InnerContextSkill;
-import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import io.janusproject.kernel.bic.BuiltinCapacityUtil;
+import io.janusproject.kernel.bic.InnerContextSkill;
+import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.InnerContextAccess;

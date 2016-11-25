@@ -33,15 +33,17 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-import io.janusproject.services.spawn.SpawnService;
-import io.janusproject.services.spawn.SpawnServiceListener;
 import org.arakhne.afc.util.ListUtil;
 import org.arakhne.afc.util.MultiCollection;
+
+import io.janusproject.services.spawn.SpawnService;
+import io.janusproject.services.spawn.SpawnServiceListener;
 
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
+import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Skill;
 
 /**
@@ -117,7 +119,7 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 				}
 				agentSkillField = field;
 			}
-			final Map<?, Skill> skills = (Map<?, Skill>) agentSkillField.get(agent);
+			final Map<?, ClearableReference<Skill>> skills = (Map<?, ClearableReference<Skill>>) agentSkillField.get(agent);
 			if (skills != null) {
 				final List<BuiltinSkill> builtinSkills = new ArrayList<>();
 				final Set<Skill> otherSkills = new TreeSet<>((first, second) -> {
@@ -127,10 +129,11 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 					return Integer.compare(System.identityHashCode(first), System.identityHashCode(second));
 				});
 				final Comparator<BuiltinSkill> comparator = inReverseOrder ? REVERSE_ORDER_COMPARATOR : ORDER_COMPARATOR;
-				for (final Skill skill : skills.values()) {
+				for (final ClearableReference<Skill> skillReference : skills.values()) {
+					final Skill skill = skillReference.get();
 					if (skill instanceof BuiltinSkill) {
 						ListUtil.add(builtinSkills, comparator, (BuiltinSkill) skill, true, false);
-					} else {
+					} else if (skill != null) {
 						otherSkills.add(skill);
 					}
 				}

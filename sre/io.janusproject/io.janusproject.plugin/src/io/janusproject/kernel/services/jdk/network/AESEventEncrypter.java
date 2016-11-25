@@ -30,6 +30,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Named;
 
 import com.google.inject.Inject;
+
 import io.janusproject.services.network.AbstractEventEncrypter;
 import io.janusproject.services.network.EventEnvelope;
 import io.janusproject.services.network.NetworkConfig;

@@ -47,10 +47,11 @@ import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
+import org.arakhne.afc.vmutil.FileSystem;
+
 import io.janusproject.JanusConfig;
 import io.janusproject.services.network.NetworkUtil;
 import io.janusproject.util.LoggerCreator;
-import org.arakhne.afc.vmutil.FileSystem;
 
 /**
  * The module configures the minimum requirements for the system variables.

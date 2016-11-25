@@ -30,14 +30,15 @@ import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
-import io.janusproject.kernel.bic.DefaultContextInteractionsSkill;
-import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.Times;
+
+import io.janusproject.kernel.bic.DefaultContextInteractionsSkill;
+import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.core.Lifecycle;
 import io.sarl.lang.core.Address;

@@ -36,6 +36,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
+
 import io.janusproject.services.network.AbstractEventSerializer;
 import io.janusproject.services.network.EventDispatch;
 import io.janusproject.services.network.EventEncrypter;

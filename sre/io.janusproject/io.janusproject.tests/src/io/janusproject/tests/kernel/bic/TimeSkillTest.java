@@ -19,19 +19,15 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.*;
-
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import io.janusproject.kernel.bic.InternalEventBusCapacity;
-import io.janusproject.kernel.bic.TimeSkill;
-import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
+import io.janusproject.kernel.bic.TimeSkill;
+import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.core.Time;
 import io.sarl.lang.core.Address;

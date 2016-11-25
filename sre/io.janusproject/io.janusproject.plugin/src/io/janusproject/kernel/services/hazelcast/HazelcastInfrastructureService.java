@@ -24,6 +24,7 @@ package io.janusproject.kernel.services.hazelcast;
 import com.google.common.util.concurrent.Service;
 import com.google.inject.Inject;
 import com.hazelcast.core.HazelcastInstance;
+
 import io.janusproject.services.AbstractDependentService;
 import io.janusproject.services.infrastructure.InfrastructureService;
 

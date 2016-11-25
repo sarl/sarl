@@ -23,6 +23,7 @@ package io.janusproject.modules.kernel;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+
 import io.janusproject.kernel.services.jdk.distributeddata.StandardDistributedDataStructureService;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 

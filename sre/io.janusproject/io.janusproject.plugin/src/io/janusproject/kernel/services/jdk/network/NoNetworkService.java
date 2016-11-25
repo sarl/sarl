@@ -32,6 +32,7 @@ import java.util.List;
 import com.google.common.util.concurrent.Service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import io.janusproject.services.network.AbstractNetworkingService;
 import io.janusproject.services.network.NetworkServiceListener;
 import io.janusproject.services.network.NetworkUtil;

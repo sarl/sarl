@@ -29,12 +29,6 @@ import static org.mockito.Mockito.verify;
 
 import java.util.UUID;
 
-import io.janusproject.kernel.bic.AsynchronousAgentKillingEvent;
-import io.janusproject.kernel.bic.InternalEventBusSkill;
-import io.janusproject.kernel.bic.LifecycleSkill;
-import io.janusproject.services.executor.ChuckNorrisException;
-import io.janusproject.services.spawn.SpawnService;
-import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +36,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
+import io.janusproject.kernel.bic.AsynchronousAgentKillingEvent;
+import io.janusproject.kernel.bic.InternalEventBusSkill;
+import io.janusproject.kernel.bic.LifecycleSkill;
+import io.janusproject.services.executor.ChuckNorrisException;
+import io.janusproject.services.spawn.SpawnService;
+import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;

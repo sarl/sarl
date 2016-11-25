@@ -30,10 +30,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
-import io.janusproject.kernel.bic.InnerContextSkill;
-import io.janusproject.kernel.bic.InternalEventBusCapacity;
-import io.janusproject.services.contextspace.ContextSpaceService;
-import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -43,6 +39,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.Times;
+
+import io.janusproject.kernel.bic.InnerContextSkill;
+import io.janusproject.kernel.bic.InternalEventBusCapacity;
+import io.janusproject.services.contextspace.ContextSpaceService;
+import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;

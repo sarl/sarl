@@ -23,6 +23,7 @@ package io.janusproject.modules.kernel;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+
 import io.janusproject.kernel.services.jdk.kerneldiscovery.StandardKernelDiscoveryService;
 import io.janusproject.services.kerneldiscovery.KernelDiscoveryService;
 
