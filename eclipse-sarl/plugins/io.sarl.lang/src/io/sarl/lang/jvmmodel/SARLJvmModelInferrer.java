@@ -140,6 +140,7 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.sarl.SarlAction;
@@ -702,8 +703,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				appendGeneratedAnnotation(constructor, context);
 			}
 
-			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
-
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
 
@@ -778,8 +777,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						toStringConcatenation("super(owner);")); //$NON-NLS-1$
 				appendGeneratedAnnotation(constructor, context);
 			}
-
-			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
@@ -961,8 +958,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						toStringConcatenation("super(owner);")); //$NON-NLS-1$
 				appendGeneratedAnnotation(constructor, context);
 			}
-
-			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
@@ -1679,21 +1674,22 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (type instanceof JvmGenericType
 					/*&& this.inheritanceHelper.isSubTypeOf(capacityType, Capacity.class, SarlCapacity.class)*/
 					&& !context.getGeneratedCapacityUseFields().contains(capacityType.getIdentifier())) {
-				// Generate the extension field
+				// Generate the buffer field
 				final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacityType.getIdentifier());
 				final JvmField field = this.typesFactory.createJvmField();
 				field.setVisibility(JvmVisibility.PRIVATE);
 				field.setSimpleName(fieldName);
 				field.setTransient(true);
-				field.setType(this.typeBuilder.cloneWithProxies(capacityType));
+				final JvmType clearableReferenceType = this.typeReferences.findDeclaredType(ClearableReference.class, container);
+				final JvmTypeReference skillClearableReference = this.typeReferences.createTypeRef(
+						clearableReferenceType, this.typeBuilder.cloneWithProxies(capacityType));
+				field.setType(skillClearableReference);
 
 				this.associator.associatePrimary(source, field);
 
 				addAnnotationSafe(field, Extension.class);
 				field.getAnnotations().add(annotationClassRef(ImportedCapacityFeature.class,
 						Collections.singletonList(capacityType)));
-
-				// Add the annotation dedicated to this particular method
 				appendGeneratedAnnotation(field, getContext(container));
 
 				container.getMembers().add(field);
@@ -1709,25 +1705,34 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.associator.associatePrimary(source, operation);
 
 				setBody(operation, (it) -> {
-					it.append("if (this.").append(fieldName).append(" == null) {"); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append("if (this.").append(fieldName).append(" == null || this."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append(fieldName).append(".get() == null) {"); //$NON-NLS-1$
 					it.increaseIndentation();
 					it.newLine();
-					it.append("this.").append(fieldName).append(" = getSkill("); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append("this.").append(fieldName).append(" = ") //$NON-NLS-1$ //$NON-NLS-2$
+							.append(Utils.HIDDEN_MEMBER_CHARACTER).append("getSkill("); //$NON-NLS-1$
 					it.append(capacityType.getType()).append(".class);"); //$NON-NLS-1$
 					it.decreaseIndentation();
 					it.newLine();
 					it.append("}"); //$NON-NLS-1$
 					it.newLine();
-					it.append("return this.").append(fieldName).append(";"); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append("return ").append(Utils.HIDDEN_MEMBER_CHARACTER) //$NON-NLS-1$
+							.append("castSkill(").append(capacityType.getType()).append(".class, this.") //$NON-NLS-1$ //$NON-NLS-2$
+							.append(fieldName).append(");"); //$NON-NLS-1$
 				});
 
 				// Add the annotation dedicated to this particular method
 				if (context.isAtLeastJava8()) {
+					final String inlineExpression = Utils.HIDDEN_MEMBER_CHARACTER
+							+ "castSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
+							+ ".class, (this." + fieldName //$NON-NLS-1$
+							+ " == null || this." + fieldName //$NON-NLS-1$
+							+ ".get() == null) ? (this." + fieldName //$NON-NLS-1$
+							+ " = " + Utils.HIDDEN_MEMBER_CHARACTER + "getSkill(" //$NON-NLS-1$ //$NON-NLS-2$
+							+ capacityType.getSimpleName()
+							+ ".class)) : this." + fieldName + ")"; //$NON-NLS-1$ //$NON-NLS-2$;
 					this.inlineExpressionCompiler.appendInlineAnnotation(
-							operation, source.eResource().getResourceSet(), fieldName
-							+ " == null ? (this." + fieldName //$NON-NLS-1$
-							+ " = getSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
-							+ ".class)) : this." + fieldName); //$NON-NLS-1$
+							operation, source.eResource().getResourceSet(), inlineExpression, capacityType);
 				}
 				appendGeneratedAnnotation(operation, context);
 				addAnnotationSafe(operation, Pure.class);
@@ -1747,103 +1752,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void transform(SarlRequiredCapacity source, JvmGenericType container) {
 		//
-	}
-
-	/** Append the overriding of the hidden setSkill function.
-	 *
-	 * @param context the current generation context.
-	 * @param source the source object.
-	 * @param target the inferred JVM object.
-	 */
-	protected void appendOverridingHiddenSetSkillOperation(GenerationContext context, XtendTypeDeclaration source,
-			JvmGenericType target) {
-		final Set<String> usedCapacities = context.getGeneratedCapacityUseFields();
-		if (!usedCapacities.isEmpty()) {
-			appendSetSkillOperation(usedCapacities, target);
-			appendClearSkillOperation(usedCapacities, target);
-		}
-	}
-
-	private void appendClearSkillOperation(Set<String> usedCapacities, JvmGenericType target) {
-		final JvmOperation clearer = this.typesFactory.createJvmOperation();
-		clearer.setVisibility(JvmVisibility.PROTECTED);
-		final JvmTypeParameter typeParameter = this.typesFactory.createJvmTypeParameter();
-		typeParameter.setName("S"); //$NON-NLS-1$
-		final JvmTypeConstraint constraint1 = this.typesFactory.createJvmUpperBound();
-		constraint1.setTypeReference(this.typeReferences.getTypeForName(Capacity.class, target));
-		typeParameter.getConstraints().add(constraint1);
-		typeParameter.setDeclarator(clearer);
-		clearer.getTypeParameters().add(typeParameter);
-		final JvmTypeReference returnType = this.typeReferences.createTypeRef(typeParameter);
-		clearer.setReturnType(cloneWithTypeParametersAndProxies(returnType, clearer));
-		clearer.setSimpleName("clearSkill"); //$NON-NLS-1$
-
-		target.getMembers().add(clearer);
-
-		final JvmFormalParameter capacityParameter = this.typesFactory.createJvmFormalParameter();
-		capacityParameter.setName("capacity"); //$NON-NLS-1$
-		final JvmTypeReference capacityParameterType = this.typeReferences.getTypeForName(Class.class, target, returnType);
-		capacityParameter.setParameterType(this.typeBuilder.cloneWithProxies(capacityParameterType));
-		clearer.getParameters().add(capacityParameter);
-
-		setBody(clearer, (it) -> {
-			for (final String capacityId : usedCapacities) {
-				it.append("this."); //$NON-NLS-1$
-				it.append(Utils.createNameForHiddenCapacityImplementationAttribute(capacityId));
-				it.append(" = null;"); //$NON-NLS-1$
-				it.newLine();
-			}
-			it.append("return super.clearSkill(capacity);"); //$NON-NLS-1$
-		});
-
-		appendGeneratedAnnotation(clearer, getContext(target));
-		addAnnotationSafe(clearer, Override.class);
-	}
-
-	private void appendSetSkillOperation(Set<String> usedCapacities, JvmGenericType target) {
-		final JvmOperation setter = this.typesFactory.createJvmOperation();
-		setter.setVisibility(JvmVisibility.PROTECTED);
-		final JvmTypeParameter typeParameter = this.typesFactory.createJvmTypeParameter();
-		typeParameter.setName("S"); //$NON-NLS-1$
-		final JvmTypeConstraint constraint1 = this.typesFactory.createJvmUpperBound();
-		constraint1.setTypeReference(this.typeReferences.getTypeForName(Skill.class, target));
-		typeParameter.getConstraints().add(constraint1);
-		typeParameter.setDeclarator(setter);
-		setter.getTypeParameters().add(typeParameter);
-		final JvmTypeReference returnType = this.typeReferences.createTypeRef(typeParameter);
-		setter.setReturnType(cloneWithTypeParametersAndProxies(returnType, setter));
-		setter.setSimpleName(Utils.HIDDEN_MEMBER_CHARACTER + "setSkill"); //$NON-NLS-1$
-
-		target.getMembers().add(setter);
-
-		final JvmFormalParameter skillParameter = this.typesFactory.createJvmFormalParameter();
-		skillParameter.setName("skill"); //$NON-NLS-1$
-		skillParameter.setParameterType(cloneWithTypeParametersAndProxies(returnType, setter));
-		setter.getParameters().add(skillParameter);
-
-		final JvmFormalParameter capacityParameter = this.typesFactory.createJvmFormalParameter();
-		capacityParameter.setName("capacities"); //$NON-NLS-1$
-		final JvmTypeReference constraint2 = this.typeReferences.wildCardExtends(
-				this.typeReferences.getTypeForName(Capacity.class, target));
-		final JvmTypeReference capacityParameterType = this.typeReferences.createArrayType(
-				this.typeReferences.getTypeForName(Class.class, target, constraint2));
-		capacityParameter.setParameterType(this.typeBuilder.cloneWithProxies(capacityParameterType));
-		setter.getParameters().add(capacityParameter);
-		setter.setVarArgs(true);
-
-		setBody(setter, (it) -> {
-			for (final String capacityId : usedCapacities) {
-				it.append("this."); //$NON-NLS-1$
-				it.append(Utils.createNameForHiddenCapacityImplementationAttribute(capacityId));
-				it.append(" = null;"); //$NON-NLS-1$
-				it.newLine();
-			}
-			it.append("return super.").append(Utils.HIDDEN_MEMBER_CHARACTER); //$NON-NLS-1$
-			it.append("setSkill(skill, capacities);"); //$NON-NLS-1$
-		});
-
-		appendGeneratedAnnotation(setter, getContext(target));
-		addAnnotationSafe(setter, Override.class);
 	}
 
 	/** Generate the code for the given SARL members in a agent-oriented container.

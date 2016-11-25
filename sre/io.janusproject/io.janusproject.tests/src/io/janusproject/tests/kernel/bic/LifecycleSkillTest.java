@@ -47,7 +47,10 @@ import io.janusproject.tests.testutils.AbstractJanusTest;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
+import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
+import io.sarl.lang.core.Skill;
 import io.sarl.tests.api.Nullable;
 
 /**
@@ -78,8 +81,8 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 		Agent agent = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null) {
 			@SuppressWarnings("synthetic-access")
 			@Override
-			protected <S extends io.sarl.lang.core.Capacity> S getSkill(java.lang.Class<S> capacity) {
-				return capacity.cast(LifecycleSkillTest.this.eventBus);
+			protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+				return new ClearableReference<>(LifecycleSkillTest.this.eventBus);
 			}
 
 			@SuppressWarnings("synthetic-access")

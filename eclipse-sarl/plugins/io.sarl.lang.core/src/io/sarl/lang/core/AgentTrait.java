@@ -88,35 +88,50 @@ abstract class AgentTrait extends AgentProtectedAPIObject {
 
 	@Override
 	@Pure
-	protected <S extends Capacity> S getSkill(Class<S> capacity) {
+	protected final <S extends Capacity> S getSkill(Class<S> capacity) {
+		assert capacity != null;
+		return $castSkill(capacity, $getSkill(capacity));
+	}
+
+	/** Cast the skill reference to the given capacity type.
+	 *
+	 * @param <S> the expected capacity type.
+	 * @param capacity the expected capacity type.
+	 * @param skillReference the skill reference.
+	 * @return the skill casted to the given capacity.
+	 */
+	@Pure
+	protected <S extends Capacity> S $castSkill(Class<S> capacity, ClearableReference<Skill> skillReference) {
+		final S skill = capacity.cast(skillReference.get());
+		if (skill == null) {
+			throw new UnimplementedCapacityException(capacity, getOwner().getID());
+		}
+		return skill;
+	}
+
+	@Override
+	protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 		final Agent owner = getOwner();
 		if (owner == null) {
 			return null;
 		}
-		return owner.getSkill(capacity);
+		return owner.$getSkill(capacity);
 	}
 
 	@Override
-	@Inline("$setSkill($2, $1)")
+	@Inline("setSkill($2, $1)")
 	protected <S extends Skill> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
 		setSkill(skill, capacity);
 	}
 
 	@Override
 	@SafeVarargs
-	@Inline("$setSkill($1, $2)")
 	protected final <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities) {
-		return $setSkill(skill, capacities);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-    protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... capacities) {
 		final Agent owner = getOwner();
 		if (owner == null) {
 			return skill;
 		}
-		return owner.$setSkill(skill, capacities);
+		return owner.setSkill(skill, capacities);
 	}
 
 	@Override

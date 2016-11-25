@@ -186,7 +186,6 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * This function enables logging and has no timeout for the end of the run.
 	 * 
 	 * @param type - the type of the agent to launch at start-up.
-	 * @param enableLogging - indicates if the logging is enable or not.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
 	protected void runJanus(Class<? extends TestingAgent> type) throws Exception {
