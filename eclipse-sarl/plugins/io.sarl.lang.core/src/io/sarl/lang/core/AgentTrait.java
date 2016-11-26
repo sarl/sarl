@@ -102,11 +102,13 @@ abstract class AgentTrait extends AgentProtectedAPIObject {
 	 */
 	@Pure
 	protected <S extends Capacity> S $castSkill(Class<S> capacity, ClearableReference<Skill> skillReference) {
-		final S skill = capacity.cast(skillReference.get());
-		if (skill == null) {
-			throw new UnimplementedCapacityException(capacity, getOwner().getID());
+		if (skillReference != null) {
+			final S skill = capacity.cast(skillReference.get());
+			if (skill != null) {
+				return skill;
+			}
 		}
-		return skill;
+		throw new UnimplementedCapacityException(capacity, getOwner().getID());
 	}
 
 	@Override
