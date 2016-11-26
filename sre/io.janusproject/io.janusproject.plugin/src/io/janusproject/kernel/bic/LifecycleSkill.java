@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.services.spawn.SpawnService;
 
+import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Lifecycle;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
@@ -64,6 +65,12 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 			installationOrder = installationOrder(this);
 		}
 		return installationOrder;
+	}
+
+	@Override
+	public UUID spawn(Class<? extends Agent> agentType, Object... params) {
+		return this.spawnService.spawn(getSkill(DefaultContextInteractions.class).getDefaultContext(),
+				null, agentType, params);
 	}
 
 	@Override

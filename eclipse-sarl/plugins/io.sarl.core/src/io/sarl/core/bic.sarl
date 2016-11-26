@@ -268,6 +268,19 @@ capacity Behaviors {
 capacity Lifecycle {
 
 	/**
+	 * Spawns a new Agent inside the default context of this agent.
+	 * This action must automatically register the newly created agent
+	 * within the default space of the context.
+	 *
+	 * @param agentType the type of the agent to spawn.
+	 * @param params the arguments to pass in the initialization event to the spawned agent.
+	 * @return the identifier of the spawned agent.
+	 * @fires AgentSpawned in DefaultSpace
+	 * @since 0.5
+	 */
+	def spawn(agentType : Class<? extends Agent>, params : Object*) : UUID fires AgentSpawned
+
+	/**
 	 * Spawns a new member agent in the parent's context (parentID).
 	 *
 	 * @param agentClass the type of the agent to spawn.

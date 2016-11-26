@@ -38,12 +38,16 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import io.janusproject.kernel.bic.AsynchronousAgentKillingEvent;
+import io.janusproject.kernel.bic.DefaultContextInteractionsSkill;
+import io.janusproject.kernel.bic.InternalEventBusCapacity;
 import io.janusproject.kernel.bic.InternalEventBusSkill;
 import io.janusproject.kernel.bic.LifecycleSkill;
 import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 
+import io.sarl.core.DefaultContextInteractions;
+import io.sarl.core.Lifecycle;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
@@ -72,17 +76,30 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 	@Mock
 	private InternalEventBusSkill eventBus;
 
+	@Mock
+	private AgentContext context;
+
+	@Mock
+	private DefaultContextInteractionsSkill defaultContextInteractions;
+
 	@InjectMocks
 	private LifecycleSkill skill;
 
 	@Before
 	public void setUp() throws Exception {
 		this.agentId = UUID.randomUUID();
+		Mockito.doReturn(this.context).when(this.defaultContextInteractions).getDefaultContext();
 		Agent agent = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null) {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
-				return new ClearableReference<>(LifecycleSkillTest.this.eventBus);
+				if (InternalEventBusCapacity.class.equals(capacity)) {
+					return new ClearableReference<>(LifecycleSkillTest.this.eventBus);
+				}
+				if (DefaultContextInteractions.class.equals(capacity)) {
+					return new ClearableReference<>(LifecycleSkillTest.this.defaultContextInteractions);
+				}
+				return null;
 			}
 
 			@SuppressWarnings("synthetic-access")
@@ -95,17 +112,32 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void spawnInContext() {
+	public void spawn() throws Exception {
 		Class type = Agent.class;
-		AgentContext context = mock(AgentContext.class);
-		this.skill.spawnInContext(type, context, 1, "String"); //$NON-NLS-1$
+		this.skill.spawn(type, 1, "String"); //$NON-NLS-1$
 		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
 		ArgumentCaptor<UUID> argument2 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Class> argument3 = ArgumentCaptor.forClass(Class.class);
 		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
 		verify(this.spawnService, times(1)).spawn(argument1.capture(), argument2.capture(), argument3.capture(),
 				argument4.capture());
-		assertSame(context, argument1.getValue());
+		assertSame(this.context, argument1.getValue());
+		assertNull(argument2.getValue());
+		assertEquals(Agent.class, argument3.getValue());
+		assertArrayEquals(new Object[] { 1, "String" }, argument4.getAllValues().toArray()); //$NON-NLS-1$
+	}
+
+	@Test
+	public void spawnInContext() {
+		Class type = Agent.class;
+		this.skill.spawnInContext(type, this.context, 1, "String"); //$NON-NLS-1$
+		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
+		ArgumentCaptor<UUID> argument2 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Class> argument3 = ArgumentCaptor.forClass(Class.class);
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
+		verify(this.spawnService, times(1)).spawn(argument1.capture(), argument2.capture(), argument3.capture(),
+				argument4.capture());
+		assertSame(this.context, argument1.getValue());
 		assertNull(argument2.getValue());
 		assertEquals(Agent.class, argument3.getValue());
 		assertArrayEquals(new Object[] { 1, "String" }, argument4.getAllValues().toArray()); //$NON-NLS-1$
@@ -114,15 +146,14 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 	@Test
 	public void spawnInContextWithID() {
 		Class type = Agent.class;
-		AgentContext context = mock(AgentContext.class);
-		this.skill.spawnInContextWithID(type, this.agentId, context, 1, "String"); //$NON-NLS-1$
+		this.skill.spawnInContextWithID(type, this.agentId, this.context, 1, "String"); //$NON-NLS-1$
 		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
 		ArgumentCaptor<UUID> argument2 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Class> argument3 = ArgumentCaptor.forClass(Class.class);
 		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
 		verify(this.spawnService, times(1)).spawn(argument1.capture(), argument2.capture(), argument3.capture(),
 				argument4.capture());
-		assertSame(context, argument1.getValue());
+		assertSame(this.context, argument1.getValue());
 		assertSame(this.agentId, argument2.getValue());
 		assertEquals(Agent.class, argument3.getValue());
 		assertArrayEquals(new Object[] { 1, "String" }, argument4.getAllValues().toArray()); //$NON-NLS-1$
