@@ -535,7 +535,6 @@ capacity DefaultContextInteractions {
 	@Pure
 	def isDefaultContext(contextID : UUID) : boolean
 
-	//Agent Creation
 	/**
 	 * Spawns a new Agent inside the default context of this agent.
 	 * This action must automatically register the newly created agent
@@ -545,8 +544,11 @@ capacity DefaultContextInteractions {
 	 * @param params the arguments to pass in the initialization event to the spawned agent.
 	 * @return the identifier of the spawned agent.
 	 * @fires AgentSpawned in DefaultSpace
+	 * @deprecated See the {@link Lifecycle} capacity.
 	 */
+	@Deprecated
 	def spawn(agentType : Class<? extends Agent>, params : Object*) : UUID fires AgentSpawned
+
 }
 
 /**

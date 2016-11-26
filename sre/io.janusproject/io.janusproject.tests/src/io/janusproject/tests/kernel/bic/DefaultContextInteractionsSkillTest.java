@@ -173,6 +173,7 @@ public class DefaultContextInteractionsSkillTest extends AbstractJanusTest {
 	}
 
 	@Test
+	@Deprecated
 	public void spawn() throws Exception {
 		this.reflect.invoke(this.skill, "install");
 		this.skill.spawn(Agent.class, "a", "b", "c"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$

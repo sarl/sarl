@@ -132,7 +132,11 @@ public class DefaultContextInteractionsSkill extends BuiltinSkill implements Def
 		this.emit(event, Scopes.addresses(recAddr));
 	}
 
+	/** {@inheritDoc}.
+	 * @deprecated See {@link Lifecycle} capacity.
+	 */
 	@Override
+	@Deprecated
 	public UUID spawn(Class<? extends Agent> agentType, Object... params) {
 		return getSkill(Lifecycle.class).spawnInContext(agentType, this.parentContext, params);
 	}
