@@ -21,8 +21,6 @@
 
 package io.janusproject.kernel.bic;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -88,11 +86,6 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 	private final Address agentAddressInInnerDefaultSpace;
 
 	/**
-	 * Collection of objects that are listening the event bus, except the owner of this skill.
-	 */
-	private List<Object> eventListeners;
-
-	/**
 	 * @param agent - reference to the owner of this skill.
 	 * @param addressInInnerDefaultSpace - address of the owner of this skill in its inner default space.
 	 */
@@ -134,35 +127,17 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 
 	@Override
 	protected void uninstall() {
-		this.eventDispatcher.unregister(getOwner());
-		// TODO: dispose eventBus => remove any registered objects, but without a list in this skill
-		final List<Object> list = this.eventListeners;
-		this.eventListeners = null;
-		if (list != null) {
-			for (final Object o : list) {
-				this.eventDispatcher.unregister(o);
-			}
-		}
+		this.eventDispatcher.unregisterAll();
 	}
 
 	@Override
 	public void registerEventListener(Object listener) {
 		this.eventDispatcher.register(listener);
-		if (this.eventListeners == null) {
-			this.eventListeners = new ArrayList<>();
-		}
-		this.eventListeners.add(listener);
 	}
 
 	@Override
 	public void unregisterEventListener(Object listener) {
 		this.eventDispatcher.unregister(listener);
-		if (this.eventListeners != null) {
-			this.eventListeners.remove(listener);
-			if (this.eventListeners.isEmpty()) {
-				this.eventListeners = null;
-			}
-		}
 	}
 
 	@Override

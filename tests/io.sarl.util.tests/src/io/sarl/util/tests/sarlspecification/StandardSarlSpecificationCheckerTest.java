@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sarlspecification.tests;
+package io.sarl.util.tests.sarlspecification;
 
 import static io.sarl.tests.api.AbstractSarlTest.assertNaN;
 import static io.sarl.tests.api.AbstractSarlTest.assertStrictlyNegative;

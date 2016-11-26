@@ -151,6 +151,17 @@ public class AgentInternalEventsDispatcherTest extends AbstractSarlTest {
 		Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
 	}
 
+	@Test
+	public void unregisterAll() {
+		this.dispatcher.register(new MyAgent());
+		this.dispatcher.register(new MyAgent2());
+		this.dispatcher.register(new MyAgent2());
+		this.dispatcher.unregisterAll();
+		this.dispatcher.immediateDispatch(new Event() { });
+		ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+		Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
+	}
+
 	public static class MyEvent extends Event {
 		public final int n;
 		public MyEvent(int n) {
@@ -177,6 +188,30 @@ public class AgentInternalEventsDispatcherTest extends AbstractSarlTest {
 			if (event.n > 0) {
 				runners.add(() -> $perception$guard$callback2(event, event));
 			}
+		}
+
+		private void $perception$guard$callback2(MyEvent occurrence, MyEvent it) {
+		}
+
+	}
+
+	public static class MyAgent2 extends Agent {
+
+		public MyAgent2() {
+			super(null, UUID.randomUUID(), UUID.randomUUID());
+		}
+
+		@PerceptGuardEvaluator
+		private void $perception$guard$evaluator1(Event event, Collection<Runnable> runners) {
+			runners.add(() -> $perception$guard$callback1(event, event));
+		}
+
+		private void $perception$guard$callback1(Event occurrence, Event it) {
+		}
+
+		@PerceptGuardEvaluator
+		private void $perception$guard$evaluator2(MyEvent event, Collection<Runnable> runners) {
+			runners.add(() -> $perception$guard$callback2(event, event));
 		}
 
 		private void $perception$guard$callback2(MyEvent occurrence, MyEvent it) {

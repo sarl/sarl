@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.sarl.util;bundle-version="0.5.0",
  io.sarl.tests.api;bundle-version="0.5.0",
  org.mockito.mockito-core;bundle-version="2.0.111"
-Export-Package: io.sarl.eventdispatching.tests,
- io.sarl.sarlspecification.tests,
- io.sarl.util.tests
+Export-Package: io.sarl.util.tests.eventdispatching,
+ io.sarl.util.tests.sarlspecification,
+ io.sarl.util.tests.util
 

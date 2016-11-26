@@ -122,6 +122,17 @@ public class AgentInternalEventsDispatcher {
 	}
 
 	/**
+	 * Unregisters all {@code PerceptGuardEvaluator} methods on all registered objects.
+	 *
+	 * @throws IllegalArgumentException if the object was not previously registered.
+	 */
+	public void unregisterAll() {
+		synchronized (this.behaviorGuardEvaluatorRegistry) {
+			this.behaviorGuardEvaluatorRegistry.unregisterAll();
+		}
+	}
+
+	/**
 	 * Posts an event to all registered {@code BehaviorGuardEvaluator}, the dispatch of this event will be done synchronously.
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
