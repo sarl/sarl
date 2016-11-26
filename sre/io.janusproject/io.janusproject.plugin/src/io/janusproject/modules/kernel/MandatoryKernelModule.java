@@ -43,6 +43,7 @@ import io.janusproject.kernel.space.RestrictedAccessEventSpaceSpecificationImpl;
 import io.janusproject.services.GoogleServiceManager;
 import io.janusproject.services.IServiceManager;
 import io.janusproject.services.contextspace.ContextSpaceService;
+import io.janusproject.services.executor.ExecutorService;
 
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
@@ -88,7 +89,7 @@ public class MandatoryKernelModule extends AbstractModule {
 
 	@Provides
 	private static AgentInternalEventsDispatcher createAgentInternalEventsDispatcher(Injector injector) {
-		final AgentInternalEventsDispatcher aeb = new AgentInternalEventsDispatcher();
+		final AgentInternalEventsDispatcher aeb = new AgentInternalEventsDispatcher(injector.getInstance(ExecutorService.class));
 		// to be able to inject the ExecutorService and SubscriberFindingStrategy
 		injector.injectMembers(aeb);
 		return aeb;

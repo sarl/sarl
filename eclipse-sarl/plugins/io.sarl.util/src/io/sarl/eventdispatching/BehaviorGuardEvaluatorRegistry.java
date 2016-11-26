@@ -201,7 +201,7 @@ public class BehaviorGuardEvaluatorRegistry {
 		for (final Method method : getAnnotatedMethods(clazz)) {
 			final Class<?>[] parameterTypes = method.getParameterTypes();
 			final Class<? extends Event> eventType = (Class<? extends Event>) parameterTypes[0];
-			methodsInListener.put(eventType, BehaviorGuardEvaluator.create(listener, method));
+			methodsInListener.put(eventType, new BehaviorGuardEvaluator(listener, method));
 		}
 		return methodsInListener;
 	}

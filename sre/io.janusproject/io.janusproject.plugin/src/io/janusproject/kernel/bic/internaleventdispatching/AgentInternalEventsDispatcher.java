@@ -85,13 +85,16 @@ public class AgentInternalEventsDispatcher {
 	/**
 	 * The executor used to execute behavior methods in dedicated thread.
 	 */
-	@Inject
-	private ExecutorService executor;
+	private final ExecutorService executor;
 
 	/**
 	 * Instantiates a dispatcher.
+	 *
+	 * @param executor the executor service.
 	 */
-	public AgentInternalEventsDispatcher() {
+	@Inject
+	public AgentInternalEventsDispatcher(ExecutorService executor) {
+		this.executor = executor;
 		this.behaviorGuardEvaluatorRegistry = new BehaviorGuardEvaluatorRegistry();
 	}
 
