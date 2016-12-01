@@ -1682,7 +1682,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				field.setTransient(true);
 				final JvmType clearableReferenceType = this.typeReferences.findDeclaredType(ClearableReference.class, container);
 				final JvmTypeReference skillClearableReference = this.typeReferences.createTypeRef(
-						clearableReferenceType, this.typeBuilder.cloneWithProxies(capacityType));
+						clearableReferenceType,
+						this.typeReferences.createTypeRef(this.typeReferences.findDeclaredType(Skill.class, container)));
 				field.setType(skillClearableReference);
 
 				this.associator.associatePrimary(source, field);
