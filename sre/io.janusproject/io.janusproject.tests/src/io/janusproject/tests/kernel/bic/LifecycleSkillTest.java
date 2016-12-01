@@ -112,15 +112,17 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void spawn() throws Exception {
+	public void spawn_1() throws Exception {
 		Class type = Agent.class;
 		this.skill.spawn(type, 1, "String"); //$NON-NLS-1$
+		ArgumentCaptor<Integer> argument0 = ArgumentCaptor.forClass(Integer.class);
 		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
 		ArgumentCaptor<UUID> argument2 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Class> argument3 = ArgumentCaptor.forClass(Class.class);
 		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
-		verify(this.spawnService, times(1)).spawn(argument1.capture(), argument2.capture(), argument3.capture(),
-				argument4.capture());
+		verify(this.spawnService, times(1)).spawn(argument0.capture(), argument1.capture(), argument2.capture(),
+				argument3.capture(), argument4.capture());
+		assertEquals(1, argument0.getValue());
 		assertSame(this.context, argument1.getValue());
 		assertNull(argument2.getValue());
 		assertEquals(Agent.class, argument3.getValue());
@@ -128,15 +130,17 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void spawnInContext() {
+	public void spawnInContext_1() {
 		Class type = Agent.class;
 		this.skill.spawnInContext(type, this.context, 1, "String"); //$NON-NLS-1$
+		ArgumentCaptor<Integer> argument0 = ArgumentCaptor.forClass(Integer.class);
 		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
 		ArgumentCaptor<UUID> argument2 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Class> argument3 = ArgumentCaptor.forClass(Class.class);
 		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
-		verify(this.spawnService, times(1)).spawn(argument1.capture(), argument2.capture(), argument3.capture(),
-				argument4.capture());
+		verify(this.spawnService, times(1)).spawn(argument0.capture(), argument1.capture(), argument2.capture(),
+				argument3.capture(), argument4.capture());
+		assertEquals(1, argument0.getValue());
 		assertSame(this.context, argument1.getValue());
 		assertNull(argument2.getValue());
 		assertEquals(Agent.class, argument3.getValue());
@@ -144,15 +148,17 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void spawnInContextWithID() {
+	public void spawnInContextWithID_1() {
 		Class type = Agent.class;
 		this.skill.spawnInContextWithID(type, this.agentId, this.context, 1, "String"); //$NON-NLS-1$
+		ArgumentCaptor<Integer> argument0 = ArgumentCaptor.forClass(Integer.class);
 		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
 		ArgumentCaptor<UUID> argument2 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Class> argument3 = ArgumentCaptor.forClass(Class.class);
 		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
-		verify(this.spawnService, times(1)).spawn(argument1.capture(), argument2.capture(), argument3.capture(),
-				argument4.capture());
+		verify(this.spawnService, times(1)).spawn(argument0.capture(), argument1.capture(), argument2.capture(),
+				argument3.capture(), argument4.capture());
+		assertEquals(1, argument0.getValue());
 		assertSame(this.context, argument1.getValue());
 		assertSame(this.agentId, argument2.getValue());
 		assertEquals(Agent.class, argument3.getValue());

@@ -29,6 +29,8 @@ import static org.mockito.Mockito.when;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import com.google.common.collect.ImmutableMultimap;
@@ -107,7 +109,7 @@ public class KernelTest extends AbstractJanusTest {
 		when(this.spawnService.isRunning()).thenReturn(true);
 		when(this.spawnService.state()).thenReturn(State.RUNNING);
 		when(this.spawnService.spawn(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-				ArgumentMatchers.any())).thenReturn(this.uuid);
+				ArgumentMatchers.any())).thenReturn(Collections.singletonList(this.uuid));
 		when(this.executorService.isRunning()).thenReturn(true);
 		when(this.executorService.state()).thenReturn(State.RUNNING);
 		when(this.contextService.isRunning()).thenReturn(true);
@@ -126,16 +128,55 @@ public class KernelTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void spawn() throws Exception {
+	public void spawnClassObjectArray() throws Exception {
 		this.reflect.set(this.kernel, "janusContext", this.agentContext);
 		//
 		UUID id = this.kernel.spawn(Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
 		assertSame(this.uuid, id);
+		ArgumentCaptor<Integer> argument0 = ArgumentCaptor.forClass(Integer.class);
 		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
 		ArgumentCaptor<UUID> argument2 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Class> argument3 = ArgumentCaptor.forClass(Class.class);
 		ArgumentCaptor<String> argument4 = ArgumentCaptor.forClass(String.class);
-		verify(this.spawnService).spawn(argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
+		verify(this.spawnService).spawn(argument0.capture(), argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
+		assertEquals(1, argument0.getValue());
+		assertSame(this.agentContext, argument1.getValue());
+		assertNull(argument2.getValue());
+		assertEquals(Agent.class, argument3.getValue());
+		assertArrayEquals(new String[] { "a", "b" }, argument4.getAllValues().toArray()); //$NON-NLS-1$//$NON-NLS-2$
+	}
+
+	@Test
+	public void spawnIntClassObjectArray_1() throws Exception {
+		this.reflect.set(this.kernel, "janusContext", this.agentContext);
+		//
+		List<UUID> ids = this.kernel.spawn(1, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
+		assertContains(ids, this.uuid);
+		ArgumentCaptor<Integer> argument0 = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
+		ArgumentCaptor<UUID> argument2 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Class> argument3 = ArgumentCaptor.forClass(Class.class);
+		ArgumentCaptor<String> argument4 = ArgumentCaptor.forClass(String.class);
+		verify(this.spawnService).spawn(argument0.capture(), argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
+		assertEquals(1, argument0.getValue());
+		assertSame(this.agentContext, argument1.getValue());
+		assertNull(argument2.getValue());
+		assertEquals(Agent.class, argument3.getValue());
+		assertArrayEquals(new String[] { "a", "b" }, argument4.getAllValues().toArray()); //$NON-NLS-1$//$NON-NLS-2$
+	}
+
+	@Test
+	public void spawnIntClassObjectArray_2() throws Exception {
+		this.reflect.set(this.kernel, "janusContext", this.agentContext);
+		//
+		this.kernel.spawn(2, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
+		ArgumentCaptor<Integer> argument0 = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
+		ArgumentCaptor<UUID> argument2 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Class> argument3 = ArgumentCaptor.forClass(Class.class);
+		ArgumentCaptor<String> argument4 = ArgumentCaptor.forClass(String.class);
+		verify(this.spawnService).spawn(argument0.capture(), argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
+		assertEquals(2, argument0.getValue());
 		assertSame(this.agentContext, argument1.getValue());
 		assertNull(argument2.getValue());
 		assertEquals(Agent.class, argument3.getValue());
@@ -150,11 +191,13 @@ public class KernelTest extends AbstractJanusTest {
 		UUID id = this.kernel.spawn(aId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
 		assertSame(this.uuid, id);
 		assertEquals(aId, id);
+		ArgumentCaptor<Integer> argument0 = ArgumentCaptor.forClass(Integer.class);
 		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
 		ArgumentCaptor<UUID> argument2 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Class> argument3 = ArgumentCaptor.forClass(Class.class);
 		ArgumentCaptor<String> argument4 = ArgumentCaptor.forClass(String.class);
-		verify(this.spawnService).spawn(argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
+		verify(this.spawnService).spawn(argument0.capture(), argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
+		assertEquals(1, argument0.getValue());
 		assertSame(this.agentContext, argument1.getValue());
 		assertSame(aId, argument2.getValue());
 		assertEquals(Agent.class, argument3.getValue());

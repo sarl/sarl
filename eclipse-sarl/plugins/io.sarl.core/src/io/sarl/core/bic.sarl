@@ -21,6 +21,7 @@
 package io.sarl.core
 
 import java.text.MessageFormat
+import java.util.Collection
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
@@ -281,6 +282,21 @@ capacity Lifecycle {
 	def spawn(agentType : Class<? extends Agent>, params : Object*) : UUID fires AgentSpawned
 
 	/**
+	 * Spawns a group of agents inside the default context of this agent.
+	 * This action must automatically register the newly created agents
+	 * within the default space of the context.
+	 *
+	 * @param nbAgents the number of agents to spawn.
+	 * @param agentType the type of the agents to spawn.
+	 * @param params the arguments to pass in the initialization event to the spawned agents. All the agents
+	 *     will receive the same initialization parameters.
+	 * @return the identifiers of the spawned agents.
+	 * @fires AgentSpawned in DefaultSpace
+	 * @since 0.5
+	 */
+	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) : Collection<UUID> fires AgentSpawned
+
+	/**
 	 * Spawns a new member agent in the parent's context (parentID).
 	 *
 	 * @param agentClass the type of the agent to spawn.
@@ -291,6 +307,20 @@ capacity Lifecycle {
 	 */
 	def spawnInContext(agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) : UUID fires AgentSpawned
 	
+	/**
+	 * Spawns a group of agents in the parent's context (parentID).
+	 *
+	 * @param nbAgents the number of agents to spawn.
+	 * @param agentClass the type of the agents to spawn.
+	 * @param context the context in which the agents must be spawned.
+	 * @param params the arguments to pass to the initialization event that will be sent to the spawned agents. All the agents
+	 *     will receive the same initialization parameters.
+	 * @return the identifiers of the spawned agents.
+	 * @fires AgentSpawned inside the default context of the parent. The source of the event is this agent.
+	 * @since 0.5
+	 */
+	def spawnInContext(nbAgents : int, agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) : Collection<UUID> fires AgentSpawned
+
 	/**
 	 * Spawns a new member agent in the parent's context (parentID).
 	 *

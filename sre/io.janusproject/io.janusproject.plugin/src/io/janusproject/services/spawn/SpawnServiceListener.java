@@ -22,6 +22,7 @@
 package io.janusproject.services.spawn;
 
 import java.util.EventListener;
+import java.util.List;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
@@ -41,10 +42,10 @@ public interface SpawnServiceListener extends EventListener {
 	 * Invoked when the agent is spawned.
 	 *
 	 * @param parent - the context in which the agent was created.
-	 * @param agentID - the agent.
+	 * @param agents - the agents.
 	 * @param initializationParameters - list of parameters that were passed to the agent.
 	 */
-	void agentSpawned(AgentContext parent, Agent agentID, Object[] initializationParameters);
+	void agentSpawned(AgentContext parent, List<Agent> agents, Object[] initializationParameters);
 
 	/**
 	 * Invoked when the agent is destroyed.

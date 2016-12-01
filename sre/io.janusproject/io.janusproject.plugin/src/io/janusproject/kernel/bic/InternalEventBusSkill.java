@@ -213,7 +213,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		public void receiveEvent(Event event) {
 			assert (!(event instanceof Initialize)) && (!(event instanceof Destroy))
 					&& (!(event instanceof AsynchronousAgentKillingEvent)) : "Unsupported type of event: " + event; //$NON-NLS-1$
-			if (event instanceof AgentSpawned && this.aid.equals(((AgentSpawned) event).agentID)) {
+			if (event instanceof AgentSpawned && ((AgentSpawned) event).agentIdentifiers.contains(this.aid)) {
 				// This permits to ensure that the killing event
 				// is correctly treated when fired from the initialization
 				// handler.

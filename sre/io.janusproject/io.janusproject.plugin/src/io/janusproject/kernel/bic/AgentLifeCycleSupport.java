@@ -84,9 +84,9 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 	}
 
 	@Override
-	public void agentSpawned(AgentContext parent, Agent agent, Object[] initializationParameters) {
+	public void agentSpawned(AgentContext parent, List<Agent> agents, Object[] initializationParameters) {
 		// Install the skills
-		installSkills(agent);
+		installSkills(agents.get(0));
 		// Notify the agent about its creation.
 		final Initialize init = new Initialize();
 		init.parameters = initializationParameters;

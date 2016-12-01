@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -37,14 +38,6 @@ import java.util.UUID;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.janusproject.kernel.services.jdk.spawn.StandardSpawnService;
-import io.janusproject.services.contextspace.ContextSpaceService;
-import io.janusproject.services.spawn.KernelAgentSpawnListener;
-import io.janusproject.services.spawn.SpawnService;
-import io.janusproject.services.spawn.SpawnServiceListener;
-import io.janusproject.tests.testutils.AbstractDependentServiceTest;
-import io.janusproject.tests.testutils.AvoidServiceStartForTest;
-import io.janusproject.tests.testutils.StartServiceForTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -53,6 +46,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.Times;
+
+import io.janusproject.kernel.services.jdk.spawn.StandardSpawnService;
+import io.janusproject.services.contextspace.ContextSpaceService;
+import io.janusproject.services.spawn.KernelAgentSpawnListener;
+import io.janusproject.services.spawn.SpawnService;
+import io.janusproject.services.spawn.SpawnServiceListener;
+import io.janusproject.tests.testutils.AbstractDependentServiceTest;
+import io.janusproject.tests.testutils.AvoidServiceStartForTest;
+import io.janusproject.tests.testutils.StartServiceForTest;
 
 import io.sarl.core.AgentKilled;
 import io.sarl.core.AgentSpawned;
@@ -174,69 +176,73 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	}
 
 	@Test
-	public void spawn_notNull() throws Exception {
+	public void spawn_notNull_1() throws Exception {
 		UUID aId = UUID.fromString(this.agentId.toString());
-		UUID agentId = this.service.spawn(this.agentContext, aId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
+		List<UUID> agentIds = this.service.spawn(1, this.agentContext, aId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
 		//
-		assertEquals(aId, agentId);
-		assertNotNull(agentId);
+		assertNotNull(agentIds);
+		assertEquals(1, agentIds.size());
+		assertEquals(aId, agentIds.get(0));
 		Set<UUID> agents = this.service.getAgents();
 		assertEquals(1, agents.size());
-		assertTrue(agents.contains(agentId));
-		Agent spawnedAgent = (Agent) this.reflect.invoke(this.service, "getAgent", agentId);
+		assertTrue(agents.contains(agentIds.get(0)));
+		Agent spawnedAgent = (Agent) this.reflect.invoke(this.service, "getAgent", agentIds.get(0));
 		assertNotNull(spawnedAgent);
-		assertEquals(agentId, spawnedAgent.getID());
+		assertEquals(agentIds.get(0), spawnedAgent.getID());
 		assertEquals(this.agentContext.getID(), spawnedAgent.getParentID());
 		//
 		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
-		ArgumentCaptor<Agent> argument2 = ArgumentCaptor.forClass(Agent.class);
+		ArgumentCaptor<List<Agent>> argument2 = ArgumentCaptor.forClass(List.class);
 		ArgumentCaptor<Object[]> argument3 = ArgumentCaptor.forClass(Object[].class);
 		Mockito.verify(this.serviceListener, new Times(1)).agentSpawned(argument1.capture(), argument2.capture(),
 				argument3.capture());
 		assertSame(this.agentContext, argument1.getValue());
-		Agent ag = argument2.getValue();
-		assertNotNull(ag);
-		assertSame(agentId, ag.getID());
+		List<Agent> ags = argument2.getValue();
+		assertNotNull(ags);
+		assertEquals(1, ags.size());
+		assertSame(agentIds.get(0), ags.get(0).getID());
 		assertEquals("a", argument3.getValue()[0]); //$NON-NLS-1$
 		assertEquals("b", argument3.getValue()[1]); //$NON-NLS-1$
 		//
 		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.defaultSpace, new Times(1)).emit(argument4.capture());
 		assertTrue(argument4.getValue() instanceof AgentSpawned);
-		assertSame(agentId, ((AgentSpawned) argument4.getValue()).agentID);
-		assertEquals(ag.getClass().getName(), ((AgentSpawned) argument4.getValue()).agentType);
+		assertSame(agentIds.get(0), ((AgentSpawned) argument4.getValue()).agentID);
+		assertEquals(ags.get(0).getClass().getName(), ((AgentSpawned) argument4.getValue()).agentType);
 	}
 
 	@Test
-	public void spawn_null() throws Exception {
-		UUID agentId = this.service.spawn(this.agentContext, null, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
+	public void spawn_null_1() throws Exception {
+		List<UUID> agentIds = this.service.spawn(1, this.agentContext, null, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
 		//
-		assertNotNull(agentId);
+		assertNotNull(agentIds);
+		assertEquals(1, agentIds.size());
 		Set<UUID> agents = this.service.getAgents();
 		assertEquals(1, agents.size());
-		assertTrue(agents.contains(agentId));
-		Agent spawnedAgent = (Agent) this.reflect.invoke(this.service, "getAgent", agentId);
+		assertTrue(agents.contains(agentIds.get(0)));
+		Agent spawnedAgent = (Agent) this.reflect.invoke(this.service, "getAgent", agentIds.get(0));
 		assertNotNull(spawnedAgent);
-		assertEquals(agentId, spawnedAgent.getID());
+		assertEquals(agentIds.get(0), spawnedAgent.getID());
 		assertEquals(this.agentContext.getID(), spawnedAgent.getParentID());
 		//
 		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
-		ArgumentCaptor<Agent> argument2 = ArgumentCaptor.forClass(Agent.class);
+		ArgumentCaptor<List<Agent>> argument2 = ArgumentCaptor.forClass(List.class);
 		ArgumentCaptor<Object[]> argument3 = ArgumentCaptor.forClass(Object[].class);
 		Mockito.verify(this.serviceListener, new Times(1)).agentSpawned(argument1.capture(), argument2.capture(),
 				argument3.capture());
 		assertSame(this.agentContext, argument1.getValue());
-		Agent ag = argument2.getValue();
-		assertNotNull(ag);
-		assertSame(agentId, ag.getID());
+		List<Agent> ags = argument2.getValue();
+		assertNotNull(ags);
+		assertEquals(1, ags.size());
+		assertSame(agentIds.get(0), ags.get(0).getID());
 		assertEquals("a", argument3.getValue()[0]); //$NON-NLS-1$
 		assertEquals("b", argument3.getValue()[1]); //$NON-NLS-1$
 		//
 		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.defaultSpace, new Times(1)).emit(argument4.capture());
 		assertTrue(argument4.getValue() instanceof AgentSpawned);
-		assertSame(agentId, ((AgentSpawned) argument4.getValue()).agentID);
-		assertEquals(ag.getClass().getName(), ((AgentSpawned) argument4.getValue()).agentType);
+		assertSame(agentIds.get(0), ((AgentSpawned) argument4.getValue()).agentID);
+		assertEquals(ags.getClass().getName(), ((AgentSpawned) argument4.getValue()).agentType);
 	}
 
 	@AvoidServiceStartForTest
@@ -245,9 +251,9 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		Set<UUID> agIds = new HashSet<>();
 		Mockito.when(this.defaultSpace.getParticipants()).thenReturn(Collections3.synchronizedSet(agIds, agIds));
 		this.service.startAsync().awaitRunning();
-		UUID agentId = this.service.spawn(this.agentContext, this.agentId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
-		agIds.add(agentId);
-		Agent ag = (Agent) this.reflect.invoke(this.service, "getAgent", agentId);
+		List<UUID> agentIds = this.service.spawn(1, this.agentContext, this.agentId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
+		agIds.add(agentIds.get(0));
+		Agent ag = (Agent) this.reflect.invoke(this.service, "getAgent", agentIds.get(0));
 		assertNotNull(ag);
 		// Only the super agent is inside the inner context => super agent could be killed
 		assertTrue(this.service.canKillAgent(ag));
@@ -261,9 +267,9 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		Set<UUID> agIds = new HashSet<>();
 		Mockito.when(this.defaultSpace.getParticipants()).thenReturn(Collections3.synchronizedSet(agIds, agIds));
 		this.service.startAsync().awaitRunning();
-		UUID agentId = this.service.spawn(this.agentContext, this.agentId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
-		agIds.add(agentId);
-		Agent ag = (Agent) this.reflect.invoke(this.service, "getAgent", agentId);
+		List<UUID> agentIds = this.service.spawn(1, this.agentContext, this.agentId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
+		agIds.add(agentIds.get(0));
+		Agent ag = (Agent) this.reflect.invoke(this.service, "getAgent", agentIds.get(0));
 		assertNotNull(ag);
 		// One agent other than the super agent is inside the inner context => super agent could not be killed
 		assertFalse(this.service.canKillAgent(ag));
@@ -271,11 +277,11 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 
 	@Test
 	public void killAgent() throws Exception {
-		UUID agentId = this.service.spawn(this.agentContext, this.agentId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
-		Agent ag = (Agent) this.reflect.invoke(this.service, "getAgent", agentId);
+		List<UUID> agentIds = this.service.spawn(1, this.agentContext, this.agentId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
+		Agent ag = (Agent) this.reflect.invoke(this.service, "getAgent", agentIds.get(0));
 		assertNotNull(ag);
 		//
-		this.service.killAgent(agentId);
+		this.service.killAgent(agentIds.get(0));
 		//
 		Set<UUID> agents = this.service.getAgents();
 		assertTrue(agents.isEmpty());
@@ -287,7 +293,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.defaultSpace, new Times(2)).emit(argument5.capture());
 		assertTrue(argument5.getValue() instanceof AgentKilled);
-		assertEquals(agentId, ((AgentKilled) argument5.getValue()).agentID);
+		assertEquals(agentIds, ((AgentKilled) argument5.getValue()).agentID);
 		//
 		Mockito.verify(this.kernelListener, new Times(1)).kernelAgentDestroy();
 	}

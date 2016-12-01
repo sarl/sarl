@@ -22,6 +22,7 @@
 package io.janusproject.services.spawn;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.UUID;
 
 import io.janusproject.services.DependentService;
@@ -41,15 +42,17 @@ import io.sarl.lang.core.AgentContext;
 public interface SpawnService extends DependentService {
 
 	/**
-	 * Spawn an agent of the given type, and pass the parameters to its initialization function.
+	 * Spawn agents of the given type, and pass the parameters to its initialization function.
 	 *
-	 * @param parent - the parent entity that is creating the agent.
-	 * @param agentClazz - the type of the agent to spawn.
+	 * @param nbAgents the number of agents to spawn.
+	 * @param parent - the parent entity that is creating the agents.
+	 * @param agentClazz - the type of the agents to spawn.
 	 * @param agentId - the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
+	 *     If {@code nbAgents} is greater than 1, the agent identifier must be {@code null}.
 	 * @param params - the list of the parameters to pass to the agent initialization function.
-	 * @return the identifier of the agent, never <code>null</code>.
+	 * @return the identifiers of the agents, never <code>null</code>.
 	 */
-	UUID spawn(AgentContext parent, UUID agentId, Class<? extends Agent> agentClazz, Object... params);
+	List<UUID> spawn(int nbAgents, AgentContext parent, UUID agentId, Class<? extends Agent> agentClazz, Object... params);
 
 	/**
 	 * Kill the agent with the given identifier.

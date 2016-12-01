@@ -22,6 +22,7 @@
 package io.janusproject.kernel;
 
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -141,7 +142,23 @@ public class Kernel {
 	 * @return the identifier of the agent, never <code>null</code>.
 	 */
 	public UUID spawn(Class<? extends Agent> agent, Object... params) {
-		return this.spawnService.spawn(this.janusContext, null, agent, params);
+		final List<UUID> ids = this.spawnService.spawn(1, this.janusContext, null, agent, params);
+		if (ids.isEmpty()) {
+			return null;
+		}
+		return ids.get(0);
+	}
+
+	/**
+	 * Spawn agents of the given type, and pass the parameters to its initialization function.
+	 *
+	 * @param nbAgents - the number of agents to spawn.
+	 * @param agent - the type of the agents to spawn.
+	 * @param params - the list of the parameters to pass to the agent initialization function.
+	 * @return the identifiers of the agents, never <code>null</code>.
+	 */
+	public List<UUID> spawn(int nbAgents, Class<? extends Agent> agent, Object... params) {
+		return this.spawnService.spawn(nbAgents, this.janusContext, null, agent, params);
 	}
 
 	/**
@@ -153,7 +170,11 @@ public class Kernel {
 	 * @return the identifier of the agent, never <code>null</code>.
 	 */
 	public UUID spawn(UUID agentID, Class<? extends Agent> agent, Object... params) {
-		return this.spawnService.spawn(this.janusContext, agentID, agent, params);
+		final List<UUID> ids = this.spawnService.spawn(1, this.janusContext, agentID, agent, params);
+		if (ids.isEmpty()) {
+			return null;
+		}
+		return ids.get(0);
 	}
 
 	/**

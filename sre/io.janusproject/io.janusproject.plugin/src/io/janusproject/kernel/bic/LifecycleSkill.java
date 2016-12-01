@@ -21,6 +21,8 @@
 
 package io.janusproject.kernel.bic;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import com.google.inject.Inject;
@@ -69,18 +71,45 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 
 	@Override
 	public UUID spawn(Class<? extends Agent> agentType, Object... params) {
-		return this.spawnService.spawn(getSkill(DefaultContextInteractions.class).getDefaultContext(),
+		final List<UUID> ids = this.spawnService.spawn(
+				1,
+				getSkill(DefaultContextInteractions.class).getDefaultContext(),
+				null, agentType, params);
+		if (ids.isEmpty()) {
+			return null;
+		}
+		return ids.get(0);
+	}
+
+	@Override
+	public Collection<UUID> spawn(int nbAgents, Class<? extends Agent> agentType, Object... params) {
+		return this.spawnService.spawn(nbAgents,
+				getSkill(DefaultContextInteractions.class).getDefaultContext(),
 				null, agentType, params);
 	}
 
 	@Override
 	public UUID spawnInContext(Class<? extends Agent> agentType, AgentContext context, Object... params) {
-		return this.spawnService.spawn(context, null, agentType, params);
+		final List<UUID> ids = this.spawnService.spawn(1, context, null, agentType, params);
+		if (ids.isEmpty()) {
+			return null;
+		}
+		return ids.get(0);
+	}
+
+	@Override
+	public Collection<UUID> spawnInContext(int nbAgents, Class<? extends Agent> agentClass, AgentContext context,
+			Object... params) {
+		return this.spawnService.spawn(nbAgents, context, null, agentClass, params);
 	}
 
 	@Override
 	public UUID spawnInContextWithID(Class<? extends Agent> agentClass, UUID agentID, AgentContext context, Object... params) {
-		return this.spawnService.spawn(context, agentID, agentClass, params);
+		final List<UUID> ids = this.spawnService.spawn(1, context, agentID, agentClass, params);
+		if (ids.isEmpty()) {
+			return null;
+		}
+		return ids.get(0);
 	}
 
 	@Override
