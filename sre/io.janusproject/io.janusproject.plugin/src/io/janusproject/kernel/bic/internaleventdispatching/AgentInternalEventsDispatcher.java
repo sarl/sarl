@@ -137,11 +137,6 @@ public class AgentInternalEventsDispatcher {
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
 	 *
-	 * <p>
-	 * If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
-	 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
-	 * </p>
-	 *
 	 * @param event - an event to dispatch synchronously.
 	 */
 	public void immediateDispatch(Event event) {
@@ -163,7 +158,11 @@ public class AgentInternalEventsDispatcher {
 			}
 
 		}
-		// XXX: not in the SARL specifications. Should be fire the DeadEvent?
+		/*
+		 * <p>If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
+		 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
+		 */
+		// XXX: not in the SARL specifications. Should we fire the DeadEvent?
 		/*else if (!(event instanceof DeadEvent)) {
 			// the event had no subscribers and was not itself a DeadEvent
 			immediateDispatch(new DeadEvent(event));

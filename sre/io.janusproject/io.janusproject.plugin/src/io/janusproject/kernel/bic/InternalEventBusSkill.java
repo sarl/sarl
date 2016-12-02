@@ -25,7 +25,10 @@ import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
+import com.google.common.base.Throwables;
 import com.google.common.collect.Queues;
 import com.google.inject.Inject;
 
@@ -37,6 +40,7 @@ import io.janusproject.services.spawn.SpawnService.AgentKillException;
 import io.sarl.core.AgentSpawned;
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
+import io.sarl.core.Logging;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Event;
@@ -155,6 +159,15 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 				this.state.set(OwnerState.RUNNING);
 
 			} catch (Exception e) {
+				// Log the exception
+				final Logging loggingCapacity = getSkill(Logging.class);
+				if (loggingCapacity != null) {
+					loggingCapacity.error(Messages.InternalEventBusSkill_3, e);
+				} else {
+					final LogRecord record = new LogRecord(Level.SEVERE, Messages.InternalEventBusSkill_3);
+			        record.setThrown(Throwables.getRootCause(e));
+					this.logger.log(record);
+				}
 				// If we have an exception within the agent's initialization, we kill the agent.
 				this.state.set(OwnerState.RUNNING);
 				// Asynchronous kill of the event.
@@ -265,7 +278,8 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		@SuppressWarnings("synthetic-access")
 		void killOrMarkAsKilled() {
 			this.isKilled.set(true);
-			if (InternalEventBusSkill.this.state.get() != OwnerState.NEW) {
+			final OwnerState state = InternalEventBusSkill.this.state.get();
+			if (state != null && state != OwnerState.NEW) {
 				killOwner(InternalEventBusSkill.this);
 			}
 

@@ -1925,7 +1925,7 @@ public class SkillCompilerTest {
 					"  @Extension",
 					"  @ImportedCapacityFeature(C2.class)",
 					"  @SyntheticMember",
-					"  private transient ClearableReference<C2> $CAPACITY_USE$C2;",
+					"  private transient ClearableReference<Skill> $CAPACITY_USE$C2;",
 					"  ",
 					"  @Inline(value = \"$castSkill(C2.class, (this.$CAPACITY_USE$C2 == null || this.$CAPACITY_USE$C2.get() == null) ? (this.$CAPACITY_USE$C2 = $getSkill(C2.class)) : this.$CAPACITY_USE$C2)\", imported = C2.class)",
 					"  @SyntheticMember",

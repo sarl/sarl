@@ -322,7 +322,7 @@ public class ClassParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
 					56, 4,
-					"Invalid implemented type", "name");
+					"The abstract method name in type C1 can only be defined by an abstract class");
 		}
 
 		@Test
@@ -639,7 +639,7 @@ public class ClassParsingTest {
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
 					95, 4,
-					"Invalid implemented type", "name");
+					"The abstract method name in type C1 can only be defined by an abstract class");
 		}
 
 		@Test

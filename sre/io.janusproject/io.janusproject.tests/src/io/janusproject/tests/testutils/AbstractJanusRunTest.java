@@ -31,6 +31,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
@@ -39,14 +40,15 @@ import java.util.logging.Logger;
 
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.junit.Rule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
+
 import io.janusproject.Boot;
 import io.janusproject.kernel.Kernel;
 import io.janusproject.modules.StandardJanusPlatformModule;
 import io.janusproject.services.executor.ChuckNorrisException;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
-import org.junit.Rule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 
 import io.sarl.core.Initialize;
 import io.sarl.core.Lifecycle;
@@ -135,6 +137,27 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	}
 
 	/**
+	 * Replies result at the given index of the run of the agent.
+	 * @return the results.
+	 */
+	protected List<Object> getResults() {
+		if (this.results != null) {
+			return Collections.unmodifiableList(this.results);
+		}
+		return Collections.emptyList();
+	}
+
+	/**
+	 * Replies the initialization parameters for the agents.
+	 * @return the parameters.
+	 */
+	protected Object[] getAgentInitializationParameters() {
+		return new Object[] {
+				this.results,
+		};
+	}
+
+	/**
 	 * Replies the index of the first result of the given type.
 	 * 
 	 * @param type - the type of the result.
@@ -171,7 +194,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * Start the Janus platform offline.
 	 *
 	 * This function has no timeout for the end of the run.
-	 * 
+	 *
 	 * @param type - the type of the agent to launch at start-up.
 	 * @param enableLogging - indicates if the logging is enable or not.
 	 * @throws Exception - if the kernel cannot be launched.
@@ -186,6 +209,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * This function enables logging and has no timeout for the end of the run.
 	 * 
 	 * @param type - the type of the agent to launch at start-up.
+	 * @return the kernel.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
 	protected void runJanus(Class<? extends TestingAgent> type) throws Exception {
@@ -202,6 +226,21 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
 	protected void runJanus(Class<? extends TestingAgent> type, boolean enableLogging, boolean offline, int timeout)
+			throws Exception {
+		setupTheJanusKernel(type, enableLogging, offline);
+		waitForTheKernel(timeout);
+	}
+
+	/**
+	 * Set-up the Janus platform.
+	 * 
+	 * @param type - the type of the agent to launch at start-up.
+	 * @param enableLogging - indicates if the logging is enable or not.
+	 * @param offline - indicates if the Janus platform is offline
+	 * @return the kernel.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	protected Kernel setupTheJanusKernel(Class<? extends TestingAgent> type, boolean enableLogging, boolean offline)
 			throws Exception {
 		assertNull("Janus already launched.", this.janusKernel);
 		Module module = new StandardJanusPlatformModule();
@@ -226,7 +265,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			module = Modules.override(new StandardJanusPlatformModule()).with(new ErrorLogTestingModule(this.results));
 		}
 		Boot.setOffline(offline);
-		this.janusKernel = Boot.startJanus(module, type, results);
+		this.janusKernel = Boot.startJanus(module, type, getAgentInitializationParameters());
 		Logger current = this.janusKernel.getLogger();
 		while (current.getParent() != null && current.getParent() != current) {
 			current = current.getParent();
@@ -234,6 +273,16 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		if (current != null) {
 			current.setLevel(Level.OFF);
 		}
+		return this.janusKernel;
+	}
+
+	/**
+	 * Wait for the end of the Janus platform.
+	 * 
+	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	public void waitForTheKernel(int timeout) throws Exception {
 		long endTime;
 		if (timeout >= 0) {
 			endTime = System.currentTimeMillis() + timeout * 1000;
@@ -243,6 +292,31 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		boolean isJanusRunning = this.janusKernel.isRunning();
 		while (isJanusRunning && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
 			isJanusRunning = this.janusKernel.isRunning();
+			Thread.yield();
+		}
+		Boot.setConsoleLogger(null);
+		if (isJanusRunning) {
+			throw new TimeoutException();
+		}
+	}
+
+	/**
+	 * Wait for the end of the Janus platform.
+	 * 
+	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 * @param predicate the predicate to use as stop condition.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	public void waitForTheKernel(int timeout, Function1<List<Object>, Boolean> predicate) throws Exception {
+		long endTime;
+		if (timeout >= 0) {
+			endTime = System.currentTimeMillis() + timeout * 1000;
+		} else {
+			endTime = -1;
+		}
+		boolean isJanusRunning = this.janusKernel.isRunning();
+		while (isJanusRunning && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
+			isJanusRunning = this.janusKernel.isRunning() || !(predicate.apply(this.results));
 			Thread.yield();
 		}
 		Boot.setConsoleLogger(null);
@@ -310,6 +384,18 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			this.results.add(result);
 		}
 		
+		/**
+		 * Replies result at the given index of the run of the agent.
+		 * @return the results.
+		 */
+		protected List<Object> getResults() {
+			if (this.results != null) {
+				return Collections.unmodifiableList(this.results);
+			}
+			return Collections.emptyList();
+		}
+
+		
 		@PerceptGuardEvaluator
 		private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
 			assert occurrence != null;
@@ -338,7 +424,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		}
 
 		/**
-		 * Invoked to run the unit test.
+		 * Invoked to run the unit test. This function is invoked at agent initialization
 		 *
 		 * @return <code>true</code> for killing the agent 1 second after its initialization.
 		 */
