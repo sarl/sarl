@@ -265,7 +265,8 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		@SuppressWarnings("synthetic-access")
 		void killOrMarkAsKilled() {
 			this.isKilled.set(true);
-			if (InternalEventBusSkill.this.state.get() != OwnerState.NEW) {
+			final OwnerState state = InternalEventBusSkill.this.state.get();
+			if (state != null && state != OwnerState.NEW) {
 				killOwner(InternalEventBusSkill.this);
 			}
 
