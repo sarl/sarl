@@ -227,6 +227,11 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 				if (task.getGuard().apply(owner).booleanValue()) {
 					task.getProcedure().apply(owner);
 				}
+			} catch (Throwable ex) {
+				if (this.isPeriodic) {
+					finishTask(task.getName());
+				}
+				throw ex;
 			} finally {
 				if (!this.isPeriodic) {
 					finishTask(task.getName());
