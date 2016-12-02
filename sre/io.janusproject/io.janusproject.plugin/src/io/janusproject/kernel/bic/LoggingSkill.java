@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 
 import io.janusproject.services.logging.LogService;
@@ -108,7 +109,7 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 			if (exception != null) {
 				final LogRecord lr = new LogRecord(Level.SEVERE, loggeableMessage);
 		        lr.setParameters(parameters);
-		        lr.setThrown(exception);
+		        lr.setThrown(Throwables.getRootCause(exception));
 				this.logger.log(lr);
 			} else {
 				this.logger.log(Level.SEVERE, loggeableMessage, parameters);
