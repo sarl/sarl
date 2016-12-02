@@ -19,7 +19,8 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -50,9 +51,9 @@ import org.mockito.stubbing.Answer;
 import io.janusproject.kernel.bic.SchedulesSkill;
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.logging.LogService;
-import io.janusproject.tests.bugs.Bug84.KilledInInitAgent;
 import io.janusproject.tests.testutils.AbstractJanusRunTest;
 import io.janusproject.tests.testutils.AbstractJanusTest;
+
 import io.sarl.core.AgentTask;
 import io.sarl.core.Schedules;
 import io.sarl.lang.SARLVersion;

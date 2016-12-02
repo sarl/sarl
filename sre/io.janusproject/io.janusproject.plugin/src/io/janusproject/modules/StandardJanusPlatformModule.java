@@ -22,6 +22,7 @@
 package io.janusproject.modules;
 
 import com.google.inject.AbstractModule;
+
 import io.janusproject.JanusConfig;
 import io.janusproject.modules.eventserial.NetworkEventModule;
 import io.janusproject.modules.hazelcast.HazelcastModule;

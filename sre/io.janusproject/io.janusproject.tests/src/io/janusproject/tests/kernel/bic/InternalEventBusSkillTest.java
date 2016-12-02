@@ -106,14 +106,9 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 	@Test
 	public void uninstall() throws Exception {
 		this.reflect.invoke(this.skill, "install");
-		EventListener eventListener = Mockito.mock(EventListener.class);
-		this.skill.registerEventListener(eventListener);
 		//
 		this.reflect.invoke(this.skill, "uninstall");
-		ArgumentCaptor<Object> argument = ArgumentCaptor.forClass(Object.class);
-		Mockito.verify(this.eventBus, new Times(2)).unregister(argument.capture());
-		assertSame(this.agent, argument.getAllValues().get(0));
-		assertSame(eventListener, argument.getAllValues().get(1));
+		Mockito.verify(this.eventBus, Mockito.times(1)).unregisterAll();
 	}
 
 	@Test

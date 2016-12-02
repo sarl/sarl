@@ -39,6 +39,11 @@ import com.google.common.util.concurrent.Service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import org.zeromq.ZContext;
+import org.zeromq.ZMQ;
+import org.zeromq.ZMQ.Poller;
+import org.zeromq.ZMQ.Socket;
+
 import io.janusproject.JanusConfig;
 import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.services.contextspace.SpaceRepositoryListener;
@@ -52,10 +57,6 @@ import io.janusproject.services.network.EventDispatch;
 import io.janusproject.services.network.EventEnvelope;
 import io.janusproject.services.network.EventSerializer;
 import io.janusproject.services.network.NetworkServiceListener;
-import org.zeromq.ZContext;
-import org.zeromq.ZMQ;
-import org.zeromq.ZMQ.Poller;
-import org.zeromq.ZMQ.Socket;
 
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Scope;

@@ -33,7 +33,6 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.Service;
@@ -41,6 +40,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+
 import io.janusproject.kernel.bic.BuiltinCapacityUtil;
 import io.janusproject.services.AbstractDependentService;
 import io.janusproject.services.contextspace.ContextSpaceService;
@@ -51,8 +51,6 @@ import io.janusproject.util.ListenerCollection;
 
 import io.sarl.core.AgentKilled;
 import io.sarl.core.AgentSpawned;
-import io.sarl.lang.SARLVersion;
-import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
@@ -60,6 +58,7 @@ import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
+import io.sarl.sarlspecification.SarlSpecificationChecker;
 import io.sarl.util.Collections3;
 
 /**
@@ -82,15 +81,20 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
     private final Injector injector;
 
+    private final SarlSpecificationChecker sarlSpecificationChecker;
+
     /**
      * Constructs the service with the given (injected) injector.
      *
      * @param injector
      *            the injector that should be used by this service for creating the agents.
+     * @param sarlSpecificationChecker the tool for checking the validity of the SARL specification supported by
+     *      the agents to launch.
      */
     @Inject
-    public StandardSpawnService(Injector injector) {
+    public StandardSpawnService(Injector injector, SarlSpecificationChecker sarlSpecificationChecker) {
         this.injector = injector;
+        this.sarlSpecificationChecker = sarlSpecificationChecker;
     }
 
     @Override
@@ -103,15 +107,10 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
         return Arrays.<Class<? extends Service>>asList(ContextSpaceService.class);
     }
 
-    private static void ensureSarlSpecificationVersion(Class<? extends Agent> agentClazz) {
-        final SarlSpecification annotation = agentClazz.getAnnotation(SarlSpecification.class);
-        if (annotation != null) {
-            final String value = annotation.value();
-            if (!Strings.isNullOrEmpty(value) && SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING.equals(value)) {
-                return;
-            }
-        }
-        throw new InvalidSarlSpecificationException(agentClazz);
+    private void ensureSarlSpecificationVersion(Class<? extends Agent> agentClazz) {
+    	if (!this.sarlSpecificationChecker.isValidSarlElement(agentClazz)) {
+            throw new InvalidSarlSpecificationException(agentClazz);
+    	}
     }
 
     @Override

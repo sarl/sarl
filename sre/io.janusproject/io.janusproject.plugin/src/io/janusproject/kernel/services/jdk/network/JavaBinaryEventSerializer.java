@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.google.inject.Inject;
+
 import io.janusproject.services.network.AbstractEventSerializer;
 import io.janusproject.services.network.EventDispatch;
 import io.janusproject.services.network.EventEncrypter;

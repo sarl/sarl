@@ -26,12 +26,13 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import io.janusproject.Boot;
-import io.janusproject.JanusConfig;
-import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
 import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import io.janusproject.Boot;
+import io.janusproject.JanusConfig;
+import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
 
 import io.sarl.eclipse.runtime.AbstractSREInstall;
 import io.sarl.eclipse.runtime.SREConstants;

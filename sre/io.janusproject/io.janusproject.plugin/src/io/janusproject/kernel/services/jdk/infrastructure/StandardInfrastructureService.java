@@ -22,6 +22,7 @@
 package io.janusproject.kernel.services.jdk.infrastructure;
 
 import com.google.common.util.concurrent.AbstractService;
+
 import io.janusproject.services.infrastructure.InfrastructureService;
 
 /**

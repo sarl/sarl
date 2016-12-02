@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 import com.google.common.util.concurrent.AbstractService;
 import com.google.common.util.concurrent.Service;
+
 import io.janusproject.services.logging.LogService;
 
 /**

@@ -30,10 +30,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
-import io.janusproject.kernel.bic.InnerContextSkill;
-import io.janusproject.kernel.bic.InternalEventBusCapacity;
-import io.janusproject.services.contextspace.ContextSpaceService;
-import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -44,15 +40,22 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.Times;
 
+import io.janusproject.kernel.bic.InnerContextSkill;
+import io.janusproject.kernel.bic.InternalEventBusCapacity;
+import io.janusproject.services.contextspace.ContextSpaceService;
+import io.janusproject.tests.testutils.AbstractJanusTest;
+
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.EventSpaceSpecification;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedSet;
@@ -281,9 +284,10 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 		}
 
 		@Override
-		protected <S extends Capacity> S getSkill(Class<S> capacity) {
-			return capacity.cast(this.test.busCapacity);
+		protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+			return new ClearableReference(this.test.busCapacity);
 		}
 
 	}
+
 }

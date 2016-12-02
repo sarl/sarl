@@ -26,12 +26,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
 
+import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidParameterException;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.inject.Inject;
+
+import com.google.common.base.Throwables;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +44,7 @@ import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.UnimplementedCapacityException;
@@ -59,6 +64,9 @@ public class AgentTest extends AbstractSarlTest {
 
 	@NonNullByDefault
 	private AgentMock agent;
+	
+	@Inject
+	private ReflectExtensions reflect;
 
 	private static Address mockAddress(UUID agentID) {
 		Address adr = mock(Address.class);
@@ -75,7 +83,13 @@ public class AgentTest extends AbstractSarlTest {
 
 	private void assertNoSkill(Class<? extends Capacity> c) {
 		try {
-			this.agent.getSkill(c);
+			try {
+				this.reflect.invoke(this.agent, "getSkill", c);
+			} catch (InvocationTargetException e) {
+				throw Throwables.propagate(e.getTargetException());
+			} catch (Exception e) {
+				throw Throwables.propagate(e);
+			}
 			fail("Expecting the exception UnimplementedCapacityException, but got no exception."); //$NON-NLS-1$
 		} catch (UnimplementedCapacityException exception) {
 			//
@@ -83,12 +97,26 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	private void assertSkill(Class<? extends Capacity> c, Skill expected) {
-		Object r = this.agent.getSkill(c);
+		Object r;
+		try {
+			r = this.reflect.invoke(this.agent, "getSkill", c);
+		} catch (InvocationTargetException e) {
+			throw Throwables.propagate(e.getTargetException());
+		} catch (Exception e) {
+			throw Throwables.propagate(e);
+		}
 		assertSame(expected, r);
 	}
 
 	private void assertSkill(Class<? extends Capacity> c) {
-		Object r = this.agent.getSkill(c);
+		Object r;
+		try {
+			r = this.reflect.invoke(this.agent, "getSkill", c);
+		} catch (InvocationTargetException e) {
+			throw Throwables.propagate(e.getTargetException());
+		} catch (Exception e) {
+			throw Throwables.propagate(e);
+		}
 		assertNotNull(r);
 	}
 
@@ -429,13 +457,9 @@ public class AgentTest extends AbstractSarlTest {
 			return setSkill(skill, capacity);
 		}
 
-		public <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... capacity) {
-			return super.$setSkill(skill, capacity);
-		}
-
 		@Override
-		public <S extends Capacity> S getSkill(Class<S> capacity) {
-			return super.getSkill(capacity);
+		public ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+			return super.$getSkill(capacity);
 		}
 
 		@Override

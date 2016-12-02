@@ -42,10 +42,6 @@ import java.util.regex.Pattern;
 import com.google.common.base.Strings;
 import com.google.inject.Module;
 import com.hazelcast.logging.LoggingService;
-import io.janusproject.kernel.Kernel;
-import io.janusproject.services.executor.ChuckNorrisException;
-import io.janusproject.services.network.NetworkConfig;
-import io.janusproject.util.LoggerCreator;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -54,6 +50,11 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.arakhne.afc.vmutil.FileSystem;
+
+import io.janusproject.kernel.Kernel;
+import io.janusproject.services.executor.ChuckNorrisException;
+import io.janusproject.services.network.NetworkConfig;
+import io.janusproject.util.LoggerCreator;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.core.Agent;

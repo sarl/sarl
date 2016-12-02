@@ -26,6 +26,7 @@ import java.util.Properties;
 
 import com.google.common.base.Charsets;
 import com.google.inject.name.Named;
+
 import io.janusproject.JanusConfig;
 import io.janusproject.modules.eventserial.NetworkEventModule;
 

@@ -267,7 +267,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 7,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -280,7 +280,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 9,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -339,7 +339,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -399,7 +399,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 6,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -412,7 +412,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					32, 8,
-					"Illegal modifier for the agent A1; only public, package, abstract & final are permitted");
+					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
 		}
 
 		@Test
@@ -449,7 +449,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					41, 5,
-					"The agent A1 can either be abstract or final, not both");
+					"The definition of A1 can either be abstract or final, not both");
 		}
 
 		@Test
@@ -537,7 +537,7 @@ public class AgentParsingTest {
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					39, 7,
-					"The agent A1 can only set one of public / package / protected / private");
+					"The definition of A1 can only set one of public / package / protected / private");
 		}
 
 	}

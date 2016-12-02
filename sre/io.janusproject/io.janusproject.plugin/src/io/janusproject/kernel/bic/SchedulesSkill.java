@@ -38,11 +38,12 @@ import java.util.logging.LogRecord;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.executor.JanusScheduledFutureTask;
 import io.janusproject.services.logging.LogService;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import io.sarl.core.AgentTask;
 import io.sarl.core.Schedules;

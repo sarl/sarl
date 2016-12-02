@@ -29,12 +29,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
-import io.janusproject.kernel.bic.BuiltinCapacityUtil;
-import io.janusproject.kernel.bic.InnerContextSkill;
-import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import io.janusproject.kernel.bic.BuiltinCapacityUtil;
+import io.janusproject.kernel.bic.InnerContextSkill;
+import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.InnerContextAccess;
@@ -42,6 +43,8 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.ClearableReference;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
@@ -148,10 +151,10 @@ public class BuiltinCapacityUtilTest extends AbstractJanusTest {
 		}
 		
 		@Override
-		protected <S extends Capacity> S getSkill(Class<S> capacity) {
+		protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 			if (capacity.equals(InnerContextAccess.class))
-				return capacity.cast(this.innerSkill);
-			return capacity.cast(this.contextSkill);
+				return new ClearableReference(this.innerSkill);
+			return new ClearableReference(this.contextSkill);
 		}
 	}
 

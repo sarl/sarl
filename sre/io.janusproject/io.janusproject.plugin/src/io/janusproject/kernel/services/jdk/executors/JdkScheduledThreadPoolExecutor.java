@@ -29,6 +29,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import com.google.inject.Inject;
+
 import io.janusproject.JanusConfig;
 import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.util.ListenerCollection;
@@ -50,8 +51,8 @@ public class JdkScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor 
 	 */
 	@Inject
 	public JdkScheduledThreadPoolExecutor(ThreadFactory factory) {
-		super(JanusConfig.getSystemPropertyAsInteger(JanusConfig.MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME,
-				JanusConfig.MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE), factory);
+		super(JanusConfig.getSystemPropertyAsInteger(JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME,
+				JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE), factory);
 	}
 
 	/**

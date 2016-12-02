@@ -28,6 +28,7 @@ import static org.junit.Assert.fail;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -758,6 +759,86 @@ public abstract class AbstractSarlTest {
 		}
 	}
 
+	/** Assert that the given value is stricty positive.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertStrictlyPositive(float actual) {
+		if (actual <= 0f) {
+			fail("Expecting a strictly positive number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is stricty negative.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertStrictlyNegative(float actual) {
+		if (actual >= 0f) {
+			fail("Expecting a strictly negative number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is stricty positive.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertPositiveOrZero(float actual) {
+		if (actual < 0f) {
+			fail("Expecting a positive or zero number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is negative or zero.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertNegativeOrZero(float actual) {
+		if (actual > 0f) {
+			fail("Expecting a negative or zero number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is stricty positive.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertStrictlyPositive(double actual) {
+		if (actual <= 0.) {
+			fail("Expecting a strictly positive number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is stricty negative.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertStrictlyNegative(double actual) {
+		if (actual >= 0.) {
+			fail("Expecting a strictly negative number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is stricty positive.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertPositiveOrZero(double actual) {
+		if (actual < 0.) {
+			fail("Expecting a positive or zero number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is negative or zero.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertNegativeOrZero(double actual) {
+		if (actual > 0.) {
+			fail("Expecting a negative or zero number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
 	/** Assert that the given value is equal to zero.
 	 *
 	 * @param actual - the value to test.
@@ -780,6 +861,56 @@ public abstract class AbstractSarlTest {
 				msg = ""; //$NON-NLS-1$
 			}
 			fail(msg + "Expecting a zero number, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is NaN.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertNaN(float actual) {
+		assertNaN(null, actual);
+	}
+
+	/** Assert that the given value is NaN.
+	 *
+	 * @param message - the error message.
+	 * @param actual - the value to test.
+	 */
+	public static void assertNaN(String message, float actual) {
+		if (!Float.isNaN(actual)) {
+			String msg;
+			if (!Strings.isNullOrEmpty(message)) {
+				msg = message + ". "; //$NON-NLS-1$
+			} else {
+				msg = ""; //$NON-NLS-1$
+			}
+			fail(msg + "Expecting NaN, actual: " + actual); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert that the given value is NaN.
+	 *
+	 * @param actual - the value to test.
+	 */
+	public static void assertNaN(double actual) {
+		assertNaN(null, actual);
+	}
+
+	/** Assert that the given value is NaN.
+	 *
+	 * @param message - the error message.
+	 * @param actual - the value to test.
+	 */
+	public static void assertNaN(String message, double actual) {
+		if (!Double.isNaN(actual)) {
+			String msg;
+			if (!Strings.isNullOrEmpty(message)) {
+				msg = message + ". "; //$NON-NLS-1$
+			} else {
+				msg = ""; //$NON-NLS-1$
+			}
+			fail(msg + "Expecting NaN, actual: " + actual); //$NON-NLS-1$
 		}
 	}
 
@@ -1879,7 +2010,7 @@ public abstract class AbstractSarlTest {
 			do {
 				for (Method candidate : clazz.getDeclaredMethods()) {
 					if (candidate != null && !candidate.isBridge() && Objects.equal(methodName, candidate.getName())
-							&& isValidArgs(args, candidate.getParameterTypes())) {
+							&& isValidArgs(candidate.isVarArgs(), args, candidate.getParameterTypes())) {
 						if (compatible != null) 
 							throw new IllegalStateException("Ambiguous methods to invoke. Both "+compatible+" and  "+candidate+" would be compatible choices.");
 						compatible = candidate;
@@ -1889,6 +2020,20 @@ public abstract class AbstractSarlTest {
 			if (compatible != null) {
 				if (!compatible.isAccessible())
 					compatible.setAccessible(true);
+				if (compatible.isVarArgs()) {
+					Object[] newArgs = new Object[compatible.getParameterCount()];
+					for (int i = 0; i < compatible.getParameterCount() - 1; ++i) {
+						newArgs[i] = args[i];
+					}
+					Class<?> componentType = compatible.getParameterTypes()[compatible.getParameterCount() - 1].getComponentType();
+					int varArgsLength = args.length - compatible.getParameterCount() + 1;
+					Object varArgs = Array.newInstance(componentType, varArgsLength);
+					for (int i = 0; i < varArgsLength; ++i) {
+						Array.set(varArgs, i, args[i + compatible.getParameterCount() - 1]);
+					}
+					newArgs[compatible.getParameterCount() - 1] = varArgs;
+					return compatible.invoke(compatible.getDeclaringClass().cast(receiver), (Object[]) newArgs);
+				}
 				return compatible.invoke(compatible.getDeclaringClass().cast(receiver), (Object[]) args);
 			}
 			// not found provoke method not found exception
@@ -1896,15 +2041,29 @@ public abstract class AbstractSarlTest {
 			return method.invoke(receiver);
 		}
 
-		private static boolean isValidArgs(Object[] args, Class<?>[] params) {
-			if (args.length != params.length) {
-				return false;
-			}
+		private static boolean isValidArgs(boolean varargs, Object[] args, Class<?>[] params) {
 			for (int i = 0; i < args.length; ++i) {
+				if (i >= params.length) {
+					return false;
+				}
 				if (args[i] == null) {
 					if (params[i].isPrimitive()) {
 						return false;
 					}
+				} else if ((!(params[i].isInstance(args[i]))) && varargs && i == params.length - 1) {
+					Class<?> componentType = params[i].getComponentType();
+
+					Class<?>[] newParams = new Class[args.length - params.length + 1];
+					for (int j = 0; j < newParams.length; ++j) {
+						newParams[j] = componentType;
+					}
+
+					Object[] newArgs = new Object[newParams.length];
+					for (int j = 0; j < newArgs.length; ++j, ++i) {
+						newArgs[j] = args[i];
+					}
+
+					return isValidArgs(false, newArgs, newParams);
 				} else if (!(params[i].isInstance(args[i]))) {
 					if (Primitives.isPrimitiveOrWrapper(params[i])) {
 						if (!Objects.equal(

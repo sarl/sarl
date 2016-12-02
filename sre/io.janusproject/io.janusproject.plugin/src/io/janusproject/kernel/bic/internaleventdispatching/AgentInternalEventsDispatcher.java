@@ -31,10 +31,11 @@ import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
-import io.janusproject.services.executor.ExecutorService;
 import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.OutputParameter;
 import org.eclipse.xtext.xbase.lib.Pair;
+
+import io.janusproject.services.executor.ExecutorService;
 
 import io.sarl.eventdispatching.BehaviorGuardEvaluator;
 import io.sarl.eventdispatching.BehaviorGuardEvaluatorRegistry;
@@ -84,13 +85,16 @@ public class AgentInternalEventsDispatcher {
 	/**
 	 * The executor used to execute behavior methods in dedicated thread.
 	 */
-	@Inject
-	private ExecutorService executor;
+	private final ExecutorService executor;
 
 	/**
 	 * Instantiates a dispatcher.
+	 *
+	 * @param executor the executor service.
 	 */
-	public AgentInternalEventsDispatcher() {
+	@Inject
+	public AgentInternalEventsDispatcher(ExecutorService executor) {
+		this.executor = executor;
 		this.behaviorGuardEvaluatorRegistry = new BehaviorGuardEvaluatorRegistry();
 	}
 
@@ -118,14 +122,20 @@ public class AgentInternalEventsDispatcher {
 	}
 
 	/**
+	 * Unregisters all {@code PerceptGuardEvaluator} methods on all registered objects.
+	 *
+	 * @throws IllegalArgumentException if the object was not previously registered.
+	 */
+	public void unregisterAll() {
+		synchronized (this.behaviorGuardEvaluatorRegistry) {
+			this.behaviorGuardEvaluatorRegistry.unregisterAll();
+		}
+	}
+
+	/**
 	 * Posts an event to all registered {@code BehaviorGuardEvaluator}, the dispatch of this event will be done synchronously.
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
-	 *
-	 * <p>
-	 * If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
-	 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
-	 * </p>
 	 *
 	 * @param event - an event to dispatch synchronously.
 	 */
@@ -148,7 +158,11 @@ public class AgentInternalEventsDispatcher {
 			}
 
 		}
-		// XXX: not in the SARL specifications. Should be fire the DeadEvent?
+		/*
+		 * <p>If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
+		 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
+		 */
+		// XXX: not in the SARL specifications. Should we fire the DeadEvent?
 		/*else if (!(event instanceof DeadEvent)) {
 			// the event had no subscribers and was not itself a DeadEvent
 			immediateDispatch(new DeadEvent(event));

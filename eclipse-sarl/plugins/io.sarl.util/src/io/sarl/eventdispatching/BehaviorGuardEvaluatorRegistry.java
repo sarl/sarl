@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.google.common.base.MoreObjects;
@@ -53,7 +52,7 @@ import io.sarl.lang.core.Event;
  * This class has been inspired by the com.google.common.eventbus.SuscriberRegistry class of Google Guava library.
  *
  * @author $Author: ngaud$
- * @author $Author: ssgalland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -95,14 +94,34 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * {@code BehaviorGuardEvaluator}s to an event without any locking.
 	 * </p>
 	 */
-	private final ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<BehaviorGuardEvaluator>> behaviorGuardEvaluators = Maps
-			.newConcurrentMap();
+	private final Map<Class<? extends Event>, CopyOnWriteArraySet<BehaviorGuardEvaluator>> behaviorGuardEvaluators;
 
 	/**
 	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
+	 *
+	 * <p>The registry will use concurrent data structures.
 	 */
 	public BehaviorGuardEvaluatorRegistry() {
-		//
+		this(true);
+	}
+
+	/**
+	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
+	 *
+	 * @param concurrent indicates if the internal data structures must support thread concurrency, or not.
+	 */
+	public BehaviorGuardEvaluatorRegistry(boolean concurrent) {
+		this(concurrent ? Maps.newConcurrentMap() : Maps.newHashMap());
+	}
+
+	/**
+	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
+	 *
+	 * @param buffer the buffer to be used for storing the behavior guard evaluators.
+	 */
+	public BehaviorGuardEvaluatorRegistry(Map<Class<? extends Event>, CopyOnWriteArraySet<BehaviorGuardEvaluator>> buffer) {
+		assert buffer != null;
+		this.behaviorGuardEvaluators = buffer;
 	}
 
 	/**
@@ -127,6 +146,13 @@ public class BehaviorGuardEvaluatorRegistry {
 
 			eventSubscribers.addAll(eventMethodsInListener);
 		}
+	}
+
+	/**
+	 * Unregisters all BehaviorGuardEvaluators on all the listener objects.
+	 */
+	public void unregisterAll() {
+		this.behaviorGuardEvaluators.clear();
 	}
 
 	/**
@@ -201,7 +227,7 @@ public class BehaviorGuardEvaluatorRegistry {
 		for (final Method method : getAnnotatedMethods(clazz)) {
 			final Class<?>[] parameterTypes = method.getParameterTypes();
 			final Class<? extends Event> eventType = (Class<? extends Event>) parameterTypes[0];
-			methodsInListener.put(eventType, BehaviorGuardEvaluator.create(listener, method));
+			methodsInListener.put(eventType, new BehaviorGuardEvaluator(listener, method));
 		}
 		return methodsInListener;
 	}

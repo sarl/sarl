@@ -24,6 +24,7 @@ package io.janusproject.kernel.bic;
 import java.lang.ref.WeakReference;
 
 import com.google.common.util.concurrent.Service;
+
 import io.janusproject.kernel.Kernel;
 
 import io.sarl.lang.core.Agent;

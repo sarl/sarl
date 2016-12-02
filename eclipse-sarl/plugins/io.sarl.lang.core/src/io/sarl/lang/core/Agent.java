@@ -23,6 +23,7 @@ package io.sarl.lang.core;
 
 import java.security.InvalidParameterException;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,7 +52,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 
 	private final UUID id;
 
-	private final Map<Class<? extends Capacity>, Skill> skills = new ConcurrentHashMap<>();
+	private final Map<Class<? extends Capacity>, ClearableReference<Skill>> skills = new ConcurrentHashMap<>();
 
 	private final UUID parentID;
 
@@ -72,9 +73,15 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 		if (provider != null) {
 			final Map<Class<? extends Capacity>, Skill> builtinCapacities = provider.getBuiltinCapacities(this);
 			if (builtinCapacities != null && !builtinCapacities.isEmpty()) {
-				this.skills.putAll(builtinCapacities);
+				for (final Entry<Class<? extends Capacity>, Skill> bic : builtinCapacities.entrySet()) {
+					mapCapacity(bic.getKey(), bic.getValue());
+				}
 			}
 		}
+	}
+
+	private ClearableReference<Skill> mapCapacity(Class<? extends Capacity> capacity, Skill skill) {
+		return this.skills.put(capacity, new ClearableReference<>(skill));
 	}
 
 	@Override
@@ -128,26 +135,22 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 
 	@Override
 	@SafeVarargs
-	@Inline("$setSkill($1, $2)")
 	protected final <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities) {
-		return $setSkill(skill, capacities);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... iCapacities) {
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
 		skill.setOwner(this);
-		if (iCapacities == null || iCapacities.length == 0) {
+		if (capacities == null || capacities.length == 0) {
 			runOnImplementedCapacities(skill, (capacity) -> {
-				final Skill oldS = this.skills.put(capacity, skill);
+				final ClearableReference<Skill> oldS = mapCapacity(capacity, skill);
 				skill.registerUse();
-				if (oldS != null && oldS != skill) {
-					oldS.unregisterUse();
+				if (oldS != null) {
+					final Skill oldSkill = oldS.clear();
+					if (oldSkill != null && oldSkill != skill) {
+						oldSkill.unregisterUse();
+					}
 				}
 			});
 		} else {
-			for (final Class<? extends Capacity> capacity : iCapacities) {
+			for (final Class<? extends Capacity> capacity : capacities) {
 				assert capacity != null : "the capacity parameter must not be null"; //$NON-NLS-1$
 				assert capacity.isInterface() : "the capacity parameter must be an interface"; //$NON-NLS-1$
 				if (!capacity.isInstance(skill)) {
@@ -155,10 +158,13 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 							"the skill must implement the given capacity " //$NON-NLS-1$
 							+ capacity.getName());
 				}
-				final Skill oldS = this.skills.put(capacity, skill);
+				final ClearableReference<Skill> oldS = mapCapacity(capacity, skill);
 				skill.registerUse();
-				if (oldS != null && oldS != skill) {
-					oldS.unregisterUse();
+				if (oldS != null) {
+					final Skill oldSkill = oldS.clear();
+					if (oldSkill != null && oldSkill != skill) {
+						oldSkill.unregisterUse();
+					}
 				}
 			}
 		}
@@ -174,30 +180,55 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	@Inline("$setSkill($2, $1)")
+	@Inline("setSkill($2, $1)")
 	protected <S extends Skill> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
-		$setSkill(skill, capacity);
+		setSkill(skill, capacity);
 	}
 
 	@Override
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		assert capacity != null;
-		final Skill skill = this.skills.remove(capacity);
-		if (skill != null) {
-			skill.unregisterUse();
+		final ClearableReference<Skill> reference = this.skills.remove(capacity);
+		if (reference != null) {
+			final Skill skill = reference.clear();
+			if (skill != null) {
+				skill.unregisterUse();
+				return capacity.cast(skill);
+			}
 		}
-		return capacity.cast(skill);
+		return null;
 	}
 
 	@Override
 	@Pure
-	protected <S extends Capacity> S getSkill(Class<S> capacity) {
+	protected final <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
-		final S skill = capacity.cast(this.skills.get(capacity));
+		return $castSkill(capacity, $getSkill(capacity));
+	}
+
+	/** Cast the skill reference to the given capacity type.
+	 *
+	 * @param <S> the expected capacity type.
+	 * @param capacity the expected capacity type.
+	 * @param skillReference the skill reference.
+	 * @return the skill casted to the given capacity.
+	 */
+	@Pure
+	protected <S extends Capacity> S $castSkill(Class<S> capacity, ClearableReference<Skill> skillReference) {
+		final S skill = capacity.cast(skillReference.get());
 		if (skill == null) {
-			throw new UnimplementedCapacityException(capacity, this.getID());
+			throw new UnimplementedCapacityException(capacity, getID());
+		}
+		return skill;
+	}
+
+	@Override
+	@Pure
+	protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+		final ClearableReference<Skill> skill = this.skills.get(capacity);
+		if (skill == null) {
+			throw new UnimplementedCapacityException(capacity, getID());
 		}
 		return skill;
 	}
