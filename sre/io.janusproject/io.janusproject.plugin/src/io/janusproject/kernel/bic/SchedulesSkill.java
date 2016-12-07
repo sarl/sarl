@@ -33,11 +33,12 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.executor.JanusScheduledFutureTask;
 import io.janusproject.services.logging.LogService;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import io.sarl.core.AgentTask;
 import io.sarl.core.Schedules;
@@ -226,6 +227,11 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 				if (task.getGuard().apply(owner).booleanValue()) {
 					task.getProcedure().apply(owner);
 				}
+			} catch (Throwable ex) {
+				if (this.isPeriodic) {
+					finishTask(task.getName());
+				}
+				throw ex;
 			} finally {
 				if (!this.isPeriodic) {
 					finishTask(task.getName());

@@ -24,6 +24,7 @@ package io.janusproject.kernel.space;
 import java.util.UUID;
 
 import com.google.inject.Inject;
+
 import io.janusproject.kernel.repository.UniqueAddressParticipantRepository;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.services.executor.ExecutorService;

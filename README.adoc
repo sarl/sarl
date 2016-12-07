@@ -168,32 +168,69 @@ You must use this issue tracker to report and follow your issues.
 == 5. Contributions
 
 Any contribution to the SARL is welcome.
+For setting up the development environment of SARL, please follow our recommendations in the following sections.
 
-=== 5.1. Installing the Development Environment
+=== 5.1. Obtaining the SARL Source Code
+
+We recommend to fork the SARL project into your own Github account, in order to make easier the pull request that is needed for sending your contribution.
+Forking the SARL project must be done through the Github web interface: click on the `Fork` button on the SARL project page.
+
+
+For obtaining the code of SARL, you must clone your fork from Github to your local harddisk:
+```bash
+git clone https://github.com/<your_github_login>/sarl
+```
+
+We recommend to use the git tool on command-line until you're becoming expert with the git tools that is embedded in Eclipse.
+
+=== 5.2. First Compilation the SARL Source Code
+
+Maven is the standard tool for compiling SARL.
+
+We recommended to launch the Maven compilation process on the command line before importing the code in the Eclipse environment.
+The command line to use (see below) compiles the SARL project and install the Maven modules into your local `.m2` repository.
+This step is mandatory for compiling the embedded SARL run-time environment (Janus). Indeed, it needs the current SARL tools
+to be installed for being compiled.
+
+The command line is:
+```bash
+mvn clean install -Dmaven.test.skip=true -Dcheckstyle.skip=true
+```
+
+=== 5.3. Installing the Eclipse Development Environment
 
 For setting up the development environment, you should follow the steps:
 
-CAUTION: Coming soon.
+* Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the Xtext tools.
+* Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
+* Import the Eclipse preferences for SARL developers, which are stored into the `dev-tools` folder.
+* Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
+** Select the folder in which you have cloned the SARL project (see Section 5.1);
+** Click on `Finish`.
+* Set the Eclipse target platform, i.e. the definition of the Eclipse plugins to be imported by the project.
+** Open the target platform file `io.sarl.lang.targetplatform.target` in the project `io.sarl.lang.targetplatform`;
+** Wait for all the entries in the target file to be refreshed, i.e each location must contains the list of the features to be imported;
+** Click on `Set as Target Platform` at the upper right corner of the file editor.
+* Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
+* The Checkstyle plugin may need to install specific connectors. Do an action that is similar as the one in the previous step.
+* Clean and compile the project: `Menu Project > Clean`. 
 
-=== 5.2. Obtaining the SARL Source Code
+=== 5.4. Compilation of SARL before Contributing
 
-For obtaining the code of SARL, you must clone it from the Git:
-```bash
-git clone https://github.com/sarl/sarl
-```
+Prior to any sending of your contribution (see Section 5.5), you must ensure that your local copy of SARL compiles without error.
 
-CAUTION: Due to an issue in the Eclipse Checkstyle plugin, it is mandatory to install the `build-tools` module in the your `.m2` repository prior to the first launch of the Eclipse IDE: `mvn clean install -Dcheckstyle.skip=true`
+The best and "sure" way to proceed is to use Maven on the command line, because it is the tool used by our compilation server for validating your contribution.
 
-=== 5.3. Compiling the SARL Source Code
-
-Maven is the standard tool for compiling SARL. It is recommended to launch the Maven compilation process on the command at least before submitting a pull request. The command line is:
+Type on the command-line:
 ```bash
 mvn clean install
 ```
 
-=== 5.4. Sending the Contribution
+This command line will launch the compilation, checkstyle and unit tests. It must be successfull.
 
-For sending your contribution to the SARL master repositoty, you must request a pull (PR) to the link:https://github.com/sarl/sarl/[GitHub repository].
+=== 5.5. Sending the Contribution
+
+For sending your contribution to the SARL master repository, you must request a pull (PR) to the link:https://github.com/sarl/sarl/[GitHub repository].
 
 For being merged, your must ensure the following points:
 
@@ -214,6 +251,7 @@ If one point is failing, please follows the steps:
 == 6. Authors and Contributors
 
 * image:https://avatars.githubusercontent.com/m-ezzat[width="50px",link=https://github.com/m-ezzat] Mohamed Ezzat, code cleaning and optimization.
+* image:https://avatars.githubusercontent.com/jgfoster[width="50px",link=https://github.com/jgfoster] James Foster, documentation contributor.
 * image:https://avatars.githubusercontent.com/gallandarakhneorg[width="50px",link=https://github.com/gallandarakhneorg] link:http://www.multiagent.fr/People:Galland_stephane[Stéphane GALLAND], founder, original and active author.
 * image:https://avatars.githubusercontent.com/ngaud[width="50px",link=https://github.com/ngaud] link:http://www.multiagent.fr/People:Gaud_nicolas[Nicolas GAUD], founder, original and active author.
 * image:https://avatars.githubusercontent.com/jjst[width="50px",link=https://github.com/jjst] Jeremie JOST, documentation contributor.

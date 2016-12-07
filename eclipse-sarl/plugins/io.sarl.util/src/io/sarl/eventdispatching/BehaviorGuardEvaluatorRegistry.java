@@ -19,17 +19,14 @@
  * limitations under the License.
  */
 
-package io.janusproject.kernel.bic.internaleventdispatching;
+package io.sarl.eventdispatching;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.google.common.base.MoreObjects;
@@ -44,9 +41,10 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
-import com.google.common.util.concurrent.UncheckedExecutionException;
 
+import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.core.Event;
 
 /**
@@ -54,6 +52,7 @@ import io.sarl.lang.core.Event;
  * This class has been inspired by the com.google.common.eventbus.SuscriberRegistry class of Google Guava library.
  *
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -62,35 +61,30 @@ import io.sarl.lang.core.Event;
 public class BehaviorGuardEvaluatorRegistry {
 
 	/**
-	 * Global cache of classes to their flattened hierarchy of supertypes.
+	 * Thread-safe cache of classes to their flattened hierarchy of supertypes.
 	 */
+	@SuppressWarnings("synthetic-access")
 	private static final LoadingCache<Class<?>, ImmutableSet<Class<?>>> FLATTEN_HIERARCHY_CACHE = CacheBuilder.newBuilder().weakKeys()
 			.build(new CacheLoader<Class<?>, ImmutableSet<Class<?>>>() {
 				@Override
 				public ImmutableSet<Class<?>> load(Class<?> concreteClass) {
-					return ImmutableSet.<Class<?>>copyOf(TypeToken.of(concreteClass).getTypes().rawTypes());
+					return getTypeHierarchyOnDemand(concreteClass);
 				}
 			});
 
 	/**
 	 * A thread-safe cache that contains the mapping from each class to all methods in that class and all super-classes, that are annotated with
-	 * {@code @Subscribe}. The cache is shared across all instances of this class; this greatly improves performance if multiple EventBus instances
-	 * are created and objects of the same class are registered on all of them.
+	 * the annotation given by {@link #perceptGuardEvaluatorAnnotation}. The cache is shared across all instances of this class; this greatly
+	 * improves performance if multiple EventBus instances are created and objects of the same class are registered on all of them.
 	 */
 	@SuppressWarnings("synthetic-access")
-	private final LoadingCache<Class<?>, ImmutableList<Method>> perceptGuardEvaluatorMethodsCache = CacheBuilder.newBuilder().weakKeys()
+	private static final LoadingCache<Class<?>, ImmutableList<Method>> PERCEPT_GUARD_EVALUATOR_METHOD_CACHE = CacheBuilder.newBuilder().weakKeys()
 			.build(new CacheLoader<Class<?>, ImmutableList<Method>>() {
 				@Override
 				public ImmutableList<Method> load(Class<?> concreteClass) throws Exception {
-					return getAnnotatedMethodsNotCached(concreteClass);
+					return getAnnotatedMethodsOnDemand(concreteClass);
 				}
 			});
-
-	/**
-	 * The annotation used to identify methods considered as the evaluator of the guard of a given behavior (on clause in SARL behavior) If class has
-	 * a such method, it is considered as a {@code BehaviorGuardEvaluator}.
-	 */
-	private final Class<? extends Annotation> perceptGuardEvaluatorAnnotation;
 
 	/**
 	 * All registered {@code BehaviorGuardEvaluator}s (class containing at least one PerceptGuardEvaluator method), indexed by event type.
@@ -100,19 +94,34 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * {@code BehaviorGuardEvaluator}s to an event without any locking.
 	 * </p>
 	 */
-	private final ConcurrentMap<Class<? extends Event>, CopyOnWriteArraySet<BehaviorGuardEvaluator>> behaviorGuardEvaluators = Maps
-			.newConcurrentMap();
+	private final Map<Class<? extends Event>, CopyOnWriteArraySet<BehaviorGuardEvaluator>> behaviorGuardEvaluators;
 
 	/**
-	 * Instanciates a new registry.
+	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
 	 *
-	 * @param annotation
-	 *            - The annotation used to identify methods considered as the evaluator of the guard of a given behavior (on clause in SARL behavior)
-	 *            If class has a such method, it is considered as a {@code BehaviorGuardEvaluator}.
+	 * <p>The registry will use concurrent data structures.
 	 */
-	BehaviorGuardEvaluatorRegistry(Class<? extends Annotation> annotation) {
+	public BehaviorGuardEvaluatorRegistry() {
+		this(true);
+	}
 
-		this.perceptGuardEvaluatorAnnotation = annotation;
+	/**
+	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
+	 *
+	 * @param concurrent indicates if the internal data structures must support thread concurrency, or not.
+	 */
+	public BehaviorGuardEvaluatorRegistry(boolean concurrent) {
+		this(concurrent ? Maps.newConcurrentMap() : Maps.newHashMap());
+	}
+
+	/**
+	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
+	 *
+	 * @param buffer the buffer to be used for storing the behavior guard evaluators.
+	 */
+	public BehaviorGuardEvaluatorRegistry(Map<Class<? extends Event>, CopyOnWriteArraySet<BehaviorGuardEvaluator>> buffer) {
+		assert buffer != null;
+		this.behaviorGuardEvaluators = buffer;
 	}
 
 	/**
@@ -121,7 +130,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * @param listener
 	 *            - the new {@code BehaviorGuardEvaluator} to add
 	 */
-	void register(Object listener) {
+	public void register(Object listener) {
 		final Multimap<Class<? extends Event>, BehaviorGuardEvaluator> listenerMethods = findAllBehaviorGuardEvaluators(listener);
 
 		for (final Map.Entry<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry : listenerMethods.asMap().entrySet()) {
@@ -140,11 +149,18 @@ public class BehaviorGuardEvaluatorRegistry {
 	}
 
 	/**
+	 * Unregisters all BehaviorGuardEvaluators on all the listener objects.
+	 */
+	public void unregisterAll() {
+		this.behaviorGuardEvaluators.clear();
+	}
+
+	/**
 	 * Unregisters all BehaviorGuardEvaluators on the given listener object.
 	 *
 	 * @param listener the new {@code BehaviorGuardEvaluator} to remove
 	 */
-	void unregister(Object listener) {
+	public void unregister(Object listener) {
 		final Multimap<Class<? extends Event>, BehaviorGuardEvaluator> listenerMethods = findAllBehaviorGuardEvaluators(listener);
 
 		for (final Map.Entry<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry : listenerMethods.asMap().entrySet()) {
@@ -182,7 +198,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	 *            -the event to process
 	 * @return the set of guard evaluators associated to the specified event
 	 */
-	Collection<BehaviorGuardEvaluator> getBehaviorGuardEvaluators(Event event) {
+	public Collection<BehaviorGuardEvaluator> getBehaviorGuardEvaluators(Event event) {
 		final ImmutableSet<Class<?>> eventTypes = flattenHierarchy(event.getClass());
 
 		final List<BehaviorGuardEvaluator> iBehaviorGuardEvaluators = Lists.newArrayListWithCapacity(eventTypes.size());
@@ -205,48 +221,83 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * @return a map associating event classes to their guard evaluators
 	 */
 	@SuppressWarnings("unchecked")
-	private Multimap<Class<? extends Event>, BehaviorGuardEvaluator> findAllBehaviorGuardEvaluators(Object listener) {
+	private static Multimap<Class<? extends Event>, BehaviorGuardEvaluator> findAllBehaviorGuardEvaluators(Object listener) {
 		final Multimap<Class<? extends Event>, BehaviorGuardEvaluator> methodsInListener = HashMultimap.create();
 		final Class<?> clazz = listener.getClass();
 		for (final Method method : getAnnotatedMethods(clazz)) {
 			final Class<?>[] parameterTypes = method.getParameterTypes();
 			final Class<? extends Event> eventType = (Class<? extends Event>) parameterTypes[0];
-			methodsInListener.put(eventType, BehaviorGuardEvaluator.create(listener, method));
+			methodsInListener.put(eventType, new BehaviorGuardEvaluator(listener, method));
 		}
 		return methodsInListener;
 	}
 
-	private ImmutableList<Method> getAnnotatedMethods(Class<?> clazz) {
-		return this.perceptGuardEvaluatorMethodsCache.getUnchecked(clazz);
+	private static ImmutableList<Method> getAnnotatedMethods(Class<?> eventType) {
+		try {
+			return PERCEPT_GUARD_EVALUATOR_METHOD_CACHE.getUnchecked(eventType);
+		} catch (Exception ex) {
+			throw Throwables.propagate(ex);
+		}
 	}
 
-	private ImmutableList<Method> getAnnotatedMethodsNotCached(Class<?> clazz) {
+	private static Class<?> reloadClass(Class<?> context, Class<?> type) {
+		ClassLoader ld = context.getClassLoader();
+		if (ld == null) {
+			ld = type.getClassLoader();
+		}
+		try {
+			return ld.loadClass(type.getName());
+		} catch (Throwable ex) {
+			return type;
+		}
+	}
+
+	private static boolean checkEventHandlerPrototype(Class<?>[] parameterTypes) {
+		try {
+			if (parameterTypes.length == 2
+				&& parameterTypes[0] != null
+				&& reloadClass(parameterTypes[0], Event.class).isAssignableFrom(parameterTypes[0])
+				&& parameterTypes[1] != null
+				&& reloadClass(parameterTypes[1], Collection.class).isAssignableFrom(parameterTypes[1])) {
+				return true;
+			}
+		} catch (Exception ex) {
+			//
+		}
+		return false;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private static ImmutableSet<Class<?>> getTypeHierarchyOnDemand(Class<?> concreteClass) {
+		assert concreteClass != null;
+		final Set typeHierarchy = TypeToken.of(concreteClass).getTypes().rawTypes();
+		try {
+			final Class<?> eventType = reloadClass(concreteClass, Event.class);
+			if (eventType.isAssignableFrom(concreteClass)) {
+				return ImmutableSet.copyOf(Sets.filter((Set<Class>) typeHierarchy,
+						(it) -> eventType.isAssignableFrom(it)));
+			}
+		} catch (Exception ex) {
+			//
+		}
+		return ImmutableSet.copyOf(typeHierarchy);
+	}
+
+	private static ImmutableList<Method> getAnnotatedMethodsOnDemand(Class<?> concreteClass) {
+		assert concreteClass != null;
 		// TODO verify it effectively explores the whole type hierarchy
-		final Set<? extends Class<?>> supertypes = TypeToken.of(clazz).getTypes().rawTypes();
+		final Set<? extends Class<?>> supertypes = Sets.filter(TypeToken.of(concreteClass).getTypes().rawTypes(),
+				(it) -> !it.isInterface() && !Object.class.equals(it));
 
 		final Map<MethodIdentifier, Method> identifiers = Maps.newHashMap();
 
+		// Traverse all methods of the whole inheritance hierarchy
 		for (final Class<?> supertype : supertypes) {
-			// Traverse all methods of the whole inheritance hierarchy
 			for (final Method method : supertype.getDeclaredMethods()) {
-				if (method.isAnnotationPresent(this.perceptGuardEvaluatorAnnotation) && !method.isSynthetic()) {
-					// FIXME: Should check for a generic parameter type and error out
+				if (method.isAnnotationPresent(PerceptGuardEvaluator.class) && !method.isSynthetic()) {
 					final Class<?>[] parameterTypes = method.getParameterTypes();
-					try {
-						if (parameterTypes.length != 2
-								|| parameterTypes[0] == null
-								//|| parameterTypes[0].getClassLoader().loadClass(Event.class.getName()).isAssignableFrom(parameterTypes[0])
-								|| parameterTypes[1] == null) {
-							//|| parameterTypes[1].getClassLoader().loadClass(Collection.class.getName()).isAssignableFrom(parameterTypes[0])) {
-							throw new IllegalArgumentException(
-									MessageFormat.format(Messages.BehaviorGuardEvaluatorRegistry_1,
-											method, this.perceptGuardEvaluatorAnnotation.toString(),
-											Integer.valueOf(parameterTypes.length),
-											Arrays.toString(parameterTypes)));
-						}
-					} catch (Exception exception) {
-						throw new RuntimeException(exception);
-					}
+					// Check the prototype of the event handler in debug mode only
+					assert checkEventHandlerPrototype(parameterTypes);
 					final MethodIdentifier ident = new MethodIdentifier(method, parameterTypes);
 					identifiers.put(ident, method);
 				}
@@ -267,7 +318,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	private static ImmutableSet<Class<?>> flattenHierarchy(Class<?> concreteClass) {
 		try {
 			return FLATTEN_HIERARCHY_CACHE.getUnchecked(concreteClass);
-		} catch (UncheckedExecutionException e) {
+		} catch (Exception e) {
 			throw Throwables.propagate(e.getCause());
 		}
 	}
@@ -307,17 +358,11 @@ public class BehaviorGuardEvaluatorRegistry {
 			this.parameterTypes = Arrays.asList(parameterTypes);
 		}
 
-		/**
-		 * {@inheritDoc}.
-		 */
 		@Override
 		public int hashCode() {
 			return Objects.hashCode(this.name, this.parameterTypes);
 		}
 
-		/**
-		 * {@inheritDoc}.
-		 */
 		@Override
 		public boolean equals(Object object) {
 			if (object instanceof MethodIdentifier) {
@@ -326,6 +371,12 @@ public class BehaviorGuardEvaluatorRegistry {
 			}
 			return false;
 		}
+
+		@Override
+		public String toString() {
+			return this.name;
+		}
+
 	}
 
 }

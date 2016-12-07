@@ -157,87 +157,87 @@
 			</plugin>
 		</plugins>
 
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-antrun-plugin</artifactId>
-										<versionRange>[1.0.0,)</versionRange>
-										<goals>
-											<goal>run</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+<!-- 		<pluginManagement> -->
+<!-- 			<plugins> -->
+<!-- 				<plugin> -->
+<!-- 					<groupId>org.eclipse.m2e</groupId> -->
+<!-- 					<artifactId>lifecycle-mapping</artifactId> -->
+<!-- 					<version>1.0.0</version> -->
+<!-- 					<configuration> -->
+<!-- 						<lifecycleMappingMetadata> -->
+<!-- 							<pluginExecutions> -->
+<!-- 								<pluginExecution> -->
+<!-- 									<pluginExecutionFilter> -->
+<!-- 										<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 										<artifactId>maven-antrun-plugin</artifactId> -->
+<!-- 										<versionRange>[1.0.0,)</versionRange> -->
+<!-- 										<goals> -->
+<!-- 											<goal>run</goal> -->
+<!-- 										</goals> -->
+<!-- 									</pluginExecutionFilter> -->
+<!-- 									<action> -->
+<!-- 										<ignore /> -->
+<!-- 									</action> -->
+<!-- 								</pluginExecution> -->
+<!-- 							</pluginExecutions> -->
+<!-- 						</lifecycleMappingMetadata> -->
+<!-- 					</configuration> -->
+<!-- 				</plugin> -->
+<!-- 			</plugins> -->
+<!-- 		</pluginManagement> -->
 	</build>
 
 	<profiles>
-		<profile>
-			<id>maven-central-release-module-set</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>expanding-product-with-sources</id>
-								<phase>prepare-package</phase>
-								<configuration>
-									<target>
-										<property name="sarl.product.definition.file"
-											value="${project.basedir}/io.sarl.lang.product" />
-										<copy overwrite="true" file="${sarl.product.definition.file}"
-											tofile="${sarl.product.definition.file}.copy" />
-										<replace file="${sarl.product.definition.file}" token="&lt;/features&gt;"
-											value="&lt;feature id=&quot;io.sarl.lib.source&quot;/&gt;&lt;feature id=&quot;io.janusproject.feature.source&quot;/&gt;&lt;/features&gt;" />
-									</target>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>restoring-default-product</id>
-								<phase>verify</phase>
-								<configuration>
-									<target>
-										<property name="sarl.product.definition.file"
-											value="${project.basedir}/io.sarl.lang.product" />
-										<copy overwrite="true" file="${sarl.product.definition.file}.copy"
-											tofile="${sarl.product.definition.file}" />
-									</target>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+<!-- 		<profile> -->
+<!-- 			<id>maven-central-release-module-set</id> -->
+<!-- 			<activation> -->
+<!-- 				<property> -->
+<!-- 					<name>performRelease</name> -->
+<!-- 					<value>true</value> -->
+<!-- 				</property> -->
+<!-- 			</activation> -->
+<!-- 			<build> -->
+<!-- 				<plugins> -->
+<!-- 					<plugin> -->
+<!-- 						<artifactId>maven-antrun-plugin</artifactId> -->
+<!-- 						<executions> -->
+<!-- 							<execution> -->
+<!-- 								<id>expanding-product-with-sources</id> -->
+<!-- 								<phase>prepare-package</phase> -->
+<!-- 								<configuration> -->
+<!-- 									<target> -->
+<!-- 										<property name="sarl.product.definition.file" -->
+<!-- 											value="${project.basedir}/io.sarl.lang.product" /> -->
+<!-- 										<copy overwrite="true" file="${sarl.product.definition.file}" -->
+<!-- 											tofile="${sarl.product.definition.file}.copy" /> -->
+<!-- 										<replace file="${sarl.product.definition.file}" token="&lt;/features&gt;" -->
+<!-- 											value="&lt;feature id=&quot;io.sarl.lib.source&quot;/&gt;&lt;feature id=&quot;io.janusproject.feature.source&quot;/&gt;&lt;/features&gt;" /> -->
+<!-- 									</target> -->
+<!-- 								</configuration> -->
+<!-- 								<goals> -->
+<!-- 									<goal>run</goal> -->
+<!-- 								</goals> -->
+<!-- 							</execution> -->
+<!-- 							<execution> -->
+<!-- 								<id>restoring-default-product</id> -->
+<!-- 								<phase>verify</phase> -->
+<!-- 								<configuration> -->
+<!-- 									<target> -->
+<!-- 										<property name="sarl.product.definition.file" -->
+<!-- 											value="${project.basedir}/io.sarl.lang.product" /> -->
+<!-- 										<copy overwrite="true" file="${sarl.product.definition.file}.copy" -->
+<!-- 											tofile="${sarl.product.definition.file}" /> -->
+<!-- 									</target> -->
+<!-- 								</configuration> -->
+<!-- 								<goals> -->
+<!-- 									<goal>run</goal> -->
+<!-- 								</goals> -->
+<!-- 							</execution> -->
+<!-- 						</executions> -->
+<!-- 					</plugin> -->
+<!-- 				</plugins> -->
+<!-- 			</build> -->
+<!-- 		</profile> -->
 		<!-- This profile is used to upload the P2 repo -->
 		<profile>
 			<id>uploadP2Repo</id>

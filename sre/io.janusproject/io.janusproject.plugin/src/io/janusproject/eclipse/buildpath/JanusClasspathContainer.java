@@ -23,11 +23,12 @@ package io.janusproject.eclipse.buildpath;
 
 import java.util.Set;
 
-import io.janusproject.eclipse.JanusEclipsePlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.osgi.framework.Bundle;
+
+import io.janusproject.eclipse.JanusEclipsePlugin;
 
 import io.sarl.eclipse.buildpath.AbstractSARLBasedClasspathContainer;
 import io.sarl.eclipse.buildpath.SARLClasspathContainer;

@@ -358,7 +358,6 @@ describe "Behavior Reference" {
 				 *     </ul></li>
 				 * <li>`abstract`: the behavior is abstract and cannot be instanced.</li>
 				 * <li>`final`: avoid to be derived.</li>
-			 	 * <li>`strictfp`: avoid the methods of the behavior to use intermediate floating number formats.</li>
 				 * </ul>
 				 *
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -372,8 +371,6 @@ describe "Behavior Reference" {
 						abstract behavior Example3 {
 						}
 						final behavior Example4 {
-						}
-						strictfp behavior Example5 {
 						}
 					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.br",
@@ -390,8 +387,6 @@ describe "Behavior Reference" {
 				 *     <li>`package`: the field is accessible only within the same package of its agent;</li>
 				 *     <li>`private`: the field is accessible only within its agent.</li>
 				 *     </ul></li>
-				 * <li>`transient`: the field is never serialized.</li>
-				 * <li>`volatile`: the field is modified by different threads. It is never cached thread-locally, and synchronized.</li>
 				 * </ul>
 				 *
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -401,8 +396,6 @@ describe "Behavior Reference" {
 						protected var example1 : Object;
 						package var example2 : Object;
 						private var example3 : Object;
-						transient var example4 : Object;
-						volatile var example5 : Object;
 					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.br
 						public behavior Behavior1 {",
@@ -420,8 +413,6 @@ describe "Behavior Reference" {
 				 * <li>`abstract`: the method has no implementation in the class.</li>
 				 * <li>`dispatch`: the method provides an implementation for the dispatch method mechanism.</li>
 				 * <li>`final`: the method cannot be overridden in derived classes.</li>
-				 * <li>`strictfp`: avoid the method to use intermediate floating number formats.</li>
-				 * <li>`synchronized`: the method is synchronized on the class instance.</li>
 				 * </ul>
 				 *
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -438,13 +429,9 @@ describe "Behavior Reference" {
 						abstract def example4
 						// Not-overridable function
 						final def example5 { }
-						// Function with strict floating point management
-						strictfp def example6 { }
-						// Synchronized function
-						synchronized def example7 { }
 						// Dispatch functions
-						dispatch def example8(p : Integer) { }
-						dispatch def example8(p : Float) { }
+						dispatch def example7(p : Integer) { }
+						dispatch def example7(p : Float) { }
 					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.br
 						abstract behavior Behavior1 {",
@@ -906,7 +893,7 @@ describe "Behavior Reference" {
 	 * Release: %sarlspecreleasedate%
 	 * 
 	 * 
-	 * <p>Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%.
 	 * 
 	 * <p>Licensed under the Apache License, Version 2.0;
 	 * you may not use this file except in compliance with the License.

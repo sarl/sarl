@@ -24,13 +24,16 @@ package io.sarl.maven.docs.generator;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.URI;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
@@ -41,6 +44,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend.core.compiler.batch.XtendBatchCompiler;
 import org.eclipse.xtend.lib.macro.file.Path;
@@ -104,6 +108,12 @@ public class SARLDocGenerate extends XtendTestCompile {
 	protected MavenProject project;
 
 	/**
+	 * The project base directory. This parameter is set by maven.
+	 */
+	@Parameter(required = true, defaultValue = "${project.basedir}")
+	protected File projectBaseDir;
+
+	/**
 	 * Set this to true to skip compiling Xtend sources.
 	 */
 	@Parameter(defaultValue = "false")
@@ -131,28 +141,55 @@ public class SARLDocGenerate extends XtendTestCompile {
 
 	@Override
 	protected void internalExecute() throws MojoExecutionException {
-		// Only for injecting the attributes from Maven.
-		super.project = this.project;
-		super.skipXtend = this.skipXtend;
-		super.encoding = this.encoding;
-		super.writeTraceFiles = this.writeTraceFiles;
+		try {
+			// Only for injecting the attributes from Maven.
+			super.project = this.project;
+			super.skipXtend = this.skipXtend;
+			super.encoding = this.encoding;
+			super.writeTraceFiles = this.writeTraceFiles;
 
-		getLog().debug("Set section numbering: " + Boolean.toString(this.sectionNumbering)); //$NON-NLS-1$
-		MavenConfig.setSectionNumbering(this.sectionNumbering);
+			getLog().info("Generating into " + this.docOutputDirectory); //$NON-NLS-1$
 
-		getLog().info("Generating Jnario reports to " + this.docOutputDirectory); //$NON-NLS-1$
+			getLog().debug("Set section numbering: " + Boolean.toString(this.sectionNumbering)); //$NON-NLS-1$
+			MavenConfig.setSectionNumbering(this.sectionNumbering);
 
-		// the order is important, the suite compiler must be executed last
-		final List<Injector> injectors = createInjectors(
-				new SARLSpecStandaloneSetup(),
-				new FeatureStandaloneSetup(),
-				new SuiteStandaloneSetup());
-		generateCssAndJsFiles(injectors);
-		this.resourceSetProvider = new JnarioMavenProjectResourceSetProvider(this.project);
+			// the order is important, the suite compiler must be executed last
+			final InjectorCollection injectors = new InjectorCollection(
+					new SARLSpecStandaloneSetup(),
+					new FeatureStandaloneSetup(),
+					new SuiteStandaloneSetup());
 
-		final HashBasedSpec2ResultMapping resultMapping = createSpec2ResultMapping(injectors);
-		for (final Injector injector : injectors) {
-			generateDoc(injector, resultMapping);
+			generateCssAndJsFiles(injectors);
+
+			getLog().info("Creating Jnario-based resource provider"); //$NON-NLS-1$
+			this.resourceSetProvider = new JnarioMavenProjectResourceSetProvider(this.project);
+
+			getLog().info("Creating Jnario specification map"); //$NON-NLS-1$
+			final HashBasedSpec2ResultMapping resultMapping = createSpec2ResultMapping(injectors);
+			for (final String injectorId : injectors.getIdentifiers()) {
+				final Injector injector = injectors.getInjector(injectorId);
+				if (injector != null) {
+					generateDoc(injectorId, injector, resultMapping);
+				}
+			}
+		} finally {
+			cleanClassFolders();
+		}
+	}
+
+	private void cleanClassFolders() {
+		if (this.projectBaseDir != null) {
+			final Pattern pattern = Pattern.compile("^classes[0-9]+$"); //$NON-NLS-1$
+			for (final File child : this.projectBaseDir.listFiles()) {
+				if (child.isDirectory() && pattern.matcher(child.getName()).matches()) {
+					getLog().debug("Deleting " + child.getName()); //$NON-NLS-1$
+					try {
+						FileSystem.delete(child);
+					} catch (IOException e) {
+						getLog().warn(e);
+					}
+				}
+			}
 		}
 	}
 
@@ -161,8 +198,10 @@ public class SARLDocGenerate extends XtendTestCompile {
 	 * @return the mapping
 	 * @throws MojoExecutionException when no Surefire report was found.
 	 */
-	protected HashBasedSpec2ResultMapping createSpec2ResultMapping(List<Injector> injectors) throws MojoExecutionException {
-		final HashBasedSpec2ResultMapping resultMapping = injectors.get(2).getInstance(HashBasedSpec2ResultMapping.class);
+	protected HashBasedSpec2ResultMapping createSpec2ResultMapping(InjectorCollection injectors) throws MojoExecutionException {
+		final Injector injector = injectors.getInjector(SuiteStandaloneSetup.class.getName());
+		final HashBasedSpec2ResultMapping resultMapping = injector.getInstance(HashBasedSpec2ResultMapping.class);
+		getLog().debug("Report directory: " + this.reportsDirectory); //$NON-NLS-1$
 		final File reportFolder = new File(this.reportsDirectory);
 		if (reportFolder.exists()) {
 			addExecutionResults(resultMapping, reportFolder);
@@ -174,11 +213,14 @@ public class SARLDocGenerate extends XtendTestCompile {
 
 	/**
 	 * @param injectors - the injector list.
+	 * @throws MojoExecutionException when no Surefire report was found.
 	 */
-	protected void generateCssAndJsFiles(List<Injector> injectors) {
-		final HtmlAssetsCompiler assetsCompiler = injectors.get(0).getInstance(HtmlAssetsCompiler.class);
+	protected void generateCssAndJsFiles(InjectorCollection injectors) throws MojoExecutionException {
+		getLog().info("Generating CSS and JS assets"); //$NON-NLS-1$
+		final Injector injector = injectors.getInjector(SARLSpecStandaloneSetup.class.getName());
+		final HtmlAssetsCompiler assetsCompiler = injector.getInstance(HtmlAssetsCompiler.class);
+		getLog().debug("Output path: " + this.docOutputDirectory); //$NON-NLS-1$
 		assetsCompiler.setOutputPath(this.docOutputDirectory);
-		getLog().info("Generating HTML assets to " + this.docOutputDirectory); //$NON-NLS-1$
 		assetsCompiler.compile();
 	}
 
@@ -210,7 +252,8 @@ public class SARLDocGenerate extends XtendTestCompile {
 		compile(xtend2BatchCompiler, testClassPath, testCompileSourceRoots, this.docOutputDirectory);
 	}
 
-	private void generateDoc(Injector injector, Executable2ResultMapping resultMapping) throws MojoExecutionException {
+	private void generateDoc(String id, Injector injector, Executable2ResultMapping resultMapping) throws MojoExecutionException {
+		getLog().info("Generating documentation with " + id); //$NON-NLS-1$
 		final JnarioDocCompiler docCompiler = injector.getInstance(JnarioDocCompiler.class);
 		docCompiler.setExecutable2ResultMapping(resultMapping);
 		compileTestSources(docCompiler);
@@ -280,15 +323,6 @@ public class SARLDocGenerate extends XtendTestCompile {
 		}
 	}
 
-	private static List<Injector> createInjectors(ISetup... setups) {
-		return Lists.transform(Arrays.asList(setups), new Function<ISetup, Injector>() {
-			@Override
-			public Injector apply(ISetup input) {
-				return input.createInjectorAndDoEMFRegistration();
-			}
-		});
-	}
-
 	/** Copied from JnarioDocGenerate  (version 1.0.1).
 	 *
 	 * @author $Author: sgalland$
@@ -305,6 +339,38 @@ public class SARLDocGenerate extends XtendTestCompile {
 		@Override
 		public boolean accept(File dir, String name) {
 			return name.endsWith("xml"); //$NON-NLS-1$
+		}
+
+	}
+
+	/** Collection of injectors.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private final class InjectorCollection {
+
+		private final Map<String, Injector> injectors = new HashMap<>();
+
+		private final List<String> order = new ArrayList<>();
+
+		InjectorCollection(ISetup... setups) {
+			for (final ISetup setup : setups) {
+				final String id = setup.getClass().getName();
+				final Injector injector = setup.createInjectorAndDoEMFRegistration();
+				this.order.add(id);
+				this.injectors.put(id, injector);
+			}
+		}
+
+		public Injector getInjector(String id) {
+			return this.injectors.get(id);
+		}
+
+		public Iterable<String> getIdentifiers() {
+			return Collections.unmodifiableCollection(this.order);
 		}
 
 	}

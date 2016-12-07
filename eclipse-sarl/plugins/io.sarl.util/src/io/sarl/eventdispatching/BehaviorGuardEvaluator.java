@@ -19,12 +19,14 @@
  * limitations under the License.
  */
 
-package io.janusproject.kernel.bic.internaleventdispatching;
+package io.sarl.eventdispatching;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.Collection;
+
+import com.google.common.base.Strings;
 
 /**
  * Describes each class having one of its methods annotated with {@code PerceptGuardEvaluator} annotation corresponding to the
@@ -44,21 +46,16 @@ public final class BehaviorGuardEvaluator {
     /** {@code PerceptGuardEvaluator} method. */
     private final Method method;
 
-    private BehaviorGuardEvaluator(Object target, Method method) {
+    /** Creates a {@code Subscriber} for {@code method} on {@code listener}.
+	 *
+	 * @param target - the listener
+	 * @param method - the method to call to evaluate a guard
+	 */
+    public BehaviorGuardEvaluator(Object target, Method method) {
     	assert target != null;
         this.target = target;
         this.method = method;
     }
-
-	/**
-	 * Creates a {@code Subscriber} for {@code method} on {@code listener}.
-	 * @param listener - the listener
-	 * @param method - the method to call to evaluate a guard
-	 * @return a BehaviorGuardEvaluator
-	 */
-	static BehaviorGuardEvaluator create(Object listener, Method method) {
-		return new BehaviorGuardEvaluator(listener, method);
-	}
 
 	/**
 	 * Evaluates the guard associated to the specified {@code event} and returns the list of behaviors methods that must be
@@ -69,20 +66,7 @@ public final class BehaviorGuardEvaluator {
 	 *        {@code PerceptGuardEvaluator} method is declared
 	 * @throws InvocationTargetException - exception during evaluation, can find the method to invoke
 	 */
-	void evaluateGuard(final Object event, Collection<Runnable> behaviorsMethodsToExecute)
-			throws InvocationTargetException {
-		invokeBehaviorGuardEvaluatorMethod(event, behaviorsMethodsToExecute);
-	}
-
-	/**
-	 * Invokes the subscriber method. This method can be overridden to make the invocation synchronized.
-     * @param event - the event triggering behaviors
-     * @param behaviorsMethodsToExecute - the list of behavior methods that will be completed according to the result of the guard
-     *        evaluation, BE CARFEUL: we suppose that these behavior methods are parts of the SAME object where the
-     *        {@code PerceptGuardEvaluator} method is declared
-     * @throws InvocationTargetException - exception during evaluation, can find the method to invoke
-	 */
-	private void invokeBehaviorGuardEvaluatorMethod(Object event, Collection<Runnable> behaviorsMethodsToExecute)
+	public void evaluateGuard(Object event, Collection<Runnable> behaviorsMethodsToExecute)
 			throws InvocationTargetException {
 		try {
 			this.method.setAccessible(true);
@@ -122,6 +106,11 @@ public final class BehaviorGuardEvaluator {
 			return this.target == that.target && this.method.equals(that.method);
 		}
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return this.method == null ? Strings.emptyToNull(null) : this.method.getName();
 	}
 
 }

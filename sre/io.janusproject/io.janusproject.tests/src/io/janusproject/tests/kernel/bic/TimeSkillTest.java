@@ -19,27 +19,22 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.*;
-
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import io.janusproject.kernel.bic.InternalEventBusCapacity;
-import io.janusproject.kernel.bic.TimeSkill;
-import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import io.janusproject.kernel.bic.TimeSkill;
+import io.janusproject.tests.testutils.AbstractJanusTest;
+
 import io.sarl.core.Time;
-import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
-import io.sarl.lang.core.Event;
+import io.sarl.lang.core.ClearableReference;
+import io.sarl.lang.core.Skill;
 import io.sarl.tests.api.Nullable;
 
 /**
@@ -95,10 +90,10 @@ public class TimeSkillTest extends AbstractJanusTest {
 		}
 
 		@Override
-		protected <S extends Capacity> S getSkill(Class<S> capacity) {
+		protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 			if (Time.class.equals(capacity))
-				return capacity.cast(this.test.skill);
-			return super.getSkill(capacity);
+				return new ClearableReference<>(this.test.skill);
+			return super.$getSkill(capacity);
 		}
 
 	}

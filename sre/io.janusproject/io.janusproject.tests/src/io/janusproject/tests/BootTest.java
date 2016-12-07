@@ -28,8 +28,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyVararg;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.times;
@@ -53,6 +52,7 @@ import com.google.inject.Provides;
 import io.janusproject.Boot;
 import io.janusproject.Boot.Exiter;
 import io.janusproject.JanusConfig;
+import io.janusproject.JanusVersion;
 import io.janusproject.kernel.Kernel;
 import io.janusproject.tests.testutils.AbstractJanusRunTest;
 import io.janusproject.tests.testutils.AbstractJanusTest;
@@ -220,13 +220,13 @@ public class BootTest {
 
 		@Test
 		public void setConsoleLogger_default() {
-			assertSame(System.err, Boot.getConsoleLogger());
+			assertSame(System.out, Boot.getConsoleLogger());
 		}
 
 		@Test
 		public void setConsoleLogger_null() {
 			Boot.setConsoleLogger(null);
-			assertSame(System.err, Boot.getConsoleLogger());
+			assertSame(System.out, Boot.getConsoleLogger());
 		}
 
 		@Test
@@ -241,7 +241,7 @@ public class BootTest {
 			PrintStream os = mock(PrintStream.class);
 			Boot.setConsoleLogger(os);
 			Boot.setConsoleLogger(null);
-			assertSame(System.err, Boot.getConsoleLogger());
+			assertSame(System.out, Boot.getConsoleLogger());
 		}
 
 	}
@@ -1010,6 +1010,24 @@ public class BootTest {
 			assertContains(Arrays.asList(freeArgs), "-x", "-y");
 			verifyZeroInteractions(this.logger);
 			verifyZeroInteractions(this.exiter);
+		}
+
+		@Test
+		public void option_version() {
+			Boot.parseCommandLine(args("-version"));
+			// The properties are null since resetProperties() is invoked for resetting the properties in
+			// the start-up function inherited from AbstractJanusTest
+			ArgumentCaptor<byte[]> array = ArgumentCaptor.forClass(byte[].class);
+			ArgumentCaptor<Integer> offset = ArgumentCaptor.forClass(Integer.class);
+			ArgumentCaptor<Integer> length = ArgumentCaptor.forClass(Integer.class);
+			verify(this.logger, times(1)).write(array.capture(), offset.capture(), length.capture());
+			final String message = new String(array.getValue(), offset.getValue(), length.getValue());
+			assertEquals("Janus: " + JanusVersion.JANUS_RELEASE_VERSION + "\nSARL specification: "
+					+ SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\n", message);
+			verify(this.logger, times(1)).flush();
+			verify(this.logger, times(1)).close();
+			verifyNoMoreInteractions(this.logger);
+			verify(this.exiter, only()).exit();
 		}
 
 	}

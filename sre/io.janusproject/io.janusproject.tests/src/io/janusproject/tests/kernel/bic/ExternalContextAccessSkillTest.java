@@ -58,9 +58,11 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpaceSpecification;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.ManualMocking;
@@ -422,10 +424,10 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		}
 
 		@Override
-		protected <S extends Capacity> S getSkill(Class<S> capacity) {
+		protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 			if (Behaviors.class.equals(capacity))
-				return capacity.cast(this.test.behaviorCapacity);
-			return capacity.cast(this.test.busCapacity);
+				return new ClearableReference(this.test.behaviorCapacity);
+			return new ClearableReference(this.test.busCapacity);
 		}
 
 	}

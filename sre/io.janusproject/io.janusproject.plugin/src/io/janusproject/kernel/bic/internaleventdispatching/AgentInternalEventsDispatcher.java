@@ -21,7 +21,6 @@
 
 package io.janusproject.kernel.bic.internaleventdispatching;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Queue;
@@ -32,11 +31,14 @@ import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
-import io.janusproject.services.executor.ExecutorService;
 import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.OutputParameter;
 import org.eclipse.xtext.xbase.lib.Pair;
 
+import io.janusproject.services.executor.ExecutorService;
+
+import io.sarl.eventdispatching.BehaviorGuardEvaluator;
+import io.sarl.eventdispatching.BehaviorGuardEvaluatorRegistry;
 import io.sarl.lang.core.DeadEvent;
 import io.sarl.lang.core.Event;
 
@@ -45,6 +47,7 @@ import io.sarl.lang.core.Event;
  * agent's behavior.
  *
  * @author $Author: ngaud$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -82,18 +85,17 @@ public class AgentInternalEventsDispatcher {
 	/**
 	 * The executor used to execute behavior methods in dedicated thread.
 	 */
-	@Inject
-	private ExecutorService executor;
+	private final ExecutorService executor;
 
 	/**
 	 * Instantiates a dispatcher.
 	 *
-	 * @param perceptGuardEvaluatorAnnotation - The annotation used to identify methods considered as the evaluator of the guard
-	 *        of a given behavior (on clause in SARL behavior) If class has a such method, it is considered as a
-	 *        {@code BehaviorGuardEvaluator}.
+	 * @param executor the executor service.
 	 */
-	public AgentInternalEventsDispatcher(Class<? extends Annotation> perceptGuardEvaluatorAnnotation) {
-		this.behaviorGuardEvaluatorRegistry = new BehaviorGuardEvaluatorRegistry(perceptGuardEvaluatorAnnotation);
+	@Inject
+	public AgentInternalEventsDispatcher(ExecutorService executor) {
+		this.executor = executor;
+		this.behaviorGuardEvaluatorRegistry = new BehaviorGuardEvaluatorRegistry();
 	}
 
 	/**
@@ -120,14 +122,20 @@ public class AgentInternalEventsDispatcher {
 	}
 
 	/**
+	 * Unregisters all {@code PerceptGuardEvaluator} methods on all registered objects.
+	 *
+	 * @throws IllegalArgumentException if the object was not previously registered.
+	 */
+	public void unregisterAll() {
+		synchronized (this.behaviorGuardEvaluatorRegistry) {
+			this.behaviorGuardEvaluatorRegistry.unregisterAll();
+		}
+	}
+
+	/**
 	 * Posts an event to all registered {@code BehaviorGuardEvaluator}, the dispatch of this event will be done synchronously.
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
-	 *
-	 * <p>
-	 * If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
-	 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
-	 * </p>
 	 *
 	 * @param event - an event to dispatch synchronously.
 	 */
@@ -149,11 +157,16 @@ public class AgentInternalEventsDispatcher {
 				throw new RuntimeException(e);
 			}
 
-		} else if (!(event instanceof DeadEvent)) {
+		}
+		/*
+		 * <p>If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
+		 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
+		 */
+		// XXX: not in the SARL specifications. Should we fire the DeadEvent?
+		/*else if (!(event instanceof DeadEvent)) {
 			// the event had no subscribers and was not itself a DeadEvent
 			immediateDispatch(new DeadEvent(event));
-		}
-
+		}*/
 	}
 
 	/**
@@ -185,10 +198,12 @@ public class AgentInternalEventsDispatcher {
 				}
 				executeAsynchronouslyBehaviorMethods(event, behaviorsMethodsToExecute);
 
-			} else if (!(event instanceof DeadEvent)) {
+			}
+			// XXX: Not in the SAR specification, should we fire the DeadEvent?
+			/*else if (!(event instanceof DeadEvent)) {
 				// the event had no subscribers and was not itself a DeadEvent
 				asyncDispatch(new DeadEvent(event));
-			}
+			}*/
 		});
 	}
 

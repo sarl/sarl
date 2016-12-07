@@ -29,6 +29,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.google.inject.Inject;
+
 import io.janusproject.JanusConfig;
 import io.janusproject.util.ListenerCollection;
 
@@ -42,7 +43,7 @@ import io.janusproject.util.ListenerCollection;
  */
 public class JdkThreadPoolExecutor extends ThreadPoolExecutor {
 
-	private static final long TIMEOUT = 60;
+	private static final long TIMEOUT = 120;
 
 	private ListenerCollection<JdkTaskListener> listeners;
 
@@ -60,7 +61,20 @@ public class JdkThreadPoolExecutor extends ThreadPoolExecutor {
 	 * @param factory - thread factory.
 	 */
 	public JdkThreadPoolExecutor(int poolSize, ThreadFactory factory) {
-		super(poolSize, Integer.MAX_VALUE, TIMEOUT, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), factory);
+		this(JanusConfig.getSystemPropertyAsInteger(JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME,
+				JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE),
+			poolSize, factory);
+	}
+
+	/**
+	 * @param minPoolSize - minimal number of threads in the pool.
+	 * @param maxPoolSize - maximal number of threads in the pool.
+	 * @param factory - thread factory.
+	 */
+	public JdkThreadPoolExecutor(int minPoolSize, int maxPoolSize, ThreadFactory factory) {
+		super(Math.max(0, Math.min(minPoolSize, maxPoolSize)),
+				Math.max(0, maxPoolSize),
+				TIMEOUT, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), factory);
 	}
 
 	/**

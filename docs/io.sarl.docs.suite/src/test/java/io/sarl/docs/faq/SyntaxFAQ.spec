@@ -25,6 +25,9 @@ import io.sarl.docs.utils.SARLParser
 import io.sarl.docs.utils.SARLSpecCreator
 import org.jnario.runner.CreateWith
 
+import static extension io.sarl.docs.utils.SpecificationTools.*
+import static extension org.junit.Assume.assumeFalse
+
 /*
  * @outline
  */
@@ -53,7 +56,7 @@ describe "SARL Syntax FAQ" {
 			fact "Can I use the same syntax as in Java for number literals?" {
 				'''		package io.sarl.docs.faq.syntax
 						agent A {
-							def action : double {,
+							def action : double {
 								var a = 123.0
 								return a
 							}
@@ -62,7 +65,7 @@ describe "SARL Syntax FAQ" {
 
 				'''		package io.sarl.docs.faq.syntax
 						agent A {
-							def action : double {,
+							def action : double {
 								var a = 0.123
 								return a
 							}
@@ -71,7 +74,7 @@ describe "SARL Syntax FAQ" {
 
 				'''		package io.sarl.docs.faq.syntax
 						agent A {
-							def action : double {,
+							def action : double {
 								var a = 123.
 								return a
 							}
@@ -80,7 +83,7 @@ describe "SARL Syntax FAQ" {
 
 				'''		package io.sarl.docs.faq.syntax
 						agent A {
-							def action : double {,
+							def action : double {
 								var a = .123
 								return a
 							}
@@ -187,6 +190,94 @@ describe "SARL Syntax FAQ" {
 				'''.parseWithError
 			}
 
+			/* In SARL, the creation of anonymous classes (interface implementation, etc.)
+			 * must be done with a closure.
+			 *
+			 * <p>Consider the definition of the following interface:
+			 * 
+			 *      interface MyInterface {
+			 *           def myfunction(parameter : Object) : void
+			 *      }
+			 * 
+			 * The on-the-fly definition and instantiation of an instance of this interface,
+			 * a.k.a. anonymous class definition in the Java community, could be written is SARL
+			 * with the following closure:
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.* 
+			 */
+			fact "How can I create instances of anonymous classes?" {
+				'''
+					var instance : MyInterface
+					instance = [ parameter | /* The code of myfunction() */ ]
+				'''.parseSuccessfully(
+						"package io.sarl.docs.faq.syntax
+						import java.util.List
+			 			interface MyInterface {
+			 				def myfunction(parameter : Object) : void
+			 			}
+						agent A {
+							def action : void {",
+						// TEXT
+						"} }"
+				)
+			}
+
+			/* In SARL, the creation of anonymous classes (interface implementation, etc.)
+			 * must be done with a closure (see previous question).
+			 *
+			 * <p>The Java-based syntax for defining an anonymous class's instance if totally forbidden
+			 * in the SARL language. It means that the following code generates a syntax error:
+			 * 
+			 * @filter(.* = '''|'''|.parseWithError.* 
+			 */
+			fact "Java syntax for anonymous classes is forbidden" {
+				'''
+					var instance = new MyInterface() {
+							def myfunction(parameter : Object) {
+								/* The code of myfunction() */
+							}
+					}
+				'''.parseWithError(
+						"package io.sarl.docs.faq.syntax
+						import java.util.List
+			 			interface MyInterface {
+			 				def myfunction(parameter : Object)
+			 			}
+						agent A {
+							def action : boolean {",
+						// TEXT
+						"} }"
+				)
+			}
+
 		}
 		
+	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
+	 * Version: %sarlspecversion%<br/>
+	 * Status: %sarlspecreleasestatus%<br/>
+	 * Release: %sarlspecreleasedate%
+	 * 
+	 * 
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%.
+	 * 
+	 * <p>Licensed under the Apache License, Version 2.0;
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
+	 *
+	 * @filter(.*) 
+	 */
+	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
+		"%sarlversion%" should startWith "%sarlspecversion%"
+		("%sarlspecreleasestatus%" == "Stable Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
+		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
+		"%copyrightdate%" should beNumber "0000";
+		("%copyrighters%".empty || "%copyrighters%".startsWith("%")) should be false
+	}
+
 }

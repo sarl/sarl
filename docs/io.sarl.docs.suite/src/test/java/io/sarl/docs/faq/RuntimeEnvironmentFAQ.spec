@@ -246,44 +246,6 @@ describe "Runtime Environment FAQ" {
 
 		/*  
 		 */
-		context "Contribute to Janus" {
-
-			/* The sources of Janus are available on
-			 * [Github](https://github.com/janus-project/janusproject).
-			 * Details for getting the source code may be found on the
-			 * [official web site of Janus](http://www.janusproject.io). 
-			 * 
-			 * @filter(.*) 
-			 */
-			fact "Where are the sources of Janus?" {
-				"https://github.com/janus-project/janusproject" should beURL _
-				"http://www.janusproject.io" should beURL _
-			}
-			
-			/* Janus Core Developers use [Github](https://github.com/janus-project/janusproject)
-			 * to manage bug tracking and project workflow. 
-			 * The issues are listed on [Github](https://github.com/janus-project/janusproject/issues). 
-			 * 
-			 * @filter(.*) 
-			 */
-			fact "How can I obtain the current issues?" {
-				"https://github.com/janus-project/janusproject" should beURL _
-				"https://github.com/janus-project/janusproject/issues" should beURL _
-			}
-
-			/* You must submit your issue on 
-			 * [this page](https://github.com/janus-project/janusproject/issues/new).
-			 * 
-			 * @filter(.*) 
-			 */
-			fact "How can I report a problem or a bug in Janus components?" {
-				"https://github.com/janus-project/janusproject/issues/new" should beURL _
-			}
-
-		}
-
-		/*  
-		 */
 		context "Runtime Behavior of Janus" {
 
 			/* __No__.
@@ -315,4 +277,72 @@ describe "Runtime Environment FAQ" {
 
 		}
 		
+		/*  
+		 */
+		context "Contribute to Janus" {
+
+			/* The sources for Janus are available inside the SARL project repository on
+			 * [Github](https://github.com/sarl/sarl/sre/io.janusproject/).
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Where are the sources for SARL?" {
+				// The checks are valid only if the macro replacements were done.
+				// The replacements are done by Maven.
+				// So, Eclipse Junit tools do not make the replacements.
+				System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+				//
+				"%website%" should beURL "!file"
+			}
+			
+			/* Janus Developers use [Github](https://github.com/sarl/sarl)
+			 * to manage bug tracking and project workflow. 
+			 * The issues are listed on [Github](https://github.com/sarl/sarl/issues). 
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "How can I find the current issues?" {
+				"https://github.com/sarl/sarl" should beURL _
+				"https://github.com/sarl/sarl/issues" should beURL _
+			}
+
+			/* You should submit your issue on 
+			 * [this page](https://github.com/sarl/sarl/issues/new).
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "How can I report a problem or a bug in Janus components?" {
+				"https://github.com/sarl/sarl/issues/new" should beURL _
+			}
+
+		}
+
+	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
+	 * Version: %sarlspecversion%<br/>
+	 * Status: %sarlspecreleasestatus%<br/>
+	 * Release: %sarlspecreleasedate%
+	 * 
+	 * 
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%.
+	 * 
+	 * <p>Licensed under the Apache License, Version 2.0;
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the [License](http://www.apache.org/licenses/LICENSE-2.0).
+	 *
+	 * @filter(.*) 
+	 */
+	fact "Legal Notice" {
+		// The checks are valid only if the macro replacements were done.
+		// The replacements are done by Maven.
+		// So, Eclipse Junit tools do not make the replacements.
+		System.getProperty("sun.java.command", "").startsWith("org.eclipse.jdt.internal.junit.").assumeFalse
+		//
+		"%sarlversion%" should startWith "%sarlspecversion%"
+		("%sarlspecreleasestatus%" == "Stable Release"
+			|| "%sarlspecreleasestatus%" == "Draft Release") should be true
+		"%sarlspecreleasedate%" should beDate "YYYY-mm-dd"
+		"%copyrightdate%" should beNumber "0000";
+		("%copyrighters%".empty || "%copyrighters%".startsWith("%")) should be false
+	}
+
 }

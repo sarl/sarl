@@ -25,6 +25,7 @@ import com.google.common.util.concurrent.Service;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
+
 import io.janusproject.kernel.services.jdk.network.NoNetworkService;
 import io.janusproject.services.network.NetworkService;
 

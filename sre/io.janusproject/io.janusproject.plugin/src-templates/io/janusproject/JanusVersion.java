@@ -19,28 +19,33 @@
  * limitations under the License.
  */
 
-package io.janusproject.kernel.bic.internaleventdispatching;
+package io.janusproject;
 
-import org.eclipse.osgi.util.NLS;
 
-/** Messages.
+/**
+ * Describes the version of the Janus platform.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 2.0.5.0
  */
 @SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.janusproject.kernel.bic.internaleventdispatching.messages"; //$NON-NLS-1$
-	public static String BehaviorGuardEvaluator_0;
-	public static String BehaviorGuardEvaluator_1;
-	public static String BehaviorGuardEvaluatorRegistry_0;
-	public static String BehaviorGuardEvaluatorRegistry_1;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+public final class JanusVersion {
+
+	/** The version number of the current release of the Janus platform.
+	 */
+	public static final String JANUS_RELEASE_VERSION = "@janusreleaseversion@"; //$NON-NLS-1$
+
+	/** Flag that indicates if the current Janus platform is a stable release.
+	 *
+	 * <p>A stable release is a platform that will be not more compiled and generated.
+	 */
+	public static final boolean IS_STABLE = @janusisstableversion@;
+
+	private JanusVersion() {
+		//
 	}
 
-	private Messages() {
-	}
 }

@@ -21,7 +21,6 @@
 
 package io.janusproject.eclipse.buildpath;
 
-import io.janusproject.eclipse.JanusEclipsePlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -32,6 +31,8 @@ import org.eclipse.jdt.core.ClasspathContainerInitializer;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+
+import io.janusproject.eclipse.JanusEclipsePlugin;
 
 /** Initializer of the classpath container dedicated to the Janus platform.
  *

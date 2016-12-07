@@ -393,7 +393,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					41, 5,
-					"The behavior B1 can either be abstract or final, not both");
+					"The definition of B1 can either be abstract or final, not both");
 		}
 
 		@Test
@@ -485,7 +485,7 @@ public class BehaviorParsingTest {
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					39, 7,
-					"The behavior B1 can only set one of public / package / protected / private");
+					"The definition of B1 can only set one of public / package / protected / private");
 		}
 
 	}

@@ -21,9 +21,10 @@
 
 package io.janusproject.util;
 
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
+
 import io.janusproject.kernel.services.jdk.logging.StandardLogService.LoggerCallerProvider;
 import io.janusproject.services.logging.LogService;
-import org.arakhne.afc.vmutil.ClassLoaderFinder;
 
 /**
  * Uitility for finding a class.

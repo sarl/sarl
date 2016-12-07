@@ -68,6 +68,31 @@
 							</replacements>
 						</configuration>
 					</execution>
+					<execution>
+						<id>generate-javaversion-class</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<basedir>${project.basedir}/src-templates</basedir>
+							<outputDir>../src</outputDir>
+							<includes>
+								<include>**/*.java</include>
+							</includes>
+							<replacements>
+								<replacement>
+									<token>@janusreleaseversion@</token>
+									<value>${janus.release_version}</value>
+								</replacement>
+								<replacement>
+									<token>@janusisstableversion@</token>
+									<value>${sarl.is_stable_version}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 

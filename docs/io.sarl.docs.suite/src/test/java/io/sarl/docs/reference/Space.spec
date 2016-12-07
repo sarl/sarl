@@ -94,7 +94,7 @@ describe "Space Reference" {
 			 * the spaces:
 			 * 
 			 *      interface Space {
-			 * 		    def getID : SpaceID
+			 * 		    def getSpaceID : SpaceID
 			 * 		    def getParticipants : SynchronizedSet<UUID>
 			 *      }
 			 *
@@ -113,8 +113,9 @@ describe "Space Reference" {
 				//
 				typeof(Space) => [
 					it should extend _
-					it should haveNbMembers 2
-					it should haveMethod "getID : io.sarl.lang.core.SpaceID"
+					it should haveNbMembers(3)
+					it should haveDeprecatedMethod "getID : io.sarl.lang.core.SpaceID"
+					it should haveMethod "getSpaceID : io.sarl.lang.core.SpaceID"
 					it should haveMethod "getParticipants : io.sarl.lang.util.SynchronizedSet"
 				]
 			}
@@ -395,7 +396,7 @@ describe "Space Reference" {
 	 * Release: %sarlspecreleasedate%
 	 * 
 	 * 
-	 * <p>Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%.
 	 * 
 	 * <p>Licensed under the Apache License, Version 2.0;
 	 * you may not use this file except in compliance with the License.

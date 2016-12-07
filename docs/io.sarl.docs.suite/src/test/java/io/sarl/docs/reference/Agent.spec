@@ -470,7 +470,6 @@ describe "Agent Reference"{
 				 *     </ul></li>
 				 * <li>`abstract`: the agent is abstract and cannot be instanced.</li>
 				 * <li>`final`: avoid to be derived.</li>
-			 	 * <li>`strictfp`: avoid the methods of the agent to use intermediate floating number formats.</li>
 				 * </ul>
 				 *
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -484,8 +483,6 @@ describe "Agent Reference"{
 						abstract agent Example3 {
 						}
 						final agent Example4 {
-						}
-						strictfp agent Example5 {
 						}
 					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.ar",
@@ -502,8 +499,6 @@ describe "Agent Reference"{
 				 *     <li>`package`: the field is accessible only within the same package of its agent;</li>
 				 *     <li>`private`: the field is accessible only within its agent.</li>
 				 *     </ul></li>
-				 * <li>`transient`: the field is never serialized.</li>
-				 * <li>`volatile`: the field is modified by different threads. It is never cached thread-locally, and synchronized.</li>
 				 * </ul>
 				 *
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
@@ -513,8 +508,6 @@ describe "Agent Reference"{
 						protected var example1 : Object;
 						package var example2 : Object;
 						private var example3 : Object;
-						transient var example5 : Object;
-						volatile var example6 : Object;
 					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.ar
 						public agent Agent1 {",
@@ -533,7 +526,6 @@ describe "Agent Reference"{
 				 * <li>`dispatch`: the method provides an implementation for the dispatch method mechanism.</li>
 				 * <li>`final`: the method cannot be overridden in derived classes.</li>
 				 * <li>`static`: the method is a class method, not an instance method.</li>
-				 * <li>`strictfp`: avoid the method to use intermediate floating number formats.</li>
 				 * <li>`synchronized`: the method is synchronized on the class instance.</li>
 				 * </ul>
 				 *
@@ -553,13 +545,11 @@ describe "Agent Reference"{
 						final def example5 { }
 						// Static function
 						static def example6 { }
-						// Function with strict floating point management
-						strictfp def example7 { }
 						// Synchronized function
-						synchronized def example8 { }
+						synchronized def example7 { }
 						// Dispatch functions
-						dispatch def example9(p : Integer) { }
-						dispatch def example9(p : Float) { }
+						dispatch def example8(p : Integer) { }
+						dispatch def example8(p : Float) { }
 					'''.parseSuccessfully(
 						"package io.sarl.docs.reference.ar
 						abstract agent Agent1 {",
@@ -1493,7 +1483,7 @@ describe "Agent Reference"{
 	 * Release: %sarlspecreleasedate%
 	 * 
 	 * 
-	 * <p>Copyright &copy; %copyrightdate% %copyrighters%. All rights reserved.
+	 * <p>Copyright &copy; %copyrightdate% %copyrighters%.
 	 * 
 	 * <p>Licensed under the Apache License, Version 2.0;
 	 * you may not use this file except in compliance with the License.

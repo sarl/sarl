@@ -59,6 +59,7 @@ import org.junit.ComparisonFailure;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.lang.SARLConfig;
+import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.WorkbenchTestHelper;
 import io.sarl.tests.api.WorkbenchTestHelper.ProjectCreator;

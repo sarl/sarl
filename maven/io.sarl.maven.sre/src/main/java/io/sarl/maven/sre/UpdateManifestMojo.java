@@ -25,7 +25,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
@@ -37,6 +39,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.codehaus.plexus.util.IOUtil;
@@ -52,22 +55,34 @@ import org.codehaus.plexus.util.IOUtil;
 		requiresDependencyResolution = ResolutionScope.COMPILE)
 public class UpdateManifestMojo extends AbstractSREMojo {
 
+	/** List of the final names that correspond to the archives to update.
+	 */
+	@Parameter(required = false)
+	private List<String> archiveFinalNames;
+
 	@Override
 	protected void executeMojo() throws MojoExecutionException, MojoFailureException {
 		final Build build = getMavenProject().getBuild();
-		final String finalName = build.getFinalName();
 		final String baseDir = build.getDirectory();
-		final File jarFile = new File(baseDir, finalName  + ".jar"); //$NON-NLS-1$
 
 		final Manifest sreManifest = createSREManifest();
-		final Manifest jarManifest = mergeManifests(jarFile, sreManifest);
-		final File outputFile = createTempArchive(jarFile, jarManifest);
-		try {
-			FileSystem.delete(jarFile);
-			FileSystem.copy(outputFile, jarFile);
-			FileSystem.delete(outputFile);
-		} catch (IOException exception) {
-			throw new MojoFailureException(exception.getLocalizedMessage(), exception);
+
+		if (this.archiveFinalNames == null || this.archiveFinalNames.isEmpty()) {
+			this.archiveFinalNames = Collections.singletonList(build.getFinalName());
+		}
+
+		for (final String finalName : this.archiveFinalNames) {
+			final File jarFile = new File(baseDir, finalName  + ".jar"); //$NON-NLS-1$
+			getLog().info("Updating the manifest of " + jarFile.getName()); //$NON-NLS-1$
+			final Manifest jarManifest = mergeManifests(jarFile, sreManifest);
+			final File outputFile = createTempArchive(jarFile, jarManifest);
+			try {
+				FileSystem.delete(jarFile);
+				FileSystem.copy(outputFile, jarFile);
+				FileSystem.delete(outputFile);
+			} catch (IOException exception) {
+				throw new MojoFailureException(exception.getLocalizedMessage(), exception);
+			}
 		}
 	}
 
