@@ -21,12 +21,11 @@
 
 package io.janusproject.kernel.bic;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 
 import io.janusproject.kernel.Kernel;
 import io.janusproject.services.contextspace.ContextSpaceService;
@@ -80,64 +79,50 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 	private ContextSpaceService contextRepository;
 
 	@Override
-	public Map<Class<? extends Capacity>, Skill> getBuiltinCapacities(Agent agent) {
-		final UUID innerContextID = agent.getID();
-		final SpaceID innerSpaceID = new SpaceID(innerContextID, UUID.randomUUID(), OpenEventSpaceSpecification.class);
-		final Address agentAddressInInnerSpace = new Address(innerSpaceID, agent.getID());
-		final Kernel k = this.injector.getInstance(Kernel.class);
+	public void builtinCapacities(Agent agent, Procedure2<Class<? extends Capacity>, Skill> skillMappingCallback) {
+		if (skillMappingCallback != null) {
+			final UUID innerContextID = agent.getID();
+			final SpaceID innerSpaceID = new SpaceID(innerContextID, UUID.randomUUID(), OpenEventSpaceSpecification.class);
+			final Address agentAddressInInnerSpace = new Address(innerSpaceID, agent.getID());
+			final Kernel k = this.injector.getInstance(Kernel.class);
 
-		final InternalEventBusSkill eventBusSkill = new InternalEventBusSkill(agent, agentAddressInInnerSpace);
-		final InnerContextSkill innerContextSkill = new InnerContextSkill(agent, agentAddressInInnerSpace);
-		final BehaviorsSkill behaviorSkill = new BehaviorsSkill(agent, agentAddressInInnerSpace);
-		final LifecycleSkill lifecycleSkill = new LifecycleSkill(agent);
-		final ExternalContextAccessSkill externalContextSkill = new ExternalContextAccessSkill(agent);
-		final DefaultContextInteractionsSkill interactionSkill = new DefaultContextInteractionsSkill(agent,
-				this.contextRepository.getContext(agent.getParentID()));
-		final SchedulesSkill scheduleSkill = new SchedulesSkill(agent);
-		final LoggingSkill loggingSkill = new LoggingSkill(agent);
-		final TimeSkill timeSkill = new TimeSkill(agent);
+			final InternalEventBusSkill eventBusSkill = new InternalEventBusSkill(agent, agentAddressInInnerSpace);
+			final InnerContextSkill innerContextSkill = new InnerContextSkill(agent, agentAddressInInnerSpace);
+			final BehaviorsSkill behaviorSkill = new BehaviorsSkill(agent, agentAddressInInnerSpace);
+			final LifecycleSkill lifecycleSkill = new LifecycleSkill(agent);
+			final ExternalContextAccessSkill externalContextSkill = new ExternalContextAccessSkill(agent);
+			final DefaultContextInteractionsSkill interactionSkill = new DefaultContextInteractionsSkill(agent,
+					this.contextRepository.getContext(agent.getParentID()));
+			final SchedulesSkill scheduleSkill = new SchedulesSkill(agent);
+			final LoggingSkill loggingSkill = new LoggingSkill(agent);
+			final TimeSkill timeSkill = new TimeSkill(agent);
 
-		this.injector.injectMembers(eventBusSkill);
-		this.injector.injectMembers(innerContextSkill);
-		this.injector.injectMembers(behaviorSkill);
-		this.injector.injectMembers(lifecycleSkill);
-		this.injector.injectMembers(externalContextSkill);
-		this.injector.injectMembers(interactionSkill);
-		this.injector.injectMembers(scheduleSkill);
-		this.injector.injectMembers(loggingSkill);
-		this.injector.injectMembers(timeSkill);
+			this.injector.injectMembers(eventBusSkill);
+			this.injector.injectMembers(innerContextSkill);
+			this.injector.injectMembers(behaviorSkill);
+			this.injector.injectMembers(lifecycleSkill);
+			this.injector.injectMembers(externalContextSkill);
+			this.injector.injectMembers(interactionSkill);
+			this.injector.injectMembers(scheduleSkill);
+			this.injector.injectMembers(loggingSkill);
+			this.injector.injectMembers(timeSkill);
 
-		final MicroKernelSkill microKernelSkill = new MicroKernelSkill(agent, k);
+			final MicroKernelSkill microKernelSkill = new MicroKernelSkill(agent, k);
 
-		// no need to be synchronized
-		final Map<Class<? extends Capacity>, Skill> result = new HashMap<>();
-		result.put(MicroKernelCapacity.class, microKernelSkill);
-		result.put(InternalEventBusCapacity.class, eventBusSkill);
-		result.put(InnerContextAccess.class, innerContextSkill);
-		result.put(Behaviors.class, behaviorSkill);
-		result.put(Lifecycle.class, lifecycleSkill);
-		result.put(ExternalContextAccess.class, externalContextSkill);
-		result.put(DefaultContextInteractions.class, interactionSkill);
-		result.put(Schedules.class, scheduleSkill);
-		result.put(Logging.class, loggingSkill);
-		result.put(Time.class, timeSkill);
+			skillMappingCallback.apply(MicroKernelCapacity.class, microKernelSkill);
+			skillMappingCallback.apply(InternalEventBusCapacity.class, eventBusSkill);
+			skillMappingCallback.apply(InnerContextAccess.class, innerContextSkill);
+			skillMappingCallback.apply(Behaviors.class, behaviorSkill);
+			skillMappingCallback.apply(Lifecycle.class, lifecycleSkill);
+			skillMappingCallback.apply(ExternalContextAccess.class, externalContextSkill);
+			skillMappingCallback.apply(DefaultContextInteractions.class, interactionSkill);
+			skillMappingCallback.apply(Schedules.class, scheduleSkill);
+			skillMappingCallback.apply(Logging.class, loggingSkill);
+			skillMappingCallback.apply(Time.class, timeSkill);
 
-		this.spawnService.addSpawnServiceListener(agent.getID(),
-				new AgentLifeCycleSupport(agent.getID(), this.spawnService, eventBusSkill));
-
-		// Test if all the BICs are installed.
-		assert result.get(Behaviors.class) != null;
-		assert result.get(DefaultContextInteractions.class) != null;
-		assert result.get(InternalEventBusCapacity.class) != null;
-		assert result.get(ExternalContextAccess.class) != null;
-		assert result.get(InnerContextAccess.class) != null;
-		assert result.get(Lifecycle.class) != null;
-		assert result.get(Schedules.class) != null;
-		assert result.get(MicroKernelCapacity.class) != null;
-		assert result.get(Logging.class) != null;
-		assert result.get(Time.class) != null;
-
-		return result;
+			this.spawnService.addSpawnServiceListener(agent.getID(),
+					new AgentLifeCycleSupport(agent.getID(), this.spawnService, eventBusSkill));
+		}
 	}
 
 }

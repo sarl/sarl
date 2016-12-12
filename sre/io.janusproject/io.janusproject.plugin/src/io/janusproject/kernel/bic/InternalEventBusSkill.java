@@ -33,6 +33,7 @@ import com.google.common.collect.Queues;
 import com.google.inject.Inject;
 
 import io.janusproject.kernel.bic.internaleventdispatching.AgentInternalEventsDispatcher;
+import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.services.spawn.SpawnService.AgentKillException;
@@ -159,14 +160,17 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 				this.state.set(OwnerState.RUNNING);
 
 			} catch (Exception e) {
-				// Log the exception
-				final Logging loggingCapacity = getSkill(Logging.class);
-				if (loggingCapacity != null) {
-					loggingCapacity.error(Messages.InternalEventBusSkill_3, e);
-				} else {
-					final LogRecord record = new LogRecord(Level.SEVERE, Messages.InternalEventBusSkill_3);
-			        record.setThrown(Throwables.getRootCause(e));
-					this.logger.log(record);
+				final Throwable cause = Throwables.getRootCause(e);
+				if (!(cause instanceof ChuckNorrisException)) {
+					// Log the exception
+					final Logging loggingCapacity = getSkill(Logging.class);
+					if (loggingCapacity != null) {
+						loggingCapacity.error(Messages.InternalEventBusSkill_3, cause);
+					} else {
+						final LogRecord record = new LogRecord(Level.SEVERE, Messages.InternalEventBusSkill_3);
+				        record.setThrown(cause);
+						this.logger.log(record);
+					}
 				}
 				// If we have an exception within the agent's initialization, we kill the agent.
 				this.state.set(OwnerState.RUNNING);

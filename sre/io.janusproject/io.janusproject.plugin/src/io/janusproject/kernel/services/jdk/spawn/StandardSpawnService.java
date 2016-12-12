@@ -23,6 +23,7 @@ package io.janusproject.kernel.services.jdk.spawn;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +48,7 @@ import com.google.inject.Singleton;
 import io.janusproject.kernel.bic.BuiltinCapacityUtil;
 import io.janusproject.services.AbstractDependentService;
 import io.janusproject.services.contextspace.ContextSpaceService;
+import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.spawn.KernelAgentSpawnListener;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.services.spawn.SpawnServiceListener;
@@ -59,6 +61,7 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.EventSpace;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.sarlspecification.SarlSpecificationChecker;
@@ -76,6 +79,23 @@ import io.sarl.util.Collections3;
 @Singleton
 public class StandardSpawnService extends AbstractDependentService implements SpawnService {
 
+	/** Maximum number of agents to be launch by a single thread.
+	 */
+	private static final int CREATION_POOL_SIZE = 128;
+
+	/** Static reference to the private function for setting the build-in capacities.
+	 */
+	private static final Method MAP_CAPACITY_FUNCTION;
+
+	static {
+		try {
+			MAP_CAPACITY_FUNCTION = Agent.class.getDeclaredMethod("mapCapacity", Class.class, Skill.class); //$NON-NLS-1$
+			MAP_CAPACITY_FUNCTION.setAccessible(true);
+		} catch (NoSuchMethodException | SecurityException e) {
+			throw new Error(Messages.StandardSpawnService_4, e);
+		}
+	}
+
 	private final ListenerCollection<?> globalListeners = new ListenerCollection<>();
 
 	// TODO The use of two maps is slowly the platform
@@ -87,6 +107,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	private final Injector injector;
 
 	private final SarlSpecificationChecker sarlSpecificationChecker;
+
+	@Inject
+	private ExecutorService executor;
+
+	@Inject
+	private BuiltinCapacitiesProvider builtinCapacityProvider;
 
 	/**
 	 * Constructs the service with the given (injected) injector.
@@ -124,19 +150,41 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 			try {
 				// Check if the version of the SARL agent class is compatible.
 				ensureSarlSpecificationVersion(agentClazz);
-				final JustInTimeAgentInjectionModule agentInjectionModule = new JustInTimeAgentInjectionModule(this.injector, agentClazz,
+				// Create the shared injector that is also able to create the agent instance.
+				final JustInTimeAgentInjectionModule agentInjectionModule = new JustInTimeAgentInjectionModule(agentClazz,
 						parent.getID(), nbAgents > 1 ? null : agentID);
 				final Injector agentInjector = this.injector.createChildInjector(agentInjectionModule);
+				// Create the list of the spawned agents during this function execution
 				final List<Agent> agents = new ArrayList<>(nbAgents);
-				for (int i = 0; i < nbAgents; ++i) {
+				// Create the block of code for creating a single agent
+				final Runnable agentCreator = () -> {
 					final Agent agent = agentInjector.getInstance(Agent.class);
 					assert agent != null;
+					// Create the builtin capacities / skill installation will be done later in the life cycle.
+					StandardSpawnService.this.builtinCapacityProvider.builtinCapacities(agent, (capacity, skill) -> {
+						try {
+							MAP_CAPACITY_FUNCTION.invoke(agent, capacity, skill);
+						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+							throw new Error(Messages.StandardSpawnService_5, e);
+						}
+					});
+					// Add the agent in the system
 					synchronized (this.agents) {
 						this.agents.put(agent.getID(), agent);
 					}
-					agents.add(agent);
+					synchronized (agents) {
+						agents.add(agent);
+					}
 					fireAgentSpawnedInAgent(parent, agent, params);
+				};
+				// Create a single agent with a sequential call; or multiple agents in parallel
+				if (nbAgents > 1) {
+					this.executor.executeMultipleTimesInParallelAndWaitForTermination(
+							agentCreator, nbAgents, CREATION_POOL_SIZE);
+				} else {
+					agentCreator.run();
 				}
+				// Fire the general spawning event
 				fireAgentSpawnedOutsideAgent(parent, agentClazz, agents, params);
 				return Collections.unmodifiableList(Lists.transform(agents, (it) -> it.getID()));
 			} catch (Throwable e) {
@@ -186,8 +234,9 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 			list = this.agentLifecycleListeners.get(agent.getID());
 		}
 		if (list != null) {
+			final List<Agent> singleton = Collections.singletonList(agent);
 			for (final SpawnServiceListener l : list.getListeners(SpawnServiceListener.class)) {
-				l.agentSpawned(context, Collections.singletonList(agent), initializationParameters);
+				l.agentSpawned(context, singleton, initializationParameters);
 			}
 		}
 	}
@@ -306,14 +355,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	@Override
 	public void addSpawnServiceListener(UUID id, SpawnServiceListener agentLifecycleListener) {
 		synchronized (this.agentLifecycleListeners) {
-			this.agentLifecycleListeners.compute(id, (key, value) -> {
-				ListenerCollection<SpawnServiceListener> list = value;
-				if (list == null) {
-					list = new ListenerCollection<>();
-				}
-				list.add(SpawnServiceListener.class, agentLifecycleListener);
-				return value;
-			});
+			ListenerCollection<SpawnServiceListener> listeners = this.agentLifecycleListeners.get(id);
+			if (listeners == null) {
+				listeners = new ListenerCollection<>();
+				this.agentLifecycleListeners.put(id, listeners);
+			}
+			listeners.add(SpawnServiceListener.class, agentLifecycleListener);
 		}
 	}
 
@@ -325,7 +372,13 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	@Override
 	public void removeSpawnServiceListener(UUID id, SpawnServiceListener agentLifecycleListener) {
 		synchronized (this.agentLifecycleListeners) {
-			this.agentLifecycleListeners.remove(id, agentLifecycleListener);
+			final ListenerCollection<SpawnServiceListener> listeners = this.agentLifecycleListeners.get(id);
+			if (listeners != null) {
+				listeners.remove(SpawnServiceListener.class, agentLifecycleListener);
+				if (listeners.isEmpty()) {
+					this.agentLifecycleListeners.remove(id);
+				}
+			}
 		}
 	}
 
@@ -511,22 +564,42 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 */
 	private static class JustInTimeAgentInjectionModule extends AbstractModule implements Provider<Agent> {
 
-		private final Injector injector;
-
 		private final Class<? extends Agent> agentType;
+
+		private final Constructor<? extends Agent> constructor1;
+
+		private final Constructor<? extends Agent> constructor2;
 
 		private final UUID parentID;
 
 		private final UUID agentID;
 
-		JustInTimeAgentInjectionModule(Injector injector, Class<? extends Agent> agentType, UUID parentID, UUID agentID) {
-			assert injector != null;
+		JustInTimeAgentInjectionModule(Class<? extends Agent> agentType, UUID parentID, UUID agentID) {
 			assert agentType != null;
 			assert parentID != null;
-			this.injector = injector;
 			this.agentType = agentType;
 			this.parentID = parentID;
 			this.agentID = agentID;
+			Constructor<? extends Agent> cons;
+			Exception e1 = null;
+			try {
+				cons = this.agentType.getConstructor(UUID.class, UUID.class);
+			} catch (NoSuchMethodException | SecurityException | IllegalArgumentException exception) {
+				cons = null;
+				e1 = exception;
+			}
+			this.constructor1 = cons;
+			Exception e2 = null;
+			try {
+				cons = this.agentType.getConstructor(BuiltinCapacitiesProvider.class, UUID.class, UUID.class);
+			} catch (NoSuchMethodException | SecurityException | IllegalArgumentException exception) {
+				cons = null;
+				e2 = exception;
+			}
+			this.constructor2 = cons;
+			if (this.constructor1 == null && this.constructor2 == null) {
+				throw new CannotSpawnException(this.agentType, e1 == null ? e2 : e1);
+			}
 		}
 
 		@Override
@@ -536,13 +609,13 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		@Override
 		public Agent get() {
+			assert this.constructor1 != null || this.constructor2 != null;
 			try {
-				final BuiltinCapacitiesProvider capacityProvider = this.injector.getInstance(BuiltinCapacitiesProvider.class);
-				final Constructor<? extends Agent> constructor = this.agentType.getConstructor(BuiltinCapacitiesProvider.class, UUID.class,
-						UUID.class);
-				return constructor.newInstance(capacityProvider, this.parentID, this.agentID);
-			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException exception) {
+				if (this.constructor1 != null) {
+					return this.constructor1.newInstance(this.parentID, this.agentID);
+				}
+				return this.constructor2.newInstance(null, this.parentID, this.agentID);
+			} catch (InstantiationException | IllegalAccessException | InvocationTargetException exception) {
 				throw new CannotSpawnException(this.agentType, exception);
 			}
 		}

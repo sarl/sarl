@@ -1146,8 +1146,8 @@ public class BootTest {
 		@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 		public static class RCAgent extends TestingAgent {
 
-			public RCAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
-				super(provider, parentID, agentID);
+			public RCAgent(UUID parentID, UUID agentID) {
+				super(parentID, agentID);
 			}
 
 			@Override

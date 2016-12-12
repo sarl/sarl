@@ -21,8 +21,10 @@
 
 package io.sarl.lang.core;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 
@@ -45,6 +47,22 @@ public interface BuiltinCapacitiesProvider {
 	 * @return the built-in capacities for the given agent.
 	 */
 	@Pure
-	Map<Class<? extends Capacity>, Skill> getBuiltinCapacities(Agent agent);
+	default Map<Class<? extends Capacity>, Skill> getBuiltinCapacities(Agent agent) {
+		final Map<Class<? extends Capacity>, Skill> result = new HashMap<>();
+		builtinCapacities(agent, (capacity, skill) -> {
+			result.put(capacity, skill);
+		});
+		return result;
+	}
+
+	/** Applies the given callback on the built-in capacities for the given agent.
+	 *
+	 * @param agent - the agent for which the built-in capacities must be retreived.
+	 * @param skillMappingCallback - the callback function for mapping a capacity and a skill.
+	 *     The first argument is the agent. The second
+	 *     argument is the builtin capacity. The third argument is the skill instance.
+	 */
+	@Pure
+	void builtinCapacities(Agent agent, Procedure2<Class<? extends Capacity>, Skill> skillMappingCallback);
 
 }

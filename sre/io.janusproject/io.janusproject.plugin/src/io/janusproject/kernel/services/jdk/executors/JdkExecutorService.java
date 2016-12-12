@@ -22,12 +22,14 @@
 package io.janusproject.kernel.services.jdk.executors;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.common.util.concurrent.Service;
 import com.google.inject.Inject;
@@ -35,6 +37,7 @@ import com.google.inject.Singleton;
 
 import io.janusproject.JanusConfig;
 import io.janusproject.services.AbstractDependentService;
+import io.janusproject.services.executor.ChuckNorrisException;
 
 /**
  * Platform service that supports the execution resources.
@@ -127,6 +130,71 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	@Override
 	public void execute(Runnable task) {
 		this.exec.execute(task);
+	}
+
+	@Override
+	public int executeMultipleTimesInParallelAndWaitForTermination(Runnable task, int nbExecutions, int runGroupSize) throws InterruptedException {
+		assert runGroupSize >= 1;
+		if (nbExecutions > 1) {
+			final AtomicInteger errors = new AtomicInteger();
+			final CountDownLatch doneSignal = new CountDownLatch(nbExecutions);
+			if (runGroupSize > 1) {
+				final int numberOfGroups = nbExecutions / runGroupSize;
+				final int rest = nbExecutions - numberOfGroups * runGroupSize;
+				for (int i = 0; i < numberOfGroups; ++i) {
+					this.exec.execute(() -> {
+						for (int j = 0; j < runGroupSize; ++j) {
+							try {
+								task.run();
+							} catch (ChuckNorrisException e) {
+								//
+							} catch (Throwable e) {
+								errors.incrementAndGet();
+							} finally {
+								doneSignal.countDown();
+							}
+						}
+					});
+				}
+				if (rest > 1) {
+					this.exec.execute(() -> {
+						for (int j = 0; j < rest; ++j) {
+							try {
+								task.run();
+							} catch (ChuckNorrisException e) {
+								//
+							} catch (Throwable e) {
+								errors.incrementAndGet();
+							} finally {
+								doneSignal.countDown();
+							}
+						}
+					});
+				}
+			} else {
+				for (int i = 0; i < nbExecutions; ++i) {
+					this.exec.execute(() -> {
+						try {
+							task.run();
+						} catch (ChuckNorrisException e) {
+							//
+						} catch (Throwable e) {
+							errors.incrementAndGet();
+						} finally {
+							doneSignal.countDown();
+						}
+					});
+				}
+			}
+			// Wait for all creators to complete before continuing
+			doneSignal.await();
+			return nbExecutions - errors.get();
+		}
+		if (nbExecutions == 1) {
+			task.run();
+			return 1;
+		}
+		return 0;
 	}
 
 	@Override

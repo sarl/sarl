@@ -55,6 +55,37 @@ public interface ExecutorService extends DependentService {
 	void execute(Runnable task);
 
 	/**
+	 * Submit a single task multiple times to the executor service.
+	 *
+	 * <p>The same task instance will be submit to the executor service.
+	 *
+	 * <p>{@code runGroupSize} indicates how many number of times the task will be run on
+	 * a single thread.
+	 *
+	 * <p>This function is equivalent to:
+	 * <code><pre>
+	 * for(i in [ 1 .. (nbExecutions/runGroupSize) ])
+	 * do
+	 *     execute({
+	 *         for(j in [1..runGroupSize]) {
+	 *            task.run
+	 *         }
+	 *     })
+	 * done
+	 * </pre></code>
+	 *
+	 * <p>Caution: if a {@code task} is failing, the exception will be output as an uncaught exception.
+	 *
+	 * @param task - the task to submit.
+	 * @param nbExecutions - the number of times the task must be run, usually greater than 1.
+	 * @param runGroupSize - the number of tasks to be run by a single thread.
+	 * @return the number of successful runs.
+	 * @throws InterruptedException when the function cannot wait for task termination.
+	 * @since 0.5
+	 */
+	int executeMultipleTimesInParallelAndWaitForTermination(Runnable task, int nbExecutions, int runGroupSize) throws InterruptedException;
+
+	/**
 	 * Submit a task to the executor service.
 	 *
 	 * @param task - the task to submit.

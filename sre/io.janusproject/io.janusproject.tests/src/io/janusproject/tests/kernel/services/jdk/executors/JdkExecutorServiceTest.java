@@ -19,7 +19,7 @@
  */
 package io.janusproject.tests.kernel.services.jdk.executors;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
@@ -29,15 +29,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import io.janusproject.kernel.services.jdk.executors.JdkExecutorService;
-import io.janusproject.tests.testutils.AbstractDependentServiceTest;
-import io.janusproject.tests.testutils.AvoidServiceStartForTest;
-import io.janusproject.tests.testutils.StartServiceForTest;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.Times;
+
+import io.janusproject.kernel.services.jdk.executors.JdkExecutorService;
+import io.janusproject.tests.testutils.AbstractDependentServiceTest;
+import io.janusproject.tests.testutils.AvoidServiceStartForTest;
+import io.janusproject.tests.testutils.StartServiceForTest;
 
 /**
  * @author $Author: sgalland$
@@ -195,6 +196,128 @@ public final class JdkExecutorServiceTest extends AbstractDependentServiceTest<J
 		Mockito.verify(this.executorService, new Times(1)).shutdown();
 		Mockito.verify(this.scheduledExecutorService, new Times(1)).shutdownNow();
 		Mockito.verify(this.executorService, new Times(1)).shutdownNow();
+	}
+
+	@Test
+	public void execute() {
+		this.service.execute(this.runnable);
+		ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+		Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
+		assertSame(this.runnable, argument.getValue());
+	}
+
+	private void initExecutor() {
+		Mockito.doAnswer((it) -> {
+			Object arg = it.getArgument(0);
+			Runnable run = (Runnable) arg;
+			run.run();
+			return null;
+		}).when(this.executorService).execute(Mockito.any());
+	}
+
+	@Test
+	public void executeMultipleTimesInParallelAndWaitForTermination_0_10() throws Exception {
+		// Force the execution of the original method
+		initExecutor();
+		//
+		int nbRuns = this.service.executeMultipleTimesInParallelAndWaitForTermination(this.runnable, 0, 10);
+		assertEquals(0, nbRuns);
+		ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+		Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
+		Mockito.verify(this.runnable, Mockito.never()).run();
+	}
+
+	@Test
+	public void executeMultipleTimesInParallelAndWaitForTermination_1_10() throws Exception {
+		// Force the execution of the original method
+		initExecutor();
+		//
+		int nbRuns = this.service.executeMultipleTimesInParallelAndWaitForTermination(this.runnable, 1, 10);
+		assertEquals(1, nbRuns);
+		ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+		Mockito.verify(this.runnable, Mockito.only()).run();
+	}
+
+	@Test
+	public void executeMultipleTimesInParallelAndWaitForTermination_5_10() throws Exception {
+		// Force the execution of the original method
+		initExecutor();
+		//
+		int nbRuns = this.service.executeMultipleTimesInParallelAndWaitForTermination(this.runnable, 5, 10);
+		assertEquals(5, nbRuns);
+		ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+		Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
+		for (Object value : argument.getAllValues()) {
+			assertNotNull(value);
+		}
+		Mockito.verify(this.runnable, Mockito.times(5)).run();
+	}
+
+	@Test
+	public void executeMultipleTimesInParallelAndWaitForTermination_12_10() throws Exception {
+		// Force the execution of the original method
+		initExecutor();
+		//
+		int nbRuns = this.service.executeMultipleTimesInParallelAndWaitForTermination(this.runnable, 12, 10);
+		assertEquals(12, nbRuns);
+		ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+		Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
+		for (Object value : argument.getAllValues()) {
+			assertNotNull(value);
+		}
+		Mockito.verify(this.runnable, Mockito.times(12)).run();
+	}
+
+	@Test
+	public void executeMultipleTimesInParallelAndWaitForTermination_0_1() throws Exception {
+		// Force the execution of the original method
+		initExecutor();
+		//
+		int nbRuns = this.service.executeMultipleTimesInParallelAndWaitForTermination(this.runnable, 0, 1);
+		assertEquals(0, nbRuns);
+		ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+		Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
+		Mockito.verify(this.runnable, Mockito.never()).run();
+	}
+
+	@Test
+	public void executeMultipleTimesInParallelAndWaitForTermination_1_1() throws Exception {
+		// Force the execution of the original method
+		initExecutor();
+		//
+		int nbRuns = this.service.executeMultipleTimesInParallelAndWaitForTermination(this.runnable, 1, 1);
+		assertEquals(1, nbRuns);
+		Mockito.verify(this.runnable, Mockito.only()).run();
+	}
+
+	@Test
+	public void executeMultipleTimesInParallelAndWaitForTermination_5_1() throws Exception {
+		// Force the execution of the original method
+		initExecutor();
+		//
+		int nbRuns = this.service.executeMultipleTimesInParallelAndWaitForTermination(this.runnable, 5, 1);
+		assertEquals(5, nbRuns);
+		ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+		Mockito.verify(this.executorService, Mockito.times(5)).execute(argument.capture());
+		for (Object value : argument.getAllValues()) {
+			assertNotNull(value);
+		}
+		Mockito.verify(this.runnable, Mockito.times(5)).run();
+	}
+
+	@Test
+	public void executeMultipleTimesInParallelAndWaitForTermination_12_1() throws Exception {
+		// Force the execution of the original method
+		initExecutor();
+		//
+		int nbRuns = this.service.executeMultipleTimesInParallelAndWaitForTermination(this.runnable, 12, 1);
+		assertEquals(12, nbRuns);
+		ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+		Mockito.verify(this.executorService, Mockito.times(12)).execute(argument.capture());
+		for (Object value : argument.getAllValues()) {
+			assertNotNull(value);
+		}
+		Mockito.verify(this.runnable, Mockito.times(12)).run();
 	}
 
 }

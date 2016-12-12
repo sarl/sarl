@@ -376,6 +376,14 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		}
 
 		/**
+		 * @param parentID - the identifier of the parent's agent.
+		 * @param agentID - the identifier of the agent.
+		 */
+		public TestingAgent(UUID parentID, UUID agentID) {
+			super(parentID, agentID);
+		}
+
+		/**
 		 * Add a result.
 		 * 
 		 * @param result - the result.
@@ -412,8 +420,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			this.results = (List<Object>) occurrence.parameters[0];
 			try {
 				if (runAgentTest()) {
-					getSkill(Schedules.class).in(1000, (it) -> 
-						getSkill(Lifecycle.class).killMe());
+					getSkill(Lifecycle.class).killMe();
 				}
 			} catch (Throwable exception) {
 				if (!(exception instanceof ChuckNorrisException)) {
@@ -426,7 +433,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		/**
 		 * Invoked to run the unit test. This function is invoked at agent initialization
 		 *
-		 * @return <code>true</code> for killing the agent 1 second after its initialization.
+		 * @return <code>true</code> for killing the agent during its initialization.
 		 */
 		protected abstract boolean runAgentTest();
 

@@ -57,9 +57,11 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	private final UUID parentID;
 
 	/**
-	 * Creates a new agent by parent <code>parentID</code>.
+	 * Creates a new agent with a parent <code>parentID</code> and initialize the built-in capacity
+	 * with the given provider.
 	 *
-	 * @param provider - the provider of built-in capacities for this agent.
+	 * @param provider - the provider of built-in capacities for this agent. If <code>null</code>, the builtin
+	 *     capacities will not be initialized.
 	 * @param parentID - the agent's spawner.
 	 * @param agentID - the identifier of the agent, or
 	 *                  <code>null</code> for computing it randomly.
@@ -78,6 +80,20 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Creates a new agent with a parent <code>parentID</code> without initializing the built-in capacities.
+	 *
+	 * @param parentID - the agent's spawner.
+	 * @param agentID - the identifier of the agent, or
+	 *                  <code>null</code> for computing it randomly.
+	 * @since 0.5
+	 */
+	public Agent(
+			UUID parentID,
+			UUID agentID) {
+		this(null, parentID, agentID);
 	}
 
 	private ClearableReference<Skill> mapCapacity(Class<? extends Capacity> capacity, Skill skill) {
