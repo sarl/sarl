@@ -2856,6 +2856,20 @@ describe "General Syntax Reference" {
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
 		 */
 		fact "Import static extension methods"{
+			'''
+			import static extension java.util.Collections.*
+			agent A {
+				def example {
+					val colors : String[] = #["red", "blue", "green"]
+					colors.sort // sort is implemented by Collections#sort(List<T>)
+				}
+			}
+			'''.parseSuccessfully(
+				"package io.sarl.docs.reference.gsr",
+				// TEXT
+				""
+			)
+			// Validate the elements in text of the enclosing section.
 			parseSuccessfully("
 			package io.sarl.docs.reference.gsr
 			class C1 {
@@ -2870,20 +2884,6 @@ describe "General Syntax Reference" {
 				}
 			}
 			")
-			//
-			'''
-			import static extension java.util.Collections.*
-			agent A {
-				def example {
-					val colors : String[] = #["red", "blue", "green"]
-					colors.sort // sort is implemented by Collections#sort(List<T>)
-				}
-			}
-			'''.parseSuccessfully(
-				"package io.sarl.docs.reference.gsr",
-				// TEXT
-				""
-			)
 		}
 
 		/*
