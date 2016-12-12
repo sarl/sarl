@@ -110,6 +110,14 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlCapacity"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlEvent"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlSkill"); //$NON-NLS-1$
+
+		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlClass"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlInterface"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlEnumeration"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlAnnotation"); //$NON-NLS-1$
+
+		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewEnumCreationWizard"); //$NON-NLS-1$
+
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewSourceFolderCreationWizard");	 //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder"); //$NON-NLS-1$
