@@ -140,7 +140,7 @@ public abstract class AbstractSarlTest {
 
 	/** Precision of the floating point number epsilon-tests.
 	 */
-	public static final int DEFAULT_DECIMAL_COUNT = 8;
+	public static final int DEFAULT_DECIMAL_COUNT = 6;
 
 	@Inject
 	private ValidationTestHelper validationHelper;

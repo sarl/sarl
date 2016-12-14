@@ -23,8 +23,6 @@ package io.janusproject.kernel.bic;
 
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-
 import io.sarl.core.Time;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.scoping.batch.SARLTimeExtensions;
@@ -64,9 +62,8 @@ public class TimeSkill extends BuiltinSkill implements Time {
 	}
 
 	@Override
-	@Inline(value = "getTime(null)")
 	public double getTime() {
-		return getTime(null);
+		return SARLTimeExtensions.convertFromTo(System.currentTimeMillis(), TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
 	}
 
 	@Override
