@@ -43,4 +43,12 @@ public final class MockFinalAgent extends Agent {
 		super(provider, parent, uuid);
 	}
 
+	/**
+	 * @param parent
+	 * @param uuid
+	 */
+	public MockFinalAgent(UUID parent, UUID uuid) {
+		super(parent, uuid);
+	}
+
 }

@@ -527,8 +527,17 @@ Workflow {
     				bind = "io.sarl.lang.generator.IGeneratorConfigProvider2"
     				to = "io.sarl.lang.generator.GeneratorConfigProvider2"
    				}
-   				
-    			
+    			runtime = {
+    				bind = "org.eclipse.xtext.validation.IssueSeveritiesProvider"
+    				to = "io.sarl.lang.validation.ConfigurableIssueSeveritiesProvider"
+    				singleton = true
+   				}
+    			runtime = {
+    				bind = "io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider"
+    				to = "io.sarl.lang.validation.ConfigurableIssueSeveritiesProvider"
+    				singleton = true
+   				}
+
     			ui = {
     				bind = "org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProcessor"
     				to = "io.sarl.lang.ui.contentassist.SARLJavaDocContentAssistProcessor"
@@ -654,6 +663,16 @@ Workflow {
     				to = "org.eclipse.xtext.xbase.ui.editor.XbaseResourceForEditorInputFactory"
    				}
    				
+    			ui = {
+    				bind = "org.eclipse.xtext.validation.IssueSeveritiesProvider"
+    				to = "io.sarl.lang.ui.validation.UIConfigurableIssueSeveritiesProvider"
+    				singleton = true
+   				}
+    			ui = {
+    				bind = "io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider"
+    				to = "io.sarl.lang.ui.validation.UIConfigurableIssueSeveritiesProvider"
+    				singleton = true
+   				}
 
     			both = {
     				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"

@@ -242,6 +242,16 @@ public class Bug505 extends AbstractSarlTest {
 				"  public TestAgent(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
 				"    super(builtinCapacityProvider, parentID, agentID);",
 				"  }",
+				"  ",
+				"  /**",
+				"   * Construct an agent.",
+				"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+				"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+				"   */",
+				"  @SyntheticMember",
+				"  public TestAgent(final UUID parentID, final UUID agentID) {",
+				"    super(parentID, agentID);",
+				"  }",
 				"}",
 				"");
 		this.compiler.compile(snippet5, (r) -> assertEquals(expected, r.getGeneratedCode("TestAgent")));

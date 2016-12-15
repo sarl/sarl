@@ -40,4 +40,8 @@ public class SubAgent extends Agent {
 		super(provider, parentID, agentID);
 	}
 
+	public SubAgent(UUID parentID, UUID agentID) {
+		super(parentID, agentID);
+	}
+
 }

@@ -80,6 +80,16 @@ public abstract class AbstractBatchCompilerTest extends AbstractSarlTest {
 			"  public MyTestAgent(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
 			"    super(builtinCapacityProvider, parentID, agentID);",
 			"  }",
+			"  ",
+			"  /**",
+			"   * Construct an agent.",
+			"   * @param parentID - identifier of the parent. It is the identifier of the parent agent and the enclosing contect, at the same time.",
+			"   * @param agentID - identifier of the agent. If <code>null</code> the agent identifier will be computed randomly.",
+			"   */",
+			"  @SyntheticMember",
+			"  public MyTestAgent(final UUID parentID, final UUID agentID) {",
+			"    super(parentID, agentID);",
+			"  }",
 			"}"
 			);
 

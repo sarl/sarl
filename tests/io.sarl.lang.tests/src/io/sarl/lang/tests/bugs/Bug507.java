@@ -17,14 +17,14 @@
 package io.sarl.lang.tests.bugs;
 
 import com.google.inject.Inject;
+import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
+import org.junit.Before;
 import org.junit.Test;
 
-import io.sarl.lang.SARLVersion;
-import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
 
@@ -37,6 +37,16 @@ import io.sarl.tests.api.TestClasspath;
 @SuppressWarnings("all")
 public class Bug507 extends AbstractSarlUiTest {
 
+	@Inject
+	private IConfigurableIssueSeveritiesProvider configurableIssueSeveritiesProvider;
+	
+	@Before
+	public void setUp() {
+		// Enable the warning (SARL and Java)
+		this.configurableIssueSeveritiesProvider.setSeverity(
+				IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.WARNING);
+	}
+	
 	@Test
 	@TestClasspath({"io.sarl.core"})
 	public void snipset1() throws Exception {

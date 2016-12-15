@@ -99,7 +99,9 @@ import io.sarl.lang.serializer.SARLSemanticSequencer;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
+import io.sarl.lang.validation.ConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.DefaultFeatureCallValidator;
+import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.IFeatureCallValidator;
 import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
 import io.sarl.lang.validation.SARLEarlyExitValidator;
@@ -196,6 +198,7 @@ import org.eclipse.xtext.serializer.tokens.SerializerScopeProviderBinding;
 import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 import org.eclipse.xtext.validation.IResourceValidator;
+import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.annotations.DefaultXbaseWithAnnotationsRuntimeModule;
 import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
@@ -544,6 +547,12 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	@SingletonBinding
+	public Class<? extends IConfigurableIssueSeveritiesProvider> bindIConfigurableIssueSeveritiesProvider() {
+		return ConfigurableIssueSeveritiesProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IFeatureCallValidator> bindIFeatureCallValidator() {
 		return DefaultFeatureCallValidator.class;
 	}
@@ -561,6 +570,12 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends JvmModelAssociator> bindJvmModelAssociator() {
 		return SarlJvmModelAssociations.Impl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	@SingletonBinding
+	public Class<? extends IssueSeveritiesProvider> bindIssueSeveritiesProvider() {
+		return ConfigurableIssueSeveritiesProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
