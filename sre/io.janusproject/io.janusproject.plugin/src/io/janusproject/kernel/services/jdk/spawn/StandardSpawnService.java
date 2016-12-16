@@ -421,7 +421,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		synchronized (this.agentLifecycleListeners) {
 			list = this.agentLifecycleListeners.get(agent.getID());
 		}
-		final SpawnServiceListener[] ilisteners = list.getListeners(SpawnServiceListener.class);
+		final SpawnServiceListener[] ilisteners;
+		if (list != null) {
+			ilisteners = list.getListeners(SpawnServiceListener.class);
+		} else {
+			ilisteners = null;
+		}
 		final SpawnServiceListener[] ilisteners2 = this.globalListeners.getListeners(SpawnServiceListener.class);
 
 		try {
@@ -438,8 +443,10 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 			throw new RuntimeException(e);
 		}
 
-		for (final SpawnServiceListener l : ilisteners) {
-			l.agentDestroy(agent);
+		if (ilisteners != null) {
+			for (final SpawnServiceListener l : ilisteners) {
+				l.agentDestroy(agent);
+			}
 		}
 		for (final SpawnServiceListener l : ilisteners2) {
 			l.agentDestroy(agent);
@@ -525,31 +532,6 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		 */
 		public InvalidSarlSpecificationException(Class<? extends Agent> agentType) {
 			super(MessageFormat.format(Messages.StandardSpawnService_2, agentType.getName()));
-		}
-
-	}
-
-	/**
-	 * This exception is thrown when an agent cannot be spawned.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	public static class CannotSpawnException extends RuntimeException {
-
-		private static final long serialVersionUID = -380402400888610762L;
-
-		/**
-		 * @param agentClazz
-		 *            - the type of the agent to spawn.
-		 * @param cause
-		 *            - the cause of the exception.
-		 */
-		public CannotSpawnException(Class<? extends Agent> agentClazz, Throwable cause) {
-			super(MessageFormat.format(Messages.StandardSpawnService_3, agentClazz,
-					(cause == null) ? null : cause.getLocalizedMessage()), cause);
 		}
 
 	}

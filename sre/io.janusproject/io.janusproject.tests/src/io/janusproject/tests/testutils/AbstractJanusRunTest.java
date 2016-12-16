@@ -271,7 +271,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			current = current.getParent();
 		}
 		if (current != null) {
-			current.setLevel(Level.OFF);
+			current.setLevel(enableLogging ? Level.SEVERE : Level.OFF);
 		}
 		return this.janusKernel;
 	}
@@ -366,6 +366,8 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 
 		private List<Object> results;
 
+		private Object[] initializationParameters;
+
 		/**
 		 * @param provider - the provider of builtin capacities.
 		 * @param parentID - the identifier of the parent's agent.
@@ -403,20 +405,28 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			return Collections.emptyList();
 		}
 
-		
+		/** Replies the initialization parameters of the agents.
+		 *
+		 * @return the initialization parameters.
+		 */
+		protected Object[] getAgentInitializationParameters() {
+			return this.initializationParameters;
+		}
+
 		@PerceptGuardEvaluator
 		private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
 			assert occurrence != null;
 			assert ___SARLlocal_runnableCollection != null;
 			___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));
 		}
-		
+
 		/**
 		 * Invoked at the start of the agent.
 		 * 
 		 * @param occurrence - the initialization event.
 		 */
 		private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
+			this.initializationParameters = occurrence.parameters;
 			this.results = (List<Object>) occurrence.parameters[0];
 			try {
 				if (runAgentTest()) {

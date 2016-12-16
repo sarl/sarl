@@ -35,16 +35,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.Times;
 
 import io.janusproject.kernel.services.jdk.spawn.StandardSpawnService;
@@ -68,7 +66,9 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedSet;
+import io.sarl.sarlspecification.SarlSpecificationChecker;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
@@ -81,18 +81,30 @@ import io.sarl.util.OpenEventSpace;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-@StartServiceForTest(startAfterSetUp = true)
+@StartServiceForTest(createAfterSetUp = false, startAfterSetUp = true)
 @ManualMocking
 public class StandardSpawnServiceTest extends AbstractDependentServiceTest<StandardSpawnService> {
 
 	@Nullable
-	private BuiltinCapacitiesProvider builtinCapacitiesProvider;
+	private UUID parentId;
 
 	@Nullable
 	private UUID agentId;
 
 	@Nullable
 	private OpenEventSpace innerSpace;
+
+	@Nullable
+	private BuiltinCapacitiesProvider builtinCapacitiesProvider;
+
+	@Nullable
+	private Injector injector;
+
+	@Nullable
+	private Injector subInjector;
+
+	@Nullable
+	private SarlSpecificationChecker sarlSpecificationChecker;
 
 	@Mock
 	private AgentContext innerContext;
@@ -109,37 +121,51 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	@Mock
 	private SpawnServiceListener serviceListener;
 
-	private Injector injector;
-
 	/**
 	 */
 	public StandardSpawnServiceTest() {
 		super(SpawnService.class);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public StandardSpawnService newService() {
-		this.builtinCapacitiesProvider = Mockito.mock(BuiltinCapacitiesProvider.class);
-		if (this.injector == null) {
-			this.injector = Guice.createInjector(new TestModule(this.builtinCapacitiesProvider));
+		if (this.builtinCapacitiesProvider == null) {
+			this.builtinCapacitiesProvider = Mockito.mock(BuiltinCapacitiesProvider.class);
 		}
-		return this.injector.getInstance(StandardSpawnService.class);
+		if (this.sarlSpecificationChecker == null) {
+			this.sarlSpecificationChecker = Mockito.mock(SarlSpecificationChecker.class);
+			Mockito.when(this.sarlSpecificationChecker.isValidSarlElement(ArgumentMatchers.any())).thenReturn(true);
+		}
+		if (this.subInjector == null) {
+			this.subInjector = Mockito.mock(Injector.class);
+			Mockito.when(this.subInjector.getInstance(ArgumentMatchers.any(Class.class))).then((it) -> {
+				if (Agent.class.equals(it.getArgument(0))) {
+					Agent agent = new Agent(this.builtinCapacitiesProvider, this.parentId,
+							this.agentId);
+					return Mockito.spy(agent);
+				}
+				return null;
+			});
+		}
+		if (this.injector == null) {
+			this.injector = Mockito.mock(Injector.class);
+			Mockito.when(this.injector.createChildInjector(ArgumentMatchers.any(Module.class))).thenReturn(this.subInjector);
+		}
+		return new StandardSpawnService(this.injector, this.sarlSpecificationChecker);
 	}
 
 	@Before
 	public void setUp() throws Exception {
-		UUID parentID = UUID.randomUUID();
+		this.parentId = UUID.randomUUID();
 		this.agentId = UUID.randomUUID();
-		MockitoAnnotations.initMocks(this);
 		this.innerSpace = Mockito.mock(OpenEventSpace.class);
 		Mockito.when(this.innerSpace.getParticipants()).thenReturn(Collections3.synchronizedSingleton(this.agentId));
 		Mockito.when(this.innerContext.getDefaultSpace()).thenReturn(this.innerSpace);
 		Mockito.when(this.agentContext.getDefaultSpace()).thenReturn(this.defaultSpace);
-		Mockito.when(this.agentContext.getID()).thenReturn(parentID);
+		Mockito.when(this.agentContext.getID()).thenReturn(parentId);
 		Mockito.when(this.defaultSpace.getAddress(ArgumentMatchers.any(UUID.class))).thenReturn(Mockito.mock(Address.class));
+		SpaceID spaceID = Mockito.mock(SpaceID.class);
+		Mockito.when(this.defaultSpace.getSpaceID()).thenReturn(spaceID);
 
 		Map<Class<? extends Capacity>, Skill> bic = new HashMap<>();
 
@@ -176,43 +202,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	}
 
 	@Test
-	public void spawn_notNull_1() throws Exception {
-		UUID aId = UUID.fromString(this.agentId.toString());
-		List<UUID> agentIds = this.service.spawn(1, this.agentContext, aId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
-		//
-		assertNotNull(agentIds);
-		assertEquals(1, agentIds.size());
-		assertEquals(aId, agentIds.get(0));
-		Set<UUID> agents = this.service.getAgents();
-		assertEquals(1, agents.size());
-		assertTrue(agents.contains(agentIds.get(0)));
-		Agent spawnedAgent = (Agent) this.reflect.invoke(this.service, "getAgent", agentIds.get(0));
-		assertNotNull(spawnedAgent);
-		assertEquals(agentIds.get(0), spawnedAgent.getID());
-		assertEquals(this.agentContext.getID(), spawnedAgent.getParentID());
-		//
-		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
-		ArgumentCaptor<List<Agent>> argument2 = ArgumentCaptor.forClass(List.class);
-		ArgumentCaptor<Object[]> argument3 = ArgumentCaptor.forClass(Object[].class);
-		Mockito.verify(this.serviceListener, new Times(1)).agentSpawned(argument1.capture(), argument2.capture(),
-				argument3.capture());
-		assertSame(this.agentContext, argument1.getValue());
-		List<Agent> ags = argument2.getValue();
-		assertNotNull(ags);
-		assertEquals(1, ags.size());
-		assertSame(agentIds.get(0), ags.get(0).getID());
-		assertEquals("a", argument3.getValue()[0]); //$NON-NLS-1$
-		assertEquals("b", argument3.getValue()[1]); //$NON-NLS-1$
-		//
-		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(this.defaultSpace, new Times(1)).emit(argument4.capture());
-		assertTrue(argument4.getValue() instanceof AgentSpawned);
-		assertSame(agentIds.get(0), ((AgentSpawned) argument4.getValue()).agentID);
-		assertEquals(ags.get(0).getClass().getName(), ((AgentSpawned) argument4.getValue()).agentType);
-	}
-
-	@Test
-	public void spawn_null_1() throws Exception {
+	public void spawn_1agent() throws Exception {
 		List<UUID> agentIds = this.service.spawn(1, this.agentContext, null, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
 		//
 		assertNotNull(agentIds);
@@ -241,8 +231,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.defaultSpace, new Times(1)).emit(argument4.capture());
 		assertTrue(argument4.getValue() instanceof AgentSpawned);
-		assertSame(agentIds.get(0), ((AgentSpawned) argument4.getValue()).agentID);
-		assertEquals(ags.getClass().getName(), ((AgentSpawned) argument4.getValue()).agentType);
+		assertContainsCollection(((AgentSpawned) argument4.getValue()).agentIdentifiers, agentIds);
 	}
 
 	@AvoidServiceStartForTest
@@ -293,7 +282,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.defaultSpace, new Times(2)).emit(argument5.capture());
 		assertTrue(argument5.getValue() instanceof AgentKilled);
-		assertEquals(agentIds, ((AgentKilled) argument5.getValue()).agentID);
+		assertEquals(agentIds.get(0), ((AgentKilled) argument5.getValue()).agentID);
 		//
 		Mockito.verify(this.kernelListener, new Times(1)).kernelAgentDestroy();
 	}
@@ -311,27 +300,6 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 			}
 		}
 		Mockito.verify(this.kernelListener, new Times(1)).kernelAgentSpawn();
-	}
-
-	/**
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	public static class TestModule extends AbstractModule {
-
-		private final BuiltinCapacitiesProvider builtinCapacitiesProvider;
-
-		TestModule(BuiltinCapacitiesProvider builtinCapacitiesProvider) {
-			this.builtinCapacitiesProvider = builtinCapacitiesProvider;
-		}
-
-		@Override
-		protected void configure() {
-			bind(BuiltinCapacitiesProvider.class).toInstance(this.builtinCapacitiesProvider);
-		}
-
 	}
 
 	/**

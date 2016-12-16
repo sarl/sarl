@@ -39,8 +39,18 @@ import io.sarl.lang.util.SynchronizedCollection;
  */
 public final class BuiltinCapacityUtil {
 
+	private static Method methodGetSkill;
+
 	private BuiltinCapacityUtil() {
 		//
+	}
+
+	private static Method getMethodGetSkill() throws Exception {
+		if (methodGetSkill == null) {
+			methodGetSkill = Agent.class.getDeclaredMethod("getSkill", Class.class); //$NON-NLS-1$
+			methodGetSkill.setAccessible(true);
+		}
+		return methodGetSkill;
 	}
 
 	/**
@@ -51,16 +61,9 @@ public final class BuiltinCapacityUtil {
 	 * @throws Exception - when it is not possible to retreive the contexts.
 	 */
 	public static SynchronizedCollection<AgentContext> getContextsOf(Agent agent) throws Exception {
-		final Method method = Agent.class.getDeclaredMethod("getSkill", Class.class); //$NON-NLS-1$
-		final boolean isAccessible = method.isAccessible();
-		final ExternalContextAccess skill;
-		try {
-			method.setAccessible(true);
-			skill = (ExternalContextAccess) method.invoke(agent, ExternalContextAccess.class);
-		} finally {
-			method.setAccessible(isAccessible);
-		}
-
+		final Method method = getMethodGetSkill();
+		final ExternalContextAccess skill = (ExternalContextAccess) method.invoke(agent, ExternalContextAccess.class);
+		assert skill != null;
 		return skill.getAllContexts();
 	}
 
@@ -72,21 +75,17 @@ public final class BuiltinCapacityUtil {
 	 * @throws Exception - when it is not possible to retreive the inner context.
 	 */
 	public static AgentContext getContextIn(Agent agent) throws Exception {
-		final Method method = Agent.class.getDeclaredMethod("getSkill", Class.class); //$NON-NLS-1$
-		final boolean isAccessible = method.isAccessible();
-		final InnerContextAccess skill;
-		try {
-			method.setAccessible(true);
-			skill = (InnerContextAccess) method.invoke(agent, InnerContextAccess.class);
-		} finally {
-			method.setAccessible(isAccessible);
-		}
+		final Method method = getMethodGetSkill();
+		final InnerContextAccess skill = (InnerContextAccess) method.invoke(agent, InnerContextAccess.class);
 
 		if (skill instanceof InnerContextSkill) {
 			final InnerContextSkill janusSkill = (InnerContextSkill) skill;
 			if (janusSkill.hasInnerContext()) {
 				return janusSkill.getInnerContext();
 			}
+			return null;
+		}
+		if (skill == null) {
 			return null;
 		}
 		return skill.getInnerContext();

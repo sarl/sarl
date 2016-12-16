@@ -45,6 +45,7 @@ import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 import io.janusproject.util.TwoStepConstruction;
 import javassist.Modifier;
+import net.bytebuddy.asm.Advice.Argument;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -108,7 +109,11 @@ public class KernelTest extends AbstractJanusTest {
 		//
 		when(this.spawnService.isRunning()).thenReturn(true);
 		when(this.spawnService.state()).thenReturn(State.RUNNING);
-		when(this.spawnService.spawn(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
+		when(this.spawnService.spawn(
+				ArgumentMatchers.anyInt(),
+				ArgumentMatchers.any(),
+				ArgumentMatchers.any(),
+				ArgumentMatchers.any(),
 				ArgumentMatchers.any())).thenReturn(Collections.singletonList(this.uuid));
 		when(this.executorService.isRunning()).thenReturn(true);
 		when(this.executorService.state()).thenReturn(State.RUNNING);

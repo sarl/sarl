@@ -39,6 +39,7 @@ import com.google.inject.Module;
 import com.google.inject.Singleton;
 
 import io.janusproject.JanusConfig;
+import io.janusproject.kernel.services.jdk.spawn.CannotSpawnException;
 import io.janusproject.services.IServiceManager;
 import io.janusproject.services.Services;
 import io.janusproject.services.logging.LogService;
@@ -144,7 +145,7 @@ public class Kernel {
 	public UUID spawn(Class<? extends Agent> agent, Object... params) {
 		final List<UUID> ids = this.spawnService.spawn(1, this.janusContext, null, agent, params);
 		if (ids.isEmpty()) {
-			return null;
+			throw new CannotSpawnException(agent, null);
 		}
 		return ids.get(0);
 	}

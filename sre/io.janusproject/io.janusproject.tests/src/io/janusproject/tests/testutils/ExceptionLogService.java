@@ -21,6 +21,7 @@ package io.janusproject.tests.testutils;
 
 import io.janusproject.services.logging.LogService;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -96,12 +97,14 @@ public class ExceptionLogService extends AbstractService implements LogService {
 	@Override
 	public void error(String message, Object... params) {
 		this.results.add(new LoggedException(message));
+		getLogger().severe(MessageFormat.format(message, params));
 	}
 
 	@Override
 	public void log(LogRecord record) {
 		if (record.getLevel() == Level.SEVERE) {
 			this.results.add(new LoggedException(record.getMessage(), record.getThrown()));
+			getLogger().log(record);
 		}
 	}
 
@@ -109,6 +112,7 @@ public class ExceptionLogService extends AbstractService implements LogService {
 	public void log(Level level, String message, Object... params) {
 		if (level == Level.SEVERE) {
 			this.results.add(new LoggedException(message));
+			getLogger().severe(MessageFormat.format(message, params));
 		}
 	}
 
