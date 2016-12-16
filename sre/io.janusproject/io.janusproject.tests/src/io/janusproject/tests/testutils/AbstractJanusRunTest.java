@@ -265,7 +265,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			module = Modules.override(new StandardJanusPlatformModule()).with(new ErrorLogTestingModule(this.results));
 		}
 		Boot.setOffline(offline);
-		this.janusKernel = Boot.startJanus(module, type, getAgentInitializationParameters());
+		this.janusKernel = Boot.startJanusWithModule(module, type, getAgentInitializationParameters());
 		Logger current = this.janusKernel.getLogger();
 		while (current.getParent() != null && current.getParent() != current) {
 			current = current.getParent();

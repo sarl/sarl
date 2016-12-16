@@ -1042,7 +1042,7 @@ public class BootTest {
 
 		@Test
 		public void startJanus() throws Exception {
-			Kernel kernel = Boot.startJanus(TestModule.class, AgentMock.class, "param1", "param2", "param3");
+			Kernel kernel = Boot.startJanusWithModuleType(TestModule.class, AgentMock.class, "param1", "param2", "param3");
 
 			assertNotNull(kernel);
 
@@ -1075,13 +1075,13 @@ public class BootTest {
 
 		@Test
 		public void getBootAgentIdentifier_started() throws Exception {
-			Boot.startJanus(TestModule.class, AgentMock.class);
+			Boot.startJanusWithModuleType(TestModule.class, AgentMock.class);
 			assertEquals(ID, Boot.getBootAgentIdentifier());
 		}
 
 		@Test
 		public void getBootAgentIdentifier_startedAgain() throws Exception {
-			Boot.startJanus(TestModule.class, AgentMock.class);
+			Boot.startJanusWithModuleType(TestModule.class, AgentMock.class);
 			assertEquals(ID, Boot.getBootAgentIdentifier());
 			assertEquals(ID, Boot.getBootAgentIdentifier());
 		}

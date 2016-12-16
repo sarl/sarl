@@ -71,7 +71,6 @@ describe "Run SARL Agent from a Java Program" {
 			class MyProgram {
 			 	static def main(args : String[]) : void {
 					Boot::startJanus(
-						null,
 						typeof(MyAgent),
 						args)
 				}
@@ -107,7 +106,6 @@ describe "Run SARL Agent from a Java Program" {
 			class MyProgram {
 				static def main(args : String[]) : void {
 					var janusKernel = Boot::startJanus(
-						null,
 						typeof(MyAgent),
 						args)
 					janusKernel.spawn(typeof(MyAgent), args)
