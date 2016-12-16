@@ -19,14 +19,24 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ui.tests.contentassist;
+package io.sarl.lang.ui.tests.bugs;
 
 import org.eclipse.xtext.junit4.ui.ContentAssistProcessorTestBuilder;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import io.sarl.lang.ui.tests.contentassist.AbstractContentAssistTest;
+
+/** Test for issue #406: Auto-completion does not work
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @see "https://github.com/sarl/sarl/issues/406"
+ */
 @SuppressWarnings("all")
-public class Bug406ContentAssistTest extends AbstractContentAssistTest {
+public class Bug406 extends AbstractContentAssistTest {
 	
 	@Test
 	public void afterStaticTypeDotCharacterProposals() throws Exception {

@@ -37,6 +37,7 @@ import com.google.inject.name.Named;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
@@ -47,10 +48,12 @@ import org.eclipse.xtext.junit4.internal.LineDelimiters;
 import org.eclipse.xtext.junit4.ui.ContentAssistProcessorTestBuilder;
 import org.eclipse.xtext.junit4.util.ResourceLoadHelper;
 import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration;
 import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal;
 import org.eclipse.xtext.ui.editor.contentassist.ReplacementTextApplier;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.junit.Assert;
+import org.junit.ComparisonFailure;
 
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.WorkbenchTestHelper;
@@ -222,10 +225,32 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 		}
 
 		if (!sortedExpectations.isEmpty()) {
-			Assert.fail("Expecting text: " + sortedExpectations.toString());
+			String[] actual = new String[computeCompletionProposals.length];
+			int i = 0;
+			for (final ICompletionProposal completionProposal : computeCompletionProposals) {
+				String proposedText = getProposedText(completionProposal);
+				actual[i] = proposedText;
+				++i;
+			}
+			Arrays.sort(actual);
+			throw new ComparisonFailure("Expecting text: " + sortedExpectations.toString(),
+					toString(expectations), toString(actual));
 		}
 		
 		return builder;
+	}
+	
+	private static String toString(Object[] array) {
+		StringBuilder buf = new StringBuilder();
+		if (array != null) {
+			for (Object obj : array) {
+				if (obj != null) {
+					buf.append(obj);
+				}
+				buf.append("\n");
+			}
+		}
+		return buf.toString();
 	}
 
 	private static String getProposedText(ICompletionProposal completionProposal) {
@@ -297,6 +322,19 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 			return null;
 		}
 		
+		private Shell ensureShell() {
+			Shell shell;
+			if (isEclipseRuntimeEnvironment()) {
+				shell = getShell();
+				if (shell == null) {
+					shell = new Shell();
+				}
+			} else {
+				shell = new Shell();
+			}
+			return shell;
+		}
+
 		@Override
 		protected ICompletionProposal[] computeCompletionProposals(final IXtextDocument xtextDocument, int cursorPosition)
 				throws BadLocationException {
@@ -325,13 +363,14 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 			}
 			return resultBuffer.get(0);
 		}
-		
+
 		@Override
-		public ContentAssistProcessorTestBuilder appendAndApplyProposal(String model, int position, String proposalString) throws Exception {
+		public ContentAssistProcessorTestBuilder applyProposal(int position, String proposalString) throws Exception {
 			throw new UnsupportedOperationException("must be overriden for Shell access");
 		}
-		
-		public ContentAssistProcessorTestBuilder applyProposal(int position, String proposalString) throws Exception {
+
+		@Override
+		public ContentAssistProcessorTestBuilder appendAndApplyProposal(String model, int position, String proposalString) throws Exception {
 			throw new UnsupportedOperationException("must be overriden for Shell access");
 		}
 		
