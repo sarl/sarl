@@ -83,7 +83,7 @@ describe "Run SARL Agent from a Java Program" {
 	 * you could use the `Kernel` instance provided by Janus.
 	 * This instance is replied by the `startJanus` function of the `Boot` class.
 	 * 
-	 * <p>The `Kernel` type provides the `spawn` function, which permits launching
+	 * <p>The `Kernel` type provides the `spawn` functions, which permit launching
 	 * an agent programmatically.
 	 * 
 	 * <p>The previous example could be updated for launching two agents of the same type.
@@ -95,8 +95,8 @@ describe "Run SARL Agent from a Java Program" {
 	 * <p>The second parameter of the `spawn` function is the list of parameters to
 	 * pass with the `Initialize` event to the launched agent.
 	 * 
-	 * <p>Note that the first agent is launched by the `startJanus` function, and the 
-	 * second agent is launched by the `spawn` function.
+	 * <important>that the first agent is launched by the `startJanus` function, and the 
+	 * second agent is launched by the `spawn` function.</important>
 	 * 
 	 * @filter(.* = '''|'''|.parse.*) 
 	 */

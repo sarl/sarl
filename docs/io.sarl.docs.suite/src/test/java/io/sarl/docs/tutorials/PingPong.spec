@@ -636,20 +636,20 @@ describe "Agent Communication with the Ping Pong Agents"{
 			 */
 			describe "Method 2: Execute all the agents in a single instance of Janus" {
 				
-				/* The boot agent uses the `DefaultContextInteractions`
+				/* The boot agent uses the `Lifecycle`
 				 * capacity for launching agents in the default context.
 				 * This capacity provides the function `spawn(Class<? extends Agent>)`
 				 * for launching an agent of the given type.
 				 * When the boot agent has launched the two expected agents,
 				 * it is killing itself. This is done with the `killMe`
-				 * function, which is provided by the `Lifecycle` capacity.
+				 * function, which is provided by the `Lifecycle` capacity too.
 				 *  
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
 				 */
 				fact "Defining the Boot agent" {
 					'''
 					agent BootAgent {
-						uses DefaultContextInteractions, Lifecycle
+						uses Lifecycle
 						on Initialize {
 							spawn( PongAgent )
 							spawn( PingAgent )
@@ -658,7 +658,6 @@ describe "Agent Communication with the Ping Pong Agents"{
 					}
 					'''.parseSuccessfully(
 						"package io.sarl.docs.tutorials.pingpong
-						import io.sarl.core.DefaultContextInteractions
 						import io.sarl.core.Initialize
 						import io.sarl.core.Lifecycle
 						agent PongAgent { }

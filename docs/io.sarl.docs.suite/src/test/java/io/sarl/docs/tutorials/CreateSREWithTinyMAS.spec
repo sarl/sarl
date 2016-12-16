@@ -1239,17 +1239,16 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 		describe "Definition of the Lifecycle skill" {
 			
 			/* Consider the agent execution mechanism in the tinyMAS platform:
-			 * inside an infinite loop, each agent is run. This algorithmical
+			 * inside an infinite loop, each agent is run. This algorithmic
 			 * principle may be described by the following algorithm:
 			 * 
-			 * ```
-			 * while (true) {
-			 *    for(a : whitePages.allAgents) {
-			 *       a.live
-			 *    }
-			 *    refreshKernelState
-			 * } 
-			 * ```
+			 * 			while (true) {
+			 * 			   for(a : whitePages.allAgents) {
+			 * 			      a.live
+			 * 			   }
+			 * 			   refreshKernelState
+			 * 			} 
+			 *
 			 * The tinyMAS platform is designed for updating the kernel state
 			 * after all the agent have been ran.
 			 * Consequently, the tinyMAS platform does not support the creation
@@ -1258,10 +1257,10 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 			 * spawned agent must be delayed until the `refreshKernelState` is invoked.
 			 *
 			 * <p>This particular design of the tinyMAS platform is at the opposite of
-			 * the standard spawning principle in SARL: in SARL the agents are spawn
+			 * the standard spawning principle in SARL: the agents are spawned
 			 * when the spawning function is called.
 			 *
-			 * <p>For solving this issue, we need to implement a buffer of spawned
+			 * <p>For fixing this issue, we need to implement a buffer of spawned
 			 * agents, that will be filled by the SARL spawning functions, and consumed
 			 * by the `refreshKernelState` function.
 			 * 
@@ -1306,6 +1305,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				'''.parseSuccessfully(
 				'''
 				package io.sarl.docs.tutorials.tinyMASSRE
+				import java.util.Collection
 				import java.util.UUID
 				import java.util.List
 				import java.util.ArrayList
@@ -1348,6 +1348,28 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				'''
 				class LifecycleSkill extends Skill implements Lifecycle {
 
+					def spawn(
+							agentClass : Class<? extends io.sarl.lang.core.Agent>,
+							params : Object*)
+							: UUID {
+						return defaultSpace.spawn(agentClass, null, params)
+					}
+
+					def spawn(
+							nbAgents : int,
+							agentClass : Class<? extends io.sarl.lang.core.Agent>,
+							params : Object*)
+							: Collection<UUID> {
+						var list = newArrayList
+						for (i : 1..nbAgents) {
+							var id = defaultSpace.spawn(agentClass, null, params)
+							if (id !== null) {
+								list += id
+							}
+						}
+						return list
+					}
+
 					def spawnInContext(
 							agentClass : Class<? extends io.sarl.lang.core.Agent>,
 							context : AgentContext,
@@ -1357,6 +1379,24 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 							return defaultSpace.spawn(agentClass, null, params)
 						}
 						return null
+					}
+
+					def spawnInContext(
+							nbAgents : int,
+							agentClass : Class<? extends io.sarl.lang.core.Agent>,
+							context : AgentContext,
+							params : Object*)
+							: Collection<UUID> {
+						var list = newArrayList
+						if (context.ID == defaultSpace.agentContext.ID) {
+							for (i : 1..nbAgents) {
+								var id = defaultSpace.spawn(agentClass, null, params)
+								if (id !== null) {
+									list += id
+								}
+							}
+						}
+						return list
 					}
 
 					def spawnInContextWithID(
@@ -1380,6 +1420,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				'''.parseSuccessfully(
 				'''
 				package io.sarl.docs.tutorials.tinyMASSRE
+				import java.util.Collection
 				import java.util.UUID
 				import io.sarl.core.Lifecycle
 				import io.sarl.lang.core.AgentContext
@@ -1481,8 +1522,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 		}
 
 		/* The `DefaultContextInteractions` capacity enables the agent to have
-		 * interaction in the default space, and to spawn agents in the default
-		 * context.
+		 * interaction in the default space.
 		 */
 		describe "Definition of the DefaultContextInteractions skill" {
 
@@ -1634,36 +1674,6 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				}
 				''')
 				typeof(DefaultContextInteractions) should haveDeprecatedMethod "receive(java.util.UUID,io.sarl.lang.core.Event)"
-			}
-
-			/* Spawning an agent in the default context could be done by calling the `spawn` function of
-			 * the `DefaultContextInteractions` capacity.
-			 * This function delegates its behavior to the `spawn` function that is already defined
-			 * in the tinyMAS-SARL default space class.
-			 * 
-			 * @filter(.* = '''|'''|.parseSuccessfully.*)
-			 */
-			fact "Spawning agents in the default context" {
-				'''
-				def spawn(agentType : Class<? extends io.sarl.lang.core.Agent>, params : Object*) : UUID {
-					(defaultSpace as TMDefaultSpace).spawn(agentType, null, params)
-				}
-				'''.parseSuccessfully(
-				'''
-				package io.sarl.docs.tutorials.tinyMASSRE
-				import java.util.UUID
-				import io.sarl.lang.core.EventSpace
-				import io.sarl.core.DefaultContextInteractions
-				interface TMDefaultSpace extends EventSpace {
-					def spawn(agentType : Class<? extends io.sarl.lang.core.Agent>, agentID : UUID, params : Object*) : UUID
-				}
-				abstract class DefaultContextInteractionsSkill implements DefaultContextInteractions {
-					def getDefaultSpace : EventSpace { null }
-				''',
-				// TEXT
-				'''
-				}
-				''')
 			}
 
 		}

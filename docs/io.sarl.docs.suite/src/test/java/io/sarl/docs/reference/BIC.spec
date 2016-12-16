@@ -659,44 +659,6 @@ describe "Built-in Capacity Reference" {
 					}".parseSuccessfully
 			}
   
-			/* Many time, it is useful for agent to create a new agent
-			 * into the default context. The following function is provided for this
-			 * task:
-			 * 
-			 *     def spawn(agentType : Class<? extends Agent>, params : Object[]) : UUID
-			 *
-			 *
-			 * <p>This action creates an instance of the given agent type, and launches the agent
-			 * into the default context. The parameters are passed to the spawned agent inside
-			 * the `Initialize` event: the `parameters` field.
-			 * 
-			 * <p>This action fires two events:
-			 * 
-			 *  * `AgentSpawned` in the default space of the default context. The source of the event is this spawner.
-			 *  * `Initialize` in spawned agent.
-			 *  
-			 * @filter(.*) 
-			 */
-			fact "Spawning an Agent"{
-				"	package io.sarl.docs.reference.bic
-					import io.sarl.core.DefaultContextInteractions
-					import io.sarl.lang.core.Agent
-					import java.util.UUID
-					agent A {
-						uses DefaultContextInteractions
-						def myaction {
-							var aid : UUID
-							var type : Class<? extends Agent>
-							var p1 : Object
-							var p2 : Object
-							type = typeof(A)
-							p1 = new Object
-							p2 = new Object
-							aid = spawn(type, #[p1, p2])
-						}
-					}".parseSuccessfully
-			}
-
 			/* The core mechanism for information exchanges among agents is
 			 * [event-based](EventReferenceSpec.html).
 			 * For sending an event in the default space of the default context,
@@ -921,17 +883,70 @@ describe "Built-in Capacity Reference" {
 					}".parseSuccessfully
 			}
 
-			/* Many time, it is useful for an agent to create a new agent
-			 * into a given context. The following function is provided for this
+			/* Many time, it is useful for agent to create a new agent
+			 * into the default context. The following functions are provided for this
 			 * task:
+			 * 
+			 *     def spawn(agentType : Class<? extends Agent>, parameters : Object*) : UUID
+			 *
+			 *     def spawn(nbAgents: int, agentType : Class<? extends Agent>, parameters : Object*) : Collection<UUID>
+			 *
+			 * <p>This action creates one to {@code nbAgents} instance(s) of the given agent type, and launches the agent(s)
+			 * into the default context.
+			 * The first `spawn` function above is spawning a single agent and replies the identifier of the spawned agent.
+			 * The second `spawn` function is spawning the given number of agents and replies the identifiers of the
+			 * spawned agents.
+			 * The {@code parameters} are passed to the spawned agent inside
+			 * the `Initialize` event: the `parameters` field.
+			 * 
+			 * <p>This action fires two events:
+			 * 
+			 *  * `AgentSpawned` in the default space of the default context. The source of the event is this spawner.
+			 *  * `Initialize` in spawned agent.
+			 *  
+			 * @filter(.*) 
+			 */
+			fact "Spawning in the default context" {
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Lifecycle
+					import io.sarl.lang.core.Agent
+					import java.util.UUID
+					import java.util.Collection
+					agent A {
+						uses Lifecycle
+						def myaction {
+							var aid : UUID
+							var listaid : Collection<UUID>
+							var type : Class<? extends Agent>
+							var p1 : Object
+							var p2 : Object
+							type = typeof(A)
+							p1 = new Object
+							p2 = new Object
+							aid = spawn(type, p1, p2)
+							listaid = spawn(5, type, p1, p2)
+						}
+					}".parseSuccessfully
+			}
+
+			/* When one or more agents should be spawned into a specific agent context, the two following functions
+			 * could be used for launching the agents:
 			 * 
 			 *     def spawnInContext(agentType : Class<? extends Agent>,
 			 *                        context : AgentContext,
-			 *                        params : Object[]) : UUID
+			 *                        parameters : Object*) : UUID
 			 * 
+			 *     def spawnInContext(nbAgents : int,
+			 *                        agentType : Class<? extends Agent>,
+			 *                        context : AgentContext,
+			 *                        parameters : Object*) : UUID
 			 *
-			 * <p>This action creates an instance of the given agent type, and launches the agent
-			 * into the given context. The parameters are passed to the spawned agent inside
+			 * <p>This action creates one to {@code nbAgents} instance(s) of the given agent type, and launches the agent(s)
+			 * into the given {@code context}.
+			 * The first `spawn` function is spawning a single agent and replies the identifier of the spawned agent.
+			 * The second `spawn` function is spawning the given number of agents and replies the identifiers of the
+			 * spawned agents.
+			 * The {@code parameters} are passed to the spawned agent inside
 			 * the `Initialize` event: the `parameters` field.
 			 * 
 			 * <p>This action fires two events:
@@ -941,24 +956,27 @@ describe "Built-in Capacity Reference" {
 			 *  
 			 * @filter(.*) 
 			 */
-			fact "Spawning an Agent"{
+			fact "Spawning in a specific context"{
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.Lifecycle
 					import io.sarl.lang.core.AgentContext
 					import io.sarl.lang.core.Agent
 					import java.util.UUID
+					import java.util.Collection
 					agent A {
 						uses Lifecycle
 						def myaction {
 							var c : AgentContext
 							var aid : UUID
+							var listaid : Collection<UUID>
 							var type : Class<? extends Agent>
 							var p1 : Object
 							var p2 : Object
 							type = typeof(A)
 							p1 = new Object
 							p2 = new Object
-							aid = spawnInContext(type, c, #[p1, p2])
+							aid = spawnInContext(type, c, p1, p2)
+							listaid = spawnInContext(5, type, c, p1, p2)
 						}
 					}".parseSuccessfully
 			}
@@ -970,7 +988,7 @@ describe "Built-in Capacity Reference" {
 			 *     def spawnInContextWithID(agentType : Class<? extends Agent>,
 			 *                              agentId : UUID,
 			 *                              context : AgentContext,
-			 *                              params : Object[]) : UUID
+			 *                              parameters : Object[]) : UUID
 			 * 
 			 *
 			 * <p>This action creates an instance of the given agent type, with
@@ -986,7 +1004,7 @@ describe "Built-in Capacity Reference" {
 			 *  
 			 * @filter(.*) 
 			 */
-			fact "Spawning an Agent with a specific identifier"{
+			fact "Spawning with a specific agent identifier"{
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.Lifecycle
 					import io.sarl.lang.core.AgentContext
