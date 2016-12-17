@@ -43,8 +43,10 @@ import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
+import io.sarl.lang.core.Skill;
 
 /**
  * Janus implementation of an internal skill that provides an event dispatcher to notify the different components/behaviors of an
@@ -89,6 +91,8 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 	 */
 	private final Address agentAddressInInnerDefaultSpace;
 
+	private ClearableReference<Skill> skillBufferLogging;
+
 	/**
 	 * @param agent - reference to the owner of this skill.
 	 * @param addressInInnerDefaultSpace - address of the owner of this skill in its inner default space.
@@ -97,6 +101,17 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		super(agent);
 		this.agentAsEventListener = new AgentEventListener();
 		this.agentAddressInInnerDefaultSpace = addressInInnerDefaultSpace;
+	}
+
+	/** Replies the Logging skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final Logging getLoggingSkill() {
+		if (this.skillBufferLogging == null || this.skillBufferLogging.get() == null) {
+			this.skillBufferLogging = $getSkill(Logging.class);
+		}
+		return $castSkill(Logging.class, this.skillBufferLogging);
 	}
 
 	@Override
@@ -160,7 +175,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 
 			} catch (Exception e) {
 				// Log the exception
-				final Logging loggingCapacity = getSkill(Logging.class);
+				final Logging loggingCapacity = getLoggingSkill();
 				if (loggingCapacity != null) {
 					loggingCapacity.error(Messages.InternalEventBusSkill_3, e);
 				} else {

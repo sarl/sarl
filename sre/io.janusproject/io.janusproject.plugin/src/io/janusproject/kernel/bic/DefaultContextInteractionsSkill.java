@@ -28,9 +28,11 @@ import io.sarl.core.Lifecycle;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
+import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.util.Scopes;
@@ -53,6 +55,8 @@ public class DefaultContextInteractionsSkill extends BuiltinSkill implements Def
 
 	private Address addressInParentDefaultSpace;
 
+	private ClearableReference<Skill> skillBufferLifecycle;
+
 	/**
 	 * Constructs a <code>DefaultContextInteractionsImpl</code>.
 	 *
@@ -62,6 +66,17 @@ public class DefaultContextInteractionsSkill extends BuiltinSkill implements Def
 	DefaultContextInteractionsSkill(Agent agent, AgentContext parentContext) {
 		super(agent);
 		this.parentContext = parentContext;
+	}
+
+	/** Replies the Lifecycle skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final Lifecycle getLifecycleSkill() {
+		if (this.skillBufferLifecycle == null || this.skillBufferLifecycle.get() == null) {
+			this.skillBufferLifecycle = $getSkill(Lifecycle.class);
+		}
+		return $castSkill(Lifecycle.class, this.skillBufferLifecycle);
 	}
 
 	@Override
@@ -134,7 +149,7 @@ public class DefaultContextInteractionsSkill extends BuiltinSkill implements Def
 
 	@Override
 	public UUID spawn(Class<? extends Agent> agentType, Object... params) {
-		return getSkill(Lifecycle.class).spawnInContext(agentType, this.parentContext, params);
+		return getLifecycleSkill().spawnInContext(agentType, this.parentContext, params);
 	}
 
 	@Override

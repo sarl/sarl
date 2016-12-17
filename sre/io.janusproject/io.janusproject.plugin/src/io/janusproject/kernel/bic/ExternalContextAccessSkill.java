@@ -39,8 +39,10 @@ import io.sarl.core.MemberJoined;
 import io.sarl.core.MemberLeft;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
+import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedCollection;
@@ -65,11 +67,37 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	@Inject
 	private ContextSpaceService contextRepository;
 
+	private ClearableReference<Skill> skillBufferInternalEventBusCapacity;
+
+	private ClearableReference<Skill> skillBufferBehaviors;
+
 	/**
 	 * @param agent - owner of the skill.
 	 */
 	ExternalContextAccessSkill(Agent agent) {
 		super(agent);
+	}
+
+	/** Replies the InternalEventBusCapacity skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final InternalEventBusCapacity getInternalEventBusCapacitySkill() {
+		if (this.skillBufferInternalEventBusCapacity == null || this.skillBufferInternalEventBusCapacity.get() == null) {
+			this.skillBufferInternalEventBusCapacity = $getSkill(InternalEventBusCapacity.class);
+		}
+		return $castSkill(InternalEventBusCapacity.class, this.skillBufferInternalEventBusCapacity);
+	}
+
+	/** Replies the Behaviors skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final Behaviors getBehaviorsSkill() {
+		if (this.skillBufferBehaviors == null || this.skillBufferBehaviors.get() == null) {
+			this.skillBufferBehaviors = $getSkill(Behaviors.class);
+		}
+		return $castSkill(Behaviors.class, this.skillBufferBehaviors);
 	}
 
 	@Override
@@ -134,7 +162,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 
 		this.contexts.add(futureContext);
 
-		((OpenEventSpace) ac.getDefaultSpace()).register(getSkill(InternalEventBusCapacity.class).asEventListener());
+		((OpenEventSpace) ac.getDefaultSpace()).register(getInternalEventBusCapacitySkill().asEventListener());
 
 		fireContextJoined(futureContext, futureContextDefaultSpaceID);
 		fireMemberJoined(ac);
@@ -148,7 +176,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 * @param futureContextDefaultSpaceID - ID of the default space of the newly joined context
 	 */
 	protected void fireContextJoined(UUID futureContext, UUID futureContextDefaultSpaceID) {
-		getSkill(Behaviors.class).wake(new ContextJoined(futureContext, futureContextDefaultSpaceID));
+		getBehaviorsSkill().wake(new ContextJoined(futureContext, futureContextDefaultSpaceID));
 	}
 
 	/**
@@ -179,7 +207,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 		fireContextLeft(contextID);
 		fireMemberLeft(ac);
 
-		((OpenEventSpace) ac.getDefaultSpace()).unregister(getSkill(InternalEventBusCapacity.class).asEventListener());
+		((OpenEventSpace) ac.getDefaultSpace()).unregister(getInternalEventBusCapacitySkill().asEventListener());
 
 		this.contexts.remove(contextID);
 	}
@@ -191,7 +219,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 * @param contextID - the ID of context that will be left
 	 */
 	protected void fireContextLeft(UUID contextID) {
-		getSkill(Behaviors.class).wake(new ContextLeft(contextID));
+		getBehaviorsSkill().wake(new ContextLeft(contextID));
 	}
 
 	/**

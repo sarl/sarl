@@ -26,9 +26,11 @@ import io.sarl.core.InnerContextAccess;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
+import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpace;
+import io.sarl.lang.core.Skill;
 
 /**
  * Janus implementation of SARL's {@link Behaviors} built-in capacity.
@@ -46,6 +48,10 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 
 	private final Address agentAddressInInnerDefaultSpace;
 
+	private ClearableReference<Skill> skillBufferInternalEventBusCapacity;
+
+	private ClearableReference<Skill> skillBufferInnerContextAccess;
+
 	/**
 	 * @param agent - owner of this skill.
 	 * @param agentAddressInInnerDefaultSpace - address of the owner of this skill in its inner default space.
@@ -53,6 +59,28 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 	BehaviorsSkill(Agent agent, Address agentAddressInInnerDefaultSpace) {
 		super(agent);
 		this.agentAddressInInnerDefaultSpace = agentAddressInInnerDefaultSpace;
+	}
+
+	/** Replies the InternalEventBusCapacity skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final InternalEventBusCapacity getInternalEventBusCapacitySkill() {
+		if (this.skillBufferInternalEventBusCapacity == null || this.skillBufferInternalEventBusCapacity.get() == null) {
+			this.skillBufferInternalEventBusCapacity = $getSkill(InternalEventBusCapacity.class);
+		}
+		return $castSkill(InternalEventBusCapacity.class, this.skillBufferInternalEventBusCapacity);
+	}
+
+	/** Replies the InnerContextAccess skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final InnerContextAccess getInnerContextAccessSkill() {
+		if (this.skillBufferInnerContextAccess == null || this.skillBufferInnerContextAccess.get() == null) {
+			this.skillBufferInnerContextAccess = $getSkill(InnerContextAccess.class);
+		}
+		return $castSkill(InnerContextAccess.class, this.skillBufferInnerContextAccess);
 	}
 
 	@Override
@@ -65,13 +93,13 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 
 	@Override
 	public synchronized Behavior registerBehavior(Behavior attitude) {
-		getSkill(InternalEventBusCapacity.class).registerEventListener(attitude);
+		getInternalEventBusCapacitySkill().registerEventListener(attitude);
 		return attitude;
 	}
 
 	@Override
 	public synchronized Behavior unregisterBehavior(Behavior attitude) {
-		getSkill(InternalEventBusCapacity.class).unregisterEventListener(attitude);
+		getInternalEventBusCapacitySkill().unregisterEventListener(attitude);
 		return attitude;
 	}
 
@@ -82,7 +110,7 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 		// the agent via the inner default space add call internalReceiveEvent
 		// for real posting
 
-		final InnerContextAccess context = getSkill(InnerContextAccess.class);
+		final InnerContextAccess context = getInnerContextAccessSkill();
 
 		if ((!(context instanceof InnerContextSkill)) || ((InnerContextSkill) context).hasInnerContext()) {
 			final EventSpace defSpace = context.getInnerContext().getDefaultSpace();
@@ -91,7 +119,7 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 		} else {
 			// Do not call getInnerContext(), which is creating the inner context automatically.
 			// In place, try to send the event inside the agent only (and its behaviors).
-			final EventListener listener = getSkill(InternalEventBusCapacity.class).asEventListener();
+			final EventListener listener = getInternalEventBusCapacitySkill().asEventListener();
 			assert listener != null;
 			evt.setSource(this.agentAddressInInnerDefaultSpace);
 			listener.receiveEvent(evt);
@@ -101,7 +129,7 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 
 	@Override
 	public EventListener asEventListener() {
-		return getSkill(InternalEventBusCapacity.class).asEventListener();
+		return getInternalEventBusCapacitySkill().asEventListener();
 	}
 
 }
