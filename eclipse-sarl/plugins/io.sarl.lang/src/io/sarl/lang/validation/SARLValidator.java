@@ -894,7 +894,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						invokeDefaultConstructor = false;
 					}
 					if (invokeDefaultConstructor && !superConstructors.containsKey(voidKey)) {
-						final List<String> issueData = newArrayList();
+						final List<String> issueData = new ArrayList<>();
 						for (final ActionParameterTypes defaultSignature : defaultSignatures) {
 							issueData.add(defaultSignature.toString());
 						}
@@ -911,7 +911,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			if (!hasDeclaredConstructor) {
 				for (final ActionParameterTypes defaultSignature : defaultSignatures) {
 					if (!superConstructors.containsKey(defaultSignature)) {
-						final List<String> issueData = newArrayList();
+						final List<String> issueData = new ArrayList<>();
 						for (final JvmConstructor superConstructor : superConstructors.values()) {
 							issueData.add(EcoreUtil.getURI(superConstructor).toString());
 							issueData.add(doGetReadableSignature(container.getName(), superConstructor.getParameters()));
@@ -1013,9 +1013,10 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkForbiddenCalls(XAbstractFeatureCall expression) {
+		/* TODO: Remove the code in this comment because it seems to be already managed by the feature call validator
 		// specific message for System.exit
-		if (expression.getFeature() != null) {
-			final JvmIdentifiableElement feature = expression.getFeature();
+		final JvmIdentifiableElement feature = expression.getFeature();
+		if (feature != null) {
 			final String id = feature.getQualifiedName();
 			if ("java.lang.System.exit".equals(id)) { //$NON-NLS-1$
 				error(
@@ -1027,6 +1028,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				return;
 			}
 		}
+		*/
 		if (this.featureCallValidator.isDisallowedCall(expression)) {
 			error(
 					MessageFormat.format(
