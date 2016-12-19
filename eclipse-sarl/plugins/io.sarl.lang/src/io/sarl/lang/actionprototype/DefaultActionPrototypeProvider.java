@@ -290,12 +290,12 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 			final int lastIndex = parameters.size() - 1;
 			for (int i = 0; i < lastIndex; ++i) {
 				final SarlFormalParameter param = parameters.get(i);
-				if (param.getParameterType() != null) {
+				if (param != null && param.getParameterType() != null) {
 					sig.add(param.getParameterType().getIdentifier());
 				}
 			}
 			final SarlFormalParameter param = parameters.get(lastIndex);
-			if (param.getParameterType() != null) {
+			if (param != null && param.getParameterType() != null) {
 				JvmTypeReference type = param.getParameterType();
 				if (isVarargs) {
 					type = this.references.createArrayType(type);

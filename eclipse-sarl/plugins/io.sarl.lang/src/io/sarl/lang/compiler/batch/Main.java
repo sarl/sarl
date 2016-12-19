@@ -142,7 +142,9 @@ public final class Main {
 	public static int runCompiler(String... args) {
 		configureLogger();
 		final Injector injector = SARLStandaloneSetup.doSetup();
+		assert injector != null;
 		final SarlBatchCompiler compiler = injector.getInstance(SarlBatchCompiler.class);
+		assert compiler != null;
 		parseCommandLine(args, compiler);
 		if (!compiler.compile()) {
 			return ERROR_CODE;

@@ -1718,7 +1718,9 @@ public class SarlBatchCompiler {
 	protected ClassLoader createClassLoader(Iterable<File> jarsAndFolders, ClassLoader parentClassLoader) {
 		return new URLClassLoader(Iterables.toArray(Iterables.transform(jarsAndFolders, (from) -> {
 			try {
-				return from.toURI().toURL();
+				final URL url = from.toURI().toURL();
+				assert url != null;
+				return url;
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

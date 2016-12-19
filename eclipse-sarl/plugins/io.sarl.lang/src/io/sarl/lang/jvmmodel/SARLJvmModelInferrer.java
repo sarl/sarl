@@ -2342,7 +2342,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		boolean hasDefaultValue = false;
 		for (int i = 0; i < params.size(); ++i) {
 			final XtendParameter param = params.get(i);
+			assert param != null;
 			final InferredStandardParameter inferredParam = paramSpec.get(i);
+			assert inferredParam != null;
 			final String paramName = param.getName();
 			final JvmTypeReference paramType = param.getParameterType();
 

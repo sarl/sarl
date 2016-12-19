@@ -181,8 +181,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 		@Override
 		public JvmGenericType getInferredType(XtendClass xtendClass) {
-			final JvmGenericType firstOrNull = getFirstOrNull(getJvmElements(xtendClass), JvmGenericType.class);
-			return firstOrNull;
+			return getFirstOrNull(getJvmElements(xtendClass), JvmGenericType.class);
 		}
 
 		@Override

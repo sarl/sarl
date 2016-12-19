@@ -280,8 +280,13 @@ public final class Utils {
 	 * @return <code>true</code> if the late parameter is variadic.
 	 */
 	public static boolean isVarArg(List<? extends XtendParameter> params) {
-		return params.size() > 0
-				&& params.get(params.size() - 1).isVarArg();
+		assert params != null;
+		if (params.size() > 0) {
+			final XtendParameter param = params.get(params.size() - 1);
+			assert param != null;
+			return param.isVarArg();
+		}
+		return false;
 	}
 
 	/** Replies if the given name is related to an hidden action.
