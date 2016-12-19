@@ -35,8 +35,9 @@ package io.sarl.lang.core;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated no more used since 0.5.
  */
-
+@Deprecated
 public final class DeadEvent extends Event {
 
 	private static final long serialVersionUID = 1117818766135181831L;
