@@ -39,7 +39,6 @@ import io.janusproject.services.executor.ExecutorService;
 
 import io.sarl.eventdispatching.BehaviorGuardEvaluator;
 import io.sarl.eventdispatching.BehaviorGuardEvaluatorRegistry;
-import io.sarl.lang.core.DeadEvent;
 import io.sarl.lang.core.Event;
 
 /**
@@ -174,10 +173,6 @@ public class AgentInternalEventsDispatcher {
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
 	 *
-	 * <p>
-	 * If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
-	 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
-	 * </p>
 	 * @param event - an event to dispatch asynchronously.
 	 */
 	public void asyncDispatch(Event event) {
