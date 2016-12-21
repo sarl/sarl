@@ -34,7 +34,7 @@ import io.sarl.lang.core.Event;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AsynchronousAgentKillingEvent extends Event {
+public final class AsynchronousAgentKillingEvent extends Event {
 
 	private static final long serialVersionUID = 1195716429229202560L;
 

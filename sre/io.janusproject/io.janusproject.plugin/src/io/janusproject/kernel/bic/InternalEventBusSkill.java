@@ -167,7 +167,8 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		// agent itself, it is treated in this function.
 		// Otherwise, it is given to the asynchronous
 		// listener.
-		if (event instanceof Initialize) {
+		final Class<? extends Event> eventType = event.getClass();
+		if (Initialize.class.equals(eventType)) {
 			// Immediate synchronous dispatching of Initialize event
 			try {
 				this.eventDispatcher.immediateDispatch(event);
@@ -188,13 +189,13 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 				// Asynchronous kill of the event.
 				this.agentAsEventListener.killOrMarkAsKilled();
 			}
-		} else if (event instanceof Destroy) {
+		} else if (Destroy.class.equals(eventType)) {
 			// Immediate synchronous dispatching of Destroy event
 			synchronized (this.state) {
 				this.state.set(OwnerState.DESTROYED);
 			}
 			this.eventDispatcher.immediateDispatch(event);
-		} else if (event instanceof AsynchronousAgentKillingEvent) {
+		} else if (AsynchronousAgentKillingEvent.class.equals(eventType)) {
 			// Asynchronous kill of the event.
 			this.agentAsEventListener.killOrMarkAsKilled();
 		} else {
@@ -239,9 +240,10 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void receiveEvent(Event event) {
-			assert (!(event instanceof Initialize)) && (!(event instanceof Destroy))
-					&& (!(event instanceof AsynchronousAgentKillingEvent)) : "Unsupported type of event: " + event; //$NON-NLS-1$
-			if (event instanceof AgentSpawned && this.aid.equals(((AgentSpawned) event).agentID)) {
+			final Class<? extends Event> eventType = event.getClass();
+			assert (!Initialize.class.equals(eventType)) && !Destroy.class.equals(eventType)
+					&& !AsynchronousAgentKillingEvent.class.equals(eventType) : "Unsupported type of event: " + event; //$NON-NLS-1$
+			if (AgentSpawned.class.equals(eventType) && this.aid.equals(((AgentSpawned) event).agentID)) {
 				// This permits to ensure that the killing event
 				// is correctly treated when fired from the initialization
 				// handler.
