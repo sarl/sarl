@@ -352,6 +352,16 @@ capacity Schedules {
 	def cancel(task : AgentTask, mayInterruptIfRunning : boolean = true) : boolean
 
 	/**
+	 * Replies if the given task was canceled.
+	 *
+	 * @param task the task.
+	 * @return <code>true</code> if the task was canceled with {@link #cancel(AgentTask,boolean)}
+	 *     or {@link #cancel(AgentTask)}; <code>false</code> otherwise.
+	 * @since 0.5
+	 */
+	def isCanceled(task : AgentTask) : boolean
+
+	/**
 	 * Schedule a periodic execution of the given task.
 	 * <p>
 	 * If the duration of the task is greater to the given period length, then
