@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -71,6 +72,14 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 */
 	SchedulesSkill(Agent agent) {
 		super(agent);
+	}
+
+	/** Replies the mutex for synchronizing on the task list.
+	 *
+	 * @return the mutex.
+	 */
+	protected final Object getTaskListMutex() {
+		return this.tasks;
 	}
 
 	@Override
@@ -180,6 +189,30 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public boolean isCanceled(AgentTask task) {
+		if (task != null) {
+			final String name = task.getName();
+			final Future<?> future = getFuture(name);
+			if (future != null) {
+				return future.isCancelled();
+			}
+		}
+		return false;
+	}
+
+	/** Replies the future object for the given task.
+	 *
+	 * @param taskName the name of the task.
+	 * @return the future.
+	 * @since 0.5
+	 */
+	Future<?> getFuture(String taskName) {
+		synchronized (getTaskListMutex()) {
+			return this.futures.get(taskName);
+		}
 	}
 
 	@Override
