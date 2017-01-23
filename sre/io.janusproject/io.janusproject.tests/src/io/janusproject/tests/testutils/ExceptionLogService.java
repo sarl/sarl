@@ -94,8 +94,18 @@ public class ExceptionLogService extends AbstractService implements LogService {
 	}
 
 	@Override
+	public void warning(Throwable exception) {
+		//
+	}
+
+	@Override
 	public void error(String message, Object... params) {
 		this.results.add(new LoggedException(message));
+	}
+
+	@Override
+	public void error(Throwable exception) {
+		this.results.add(exception);
 	}
 
 	@Override

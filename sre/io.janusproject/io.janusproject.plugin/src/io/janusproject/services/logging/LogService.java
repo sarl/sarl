@@ -101,12 +101,28 @@ public interface LogService extends DependentService {
 	void warning(String message, Object... params);
 
 	/**
+	 * Log a warning message.
+	 *
+	 * @param exception - the exception to log.
+	 * @since 0.5
+	 */
+	void warning(Throwable exception);
+
+	/**
 	 * Log an error message.
 	 *
 	 * @param message - the message in the properties.
 	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 */
 	void error(String message, Object... params);
+
+	/**
+	 * Log an error message.
+	 *
+	 * @param exception - the exception to log.
+	 * @since 0.5
+	 */
+	void error(Throwable exception);
 
 	/**
 	 * Log the given record.

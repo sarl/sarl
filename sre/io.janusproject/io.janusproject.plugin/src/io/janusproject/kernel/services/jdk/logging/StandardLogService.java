@@ -131,7 +131,7 @@ public class StandardLogService extends AbstractDependentService implements LogS
 		return record;
 	}
 
-	private synchronized void writeInLog(Level level, boolean exception, String message, Object... params) {
+	private void writeInLog(Level level, boolean exception, String message, Object... params) {
 		if (isLogEnabled() && this.logger.isLoggable(level)) {
 			final LoggerCaller caller = this.loggerCallerProvider.getLoggerCaller();
 			final String text = MessageFormat.format(message, params);
@@ -146,7 +146,7 @@ public class StandardLogService extends AbstractDependentService implements LogS
 	}
 
 	@Override
-	public synchronized void log(LogRecord record) {
+	public void log(LogRecord record) {
 		if (isLogEnabled()) {
 			this.logger.log(record);
 		}
@@ -183,30 +183,40 @@ public class StandardLogService extends AbstractDependentService implements LogS
 	}
 
 	@Override
+	public void warning(Throwable exception) {
+		writeInLog(Level.WARNING, true, exception.getLocalizedMessage(), exception);
+	}
+
+	@Override
 	public void error(String message, Object... params) {
 		writeInLog(Level.SEVERE, true, message, params);
 	}
 
 	@Override
-	public synchronized Logger getLogger() {
+	public void error(Throwable exception) {
+		writeInLog(Level.SEVERE, true, exception.getLocalizedMessage(), exception);
+	}
+
+	@Override
+	public Logger getLogger() {
 		return this.logger;
 	}
 
 	@Inject
 	@Override
-	public synchronized void setLogger(Logger logger) {
+	public void setLogger(Logger logger) {
 		if (logger != null) {
 			this.logger = logger;
 		}
 	}
 
 	@Override
-	public synchronized void setFilter(Filter filter) {
+	public void setFilter(Filter filter) {
 		this.logger.setFilter(filter);
 	}
 
 	@Override
-	public synchronized Filter getFilter() {
+	public Filter getFilter() {
 		return this.logger.getFilter();
 	}
 
