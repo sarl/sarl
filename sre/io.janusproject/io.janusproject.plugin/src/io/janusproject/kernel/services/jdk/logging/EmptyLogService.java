@@ -93,7 +93,17 @@ public class EmptyLogService extends AbstractService implements LogService {
 	}
 
 	@Override
+	public void warning(Throwable exception) {
+		//
+	}
+
+	@Override
 	public void error(String message, Object... params) {
+		//
+	}
+
+	@Override
+	public void error(Throwable exception) {
 		//
 	}
 
