@@ -21,44 +21,44 @@
 
 package io.janusproject.kernel.services.jdk.executors;
 
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
+import java.text.MessageFormat;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
+import io.janusproject.services.logging.LogService;
 
 /**
- * A factory of threads for the Janus platform.
+ * An execution rejection handler for the Janus platform.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class JdkThreadFactory implements ThreadFactory {
+@Singleton
+public class JdkRejectedExecutionHandler implements RejectedExecutionHandler {
 
-	private final ThreadFactory defaultThreadFactory;
-
-	private final UncaughtExceptionHandler handler;
+	private final LogService logger;
 
 	/**
-	 * Constructs a factory based on the {@link Executors#defaultThreadFactory() default thread factory}.
-	 *
-	 * @param handler - the uncaught exception handler that must be provided to the created threads.
+	 * @param logger - the logging service that must be used for output the errors.
 	 */
 	@Inject
-	public JdkThreadFactory(UncaughtExceptionHandler handler) {
-		this.handler = handler;
-		this.defaultThreadFactory = Executors.defaultThreadFactory();
+	public JdkRejectedExecutionHandler(LogService logger) {
+		assert logger != null;
+		this.logger = logger;
 	}
 
 	@Override
-	public Thread newThread(Runnable runnable) {
-		final Thread t = this.defaultThreadFactory.newThread(runnable);
-		t.setDaemon(false);
-		assert this.handler != null;
-		t.setUncaughtExceptionHandler(this.handler);
-		return t;
+	public void rejectedExecution(Runnable task, ThreadPoolExecutor executor) {
+		final LogRecord record = new LogRecord(Level.SEVERE,
+				MessageFormat.format(Messages.JdkRejectedExecutionHandler_0, task.toString()));
+		this.logger.log(record);
 	}
 
 }
