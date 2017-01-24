@@ -126,7 +126,7 @@ public class AgentInternalEventsDispatcher {
 			final Collection<Runnable> behaviorsMethodsToExecute;
 			try {
 				behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
-				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(event, behaviorsMethodsToExecute);
+				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute);
 			} catch (RuntimeException exception) {
 				throw exception;
 			} catch (InterruptedException | ExecutionException | InvocationTargetException e) {
@@ -222,14 +222,12 @@ public class AgentInternalEventsDispatcher {
 	 *
 	 * <p>This function may fail if one of the called handlers has failed. Errors are logged by the executor service too.
 	 *
-	 * @param event - the event occurrence that has activated the specified behaviors, used just for indexing purpose but not
-	 *        passed to runnable here, they were created according to this occurrence
 	 * @param behaviorsMethodsToExecute - the collection of Behaviors runnable that must be executed.
 	 * @throws InterruptedException - something interrupt the waiting of the event handler terminations.
 	 * @throws ExecutionException - when the event handlers cannot be called; or when one of the event handler has failed during
 	 *     its run.
 	 */
-	private void executeBehaviorMethodsInParalellWithSynchroAtTheEnd(Event event, Collection<Runnable> behaviorsMethodsToExecute)
+	private void executeBehaviorMethodsInParalellWithSynchroAtTheEnd(Collection<Runnable> behaviorsMethodsToExecute)
 			throws InterruptedException, ExecutionException {
 
 		final CountDownLatch doneSignal = new CountDownLatch(behaviorsMethodsToExecute.size());
