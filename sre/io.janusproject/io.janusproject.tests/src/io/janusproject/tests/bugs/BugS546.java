@@ -70,9 +70,9 @@ public class BugS546 {
 
 	private static final boolean LOG = false;
 	
-	private static final int NB_AGENTS = 150;
+	private static final int NB_AGENTS = 300;
 
-	private static final int TIMEOUT = 60;
+	private static final int TIMEOUT = 120;
 
 	private static final int BASE_DELAY = 500;
 

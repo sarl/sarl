@@ -23,17 +23,14 @@ package io.janusproject.kernel.bic.internaleventdispatching;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
 import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.OutputParameter;
-import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.janusproject.services.executor.ExecutorService;
 
@@ -60,26 +57,6 @@ public class AgentInternalEventsDispatcher {
 	 * Google Guava library.
 	 */
 	private final BehaviorGuardEvaluatorRegistry behaviorGuardEvaluatorRegistry;
-
-	/**
-	 * Per-thread queue of events to dispatch.
-	 */
-	private final ThreadLocal<Queue<Pair<Event, Collection<Runnable>>>> queue = new ThreadLocal<Queue<Pair<Event, Collection<Runnable>>>>() {
-		@Override
-		protected Queue<Pair<Event, Collection<Runnable>>> initialValue() {
-			return Queues.newArrayDeque();
-		}
-	};
-
-	/**
-	 * Per-thread dispatch state, used to avoid reentrant event dispatching.
-	 */
-	private final ThreadLocal<Boolean> dispatching = new ThreadLocal<Boolean>() {
-		@Override
-		protected Boolean initialValue() {
-			return Boolean.FALSE;
-		}
-	};
 
 	/**
 	 * The executor used to execute behavior methods in dedicated thread.
@@ -191,7 +168,7 @@ public class AgentInternalEventsDispatcher {
 				} catch (InvocationTargetException e) {
 					throw new RuntimeException(e);
 				}
-				executeAsynchronouslyBehaviorMethods(event, behaviorsMethodsToExecute);
+				executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute);
 
 			}
 			// XXX: Not in the SAR specification, should we fire the DeadEvent?
@@ -294,30 +271,12 @@ public class AgentInternalEventsDispatcher {
 	 *
 	 * <p>This function never fails. Errors in the event handlers are logged by the executor service.
 	 *
-	 * @param event - the event occurrence that has activated the specified behaviors, used just for indexing purpose but not
-	 *        passed to runnable here, they were created according to this occurrence
 	 * @param behaviorsMethodsToExecute - the collection of Behaviors runnable that must be executed.
 	 */
-	private void executeAsynchronouslyBehaviorMethods(Event event, Collection<Runnable> behaviorsMethodsToExecute) {
-
-		final Queue<Pair<Event, Collection<Runnable>>> queueForThread = this.queue.get();
-		queueForThread.offer(new Pair<>(event, behaviorsMethodsToExecute));
-
-		if (!this.dispatching.get().booleanValue()) {
-			this.dispatching.set(Boolean.TRUE);
-			try {
-				Pair<Event, Collection<Runnable>> nextEvent;
-				while ((nextEvent = queueForThread.poll()) != null) {
-					for (final Runnable runnable : nextEvent.getValue()) {
-						this.executor.execute(runnable);
-					}
-				}
-			} finally {
-				this.dispatching.remove();
-				this.queue.remove();
-			}
+	private void executeAsynchronouslyBehaviorMethods(Collection<Runnable> behaviorsMethodsToExecute) {
+		for (final Runnable runnable : behaviorsMethodsToExecute) {
+			this.executor.execute(runnable);
 		}
-
 	}
 
 }
