@@ -92,7 +92,7 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 	}
 
 	@Override
-	public synchronized Set<V> removeAll(Object key) {
+	public Set<V> removeAll(Object key) {
 		return (Set<V>) super.removeAll(key);
 	}
 

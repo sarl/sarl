@@ -50,7 +50,9 @@ import io.sarl.lang.core.Event;
 
 /**
  * Registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a given behavior (on clause in SARL behavior).
- * This class has been inspired by the com.google.common.eventbus.SuscriberRegistry class of Google Guava library.
+ * This class has been inspired by the {@code com.google.common.eventbus.SuscriberRegistry} class of Google Guava library.
+ *
+ * <p>This class is not thread-safe.
  *
  * @author $Author: ngaud$
  * @author $Author: sgalland$
@@ -168,7 +170,7 @@ public class BehaviorGuardEvaluatorRegistry {
 			final Class<? extends Event> eventType = entry.getKey();
 			final Collection<BehaviorGuardEvaluator> listenerMethodsForType = entry.getValue();
 
-			//TODO Array-based implementation may be not efficient
+			//TODO Array-based implementation for a set may be not efficient
 			final CopyOnWriteArraySet<BehaviorGuardEvaluator> currentSubscribers = this.behaviorGuardEvaluators.get(eventType);
 
 			if (currentSubscribers == null || !currentSubscribers.removeAll(listenerMethodsForType)) {

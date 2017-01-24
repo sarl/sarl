@@ -27,8 +27,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,13 +70,15 @@ public class BugS546 {
 
 	private static final boolean LOG = false;
 	
-	private static final int NB_AGENTS = 100;
+	private static final int NB_AGENTS = 150;
 
 	private static final int TIMEOUT = 60;
 
 	private static final int BASE_DELAY = 500;
 
 	private static final int MAX_EXTRA_DELAY = 2000;
+
+	private static final int PRESENTATION_DELAY = 1000;
 
 	public static abstract class AbstractBugS546Test extends AbstractJanusRunTest {
 
@@ -112,13 +116,13 @@ public class BugS546 {
 			@Override
 			protected boolean runAgentTest() {
 				if (LOG) {
-					System.out.println("KILLABLE AGENT: " + getID());
+					System.out.println("K-" + getID() + ": starting");
 				}
 				final Schedules s = getSkill(Schedules.class);
 				this.task = s.task(null);
-				s.every(this.task, 1000, (it) -> {
+				s.every(this.task, PRESENTATION_DELAY, (it) -> {
 					if (LOG) {
-						System.out.println("SEND PRESENTATION: " + getID());
+						System.out.println("K-" + getID() + ": send presentation");
 					}
 					getSkill(DefaultContextInteractions.class).emit(new PresentationEvent());
 				});
@@ -133,13 +137,11 @@ public class BugS546 {
 			}
 
 			private void shootBehaviorUnitPrivate(ShootEvent occurrence) {
-				if (LOG) {
-					System.out.println("SHOOT -> cancel task: " + getID());
-				}
 				Schedules s = getSkill(Schedules.class);
 				s.cancel(this.task);
 				if (LOG) {
-					System.out.println("SHOOT -> react: " + getID());
+					System.out.println("K-" + getID() + ": cancel presentation task");
+					System.out.println("K-" + getID() + ": run shoot behavior");
 				}
 				shootBehaviorUnit(occurrence);
 			}
@@ -151,8 +153,10 @@ public class BugS546 {
 		@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 		public static class KillWaiterAgent extends TestingAgent {
 
-			private final Set<UUID> agents = Collections.synchronizedSet(new HashSet<>());
-			private final Set<UUID> killedAgents = Collections.synchronizedSet(new HashSet<>());
+			private final Set<UUID> presentedAgents = new TreeSet<>();
+			private final Set<UUID> shootedAgents = new TreeSet<>();
+			private final AtomicInteger feedbacks = new AtomicInteger();
+			private final AtomicInteger guards = new AtomicInteger();
 
 			public KillWaiterAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
 				super(provider, parentID, agentID);
@@ -163,15 +167,37 @@ public class BugS546 {
 				final Schedules s = getSkill(Schedules.class);
 				final AgentTask task = s.task(null);
 				s.every(task, 500, (it) -> {
-					int nb = this.agents.size();
-					if (LOG) {
-						System.out.println("CHECK FOR KILLABLE AGENTS: " + nb);
+					final int nb;
+					synchronized (this.presentedAgents) {
+						nb = this.presentedAgents.size();
 					}
-					if (nb >= NB_AGENTS) {
+					if (LOG) {
+						System.out.println("W: receiving " + nb + " agent presentation(s)");
+					}
+					if (nb >= NB_AGENTS && !s.isCanceled(task)) {
 						s.cancel(task);
+						if (LOG) {
+							System.out.println("W: waiting task canceled");
+							System.out.println("W: shoot the guys");
+						}
 						getSkill(DefaultContextInteractions.class).emit(new ShootEvent());
 					}
 				});
+				if (LOG) {
+					s.every(1000, (it) -> {
+						final int nb1;
+						synchronized (this.presentedAgents) {
+							nb1 = this.presentedAgents.size();
+						}
+						final int nb2;
+						synchronized (this.shootedAgents) {
+							nb2 = this.shootedAgents.size();
+						}
+						final int nb3 = getSkill(DefaultContextInteractions.class).getDefaultSpace().getParticipants().size();
+						System.out.println("INFO: present=" + nb1 + "; killed=" + nb2 + "; inSpace=" + nb3);
+						System.out.flush();
+					});
+				}
 				return false;
 			}
 
@@ -183,37 +209,68 @@ public class BugS546 {
 			}
 
 			private void initializeBehaviorUnit(PresentationEvent occurrence) {
-				if (LOG) {
-					System.out.println("AGENT READY: " + occurrence.getSource().getUUID());
+				final boolean b;
+				synchronized (this.presentedAgents) {
+					b = this.presentedAgents.add(occurrence.getSource().getUUID());
 				}
-				this.agents.add(occurrence.getSource().getUUID());
+				if (!b) {
+					if (LOG) {
+						System.out.println("W: again K-" + occurrence.getSource().getUUID());
+					}
+				} else if (LOG) {
+					System.out.println("W: hello K-" + occurrence.getSource().getUUID());
+				}
+
 			}
 
 			@PerceptGuardEvaluator
 			private void agentKilledGuardEvaluator(AgentKilled occurrence, Collection<Runnable> ___SARLlocal_runnableCollection) {
 				assert occurrence != null;
 				assert ___SARLlocal_runnableCollection != null;
+				if (LOG) {
+					System.out.println("W: guard evaluation #" + guards.incrementAndGet()) ;
+				}
 				if (!isFromMe(occurrence)) {
 					___SARLlocal_runnableCollection.add(() -> agentKilledBehaviorUnit(occurrence));
 				}
 			}
 
 			private void agentKilledBehaviorUnit(AgentKilled occurrence) {
-				if (this.agents.contains(occurrence.getSource().getUUID())) {
+				if (LOG) {
+					System.out.println("W: feedback #" + feedbacks.incrementAndGet()) ;
+				}
+				final boolean b;
+				final int size1;
+				synchronized (this.presentedAgents) {
+					b = this.presentedAgents.remove(occurrence.getSource().getUUID());
+					size1 = this.presentedAgents.size();
+				}
+				if (b) {
 					if (LOG) {
-						System.out.println("AGENT KILLED: " + occurrence.getSource().getUUID());
+						System.out.println("W: agent K-" + occurrence.getSource().getUUID() + " killed") ;
+						System.out.println("W: remaining " + size1 + " agent(s)") ;
 					}
-					addResult(occurrence.getSource().getUUID());
-					if (getResults().size() >= NB_AGENTS) {
+					final int size2;
+					synchronized (this.shootedAgents) {
+						this.shootedAgents.add(occurrence.getSource().getUUID());
+						size2 = this.shootedAgents.size();
+					}
+					if (LOG) {
+						System.out.println("W: living agents = " + size1) ;
+						System.out.println("W: killed agents = " + size2) ;
+					}
+					if (size2 >= NB_AGENTS) {
 						if (LOG) {
-							System.out.println("STOP SYSTEM");
+							System.out.println("W: Stop unit test");
+						}
+						synchronized (this.shootedAgents) {
+							addResults(this.shootedAgents);
 						}
 						getSkill(Lifecycle.class).killMe();
 					}
 				} else if (LOG) {
-					System.out.println("IGNORE AGENT KILLED: " + occurrence.getSource().getUUID());
+					System.out.println("W: IGNORE AGENT KILLED FOR " + occurrence.getSource().getUUID());
 				}
-
 			}
 	
 		}
@@ -237,7 +294,8 @@ public class BugS546 {
 
 			protected void shootBehaviorUnit(ShootEvent occurrence) {
 				if (LOG) {
-					System.out.println("I'M SHOOT -> commit suicide: " + getID());
+					System.out.println("K-" + getID() + ": bye bye");
+
 				}
 				getSkill(Lifecycle.class).killMe();
 			}

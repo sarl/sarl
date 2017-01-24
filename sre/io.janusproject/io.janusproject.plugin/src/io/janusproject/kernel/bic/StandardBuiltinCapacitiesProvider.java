@@ -109,7 +109,6 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 
 		final MicroKernelSkill microKernelSkill = new MicroKernelSkill(agent, k);
 
-		// no need to be synchronized
 		final Map<Class<? extends Capacity>, Skill> result = new HashMap<>();
 		result.put(MicroKernelCapacity.class, microKernelSkill);
 		result.put(InternalEventBusCapacity.class, eventBusSkill);

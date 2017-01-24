@@ -120,7 +120,7 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 
 	@Test
 	public void selfEvent_other_initialized() {
-		Initialize initEvent = Mockito.mock(Initialize.class);
+		Initialize initEvent = new Initialize();
 		this.skill.selfEvent(initEvent);
 		//
 		Event event = Mockito.mock(Event.class);
@@ -132,7 +132,7 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 
 	@Test
 	public void selfEvent_initialize() {
-		Initialize event = Mockito.mock(Initialize.class);
+		Initialize event = new Initialize();
 		this.skill.selfEvent(event);
 		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.eventBus, new Times(1)).immediateDispatch(argument.capture());
@@ -141,7 +141,7 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 
 	@Test
 	public void selfEvent_destroy() {
-		Destroy event = Mockito.mock(Destroy.class);
+		Destroy event = new Destroy();
 		this.skill.selfEvent(event);
 		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.eventBus, new Times(1)).immediateDispatch(argument.capture());

@@ -39,6 +39,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.janusproject.kernel.services.jdk.spawn.StandardSpawnService;
 import io.janusproject.services.contextspace.ContextSpaceService;
+import io.janusproject.services.logging.LogService;
 import io.janusproject.services.spawn.KernelAgentSpawnListener;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.services.spawn.SpawnServiceListener;
@@ -92,6 +93,9 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	@Nullable
 	private OpenEventSpace innerSpace;
 
+	@Nullable
+	private LogService logService;
+
 	@Mock
 	private AgentContext innerContext;
 
@@ -121,8 +125,9 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	@Override
 	public StandardSpawnService newService() {
 		this.builtinCapacitiesProvider = Mockito.mock(BuiltinCapacitiesProvider.class);
+		this.logService = Mockito.mock(LogService.class);
 		if (this.injector == null) {
-			this.injector = Guice.createInjector(new TestModule(this.builtinCapacitiesProvider));
+			this.injector = Guice.createInjector(new TestModule(this.builtinCapacitiesProvider, this.logService));
 		}
 		return this.injector.getInstance(StandardSpawnService.class);
 	}
@@ -317,13 +322,17 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 
 		private final BuiltinCapacitiesProvider builtinCapacitiesProvider;
 
-		TestModule(BuiltinCapacitiesProvider builtinCapacitiesProvider) {
+		private final LogService logService;
+
+		TestModule(BuiltinCapacitiesProvider builtinCapacitiesProvider, LogService logService) {
 			this.builtinCapacitiesProvider = builtinCapacitiesProvider;
+			this.logService = logService;
 		}
 
 		@Override
 		protected void configure() {
 			bind(BuiltinCapacitiesProvider.class).toInstance(this.builtinCapacitiesProvider);
+			bind(LogService.class).toInstance(this.logService);
 		}
 
 	}

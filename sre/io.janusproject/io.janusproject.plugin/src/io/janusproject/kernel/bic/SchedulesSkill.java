@@ -151,7 +151,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	public synchronized AgentTask in(AgentTask task, long delay, Procedure1<? super Agent> procedure) {
 		final AgentTask rtask = task == null ? task("task-" + UUID.randomUUID()) : task; //$NON-NLS-1$
 		rtask.setProcedure(procedure);
-		final ScheduledFuture<?> sf = this.executorService.schedule(new AgentRunnableTask(rtask, false), delay, TimeUnit.MILLISECONDS);
+		final ScheduledFuture<?> sf = this.executorService.schedule(new AgentTaskRunner(rtask, false), delay, TimeUnit.MILLISECONDS);
 		this.futures.put(rtask.getName(), sf);
 		return rtask;
 	}
@@ -224,7 +224,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	public synchronized AgentTask every(AgentTask task, long period, Procedure1<? super Agent> procedure) {
 		final AgentTask rtask = task == null ? task("task-" + UUID.randomUUID()) : task; //$NON-NLS-1$
 		rtask.setProcedure(procedure);
-		final ScheduledFuture<?> sf = this.executorService.scheduleAtFixedRate(new AgentRunnableTask(rtask, true), 0, period,
+		final ScheduledFuture<?> sf = this.executorService.scheduleAtFixedRate(new AgentTaskRunner(rtask, true), 0, period,
 				TimeUnit.MILLISECONDS);
 		this.futures.put(rtask.getName(), sf);
 		return rtask;
@@ -234,19 +234,43 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 * Implementation of an agent task.
 	 *
 	 * @author $Author: srodriguez$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@SuppressWarnings("synthetic-access")
-	private class AgentRunnableTask implements Runnable {
-		private WeakReference<AgentTask> agentTaskRef;
+	private class AgentTaskRunner implements Runnable {
+
+		private final WeakReference<AgentTask> agentTaskRef;
+
+		private WeakReference<Future<?>> future;
 
 		private final boolean isPeriodic;
 
-		AgentRunnableTask(AgentTask task, boolean isPeriodic) {
+		AgentTaskRunner(AgentTask task, boolean isPeriodic) {
+			assert task != null;
 			this.agentTaskRef = new WeakReference<>(task);
 			this.isPeriodic = isPeriodic;
+		}
+
+		/** Set the future of this task.
+		 *
+		 * @param future the future.
+		 * @since 0.5
+		 */
+		void setFuture(Future<?> future) {
+			this.future = future == null ? null : new WeakReference<>(future);
+		}
+
+		/** Replies the future of this task.
+		 *
+		 * @return the future.
+		 * @since 0.5
+		 */
+		private Future<?> getFuture() {
+			final WeakReference<Future<?>> safeFutureReference = this.future;
+			return safeFutureReference == null ? null : safeFutureReference.get();
 		}
 
 		@Override
@@ -254,6 +278,11 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			final AgentTask task = this.agentTaskRef.get();
 			if (task == null) {
 				throw new RuntimeException(Messages.SchedulesSkill_2);
+			}
+			final Future<?> future = getFuture();
+			if (future != null && (future.isDone() || future.isCancelled())) {
+				setFuture(null);
+				return;
 			}
 			try {
 				final Agent owner = getOwner();

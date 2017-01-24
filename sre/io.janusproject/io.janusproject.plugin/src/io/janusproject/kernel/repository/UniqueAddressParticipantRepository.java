@@ -40,6 +40,8 @@ import io.sarl.util.Collections3;
  * <p>The repository must be distributed and synchronized all over the network by using data-structures that are provided by an
  * injected {@link DistributedDataStructureService}.
  *
+ * <p>This class is thread-safe.
+ *
  * @param <ADDRESST> - the generic type representing the address of a participant in the related space. This type must remains
  *        small, less than M in memory and must be {@link java.io.Serializable}.
  * @author $Author: ngaud$

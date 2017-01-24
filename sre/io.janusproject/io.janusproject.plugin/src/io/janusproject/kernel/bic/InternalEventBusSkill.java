@@ -202,7 +202,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 			// Asynchronous parallel dispatching of this event
 			this.agentAsEventListener.receiveEvent(event);
 		}
-		this.logger.debug(Messages.InternalEventBusSkill_0, event);
+		//this.logger.debug(Messages.InternalEventBusSkill_0, event);
 	}
 
 	@Override
