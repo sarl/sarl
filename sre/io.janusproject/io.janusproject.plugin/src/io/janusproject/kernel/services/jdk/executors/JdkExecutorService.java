@@ -41,6 +41,8 @@ import io.janusproject.services.executor.ChuckNorrisException;
 /**
  * Platform service that supports the execution resources.
  *
+ * <p>This service is thread-safe.
+ *
  * @author $Author: srodriguez$
  * @author $Author: ngaud$
  * @author $Author: sgalland$
