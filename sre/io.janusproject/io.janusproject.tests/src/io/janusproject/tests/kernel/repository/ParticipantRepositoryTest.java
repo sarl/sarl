@@ -58,7 +58,10 @@ public class ParticipantRepositoryTest extends AbstractJanusTest {
 	@Before
 	public void setUp() {
 		this.repository = new ParticipantRepository<String>() {
-			//
+			@Override
+			public Object mutex() {
+				return this;
+			}
 		};
 		this.listeners = new TreeMap<>();
 		this.listeners.put("a", Mockito.mock(EventListener.class)); //$NON-NLS-1$

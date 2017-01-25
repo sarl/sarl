@@ -47,6 +47,8 @@ import io.janusproject.util.DataViewDelegate.Delegator;
 /**
  * A view on a Map that provides the API for the DMultiMap.
  *
+ * <p>This class is not thread-safe.
+ *
  * @param <K> - type of the keys.
  * @param <V> - type of the values.
  * @author $Author: sgalland$

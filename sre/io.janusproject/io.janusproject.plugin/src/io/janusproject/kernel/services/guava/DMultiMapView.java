@@ -28,6 +28,8 @@ import io.janusproject.util.AbstractDMultiMapView;
 /**
  * A view on a Guava multimap that provides the API for the DMultiMap.
  *
+ * <p>This class is not thread-safe.
+ *
  * @param <K> - type of the keys.
  * @param <V> - type of the values.
  * @author $Author: sgalland$

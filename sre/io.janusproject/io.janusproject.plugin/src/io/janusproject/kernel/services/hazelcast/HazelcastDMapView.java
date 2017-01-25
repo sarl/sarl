@@ -28,6 +28,8 @@ import io.janusproject.util.AbstractDMapView;
 /**
  * View from a Hazelcast map to DMap.
  *
+ * <p>This class is not thread-safe.
+ *
  * @param <K> - type of the keys.
  * @param <V> - type of the values.
  * @author $Author: sgalland$

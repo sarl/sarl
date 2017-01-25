@@ -73,6 +73,11 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 		this.participants = repositoryImplFactory.getMap(this.distributedParticipantMapName, null);
 	}
 
+	@Override
+	public Object mutex() {
+		return this.participants;
+	}
+
 	/**
 	 * Registers a new participant in this repository.
 	 * @param address - the address of the participant

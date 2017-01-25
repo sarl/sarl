@@ -45,6 +45,8 @@ import io.janusproject.util.MultisetView;
 /**
  * A view from the Hazelcast multimap to DMultiMap.
  *
+ * <p>This class is not thread-safe.
+ *
  * @param <K> - type of the keys.
  * @param <V> - type of the values.
  * @author $Author: sgalland$

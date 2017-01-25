@@ -39,6 +39,8 @@ import io.janusproject.util.DataViewDelegate.Delegator;
 /**
  * A view if the multiset of the keys in a {@link AbstractDMultiMapView}.
  *
+ * <p>This class is not thread-safe.
+ *
  * @param <K> - the keys.
  * @param <V> - the values.
  * @author $Author: sgalland$
