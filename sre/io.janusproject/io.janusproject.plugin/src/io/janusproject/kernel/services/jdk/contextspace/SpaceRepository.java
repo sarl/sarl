@@ -53,6 +53,8 @@ import io.sarl.util.Collections3;
 /**
  * A repository of spaces specific to a given context.
  *
+ * <p>This repository is thread-safe.
+ *
  * @author $Author: ngaud$
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -114,7 +116,7 @@ public class SpaceRepository {
 	/**
 	 * Finalize the initialization: ensure that the events are fired outside the scope of the SpaceRepository constructor.
 	 */
-	synchronized void postConstruction() {
+	void postConstruction() {
 		if (this.spaceIDs != null) {
 			for (final Entry<SpaceID, Object[]> e : this.spaceIDs.entrySet()) {
 				assert this.spaceIDs.containsKey(e.getKey());
@@ -125,25 +127,43 @@ public class SpaceRepository {
 		}
 	}
 
+	/** Replies the mutex to be synchronized on the internal space repository.
+	 *
+	 * @return the mutex.
+	 */
+	private Object getSpaceRepositoryMutex() {
+		return this.spaces;
+	}
+
+	/** Replies the mutex to be synchronized on the internal space ID repository.
+	 *
+	 * @return the mutex.
+	 */
+	private Object getSpaceIDsMutex() {
+		return this.spaceIDs;
+	}
+
 	/**
 	 * Destroy this repository and releaqse all the resources.
 	 */
-	public synchronized void destroy() {
+	public void destroy() {
 		// Unregister from Hazelcast layer.
-		if (this.internalListener != null) {
-			this.spaceIDs.removeDMapListener(this.internalListener);
-		}
-		// Delete the spaces. If this function is called, it
-		// means that the spaces seems to have no more participant.
-		// The process cannot be done through hazelcast.
-		final List<SpaceID> ids = new ArrayList<>(this.spaceIDs.keySet());
-		this.spaceIDs.clear();
-		for (final SpaceID spaceId : ids) {
-			removeLocalSpaceDefinition(spaceId, true);
+		synchronized (getSpaceIDsMutex()) {
+			if (this.internalListener != null) {
+				this.spaceIDs.removeDMapListener(this.internalListener);
+			}
+			// Delete the spaces. If this function is called, it
+			// means that the spaces seems to have no more participant.
+			// The process cannot be done through hazelcast.
+			final List<SpaceID> ids = new ArrayList<>(this.spaceIDs.keySet());
+			this.spaceIDs.clear();
+			for (final SpaceID spaceId : ids) {
+				removeLocalSpaceDefinition(spaceId, true);
+			}
 		}
 	}
 
-	private synchronized <S extends Space> S createSpaceInstance(Class<? extends SpaceSpecification<S>> spec, SpaceID spaceID,
+	private <S extends Space> S createSpaceInstance(Class<? extends SpaceSpecification<S>> spec, SpaceID spaceID,
 			boolean isLocalCreation, Object[] creationParams) {
 		final S space;
 		assert spaceID.getSpaceSpecification() == null
@@ -172,7 +192,9 @@ public class SpaceRepository {
 					sharedParams = serializableParameters.toArray();
 				}
 			}
-			this.spaceIDs.putIfAbsent(id, sharedParams);
+			synchronized (getSpaceIDsMutex()) {
+				this.spaceIDs.putIfAbsent(id, sharedParams);
+			}
 		}
 		fireSpaceAdded(space, isLocalCreation);
 		return space;
@@ -185,9 +207,11 @@ public class SpaceRepository {
 	 * @param initializationParameters - parameters for initialization.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected synchronized void ensureLocalSpaceDefinition(SpaceID id, Object[] initializationParameters) {
-		if (!this.spaces.containsKey(id)) {
-			createSpaceInstance((Class) id.getSpaceSpecification(), id, false, initializationParameters);
+	protected void ensureLocalSpaceDefinition(SpaceID id, Object[] initializationParameters) {
+		synchronized (getSpaceRepositoryMutex()) {
+			if (!this.spaces.containsKey(id)) {
+				createSpaceInstance((Class) id.getSpaceSpecification(), id, false, initializationParameters);
+			}
 		}
 	}
 
@@ -197,10 +221,15 @@ public class SpaceRepository {
 	 * @param id - identifier of the space
 	 * @param isLocalDestruction - indicates if the destruction is initiated by the local kernel.
 	 */
-	protected synchronized void removeLocalSpaceDefinition(SpaceID id, boolean isLocalDestruction) {
-		final Space space = this.spaces.remove(id);
+	protected void removeLocalSpaceDefinition(SpaceID id, boolean isLocalDestruction) {
+		final Space space;
+		synchronized (getSpaceRepositoryMutex()) {
+			space = this.spaces.remove(id);
+			if (space != null) {
+				this.spacesBySpec.remove(id.getSpaceSpecification(), id);
+			}
+		}
 		if (space != null) {
-			this.spacesBySpec.remove(id.getSpaceSpecification(), id);
 			fireSpaceRemoved(space, isLocalDestruction);
 		}
 	}
@@ -210,20 +239,25 @@ public class SpaceRepository {
 	 *
 	 * @param isLocalDestruction - indicates if the destruction is initiated by the local kernel.
 	 */
-	protected synchronized void removeLocalSpaceDefinitions(boolean isLocalDestruction) {
-		if (!this.spaces.isEmpty()) {
-			final List<Space> removedSpaces = new ArrayList<>(this.spaces.size());
-			final Iterator<Entry<SpaceID, Space>> iterator = this.spaces.entrySet().iterator();
-			Space space;
-			SpaceID id;
-			while (iterator.hasNext()) {
-				final Entry<SpaceID, Space> entry = iterator.next();
-				id = entry.getKey();
-				space = entry.getValue();
-				iterator.remove();
-				this.spacesBySpec.remove(id.getSpaceSpecification(), id);
-				removedSpaces.add(space);
+	protected void removeLocalSpaceDefinitions(boolean isLocalDestruction) {
+		List<Space> removedSpaces = null;
+		synchronized (getSpaceRepositoryMutex()) {
+			if (!this.spaces.isEmpty()) {
+				removedSpaces = new ArrayList<>(this.spaces.size());
+				final Iterator<Entry<SpaceID, Space>> iterator = this.spaces.entrySet().iterator();
+				Space space;
+				SpaceID id;
+				while (iterator.hasNext()) {
+					final Entry<SpaceID, Space> entry = iterator.next();
+					id = entry.getKey();
+					space = entry.getValue();
+					iterator.remove();
+					this.spacesBySpec.remove(id.getSpaceSpecification(), id);
+					removedSpaces.add(space);
+				}
 			}
+		}
+		if (removedSpaces != null) {
 			for (final Space s : removedSpaces) {
 				fireSpaceRemoved(s, isLocalDestruction);
 			}
@@ -239,10 +273,12 @@ public class SpaceRepository {
 	 * @param creationParams - creation parameters.
 	 * @return the new space, or <code>null</code> if the space already exists.
 	 */
-	public synchronized <S extends io.sarl.lang.core.Space> S createSpace(SpaceID spaceID,
+	public <S extends io.sarl.lang.core.Space> S createSpace(SpaceID spaceID,
 			Class<? extends SpaceSpecification<S>> spec, Object... creationParams) {
-		if (!this.spaces.containsKey(spaceID)) {
-			return createSpaceInstance(spec, spaceID, true, creationParams);
+		synchronized (getSpaceRepositoryMutex()) {
+			if (!this.spaces.containsKey(spaceID)) {
+				return createSpaceInstance(spec, spaceID, true, creationParams);
+			}
 		}
 		return null;
 	}
@@ -257,17 +293,19 @@ public class SpaceRepository {
 	 * @return the new space.
 	 */
 	@SuppressWarnings("unchecked")
-	public synchronized <S extends io.sarl.lang.core.Space> S getOrCreateSpaceWithSpec(SpaceID spaceID,
+	public <S extends io.sarl.lang.core.Space> S getOrCreateSpaceWithSpec(SpaceID spaceID,
 			Class<? extends SpaceSpecification<S>> spec, Object... creationParams) {
-		final Collection<SpaceID> ispaces = this.spacesBySpec.get(spec);
-		final S firstSpace;
-		if (ispaces == null || ispaces.isEmpty()) {
-			firstSpace = createSpaceInstance(spec, spaceID, true, creationParams);
-		} else {
-			firstSpace = (S) this.spaces.get(ispaces.iterator().next());
+		synchronized (getSpaceRepositoryMutex()) {
+			final Collection<SpaceID> ispaces = this.spacesBySpec.get(spec);
+			final S firstSpace;
+			if (ispaces == null || ispaces.isEmpty()) {
+				firstSpace = createSpaceInstance(spec, spaceID, true, creationParams);
+			} else {
+				firstSpace = (S) this.spaces.get(ispaces.iterator().next());
+			}
+			assert firstSpace != null;
+			return firstSpace;
 		}
-		assert firstSpace != null;
-		return firstSpace;
 	}
 
 	/**
@@ -280,14 +318,16 @@ public class SpaceRepository {
 	 * @return the new space.
 	 */
 	@SuppressWarnings("unchecked")
-	public synchronized <S extends io.sarl.lang.core.Space> S getOrCreateSpaceWithID(SpaceID spaceID,
+	public <S extends io.sarl.lang.core.Space> S getOrCreateSpaceWithID(SpaceID spaceID,
 			Class<? extends SpaceSpecification<S>> spec, Object... creationParams) {
-		Space space = this.spaces.get(spaceID);
-		if (space == null) {
-			space = createSpaceInstance(spec, spaceID, true, creationParams);
+		synchronized (getSpaceRepositoryMutex()) {
+			Space space = this.spaces.get(spaceID);
+			if (space == null) {
+				space = createSpaceInstance(spec, spaceID, true, creationParams);
+			}
+			assert space != null;
+			return (S) space;
 		}
-		assert space != null;
-		return (S) space;
 	}
 
 	/**
@@ -295,8 +335,11 @@ public class SpaceRepository {
 	 *
 	 * @return the collection of all spaces stored in this repository.
 	 */
-	public synchronized SynchronizedCollection<? extends Space> getSpaces() {
-		return Collections3.synchronizedCollection(Collections.unmodifiableCollection(this.spaces.values()), this);
+	public SynchronizedCollection<? extends Space> getSpaces() {
+		synchronized (getSpaceRepositoryMutex()) {
+			return Collections3.synchronizedCollection(Collections.unmodifiableCollection(this.spaces.values()),
+					getSpaceRepositoryMutex());
+		}
 	}
 
 	/**
@@ -307,14 +350,16 @@ public class SpaceRepository {
 	 * @return the collection of all spaces with the specified {@link SpaceSpecification} stored in this repository
 	 */
 	@SuppressWarnings("unchecked")
-	public synchronized <S extends Space> SynchronizedCollection<S> getSpaces(final Class<? extends SpaceSpecification<S>> spec) {
-		return Collections3
-				.synchronizedCollection((Collection<S>) Collections2.filter(this.spaces.values(), new Predicate<Space>() {
-					@Override
-					public boolean apply(Space input) {
-						return input.getSpaceID().getSpaceSpecification().equals(spec);
-					}
-				}), this);
+	public <S extends Space> SynchronizedCollection<S> getSpaces(final Class<? extends SpaceSpecification<S>> spec) {
+		synchronized (getSpaceRepositoryMutex()) {
+			return Collections3
+					.synchronizedCollection((Collection<S>) Collections2.filter(this.spaces.values(), new Predicate<Space>() {
+						@Override
+						public boolean apply(Space input) {
+							return input.getSpaceID().getSpaceSpecification().equals(spec);
+						}
+					}), getSpaceRepositoryMutex());
+		}
 	}
 
 	/**
@@ -323,8 +368,10 @@ public class SpaceRepository {
 	 * @param spaceID - the identifier to retreive.
 	 * @return the space instance of <code>null</code> if none.
 	 */
-	public synchronized Space getSpace(SpaceID spaceID) {
-		return this.spaces.get(spaceID);
+	public Space getSpace(SpaceID spaceID) {
+		synchronized (getSpaceRepositoryMutex()) {
+			return this.spaces.get(spaceID);
+		}
 	}
 
 	/**

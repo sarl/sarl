@@ -98,6 +98,9 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	private ContextDMapListener dmapListener;
 
+	/**
+	 * Log service.
+	 */
 	private LogService logger;
 
 	/**
@@ -172,7 +175,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 * @param injector - the injector to use.
 	 */
 	@Inject
-	synchronized void postConstruction(@Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME) UUID janusID,
+	void postConstruction(@Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME) UUID janusID,
 			DistributedDataStructureService dataStructureService, LogService logService, Injector injector) {
 		this.logger = logService;
 		this.contextFactory = new DefaultContextFactory();
@@ -181,18 +184,24 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	}
 
 	@Override
-	public synchronized boolean isEmptyContextRepository() {
-		return this.contexts.isEmpty();
+	public boolean isEmptyContextRepository() {
+		synchronized (mutex()) {
+			return this.contexts.isEmpty();
+		}
 	}
 
 	@Override
-	public synchronized int getNumberOfContexts() {
-		return this.contexts.size();
+	public int getNumberOfContexts() {
+		synchronized (mutex()) {
+			return this.contexts.size();
+		}
 	}
 
 	@Override
-	public synchronized boolean containsContext(UUID contextID) {
-		return this.contexts.containsKey(contextID);
+	public boolean containsContext(UUID contextID) {
+		synchronized (mutex()) {
+			return this.contexts.containsKey(contextID);
+		}
 	}
 
 	@Override
@@ -223,38 +232,51 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	}
 
 	@Override
-	public synchronized void removeContext(UUID contextID) {
-		this.defaultSpaces.remove(contextID);
-		final AgentContext context = this.contexts.remove(contextID);
+	public void removeContext(UUID contextID) {
+		AgentContext context = null;
+		synchronized (mutex()) {
+			this.defaultSpaces.remove(contextID);
+			context = this.contexts.remove(contextID);
+			if (context != null) {
+				((Context) context).destroy();
+			}
+		}
 		if (context != null) {
-			((Context) context).destroy();
 			fireContextDestroyed(context);
 		}
 	}
 
 	@Override
-	public synchronized Collection<AgentContext> getContexts() {
-		return Collections.unmodifiableCollection(Collections3.synchronizedCollection(this.contexts.values(), mutex()));
+	public Collection<AgentContext> getContexts() {
+		synchronized (mutex()) {
+			return Collections.unmodifiableCollection(Collections3.synchronizedCollection(this.contexts.values(), mutex()));
+		}
 	}
 
 	@Override
-	public synchronized Collection<AgentContext> getContexts(final Collection<UUID> contextIDs) {
-		return Collections2.filter(this.contexts.values(), new Predicate<AgentContext>() {
-			@Override
-			public boolean apply(AgentContext input) {
-				return contextIDs.contains(input.getID());
-			}
-		});
+	public Collection<AgentContext> getContexts(final Collection<UUID> contextIDs) {
+		synchronized (mutex()) {
+			return Collections2.filter(this.contexts.values(), new Predicate<AgentContext>() {
+				@Override
+				public boolean apply(AgentContext input) {
+					return contextIDs.contains(input.getID());
+				}
+			});
+		}
 	}
 
 	@Override
-	public synchronized Set<UUID> getContextIDs() {
-		return Collections.unmodifiableSet(Collections3.synchronizedSet(this.contexts.keySet(), mutex()));
+	public Set<UUID> getContextIDs() {
+		synchronized (mutex()) {
+			return Collections.unmodifiableSet(Collections3.synchronizedSet(this.contexts.keySet(), mutex()));
+		}
 	}
 
 	@Override
-	public synchronized AgentContext getContext(UUID contextID) {
-		return this.contexts.get(contextID);
+	public AgentContext getContext(UUID contextID) {
+		synchronized (mutex()) {
+			return this.contexts.get(contextID);
+		}
 	}
 
 	@Override
@@ -332,9 +354,8 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 *
 	 * @param spaceID - identifier of the space to initialize.
 	 */
-	protected synchronized void ensureDefaultSpaceDefinition(SpaceID spaceID) {
-		final UUID contextID = spaceID.getContextID();
-		createContext(contextID, spaceID.getID());
+	protected void ensureDefaultSpaceDefinition(SpaceID spaceID) {
+		createContext(spaceID.getContextID(), spaceID.getID());
 	}
 
 	/**
@@ -342,33 +363,41 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 *
 	 * @param spaceID - identifier of the space to remove.
 	 */
-	protected synchronized void removeDefaultSpaceDefinition(SpaceID spaceID) {
-		final AgentContext context = this.contexts.remove(spaceID.getContextID());
+	protected void removeDefaultSpaceDefinition(SpaceID spaceID) {
+		AgentContext context = null;
+		synchronized (mutex()) {
+			context = this.contexts.remove(spaceID.getContextID());
+		}
 		if (context != null) {
 			fireContextDestroyed(context);
 		}
 	}
 
 	@Override
-	protected synchronized void doStart() {
-		for (final SpaceID space : this.defaultSpaces.values()) {
-			ensureDefaultSpaceDefinition(space);
+	protected void doStart() {
+		synchronized (mutex()) {
+			for (final SpaceID space : this.defaultSpaces.values()) {
+				ensureDefaultSpaceDefinition(space);
+			}
+			this.dmapListener = new ContextDMapListener();
+			this.defaultSpaces.addDMapListener(this.dmapListener);
 		}
-		this.dmapListener = new ContextDMapListener();
-		this.defaultSpaces.addDMapListener(this.dmapListener);
 		notifyStarted();
 	}
 
 	@Override
-	protected synchronized void doStop() {
-		if (this.dmapListener != null) {
-			this.defaultSpaces.removeDMapListener(this.dmapListener);
+	protected void doStop() {
+		final Map<UUID, AgentContext> old;
+		synchronized (mutex()) {
+			if (this.dmapListener != null) {
+				this.defaultSpaces.removeDMapListener(this.dmapListener);
+			}
+			// Unconnect the default space collection from remote clusters
+			// Not needed becasue the Kernel will be stopped: this.defaultSpaces.destroy();
+			// Delete the contexts from this repository
+			old = this.contexts;
+			this.contexts = new TreeMap<>();
 		}
-		// Unconnect the default space collection from remote clusters
-		// Not needed becasue the Kernel will be stopped: this.defaultSpaces.destroy();
-		// Delete the contexts from this repository
-		final Map<UUID, AgentContext> old = this.contexts;
-		this.contexts = new TreeMap<>();
 		for (final AgentContext context : old.values()) {
 			((Context) context).destroy();
 			fireContextDestroyed(context);
