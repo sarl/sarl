@@ -28,6 +28,8 @@ import io.janusproject.util.AbstractDMapView;
 /**
  * A view on a standard Map that provides the API for DMap.
  *
+ * <p>This class is not thread-safe.
+ *
  * @param <K> - type of the keys.
  * @param <V> - type of the values.
  * @author $Author: sgalland$

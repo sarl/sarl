@@ -44,6 +44,8 @@ import io.janusproject.services.distributeddata.DistributedDataStructureService;
  *
  * <p>This implementation creates standard Java collections that cannot be distributed other several JVM.
  *
+ * <p>This class is thread-safe.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
