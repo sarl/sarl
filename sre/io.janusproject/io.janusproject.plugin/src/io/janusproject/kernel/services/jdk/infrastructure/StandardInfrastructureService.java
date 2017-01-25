@@ -28,6 +28,8 @@ import io.janusproject.services.infrastructure.InfrastructureService;
 /**
  * This class supports the management of the Janus infrastructure inside a closed environment.
  *
+ * <p>This service is thread-safe.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

@@ -36,6 +36,8 @@ import io.janusproject.services.logging.LogService;
 /**
  * This class provides an implementation of the {@link LogService} that outputs nothing.
  *
+ * <p>This service is thread-safe.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
