@@ -789,7 +789,7 @@ describe "Built-in Capacity Reference" {
 							emit(e, Scopes::addresses(a1, a2))
 						}
 					}".parseSuccessfully
-				"http://www.sarl.io/docs/api/index.html?io/sarl/util/Scopes.html" should beURL null
+				"http://www.sarl.io/docs/api/index.html?io/sarl/util/Scopes.html" should beApiURL ""
 			}
 
 			/* The `DefaultContextInteractions` provides a collection of utility functions
