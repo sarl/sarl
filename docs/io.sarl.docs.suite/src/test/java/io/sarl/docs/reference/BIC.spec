@@ -763,11 +763,13 @@ describe "Built-in Capacity Reference" {
 			 *     emit(new Event, Scopes::addresses(a1, a2))
 			 * 
 			 * 
+			 * <p>The complete list of the functions that are provided by the `Scopes` class is
+			 * accessible on the <a href="http://www.sarl.io/docs/api/index.html?io/sarl/util/Scopes.html">Scopes API documentation</a>.
 			 * 
 			 * <p>You are free to create new implementation of `Scope`
 			 * in order to filter the receivers of an event according to your
 			 * own criteria.
-			 *  
+			 *
 			 * @filter(.*) 
 			 */
 			fact "Sending an Event to Specific Agents in the Default Space"{
@@ -787,6 +789,7 @@ describe "Built-in Capacity Reference" {
 							emit(e, Scopes::addresses(a1, a2))
 						}
 					}".parseSuccessfully
+				"http://www.sarl.io/docs/api/index.html?io/sarl/util/Scopes.html" should beURL null
 			}
 
 			/* The `DefaultContextInteractions` provides a collection of utility functions
