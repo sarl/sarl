@@ -57,13 +57,18 @@ public class TimeSkill extends BuiltinSkill implements Time {
 	@Override
 	public double getTime(TimeUnit timeUnit) {
 		final double currentTime = System.currentTimeMillis();
-		final TimeUnit tu = (timeUnit == null) ? TimeUnit.SECONDS : timeUnit;
-		return SARLTimeExtensions.convertFromTo(currentTime, TimeUnit.MILLISECONDS, tu);
+		if (timeUnit == null || timeUnit == TimeUnit.SECONDS) {
+			return System.currentTimeMillis() / (double) SARLTimeExtensions.MILLIS_IN_SECOND;
+		}
+		if (timeUnit == TimeUnit.MILLISECONDS) {
+			return currentTime;
+		}
+		return SARLTimeExtensions.convertFromTo(currentTime, TimeUnit.MILLISECONDS, timeUnit);
 	}
 
 	@Override
 	public double getTime() {
-		return SARLTimeExtensions.convertFromTo(System.currentTimeMillis(), TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
+		return System.currentTimeMillis() / (double) SARLTimeExtensions.MILLIS_IN_SECOND;
 	}
 
 	@Override

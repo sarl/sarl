@@ -255,12 +255,12 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 			}
 
 			switch (InternalEventBusSkill.this.state.get()) {
-			case NEW:
-				this.buffer.add(event);
-				break;
 			case RUNNING:
 				fireEnqueuedEvents(InternalEventBusSkill.this);
 				InternalEventBusSkill.this.eventDispatcher.asyncDispatch(event);
+				break;
+			case NEW:
+				this.buffer.add(event);
 				break;
 			case DESTROYED:
 				// Dropping messages since agent is dying

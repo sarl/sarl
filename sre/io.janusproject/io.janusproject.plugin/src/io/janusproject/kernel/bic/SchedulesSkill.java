@@ -57,6 +57,8 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	private static int installationOrder = -1;
 
+	private static final Function1<Agent, Boolean> TRUE_GUARD = (agent) -> Boolean.TRUE;
+
 	@Inject
 	private ExecutorService executorService;
 
@@ -100,9 +102,11 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 *
 	 * @param name - name of the task.
 	 */
-	private synchronized void finishTask(String name) {
-		this.tasks.remove(name);
-		this.futures.remove(name);
+	private void finishTask(String name) {
+		synchronized (getTaskListMutex()) {
+			this.tasks.remove(name);
+			this.futures.remove(name);
+		}
 	}
 
 	/**
@@ -110,8 +114,11 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 *
 	 * @return the names of the active tasks.
 	 */
-	synchronized Collection<String> getActiveTasks() {
-		return new ArrayList<>(this.tasks.keySet());
+	Collection<String> getActiveTasks() {
+		synchronized (getTaskListMutex()) {
+			//TODO: Avoid copy of collection
+			return new ArrayList<>(this.tasks.keySet());
+		}
 	}
 
 	/**
@@ -119,27 +126,32 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 *
 	 * @return the names of the active futures.
 	 */
-	synchronized Collection<ScheduledFuture<?>> getActiveFutures() {
-		return new ArrayList<>(this.futures.values());
+	Collection<ScheduledFuture<?>> getActiveFutures() {
+		synchronized (getTaskListMutex()) {
+			//TODO: Avoid copy of collection
+			return new ArrayList<>(this.futures.values());
+		}
 	}
 
 	@Override
-	protected synchronized void uninstall() {
+	protected void uninstall() {
 		ScheduledFuture<?> future;
-		for (final Entry<String, ScheduledFuture<?>> futureDescription : this.futures.entrySet()) {
-			future = futureDescription.getValue();
-			if ((future instanceof JanusScheduledFutureTask<?>) && ((JanusScheduledFutureTask<?>) future).isCurrentThread()) {
-				// Ignore the cancelation of the future.
-				// It is assumed that a ChuckNorrisException will be thrown later.
-				this.logger.fineInfo(Messages.SchedulesSkill_0,
-						futureDescription.getKey(), future);
-			} else {
-				future.cancel(true);
-				this.logger.fineInfo(Messages.SchedulesSkill_1, futureDescription.getKey(), future);
+		synchronized (getTaskListMutex()) {
+			for (final Entry<String, ScheduledFuture<?>> futureDescription : this.futures.entrySet()) {
+				future = futureDescription.getValue();
+				if ((future instanceof JanusScheduledFutureTask<?>) && ((JanusScheduledFutureTask<?>) future).isCurrentThread()) {
+					// Ignore the cancelation of the future.
+					// It is assumed that a ChuckNorrisException will be thrown later.
+					this.logger.fineInfo(Messages.SchedulesSkill_0,
+							futureDescription.getKey(), future);
+				} else {
+					future.cancel(true);
+					this.logger.fineInfo(Messages.SchedulesSkill_1, futureDescription.getKey(), future);
+				}
 			}
+			this.futures.clear();
+			this.tasks.clear();
 		}
-		this.futures.clear();
-		this.tasks.clear();
 	}
 
 	@Override
@@ -148,30 +160,31 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	}
 
 	@Override
-	public synchronized AgentTask in(AgentTask task, long delay, Procedure1<? super Agent> procedure) {
+	public AgentTask in(AgentTask task, long delay, Procedure1<? super Agent> procedure) {
 		final AgentTask rtask = task == null ? task("task-" + UUID.randomUUID()) : task; //$NON-NLS-1$
 		rtask.setProcedure(procedure);
 		final ScheduledFuture<?> sf = this.executorService.schedule(new AgentTaskRunner(rtask, false), delay, TimeUnit.MILLISECONDS);
-		this.futures.put(rtask.getName(), sf);
+		synchronized (getTaskListMutex()) {
+			this.futures.put(rtask.getName(), sf);
+		}
 		return rtask;
 	}
 
 	@Override
-	public synchronized AgentTask task(String name) {
-		if (this.tasks.containsKey(name)) {
-			return this.tasks.get(name);
+	public AgentTask task(String name) {
+		AgentTask task;
+		synchronized (getTaskListMutex()) {
+			task = this.tasks.get(name);
 		}
-		final AgentTask t = new AgentTask();
-		t.setName(name);
-		t.setGuard(new Function1<Agent, Boolean>() {
-
-			@Override
-			public Boolean apply(Agent arg0) {
-				return Boolean.TRUE;
+		if (task == null) {
+			task = new AgentTask();
+			task.setName(name);
+			task.setGuard(TRUE_GUARD);
+			synchronized (getTaskListMutex()) {
+				this.tasks.put(name, task);
 			}
-		});
-		this.tasks.put(name, t);
-		return t;
+		}
+		return task;
 	}
 
 	@Override
@@ -180,10 +193,10 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	}
 
 	@Override
-	public synchronized boolean cancel(AgentTask task, boolean mayInterruptIfRunning) {
+	public boolean cancel(AgentTask task, boolean mayInterruptIfRunning) {
 		if (task != null) {
 			final String name = task.getName();
-			final ScheduledFuture<?> future = this.futures.get(name);
+			final ScheduledFuture<?> future = getFuture(task.getName());
 			if (future != null && !future.isDone() && !future.isCancelled() && future.cancel(mayInterruptIfRunning)) {
 				finishTask(name);
 			}
@@ -209,7 +222,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 * @return the future.
 	 * @since 0.5
 	 */
-	Future<?> getFuture(String taskName) {
+	ScheduledFuture<?> getFuture(String taskName) {
 		synchronized (getTaskListMutex()) {
 			return this.futures.get(taskName);
 		}
@@ -221,12 +234,14 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	}
 
 	@Override
-	public synchronized AgentTask every(AgentTask task, long period, Procedure1<? super Agent> procedure) {
+	public AgentTask every(AgentTask task, long period, Procedure1<? super Agent> procedure) {
 		final AgentTask rtask = task == null ? task("task-" + UUID.randomUUID()) : task; //$NON-NLS-1$
 		rtask.setProcedure(procedure);
 		final ScheduledFuture<?> sf = this.executorService.scheduleAtFixedRate(new AgentTaskRunner(rtask, true), 0, period,
 				TimeUnit.MILLISECONDS);
-		this.futures.put(rtask.getName(), sf);
+		synchronized (getTaskListMutex()) {
+			this.futures.put(rtask.getName(), sf);
+		}
 		return rtask;
 	}
 

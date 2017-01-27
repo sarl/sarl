@@ -31,6 +31,8 @@ import io.janusproject.services.infrastructure.InfrastructureService;
 /**
  * This class supports the management of the hazelcast infrastructure.
  *
+ * <p>This service is thread-safe.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

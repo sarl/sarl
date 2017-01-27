@@ -20,16 +20,17 @@
 
 package io.janusproject.tests.bugs;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Test;
@@ -43,13 +44,16 @@ import io.janusproject.tests.testutils.AbstractJanusRunTest;
 import io.sarl.core.AgentKilled;
 import io.sarl.core.AgentTask;
 import io.sarl.core.DefaultContextInteractions;
+import io.sarl.core.Initialize;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Schedules;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlSpecification;
+import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Event;
+import io.sarl.util.Scopes;
 
 /**
  * Unit test for the issue #546: Not enough AgentKilled occurrences after killMe() calls.
@@ -64,6 +68,7 @@ import io.sarl.lang.core.Event;
 @SuiteClasses({
 	BugS546.NoRandomWaiting.class,
 	BugS546.RandomWaiting.class,
+	BugS546.HugeEventSetTest.class,
 })
 @SuppressWarnings("all")
 public class BugS546 {
@@ -71,6 +76,8 @@ public class BugS546 {
 	private static final boolean LOG = false;
 	
 	private static final int NB_AGENTS = 300;
+
+	private static final int NB_EVENTS = 500;
 
 	private static final int TIMEOUT = 120;
 
@@ -275,12 +282,12 @@ public class BugS546 {
 	
 		}
 
-		public static class PresentationEvent extends Event {
-		}
+	}
 
-		public static class ShootEvent extends Event {
-		}
+	public static class PresentationEvent extends Event {
+	}
 
+	public static class ShootEvent extends Event {
 	}
 
 	public static class NoRandomWaiting extends AbstractBugS546Test {
@@ -338,6 +345,104 @@ public class BugS546 {
 		@Override
 		protected UUID spawn(Kernel kernel) {
 			return kernel.spawn(RandomKillableAgent.class, getAgentInitializationParameters());
+		}
+
+	}
+
+	public static class HugeEventSetTest extends AbstractJanusRunTest {
+
+		@Test
+		public void sendEvents() throws Exception {
+			Kernel kernel = setupTheJanusKernel(ReceivingAgent.class, false, true);
+			kernel.spawn(SendingAgent.class);
+			try {
+				waitForTheKernel(TIMEOUT);
+			} catch (TimeoutException e) {
+				if (LOG) {
+					System.err.println(getResults());
+				}
+				throw e;
+			}
+			assertEquals(NB_EVENTS, getNumberOfResults());
+			for (Object result : getResults()) {
+				assertTrue(result instanceof HugeEventSetEvent);
+			}
+		}
+
+		public static class SendingAgent extends TestingAgent {
+
+			private final AtomicBoolean treated = new AtomicBoolean(false);
+
+			public SendingAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
+				super(provider, parentID, agentID);
+			}
+
+			@Override
+			protected boolean runAgentTest() {
+				return false;
+			}
+
+			@PerceptGuardEvaluator
+			private void guardEvaluator1(PresentationEvent occurrence, Collection<Runnable> ___SARLlocal_runnableCollection) {
+				assert occurrence != null;
+				assert ___SARLlocal_runnableCollection != null;
+				if (treated.getAndSet(true)) {
+					___SARLlocal_runnableCollection.add(() -> eventHandler1(occurrence));
+				}
+			}
+
+			private void eventHandler1(PresentationEvent occurrence) {
+				assert occurrence != null;
+				getSkill(Schedules.class).in(1000, (agent) -> {
+					DefaultContextInteractions skill = getSkill(DefaultContextInteractions.class);
+					for (int i = 0; i < NB_EVENTS; ++i) {
+						skill.emit(new HugeEventSetEvent(), Scopes.notAddresses(skill.getDefaultAddress()));
+					}
+				});
+			}
+
+		}
+	
+		public static class ReceivingAgent extends TestingAgent {
+
+			private AgentTask task;
+
+			public ReceivingAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
+				super(provider, parentID, agentID);
+			}
+
+			@Override
+			protected boolean runAgentTest() {
+				final Schedules schedules = getSkill(Schedules.class);
+				this.task = schedules.task(null);
+				schedules.every(this.task, PRESENTATION_DELAY, (agent) -> {
+					DefaultContextInteractions ctx = getSkill(DefaultContextInteractions.class);
+					ctx.emit(new PresentationEvent(), Scopes.notAddresses(ctx.getDefaultAddress()));
+				});
+				return false;
+			}
+
+			@PerceptGuardEvaluator
+			private void guardEvaluator(HugeEventSetEvent occurrence, Collection<Runnable> ___SARLlocal_runnableCollection) {
+				assert occurrence != null;
+				assert ___SARLlocal_runnableCollection != null;
+				AgentTask tsk = this.task;
+				if (tsk != null) {
+					this.task = null;
+					getSkill(Schedules.class).cancel(tsk);
+				}
+				___SARLlocal_runnableCollection.add(() -> eventHandler(occurrence));
+			}
+
+			private void eventHandler(HugeEventSetEvent occurrence) {
+				assert occurrence != null;
+				addResult(occurrence);
+			}
+
+		}
+
+		public static final class HugeEventSetEvent extends Event {
+
 		}
 
 	}

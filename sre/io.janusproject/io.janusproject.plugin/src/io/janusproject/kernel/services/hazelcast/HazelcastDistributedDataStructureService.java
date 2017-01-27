@@ -51,6 +51,8 @@ import io.janusproject.services.distributeddata.DistributedDataStructureService;
 /**
  * Service based on Hazelcast that permits to manage data structures that are shared over a network.
  *
+ * <p>This service is thread-safe.
+ *
  * @author $Author: srodriguez$
  * @author $Author: ngaud$
  * @author $Author: sgalland$
