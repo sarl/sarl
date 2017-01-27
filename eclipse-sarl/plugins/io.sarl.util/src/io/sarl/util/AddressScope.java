@@ -46,7 +46,7 @@ public class AddressScope implements Scope<Address> {
 	/**
 	 * @param addrs - addresses to put in the scope.
 	 */
-	protected AddressScope(Address... addrs) {
+	public AddressScope(Address... addrs) {
 	    this.addresses = new TreeSet<>();
 	    for (final Address adr : addrs) {
 	        if (adr != null) {

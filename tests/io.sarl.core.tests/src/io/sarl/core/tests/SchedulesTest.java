@@ -46,7 +46,7 @@ public class SchedulesTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(7, this.type.getDeclaredMethods().length);
+		assertEquals(8, this.type.getDeclaredMethods().length);
 	}
 
 	/**
