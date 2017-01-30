@@ -87,7 +87,11 @@ public final class SpecificationTools {
 	/** Indicates if the network-based tests are mandatory, i.e. tests with network connections
 	 * must be run and successful.
 	 */
-	public static final boolean MANDATORY_NETWORK_TESTS = false;
+	public static final boolean MANDATORY_NETWORK_TESTS = true;
+
+	/** Indicates if the tests must fail if network is unreachable.
+	 */
+	public static final boolean FAIL_ON_NETWORK_FAILURES = false;
 
 	private static final int HEX_RADIX = 16;
 
@@ -466,14 +470,16 @@ public final class SpecificationTools {
 				return false;
 			}
 			if (isValidURL(u, requiredSchemes)) {
-				try (InputStream is = u.openStream()) {
-					is.read();
-				} catch (Throwable exception) {
-					if (MANDATORY_NETWORK_TESTS) {
-						return false;
+				if (MANDATORY_NETWORK_TESTS) {
+					try (InputStream is = u.openStream()) {
+						is.read();
+					} catch (Throwable exception) {
+						if (FAIL_ON_NETWORK_FAILURES) {
+							return false;
+						}
+						Logger.getLogger(SpecificationTools.class.getName()).warning("Unable to connect to: " //$NON-NLS-1$
+								+ u);
 					}
-					Logger.getLogger(SpecificationTools.class.getName()).warning("Unable to connect to: " //$NON-NLS-1$
-							+ u);
 				}
 				return true;
 			}
@@ -500,7 +506,7 @@ public final class SpecificationTools {
 				return false;
 			}
 			String[] validHostnames = {"www.sarl.io"}; //$NON-NLS-1$
-			if (allowedAPIhostname != null && allowedAPIhostname.isEmpty()) {
+			if (allowedAPIhostname != null && !allowedAPIhostname.isEmpty()) {
 				validHostnames = allowedAPIhostname.split("[ \t]*[,;][ \t]*"); //$NON-NLS-1$
 			}
 			final List<String> hosts = Arrays.asList(validHostnames);
@@ -509,14 +515,16 @@ public final class SpecificationTools {
 				|| !u.getPath().endsWith("index.html")) { //$NON-NLS-1$
 				return false;
 			}
-			try (InputStream is = u.openStream()) {
-				is.read();
-			} catch (Throwable exception) {
-				if (MANDATORY_NETWORK_TESTS) {
-					return false;
+			if (MANDATORY_NETWORK_TESTS) {
+				try (InputStream is = u.openStream()) {
+					is.read();
+				} catch (Throwable exception) {
+					if (FAIL_ON_NETWORK_FAILURES) {
+						return false;
+					}
+					Logger.getLogger(SpecificationTools.class.getName()).warning("Unable to connect to: " //$NON-NLS-1$
+							+ u);
 				}
-				Logger.getLogger(SpecificationTools.class.getName()).warning("Unable to connect to: " //$NON-NLS-1$
-						+ u);
 			}
 			return true;
 		} catch (Throwable exception)  {
