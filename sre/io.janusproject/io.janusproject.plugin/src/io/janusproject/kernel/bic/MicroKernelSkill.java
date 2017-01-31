@@ -61,8 +61,14 @@ public class MicroKernelSkill extends BuiltinSkill implements MicroKernelCapacit
 	}
 
 	@Override
-	protected void uninstall() {
-		this.kernel = null;
+	protected void uninstall(UninstallationStage stage) {
+		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
+			final WeakReference<Kernel> kernelReference = this.kernel;
+			this.kernel = null;
+			if (kernelReference != null) {
+				kernelReference.clear();
+			}
+		}
 	}
 
 	/**

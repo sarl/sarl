@@ -25,6 +25,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -133,24 +134,37 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		}
 	}
 
-	@Override
-	protected void uninstall() {
-		ScheduledFuture<?> future;
-		synchronized (getTaskListMutex()) {
-			for (final Entry<String, ScheduledFuture<?>> futureDescription : this.futures.entrySet()) {
-				future = futureDescription.getValue();
-				if ((future instanceof JanusScheduledFutureTask<?>) && ((JanusScheduledFutureTask<?>) future).isCurrentThread()) {
-					// Ignore the cancelation of the future.
-					// It is assumed that a ChuckNorrisException will be thrown later.
-					this.logger.fineInfo(Messages.SchedulesSkill_0,
-							futureDescription.getKey(), future);
-				} else {
-					future.cancel(true);
-					this.logger.fineInfo(Messages.SchedulesSkill_1, futureDescription.getKey(), future);
-				}
+	private void cancelAllRunningTasks() {
+		final Iterator<Entry<String, ScheduledFuture<?>>> futureIterator = this.futures.entrySet().iterator();
+		while (futureIterator.hasNext()) {
+			final Entry<String, ScheduledFuture<?>> futureDescription = futureIterator.next();
+			final ScheduledFuture<?> future = futureDescription.getValue();
+			if ((future instanceof JanusScheduledFutureTask<?>) && ((JanusScheduledFutureTask<?>) future).isCurrentThread()) {
+				// Ignore the cancelation of the future.
+				// It is assumed that a ChuckNorrisException will be thrown later.
+				this.logger.fineInfo(Messages.SchedulesSkill_0,
+						futureDescription.getKey(), future);
+			} else if (!future.isCancelled() && !future.isDone()) {
+				future.cancel(true);
+				this.logger.fineInfo(Messages.SchedulesSkill_1, futureDescription.getKey(), future);
 			}
-			this.futures.clear();
-			this.tasks.clear();
+			futureIterator.remove();
+		}
+		this.tasks.clear();
+	}
+
+	@Override
+	protected void uninstall(UninstallationStage stage) {
+		if (stage == UninstallationStage.PRE_DESTROY_EVENT) {
+			// Cancel the tasks as soon as possible in the uninstallation process
+			synchronized (getTaskListMutex()) {
+				cancelAllRunningTasks();
+			}
+		} else {
+			synchronized (getTaskListMutex()) {
+				// Cancel the tasks that were creating during the destruction stage (in the Destroy event handler)
+				cancelAllRunningTasks();
+			}
 		}
 	}
 

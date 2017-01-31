@@ -56,6 +56,7 @@ import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.core.Skill.UninstallationStage;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedSet;
@@ -145,14 +146,14 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void uninstall() throws Exception {
+	public void uninstall_Post() throws Exception {
 		// Things are already injected
 		this.reflect.invoke(this.skill, "resetInnerContext");
 		assertFalse((Boolean) this.reflect.invoke(this.skill, "hasInnerContext"));
 		this.skill.getInnerContext();
 		assertTrue((Boolean) this.reflect.invoke(this.skill, "hasInnerContext"));
 		//
-		this.reflect.invoke(this.skill, "uninstall");
+		this.reflect.invoke(this.skill, "uninstall", UninstallationStage.POST_DESTROY_EVENT);
 		assertFalse((Boolean) this.reflect.invoke(this.skill, "hasInnerContext"));
 		//
 		ArgumentCaptor<EventListener> argument = ArgumentCaptor.forClass(EventListener.class);

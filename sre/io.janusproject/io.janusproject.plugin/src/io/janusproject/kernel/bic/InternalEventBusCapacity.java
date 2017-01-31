@@ -95,15 +95,39 @@ public interface InternalEventBusCapacity extends Capacity {
 		/**
 		 * The owner of the event bus is under creation.
 		 */
-		NEW,
+		NEW {
+			@Override
+			public boolean isEventHandling() {
+				return true;
+			}
+		},
+
 		/**
 		 * The owner of the event bus is running.
 		 */
-		RUNNING,
+		RUNNING {
+			@Override
+			public boolean isEventHandling() {
+				return true;
+			}
+		},
+
 		/**
 		 * The owner of the event bus was destroyed.
 		 */
-		DESTROYED,
+		DESTROYED {
+			@Override
+			public boolean isEventHandling() {
+				return false;
+			}
+		};
+
+		/** Replies if the state accepts event handling.
+		 *
+		 * @return {@code true} if the state accept event handling.
+		 * @since 0.5
+		 */
+		public abstract boolean isEventHandling();
 	}
 
 }

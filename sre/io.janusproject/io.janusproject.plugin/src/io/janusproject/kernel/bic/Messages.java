@@ -39,6 +39,7 @@ public class Messages extends NLS {
 	public static String InternalEventBusSkill_1;
 	public static String InternalEventBusSkill_2;
 	public static String InternalEventBusSkill_3;
+	public static String InternalEventBusSkill_4;
 	public static String LoggingSkill_0;
 	public static String SchedulesSkill_0;
 	public static String SchedulesSkill_1;

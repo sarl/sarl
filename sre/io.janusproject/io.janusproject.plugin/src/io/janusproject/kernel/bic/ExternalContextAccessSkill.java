@@ -120,10 +120,12 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	}
 
 	@Override
-	protected void uninstall() {
-		// Leave all contexts including the default one.
-		for (final UUID contextID : this.contexts) {
-			leave(contextID);
+	protected void uninstall(UninstallationStage stage) {
+		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
+			// Leave all contexts including the default one.
+			for (final UUID contextID : this.contexts) {
+				leave(contextID);
+			}
 		}
 	}
 

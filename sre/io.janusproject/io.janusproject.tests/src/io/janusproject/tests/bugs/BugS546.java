@@ -79,7 +79,7 @@ public class BugS546 {
 
 	private static final int NB_EVENTS = 500;
 
-	private static final int TIMEOUT = 120;
+	private static final int TIMEOUT = 240;
 
 	private static final int BASE_DELAY = 500;
 
@@ -369,6 +369,7 @@ public class BugS546 {
 			}
 		}
 
+		@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 		public static class SendingAgent extends TestingAgent {
 
 			private final AtomicBoolean treated = new AtomicBoolean(false);
@@ -403,6 +404,7 @@ public class BugS546 {
 
 		}
 	
+		@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 		public static class ReceivingAgent extends TestingAgent {
 
 			private AgentTask task;
@@ -441,6 +443,7 @@ public class BugS546 {
 
 		}
 
+		@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 		public static final class HugeEventSetEvent extends Event {
 
 		}

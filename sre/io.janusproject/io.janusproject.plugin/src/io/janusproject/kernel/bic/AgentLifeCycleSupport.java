@@ -45,6 +45,7 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.core.Skill.UninstallationStage;
 
 /**
  * Implementation of the agent's cycle.
@@ -99,12 +100,17 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 		assert service != null;
 		service.removeSpawnServiceListener(this.agentID, this);
 
-		// Notify the agent about its destruction
-		final Destroy destroy = new Destroy();
-		this.eventBusCapacity.selfEvent(destroy);
+		final Iterable<? extends Skill> skills = getAllSkills(agent, true);
 
-		// Uninstall the skills (BIC and user defined)
-		uninstallSkills(agent);
+		// Prestage for uninstalling the skills (BIC and user defined)
+		uninstallSkillsPreStage(skills);
+
+		// Notify the agent about its destruction.
+		// Assume event handlers were run after returning from the selfEvent function.
+		this.eventBusCapacity.selfEvent(new Destroy());
+
+		// Final stage for uninstalling the skills (BIC and user defined)
+		uninstallSkillsFinalStage(skills);
 	}
 
 	@SuppressWarnings({"unchecked", "checkstyle:npathcomplexity"})
@@ -180,18 +186,52 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 
 	}
 
-	private static void uninstallSkills(Agent agent) {
+	/** Run the uninstallation functions of the skills for the pre stage of the uninstallation process.
+	 *
+	 * <p>This function is run before the handlers for {@link Destroy} are invoked.
+	 *
+	 * @param skills the skills to uninstall.
+	 * @see #uninstallSkillsFinalStage(Agent)
+	 */
+	private static void uninstallSkillsPreStage(Iterable<? extends Skill> skills) {
 		try {
 			// Use reflection to ignore the "private/protected" access right.
 			if (skillUninstallationMethod == null) {
-				final Method method = Skill.class.getDeclaredMethod("uninstall"); //$NON-NLS-1$
+				final Method method = Skill.class.getDeclaredMethod("uninstall", UninstallationStage.class); //$NON-NLS-1$
 				if (!method.isAccessible()) {
 					method.setAccessible(true);
 				}
 				skillUninstallationMethod = method;
 			}
-			for (final Skill s : getAllSkills(agent, true)) {
-				skillUninstallationMethod.invoke(s);
+			for (final Skill s : skills) {
+				skillUninstallationMethod.invoke(s, UninstallationStage.PRE_DESTROY_EVENT);
+			}
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/** Run the uninstallation functions of the skills for the final stage of the uninstallation process.
+	 *
+	 * <p>This function is run after the handlers for {@link Destroy} are invoked.
+	 *
+	 * @param skills the skills to uninstall.
+	 * @see #uninstallSkillsPreStage(Agent)
+	 */
+	private static void uninstallSkillsFinalStage(Iterable<? extends Skill> skills) {
+		try {
+			// Use reflection to ignore the "private/protected" access right.
+			if (skillUninstallationMethod == null) {
+				final Method method = Skill.class.getDeclaredMethod("uninstall", UninstallationStage.class); //$NON-NLS-1$
+				if (!method.isAccessible()) {
+					method.setAccessible(true);
+				}
+				skillUninstallationMethod = method;
+			}
+			for (final Skill s : skills) {
+				skillUninstallationMethod.invoke(s, UninstallationStage.POST_DESTROY_EVENT);
 			}
 		} catch (RuntimeException e) {
 			throw e;

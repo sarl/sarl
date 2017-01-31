@@ -145,8 +145,10 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 	}
 
 	@Override
-	protected void uninstall() {
-		this.eventDispatcher.unregisterAll();
+	protected void uninstall(UninstallationStage stage) {
+		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
+			this.eventDispatcher.unregisterAll();
+		}
 	}
 
 	@Override
@@ -159,6 +161,54 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		this.eventDispatcher.unregister(listener);
 	}
 
+	/** This function runs the initialization of the agent.
+	 *
+	 * @param event the {@link Initialize} occurrence.
+	 */
+	private void runInitializationStage(Event event) {
+		// Immediate synchronous dispatching of Initialize event
+		try {
+			this.eventDispatcher.immediateDispatch(event);
+			this.state.set(OwnerState.RUNNING);
+		} catch (Exception e) {
+			// Log the exception
+			final Logging loggingCapacity = getLoggingSkill();
+			if (loggingCapacity != null) {
+				loggingCapacity.error(Messages.InternalEventBusSkill_3, e);
+			} else {
+				final LogRecord record = new LogRecord(Level.SEVERE, Messages.InternalEventBusSkill_3);
+		        record.setThrown(Throwables.getRootCause(e));
+				this.logger.log(record);
+			}
+			// If we have an exception within the agent's initialization, we kill the agent.
+			this.state.set(OwnerState.RUNNING);
+			// Asynchronous kill of the event.
+			this.agentAsEventListener.killOrMarkAsKilled();
+		}
+	}
+
+	/** This function runs the destruction of the agent.
+	 *
+	 * @param event the {@link Destroy} occurrence.
+	 */
+	private void runDestructionStage(Event event) {
+		// Immediate synchronous dispatching of Destroy event
+		try {
+			this.state.set(OwnerState.DESTROYED);
+			this.eventDispatcher.immediateDispatch(event);
+		} catch (Exception e) {
+			// Log the exception
+			final Logging loggingCapacity = getLoggingSkill();
+			if (loggingCapacity != null) {
+				loggingCapacity.error(Messages.InternalEventBusSkill_4, e);
+			} else {
+				final LogRecord record = new LogRecord(Level.SEVERE, Messages.InternalEventBusSkill_4);
+		        record.setThrown(Throwables.getRootCause(e));
+				this.logger.log(record);
+			}
+		}
+	}
+
 	@Override
 	public void selfEvent(Event event) {
 		// Ensure that the event source is the agent itself!
@@ -169,36 +219,13 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		// listener.
 		final Class<? extends Event> eventType = event.getClass();
 		if (Initialize.class.equals(eventType)) {
-			// Immediate synchronous dispatching of Initialize event
-			try {
-				this.eventDispatcher.immediateDispatch(event);
-				this.state.set(OwnerState.RUNNING);
-
-			} catch (Exception e) {
-				// Log the exception
-				final Logging loggingCapacity = getLoggingSkill();
-				if (loggingCapacity != null) {
-					loggingCapacity.error(Messages.InternalEventBusSkill_3, e);
-				} else {
-					final LogRecord record = new LogRecord(Level.SEVERE, Messages.InternalEventBusSkill_3);
-			        record.setThrown(Throwables.getRootCause(e));
-					this.logger.log(record);
-				}
-				// If we have an exception within the agent's initialization, we kill the agent.
-				this.state.set(OwnerState.RUNNING);
-				// Asynchronous kill of the event.
-				this.agentAsEventListener.killOrMarkAsKilled();
-			}
+			runInitializationStage(event);
 		} else if (Destroy.class.equals(eventType)) {
-			// Immediate synchronous dispatching of Destroy event
-			synchronized (this.state) {
-				this.state.set(OwnerState.DESTROYED);
-			}
-			this.eventDispatcher.immediateDispatch(event);
+			runDestructionStage(event);
 		} else if (AsynchronousAgentKillingEvent.class.equals(eventType)) {
 			// Asynchronous kill of the event.
 			this.agentAsEventListener.killOrMarkAsKilled();
-		} else {
+		} else if (this.state.get().isEventHandling()) {
 			// Asynchronous parallel dispatching of this event
 			this.agentAsEventListener.receiveEvent(event);
 		}
@@ -256,14 +283,17 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 
 			switch (InternalEventBusSkill.this.state.get()) {
 			case RUNNING:
+				assert InternalEventBusSkill.this.state.get().isEventHandling();
 				fireEnqueuedEvents(InternalEventBusSkill.this);
 				InternalEventBusSkill.this.eventDispatcher.asyncDispatch(event);
 				break;
 			case NEW:
+				assert InternalEventBusSkill.this.state.get().isEventHandling();
 				this.buffer.add(event);
 				break;
 			case DESTROYED:
 				// Dropping messages since agent is dying
+				assert !InternalEventBusSkill.this.state.get().isEventHandling();
 				InternalEventBusSkill.this.logger.debug(Messages.InternalEventBusSkill_1, event);
 				break;
 			default:
