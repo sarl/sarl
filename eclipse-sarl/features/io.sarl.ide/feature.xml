@@ -227,21 +227,19 @@ tools upon the Eclipse IDE.
       <import plugin="org.eclipse.xtend.core" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.common.types.ui" version="2.10.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.filesystem" version="1.6.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.equinox.bidi" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.navigator" version="3.6.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.launching" version="3.8.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.search" version="3.11.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.console" version="3.6.200" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui" version="3.108.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.variables" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.debug.ui" version="3.7.201" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.intro.quicklinks" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.intro.universal" version="3.3.1" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.vmutils" version="14.0.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.eclipse" version="0.5.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.12.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.resources" version="3.11.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2e.maven.runtime" version="1.7.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2e.core" version="1.7.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2e.jdt" version="1.7.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.expressions" version="3.4.0" match="compatible"/>
+      <import plugin="org.eclipse.core.variables" version="3.2.800" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.ui.console" version="3.5.300" match="compatible"/>
       <import plugin="org.eclipse.help" version="3.4.0" match="compatible"/>
@@ -256,16 +254,18 @@ tools upon the Eclipse IDE.
       <import plugin="org.eclipse.core.runtime" version="3.3.0" match="compatible"/>
       <import feature="org.eclipse.m2e.feature" version="1.7.0.20160603-1933"/>
       <import feature="org.jboss.tools.m2e.jdt.feature" version="1.0.1.201209200903"/>
-      <import plugin="org.eclipse.ui.ide" version="3.12.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.variables" version="3.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.debug.ui" version="3.11.201" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.core" version="3.12.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.ui" version="3.12.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.debug.ui" version="3.7.201" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.intro" version="3.5.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.intro.universal" version="3.3.1" match="greaterOrEqual"/>
-      <import plugin="io.sarl.eclipse" version="0.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.variables" version="3.2.800" match="compatible"/>
+      <import plugin="org.eclipse.ui.ide" version="3.12.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.filesystem" version="1.6.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.debug.ui" version="3.11.202" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.navigator" version="3.6.101" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.12.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.12.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.launching" version="3.8.101" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.search" version="3.11.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console" version="3.6.201" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.108.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.intro" version="3.5.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources" version="3.11.1" match="greaterOrEqual"/>
    </requires>
 
    <plugin

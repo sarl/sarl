@@ -222,9 +222,9 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.ui" version="3.108.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.common.ui" version="2.11.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.108.1" match="greaterOrEqual"/>
    </requires>
 
    <plugin
