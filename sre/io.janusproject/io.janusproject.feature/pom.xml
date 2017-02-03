@@ -23,7 +23,6 @@
 						<plugin id="org.arakhne.afc.core.vmutils"/>
 						<plugin id="com.google.code.gson"/>
 						<plugin id="com.google.guava"/>
-						<plugin id="com.google.gson"/>
 						<plugin id="com.google.inject"/>
 						<plugin id="com.hazelcast"/>
 						<plugin id="org.zeromq.jeromq"/>

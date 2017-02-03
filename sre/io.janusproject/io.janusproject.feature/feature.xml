@@ -240,6 +240,7 @@
       <import plugin="org.eclipse.swt" version="3.105.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.launching" version="3.8.101" match="greaterOrEqual"/>
       <import plugin="com.google.code.gson" version="2.8.0" match="greaterOrEqual"/>
+      <import plugin="com.google.guava" version="18.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -283,13 +284,6 @@
          install-size="0"
          version="0.0.0"
          fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="com.google.guava"
-         download-size="0"
-         install-size="0"
-         version="18.0.0"
          unpack="false"/>
 
    <plugin

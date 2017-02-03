@@ -157,28 +157,28 @@ public class SARLFormatter extends XtendFormatter {
 
 	@Override
 	public void format(Object sarlComponent, IFormattableDocument document) {
-		if (sarlComponent instanceof SarlEvent) {
-			_format((SarlEvent) sarlComponent, document);
-		} else if (sarlComponent instanceof SarlCapacity) {
-			_format((SarlCapacity) sarlComponent, document);
-		} else if (sarlComponent instanceof SarlAgent) {
-			_format((SarlAgent) sarlComponent, document);
-		} else if (sarlComponent instanceof SarlBehavior) {
-			_format((SarlBehavior) sarlComponent, document);
-		} else if (sarlComponent instanceof SarlSkill) {
-			_format((SarlSkill) sarlComponent, document);
-		} else if (sarlComponent instanceof SarlBehaviorUnit) {
-			_format((SarlBehaviorUnit) sarlComponent, document);
-		} else if (sarlComponent instanceof SarlCapacityUses) {
-			_format((SarlCapacityUses) sarlComponent, document);
-		} else if (sarlComponent instanceof SarlRequiredCapacity) {
-			_format((SarlRequiredCapacity) sarlComponent, document);
-		} else {
-			try {
+		try {
+			if (sarlComponent instanceof SarlEvent) {
+				_format((SarlEvent) sarlComponent, document);
+			} else if (sarlComponent instanceof SarlCapacity) {
+				_format((SarlCapacity) sarlComponent, document);
+			} else if (sarlComponent instanceof SarlAgent) {
+				_format((SarlAgent) sarlComponent, document);
+			} else if (sarlComponent instanceof SarlBehavior) {
+				_format((SarlBehavior) sarlComponent, document);
+			} else if (sarlComponent instanceof SarlSkill) {
+				_format((SarlSkill) sarlComponent, document);
+			} else if (sarlComponent instanceof SarlBehaviorUnit) {
+				_format((SarlBehaviorUnit) sarlComponent, document);
+			} else if (sarlComponent instanceof SarlCapacityUses) {
+				_format((SarlCapacityUses) sarlComponent, document);
+			} else if (sarlComponent instanceof SarlRequiredCapacity) {
+				_format((SarlRequiredCapacity) sarlComponent, document);
+			} else {
 				super.format(sarlComponent, document);
-			} catch (FormattingNotApplicableException exception) {
-				// Silently ignore this exception.
 			}
+		} catch (FormattingNotApplicableException exception) {
+			// Silently ignore this exception.
 		}
 	}
 

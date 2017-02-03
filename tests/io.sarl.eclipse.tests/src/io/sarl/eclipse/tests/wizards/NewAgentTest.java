@@ -112,7 +112,7 @@ public class NewAgentTest extends AbstractSarlUiTest {
 			content = baos.toString();
 		}
 		
-		assertEquals("package io.sarl.eclipse.tests.wizards/* Foo Agent\n */agent FooAgent {\n}\n", content);
+		assertEquals("package io.sarl.eclipse.tests.wizards\n/* Foo Agent\n */\nagent FooAgent {\n}\n", content);
 	}
 
 }

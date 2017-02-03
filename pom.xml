@@ -27,8 +27,8 @@
 		<!-- Version of the Xtext API -->
 		<sarl.version>0.5.0-SNAPSHOT</sarl.version>
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.10.0</xtext.version>
-		<xtext.versionRange>[2.10.0,2.10.1)</xtext.versionRange><!-- For generating 
+		<xtext.version>2.11.0</xtext.version>
+		<xtext.versionRange>[2.11.0,2.11.1)</xtext.versionRange><!-- For generating 
 			a correct version range you need to create a range integrating ONLY the current 
 			version and excluding all other possible versions especially the greater 
 			ones -->

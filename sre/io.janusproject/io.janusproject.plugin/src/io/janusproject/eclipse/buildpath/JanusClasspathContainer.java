@@ -54,7 +54,7 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 
 	static {
 		final String[] array1 = new String[] {
-			"com.google.gson", //$NON-NLS-1$
+			"com.google.code.gson", //$NON-NLS-1$
 			"com.google.inject", //$NON-NLS-1$
 			"com.hazelcast", //$NON-NLS-1$
 			"org.apache.commons.cli", //$NON-NLS-1$

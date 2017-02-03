@@ -103,7 +103,11 @@ public class SARLClasspathContainerTest extends AbstractSarlUiTest {
 				//
 				"io.sarl.util",
 				//
-				"io.sarl.core");
+				"io.sarl.core",
+				//
+				"aopalliance",
+				"com.google.inject",
+				"com.google.inject.multibindings");
 	}
 
 	@Test
@@ -129,7 +133,7 @@ public class SARLClasspathContainerTest extends AbstractSarlUiTest {
 	public void getClasspathEntries_withEclipse() {
 		IClasspathEntry[] iterable = this.container.getClasspathEntries();
 		assertNotNull(iterable);
-		assertEquals(8, iterable.length);
+		assertEquals(12, iterable.length);
 	}
 
 	@Test

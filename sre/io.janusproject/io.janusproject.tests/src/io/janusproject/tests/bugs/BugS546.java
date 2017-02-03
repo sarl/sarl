@@ -70,7 +70,7 @@ public class BugS546 {
 	
 	private static final int NB_AGENTS = 100;
 
-	private static final int TIMEOUT = 60;
+	private static final int TIMEOUT = 240;
 
 	private static final int BASE_DELAY = 500;
 

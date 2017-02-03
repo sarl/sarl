@@ -16,8 +16,9 @@
 package io.sarl.lang.tests.modules.formatting2;
 
 import com.google.inject.Inject;
-import org.eclipse.xtext.junit4.formatter.FormatterTestRequest;
 import org.eclipse.xtext.junit4.formatter.FormatterTester;
+import org.eclipse.xtext.testing.formatter.FormatterTestHelper;
+import org.eclipse.xtext.testing.formatter.FormatterTestRequest;
 import org.eclipse.xtext.xbase.lib.Procedures;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -33,7 +34,7 @@ import io.sarl.tests.api.AbstractSarlTest;
 public abstract class AbstractFormatterTest extends AbstractSarlTest {
 
 	@Inject
-	private FormatterTester tester;
+	private FormatterTestHelper helper;
 	
 	/** Assert formatting
 	 *
@@ -41,17 +42,17 @@ public abstract class AbstractFormatterTest extends AbstractSarlTest {
 	 * @param expected the expected input.
 	 */
 	protected void assertFormatted(String input, final String expected) {
-		this.tester.assertFormatted(new Procedures.Procedure1<FormatterTestRequest>() {
+		this.helper.assertFormatted(new Procedures.Procedure1<FormatterTestRequest>() {
 			@Override
 			public void apply(FormatterTestRequest it) {
 				it.setToBeFormatted(input);
 				it.setExpectation(expected);
 				it.setAllowSyntaxErrors(false);
-				it.setAllowUnformattedWhitespace(false);
+				it.setAllowUnformattedWhitespace(true);
 				it.setUseNodeModel(true);
 				it.setUseSerializer(false);
 			}
 		});
 	}
-	
+
 }
