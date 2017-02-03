@@ -315,9 +315,10 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 				if (Objects.equals(newContent, oldContent)) {
 					// Save the resource for ensuring EMF changes are comitted.
 					try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-						SaveOptions.Builder options = SaveOptions.newBuilder();
-						options.noValidation();
-						this.scriptResource.save(baos, options.getOptions().toOptionsMap());
+						SaveOptions options = new SaveOptions(false, false) {
+							//
+						};
+						this.scriptResource.save(baos, options.toOptionsMap());
 						baos.flush();
 						newContent = baos.toString();
 					}

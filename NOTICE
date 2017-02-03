@@ -14,5 +14,10 @@ limitations under the License.
 
 
 This project uses:
-- Xtext
+- Eclipse Xtext
 - Eclipse RCP
+- Hazelcast
+- ZeroMQ
+- Google Guava
+- Google Guice
+- Google Gson
