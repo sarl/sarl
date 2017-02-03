@@ -221,6 +221,16 @@ public class BugMultilineCommentIndentation {
 			this.context.addReplacement(replacement);
 		}
 
+		@Override
+		public boolean isWrapInRegion() {
+			return this.context.isWrapInRegion();
+		}
+
+		@Override
+		public boolean isWrapSincePrevious() {
+			return this.context.isWrapSincePrevious();
+		}
+
 	}
 
 }
