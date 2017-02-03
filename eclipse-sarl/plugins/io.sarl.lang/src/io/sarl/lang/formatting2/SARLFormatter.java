@@ -72,6 +72,7 @@ import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /**
  * This class contains custom formatting description.
@@ -128,6 +129,9 @@ public class SARLFormatter extends XtendFormatter {
 
 	@Inject
 	private Injector injector;
+
+	@Inject
+	private SARLGrammarKeywordAccess keywords;
 
 	@Override
 	public ITextReplacer createCommentReplacer(IComment comment) {
@@ -188,8 +192,8 @@ public class SARLFormatter extends XtendFormatter {
 			if (expr.eContainer() == null) {
 				document.surround(expr, NO_SPACE);
 			}
-			final ISemanticRegion open = regionFor.keyword("{"); //$NON-NLS-1$
-			final ISemanticRegion close = regionFor.keyword("}"); //$NON-NLS-1$
+			final ISemanticRegion open = regionFor.keyword(this.keywords.getLeftCurlyBracketKeyword());
+			final ISemanticRegion close = regionFor.keyword(this.keywords.getRightCurlyBracketKeyword());
 			if (open != null && close != null) {
 				formatExpressionsMultiline(expr.getExpressions(), open, close, document);
 			}
@@ -206,9 +210,9 @@ public class SARLFormatter extends XtendFormatter {
 		formatModifiers(event, document);
 
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(event);
-		document.append(regionFor.keyword("event"), ONE_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getEventKeyword()), ONE_SPACE);
 
-		document.surround(regionFor.keyword("extends"), ONE_SPACE); //$NON-NLS-1$
+		document.surround(regionFor.keyword(this.keywords.getExtendsKeyword()), ONE_SPACE);
 		document.format(event.getExtends());
 
 		formatBody(event, document);
@@ -225,9 +229,9 @@ public class SARLFormatter extends XtendFormatter {
 
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(capacity);
 
-		document.append(regionFor.keyword("capacity"), ONE_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getCapacityKeyword()), ONE_SPACE);
 
-		document.surround(regionFor.keyword("extends"), ONE_SPACE); //$NON-NLS-1$
+		document.surround(regionFor.keyword(this.keywords.getExtendsKeyword()), ONE_SPACE);
 		formatCommaSeparatedList(capacity.getExtends(), document);
 
 		formatBody(capacity, document);
@@ -243,9 +247,9 @@ public class SARLFormatter extends XtendFormatter {
 		formatModifiers(agent, document);
 
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(agent);
-		document.append(regionFor.keyword("agent"), ONE_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getAgentKeyword()), ONE_SPACE);
 
-		document.surround(regionFor.keyword("extends"), ONE_SPACE); //$NON-NLS-1$
+		document.surround(regionFor.keyword(this.keywords.getExtendsKeyword()), ONE_SPACE);
 		document.format(agent.getExtends());
 
 		formatBody(agent, document);
@@ -261,9 +265,9 @@ public class SARLFormatter extends XtendFormatter {
 		formatModifiers(behavior, document);
 
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(behavior);
-		document.append(regionFor.keyword("behavior"), ONE_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getBehaviorKeyword()), ONE_SPACE);
 
-		document.surround(regionFor.keyword("extends"), ONE_SPACE); //$NON-NLS-1$
+		document.surround(regionFor.keyword(this.keywords.getExtendsKeyword()), ONE_SPACE);
 		document.format(behavior.getExtends());
 
 		formatBody(behavior, document);
@@ -279,12 +283,12 @@ public class SARLFormatter extends XtendFormatter {
 		formatModifiers(skill, document);
 
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(skill);
-		document.append(regionFor.keyword("skill"), ONE_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getSkillKeyword()), ONE_SPACE);
 
-		document.surround(regionFor.keyword("extends"), ONE_SPACE); //$NON-NLS-1$
+		document.surround(regionFor.keyword(this.keywords.getExtendsKeyword()), ONE_SPACE);
 		document.format(skill.getExtends());
 
-		document.surround(regionFor.keyword("implements"), ONE_SPACE); //$NON-NLS-1$
+		document.surround(regionFor.keyword(this.keywords.getImplementsKeyword()), ONE_SPACE);
 		formatCommaSeparatedList(skill.getImplements(), document);
 
 		formatBody(skill, document);
@@ -296,13 +300,13 @@ public class SARLFormatter extends XtendFormatter {
 		formatModifiers(field, document);
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(field);
 
-		final ISemanticRegion columnKw = regionFor.keyword(":"); //$NON-NLS-1$
+		final ISemanticRegion columnKw = regionFor.keyword(this.keywords.getColonKeyword());
 		document.prepend(columnKw, ONE_SPACE);
 		document.append(columnKw, ONE_SPACE);
-		final ISemanticRegion equalKw = regionFor.keyword("="); //$NON-NLS-1$
+		final ISemanticRegion equalKw = regionFor.keyword(this.keywords.getEqualsSignKeyword());
 		document.prepend(equalKw, ONE_SPACE);
 		document.append(equalKw, ONE_SPACE);
-		final ISemanticRegion semicolumn = regionFor.keyword(";"); //$NON-NLS-1$
+		final ISemanticRegion semicolumn = regionFor.keyword(this.keywords.getSemicolonKeyword());
 		document.prepend(semicolumn, NO_SPACE);
 
 		final JvmTypeReference type = field.getType();
@@ -321,13 +325,13 @@ public class SARLFormatter extends XtendFormatter {
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(function);
 
 		if (!typeParameters.isEmpty()) {
-			final ISemanticRegion open = regionFor.keyword("<"); //$NON-NLS-1$
+			final ISemanticRegion open = regionFor.keyword(this.keywords.getLessThanSignKeyword());
 			document.prepend(open, ONE_SPACE);
 			document.append(open, NO_SPACE);
-			final ISemanticRegion close = regionFor.keyword(">"); //$NON-NLS-1$
+			final ISemanticRegion close = regionFor.keyword(this.keywords.getGreaterThanSignKeyword());
 			document.prepend(close, NO_SPACE);
 			document.append(close, ONE_SPACE);
-			document.surround(regionFor.keyword("with"), ONE_SPACE); //$NON-NLS-1$
+			document.surround(regionFor.keyword(this.keywords.getWithKeyword()), ONE_SPACE);
 			formatCommaSeparatedList(function.getTypeParameters(), document);
 		}
 
@@ -340,9 +344,9 @@ public class SARLFormatter extends XtendFormatter {
 		}
 		final ISemanticRegion open;
 		if (immediatelyFollowing != null) {
-			open = immediatelyFollowing.keyword("("); //$NON-NLS-1$
+			open = immediatelyFollowing.keyword(this.keywords.getLeftParenthesisKeyword());
 			document.prepend(open, NO_SPACE);
-			final ISemanticRegion close = regionFor.keyword(")"); //$NON-NLS-1$
+			final ISemanticRegion close = regionFor.keyword(this.keywords.getRightParenthesisKeyword());
 			final EList<XtendParameter> parameters = function.getParameters();
 			formatCommaSeparatedList(parameters, open, close, document);
 		} else {
@@ -352,21 +356,21 @@ public class SARLFormatter extends XtendFormatter {
 		final JvmTypeReference returnType = function.getReturnType();
 		if (returnType != null) {
 			final ISemanticRegion typeColumn = this.textRegionExtensions.immediatelyPreceding(returnType)
-					.keyword(":"); //$NON-NLS-1$
+					.keyword(this.keywords.getColonKeyword());
 			document.surround(typeColumn, ONE_SPACE);
 			document.format(returnType);
 		}
 
 		final EList<JvmTypeReference> exceptions = function.getExceptions();
 		if (!exceptions.isEmpty()) {
-			document.surround(regionFor.keyword("throws"), ONE_SPACE); //$NON-NLS-1$
+			document.surround(regionFor.keyword(this.keywords.getThrowsKeyword()), ONE_SPACE);
 		}
 		formatCommaSeparatedList(exceptions, document);
 
 		if (function instanceof SarlAction) {
 			final EList<JvmTypeReference> events = ((SarlAction) function).getFiredEvents();
 			if (!events.isEmpty()) {
-				document.surround(regionFor.keyword("fires"), ONE_SPACE); //$NON-NLS-1$
+				document.surround(regionFor.keyword(this.keywords.getFiresKeyword()), ONE_SPACE);
 			}
 			formatCommaSeparatedList(events, document);
 		}
@@ -374,11 +378,11 @@ public class SARLFormatter extends XtendFormatter {
 		final XExpression expression = function.getExpression();
 		if (expression != null) {
 			final ISemanticRegionFinder finder = this.textRegionExtensions.regionFor(expression);
-			final ISemanticRegion brace = finder.keyword("{"); //$NON-NLS-1$
+			final ISemanticRegion brace = finder.keyword(this.keywords.getLeftCurlyBracketKeyword());
 			document.prepend(brace, XbaseFormatterPreferenceKeys.bracesInNewLine);
 			document.format(expression);
 		} else {
-			final ISemanticRegion column = regionFor.keyword(";"); //$NON-NLS-1$
+			final ISemanticRegion column = regionFor.keyword(this.keywords.getSemicolonKeyword());
 			document.prepend(column, NO_SPACE);
 		}
 	}
@@ -391,17 +395,17 @@ public class SARLFormatter extends XtendFormatter {
 		final EList<JvmTypeParameter> typeParameters = constructor.getTypeParameters();
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(constructor);
 
-		final ISemanticRegion nameNode = regionFor.keyword("new"); //$NON-NLS-1$
+		final ISemanticRegion nameNode = regionFor.keyword(this.keywords.getNewKeyword());
 		final ISemanticRegionFinder immediatelyFollowing;
 
 		if (!typeParameters.isEmpty()) {
-			final ISemanticRegion open = regionFor.keyword("<"); //$NON-NLS-1$
+			final ISemanticRegion open = regionFor.keyword(this.keywords.getLessThanSignKeyword());
 			document.prepend(open, ONE_SPACE);
 			document.append(open, NO_SPACE);
-			final ISemanticRegion close = regionFor.keyword(">"); //$NON-NLS-1$
+			final ISemanticRegion close = regionFor.keyword(this.keywords.getGreaterThanSignKeyword());
 			document.prepend(close, NO_SPACE);
 			document.append(close, ONE_SPACE);
-			document.surround(regionFor.keyword("with"), ONE_SPACE); //$NON-NLS-1$
+			document.surround(regionFor.keyword(this.keywords.getWithKeyword()), ONE_SPACE);
 			formatCommaSeparatedList(constructor.getTypeParameters(), document);
 			if (close != null) {
 				immediatelyFollowing = close.immediatelyFollowing();
@@ -418,16 +422,16 @@ public class SARLFormatter extends XtendFormatter {
 
 		final ISemanticRegion open;
 		if (immediatelyFollowing != null) {
-			open = immediatelyFollowing.keyword("("); //$NON-NLS-1$
+			open = immediatelyFollowing.keyword(this.keywords.getLeftParenthesisKeyword());
 		} else {
 			open = null;
 		}
-		final ISemanticRegion close = regionFor.keyword(")"); //$NON-NLS-1$
+		final ISemanticRegion close = regionFor.keyword(this.keywords.getRightParenthesisKeyword());
 
 		final XExpression expression = constructor.getExpression();
 		if (expression != null) {
 			final ISemanticRegionFinder finder = this.textRegionExtensions.regionFor(expression);
-			final ISemanticRegion brace = finder.keyword("{"); //$NON-NLS-1$
+			final ISemanticRegion brace = finder.keyword(this.keywords.getLeftCurlyBracketKeyword());
 			document.prepend(brace, XbaseFormatterPreferenceKeys.bracesInNewLine);
 			document.format(expression);
 		}
@@ -437,7 +441,7 @@ public class SARLFormatter extends XtendFormatter {
 
 		final EList<JvmTypeReference> exceptions = constructor.getExceptions();
 		if (!exceptions.isEmpty()) {
-			document.surround(regionFor.keyword("throws"), ONE_SPACE); //$NON-NLS-1$
+			document.surround(regionFor.keyword(this.keywords.getThrowsKeyword()), ONE_SPACE);
 		}
 		formatCommaSeparatedList(exceptions, document);
 	}
@@ -452,15 +456,15 @@ public class SARLFormatter extends XtendFormatter {
 
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(behaviorUnit);
 
-		document.append(regionFor.keyword("on"), ONE_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getOnKeyword()), ONE_SPACE);
 
 		if (behaviorUnit.getGuard() != null) {
 			ISemanticRegion keyword = this.textRegionExtensions.immediatelyPreceding(
-					behaviorUnit.getGuard()).keyword("["); //$NON-NLS-1$
+					behaviorUnit.getGuard()).keyword(this.keywords.getLeftSquareBracketKeyword());
 			document.prepend(keyword, ONE_SPACE);
 			document.append(keyword, NO_SPACE);
 			keyword = this.textRegionExtensions.immediatelyFollowing(
-					behaviorUnit.getGuard()).keyword("]"); //$NON-NLS-1$
+					behaviorUnit.getGuard()).keyword(this.keywords.getRightSquareBracketKeyword());
 			document.prepend(keyword, NO_SPACE);
 		}
 
@@ -470,7 +474,7 @@ public class SARLFormatter extends XtendFormatter {
 		final XExpression expression = behaviorUnit.getExpression();
 		if (expression != null) {
 			final ISemanticRegionFinder finder = this.textRegionExtensions.regionFor(expression);
-			final ISemanticRegion brace = finder.keyword("{"); //$NON-NLS-1$
+			final ISemanticRegion brace = finder.keyword(this.keywords.getLeftCurlyBracketKeyword());
 			document.prepend(brace, XbaseFormatterPreferenceKeys.bracesInNewLine);
 			document.format(expression);
 		}
@@ -483,9 +487,9 @@ public class SARLFormatter extends XtendFormatter {
 	 */
 	protected void _format(SarlCapacityUses capacityUses, IFormattableDocument document) {
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(capacityUses);
-		document.append(regionFor.keyword("uses"), ONE_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getUsesKeyword()), ONE_SPACE);
 		formatCommaSeparatedList(capacityUses.getCapacities(), document);
-		document.prepend(regionFor.keyword(";"), NO_SPACE); //$NON-NLS-1$
+		document.prepend(regionFor.keyword(this.keywords.getSemicolonKeyword()), NO_SPACE);
 	}
 
 	/** Format a required capacity.
@@ -495,21 +499,21 @@ public class SARLFormatter extends XtendFormatter {
 	 */
 	protected void _format(SarlRequiredCapacity requiredCapacity, IFormattableDocument document) {
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(requiredCapacity);
-		document.append(regionFor.keyword("requires"), ONE_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getRequiresKeyword()), ONE_SPACE);
 		formatCommaSeparatedList(requiredCapacity.getCapacities(), document);
-		document.prepend(regionFor.keyword(";"), NO_SPACE); //$NON-NLS-1$
+		document.prepend(regionFor.keyword(this.keywords.getSemicolonKeyword()), NO_SPACE);
 	}
 
 	@Override
 	protected void _format(XtendParameter param, IFormattableDocument document) {
 		formatAnnotations(param, document, XbaseFormatterPreferenceKeys.newLineAfterParameterAnnotations);
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(param);
-		document.surround(regionFor.keyword(":"), ONE_SPACE); //$NON-NLS-1$
-		document.surround(regionFor.keyword("="), ONE_SPACE); //$NON-NLS-1$
+		document.surround(regionFor.keyword(this.keywords.getColonKeyword()), ONE_SPACE);
+		document.surround(regionFor.keyword(this.keywords.getEqualsSignKeyword()), ONE_SPACE);
 		final JvmTypeReference parameterType = param.getParameterType();
 		if (parameterType != null) {
 			document.format(parameterType);
-			final ISemanticRegion varArgToken = regionFor.keyword("*"); //$NON-NLS-1$
+			final ISemanticRegion varArgToken = regionFor.keyword(this.keywords.getWildcardAsteriskKeyword());
 			document.surround(varArgToken, NO_SPACE);
 		}
 	}
@@ -517,11 +521,11 @@ public class SARLFormatter extends XtendFormatter {
 	@Override
 	protected void _format(XVariableDeclaration expr, IFormattableDocument document) {
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
-		document.append(regionFor.keyword("extension"), ONE_SPACE); //$NON-NLS-1$
-		document.append(regionFor.keyword("val"), ONE_SPACE); //$NON-NLS-1$
-		document.append(regionFor.keyword("var"), ONE_SPACE); //$NON-NLS-1$
-		document.surround(regionFor.keyword(":"), ONE_SPACE); //$NON-NLS-1$
-		document.surround(regionFor.keyword("="), ONE_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getExtensionExtensionKeyword()), ONE_SPACE);
+		document.append(regionFor.keyword(this.keywords.getValKeyword()), ONE_SPACE);
+		document.append(regionFor.keyword(this.keywords.getVarKeyword()), ONE_SPACE);
+		document.surround(regionFor.keyword(this.keywords.getColonKeyword()), ONE_SPACE);
+		document.surround(regionFor.keyword(this.keywords.getEqualsSignKeyword()), ONE_SPACE);
 		document.format(expr.getType());
 		document.format(expr.getRight());
 	}
@@ -529,11 +533,11 @@ public class SARLFormatter extends XtendFormatter {
 	@Override
 	protected void _format(JvmFormalParameter expr, IFormattableDocument document) {
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
-		document.append(regionFor.keyword("extension"), ONE_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getExtensionExtensionKeyword()), ONE_SPACE);
 		final JvmTypeReference parameterType = expr.getParameterType();
 		if (parameterType != null) {
-			document.surround(regionFor.keyword(":"), ONE_SPACE); //$NON-NLS-1$
-			document.surround(regionFor.keyword("as"), ONE_SPACE); //$NON-NLS-1$
+			document.surround(regionFor.keyword(this.keywords.getColonKeyword()), ONE_SPACE);
+			document.surround(regionFor.keyword(this.keywords.getAsKeyword()), ONE_SPACE);
 		}
 		document.format(parameterType);
 	}
@@ -541,7 +545,7 @@ public class SARLFormatter extends XtendFormatter {
 	@Override
 	protected void _format(XForLoopExpression expr, IFormattableDocument document) {
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
-		document.append(regionFor.keyword("for"), ONE_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getForKeyword()), ONE_SPACE);
 
 		final JvmFormalParameter declaredParam = expr.getDeclaredParam();
 		document.prepend(declaredParam, NO_SPACE);
@@ -557,15 +561,15 @@ public class SARLFormatter extends XtendFormatter {
 		if (eachExpression != null) {
 			formatBody(eachExpression, true, document);
 		} else {
-			document.prepend(regionFor.keyword(";"), NO_SPACE); //$NON-NLS-1$
+			document.prepend(regionFor.keyword(this.keywords.getSemicolonKeyword()), NO_SPACE);
 		}
 	}
 
 	@Override
 	protected void _format(XAnnotation annotation, IFormattableDocument document) {
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(annotation);
-		document.append(regionFor.keyword("@"), NO_SPACE); //$NON-NLS-1$
-		document.surround(regionFor.keyword("("), NO_SPACE); //$NON-NLS-1$
+		document.append(regionFor.keyword(this.keywords.getCommercialAtKeyword()), NO_SPACE);
+		document.surround(regionFor.keyword(this.keywords.getLeftParenthesisKeyword()), NO_SPACE);
 		XExpression value = annotation.getValue();
 		if (value != null) {
 			document.format(value);
@@ -574,17 +578,17 @@ public class SARLFormatter extends XtendFormatter {
 			if (!elementValuePairs.isEmpty()) {
 				for (final XAnnotationElementValuePair pair : elementValuePairs) {
 					final ISemanticRegionsFinder regionForPair = this.textRegionExtensions.regionFor(pair);
-					document.surround(regionForPair.keyword("="), ONE_SPACE); //$NON-NLS-1$
+					document.surround(regionForPair.keyword(this.keywords.getEqualsSignKeyword()), ONE_SPACE);
 					value = pair.getValue();
 					document.format(value);
 					final ISemanticRegionFinder immediatelyFollowing = this.textRegionExtensions.immediatelyFollowing(pair);
-					final ISemanticRegion keyword = immediatelyFollowing.keyword(","); //$NON-NLS-1$
+					final ISemanticRegion keyword = immediatelyFollowing.keyword(this.keywords.getCommaKeyword());
 					document.prepend(keyword, NO_SPACE);
 					document.append(keyword, ONE_SPACE);
 				}
 			}
 		}
-		document.prepend(regionFor.keyword(")"), NO_SPACE); //$NON-NLS-1$
+		document.prepend(regionFor.keyword(this.keywords.getRightParenthesisKeyword()), NO_SPACE);
 	}
 
 	@Override
@@ -604,7 +608,7 @@ public class SARLFormatter extends XtendFormatter {
 		for (final EObject element : elements) {
 			document.format(element);
 			final ISemanticRegionFinder immediatelyFollowing = this.textRegionExtensions.immediatelyFollowing(element);
-			final ISemanticRegion keyword = immediatelyFollowing.keyword(","); //$NON-NLS-1$
+			final ISemanticRegion keyword = immediatelyFollowing.keyword(this.keywords.getCommaKeyword());
 			document.prepend(keyword, NO_SPACE);
 			document.append(keyword, ONE_SPACE);
 		}
@@ -615,8 +619,8 @@ public class SARLFormatter extends XtendFormatter {
 	protected ISemanticRegion formatBody(XtendTypeDeclaration type, IFormattableDocument document) {
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(type);
 
-		final ISemanticRegion open = regionFor.keyword("{"); //$NON-NLS-1$
-		final ISemanticRegion close = regionFor.keyword("}"); //$NON-NLS-1$
+		final ISemanticRegion open = regionFor.keyword(this.keywords.getLeftCurlyBracketKeyword());
+		final ISemanticRegion close = regionFor.keyword(this.keywords.getRightCurlyBracketKeyword());
 		document.prepend(open, XbaseFormatterPreferenceKeys.bracesInNewLine);
 		document.interior(open, close, INDENT);
 
