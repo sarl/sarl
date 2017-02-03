@@ -25,8 +25,8 @@
 						<plugin id="com.google.code.gson"/>
 						<plugin id="com.google.guava"/>
 						<plugin id="com.google.gson"/>
-						<plugin id="org.zeromq.jeromq"/>
 						<plugin id="com.google.inject"/>
+						<plugin id="org.zeromq.jeromq"/>
 					</excludes>
 				</configuration>
 			</plugin>
