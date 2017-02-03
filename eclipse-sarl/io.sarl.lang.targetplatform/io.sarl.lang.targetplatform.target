@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="104">
+<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="106">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.xtend.sdk.feature.group" version="2.11.0.v20170201-0242"/>
@@ -46,7 +46,7 @@
 <unit id="javax.cache.api" version="1.0.0"/>
 <unit id="com.google.inject.multibindings.source" version="4.1.0"/>
 <unit id="org.apache.commons.cli" version="1.3.1"/>
-<unit id="com.hazelcast" version="3.7.0.EA"/>
+<unit id="com.hazelcast" version="3.8.0.EA"/>
 <unit id="com.google.guava.source" version="18.0.0"/>
 <unit id="com.google.guava.testlib" version="18.0.0"/>
 <unit id="org.jsr107.ri.cache-ri-impl" version="1.0.0"/>
