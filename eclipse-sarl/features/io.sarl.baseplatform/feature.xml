@@ -232,6 +232,50 @@
          id="org.eclipse.epp.mpc"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.platform"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.jdt"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.xtend.sdk"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.xtext.redist"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.m2e.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.jboss.tools.m2e.jdt.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.jgit"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.wst.common_core.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.wst.common_ui.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.wst.xml_core.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.xsd"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.xtext.ide"/>
       <import plugin="org.eclipse.xtext.xbase"/>
@@ -506,6 +550,13 @@
          download-size="0"
          install-size="0"
          version="15.0.0.v201403281430"
+         unpack="false"/>
+
+   <plugin
+         id="aopalliance"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

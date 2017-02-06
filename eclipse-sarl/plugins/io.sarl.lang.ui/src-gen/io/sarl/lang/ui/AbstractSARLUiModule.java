@@ -113,9 +113,7 @@ import org.eclipse.xtext.generator.AbstractFileSystemAccess2;
 import org.eclipse.xtext.generator.IContextualOutputConfigurationProvider;
 import org.eclipse.xtext.ide.LexerIdeBindings;
 import org.eclipse.xtext.ide.editor.bracketmatching.IBracePairProvider;
-import org.eclipse.xtext.ide.editor.contentassist.antlr.ContentAssistContextFactory;
 import org.eclipse.xtext.ide.editor.contentassist.antlr.IContentAssistParser;
-import org.eclipse.xtext.ide.editor.contentassist.antlr.PartialContentAssistContextFactory;
 import org.eclipse.xtext.ide.editor.contentassist.antlr.internal.Lexer;
 import org.eclipse.xtext.ide.editor.partialEditing.IPartialEditingContentAssistParser;
 import org.eclipse.xtext.ide.editor.syntaxcoloring.ISemanticHighlightingCalculator;
@@ -219,7 +217,7 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.ImplicitFragment
-	public Provider<IAllContainersState> provideIAllContainersState() {
+	public Provider<? extends IAllContainersState> provideIAllContainersState() {
 		return Access.getJavaProjectsState();
 	}
 	
@@ -272,11 +270,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by org.eclipse.xtext.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment2
 	public void configureContentAssistLexerProvider(Binder binder) {
 		binder.bind(InternalSARLLexer.class).toProvider(LexerProvider.create(InternalSARLLexer.class));
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment2
-	public Class<? extends ContentAssistContextFactory> bindContentAssistContextFactory() {
-		return PartialContentAssistContextFactory.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.formatting.Formatter2Fragment2
@@ -435,12 +428,12 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.ui.templates.CodetemplatesGeneratorFragment2
-	public Provider<TemplatesLanguageConfiguration> provideTemplatesLanguageConfiguration() {
+	public Provider<? extends TemplatesLanguageConfiguration> provideTemplatesLanguageConfiguration() {
 		return AccessibleCodetemplatesActivator.getTemplatesLanguageConfigurationProvider();
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.ui.templates.CodetemplatesGeneratorFragment2
-	public Provider<LanguageRegistry> provideLanguageRegistry() {
+	public Provider<? extends LanguageRegistry> provideLanguageRegistry() {
 		return AccessibleCodetemplatesActivator.getLanguageRegistry();
 	}
 	

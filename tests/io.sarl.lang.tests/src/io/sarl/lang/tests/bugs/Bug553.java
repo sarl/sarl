@@ -17,18 +17,12 @@
 package io.sarl.lang.tests.bugs;
 
 import com.google.inject.Inject;
-import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
-import org.eclipse.xtext.xbase.validation.IssueCodes;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
-import io.sarl.lang.annotation.SarlSpecification;
-import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.TestClasspath;
 
 /**
  * @author $Author: sgalland$

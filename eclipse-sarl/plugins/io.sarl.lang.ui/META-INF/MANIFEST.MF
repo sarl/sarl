@@ -21,10 +21,12 @@ Require-Bundle: io.sarl.lang;bundle-version="0.5.0";visibility:=reexport,
  org.eclipse.jdt.debug.ui;bundle-version="3.7.201",
  org.eclipse.ui;bundle-version="3.108.1",
  org.eclipse.ui.editors;bundle-version="3.10.1",
- org.arakhne.afc.core.references;bundle-version="14.0.0"
+ org.arakhne.afc.core.references;bundle-version="14.0.0",
+ org.antlr.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Activator: io.sarl.lang.ui.internal.LangActivator
-Export-Package: io.sarl.lang.ide.contentassist.antlr,
+Export-Package: io.sarl.lang.ide,
+ io.sarl.lang.ide.contentassist.antlr,
  io.sarl.lang.ide.contentassist.antlr.internal,
  io.sarl.lang.ui;x-friends:="io.sarl.lang.ui.tests",
  io.sarl.lang.ui.builder,

@@ -284,7 +284,7 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment2
-	public Provider<InternalSARLLexer> provideInternalSARLLexer() {
+	public Provider<? extends InternalSARLLexer> provideInternalSARLLexer() {
 		return LexerProvider.create(InternalSARLLexer.class);
 	}
 	

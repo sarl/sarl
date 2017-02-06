@@ -20,28 +20,22 @@
  */
 package io.sarl.eclipse.tests;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import javax.inject.Inject;
 
-import io.sarl.eclipse.SARLEclipseConfig;
+import org.eclipse.core.internal.preferences.EclipsePreferences;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.junit.After;
+import org.junit.Before;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.tests.api.AbstractSarlUiTest;
-import io.sarl.tests.api.WorkbenchTestHelper;
-
-import org.eclipse.core.internal.preferences.EclipsePreferences;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.xtext.ui.XtextProjectHelper;
-import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 
 /** Abstract class that is forcing the Eclipse preferences to be specific for tests.
  * 

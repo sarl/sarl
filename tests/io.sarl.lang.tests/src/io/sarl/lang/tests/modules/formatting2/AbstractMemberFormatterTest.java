@@ -16,8 +16,8 @@
 package io.sarl.lang.tests.modules.formatting2;
 
 import com.google.inject.Inject;
-import org.eclipse.xtext.junit4.formatter.FormatterTestRequest;
-import org.eclipse.xtext.junit4.formatter.FormatterTester;
+import org.eclipse.xtext.testing.formatter.FormatterTestHelper;
+import org.eclipse.xtext.testing.formatter.FormatterTestRequest;
 import org.eclipse.xtext.xbase.lib.Procedures;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -33,24 +33,15 @@ import io.sarl.tests.api.AbstractSarlTest;
 public abstract class AbstractMemberFormatterTest extends AbstractSarlTest {
 
 	@Inject
-	private FormatterTester tester;
+	private FormatterTestHelper tester;
 	
 	/** Assert formatting
 	 *
 	 * @param input the input.
 	 * @param expected the expected input.
 	 */
-	protected void assertFormatted(CharSequence input, final CharSequence expected) {
-		this.tester.assertFormatted(new Procedures.Procedure1<FormatterTestRequest>() {
-			@Override
-			public void apply(FormatterTestRequest it) {
-				it.setToBeFormatted(input);
-				it.setExpectation(expected);
-				it.setAllowSyntaxErrors(false);
-				it.setUseNodeModel(true);
-				it.setUseSerializer(false);
-			}
-		});
+	protected void assertFormatted(final CharSequence input, final CharSequence expected) {
+		this.tester.assertFormatted((it) -> AbstractFormatterTest.configureFormatterTestRequest(input, expected, it));
 	}
 	
 	/** Replies the keyword for declaring the top element.

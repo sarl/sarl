@@ -37,7 +37,6 @@ import com.google.inject.name.Named;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
@@ -48,7 +47,6 @@ import org.eclipse.xtext.junit4.internal.LineDelimiters;
 import org.eclipse.xtext.junit4.ui.ContentAssistProcessorTestBuilder;
 import org.eclipse.xtext.junit4.util.ResourceLoadHelper;
 import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration;
 import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal;
 import org.eclipse.xtext.ui.editor.contentassist.ReplacementTextApplier;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -336,7 +334,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 		}
 
 		@Override
-		protected ICompletionProposal[] computeCompletionProposals(final IXtextDocument xtextDocument, int cursorPosition)
+		protected ICompletionProposal[] computeCompletionProposals(IXtextDocument xtextDocument, int cursorPosition)
 				throws BadLocationException {
 			if (isEclipseRuntimeEnvironment()) {
 				Shell shell = getShell();
@@ -363,7 +361,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 			}
 			return resultBuffer.get(0);
 		}
-
+		
 		@Override
 		public ContentAssistProcessorTestBuilder applyProposal(int position, String proposalString) throws Exception {
 			throw new UnsupportedOperationException("must be overriden for Shell access");

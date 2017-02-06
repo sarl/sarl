@@ -258,33 +258,33 @@
    </plugins>
 
    <features>
+      <feature id="io.sarl.compiler" version="0.5.0.qualifier"/>
       <feature id="io.sarl.ide" version="0.5.0.qualifier"/>
+      <feature id="io.sarl.lib" version="0.5.0.qualifier"/>
       <feature id="io.sarl.baseplatform" version="0.5.0.qualifier"/>
-      <feature id="io.sarl.examples.feature" version="0.5.0.qualifier"/>
       <feature id="io.janusproject.feature" version="0.5.0.qualifier"/>
+      <feature id="io.sarl.examples.feature" version="0.5.0.qualifier"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
-      <feature id="org.jboss.tools.m2e.jdt.feature"/>
       <feature id="org.eclipse.help"/>
-      <feature id="io.sarl.lib"/>
+      <feature id="org.jboss.tools.m2e.jdt.feature"/>
+      <feature id="org.eclipse.xtext.redist"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
-      <feature id="org.eclipse.xtext.xbase.lib"/>
       <feature id="org.eclipse.jdt"/>
+      <feature id="org.eclipse.xtext.xbase.lib"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
       <feature id="org.eclipse.wst.xml_core.feature"/>
-      <feature id="org.eclipse.egit"/>
       <feature id="org.eclipse.wst.common_core.feature"/>
-      <feature id="org.eclipse.xtend.sdk"/>
       <feature id="org.eclipse.ecf.core.ssl.feature"/>
+      <feature id="org.eclipse.xtend.sdk"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
       <feature id="org.eclipse.xsd"/>
-      <feature id="io.sarl.compiler"/>
       <feature id="org.eclipse.xtext.runtime"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.equinox.p2.user.ui"/>
+      <feature id="org.eclipse.xtext.xbase"/>
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
       <feature id="org.eclipse.m2e.feature"/>
-      <feature id="org.eclipse.xtext.xbase.lib.source"/>
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.ecf.core.feature"/>
       <feature id="org.eclipse.jgit"/>
@@ -296,8 +296,6 @@
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.wst.common_ui.feature"/>
-      <feature id="io.sarl.lib.source"/>
-      <feature id="io.janusproject.feature.source"/>
    </features>
 
    <configurations>

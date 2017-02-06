@@ -52,15 +52,19 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -83,7 +87,6 @@ import org.eclipse.ui.internal.ErrorEditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
-import org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil;
 import org.eclipse.xtext.resource.FileExtensionProvider;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.XtextEditorInfo;
@@ -218,14 +221,25 @@ public class WorkbenchTestHelper {
 			}
 
 		}.run(null);
-		IResourcesSetupUtil.reallyWaitForAutoBuild();
+		awaitAutoBuild();
 	}
 
+	private static void deleteProjects(IProject[] projects) throws CoreException {
+		for (IProject iProject : projects) {
+			if (iProject.exists()) {
+				iProject.delete(true,true, new NullProgressMonitor());
+			}
+		}
+	}
+	
 	/** Clear the workspace.
 	 */
 	public void clearWorkspace() {
 		try {
-			IResourcesSetupUtil.cleanWorkspace();
+			IProject[] visibleProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			deleteProjects(visibleProjects);
+			IProject[] hiddenProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects(org.eclipse.core.resources.IContainer.INCLUDE_HIDDEN);
+			deleteProjects(hiddenProjects);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -337,6 +351,35 @@ public class WorkbenchTestHelper {
 		return createFileImpl(fullFileName, content);
 	}
 
+	private static IProject createProject(IProject project) throws CoreException {
+		if (!project.exists())
+			project.create(new NullProgressMonitor());
+		project.open(new NullProgressMonitor());
+		return project;
+	}
+
+	private static void create(org.eclipse.core.resources.IContainer container)
+			throws InvocationTargetException, InterruptedException {
+		new WorkspaceModifyOperation() {
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			protected void execute(IProgressMonitor monitor)
+					throws CoreException, InvocationTargetException,
+					InterruptedException {
+				if (!container.exists()) {
+					create(container.getParent());
+					if (container instanceof IFolder) {
+						((IFolder) container).create(true, true, new NullProgressMonitor());
+					} else {
+						IProject iProject = (IProject) container;
+						createProject(iProject);
+					}
+				}
+			}
+		}.run(new NullProgressMonitor());
+	}
+
 	/** Create a file.
 	 * 
 	 * @param fullFileName the name of the file to create.
@@ -345,7 +388,19 @@ public class WorkbenchTestHelper {
 	 * @throws Exception
 	 */
 	public IFile createFileImpl(String fullFileName, String content) throws Exception {
-		IFile file = IResourcesSetupUtil.createFile(fullFileName, content);
+		final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fullFileName));
+		new WorkspaceModifyOperation() {
+			@SuppressWarnings({ "synthetic-access", "resource" })
+			@Override
+			protected void execute(IProgressMonitor monitor)
+					throws CoreException, InvocationTargetException,
+					InterruptedException {
+				create(file.getParent());
+				file.delete(true, new NullProgressMonitor());
+				file.create(new StringInputStream(content), true, new NullProgressMonitor());
+			}
+
+		}.run(new NullProgressMonitor());
 		getFiles().add(file);
 		return file;
 	}
@@ -706,7 +761,7 @@ public class WorkbenchTestHelper {
 					exception.getLocalizedMessage(), exception));
 		}
 		
-		IResourcesSetupUtil.reallyWaitForAutoBuild();
+		awaitAutoBuild();
 		
 		return result;
 	}
@@ -978,7 +1033,18 @@ public class WorkbenchTestHelper {
 	/** Wait for the end of auto-build.
 	 */
 	public void awaitAutoBuild() {
-		IResourcesSetupUtil.reallyWaitForAutoBuild();
+		boolean wasInterrupted = false;
+		do {
+			try {
+				Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD,
+						null);
+				wasInterrupted = false;
+			} catch (OperationCanceledException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				wasInterrupted = true;
+			}
+		} while (wasInterrupted);
 	}
 
 	/** Do a full build.
@@ -992,7 +1058,20 @@ public class WorkbenchTestHelper {
 				resource.getContents();
 			}
 		}
-		IResourcesSetupUtil.fullBuild();
+		ResourcesPlugin.getWorkspace().build(
+				IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+		boolean wasInterrupted = false;
+		do {
+			try {
+				Job.getJobManager().join(ResourcesPlugin.FAMILY_MANUAL_BUILD,
+						null);
+				wasInterrupted = false;
+			} catch (OperationCanceledException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				wasInterrupted = true;
+			}
+		} while (wasInterrupted);
 	}
 
 	/** Generate a filename for a resource that does not exist yet.

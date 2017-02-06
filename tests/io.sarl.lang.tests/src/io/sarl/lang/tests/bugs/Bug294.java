@@ -17,25 +17,21 @@ package io.sarl.lang.tests.bugs;
 
 import static io.sarl.tests.api.AbstractSarlTest.assertContains;
 import static io.sarl.tests.api.AbstractSarlTest.multilineString;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import io.sarl.lang.SARLVersion;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.tests.api.AbstractSarlTest;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.eclipse.xtext.util.IAcceptor;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
+import com.google.inject.Inject;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.google.inject.Inject;
+import io.sarl.lang.SARLVersion;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$

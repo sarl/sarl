@@ -15,37 +15,24 @@
  */
 package io.sarl.util.tests.eventdispatching;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.inject.Inject;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import io.sarl.eventdispatching.BehaviorGuardEvaluator;
 import io.sarl.eventdispatching.BehaviorGuardEvaluatorRegistry;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Event;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.Nullable;

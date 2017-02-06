@@ -16,7 +16,7 @@
 package io.sarl.lang.tests.general.compilation.oop;
 
 import com.google.inject.Inject;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

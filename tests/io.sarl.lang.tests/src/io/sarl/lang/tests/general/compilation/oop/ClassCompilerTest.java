@@ -15,12 +15,10 @@
  */
 package io.sarl.lang.tests.general.compilation.oop;
 
-import static org.junit.Assert.assertEquals;
-
 import com.google.inject.Inject;
 import org.eclipse.xtext.util.IAcceptor;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
