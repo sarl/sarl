@@ -95,7 +95,6 @@ import java.util.TreeMap;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -104,6 +103,8 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.validation.ModifierValidator;
@@ -120,6 +121,7 @@ import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmField;
@@ -181,7 +183,9 @@ import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
+import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
+import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
 
 /**
  * Validator for the SARL elements.
@@ -466,6 +470,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.NORMAL)
 	@Override
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void checkClassPath(XtendFile sarlScript) {
 		final TypeReferences typeReferences = getServices().getTypeReferences();
 
@@ -518,18 +523,42 @@ public class SARLValidator extends AbstractSARLValidator {
 			}
 		}
 
-
-		final String sarlOnClasspath = Utils.getSARLLibraryVersionOnClasspath(typeReferences, sarlScript);
-		if (Strings.isNullOrEmpty(sarlOnClasspath)) {
+		final OutParameter<String> sarlLibraryVersion = new OutParameter<>();
+		final SarlLibraryErrorCode errorCode = Utils.getSARLLibraryVersionOnClasspath(typeReferences, sarlScript, sarlLibraryVersion);
+		if (errorCode != SarlLibraryErrorCode.SARL_FOUND) {
+			final ResourceSet resourceSet = EcoreUtil2.getResourceSet(sarlScript);
+			final StringBuilder classPath = new StringBuilder();
+			for (final Resource resource : resourceSet.getResources()) {
+				classPath.append(resource.getURI().toString());
+				classPath.append("\n"); //$NON-NLS-1$
+			}
+			final StringBuilder fields = new StringBuilder();
+			try {
+				final JvmDeclaredType type = (JvmDeclaredType) typeReferences.findDeclaredType(SARLVersion.class, sarlScript);
+				for (final JvmField field : type.getDeclaredFields()) {
+					fields.append(field.getIdentifier());
+					fields.append(" / "); //$NON-NLS-1$
+					fields.append(field.getSimpleName());
+					fields.append("\n"); //$NON-NLS-1$
+				}
+			} catch (Exception e) {
+				//
+			}
+			if (fields.length() == 0) {
+				for (final Field field : SARLVersion.class.getDeclaredFields()) {
+					fields.append(field.getName());
+					fields.append("\n"); //$NON-NLS-1$
+				}
+			}
 			error(
-					Messages.SARLValidator_7,
+					MessageFormat.format(Messages.SARLValidator_7, errorCode.name(), classPath.toString(), fields.toString()),
 					sarlScript,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					io.sarl.lang.validation.IssueCodes.SARL_LIB_NOT_ON_CLASSPATH);
-		} else if (!Utils.isCompatibleSARLLibraryVersion(sarlOnClasspath)) {
+		} else if (!Utils.isCompatibleSARLLibraryVersion(sarlLibraryVersion.get())) {
 			error(
 					MessageFormat.format(Messages.SARLValidator_8,
-					sarlOnClasspath, SARLVersion.SPECIFICATION_RELEASE_VERSION),
+					sarlLibraryVersion.get(), SARLVersion.SPECIFICATION_RELEASE_VERSION),
 					sarlScript,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					io.sarl.lang.validation.IssueCodes.INVALID_SARL_LIB_ON_CLASSPATH);
