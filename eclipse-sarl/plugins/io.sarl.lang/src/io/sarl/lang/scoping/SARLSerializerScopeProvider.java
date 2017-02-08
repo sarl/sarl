@@ -21,10 +21,7 @@
 
 package io.sarl.lang.scoping;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtend.core.serializer.XtendSerializerScopeProvider;
-import org.eclipse.xtext.scoping.IScope;
 
 /**
  * Scope provider for the serializer.
@@ -37,11 +34,5 @@ import org.eclipse.xtext.scoping.IScope;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLSerializerScopeProvider extends XtendSerializerScopeProvider {
-
-	@Override
-	public IScope getScope(EObject context, EReference reference) {
-		// TODO Auto-generated method stub
-		return super.getScope(context, reference);
-	}
-
+	//
 }

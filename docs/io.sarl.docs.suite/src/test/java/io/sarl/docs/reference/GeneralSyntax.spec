@@ -31,13 +31,13 @@ import java.math.BigInteger
 import java.util.List
 import java.util.Map
 import org.eclipse.xtend.core.xtend.XtendConstructor
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XbasePackage
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
+import org.eclipse.xtext.testing.validation.ValidationTestHelper
 
 /* @outline
  * 

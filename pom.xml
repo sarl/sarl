@@ -263,6 +263,11 @@
 				<version>${xtext.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.testing</artifactId>
+				<version>${xtext.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>javax.inject</groupId>
 				<artifactId>javax.inject</artifactId>
 				<version>${javaxinject.version}</version>
