@@ -19,13 +19,15 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 import java.util.UUID;
 
 import io.janusproject.kernel.bic.BehaviorsSkill;
 import io.janusproject.kernel.bic.InternalEventBusCapacity;
 import io.janusproject.tests.testutils.AbstractJanusTest;
+
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -104,9 +106,49 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 		Behavior b = new TestBehavior();
 		b = spy(b);
 		assertSame(b, this.skill.registerBehavior(b));
-		ArgumentCaptor<Behavior> argument = ArgumentCaptor.forClass(Behavior.class);
-		Mockito.verify(this.busCapacity).registerEventListener(argument.capture());
-		assertSame(b, argument.getValue());
+		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture());
+		assertSame(b, argument1.getValue());
+		assertNull(argument2.getValue());
+	}
+
+	@Test
+	public void registerBehavior_null() {
+		Behavior b = new TestBehavior();
+		b = spy(b);
+		assertSame(b, this.skill.registerBehavior(b, null));
+		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture());
+		assertSame(b, argument1.getValue());
+		assertNull(argument2.getValue());
+	}
+
+	@Test
+	public void registerBehavior_validFilter() {
+		Behavior b = new TestBehavior();
+		b = spy(b);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> true;
+		assertSame(b, this.skill.registerBehavior(b, filter));
+		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture());
+		assertSame(b, argument1.getValue());
+		assertSame(filter, argument2.getValue());
+	}
+
+	@Test
+	public void registerBehavior_invalidFilter() {
+		Behavior b = new TestBehavior();
+		b = spy(b);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> false;
+		assertSame(b, this.skill.registerBehavior(b, filter));
+		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture());
+		assertSame(b, argument1.getValue());
+		assertSame(filter, argument2.getValue());
 	}
 
 	@Test

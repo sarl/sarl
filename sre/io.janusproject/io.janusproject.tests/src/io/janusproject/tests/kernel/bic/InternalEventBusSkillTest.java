@@ -19,8 +19,10 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertSame;
+
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
 import io.janusproject.kernel.bic.InternalEventBusSkill;
 import io.janusproject.kernel.bic.internaleventdispatching.AgentInternalEventsDispatcher;
@@ -76,18 +78,44 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void registerEventListener() {
+	public void registerEventListener_null() {
 		EventListener eventListener = Mockito.mock(EventListener.class);
-		this.skill.registerEventListener(eventListener);
-		ArgumentCaptor<Object> argument = ArgumentCaptor.forClass(Object.class);
-		Mockito.verify(this.eventBus, new Times(1)).register(argument.capture());
-		assertSame(eventListener, argument.getValue());
+		this.skill.registerEventListener(eventListener, null);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		Mockito.verify(this.eventBus, new Times(1)).register(argument1.capture(), argument2.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertNull(argument2.getValue());
+	}
+
+	@Test
+	public void registerEventListener_validFilter() {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> true;
+		this.skill.registerEventListener(eventListener, filter);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		Mockito.verify(this.eventBus, new Times(1)).register(argument1.capture(), argument2.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertSame(filter, argument2.getValue());
+	}
+
+	@Test
+	public void registerEventListener_invalidFilter() {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> false;
+		this.skill.registerEventListener(eventListener, filter);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		Mockito.verify(this.eventBus, new Times(1)).register(argument1.capture(), argument2.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertSame(filter, argument2.getValue());
 	}
 
 	@Test
 	public void unregisterEventListener() {
 		EventListener eventListener = Mockito.mock(EventListener.class);
-		this.skill.registerEventListener(eventListener);
+		this.skill.registerEventListener(eventListener, null);
 		//
 		this.skill.unregisterEventListener(eventListener);
 		ArgumentCaptor<Object> argument = ArgumentCaptor.forClass(Object.class);

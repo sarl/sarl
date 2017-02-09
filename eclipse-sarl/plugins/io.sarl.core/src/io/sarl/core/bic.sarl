@@ -233,10 +233,16 @@ capacity Behaviors {
 	 * Register a Behavior for the owner agent.
 	 * The new Behavior will react to all declared events received by the agent.
 	 *
+	 * <p>If the filter is provided, it will be used for determining if the given behavior accepts a specific event.
+	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
+	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context. 
+	 *
 	 * @param attitude the behavior to add to the agent.
+	 * @param filter the filter that enables to indicates if an event is accepted by a behavior.
 	 * @return the given behavior.
+	 * @since 0.5 for the {@code filter} parameter.
 	 */
-	def registerBehavior(attitude : Behavior) : Behavior
+	def registerBehavior(attitude : Behavior, filter : (Event) => boolean = null) : Behavior
 	
 	/**
 	 * Unregisters a behavior for the owner agent.

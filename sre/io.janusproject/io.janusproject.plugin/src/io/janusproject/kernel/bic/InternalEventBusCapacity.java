@@ -21,6 +21,8 @@
 
 package io.janusproject.kernel.bic;
 
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.lang.core.Address;
@@ -51,8 +53,22 @@ public interface InternalEventBusCapacity extends Capacity {
 	 * Register the given object on the event bus for receiving any event.
 	 *
 	 * @param listener - the listener on the SARL events.
+	 * @deprecated see {@link #registerEventListener(Object, Function1)}.
 	 */
+	@Deprecated
 	void registerEventListener(Object listener);
+
+	/**
+	 * Register the given object on the event bus for receiving any event.
+	 *
+	 * <p>If the filter is provided, it will be used for determining if the given behavior accepts a specific event.
+	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
+	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context.
+	 *
+	 * @param listener - the listener on the SARL events.
+	 * @param filter - the filter function.
+	 */
+	void registerEventListener(Object listener, Function1<? super Event, ? extends Boolean> filter);
 
 	/**
 	 * Unregister the given object on the event bus for receiving any event.

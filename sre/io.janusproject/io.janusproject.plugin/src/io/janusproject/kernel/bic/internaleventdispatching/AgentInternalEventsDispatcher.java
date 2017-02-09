@@ -33,6 +33,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.OutputParameter;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.janusproject.services.executor.ExecutorService;
@@ -103,8 +104,22 @@ public class AgentInternalEventsDispatcher {
 	 * @param object object whose {@code PerceptGuardEvaluator} methods should be registered.
 	 */
 	public void register(Object object) {
+		register(object, null);
+	}
+
+	/**
+	 * Registers all {@code PerceptGuardEvaluator} methods on {@code object} to receive events.
+	 *
+	 * <p>If the filter is provided, it will be used for determining if the given behavior accepts a specific event.
+	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
+	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context.
+	 *
+	 * @param object object whose {@code PerceptGuardEvaluator} methods should be registered.
+	 * @param filter - the filter function.
+	 */
+	public void register(Object object, Function1<? super Event, ? extends Boolean> filter) {
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
-			this.behaviorGuardEvaluatorRegistry.register(object);
+			this.behaviorGuardEvaluatorRegistry.register(object, filter);
 		}
 	}
 
@@ -184,7 +199,6 @@ public class AgentInternalEventsDispatcher {
 						.getBehaviorGuardEvaluators(event);
 			}
 			if (behaviorGuardEvaluators != null && !behaviorGuardEvaluators.isEmpty()) {
-
 				final Collection<Runnable> behaviorsMethodsToExecute;
 				try {
 					behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);

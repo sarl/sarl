@@ -21,6 +21,8 @@
 
 package io.janusproject.kernel.bic;
 
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+
 import io.sarl.core.Behaviors;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.lang.core.Address;
@@ -93,7 +95,12 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 
 	@Override
 	public synchronized Behavior registerBehavior(Behavior attitude) {
-		getInternalEventBusCapacitySkill().registerEventListener(attitude);
+		return registerBehavior(attitude, null);
+	}
+
+	@Override
+	public Behavior registerBehavior(Behavior attitude, Function1<? super Event, ? extends Boolean> filter) {
+		getInternalEventBusCapacitySkill().registerEventListener(attitude, filter);
 		return attitude;
 	}
 

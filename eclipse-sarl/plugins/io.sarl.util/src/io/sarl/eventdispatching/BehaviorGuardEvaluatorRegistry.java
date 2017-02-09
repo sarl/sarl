@@ -25,25 +25,27 @@ import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.core.Event;
@@ -79,11 +81,12 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * improves performance if multiple EventBus instances are created and objects of the same class are registered on all of them.
 	 */
 	@SuppressWarnings("synthetic-access")
-	private static final LoadingCache<Class<?>, ImmutableList<Method>> PERCEPT_GUARD_EVALUATOR_METHOD_CACHE = CacheBuilder.newBuilder().weakKeys()
-			.build(new CacheLoader<Class<?>, ImmutableList<Method>>() {
+	private static final LoadingCache<Class<?>, Map<Class<? extends Event>, Collection<Method>>> PERCEPT_GUARD_EVALUATOR_METHOD_CACHE =
+		CacheBuilder.newBuilder().weakKeys()
+			.build(new CacheLoader<Class<?>, Map<Class<? extends Event>, Collection<Method>>>() {
 				@Override
-				public ImmutableList<Method> load(Class<?> concreteClass) throws Exception {
-					return getAnnotatedMethodsOnDemand(concreteClass);
+				public Map<Class<? extends Event>, Collection<Method>> load(Class<?> concreteClass) throws Exception {
+					return getAnnotatedMethodMapOnDemand(concreteClass);
 				}
 			});
 
@@ -95,7 +98,8 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * {@code BehaviorGuardEvaluator}s to an event without any locking.
 	 * </p>
 	 */
-	private final Map<Class<? extends Event>, CopyOnWriteArraySet<BehaviorGuardEvaluator>> behaviorGuardEvaluators;
+	private final Map<Class<? extends Event>,
+		Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>>> behaviorGuardEvaluators;
 
 	/**
 	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
@@ -120,7 +124,8 @@ public class BehaviorGuardEvaluatorRegistry {
 	 *
 	 * @param buffer the buffer to be used for storing the behavior guard evaluators.
 	 */
-	public BehaviorGuardEvaluatorRegistry(Map<Class<? extends Event>, CopyOnWriteArraySet<BehaviorGuardEvaluator>> buffer) {
+	public BehaviorGuardEvaluatorRegistry(Map<Class<? extends Event>, Pair<Function1<? super Event, ? extends Boolean>,
+			Set<BehaviorGuardEvaluator>>> buffer) {
 		assert buffer != null;
 		this.behaviorGuardEvaluators = buffer;
 	}
@@ -128,21 +133,39 @@ public class BehaviorGuardEvaluatorRegistry {
 	/**
 	 * Registers all {@code PerceptGuardEvaluator} methods on the given listener object.
 	 *
-	 * @param listener
-	 *            - the new {@code BehaviorGuardEvaluator} to add
+	 * @param listener the new {@code BehaviorGuardEvaluator} to add
 	 */
 	public void register(Object listener) {
-		final Multimap<Class<? extends Event>, BehaviorGuardEvaluator> listenerMethods = findAllBehaviorGuardEvaluators(listener);
+		register(listener, null);
+	}
 
-		for (final Map.Entry<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry : listenerMethods.asMap().entrySet()) {
+	/**
+	 * Registers all {@code PerceptGuardEvaluator} methods on the given listener object.
+	 *
+	 * <p>If the filter is provided, it will be used for determining if the given behavior accepts a specific event.
+	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
+	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context.
+	 *
+	 * @param listener the new {@code BehaviorGuardEvaluator} to add
+	 * @param filter the filter function.
+	 */
+	public void register(Object listener, Function1<? super Event, ? extends Boolean> filter) {
+		final Iterator<Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>>> listenerMethods = new EvaluatorIterator(listener);
+		while (listenerMethods.hasNext()) {
+			final Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry = listenerMethods.next();
 			final Class<? extends Event> eventType = entry.getKey();
 			final Collection<BehaviorGuardEvaluator> eventMethodsInListener = entry.getValue();
 
-			CopyOnWriteArraySet<BehaviorGuardEvaluator> eventSubscribers = this.behaviorGuardEvaluators.get(eventType);
+			final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> pair =
+					this.behaviorGuardEvaluators.get(eventType);
+			final Set<BehaviorGuardEvaluator> eventSubscribers;
 
-			if (eventSubscribers == null) {
-				final CopyOnWriteArraySet<BehaviorGuardEvaluator> newSet = new CopyOnWriteArraySet<>();
-				eventSubscribers = MoreObjects.firstNonNull(this.behaviorGuardEvaluators.putIfAbsent(eventType, newSet), newSet);
+			if (pair == null) {
+				//TODO Array-based implementation may be not efficient
+				eventSubscribers = new CopyOnWriteArraySet<>();
+				this.behaviorGuardEvaluators.put(eventType, new Pair<>(filter, eventSubscribers));
+			} else {
+				eventSubscribers = pair.getValue();
 			}
 
 			eventSubscribers.addAll(eventMethodsInListener);
@@ -162,18 +185,18 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * @param listener the new {@code BehaviorGuardEvaluator} to remove
 	 */
 	public void unregister(Object listener) {
-		final Multimap<Class<? extends Event>, BehaviorGuardEvaluator> listenerMethods = findAllBehaviorGuardEvaluators(listener);
-
-		for (final Map.Entry<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry : listenerMethods.asMap().entrySet()) {
+		final Iterator<Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>>> listenerMethods = new EvaluatorIterator(listener);
+		while (listenerMethods.hasNext()) {
+			final Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry = listenerMethods.next();
 			final Class<? extends Event> eventType = entry.getKey();
 			final Collection<BehaviorGuardEvaluator> listenerMethodsForType = entry.getValue();
 
-			//TODO Array-based implementation may be not efficient
-			final CopyOnWriteArraySet<BehaviorGuardEvaluator> currentSubscribers = this.behaviorGuardEvaluators.get(eventType);
+			final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> pair =
+					this.behaviorGuardEvaluators.get(eventType);
 
-			if (currentSubscribers == null || !currentSubscribers.removeAll(listenerMethodsForType)) {
-				if (currentSubscribers != null) {
-					currentSubscribers.removeAll(listenerMethodsForType);
+			if (pair == null || pair.getValue() == null || !pair.getValue().removeAll(listenerMethodsForType)) {
+				if (pair != null && pair.getValue() != null) {
+					pair.getValue().removeAll(listenerMethodsForType);
 				}
 				// if removeAll returns true, all we really know is that at least one subscriber was
 				// removed... however, barring something very strange we can assume that if at least one
@@ -200,37 +223,20 @@ public class BehaviorGuardEvaluatorRegistry {
 		final List<BehaviorGuardEvaluator> iBehaviorGuardEvaluators = Lists.newArrayListWithCapacity(eventTypes.size());
 
 		for (final Class<?> eventType : eventTypes) {
-			final CopyOnWriteArraySet<BehaviorGuardEvaluator> eventSubscribers = this.behaviorGuardEvaluators.get(eventType);
-			if (eventSubscribers != null) {
-				iBehaviorGuardEvaluators.addAll(eventSubscribers);
+			final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> eventSubscribers =
+					this.behaviorGuardEvaluators.get(eventType);
+			if (eventSubscribers != null && eventSubscribers.getValue() != null
+					&& (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(event))) {
+				iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
 			}
 		}
 
 		return iBehaviorGuardEvaluators;
 	}
 
-	/**
-	 * Returns all {@code BehaviorGuardEvaluator}s for the given listener grouped by the type of event they subscribe to.
-	 *
-	 * @param listener
-	 *            - the listener
-	 * @return a map associating event classes to their guard evaluators
-	 */
-	@SuppressWarnings("unchecked")
-	private static Multimap<Class<? extends Event>, BehaviorGuardEvaluator> findAllBehaviorGuardEvaluators(Object listener) {
-		final Multimap<Class<? extends Event>, BehaviorGuardEvaluator> methodsInListener = HashMultimap.create();
-		final Class<?> clazz = listener.getClass();
-		for (final Method method : getAnnotatedMethods(clazz)) {
-			final Class<?>[] parameterTypes = method.getParameterTypes();
-			final Class<? extends Event> eventType = (Class<? extends Event>) parameterTypes[0];
-			methodsInListener.put(eventType, new BehaviorGuardEvaluator(listener, method));
-		}
-		return methodsInListener;
-	}
-
-	private static ImmutableList<Method> getAnnotatedMethods(Class<?> eventType) {
+	private static Map<Class<? extends Event>, Collection<Method>> getAnnotatedMethodsPerEvent(Class<?> listenerType) {
 		try {
-			return PERCEPT_GUARD_EVALUATOR_METHOD_CACHE.getUnchecked(eventType);
+			return PERCEPT_GUARD_EVALUATOR_METHOD_CACHE.getUnchecked(listenerType);
 		} catch (Exception ex) {
 			throw Throwables.propagate(ex);
 		}
@@ -279,28 +285,42 @@ public class BehaviorGuardEvaluatorRegistry {
 		return ImmutableSet.copyOf(typeHierarchy);
 	}
 
-	private static ImmutableList<Method> getAnnotatedMethodsOnDemand(Class<?> concreteClass) {
+	@SuppressWarnings("unchecked")
+	private static Map<Class<? extends Event>, Collection<Method>> getAnnotatedMethodMapOnDemand(Class<?> concreteClass) {
 		assert concreteClass != null;
 		// TODO verify it effectively explores the whole type hierarchy
 		final Set<? extends Class<?>> supertypes = Sets.filter(TypeToken.of(concreteClass).getTypes().rawTypes(),
 				(it) -> !it.isInterface() && !Object.class.equals(it));
 
-		final Map<MethodIdentifier, Method> identifiers = Maps.newHashMap();
+		final Map<MethodIdentifier, Method> identifiers = Maps.newTreeMap();
 
 		// Traverse all methods of the whole inheritance hierarchy
 		for (final Class<?> supertype : supertypes) {
 			for (final Method method : supertype.getDeclaredMethods()) {
 				if (method.isAnnotationPresent(PerceptGuardEvaluator.class) && !method.isSynthetic()) {
 					final Class<?>[] parameterTypes = method.getParameterTypes();
-					// Check the prototype of the event handler in debug mode only
-					assert checkEventHandlerPrototype(parameterTypes);
 					final MethodIdentifier ident = new MethodIdentifier(method, parameterTypes);
-					identifiers.put(ident, method);
+					identifiers.putIfAbsent(ident, method);
 				}
 			}
 		}
 
-		return ImmutableList.copyOf(identifiers.values());
+		final Map<Class<? extends Event>, Collection<Method>> buffer = Maps.newTreeMap(
+				(elt1, elt2) -> elt1.getName().compareTo(elt2.getName()));
+		for (final Method method : identifiers.values()) {
+			final Class<?>[] parameterTypes = method.getParameterTypes();
+			// Check the prototype of the event handler in debug mode only
+			assert checkEventHandlerPrototype(parameterTypes);
+			final Class<? extends Event> eventType = (Class<? extends Event>) parameterTypes[0];
+			Collection<Method> methods = buffer.get(eventType);
+			if (methods == null) {
+				methods = Lists.newArrayList();
+				buffer.put(eventType, methods);
+			}
+			methods.add(method);
+		}
+
+		return ImmutableMap.copyOf(buffer);
 	}
 
 	/**
@@ -323,12 +343,13 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * It stores the information related to a given method especially its prototype.
 	 *
 	 * @author $Author: ngaud$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 *
 	 */
-	private static final class MethodIdentifier {
+	private static final class MethodIdentifier implements Comparable<MethodIdentifier> {
 
 		/**
 		 * the name of the considered method.
@@ -369,8 +390,67 @@ public class BehaviorGuardEvaluatorRegistry {
 		}
 
 		@Override
+		public int compareTo(MethodIdentifier obj) {
+			if (obj == null) {
+				return -1;
+			}
+			int cmp = this.name.compareTo(obj.name);
+			if (cmp != 0) {
+				return cmp;
+			}
+			cmp = Integer.compare(this.parameterTypes.size(), obj.parameterTypes.size());
+			if (cmp != 0) {
+				return cmp;
+			}
+			final Iterator<Class<?>> it1 = this.parameterTypes.iterator();
+			final Iterator<Class<?>> it2 = obj.parameterTypes.iterator();
+			while (it1.hasNext()) {
+				assert it2.hasNext();
+				cmp = it1.next().getName().compareTo(it2.next().getName());
+				if (cmp != 0) {
+					return cmp;
+				}
+			}
+			return 0;
+		}
+
+		@Override
 		public String toString() {
 			return this.name;
+		}
+
+	}
+
+	/** Iterator on guard evaluators.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class EvaluatorIterator implements Iterator<Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>>> {
+
+		private final Object listener;
+
+		private final Iterator<Entry<Class<? extends Event>, Collection<Method>>> iterator;
+
+		@SuppressWarnings("synthetic-access")
+		EvaluatorIterator(Object listener) {
+			final Map<Class<? extends Event>, Collection<Method>> methods = getAnnotatedMethodsPerEvent(listener.getClass());
+			this.iterator = methods.entrySet().iterator();
+			this.listener = listener;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return this.iterator.hasNext();
+		}
+
+		@Override
+		public Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> next() {
+			final Entry<Class<? extends Event>, Collection<Method>> entry = this.iterator.next();
+			return new Pair<>(entry.getKey(), Collections2.transform(entry.getValue(),
+					(element) -> new BehaviorGuardEvaluator(this.listener, element)));
 		}
 
 	}

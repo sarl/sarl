@@ -89,7 +89,7 @@ public class BehaviorGuardEvaluatorRegistryTest {
 			assertContains(Collections2.transform(evaluators, (it) -> it.toString()),
 					"$perception$guard$evaluator1");
 		}
-	
+
 		@Test
 		public void getBehaviorGuardEvaluators_register_myEvent() {
 			this.registry.register(this.agent);
@@ -97,7 +97,37 @@ public class BehaviorGuardEvaluatorRegistryTest {
 			assertContains(Collections2.transform(evaluators, (it) -> it.toString()),
 					"$perception$guard$evaluator1", "$perception$guard$evaluator2");
 		}
+
+		@Test
+		public void getBehaviorGuardEvaluators_register_event_withValidFilter() {
+			this.registry.register(this.agent, (event) -> true);
+			Collection<BehaviorGuardEvaluator> evaluators = this.registry.getBehaviorGuardEvaluators(new Event() { });
+			assertContains(Collections2.transform(evaluators, (it) -> it.toString()),
+					"$perception$guard$evaluator1");
+		}
+
+		@Test
+		public void getBehaviorGuardEvaluators_register_myEvent_withValidFilter() {
+			this.registry.register(this.agent, (event) -> true);
+			Collection<BehaviorGuardEvaluator> evaluators = this.registry.getBehaviorGuardEvaluators(new MyEvent());
+			assertContains(Collections2.transform(evaluators, (it) -> it.toString()),
+					"$perception$guard$evaluator1", "$perception$guard$evaluator2");
+		}
+
+		@Test
+		public void getBehaviorGuardEvaluators_register_event_withInvalidFilter() {
+			this.registry.register(this.agent, (event) -> false);
+			Collection<BehaviorGuardEvaluator> evaluators = this.registry.getBehaviorGuardEvaluators(new Event() { });
+			assertTrue(evaluators.isEmpty());
+		}
 	
+		@Test
+		public void getBehaviorGuardEvaluators_register_myEvent_withInvalidFilter() {
+			this.registry.register(this.agent, (event) -> false);
+			Collection<BehaviorGuardEvaluator> evaluators = this.registry.getBehaviorGuardEvaluators(new MyEvent());
+			assertTrue(evaluators.isEmpty());
+		}
+
 		@Test
 		public void unregister() {
 			this.registry.register(this.agent);

@@ -31,6 +31,7 @@ import java.util.logging.LogRecord;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Queues;
 import com.google.inject.Inject;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
 import io.janusproject.kernel.bic.internaleventdispatching.AgentInternalEventsDispatcher;
 import io.janusproject.services.logging.LogService;
@@ -149,9 +150,19 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		this.eventDispatcher.unregisterAll();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @deprecated see {@link #registerEventListener(Object, Function1)}.
+	 */
 	@Override
+	@Deprecated
 	public void registerEventListener(Object listener) {
-		this.eventDispatcher.register(listener);
+		registerEventListener(listener, null);
+	}
+
+	@Override
+	public void registerEventListener(Object listener, Function1<? super Event, ? extends Boolean> filter) {
+		this.eventDispatcher.register(listener, filter);
 	}
 
 	@Override
