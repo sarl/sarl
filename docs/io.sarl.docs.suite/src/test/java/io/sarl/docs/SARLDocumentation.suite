@@ -61,6 +61,7 @@ import io.sarl.docs.tutorials.*
 ##4. Best Practices with SARL
 
 - "Event Creation with a Builder"
+- "Event Handler Overriding"
 
 ##5. Reference Documentation
 
