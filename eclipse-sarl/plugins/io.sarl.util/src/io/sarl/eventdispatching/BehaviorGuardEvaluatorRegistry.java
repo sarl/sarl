@@ -46,6 +46,7 @@ import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Pair;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.core.Event;
@@ -101,6 +102,8 @@ public class BehaviorGuardEvaluatorRegistry {
 	private final Map<Class<? extends Event>,
 		Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>>> behaviorGuardEvaluators;
 
+	private boolean active = true;
+
 	/**
 	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
 	 *
@@ -134,9 +137,20 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * Registers all {@code PerceptGuardEvaluator} methods on the given listener object.
 	 *
 	 * @param listener the new {@code BehaviorGuardEvaluator} to add
+	 * @param callback function which is invoked just after the first registration of the object. It could be {@code null}.
+	 * @sincce 0.5
+	 */
+	public void register(Object listener, Procedure1<Object> callback) {
+		register(listener, null, callback);
+	}
+
+	/**
+	 * Registers all {@code PerceptGuardEvaluator} methods on the given listener object.
+	 *
+	 * @param listener the new {@code BehaviorGuardEvaluator} to add
 	 */
 	public void register(Object listener) {
-		register(listener, null);
+		register(listener, null, null);
 	}
 
 	/**
@@ -148,27 +162,53 @@ public class BehaviorGuardEvaluatorRegistry {
 	 *
 	 * @param listener the new {@code BehaviorGuardEvaluator} to add
 	 * @param filter the filter function.
+	 * @sincce 0.5
 	 */
 	public void register(Object listener, Function1<? super Event, ? extends Boolean> filter) {
-		final Iterator<Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>>> listenerMethods = new EvaluatorIterator(listener);
-		while (listenerMethods.hasNext()) {
-			final Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry = listenerMethods.next();
-			final Class<? extends Event> eventType = entry.getKey();
-			final Collection<BehaviorGuardEvaluator> eventMethodsInListener = entry.getValue();
+		register(listener, filter, null);
+	}
 
-			final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> pair =
-					this.behaviorGuardEvaluators.get(eventType);
-			final Set<BehaviorGuardEvaluator> eventSubscribers;
+	/**
+	 * Registers all {@code PerceptGuardEvaluator} methods on the given listener object.
+	 *
+	 * <p>If the filter is provided, it will be used for determining if the given behavior accepts a specific event.
+	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
+	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context.
+	 *
+	 * @param listener the new {@code BehaviorGuardEvaluator} to add
+	 * @param filter the filter function.
+	 * @param callback function which is invoked just after the first registration of the object. It could be {@code null}.
+	 * @since 0.5
+	 */
+	public void register(Object listener, Function1<? super Event, ? extends Boolean> filter, Procedure1<Object> callback) {
+		if (this.active) {
+			boolean firstInit = false;
+			final Iterator<Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>>> listenerMethods = new EvaluatorIterator(listener);
+			while (listenerMethods.hasNext()) {
+				final Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry = listenerMethods.next();
+				final Class<? extends Event> eventType = entry.getKey();
+				final Collection<BehaviorGuardEvaluator> eventMethodsInListener = entry.getValue();
 
-			if (pair == null) {
-				//TODO Array-based implementation may be not efficient
-				eventSubscribers = new CopyOnWriteArraySet<>();
-				this.behaviorGuardEvaluators.put(eventType, new Pair<>(filter, eventSubscribers));
-			} else {
-				eventSubscribers = pair.getValue();
+				final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> pair =
+						this.behaviorGuardEvaluators.get(eventType);
+				final Set<BehaviorGuardEvaluator> eventSubscribers;
+
+				if (pair == null) {
+					//TODO Array-based implementation may be not efficient
+					eventSubscribers = new CopyOnWriteArraySet<>();
+					this.behaviorGuardEvaluators.put(eventType, new Pair<>(filter, eventSubscribers));
+					firstInit = true;
+				} else {
+					eventSubscribers = pair.getValue();
+				}
+
+				if (eventSubscribers.addAll(eventMethodsInListener)) {
+					firstInit = true;
+				}
 			}
-
-			eventSubscribers.addAll(eventMethodsInListener);
+			if (firstInit && callback != null) {
+				callback.apply(listener);
+			}
 		}
 	}
 
@@ -176,7 +216,44 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * Unregisters all BehaviorGuardEvaluators on all the listener objects.
 	 */
 	public void unregisterAll() {
-		this.behaviorGuardEvaluators.clear();
+		unregisterAll(null);
+	}
+
+	/**
+	 * Unregisters all BehaviorGuardEvaluators on all the listener objects.
+	 *
+	 * @param callback function which is invoked just before the object is unregistered. It could be {@code null}.
+	 * @since 0.5
+	 */
+	public void unregisterAll(Procedure1<Object> callback) {
+		if (this.active) {
+			this.active = false;
+			try {
+				if (callback != null) {
+					final Iterator<Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>>> iterator =
+							this.behaviorGuardEvaluators.values().iterator();
+					final Set<Object> subscribers = Sets.newTreeSet((term1, term2) -> {
+						if (term1 == term2) {
+							return 0;
+						}
+						return Integer.compare(System.identityHashCode(term1), System.identityHashCode(term2));
+					});
+					while (iterator.hasNext()) {
+						final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> pair = iterator.next();
+						for (final BehaviorGuardEvaluator evaluator : pair.getValue()) {
+							if (subscribers.add(evaluator.getTarget())) {
+								callback.apply(evaluator.getTarget());
+							}
+						}
+						iterator.remove();
+					}
+				} else {
+					this.behaviorGuardEvaluators.clear();
+				}
+			} finally {
+				this.active = true;
+			}
+		}
 	}
 
 	/**
@@ -185,28 +262,47 @@ public class BehaviorGuardEvaluatorRegistry {
 	 * @param listener the new {@code BehaviorGuardEvaluator} to remove
 	 */
 	public void unregister(Object listener) {
-		final Iterator<Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>>> listenerMethods = new EvaluatorIterator(listener);
-		while (listenerMethods.hasNext()) {
-			final Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry = listenerMethods.next();
-			final Class<? extends Event> eventType = entry.getKey();
-			final Collection<BehaviorGuardEvaluator> listenerMethodsForType = entry.getValue();
+		unregister(listener, null);
+	}
 
-			final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> pair =
-					this.behaviorGuardEvaluators.get(eventType);
+	/**
+	 * Unregisters all BehaviorGuardEvaluators on the given listener object.
+	 *
+	 * @param listener the new {@code BehaviorGuardEvaluator} to remove
+	 * @param callback function which is invoked just before the object is unregistered. It could be {@code null}.
+	 * @since 0.5
+	 */
+	public void unregister(Object listener, Procedure1<Object> callback) {
+		if (this.active) {
+			final Iterator<Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>>> listenerMethods = new EvaluatorIterator(listener);
+			Procedure1<Object> listenerCallback = callback;
+			while (listenerMethods.hasNext()) {
+				final Pair<Class<? extends Event>, Collection<BehaviorGuardEvaluator>> entry = listenerMethods.next();
+				final Class<? extends Event> eventType = entry.getKey();
+				final Collection<BehaviorGuardEvaluator> listenerMethodsForType = entry.getValue();
 
-			if (pair == null || pair.getValue() == null || !pair.getValue().removeAll(listenerMethodsForType)) {
-				if (pair != null && pair.getValue() != null) {
-					pair.getValue().removeAll(listenerMethodsForType);
+				final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> pair =
+						this.behaviorGuardEvaluators.get(eventType);
+
+				if (listenerCallback != null && pair != null && pair.getValue() != null && !pair.getValue().isEmpty()) {
+					listenerCallback.apply(listener);
+					listenerCallback = null;
 				}
-				// if removeAll returns true, all we really know is that at least one subscriber was
-				// removed... however, barring something very strange we can assume that if at least one
-				// subscriber was removed, all subscribers on listener for that event type were... after
-				// all, the definition of subscribers on a particular class is totally static
-				throw new IllegalArgumentException(MessageFormat.format(Messages.BehaviorGuardEvaluatorRegistry_0, listener));
-			}
 
-			// don't try to remove the set if it's empty; that can't be done safely without a lock
-			// anyway, if the set is empty it'll just be wrapping an array of length 0
+				if (pair == null || pair.getValue() == null || !pair.getValue().removeAll(listenerMethodsForType)) {
+					if (pair != null && pair.getValue() != null) {
+						pair.getValue().removeAll(listenerMethodsForType);
+					}
+					// if removeAll returns true, all we really know is that at least one subscriber was
+					// removed... however, barring something very strange we can assume that if at least one
+					// subscriber was removed, all subscribers on listener for that event type were... after
+					// all, the definition of subscribers on a particular class is totally static
+					throw new IllegalArgumentException(MessageFormat.format(Messages.BehaviorGuardEvaluatorRegistry_0, listener));
+				}
+
+				// don't try to remove the set if it's empty; that can't be done safely without a lock
+				// anyway, if the set is empty it'll just be wrapping an array of length 0
+			}
 		}
 	}
 
@@ -217,21 +313,46 @@ public class BehaviorGuardEvaluatorRegistry {
 	 *            -the event to process
 	 * @return the set of guard evaluators associated to the specified event
 	 */
-	public Collection<BehaviorGuardEvaluator> getBehaviorGuardEvaluators(Event event) {
-		final ImmutableSet<Class<?>> eventTypes = flattenHierarchy(event.getClass());
+	public Iterable<BehaviorGuardEvaluator> getBehaviorGuardEvaluators(Event event) {
+		//		final ImmutableSet<Class<?>> eventTypes = flattenHierarchy(event.getClass());
+		//
+		//		final List<BehaviorGuardEvaluator> iBehaviorGuardEvaluators = Lists.newArrayListWithCapacity(eventTypes.size());
+		//
+		//		for (final Class<?> eventType : eventTypes) {
+		//			final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> eventSubscribers =
+		//					this.behaviorGuardEvaluators.get(eventType);
+		//			if (eventSubscribers != null && eventSubscribers.getValue() != null
+		//					&& (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(event))) {
+		//				iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
+		//			}
+		//		}
+		//
+		//		return iBehaviorGuardEvaluators;
+		final Iterable<Class<?>> eventTypes = flattenHierarchy(event.getClass());
+		return () -> {
+			return new EvaluatorCollectionIterator(this.behaviorGuardEvaluators, event,
+					eventTypes.iterator(), false);
+		};
+	}
 
-		final List<BehaviorGuardEvaluator> iBehaviorGuardEvaluators = Lists.newArrayListWithCapacity(eventTypes.size());
-
-		for (final Class<?> eventType : eventTypes) {
-			final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> eventSubscribers =
-					this.behaviorGuardEvaluators.get(eventType);
-			if (eventSubscribers != null && eventSubscribers.getValue() != null
-					&& (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(event))) {
-				iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
-			}
-		}
-
-		return iBehaviorGuardEvaluators;
+	/**
+	 * Gets an iterator representing an immutable snapshot of all BehaviorGuardEvaluators of the given listener
+	 * to the given event at the time this method is called.
+	 *
+	 * <p>Caution: This function does not apply filtering function given to {@link #register(Object, Function1, Procedure1)}.
+	 *
+	 * @param event -the event to process
+	 * @param listener - the owner of the BehaviorGuardEvaluators (never {@code null}).
+	 * @return the set of guard evaluators associated to the specified event
+	 * @since 0.5
+	 */
+	public Iterable<BehaviorGuardEvaluator> getBehaviorGuardEvaluatorsFor(Event event, Object listener) {
+		final Iterable<Class<?>> eventTypes = flattenHierarchy(event.getClass());
+		return () -> {
+			final Iterator<BehaviorGuardEvaluator> base = new EvaluatorCollectionIterator(this.behaviorGuardEvaluators, event,
+					eventTypes.iterator(), true);
+			return new EvaluatorCollectionFilteringIterator(base, listener);
+		};
 	}
 
 	private static Map<Class<? extends Event>, Collection<Method>> getAnnotatedMethodsPerEvent(Class<?> listenerType) {
@@ -451,6 +572,125 @@ public class BehaviorGuardEvaluatorRegistry {
 			final Entry<Class<? extends Event>, Collection<Method>> entry = this.iterator.next();
 			return new Pair<>(entry.getKey(), Collections2.transform(entry.getValue(),
 					(element) -> new BehaviorGuardEvaluator(this.listener, element)));
+		}
+
+	}
+
+	/** Iterator on behavior guard evaluators.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.5
+	 */
+	private static class EvaluatorCollectionIterator implements Iterator<BehaviorGuardEvaluator> {
+
+		private final Map<Class<? extends Event>,
+			Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>>> behaviorGuardEvaluators;
+
+		private final Event event;
+
+		private final Iterator<Class<?>> eventTypeIterator;
+
+		private final boolean skipSubscriberFiltering;
+
+		private Iterator<BehaviorGuardEvaluator> evaluators;
+
+		EvaluatorCollectionIterator(Map<Class<? extends Event>,
+				Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>>> behaviorGuardEvaluators,
+				Event event,
+				Iterator<Class<?>> eventTypes,
+				boolean skipSubscriberFiltering) {
+			assert behaviorGuardEvaluators != null;
+			assert event != null;
+			this.skipSubscriberFiltering = skipSubscriberFiltering;
+			this.behaviorGuardEvaluators = behaviorGuardEvaluators;
+			this.event = event;
+			this.eventTypeIterator = eventTypes;
+			searchNext();
+		}
+
+		private void searchNext() {
+			while ((this.evaluators == null || !this.evaluators.hasNext()) && this.eventTypeIterator.hasNext()) {
+				final Class<?> eventType = this.eventTypeIterator.next();
+				final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> eventSubscribers =
+						this.behaviorGuardEvaluators.get(eventType);
+				if (isValidSubscriber(eventSubscribers)) {
+					this.evaluators = eventSubscribers.getValue().iterator();
+				}
+			}
+		}
+
+		protected boolean isValidSubscriber(Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> subscriber) {
+			if (subscriber != null && subscriber.getValue() != null) {
+				return this.skipSubscriberFiltering || subscriber.getKey() == null || subscriber.getKey().apply(this.event);
+			}
+			return false;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return this.evaluators != null && this.evaluators.hasNext();
+		}
+
+		@Override
+		public BehaviorGuardEvaluator next() {
+			if (this.evaluators == null) {
+				searchNext();
+			}
+			final BehaviorGuardEvaluator next = this.evaluators.next();
+			searchNext();
+			return next;
+		}
+
+	}
+
+	/** Iterator on behavior guard evaluators.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.5
+	 */
+	private static class EvaluatorCollectionFilteringIterator implements Iterator<BehaviorGuardEvaluator> {
+
+		private final Iterator<BehaviorGuardEvaluator> iterator;
+
+		private final Object subscriber;
+
+		private BehaviorGuardEvaluator next;
+
+		EvaluatorCollectionFilteringIterator(Iterator<BehaviorGuardEvaluator> iterator, Object subscriber) {
+			assert iterator != null;
+			assert subscriber != null;
+			this.iterator = iterator;
+			this.subscriber = subscriber;
+			searchNext();
+		}
+
+		private void searchNext() {
+			this.next = null;
+			while (this.next == null && this.iterator.hasNext()) {
+				final BehaviorGuardEvaluator evaluator = this.iterator.next();
+				if (evaluator.getTarget() == this.subscriber) {
+					this.next = evaluator;
+				}
+			}
+		}
+
+		@Override
+		public boolean hasNext() {
+			return this.next != null;
+		}
+
+		@Override
+		public BehaviorGuardEvaluator next() {
+			assert this.next != null;
+			final BehaviorGuardEvaluator next = this.next;
+			searchNext();
+			return next;
 		}
 
 	}

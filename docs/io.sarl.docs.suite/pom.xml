@@ -130,8 +130,6 @@
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>replacer</artifactId>
 				<executions>
-					<!-- Replace the Maven properties in the Jnario specifications. These 
-						specifications will be used for generating the reports only. -->
 					<execution>
 						<id>prepare-jnario-for-reports</id>
 						<phase>generate-test-sources</phase>
@@ -148,8 +146,6 @@
 							</includes>
 						</configuration>
 					</execution>
-					<!-- Replace the Maven properties in the Java files generated from the 
-						Jnario specifications. These specifications will be used during tests only. -->
 					<execution>
 						<id>process-jnario-for-tests</id>
 						<phase>process-test-sources</phase>

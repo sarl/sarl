@@ -97,7 +97,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void immediateDispatch_register_event() {
-			this.dispatcher.register(new MyAgent());
+			this.dispatcher.register(new MyAgent(), null, null);
 			this.dispatcher.immediateDispatch(new Event() { });
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
@@ -105,7 +105,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void immediateDispatch_register_myEvent_n0() {
-			this.dispatcher.register(new MyAgent());
+			this.dispatcher.register(new MyAgent(), null, null);
 			this.dispatcher.immediateDispatch(new MyEvent(0));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
@@ -113,7 +113,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void immediateDispatch_register_myEvent_n1() {
-			this.dispatcher.register(new MyAgent());
+			this.dispatcher.register(new MyAgent(), null, null);
 			this.dispatcher.immediateDispatch(new MyEvent(1));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
@@ -121,7 +121,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void immediateDispatch_register_event_withValidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> true);
+			this.dispatcher.register(new MyAgent(), (event) -> true, null);
 			this.dispatcher.immediateDispatch(new Event() { });
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
@@ -129,7 +129,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void immediateDispatch_register_myEvent_n0_withValidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> true);
+			this.dispatcher.register(new MyAgent(), (event) -> true, null);
 			this.dispatcher.immediateDispatch(new MyEvent(0));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
@@ -137,7 +137,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void immediateDispatch_register_myEvent_n1_withValidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> true);
+			this.dispatcher.register(new MyAgent(), (event) -> true, null);
 			this.dispatcher.immediateDispatch(new MyEvent(1));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
@@ -145,7 +145,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void immediateDispatch_register_event_withInvalidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> false);
+			this.dispatcher.register(new MyAgent(), (event) -> false, null);
 			this.dispatcher.immediateDispatch(new Event() { });
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
@@ -153,7 +153,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void immediateDispatch_register_myEvent_n0_withInvalidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> false);
+			this.dispatcher.register(new MyAgent(), (event) -> false, null);
 			this.dispatcher.immediateDispatch(new MyEvent(0));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
@@ -161,7 +161,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void immediateDispatch_register_myEvent_n1_withInvalidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> false);
+			this.dispatcher.register(new MyAgent(), (event) -> false, null);
 			this.dispatcher.immediateDispatch(new MyEvent(1));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
@@ -183,7 +183,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void asyncDispatch_register_event() {
-			this.dispatcher.register(new MyAgent());
+			this.dispatcher.register(new MyAgent(), null, null);
 			this.dispatcher.asyncDispatch(new Event() { });
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
@@ -191,7 +191,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void asyncDispatch_register_myEvent_n0() {
-			this.dispatcher.register(new MyAgent());
+			this.dispatcher.register(new MyAgent(), null, null);
 			this.dispatcher.asyncDispatch(new MyEvent(0));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
@@ -199,7 +199,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void asyncDispatch_register_myEvent_n1() {
-			this.dispatcher.register(new MyAgent());
+			this.dispatcher.register(new MyAgent(), null, null);
 			this.dispatcher.asyncDispatch(new MyEvent(1));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.times(3)).execute(argument.capture());
@@ -207,7 +207,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void asyncDispatch_register_event_withValidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> true);
+			this.dispatcher.register(new MyAgent(), (event) -> true, null);
 			this.dispatcher.asyncDispatch(new Event() { });
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
@@ -215,7 +215,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void asyncDispatch_register_myEvent_n0_withValidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> true);
+			this.dispatcher.register(new MyAgent(), (event) -> true, null);
 			this.dispatcher.asyncDispatch(new MyEvent(0));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
@@ -223,7 +223,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void asyncDispatch_register_myEvent_n1_withValidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> true);
+			this.dispatcher.register(new MyAgent(), (event) -> true, null);
 			this.dispatcher.asyncDispatch(new MyEvent(1));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.times(3)).execute(argument.capture());
@@ -231,7 +231,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void asyncDispatch_register_event_withInvalidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> false);
+			this.dispatcher.register(new MyAgent(), (event) -> false, null);
 			this.dispatcher.asyncDispatch(new Event() { });
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.times(1)).execute(argument.capture());
@@ -239,7 +239,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void asyncDispatch_register_myEvent_n0_withInvalidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> false);
+			this.dispatcher.register(new MyAgent(), (event) -> false, null);
 			this.dispatcher.asyncDispatch(new MyEvent(0));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.times(1)).execute(argument.capture());
@@ -247,7 +247,7 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void asyncDispatch_register_myEvent_n1_withInvalidFilter() {
-			this.dispatcher.register(new MyAgent(), (event) -> false);
+			this.dispatcher.register(new MyAgent(), (event) -> false, null);
 			this.dispatcher.asyncDispatch(new MyEvent(1));
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.times(1)).execute(argument.capture());
@@ -256,8 +256,8 @@ public class AgentInternalEventsDispatcherTest {
 		@Test
 		public void unregister() {
 			Object ag = new MyAgent();
-			this.dispatcher.register(ag);
-			this.dispatcher.unregister(ag);
+			this.dispatcher.register(ag, null, null);
+			this.dispatcher.unregister(ag, null);
 			this.dispatcher.immediateDispatch(new Event() { });
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
@@ -265,15 +265,143 @@ public class AgentInternalEventsDispatcherTest {
 	
 		@Test
 		public void unregisterAll() {
-			this.dispatcher.register(new MyAgent());
-			this.dispatcher.register(new MyAgent2());
-			this.dispatcher.register(new MyAgent2());
-			this.dispatcher.unregisterAll();
+			this.dispatcher.register(new MyAgent(), null, null);
+			this.dispatcher.register(new MyAgent2(), null, null);
+			this.dispatcher.register(new MyAgent2(), null, null);
+			this.dispatcher.unregisterAll(null);
 			this.dispatcher.immediateDispatch(new Event() { });
 			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 			Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
 		}
 	
+		@Test
+		public void unregisterAll_withCallback() {
+			this.dispatcher.register(new MyAgent(), null, null);
+			this.dispatcher.register(new MyAgent2(), null, null);
+			this.dispatcher.register(new MyAgent2(), null, null);
+			this.dispatcher.unregisterAll((subscriber) -> {});
+			this.dispatcher.immediateDispatch(new Event() { });
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
+		}
+
+		@Test
+		public void immediateDispatchTo_noRegister_event() {
+			this.dispatcher.immediateDispatchTo(new Object(), new Event() { });
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
+		}
+	
+		@Test
+		public void immediateDispatchTo_noRegister_myEvent() {
+			this.dispatcher.immediateDispatchTo(new Object(), new MyEvent(0));
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.never()).execute(argument.capture());
+		}
+	
+		@Test
+		public void immediateDispatchTo_register_event() {
+			Object subscriber = new MyAgent();
+			this.dispatcher.register(subscriber, null, null);
+			this.dispatcher.immediateDispatchTo(subscriber, new Event() { });
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
+		}
+	
+		@Test
+		public void immediateDispatchTo_register_myEvent_n0() {
+			Object subscriber = new MyAgent();
+			this.dispatcher.register(subscriber, null, null);
+			this.dispatcher.immediateDispatchTo(subscriber, new MyEvent(0));
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
+		}
+	
+		@Test
+		public void immediateDispatchTo_register_myEvent_n1() {
+			Object subscriber = new MyAgent();
+			this.dispatcher.register(subscriber, null, null);
+			this.dispatcher.immediateDispatchTo(subscriber, new MyEvent(1));
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
+		}
+	
+		@Test
+		public void immediateDispatchTo_register_event_withValidFilter() {
+			Object subscriber = new MyAgent();
+			this.dispatcher.register(subscriber, (event) -> true, null);
+			this.dispatcher.immediateDispatchTo(subscriber, new Event() { });
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
+		}
+	
+		@Test
+		public void immediateDispatchTo_register_myEvent_n0_withValidFilter() {
+			Object subscriber = new MyAgent();
+			this.dispatcher.register(subscriber, (event) -> true, null);
+			this.dispatcher.immediateDispatchTo(subscriber, new MyEvent(0));
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
+		}
+	
+		@Test
+		public void immediateDispatchTo_register_myEvent_n1_withValidFilter() {
+			Object subscriber = new MyAgent();
+			this.dispatcher.register(subscriber, (event) -> true, null);
+			this.dispatcher.immediateDispatchTo(subscriber, new MyEvent(1));
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
+		}
+	
+		@Test
+		public void immediateDispatchTo_register_event_withInvalidFilter() {
+			Object subscriber = new MyAgent();
+			this.dispatcher.register(subscriber, (event) -> false, null);
+			this.dispatcher.immediateDispatchTo(subscriber, new Event() { });
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
+		}
+	
+		@Test
+		public void immediateDispatchTo_register_myEvent_n0_withInvalidFilter() {
+			Object subscriber = new MyAgent();
+			this.dispatcher.register(subscriber, (event) -> false, null);
+			this.dispatcher.immediateDispatchTo(subscriber, new MyEvent(0));
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
+		}
+	
+		@Test
+		public void immediateDispatchTo_register_myEvent_n1_withInvalidFilter() {
+			Object subscriber = new MyAgent();
+			this.dispatcher.register(subscriber, (event) -> false, null);
+			this.dispatcher.immediateDispatchTo(subscriber, new MyEvent(1));
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
+		}
+
+		@Test
+		public void immediateDispatchTo_twoRegistered_01() {
+			Object subscriber1 = new MyAgent();
+			Object subscriber2 = new MyAgent();
+			this.dispatcher.register(subscriber1, null, null);
+			this.dispatcher.register(subscriber2, null, null);
+			this.dispatcher.immediateDispatchTo(subscriber1, new MyEvent(1));
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
+		}
+
+		@Test
+		public void immediateDispatchTo_twoRegistered_02() {
+			Object subscriber1 = new MyAgent();
+			Object subscriber2 = new MyAgent();
+			this.dispatcher.register(subscriber2, null, null);
+			this.dispatcher.register(subscriber1, null, null);
+			this.dispatcher.immediateDispatchTo(subscriber1, new MyEvent(1));
+			ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
+			Mockito.verify(this.executorService, Mockito.times(2)).execute(argument.capture());
+		}
+
 		public static class MyEvent extends Event {
 			public final int n;
 			public MyEvent(int n) {
@@ -373,7 +501,7 @@ public class AgentInternalEventsDispatcherTest {
 		@Test
 		public void async_withValidGuard_withValidFilter() throws Exception {
 			MyAgent agent = new MyAgent();
-			this.dispatcher.register(agent, (event) -> true);
+			this.dispatcher.register(agent, (event) -> true, null);
 			//
 			MyEvent event = new MyEvent(true);
 			this.dispatcher.asyncDispatch(event);
@@ -386,7 +514,7 @@ public class AgentInternalEventsDispatcherTest {
 		@Test
 		public void async_withValidGuard_withInvalidFilter() throws Exception {
 			MyAgent agent = new MyAgent();
-			this.dispatcher.register(agent, (event) -> false);
+			this.dispatcher.register(agent, (event) -> false, null);
 			//
 			MyEvent event = new MyEvent(true);
 			this.dispatcher.asyncDispatch(event);
@@ -399,7 +527,7 @@ public class AgentInternalEventsDispatcherTest {
 		@Test
 		public void async_withInvalidGuard_withValidFilter() throws Exception {
 			MyAgent agent = new MyAgent();
-			this.dispatcher.register(agent, (event) -> true);
+			this.dispatcher.register(agent, (event) -> true, null);
 			//
 			MyEvent event = new MyEvent(false);
 			this.dispatcher.asyncDispatch(event);
@@ -412,7 +540,7 @@ public class AgentInternalEventsDispatcherTest {
 		@Test
 		public void async_withInvalidGuard_withInvalidFilter() throws Exception {
 			MyAgent agent = new MyAgent();
-			this.dispatcher.register(agent, (event) -> false);
+			this.dispatcher.register(agent, (event) -> false, null);
 			//
 			MyEvent event = new MyEvent(false);
 			this.dispatcher.asyncDispatch(event);
@@ -425,7 +553,7 @@ public class AgentInternalEventsDispatcherTest {
 		@Test
 		public void immediate_withValidGuard_withValidFilter() throws Exception {
 			MyAgent agent = new MyAgent();
-			this.dispatcher.register(agent, (event) -> true);
+			this.dispatcher.register(agent, (event) -> true, null);
 			//
 			MyEvent event = new MyEvent(true);
 			this.dispatcher.immediateDispatch(event);
@@ -437,7 +565,7 @@ public class AgentInternalEventsDispatcherTest {
 		@Test
 		public void immediate_withValidGuard_withInvalidFilter() throws Exception {
 			MyAgent agent = new MyAgent();
-			this.dispatcher.register(agent, (event) -> false);
+			this.dispatcher.register(agent, (event) -> false, null);
 			//
 			MyEvent event = new MyEvent(true);
 			this.dispatcher.immediateDispatch(event);
@@ -449,7 +577,7 @@ public class AgentInternalEventsDispatcherTest {
 		@Test
 		public void immediate_withInvalidGuard_withValidFilter() throws Exception {
 			MyAgent agent = new MyAgent();
-			this.dispatcher.register(agent, (event) -> true);
+			this.dispatcher.register(agent, (event) -> true, null);
 			//
 			MyEvent event = new MyEvent(false);
 			this.dispatcher.immediateDispatch(event);
@@ -461,12 +589,60 @@ public class AgentInternalEventsDispatcherTest {
 		@Test
 		public void immediate_withInvalidGuard_withInvalidFilter() throws Exception {
 			MyAgent agent = new MyAgent();
-			this.dispatcher.register(agent, (event) -> false);
+			this.dispatcher.register(agent, (event) -> false, null);
 			//
 			MyEvent event = new MyEvent(false);
 			this.dispatcher.immediateDispatch(event);
 			//
 			assertTrue(agent.events.isEmpty());
+			assertTrue(agent.myEvents.isEmpty());
+		}
+
+		@Test
+		public void immediateTo_withValidGuard_withValidFilter() throws Exception {
+			MyAgent agent = new MyAgent();
+			this.dispatcher.register(agent, (event) -> true, null);
+			//
+			MyEvent event = new MyEvent(true);
+			this.dispatcher.immediateDispatchTo(agent, event);
+			//
+			assertContains(agent.events, event);
+			assertContains(agent.myEvents, event);
+		}
+
+		@Test
+		public void immediateTo_withValidGuard_withInvalidFilter() throws Exception {
+			MyAgent agent = new MyAgent();
+			this.dispatcher.register(agent, (event) -> false, null);
+			//
+			MyEvent event = new MyEvent(true);
+			this.dispatcher.immediateDispatchTo(agent, event);
+			//
+			assertContains(agent.events, event);
+			assertContains(agent.myEvents, event);
+		}
+
+		@Test
+		public void immediateTo_withInvalidGuard_withValidFilter() throws Exception {
+			MyAgent agent = new MyAgent();
+			this.dispatcher.register(agent, (event) -> true, null);
+			//
+			MyEvent event = new MyEvent(false);
+			this.dispatcher.immediateDispatchTo(agent, event);
+			//
+			assertContains(agent.events, event);
+			assertTrue(agent.myEvents.isEmpty());
+		}
+
+		@Test
+		public void immediateTo_withInvalidGuard_withInvalidFilter() throws Exception {
+			MyAgent agent = new MyAgent();
+			this.dispatcher.register(agent, (event) -> false, null);
+			//
+			MyEvent event = new MyEvent(false);
+			this.dispatcher.immediateDispatchTo(agent, event);
+			//
+			assertContains(agent.events, event);
 			assertTrue(agent.myEvents.isEmpty());
 		}
 

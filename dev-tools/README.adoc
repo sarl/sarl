@@ -1,0 +1,17 @@
+= Developpers tools
+:toc: right
+:toc-placement!:
+:hide-uri-scheme:
+
+toc::[]
+
+== 1) Install the working sets
+
+* You must import the SARL projects into your workspace. All the projects should be in the "Other" working set.
+* The working set definition of the worknig set is in the file `eclipse_workingsets.xml`.
+* Copy the file `eclipse_workingsets.xml` into `${workspace_loc}/.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml`.
+
+CAUTION: Copy the working set definition must be done without a running Eclipse.
+
+CAUTION: The exisiting definition of the working sets will be replaced by the content of the copied file.
+

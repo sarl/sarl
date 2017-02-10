@@ -493,6 +493,231 @@ describe "Behavior Reference" {
 		 */
 		describe "Behavior Units of a Behavior" {
 
+			/* When a behavior is ready to be executed by the runtime environment, usually when it
+			 * is registered in its owning agent, it receives the `Initialize` event.
+			 * This event is defined as:
+			 * 
+			 *     event Initialize {
+			 *         var parameters : Object[]
+			 *     }
+			 *
+			 * 
+			 * <p>It contains the list of the parameters given that are never set for behaviors.
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Initialization Handler"{
+				// Test the URL in the introduction of the section
+				"SpaceReferenceSpec.html" should beAccessibleFrom this
+				// Test the URL in this section
+				"BuiltInCapacityReferenceSpec.html" should beAccessibleFrom this
+				//
+				val model = '''
+				behavior MyBehavior {
+					uses Logging
+					on Initialize {
+						println("I'm initializing my behavior")
+					}
+				}
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
+					import io.sarl.core.Initialize",
+					// TEXT
+					""
+				)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Logging"
+					it should importClass "io.sarl.core.Initialize"
+					it should haveNbElements 1
+				]
+				
+				var a = (model.xtendTypes.get(0) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 2
+				]) as SarlAgent
+
+				a.members.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				a.members.get(1) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith _
+				]
+			}
+
+			/* Because `Initialize` is an event, the handler in
+			 * the behavior could use a guard. This feature enables
+			 * the developer to write different initialization blocks
+			 * depending on the guards of the handlers.
+			 * 
+			 * <p>In the following example, the first event handler is
+			 * executed when the `Initialize` event has
+			 * no parameter. The second event handler is executed
+			 * when the event has at least one parameter.
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Guarded Initialization Handler"{
+				val model = '''
+				behavior MyBehavior {
+					uses Logging
+					on Initialize [ occurrence.parameters.empty ] {
+						println("First initialization")
+					}
+					on Initialize [ ! occurrence.parameters.empty ] {
+						println("First initialization")
+					}
+				}
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
+					import io.sarl.core.Initialize",
+					// TEXT
+					""
+				)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Logging"
+					it should importClass "io.sarl.core.Initialize"
+					it should haveNbElements 1
+				]
+				
+				var a = (model.xtendTypes.get(0) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 3
+				]) as SarlAgent
+
+				a.members.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				a.members.get(1) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith "occurrence.parameters.empty"
+				]
+				a.members.get(2) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith "! occurrence.parameters.empty"
+				]
+			}
+
+			/* The counterpart of `Initialize` is the event
+			 * `Destroy`.
+			 * This event is defined as:
+			 * 
+			 *     event Destroy
+			 *
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Destruction Handler" {
+				val model = '''
+				behavior MyBehavior {
+					uses Logging
+					on Destroy {
+						println("Destroying the behavior")
+					}
+				}
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
+					import io.sarl.core.Destroy",
+					// TEXT
+					""
+				)
+
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Logging"
+					it should importClass "io.sarl.core.Destroy"
+					it should haveNbElements 1
+				]
+				
+				var a = (model.xtendTypes.get(0) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 2
+				]) as SarlAgent
+
+				a.members.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				a.members.get(1) => [
+					it should beBehaviorUnit "io.sarl.core.Destroy"
+					it should beGuardedWith _
+				]
+			}
+			/* As for `Initialize`, the handlers of
+			 * the `Destroy` event could be guarded.
+			 * 
+			 * <p>In the following example, the first event handler is
+			 * executed when the `Destroy` is received
+			 * and there is resource stored in the corresponding
+			 * field. The second event handler is executed
+			 * when there is no resource.
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+			 */
+			fact "Guarded Destruction Handler" {
+				val model = '''
+				behavior MyBehavior {
+					uses Logging
+					var resource : Object
+					on Destroy [ resource !== null ] {
+						println("Destroying the behavior when there is a resource")
+					}
+					on Destroy [ resource === null ] {
+						println("Destroying the behavior when there is no resource")
+					}
+				}
+				'''.parseSuccessfully(
+					"package io.sarl.docs.reference.ar
+					import io.sarl.core.Logging
+					import io.sarl.core.Destroy",
+					// TEXT
+					""
+				)
+				
+				model => [
+					it should havePackage "io.sarl.docs.reference.ar"
+					it should haveNbImports 2
+					it should importClass "io.sarl.core.Logging"
+					it should importClass "io.sarl.core.Destroy"
+					it should haveNbElements 1
+				]
+				
+				var a = (model.xtendTypes.get(0) => [
+					it should beBehavior "MyBehavior"
+					it should extend _
+					it should haveNbElements 4
+				]) as SarlAgent
+
+				a.members.get(0) => [
+					it should beCapacityUse "io.sarl.core.Logging"
+				]
+				a.members.get(1) => [
+					it should beVariable "resource"
+					it should haveType "java.lang.Object"
+					it should haveInitialValue _
+				]
+				a.members.get(2) => [
+					it should beBehaviorUnit "io.sarl.core.Destroy"
+					it should beGuardedWith "resource !== null"
+				]
+				a.members.get(3) => [
+					it should beBehaviorUnit "io.sarl.core.Destroy"
+					it should beGuardedWith "resource === null"
+				]
+			}
+
 			/* The reactive behavior is specified with a collection
 			 * of event handlers. The principle of a reactive behavior
 			 * is to execute a part of the behavior when something has happening
