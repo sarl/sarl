@@ -1735,7 +1735,6 @@ public abstract class AbstractSarlTest {
 		 * @throws IllegalAccessException see {@link Field#get(Object)}
 		 * @throws IllegalArgumentException see {@link Field#get(Object)}
 		 */
-		@SuppressWarnings("unchecked")
 		public <T> T getStatic(Class<?> receiverType, String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 			Field f = getDeclaredField(receiverType, fieldName);
 			if (!f.isAccessible()) {
@@ -1756,7 +1755,6 @@ public abstract class AbstractSarlTest {
 		 * @throws IllegalAccessException see {@link Field#get(Object)}
 		 * @throws IllegalArgumentException see {@link Field#get(Object)}
 		 */
-		@SuppressWarnings("unchecked")
 		public <T> void setStatic(Class<?> receiverType, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 			Field f = getDeclaredField(receiverType, fieldName);
 			if (!f.isAccessible()) {
@@ -1772,7 +1770,6 @@ public abstract class AbstractSarlTest {
 		 * @param fieldName the field's name, not <code>null</code>
 		 * @return the value of the field
 		 */
-		@SuppressWarnings("unchecked")
 		public <T> void set(Object instance, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 			Class<?> type = instance.getClass();
 			while (type != null) {
@@ -1798,7 +1795,6 @@ public abstract class AbstractSarlTest {
 		 * @param fieldName the field's name, not <code>null</code>
 		 * @return the value of the field
 		 */
-		@SuppressWarnings("unchecked")
 		public <T> T get(Object instance, String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 			Class<?> type = instance.getClass();
 			while (type != null) {
@@ -1831,7 +1827,6 @@ public abstract class AbstractSarlTest {
 		 * @throws SecurityException 
 		 * @throws NoSuchMethodException 
 		 */
-		@SuppressWarnings("static-method")
 		public <T> T newInstance(Class<T> type, Object... args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 			final Object[] arguments = args == null ? new Object[]{null} : args;
 			Constructor<?> compatible = null;
@@ -1920,7 +1915,6 @@ public abstract class AbstractSarlTest {
 		 * @throws NoSuchMethodException 
 		 * @throws ClassNotFoundException 
 		 */
-		@SuppressWarnings("static-method")
 		public <T> T newInstance(String type, Object... args)
 				throws InstantiationException, IllegalAccessException, IllegalArgumentException,
 				InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
@@ -1935,7 +1929,6 @@ public abstract class AbstractSarlTest {
 		 * @return the class.
 		 * @throws ClassNotFoundException 
 		 */
-		@SuppressWarnings("static-method")
 		public Class<?> forName(String name) throws ClassNotFoundException {
 			try {
 				return Class.forName(name);

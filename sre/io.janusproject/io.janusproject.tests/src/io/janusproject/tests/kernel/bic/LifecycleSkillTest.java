@@ -81,13 +81,11 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 	public void setUp() throws Exception {
 		this.agentId = UUID.randomUUID();
 		Agent agent = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null) {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 				return new ClearableReference<>(LifecycleSkillTest.this.eventBus);
 			}
 
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public UUID getID() {
 				return LifecycleSkillTest.this.agentId;

@@ -141,6 +141,11 @@ public final class SARLEclipseConfig {
 	 */
 	public static final String EXTENSION_POINT_PROJECT_SRE_PROVIDER_FACTORY = "projectSREProviderFactory"; //$NON-NLS-1$
 
+	/** Filename of the image that may be used at
+	 * the top of the wizard dialog when submiting an issue to the SARL tracker.
+	 */
+	public static final String SUBMIT_ISSUE_WIZARD_DIALOG_IMAGE = "icons/sarl_submit_issue_dialog.png"; //$NON-NLS-1$
+
 	private SARLEclipseConfig() {
 		//
 	}

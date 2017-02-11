@@ -78,7 +78,6 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	@Rule
 	public TestWatcher rootSarlUiWatchter = new TestWatcher() {
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		protected void starting(Description description) {
 			try {
