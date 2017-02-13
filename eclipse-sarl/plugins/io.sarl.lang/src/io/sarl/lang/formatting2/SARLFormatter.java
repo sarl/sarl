@@ -44,7 +44,6 @@ import org.eclipse.xtext.AbstractRule;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.formatting2.FormattingNotApplicableException;
 import org.eclipse.xtext.formatting2.IFormattableDocument;
 import org.eclipse.xtext.formatting2.IHiddenRegionFormatter;
 import org.eclipse.xtext.formatting2.ITextReplacer;
@@ -177,7 +176,7 @@ public class SARLFormatter extends XtendFormatter {
 			} else {
 				super.format(sarlComponent, document);
 			}
-		} catch (FormattingNotApplicableException exception) {
+		} catch (Throwable exception) {
 			// Silently ignore this exception.
 		}
 	}
