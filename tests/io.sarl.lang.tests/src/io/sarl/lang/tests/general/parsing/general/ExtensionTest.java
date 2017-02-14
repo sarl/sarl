@@ -96,7 +96,6 @@ public class ExtensionTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.diagnostics.Diagnostic.SYNTAX_DIAGNOSTIC,
-				74, 1,
 				"mismatched input '=' expecting ':'");
 	}
 

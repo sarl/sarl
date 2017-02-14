@@ -45,7 +45,6 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 		validate(mas).assertWarning(
 				XtypePackage.eINSTANCE.getXImportDeclaration(),
 				IssueCodes.IMPORT_WILDCARD_DEPRECATED,
-				35, 47,
 				"The use of wildcard imports is deprecated");
 	}
 
@@ -79,7 +78,6 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlScript(),
 				SyntaxIssueCodes.USED_RESERVED_KEYWORD,
-				26, 1,
 				"'behavior' is a reserved keyword which is not allowed as identifier.");
 	}
 
@@ -91,7 +89,6 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlScript(),
 				SyntaxIssueCodes.USED_RESERVED_KEYWORD,
-				26, 1,
 				"'null' is a reserved keyword which is not allowed as identifier.");
 	}
 

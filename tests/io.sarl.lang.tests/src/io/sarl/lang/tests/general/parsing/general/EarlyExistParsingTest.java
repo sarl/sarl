@@ -126,7 +126,6 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				196, 16,
 				"Unreachable expression");
 	}
 
@@ -150,7 +149,6 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				210, 16,
 				"Unreachable expression");
 	}
 
@@ -177,7 +175,6 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				273, 16,
 				"Unreachable expression");
 	}
 
@@ -274,7 +271,6 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				218, 16,
 				"Unreachable expression");
 	}
 

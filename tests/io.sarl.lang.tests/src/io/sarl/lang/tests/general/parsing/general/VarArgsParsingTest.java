@@ -123,7 +123,6 @@ public class VarArgsParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
 					IssueCodes.INVALID_USE_OF_VAR_ARG,
-					52, 1,
 					"A vararg must be the last parameter");
 		}
 

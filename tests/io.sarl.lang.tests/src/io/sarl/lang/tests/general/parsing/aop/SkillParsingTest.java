@@ -166,7 +166,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_IMPLEMENTED_TYPE,
-					54, 8,
 					"Invalid implemented type: 'io.sarl.lang.core.Capacity'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
 		}
 
@@ -243,7 +242,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
-					49, 2,
 					"Invalid supertype. Expecting a class");
 		}
 
@@ -258,7 +256,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_IMPLEMENTED_TYPE,
-					36, 2,
 					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
 		}
 
@@ -277,7 +274,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_IMPLEMENTED_TYPE,
-					68, 2,
 					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
 		}
 
@@ -296,7 +292,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_IMPLEMENTED_TYPE,
-					72, 2,
 					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
 		}
 
@@ -315,7 +310,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_IMPLEMENTED_TYPE,
-					76, 2,
 					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
 		}
 
@@ -550,8 +544,7 @@ public class SkillParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 7);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -563,8 +556,7 @@ public class SkillParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 9);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -620,8 +612,7 @@ public class SkillParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -633,8 +624,7 @@ public class SkillParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -668,8 +658,7 @@ public class SkillParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -681,8 +670,7 @@ public class SkillParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -694,8 +682,7 @@ public class SkillParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -707,8 +694,7 @@ public class SkillParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 12);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -720,8 +706,7 @@ public class SkillParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 9);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -734,7 +719,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					54, 7,
 					"public / package / protected / private");
 		}
 
@@ -748,7 +732,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
-					44, 2,
 					"class S1 must be defined abstract");
 		}
 
@@ -787,7 +770,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE,
-					137, 8,
 					"The method name() of type S2 must override a superclass method");
 		}
 
@@ -985,8 +967,7 @@ public class SkillParsingTest {
 					"}"), true);
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					87, 4);
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 			//
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1018,8 +999,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1088,8 +1068,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1102,8 +1081,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1116,8 +1094,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1158,8 +1135,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 9);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1172,8 +1148,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					84, 7);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1216,7 +1191,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
-					74, 8,
 					"Duplicate method myaction(int) in type C1");
 		}
 
@@ -1233,7 +1207,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
-					109, 8,
 					"Duplicate method myaction(int) in type S1");
 		}
 
@@ -1357,7 +1330,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
-					101, 2,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
 		}
 
@@ -1378,7 +1350,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
-					101, 2,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
 		}
 
@@ -1400,8 +1371,7 @@ public class SkillParsingTest {
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					165, 5);
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
@@ -1422,8 +1392,7 @@ public class SkillParsingTest {
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					158, 3);
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
@@ -1444,8 +1413,7 @@ public class SkillParsingTest {
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					165, 4);
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
@@ -1484,8 +1452,7 @@ public class SkillParsingTest {
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					95, 5);
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
@@ -1502,8 +1469,7 @@ public class SkillParsingTest {
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					97, 3);
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
@@ -1520,8 +1486,7 @@ public class SkillParsingTest {
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					95, 4);
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
@@ -1539,7 +1504,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXBlockExpression(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
-					93, 25,
 					"Type mismatch: cannot convert from null to int");
 		}
 
@@ -1562,7 +1526,6 @@ public class SkillParsingTest {
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
-					141, 30,
 					"int");
 		}
 
@@ -1931,8 +1894,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1945,8 +1907,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1959,8 +1920,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1973,8 +1933,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					80, 3);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1987,8 +1946,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -2001,8 +1959,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -2015,8 +1972,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -2029,8 +1985,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 12);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -2043,8 +1998,7 @@ public class SkillParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					74, 9);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -2058,7 +2012,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					84, 7,
 					"public / package / protected / private");
 		}
 
@@ -2075,7 +2028,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
-					88, 7,
 					"Duplicate field myfield");
 		}
 
@@ -2092,7 +2044,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
-					97, 7,
 					"Duplicate field myfield");
 		}
 
@@ -2108,7 +2059,6 @@ public class SkillParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED,
-					16, 69,
 					"The blank final field field2 may not have been initialized");
 		}
 

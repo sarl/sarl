@@ -102,7 +102,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
-					33, 2,
 					"Invalid supertype. Expecting a class.");
 		}
 
@@ -266,7 +265,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 7,
 					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
 		}
 
@@ -279,7 +277,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 9,
 					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
 		}
 
@@ -338,7 +335,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 6,
 					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
 		}
 
@@ -350,8 +346,7 @@ public class AgentParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -385,8 +380,7 @@ public class AgentParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -398,7 +392,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 6,
 					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
 		}
 
@@ -411,7 +404,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8,
 					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
 		}
 
@@ -423,8 +415,7 @@ public class AgentParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 12);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -435,8 +426,7 @@ public class AgentParsingTest {
 					), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 9);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -448,7 +438,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					41, 5,
 					"The definition of A1 can either be abstract or final, not both");
 		}
 
@@ -461,8 +450,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					48, 4);
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 		}
 
 		@Test
@@ -474,8 +462,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					57, 4);
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 		}
 
 		@Test
@@ -509,8 +496,7 @@ public class AgentParsingTest {
 					"}"), true);
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					57, 4);
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 			//
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -536,7 +522,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					39, 7,
 					"The definition of A1 can only set one of public / package / protected / private");
 		}
 
@@ -647,7 +632,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					Diagnostic.LINKING_DIAGNOSTIC,
-					14, 1,
 					"E cannot be resolved to a type");
 		}
 
@@ -723,7 +707,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXBinaryOperation(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
-					37, 6,
 					"cannot convert from int to boolean");
 		}
 
@@ -740,7 +723,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXBinaryOperation(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
-					37, 12,
 					"Expression with side effect is not allowed in guards");
 		}
 
@@ -757,7 +739,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXCastedExpression(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
-					85, 25,
 					"Expression with side effect is not allowed in guards");
 		}
 
@@ -852,7 +833,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
-					55, 7,
 					"Duplicate field myfield");
 		}
 
@@ -868,7 +848,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
-					64, 7,
 					"Duplicate field myfield");
 		}
 
@@ -968,7 +947,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED,
-					0, 53,
 					"The blank final field field2 may not have been initialized");
 		}
 
@@ -1029,8 +1007,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1154,8 +1131,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1167,8 +1143,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1180,8 +1155,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1194,7 +1168,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					50, 3,
 					"var or val / final, not both");
 		}
 
@@ -1207,8 +1180,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1220,8 +1192,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1233,8 +1204,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1246,8 +1216,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 12);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1259,8 +1228,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 9);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1273,7 +1241,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					54, 7,
 					"public / package / protected / private");
 		}
 
@@ -1325,7 +1292,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					Diagnostic.LINKING_DIAGNOSTIC,
-					16, 5,
 					"MyCap cannot be resolved to a type");
 		}
 
@@ -1380,7 +1346,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
-					50, 8,
 					"Duplicate method myaction(int) in type A1");
 		}
 
@@ -1421,8 +1386,7 @@ public class AgentParsingTest {
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					100, 5);
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
@@ -1441,8 +1405,7 @@ public class AgentParsingTest {
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					93, 3);
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
@@ -1461,8 +1424,7 @@ public class AgentParsingTest {
 					));
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE,
-					100, 4);
+					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
@@ -1482,7 +1444,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXBlockExpression(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
-					98, 34,
 					"Type mismatch: cannot convert from null to int");
 		}
 
@@ -1598,8 +1559,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1710,7 +1670,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE,
-					68, 8,
 					"The method name() of type A2 must override a superclass method");
 		}
 
@@ -1790,8 +1749,7 @@ public class AgentParsingTest {
 					"}"), true);
 			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT,
-					57, 4);
+					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 			//
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1903,8 +1861,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1916,8 +1873,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1929,8 +1885,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1969,8 +1924,7 @@ public class AgentParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					44, 9);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -1983,7 +1937,6 @@ public class AgentParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					54, 7,
 					"public / package / protected / private");
 		}
 

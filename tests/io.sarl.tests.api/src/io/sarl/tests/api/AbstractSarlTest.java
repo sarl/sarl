@@ -1596,25 +1596,15 @@ public abstract class AbstractSarlTest {
 
 		Validator assertNoIssue(EClass objectType, String issuecode);
 
-		Validator assertError(EClass objectType, String code, int offset, int length, String... messageParts);
-
 		Validator assertError(EClass objectType, String code, String... messageParts);
 
 		Validator assertIssue(EClass objectType, String code, Severity severity, String... messageParts);
 
-		Validator assertIssue(EClass objectType, String code, int offset, int length,  Severity severity,
-				String... messageParts);
-
 		Validator assertNoIssues(EClass objectType, String code, Severity severity, String... messageParts);
-
-		Validator assertNoIssues(EClass objectType, String code, int offset, int length, Severity severity,
-				String... messageParts);
 
 		Validator assertWarning(EClass objectType, String code, String... messageParts);
 
 		Validator assertNoWarnings(EClass objectType, String code, String... messageParts);
-
-		Validator assertWarning(EClass objectType, String code, int offset, int length, String... messageParts);
 
 	}
 
@@ -1675,11 +1665,6 @@ public abstract class AbstractSarlTest {
 			return this;
 		}
 
-		public Validator assertError(EClass objectType, String code, int offset, int length, String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertError(this.resource, objectType, code, offset, length, messageParts);
-			return this;
-		}
-
 		public Validator assertError(EClass objectType, String code, String... messageParts) {
 			AbstractSarlTest.this.validationHelper.assertError(this.resource, objectType, code, messageParts);
 			return this;
@@ -1690,22 +1675,8 @@ public abstract class AbstractSarlTest {
 			return this;
 		}
 
-		public Validator assertIssue(EClass objectType, String code, int offset, int length,  Severity severity,
-				String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertIssue(this.resource, objectType, code, offset, length, severity,
-					messageParts);
-			return this;
-		}
-
 		public Validator assertNoIssues(EClass objectType, String code, Severity severity, String... messageParts) {
 			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType, code, severity, messageParts);
-			return this;
-		}
-
-		public Validator assertNoIssues(EClass objectType, String code, int offset, int length, Severity severity,
-				String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType, code, offset, length, severity,
-					messageParts);
 			return this;
 		}
 
@@ -1716,12 +1687,6 @@ public abstract class AbstractSarlTest {
 
 		public Validator assertNoWarnings(EClass objectType, String code, String... messageParts) {
 			AbstractSarlTest.this.validationHelper.assertNoWarnings(this.resource, objectType, code, messageParts);
-			return this;
-		}
-
-		public Validator assertWarning(EClass objectType, String code, int offset, int length, String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertWarning(this.resource, objectType, code, offset,
-					length, messageParts);
 			return this;
 		}
 		

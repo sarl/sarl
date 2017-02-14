@@ -59,12 +59,10 @@ public class Bug507 extends AbstractSarlUiTest {
 		validator.assertWarning(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.DEPRECATED_MEMBER_REFERENCE,
-				196, 7,
 				"method println(Object) from the type Logging");
 		validator.assertWarning(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.DEPRECATED_MEMBER_REFERENCE,
-				240, 7,
 				"method println(Object) from the type Logging");
 	}
 
@@ -113,12 +111,10 @@ public class Bug507 extends AbstractSarlUiTest {
 		validator.assertWarning(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.DEPRECATED_MEMBER_REFERENCE,
-				159, 23,
 				"Discouraged feature call: println");
 		validator.assertWarning(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.DEPRECATED_MEMBER_REFERENCE,
-				203, 22,
 				"Discouraged feature call: println");
 	}
 

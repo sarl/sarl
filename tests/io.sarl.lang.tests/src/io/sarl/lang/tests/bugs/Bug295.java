@@ -49,7 +49,6 @@ public class Bug295 extends AbstractSarlTest {
 		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.AMBIGUOUS_FEATURE_CALL,
-				117, 3,
 				"both match");
 	}
 
