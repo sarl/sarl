@@ -217,6 +217,11 @@
 			<layout>p2</layout>
 			<url>http://dependencies.sarl.io</url>
 		</repository>
+		<repository>
+			<id>org.eclipse.efxeclipse.updates</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/efxclipse/updates-released/${efxclipse.version}/site</url>
+		</repository>
 	</repositories>
 
 </project>

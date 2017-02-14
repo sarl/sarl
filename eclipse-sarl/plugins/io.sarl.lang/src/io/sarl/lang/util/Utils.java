@@ -71,6 +71,7 @@ import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
+import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
@@ -152,6 +153,7 @@ public final class Utils {
 	 * @param operations - filled with the operations inside and inherited by the element.
 	 * @param fields - filled with the fields inside and inherited by the element.
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
+	 * @see OverrideHelper
 	 */
 	public static void populateInterfaceElements(
 			JvmDeclaredType jvmElement,
@@ -184,6 +186,7 @@ public final class Utils {
 	 * @param operationsToImplement - filled with the abstract operations inherited by the element.
 	 * @param superConstructors - filled with the construstors of the super type.
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
+	 * @see OverrideHelper
 	 */
 	@SuppressWarnings({
 		"checkstyle:cyclomaticcomplexity",
