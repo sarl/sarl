@@ -330,21 +330,25 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Test
 		public void createQualifiedActionName() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
+			final String xtextResourceID = container.eResource().getURI().toString();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			assertNotNull(qn);
 			assertEquals("myfct", qn.getActionName());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index, qn.getContainerID());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index+"#myfct", qn.toString());
+			// xtextResourceID == "file:/path/to/io/sarl/tests/Stub"+index+".sarl" 
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index, qn.getContainerID());
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index+"#myfct", qn.toString());
 		}
 
 		@Test
 		public void createConstructorQualifiedName() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
+			final String xtextResourceID = container.eResource().getURI().toString();
 			QualifiedActionName qn = this.provider.createConstructorQualifiedName(container);
 			assertNotNull(qn);
 			assertEquals("new", qn.getActionName());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index, qn.getContainerID());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index+"#new", qn.toString());
+			// xtextResourceID == "file:/path/to/io/sarl/tests/Stub"+index+".sarl"
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index, qn.getContainerID());
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index+"#new", qn.toString());
 		}
 
 		@Test
@@ -988,21 +992,25 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Test
 		public void createQualifiedActionName() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
+			final String xtextResourceID = container.eResource().getURI().toString();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			assertNotNull(qn);
 			assertEquals("myfct", qn.getActionName());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index, qn.getContainerID());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index+"#myfct", qn.toString());
+			//xtextResourceID == "file:/path/to/io/sarl/tests/Stub"+index+".sarl"
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index, qn.getContainerID());
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index+"#myfct", qn.toString());
 		}
 
 		@Test
 		public void createConstructorQualifiedName() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
+			final String xtextResourceID = container.eResource().getURI().toString();
 			QualifiedActionName qn = this.provider.createConstructorQualifiedName(container);
 			assertNotNull(qn);
 			assertEquals("new", qn.getActionName());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index, qn.getContainerID());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index+"#new", qn.toString());
+			//xtextResourceID == "file:/path/to/io/sarl/tests/Stub"+index+".sarl"
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index, qn.getContainerID());
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index+"#new", qn.toString());
 		}
 
 		@Test
