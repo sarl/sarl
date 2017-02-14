@@ -951,13 +951,27 @@ public abstract class AbstractSarlTest {
 				+ "\narray: " + Arrays.toString(expected)); //$NON-NLS-1$
 	}
 
-	/** Helper for writting a multiline string in unit tests.
+	/** Replies the OS-dependent line separator.
+	 *
+	 * @return the line separator from the {@code "line.separator"} property, or {@code "\n"}.
+	 * @since 0.5
+	 */
+	public static String getLineSeparator() {
+		 final String nl = System.getProperty("line.separator");
+		 if (Strings.isNullOrEmpty(nl)) {
+			 return "\n";
+		 }
+		 return nl;
+	}
+
+	/** Helper for writting a multiline string in unit tests, which supports the
+	 * OS-dependent line separator.
 	 *
 	 * @param lines - the lines in the string.
 	 * @return the complete multiline string.
 	 */
 	public static String multilineString(Object... lines) {
-		return Joiner.on("\n").join(lines);
+		return Joiner.on(getLineSeparator()).join(lines);
 	}
 
 	/** Assert that the given iterable object replies the expected identifiers.
@@ -1343,8 +1357,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlAction function(String string, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}");
 		return (SarlAction) clazz.getMembers().get(0);
 	}
 
@@ -1352,8 +1366,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlAction function(String string, boolean validate, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}");
 		return (SarlAction) clazz.getMembers().get(0);
 	}
 
@@ -1375,8 +1389,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlAction functionSignature(String string, String... prefix) throws Exception {
 		SarlInterface interfaze = interfaze(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\ninterface Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "interface Foo { " + string + "}");
 		return (SarlAction) interfaze.getMembers().get(0);
 	}
 
@@ -1384,8 +1398,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlAction functionSignature(String string, boolean validate, String... prefix) throws Exception {
 		SarlInterface interfaze = interfaze(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\ninterface Foo { " + string + "}", validate);
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "interface Foo { " + string + "}", validate);
 		return (SarlAction) interfaze.getMembers().get(0);
 	}
 
@@ -1407,8 +1421,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlConstructor constructor(String string, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}");
 		return (SarlConstructor) clazz.getMembers().get(0);
 	}
 
@@ -1416,8 +1430,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlConstructor constructor(String string, boolean validate, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}", validate);
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}", validate);
 		return (SarlConstructor) clazz.getMembers().get(0);
 	}
 
@@ -1439,8 +1453,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlField field(String string, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}");
 		return (SarlField) clazz.getMembers().get(0);
 	}
 
@@ -1448,8 +1462,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlField field(String string, boolean validate, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}", validate);
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}", validate);
 		return (SarlField) clazz.getMembers().get(0);
 	}
 
@@ -1457,8 +1471,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlBehaviorUnit behaviorUnit(String string, String... prefix) throws Exception {
 		SarlAgent agent = agent(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nagent Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "agent Foo { " + string + "}");
 		return (SarlBehaviorUnit) agent.getMembers().get(0);
 	}
 
@@ -1466,8 +1480,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlBehaviorUnit behaviorUnit(String string, boolean validate, String... prefix) throws Exception {
 		SarlAgent agent = agent(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nagent Foo { " + string + "}", validate);
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "agent Foo { " + string + "}", validate);
 		return (SarlBehaviorUnit) agent.getMembers().get(0);
 	}
 
@@ -1475,8 +1489,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected JvmTypeReference getType(String typeName, String... prefix) throws Exception {
 		SarlAgent agent = agent(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nagent Foo { var fooAttr : " + typeName + " }");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "agent Foo { var fooAttr : " + typeName + " }");
 		return ((SarlField) agent.getMembers().get(0)).getType();
 	}
 
