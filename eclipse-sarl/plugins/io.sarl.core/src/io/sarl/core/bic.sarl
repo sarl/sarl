@@ -474,7 +474,7 @@ capacity DefaultContextInteractions {
 	 * ...
 	 * const mySpawnArgs = ...
 	 * const myAgentAddr = MyAgent.spawn(mySpawnArgs)
-	 * defaultSpace.emit(new StartWorkingEvent, AddressScope::scope(myAgentAddr)
+	 * defaultSpace.emit(new StartWorkingEvent, AddressScope::scope(myAgentAddr))
 	 * </code> 
 	 * <p>The equivalent using receive could be written:
 	 * <code>

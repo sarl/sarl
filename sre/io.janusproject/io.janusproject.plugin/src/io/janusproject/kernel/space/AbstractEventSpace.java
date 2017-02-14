@@ -122,10 +122,10 @@ public abstract class AbstractEventSpace extends SpaceBase {
 		assert event != null;
 		assert event.getSource() != null : "Every event must have a source"; //$NON-NLS-1$
 		assert this.getSpaceID().equals(event.getSource().getSpaceId()) : "The source address must belong to this space"; //$NON-NLS-1$
-
 		try {
-			this.network.publish(scope, event);
-			doEmit(event, scope);
+			final Scope<Address> scopeInstance = (scope == null) ? Scopes.<Address>allParticipants() : scope;
+			this.network.publish(scopeInstance, event);
+			doEmit(event, scopeInstance);
 		} catch (Throwable e) {
 			this.logger.error(Messages.AbstractEventSpace_0, event, scope, e);
 		}
@@ -141,7 +141,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 * @see #emit(Event, Scope)
 	 */
 	public final void emit(Event event) {
-		emit(event, Scopes.<Address>allParticipants());
+		emit(event, null);
 	}
 
 	/**
@@ -153,6 +153,8 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 * @param scope - description of the scope of the event, i.e. the receivers of the event.
 	 */
 	protected void doEmit(Event event, Scope<? super Address> scope) {
+		assert scope != null;
+		assert event != null;
 		synchronized (this.participants) {
 			for (final EventListener agent : this.participants.getListeners()) {
 				if (scope.matches(getAddress(agent))) {

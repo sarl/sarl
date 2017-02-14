@@ -23,6 +23,7 @@ package io.sarl.lang.core;
 
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -58,6 +59,7 @@ public interface EventSpace extends Space {
 	 *
 	 * @param event - the event to emit in the space.
 	 */
+	@Inline(value = "emit($1, null)")
 	void emit(Event event);
 
 }
