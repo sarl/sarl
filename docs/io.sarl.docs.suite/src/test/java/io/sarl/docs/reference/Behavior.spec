@@ -539,7 +539,7 @@ describe "Behavior Reference" {
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 2
-				]) as SarlAgent
+				]) as SarlBehavior
 
 				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
@@ -593,7 +593,7 @@ describe "Behavior Reference" {
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 3
-				]) as SarlAgent
+				]) as SarlBehavior
 
 				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
@@ -645,7 +645,7 @@ describe "Behavior Reference" {
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 2
-				]) as SarlAgent
+				]) as SarlBehavior
 
 				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
@@ -698,7 +698,7 @@ describe "Behavior Reference" {
 					it should beBehavior "MyBehavior"
 					it should extend _
 					it should haveNbElements 4
-				]) as SarlAgent
+				]) as SarlBehavior
 
 				a.members.get(0) => [
 					it should beCapacityUse "io.sarl.core.Logging"
