@@ -95,7 +95,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 				String line = breader.readLine();
 				while (line != null) {
 					content.append(line);
-					content.append("\n");
+					content.append(getLineSeparator());
 					line = breader.readLine();
 				}
 			}
@@ -135,9 +135,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 	 * @throws Exception if the builder cannot be created.
 	 */
 	protected final ContentAssistProcessorTestBuilder newBuilder() throws Exception {
-		final ContentAssistProcessorTestBuilder.Factory factory = getInjector().getInstance(
-				ContentAssistProcessorTestBuilder.Factory.class);
-		ContentAssistProcessorTestBuilder builder = factory.create(this);
+		ContentAssistProcessorTestBuilder builder = new ContentAssistProcessorTestBuilder(getInjectedInjector(), this);
 		String prefix = getPrefix();
 		if (prefix.length() > 0) {
 			builder = builder.appendNl(prefix);
@@ -245,7 +243,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 				if (obj != null) {
 					buf.append(obj);
 				}
-				buf.append("\n");
+				buf.append(getLineSeparator());
 			}
 		}
 		return buf.toString();

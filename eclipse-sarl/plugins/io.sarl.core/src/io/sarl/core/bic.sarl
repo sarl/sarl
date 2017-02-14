@@ -321,6 +321,10 @@ capacity Schedules {
 	 *
 	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
 	 *
+	 * <p>If this function is invoked from a {@code Behavior} and there is no provided task,
+	 * the created task will be associated to the behavior instance. It means that the task will
+	 * be automatically cancelled when the behavior instance is unregistered from the the owning agent.
+	 *
 	 * @param task the task that will run the given closure. If <code>null</code>, a new task is created.
 	 * @param delay time in milliseconds to delay the procedure execution.
 	 * @param procedure the closure to execute.
@@ -331,6 +335,10 @@ capacity Schedules {
 	/**
 	 * Create a named task that can be retrieved and schedule later.
 	 * If a task with the specified name already exists, this task is returned.
+	 *
+	 * <p>If this function is invoked from a {@code Behavior}, the created task will be associated
+	 * to the behavior instance. It means that the task will be automatically cancelled when the behavior
+	 * instance is unregistered from the the owning agent.
 	 *
 	 * @param name the name of the tash.
 	 * @return the task instance.
@@ -389,6 +397,10 @@ capacity Schedules {
 	 * </code></pre>
 	 *
 	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
+	 *
+	 * <p>If this function is invoked from a {@code Behavior} and there is no provided task,
+	 * the created task will be associated to the behavior instance. It means that the task will
+	 * be automatically cancelled when the behavior instance is unregistered from the the owning agent.
 	 *
 	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
 	 * @param period the number of milliseconds between two launches of the given procedure.

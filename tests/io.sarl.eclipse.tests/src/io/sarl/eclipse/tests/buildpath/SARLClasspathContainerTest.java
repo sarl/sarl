@@ -93,21 +93,19 @@ public class SARLClasspathContainerTest extends AbstractSarlUiTest {
 	public void getBundleDependencies_withEclipse() {
 		Iterable<String> iterable = this.container.getBundleDependencies();
 		assertNotNull(iterable);
-		assertContains(iterable,
-				"io.sarl.lang.core",
-				"javax.inject",
-				"org.eclipse.xtext.xbase.lib",
-				"com.google.guava",
-				"org.eclipse.osgi",
-				"org.eclipse.osgi.compatibility.state",
-				//
-				"io.sarl.util",
-				//
-				"io.sarl.core",
-				//
-				"aopalliance",
-				"com.google.inject",
-				"com.google.inject.multibindings");
+		assertPartlyContains(iterable,
+			"aopalliance",
+			"com.google.guava",
+			"com.google.inject",
+			"com.google.inject.multibindings",
+			"io.sarl.core",
+			"io.sarl.lang.core",
+			"io.sarl.util",
+			"javax.inject",
+			"org.eclipse.osgi",
+			"org.eclipse.osgi.compatibility.state",
+			"org.eclipse.xtext.xbase.lib"
+			);
 	}
 
 	@Test
@@ -115,7 +113,7 @@ public class SARLClasspathContainerTest extends AbstractSarlUiTest {
 	public void getBundleDependencies_withTycho() {
 		Iterable<String> iterable = this.container.getBundleDependencies();
 		assertNotNull(iterable);
-		assertContains(iterable,
+		assertPartlyContains(iterable,
 				"io.sarl.lang.core",
 				"javax.inject",
 				"org.eclipse.xtext.xbase.lib",
