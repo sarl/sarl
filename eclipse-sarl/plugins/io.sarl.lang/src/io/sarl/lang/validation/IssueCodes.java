@@ -134,6 +134,18 @@ public final class IssueCodes {
 	public static final String USED_RESERVED_SARL_ANNOTATION =
 			ISSUE_CODE_PREFIX + "use_reserved_sarl_annotation"; //$NON-NLS-1$
 
+	/**
+	 * The occurrence use is invalid because the occurrence is a read-only variable.
+	 */
+	public static final String INVALID_OCCURRENCE_READONLY_USE =
+			ISSUE_CODE_PREFIX + "invalid_occurrence_readonly_use"; //$NON-NLS-1$
+
+	/**
+	 * The occurrence use is invalid because the occurrence is a read-only variable.
+	 */
+	public static final String DISCOURAGED_OCCURRENCE_READONLY_USE =
+			ISSUE_CODE_PREFIX + "discouraged_occurrence_readonly_use"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

@@ -27,11 +27,13 @@ import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
 
-/**
+/** Issue 350: Invalid inferred return type
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see https://github.com/sarl/sarl/issues/350
  */
 @RunWith(Suite.class)
 @SuiteClasses({
@@ -90,7 +92,7 @@ public class Bug350 {
 		@TestClasspath({"io.sarl.core"})
 		public void bug350() throws Exception {
 			SarlScript mas = file(snippet);
-			validate(mas).assertNoIssues();
+			validate(mas).assertNoErrors();
 		}
 
 	}

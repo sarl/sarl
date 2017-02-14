@@ -100,6 +100,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -141,10 +142,14 @@ import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.IssueSeverities;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XFeatureCall;
+import org.eclipse.xtext.xbase.XVariableDeclaration;
+import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -2001,6 +2006,103 @@ public class SARLValidator extends AbstractSARLValidator {
 						}
 					}
 				}
+			}
+		}
+	}
+
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
+	private void checkUnmodifiableEventAccess(boolean enable1, XFeatureCall child) {
+		EObject previous = child;
+		EObject elt = child.eContainer();
+		EObject container = null;
+		while (elt != null && container == null) {
+			final EClass type = elt.eClass();
+			if (XbasePackage.Literals.XASSIGNMENT.equals(type)) {
+				final XAssignment assign = (XAssignment) elt;
+				if (previous == assign.getActualReceiver()) {
+					error(Messages.SARLValidator_2,
+							child,
+							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes.INVALID_OCCURRENCE_READONLY_USE);
+					return;
+				}
+				container = elt;
+			} else if (XbasePackage.Literals.XBINARY_OPERATION.equals(type)
+					|| XbasePackage.Literals.XUNARY_OPERATION.equals(type)
+					|| XbasePackage.Literals.XPOSTFIX_OPERATION.equals(type)) {
+				if (enable1 && getExpressionHelper().hasSideEffects((XExpression) elt)) {
+					addIssue(Messages.SARLValidator_11,
+							elt,
+							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION);
+					return;
+				}
+				container = elt;
+			} else if (elt instanceof XAbstractFeatureCall) {
+				final XAbstractFeatureCall featureCall = (XAbstractFeatureCall) elt;
+				if (featureCall.getFeature() instanceof JvmOperation && featureCall instanceof XFeatureCall) {
+					if (enable1) {
+						final XFeatureCall xfeatureCall = (XFeatureCall) featureCall;
+						final JvmOperation operation = (JvmOperation) featureCall.getFeature();
+						boolean stopCheck = false;
+						int paramIndex = 0;
+						for (final XExpression arg : xfeatureCall.getActualArguments()) {
+							if (arg == previous) {
+								final LightweightTypeReference paramType = getActualType(operation.getParameters().get(paramIndex));
+								if (!paramType.isPrimitive()) {
+									addIssue(
+											Messages.SARLValidator_12,
+											arg,
+											IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+									stopCheck = true;
+								}
+							}
+							++paramIndex;
+						}
+						if (stopCheck) {
+							return;
+						}
+					}
+					container = elt;
+				} else {
+					if (enable1 && getExpressionHelper().hasSideEffects(featureCall)) {
+						addIssue(
+								Messages.SARLValidator_13,
+								elt,
+								IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+						return;
+					}
+					previous = elt;
+					elt = elt.eContainer();
+				}
+			} else {
+				container = elt;
+			}
+		}
+		if (container instanceof XVariableDeclaration && previous instanceof XExpression) {
+			final LightweightTypeReference variableType = getActualType((XExpression) previous);
+			if (!variableType.isPrimitive()) {
+				addIssue(
+						Messages.SARLValidator_12,
+						previous,
+						IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+			}
+		}
+	}
+
+	/** Check for usage of the event functions in the behavior units.
+	 *
+	 * @param unit the unit to analyze.
+	 */
+	@Check(CheckType.EXPENSIVE)
+	public void checkUnmodifiableEventAccess(SarlBehaviorUnit unit) {
+		final boolean enable1 = !isIgnored(IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+		final XExpression root = unit.getExpression();
+		for (final XFeatureCall child : EcoreUtil2.getAllContentsOfType(root, XFeatureCall.class)) {
+			if (this.grammarAccess.getOccurrenceKeyword().equals(child.getFeature().getIdentifier())) {
+				checkUnmodifiableEventAccess(enable1, child);
 			}
 		}
 	}

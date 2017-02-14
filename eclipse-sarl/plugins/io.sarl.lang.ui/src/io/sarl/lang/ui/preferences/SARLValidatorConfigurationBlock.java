@@ -99,6 +99,15 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 				Messages.SARLValidatorConfigurationBlock_15);
 		builder.addComboBox(IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
 				Messages.SARLValidatorConfigurationBlock_16);
+		builder.addComboBox(IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE,
+				Messages.SARLValidatorConfigurationBlock_6);
+	}
+
+	@Override
+	protected void fillRestrictedApiSection(ComboBoxBuilder builder) {
+		super.fillRestrictedApiSection(builder);
+		builder.addComboBox(IssueCodes.USED_RESERVED_SARL_ANNOTATION,
+				Messages.SARLValidatorConfigurationBlock_7);
 	}
 
 	@Override

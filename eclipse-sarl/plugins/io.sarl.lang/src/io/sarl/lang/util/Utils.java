@@ -40,10 +40,12 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmFeature;
@@ -1113,6 +1115,37 @@ public final class Utils {
 			final Map<ActionPrototype, JvmOperation> operations = new HashMap<>();
 			populateInterfaceElements(type, operations, null, sarlSignatureProvider);
 			return operations.size() == 1;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns the closest {@link EObject#eContainer() container object} that is not of the requested type.
+	 *
+	 * @param element the element to start from.
+	 * @param type the unexpected type.
+	 * @param container the container.
+	 * @param directContainerChild the child of the container that is or contains the given element.
+	 * @return {@code true} if the container was found.
+	 * @since 0.5
+	 * @see EcoreUtil2#getContainerOfType(EObject, Class)
+	 */
+	public static boolean getContainerNotOfType(EObject element, Class<? extends EObject> type,
+			OutParameter<EObject> container, OutParameter<EObject> directContainerChild) {
+		EObject previous = element;
+		EObject elt = element.eContainer();
+		while (elt != null) {
+			if (!type.isInstance(elt)) {
+				if (directContainerChild != null) {
+					directContainerChild.set(previous);
+				}
+				if (container != null) {
+					container.set(elt);
+				}
+				return true;
+			}
+			previous = elt;
+			elt = elt.eContainer();
 		}
 		return false;
 	}
