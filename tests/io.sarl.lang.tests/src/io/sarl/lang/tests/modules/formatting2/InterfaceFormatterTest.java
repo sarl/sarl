@@ -74,7 +74,9 @@ public class InterfaceFormatterTest {
 
 		@Test
 		public void threeAnnotations() throws Exception {
-			String source = "@Pure@Beta\n@Hello    interface EntityX{}";
+			String source = multilineString(
+					"@Pure@Beta",
+					"@Hello    interface EntityX{}");
 			String expected = multilineString(
 					"@Pure @Beta",
 					"@Hello interface EntityX {",
@@ -196,7 +198,10 @@ public class InterfaceFormatterTest {
 
 		@Test
 		public void mlStandardComment1() throws Exception {
-			String source = "/*Hello world.\n* That's the second line.\n*/interface A{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"* That's the second line.",
+					"*/interface A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -209,7 +214,9 @@ public class InterfaceFormatterTest {
 
 		@Test
 		public void mlStandardComment2() throws Exception {
-			String source = "/*Hello world.\nThat's the second line.*/interface A{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"That's the second line.*/interface A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -248,7 +255,9 @@ public class InterfaceFormatterTest {
 
 		@Test
 		public void mlJavaComment() throws Exception {
-			String source = "/**Hello world.\nThat's the second line.*/interface A{}";
+			String source = multilineString(
+					"/**Hello world.",
+					"That's the second line.*/interface A{}");
 			String expected = multilineString(
 					"/** Hello world.",
 					" * That's the second line.",
@@ -261,7 +270,10 @@ public class InterfaceFormatterTest {
 
 		@Test
 		public void slComment() throws Exception {
-			String source = "\n//Hello world.\ninterface A{}";
+			String source = multilineString(
+					"",
+					"//Hello world.",
+					"interface A{}");
 			String expected = multilineString(
 					"// Hello world.",
 					"interface A {",

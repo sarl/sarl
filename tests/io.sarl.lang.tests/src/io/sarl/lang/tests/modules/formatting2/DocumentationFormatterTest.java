@@ -99,7 +99,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withEnclosingSymbols_noExternalText() throws Exception {
-			String source = "/*    The first\n     line    */";
+			String source = multilineString(
+					"/*    The first",
+					"     line    */");
 			String expected = multilineString(
 					"/* The first",
 					"\t * line",
@@ -109,7 +111,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withEnclosingSymbols_externalText() throws Exception {
-			String source = "    /*    The first\n     line    */";
+			String source = multilineString(
+					"    /*    The first",
+					"     line    */");
 			String expected = multilineString(
 					"    /* The first",
 					"\t * line",
@@ -119,7 +123,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withoutEnclosingSymbols() throws Exception {
-			String source = "    The first\n     line    ";
+			String source = multilineString(
+					"    The first",
+					"     line    ");
 			String expected = multilineString(
 					"/* The first",
 					"\t * line",
@@ -143,7 +149,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void sl_withoutStartSymbols_carriageReturn() throws Exception {
-			String source = "    The first     \n    line    ";
+			String source = multilineString(
+					"    The first     ",
+					"    line    ");
 			String expected = multilineString(
 					"// The first",
 					"\t// line");
@@ -152,7 +160,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void sl_withStartSymbols_carriageReturn() throws Exception {
-			String source = "    //    The first     \n    line    ";
+			String source = multilineString(
+					"    //    The first     ",
+					"    line    ");
 			String expected = multilineString(
 					"    // The first",
 					"\t// line");
@@ -233,7 +243,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withEnclosingSymbols_noExternalText() throws Exception {
-			String source = "/*    The first\n     line    */";
+			String source = multilineString(
+					"/*    The first",
+					"     line    */");
 			String expected = multilineString(
 					"/* The first",
 					" * line",
@@ -243,7 +255,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withEnclosingSymbols_externalText() throws Exception {
-			String source = "    /*    The first\n     line    */";
+			String source = multilineString(
+					"    /*    The first",
+					"     line    */");
 			String expected = multilineString(
 					"    /* The first",
 					" * line",
@@ -253,7 +267,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withoutEnclosingSymbols() throws Exception {
-			String source = "    The first\n     line    ";
+			String source = multilineString(
+					"    The first",
+					"     line    ");
 			String expected = multilineString(
 					"/* The first",
 					" * line",
@@ -277,7 +293,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void sl_withoutStartSymbols_carriageReturn() throws Exception {
-			String source = "    The first     \n    line    ";
+			String source = multilineString(
+					"    The first     ",
+					"    line    ");
 			String expected = multilineString(
 					"// The first",
 					"// line");
@@ -286,7 +304,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void sl_withStartSymbols_carriageReturn() throws Exception {
-			String source = "    //    The first     \n    line    ";
+			String source = multilineString(
+					"    //    The first     ",
+					"    line    ");
 			String expected = multilineString(
 					"    // The first",
 					"// line");
@@ -309,8 +329,14 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void sl_commentFromEcoreSerializer() throws Exception {
-			String source = "\n//TODO Auto-generated code.\n";
-			String expected = "\n// TODO Auto-generated code.\n";
+			String source = multilineString(
+					"",
+					"//TODO Auto-generated code.",
+					"");
+			String expected = multilineString(
+					"",
+					"// TODO Auto-generated code.",
+					"");
 			assertSLFormatted(source, expected);
 		}
 

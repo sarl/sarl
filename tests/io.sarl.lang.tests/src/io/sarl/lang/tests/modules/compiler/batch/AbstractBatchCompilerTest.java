@@ -114,7 +114,7 @@ public abstract class AbstractBatchCompilerTest extends AbstractSarlTest {
 			runBatchCompiler(tempDirectory, sourceDirectory, sarlcOutputDirectory, javacOutputDirectory, buildDirectory);
 			// Check result
 			File javaFile = makeFolder(sarlcOutputDirectory, "io", "sarl", "lang", "tests", "compiler", "batch", "MyTestAgent.java");
-			assertEquals(JAVA_CODE, Strings.concat("\n", Files.readLines(javaFile, Charset.defaultCharset())));
+			assertEquals(JAVA_CODE, Strings.concat(getLineSeparator(), Files.readLines(javaFile, Charset.defaultCharset())));
 		} finally {
 			FileSystem.delete(tempDirectory);
 		}

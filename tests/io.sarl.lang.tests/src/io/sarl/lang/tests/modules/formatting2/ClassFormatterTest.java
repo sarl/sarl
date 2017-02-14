@@ -74,7 +74,9 @@ public class ClassFormatterTest {
 	
 		@Test
 		public void threeAnnotations() throws Exception {
-			String source = "@Pure@Beta\n@Hello    class EntityX{}";
+			String source = multilineString(
+					"@Pure@Beta",
+					"@Hello    class EntityX{}");
 			String expected = multilineString(
 					"@Pure @Beta",
 					"@Hello class EntityX {",
@@ -206,7 +208,10 @@ public class ClassFormatterTest {
 	
 		@Test
 		public void mlStandardComment1() throws Exception {
-			String source = "/*Hello world.\n* That's the second line.\n*/class A{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"* That's the second line.",
+					"*/class A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -219,7 +224,9 @@ public class ClassFormatterTest {
 	
 		@Test
 		public void mlStandardComment2() throws Exception {
-			String source = "/*Hello world.\nThat's the second line.*/class A{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"That's the second line.*/class A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -258,7 +265,12 @@ public class ClassFormatterTest {
 	
 		@Test
 		public void mlStandardComment5() throws Exception {
-			String source = "class X {}\n\n/*Hello world.\n* That's the second line.\n*/class A{}";
+			String source = multilineString(
+					"class X {}",
+					"",
+					"/*Hello world.",
+					"* That's the second line.",
+					"*/class A{}");
 			String expected = multilineString(
 					"class X {",
 					"}",
@@ -273,7 +285,9 @@ public class ClassFormatterTest {
 
 		@Test
 		public void mlJavaComment() throws Exception {
-			String source = "/**Hello world.\nThat's the second line.*/class A{}";
+			String source = multilineString(
+					"/**Hello world.",
+					"That's the second line.*/class A{}");
 			String expected = multilineString(
 					"/** Hello world.",
 					" * That's the second line.",
@@ -286,7 +300,10 @@ public class ClassFormatterTest {
 	
 		@Test
 		public void slComment() throws Exception {
-			String source = "\n//Hello world.\nclass A{}";
+			String source = multilineString(
+					"",
+					"//Hello world.",
+					"class A{}");
 			String expected = multilineString(
 					"// Hello world.",
 					"class A {",

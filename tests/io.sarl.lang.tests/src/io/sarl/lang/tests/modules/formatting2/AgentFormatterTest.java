@@ -74,7 +74,9 @@ public class AgentFormatterTest {
 	
 		@Test
 		public void threeAnnotations() throws Exception {
-			String source = "@Pure@Beta\n@Hello    agent EntityX{}";
+			String source = multilineString(
+					"@Pure@Beta",
+					"@Hello    agent EntityX{}");
 			String expected = multilineString(
 					"@Pure @Beta",
 					"@Hello agent EntityX {",
@@ -126,7 +128,10 @@ public class AgentFormatterTest {
 	
 		@Test
 		public void mlStandardComment1() throws Exception {
-			String source = "/*Hello world.\n* That's the second line.\n*/agent A{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"* That's the second line.",
+					"*/agent A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -139,7 +144,9 @@ public class AgentFormatterTest {
 	
 		@Test
 		public void mlStandardComment2() throws Exception {
-			String source = "/*Hello world.\nThat's the second line.*/agent A{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"That's the second line.*/agent A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -202,7 +209,9 @@ public class AgentFormatterTest {
 	
 		@Test
 		public void mlJavaComment() throws Exception {
-			String source = "/**Hello world.\nThat's the second line.*/agent A{}";
+			String source = multilineString(
+					"/**Hello world.",
+					"That's the second line.*/agent A{}");
 			String expected = multilineString(
 					"/** Hello world.",
 					" * That's the second line.",
@@ -215,7 +224,10 @@ public class AgentFormatterTest {
 	
 		@Test
 		public void slComment() throws Exception {
-			String source = "\n//Hello world.\nagent A{}";
+			String source = multilineString(
+					"",
+					"//Hello world.",
+					"agent A{}");
 			String expected = multilineString(
 					"// Hello world.",
 					"agent A {",

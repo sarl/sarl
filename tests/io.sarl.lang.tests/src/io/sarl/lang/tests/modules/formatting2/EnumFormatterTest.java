@@ -77,7 +77,9 @@ public class EnumFormatterTest {
 
 		@Test
 		public void threeAnnotations() throws Exception {
-			String source = "@Pure@Beta\n@Hello    enum EntityX{CONST}";
+			String source = multilineString(
+					"@Pure@Beta",
+					"@Hello    enum EntityX{CONST}");
 			String expected = multilineString(
 					"@Pure @Beta",
 					"@Hello enum EntityX {",
@@ -124,7 +126,10 @@ public class EnumFormatterTest {
 
 		@Test
 		public void mlStandardComment1() throws Exception {
-			String source = "/*Hello world.\n* That's the second line.\n*/enum A{CONST1}";
+			String source = multilineString(
+					"/*Hello world.",
+					"* That's the second line.",
+					"*/enum A{CONST1}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -138,7 +143,9 @@ public class EnumFormatterTest {
 
 		@Test
 		public void mlStandardComment2() throws Exception {
-			String source = "/*Hello world.\nThat's the second line.*/enum A{CONST1}";
+			String source = multilineString(
+					"/*Hello world.",
+					"That's the second line.*/enum A{CONST1}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -180,7 +187,9 @@ public class EnumFormatterTest {
 
 		@Test
 		public void mlJavaComment() throws Exception {
-			String source = "/**Hello world.\nThat's the second line.*/enum A{CONST1}";
+			String source = multilineString(
+					"/**Hello world.",
+					"That's the second line.*/enum A{CONST1}");
 			String expected = multilineString(
 					"/** Hello world.",
 					" * That's the second line.",
@@ -194,7 +203,10 @@ public class EnumFormatterTest {
 
 		@Test
 		public void slComment() throws Exception {
-			String source = "\n//Hello world.\nenum A{CONST1}";
+			String source = multilineString(
+					"",
+					"//Hello world.",
+					"enum A{CONST1}");
 			String expected = multilineString(
 					"// Hello world.",
 					"enum A {",

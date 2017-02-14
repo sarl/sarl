@@ -44,7 +44,7 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 
 	@Inject
 	private FormatterFacade facade;
-	
+
 	@Inject
 	private IResourceFactory resourceFactory;
 
@@ -90,7 +90,10 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 
 	@Test
 	public void formatString2() {
-		String source = "/*Top comment.\nSecond line.\n    Third line.*/agent Myagent {}";
+		String source = multilineString(
+				"/*Top comment.",
+				"Second line.",
+				"    Third line.*/agent Myagent {}");
 		String expected = multilineString(
 				"/* Top comment.",
 				"   Second line.",
@@ -140,7 +143,7 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 		}
 		assertEquals(expected, actual);
 	}
-	
+
 	@Test
 	public void formatResource0() throws IOException {
 		String source = "event E1 { var i : int }"
@@ -166,5 +169,5 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 				"");
 		assertResourceContentFormat(source, expected);
 	}
-	 
+
 }

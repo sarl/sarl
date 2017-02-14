@@ -263,7 +263,10 @@ public class ActionFormatterTest {
 
 		@Test
 		public void mlStandardComment1() throws Exception {
-			String source = unformattedCode("/*Hello world.\n* That's the second line.\n*/def myfct");
+			String source = unformattedCode(multilineString(
+					"/*Hello world.",
+					"* That's the second line.",
+					"*/def myfct"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
@@ -274,7 +277,9 @@ public class ActionFormatterTest {
 
 		@Test
 		public void mlStandardComment2() throws Exception {
-			String source = unformattedCode("/*Hello world.\nThat's the second line.*/def myfct");
+			String source = unformattedCode(multilineString(
+					"/*Hello world.",
+					"That's the second line.*/def myfct"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
@@ -285,7 +290,9 @@ public class ActionFormatterTest {
 
 		@Test
 		public void mlStandardComment3() throws Exception {
-			String source = unformattedCode("/*Hello world.\nThat's the second line.*/def myfct /*Second comment.*/def myfct2");
+			String source = unformattedCode(multilineString(
+					"/*Hello world.",
+					"That's the second line.*/def myfct /*Second comment.*/def myfct2"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
@@ -299,7 +306,9 @@ public class ActionFormatterTest {
 
 		@Test
 		public void mlStandardComment4() throws Exception {
-			String source = unformattedCode("/*Hello world.\nThat's the second line.*/def myfct /*Second comment.*/");
+			String source = unformattedCode(multilineString(
+					"/*Hello world.",
+					"That's the second line.*/def myfct /*Second comment.*/"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
@@ -312,7 +321,9 @@ public class ActionFormatterTest {
 
 		@Test
 		public void mlJavaComment() throws Exception {
-			String source = unformattedCode("/**Hello world.\nThat's the second line.*/def myfct");
+			String source = unformattedCode(multilineString(
+					"/**Hello world.",
+					"That's the second line.*/def myfct"));
 			String expected = formattedCode(
 					"\t/** Hello world.",
 					"\t * That's the second line.",
@@ -323,7 +334,10 @@ public class ActionFormatterTest {
 
 		@Test
 		public void slComment1() throws Exception {
-			String source = unformattedCode("\n//Hello world.\ndef myfct");
+			String source = unformattedCode(multilineString(
+					"",
+					"//Hello world.",
+					"def myfct"));
 			String expected = formattedCode(
 					"\t// Hello world.",
 					"\tdef myfct");
@@ -332,7 +346,10 @@ public class ActionFormatterTest {
 
 		@Test
 		public void slComment2() throws Exception {
-			String source = unformattedCode("\n//      Hello world.\ndef myfct");
+			String source = unformattedCode(multilineString(
+					"",
+					"//      Hello world.",
+					"def myfct"));
 			String expected = formattedCode(
 					"\t// Hello world.",
 					"\tdef myfct");
@@ -341,7 +358,10 @@ public class ActionFormatterTest {
 
 		@Test
 		public void slComment3() throws Exception {
-			String source = unformattedCode("\n// Hello world.\ndef myfct");
+			String source = unformattedCode(multilineString(
+					"",
+					"// Hello world.",
+					"def myfct"));
 			String expected = formattedCode(
 					"\t// Hello world.",
 					"\tdef myfct");
@@ -350,7 +370,12 @@ public class ActionFormatterTest {
 
 		@Test
 		public void slComment4() throws Exception {
-			String source = unformattedCode("\n// Hello world.\ndef myfct\n//Second comment\n");
+			String source = unformattedCode(multilineString(
+					"",
+					"// Hello world.",
+					"def myfct",
+					"//Second comment",
+					""));
 			String expected = formattedCode(
 					"\t// Hello world.",
 					"\tdef myfct",
@@ -360,7 +385,12 @@ public class ActionFormatterTest {
 
 		@Test
 		public void slComment5() throws Exception {
-			String source = unformattedCode("\n// Hello world.\ndef myfct\n//Second comment\ndef myfct2");
+			String source = unformattedCode(multilineString(
+					"",
+					"// Hello world.",
+					"def myfct",
+					"//Second comment",
+					"def myfct2"));
 			String expected = formattedCode(
 					"\t// Hello world.",
 					"\tdef myfct",

@@ -124,7 +124,9 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void threeAnnotations() throws Exception {
-			String source = unformattedCode("@Pure@Beta\n@Hello var xxx:int=45");
+			String source = unformattedCode(multilineString(
+					"@Pure@Beta",
+					"@Hello var xxx:int=45"));
 			String expected = formattedCode(
 					"	@Pure @Beta",
 					"	@Hello var xxx : int = 45");
@@ -147,7 +149,10 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void mlStandardComment1() throws Exception {
-			String source = unformattedCode("/*Hello world.\n* That's the second line.\n*/var xxx:int=45");
+			String source = unformattedCode(multilineString(
+					"/*Hello world.",
+					"* That's the second line.",
+					"*/var xxx:int=45"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
@@ -158,7 +163,9 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void mlStandardComment2() throws Exception {
-			String source = unformattedCode("/*Hello world.\nThat's the second line.*/var xxx:int=45");
+			String source = unformattedCode(multilineString(
+					"/*Hello world.",
+					"That's the second line.*/var xxx:int=45"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
@@ -169,7 +176,9 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void mlStandardComment3() throws Exception {
-			String source = unformattedCode("/*Hello world.\nThat's the second line.*/var xxx:int=45 /*Second comment.*/var yyy:int");
+			String source = unformattedCode(multilineString(
+					"/*Hello world.",
+					"That's the second line.*/var xxx:int=45 /*Second comment.*/var yyy:int"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
@@ -183,7 +192,9 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void mlStandardComment4() throws Exception {
-			String source = unformattedCode("/*Hello world.\nThat's the second line.*/var xxx:int=45/*Second comment.*/");
+			String source = unformattedCode(multilineString(
+					"/*Hello world.",
+					"That's the second line.*/var xxx:int=45/*Second comment.*/"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
@@ -196,7 +207,9 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void mlJavaComment() throws Exception {
-			String source = unformattedCode("/**Hello world.\nThat's the second line.*/var xxx:int=45");
+			String source = unformattedCode(multilineString(
+					"/**Hello world.",
+					"That's the second line.*/var xxx:int=45"));
 			String expected = formattedCode(
 					"\t/** Hello world.",
 					"\t * That's the second line.",
@@ -207,7 +220,10 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void slComment1() throws Exception {
-			String source = unformattedCode("\n//Hello world.\nvar xxx:int=45");
+			String source = unformattedCode(multilineString(
+					"",
+					"//Hello world.",
+					"var xxx:int=45"));
 			String expected = formattedCode(
 					"\t// Hello world.",
 					"\tvar xxx : int = 45");
@@ -216,7 +232,10 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void slComment2() throws Exception {
-			String source = unformattedCode("\n//      Hello world.\nvar xxx:int=45");
+			String source = unformattedCode(multilineString(
+					"",
+					"//      Hello world.",
+					"var xxx:int=45"));
 			String expected = formattedCode(
 					"\t// Hello world.",
 					"\tvar xxx : int = 45");
@@ -225,7 +244,10 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void slComment3() throws Exception {
-			String source = unformattedCode("\n// Hello world.\nvar xxx:int=45");
+			String source = unformattedCode(multilineString(
+					"",
+					"// Hello world.",
+					"var xxx:int=45"));
 			String expected = formattedCode(
 					"\t// Hello world.",
 					"\tvar xxx : int = 45");
@@ -234,7 +256,12 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void slComment4() throws Exception {
-			String source = unformattedCode("\n// Hello world.\nvar xxx:int=45\n//Second comment\n");
+			String source = unformattedCode(multilineString(
+					"",
+					"// Hello world.",
+					"var xxx:int=45",
+					"//Second comment",
+					""));
 			String expected = formattedCode(
 					"\t// Hello world.",
 					"\tvar xxx : int = 45",
@@ -244,7 +271,12 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void slComment5() throws Exception {
-			String source = unformattedCode("\n// Hello world.\nvar xxx:int=45\n//Second comment\nvar yyy:int=67");
+			String source = unformattedCode(multilineString(
+					"",
+					"// Hello world.",
+					"var xxx:int=45",
+					"//Second comment",
+					"var yyy:int=67"));
 			String expected = formattedCode(
 					"\t// Hello world.",
 					"\tvar xxx : int = 45",

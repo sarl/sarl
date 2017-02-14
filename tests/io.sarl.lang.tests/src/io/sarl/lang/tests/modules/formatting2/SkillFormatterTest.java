@@ -74,7 +74,9 @@ public class SkillFormatterTest {
 
 		@Test
 		public void threeAnnotations() throws Exception {
-			String source = "@Pure@Beta\n@Hello    skill EntityX{}";
+			String source = multilineString(
+					"@Pure@Beta",
+					"@Hello    skill EntityX{}");
 			String expected = multilineString(
 					"@Pure @Beta",
 					"@Hello skill EntityX {",
@@ -146,7 +148,10 @@ public class SkillFormatterTest {
 
 		@Test
 		public void mlStandardComment1() throws Exception {
-			String source = "/*Hello world.\n* That's the second line.\n*/skill A implements B{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"* That's the second line.",
+					"*/skill A implements B{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -159,7 +164,9 @@ public class SkillFormatterTest {
 
 		@Test
 		public void mlStandardComment2() throws Exception {
-			String source = "/*Hello world.\nThat's the second line.*/skill A implements B{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"That's the second line.*/skill A implements B{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -198,7 +205,9 @@ public class SkillFormatterTest {
 
 		@Test
 		public void mlJavaComment() throws Exception {
-			String source = "/**Hello world.\nThat's the second line.*/skill A implements B{}";
+			String source = multilineString(
+					"/**Hello world.",
+					"That's the second line.*/skill A implements B{}");
 			String expected = multilineString(
 					"/** Hello world.",
 					" * That's the second line.",
@@ -211,7 +220,10 @@ public class SkillFormatterTest {
 
 		@Test
 		public void slComment() throws Exception {
-			String source = "\n//Hello world.\nskill A implements B{}";
+			String source = multilineString(
+					"",
+					"//Hello world.",
+					"skill A implements B{}");
 			String expected = multilineString(
 					"// Hello world.",
 					"skill A implements B {",

@@ -74,7 +74,9 @@ public class EventFormatterTest {
 
 		@Test
 		public void threeAnnotations() throws Exception {
-			String source = "@Pure@Beta\n@Hello    event EntityX{}";
+			String source = multilineString(
+					"@Pure@Beta",
+					"@Hello    event EntityX{}");
 			String expected = multilineString(
 					"@Pure @Beta",
 					"@Hello event EntityX {",
@@ -126,7 +128,10 @@ public class EventFormatterTest {
 
 		@Test
 		public void mlStandardComment1() throws Exception {
-			String source = "/*Hello world.\n* That's the second line.\n*/event A";
+			String source = multilineString(
+					"/*Hello world.",
+					"* That's the second line.",
+					"*/event A");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -138,7 +143,9 @@ public class EventFormatterTest {
 
 		@Test
 		public void mlStandardComment2() throws Exception {
-			String source = "/*Hello world.\nThat's the second line.*/event A";
+			String source = multilineString(
+					"/*Hello world.",
+					"That's the second line.*/event A");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -175,7 +182,9 @@ public class EventFormatterTest {
 
 		@Test
 		public void mlJavaComment() throws Exception {
-			String source = "/**Hello world.\nThat's the second line.*/event A";
+			String source = multilineString(
+					"/**Hello world.",
+					"That's the second line.*/event A");
 			String expected = multilineString(
 					"/** Hello world.",
 					" * That's the second line.",
@@ -187,7 +196,10 @@ public class EventFormatterTest {
 
 		@Test
 		public void slComment() throws Exception {
-			String source = "\n//Hello world.\nevent A";
+			String source = multilineString(
+					"",
+					"//Hello world.",
+					"event A");
 			String expected = multilineString(
 					"// Hello world.",
 					"event A",

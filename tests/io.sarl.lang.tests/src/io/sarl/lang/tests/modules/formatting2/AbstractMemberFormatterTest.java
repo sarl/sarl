@@ -71,7 +71,7 @@ public abstract class AbstractMemberFormatterTest extends AbstractSarlTest {
 	/** Replies the formatted postfix code.
 	 */
 	protected String formattedPostfix() {
-		return "}\n";
+		return "}" + getLineSeparator();
 	}
 	
 	/** Build an unformatted code.
@@ -89,7 +89,7 @@ public abstract class AbstractMemberFormatterTest extends AbstractSarlTest {
 	 * @return the formatted code with the prefix and postfix.
 	 */
 	protected String formattedCode(String... lines) {
-		return formattedPrefix() + "\n" + multilineString(lines) + "\n" + formattedPostfix();
+		return formattedPrefix() + getLineSeparator() + multilineString(lines) + getLineSeparator() + formattedPostfix();
 	}
 
 }

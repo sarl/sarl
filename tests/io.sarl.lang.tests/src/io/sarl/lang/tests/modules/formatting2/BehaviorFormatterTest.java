@@ -74,7 +74,9 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void threeAnnotations() throws Exception {
-			String source = "@Pure@Beta\n@Hello    behavior EntityX{}";
+			String source = multilineString(
+					"@Pure@Beta",
+					"@Hello    behavior EntityX{}");
 			String expected = multilineString(
 					"@Pure @Beta",
 					"@Hello behavior EntityX {",
@@ -126,7 +128,10 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void mlStandardComment1() throws Exception {
-			String source = "/*Hello world.\n* That's the second line.\n*/behavior A{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"* That's the second line.",
+					"*/behavior A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -139,7 +144,9 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void mlStandardComment2() throws Exception {
-			String source = "/*Hello world.\nThat's the second line.*/behavior A{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"That's the second line.*/behavior A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -178,7 +185,9 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void mlJavaComment() throws Exception {
-			String source = "/**Hello world.\nThat's the second line.*/behavior A{}";
+			String source = multilineString(
+					"/**Hello world.",
+					"That's the second line.*/behavior A{}");
 			String expected = multilineString(
 					"/** Hello world.",
 					" * That's the second line.",
@@ -191,7 +200,10 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void slComment() throws Exception {
-			String source = "\n//Hello world.\nbehavior A{}";
+			String source = multilineString(
+					"",
+					"//Hello world.",
+					"behavior A{}");
 			String expected = multilineString(
 					"// Hello world.",
 					"behavior A {",
