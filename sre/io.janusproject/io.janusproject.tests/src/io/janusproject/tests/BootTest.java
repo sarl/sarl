@@ -1023,8 +1023,8 @@ public class BootTest {
 			ArgumentCaptor<Integer> length = ArgumentCaptor.forClass(Integer.class);
 			verify(this.logger, times(1)).write(array.capture(), offset.capture(), length.capture());
 			final String message = new String(array.getValue(), offset.getValue(), length.getValue());
-			assertEquals("Janus: " + JanusVersion.JANUS_RELEASE_VERSION + "\nSARL specification: "
-					+ SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\n", message);
+			assertEquals("Janus: " + JanusVersion.JANUS_RELEASE_VERSION + getLineSeparator() + "SARL specification: "
+					+ SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + getLineSeparator(), message);
 			verify(this.logger, times(1)).flush();
 			verify(this.logger, times(1)).close();
 			verifyNoMoreInteractions(this.logger);
