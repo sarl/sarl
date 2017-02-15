@@ -78,6 +78,25 @@
 						</filter>
 
 					</filters>
+					<!-- The following dependency-resolution is added for obtaining a runnable
+					     product on MacOS  -->
+					<dependency-resolution>
+						<extraRequirements>
+							<!-- to get the org.eclipse.osgi.compatibility.state plugin iff 
+							the targeted Eclipse version (e.g., Luna) has it
+							(backwards compatible with kepler and previous versions) -->
+							<requirement>
+								<type>eclipse-feature</type>
+								<id>org.eclipse.rcp</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-feature</type>
+								<id>org.eclipse.jdt</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+						</extraRequirements>
+					</dependency-resolution>
 				</configuration>
 			</plugin>
 		</plugins>
