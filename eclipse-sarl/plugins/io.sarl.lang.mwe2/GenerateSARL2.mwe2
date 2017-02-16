@@ -203,6 +203,7 @@ Workflow {
 			grammarKeywordAccess = auto-inject {
 				dependencyGrammarInheritance = true
 				
+    			literal = "void"
     			literal = "true"
     			literal = "false"
     			literal = "null"
@@ -656,6 +657,18 @@ Workflow {
     			ui = {
     				bind = "org.eclipse.xtend.ide.hover.XtendHoverSerializer"
     				to = "io.sarl.lang.ui.hover.SARLHoverSerializer"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.xbase.ui.hover.XbaseDeclarativeHoverSignatureProvider"
+    				to = "io.sarl.lang.ui.hover.SARLHoverSignatureProvider"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.xbase.ui.hover.HoverUiStrings"
+    				to = "io.sarl.lang.ui.hover.SARLHoverUIStrings"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.xbase.validation.UIStrings"
+    				to = "io.sarl.lang.ui.labeling.SARLUIStrings"
    				}
 
     			both = {

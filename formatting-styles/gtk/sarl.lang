@@ -165,6 +165,7 @@
 			<keyword>occurrence</keyword>
 			<keyword>this</keyword>
 			<keyword>true</keyword>
+			<keyword>void</keyword>
 		</context>
 		<context id="annotations" style-ref="annotation">
 			<match>\@\%{sarl-identifier}(\.\%{sarl-identifier})*</match>

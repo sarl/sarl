@@ -775,6 +775,15 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getAOPMemberAccess().getUsesKeyword_2_1_1().getValue();
 	}
 
+	private static final String VOID = "void";
+
+	/** Keyword: {@code void}.
+	 * Source: io.sarl.lang.SARL
+	 */
+	public String getVoidKeyword() {
+		return VOID;
+	}
+
 	private static final String THIS = "this";
 
 	/** Keyword: {@code this}.
@@ -870,6 +879,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getValKeyword());
 			kws.add(getNewKeyword());
 			kws.add(getStrictfpKeyword());
+			kws.add(getVoidKeyword());
 			kws.add(getTypeofKeyword());
 			kws.add(getPackageKeyword());
 			kws.add(getOccurrenceKeyword());

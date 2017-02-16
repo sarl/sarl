@@ -55,7 +55,10 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.util.Exceptions;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
 import org.eclipse.xtext.util.PolymorphicDispatcher.ErrorHandler;
+import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
+import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
+import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
 import org.eclipse.xtext.xbase.validation.UIStrings;
@@ -77,6 +80,7 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
 import io.sarl.lang.ui.images.SARLImages;
 
@@ -121,6 +125,9 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	@Inject
 	private CommonTypeComputationServices services;
+
+	@Inject
+	private SARLGrammarKeywordAccess keywords;
 
 	/**
 	 * @param delegate - the original provider.
@@ -536,6 +543,17 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 			text.append(txt, StyledString.DECORATIONS_STYLER);
 		}
 		return text;
+	}
+
+	@Override
+	protected String text(XVariableDeclaration variableDeclaration) {
+		final IResolvedTypes resolvedTypes = getTypeResolver().resolveTypes(variableDeclaration);
+		final LightweightTypeReference type = resolvedTypes.getActualType((JvmIdentifiableElement) variableDeclaration);
+		if (type != null) {
+			return variableDeclaration.getName() + " " + this.keywords.getColonKeyword() //$NON-NLS-1$
+				+ " " + type.getHumanReadableName(); //$NON-NLS-1$
+		}
+		return variableDeclaration.getName();
 	}
 
 	private boolean isAssignableTo(JvmGenericType source, Class<?> target, IJvmTypeProvider jvmTypeProvider) {
