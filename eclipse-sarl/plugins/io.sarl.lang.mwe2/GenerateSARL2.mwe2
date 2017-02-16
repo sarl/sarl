@@ -653,7 +653,10 @@ Workflow {
     				bind = "org.eclipse.xtext.ui.editor.model.IResourceForEditorInputFactory"
     				to = "org.eclipse.xtext.xbase.ui.editor.XbaseResourceForEditorInputFactory"
    				}
-   				
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.hover.XtendHoverSerializer"
+    				to = "io.sarl.lang.ui.hover.SARLHoverSerializer"
+   				}
 
     			both = {
     				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"
