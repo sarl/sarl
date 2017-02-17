@@ -70,7 +70,7 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 	public void createPageControls(Composite parent) {
 		createSuperClassControls(parent, COLUMNS);
 		createSeparator(parent, COLUMNS);
-		createMethodStubControls(parent, COLUMNS, true, true, true);
+		createMethodStubControls(parent, COLUMNS, true, true, true, false);
 	}
 
 	@Override
@@ -104,11 +104,9 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 					getSuperClass());
 		}
 		mon.worked(2);
-		if (isCreateStandardEventHandlers()) {
-			createStandardSARLEventTemplates(Messages.NewSarlAgentWizardPage_3,
-					(name) -> agent.addSarlBehaviorUnit(name),
-					(name) -> agent.addSarlCapacityUses(name));
-		}
+		createStandardSARLEventTemplates(Messages.NewSarlAgentWizardPage_3,
+				(name) -> agent.addSarlBehaviorUnit(name),
+				(name) -> agent.addSarlCapacityUses(name));
 		mon.worked(3);
 		scriptBuilder.build(appender);
 		mon.done();

@@ -43,7 +43,10 @@ public class Messages extends NLS {
 	public static String AbstractNewSarlElementWizardPage_15;
 	public static String AbstractNewSarlElementWizardPage_16;
 	public static String AbstractNewSarlElementWizardPage_17;
+	public static String AbstractNewSarlElementWizardPage_18;
+	public static String AbstractNewSarlElementWizardPage_19;
 	public static String AbstractNewSarlElementWizardPage_2;
+	public static String AbstractNewSarlElementWizardPage_20;
 	public static String AbstractNewSarlElementWizardPage_3;
 	public static String AbstractNewSarlElementWizardPage_4;
 	public static String AbstractNewSarlElementWizardPage_5;

@@ -104,6 +104,7 @@ import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlBehaviorUnitBuilder;
 import io.sarl.lang.formatting2.FormatterFacade;
 
@@ -162,6 +163,14 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected static final String LOGGING_CAPACITY_NAME = "io.sarl.core.Logging"; //$NON-NLS-1$
 
+	/** Name of the SARL skill install function.
+	 */
+	protected static final String INSTALL_SKILL_NAME = "install"; //$NON-NLS-1$
+
+	/** Name of the SARL skill uninstall function.
+	 */
+	protected static final String UNINSTALL_SKILL_NAME = "uninstall"; //$NON-NLS-1$
+
 	private static final int STEPS = 8;
 
 	private static final String SETTINGS_CREATECONSTR = "create_constructor"; //$NON-NLS-1$
@@ -169,6 +178,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	private static final String SETTINGS_CREATEUNIMPLEMENTED = "create_unimplemented"; //$NON-NLS-1$
 
 	private static final String SETTINGS_GENERATEEVENTHANDLERS = "generate_event_handlers"; //$NON-NLS-1$
+
+	private static final String SETTINGS_GENERATELIFECYCLEFUNCTIONS = "generate_lifecycle_functions"; //$NON-NLS-1$
 
 	/** A builder of code.
 	 */
@@ -203,9 +214,11 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	private boolean isConstructorCreationEnabled;
 
-	private boolean isInheritedCreationEnabled_;
+	private boolean isInheritedCreationEnabled;
 
 	private boolean isDefaultEventGenerated;
+
+	private boolean isDefaultLifecycleFunctionsGenerated;
 
 	@Inject
 	private FormatterFacade formatterFacade;
@@ -922,6 +935,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		boolean createConstructors = false;
 		boolean createUnimplemented = true;
 		boolean createEventHandlers = true;
+		boolean createLifecycleFunctions = true;
 		final IDialogSettings dialogSettings = getDialogSettings();
 		if (dialogSettings != null) {
 			final IDialogSettings section = dialogSettings.getSection(getName());
@@ -929,9 +943,11 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				createConstructors = section.getBoolean(SETTINGS_CREATECONSTR);
 				createUnimplemented = section.getBoolean(SETTINGS_CREATEUNIMPLEMENTED);
 				createEventHandlers = section.getBoolean(SETTINGS_GENERATEEVENTHANDLERS);
+				createLifecycleFunctions = section.getBoolean(SETTINGS_GENERATELIFECYCLEFUNCTIONS);
 			}
 		}
-		setMethodStubSelection(createConstructors, createUnimplemented, createEventHandlers, true);
+		setMethodStubSelection(createConstructors, createUnimplemented, createEventHandlers,
+				createLifecycleFunctions, true);
 	}
 
 	/** Save the settings of the dialog box.
@@ -946,6 +962,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			section.put(SETTINGS_CREATECONSTR, isCreateConstructors());
 			section.put(SETTINGS_CREATEUNIMPLEMENTED, isCreateInherited());
 			section.put(SETTINGS_GENERATEEVENTHANDLERS, isCreateStandardEventHandlers());
+			section.put(SETTINGS_GENERATELIFECYCLEFUNCTIONS, isCreateStandardLifecycleFunctions());
 		}
 	}
 
@@ -967,61 +984,34 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param enableConstructors - indicates if the constructor creation is enable.
 	 * @param enableInherited - indicates if the inherited operation creation is enable.
 	 * @param defaultEvents - indicates if the default events will be generated.
+	 * @param lifecycleFunctions - indicates if the default lifecycle functions will be generated.
 	 */
 	protected void createMethodStubControls(Composite composite, int columns,
-			boolean enableConstructors, boolean enableInherited, boolean defaultEvents) {
+			boolean enableConstructors, boolean enableInherited, boolean defaultEvents,
+			boolean lifecycleFunctions) {
 		this.isConstructorCreationEnabled = enableConstructors;
-		this.isInheritedCreationEnabled_ = enableInherited;
+		this.isInheritedCreationEnabled = enableInherited;
 		this.isDefaultEventGenerated = defaultEvents;
-		final String[] buttonNames;
+		this.isDefaultLifecycleFunctionsGenerated = lifecycleFunctions;
+		final List<String> nameList = new ArrayList<>(4);
 		if (enableConstructors) {
-			if (enableInherited) {
-				if (defaultEvents) {
-					buttonNames = new String[] {
-						Messages.AbstractNewSarlElementWizardPage_0,
-						Messages.AbstractNewSarlElementWizardPage_1,
-						Messages.AbstractNewSarlElementWizardPage_17,
-					};
-				} else {
-					buttonNames = new String[] {
-						Messages.AbstractNewSarlElementWizardPage_0,
-						Messages.AbstractNewSarlElementWizardPage_1,
-					};
-				}
-			} else {
-				if (defaultEvents) {
-					buttonNames = new String[] {
-						Messages.AbstractNewSarlElementWizardPage_0,
-						Messages.AbstractNewSarlElementWizardPage_17,
-					};
-				} else {
-					buttonNames = new String[] {
-						Messages.AbstractNewSarlElementWizardPage_0,
-					};
-				}
-			}
-		} else {
-			if (enableInherited) {
-				if (defaultEvents) {
-					buttonNames = new String[] {
-						Messages.AbstractNewSarlElementWizardPage_1,
-						Messages.AbstractNewSarlElementWizardPage_17,
-					};
-				} else {
-					buttonNames = new String[] {
-						Messages.AbstractNewSarlElementWizardPage_1,
-					};
-				}
-			} else {
-				if (defaultEvents) {
-					buttonNames = new String[] {
-						Messages.AbstractNewSarlElementWizardPage_17,
-					};
-				} else {
-					return;
-				}
-			}
+			nameList.add(Messages.AbstractNewSarlElementWizardPage_0);
 		}
+		if (enableInherited) {
+			nameList.add(Messages.AbstractNewSarlElementWizardPage_1);
+		}
+		if (defaultEvents) {
+			nameList.add(Messages.AbstractNewSarlElementWizardPage_17);
+		}
+		if (lifecycleFunctions) {
+			nameList.add(Messages.AbstractNewSarlElementWizardPage_18);
+		}
+		if (nameList.isEmpty()) {
+			return;
+		}
+		final String[] buttonNames = new String[nameList.size()];
+		nameList.toArray(buttonNames);
+
 		this.methodStubsButtons = new SelectionButtonDialogFieldGroup(SWT.CHECK, buttonNames, 1);
 		this.methodStubsButtons.setLabelText(Messages.AbstractNewSarlElementWizardPage_2);
 
@@ -1054,7 +1044,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (this.isConstructorCreationEnabled) {
 			++idx;
 		}
-		return this.isInheritedCreationEnabled_ && this.methodStubsButtons.isSelected(idx);
+		return this.isInheritedCreationEnabled && this.methodStubsButtons.isSelected(idx);
 	}
 
 	/**
@@ -1068,10 +1058,30 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		if (this.isConstructorCreationEnabled) {
 			++idx;
 		}
-		if (this.isInheritedCreationEnabled_) {
+		if (this.isInheritedCreationEnabled) {
 			++idx;
 		}
 		return this.isDefaultEventGenerated && this.methodStubsButtons.isSelected(idx);
+	}
+
+	/**
+	 * Returns the current selection state of the 'Create standard lifecycle functions'
+	 * checkbox.
+	 *
+	 * @return the selection state of the 'Create standard lifecycle functions' checkbox
+	 */
+	protected boolean isCreateStandardLifecycleFunctions() {
+		int idx = 0;
+		if (this.isConstructorCreationEnabled) {
+			++idx;
+		}
+		if (this.isInheritedCreationEnabled) {
+			++idx;
+		}
+		if (this.isDefaultEventGenerated) {
+			++idx;
+		}
+		return this.isDefaultLifecycleFunctionsGenerated && this.methodStubsButtons.isSelected(idx);
 	}
 
 	/**
@@ -1080,22 +1090,28 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param createConstructors initial selection state of the 'Create Constructors' checkbox.
 	 * @param createInherited initial selection state of the 'Create inherited abstract methods' checkbox.
 	 * @param createEventHandlers initial selection state of the 'Create standard event handlers' checkbox.
+	 * @param createLifecycleFunctions initial selection state of the 'Create standard lifecycle functions' checkbox.
 	 * @param canBeModified if <code>true</code> the method stub checkboxes can be changed by
 	 *     the user. If <code>false</code> the buttons are "read-only"
 	 */
-	protected void setMethodStubSelection(boolean createConstructors, boolean createInherited, boolean createEventHandlers, boolean canBeModified) {
+	protected void setMethodStubSelection(boolean createConstructors, boolean createInherited,
+			boolean createEventHandlers, boolean createLifecycleFunctions, boolean canBeModified) {
 		if (this.methodStubsButtons != null) {
 			int idx = 0;
 			if (this.isConstructorCreationEnabled) {
 				this.methodStubsButtons.setSelection(idx, createConstructors);
 				++idx;
 			}
-			if (this.isInheritedCreationEnabled_) {
+			if (this.isInheritedCreationEnabled) {
 				this.methodStubsButtons.setSelection(idx, createInherited);
 				++idx;
 			}
 			if (this.isDefaultEventGenerated) {
 				this.methodStubsButtons.setSelection(idx, createEventHandlers);
+				++idx;
+			}
+			if (this.isDefaultLifecycleFunctionsGenerated) {
+				this.methodStubsButtons.setSelection(idx, createLifecycleFunctions);
 				++idx;
 			}
 			this.methodStubsButtons.setEnabled(canBeModified);
@@ -1172,6 +1188,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	protected boolean createStandardSARLEventTemplates(String elementTypeName,
 			Function1<String, ISarlBehaviorUnitBuilder> behaviorUnitAdder,
 			Procedure1<String> usesAdder) {
+		if (!isCreateStandardEventHandlers()) {
+			return false;
+		}
 		Object type;
 		try {
 			type = getTypeFinder().findType(INITIALIZE_EVENT_NAME);
@@ -1238,6 +1257,42 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			return true;
 		}
 		return false;
+	}
+
+	/** Create the default standard lifecycle function templates.
+	 *
+	 * @param elementTypeName the name of the element type.
+	 * @param actionAdder the adder of actions.
+	 * @param usesAdder the adder of uses statement.
+	 * @return {@code true} if the units are added; {@code false} otherwise.
+	 * @since 0.5
+	 */
+	protected boolean createStandardSARLLifecycleFunctionTemplates(String elementTypeName,
+			Function1<String, ISarlActionBuilder> actionAdder,
+			Procedure1<String> usesAdder) {
+		if (!isCreateStandardLifecycleFunctions()) {
+			return false;
+		}
+
+		usesAdder.apply(LOGGING_CAPACITY_NAME);
+
+		ISarlActionBuilder action = actionAdder.apply(INSTALL_SKILL_NAME);
+		IBlockExpressionBuilder block = action.getExpression();
+		block.setInnerDocumentation(MessageFormat.format(
+				Messages.AbstractNewSarlElementWizardPage_19,
+				elementTypeName));
+		IExpressionBuilder expr = block.addExpression();
+		expr.setExpression("info(\"Install " + elementTypeName + "\")");  //$NON-NLS-1$//$NON-NLS-2$
+
+		action = actionAdder.apply(INSTALL_SKILL_NAME);
+		block = action.getExpression();
+		block.setInnerDocumentation(MessageFormat.format(
+				Messages.AbstractNewSarlElementWizardPage_20,
+				elementTypeName));
+		expr = block.addExpression();
+		expr.setExpression("info(\"Uninstall " + elementTypeName + "\")");  //$NON-NLS-1$//$NON-NLS-2$
+
+		return true;
 	}
 
 	@Override
