@@ -35,6 +35,7 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XConstructorCall;
 
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -171,6 +172,15 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 	@Override
 	protected String _signature(XAbstractFeatureCall featureCall, boolean typeAtEnd) {
 		final JvmIdentifiableElement feature = featureCall.getFeature();
+		if (feature != null) {
+			return internalGetSignature(feature, typeAtEnd);
+		}
+		return ""; //$NON-NLS-1$
+	}
+
+	@Override
+	protected String _signature(XConstructorCall featureCall, boolean typeAtEnd) {
+		final JvmIdentifiableElement feature = featureCall.getConstructor();
 		if (feature != null) {
 			return internalGetSignature(feature, typeAtEnd);
 		}

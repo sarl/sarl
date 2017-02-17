@@ -27,6 +27,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
 import org.eclipse.xtext.ui.editor.contentassist.XtextContentAssistProcessor;
+import org.eclipse.xtext.ui.editor.hover.IEObjectHover;
+
+import io.sarl.lang.bugfixes.Bug187SARLDispatchingEObjectTextHover;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -63,6 +66,12 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		// matches ID of org.eclipse.ui.contexts extension registered in plugin.xml
 		binder.bindConstant().annotatedWith(Names.named(XtextEditor.KEY_BINDING_SCOPE))
 		.to("io.sarl.lang.ui.scoping.SARLEditorScope"); //$NON-NLS-1$
+	}
+
+	// TODO: Remove when Xtext PR 187 is merged - https://github.com/eclipse/xtext-eclipse/pull/187
+	@Override
+	public Class<? extends IEObjectHover> bindIEObjectHover() {
+		return Bug187SARLDispatchingEObjectTextHover.class;
 	}
 
 }

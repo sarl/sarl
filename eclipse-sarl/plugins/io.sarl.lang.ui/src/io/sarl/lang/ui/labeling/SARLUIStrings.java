@@ -77,7 +77,7 @@ public class SARLUIStrings extends UIStrings {
 			}
 			needsSeparator = true;
 			if (includeName) {
-				result.append(" ").append(parameter.getName()).append(" ");  //$NON-NLS-1$//$NON-NLS-2$
+				result.append(parameter.getName()).append(" ");  //$NON-NLS-1$
 				result.append(keywords.getColonKeyword()).append(" "); //$NON-NLS-1$
 			}
 			JvmTypeReference typeRef = parameter.getParameterType();
