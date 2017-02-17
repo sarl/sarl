@@ -82,7 +82,7 @@
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newclass_wiz.png"
+				icon="icons/newclass_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlClass"
 				name="%wizard.name.newClass">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
@@ -93,7 +93,7 @@
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newint_wiz.png"
+				icon="icons/newinterface_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlInterface"
 				name="%wizard.name.newInterface">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
@@ -104,7 +104,7 @@
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newenum_wiz.png"
+				icon="icons/newenumeration_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlEnumeration"
 				name="%wizard.name.newEnumeration">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
@@ -115,7 +115,7 @@
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newannotation_wiz.png"
+				icon="icons/newannotation_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlAnnotation"
 				name="%wizard.name.newAnnotation">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
