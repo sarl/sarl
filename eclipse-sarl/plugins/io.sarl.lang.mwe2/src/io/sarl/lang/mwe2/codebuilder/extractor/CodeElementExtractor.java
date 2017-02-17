@@ -214,7 +214,12 @@ public interface CodeElementExtractor {
 	 * @param constructorCallback the function to call on each discovered constructor.
 	 *     The parameters of the callback function are: the grammar container given to the visiting function;
 	 *     and the grammar container of the member.
-	 * @param namedMemberCallback the function to call on each discovered named member.
+	 * @param namedMemberCallback the function to call on each discovered named member. A named member is
+	 *     a member that has a field "name" defined in the grammar.
+	 *     The parameters of the callback function are: the grammar container given to the visiting function;
+	 *     the grammar container of the member, and the name of the member.
+	 * @param typeReferencingMemberCallback the function to call on each discovered member that are referencing
+	 *     types, for example a kind of "import".
 	 *     The parameters of the callback function are: the grammar container given to the visiting function;
 	 *     the grammar container of the member, and the name of the member.
 	 * @return the first value replied by the callback, or <code>null</code>.
@@ -223,7 +228,8 @@ public interface CodeElementExtractor {
 			ElementDescription element,
 			EObject grammarContainer,
 			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> constructorCallback,
-			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> namedMemberCallback);
+			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> namedMemberCallback,
+			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> typeReferencingMemberCallback);
 
 	/** Construct an element description.
 	 *

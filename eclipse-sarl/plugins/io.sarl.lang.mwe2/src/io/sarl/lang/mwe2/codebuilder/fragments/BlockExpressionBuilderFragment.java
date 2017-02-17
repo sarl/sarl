@@ -828,7 +828,8 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 												expressionAssignment);
 									}
 									return null;
-								});
+								},
+						null);
 					if (description != null) {
 						return description;
 					}

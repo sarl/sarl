@@ -99,7 +99,8 @@ public class NamedMemberBuilderFragment extends AbstractMemberBuilderFragment {
 								}
 								containers.add(containerName);
 								return null;
-							});
+							},
+							null);
 				}
 			}
 		}

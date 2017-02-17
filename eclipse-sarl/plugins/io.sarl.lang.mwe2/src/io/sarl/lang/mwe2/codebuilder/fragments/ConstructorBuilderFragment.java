@@ -65,7 +65,7 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 							return new MemberDescription(memberDescription, containerDescription, false,
 									memberDescription.isAnnotationInfo(), null);
 						},
-						null);
+						null, null);
 					if (this.constructor != null) {
 						break;
 					}

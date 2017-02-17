@@ -156,6 +156,7 @@ Workflow {
 				scriptRuleName = "SarlScript"
 				topElementRuleName = "Type"
 				formalParameterRuleName = "Parameter"
+				unnamedMemberExtensionGrammarName = "capacities"
 				multilineCommentedType = "org.eclipse.xtend.core.xtend.XtendMember"
 				constructorFreeType = "SarlCapacity"
 				constructorFreeType = "SarlInterface"

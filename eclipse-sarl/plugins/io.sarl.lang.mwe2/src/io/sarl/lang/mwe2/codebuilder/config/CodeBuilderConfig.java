@@ -170,6 +170,8 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 
 	private String memberNameGrammarName = MEMBER_NAME_GRAMMAR_NAME;
 
+	private final Set<String> unnamedMemberGrammarNames = new HashSet<>();
+
 	private String memberTypeGrammarName = MEMBER_TYPE_GRAMMAR_NAME;
 
 	private String memberThrowsGrammarName = MEMBER_THROWS_GRAMMAR_NAME;
@@ -635,6 +637,25 @@ public class CodeBuilderConfig implements IGuiceAwareGeneratorComponent {
 	@Pure
 	public String getMemberNameExtensionGrammarName() {
 		return this.memberNameGrammarName;
+	}
+
+	/** Set the name that is used for representing the name of a member in the grammar's assignments.
+	 *
+	 * @param name the name of the assignment for the name of a member.
+	 */
+	public void addUnnamedMemberExtensionGrammarName(String name) {
+		if (!Strings.isEmpty(name)) {
+			this.unnamedMemberGrammarNames.add(name);
+		}
+	}
+
+	/** Replies the name that is used for representing the name of a member in the grammar's assignments.
+	 *
+	 * @return the name of the assignment for the name of a member.
+	 */
+	@Pure
+	public Set<String> getUnnamedMemberExtensionGrammarNames() {
+		return this.unnamedMemberGrammarNames;
 	}
 
 	/** Set the name that is used for representing collection of members in the grammar's assignments.

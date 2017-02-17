@@ -1148,7 +1148,8 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 									expressionAssignment);
 						}
 						return null;
-					});
+					},
+					null);
 				if (description != null) {
 					return description;
 				}
