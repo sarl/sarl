@@ -46,4 +46,5 @@ public class Messages extends NLS {
 	public static String NewSarlBehaviorWizardPage_1;
 	public static String NewSarlBehaviorWizardPage_2;
 	public static String NewSarlBehaviorWizardPage_3;
+	public static String NewSarlBehaviorWizardPage_4;
 }

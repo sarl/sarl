@@ -62,7 +62,7 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 		createSuperClassControls(parent, COLUMNS);
 		createSuperInterfacesControls(parent, COLUMNS);
 		createSeparator(parent, COLUMNS);
-		createMethodStubControls(parent, COLUMNS, true, true);
+		createMethodStubControls(parent, COLUMNS, true, true, false);
 	}
 
 	@Override

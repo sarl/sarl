@@ -70,7 +70,7 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 	public void createPageControls(Composite parent) {
 		createSuperClassControls(parent, COLUMNS);
 		createSeparator(parent, COLUMNS);
-		createMethodStubControls(parent, COLUMNS, true, true);
+		createMethodStubControls(parent, COLUMNS, true, true, true);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
 			String comment, IProgressMonitor monitor) throws Exception {
-		final SubMonitor mon = SubMonitor.convert(monitor, 3);
+		final SubMonitor mon = SubMonitor.convert(monitor, 4);
 		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
 				getPackageFragment().getElementName(), typeProvider);
 		final ISarlBehaviorBuilder behavior = scriptBuilder.addSarlBehavior(getTypeName());
@@ -104,6 +104,12 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 					getSuperClass());
 		}
 		mon.worked(2);
+		if (isCreateStandardEventHandlers()) {
+			createStandardSARLEventTemplates(Messages.NewSarlBehaviorWizardPage_4,
+					(name) -> behavior.addSarlBehaviorUnit(name),
+					(name) -> behavior.addSarlCapacityUses(name));
+		}
+		mon.worked(3);
 		scriptBuilder.build(appender);
 		mon.done();
 	}

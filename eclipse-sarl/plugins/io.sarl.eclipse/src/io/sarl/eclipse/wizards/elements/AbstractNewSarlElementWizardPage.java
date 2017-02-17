@@ -91,6 +91,8 @@ import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Jdt2Ecore;
@@ -100,6 +102,9 @@ import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
 import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.codebuilder.CodeBuilderFactory;
+import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
+import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlBehaviorUnitBuilder;
 import io.sarl.lang.formatting2.FormatterFacade;
 
 /**
@@ -121,11 +126,49 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected static final int COLUMNS = 4;
 
+	/** Name of the SARL Initialize event.
+	 */
+	protected static final String INITIALIZE_EVENT_NAME = "io.sarl.core.Initialize"; //$NON-NLS-1$
+
+	/** Name of the SARL Destroy event.
+	 */
+	protected static final String DESTROY_EVENT_NAME = "io.sarl.core.Destroy"; //$NON-NLS-1$
+
+	/** Name of the SARL ContextJoined event.
+	 */
+	protected static final String CONTEXTJOINED_EVENT_NAME = "io.sarl.core.ContextJoined"; //$NON-NLS-1$
+
+	/** Name of the SARL ContextLeft event.
+	 */
+	protected static final String CONTEXTLEFT_EVENT_NAME = "io.sarl.core.ContextLeft"; //$NON-NLS-1$
+
+	/** Name of the SARL MemberJoined event.
+	 */
+	protected static final String MEMBERJOINED_EVENT_NAME = "io.sarl.core.MemberJoined"; //$NON-NLS-1$
+
+	/** Name of the SARL MemberLeft event.
+	 */
+	protected static final String MEMBERLEFT_EVENT_NAME = "io.sarl.core.MemberLeft"; //$NON-NLS-1$
+
+	/** Name of the SARL AgentSpawned event.
+	 */
+	protected static final String AGENTSPAWNED_EVENT_NAME = "io.sarl.core.AgentSpawned"; //$NON-NLS-1$
+
+	/** Name of the SARL AgentKilled event.
+	 */
+	protected static final String AGENTKILLED_EVENT_NAME = "io.sarl.core.AgentKilled"; //$NON-NLS-1$
+
+	/** Name of the SARL Logging capacity.
+	 */
+	protected static final String LOGGING_CAPACITY_NAME = "io.sarl.core.Logging"; //$NON-NLS-1$
+
 	private static final int STEPS = 8;
 
 	private static final String SETTINGS_CREATECONSTR = "create_constructor"; //$NON-NLS-1$
 
 	private static final String SETTINGS_CREATEUNIMPLEMENTED = "create_unimplemented"; //$NON-NLS-1$
+
+	private static final String SETTINGS_GENERATEEVENTHANDLERS = "generate_event_handlers"; //$NON-NLS-1$
 
 	/** A builder of code.
 	 */
@@ -160,7 +203,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	private boolean isConstructorCreationEnabled;
 
-	private boolean isInheritedCreationEnabled;
+	private boolean isInheritedCreationEnabled_;
+
+	private boolean isDefaultEventGenerated;
 
 	@Inject
 	private FormatterFacade formatterFacade;
@@ -714,7 +759,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			ConstructorBuilder constructorBuilder, ActionBuilder actionBuilder,
 			String superTypeQualifiedName, List<String> superInterfaceQualifiedNames)
 					throws JavaModelException {
-		final TypeFinder typeFinder = this.jdt2sarl.toTypeFinder(getJavaProject());
+		final TypeFinder typeFinder = getTypeFinder();
 
 		final Map<ActionParameterTypes, IMethod> baseConstructors = Maps.newTreeMap((Comparator<ActionParameterTypes>) null);
 		this.jdt2sarl.populateInheritanceContext(
@@ -763,6 +808,15 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 						generateActionBlocks ? context : null);
 			}
 		}
+	}
+
+	/** Replies the type finder in the context of the current project.
+	 *
+	 * @return the type finder.
+	 * @since 0.5
+	 */
+	protected final TypeFinder getTypeFinder() {
+		return this.jdt2sarl.toTypeFinder(getJavaProject());
 	}
 
 	/** Create the SARL type.
@@ -867,15 +921,17 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	protected void readSettings() {
 		boolean createConstructors = false;
 		boolean createUnimplemented = true;
+		boolean createEventHandlers = true;
 		final IDialogSettings dialogSettings = getDialogSettings();
 		if (dialogSettings != null) {
 			final IDialogSettings section = dialogSettings.getSection(getName());
 			if (section != null) {
 				createConstructors = section.getBoolean(SETTINGS_CREATECONSTR);
 				createUnimplemented = section.getBoolean(SETTINGS_CREATEUNIMPLEMENTED);
+				createEventHandlers = section.getBoolean(SETTINGS_GENERATEEVENTHANDLERS);
 			}
 		}
-		setMethodStubSelection(createConstructors, createUnimplemented, true);
+		setMethodStubSelection(createConstructors, createUnimplemented, createEventHandlers, true);
 	}
 
 	/** Save the settings of the dialog box.
@@ -889,6 +945,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			}
 			section.put(SETTINGS_CREATECONSTR, isCreateConstructors());
 			section.put(SETTINGS_CREATEUNIMPLEMENTED, isCreateInherited());
+			section.put(SETTINGS_GENERATEEVENTHANDLERS, isCreateStandardEventHandlers());
 		}
 	}
 
@@ -909,26 +966,61 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param columns - the number of columns.
 	 * @param enableConstructors - indicates if the constructor creation is enable.
 	 * @param enableInherited - indicates if the inherited operation creation is enable.
+	 * @param defaultEvents - indicates if the default events will be generated.
 	 */
 	protected void createMethodStubControls(Composite composite, int columns,
-			boolean enableConstructors, boolean enableInherited) {
+			boolean enableConstructors, boolean enableInherited, boolean defaultEvents) {
 		this.isConstructorCreationEnabled = enableConstructors;
-		this.isInheritedCreationEnabled = enableInherited;
+		this.isInheritedCreationEnabled_ = enableInherited;
+		this.isDefaultEventGenerated = defaultEvents;
 		final String[] buttonNames;
-		if (enableConstructors && enableInherited) {
-			buttonNames = new String[] {
-				Messages.AbstractNewSarlElementWizardPage_0,
-				Messages.AbstractNewSarlElementWizardPage_1,
-			};
-		} else if (enableInherited && !enableConstructors) {
-			buttonNames = new String[] {
-				Messages.AbstractNewSarlElementWizardPage_1,
-			};
+		if (enableConstructors) {
+			if (enableInherited) {
+				if (defaultEvents) {
+					buttonNames = new String[] {
+						Messages.AbstractNewSarlElementWizardPage_0,
+						Messages.AbstractNewSarlElementWizardPage_1,
+						Messages.AbstractNewSarlElementWizardPage_17,
+					};
+				} else {
+					buttonNames = new String[] {
+						Messages.AbstractNewSarlElementWizardPage_0,
+						Messages.AbstractNewSarlElementWizardPage_1,
+					};
+				}
+			} else {
+				if (defaultEvents) {
+					buttonNames = new String[] {
+						Messages.AbstractNewSarlElementWizardPage_0,
+						Messages.AbstractNewSarlElementWizardPage_17,
+					};
+				} else {
+					buttonNames = new String[] {
+						Messages.AbstractNewSarlElementWizardPage_0,
+					};
+				}
+			}
 		} else {
-			assert enableConstructors;
-			buttonNames = new String[] {
-				Messages.AbstractNewSarlElementWizardPage_0,
-			};
+			if (enableInherited) {
+				if (defaultEvents) {
+					buttonNames = new String[] {
+						Messages.AbstractNewSarlElementWizardPage_1,
+						Messages.AbstractNewSarlElementWizardPage_17,
+					};
+				} else {
+					buttonNames = new String[] {
+						Messages.AbstractNewSarlElementWizardPage_1,
+					};
+				}
+			} else {
+				if (defaultEvents) {
+					buttonNames = new String[] {
+						Messages.AbstractNewSarlElementWizardPage_17,
+					};
+				} else {
+					return;
+				}
+			}
 		}
 		this.methodStubsButtons = new SelectionButtonDialogFieldGroup(SWT.CHECK, buttonNames, 1);
 		this.methodStubsButtons.setLabelText(Messages.AbstractNewSarlElementWizardPage_2);
@@ -958,8 +1050,28 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @return the selection state of the 'Create inherited abstract methods' checkbox
 	 */
 	protected boolean isCreateInherited() {
-		return this.isInheritedCreationEnabled && this.methodStubsButtons.isSelected(
-				this.isConstructorCreationEnabled ? 1 : 0);
+		int idx = 0;
+		if (this.isConstructorCreationEnabled) {
+			++idx;
+		}
+		return this.isInheritedCreationEnabled_ && this.methodStubsButtons.isSelected(idx);
+	}
+
+	/**
+	 * Returns the current selection state of the 'Create standard event handlers'
+	 * checkbox.
+	 *
+	 * @return the selection state of the 'Create standard event handlers' checkbox
+	 */
+	protected boolean isCreateStandardEventHandlers() {
+		int idx = 0;
+		if (this.isConstructorCreationEnabled) {
+			++idx;
+		}
+		if (this.isInheritedCreationEnabled_) {
+			++idx;
+		}
+		return this.isDefaultEventGenerated && this.methodStubsButtons.isSelected(idx);
 	}
 
 	/**
@@ -967,18 +1079,24 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 *
 	 * @param createConstructors initial selection state of the 'Create Constructors' checkbox.
 	 * @param createInherited initial selection state of the 'Create inherited abstract methods' checkbox.
+	 * @param createEventHandlers initial selection state of the 'Create standard event handlers' checkbox.
 	 * @param canBeModified if <code>true</code> the method stub checkboxes can be changed by
 	 *     the user. If <code>false</code> the buttons are "read-only"
 	 */
-	protected void setMethodStubSelection(boolean createConstructors, boolean createInherited, boolean canBeModified) {
+	protected void setMethodStubSelection(boolean createConstructors, boolean createInherited, boolean createEventHandlers, boolean canBeModified) {
 		if (this.methodStubsButtons != null) {
-			if (this.isConstructorCreationEnabled && this.isInheritedCreationEnabled) {
-				this.methodStubsButtons.setSelection(0, createConstructors);
-				this.methodStubsButtons.setSelection(1, createInherited);
-			} else if (this.isInheritedCreationEnabled && !this.isConstructorCreationEnabled) {
-				this.methodStubsButtons.setSelection(0, createInherited);
-			} else {
-				this.methodStubsButtons.setSelection(0, createConstructors);
+			int idx = 0;
+			if (this.isConstructorCreationEnabled) {
+				this.methodStubsButtons.setSelection(idx, createConstructors);
+				++idx;
+			}
+			if (this.isInheritedCreationEnabled_) {
+				this.methodStubsButtons.setSelection(idx, createInherited);
+				++idx;
+			}
+			if (this.isDefaultEventGenerated) {
+				this.methodStubsButtons.setSelection(idx, createEventHandlers);
+				++idx;
 			}
 			this.methodStubsButtons.setEnabled(canBeModified);
 		}
@@ -1041,6 +1159,85 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			Shell parent, IRunnableContext context, IJavaProject project, SarlSpecificTypeSelectionExtension extension,
 			boolean multi) {
 		return null;
+	}
+
+	/** Create the default standard SARL event templates.
+	 *
+	 * @param elementTypeName the name of the element type.
+	 * @param behaviorUnitAdder the adder of behavior unit.
+	 * @param usesAdder the adder of uses statement.
+	 * @return {@code true} if the units are added; {@code false} otherwise.
+	 * @since 0.5
+	 */
+	protected boolean createStandardSARLEventTemplates(String elementTypeName,
+			Function1<String, ISarlBehaviorUnitBuilder> behaviorUnitAdder,
+			Procedure1<String> usesAdder) {
+		Object type;
+		try {
+			type = getTypeFinder().findType(INITIALIZE_EVENT_NAME);
+		} catch (JavaModelException e) {
+			type = null;
+		}
+		if (type != null) {
+			// SARL Libraries are on the classpath
+
+			usesAdder.apply(LOGGING_CAPACITY_NAME);
+
+			ISarlBehaviorUnitBuilder unit = behaviorUnitAdder.apply(INITIALIZE_EVENT_NAME);
+			IBlockExpressionBuilder block = unit.getExpression();
+			block.setInnerDocumentation(MessageFormat.format(
+					Messages.AbstractNewSarlElementWizardPage_9,
+					elementTypeName));
+			IExpressionBuilder expr = block.addExpression();
+			expr.setExpression("info(\"Start the " + elementTypeName + "\")");  //$NON-NLS-1$//$NON-NLS-2$
+
+			unit = behaviorUnitAdder.apply(DESTROY_EVENT_NAME);
+			block = unit.getExpression();
+			block.setInnerDocumentation(MessageFormat.format(
+					Messages.AbstractNewSarlElementWizardPage_10,
+					elementTypeName));
+			expr = block.addExpression();
+			expr.setExpression("info(\"Stop the " + elementTypeName + "\")");  //$NON-NLS-1$//$NON-NLS-2$
+
+			unit = behaviorUnitAdder.apply(AGENTSPAWNED_EVENT_NAME);
+			block = unit.getExpression();
+			block.setInnerDocumentation(MessageFormat.format(
+					Messages.AbstractNewSarlElementWizardPage_11,
+					elementTypeName));
+
+			unit = behaviorUnitAdder.apply(AGENTKILLED_EVENT_NAME);
+			block = unit.getExpression();
+			block.setInnerDocumentation(MessageFormat.format(
+					Messages.AbstractNewSarlElementWizardPage_12,
+					elementTypeName));
+
+			unit = behaviorUnitAdder.apply(CONTEXTJOINED_EVENT_NAME);
+			block = unit.getExpression();
+			block.setInnerDocumentation(MessageFormat.format(
+					Messages.AbstractNewSarlElementWizardPage_13,
+					elementTypeName));
+
+			unit = behaviorUnitAdder.apply(CONTEXTLEFT_EVENT_NAME);
+			block = unit.getExpression();
+			block.setInnerDocumentation(MessageFormat.format(
+					Messages.AbstractNewSarlElementWizardPage_14,
+					elementTypeName));
+
+			unit = behaviorUnitAdder.apply(MEMBERJOINED_EVENT_NAME);
+			block = unit.getExpression();
+			block.setInnerDocumentation(MessageFormat.format(
+					Messages.AbstractNewSarlElementWizardPage_15,
+					elementTypeName));
+
+			unit = behaviorUnitAdder.apply(MEMBERLEFT_EVENT_NAME);
+			block = unit.getExpression();
+			block.setInnerDocumentation(MessageFormat.format(
+					Messages.AbstractNewSarlElementWizardPage_16,
+					elementTypeName));
+
+			return true;
+		}
+		return false;
 	}
 
 	@Override

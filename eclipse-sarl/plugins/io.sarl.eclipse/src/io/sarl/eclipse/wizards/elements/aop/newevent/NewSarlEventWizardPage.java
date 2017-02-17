@@ -70,7 +70,7 @@ public class NewSarlEventWizardPage extends AbstractNewSarlElementWizardPage {
 	public void createPageControls(Composite parent) {
 		createSuperClassControls(parent, COLUMNS);
 		createSeparator(parent, COLUMNS);
-		createMethodStubControls(parent, COLUMNS, true, false);
+		createMethodStubControls(parent, COLUMNS, true, false, false);
 	}
 
 	@Override
