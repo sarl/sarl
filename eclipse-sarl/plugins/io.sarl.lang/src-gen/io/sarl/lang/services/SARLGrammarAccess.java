@@ -4547,7 +4547,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cAnnotationsAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
 		private final RuleCall cAnnotationsXAnnotationParserRuleCall_2_1_0 = (RuleCall)cAnnotationsAssignment_2_1.eContents().get(0);
 		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cNameInnerVarIDParserRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
+		private final RuleCall cNameValidIDParserRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
 		private final Keyword cColonKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final Assignment cParameterTypeAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_5_0 = (RuleCall)cParameterTypeAssignment_5.eContents().get(0);
@@ -4561,10 +4561,10 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Parameter xtend::XtendParameter:
 		//	{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)?
-		//	name=InnerVarID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XLiteral)?;
+		//	name=ValidID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XLiteral)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)? name=InnerVarID ':'
+		//{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)? name=ValidID ':'
 		//parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XLiteral)?
 		public Group getGroup() { return cGroup; }
 		
@@ -4592,11 +4592,11 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//XAnnotation
 		public RuleCall getAnnotationsXAnnotationParserRuleCall_2_1_0() { return cAnnotationsXAnnotationParserRuleCall_2_1_0; }
 		
-		//name=InnerVarID
+		//name=ValidID
 		public Assignment getNameAssignment_3() { return cNameAssignment_3; }
 		
-		//InnerVarID
-		public RuleCall getNameInnerVarIDParserRuleCall_3_0() { return cNameInnerVarIDParserRuleCall_3_0; }
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_3_0() { return cNameValidIDParserRuleCall_3_0; }
 		
 		//':'
 		public Keyword getColonKeyword_4() { return cColonKeyword_4; }
@@ -4673,7 +4673,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cWriteableVarKeyword_0_0_1_1_1_0_0 = (Keyword)cWriteableAssignment_0_0_1_1_1_0.eContents().get(0);
 		private final Keyword cValKeyword_0_0_1_1_1_1 = (Keyword)cAlternatives_0_0_1_1_1.eContents().get(1);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameInnerVarIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
 		private final Keyword cColonKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Assignment cTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
@@ -4688,12 +4688,12 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//// Variable declaration according to the SARL syntax (not the Xtext/Xtend)
 		//XVariableDeclaration xbase::XExpression:
 		//	=> ({xtend::XtendVariableDeclaration} ((writeable?='var' | 'val') extension?='extension'?
-		//	| extension?='extension' (writeable?='var' | 'val'))) name=InnerVarID (':' type=JvmTypeReference)? ('='
+		//	| extension?='extension' (writeable?='var' | 'val'))) name=ValidID (':' type=JvmTypeReference)? ('='
 		//	right=XExpression)?;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//=> ({xtend::XtendVariableDeclaration} ((writeable?='var' | 'val') extension?='extension'? | extension?='extension'
-		//(writeable?='var' | 'val'))) name=InnerVarID (':' type=JvmTypeReference)? ('=' right=XExpression)?
+		//(writeable?='var' | 'val'))) name=ValidID (':' type=JvmTypeReference)? ('=' right=XExpression)?
 		public Group getGroup() { return cGroup; }
 		
 		//=> ({xtend::XtendVariableDeclaration} ((writeable?='var' | 'val') extension?='extension'? | extension?='extension'
@@ -4752,11 +4752,11 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//'val'
 		public Keyword getValKeyword_0_0_1_1_1_1() { return cValKeyword_0_0_1_1_1_1; }
 		
-		//name=InnerVarID
+		//name=ValidID
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
 		
-		//InnerVarID
-		public RuleCall getNameInnerVarIDParserRuleCall_1_0() { return cNameInnerVarIDParserRuleCall_1_0; }
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
 		
 		//(':' type=JvmTypeReference)?
 		public Group getGroup_2() { return cGroup_2; }
@@ -4788,7 +4788,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cExtensionAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final Keyword cExtensionExtensionKeyword_0_0 = (Keyword)cExtensionAssignment_0.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameInnerVarIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
 		private final Keyword cColonKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Assignment cParameterTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
@@ -4796,10 +4796,10 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 		//JvmFormalParameter xtend::XtendFormalParameter:
-		//	extension?='extension'? name=InnerVarID (=> ':' parameterType=JvmTypeReference)?;
+		//	extension?='extension'? name=ValidID (=> ':' parameterType=JvmTypeReference)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//extension?='extension'? name=InnerVarID (=> ':' parameterType=JvmTypeReference)?
+		//extension?='extension'? name=ValidID (=> ':' parameterType=JvmTypeReference)?
 		public Group getGroup() { return cGroup; }
 		
 		//extension?='extension'?
@@ -4808,11 +4808,11 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//'extension'
 		public Keyword getExtensionExtensionKeyword_0_0() { return cExtensionExtensionKeyword_0_0; }
 		
-		//name=InnerVarID
+		//name=ValidID
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
 		
-		//InnerVarID
-		public RuleCall getNameInnerVarIDParserRuleCall_1_0() { return cNameInnerVarIDParserRuleCall_1_0; }
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
 		
 		//(=> ':' parameterType=JvmTypeReference)?
 		public Group getGroup_2() { return cGroup_2; }
@@ -4832,17 +4832,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cExtensionAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final Keyword cExtensionExtensionKeyword_0_0 = (Keyword)cExtensionAssignment_0.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameInnerVarIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cParameterTypeAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_3_0 = (RuleCall)cParameterTypeAssignment_3.eContents().get(0);
 		
 		//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 		//FullJvmFormalParameter xtend::XtendFormalParameter:
-		//	extension?='extension'? name=InnerVarID ':' parameterType=JvmTypeReference;
+		//	extension?='extension'? name=ValidID ':' parameterType=JvmTypeReference;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//extension?='extension'? name=InnerVarID ':' parameterType=JvmTypeReference
+		//extension?='extension'? name=ValidID ':' parameterType=JvmTypeReference
 		public Group getGroup() { return cGroup; }
 		
 		//extension?='extension'?
@@ -4851,11 +4851,11 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//'extension'
 		public Keyword getExtensionExtensionKeyword_0_0() { return cExtensionExtensionKeyword_0_0; }
 		
-		//name=InnerVarID
+		//name=ValidID
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
 		
-		//InnerVarID
-		public RuleCall getNameInnerVarIDParserRuleCall_1_0() { return cNameInnerVarIDParserRuleCall_1_0; }
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
 		
 		//':'
 		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
@@ -5013,7 +5013,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cDeclaredParamJvmFormalParameterParserRuleCall_2_1_0_0_0_0 = (RuleCall)cDeclaredParamAssignment_2_1_0_0_0.eContents().get(0);
 		private final Keyword cEqualsSignKeyword_2_1_0_0_1 = (Keyword)cGroup_2_1_0_0.eContents().get(1);
 		private final Assignment cSwitchAssignment_2_1_1 = (Assignment)cGroup_2_1.eContents().get(1);
-		private final RuleCall cSwitchXExpressionOrSimpleConstructorCallParserRuleCall_2_1_1_0 = (RuleCall)cSwitchAssignment_2_1_1.eContents().get(0);
+		private final RuleCall cSwitchXExpressionParserRuleCall_2_1_1_0 = (RuleCall)cSwitchAssignment_2_1_1.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Assignment cCasesAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cCasesXCasePartParserRuleCall_4_0 = (RuleCall)cCasesAssignment_4.eContents().get(0);
@@ -5028,14 +5028,14 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//XSwitchExpression xbase::XExpression:
 		//	{xbase::XSwitchExpression}
 		//	'switch' (=> ('(' declaredParam=JvmFormalParameter '=') switch=XExpression ')'
-		//	| => (declaredParam=JvmFormalParameter '=')? switch=XExpressionOrSimpleConstructorCall) '{'
+		//	| => (declaredParam=JvmFormalParameter '=')? switch=XExpression) '{'
 		//	cases+=XCasePart* ('default' ':' default=XExpression)?
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{xbase::XSwitchExpression} 'switch' (=> ('(' declaredParam=JvmFormalParameter '=') switch=XExpression ')' | =>
-		//(declaredParam=JvmFormalParameter '=')? switch=XExpressionOrSimpleConstructorCall) '{' cases+=XCasePart* ('default' ':'
-		//default=XExpression)? '}'
+		//(declaredParam=JvmFormalParameter '=')? switch=XExpression) '{' cases+=XCasePart* ('default' ':' default=XExpression)?
+		//'}'
 		public Group getGroup() { return cGroup; }
 		
 		//{xbase::XSwitchExpression}
@@ -5045,7 +5045,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getSwitchKeyword_1() { return cSwitchKeyword_1; }
 		
 		//=> ('(' declaredParam=JvmFormalParameter '=') switch=XExpression ')' | => (declaredParam=JvmFormalParameter '=')?
-		//switch=XExpressionOrSimpleConstructorCall
+		//switch=XExpression
 		public Alternatives getAlternatives_2() { return cAlternatives_2; }
 		
 		//=> ('(' declaredParam=JvmFormalParameter '=') switch=XExpression ')'
@@ -5078,7 +5078,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//')'
 		public Keyword getRightParenthesisKeyword_2_0_2() { return cRightParenthesisKeyword_2_0_2; }
 		
-		//=> (declaredParam=JvmFormalParameter '=')? switch=XExpressionOrSimpleConstructorCall
+		//=> (declaredParam=JvmFormalParameter '=')? switch=XExpression
 		public Group getGroup_2_1() { return cGroup_2_1; }
 		
 		//=> (declaredParam=JvmFormalParameter '=')?
@@ -5096,11 +5096,11 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//'='
 		public Keyword getEqualsSignKeyword_2_1_0_0_1() { return cEqualsSignKeyword_2_1_0_0_1; }
 		
-		//switch=XExpressionOrSimpleConstructorCall
+		//switch=XExpression
 		public Assignment getSwitchAssignment_2_1_1() { return cSwitchAssignment_2_1_1; }
 		
-		//XExpressionOrSimpleConstructorCall
-		public RuleCall getSwitchXExpressionOrSimpleConstructorCallParserRuleCall_2_1_1_0() { return cSwitchXExpressionOrSimpleConstructorCallParserRuleCall_2_1_1_0; }
+		//XExpression
+		public RuleCall getSwitchXExpressionParserRuleCall_2_1_1_0() { return cSwitchXExpressionParserRuleCall_2_1_1_0; }
 		
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_3() { return cLeftCurlyBracketKeyword_3; }
@@ -5445,7 +5445,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//Parameter xtend::XtendParameter:
 	//	{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)?
-	//	name=InnerVarID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XLiteral)?;
+	//	name=ValidID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XLiteral)?;
 	public ParameterElements getParameterAccess() {
 		return pParameter;
 	}
@@ -5469,7 +5469,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//// Variable declaration according to the SARL syntax (not the Xtext/Xtend)
 	//XVariableDeclaration xbase::XExpression:
 	//	=> ({xtend::XtendVariableDeclaration} ((writeable?='var' | 'val') extension?='extension'?
-	//	| extension?='extension' (writeable?='var' | 'val'))) name=InnerVarID (':' type=JvmTypeReference)? ('='
+	//	| extension?='extension' (writeable?='var' | 'val'))) name=ValidID (':' type=JvmTypeReference)? ('='
 	//	right=XExpression)?;
 	public XVariableDeclarationElements getXVariableDeclarationAccess() {
 		return pXVariableDeclaration;
@@ -5481,7 +5481,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 	//JvmFormalParameter xtend::XtendFormalParameter:
-	//	extension?='extension'? name=InnerVarID (=> ':' parameterType=JvmTypeReference)?;
+	//	extension?='extension'? name=ValidID (=> ':' parameterType=JvmTypeReference)?;
 	public JvmFormalParameterElements getJvmFormalParameterAccess() {
 		return pJvmFormalParameter;
 	}
@@ -5492,7 +5492,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 	//FullJvmFormalParameter xtend::XtendFormalParameter:
-	//	extension?='extension'? name=InnerVarID ':' parameterType=JvmTypeReference;
+	//	extension?='extension'? name=ValidID ':' parameterType=JvmTypeReference;
 	public FullJvmFormalParameterElements getFullJvmFormalParameterAccess() {
 		return pFullJvmFormalParameter;
 	}
@@ -5530,7 +5530,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	//XSwitchExpression xbase::XExpression:
 	//	{xbase::XSwitchExpression}
 	//	'switch' (=> ('(' declaredParam=JvmFormalParameter '=') switch=XExpression ')'
-	//	| => (declaredParam=JvmFormalParameter '=')? switch=XExpressionOrSimpleConstructorCall) '{'
+	//	| => (declaredParam=JvmFormalParameter '=')? switch=XExpression) '{'
 	//	cases+=XCasePart* ('default' ':' default=XExpression)?
 	//	'}';
 	public XSwitchExpressionElements getXSwitchExpressionAccess() {

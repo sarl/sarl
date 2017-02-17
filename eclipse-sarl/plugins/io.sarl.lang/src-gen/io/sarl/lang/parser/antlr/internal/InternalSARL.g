@@ -7256,9 +7256,9 @@ ruleParameter returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getParameterAccess().getNameInnerVarIDParserRuleCall_3_0());
+					newCompositeNode(grammarAccess.getParameterAccess().getNameValidIDParserRuleCall_3_0());
 				}
-				lv_name_4_0=ruleInnerVarID
+				lv_name_4_0=ruleValidID
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getParameterRule());
@@ -7267,7 +7267,7 @@ ruleParameter returns [EObject current=null]
 						$current,
 						"name",
 						lv_name_4_0,
-						"org.eclipse.xtend.core.Xtend.InnerVarID");
+						"org.eclipse.xtend.core.Xtend.ValidID");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -7532,9 +7532,9 @@ ruleXVariableDeclaration returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getXVariableDeclarationAccess().getNameInnerVarIDParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getXVariableDeclarationAccess().getNameValidIDParserRuleCall_1_0());
 				}
-				lv_name_7_0=ruleInnerVarID
+				lv_name_7_0=ruleValidID
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getXVariableDeclarationRule());
@@ -7543,7 +7543,7 @@ ruleXVariableDeclaration returns [EObject current=null]
 						$current,
 						"name",
 						lv_name_7_0,
-						"org.eclipse.xtend.core.Xtend.InnerVarID");
+						"org.eclipse.xtend.core.Xtend.ValidID");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -7634,9 +7634,9 @@ ruleJvmFormalParameter returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getJvmFormalParameterAccess().getNameInnerVarIDParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0());
 				}
-				lv_name_1_0=ruleInnerVarID
+				lv_name_1_0=ruleValidID
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getJvmFormalParameterRule());
@@ -7645,7 +7645,7 @@ ruleJvmFormalParameter returns [EObject current=null]
 						$current,
 						"name",
 						lv_name_1_0,
-						"org.eclipse.xtend.core.Xtend.InnerVarID");
+						"org.eclipse.xtend.core.Xtend.ValidID");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -7714,9 +7714,9 @@ ruleFullJvmFormalParameter returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getFullJvmFormalParameterAccess().getNameInnerVarIDParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getFullJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0());
 				}
-				lv_name_1_0=ruleInnerVarID
+				lv_name_1_0=ruleValidID
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getFullJvmFormalParameterRule());
@@ -7725,7 +7725,7 @@ ruleFullJvmFormalParameter returns [EObject current=null]
 						$current,
 						"name",
 						lv_name_1_0,
-						"org.eclipse.xtend.core.Xtend.InnerVarID");
+						"org.eclipse.xtend.core.Xtend.ValidID");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -8098,9 +8098,9 @@ ruleXSwitchExpression returns [EObject current=null]
 				(
 					(
 						{
-							newCompositeNode(grammarAccess.getXSwitchExpressionAccess().getSwitchXExpressionOrSimpleConstructorCallParserRuleCall_2_1_1_0());
+							newCompositeNode(grammarAccess.getXSwitchExpressionAccess().getSwitchXExpressionParserRuleCall_2_1_1_0());
 						}
-						lv_switch_9_0=ruleXExpressionOrSimpleConstructorCall
+						lv_switch_9_0=ruleXExpression
 						{
 							if ($current==null) {
 								$current = createModelElementForParent(grammarAccess.getXSwitchExpressionRule());
@@ -8109,7 +8109,7 @@ ruleXSwitchExpression returns [EObject current=null]
 								$current,
 								"switch",
 								lv_switch_9_0,
-								"org.eclipse.xtend.core.Xtend.XExpressionOrSimpleConstructorCall");
+								"org.eclipse.xtext.xbase.Xbase.XExpression");
 							afterParserOrEnumRuleCall();
 						}
 					)
@@ -9539,45 +9539,6 @@ ruleXStringLiteral returns [EObject current=null]
 		this_RichString_1=ruleRichString
 		{
 			$current = $this_RichString_1.current;
-			afterParserOrEnumRuleCall();
-		}
-	)
-;
-
-// Entry rule entryRuleXExpressionOrSimpleConstructorCall
-entryRuleXExpressionOrSimpleConstructorCall returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getXExpressionOrSimpleConstructorCallRule()); }
-	iv_ruleXExpressionOrSimpleConstructorCall=ruleXExpressionOrSimpleConstructorCall
-	{ $current=$iv_ruleXExpressionOrSimpleConstructorCall.current; }
-	EOF;
-
-// Rule XExpressionOrSimpleConstructorCall
-ruleXExpressionOrSimpleConstructorCall returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			('new')=>
-			{
-				newCompositeNode(grammarAccess.getXExpressionOrSimpleConstructorCallAccess().getXbaseConstructorCallParserRuleCall_0());
-			}
-			this_XbaseConstructorCall_0=ruleXbaseConstructorCall
-			{
-				$current = $this_XbaseConstructorCall_0.current;
-				afterParserOrEnumRuleCall();
-			}
-		)
-		    |
-		{
-			newCompositeNode(grammarAccess.getXExpressionOrSimpleConstructorCallAccess().getXExpressionParserRuleCall_1());
-		}
-		this_XExpression_1=ruleXExpression
-		{
-			$current = $this_XExpression_1.current;
 			afterParserOrEnumRuleCall();
 		}
 	)

@@ -1177,7 +1177,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     FullJvmFormalParameter returns XtendFormalParameter
 	 *
 	 * Constraint:
-	 *     (extension?='extension'? name=InnerVarID parameterType=JvmTypeReference)
+	 *     (extension?='extension'? name=ValidID parameterType=JvmTypeReference)
 	 */
 	protected void sequence_FullJvmFormalParameter(ISerializationContext context, XtendFormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1189,7 +1189,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     JvmFormalParameter returns XtendFormalParameter
 	 *
 	 * Constraint:
-	 *     (extension?='extension'? name=InnerVarID parameterType=JvmTypeReference?)
+	 *     (extension?='extension'? name=ValidID parameterType=JvmTypeReference?)
 	 */
 	protected void sequence_JvmFormalParameter(ISerializationContext context, XtendFormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1354,7 +1354,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     (
 	 *         annotations+=XAnnotation* 
 	 *         (extension?='extension' annotations+=XAnnotation*)? 
-	 *         name=InnerVarID 
+	 *         name=ValidID 
 	 *         parameterType=JvmTypeReference 
 	 *         (varArg?='*' | defaultValue=XLiteral)?
 	 *     )
@@ -1643,7 +1643,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *
 	 * Constraint:
 	 *     (
-	 *         ((declaredParam=JvmFormalParameter switch=XExpression) | (declaredParam=JvmFormalParameter? switch=XExpressionOrSimpleConstructorCall)) 
+	 *         ((declaredParam=JvmFormalParameter switch=XExpression) | (declaredParam=JvmFormalParameter? switch=XExpression)) 
 	 *         cases+=XCasePart* 
 	 *         default=XExpression?
 	 *     )
@@ -1662,7 +1662,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 * Constraint:
 	 *     (
 	 *         ((writeable?='var'? extension?='extension'?) | (extension?='extension' writeable?='var'?)) 
-	 *         name=InnerVarID 
+	 *         name=ValidID 
 	 *         type=JvmTypeReference? 
 	 *         right=XExpression?
 	 *     )

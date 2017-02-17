@@ -820,31 +820,6 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-// Entry rule entryRuleXExpressionOrSimpleConstructorCall
-entryRuleXExpressionOrSimpleConstructorCall
-:
-{ before(grammarAccess.getXExpressionOrSimpleConstructorCallRule()); }
-	 ruleXExpressionOrSimpleConstructorCall
-{ after(grammarAccess.getXExpressionOrSimpleConstructorCallRule()); } 
-	 EOF 
-;
-
-// Rule XExpressionOrSimpleConstructorCall
-ruleXExpressionOrSimpleConstructorCall 
-	@init {
-		int stackSize = keepStackSize();
-	}
-	:
-	(
-		{ before(grammarAccess.getXExpressionOrSimpleConstructorCallAccess().getAlternatives()); }
-		(rule__XExpressionOrSimpleConstructorCall__Alternatives)
-		{ after(grammarAccess.getXExpressionOrSimpleConstructorCallAccess().getAlternatives()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
 // Entry rule entryRuleSimpleStringLiteral
 entryRuleSimpleStringLiteral
 :
@@ -4218,27 +4193,6 @@ rule__XStringLiteral__Alternatives
 		{ before(grammarAccess.getXStringLiteralAccess().getRichStringParserRuleCall_1()); }
 		ruleRichString
 		{ after(grammarAccess.getXStringLiteralAccess().getRichStringParserRuleCall_1()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__XExpressionOrSimpleConstructorCall__Alternatives
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getXExpressionOrSimpleConstructorCallAccess().getXbaseConstructorCallParserRuleCall_0()); }
-		(ruleXbaseConstructorCall)
-		{ after(grammarAccess.getXExpressionOrSimpleConstructorCallAccess().getXbaseConstructorCallParserRuleCall_0()); }
-	)
-	|
-	(
-		{ before(grammarAccess.getXExpressionOrSimpleConstructorCallAccess().getXExpressionParserRuleCall_1()); }
-		ruleXExpression
-		{ after(grammarAccess.getXExpressionOrSimpleConstructorCallAccess().getXExpressionParserRuleCall_1()); }
 	)
 ;
 finally {
@@ -44225,9 +44179,9 @@ rule__Parameter__NameAssignment_3
 	}
 :
 	(
-		{ before(grammarAccess.getParameterAccess().getNameInnerVarIDParserRuleCall_3_0()); }
-		ruleInnerVarID
-		{ after(grammarAccess.getParameterAccess().getNameInnerVarIDParserRuleCall_3_0()); }
+		{ before(grammarAccess.getParameterAccess().getNameValidIDParserRuleCall_3_0()); }
+		ruleValidID
+		{ after(grammarAccess.getParameterAccess().getNameValidIDParserRuleCall_3_0()); }
 	)
 ;
 finally {
@@ -44380,9 +44334,9 @@ rule__XVariableDeclaration__NameAssignment_1
 	}
 :
 	(
-		{ before(grammarAccess.getXVariableDeclarationAccess().getNameInnerVarIDParserRuleCall_1_0()); }
-		ruleInnerVarID
-		{ after(grammarAccess.getXVariableDeclarationAccess().getNameInnerVarIDParserRuleCall_1_0()); }
+		{ before(grammarAccess.getXVariableDeclarationAccess().getNameValidIDParserRuleCall_1_0()); }
+		ruleValidID
+		{ after(grammarAccess.getXVariableDeclarationAccess().getNameValidIDParserRuleCall_1_0()); }
 	)
 ;
 finally {
@@ -44444,9 +44398,9 @@ rule__JvmFormalParameter__NameAssignment_1
 	}
 :
 	(
-		{ before(grammarAccess.getJvmFormalParameterAccess().getNameInnerVarIDParserRuleCall_1_0()); }
-		ruleInnerVarID
-		{ after(grammarAccess.getJvmFormalParameterAccess().getNameInnerVarIDParserRuleCall_1_0()); }
+		{ before(grammarAccess.getJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0()); }
+		ruleValidID
+		{ after(grammarAccess.getJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0()); }
 	)
 ;
 finally {
@@ -44493,9 +44447,9 @@ rule__FullJvmFormalParameter__NameAssignment_1
 	}
 :
 	(
-		{ before(grammarAccess.getFullJvmFormalParameterAccess().getNameInnerVarIDParserRuleCall_1_0()); }
-		ruleInnerVarID
-		{ after(grammarAccess.getFullJvmFormalParameterAccess().getNameInnerVarIDParserRuleCall_1_0()); }
+		{ before(grammarAccess.getFullJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0()); }
+		ruleValidID
+		{ after(grammarAccess.getFullJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0()); }
 	)
 ;
 finally {
@@ -44662,9 +44616,9 @@ rule__XSwitchExpression__SwitchAssignment_2_1_1
 	}
 :
 	(
-		{ before(grammarAccess.getXSwitchExpressionAccess().getSwitchXExpressionOrSimpleConstructorCallParserRuleCall_2_1_1_0()); }
-		ruleXExpressionOrSimpleConstructorCall
-		{ after(grammarAccess.getXSwitchExpressionAccess().getSwitchXExpressionOrSimpleConstructorCallParserRuleCall_2_1_1_0()); }
+		{ before(grammarAccess.getXSwitchExpressionAccess().getSwitchXExpressionParserRuleCall_2_1_1_0()); }
+		ruleXExpression
+		{ after(grammarAccess.getXSwitchExpressionAccess().getSwitchXExpressionParserRuleCall_2_1_1_0()); }
 	)
 ;
 finally {

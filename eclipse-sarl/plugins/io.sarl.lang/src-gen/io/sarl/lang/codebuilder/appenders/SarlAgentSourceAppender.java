@@ -123,7 +123,7 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlBehaviorUnit.
-	 * @param name - the typename of the SarlBehaviorUnit.
+	 * @param name - the type of the SarlBehaviorUnit.
 	 * @return the builder.
 	 */
 	public ISarlBehaviorUnitBuilder addSarlBehaviorUnit(String name) {
@@ -210,6 +210,20 @@ public class SarlAgentSourceAppender extends AbstractSourceAppender implements I
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
 		return this.builder.addSarlAnnotationType(name);
+	}
+
+	/** Create a SarlCapacityUses.
+	 * @param name - the types referenced by the SarlCapacityUses.
+	 */
+	public void addSarlCapacityUses(String... name) {
+		this.builder.addSarlCapacityUses(name);
+	}
+
+	/** Create a SarlRequiredCapacity.
+	 * @param name - the types referenced by the SarlRequiredCapacity.
+	 */
+	public void addSarlRequiredCapacity(String... name) {
+		this.builder.addSarlRequiredCapacity(name);
 	}
 
 }

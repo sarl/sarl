@@ -87,7 +87,7 @@ public interface ISarlSkillBuilder {
 	ISarlConstructorBuilder addSarlConstructor();
 
 	/** Create a SarlBehaviorUnit.
-	 * @param name - the typename of the SarlBehaviorUnit.
+	 * @param name - the type of the SarlBehaviorUnit.
 	 * @return the builder.
 	 */
 	ISarlBehaviorUnitBuilder addSarlBehaviorUnit(String name);
@@ -153,6 +153,16 @@ public interface ISarlSkillBuilder {
 	 * @return the builder.
 	 */
 	ISarlAnnotationTypeBuilder addSarlAnnotationType(String name);
+
+	/** Create a SarlCapacityUses.
+	 * @param name - the types referenced by the SarlCapacityUses.
+	 */
+	void addSarlCapacityUses(String... name);
+
+	/** Create a SarlRequiredCapacity.
+	 * @param name - the types referenced by the SarlRequiredCapacity.
+	 */
+	void addSarlRequiredCapacity(String... name);
 
 }
 

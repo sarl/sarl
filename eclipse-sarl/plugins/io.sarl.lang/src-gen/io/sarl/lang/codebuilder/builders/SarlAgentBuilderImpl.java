@@ -25,8 +25,11 @@ package io.sarl.lang.codebuilder.builders;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlFactory;
+import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
+import java.util.Collection;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -149,7 +152,7 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 	private Provider<ISarlBehaviorUnitBuilder> iSarlBehaviorUnitBuilderProvider;
 
 	/** Create a SarlBehaviorUnit.
-	 * @param name - the typename of the SarlBehaviorUnit.
+	 * @param name - the type of the SarlBehaviorUnit.
 	 * @return the builder.
 	 */
 	public ISarlBehaviorUnitBuilder addSarlBehaviorUnit(String name) {
@@ -272,6 +275,42 @@ public class SarlAgentBuilderImpl extends AbstractBuilder implements ISarlAgentB
 		ISarlAnnotationTypeBuilder builder = this.iSarlAnnotationTypeBuilderProvider.get();
 		builder.eInit(getSarlAgent(), name, getTypeResolutionContext());
 		return builder;
+	}
+
+	/** Create a SarlCapacityUses.
+	 * @param name - the types referenced by the SarlCapacityUses.
+	 */
+	public void addSarlCapacityUses(String... name) {
+		if (name != null && name.length > 0) {
+			SarlCapacityUses member = SarlFactory.eINSTANCE.createSarlCapacityUses();
+			this.sarlAgent.getMembers().add(member);
+			member.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
+			Collection<JvmParameterizedTypeReference> thecollection = member.getCapacities();
+			for (final String aname : name) {
+				if (!Strings.isEmpty(aname)) {
+					thecollection.add(newTypeRef(this.sarlAgent, aname));
+				}
+			}
+		}
+
+	}
+
+	/** Create a SarlRequiredCapacity.
+	 * @param name - the types referenced by the SarlRequiredCapacity.
+	 */
+	public void addSarlRequiredCapacity(String... name) {
+		if (name != null && name.length > 0) {
+			SarlRequiredCapacity member = SarlFactory.eINSTANCE.createSarlRequiredCapacity();
+			this.sarlAgent.getMembers().add(member);
+			member.setAnnotationInfo(XtendFactory.eINSTANCE.createXtendMember());
+			Collection<JvmParameterizedTypeReference> thecollection = member.getCapacities();
+			for (final String aname : name) {
+				if (!Strings.isEmpty(aname)) {
+					thecollection.add(newTypeRef(this.sarlAgent, aname));
+				}
+			}
+		}
+
 	}
 
 }

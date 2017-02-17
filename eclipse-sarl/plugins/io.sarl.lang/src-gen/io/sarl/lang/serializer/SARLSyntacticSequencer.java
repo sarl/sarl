@@ -611,7 +611,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) 'return' expression=XExpression
 	 *     (rule start) (ambiguity) 'switch' '(' declaredParam=JvmFormalParameter
 	 *     (rule start) (ambiguity) 'switch' declaredParam=JvmFormalParameter
-	 *     (rule start) (ambiguity) 'switch' switch=XExpressionOrSimpleConstructorCall
+	 *     (rule start) (ambiguity) 'switch' switch=XExpression
 	 *     (rule start) (ambiguity) 'synchronized' '(' param=XExpression
 	 *     (rule start) (ambiguity) 'throw' expression=XExpression
 	 *     (rule start) (ambiguity) 'try' expression=XExpression
@@ -666,7 +666,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) 'return' expression=XExpression
 	 *     (rule start) (ambiguity) 'switch' '(' declaredParam=JvmFormalParameter
 	 *     (rule start) (ambiguity) 'switch' declaredParam=JvmFormalParameter
-	 *     (rule start) (ambiguity) 'switch' switch=XExpressionOrSimpleConstructorCall
+	 *     (rule start) (ambiguity) 'switch' switch=XExpression
 	 *     (rule start) (ambiguity) 'synchronized' '(' param=XExpression
 	 *     (rule start) (ambiguity) 'throw' expression=XExpression
 	 *     (rule start) (ambiguity) 'try' expression=XExpression

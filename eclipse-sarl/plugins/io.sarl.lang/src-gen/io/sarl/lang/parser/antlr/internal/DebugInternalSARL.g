@@ -983,7 +983,7 @@ ruleParameter:
 		ruleXAnnotation
 		*
 	)?
-	ruleInnerVarID
+	ruleValidID
 	':'
 	ruleJvmTypeReference
 	(
@@ -1036,7 +1036,7 @@ ruleXVariableDeclaration:
 			)
 		)
 	)
-	ruleInnerVarID
+	ruleValidID
 	(
 		':'
 		ruleJvmTypeReference
@@ -1051,7 +1051,7 @@ ruleXVariableDeclaration:
 ruleJvmFormalParameter:
 	'extension'
 	?
-	ruleInnerVarID
+	ruleValidID
 	(
 		(
 			(':')=>
@@ -1065,7 +1065,7 @@ ruleJvmFormalParameter:
 ruleFullJvmFormalParameter:
 	'extension'
 	?
-	ruleInnerVarID
+	ruleValidID
 	':'
 	ruleJvmTypeReference
 ;
@@ -1126,7 +1126,7 @@ ruleXSwitchExpression:
 			ruleJvmFormalParameter
 			'='
 		)?
-		ruleXExpressionOrSimpleConstructorCall
+		ruleXExpression
 	)
 	'{'
 	ruleXCasePart
@@ -1454,18 +1454,6 @@ ruleXStringLiteral:
 		ruleSimpleStringLiteral
 		    |
 		ruleRichString
-	)
-;
-
-// Rule XExpressionOrSimpleConstructorCall
-ruleXExpressionOrSimpleConstructorCall:
-	(
-		(
-			('new')=>
-			ruleXbaseConstructorCall
-		)
-		    |
-		ruleXExpression
 	)
 ;
 
