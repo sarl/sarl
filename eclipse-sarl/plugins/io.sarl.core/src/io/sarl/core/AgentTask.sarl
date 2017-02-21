@@ -19,12 +19,12 @@
  * limitations under the License.
  */
 
-package io.sarl.core;
+package io.sarl.core
 
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.Procedures;
+import org.eclipse.xtext.xbase.lib.Functions.Function1
+import org.eclipse.xtext.xbase.lib.Procedures
 
-import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.Agent
 
 /**
  * Description of a task an agent has schedule to be performed at a later time.
@@ -34,19 +34,19 @@ import io.sarl.lang.core.Agent;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AgentTask {
+class AgentTask {
 
-	private static final Function1<Agent, Boolean> FALSE_GUARD = (agent) -> Boolean.FALSE;
+	static val FALSE_GUARD : Function1<Agent, Boolean> = [ Boolean.FALSE ]
 
-	private String name;
+	var name : String
 
-	private Function1<Agent, Boolean> guard;
+	var guard : Function1<Agent, Boolean>
 
-	private Procedures.Procedure1<? super Agent> procedure;
+	var procedure : Procedures.Procedure1<? super Agent>
 
 	/** Construct an AgentTask.
 	 */
-	public AgentTask() {
+	new {
 		//
 	}
 
@@ -54,24 +54,24 @@ public class AgentTask {
 	 *
 	 * @return the procedure to run.
 	 */
-	public Procedures.Procedure1<? super Agent> getProcedure() {
-		return this.procedure;
+	def getProcedure : Procedures.Procedure1<? super Agent> {
+		this.procedure
 	}
 
 	/** Change the procedure associated to this task.
 	 *
 	 * @param procedure - code of the procedure to associate to the task.
 	 */
-	public void setProcedure(Procedures.Procedure1<? super Agent> procedure) {
-		this.procedure = procedure;
+	def setProcedure(procedure : Procedures.Procedure1<? super Agent>) {
+		this.procedure = procedure
 	}
 
 	/** Replies the guard of this task.
 	 *
 	 * @return the guard.
 	 */
-	public Function1<Agent, Boolean> getGuard() {
-		return this.guard;
+	def getGuard : Function1<Agent, Boolean> {
+		this.guard
 	}
 
 	/** Change the guard of this task.
@@ -80,24 +80,24 @@ public class AgentTask {
 	 * @see #unless
 	 * @see #ifTrue
 	 */
-	public void setGuard(Function1<Agent, Boolean> guard) {
-		this.guard = guard;
+	def setGuard(guard : Function1<Agent, Boolean>) {
+		this.guard = guard
 	}
 
 	/** Replies the name of this task.
 	 *
 	 * @return the name.
 	 */
-	public String getName() {
-		return this.name;
+	def getName : String {
+		this.name
 	}
 
 	/** Change the name of this task.
 	 *
 	 * @param name - name of the task.
 	 */
-	public void setName(String name) {
-		this.name = name;
+	def setName(name : String) {
+		this.name = name
 	}
 
 	/** Change the gard of this that with the negation of the given predicate.
@@ -106,33 +106,33 @@ public class AgentTask {
 	 * @return <code>this</code>.
 	 * @see #setGuard
 	 */
-	public AgentTask unless(final Function1<Agent, Boolean> predicate) {
-		if (predicate == null) {
-			this.guard = FALSE_GUARD;
+	def unless(predicate : Function1<Agent, Boolean>) : AgentTask {
+		if (predicate === null) {
+			this.guard = FALSE_GUARD
 		} else {
-			this.guard = (agent) -> predicate.apply(agent) == Boolean.TRUE ? Boolean.FALSE : Boolean.TRUE;
+			this.guard = [ ^agent | if (predicate.apply(^agent) === Boolean.TRUE) Boolean.FALSE else Boolean.TRUE ]
 		}
-		return this;
+		return this
 	}
 
-	/** Change the gard to the given predicate.
+	/** Change the guard to the given predicate.
 	 *
 	 * @param predicate - the code of the function that is the predicate to test.
 	 * @return <code>this</code>.
 	 * @see #setGuard
 	 */
-	public AgentTask ifTrue(Function1<Agent, Boolean> predicate) {
-		if (predicate == null) {
-			this.guard = null;
+	def ifTrue(predicate : Function1<Agent, Boolean>) : AgentTask {
+		if (predicate === null) {
+			this.guard = null
 		} else {
-			this.guard = predicate;
+			this.guard = predicate
 		}
-		return this;
+		return this
 	}
 
 	@Override
-	public String toString() {
-		return "AgentTask: " + this.name; //$NON-NLS-1$
+	def toString : String {
+		"AgentTask: " + this.name //$NON-NLS-1$
 	}
 
 }

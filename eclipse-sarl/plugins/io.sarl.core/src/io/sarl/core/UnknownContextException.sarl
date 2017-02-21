@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-package io.sarl.core;
+package io.sarl.core
 
-import java.util.UUID;
+import java.util.UUID
 
 /** Exception thrown when an agent context is unknown.
  *
@@ -30,26 +30,23 @@ import java.util.UUID;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class UnknownContextException extends RuntimeException {
+class UnknownContextException extends RuntimeException {
 
-	private static final long serialVersionUID = 6092777787192871658L;
-
-	private final UUID unknownContextID;
+	val unknownContextID : UUID
 
 	/**
 	 * @param unknownContextID - ID of the context that is unkown.
 	 */
-	public UnknownContextException(UUID unknownContextID) {
-		super();
-		this.unknownContextID = unknownContextID;
+	new(unknownContextID : UUID) {
+		this.unknownContextID = unknownContextID
 	}
 
 	/** Replies the identifier that is used to reference the unknown context.
 	 *
 	 * @return the unknownContextID
 	 */
-	public UUID getUnknownContextID() {
-		return this.unknownContextID;
+	def getUnknownContextID : UUID {
+		this.unknownContextID
 	}
 
 }
