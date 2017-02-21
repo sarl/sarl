@@ -180,7 +180,8 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 			if (parameters != null) {
 				for (int i = 0; i < parameters.size(); ++i) {
 					if (!Strings.isNullOrEmpty(annotationValues[i])) {
-						parameters.get(i).setDefaultValueAnnotationValue(annotationValues[i]);
+						parameters.get(i).setDefaultValueAnnotationValue(annotationValues[i],
+								annotationValues[i].substring(annotationValues[i].lastIndexOf("#") + 1)); //$NON-NLS-1$
 					}
 				}
 			}
