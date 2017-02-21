@@ -40,6 +40,7 @@ import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.UnimplementedCapacityException;
+import io.sarl.lang.core.tests.core.AbstractAgentTraitBehaviorTest.Capacity1;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.Nullable;
 
@@ -111,7 +112,7 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 		//
 		Object result = invoke(getInstance(), "getSkill", Capacity1.class);
 		//
-		assertSame(skill, result);
+		assertInstanceOf(Capacity1.class, result);
 	}
 
 	@Test
@@ -139,7 +140,7 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 		assertSame(skill, result);
 		//
 		result = invoke(getInstance(), "getSkill", Capacity1.class);
-		assertSame(skill, result);
+		assertInstanceOf(Capacity1.class, result);
 	}
 
 	@Test
@@ -149,7 +150,7 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 		invoke(getInstance(), "operator_mappedTo", Capacity1.class, skill);
 		//
 		Object result = invoke(getInstance(), "getSkill", Capacity1.class);
-		assertSame(skill, result);
+		assertInstanceOf(Capacity1.class, result);
 	}
 
 	@Test(expected = UnimplementedCapacityException.class)
@@ -235,7 +236,11 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	protected static interface Capacity1 extends Capacity {
-		//
+		public static class ContextAwareCapacityWrapper<C extends Capacity1> extends Capacity.ContextAwareCapacityWrapper<C> implements Capacity1 {
+			public ContextAwareCapacityWrapper(C capacity, Object caller) {
+				super(capacity, caller);
+			}
+		}
 	}
 
 	/**

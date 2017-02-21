@@ -110,6 +110,7 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.InferredTypeIndicator;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
@@ -1021,6 +1022,88 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
 		} finally {
 			closeContext(context);
+		}
+
+		// Generate the internal class for context-aware wrappers
+
+		// Change the modifiers on the generated type.
+		final JvmGenericType innerType = this.typesFactory.createJvmGenericType();
+		innerType.setInterface(false);
+		innerType.setAbstract(false);
+		innerType.setVisibility(JvmVisibility.PUBLIC);
+		innerType.setStatic(true);
+		innerType.setStrictFloatingPoint(false);
+		innerType.setFinal(false);
+		final String innerTypeName = Capacity.ContextAwareCapacityWrapper.class.getSimpleName();
+		innerType.setSimpleName(innerTypeName);
+
+		inferredJvmType.getMembers().add(innerType);
+
+		final JvmTypeParameter typeParameter = this.typesFactory.createJvmTypeParameter();
+		typeParameter.setName("C"); //$NON-NLS-1$
+		final JvmUpperBound constraint = this.typesFactory.createJvmUpperBound();
+		constraint.setTypeReference(this._typeReferenceBuilder.typeRef(inferredJvmType));
+		typeParameter.getConstraints().add(constraint);
+		innerType.getTypeParameters().add(typeParameter);
+
+		final JvmTypeReference extendedType = inferredJvmType.getExtendedInterfaces().iterator().next();
+		final JvmTypeReference superType = this._typeReferenceBuilder.typeRef(
+				extendedType.getQualifiedName() + "$" + innerTypeName, //$NON-NLS-1$
+				this._typeReferenceBuilder.typeRef(typeParameter));
+		innerType.getSuperTypes().add(superType);
+
+		innerType.getSuperTypes().add(this._typeReferenceBuilder.typeRef(inferredJvmType));
+
+		final JvmConstructor constructor = this.typesFactory.createJvmConstructor();
+		constructor.setVisibility(JvmVisibility.PUBLIC);
+		innerType.getMembers().add(constructor);
+		final JvmFormalParameter parameter1 = this.typesFactory.createJvmFormalParameter();
+		parameter1.setName("capacity"); //$NON-NLS-1$
+		parameter1.setParameterType(this._typeReferenceBuilder.typeRef(typeParameter));
+		constructor.getParameters().add(parameter1);
+		final JvmFormalParameter parameter2 = this.typesFactory.createJvmFormalParameter();
+		parameter2.setName("caller"); //$NON-NLS-1$
+		parameter2.setParameterType(this._typeReferenceBuilder.typeRef(Object.class));
+		constructor.getParameters().add(parameter2);
+		setBody(constructor, (it) -> {
+			it.append("super(capacity, caller);"); //$NON-NLS-1$
+		});
+
+		final Set<ActionPrototype> createdActions = new TreeSet<>();
+		for (final JvmGenericType sourceType : Iterables.concat(
+				Collections.singletonList(inferredJvmType),
+				Iterables.transform(Iterables.skip(inferredJvmType.getExtendedInterfaces(), 1), (it) -> {
+					return (JvmGenericType) it.getType();
+				}))) {
+			copyNonStaticPublicJvmOperations(sourceType, innerType, createdActions, (operation, it) -> {
+				it.append("try {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("  ensureCallerInLocalThread();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("  "); //$NON-NLS-1$
+				if (operation.getReturnType() != null && !Objects.equal("void", operation.getReturnType().getIdentifier())) { //$NON-NLS-1$
+					it.append("return "); //$NON-NLS-1$
+				}
+				it.append("this.capacity."); //$NON-NLS-1$
+				it.append(operation.getSimpleName());
+				it.append("("); //$NON-NLS-1$
+				boolean first = true;
+				for (final JvmFormalParameter fparam : operation.getParameters()) {
+					if (first) {
+						first = false;
+					} else {
+						it.append(", "); //$NON-NLS-1$
+					}
+					it.append(fparam.getName());
+				}
+				it.append(");"); //$NON-NLS-1$
+				it.newLine();
+				it.append("} finally {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("  resetCallerInLocalThread();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("}"); //$NON-NLS-1$
+			});
 		}
 	}
 
@@ -2761,6 +2844,57 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return code.trim();
 		}
 		return code;
+	}
+
+	/** Copy the JVM operations from the source to the destination.
+	 *
+	 * @param source the source.
+	 * @param target the destination.
+	 * @param createdActions the set of actions that are created before (input) or during (output) the invocation.
+	 * @param bodyBuilder the builder of the target's operations.
+	 * @since 0.5
+	 */
+	protected void copyNonStaticPublicJvmOperations(JvmGenericType source, JvmGenericType target,
+			Set<ActionPrototype> createdActions, Procedure2<JvmOperation, ITreeAppendable> bodyBuilder) {
+		final Iterable<JvmOperation> operations = Iterables.transform(Iterables.filter(source.getMembers(), (it) -> {
+			if (it instanceof JvmOperation) {
+				final JvmOperation op = (JvmOperation) it;
+				return !op.isStatic() && op.getVisibility() == JvmVisibility.PUBLIC;
+			}
+			return false;
+		}), (it) -> (JvmOperation) it);
+		for (final JvmOperation operation : operations) {
+			final ActionParameterTypes types = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
+					operation.isVarArgs(), operation.getParameters());
+			final ActionPrototype actSigKey = this.sarlSignatureProvider.createActionPrototype(
+					operation.getSimpleName(), types);
+			if (createdActions.add(actSigKey)) {
+				final JvmOperation newOp = this.typesFactory.createJvmOperation();
+				target.getMembers().add(newOp);
+				newOp.setAbstract(false);
+				newOp.setDefault(operation.isDefault());
+				newOp.setDeprecated(operation.isDeprecated());
+				newOp.setFinal(false);
+				newOp.setNative(false);
+				newOp.setReturnType(this.typeBuilder.cloneWithProxies(operation.getReturnType()));
+				newOp.setSimpleName(operation.getSimpleName());
+				newOp.setStatic(false);
+				newOp.setStrictFloatingPoint(operation.isStrictFloatingPoint());
+				newOp.setSynchronized(operation.isSynchronized());
+				newOp.setVisibility(JvmVisibility.PUBLIC);
+
+				for (final JvmFormalParameter parameter : operation.getParameters()) {
+					final JvmFormalParameter newParam = this.typesFactory.createJvmFormalParameter();
+					newOp.getParameters().add(newParam);
+					newParam.setName(parameter.getSimpleName());
+					newParam.setParameterType(this.typeBuilder.cloneWithProxies(parameter.getParameterType()));
+				}
+
+				newOp.setVarArgs(operation.isVarArgs());
+
+				setBody(newOp, (it) -> bodyBuilder.apply(operation, it));
+			}
+		}
 	}
 
 }

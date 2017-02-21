@@ -29,5 +29,58 @@ package io.sarl.lang.core;
  * @mavenartifactid $ArtifactId$
  */
 public interface Capacity {
-	//
+
+	/** Wrapper to a capacity that enable to manage and provide the caller to the capacity function.
+	 *
+	 * @param <C> the type of the wrapper capacity.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.5
+	 */
+	abstract class ContextAwareCapacityWrapper<C extends Capacity> implements Capacity {
+
+		private static final ThreadLocal<Object> CALLER = new ThreadLocal<>();
+
+		/** The wrapped capacity.
+		 */
+		protected final C capacity;
+
+		private final Object caller;
+
+		/** Constructor.
+		 *
+		 * @param capacity the wrapped capacity.
+		 * @param caller the owner of the wrapper, that should be the caller of the capacity's function.
+		 */
+		public ContextAwareCapacityWrapper(C capacity, Object caller) {
+			assert capacity != null;
+			this.capacity = capacity;
+			this.caller = caller;
+		}
+
+		/** Ensure that the local-thread variable stores the caller.
+		 */
+		protected final void ensureCallerInLocalThread() {
+			CALLER.set(this.caller);
+		}
+
+		/** Reset the local-thread variable storing the caller.
+		 */
+		@SuppressWarnings("static-method")
+		protected final void resetCallerInLocalThread() {
+			CALLER.remove();
+		}
+
+		/** Replies the caller of the capacity functions.
+		 *
+		 * @return the caller, or {@code null} if no caller is registered.
+		 */
+		public static final Object getCaller() {
+			return CALLER.get();
+		}
+
+	}
+
 }

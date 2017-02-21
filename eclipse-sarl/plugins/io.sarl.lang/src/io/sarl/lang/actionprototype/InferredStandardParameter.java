@@ -50,6 +50,10 @@ public class InferredStandardParameter {
 	 */
 	protected String defaultValueAnnotationValue;
 
+	/** Basename of default value annotation value.
+	 */
+	protected String defaultValueAnnotationValueBasename;
+
 	/**
 	 * @param source - the original parameter.
 	 * @param name - the name of the formal parameter.
@@ -98,12 +102,22 @@ public class InferredStandardParameter {
 		return this.defaultValueAnnotationValue;
 	}
 
+	/** Replies the basename of the value of the annotation that is marked this parameter with a default value.
+	 *
+	 * @return the basename of the annotation's value.
+	 */
+	public String getDefaultValueAnnotationValueBasename() {
+		return this.defaultValueAnnotationValueBasename;
+	}
+
 	/** Set the value of the annotation that is marked this parameter with a default value.
 	 *
 	 * @param value the annotation's value.
+	 * @param basename the basename of the value.
 	 */
-	void setDefaultValueAnnotationValue(String value) {
+	void setDefaultValueAnnotationValue(String value, String basename) {
 		this.defaultValueAnnotationValue = value;
+		this.defaultValueAnnotationValueBasename = basename;
 	}
 
 }
