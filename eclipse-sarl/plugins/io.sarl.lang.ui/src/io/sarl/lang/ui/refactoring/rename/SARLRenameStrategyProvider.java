@@ -38,13 +38,13 @@ import org.eclipse.xtext.ui.refactoring.ui.IRenameElementContext;
 public class SARLRenameStrategyProvider extends JvmMemberRenameStrategy.Provider {
 
 	@Inject
-	private Provider<SARLPackageRenameParticipant.Strategy> guicePackageStartegyProvider;
+	private Provider<SARLJdtPackageRenameParticipant.Strategy> guicePackageStartegyProvider;
 
 	@Override
 	public IRenameStrategy get(EObject targetEObject, IRenameElementContext renameElementContext)
 			throws NoSuchStrategyException {
-		if (renameElementContext instanceof SARLPackageRenameParticipant.Context) {
-			final SARLPackageRenameParticipant.Strategy strategy = this.guicePackageStartegyProvider.get();
+		if (renameElementContext instanceof SARLJdtPackageRenameParticipant.Context) {
+			final SARLJdtPackageRenameParticipant.Strategy strategy = this.guicePackageStartegyProvider.get();
 			if (strategy.initialize(targetEObject, renameElementContext)) {
 				return strategy;
 			}

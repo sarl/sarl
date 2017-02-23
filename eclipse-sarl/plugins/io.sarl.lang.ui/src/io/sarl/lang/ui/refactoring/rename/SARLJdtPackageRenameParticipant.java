@@ -27,6 +27,7 @@ import static org.eclipse.xtext.EcoreUtil2.getPlatformResourceOrNormalizedURI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import javax.inject.Named;
 
@@ -56,22 +57,26 @@ import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.util.ITextRegion;
 
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /** Participant to the package renaming mechanism.
+ * This participant react to the refactor of IPackageFragment, i.e. the package definition given by JDT.
+ * It means that this participant rename the packages outside the SARL editor.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLPackageRenameParticipant extends AbstractProcessorBasedRenameParticipant {
+public class SARLJdtPackageRenameParticipant extends AbstractProcessorBasedRenameParticipant {
 
-	private static final Logger LOG = Logger.getLogger(SARLPackageRenameParticipant.class);
-
-	private static final String PACKAGE_SEPARATOR_PATTERN = "\\."; //$NON-NLS-1$
+	private static final Logger LOG = Logger.getLogger(SARLJdtPackageRenameParticipant.class);
 
 	@Inject
 	private IResourceSetProvider resourceSetProvider;
+
+	@Inject
+	private SARLGrammarKeywordAccess keywords;
 
 	private final String fileExtension;
 
@@ -80,7 +85,7 @@ public class SARLPackageRenameParticipant extends AbstractProcessorBasedRenamePa
 	 * @param fileExtension the file extension.
 	 */
 	@Inject
-	public SARLPackageRenameParticipant(@Named(Constants.FILE_EXTENSIONS) String fileExtension) {
+	public SARLJdtPackageRenameParticipant(@Named(Constants.FILE_EXTENSIONS) String fileExtension) {
 		this.fileExtension = fileExtension;
 	}
 
@@ -93,9 +98,10 @@ public class SARLPackageRenameParticipant extends AbstractProcessorBasedRenamePa
 			try {
 				final ResourceSet resourceSet = this.resourceSetProvider.get(packageFragment.getJavaProject().getProject());
 				final String oldPackageName = packageFragment.getElementName();
-				final String[] oldPackageNameElements = oldPackageName.split(PACKAGE_SEPARATOR_PATTERN);
+				final String packageSeparatorPattern = Pattern.quote(this.keywords.getFullStopKeyword());
+				final String[] oldPackageNameElements = oldPackageName.split(packageSeparatorPattern);
 				final String newPackageName = getNewName();
-				final String[] newPackageNameElements = newPackageName.split(PACKAGE_SEPARATOR_PATTERN);
+				final String[] newPackageNameElements = newPackageName.split(packageSeparatorPattern);
 				for (final Object resourceObject : packageFragment.getNonJavaResources()) {
 					if (resourceObject instanceof IFile) {
 						final IFile file = (IFile) resourceObject;
