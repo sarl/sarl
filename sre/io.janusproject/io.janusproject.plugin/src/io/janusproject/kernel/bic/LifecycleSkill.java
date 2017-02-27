@@ -31,8 +31,8 @@ import io.janusproject.services.spawn.SpawnService;
 import io.sarl.core.Lifecycle;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
-import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.util.ClearableReference;
 
 /**
  * Skill that permits to manage the life cycle of the agents.

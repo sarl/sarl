@@ -280,6 +280,7 @@ public class VarArgsCompilerTest {
 					);
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
@@ -289,7 +290,7 @@ public class VarArgsCompilerTest {
 					"  public abstract void myaction(final int... arg);",
 					"  ",
 					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"    ",
@@ -317,6 +318,7 @@ public class VarArgsCompilerTest {
 					);
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
@@ -326,7 +328,7 @@ public class VarArgsCompilerTest {
 					"  public abstract void myaction(final char arg1, final boolean arg2, final int... arg3);",
 					"  ",
 					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"    ",
@@ -429,13 +431,14 @@ public class VarArgsCompilerTest {
 					);
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"  }",

@@ -44,10 +44,10 @@ import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.util.ClearableReference;
 
 /**
  * Janus implementation of an internal skill that provides an event dispatcher to notify the different components/behaviors of an

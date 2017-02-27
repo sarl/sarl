@@ -36,7 +36,13 @@ import io.sarl.lang.core.Agent
  */
 class AgentTask {
 
-	static val FALSE_GUARD : Function1<Agent, Boolean> = [ Boolean.FALSE ]
+	/** a gaurd that is always true.
+	 */
+	public static val TRUE_GUARD : Function1<Agent, Boolean> = [ Boolean.TRUE ]
+
+	/** a gaurd that is always false.
+	 */
+	public static val FALSE_GUARD : Function1<Agent, Boolean> = [ Boolean.FALSE ]
 
 	var name : String
 
@@ -44,10 +50,15 @@ class AgentTask {
 
 	var procedure : Procedures.Procedure1<? super Agent>
 
-	/** Construct an AgentTask.
+	val initiator : Object
+
+	/** Construct an AgentTask with the given initiator.
+	 * @param initiator the object that has initiated the execution of this task.
+	 *     If the value is {@code null} (the default value of the argument), the agent is assumed to
+	 *     be the initiator.
 	 */
-	new {
-		//
+	new(initiator : Object = null) {
+		this.initiator = initiator
 	}
 
 	/** Replies the procedure that is associated to this task.
@@ -133,6 +144,17 @@ class AgentTask {
 	@Override
 	def toString : String {
 		"AgentTask: " + this.name //$NON-NLS-1$
+	}
+
+	/**
+	 * Replies the object that has initiated the execution of this task.
+	 * If the value replied by this function is {@code null}, the agent is assumed to be the initiator.
+	 * 
+	 * @return the initiator, or {@code null} if the initiator is the agent itself.
+	 * @since 0.5
+	 */
+	def getInitiator : Object {
+		this.initiator
 	}
 
 }

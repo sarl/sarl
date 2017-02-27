@@ -457,13 +457,14 @@ public class SkillCompilerTest {
 		public void completeFinalFieldInitialization() throws Exception {
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"  }",
@@ -1167,6 +1168,7 @@ public class SkillCompilerTest {
 		public void missedActionImplementation_0() throws Exception {
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
@@ -1176,7 +1178,7 @@ public class SkillCompilerTest {
 					"  public abstract void myaction1(final int a);",
 					"  ",
 					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"    ",
@@ -1194,6 +1196,7 @@ public class SkillCompilerTest {
 					);
 			final String expectedC2 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
@@ -1203,7 +1206,7 @@ public class SkillCompilerTest {
 					"  public abstract void myaction2(final float b, final boolean c);",
 					"  ",
 					"  public static class ContextAwareCapacityWrapper<C extends C2> extends Capacity.ContextAwareCapacityWrapper<C> implements C2 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"    ",
@@ -1286,13 +1289,14 @@ public class SkillCompilerTest {
 		public void compatibleReturnType_0() throws Exception {
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"  }",
@@ -1301,13 +1305,14 @@ public class SkillCompilerTest {
 					);
 			final String expectedC2 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C2 extends Capacity {",
 					"  public static class ContextAwareCapacityWrapper<C extends C2> extends Capacity.ContextAwareCapacityWrapper<C> implements C2 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"  }",
@@ -1410,13 +1415,14 @@ public class SkillCompilerTest {
 		public void compatibleReturnType_1() throws Exception {
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"  }",
@@ -1425,13 +1431,14 @@ public class SkillCompilerTest {
 					);
 			final String expectedC2 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C2 extends Capacity {",
 					"  public static class ContextAwareCapacityWrapper<C extends C2> extends Capacity.ContextAwareCapacityWrapper<C> implements C2 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"  }",
@@ -1534,13 +1541,14 @@ public class SkillCompilerTest {
 		public void compatibleReturnType_2() throws Exception {
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"  }",
@@ -1602,6 +1610,7 @@ public class SkillCompilerTest {
 		public void compatibleReturnType_3() throws Exception {
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
@@ -1611,7 +1620,7 @@ public class SkillCompilerTest {
 					"  public abstract float myaction(final int a);",
 					"  ",
 					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"    ",
@@ -1947,6 +1956,7 @@ public class SkillCompilerTest {
 		public void capacityAccessors_inSkill() throws Exception {
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1957,7 +1967,7 @@ public class SkillCompilerTest {
 					"  public abstract void myaction2(final boolean a);",
 					"  ",
 					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"    ",
@@ -1984,6 +1994,7 @@ public class SkillCompilerTest {
 					);
 			final String expectedC2 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1994,7 +2005,7 @@ public class SkillCompilerTest {
 					"  public abstract void myaction4(final boolean a);",
 					"  ",
 					"  public static class ContextAwareCapacityWrapper<C extends C2> extends Capacity.ContextAwareCapacityWrapper<C> implements C2 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"    ",
@@ -2024,8 +2035,8 @@ public class SkillCompilerTest {
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
-					"import io.sarl.lang.core.ClearableReference;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.util.ClearableReference;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
@@ -2110,6 +2121,7 @@ public class SkillCompilerTest {
 		public void inheritance() throws Exception {
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
@@ -2119,7 +2131,7 @@ public class SkillCompilerTest {
 					"  public abstract int func1();",
 					"  ",
 					"  public static class ContextAwareCapacityWrapper<C extends CapTest1> extends Capacity.ContextAwareCapacityWrapper<C> implements CapTest1 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"    ",
@@ -2138,6 +2150,7 @@ public class SkillCompilerTest {
 			final String expectedC2 = multilineString(
 					"import CapTest1;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
@@ -2145,7 +2158,7 @@ public class SkillCompilerTest {
 					"  public abstract void func2(final int a);",
 					"  ",
 					"  public static class ContextAwareCapacityWrapper<C extends CapTest2> extends CapTest1.ContextAwareCapacityWrapper<C> implements CapTest2 {",
-					"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 					"      super(capacity, caller);",
 					"    }",
 					"    ",

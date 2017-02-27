@@ -35,12 +35,12 @@ import org.mockito.Mockito;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.UnimplementedCapacityException;
-import io.sarl.lang.core.tests.core.AbstractAgentTraitBehaviorTest.Capacity1;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.Nullable;
 
@@ -237,7 +237,7 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 	 */
 	protected static interface Capacity1 extends Capacity {
 		public static class ContextAwareCapacityWrapper<C extends Capacity1> extends Capacity.ContextAwareCapacityWrapper<C> implements Capacity1 {
-			public ContextAwareCapacityWrapper(C capacity, Object caller) {
+			public ContextAwareCapacityWrapper(C capacity, AgentTrait caller) {
 				super(capacity, caller);
 			}
 		}

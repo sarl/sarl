@@ -36,9 +36,9 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 
 import io.sarl.lang.core.Address;
-import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.lang.util.ClearableReference;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**

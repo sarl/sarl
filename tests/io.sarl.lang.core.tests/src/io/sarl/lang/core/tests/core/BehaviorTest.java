@@ -20,6 +20,10 @@
  */
 package io.sarl.lang.core.tests.core;
 
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 import io.sarl.lang.core.Behavior;
 
 /**
@@ -36,6 +40,17 @@ public class BehaviorTest extends AbstractAgentTraitBehaviorTest {
 		return new Behavior(getAgent()) {
 			//
 		};
+	}
+
+	@Test
+	public void contextAwareSkill() throws Exception {
+		Skill1 skill = new Skill1();
+		getAgent().setSkill_Fake(skill, Capacity1.class);
+		//
+		Object result = invoke(getInstance(), "getSkill", Capacity1.class);
+		//
+		assertInstanceOf(Capacity1.class, result);
+		assertInstanceOf(Capacity1.ContextAwareCapacityWrapper.class, result);
 	}
 
 }

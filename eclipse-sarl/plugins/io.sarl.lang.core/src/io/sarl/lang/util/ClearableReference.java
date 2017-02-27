@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.core;
+package io.sarl.lang.util;
 
 /** A reference to an object that could be clear dynamically.
  *

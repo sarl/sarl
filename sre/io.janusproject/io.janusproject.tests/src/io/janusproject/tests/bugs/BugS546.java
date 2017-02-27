@@ -70,8 +70,6 @@ public class BugS546 {
 	
 	private static final int NB_AGENTS = 100;
 
-	private static final int TIMEOUT = 240;
-
 	private static final int BASE_DELAY = 500;
 
 	private static final int MAX_EXTRA_DELAY = 2000;
@@ -87,7 +85,7 @@ public class BugS546 {
 				ids.add(id);
 			}
 			try {
-				waitForTheKernel(TIMEOUT);
+				waitForTheKernel(EXTRA_TIMEOUT);
 			} catch (TimeoutException e) {
 				if (LOG) {
 					System.err.println(getResults());

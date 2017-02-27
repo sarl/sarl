@@ -263,6 +263,7 @@ public class Bug92 extends AbstractSarlTest {
 				"");
 		final String expected1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -273,7 +274,7 @@ public class Bug92 extends AbstractSarlTest {
 				"  public abstract void setVoltage(final Double currentVoltage);",
 				"  ",
 				"  public static class ContextAwareCapacityWrapper<C extends ComputeEnergyCapacity> extends Capacity.ContextAwareCapacityWrapper<C> implements ComputeEnergyCapacity {",
-				"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+				"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 				"      super(capacity, caller);",
 				"    }",
 				"    ",
@@ -302,8 +303,8 @@ public class Bug92 extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.ClearableReference;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.util.ClearableReference;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -395,6 +396,7 @@ public class Bug92 extends AbstractSarlTest {
 				);
 		final String expected1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -405,7 +407,7 @@ public class Bug92 extends AbstractSarlTest {
 				"  public abstract void setVoltage(final Double currentVoltage);",
 				"  ",
 				"  public static class ContextAwareCapacityWrapper<C extends ComputeEnergyCapacity> extends Capacity.ContextAwareCapacityWrapper<C> implements ComputeEnergyCapacity {",
-				"    public ContextAwareCapacityWrapper(final C capacity, final Object caller) {",
+				"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
 				"      super(capacity, caller);",
 				"    }",
 				"    ",
@@ -434,8 +436,8 @@ public class Bug92 extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.ClearableReference;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.util.ClearableReference;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",

@@ -538,7 +538,7 @@ public abstract class AbstractSarlTest {
 		while (it1.hasNext()) {
 			Object ac = it1.next();
 			it1.remove();
-			if (!le.remove(ac)) {
+			if (ac != null && !le.remove(ac)) {
 				unexpectedElements.add(ac.toString());
 			}
 		}

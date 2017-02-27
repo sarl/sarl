@@ -25,6 +25,8 @@ import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.util.ClearableReference;
+
 /** This class defines the protected API that is provided to the agents and the agent traits.
  *
  * @author $Author: sgalland$

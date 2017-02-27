@@ -25,14 +25,15 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
 import io.sarl.core.Behaviors;
 import io.sarl.core.InnerContextAccess;
+import io.sarl.core.Schedules;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
-import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.util.ClearableReference;
 
 /**
  * Janus implementation of SARL's {@link Behaviors} built-in capacity.
@@ -53,6 +54,8 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 	private ClearableReference<Skill> skillBufferInternalEventBusCapacity;
 
 	private ClearableReference<Skill> skillBufferInnerContextAccess;
+
+	private ClearableReference<Skill> skillBufferSchedules;
 
 	/**
 	 * @param agent - owner of this skill.
@@ -85,6 +88,17 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 		return $castSkill(InnerContextAccess.class, this.skillBufferInnerContextAccess);
 	}
 
+	/** Replies the Schedules skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final SchedulesSkill getSchedulesSkill() {
+		if (this.skillBufferSchedules == null || this.skillBufferSchedules.get() == null) {
+			this.skillBufferSchedules = $getSkill(Schedules.class);
+		}
+		return $castSkill(SchedulesSkill.class, this.skillBufferSchedules);
+	}
+
 	@Override
 	public int getInstallationOrder() {
 		if (installationOrder < 0) {
@@ -106,6 +120,7 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 
 	@Override
 	public synchronized Behavior unregisterBehavior(Behavior attitude) {
+		getSchedulesSkill().unregisterTasksForBehavior(attitude);
 		getInternalEventBusCapacitySkill().unregisterEventListener(attitude, true);
 		return attitude;
 	}

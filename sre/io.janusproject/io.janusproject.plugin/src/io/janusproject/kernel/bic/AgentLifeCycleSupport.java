@@ -43,8 +43,8 @@ import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
-import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.util.ClearableReference;
 
 /**
  * Implementation of the agent's cycle.

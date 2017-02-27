@@ -138,10 +138,10 @@ import io.sarl.lang.compiler.IInlineExpressionCompiler;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
-import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.sarl.SarlAction;
@@ -162,6 +162,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
+import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
 
@@ -1063,7 +1064,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		constructor.getParameters().add(parameter1);
 		final JvmFormalParameter parameter2 = this.typesFactory.createJvmFormalParameter();
 		parameter2.setName("caller"); //$NON-NLS-1$
-		parameter2.setParameterType(this._typeReferenceBuilder.typeRef(Object.class));
+		parameter2.setParameterType(this._typeReferenceBuilder.typeRef(AgentTrait.class));
 		constructor.getParameters().add(parameter2);
 		setBody(constructor, (it) -> {
 			it.append("super(capacity, caller);"); //$NON-NLS-1$

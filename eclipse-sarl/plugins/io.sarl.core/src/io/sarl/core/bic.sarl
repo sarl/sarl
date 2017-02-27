@@ -340,7 +340,7 @@ capacity Schedules {
 	 * to the behavior instance. It means that the task will be automatically cancelled when the behavior
 	 * instance is unregistered from the the owning agent.
 	 *
-	 * @param name the name of the tash.
+	 * @param name the name of the task. If {@code null} or empty, a random name will be given to the task.
 	 * @return the task instance.
 	 */
 	def task(name : String) : AgentTask

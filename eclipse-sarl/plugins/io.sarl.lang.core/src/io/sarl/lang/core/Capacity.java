@@ -41,44 +41,58 @@ public interface Capacity {
 	 */
 	abstract class ContextAwareCapacityWrapper<C extends Capacity> implements Capacity {
 
-		private static final ThreadLocal<Object> CALLER = new ThreadLocal<>();
-
 		/** The wrapped capacity.
 		 */
 		protected final C capacity;
 
-		private final Object caller;
+		private final AgentTrait caller;
 
 		/** Constructor.
 		 *
 		 * @param capacity the wrapped capacity.
 		 * @param caller the owner of the wrapper, that should be the caller of the capacity's function.
 		 */
-		public ContextAwareCapacityWrapper(C capacity, Object caller) {
+		public ContextAwareCapacityWrapper(C capacity, AgentTrait caller) {
 			assert capacity != null;
 			this.capacity = capacity;
 			this.caller = caller;
 		}
 
+		/** Wrapping to the uninstallation function of the delegate.
+		 */
+		protected final void install() {
+			if (this.capacity instanceof Skill) {
+				((Skill) this.capacity).install();
+			}
+		}
+
+		/** Wrapping to the uninstallation function of the delegate.
+		 */
+		protected final void uninstall() {
+			if (this.capacity instanceof Skill) {
+				((Skill) this.capacity).uninstall();
+			}
+		}
+
+		/** Replies the capacity to delegate to..
+		 *
+		 * @return the capacity.
+		 */
+		public C getDelegate() {
+			return this.capacity;
+		}
+
 		/** Ensure that the local-thread variable stores the caller.
 		 */
 		protected final void ensureCallerInLocalThread() {
-			CALLER.set(this.caller);
+			Capacities.CALLER.set(this.caller);
 		}
 
 		/** Reset the local-thread variable storing the caller.
 		 */
 		@SuppressWarnings("static-method")
 		protected final void resetCallerInLocalThread() {
-			CALLER.remove();
-		}
-
-		/** Replies the caller of the capacity functions.
-		 *
-		 * @return the caller, or {@code null} if no caller is registered.
-		 */
-		public static final Object getCaller() {
-			return CALLER.get();
+			Capacities.CALLER.remove();
 		}
 
 	}

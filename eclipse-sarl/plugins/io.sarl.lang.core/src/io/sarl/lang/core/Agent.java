@@ -34,6 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.SarlSpecification;
+import io.sarl.lang.util.ClearableReference;
 
 
 /**
