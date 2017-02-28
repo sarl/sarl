@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,13 +35,25 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "io.sarl.eclipse.wizards.elements.messages"; //$NON-NLS-1$
 	public static String AbstractNewSarlElementWizardPage_0;
 	public static String AbstractNewSarlElementWizardPage_1;
+	public static String AbstractNewSarlElementWizardPage_10;
+	public static String AbstractNewSarlElementWizardPage_11;
+	public static String AbstractNewSarlElementWizardPage_12;
+	public static String AbstractNewSarlElementWizardPage_13;
+	public static String AbstractNewSarlElementWizardPage_14;
+	public static String AbstractNewSarlElementWizardPage_15;
+	public static String AbstractNewSarlElementWizardPage_16;
+	public static String AbstractNewSarlElementWizardPage_17;
+	public static String AbstractNewSarlElementWizardPage_18;
+	public static String AbstractNewSarlElementWizardPage_19;
 	public static String AbstractNewSarlElementWizardPage_2;
+	public static String AbstractNewSarlElementWizardPage_20;
 	public static String AbstractNewSarlElementWizardPage_3;
 	public static String AbstractNewSarlElementWizardPage_4;
 	public static String AbstractNewSarlElementWizardPage_5;
 	public static String AbstractNewSarlElementWizardPage_6;
 	public static String AbstractNewSarlElementWizardPage_7;
 	public static String AbstractNewSarlElementWizardPage_8;
+	public static String AbstractNewSarlElementWizardPage_9;
 	public static String AbstractSuperTypeSelectionDialog_0;
 	public static String AbstractSuperTypeSelectionDialog_1;
 	public static String AbstractSuperTypeSelectionDialog_2;

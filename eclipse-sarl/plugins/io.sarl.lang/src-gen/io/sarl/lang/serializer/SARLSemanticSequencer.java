@@ -7,13 +7,13 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright 2014-2016 the original authors and authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1177,7 +1177,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     FullJvmFormalParameter returns XtendFormalParameter
 	 *
 	 * Constraint:
-	 *     (extension?='extension'? name=InnerVarID parameterType=JvmTypeReference)
+	 *     (extension?='extension'? name=ValidID parameterType=JvmTypeReference)
 	 */
 	protected void sequence_FullJvmFormalParameter(ISerializationContext context, XtendFormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1189,7 +1189,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     JvmFormalParameter returns XtendFormalParameter
 	 *
 	 * Constraint:
-	 *     (extension?='extension'? name=InnerVarID parameterType=JvmTypeReference?)
+	 *     (extension?='extension'? name=ValidID parameterType=JvmTypeReference?)
 	 */
 	protected void sequence_JvmFormalParameter(ISerializationContext context, XtendFormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1354,7 +1354,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     (
 	 *         annotations+=XAnnotation* 
 	 *         (extension?='extension' annotations+=XAnnotation*)? 
-	 *         name=InnerVarID 
+	 *         name=ValidID 
 	 *         parameterType=JvmTypeReference 
 	 *         (varArg?='*' | defaultValue=XLiteral)?
 	 *     )
@@ -1643,7 +1643,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *
 	 * Constraint:
 	 *     (
-	 *         ((declaredParam=JvmFormalParameter switch=XExpression) | (declaredParam=JvmFormalParameter? switch=XExpressionOrSimpleConstructorCall)) 
+	 *         ((declaredParam=JvmFormalParameter switch=XExpression) | (declaredParam=JvmFormalParameter? switch=XExpression)) 
 	 *         cases+=XCasePart* 
 	 *         default=XExpression?
 	 *     )
@@ -1662,7 +1662,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 * Constraint:
 	 *     (
 	 *         ((writeable?='var'? extension?='extension'?) | (extension?='extension' writeable?='var'?)) 
-	 *         name=InnerVarID 
+	 *         name=ValidID 
 	 *         type=JvmTypeReference? 
 	 *         right=XExpression?
 	 *     )

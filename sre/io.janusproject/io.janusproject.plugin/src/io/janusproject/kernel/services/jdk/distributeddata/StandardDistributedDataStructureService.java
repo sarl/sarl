@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.util.concurrent.Service;
+
 import io.janusproject.kernel.services.guava.DMultiMapView;
 import io.janusproject.services.AbstractDependentService;
 import io.janusproject.services.distributeddata.DMap;
@@ -42,6 +43,8 @@ import io.janusproject.services.distributeddata.DistributedDataStructureService;
  * Service providing tools for creating distributed data structures.
  *
  * <p>This implementation creates standard Java collections that cannot be distributed other several JVM.
+ *
+ * <p>This class is thread-safe.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

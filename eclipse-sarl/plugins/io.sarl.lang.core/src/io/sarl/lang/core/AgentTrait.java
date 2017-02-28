@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,16 +27,21 @@ import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.util.ClearableReference;
+
 /** This class represents a part of trait of an agent.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class AgentTrait extends AgentProtectedAPIObject {
+public abstract class AgentTrait extends AgentProtectedAPIObject {
 
 	private WeakReference<Agent> agentRef;
+
+	private transient Object sreSpecificData;
 
 	/** Construct a trait to the given agent.
 	 *
@@ -88,35 +93,50 @@ abstract class AgentTrait extends AgentProtectedAPIObject {
 
 	@Override
 	@Pure
-	protected <S extends Capacity> S getSkill(Class<S> capacity) {
-		final Agent owner = getOwner();
-		if (owner == null) {
-			return null;
+	protected final <S extends Capacity> S getSkill(Class<S> capacity) {
+		assert capacity != null;
+		return $castSkill(capacity, $getSkill(capacity));
+	}
+
+	/** Cast the skill reference to the given capacity type.
+	 *
+	 * @param <S> the expected capacity type.
+	 * @param capacity the expected capacity type.
+	 * @param skillReference the skill reference.
+	 * @return the skill casted to the given capacity.
+	 */
+	@Pure
+	protected <S extends Capacity> S $castSkill(Class<S> capacity, ClearableReference<Skill> skillReference) {
+		final S skill = capacity.cast(skillReference.get());
+		if (skill == null) {
+			throw new UnimplementedCapacityException(capacity, getOwner().getID());
 		}
-		return owner.getSkill(capacity);
+		return skill;
 	}
 
 	@Override
-	@Inline("$setSkill($2, $1)")
+	protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+		final Agent owner = getOwner();
+		if (owner == null) {
+			throw new UnimplementedCapacityException(capacity, null);
+		}
+		return owner.$getSkill(capacity);
+	}
+
+	@Override
+	@Inline("setSkill($2, $1)")
 	protected <S extends Skill> void operator_mappedTo(Class<? extends Capacity> capacity, S skill) {
 		setSkill(skill, capacity);
 	}
 
 	@Override
 	@SafeVarargs
-	@Inline("$setSkill($1, $2)")
 	protected final <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities) {
-		return $setSkill(skill, capacities);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-    protected <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... capacities) {
 		final Agent owner = getOwner();
 		if (owner == null) {
 			return skill;
 		}
-		return owner.$setSkill(skill, capacities);
+		return owner.setSkill(skill, capacities);
 	}
 
 	@Override
@@ -166,6 +186,27 @@ abstract class AgentTrait extends AgentProtectedAPIObject {
 			return false;
 		}
 		return owner.isFromMe(event);
+	}
+
+	/** Replies the data associated to this agent trait by the SRE.
+	 *
+	 * @param <S> the type of the data.
+	 * @param type the type of the data.
+	 * @return the SRE-specific data.
+	 * @since 0.5
+	 */
+	@Pure
+	<S> S getSreSpecificData(Class<S> type) {
+		return type.cast(this.sreSpecificData);
+	}
+
+	/** Change the data associated to this agent trait by the SRE.
+	 *
+	 * @param data the SRE-specific data.
+	 * @since 0.5
+	 */
+	void setSreSpecificData(Object data) {
+		this.sreSpecificData = data;
 	}
 
 }

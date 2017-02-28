@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2009,9 +2009,15 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				 */
 				fact "Proper un-installation of the skill" {
 					'''
-					protected def uninstall {
-						for (beh : this.behaviors) {
-							(owner as TMSarlAgent).evaluatorRegistry.unregister(beh)
+					protected def uninstall(stage : UninstallationStage) {
+						switch (stage) {
+						case PRE_DESTROY_EVENT: {
+							}
+						case POST_DESTROY_EVENT: {
+								for (beh : this.behaviors) {
+									(owner as TMSarlAgent).evaluatorRegistry.unregister(beh)
+								}
+							}
 						}
 					}
 					'''.parseSuccessfully(
@@ -2019,6 +2025,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 					package io.sarl.docs.tutorials.tinyMASSRE
 					import java.util.List
 					import io.sarl.lang.core.Behavior
+					import io.sarl.lang.core.Skill.UninstallationStage
 					import io.sarl.core.Behaviors
 					interface Registry {
 						def unregister(obj : Object)

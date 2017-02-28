@@ -73,9 +73,13 @@ import io.sarl.tests.api.Nullable;
  * @mavenartifactid $ArtifactId$
  */
 @RunWith(Suite.class)
-@SuiteClasses({ DMultiMapViewTest.BackedCollectionTests.class, DMultiMapViewTest.GuavaMultiMapOperationTests.class,
-		DMultiMapViewTest.ViewTests.class, DMultiMapViewTest.SpecificDMultiMapFunctionTests.class,
-		DMultiMapViewTest.ListeningFeatureTests.class })
+@SuiteClasses({
+	DMultiMapViewTest.BackedCollectionTests.class,
+	DMultiMapViewTest.ViewTests.class,
+	DMultiMapViewTest.SpecificDMultiMapFunctionTests.class,
+	DMultiMapViewTest.ListeningFeatureTests.class,
+	//DMultiMapViewTest.GuavaMultiMapOperationTests.class,
+})
 @SuppressWarnings("all")
 public class DMultiMapViewTest {
 

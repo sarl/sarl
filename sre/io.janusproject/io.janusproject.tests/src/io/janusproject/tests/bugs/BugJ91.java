@@ -56,7 +56,7 @@ public class BugJ91 extends AbstractJanusRunTest {
 
 	@Test
 	public void ExceptionInInit() throws Exception {
-		runJanus(ExceptionInInitAgent.class, false, true, 10);
+		runJanus(ExceptionInInitAgent.class, false, true, STANDARD_TIMEOUT);
 		assertNumberOfResults(1);
 		Exception ex = getResult(Exception.class, 0);
 		assertNotNull(ex);

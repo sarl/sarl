@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -141,7 +141,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -174,7 +174,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -190,7 +190,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -207,7 +207,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -226,7 +226,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -243,7 +243,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -263,7 +263,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -279,7 +279,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -296,7 +296,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -312,7 +312,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -329,7 +329,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -348,7 +348,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -365,7 +365,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 	@Test
@@ -385,7 +385,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
-			"Forbidden call to the exit function. The killing feature of the agent must be used");
+			"Forbidden feature call: java.lang.System.exit(int)");
 	}
 
 }

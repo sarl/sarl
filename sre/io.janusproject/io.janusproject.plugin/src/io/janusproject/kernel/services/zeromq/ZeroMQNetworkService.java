@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,11 @@ import com.google.common.util.concurrent.Service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import org.zeromq.ZContext;
+import org.zeromq.ZMQ;
+import org.zeromq.ZMQ.Poller;
+import org.zeromq.ZMQ.Socket;
+
 import io.janusproject.JanusConfig;
 import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.services.contextspace.SpaceRepositoryListener;
@@ -52,10 +57,6 @@ import io.janusproject.services.network.EventDispatch;
 import io.janusproject.services.network.EventEnvelope;
 import io.janusproject.services.network.EventSerializer;
 import io.janusproject.services.network.NetworkServiceListener;
-import org.zeromq.ZContext;
-import org.zeromq.ZMQ;
-import org.zeromq.ZMQ.Poller;
-import org.zeromq.ZMQ.Socket;
 
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Scope;
@@ -64,6 +65,8 @@ import io.sarl.lang.core.SpaceID;
 
 /**
  * Service that is providing the ZeroMQ network.
+ *
+ * <p>This service is thread-safe.
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$

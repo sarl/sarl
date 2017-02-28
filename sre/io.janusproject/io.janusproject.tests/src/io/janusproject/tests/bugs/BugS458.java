@@ -54,7 +54,7 @@ public class BugS458 extends AbstractJanusRunTest {
 
 	@Test
 	public void ExceptionInInit() throws Exception {
-		runJanus(KillMeInBehaviorAgent.class, false, true, 20);
+		runJanus(KillMeInBehaviorAgent.class, false, true, STANDARD_TIMEOUT);
 	}
 
 	/**

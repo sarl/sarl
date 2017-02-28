@@ -19,31 +19,42 @@
  */
 package io.janusproject.tests.kernel.bic;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
 
-import io.janusproject.kernel.bic.BehaviorsSkill;
-import io.janusproject.kernel.bic.InternalEventBusCapacity;
-import io.janusproject.tests.testutils.AbstractJanusTest;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
+import io.janusproject.kernel.bic.BehaviorsSkill;
+import io.janusproject.kernel.bic.InternalEventBusCapacity;
+import io.janusproject.kernel.bic.SchedulesSkill;
+import io.janusproject.tests.testutils.AbstractJanusTest;
+
 import io.sarl.core.InnerContextAccess;
+import io.sarl.core.Schedules;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
+import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
+import io.sarl.lang.core.Capacities;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.EventSpaceSpecification;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.lang.util.ClearableReference;
 import io.sarl.tests.api.Nullable;
 
 /**
@@ -65,6 +76,9 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 	private InnerContextAccess innerCapacity;
 
 	@Nullable
+	private SchedulesSkill schedulesCapacity;
+
+	@Nullable
 	private EventSpace innerSpace;
 
 	@Nullable
@@ -72,6 +86,12 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 
 	@Nullable
 	private BehaviorsSkill skill;
+
+	@Nullable
+	private Skill1 specificCapacity;
+
+	@Nullable
+	private TestAgent agent;
 
 	@Before
 	public void setUp() throws Exception {
@@ -87,9 +107,12 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 		Mockito.when(innerContext.getDefaultSpace()).thenReturn(this.innerSpace);
 		this.innerCapacity = Mockito.mock(InnerContextAccess.class);
 		Mockito.when(this.innerCapacity.getInnerContext()).thenReturn(innerContext);
+		this.schedulesCapacity = Mockito.mock(SchedulesSkill.class);
 
-		Agent agent = new TestAgent(this);
-		this.skill = this.reflect.newInstance(BehaviorsSkill.class, agent, this.address);
+		this.agent = new TestAgent(this);
+		this.skill = this.reflect.newInstance(BehaviorsSkill.class, this.agent, this.address);
+
+		this.specificCapacity = new Skill1(this.agent);
 	}
 
 	@Test
@@ -99,24 +122,74 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 
 	@Test
 	public void registerBehavior() {
-		Behavior b = new TestBehavior();
+		Behavior b = new TestBehavior(this.agent);
 		b = spy(b);
 		assertSame(b, this.skill.registerBehavior(b));
-		ArgumentCaptor<Behavior> argument = ArgumentCaptor.forClass(Behavior.class);
-		Mockito.verify(this.busCapacity).registerEventListener(argument.capture());
-		assertSame(b, argument.getValue());
+		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
+		ArgumentCaptor<Boolean> argument2 = ArgumentCaptor.forClass(Boolean.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument3 = ArgumentCaptor.forClass(Function1.class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture());
+		assertSame(b, argument1.getValue());
+		assertTrue(argument2.getValue());
+		assertNull(argument3.getValue());
+	}
+
+	@Test
+	public void registerBehavior_null() {
+		Behavior b = new TestBehavior(this.agent);
+		b = spy(b);
+		assertSame(b, this.skill.registerBehavior(b, null));
+		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
+		ArgumentCaptor<Boolean> argument2 = ArgumentCaptor.forClass(Boolean.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument3 = ArgumentCaptor.forClass(Function1.class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture());
+		assertSame(b, argument1.getValue());
+		assertTrue(argument2.getValue());
+		assertNull(argument3.getValue());
+	}
+
+	@Test
+	public void registerBehavior_validFilter() {
+		Behavior b = new TestBehavior(this.agent);
+		b = spy(b);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> true;
+		assertSame(b, this.skill.registerBehavior(b, filter));
+		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
+		ArgumentCaptor<Boolean> argument2 = ArgumentCaptor.forClass(Boolean.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument3 = ArgumentCaptor.forClass(Function1.class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture());
+		assertSame(b, argument1.getValue());
+		assertTrue(argument2.getValue());
+		assertSame(filter, argument3.getValue());
+	}
+
+	@Test
+	public void registerBehavior_invalidFilter() {
+		Behavior b = new TestBehavior(this.agent);
+		b = spy(b);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> false;
+		assertSame(b, this.skill.registerBehavior(b, filter));
+		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
+		ArgumentCaptor<Boolean> argument2 = ArgumentCaptor.forClass(Boolean.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument3 = ArgumentCaptor.forClass(Function1.class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture());
+		assertSame(b, argument1.getValue());
+		assertTrue(argument2.getValue());
+		assertSame(filter, argument3.getValue());
 	}
 
 	@Test
 	public void unregisterBehavior() {
-		Behavior b = new TestBehavior();
+		Behavior b = new TestBehavior(this.agent);
 		b = spy(b);
 		this.skill.registerBehavior(b);
 		//
 		assertSame(b, this.skill.unregisterBehavior(b));
-		ArgumentCaptor<Behavior> argument = ArgumentCaptor.forClass(Behavior.class);
-		Mockito.verify(this.busCapacity).unregisterEventListener(argument.capture());
-		assertSame(b, argument.getValue());
+		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
+		ArgumentCaptor<Boolean> argument2 = ArgumentCaptor.forClass(Boolean.class);
+		Mockito.verify(this.busCapacity, Mockito.times(1)).unregisterEventListener(argument1.capture(), argument2.capture());
+		assertSame(b, argument1.getValue());
+		assertTrue(argument2.getValue());
 	}
 
 	@Test
@@ -131,6 +204,49 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 		assertEquals(this.address, argument2.getValue());
 	}
 
+	@Test
+	public void contextAwareCapacityCall() throws Exception {
+		TestBehavior b = new TestBehavior(this.agent);
+		//
+		b.runContextAwareCapacityCallTest();
+		//
+		assertNotNull(this.specificCapacity.caller);
+		assertSame(b, this.specificCapacity.caller);
+	}
+
+	public static interface Capacity1 extends Capacity {
+		void callCapacity();
+		public static class ContextAwareCapacityWrapper<C extends Capacity1> extends Capacity.ContextAwareCapacityWrapper<C> implements Capacity1 {
+			public ContextAwareCapacityWrapper(C capacity, AgentTrait caller) {
+				super(capacity, caller);
+			}
+			public void callCapacity() {
+				try {
+					ensureCallerInLocalThread();
+					this.capacity.callCapacity();
+				} finally {
+					resetCallerInLocalThread();
+				}
+			}
+		}
+	}
+
+	public static class Skill1 extends Skill implements Capacity1 {
+
+		public Object caller;
+
+		public Skill1(Agent agent) {
+			super(agent);
+		}
+
+		@Override
+		public void callCapacity() {
+			Object caller = Capacities.getCaller();
+			this.caller = caller; 
+		}
+
+	}
+
 	public static class TestAgent extends Agent {
 
 		private final BehaviorsSkillTest test;
@@ -141,18 +257,35 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 		}
 
 		@Override
-		protected <S extends Capacity> S getSkill(Class<S> capacity) {
+		protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+			if (Capacity1.class.equals(capacity))
+				return new ClearableReference(this.test.specificCapacity);
 			if (InternalEventBusCapacity.class.equals(capacity))
-				return capacity.cast(this.test.busCapacity);
-			return capacity.cast(this.test.innerCapacity);
+				return new ClearableReference(this.test.busCapacity);
+			if (InnerContextAccess.class.equals(capacity))
+				return new ClearableReference(this.test.innerCapacity);
+			if (Schedules.class.equals(capacity))
+				return new ClearableReference(this.test.schedulesCapacity);
+			return new ClearableReference<>(null);
 		}
 
 	}
 
 	public static class TestBehavior extends Behavior {
 
-		public TestBehavior() {
-			super(null);
+		public TestBehavior(Agent owner) {
+			super(owner);
+		}
+
+		public void runContextAwareCapacityCallTest() {
+			Capacity1 skill = getSkill(Capacity1.class);
+			assertNotNull(skill);
+			assertInstanceOf(Capacity1.ContextAwareCapacityWrapper.class, skill);
+			Capacity1 original = ((Capacity1.ContextAwareCapacityWrapper<?>) skill).getDelegate();
+			assertInstanceOf(Skill1.class, original);
+			Skill1 skill1 = (Skill1) original;
+			skill.callCapacity();
+			assertSame(this, skill1.caller);
 		}
 
 	}

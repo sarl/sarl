@@ -82,7 +82,7 @@
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newclass_wiz.png"
+				icon="icons/newclass_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlClass"
 				name="%wizard.name.newClass">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
@@ -93,7 +93,7 @@
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newint_wiz.png"
+				icon="icons/newinterface_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlInterface"
 				name="%wizard.name.newInterface">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
@@ -104,7 +104,7 @@
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newenum_wiz.png"
+				icon="icons/newenumeration_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlEnumeration"
 				name="%wizard.name.newEnumeration">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
@@ -115,7 +115,7 @@
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-				icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/newannotation_wiz.png"
+				icon="icons/newannotation_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlAnnotation"
 				name="%wizard.name.newAnnotation">
 				<class class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory">
@@ -469,7 +469,7 @@
    <extension
          point="org.eclipse.ui.intro.quicklinks">
          <command
-          	id="org.eclipse.ui.newWizard(newWizardId=io.sarl.eclipse.wizard.newSarlProject)"            
+          	id="org.eclipse.ui.newWizard(newWizardId=io.sarl.eclipse.wizard.newSarlProject)"
             description="%wizard.description.newSarlProject.long"
             label="%wizard.description.newSarlProject.short"
             icon="platform:/plugin/org.eclipse.ui.intro.universal/themes/solstice/graphics/icons/ctool/new-project.png">
@@ -489,4 +489,24 @@
       </splashHandlerProductBinding>
    </extension>
    
+  <!-- Submit Eclipse logs as SARL issue -->
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="menu:help?after=helpEnd">
+         <command commandId="io.sarl.eclipse.logs.submitIssue"
+                  label="%action.submitIssue"
+                  icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/eview16/errorwarning_tab.png"
+                  style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension point="org.eclipse.ui.commands">
+      <command id="io.sarl.eclipse.logs.submitIssue"
+            name="%action.submitIssue" />
+   </extension>
+   <extension point="org.eclipse.ui.handlers">
+   		<handler
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.log.SubmitIssueToSarlTrackerHandler"
+            commandId="io.sarl.eclipse.logs.submitIssue" />
+   </extension>
+
 </plugin>

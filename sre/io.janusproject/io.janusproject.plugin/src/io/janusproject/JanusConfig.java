@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -184,11 +184,39 @@ public final class JanusConfig {
     public static final String MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME = "janus.executors.threads.max"; //$NON-NLS-1$
 
     /**
-     * Indicates the maximal number of threads to keep in the pool, even if they are idle, unless {@code allowCoreThreadTimeOut} is set.
+     * Indicates the maximal number of threads to keep in the pool.
      *
      * @see #MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME
      */
-    public static final int MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 50;
+    public static final int MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 512;
+
+    /**
+     * Name of the property that contains the minimal number of threads in the pool.
+     *
+     * @see #MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE
+     */
+    public static final String MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME = "janus.executors.threads.min"; //$NON-NLS-1$
+
+    /**
+     * Indicates the minimal number of threads to keep in the pool, even if they are idle.
+     *
+     * @see #MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME
+     */
+    public static final int MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 16;
+
+    /**
+     * Name of the property that contains the duration for keeping the iddle threads alive (in seconds).
+     *
+     * @since 2.0.5.0
+     */
+    public static final String THREAD_KEEP_ALIVE_DURATION_NAME = "janus.executors.threads.keepAliveDuration"; //$NON-NLS-1$
+
+    /**
+     * Indicates the duration for keeping the iddle threads alive (in seconds).
+     *
+     * @since 2.0.5.0
+     */
+    public static final int THREAD_KEEP_ALIVE_DURATION_VALUE = 0;
 
     /**
      * Name of the property that contains the numbers of seconds that the kernel is waiting for thread terminations before timeout.
@@ -259,6 +287,7 @@ public final class JanusConfig {
         defaultValues.put(VERBOSE_LEVEL_NAME, VERBOSE_LEVEL_VALUE);
         defaultValues.put(LOGGING_PROPERTY_FILE_NAME, LOGGING_PROPERTY_FILE_VALUE);
         defaultValues.put(HAZELCAST_LOGGER_FACTORY_NAME, HAZELCAST_LOGGER_FACTORY_VALUE);
+        defaultValues.put(MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME, Integer.toString(MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE));
         defaultValues.put(MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME, Integer.toString(MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE));
         defaultValues.put(KERNEL_THREAD_TIMEOUT_NAME, Integer.toString(KERNEL_THREAD_TIMEOUT_VALUE));
         defaultValues.put(KERNEL_THREAD_PURGE_DELAY_NAME, Integer.toString(KERNEL_THREAD_PURGE_DELAY_VALUE));

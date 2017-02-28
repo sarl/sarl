@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@
 package io.janusproject.kernel.bic;
 
 import java.util.concurrent.TimeUnit;
-
-import org.eclipse.xtext.xbase.lib.Inline;
 
 import io.sarl.core.Time;
 import io.sarl.lang.core.Agent;
@@ -59,14 +57,18 @@ public class TimeSkill extends BuiltinSkill implements Time {
 	@Override
 	public double getTime(TimeUnit timeUnit) {
 		final double currentTime = System.currentTimeMillis();
-		final TimeUnit tu = (timeUnit == null) ? TimeUnit.SECONDS : timeUnit;
-		return SARLTimeExtensions.convertFromTo(currentTime, TimeUnit.MILLISECONDS, tu);
+		if (timeUnit == null || timeUnit == TimeUnit.SECONDS) {
+			return System.currentTimeMillis() / (double) SARLTimeExtensions.MILLIS_IN_SECOND;
+		}
+		if (timeUnit == TimeUnit.MILLISECONDS) {
+			return currentTime;
+		}
+		return SARLTimeExtensions.convertFromTo(currentTime, TimeUnit.MILLISECONDS, timeUnit);
 	}
 
 	@Override
-	@Inline(value = "getTime(null)")
 	public double getTime() {
-		return getTime(null);
+		return System.currentTimeMillis() / (double) SARLTimeExtensions.MILLIS_IN_SECOND;
 	}
 
 	@Override

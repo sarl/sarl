@@ -1,3 +1,6 @@
+# Debug file
+sarlide.sh
+
 # Specific files
 /eclipse-products/contribs/io.sarl.examples/io.sarl.examples.plugin/about.mappings
 /eclipse-sarl/plugins/io.sarl.eclipse/about.mappings

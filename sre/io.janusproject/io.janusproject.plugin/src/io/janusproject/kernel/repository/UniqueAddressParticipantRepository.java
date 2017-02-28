@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,8 @@ import io.sarl.util.Collections3;
  * <p>The repository must be distributed and synchronized all over the network by using data-structures that are provided by an
  * injected {@link DistributedDataStructureService}.
  *
+ * <p>This class is thread-safe.
+ *
  * @param <ADDRESST> - the generic type representing the address of a participant in the related space. This type must remains
  *        small, less than M in memory and must be {@link java.io.Serializable}.
  * @author $Author: ngaud$
@@ -69,6 +71,11 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 		super();
 		this.distributedParticipantMapName = distributedParticipantMapName;
 		this.participants = repositoryImplFactory.getMap(this.distributedParticipantMapName, null);
+	}
+
+	@Override
+	public Object mutex() {
+		return this.participants;
 	}
 
 	/**

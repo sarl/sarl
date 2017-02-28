@@ -30,14 +30,15 @@ import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
-import io.janusproject.kernel.bic.DefaultContextInteractionsSkill;
-import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.Times;
+
+import io.janusproject.kernel.bic.DefaultContextInteractionsSkill;
+import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.core.Lifecycle;
 import io.sarl.lang.core.Address;
@@ -49,8 +50,10 @@ import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.lang.core.Scope;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.lang.util.ClearableReference;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.Scopes;
 
@@ -108,8 +111,8 @@ public class DefaultContextInteractionsSkillTest extends AbstractJanusTest {
 
 		Agent agent = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null) {
 			@Override
-			protected <S extends Capacity> S getSkill(Class<S> capacity) {
-				return capacity.cast(DefaultContextInteractionsSkillTest.this.lifeCapacity);
+			protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+				return new ClearableReference(DefaultContextInteractionsSkillTest.this.lifeCapacity);
 			}
 		};
 		this.skill = this.reflect.newInstance(DefaultContextInteractionsSkill.class, agent, this.parentContext);

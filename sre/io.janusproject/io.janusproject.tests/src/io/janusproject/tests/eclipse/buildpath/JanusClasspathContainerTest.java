@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.janusproject.tests.eclipse.buildpath;
 
 import static org.junit.Assert.*;
@@ -40,6 +41,7 @@ import org.junit.Test;
 
 import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
 import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.TestScope;
 
 /**
  * @author $Author: sgalland$
@@ -52,7 +54,7 @@ public class JanusClasspathContainerTest extends AbstractSarlTest {
 
 	private static final String[] ECLIPSE_DEPENDENCIES = {
 			"aopalliance",
-			"com.google.gson",
+			"com.google.code.gson",
 			"com.google.guava",
 			"com.google.inject",
 			"com.google.inject.multibindings",
@@ -86,7 +88,7 @@ public class JanusClasspathContainerTest extends AbstractSarlTest {
 	};
 	
 	private static final String[] TYCHO_DEPENDENCIES = {
-			"com.google.gson",
+			"com.google.code.gson",
 			"com.google.guava",
 			"com.google.inject",
 			"com.google.inject.multibindings",
@@ -152,25 +154,35 @@ public class JanusClasspathContainerTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void getBundleDependencies() {
+	@TestScope(eclipse = true, tycho = false)
+	public void getBundleDependencies_withEclipse() {
 		Iterable<String> iterable = this.container.getBundleDependencies();
 		assertNotNull(iterable);
-		if (isEclipseRuntimeEnvironment()) {
-			assertContains(iterable, ECLIPSE_DEPENDENCIES);
-		} else {
-			assertContains(iterable, TYCHO_DEPENDENCIES);
-		}
+		assertContains(iterable, ECLIPSE_DEPENDENCIES);
 	}
 
 	@Test
-	public void getClasspathEntries() {
+	@TestScope(eclipse = false, tycho = true)
+	public void getBundleDependencies_withTycho() {
+		Iterable<String> iterable = this.container.getBundleDependencies();
+		assertNotNull(iterable);
+		assertContains(iterable, TYCHO_DEPENDENCIES);
+	}
+
+	@Test
+	@TestScope(eclipse = true, tycho = false)
+	public void getClasspathEntries_withEclipse() {
 		IClasspathEntry[] iterable = this.container.getClasspathEntries();
 		assertNotNull(iterable);
-		if (isEclipseRuntimeEnvironment()) {
-			assertEquals(ECLIPSE_DEPENDENCIES.length, iterable.length);
-		} else {
-			assertEquals(TYCHO_DEPENDENCIES.length, iterable.length);
-		}
+		assertEquals(ECLIPSE_DEPENDENCIES.length, iterable.length);
+	}
+
+	@Test
+	@TestScope(eclipse = false, tycho = true)
+	public void getClasspathEntries_withTycho() {
+		IClasspathEntry[] iterable = this.container.getClasspathEntries();
+		assertNotNull(iterable);
+		assertEquals(TYCHO_DEPENDENCIES.length, iterable.length);
 	}
 
 }

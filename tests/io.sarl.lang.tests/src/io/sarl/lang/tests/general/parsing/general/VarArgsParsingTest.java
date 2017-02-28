@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -123,7 +123,6 @@ public class VarArgsParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
 					IssueCodes.INVALID_USE_OF_VAR_ARG,
-					52, 1,
 					"A vararg must be the last parameter");
 		}
 

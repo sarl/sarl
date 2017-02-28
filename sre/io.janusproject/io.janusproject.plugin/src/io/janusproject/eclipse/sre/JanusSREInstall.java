@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,13 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import io.janusproject.Boot;
-import io.janusproject.JanusConfig;
-import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
 import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import io.janusproject.Boot;
+import io.janusproject.JanusConfig;
+import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
 
 import io.sarl.eclipse.runtime.AbstractSREInstall;
 import io.sarl.eclipse.runtime.SREConstants;

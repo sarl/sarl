@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -126,7 +126,7 @@ public class ListenerCollection<L extends EventListener> {
 	 * @param type - type of the listeners to consider.
 	 * @return the total number of listeners of the supplied type for this listener list.
 	 */
-	public int getListenerCount(Class<?> type) {
+	public synchronized int getListenerCount(Class<?> type) {
 		return getListenerCount(this.listeners, type);
 	}
 
@@ -147,22 +147,26 @@ public class ListenerCollection<L extends EventListener> {
 	 * @param type the type of the listener to be added
 	 * @param listener the listener to be added
 	 */
-	public synchronized <T extends EventListener> void add(Class<T> type, T listener) {
+	public <T extends EventListener> void add(Class<T> type, T listener) {
 		assert listener != null;
-		if (this.listeners == NULL) {
-			// if this is the first listener added,
-			// initialize the lists
-			this.listeners = new Object[] {type, listener, };
-		} else {
-			// Otherwise copy the array and add the new listener
-			final int i = this.listeners.length;
-			final Object[] tmp = new Object[i + 2];
-			System.arraycopy(this.listeners, 0, tmp, 0, i);
+		synchronized (this) {
+			Object[] ilisteners = this.listeners;
+			if (ilisteners == NULL) {
+				// if this is the first listener added,
+				// initialize the lists
+				ilisteners = new Object[] {type, listener};
+			} else {
+				// Otherwise copy the array and add the new listener
+				final int i = ilisteners.length;
+				final Object[] tmp = new Object[i + 2];
+				System.arraycopy(ilisteners, 0, tmp, 0, i);
 
-			tmp[i] = type;
-			tmp[i + 1] = listener;
+				tmp[i] = type;
+				tmp[i + 1] = listener;
 
-			this.listeners = tmp;
+				ilisteners = tmp;
+			}
+			this.listeners = ilisteners;
 		}
 	}
 
@@ -173,30 +177,36 @@ public class ListenerCollection<L extends EventListener> {
 	 * @param type the type of the listener to be removed
 	 * @param listener the listener to be removed
 	 */
-	public synchronized <T extends EventListener> void remove(Class<T> type, T listener) {
+	public <T extends EventListener> void remove(Class<T> type, T listener) {
 		assert listener != null;
-		// Is l on the list?
-		int index = -1;
-		for (int i = this.listeners.length - 2; i >= 0; i -= 2) {
-			if ((this.listeners[i] == type) && (this.listeners[i + 1].equals(listener))) {
-				index = i;
-				break;
-			}
-		}
+		synchronized (this) {
+			Object[] ilisteners = this.listeners;
 
-		// If so, remove it
-		if (index != -1) {
-			final Object[] tmp = new Object[this.listeners.length - 2];
-			// Copy the list up to index
-			System.arraycopy(this.listeners, 0, tmp, 0, index);
-			// Copy from two past the index, up to
-			// the end of tmp (which is two elements
-			// shorter than the old list)
-			if (index < tmp.length) {
-				System.arraycopy(this.listeners, index + 2, tmp, index, tmp.length - index);
+			// Is l on the list?
+			int index = -1;
+			for (int i = ilisteners.length - 2; i >= 0; i -= 2) {
+				if ((ilisteners[i] == type) && (ilisteners[i + 1].equals(listener))) {
+					index = i;
+					break;
+				}
 			}
-			// set the listener array to the new array or null
-			this.listeners = (tmp.length == 0) ? NULL : tmp;
+
+			// If so, remove it
+			if (index != -1) {
+				final Object[] tmp = new Object[ilisteners.length - 2];
+				// Copy the list up to index
+				System.arraycopy(ilisteners, 0, tmp, 0, index);
+				// Copy from two past the index, up to
+				// the end of tmp (which is two elements
+				// shorter than the old list)
+				if (index < tmp.length) {
+					System.arraycopy(ilisteners, index + 2, tmp, index, tmp.length - index);
+				}
+				// set the listener array to the new array or null
+				ilisteners = (tmp.length == 0) ? NULL : tmp;
+			}
+
+			this.listeners = ilisteners;
 		}
 	}
 

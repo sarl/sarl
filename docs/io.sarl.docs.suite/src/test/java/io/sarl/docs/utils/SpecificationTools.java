@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,6 +83,15 @@ import org.osgi.framework.Version;
  */
 @SuppressWarnings({"checkstyle:methodname"})
 public final class SpecificationTools {
+
+	/** Indicates if the network-based tests are mandatory, i.e. tests with network connections
+	 * must be run and successful.
+	 */
+	public static final boolean MANDATORY_NETWORK_TESTS = true;
+
+	/** Indicates if the tests must fail if network is unreachable.
+	 */
+	public static final boolean FAIL_ON_NETWORK_FAILURES = false;
 
 	private static final int HEX_RADIX = 16;
 
@@ -461,14 +470,63 @@ public final class SpecificationTools {
 				return false;
 			}
 			if (isValidURL(u, requiredSchemes)) {
-				try (InputStream is = u.openStream()) {
-					is.read();
-				} catch (Throwable exception) {
-					Logger.getLogger(SpecificationTools.class.getName()).warning("Unable to connect to: " //$NON-NLS-1$
-							+ u);
+				if (MANDATORY_NETWORK_TESTS) {
+					try (InputStream is = u.openStream()) {
+						is.read();
+					} catch (Throwable exception) {
+						if (FAIL_ON_NETWORK_FAILURES) {
+							return false;
+						}
+						Logger.getLogger(SpecificationTools.class.getName()).warning("Unable to connect to: " //$NON-NLS-1$
+								+ u);
+					}
 				}
 				return true;
 			}
+		} catch (Throwable exception)  {
+			//
+		}
+		return false;
+	}
+
+	/** Ensure that the string has the format of an URL to the SARL API.
+	 *
+	 * @param actual - the string to parse.
+	 * @param allowedAPIhostname - is a list of API base hostname to consider as valid.
+	 *     If not given, only "www.sarl.io" is allowed.
+	 * @return the validation status
+	 */
+	public static boolean should_beApiURL(String actual, String allowedAPIhostname) {
+		if (actual == null || actual.isEmpty()) {
+			return false;
+		}
+		try {
+			final URL u = FileSystem.convertStringToURL(actual, true);
+			if (u == null) {
+				return false;
+			}
+			String[] validHostnames = {"www.sarl.io"}; //$NON-NLS-1$
+			if (allowedAPIhostname != null && !allowedAPIhostname.isEmpty()) {
+				validHostnames = allowedAPIhostname.split("[ \t]*[,;][ \t]*"); //$NON-NLS-1$
+			}
+			final List<String> hosts = Arrays.asList(validHostnames);
+			if (!hosts.contains(u.getHost())
+				|| !u.getQuery().endsWith(".html") //$NON-NLS-1$
+				|| !u.getPath().endsWith("index.html")) { //$NON-NLS-1$
+				return false;
+			}
+			if (MANDATORY_NETWORK_TESTS) {
+				try (InputStream is = u.openStream()) {
+					is.read();
+				} catch (Throwable exception) {
+					if (FAIL_ON_NETWORK_FAILURES) {
+						return false;
+					}
+					Logger.getLogger(SpecificationTools.class.getName()).warning("Unable to connect to: " //$NON-NLS-1$
+							+ u);
+				}
+			}
+			return true;
 		} catch (Throwable exception)  {
 			//
 		}

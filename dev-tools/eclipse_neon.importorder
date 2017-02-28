@@ -1,0 +1,8 @@
+#Organize Import Order
+#Mon Nov 21 18:50:31 CET 2016
+5=io.sarl
+4=io.janusproject
+3=
+2=javax
+1=java
+0=\#

@@ -185,7 +185,9 @@ public class StandardContextSpaceServiceTest extends AbstractDependentServiceTes
 
 	@Test
 	public void mutex() {
-		assertSame(this.service, this.service.mutex());
+		Object mutex = this.service.mutex();
+		assertNotNull(mutex);
+		assertSame(mutex, this.service.mutex());
 	}
 
 	@Test

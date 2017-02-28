@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@
  */
 
 package io.janusproject.kernel.bic;
+
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
@@ -51,15 +53,42 @@ public interface InternalEventBusCapacity extends Capacity {
 	 * Register the given object on the event bus for receiving any event.
 	 *
 	 * @param listener - the listener on the SARL events.
+	 * @deprecated see {@link #registerEventListener(Object, boolean, Function1)}.
 	 */
+	@Deprecated
 	void registerEventListener(Object listener);
+
+	/**
+	 * Register the given object on the event bus for receiving any event.
+	 *
+	 * <p>If the filter is provided, it will be used for determining if the given behavior accepts a specific event.
+	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
+	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context.
+	 *
+	 * @param listener - the listener on the SARL events.
+	 * @param fireInitializeEvent - indicates if the {@code Initialize} event should be fired to the listener if the agent is alive.
+	 * @param filter - the filter function.
+	 * @since 0.5
+	 */
+	void registerEventListener(Object listener, boolean fireInitializeEvent, Function1<? super Event, ? extends Boolean> filter);
 
 	/**
 	 * Unregister the given object on the event bus for receiving any event.
 	 *
 	 * @param listener - the listener on the SARL events.
+	 * @deprecated see {@link #unregisterEventListener(Object, boolean)}.
 	 */
+	@Deprecated
 	void unregisterEventListener(Object listener);
+
+	/**
+	 * Unregister the given object on the event bus for receiving any event.
+	 *
+	 * @param listener - the listener on the SARL events.
+	 * @param fireDestroyEvent - indicates if the {@code Destroy} event should be fired to the listener if the agent is alive.
+	 * @since 0.5
+	 */
+	void unregisterEventListener(Object listener, boolean fireDestroyEvent);
 
 	/**
 	 * Sends an event to itself using its defaultInnerAddress as source. Used for platform level event dispatching (i.e.
@@ -93,17 +122,61 @@ public interface InternalEventBusCapacity extends Capacity {
 	 */
 	enum OwnerState {
 		/**
+		 * The owner of the event bus is unstarted: before initialization process.
+		 */
+		UNSTARTED {
+			@Override
+			public boolean isEventHandling() {
+				return true;
+			}
+		},
+
+		/**
 		 * The owner of the event bus is under creation.
 		 */
-		NEW,
+		INITIALIZING {
+			@Override
+			public boolean isEventHandling() {
+				return true;
+			}
+		},
+
 		/**
 		 * The owner of the event bus is running.
 		 */
-		RUNNING,
+		ALIVE {
+			@Override
+			public boolean isEventHandling() {
+				return true;
+			}
+		},
+
+		/**
+		 * The owner of the event bus is under destruction.
+		 */
+		DYING {
+			@Override
+			public boolean isEventHandling() {
+				return false;
+			}
+		},
+
 		/**
 		 * The owner of the event bus was destroyed.
 		 */
-		DESTROYED,
+		DEAD {
+			@Override
+			public boolean isEventHandling() {
+				return false;
+			}
+		};
+
+		/** Replies if the state accepts event handling.
+		 *
+		 * @return {@code true} if the state accept event handling.
+		 * @since 0.5
+		 */
+		public abstract boolean isEventHandling();
 	}
 
 }

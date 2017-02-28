@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import io.sarl.lang.core.Address
  * This event is only received by the agent's native behavior.
  * The other agent behaviors cannot receive this event because they are associated to the agent too late in the agent lifecycle.
  */
-event Initialize {
+final event Initialize {
 
 	/** The initialization parameters.
 	 * Usually, they are the arguments passed to the agent spawning function.
@@ -80,13 +80,13 @@ event Initialize {
  * the <code>killMe</code> action.
  */
 @EarlyExit
-event Destroy
+final event Destroy
 
 /**
  * Informs the creation of a new agent in a given context.
  * The context Id can be retrieved via <code>ev.getSource().getSpaceID().getContextID()</code>.
  */
-event AgentSpawned {
+final event AgentSpawned {
 
 	/** Identifier of the spawned agent.
 	 */
@@ -114,7 +114,7 @@ event AgentSpawned {
  * Informs an agent has been killed.
  * The context Id can be retrieved via <code>ev.getSource().getSpaceID().getContextID()</code>.
  */
-event AgentKilled {
+final event AgentKilled {
 
 	/** The identifier of the killed agent.
 	 */
@@ -142,7 +142,7 @@ event AgentKilled {
 /**
  * Informs the creation of a new space in a given context.
  */
-event SpaceCreated {
+final event SpaceCreated {
 
 	/** Identifier of the created space.
 	 */
@@ -162,7 +162,7 @@ event SpaceCreated {
 
 /** Informs the destruction of a space in a given context.
  */
-event SpaceDestroyed {
+final event SpaceDestroyed {
 
 	/** The identifier of the destroyed space.
 	 */
@@ -183,7 +183,7 @@ event SpaceDestroyed {
 /** Notifies other members the member with agentID has effectively 
  * integrated the holon context.
  */
-event MemberJoined {
+final event MemberJoined {
 
 	/** The identifier of the context that the member joined.
 	 */
@@ -217,7 +217,7 @@ event MemberJoined {
  * excluded (forced to leave) the holon context
  * parentContextID.
  */
-event MemberExcluded {
+final event MemberExcluded {
 
 	/** The identifier of the context from which the member was excluded.
 	 */
@@ -249,7 +249,7 @@ event MemberExcluded {
 
 /** Notifies other members the member with agentID has left the holon context.
  */
-event MemberLeft {
+final event MemberLeft {
 
 	/** The identifier of the agent that has left the holon context.
 	 */
@@ -276,7 +276,7 @@ event MemberLeft {
 /** Notifies behaviors the agent has joined a new superholon.
  * This event is received only by the agent which has joined the superholon.
  */
-event ContextJoined {
+final event ContextJoined {
 
 	/** The identifier of the context in the super holon.
 	 */
@@ -302,7 +302,7 @@ event ContextJoined {
  * Notifies behaviors the agent has left a superholon.
  * This event is received only by the agent which has left the superholon.
  */
-event ContextLeft {
+final event ContextLeft {
 
 	/** The identifier of the context in the super holon.
 	 */
