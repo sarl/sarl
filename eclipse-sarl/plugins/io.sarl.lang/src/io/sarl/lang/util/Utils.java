@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,14 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.regex.Matcher;
@@ -37,10 +40,12 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmFeature;
@@ -66,6 +71,7 @@ import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
+import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
@@ -119,6 +125,12 @@ public final class Utils {
 
 	private static final String SARL_PACKAGE_PREFIX;
 
+	private static final String SARL_VERSION_FIELD_NAME_STR = "SPECIFICATION_RELEASE_VERSION_STRING"; //$NON-NLS-1$
+
+	private static final String SARL_VERSION_FIELD_NAME_FLOAT = "SPECIFICATION_RELEASE_VERSION"; //$NON-NLS-1$
+
+	private static boolean checkSarlVersionClass = true;
+
 	static {
 		final StringBuilder name = new StringBuilder();
 		final String[] components = EarlyExit.class.getPackage().getName().split("\\."); //$NON-NLS-1$
@@ -141,6 +153,7 @@ public final class Utils {
 	 * @param operations - filled with the operations inside and inherited by the element.
 	 * @param fields - filled with the fields inside and inherited by the element.
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
+	 * @see OverrideHelper
 	 */
 	public static void populateInterfaceElements(
 			JvmDeclaredType jvmElement,
@@ -173,6 +186,7 @@ public final class Utils {
 	 * @param operationsToImplement - filled with the abstract operations inherited by the element.
 	 * @param superConstructors - filled with the construstors of the super type.
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
+	 * @see OverrideHelper
 	 */
 	@SuppressWarnings({
 		"checkstyle:cyclomaticcomplexity",
@@ -902,7 +916,12 @@ public final class Utils {
 	 *     Otherwise <code>false</code>.
 	 */
 	public static boolean isCompatibleSARLLibraryOnClasspath(TypeReferences typeReferences, Notifier context) {
-		return isCompatibleSARLLibraryVersion(getSARLLibraryVersionOnClasspath(typeReferences, context));
+		final OutParameter<String> version = new OutParameter<>();
+		final SarlLibraryErrorCode code = getSARLLibraryVersionOnClasspath(typeReferences, context, version);
+		if (code == SarlLibraryErrorCode.SARL_FOUND) {
+			return isCompatibleSARLLibraryVersion(version.get());
+		}
+		return false;
 	}
 
 	/** Check if a version is compatible with the expected SARL library.
@@ -965,27 +984,83 @@ public final class Utils {
 	 * @param context - the context that is providing the access to the classpath.
 	 * @return the version, or <code>null</code> if the SARL library cannot be found or
 	 *     is too old.
+	 * @deprecated see {@link #getSARLLibraryVersionOnClasspath(TypeReferences, Notifier, OutParameter)}
 	 */
+	@Deprecated
 	public static String getSARLLibraryVersionOnClasspath(TypeReferences typeReferences, Notifier context) {
-		try {
-			final JvmType type = typeReferences.findDeclaredType(SARLVersion.class.getName(), context);
-			if (type instanceof JvmDeclaredType) {
-				JvmField versionField = null;
-				final Iterator<JvmField> iterator = ((JvmDeclaredType) type).getDeclaredFields().iterator();
-				while (versionField == null && iterator.hasNext()) {
-					final JvmField field = iterator.next();
-					if ("SPECIFICATION_RELEASE_VERSION_STRING".equals(field.getSimpleName())) { //$NON-NLS-1$
-						versionField = field;
-					}
-				}
-				if (versionField != null) {
-					return versionField.getConstantValueAsString();
-				}
-			}
-		} catch (Throwable exception) {
-			//
+		final OutParameter<String> version = new OutParameter<>();
+		final SarlLibraryErrorCode code = getSARLLibraryVersionOnClasspath(typeReferences, context, version);
+		if (code == SarlLibraryErrorCode.SARL_FOUND) {
+			return version.get();
 		}
 		return null;
+	}
+
+	/** Replies the version of the SARL library on the classpath.
+	 *
+	 * @param typeReferences - the accessor to the types.
+	 * @param context the context that is providing the access to the classpath.
+	 * @param version the version of the SARL library that was found, according to the returned error code.
+	 * @return the version, or <code>null</code> if the SARL library cannot be found or
+	 *     is too old.
+	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	public static SarlLibraryErrorCode getSARLLibraryVersionOnClasspath(TypeReferences typeReferences, Notifier context,
+			OutParameter<String> version) {
+		if (checkSarlVersionClass) {
+			checkSarlVersionClass = false;
+			try {
+				SARLVersion.class.getDeclaredField(SARL_VERSION_FIELD_NAME_STR);
+			} catch (Exception e) {
+				try {
+					SARLVersion.class.getDeclaredField(SARL_VERSION_FIELD_NAME_FLOAT);
+				} catch (Exception ex) {
+					return SarlLibraryErrorCode.INVALID_SARL_VERSION_BYTECODE;
+				}
+			}
+		}
+		final JvmType type;
+		try {
+			type = typeReferences.findDeclaredType(SARLVersion.class, context);
+		} catch (Throwable exception) {
+			return SarlLibraryErrorCode.NO_SARL_VERSION_CLASS;
+		}
+		if (type == null) {
+			return SarlLibraryErrorCode.NO_SARL_VERSION_CLASS;
+		}
+		if (!(type instanceof JvmDeclaredType)) {
+			return SarlLibraryErrorCode.NO_SARL_VERSION_DECLARED_TYPE;
+		}
+		final JvmDeclaredType sarlVersionType = (JvmDeclaredType) type;
+		JvmField versionField = null;
+		boolean isString = true;
+		final Iterator<JvmField> iterator = sarlVersionType.getDeclaredFields().iterator();
+		while (versionField == null && iterator.hasNext()) {
+			final JvmField field = iterator.next();
+			if (SARL_VERSION_FIELD_NAME_STR.equals(field.getSimpleName())) {
+				versionField = field;
+			} else if (SARL_VERSION_FIELD_NAME_FLOAT.equals(field.getSimpleName())) {
+				versionField = field;
+				isString = false;
+			}
+		}
+		if (versionField == null) {
+			return SarlLibraryErrorCode.NO_SARL_VERSION_FIELD;
+		}
+		final String value;
+		if (isString) {
+			value = versionField.getConstantValueAsString();
+		} else {
+			final DecimalFormat format = new DecimalFormat("0.0", DecimalFormatSymbols.getInstance(Locale.US)); //$NON-NLS-1$
+			value = format.format(versionField.getConstantValueAsFloat());
+		}
+		if (Strings.isNullOrEmpty(value)) {
+			return SarlLibraryErrorCode.NO_SARL_VERSION_VALUE;
+		}
+		if (version != null) {
+			version.set(value);
+		}
+		return SarlLibraryErrorCode.SARL_FOUND;
 	}
 
 	/** Replies if the given annotation is an annotation from the SARL core library.
@@ -1045,6 +1120,68 @@ public final class Utils {
 			return operations.size() == 1;
 		}
 		return false;
+	}
+
+	/**
+	 * Returns the closest {@link EObject#eContainer() container object} that is not of the requested type.
+	 *
+	 * @param element the element to start from.
+	 * @param type the unexpected type.
+	 * @param container the container.
+	 * @param directContainerChild the child of the container that is or contains the given element.
+	 * @return {@code true} if the container was found.
+	 * @since 0.5
+	 * @see EcoreUtil2#getContainerOfType(EObject, Class)
+	 */
+	public static boolean getContainerNotOfType(EObject element, Class<? extends EObject> type,
+			OutParameter<EObject> container, OutParameter<EObject> directContainerChild) {
+		EObject previous = element;
+		EObject elt = element.eContainer();
+		while (elt != null) {
+			if (!type.isInstance(elt)) {
+				if (directContainerChild != null) {
+					directContainerChild.set(previous);
+				}
+				if (container != null) {
+					container.set(elt);
+				}
+				return true;
+			}
+			previous = elt;
+			elt = elt.eContainer();
+		}
+		return false;
+	}
+
+	/** Error code for the
+	 * {@link Utils#getSARLLibraryVersionOnClasspath(TypeReferences, Notifier, OutParameter)}
+	 * function.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.5
+	 */
+	public enum SarlLibraryErrorCode {
+		/** SARL Library was found.
+		 */
+		SARL_FOUND,
+		/** SARL version class not found.
+		 */
+		NO_SARL_VERSION_CLASS,
+		/** SARL version class is not a Xtext declared type.
+		 */
+		NO_SARL_VERSION_DECLARED_TYPE,
+		/** SARL version field not found.
+		 */
+		NO_SARL_VERSION_FIELD,
+		/** SARL version value not found.
+		 */
+		NO_SARL_VERSION_VALUE,
+		/** The byte code (the class) of {@link SARLVersion} does not contains the expected field.
+		 */
+		INVALID_SARL_VERSION_BYTECODE,
 	}
 
 }

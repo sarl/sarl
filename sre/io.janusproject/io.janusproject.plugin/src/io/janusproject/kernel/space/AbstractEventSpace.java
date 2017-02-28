@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,10 +129,10 @@ public abstract class AbstractEventSpace extends SpaceBase {
 		assert event != null;
 		assert event.getSource() != null : "Every event must have a source"; //$NON-NLS-1$
 		assert this.getSpaceID().equals(event.getSource().getSpaceId()) : "The source address must belong to this space"; //$NON-NLS-1$
-
 		try {
-			this.network.publish(scope, event);
-			doEmit(event, scope);
+			final Scope<Address> scopeInstance = (scope == null) ? Scopes.<Address>allParticipants() : scope;
+			this.network.publish(scopeInstance, event);
+			doEmit(event, scopeInstance);
 		} catch (Throwable e) {
 			this.logger.error(Messages.AbstractEventSpace_0, event, scope, e);
 		}
@@ -148,7 +148,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 * @see #emit(Event, Scope)
 	 */
 	public final void emit(Event event) {
-		emit(event, Scopes.<Address>allParticipants());
+		emit(event, null);
 	}
 
 	/**
@@ -160,6 +160,8 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 * @param scope - description of the scope of the event, i.e. the receivers of the event.
 	 */
 	protected void doEmit(Event event, Scope<? super Address> scope) {
+		assert scope != null;
+		assert event != null;
 		final UniqueAddressParticipantRepository<Address> particips = getParticipantInternalDataStructure();
 		final SynchronizedCollection<EventListener> listeners = particips.getListeners();
 		synchronized (listeners.mutex()) {

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,16 +63,17 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 	 * considered as pure.
 	 */
 	public static final String[] SPECIAL_PURE_FUNCTION_NAME_PATTERNS = {
-		"is[A-Z].*", //$NON-NLS-1$
-		"get(?:[A-Z1-9].*)?", //$NON-NLS-1$
-		"has[A-Z1-9].*", //$NON-NLS-1$
-		"to[A-Z1-9].*", //$NON-NLS-1$
+		"clone", //$NON-NLS-1$
 		"contains(?:[A-Z1-9].*)?", //$NON-NLS-1$
 		"equals", //$NON-NLS-1$
+		"get(?:[A-Z1-9].*)?", //$NON-NLS-1$
+		"has[A-Z1-9].*", //$NON-NLS-1$
 		"hashCode", //$NON-NLS-1$
-		"clone", //$NON-NLS-1$
-		"size", //$NON-NLS-1$
+		"is[A-Z].*", //$NON-NLS-1$
 		"iterator", //$NON-NLS-1$
+		"length", //$NON-NLS-1$
+		"to[A-Z1-9].*", //$NON-NLS-1$
+		"size", //$NON-NLS-1$
 	};
 
 	private Pattern pattern;

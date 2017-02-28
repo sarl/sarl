@@ -1,7 +1,7 @@
 /*
  * $Id$
  * 
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,11 +27,13 @@ import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.TestClasspath;
 
-/**
+/** Issue 350: Invalid inferred return type
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see https://github.com/sarl/sarl/issues/350
  */
 @RunWith(Suite.class)
 @SuiteClasses({
@@ -90,7 +92,7 @@ public class Bug350 {
 		@TestClasspath({"io.sarl.core"})
 		public void bug350() throws Exception {
 			SarlScript mas = file(snippet);
-			validate(mas).assertNoIssues();
+			validate(mas).assertNoErrors();
 		}
 
 	}

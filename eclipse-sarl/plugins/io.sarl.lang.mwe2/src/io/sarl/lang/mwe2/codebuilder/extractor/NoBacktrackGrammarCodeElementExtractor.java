@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,6 +92,29 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 		return null;
 	}
 
+	private <T> T visitTypeReferencingMembers(EObject grammarContainer, EObject container,
+			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> memberCallback) {
+		final Set<String> treatedMembers = new HashSet<>();
+		for (final Assignment nameAssignment : IterableExtensions.filter(
+				GrammarUtil.containedAssignments(container),
+				(passignment) -> getCodeBuilderConfig()
+				.getUnnamedMemberExtensionGrammarNames().contains(passignment.getFeature()))) {
+			// Get the container of the name assignment
+			final EObject assignmentContainer = getContainerInRule(grammarContainer, nameAssignment);
+			if (assignmentContainer != null) {
+				final EClassifier classifier = getGeneratedTypeFor(assignmentContainer);
+				if (!treatedMembers.contains(classifier.getName())) {
+					treatedMembers.add(classifier.getName());
+					final T retVal = memberCallback.apply(this, grammarContainer, assignmentContainer, classifier);
+					if (retVal != null) {
+						return retVal;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	private <T> T visitConstructors(EObject grammarContainer, EObject container,
 			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> callback) {
 		final Set<String> treatedConstructors = new HashSet<>();
@@ -123,10 +146,18 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 			ElementDescription element,
 			EObject grammarContainer,
 			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> constructorCallback,
-			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> namedMemberCallback) {
+			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> namedMemberCallback,
+			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> typeReferencingMemberCallback) {
 		// Treat the standard members
 		if (namedMemberCallback != null) {
 			final T retVal = visitMembers(grammarContainer,  grammarContainer, namedMemberCallback);
+			if (retVal != null) {
+				return retVal;
+			}
+		}
+		// Treat the members that are referencing types.
+		if (typeReferencingMemberCallback != null) {
+			final T retVal = visitTypeReferencingMembers(grammarContainer,  grammarContainer, typeReferencingMemberCallback);
 			if (retVal != null) {
 				return retVal;
 			}

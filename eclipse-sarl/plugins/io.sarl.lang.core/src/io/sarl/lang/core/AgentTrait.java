@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,16 +27,21 @@ import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.util.ClearableReference;
+
 /** This class represents a part of trait of an agent.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class AgentTrait extends AgentProtectedAPIObject {
+public abstract class AgentTrait extends AgentProtectedAPIObject {
 
 	private WeakReference<Agent> agentRef;
+
+	private transient Object sreSpecificData;
 
 	/** Construct a trait to the given agent.
 	 *
@@ -113,7 +118,7 @@ abstract class AgentTrait extends AgentProtectedAPIObject {
 	protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 		final Agent owner = getOwner();
 		if (owner == null) {
-			return null;
+			throw new UnimplementedCapacityException(capacity, null);
 		}
 		return owner.$getSkill(capacity);
 	}
@@ -181,6 +186,27 @@ abstract class AgentTrait extends AgentProtectedAPIObject {
 			return false;
 		}
 		return owner.isFromMe(event);
+	}
+
+	/** Replies the data associated to this agent trait by the SRE.
+	 *
+	 * @param <S> the type of the data.
+	 * @param type the type of the data.
+	 * @return the SRE-specific data.
+	 * @since 0.5
+	 */
+	@Pure
+	<S> S getSreSpecificData(Class<S> type) {
+		return type.cast(this.sreSpecificData);
+	}
+
+	/** Change the data associated to this agent trait by the SRE.
+	 *
+	 * @param data the SRE-specific data.
+	 * @since 0.5
+	 */
+	void setSreSpecificData(Object data) {
+		this.sreSpecificData = data;
 	}
 
 }

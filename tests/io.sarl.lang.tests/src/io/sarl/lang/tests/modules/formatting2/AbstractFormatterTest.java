@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 package io.sarl.lang.tests.modules.formatting2;
 
 import com.google.inject.Inject;
-import org.eclipse.xtext.junit4.formatter.FormatterTestRequest;
-import org.eclipse.xtext.junit4.formatter.FormatterTester;
+import org.eclipse.xtext.testing.formatter.FormatterTestHelper;
+import org.eclipse.xtext.testing.formatter.FormatterTestRequest;
 import org.eclipse.xtext.xbase.lib.Procedures;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -33,25 +33,30 @@ import io.sarl.tests.api.AbstractSarlTest;
 public abstract class AbstractFormatterTest extends AbstractSarlTest {
 
 	@Inject
-	private FormatterTester tester;
-	
+	private FormatterTestHelper helper;
+
+	/** Configure the formatter request for testing.
+	 *
+	 * @param input the input string.
+	 * @param expected the expected string.
+	 * @param it the request.
+	 */
+	static void configureFormatterTestRequest(CharSequence input, CharSequence expected, FormatterTestRequest it) {
+		it.setToBeFormatted(input);
+		it.setExpectation(expected);
+		it.setAllowSyntaxErrors(false);
+		it.setAllowUnformattedWhitespace(true);
+		it.setUseNodeModel(true);
+		it.setUseSerializer(false);
+	}
+
 	/** Assert formatting
 	 *
 	 * @param input the input.
 	 * @param expected the expected input.
 	 */
-	protected void assertFormatted(String input, final String expected) {
-		this.tester.assertFormatted(new Procedures.Procedure1<FormatterTestRequest>() {
-			@Override
-			public void apply(FormatterTestRequest it) {
-				it.setToBeFormatted(input);
-				it.setExpectation(expected);
-				it.setAllowSyntaxErrors(false);
-				it.setAllowUnformattedWhitespace(false);
-				it.setUseNodeModel(true);
-				it.setUseSerializer(false);
-			}
-		});
+	protected void assertFormatted(final String input, final String expected) {
+		this.helper.assertFormatted((it) -> configureFormatterTestRequest(input, expected, it));
 	}
-	
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,45 +15,28 @@
  */
 package io.sarl.lang.tests.general.parsing.oop;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.xtext.common.types.JvmTypeConstraint;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
-
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
-import io.sarl.lang.sarl.SarlBehaviorUnit;
-import io.sarl.lang.sarl.SarlCapacity;
-import io.sarl.lang.sarl.SarlCapacityUses;
-import io.sarl.lang.sarl.SarlClass;
-import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlField;
-import io.sarl.lang.sarl.SarlInterface;
-import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.validation.IssueCodes;
-import io.sarl.tests.api.AbstractSarlTest;
-
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.eclipse.xtext.diagnostics.Diagnostic;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XStringLiteral;
-import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
+
+import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlBehavior;
+import io.sarl.lang.sarl.SarlClass;
+import io.sarl.lang.sarl.SarlInterface;
+import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -127,7 +110,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 7,
 					"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
 		}
 
@@ -139,7 +121,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 9,
 					"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
 		}
 
@@ -191,7 +172,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 6,
 					"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
 		}
 
@@ -203,7 +183,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				32, 8,
 				"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
 		}
 
@@ -215,7 +194,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 5,
 					"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
 		}
 
@@ -247,7 +225,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				32, 6,
 				"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
 		}
 
@@ -259,7 +236,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				32, 8,
 				"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
 		}
 
@@ -271,7 +247,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				32, 12,
 				"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
 		}
 
@@ -283,7 +258,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				32, 9,
 				"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
 		}
 
@@ -295,7 +269,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				41, 5,
 				"The interface I1 can either be abstract or final, not both");
 		}
 
@@ -307,7 +280,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				39, 7,
 				"The interface I1 can only set one of public / package / protected / private");
 		}
 
@@ -484,7 +456,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 8,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -498,7 +469,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					64, 5,
 					"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -534,7 +504,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 6,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -548,7 +517,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 8,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -562,7 +530,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 12,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -576,7 +543,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 9,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -590,7 +556,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				73, 5,
 				"The interface I1 can either be abstract or final, not both");
 		}
 
@@ -604,7 +569,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				71, 7,
 				"The interface I1 can only set one of public / package / protected / private");
 		}
 
@@ -626,8 +590,7 @@ public class InterfaceParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					64, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -771,8 +734,7 @@ public class InterfaceParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
-				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 8);
+				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -784,8 +746,7 @@ public class InterfaceParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					64, 5);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -797,8 +758,7 @@ public class InterfaceParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					64, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -810,8 +770,7 @@ public class InterfaceParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
-				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 6);
+				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -823,8 +782,7 @@ public class InterfaceParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
-				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 8);
+				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -836,8 +794,7 @@ public class InterfaceParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
-				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 12);
+				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -849,8 +806,7 @@ public class InterfaceParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
-				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				64, 9);
+				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -863,7 +819,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				73, 5,
 				"abstract or final, not both");
 		}
 
@@ -877,7 +832,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				71, 7,
 				"public / package / protected / private");
 		}
 
@@ -1054,7 +1008,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				70, 8,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1068,7 +1021,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					70, 5,
 					"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1104,7 +1056,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				70, 6,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1118,7 +1069,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				70, 8,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1132,7 +1082,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				70, 12,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1146,7 +1095,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				70, 9,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1160,7 +1108,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				79, 5,
 				"The interface I1 can either be abstract or final, not both");
 		}
 
@@ -1174,7 +1121,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				77, 7,
 				"The interface I1 can only set one of public / package / protected / private");
 		}
 
@@ -1359,7 +1305,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				101, 8,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1374,7 +1319,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					101, 5,
 					"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1412,7 +1356,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				101, 6,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1427,7 +1370,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				101, 8,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1442,7 +1384,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				101, 12,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1457,7 +1398,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				101, 9,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
 		}
 
@@ -1472,7 +1412,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				110, 5,
 				"The interface I1 can either be abstract or final, not both");
 		}
 
@@ -1487,7 +1426,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-				108, 7,
 				"The interface I1 can only set one of public / package / protected / private");
 		}
 
@@ -1609,7 +1547,6 @@ public class InterfaceParsingTest {
 			validate(mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_PARAMETER_FORWARD_REFERENCE,
-					55, 1,
 					"Illegal forward reference to type parameter Y");
 		}
 

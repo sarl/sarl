@@ -31,13 +31,13 @@ import java.math.BigInteger
 import java.util.List
 import java.util.Map
 import org.eclipse.xtend.core.xtend.XtendConstructor
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XbasePackage
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
+import org.eclipse.xtext.testing.validation.ValidationTestHelper
 
 /* @outline
  * 
@@ -2622,7 +2622,7 @@ describe "General Syntax Reference" {
 		 * In many situations, it is correct for an expression to return `null`
 		 * if a receiver was `null`.
 		 * 
-		 * <p>SARL supports the safe navigation operator `?`. to make such code
+		 * <p>SARL supports the safe navigation operator `?.`. to make such code
 		 * better readable.
 		 * 
 		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
@@ -2630,16 +2630,16 @@ describe "General Syntax Reference" {
 		fact "Null-Safe Feature Call"{
 			'''
 					// First expression
-					if (myRef != null) myRef.length()
+					var a = if (myRef !== null) myRef.length() else 0
 					// Second expression, equivalent to the first expression
-					myRef?.length()
+					var b = myRef?.length()
 			'''.parseSuccessfully(
 				"package io.sarl.docs.reference.gsr
 				agent A {
 					var myRef = \"abc\"
-					def examples {",
+					def examples : int {",
 				// TEXT
-				"} }"
+				"b;} }"
 			)
 		}
 

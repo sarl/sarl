@@ -51,9 +51,9 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
-import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.util.ClearableReference;
 import io.sarl.tests.api.Nullable;
 
 /**
@@ -81,13 +81,11 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 	public void setUp() throws Exception {
 		this.agentId = UUID.randomUUID();
 		Agent agent = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null) {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 				return new ClearableReference<>(LifecycleSkillTest.this.eventBus);
 			}
 
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public UUID getID() {
 				return LifecycleSkillTest.this.agentId;

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -233,10 +233,16 @@ capacity Behaviors {
 	 * Register a Behavior for the owner agent.
 	 * The new Behavior will react to all declared events received by the agent.
 	 *
+	 * <p>If the filter is provided, it will be used for determining if the given behavior accepts a specific event.
+	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
+	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context. 
+	 *
 	 * @param attitude the behavior to add to the agent.
+	 * @param filter the filter that enables to indicates if an event is accepted by a behavior.
 	 * @return the given behavior.
+	 * @since 0.5 for the {@code filter} parameter.
 	 */
-	def registerBehavior(attitude : Behavior) : Behavior
+	def registerBehavior(attitude : Behavior, filter : (Event) => boolean = null) : Behavior
 	
 	/**
 	 * Unregisters a behavior for the owner agent.
@@ -315,6 +321,10 @@ capacity Schedules {
 	 *
 	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
 	 *
+	 * <p>If this function is invoked from a {@code Behavior} and there is no provided task,
+	 * the created task will be associated to the behavior instance. It means that the task will
+	 * be automatically cancelled when the behavior instance is unregistered from the the owning agent.
+	 *
 	 * @param task the task that will run the given closure. If <code>null</code>, a new task is created.
 	 * @param delay time in milliseconds to delay the procedure execution.
 	 * @param procedure the closure to execute.
@@ -326,7 +336,11 @@ capacity Schedules {
 	 * Create a named task that can be retrieved and schedule later.
 	 * If a task with the specified name already exists, this task is returned.
 	 *
-	 * @param name the name of the tash.
+	 * <p>If this function is invoked from a {@code Behavior}, the created task will be associated
+	 * to the behavior instance. It means that the task will be automatically cancelled when the behavior
+	 * instance is unregistered from the the owning agent.
+	 *
+	 * @param name the name of the task. If {@code null} or empty, a random name will be given to the task.
 	 * @return the task instance.
 	 */
 	def task(name : String) : AgentTask
@@ -383,6 +397,10 @@ capacity Schedules {
 	 * </code></pre>
 	 *
 	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
+	 *
+	 * <p>If this function is invoked from a {@code Behavior} and there is no provided task,
+	 * the created task will be associated to the behavior instance. It means that the task will
+	 * be automatically cancelled when the behavior instance is unregistered from the the owning agent.
 	 *
 	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
 	 * @param period the number of milliseconds between two launches of the given procedure.
@@ -468,7 +486,7 @@ capacity DefaultContextInteractions {
 	 * ...
 	 * const mySpawnArgs = ...
 	 * const myAgentAddr = MyAgent.spawn(mySpawnArgs)
-	 * defaultSpace.emit(new StartWorkingEvent, AddressScope::scope(myAgentAddr)
+	 * defaultSpace.emit(new StartWorkingEvent, AddressScope::scope(myAgentAddr))
 	 * </code> 
 	 * <p>The equivalent using receive could be written:
 	 * <code>

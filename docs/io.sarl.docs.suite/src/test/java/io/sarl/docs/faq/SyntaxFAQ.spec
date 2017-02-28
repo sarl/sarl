@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -203,7 +203,7 @@ describe "SARL Syntax FAQ" {
 			 * a.k.a. anonymous class definition in the Java community, could be written is SARL
 			 * with the following closure:
 			 * 
-			 * @filter(.* = '''|'''|.parseSuccessfully.* 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "How can I create instances of anonymous classes?" {
 				'''
@@ -228,7 +228,7 @@ describe "SARL Syntax FAQ" {
 			 * <p>The Java-based syntax for defining an anonymous class's instance if totally forbidden
 			 * in the SARL language. It means that the following code generates a syntax error:
 			 * 
-			 * @filter(.* = '''|'''|.parseWithError.* 
+			 * @filter(.* = '''|'''|.parseWithError.*)
 			 */
 			fact "Java syntax for anonymous classes is forbidden" {
 				'''
@@ -247,6 +247,51 @@ describe "SARL Syntax FAQ" {
 							def action : boolean {",
 						// TEXT
 						"} }"
+				)
+			}
+
+			/* When the calling a capacity function, the SARL compiler complains with an "ambiguous call" error.
+			 * In the code below, the function `myfunction` is defined in the capacities `CA` and `C2`.
+			 * The call to `myfunction` in the agent definition is the place where the error occurs.  
+			 *
+			 * <p>This error is standard because the functions of the capacities `C1` and `C2` are implicitly accessible
+			 * in the scope of the agent definition (see `uses` keyword definition). The SARL compiler is then unable
+			 * to determine that is the function to call.
+			 *
+			 * <p>For solving this issue, the developer must explicitly call the correct version of `myfunction` by
+			 * getting the capacity. The following code is the correct call to the function if the function in the
+			 * capacity `C1` should be called:
+			 *
+			 *
+			 *     getSkill(C1).myfunction
+			 *
+			 *
+			 * @filter(.* = '''|'''|.parseWithError.*)
+			 */
+			fact "Ambiguous call to capacity function" {
+				'''
+					capacity C1 {
+					    def myfunction
+					    def myfunction2
+					}
+					capacity C2 {
+					    def myfunction
+					    def myfunction3
+					}
+					agent MyAgent {
+					    uses C1, C2
+					    on Initialize {
+					        myfunction
+					        myfunction2
+					        myfunction3
+					    }
+					}
+				'''.parseWithError(
+					"package io.sarl.docs.faq.syntax
+					event Initialize
+					",
+					// TEXT
+					""
 				)
 			}
 

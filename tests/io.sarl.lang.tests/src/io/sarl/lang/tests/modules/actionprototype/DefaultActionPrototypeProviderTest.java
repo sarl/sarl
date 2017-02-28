@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -330,21 +330,25 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Test
 		public void createQualifiedActionName() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
+			final String xtextResourceID = container.eResource().getURI().toString();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			assertNotNull(qn);
 			assertEquals("myfct", qn.getActionName());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index, qn.getContainerID());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index+"#myfct", qn.toString());
+			// xtextResourceID == "file:/path/to/io/sarl/tests/Stub"+index+".sarl" 
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index, qn.getContainerID());
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index+"#myfct", qn.toString());
 		}
 
 		@Test
 		public void createConstructorQualifiedName() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
+			final String xtextResourceID = container.eResource().getURI().toString();
 			QualifiedActionName qn = this.provider.createConstructorQualifiedName(container);
 			assertNotNull(qn);
 			assertEquals("new", qn.getActionName());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index, qn.getContainerID());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index+"#new", qn.toString());
+			// xtextResourceID == "file:/path/to/io/sarl/tests/Stub"+index+".sarl"
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index, qn.getContainerID());
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index+"#new", qn.toString());
 		}
 
 		@Test
@@ -988,21 +992,25 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Test
 		public void createQualifiedActionName() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
+			final String xtextResourceID = container.eResource().getURI().toString();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			assertNotNull(qn);
 			assertEquals("myfct", qn.getActionName());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index, qn.getContainerID());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index+"#myfct", qn.toString());
+			//xtextResourceID == "file:/path/to/io/sarl/tests/Stub"+index+".sarl"
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index, qn.getContainerID());
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index+"#myfct", qn.toString());
 		}
 
 		@Test
 		public void createConstructorQualifiedName() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
+			final String xtextResourceID = container.eResource().getURI().toString();
 			QualifiedActionName qn = this.provider.createConstructorQualifiedName(container);
 			assertNotNull(qn);
 			assertEquals("new", qn.getActionName());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index, qn.getContainerID());
-			assertEquals("file:/path/to/io/sarl/tests/Stub"+index+".sarl/io.sarl.tests.Stub"+index+"#new", qn.toString());
+			//xtextResourceID == "file:/path/to/io/sarl/tests/Stub"+index+".sarl"
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index, qn.getContainerID());
+			assertEquals(xtextResourceID + "/io.sarl.tests.Stub"+index+"#new", qn.toString());
 		}
 
 		@Test

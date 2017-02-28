@@ -620,7 +620,7 @@
    <extension
          point="org.eclipse.ltk.core.refactoring.renameParticipants">
       <renameParticipant
-            class="io.sarl.lang.ui.SARLExecutableExtensionFactory:io.sarl.lang.ui.refactoring.rename.SARLPackageRenameParticipant"
+            class="io.sarl.lang.ui.SARLExecutableExtensionFactory:io.sarl.lang.ui.refactoring.rename.SARLJdtPackageRenameParticipant"
             id="io.sarl.lang.ui.refactoring.packageRenameParticipant"
             name="%sarl.rename.participant">
          <enablement>

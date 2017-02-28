@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.StreamSupport;
 
 import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
 import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.OutputParameter;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import io.janusproject.services.executor.ExecutorService;
 
@@ -77,11 +80,17 @@ public class AgentInternalEventsDispatcher {
 	/**
 	 * Registers all {@code PerceptGuardEvaluator} methods on {@code object} to receive events.
 	 *
+	 * <p>If the filter is provided, it will be used for determining if the given behavior accepts a specific event.
+	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
+	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context.
+	 *
 	 * @param object object whose {@code PerceptGuardEvaluator} methods should be registered.
+	 * @param filter - the filter function. It could be {@code null}.
+	 * @param callback function which is invoked just after the first registration of the object. It could be {@code null}.
 	 */
-	public void register(Object object) {
+	public void register(Object object, Function1<? super Event, ? extends Boolean> filter, Procedure1<Object> callback) {
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
-			this.behaviorGuardEvaluatorRegistry.register(object);
+			this.behaviorGuardEvaluatorRegistry.register(object, filter, callback);
 		}
 	}
 
@@ -89,27 +98,30 @@ public class AgentInternalEventsDispatcher {
 	 * Unregisters all {@code PerceptGuardEvaluator} methods on a registered {@code object}.
 	 *
 	 * @param object object whose {@code PerceptGuardEvaluator} methods should be unregistered.
+	 * @param callback function which is invoked just before the object is unregistered.
 	 * @throws IllegalArgumentException if the object was not previously registered.
 	 */
-	public void unregister(Object object) {
+	public void unregister(Object object, Procedure1<Object> callback) {
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
-			this.behaviorGuardEvaluatorRegistry.unregister(object);
+			this.behaviorGuardEvaluatorRegistry.unregister(object, callback);
 		}
 	}
 
 	/**
 	 * Unregisters all {@code PerceptGuardEvaluator} methods on all registered objects.
 	 *
+	 * @param callback function which is invoked just before the object is unregistered.
 	 * @throws IllegalArgumentException if the object was not previously registered.
 	 */
-	public void unregisterAll() {
+	public void unregisterAll(Procedure1<Object> callback) {
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
-			this.behaviorGuardEvaluatorRegistry.unregisterAll();
+			this.behaviorGuardEvaluatorRegistry.unregisterAll(callback);
 		}
 	}
 
 	/**
-	 * Posts an event to all registered {@code BehaviorGuardEvaluator}, the dispatch of this event will be done synchronously.
+	 * Posts an event to all registered {@code BehaviorGuardEvaluator}.
+	 * The dispatch of this event will be done synchronously.
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
 	 *
@@ -117,12 +129,12 @@ public class AgentInternalEventsDispatcher {
 	 */
 	public void immediateDispatch(Event event) {
 		assert event != null;
-		Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
+		Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
 			behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
 					.getBehaviorGuardEvaluators(event);
 		}
-		if (behaviorGuardEvaluators != null && !behaviorGuardEvaluators.isEmpty()) {
+		if (behaviorGuardEvaluators != null) {
 			final Collection<Runnable> behaviorsMethodsToExecute;
 			try {
 				behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
@@ -146,7 +158,47 @@ public class AgentInternalEventsDispatcher {
 	}
 
 	/**
-	 * Posts an event to all registered {@code BehaviorGuardEvaluator}, the dispatch of this event will be done asynchronously.
+	 * Posts an event to the registered {@code BehaviorGuardEvaluator} of the given listener only.
+	 * The dispatch of this event will be done synchronously.
+	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
+	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
+	 *
+	 * @param listener - the listener to dispatch to.
+	 * @param event - an event to dispatch synchronously.
+	 */
+	public void immediateDispatchTo(Object listener, Event event) {
+		assert event != null;
+		Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
+		synchronized (this.behaviorGuardEvaluatorRegistry) {
+			behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
+					.getBehaviorGuardEvaluatorsFor(event, listener);
+		}
+		if (behaviorGuardEvaluators != null) {
+			final Collection<Runnable> behaviorsMethodsToExecute;
+			try {
+				behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
+				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute);
+			} catch (RuntimeException exception) {
+				throw exception;
+			} catch (InterruptedException | ExecutionException | InvocationTargetException e) {
+				throw new RuntimeException(e);
+			}
+
+		}
+		/*
+		 * <p>If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
+		 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
+		 */
+		// XXX: not in the SARL specifications. Should we fire the DeadEvent?
+		/*else if (!(event instanceof DeadEvent)) {
+			// the event had no subscribers and was not itself a DeadEvent
+			immediateDispatch(new DeadEvent(event));
+		}*/
+	}
+
+	/**
+	 * Posts an event to all registered {@code BehaviorGuardEvaluator}.
+	 * The dispatch of this event will be done asynchronously.
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
 	 *
@@ -155,13 +207,12 @@ public class AgentInternalEventsDispatcher {
 	public void asyncDispatch(Event event) {
 		assert event != null;
 		this.executor.execute(() -> {
-			Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
+			Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
 			synchronized (AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry) {
 				behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
 						.getBehaviorGuardEvaluators(event);
 			}
-			if (behaviorGuardEvaluators != null && !behaviorGuardEvaluators.isEmpty()) {
-
+			if (behaviorGuardEvaluators != null) {
 				final Collection<Runnable> behaviorsMethodsToExecute;
 				try {
 					behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
@@ -189,12 +240,12 @@ public class AgentInternalEventsDispatcher {
 	 * @throws InvocationTargetException - exception when you try to execute a method by reflection and this method doesn't exist.
 	 */
 	private static Collection<Runnable> evaluateGuards(final Event event,
-			final Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators) throws InvocationTargetException {
+			final Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators) throws InvocationTargetException {
 
 		final MultiCollection<Runnable> behaviorsMethodsToExecute = new MultiCollection<>();
 
 		try {
-			behaviorGuardEvaluators.parallelStream().forEach((evaluator) -> {
+			StreamSupport.stream(behaviorGuardEvaluators.spliterator(), true).forEach((evaluator) -> {
 				try {
 					final Collection<Runnable> behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
 					evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);

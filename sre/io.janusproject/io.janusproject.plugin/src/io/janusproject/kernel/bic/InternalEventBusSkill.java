@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import java.util.logging.LogRecord;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Queues;
 import com.google.inject.Inject;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
 import io.janusproject.kernel.bic.internaleventdispatching.AgentInternalEventsDispatcher;
 import io.janusproject.services.logging.LogService;
@@ -43,10 +44,10 @@ import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.util.ClearableReference;
 
 /**
  * Janus implementation of an internal skill that provides an event dispatcher to notify the different components/behaviors of an
@@ -66,7 +67,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 	/**
 	 * State of the owner.
 	 */
-	private final AtomicReference<OwnerState> state = new AtomicReference<>(OwnerState.NEW);
+	private final AtomicReference<OwnerState> ownerState = new AtomicReference<>(OwnerState.UNSTARTED);
 
 	/**
 	 * Implementation of an EventListener linked to the owner of this skill.
@@ -124,13 +125,22 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 
 	@Override
 	protected String attributesToString() {
-		return super.attributesToString() + ", state = " + this.state //$NON-NLS-1$
+		return super.attributesToString() + ", state = " + getOwnerState() //$NON-NLS-1$
 				+ ", addressInDefaultspace = " + this.agentAddressInInnerDefaultSpace; //$NON-NLS-1$
 	}
 
 	@Override
 	public OwnerState getOwnerState() {
-		return this.state.get();
+		return this.ownerState.get();
+	}
+
+	/** Change the owner state.
+	 *
+	 * @param state the state.
+	 */
+	void setOwnerState(OwnerState state) {
+		assert state != null;
+		this.ownerState.set(state);
 	}
 
 	@Override
@@ -141,24 +151,74 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 
 	@Override
 	protected void install() {
-		this.eventDispatcher.register(getOwner());
+		this.eventDispatcher.register(getOwner(), null, null);
 	}
 
 	@Override
 	protected void uninstall(UninstallationStage stage) {
 		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
-			this.eventDispatcher.unregisterAll();
+			final Destroy event = new Destroy();
+			event.setSource(getInnerDefaultSpaceAddress());
+			this.eventDispatcher.unregisterAll((subscriber) -> {
+				this.eventDispatcher.immediateDispatchTo(subscriber, event);
+			});
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @deprecated see {@link #registerEventListener(Object, boolean, Function1)}.
+	 */
 	@Override
+	@Deprecated
 	public void registerEventListener(Object listener) {
-		this.eventDispatcher.register(listener);
+		registerEventListener(listener, true, null);
 	}
 
 	@Override
+	public void registerEventListener(Object listener, boolean fireInitializeEvent, Function1<? super Event, ? extends Boolean> filter) {
+		if (fireInitializeEvent) {
+			final OwnerState state = getOwnerState();
+			if (state == OwnerState.INITIALIZING || state == OwnerState.ALIVE) {
+				this.eventDispatcher.register(listener, filter, (subscriber) -> {
+					final Initialize event = new Initialize();
+					event.setSource(getInnerDefaultSpaceAddress());
+					this.eventDispatcher.immediateDispatchTo(subscriber, event);
+				});
+			} else {
+				this.eventDispatcher.register(listener, filter, null);
+			}
+		} else {
+			this.eventDispatcher.register(listener, filter, null);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @deprecated see {@link #unregisterEventListener(Object, boolean)}.
+	 */
+	@Override
+	@Deprecated
 	public void unregisterEventListener(Object listener) {
-		this.eventDispatcher.unregister(listener);
+		unregisterEventListener(listener, true);
+	}
+
+	@Override
+	public void unregisterEventListener(Object listener, boolean fireDestroyEvent) {
+		if (fireDestroyEvent) {
+			final OwnerState state = getOwnerState();
+			if (state == OwnerState.INITIALIZING || state == OwnerState.ALIVE) {
+				this.eventDispatcher.unregister(listener, (subscriber) -> {
+					final Destroy event = new Destroy();
+					event.setSource(getInnerDefaultSpaceAddress());
+					this.eventDispatcher.immediateDispatchTo(subscriber, event);
+				});
+			} else {
+				this.eventDispatcher.unregister(listener, null);
+			}
+		} else {
+			this.eventDispatcher.unregister(listener, null);
+		}
 	}
 
 	/** This function runs the initialization of the agent.
@@ -168,8 +228,9 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 	private void runInitializationStage(Event event) {
 		// Immediate synchronous dispatching of Initialize event
 		try {
+			setOwnerState(OwnerState.INITIALIZING);
 			this.eventDispatcher.immediateDispatch(event);
-			this.state.set(OwnerState.RUNNING);
+			setOwnerState(OwnerState.ALIVE);
 		} catch (Exception e) {
 			// Log the exception
 			final Logging loggingCapacity = getLoggingSkill();
@@ -181,7 +242,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 				this.logger.log(record);
 			}
 			// If we have an exception within the agent's initialization, we kill the agent.
-			this.state.set(OwnerState.RUNNING);
+			setOwnerState(OwnerState.ALIVE);
 			// Asynchronous kill of the event.
 			this.agentAsEventListener.killOrMarkAsKilled();
 		}
@@ -194,8 +255,9 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 	private void runDestructionStage(Event event) {
 		// Immediate synchronous dispatching of Destroy event
 		try {
-			this.state.set(OwnerState.DESTROYED);
+			setOwnerState(OwnerState.DYING);
 			this.eventDispatcher.immediateDispatch(event);
+			setOwnerState(OwnerState.DEAD);
 		} catch (Exception e) {
 			// Log the exception
 			final Logging loggingCapacity = getLoggingSkill();
@@ -225,7 +287,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		} else if (AsynchronousAgentKillingEvent.class.equals(eventType)) {
 			// Asynchronous kill of the event.
 			this.agentAsEventListener.killOrMarkAsKilled();
-		} else if (this.state.get().isEventHandling()) {
+		} else if (getOwnerState().isEventHandling()) {
 			// Asynchronous parallel dispatching of this event
 			this.agentAsEventListener.receiveEvent(event);
 		}
@@ -281,19 +343,21 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 				}
 			}
 
-			switch (InternalEventBusSkill.this.state.get()) {
-			case RUNNING:
-				assert InternalEventBusSkill.this.state.get().isEventHandling();
+			switch (getOwnerState()) {
+			case UNSTARTED:
+			case INITIALIZING:
+				assert getOwnerState().isEventHandling();
+				this.buffer.add(event);
+				break;
+			case ALIVE:
+				assert getOwnerState().isEventHandling();
 				fireEnqueuedEvents(InternalEventBusSkill.this);
 				InternalEventBusSkill.this.eventDispatcher.asyncDispatch(event);
 				break;
-			case NEW:
-				assert InternalEventBusSkill.this.state.get().isEventHandling();
-				this.buffer.add(event);
-				break;
-			case DESTROYED:
+			case DYING:
+			case DEAD:
 				// Dropping messages since agent is dying
-				assert !InternalEventBusSkill.this.state.get().isEventHandling();
+				assert !getOwnerState().isEventHandling();
 				InternalEventBusSkill.this.logger.debug(Messages.InternalEventBusSkill_1, event);
 				break;
 			default:
@@ -322,11 +386,11 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 			}
 		}
 
-		@SuppressWarnings("synthetic-access")
 		void killOrMarkAsKilled() {
 			this.isKilled.set(true);
-			final OwnerState state = InternalEventBusSkill.this.state.get();
-			if (state != null && state != OwnerState.NEW) {
+			final OwnerState state = getOwnerState();
+			assert state != null;
+			if (state == OwnerState.ALIVE) {
 				killOwner(InternalEventBusSkill.this);
 			}
 

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -139,26 +139,27 @@ public class BundleUtilTest {
 			assertNotNull(dependencies);
 			assertEquals("io.sarl.lang.core", dependencies.getBundleSymbolicName());
 			assertOsgiVersionEquals(Version.parseVersion(SARLVersion.SARL_RELEASE_VERSION_OSGI), dependencies.getBundleVersion());
-			assertContains(dependencies.getDirectSymbolicNames(),
+			assertPartlyContains(dependencies.getDirectSymbolicNames(),
 					"io.sarl.lang.core",
 					"javax.inject",
 					"org.eclipse.xtext.xbase.lib");
-			assertContains(dependencies.getTransitiveSymbolicNames(false),
+			assertPartlyContains(dependencies.getTransitiveSymbolicNames(false),
 					"io.sarl.lang.core",
 					"javax.inject",
 					"org.eclipse.xtext.xbase.lib",
 					"com.google.guava",
 					"org.eclipse.osgi");
 			if (isEclipseRuntimeEnvironment()) {
-				assertContains(dependencies.getTransitiveSymbolicNames(true),
+				assertPartlyContains(dependencies.getTransitiveSymbolicNames(true),
 						"io.sarl.lang.core",
-						"javax.inject",
 						"org.eclipse.xtext.xbase.lib",
+						"javax.inject",
 						"com.google.guava",
 						"org.eclipse.osgi",
-						"org.eclipse.osgi.compatibility.state");
+						"org.eclipse.osgi.compatibility.state"
+						);
 			} else {
-				assertContains(dependencies.getTransitiveSymbolicNames(true),
+				assertPartlyContains(dependencies.getTransitiveSymbolicNames(true),
 						"io.sarl.lang.core",
 						"javax.inject",
 						"org.eclipse.xtext.xbase.lib",
@@ -177,23 +178,24 @@ public class BundleUtilTest {
 			assertNotNull(dependencies);
 			assertEquals("io.sarl.lang.core", dependencies.getBundleSymbolicName());
 			assertOsgiVersionEquals(Version.parseVersion(SARLVersion.SARL_RELEASE_VERSION_OSGI), dependencies.getBundleVersion());
-			assertContains(dependencies.getDirectSymbolicNames(),
+			assertPartlyContains(dependencies.getDirectSymbolicNames(),
 					"io.sarl.lang.core",
 					"org.eclipse.xtext.xbase.lib");
-			assertContains(dependencies.getTransitiveSymbolicNames(false),
+			assertPartlyContains(dependencies.getTransitiveSymbolicNames(false),
 					"io.sarl.lang.core",
 					"org.eclipse.xtext.xbase.lib",
 					"com.google.guava",
 					"org.eclipse.osgi");
 			if (isEclipseRuntimeEnvironment()) {
-				assertContains(dependencies.getTransitiveSymbolicNames(true),
+				assertPartlyContains(dependencies.getTransitiveSymbolicNames(true),
 						"io.sarl.lang.core",
 						"org.eclipse.xtext.xbase.lib",
 						"com.google.guava",
 						"org.eclipse.osgi",
-						"org.eclipse.osgi.compatibility.state");
+						"org.eclipse.osgi.compatibility.state"
+						);
 			} else {
-				assertContains(dependencies.getTransitiveSymbolicNames(true),
+				assertPartlyContains(dependencies.getTransitiveSymbolicNames(true),
 						"io.sarl.lang.core",
 						"org.eclipse.xtext.xbase.lib",
 						"com.google.guava",

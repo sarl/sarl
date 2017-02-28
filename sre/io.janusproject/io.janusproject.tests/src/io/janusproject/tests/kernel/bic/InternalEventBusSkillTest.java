@@ -19,9 +19,15 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertSame;
 
+import javax.inject.Inject;
+
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+
+import io.janusproject.kernel.bic.InternalEventBusCapacity.OwnerState;
 import io.janusproject.kernel.bic.InternalEventBusSkill;
 import io.janusproject.kernel.bic.internaleventdispatching.AgentInternalEventsDispatcher;
 import io.janusproject.services.logging.LogService;
@@ -51,6 +57,9 @@ import io.sarl.lang.core.Skill.UninstallationStage;
 @SuppressWarnings("all")
 public class InternalEventBusSkillTest extends AbstractJanusTest {
 
+	@Inject
+	private ReflectExtensions reflect;
+
 	@Mock
 	private AgentInternalEventsDispatcher eventBus;
 
@@ -77,31 +86,197 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void registerEventListener() {
+	public void registerEventListener_null_disableInitializeFiring() {
 		EventListener eventListener = Mockito.mock(EventListener.class);
-		this.skill.registerEventListener(eventListener);
-		ArgumentCaptor<Object> argument = ArgumentCaptor.forClass(Object.class);
-		Mockito.verify(this.eventBus, new Times(1)).register(argument.capture());
-		assertSame(eventListener, argument.getValue());
+		this.skill.registerEventListener(eventListener, false, null);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Procedure1<Object>> argument3 = ArgumentCaptor.forClass(Procedure1.class);
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).register(argument1.capture(), argument2.capture(), argument3.capture());
+		Mockito.verify(this.eventBus, Mockito.never()).immediateDispatchTo(argument4.capture(), argument5.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertNull(argument2.getValue());
 	}
 
 	@Test
-	public void unregisterEventListener() {
+	public void registerEventListener_validFilter_disableInitializeFiring() {
 		EventListener eventListener = Mockito.mock(EventListener.class);
-		this.skill.registerEventListener(eventListener);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> true;
+		this.skill.registerEventListener(eventListener, false, filter);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Procedure1<Object>> argument3 = ArgumentCaptor.forClass(Procedure1.class);
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).register(argument1.capture(), argument2.capture(), argument3.capture());
+		Mockito.verify(this.eventBus, Mockito.never()).immediateDispatchTo(argument4.capture(), argument5.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertSame(filter, argument2.getValue());
+	}
+
+	@Test
+	public void registerEventListener_invalidFilter_disableInitializeFiring() {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> false;
+		this.skill.registerEventListener(eventListener, false, filter);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Procedure1<Object>> argument3 = ArgumentCaptor.forClass(Procedure1.class);
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).register(argument1.capture(), argument2.capture(), argument3.capture());
+		Mockito.verify(this.eventBus, Mockito.never()).immediateDispatchTo(argument4.capture(), argument5.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertSame(filter, argument2.getValue());
+	}
+
+	@Test
+	public void registerEventListener_null_enableInitializeFiring_running() throws Exception {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		this.reflect.invoke(this.skill, "setOwnerState", OwnerState.ALIVE);
+		this.skill.registerEventListener(eventListener, true, null);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Procedure1<Object>> argument3 = ArgumentCaptor.forClass(Procedure1.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).register(argument1.capture(), argument2.capture(), argument3.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertNull(argument2.getValue());
+		assertNotNull(argument3.getValue());
+	}
+
+	@Test
+	public void registerEventListener_validFilter_enableInitializeFiring_running() throws Exception {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		this.reflect.invoke(this.skill, "setOwnerState", OwnerState.ALIVE);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> true;
+		this.skill.registerEventListener(eventListener, true, filter);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Procedure1<Object>> argument3 = ArgumentCaptor.forClass(Procedure1.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).register(argument1.capture(), argument2.capture(), argument3.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertSame(filter, argument2.getValue());
+		assertNotNull(argument3.getValue());
+	}
+
+	@Test
+	public void registerEventListener_invalidFilter_enableInitializeFiring_running() throws Exception {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		this.reflect.invoke(this.skill, "setOwnerState", OwnerState.ALIVE);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> false;
+		this.skill.registerEventListener(eventListener, true, filter);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Procedure1<Object>> argument3 = ArgumentCaptor.forClass(Procedure1.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).register(argument1.capture(), argument2.capture(), argument3.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertSame(filter, argument2.getValue());
+		assertNotNull(argument3.getValue());
+	}
+
+	@Test
+	public void registerEventListener_null_enableInitializeFiring_notRunning() {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		this.skill.registerEventListener(eventListener, true, null);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Procedure1<Object>> argument3 = ArgumentCaptor.forClass(Procedure1.class);
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).register(argument1.capture(), argument2.capture(), argument3.capture());
+		Mockito.verify(this.eventBus, Mockito.never()).immediateDispatchTo(argument4.capture(), argument5.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertNull(argument2.getValue());
+	}
+
+	@Test
+	public void registerEventListener_validFilter_enableInitializeFiring_notRunning() {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> true;
+		this.skill.registerEventListener(eventListener, true, filter);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Procedure1<Object>> argument3 = ArgumentCaptor.forClass(Procedure1.class);
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).register(argument1.capture(), argument2.capture(), argument3.capture());
+		Mockito.verify(this.eventBus, Mockito.never()).immediateDispatchTo(argument4.capture(), argument5.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertSame(filter, argument2.getValue());
+	}
+
+	@Test
+	public void registerEventListener_invalidFilter_enableInitializeFiring_notRunning() {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		Function1<? super Event, ? extends Boolean> filter = (event) -> false;
+		this.skill.registerEventListener(eventListener, true, filter);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Procedure1<Object>> argument3 = ArgumentCaptor.forClass(Procedure1.class);
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).register(argument1.capture(), argument2.capture(), argument3.capture());
+		Mockito.verify(this.eventBus, Mockito.never()).immediateDispatchTo(argument4.capture(), argument5.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertSame(filter, argument2.getValue());
+	}
+
+	@Test
+	public void unregisterEventListener_enableDestroyFiring_running() throws Exception {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		this.reflect.invoke(this.skill, "setOwnerState", OwnerState.ALIVE);
+		this.skill.registerEventListener(eventListener, false, null);
 		//
-		this.skill.unregisterEventListener(eventListener);
-		ArgumentCaptor<Object> argument = ArgumentCaptor.forClass(Object.class);
-		Mockito.verify(this.eventBus, new Times(1)).unregister(argument.capture());
-		assertSame(eventListener, argument.getValue());
+		this.skill.unregisterEventListener(eventListener, true);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Procedure1<Object>> argument2 = ArgumentCaptor.forClass(Procedure1.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).unregister(argument1.capture(), argument2.capture());
+		assertSame(eventListener, argument1.getValue());
+		assertNotNull(argument2.getValue());
+	}
+
+	@Test
+	public void unregisterEventListener_enableDestroyFiring_notRunning() {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		this.skill.registerEventListener(eventListener, false, null);
+		//
+		this.skill.unregisterEventListener(eventListener, true);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Procedure1<Object>> argument2 = ArgumentCaptor.forClass(Procedure1.class);
+		ArgumentCaptor<Object> argument3 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).unregister(argument1.capture(), argument2.capture());
+		Mockito.verify(this.eventBus, Mockito.never()).immediateDispatchTo(argument3.capture(), argument4.capture());
+		assertSame(eventListener, argument1.getValue());
+	}
+
+	@Test
+	public void unregisterEventListener_disableDestroyFiring() {
+		EventListener eventListener = Mockito.mock(EventListener.class);
+		this.skill.registerEventListener(eventListener, false, null);
+		//
+		this.skill.unregisterEventListener(eventListener, false);
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Procedure1<Object>> argument2 = ArgumentCaptor.forClass(Procedure1.class);
+		ArgumentCaptor<Object> argument3 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).unregister(argument1.capture(), argument2.capture());
+		Mockito.verify(this.eventBus, Mockito.never()).immediateDispatchTo(argument3.capture(), argument4.capture());
+		assertSame(eventListener, argument1.getValue());
 	}
 
 	@Test
 	public void install() throws Exception {
 		this.reflect.invoke(this.skill, "install");
-		ArgumentCaptor<Object> argument = ArgumentCaptor.forClass(Object.class);
-		Mockito.verify(this.eventBus, new Times(1)).register(argument.capture());
-		assertSame(this.agent, argument.getValue());
+		ArgumentCaptor<Object> argument1 = ArgumentCaptor.forClass(Object.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument2 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Procedure1<Object>> argument3 = ArgumentCaptor.forClass(Procedure1.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).register(argument1.capture(), argument2.capture(), argument3.capture());
+		assertSame(this.agent, argument1.getValue());
+		assertNull(argument2.getValue());
+		assertNull(argument3.getValue());
 	}
 
 	@Test
@@ -109,7 +284,8 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 		this.reflect.invoke(this.skill, "install");
 		//
 		this.reflect.invoke(this.skill, "uninstall", UninstallationStage.PRE_DESTROY_EVENT);
-		Mockito.verify(this.eventBus, Mockito.never()).unregisterAll();
+		ArgumentCaptor<Procedure1<Object>> argument = ArgumentCaptor.forClass(Procedure1.class);
+		Mockito.verify(this.eventBus, Mockito.never()).unregisterAll(argument.capture());
 	}
 
 	@Test
@@ -117,7 +293,8 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 		this.reflect.invoke(this.skill, "install");
 		//
 		this.reflect.invoke(this.skill, "uninstall", UninstallationStage.POST_DESTROY_EVENT);
-		Mockito.verify(this.eventBus, Mockito.times(1)).unregisterAll();
+		ArgumentCaptor<Procedure1<Object>> argument = ArgumentCaptor.forClass(Procedure1.class);
+		Mockito.verify(this.eventBus, Mockito.times(1)).unregisterAll(argument.capture());
 	}
 
 	@Test
@@ -135,7 +312,7 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 		Event event = Mockito.mock(Event.class);
 		this.skill.selfEvent(event);
 		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(this.eventBus, new Times(1)).asyncDispatch(argument.capture());
+		Mockito.verify(this.eventBus, Mockito.times(1)).asyncDispatch(argument.capture());
 		assertSame(event, argument.getValue());
 	}
 
@@ -144,7 +321,7 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 		Initialize event = new Initialize();
 		this.skill.selfEvent(event);
 		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(this.eventBus, new Times(1)).immediateDispatch(argument.capture());
+		Mockito.verify(this.eventBus, Mockito.times(1)).immediateDispatch(argument.capture());
 		assertSame(event, argument.getValue());
 	}
 
@@ -153,7 +330,7 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 		Destroy event = new Destroy();
 		this.skill.selfEvent(event);
 		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(this.eventBus, new Times(1)).immediateDispatch(argument.capture());
+		Mockito.verify(this.eventBus, Mockito.times(1)).immediateDispatch(argument.capture());
 		assertSame(event, argument.getValue());
 	}
 

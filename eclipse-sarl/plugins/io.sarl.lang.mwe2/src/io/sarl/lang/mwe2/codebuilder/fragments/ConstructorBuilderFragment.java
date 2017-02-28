@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public class ConstructorBuilderFragment extends AbstractMemberBuilderFragment {
 							return new MemberDescription(memberDescription, containerDescription, false,
 									memberDescription.isAnnotationInfo(), null);
 						},
-						null);
+						null, null);
 					if (this.constructor != null) {
 						break;
 					}

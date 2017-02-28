@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import org.mockito.Mockito;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
@@ -111,7 +112,7 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 		//
 		Object result = invoke(getInstance(), "getSkill", Capacity1.class);
 		//
-		assertSame(skill, result);
+		assertInstanceOf(Capacity1.class, result);
 	}
 
 	@Test
@@ -139,7 +140,7 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 		assertSame(skill, result);
 		//
 		result = invoke(getInstance(), "getSkill", Capacity1.class);
-		assertSame(skill, result);
+		assertInstanceOf(Capacity1.class, result);
 	}
 
 	@Test
@@ -149,7 +150,7 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 		invoke(getInstance(), "operator_mappedTo", Capacity1.class, skill);
 		//
 		Object result = invoke(getInstance(), "getSkill", Capacity1.class);
-		assertSame(skill, result);
+		assertInstanceOf(Capacity1.class, result);
 	}
 
 	@Test(expected = UnimplementedCapacityException.class)
@@ -235,7 +236,11 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	protected static interface Capacity1 extends Capacity {
-		//
+		public static class ContextAwareCapacityWrapper<C extends Capacity1> extends Capacity.ContextAwareCapacityWrapper<C> implements Capacity1 {
+			public ContextAwareCapacityWrapper(C capacity, AgentTrait caller) {
+				super(capacity, caller);
+			}
+		}
 	}
 
 	/**

@@ -17,25 +17,21 @@ package io.sarl.lang.tests.bugs;
 
 import static io.sarl.tests.api.AbstractSarlTest.assertContains;
 import static io.sarl.tests.api.AbstractSarlTest.multilineString;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import io.sarl.lang.SARLVersion;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.tests.api.AbstractSarlTest;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.eclipse.xtext.util.IAcceptor;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
+import com.google.inject.Inject;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.google.inject.Inject;
+import io.sarl.lang.SARLVersion;
+import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.tests.api.AbstractSarlTest;
 
 /**
  * @author $Author: sgalland$
@@ -93,6 +89,7 @@ public class Bug294 {
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -155,6 +152,84 @@ public class Bug294 {
 					"  @DefaultValueUse(\"java.lang.String,float,java.lang.Object*\")",
 					"  @SyntheticMember",
 					"  public abstract void influenceSteering(final String linearInfluence, final Object... otherInfluences);",
+					"  ",
+					"  public static class ContextAwareCapacityWrapper<C extends PhysicEnvironment> extends Capacity.ContextAwareCapacityWrapper<C> implements PhysicEnvironment {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+					"      super(capacity, caller);",
+					"    }",
+					"    ",
+					"    public void influenceKinematic(final String linearInfluence, final float angularInfluence, final Object... otherInfluences) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.influenceKinematic(linearInfluence, angularInfluence, otherInfluences);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"    ",
+					"    public void influenceSteering(final String linearInfluence, final float angularInfluence, final Object... otherInfluences) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.influenceSteering(linearInfluence, angularInfluence, otherInfluences);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"    ",
+					"    public void influenceKinematic(final Object... otherInfluences) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.influenceKinematic(otherInfluences);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"    ",
+					"    public void influenceKinematic(final float angularInfluence, final Object... otherInfluences) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.influenceKinematic(angularInfluence, otherInfluences);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"    ",
+					"    public void influenceKinematic(final String linearInfluence, final Object... otherInfluences) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.influenceKinematic(linearInfluence, otherInfluences);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"    ",
+					"    public void influenceSteering(final Object... otherInfluences) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.influenceSteering(otherInfluences);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"    ",
+					"    public void influenceSteering(final float angularInfluence, final Object... otherInfluences) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.influenceSteering(angularInfluence, otherInfluences);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"    ",
+					"    public void influenceSteering(final String linearInfluence, final Object... otherInfluences) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.influenceSteering(linearInfluence, otherInfluences);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"  }",
 					"}",
 					"");
 			final String expectedStandardPhysicEnvironment = multilineString(

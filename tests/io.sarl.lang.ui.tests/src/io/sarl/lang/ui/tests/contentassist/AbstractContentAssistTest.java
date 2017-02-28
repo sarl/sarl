@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@ import com.google.inject.name.Named;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
@@ -48,7 +47,6 @@ import org.eclipse.xtext.junit4.internal.LineDelimiters;
 import org.eclipse.xtext.junit4.ui.ContentAssistProcessorTestBuilder;
 import org.eclipse.xtext.junit4.util.ResourceLoadHelper;
 import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration;
 import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal;
 import org.eclipse.xtext.ui.editor.contentassist.ReplacementTextApplier;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -97,7 +95,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 				String line = breader.readLine();
 				while (line != null) {
 					content.append(line);
-					content.append("\n");
+					content.append(getLineSeparator());
 					line = breader.readLine();
 				}
 			}
@@ -137,9 +135,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 	 * @throws Exception if the builder cannot be created.
 	 */
 	protected final ContentAssistProcessorTestBuilder newBuilder() throws Exception {
-		final ContentAssistProcessorTestBuilder.Factory factory = getInjector().getInstance(
-				ContentAssistProcessorTestBuilder.Factory.class);
-		ContentAssistProcessorTestBuilder builder = factory.create(this);
+		ContentAssistProcessorTestBuilder builder = new ContentAssistProcessorTestBuilder(getInjectedInjector(), this);
 		String prefix = getPrefix();
 		if (prefix.length() > 0) {
 			builder = builder.appendNl(prefix);
@@ -247,7 +243,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 				if (obj != null) {
 					buf.append(obj);
 				}
-				buf.append("\n");
+				buf.append(getLineSeparator());
 			}
 		}
 		return buf.toString();
@@ -336,7 +332,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 		}
 
 		@Override
-		protected ICompletionProposal[] computeCompletionProposals(final IXtextDocument xtextDocument, int cursorPosition)
+		protected ICompletionProposal[] computeCompletionProposals(IXtextDocument xtextDocument, int cursorPosition)
 				throws BadLocationException {
 			if (isEclipseRuntimeEnvironment()) {
 				Shell shell = getShell();
@@ -363,7 +359,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 			}
 			return resultBuffer.get(0);
 		}
-
+		
 		@Override
 		public ContentAssistProcessorTestBuilder applyProposal(int position, String proposalString) throws Exception {
 			throw new UnsupportedOperationException("must be overriden for Shell access");

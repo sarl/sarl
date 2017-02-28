@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@
 
 package io.sarl.tests.api;
 
-import static org.eclipse.xtext.junit4.ui.util.IResourcesSetupUtil.reallyWaitForAutoBuild;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -48,9 +47,9 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.ui.util.JavaProjectSetupUtil;
+import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.ui.XtextProjectHelper;
+import org.eclipse.xtext.ui.util.JREContainerProvider;
 import org.eclipse.xtext.ui.util.PluginProjectFactory;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
@@ -79,7 +78,6 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	@Rule
 	public TestWatcher rootSarlUiWatchter = new TestWatcher() {
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		protected void starting(Description description) {
 			try {
@@ -213,13 +211,11 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 				new Module() {
 					@Override
 					public void configure(Binder binder) {
-						binder.bind(ProjectCreator.class).to(JavaProjectCreator.class);
-						binder.bind(JavaVersion.class).toProvider(new Provider<JavaVersion>() {
-							@Override
-							public JavaVersion get() {
-								return JavaVersion.JAVA8;
-							}
-						});
+						final JavaVersion version = JavaVersion.JAVA8;
+						binder.bind(JavaVersion.class).toProvider(() -> version);
+						binder.bind(ProjectCreator.class).toProvider(() -> {
+							return new JavaProjectCreator(version);
+						}).asEagerSingleton();
 					}
 				},	
 		};
@@ -374,18 +370,18 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@Singleton
-	private static class JavaProjectCreator implements ProjectCreator {
+	private class JavaProjectCreator implements ProjectCreator {
 
-		@Inject
-		private Injector injector;
-
-		@Inject
 		@Nullable
-		private JavaVersion javaVersion;
+		private final JavaVersion javaVersion;
 
+		JavaProjectCreator(JavaVersion version) {
+			this.javaVersion = version;
+		}
+		
 		@Override
 		public Injector getInjector() {
-			return this.injector;
+			return getInjectedInjector();
 		}
 
 		@Override
@@ -427,12 +423,26 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
 		@Override
 		public void addJreClasspathEntry(IJavaProject javaProject) throws JavaModelException {
-			JavaProjectSetupUtil.addJreClasspathEntry(javaProject);
+			IClasspathEntry existingJreContainerClasspathEntry = JREContainerProvider.getJREContainerEntry(javaProject);
+			if (existingJreContainerClasspathEntry == null) {
+				addToClasspath(javaProject, JREContainerProvider.getDefaultJREContainerEntry());
+			}
 		}
 
 		@Override
 		public void addToClasspath(IJavaProject javaProject, IClasspathEntry newClassPathEntry) throws JavaModelException {
-			JavaProjectSetupUtil.addToClasspath(javaProject, newClassPathEntry);
+			IClasspathEntry[] newClassPath;
+			IClasspathEntry[] classPath = javaProject.getRawClasspath();
+			for (IClasspathEntry classPathEntry : classPath) {
+				if (classPathEntry.equals(newClassPathEntry)) {
+					return;
+				}
+			}
+			newClassPath = new IClasspathEntry[classPath.length + 1];
+			System.arraycopy(classPath, 0, newClassPath, 1, classPath.length);
+			newClassPath[0] = newClassPathEntry;
+			javaProject.setRawClasspath(newClassPath, null);
+			helper().awaitAutoBuild();
 		}
 
 		@Override
@@ -449,7 +459,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 			newClassPath.toArray(classPath);
 			javaProject.setRawClasspath(classPath, null);
 			if (autobuild) {
-				reallyWaitForAutoBuild();
+				helper().awaitAutoBuild();
 			}
 		}
 
