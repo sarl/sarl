@@ -66,6 +66,8 @@ import io.sarl.lang.core.SpaceID;
 /**
  * Service that is providing the ZeroMQ network.
  *
+ * <p>This service is thread-safe.
+ *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
  * @author $Author: ngaud$

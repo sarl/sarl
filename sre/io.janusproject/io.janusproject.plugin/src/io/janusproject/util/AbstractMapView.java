@@ -26,6 +26,8 @@ import io.janusproject.services.distributeddata.DMapListener;
 /**
  * Abstract implementation of a view on a Map for a distributed map.
  *
+ * <p>This class is not thread-safe.
+ *
  * @param <K> - type of the keys.
  * @param <V> - type of the values.
  * @author $Author: sgalland$

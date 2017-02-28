@@ -33,10 +33,8 @@ import com.google.inject.Singleton;
 import io.janusproject.services.executor.ChuckNorrisException;
 import io.janusproject.services.logging.LogService;
 
-import io.sarl.core.Initialize;
-
 /**
- * A factory of threads for the Janus platform.
+ * A threading error handler for the Janus platform.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -103,17 +101,6 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 	@Override
 	public void uncaughtException(Thread thread, Throwable exception) {
 		log(exception, Long.toString(thread.getId()), thread.getName());
-	}
-
-	/**
-	 * Replies if the given object is an event that may cause agent stop when an error occured in the event's handler.
-	 *
-	 * @param object - the event to test.
-	 * @return <code>true</code> if the agent must stop if an error occured in the handler for the given event.
-	 */
-	@SuppressWarnings("static-method")
-	public boolean isAutoKillEvent(Object object) {
-		return object instanceof Initialize;
 	}
 
 }

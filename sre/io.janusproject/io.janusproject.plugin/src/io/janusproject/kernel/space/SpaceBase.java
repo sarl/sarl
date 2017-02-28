@@ -23,6 +23,9 @@ package io.janusproject.kernel.space;
 
 import org.eclipse.xtext.xbase.lib.Inline;
 
+import io.janusproject.services.network.NetworkService.NetworkEventReceivingListener;
+
+import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 
 /**
@@ -33,7 +36,7 @@ import io.sarl.lang.core.SpaceID;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class SpaceBase implements DistributedSpace {
+public abstract class SpaceBase implements Space, NetworkEventReceivingListener {
 
 	private final SpaceID id;
 

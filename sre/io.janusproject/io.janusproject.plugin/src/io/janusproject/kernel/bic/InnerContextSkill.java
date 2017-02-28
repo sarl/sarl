@@ -122,15 +122,17 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	}
 
 	@Override
-	protected void uninstall() {
-		final AgentContext context = this.innerContext;
-		this.innerContext = null;
-		if (context != null) {
-			// Unregister the agent from the default space
-			final EventListener listener = getInternalEventBusCapacitySkill().asEventListener();
-			((OpenEventSpace) context.getDefaultSpace()).unregister(listener);
-			// Destroy the context
-			this.contextService.removeContext(context);
+	protected void uninstall(UninstallationStage stage) {
+		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
+			final AgentContext context = this.innerContext;
+			this.innerContext = null;
+			if (context != null) {
+				// Unregister the agent from the default space
+				final EventListener listener = getInternalEventBusCapacitySkill().asEventListener();
+				((OpenEventSpace) context.getDefaultSpace()).unregister(listener);
+				// Destroy the context
+				this.contextService.removeContext(context);
+			}
 		}
 	}
 

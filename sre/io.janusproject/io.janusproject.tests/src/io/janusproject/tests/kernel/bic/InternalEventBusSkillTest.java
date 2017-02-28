@@ -45,6 +45,7 @@ import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
+import io.sarl.lang.core.Skill.UninstallationStage;
 
 
 /**
@@ -279,10 +280,19 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void uninstall() throws Exception {
+	public void uninstall_Pre() throws Exception {
 		this.reflect.invoke(this.skill, "install");
 		//
-		this.reflect.invoke(this.skill, "uninstall");
+		this.reflect.invoke(this.skill, "uninstall", UninstallationStage.PRE_DESTROY_EVENT);
+		ArgumentCaptor<Procedure1<Object>> argument = ArgumentCaptor.forClass(Procedure1.class);
+		Mockito.verify(this.eventBus, Mockito.never()).unregisterAll(argument.capture());
+	}
+
+	@Test
+	public void uninstall_Post() throws Exception {
+		this.reflect.invoke(this.skill, "install");
+		//
+		this.reflect.invoke(this.skill, "uninstall", UninstallationStage.POST_DESTROY_EVENT);
 		ArgumentCaptor<Procedure1<Object>> argument = ArgumentCaptor.forClass(Procedure1.class);
 		Mockito.verify(this.eventBus, Mockito.times(1)).unregisterAll(argument.capture());
 	}

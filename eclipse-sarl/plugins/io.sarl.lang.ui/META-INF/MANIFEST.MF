@@ -25,7 +25,8 @@ Require-Bundle: io.sarl.lang;bundle-version="0.5.0";visibility:=reexport,
  org.antlr.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Activator: io.sarl.lang.ui.internal.LangActivator
-Export-Package: io.sarl.lang.ide,
+Export-Package: io.sarl.lang.bugfixes,
+ io.sarl.lang.ide,
  io.sarl.lang.ide.contentassist.antlr,
  io.sarl.lang.ide.contentassist.antlr.internal,
  io.sarl.lang.ui;x-friends:="io.sarl.lang.ui.tests",
@@ -33,6 +34,7 @@ Export-Package: io.sarl.lang.ide,
  io.sarl.lang.ui.contentassist,
  io.sarl.lang.ui.editor,
  io.sarl.lang.ui.highlighting,
+ io.sarl.lang.ui.hover,
  io.sarl.lang.ui.images;x-friends:="io.sarl.lang.ui.tests",
  io.sarl.lang.ui.internal,
  io.sarl.lang.ui.labeling;x-friends:="io.sarl.lang.ui.tests",

@@ -97,6 +97,8 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 		// This event is supported by the internal event bus implementation.
 		final InternalEventBusCapacity busCapacity = getInternalEventBusCapacitySkill();
 		busCapacity.selfEvent(new AsynchronousAgentKillingEvent());
+		// Never return from the killMe
+		Thread.yield();
 		throw new ChuckNorrisException();
 	}
 

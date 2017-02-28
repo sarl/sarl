@@ -19,16 +19,21 @@
  */
 package io.janusproject.tests.kernel.services.jdk.executors;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
-import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
-import io.janusproject.kernel.services.jdk.executors.JdkThreadFactory;
-import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+
+import io.janusproject.kernel.services.jdk.executors.JdkRejectedExecutionHandler;
+import io.janusproject.services.logging.LogService;
+import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.tests.api.Nullable;
 
@@ -39,25 +44,30 @@ import io.sarl.tests.api.Nullable;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class JdkThreadFactoryTest extends AbstractJanusTest {
+public class JdkRejectedExecutionHandlerTest extends AbstractJanusTest {
 
 	@Nullable
-	private UncaughtExceptionHandler handler;
+	private LogService logger;
 
 	@Nullable
-	private JdkThreadFactory factory;
+	private JdkRejectedExecutionHandler handler;
 
 	@Before
 	public void setUp() {
-		this.handler = Mockito.mock(UncaughtExceptionHandler.class);
-		this.factory = new JdkThreadFactory(this.handler);
+		this.logger = Mockito.mock(LogService.class);
+		Mockito.when(this.logger.isLoggeable(ArgumentMatchers.any(Level.class))).thenReturn(true);
+
+		this.handler = new JdkRejectedExecutionHandler(this.logger);
 	}
 
 	@Test
-	public void newThread() {
-		Thread t = this.factory.newThread(Mockito.mock(Runnable.class));
-		assertNotNull(t);
-		assertSame(this.handler, t.getUncaughtExceptionHandler());
+	public void rejectedExecution() {
+		Runnable runnable = Mockito.mock(Runnable.class);
+		this.handler.rejectedExecution(runnable, null);
+
+		ArgumentCaptor<LogRecord> argument = ArgumentCaptor.forClass(LogRecord.class);
+		Mockito.verify(this.logger).log(argument.capture());
+		assertSame(Level.SEVERE, argument.getValue().getLevel());
 	}
 
 }

@@ -66,6 +66,7 @@ import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
+import io.sarl.lang.core.Skill.UninstallationStage;
 import io.sarl.tests.api.Nullable;
 
 /**
@@ -227,10 +228,11 @@ public class SchedulesSkillTest {
 			Collection<ScheduledFuture<?>> futures = (Collection<ScheduledFuture<?>>) this.reflect.invoke(this.skill, "getActiveFutures");
 			assertEquals(2, futures.size());
 			//
-			this.reflect.invoke(this.skill, "uninstall");
+			this.reflect.invoke(this.skill, "uninstall", UninstallationStage.PRE_DESTROY_EVENT);
 			//
 			Collection<String> activeTasks = (Collection<String>) this.reflect.invoke(this.skill, "getActiveTasks");
 			assertTrue(activeTasks.isEmpty());
+			//
 			for (ScheduledFuture<?> f : futures) {
 				Mockito.verify(f, new Times(1)).cancel(ArgumentMatchers.anyBoolean());
 			}
@@ -285,6 +287,42 @@ public class SchedulesSkillTest {
 			//
 			this.skill.cancel(t2, false);
 			this.skill.cancel(t1, false);
+			//
+			Collection<String> activeTasks = (Collection<String>) this.reflect.invoke(this.skill, "getActiveTasks");
+			assertTrue(activeTasks.isEmpty());
+			for (ScheduledFuture<?> f : futures) {
+				Mockito.verify(f, new Times(1)).cancel(ArgumentMatchers.anyBoolean());
+			}
+		}
+
+		@Test
+		public void uninstall_Pre() throws Exception {
+			Procedure1 procedure1 = Mockito.mock(Procedure1.class);
+			this.skill.every(5, procedure1);
+			Procedure1 procedure2 = Mockito.mock(Procedure1.class);
+			this.skill.in(5, procedure2);
+			Collection<ScheduledFuture<?>> futures = (Collection<ScheduledFuture<?>>) this.reflect.invoke(this.skill, "getActiveFutures");
+			assertEquals(2, futures.size());
+			//
+			this.reflect.invoke(this.skill, "uninstall", UninstallationStage.PRE_DESTROY_EVENT);
+			//
+			Collection<String> activeTasks = (Collection<String>) this.reflect.invoke(this.skill, "getActiveTasks");
+			assertTrue(activeTasks.isEmpty());
+			for (ScheduledFuture<?> f : futures) {
+				Mockito.verify(f, new Times(1)).cancel(ArgumentMatchers.anyBoolean());
+			}
+		}
+
+		@Test
+		public void uninstall_Post() throws Exception {
+			Procedure1 procedure1 = Mockito.mock(Procedure1.class);
+			this.skill.every(5, procedure1);
+			Procedure1 procedure2 = Mockito.mock(Procedure1.class);
+			this.skill.in(5, procedure2);
+			Collection<ScheduledFuture<?>> futures = (Collection<ScheduledFuture<?>>) this.reflect.invoke(this.skill, "getActiveFutures");
+			assertEquals(2, futures.size());
+			//
+			this.reflect.invoke(this.skill, "uninstall", UninstallationStage.POST_DESTROY_EVENT);
 			//
 			Collection<String> activeTasks = (Collection<String>) this.reflect.invoke(this.skill, "getActiveTasks");
 			assertTrue(activeTasks.isEmpty());

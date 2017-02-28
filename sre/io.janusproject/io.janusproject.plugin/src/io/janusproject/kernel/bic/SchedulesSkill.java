@@ -96,7 +96,14 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		return super.attributesToString() + ", tasks = " + this.tasks; //$NON-NLS-1$
 	}
 
-	private synchronized void finishTask(AgentTask task, boolean updateSkillReferences, boolean updateAgentTraitReferences) {
+	/**
+	 * Remove any reference to the given task.
+	 *
+	 * <p>This function is not thread-safe.
+	 *
+	 * @param name - name of the task.
+	 */
+	private void finishTask(AgentTask task, boolean updateSkillReferences, boolean updateAgentTraitReferences) {
 		assert task != null;
 		if (updateSkillReferences) {
 			this.tasks.remove(task.getName());
@@ -117,8 +124,11 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 *
 	 * @return the names of the active tasks.
 	 */
-	synchronized Collection<String> getActiveTasks() {
-		return Lists.newArrayList(this.tasks.keySet());
+	Collection<String> getActiveTasks() {
+		synchronized (getTaskListMutex()) {
+			//TODO: Avoid copy of collection
+			return Lists.newArrayList(this.tasks.keySet());
+		}
 	}
 
 	/**
@@ -126,8 +136,10 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 *
 	 * @return the names of the active futures.
 	 */
-	synchronized Collection<ScheduledFuture<?>> getActiveFutures() {
-		return Lists.newArrayList(Iterables.transform(this.tasks.values(), (it) -> it.getFuture()));
+	Collection<ScheduledFuture<?>> getActiveFutures() {
+		synchronized (getTaskListMutex()) {
+			return Lists.newArrayList(Iterables.transform(this.tasks.values(), (it) -> it.getFuture()));
+		}
 	}
 
 	/** Unregister the tasks associated to the given behavior.
@@ -144,8 +156,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		}
 	}
 
-	@Override
-	protected synchronized void uninstall() {
+	private void cancelAllRunningTasks() {
 		ScheduledFuture<?> future;
 		AgentTask task;
 		for (final Entry<String, TaskDescription> taskDescription : this.tasks.entrySet()) {
@@ -170,18 +181,38 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	}
 
 	@Override
+	protected void uninstall(UninstallationStage stage) {
+		if (stage == UninstallationStage.PRE_DESTROY_EVENT) {
+			// Cancel the tasks as soon as possible in the uninstallation process
+			synchronized (getTaskListMutex()) {
+				cancelAllRunningTasks();
+			}
+		} else {
+			synchronized (getTaskListMutex()) {
+				// Cancel the tasks that were creating during the destruction stage (in the Destroy event handler)
+				cancelAllRunningTasks();
+			}
+		}
+	}
+
+	@Override
 	public AgentTask in(long delay, Procedure1<? super Agent> procedure) {
 		return in(Schedules.$DEFAULT_VALUE$IN_0, delay, procedure);
 	}
 
 	@Override
-	public synchronized AgentTask in(AgentTask task, long delay, Procedure1<? super Agent> procedure) {
-		TaskDescription pair = preRunTask(task, procedure);
+	public AgentTask in(AgentTask task, long delay, Procedure1<? super Agent> procedure) {
+		TaskDescription pair;
+		synchronized (getTaskListMutex()) {
+			pair = preRunTask(task, procedure);
+		}
 		final AgentTask runnableTask = pair != null ? pair.getTask() : task;
 		final ScheduledFuture<?> sf = this.executorService.schedule(
-				new AgentRunnableTask(runnableTask, false),
+				new AgentTaskRunner(runnableTask, false),
 				delay, TimeUnit.MILLISECONDS);
-		pair = postRunTask(pair, task, sf);
+		synchronized (getTaskListMutex()) {
+			pair = postRunTask(pair, task, sf);
+		}
 		return pair.getTask();
 	}
 
@@ -214,14 +245,16 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		return pair;
 	}
 
-	private synchronized TaskDescription createTaskIfNecessary(String name) {
+	private TaskDescription createTaskIfNecessary(String name) {
 		TaskDescription pair = null;
 		final String realName;
 		if (Strings.isNullOrEmpty(name)) {
 			realName = "task-" + UUID.randomUUID().toString(); //$NON-NLS-1$
 		} else {
 			realName = name;
-			pair = this.tasks.get(realName);
+			synchronized (getTaskListMutex()) {
+				pair = this.tasks.get(realName);
+			}
 		}
 		if (pair == null) {
 			final AgentTrait caller = Capacities.getCaller();
@@ -229,14 +262,16 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			task.setName(realName);
 			task.setGuard(AgentTask.TRUE_GUARD);
 			pair = new TaskDescription(task);
-			this.tasks.put(realName, pair);
-			if (caller != null) {
-				AgentTraitData data = SREutils.getSreSpecificData(caller, AgentTraitData.class);
-				if (data == null) {
-					data = new AgentTraitData();
-					SREutils.setSreSpecificData(caller, data);
+			synchronized (getTaskListMutex()) {
+				this.tasks.put(realName, pair);
+				if (caller != null) {
+					AgentTraitData data = SREutils.getSreSpecificData(caller, AgentTraitData.class);
+					if (data == null) {
+						data = new AgentTraitData();
+						SREutils.setSreSpecificData(caller, data);
+					}
+					data.addTask(task);
 				}
-				data.addTask(task);
 			}
 		}
 		return pair;
@@ -249,11 +284,11 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	@Override
 	public final boolean cancel(AgentTask task) {
-		return cancel(task, Schedules.$DEFAULT_VALUE$CANCEL_0);
+		return cancel(task, Schedules.$DEFAULT_VALUE$CANCEL_0, true);
 	}
 
 	@Override
-	public synchronized boolean cancel(AgentTask task, boolean mayInterruptIfRunning) {
+	public final boolean cancel(AgentTask task, boolean mayInterruptIfRunning) {
 		return cancel(task, mayInterruptIfRunning, true);
 	}
 
@@ -268,12 +303,14 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	protected boolean cancel(AgentTask task, boolean mayInterruptIfRunning, boolean updateAgentTraitReferences) {
 		if (task != null) {
 			final String name = task.getName();
-			final TaskDescription pair = this.tasks.get(name);
-			if (pair != null) {
-				final ScheduledFuture<?> future = pair.getFuture();
-				if (future != null && !future.isDone() && !future.isCancelled() && future.cancel(mayInterruptIfRunning)) {
-					finishTask(task, true, updateAgentTraitReferences);
-					return true;
+			synchronized (getTaskListMutex()) {
+				final TaskDescription pair = this.tasks.get(name);
+				if (pair != null) {
+					final ScheduledFuture<?> future = pair.getFuture();
+					if (future != null && !future.isDone() && !future.isCancelled() && future.cancel(mayInterruptIfRunning)) {
+						finishTask(task, true, updateAgentTraitReferences);
+						return true;
+					}
 				}
 			}
 		}
@@ -298,7 +335,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 * @return the future.
 	 * @since 0.5
 	 */
-	Future<?> getFuture(String taskName) {
+	ScheduledFuture<?> getFuture(String taskName) {
 		synchronized (getTaskListMutex()) {
 			final TaskDescription pair = this.tasks.get(taskName);
 			if (pair != null) {
@@ -314,13 +351,18 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	}
 
 	@Override
-	public synchronized AgentTask every(AgentTask task, long period, Procedure1<? super Agent> procedure) {
-		TaskDescription description = preRunTask(task, procedure);
+	public AgentTask every(AgentTask task, long period, Procedure1<? super Agent> procedure) {
+		TaskDescription description;
+		synchronized (getTaskListMutex()) {
+			description = preRunTask(task, procedure);
+		}
 		final AgentTask runnableTask = description != null ? description.getTask() : task;
 		final ScheduledFuture<?> sf = this.executorService.scheduleAtFixedRate(
-				new AgentRunnableTask(runnableTask, true),
+				new AgentTaskRunner(runnableTask, true),
 				0, period, TimeUnit.MILLISECONDS);
-		description = postRunTask(description, task, sf);
+		synchronized (getTaskListMutex()) {
+			description = postRunTask(description, task, sf);
+		}
 		return description.getTask();
 	}
 
@@ -328,19 +370,43 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 * Implementation of an agent task.
 	 *
 	 * @author $Author: srodriguez$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@SuppressWarnings("synthetic-access")
-	private class AgentRunnableTask implements Runnable {
-		private WeakReference<AgentTask> agentTaskRef;
+	private class AgentTaskRunner implements Runnable {
+
+		private final WeakReference<AgentTask> agentTaskRef;
+
+		private WeakReference<Future<?>> future;
 
 		private final boolean isPeriodic;
 
-		AgentRunnableTask(AgentTask task, boolean isPeriodic) {
+		AgentTaskRunner(AgentTask task, boolean isPeriodic) {
+			assert task != null;
 			this.agentTaskRef = new WeakReference<>(task);
 			this.isPeriodic = isPeriodic;
+		}
+
+		/** Set the future of this task.
+		 *
+		 * @param future the future.
+		 * @since 0.5
+		 */
+		void setFuture(Future<?> future) {
+			this.future = future == null ? null : new WeakReference<>(future);
+		}
+
+		/** Replies the future of this task.
+		 *
+		 * @return the future.
+		 * @since 0.5
+		 */
+		private Future<?> getFuture() {
+			final WeakReference<Future<?>> safeFutureReference = this.future;
+			return safeFutureReference == null ? null : safeFutureReference.get();
 		}
 
 		@Override
@@ -349,6 +415,11 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			if (task == null) {
 				throw new RuntimeException(Messages.SchedulesSkill_0);
 			}
+			final Future<?> future = getFuture();
+			if (future != null && (future.isDone() || future.isCancelled())) {
+				setFuture(null);
+				return;
+			}
 			try {
 				final Agent owner = getOwner();
 				if (task.getGuard().apply(owner).booleanValue()) {
@@ -356,12 +427,16 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 				}
 			} catch (Throwable ex) {
 				if (this.isPeriodic) {
-					finishTask(task, true, true);
+					synchronized (getTaskListMutex()) {
+						finishTask(task, true, true);
+					}
 				}
 				throw ex;
 			} finally {
 				if (!this.isPeriodic) {
-					finishTask(task, true, true);
+					synchronized (getTaskListMutex()) {
+						finishTask(task, true, true);
+					}
 				}
 			}
 		}

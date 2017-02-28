@@ -124,23 +124,59 @@ public interface InternalEventBusCapacity extends Capacity {
 		/**
 		 * The owner of the event bus is unstarted: before initialization process.
 		 */
-		UNSTARTED,
+		UNSTARTED {
+			@Override
+			public boolean isEventHandling() {
+				return true;
+			}
+		},
+
 		/**
 		 * The owner of the event bus is under creation.
 		 */
-		INITIALIZING,
+		INITIALIZING {
+			@Override
+			public boolean isEventHandling() {
+				return true;
+			}
+		},
+
 		/**
 		 * The owner of the event bus is running.
 		 */
-		ALIVE,
+		ALIVE {
+			@Override
+			public boolean isEventHandling() {
+				return true;
+			}
+		},
+
 		/**
 		 * The owner of the event bus is under destruction.
 		 */
-		DYING,
+		DYING {
+			@Override
+			public boolean isEventHandling() {
+				return false;
+			}
+		},
+
 		/**
 		 * The owner of the event bus was destroyed.
 		 */
-		DEAD,
+		DEAD {
+			@Override
+			public boolean isEventHandling() {
+				return false;
+			}
+		};
+
+		/** Replies if the state accepts event handling.
+		 *
+		 * @return {@code true} if the state accept event handling.
+		 * @since 0.5
+		 */
+		public abstract boolean isEventHandling();
 	}
 
 }

@@ -120,10 +120,12 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	}
 
 	@Override
-	protected void uninstall() {
-		// Leave all contexts including the default one.
-		for (final UUID contextID : this.contexts) {
-			leave(contextID);
+	protected void uninstall(UninstallationStage stage) {
+		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
+			// Leave all contexts including the default one.
+			for (final UUID contextID : this.contexts) {
+				leave(contextID);
+			}
 		}
 	}
 
@@ -175,7 +177,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 * @param futureContext - ID of the newly joined context
 	 * @param futureContextDefaultSpaceID - ID of the default space of the newly joined context
 	 */
-	protected void fireContextJoined(UUID futureContext, UUID futureContextDefaultSpaceID) {
+	protected final void fireContextJoined(UUID futureContext, UUID futureContextDefaultSpaceID) {
 		getBehaviorsSkill().wake(new ContextJoined(futureContext, futureContextDefaultSpaceID));
 	}
 
@@ -185,7 +187,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 *
 	 * @param newJoinedContext - the newly joined context to notify its members
 	 */
-	protected void fireMemberJoined(AgentContext newJoinedContext) {
+	protected final void fireMemberJoined(AgentContext newJoinedContext) {
 		final EventSpace defSpace = newJoinedContext.getDefaultSpace();
 		defSpace.emit(new MemberJoined(defSpace.getAddress(getOwner().getID()), newJoinedContext.getID(), getOwner().getID(),
 				getOwner().getClass().getName()));
@@ -218,7 +220,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 *
 	 * @param contextID - the ID of context that will be left
 	 */
-	protected void fireContextLeft(UUID contextID) {
+	protected final void fireContextLeft(UUID contextID) {
 		getBehaviorsSkill().wake(new ContextLeft(contextID));
 	}
 
@@ -228,7 +230,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 *
 	 * @param leftContext - the context that will be left
 	 */
-	protected void fireMemberLeft(AgentContext leftContext) {
+	protected final void fireMemberLeft(AgentContext leftContext) {
 		final EventSpace defSpace = leftContext.getDefaultSpace();
 		defSpace.emit(
 				new MemberLeft(defSpace.getAddress(getOwner().getID()), getOwner().getID(), getOwner().getClass().getName()));

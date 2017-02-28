@@ -191,8 +191,6 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 *
 	 * @return the mutex.
 	 */
-	public final Object mutex() {
-		return this;
-	}
+	public abstract Object mutex();
 
 }

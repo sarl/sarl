@@ -21,6 +21,7 @@
 
 package io.janusproject.kernel.services.jdk.executors;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -35,9 +36,12 @@ import com.google.inject.Singleton;
 
 import io.janusproject.JanusConfig;
 import io.janusproject.services.AbstractDependentService;
+import io.janusproject.services.executor.ChuckNorrisException;
 
 /**
  * Platform service that supports the execution resources.
+ *
+ * <p>This service is thread-safe.
  *
  * @author $Author: srodriguez$
  * @author $Author: ngaud$
@@ -54,6 +58,8 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	private ExecutorService exec;
 
 	private ScheduledFuture<?> purgeTask;
+
+	private UncaughtExceptionHandler uncaughtExceptionHandler;
 
 	/**
 	 * Construct.
@@ -82,6 +88,16 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 		this.exec = service;
 	}
 
+	/**
+	 * Change the default exception handler.
+	 *
+	 * @param handler the default exception handler.
+	 */
+	@Inject
+	void setUncaughtExceptionHandler(UncaughtExceptionHandler handler) {
+		this.uncaughtExceptionHandler = handler;
+	}
+
 	@Override
 	public final Class<? extends Service> getServiceType() {
 		return io.janusproject.services.executor.ExecutorService.class;
@@ -91,6 +107,9 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	protected void doStart() {
 		assert this.schedules != null;
 		assert this.exec != null;
+		if (this.uncaughtExceptionHandler != null) {
+			Thread.setDefaultUncaughtExceptionHandler(this.uncaughtExceptionHandler);
+		}
 		// Launch a periodic task that is purging the executor pools.
 		if ((this.schedules instanceof ThreadPoolExecutor) || (this.exec instanceof ThreadPoolExecutor)) {
 			final int delay = JanusConfig.getSystemPropertyAsInteger(JanusConfig.KERNEL_THREAD_PURGE_DELAY_NAME,
@@ -124,44 +143,65 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 
 	}
 
+	/** Create a task with the given runnable.
+	 *
+	 * @param runnable the runnable.
+	 * @return the task.
+	 */
+	@SuppressWarnings("static-method")
+	protected Runnable createTask(Runnable runnable) {
+		return new JanusRunnable(runnable);
+	}
+
+	/** Create a task with the given callable.
+	 *
+	 * @param <T> the type of the returned value.
+	 * @param callable the callable.
+	 * @return the task.
+	 */
+	@SuppressWarnings("static-method")
+	protected <T> Callable<T> createTask(Callable<T> callable) {
+		return new JanusCallable<>(callable);
+	}
+
 	@Override
 	public void execute(Runnable task) {
-		this.exec.execute(task);
+		this.exec.execute(createTask(task));
 	}
 
 	@Override
 	public Future<?> submit(Runnable task) {
-		return this.exec.submit(task);
+		return this.exec.submit(createTask(task));
 	}
 
 	@Override
 	public <T> Future<T> submit(Runnable task, T result) {
-		return this.exec.submit(task, result);
+		return this.exec.submit(createTask(task), result);
 	}
 
 	@Override
 	public <T> Future<T> submit(Callable<T> task) {
-		return this.exec.submit(task);
+		return this.exec.submit(createTask(task));
 	}
 
 	@Override
 	public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
-		return this.schedules.schedule(command, delay, unit);
+		return this.schedules.schedule(createTask(command), delay, unit);
 	}
 
 	@Override
 	public <T> ScheduledFuture<T> schedule(Callable<T> command, long delay, TimeUnit unit) {
-		return this.schedules.schedule(command, delay, unit);
+		return this.schedules.schedule(createTask(command), delay, unit);
 	}
 
 	@Override
 	public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit) {
-		return this.schedules.scheduleAtFixedRate(command, initialDelay, period, unit);
+		return this.schedules.scheduleAtFixedRate(createTask(command), initialDelay, period, unit);
 	}
 
 	@Override
 	public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit) {
-		return this.schedules.scheduleWithFixedDelay(command, initialDelay, delay, unit);
+		return this.schedules.scheduleWithFixedDelay(createTask(command), initialDelay, delay, unit);
 	}
 
 	@Override
@@ -231,6 +271,113 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 		@Override
 		public String toString() {
 			return "Janus Thread Purger"; //$NON-NLS-1$
+		}
+
+	}
+
+	/**
+	 * A specific Janus runnable that is catching the {@link ChuckNorrisException}.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class JanusRunnable implements Runnable {
+
+		private final Runnable runnable;
+
+		/**
+		 * @param runnable the wrapped task.
+		 */
+		public JanusRunnable(Runnable runnable) {
+			this.runnable = runnable;
+		}
+
+		/** Replies the wrapped task.
+		 *
+		 * @return the runnable.
+		 */
+		public Runnable getWrappedRunnable() {
+			return this.runnable;
+		}
+
+		@Override
+		public void run() {
+			try {
+				this.runnable.run();
+			} catch (ChuckNorrisException ex) {
+				//
+			}
+		}
+
+		@Override
+		public String toString() {
+			return this.runnable.toString();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return this.runnable.equals(obj);
+		}
+
+		@Override
+		public int hashCode() {
+			return this.runnable.hashCode();
+		}
+
+	}
+
+	/**
+	 * A specific Janus callable that is catching the {@link ChuckNorrisException}.
+	 *
+	 * @param <T> the type of the result.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class JanusCallable<T> implements Callable<T> {
+
+		private final Callable<T> callable;
+
+		/**
+		 * @param callable the wrapped task.
+		 */
+		JanusCallable(Callable<T> callable) {
+			this.callable = callable;
+		}
+
+		/** Replies the wrapped task.
+		 *
+		 * @return the callable.
+		 */
+		public Callable<T> getWrappedCallable() {
+			return this.callable;
+		}
+
+		@Override
+		public T call() throws Exception {
+			try {
+				return this.callable.call();
+			} catch (ChuckNorrisException e) {
+				return null;
+			}
+		}
+
+		@Override
+		public String toString() {
+			return this.callable.toString();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return this.callable.equals(obj);
+		}
+
+		@Override
+		public int hashCode() {
+			return this.callable.hashCode();
 		}
 
 	}

@@ -404,15 +404,24 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		 * 
 		 * @param result - the result.
 		 */
-		protected void addResult(Object result) {
+		protected synchronized void addResult(Object result) {
 			this.results.add(result);
 		}
 		
 		/**
+		 * Add a result.
+		 * 
+		 * @param result - the result.
+		 */
+		protected synchronized void addResults(Collection<?> results) {
+			this.results.addAll(results);
+		}
+
+		/**
 		 * Replies result at the given index of the run of the agent.
 		 * @return the results.
 		 */
-		protected List<Object> getResults() {
+		protected synchronized List<Object> getResults() {
 			if (this.results != null) {
 				return Collections.unmodifiableList(this.results);
 			}

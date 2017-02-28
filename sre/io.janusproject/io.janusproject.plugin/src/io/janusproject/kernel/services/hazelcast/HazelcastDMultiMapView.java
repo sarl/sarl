@@ -45,6 +45,8 @@ import io.janusproject.util.MultisetView;
 /**
  * A view from the Hazelcast multimap to DMultiMap.
  *
+ * <p>This class is not thread-safe.
+ *
  * @param <K> - type of the keys.
  * @param <V> - type of the values.
  * @author $Author: sgalland$
@@ -92,7 +94,7 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 	}
 
 	@Override
-	public synchronized Set<V> removeAll(Object key) {
+	public Set<V> removeAll(Object key) {
 		return (Set<V>) super.removeAll(key);
 	}
 

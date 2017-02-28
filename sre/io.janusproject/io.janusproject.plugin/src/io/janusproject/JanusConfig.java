@@ -205,6 +205,20 @@ public final class JanusConfig {
     public static final int MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 16;
 
     /**
+     * Name of the property that contains the duration for keeping the iddle threads alive (in seconds).
+     *
+     * @since 2.0.5.0
+     */
+    public static final String THREAD_KEEP_ALIVE_DURATION_NAME = "janus.executors.threads.keepAliveDuration"; //$NON-NLS-1$
+
+    /**
+     * Indicates the duration for keeping the iddle threads alive (in seconds).
+     *
+     * @since 2.0.5.0
+     */
+    public static final int THREAD_KEEP_ALIVE_DURATION_VALUE = 0;
+
+    /**
      * Name of the property that contains the numbers of seconds that the kernel is waiting for thread terminations before timeout.
      *
      * @see #KERNEL_THREAD_TIMEOUT_VALUE

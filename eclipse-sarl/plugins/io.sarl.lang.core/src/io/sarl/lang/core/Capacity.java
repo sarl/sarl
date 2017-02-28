@@ -21,6 +21,8 @@
 
 package io.sarl.lang.core;
 
+import io.sarl.lang.core.Skill.UninstallationStage;
+
 /** Root type for all the capacities in the SARL language.
  *
  * @author $Author: srodriguez$
@@ -67,10 +69,23 @@ public interface Capacity {
 		}
 
 		/** Wrapping to the uninstallation function of the delegate.
+		 *
+		 * @deprecated see {@link #uninstall(UninstallationStage)}
 		 */
+		@Deprecated
 		protected final void uninstall() {
 			if (this.capacity instanceof Skill) {
 				((Skill) this.capacity).uninstall();
+			}
+		}
+
+		/** Wrapping to the uninstallation function of the delegate.
+		 *
+		 * @param stage indicates the stage in the uninstallation process.
+		 */
+		protected final void uninstall(UninstallationStage stage) {
+			if (this.capacity instanceof Skill) {
+				((Skill) this.capacity).uninstall(stage);
 			}
 		}
 

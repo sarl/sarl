@@ -33,6 +33,7 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "io.janusproject.kernel.services.jdk.executors.messages"; //$NON-NLS-1$
+	public static String JdkRejectedExecutionHandler_0;
 	public static String JdkUncaughtExceptionHandler_0;
 	public static String JdkUncaughtExceptionHandler_1;
 	public static String JdkUncaughtExceptionHandler_2;

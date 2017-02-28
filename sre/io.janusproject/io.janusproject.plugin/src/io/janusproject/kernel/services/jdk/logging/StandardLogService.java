@@ -40,8 +40,7 @@ import io.janusproject.util.ClassFinder;
  * This class enables to log information by ensuring that the values of the parameters are not evaluated until the information
  * should be really log, according to the log level. The logger is injected.
  *
- * <p>The LogService considers the parameters of the functions as:
- * <ul>
+ * <p>The LogService considers the parameters of the functions as:<ul>
  * <li>the message is the the message in the property file;</li>
  * <li>the parameters are the values that will replace the strings {0}, {1}, {2}... in the text extracted from the
  * resource property.</li>
@@ -55,6 +54,7 @@ import io.janusproject.util.ClassFinder;
  *
  * <p>For all the other objects, the {@link #toString()} function is invoked.
  *
+ * <p>This service is thread-safe.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

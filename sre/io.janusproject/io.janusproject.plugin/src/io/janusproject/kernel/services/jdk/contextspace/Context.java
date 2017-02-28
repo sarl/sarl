@@ -45,6 +45,8 @@ import io.sarl.util.OpenEventSpaceSpecification;
 /**
  * Implementation of an agent context in the Janus platform.
  *
+ * <p>This class is thread-safe.
+ *
  * @author $Author: srodriguez$
  * @author $Author: ngaud$
  * @author $Author: sgalland$

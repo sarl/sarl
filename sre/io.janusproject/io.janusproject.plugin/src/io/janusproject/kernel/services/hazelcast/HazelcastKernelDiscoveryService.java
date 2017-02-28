@@ -59,6 +59,8 @@ import io.janusproject.util.TwoStepConstruction;
  *
  * <p>It uses the Hazelcast library for discovering the nodes over the network.
  *
+ * <p>This service is thread-safe.
+ *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
  * @version $FullVersion$

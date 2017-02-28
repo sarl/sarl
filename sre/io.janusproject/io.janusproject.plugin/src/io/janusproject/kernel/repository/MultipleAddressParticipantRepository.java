@@ -71,6 +71,11 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 		this.participants = repositoryImplFactory.getMultiMap(this.distributedParticipantMapName, null);
 	}
 
+	@Override
+	public Object mutex() {
+		return this.participants;
+	}
+
 	/**
 	 * Add a participant in this repository.
 	 *
