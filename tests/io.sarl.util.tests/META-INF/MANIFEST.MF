@@ -12,4 +12,3 @@ Require-Bundle: io.sarl.util;bundle-version="0.5.0",
 Export-Package: io.sarl.util.tests.eventdispatching,
  io.sarl.util.tests.sarlspecification,
  io.sarl.util.tests.util
-

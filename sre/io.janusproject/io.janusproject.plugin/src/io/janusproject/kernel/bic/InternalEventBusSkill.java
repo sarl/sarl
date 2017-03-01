@@ -181,7 +181,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 			final OwnerState state = getOwnerState();
 			if (state == OwnerState.INITIALIZING || state == OwnerState.ALIVE) {
 				this.eventDispatcher.register(listener, filter, (subscriber) -> {
-					final Initialize event = new Initialize();
+					final Initialize event = new Initialize(getOwner().getID());
 					event.setSource(getInnerDefaultSpaceAddress());
 					this.eventDispatcher.immediateDispatchTo(subscriber, event);
 				});

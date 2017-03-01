@@ -22,6 +22,8 @@ package io.janusproject.tests.kernel.bic;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertSame;
 
+import java.util.UUID;
+
 import javax.inject.Inject;
 
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
@@ -306,7 +308,7 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 
 	@Test
 	public void selfEvent_other_initialized() {
-		Initialize initEvent = new Initialize();
+		Initialize initEvent = new Initialize(UUID.randomUUID());
 		this.skill.selfEvent(initEvent);
 		//
 		Event event = Mockito.mock(Event.class);
@@ -318,7 +320,7 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 
 	@Test
 	public void selfEvent_initialize() {
-		Initialize event = new Initialize();
+		Initialize event = new Initialize(UUID.randomUUID());
 		this.skill.selfEvent(event);
 		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.eventBus, Mockito.times(1)).immediateDispatch(argument.capture());

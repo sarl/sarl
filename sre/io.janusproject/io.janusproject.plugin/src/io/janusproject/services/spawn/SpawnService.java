@@ -43,13 +43,14 @@ public interface SpawnService extends DependentService {
 	/**
 	 * Spawn an agent of the given type, and pass the parameters to its initialization function.
 	 *
+	 * @param spawningAgent the identifier of the spawning agent.
 	 * @param parent - the parent entity that is creating the agent.
-	 * @param agentClazz - the type of the agent to spawn.
 	 * @param agentId - the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
+	 * @param agentClazz - the type of the agent to spawn.
 	 * @param params - the list of the parameters to pass to the agent initialization function.
 	 * @return the identifier of the agent, never <code>null</code>.
 	 */
-	UUID spawn(AgentContext parent, UUID agentId, Class<? extends Agent> agentClazz, Object... params);
+	UUID spawn(UUID spawningAgent, AgentContext parent, UUID agentId, Class<? extends Agent> agentClazz, Object... params);
 
 	/**
 	 * Kill the agent with the given identifier.

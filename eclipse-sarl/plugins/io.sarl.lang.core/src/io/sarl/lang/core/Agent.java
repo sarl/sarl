@@ -61,7 +61,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * Creates a new agent by parent <code>parentID</code>.
 	 *
 	 * @param provider - the provider of built-in capacities for this agent.
-	 * @param parentID - the agent's spawner.
+	 * @param parentID - the agent's parent.
 	 * @param agentID - the identifier of the agent, or
 	 *                  <code>null</code> for computing it randomly.
 	 */
@@ -104,9 +104,9 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	}
 
 	/**
-	 * Replies the agent's spawner's ID.
+	 * Replies the agent's parent's ID.
 	 *
-	 * @return the identifier of the agent's spawner.
+	 * @return the identifier of the agent's parent.
 	 */
 	@Pure
 	public UUID getParentID() {

@@ -83,12 +83,12 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 
 	@Override
 	public UUID spawnInContext(Class<? extends Agent> agentType, AgentContext context, Object... params) {
-		return this.spawnService.spawn(context, null, agentType, params);
+		return this.spawnService.spawn(getOwner().getID(), context, null, agentType, params);
 	}
 
 	@Override
 	public UUID spawnInContextWithID(Class<? extends Agent> agentClass, UUID agentID, AgentContext context, Object... params) {
-		return this.spawnService.spawn(context, agentID, agentClass, params);
+		return this.spawnService.spawn(getOwner().getID(), context, agentID, agentClass, params);
 	}
 
 	@Override
