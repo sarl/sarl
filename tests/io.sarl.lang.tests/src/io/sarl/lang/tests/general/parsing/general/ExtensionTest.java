@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,7 +96,6 @@ public class ExtensionTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.diagnostics.Diagnostic.SYNTAX_DIAGNOSTIC,
-				74, 1,
 				"mismatched input '=' expecting ':'");
 	}
 

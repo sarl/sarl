@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,11 +63,11 @@ import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.diagnostics.Severity;
-import org.eclipse.xtext.junit4.InjectWith;
-import org.eclipse.xtext.junit4.XtextRunner;
-import org.eclipse.xtext.junit4.util.ParseHelper;
-import org.eclipse.xtext.junit4.validation.ValidationTestHelper;
 import org.eclipse.xtext.resource.XtextResourceSet;
+import org.eclipse.xtext.testing.InjectWith;
+import org.eclipse.xtext.testing.XtextRunner;
+import org.eclipse.xtext.testing.util.ParseHelper;
+import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.XExpression;
@@ -127,7 +127,7 @@ import io.sarl.lang.tests.SARLInjectorProvider;
  */
 @SuppressWarnings("all")
 @RunWith(XtextRunner.class)
-@InjectWith(SARLInjectorProvider.class)
+@InjectWith(ExtendedSARLInjectorProvider.class)
 public abstract class AbstractSarlTest {
 
 	/** URL of the Maven central repository.
@@ -140,7 +140,7 @@ public abstract class AbstractSarlTest {
 
 	/** Precision of the floating point number epsilon-tests.
 	 */
-	public static final int DEFAULT_DECIMAL_COUNT = 8;
+	public static final int DEFAULT_DECIMAL_COUNT = 6;
 
 	@Inject
 	private ValidationTestHelper validationHelper;
@@ -538,13 +538,13 @@ public abstract class AbstractSarlTest {
 		while (it1.hasNext()) {
 			Object ac = it1.next();
 			it1.remove();
-			if (!le.remove(ac)) {
+			if (ac != null && !le.remove(ac)) {
 				unexpectedElements.add(ac.toString());
 			}
 		}
 
 		if (!unexpectedElements.isEmpty()) {
-			fail("Unexpected elements:\n" + unexpectedElements.toString() + "\nExpected elements are:\n" +
+			fail("Unexpected elements:\n" + unexpectedElements.toString() + "\nActual elements are:\n" +
 					Iterables.toString(actual));
 		} else if (!le.isEmpty()) {
 			fail("Expecting the following elements:\n" + le.toString() + "\nbut was:\n" +
@@ -951,13 +951,27 @@ public abstract class AbstractSarlTest {
 				+ "\narray: " + Arrays.toString(expected)); //$NON-NLS-1$
 	}
 
-	/** Helper for writting a multiline string in unit tests.
+	/** Replies the OS-dependent line separator.
+	 *
+	 * @return the line separator from the {@code "line.separator"} property, or {@code "\n"}.
+	 * @since 0.5
+	 */
+	public static String getLineSeparator() {
+		 final String nl = System.getProperty("line.separator");
+		 if (Strings.isNullOrEmpty(nl)) {
+			 return "\n";
+		 }
+		 return nl;
+	}
+
+	/** Helper for writting a multiline string in unit tests, which supports the
+	 * OS-dependent line separator.
 	 *
 	 * @param lines - the lines in the string.
 	 * @return the complete multiline string.
 	 */
 	public static String multilineString(Object... lines) {
-		return Joiner.on("\n").join(lines);
+		return Joiner.on(getLineSeparator()).join(lines);
 	}
 
 	/** Assert that the given iterable object replies the expected identifiers.
@@ -1343,8 +1357,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlAction function(String string, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}");
 		return (SarlAction) clazz.getMembers().get(0);
 	}
 
@@ -1352,8 +1366,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlAction function(String string, boolean validate, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}");
 		return (SarlAction) clazz.getMembers().get(0);
 	}
 
@@ -1375,8 +1389,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlAction functionSignature(String string, String... prefix) throws Exception {
 		SarlInterface interfaze = interfaze(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\ninterface Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "interface Foo { " + string + "}");
 		return (SarlAction) interfaze.getMembers().get(0);
 	}
 
@@ -1384,8 +1398,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlAction functionSignature(String string, boolean validate, String... prefix) throws Exception {
 		SarlInterface interfaze = interfaze(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\ninterface Foo { " + string + "}", validate);
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "interface Foo { " + string + "}", validate);
 		return (SarlAction) interfaze.getMembers().get(0);
 	}
 
@@ -1407,8 +1421,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlConstructor constructor(String string, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}");
 		return (SarlConstructor) clazz.getMembers().get(0);
 	}
 
@@ -1416,8 +1430,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlConstructor constructor(String string, boolean validate, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}", validate);
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}", validate);
 		return (SarlConstructor) clazz.getMembers().get(0);
 	}
 
@@ -1439,8 +1453,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlField field(String string, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}");
 		return (SarlField) clazz.getMembers().get(0);
 	}
 
@@ -1448,8 +1462,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlField field(String string, boolean validate, String... prefix) throws Exception {
 		SarlClass clazz = clazz(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nclass Foo { " + string + "}", validate);
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "class Foo { " + string + "}", validate);
 		return (SarlField) clazz.getMembers().get(0);
 	}
 
@@ -1457,8 +1471,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlBehaviorUnit behaviorUnit(String string, String... prefix) throws Exception {
 		SarlAgent agent = agent(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nagent Foo { " + string + "}");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "agent Foo { " + string + "}");
 		return (SarlBehaviorUnit) agent.getMembers().get(0);
 	}
 
@@ -1466,8 +1480,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected SarlBehaviorUnit behaviorUnit(String string, boolean validate, String... prefix) throws Exception {
 		SarlAgent agent = agent(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nagent Foo { " + string + "}", validate);
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "agent Foo { " + string + "}", validate);
 		return (SarlBehaviorUnit) agent.getMembers().get(0);
 	}
 
@@ -1475,8 +1489,8 @@ public abstract class AbstractSarlTest {
 	 */
 	protected JvmTypeReference getType(String typeName, String... prefix) throws Exception {
 		SarlAgent agent = agent(
-				IterableExtensions.join(Arrays.asList(prefix), "\n")
-				+ "\nagent Foo { var fooAttr : " + typeName + " }");
+				IterableExtensions.join(Arrays.asList(prefix), getLineSeparator())
+				+ getLineSeparator() + "agent Foo { var fooAttr : " + typeName + " }");
 		return ((SarlField) agent.getMembers().get(0)).getType();
 	}
 
@@ -1582,25 +1596,15 @@ public abstract class AbstractSarlTest {
 
 		Validator assertNoIssue(EClass objectType, String issuecode);
 
-		Validator assertError(EClass objectType, String code, int offset, int length, String... messageParts);
-
 		Validator assertError(EClass objectType, String code, String... messageParts);
 
 		Validator assertIssue(EClass objectType, String code, Severity severity, String... messageParts);
 
-		Validator assertIssue(EClass objectType, String code, int offset, int length,  Severity severity,
-				String... messageParts);
-
 		Validator assertNoIssues(EClass objectType, String code, Severity severity, String... messageParts);
-
-		Validator assertNoIssues(EClass objectType, String code, int offset, int length, Severity severity,
-				String... messageParts);
 
 		Validator assertWarning(EClass objectType, String code, String... messageParts);
 
 		Validator assertNoWarnings(EClass objectType, String code, String... messageParts);
-
-		Validator assertWarning(EClass objectType, String code, int offset, int length, String... messageParts);
 
 	}
 
@@ -1661,11 +1665,6 @@ public abstract class AbstractSarlTest {
 			return this;
 		}
 
-		public Validator assertError(EClass objectType, String code, int offset, int length, String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertError(this.resource, objectType, code, offset, length, messageParts);
-			return this;
-		}
-
 		public Validator assertError(EClass objectType, String code, String... messageParts) {
 			AbstractSarlTest.this.validationHelper.assertError(this.resource, objectType, code, messageParts);
 			return this;
@@ -1676,22 +1675,8 @@ public abstract class AbstractSarlTest {
 			return this;
 		}
 
-		public Validator assertIssue(EClass objectType, String code, int offset, int length,  Severity severity,
-				String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertIssue(this.resource, objectType, code, offset, length, severity,
-					messageParts);
-			return this;
-		}
-
 		public Validator assertNoIssues(EClass objectType, String code, Severity severity, String... messageParts) {
 			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType, code, severity, messageParts);
-			return this;
-		}
-
-		public Validator assertNoIssues(EClass objectType, String code, int offset, int length, Severity severity,
-				String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType, code, offset, length, severity,
-					messageParts);
 			return this;
 		}
 
@@ -1702,12 +1687,6 @@ public abstract class AbstractSarlTest {
 
 		public Validator assertNoWarnings(EClass objectType, String code, String... messageParts) {
 			AbstractSarlTest.this.validationHelper.assertNoWarnings(this.resource, objectType, code, messageParts);
-			return this;
-		}
-
-		public Validator assertWarning(EClass objectType, String code, int offset, int length, String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertWarning(this.resource, objectType, code, offset,
-					length, messageParts);
 			return this;
 		}
 		
@@ -1735,7 +1714,6 @@ public abstract class AbstractSarlTest {
 		 * @throws IllegalAccessException see {@link Field#get(Object)}
 		 * @throws IllegalArgumentException see {@link Field#get(Object)}
 		 */
-		@SuppressWarnings("unchecked")
 		public <T> T getStatic(Class<?> receiverType, String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 			Field f = getDeclaredField(receiverType, fieldName);
 			if (!f.isAccessible()) {
@@ -1756,7 +1734,6 @@ public abstract class AbstractSarlTest {
 		 * @throws IllegalAccessException see {@link Field#get(Object)}
 		 * @throws IllegalArgumentException see {@link Field#get(Object)}
 		 */
-		@SuppressWarnings("unchecked")
 		public <T> void setStatic(Class<?> receiverType, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 			Field f = getDeclaredField(receiverType, fieldName);
 			if (!f.isAccessible()) {
@@ -1772,7 +1749,6 @@ public abstract class AbstractSarlTest {
 		 * @param fieldName the field's name, not <code>null</code>
 		 * @return the value of the field
 		 */
-		@SuppressWarnings("unchecked")
 		public <T> void set(Object instance, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 			Class<?> type = instance.getClass();
 			while (type != null) {
@@ -1798,7 +1774,6 @@ public abstract class AbstractSarlTest {
 		 * @param fieldName the field's name, not <code>null</code>
 		 * @return the value of the field
 		 */
-		@SuppressWarnings("unchecked")
 		public <T> T get(Object instance, String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 			Class<?> type = instance.getClass();
 			while (type != null) {
@@ -1831,7 +1806,6 @@ public abstract class AbstractSarlTest {
 		 * @throws SecurityException 
 		 * @throws NoSuchMethodException 
 		 */
-		@SuppressWarnings("static-method")
 		public <T> T newInstance(Class<T> type, Object... args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 			final Object[] arguments = args == null ? new Object[]{null} : args;
 			Constructor<?> compatible = null;
@@ -1920,7 +1894,6 @@ public abstract class AbstractSarlTest {
 		 * @throws NoSuchMethodException 
 		 * @throws ClassNotFoundException 
 		 */
-		@SuppressWarnings("static-method")
 		public <T> T newInstance(String type, Object... args)
 				throws InstantiationException, IllegalAccessException, IllegalArgumentException,
 				InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
@@ -1935,7 +1908,6 @@ public abstract class AbstractSarlTest {
 		 * @return the class.
 		 * @throws ClassNotFoundException 
 		 */
-		@SuppressWarnings("static-method")
 		public Class<?> forName(String name) throws ClassNotFoundException {
 			try {
 				return Class.forName(name);

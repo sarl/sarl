@@ -19,25 +19,28 @@
  */
 package io.janusproject.tests.kernel.services.jdk.executors;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import io.janusproject.kernel.services.jdk.executors.JdkExecutorService;
-import io.janusproject.tests.testutils.AbstractDependentServiceTest;
-import io.janusproject.tests.testutils.AvoidServiceStartForTest;
-import io.janusproject.tests.testutils.StartServiceForTest;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.Times;
+
+import io.janusproject.kernel.services.jdk.executors.JdkExecutorService;
+import io.janusproject.kernel.services.jdk.executors.JdkExecutorService.JanusCallable;
+import io.janusproject.kernel.services.jdk.executors.JdkExecutorService.JanusRunnable;
+import io.janusproject.tests.testutils.AbstractDependentServiceTest;
+import io.janusproject.tests.testutils.AvoidServiceStartForTest;
+import io.janusproject.tests.testutils.StartServiceForTest;
 
 /**
  * @author $Author: sgalland$
@@ -83,12 +86,29 @@ public final class JdkExecutorServiceTest extends AbstractDependentServiceTest<J
 		assertContains(this.service.getServiceWeakDependencies());
 	}
 
+	protected static void assertJanusTask(Object expected, Object actual) {
+		if (actual instanceof JanusRunnable) {
+			final JanusRunnable runnable = (JanusRunnable) actual;
+			if (expected == runnable.getWrappedRunnable()) {
+				return;
+			}
+		} else if (actual instanceof JanusCallable<?>) {
+			final JanusCallable<?> callable = (JanusCallable<?>) actual;
+			if (expected == callable.getWrappedCallable()) {
+				return;
+			}
+		} else if (expected == actual) {
+			return;
+		}
+		fail("Unexpected runnable: " + Objects.toString(actual));
+	}
+
 	@Test
 	public void submitRunnable() {
 		this.service.submit(this.runnable);
 		ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 		Mockito.verify(this.executorService).submit(argument.capture());
-		assertSame(this.runnable, argument.getValue());
+		assertJanusTask(this.runnable, argument.getValue());
 	}
 
 	@Test
@@ -98,7 +118,7 @@ public final class JdkExecutorServiceTest extends AbstractDependentServiceTest<J
 		ArgumentCaptor<Runnable> argument1 = ArgumentCaptor.forClass(Runnable.class);
 		ArgumentCaptor<Object> argument2 = ArgumentCaptor.forClass(Object.class);
 		Mockito.verify(this.executorService).submit(argument1.capture(), argument2.capture());
-		assertSame(this.runnable, argument1.getValue());
+		assertJanusTask(this.runnable, argument1.getValue());
 		assertSame(result, argument2.getValue());
 	}
 
@@ -107,7 +127,7 @@ public final class JdkExecutorServiceTest extends AbstractDependentServiceTest<J
 		this.service.submit(this.callable);
 		ArgumentCaptor<Callable> argument = ArgumentCaptor.forClass(Callable.class);
 		Mockito.verify(this.executorService).submit(argument.capture());
-		assertSame(this.callable, argument.getValue());
+		assertJanusTask(this.callable, argument.getValue());
 	}
 
 	@Test
@@ -117,7 +137,7 @@ public final class JdkExecutorServiceTest extends AbstractDependentServiceTest<J
 		ArgumentCaptor<Long> argument2 = ArgumentCaptor.forClass(Long.class);
 		ArgumentCaptor<TimeUnit> argument3 = ArgumentCaptor.forClass(TimeUnit.class);
 		Mockito.verify(this.scheduledExecutorService).schedule(argument1.capture(), argument2.capture(), argument3.capture());
-		assertSame(this.runnable, argument1.getValue());
+		assertJanusTask(this.runnable, argument1.getValue());
 		assertEquals(new Long(5), argument2.getValue());
 		assertSame(TimeUnit.MILLISECONDS, argument3.getValue());
 	}
@@ -129,7 +149,7 @@ public final class JdkExecutorServiceTest extends AbstractDependentServiceTest<J
 		ArgumentCaptor<Long> argument2 = ArgumentCaptor.forClass(Long.class);
 		ArgumentCaptor<TimeUnit> argument3 = ArgumentCaptor.forClass(TimeUnit.class);
 		Mockito.verify(this.scheduledExecutorService).schedule(argument1.capture(), argument2.capture(), argument3.capture());
-		assertSame(this.callable, argument1.getValue());
+		assertJanusTask(this.callable, argument1.getValue());
 		assertEquals(new Long(5), argument2.getValue());
 		assertSame(TimeUnit.MILLISECONDS, argument3.getValue());
 	}
@@ -143,7 +163,7 @@ public final class JdkExecutorServiceTest extends AbstractDependentServiceTest<J
 		ArgumentCaptor<TimeUnit> argument4 = ArgumentCaptor.forClass(TimeUnit.class);
 		Mockito.verify(this.scheduledExecutorService).scheduleAtFixedRate(argument1.capture(), argument2.capture(),
 				argument3.capture(), argument4.capture());
-		assertSame(this.runnable, argument1.getValue());
+		assertJanusTask(this.runnable, argument1.getValue());
 		assertEquals(new Long(10), argument2.getValue());
 		assertEquals(new Long(5), argument3.getValue());
 		assertSame(TimeUnit.MILLISECONDS, argument4.getValue());
@@ -158,7 +178,7 @@ public final class JdkExecutorServiceTest extends AbstractDependentServiceTest<J
 		ArgumentCaptor<TimeUnit> argument4 = ArgumentCaptor.forClass(TimeUnit.class);
 		Mockito.verify(this.scheduledExecutorService).scheduleWithFixedDelay(argument1.capture(), argument2.capture(),
 				argument3.capture(), argument4.capture());
-		assertSame(this.runnable, argument1.getValue());
+		assertJanusTask(this.runnable, argument1.getValue());
 		assertEquals(new Long(10), argument2.getValue());
 		assertEquals(new Long(5), argument3.getValue());
 		assertSame(TimeUnit.MILLISECONDS, argument4.getValue());

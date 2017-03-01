@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import io.janusproject.services.distributeddata.DMapListener;
 
 /**
  * Abstract implementation of a view on a Map for a distributed map.
+ *
+ * <p>This class is not thread-safe.
  *
  * @param <K> - type of the keys.
  * @param <V> - type of the values.

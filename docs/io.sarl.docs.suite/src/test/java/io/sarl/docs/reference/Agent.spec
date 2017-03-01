@@ -619,6 +619,7 @@ describe "Agent Reference"{
 			 * 
 			 *     event Initialize {
 			 *         var parameters : Object[]
+			 *         var spawner : UUID
 			 *     }
 			 *
 			 * 
@@ -638,6 +639,7 @@ describe "Agent Reference"{
 				agent MyAgent {
 					uses Logging
 					on Initialize {
+						println("My spawner is " + occurrence.spawner)
 						println(
 							"My initialization parameters are: "
 							+ occurrence.parameters )
@@ -645,21 +647,40 @@ describe "Agent Reference"{
 				}
 				'''.parseSuccessfully(
 					"package io.sarl.docs.reference.ar
+					import java.util.UUID
 					import io.sarl.core.Logging
-					import io.sarl.core.Initialize",
+					import io.sarl.core.Initialize
+					agent TestInitializeContent {
+						on Initialize {
+							var spawnerID : UUID = occurrence.spawner
+							var parameters : Object[] = occurrence.parameters
+						}
+					}",
 					// TEXT
 					""
 				)
 				
 				model => [
 					it should havePackage "io.sarl.docs.reference.ar"
-					it should haveNbImports 2
+					it should haveNbImports 3
+					it should importClass "java.util.UUID"
 					it should importClass "io.sarl.core.Logging"
 					it should importClass "io.sarl.core.Initialize"
-					it should haveNbElements 1
+					it should haveNbElements 2
 				]
 				
-				var a = (model.xtendTypes.get(0) => [
+				var hidden = (model.xtendTypes.get(0) => [
+					it should beAgent "TestInitializeContent"
+					it should extend _
+					it should haveNbElements 1
+				]) as SarlAgent
+
+				hidden.members.get(0) => [
+					it should beBehaviorUnit "io.sarl.core.Initialize"
+					it should beGuardedWith _
+				]
+
+				var a = (model.xtendTypes.get(1) => [
 					it should beAgent "MyAgent"
 					it should extend _
 					it should haveNbElements 2

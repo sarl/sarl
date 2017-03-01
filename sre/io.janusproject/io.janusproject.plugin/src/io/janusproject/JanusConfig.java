@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -203,6 +203,20 @@ public final class JanusConfig {
      * @see #MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME
      */
     public static final int MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 16;
+
+    /**
+     * Name of the property that contains the duration for keeping the iddle threads alive (in seconds).
+     *
+     * @since 2.0.5.0
+     */
+    public static final String THREAD_KEEP_ALIVE_DURATION_NAME = "janus.executors.threads.keepAliveDuration"; //$NON-NLS-1$
+
+    /**
+     * Indicates the duration for keeping the iddle threads alive (in seconds).
+     *
+     * @since 2.0.5.0
+     */
+    public static final int THREAD_KEEP_ALIVE_DURATION_VALUE = 0;
 
     /**
      * Name of the property that contains the numbers of seconds that the kernel is waiting for thread terminations before timeout.

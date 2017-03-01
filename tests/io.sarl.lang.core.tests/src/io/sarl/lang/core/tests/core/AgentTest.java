@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,10 +44,10 @@ import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
-import io.sarl.lang.core.ClearableReference;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.UnimplementedCapacityException;
+import io.sarl.lang.util.ClearableReference;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -431,10 +431,12 @@ public class AgentTest extends AbstractSarlTest {
 		this.agent.setSkill_Fake(s4);
 
 		this.agent.clearSkill(Capacity1.class);
-		assertEquals(0, s4.uninstallCalls());
+		assertEquals(0, s4.uninstallPreCalls());
+		assertEquals(0, s4.uninstallPostCalls());
 
 		this.agent.clearSkill(Capacity2.class);
-		assertEquals(1, s4.uninstallCalls());
+		assertEquals(1, s4.uninstallPreCalls());
+		assertEquals(1, s4.uninstallPostCalls());
 	}
 
 	/** Only for making public several protected methods.
@@ -559,7 +561,8 @@ public class AgentTest extends AbstractSarlTest {
 	 */
 	private static class Skill4 extends Skill1 implements Capacity2 {
 		private final AtomicInteger installCalls = new AtomicInteger();
-		private final AtomicInteger uninstallCalls = new AtomicInteger();
+		private final AtomicInteger uninstallPreCalls = new AtomicInteger();
+		private final AtomicInteger uninstallPostCalls = new AtomicInteger();
 		public Skill4() {
 			//
 		}
@@ -569,15 +572,22 @@ public class AgentTest extends AbstractSarlTest {
 			this.installCalls.incrementAndGet();
 		}
 		@Override
-		protected void uninstall() {
-			super.uninstall();
-			this.uninstallCalls.incrementAndGet();
+		protected void uninstall(UninstallationStage stage) {
+			super.uninstall(stage);
+			if (stage == UninstallationStage.PRE_DESTROY_EVENT) {
+				this.uninstallPreCalls.incrementAndGet();
+			} else {
+				this.uninstallPostCalls.incrementAndGet();
+			}
 		}
 		public int installCalls() {
 			return this.installCalls.getAndSet(0);
 		}
-		public int uninstallCalls() {
-			return this.uninstallCalls.getAndSet(0);
+		public int uninstallPreCalls() {
+			return this.uninstallPreCalls.getAndSet(0);
+		}
+		public int uninstallPostCalls() {
+			return this.uninstallPostCalls.getAndSet(0);
 		}
 	}
 

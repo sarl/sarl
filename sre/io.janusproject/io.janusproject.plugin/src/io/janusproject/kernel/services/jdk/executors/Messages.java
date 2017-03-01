@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "io.janusproject.kernel.services.jdk.executors.messages"; //$NON-NLS-1$
+	public static String JdkRejectedExecutionHandler_0;
 	public static String JdkUncaughtExceptionHandler_0;
 	public static String JdkUncaughtExceptionHandler_1;
 	public static String JdkUncaughtExceptionHandler_2;

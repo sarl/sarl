@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.SarlSpecification;
+import io.sarl.lang.util.ClearableReference;
 
 
 /**
@@ -60,7 +61,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * Creates a new agent by parent <code>parentID</code>.
 	 *
 	 * @param provider - the provider of built-in capacities for this agent.
-	 * @param parentID - the agent's spawner.
+	 * @param parentID - the agent's parent.
 	 * @param agentID - the identifier of the agent, or
 	 *                  <code>null</code> for computing it randomly.
 	 */
@@ -103,9 +104,9 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	}
 
 	/**
-	 * Replies the agent's spawner's ID.
+	 * Replies the agent's parent's ID.
 	 *
-	 * @return the identifier of the agent's spawner.
+	 * @return the identifier of the agent's parent.
 	 */
 	@Pure
 	public UUID getParentID() {

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal;
 import org.eclipse.xtext.ui.editor.contentassist.ReplacementTextApplier;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.junit.Assert;
+import org.junit.ComparisonFailure;
 
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.WorkbenchTestHelper;
@@ -94,7 +95,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 				String line = breader.readLine();
 				while (line != null) {
 					content.append(line);
-					content.append("\n");
+					content.append(getLineSeparator());
 					line = breader.readLine();
 				}
 			}
@@ -134,9 +135,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 	 * @throws Exception if the builder cannot be created.
 	 */
 	protected final ContentAssistProcessorTestBuilder newBuilder() throws Exception {
-		final ContentAssistProcessorTestBuilder.Factory factory = getInjector().getInstance(
-				ContentAssistProcessorTestBuilder.Factory.class);
-		ContentAssistProcessorTestBuilder builder = factory.create(this);
+		ContentAssistProcessorTestBuilder builder = new ContentAssistProcessorTestBuilder(getInjectedInjector(), this);
 		String prefix = getPrefix();
 		if (prefix.length() > 0) {
 			builder = builder.appendNl(prefix);
@@ -222,10 +221,32 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 		}
 
 		if (!sortedExpectations.isEmpty()) {
-			Assert.fail("Expecting text: " + sortedExpectations.toString());
+			String[] actual = new String[computeCompletionProposals.length];
+			int i = 0;
+			for (final ICompletionProposal completionProposal : computeCompletionProposals) {
+				String proposedText = getProposedText(completionProposal);
+				actual[i] = proposedText;
+				++i;
+			}
+			Arrays.sort(actual);
+			throw new ComparisonFailure("Expecting text: " + sortedExpectations.toString(),
+					toString(expectations), toString(actual));
 		}
 		
 		return builder;
+	}
+	
+	private static String toString(Object[] array) {
+		StringBuilder buf = new StringBuilder();
+		if (array != null) {
+			for (Object obj : array) {
+				if (obj != null) {
+					buf.append(obj);
+				}
+				buf.append(getLineSeparator());
+			}
+		}
+		return buf.toString();
 	}
 
 	private static String getProposedText(ICompletionProposal completionProposal) {
@@ -297,8 +318,21 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 			return null;
 		}
 		
+		private Shell ensureShell() {
+			Shell shell;
+			if (isEclipseRuntimeEnvironment()) {
+				shell = getShell();
+				if (shell == null) {
+					shell = new Shell();
+				}
+			} else {
+				shell = new Shell();
+			}
+			return shell;
+		}
+
 		@Override
-		protected ICompletionProposal[] computeCompletionProposals(final IXtextDocument xtextDocument, int cursorPosition)
+		protected ICompletionProposal[] computeCompletionProposals(IXtextDocument xtextDocument, int cursorPosition)
 				throws BadLocationException {
 			if (isEclipseRuntimeEnvironment()) {
 				Shell shell = getShell();
@@ -327,11 +361,12 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 		}
 		
 		@Override
-		public ContentAssistProcessorTestBuilder appendAndApplyProposal(String model, int position, String proposalString) throws Exception {
+		public ContentAssistProcessorTestBuilder applyProposal(int position, String proposalString) throws Exception {
 			throw new UnsupportedOperationException("must be overriden for Shell access");
 		}
-		
-		public ContentAssistProcessorTestBuilder applyProposal(int position, String proposalString) throws Exception {
+
+		@Override
+		public ContentAssistProcessorTestBuilder appendAndApplyProposal(String model, int position, String proposalString) throws Exception {
 			throw new UnsupportedOperationException("must be overriden for Shell access");
 		}
 		

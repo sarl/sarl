@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * A possible implementation of a capacity fulfilling all the constraints of
  * this specification. Require Capacities should be accessed via the
  * {@link #getSkill(Class)} inside the {@link #install()} The Skill should
- * release all resources in the {@link #uninstall()}.
+ * release all resources in the {@link #uninstall(UninstallationStage)}.
  *
  * @author $Author: srodriguez$
  * @version $FullVersion$
@@ -75,7 +75,8 @@ public abstract class Skill extends AgentTrait {
 	void unregisterUse() {
 		final int value = this.uses.decrementAndGet();
 		if (value <= 0) {
-			uninstall();
+			uninstall(UninstallationStage.PRE_DESTROY_EVENT);
+			uninstall(UninstallationStage.POST_DESTROY_EVENT);
 		}
 	}
 
@@ -88,12 +89,51 @@ public abstract class Skill extends AgentTrait {
 		//
 	}
 
-	/**
-	 * This method is called just before uninstalling the skill from its owner
-	 * agent. The Skill should release all resources here.
+	/** This method is called just before uninstalling the skill from its owner agent.
+	 * The Skill should release all resources here.
+	 *
+	 * @deprecated see {@link #uninstall(UninstallationStage)} with {@link UninstallationStage#POST_DESTROY_EVENT} argument.
 	 */
+	@Deprecated
 	protected void uninstall() {
 		//
+	}
+
+	/**
+	 * This method is called just before uninstalling the skill from its owner agent.
+	 *
+	 * @param stage indicates the stage in the uninstallation process.
+	 * @since 0.5
+	 */
+	protected void uninstall(UninstallationStage stage) {
+		// This following code should be removed when uninstalled() is removed.
+		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
+			uninstall();
+		}
+	}
+
+	/** Sage in the skill uninstallation process.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.5
+	 */
+	public enum UninstallationStage {
+
+		/** The stage is before the event handlers for {@code Destroy} are invoked.
+		 *
+		 * <p>During this stage, the skill could release resources before the destruction functions of its agent are invoked.
+		 */
+		PRE_DESTROY_EVENT,
+
+		/** The stage is after the event handlers for {@code Destroy} are invoked.
+		 *
+		 * <p>During this stage, the skill should release all the resources that are still used by the skill.
+		 */
+		POST_DESTROY_EVENT,
+
 	}
 
 }

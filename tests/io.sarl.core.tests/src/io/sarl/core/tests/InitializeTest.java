@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@
  */
 package io.sarl.core.tests;
 
+import java.util.UUID;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,49 +34,43 @@ import io.sarl.lang.core.Event;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class InitializeTest extends AbstractSarlCoreTest<Event> {
 
-	/**
-	 */
 	@Before
 	public void setUp() {
 		loadSARL("io.sarl.core.Initialize", Event.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void memberCount() {
-		assertEquals(2, this.type.getDeclaredFields().length);
+		assertEquals(3, this.type.getDeclaredFields().length);
 		assertEquals(2, this.type.getDeclaredConstructors().length);
 	}
 
-	/**
-	 */
 	@Test
 	public void serialVersionUID() {
 		assertField("serialVersionUID", long.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void parameters() {
 		assertField("parameters", Object[].class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
-	public void constructorVoid() {
-		assertConstructor();
+	public void spawner() {
+		assertField("spawner", UUID.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
-	public void constructorAddress() {
-		assertConstructor(Address.class);
+	public void constructorUUIDUUIDObjectArray() {
+		assertConstructor(UUID.class, Object[].class);
+	}
+
+	@Test
+	public void constructorAddressUUIDUUIDObjectArray() {
+		assertConstructor(Address.class, UUID.class, Object[].class);
 	}
 
 }

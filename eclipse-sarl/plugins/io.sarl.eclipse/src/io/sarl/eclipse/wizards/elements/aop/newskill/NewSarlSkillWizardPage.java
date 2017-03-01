@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 		createSuperClassControls(parent, COLUMNS);
 		createSuperInterfacesControls(parent, COLUMNS);
 		createSeparator(parent, COLUMNS);
-		createMethodStubControls(parent, COLUMNS, true, true);
+		createMethodStubControls(parent, COLUMNS, true, true, false, true);
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 	@Override
 	protected void generateTypeContent(ISourceAppender appender, IJvmTypeProvider typeProvider,
 			String comment, IProgressMonitor monitor) throws Exception {
-		final SubMonitor mon = SubMonitor.convert(monitor, 3);
+		final SubMonitor mon = SubMonitor.convert(monitor, 4);
 		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
 				getPackageFragment().getElementName(), typeProvider);
 		final ISarlSkillBuilder skill = scriptBuilder.addSarlSkill(getTypeName());
@@ -117,6 +117,11 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 				getSuperClass(),
 				getSuperInterfaces());
 		mon.worked(2);
+		createStandardSARLLifecycleFunctionTemplates(
+				"skill",
+				(it) -> skill.addSarlAction(it),
+				(it) -> skill.addSarlCapacityUses(it));
+		mon.worked(3);
 		scriptBuilder.build(appender);
 		mon.done();
 	}

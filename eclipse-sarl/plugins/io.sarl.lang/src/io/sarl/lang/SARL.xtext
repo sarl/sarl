@@ -406,7 +406,7 @@ AnnotationField returns xtend::XtendMember:
 Parameter returns xtend::XtendParameter:
 	{SarlFormalParameter} annotations+=XAnnotation*
 	(extension?='extension' annotations+=XAnnotation*)?
-	name=InnerVarID ':' parameterType=JvmTypeReference 
+	name=ValidID ':' parameterType=JvmTypeReference 
 	(   (varArg?='*')
 	  | ('=' defaultValue=XLiteral))?
 ;
@@ -430,19 +430,19 @@ XVariableDeclaration returns xbase::XExpression:
 	|
 		(extension?='extension' (writeable?='var'|'val'))
 	))
-	name=InnerVarID
+	name=ValidID
 	(':' type=JvmTypeReference)?
 	('=' right=XExpression)?
 ;
 
 // Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 JvmFormalParameter returns xtend::XtendFormalParameter:
-	extension?='extension'? name=InnerVarID (=> ':' (parameterType=JvmTypeReference))?
+	extension?='extension'? name=ValidID (=> ':' (parameterType=JvmTypeReference))?
 ;
 	
 // Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 FullJvmFormalParameter returns xtend::XtendFormalParameter:
-	extension?='extension'? name=InnerVarID ':' parameterType=JvmTypeReference
+	extension?='extension'? name=ValidID ':' parameterType=JvmTypeReference
 ;
 
 // The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)
@@ -463,7 +463,7 @@ SarlXLoopFormalParameter returns xtend::XtendFormalParameter:
 XSwitchExpression returns xbase::XExpression:
 	{xbase::XSwitchExpression}
 	'switch' (=>('(' declaredParam=JvmFormalParameter '=') switch=XExpression ')'
-		| =>(declaredParam=JvmFormalParameter '=')? switch=XExpressionOrSimpleConstructorCall) '{'
+		| =>(declaredParam=JvmFormalParameter '=')? switch=XExpression) '{'
 	(cases+=XCasePart)*
 	('default' ':' default=XExpression )?
 	'}'

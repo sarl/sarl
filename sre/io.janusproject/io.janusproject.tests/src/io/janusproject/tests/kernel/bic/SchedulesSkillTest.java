@@ -55,11 +55,18 @@ import io.janusproject.tests.testutils.AbstractJanusRunTest;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.core.AgentTask;
+import io.sarl.core.Behaviors;
+import io.sarl.core.Destroy;
+import io.sarl.core.Initialize;
+import io.sarl.core.Lifecycle;
 import io.sarl.core.Schedules;
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
+import io.sarl.lang.core.Skill.UninstallationStage;
 import io.sarl.tests.api.Nullable;
 
 /**
@@ -68,15 +75,15 @@ import io.sarl.tests.api.Nullable;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("all")
 @RunWith(Suite.class)
 @SuiteClasses({
-	SchedulesSkillTest.SchedulesAPITest.class,
-	SchedulesSkillTest.SchedulesRunTest.class
+	SchedulesSkillTest.StaticTests.class,
+	SchedulesSkillTest.RuntimeTests.class,
 })
+@SuppressWarnings("all")
 public class SchedulesSkillTest {
 
-	public static class SchedulesAPITest extends AbstractJanusTest {
+	public static class StaticTests extends AbstractJanusTest {
 
 		@Nullable
 		private UUID agentId;
@@ -125,7 +132,8 @@ public class SchedulesSkillTest {
 		public void task() {
 			AgentTask task = this.skill.task("thename"); //$NON-NLS-1$
 			assertNotNull(task);
-			assertNull(task.getGuard());
+			assertNotNull(task.getGuard());
+			assertSame(AgentTask.TRUE_GUARD, task.getGuard());
 			assertNull(task.getProcedure());
 			assertEquals("thename", task.getName()); //$NON-NLS-1$
 			//
@@ -137,13 +145,15 @@ public class SchedulesSkillTest {
 			//
 			AgentTask task4 = this.skill.task(null);
 			assertNotNull(task4);
-			assertNull(task4.getGuard());
+			assertNotNull(task4.getGuard());
+			assertSame(AgentTask.TRUE_GUARD, task4.getGuard());
 			assertNull(task4.getProcedure());
 			assertFalse(Strings.isEmpty(task4.getName()));
 			//
 			AgentTask task5 = this.skill.task("");
 			assertNotNull(task5);
-			assertNull(task5.getGuard());
+			assertNotNull(task5.getGuard());
+			assertSame(AgentTask.TRUE_GUARD, task5.getGuard());
 			assertNull(task5.getProcedure());
 			assertFalse(Strings.isEmpty(task5.getName()));
 		}
@@ -233,10 +243,11 @@ public class SchedulesSkillTest {
 			Collection<ScheduledFuture<?>> futures = (Collection<ScheduledFuture<?>>) this.reflect.invoke(this.skill, "getActiveFutures");
 			assertEquals(2, futures.size());
 			//
-			this.reflect.invoke(this.skill, "uninstall");
+			this.reflect.invoke(this.skill, "uninstall", UninstallationStage.PRE_DESTROY_EVENT);
 			//
 			Collection<String> activeTasks = (Collection<String>) this.reflect.invoke(this.skill, "getActiveTasks");
 			assertTrue(activeTasks.isEmpty());
+			//
 			for (ScheduledFuture<?> f : futures) {
 				Mockito.verify(f, new Times(1)).cancel(ArgumentMatchers.anyBoolean());
 			}
@@ -395,15 +406,129 @@ public class SchedulesSkillTest {
 			assertNotNull(argument1.getValue());
 		}
 
+		@Test
+		public void uninstall_Pre() throws Exception {
+			Procedure1 procedure1 = Mockito.mock(Procedure1.class);
+			this.skill.every(5, procedure1);
+			Procedure1 procedure2 = Mockito.mock(Procedure1.class);
+			this.skill.in(5, procedure2);
+			Collection<ScheduledFuture<?>> futures = (Collection<ScheduledFuture<?>>) this.reflect.invoke(this.skill, "getActiveFutures");
+			assertEquals(2, futures.size());
+			//
+			this.reflect.invoke(this.skill, "uninstall", UninstallationStage.PRE_DESTROY_EVENT);
+			//
+			Collection<String> activeTasks = (Collection<String>) this.reflect.invoke(this.skill, "getActiveTasks");
+			assertTrue(activeTasks.isEmpty());
+			for (ScheduledFuture<?> f : futures) {
+				Mockito.verify(f, new Times(1)).cancel(ArgumentMatchers.anyBoolean());
+			}
+		}
+
+		@Test
+		public void uninstall_Post() throws Exception {
+			Procedure1 procedure1 = Mockito.mock(Procedure1.class);
+			this.skill.every(5, procedure1);
+			Procedure1 procedure2 = Mockito.mock(Procedure1.class);
+			this.skill.in(5, procedure2);
+			Collection<ScheduledFuture<?>> futures = (Collection<ScheduledFuture<?>>) this.reflect.invoke(this.skill, "getActiveFutures");
+			assertEquals(2, futures.size());
+			//
+			this.reflect.invoke(this.skill, "uninstall", UninstallationStage.POST_DESTROY_EVENT);
+			//
+			Collection<String> activeTasks = (Collection<String>) this.reflect.invoke(this.skill, "getActiveTasks");
+			assertTrue(activeTasks.isEmpty());
+			for (ScheduledFuture<?> f : futures) {
+				Mockito.verify(f, new Times(1)).cancel(ArgumentMatchers.anyBoolean());
+			}
+		}
+
 	}
 
-	public static class SchedulesRunTest extends AbstractJanusRunTest {
+	public static class RuntimeTests extends AbstractJanusRunTest {
 
 		@Test
 		public void in() throws Exception {
 			runJanus(SchedulesRunTestAgent0.class, false);
 			assertEquals(1, getNumberOfResults());
 			assertEquals(Boolean.TRUE, getResult(Boolean.class, 0));
+		}
+
+		@Test
+		public void every() throws Exception {
+			runJanus(SchedulesRunTestAgent1.class, false);
+			assertEquals(2, getNumberOfResults());
+			assertEquals(0, getResult(Integer.class, 0));
+			assertEquals(1, getResult(Integer.class, 1));
+		}
+
+		@Test
+		public void atFixedDelay() throws Exception {
+			runJanus(SchedulesRunTestAgent2.class, false);
+			assertEquals(2, getNumberOfResults());
+			assertEquals(0, getResult(Integer.class, 0));
+			assertEquals(1, getResult(Integer.class, 1));
+		}
+
+		@Test
+		public void atFixedDelay_zeroDelay() throws Exception {
+			runJanus(SchedulesRunTestAgent3.class, false);
+			assertEquals(2, getNumberOfResults());
+			assertEquals(0, getResult(Integer.class, 0));
+			assertEquals(1, getResult(Integer.class, 1));
+		}
+
+		@Test
+		public void execute() throws Exception {
+			runJanus(SchedulesRunTestAgent4.class, false);
+			assertEquals(1, getNumberOfResults());
+			assertEquals(Boolean.TRUE, getResult(Boolean.class, 0));
+		}
+
+		@Test
+		public void cancel_infiniteLoop() throws Exception {
+			runJanus(SchedulesRunTestAgent5.class, false);
+			assertEquals(2, getNumberOfResults());
+			assertEquals(0, getResult(Integer.class, 0));
+			assertEquals(1, getResult(Integer.class, 1));
+		}
+
+		@Test
+		public void cancel_everyTask() throws Exception {
+			runJanus(SchedulesRunTestAgent6.class, false);
+			assertEquals(2, getNumberOfResults());
+			assertEquals(0, getResult(Integer.class, 0));
+			assertEquals(1, getResult(Integer.class, 1));
+		}
+
+		@Test
+		public void autodestroyTaskLaunchedFromBehavior() throws Exception {
+			runJanus(InitiatorTestingAgent.class);
+			Collection<String> collection = getResult(Collection.class, 0);
+			assertNotNull(collection);
+			assertEquals("Task list: " + collection.toArray(), 1, collection.size());
+			String task = collection.iterator().next();
+			assertEquals("XXX", task);
+		}
+
+		/**
+		 * @author $Author: sgalland$
+		 * @version $FullVersion$
+		 * @mavengroupid $GroupId$
+		 * @mavenartifactid $ArtifactId$
+		 */
+		public static class InfiniteTask implements Procedure1<Agent> {
+
+			@Override
+			public void apply(Agent it) {
+				while (true) {
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						//
+					}
+				}
+			}
+
 		}
 
 		/**
@@ -428,14 +553,6 @@ public class SchedulesSkillTest {
 				return false;
 			}
 
-		}
-
-		@Test
-		public void every() throws Exception {
-			runJanus(SchedulesRunTestAgent1.class, false);
-			assertEquals(2, getNumberOfResults());
-			assertEquals(0, getResult(Integer.class, 0));
-			assertEquals(1, getResult(Integer.class, 1));
 		}
 
 		/**
@@ -466,14 +583,6 @@ public class SchedulesSkillTest {
 
 		}
 
-		@Test
-		public void atFixedDelay() throws Exception {
-			runJanus(SchedulesRunTestAgent2.class, false);
-			assertEquals(2, getNumberOfResults());
-			assertEquals(0, getResult(Integer.class, 0));
-			assertEquals(1, getResult(Integer.class, 1));
-		}
-
 		/**
 		 * @author $Author: sgalland$
 		 * @version $FullVersion$
@@ -499,164 +608,192 @@ public class SchedulesSkillTest {
 				});
 				return false;
 			}
-
 		}
 
-		@Test
-		public void atFixedDelay_zeroDelay() throws Exception {
-			runJanus(SchedulesRunTestAgent3.class, false);
-			assertEquals(2, getNumberOfResults());
-			assertEquals(0, getResult(Integer.class, 0));
-			assertEquals(1, getResult(Integer.class, 1));
-		}
+				/**
+				 * @author $Author: sgalland$
+				 * @version $FullVersion$
+				 * @mavengroupid $GroupId$
+				 * @mavenartifactid $ArtifactId$
+				 */
+				@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
+				public static class SchedulesRunTestAgent3 extends TestingAgent {
 
-		/**
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
-		 */
-		@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
-		public static class SchedulesRunTestAgent3 extends TestingAgent {
+					private final AtomicInteger index = new AtomicInteger();
 
-			private final AtomicInteger index = new AtomicInteger();
-
-			public SchedulesRunTestAgent3(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
-				super(provider, parentID, agentID);
-			}
-
-			@Override
-			protected boolean runAgentTest() {
-				getSkill(Schedules.class).atFixedDelay(0, (it) -> {
-					addResult(this.index.getAndIncrement());
-					if (this.index.get() >= 2) {
-						forceKillMe();
+					public SchedulesRunTestAgent3(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
+						super(provider, parentID, agentID);
 					}
-				});
-				return false;
-			}
 
-		}
-
-		@Test
-		public void execute() throws Exception {
-			runJanus(SchedulesRunTestAgent4.class, false);
-			assertEquals(1, getNumberOfResults());
-			assertEquals(Boolean.TRUE, getResult(Boolean.class, 0));
-		}
-
-		/**
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
-		 */
-		@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
-		public static class SchedulesRunTestAgent4 extends TestingAgent {
-
-			public SchedulesRunTestAgent4(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
-				super(provider, parentID, agentID);
-			}
-
-			@Override
-			protected boolean runAgentTest() {
-				getSkill(Schedules.class).execute((it) -> {
-					addResult(Boolean.TRUE);
-					forceKillMe();
-				});
-				return false;
-			}
-
-		}
-
-		@Test
-		public void cancel_infiniteLoop() throws Exception {
-			runJanus(SchedulesRunTestAgent5.class, false);
-			assertEquals(2, getNumberOfResults());
-			assertEquals(0, getResult(Integer.class, 0));
-			assertEquals(1, getResult(Integer.class, 1));
-		}
-
-		/**
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
-		 */
-		@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
-		public static class SchedulesRunTestAgent5 extends TestingAgent {
-
-			private final AtomicInteger index = new AtomicInteger();
-
-			public SchedulesRunTestAgent5(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
-				super(provider, parentID, agentID);
-			}
-
-			@Override
-			protected boolean runAgentTest() {
-				final AgentTask task = getSkill(Schedules.class).task(null);
-				getSkill(Schedules.class).atFixedDelay(task, 0, (it) -> {
-					if (this.index.get() >= 2) {
-						throw new IllegalStateException();
+					@Override
+					protected boolean runAgentTest() {
+						getSkill(Schedules.class).atFixedDelay(0, (it) -> {
+							addResult(this.index.getAndIncrement());
+							if (this.index.get() >= 2) {
+								forceKillMe();
+							}
+						});
+						return false;
 					}
-					addResult(this.index.getAndIncrement());
-					if (this.index.get() >= 2) {
-						getSkill(Schedules.class).cancel(task);
+
+				}
+
+				/**
+				 * @author $Author: sgalland$
+				 * @version $FullVersion$
+				 * @mavengroupid $GroupId$
+				 * @mavenartifactid $ArtifactId$
+				 */
+				@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
+				public static class SchedulesRunTestAgent4 extends TestingAgent {
+
+					public SchedulesRunTestAgent4(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
+						super(provider, parentID, agentID);
 					}
-					SchedulesSkill skill = (SchedulesSkill) getSkill(Schedules.class);
-					if (skill.getActiveTasks().isEmpty()) {
-						forceKillMe();
+
+					@Override
+					protected boolean runAgentTest() {
+						getSkill(Schedules.class).execute((it) -> {
+							addResult(Boolean.TRUE);
+							forceKillMe();
+						});
+						return false;
 					}
-				});
-				return false;
+
+				}
+
+				/**
+				 * @author $Author: sgalland$
+				 * @version $FullVersion$
+				 * @mavengroupid $GroupId$
+				 * @mavenartifactid $ArtifactId$
+				 */
+				@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
+				public static class SchedulesRunTestAgent5 extends TestingAgent {
+
+					private final AtomicInteger index = new AtomicInteger();
+
+					public SchedulesRunTestAgent5(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
+						super(provider, parentID, agentID);
+					}
+
+					@Override
+					protected boolean runAgentTest() {
+						final AgentTask task = getSkill(Schedules.class).task(null);
+						getSkill(Schedules.class).atFixedDelay(task, 0, (it) -> {
+							if (this.index.get() >= 2) {
+								throw new IllegalStateException();
+							}
+							addResult(this.index.getAndIncrement());
+							if (this.index.get() >= 2) {
+								getSkill(Schedules.class).cancel(task);
+							}
+							SchedulesSkill skill = (SchedulesSkill) getSkill(Schedules.class);
+							if (skill.getActiveTasks().isEmpty()) {
+								forceKillMe();
+							}
+						});
+						return false;
+					}
+
+				}
+
+				/**
+				 * @author $Author: sgalland$
+				 * @version $FullVersion$
+				 * @mavengroupid $GroupId$
+				 * @mavenartifactid $ArtifactId$
+				 */
+				@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
+				public static class SchedulesRunTestAgent6 extends TestingAgent {
+
+					private final AtomicInteger index = new AtomicInteger();
+
+					public SchedulesRunTestAgent6(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
+						super(provider, parentID, agentID);
+					}
+
+					@Override
+					protected boolean runAgentTest() {
+						final AgentTask task = getSkill(Schedules.class).task(null);
+						getSkill(Schedules.class).every(task, 500, (it) -> {
+							if (this.index.get() >= 2) {
+								throw new IllegalStateException();
+							}
+							addResult(this.index.getAndIncrement());
+							if (this.index.get() >= 2) {
+								getSkill(Schedules.class).cancel(task);
+							}
+							SchedulesSkill skill = (SchedulesSkill) getSkill(Schedules.class);
+							if (skill.getActiveTasks().isEmpty()) {
+								forceKillMe();
+							}
+						});
+						return false;
+					}
+
+				}
+
+				@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
+				public static class InitiatorTestingAgent extends TestingAgent {
+
+					protected final ReflectExtensions ext = new ReflectExtensions();
+
+					public InitiatorTestingAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
+						super(provider, parentID, agentID);
+					}
+
+					@PerceptGuardEvaluator
+					private void onDestroyGuard(Destroy event, Collection<Runnable> handlers) {
+						handlers.add(() -> onDestroy(event, event));
+					}
+
+					private void onDestroy(Destroy it, Destroy occurrence) {
+						try {
+							addResult(this.ext.invoke(getSkill(Schedules.class), "getActiveTasks"));
+						} catch (Exception e) {
+							addResult(e);
+						}
+					}
+
+					@Override
+					protected boolean runAgentTest() {
+						BehaviorTest beh = new BehaviorTest(this);
+						getSkill(Behaviors.class).registerBehavior(beh);
+						Schedules schedules = getSkill(Schedules.class);
+						AgentTask xxx = schedules.task("XXX");
+						schedules.in(xxx, 1000, (it) -> {
+							getSkill(Behaviors.class).unregisterBehavior(beh);
+							try {
+								addResult(this.ext.invoke(schedules, "getActiveTasks"));
+							} catch (Exception e) {
+								addResult(e);
+							}
+							getSkill(Lifecycle.class).killMe();
+						});
+						return false;
+					}
+
+				}
+
+				@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
+				public static class BehaviorTest extends Behavior {
+
+					public BehaviorTest(Agent agent) {
+						super(agent);
+					}
+
+					@PerceptGuardEvaluator
+					private void onInitializeGuard(Initialize event, Collection<Runnable> handlers) {
+						handlers.add(() -> onInitialize(event, event));
+					}
+
+					private void onInitialize(Initialize it, Initialize occurrence) {
+						getSkill(Schedules.class).in(0, new InfiniteTask());
+					}
+
+				}
+
 			}
 
 		}
-
-		@Test
-		public void cancel_everyTask() throws Exception {
-			runJanus(SchedulesRunTestAgent6.class, false);
-			assertEquals(2, getNumberOfResults());
-			assertEquals(0, getResult(Integer.class, 0));
-			assertEquals(1, getResult(Integer.class, 1));
-		}
-
-		/**
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
-		 */
-		@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
-		public static class SchedulesRunTestAgent6 extends TestingAgent {
-
-			private final AtomicInteger index = new AtomicInteger();
-
-			public SchedulesRunTestAgent6(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
-				super(provider, parentID, agentID);
-			}
-
-			@Override
-			protected boolean runAgentTest() {
-				final AgentTask task = getSkill(Schedules.class).task(null);
-				getSkill(Schedules.class).every(task, 500, (it) -> {
-					if (this.index.get() >= 2) {
-						throw new IllegalStateException();
-					}
-					addResult(this.index.getAndIncrement());
-					if (this.index.get() >= 2) {
-						getSkill(Schedules.class).cancel(task);
-					}
-					SchedulesSkill skill = (SchedulesSkill) getSkill(Schedules.class);
-					if (skill.getActiveTasks().isEmpty()) {
-						forceKillMe();
-					}
-				});
-				return false;
-			}
-
-		}
-
-	}
-
-}

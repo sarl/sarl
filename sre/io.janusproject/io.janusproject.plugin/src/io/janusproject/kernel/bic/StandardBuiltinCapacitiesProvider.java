@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,15 +59,36 @@ import io.sarl.util.OpenEventSpaceSpecification;
  */
 public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvider {
 
-	/** Order of installation of the BIC skills, except InternalEventBusSkill.
-	 * The skills that are not present in the table are assumed to be installed after all the others.
+	/** Order of installation of the BIC skills.
+	 *
+	 * <p>The skills that are not present in the table are assumed to be installed after all the others.
 	 */
 	@SuppressWarnings("unchecked")
 	static final Class<? extends BuiltinSkill>[] SKILL_INSTALLATION_ORDER = new Class[] {
-		InternalEventBusSkill.class, MicroKernelSkill.class, InnerContextSkill.class,
-		BehaviorsSkill.class, LifecycleSkill.class,
-		ExternalContextAccessSkill.class, DefaultContextInteractionsSkill.class,
-		SchedulesSkill.class, LoggingSkill.class, TimeSkill.class,
+		//
+		// The order depends on the dependencies of the skill to the other capacities:
+		// a skill using a capacity should be launched after the skill implemented this latter capacity.
+		//
+		// MicroKernelSkill ->
+		MicroKernelSkill.class,
+		// LoggingSkill ->
+		LoggingSkill.class,
+		// TimeSkill ->
+		TimeSkill.class,
+		// SchedulesSkill -> Logging
+		SchedulesSkill.class,
+		// InternalEventBusSkill -> Logging
+		InternalEventBusSkill.class,
+		// LifecycleSkill -> InternalEventBusCapacity
+		LifecycleSkill.class,
+		// InnerContextSkill -> InternalEventBusCapacity
+		InnerContextSkill.class,
+		// DefaultContextInteractionsSkill -> Lifecycle
+		DefaultContextInteractionsSkill.class,
+		// BehaviorsSkill -> InternalEventBusCapacity, InnerContextAccess, Schedules
+		BehaviorsSkill.class,
+		// ExternalContextAccessSkill -> InternalEventBusCapacity, Behaviors
+		ExternalContextAccessSkill.class,
 	};
 
 	@Inject
@@ -109,7 +130,6 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 
 		final MicroKernelSkill microKernelSkill = new MicroKernelSkill(agent, k);
 
-		// no need to be synchronized
 		final Map<Class<? extends Capacity>, Skill> result = new HashMap<>();
 		result.put(MicroKernelCapacity.class, microKernelSkill);
 		result.put(InternalEventBusCapacity.class, eventBusSkill);

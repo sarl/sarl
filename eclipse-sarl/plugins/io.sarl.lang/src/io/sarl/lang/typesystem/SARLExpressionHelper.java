@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
-import com.google.inject.Singleton;
 import org.eclipse.xtend.core.typing.XtendExpressionHelper;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
@@ -59,21 +59,73 @@ import io.sarl.lang.util.Utils;
 @Singleton
 public class SARLExpressionHelper extends XtendExpressionHelper {
 
-	/** Regular expression pattern that matches the names of functions usually
+	/** Regular expression patterns that matches the names of functions usually
 	 * considered as pure.
 	 */
-	public static final String SPECIAL_PURE_FUNCTION_NAME_PATTERN =
-			"^(((is)|(get)|(has))[A-Z].*)|(get)|(equals)|(hashCode)|(clone)|(toString)$"; //$NON-NLS-1$;
+	public static final String[] SPECIAL_PURE_FUNCTION_NAME_PATTERNS = {
+		"clone", //$NON-NLS-1$
+		"contains(?:[A-Z1-9].*)?", //$NON-NLS-1$
+		"equals", //$NON-NLS-1$
+		"get(?:[A-Z1-9].*)?", //$NON-NLS-1$
+		"has[A-Z1-9].*", //$NON-NLS-1$
+		"hashCode", //$NON-NLS-1$
+		"is[A-Z].*", //$NON-NLS-1$
+		"iterator", //$NON-NLS-1$
+		"length", //$NON-NLS-1$
+		"to[A-Z1-9].*", //$NON-NLS-1$
+		"size", //$NON-NLS-1$
+	};
 
-	private final Pattern pattern;
+	private Pattern pattern;
 
 	@Inject
 	private CommonTypeComputationServices services;
 
 	/** Construct the helper.
+	 *
+	 * @param additionalSpecialPureFunctionNamePatterns the patterns for the functions that are considered as pure functions.
+	 * @see #SPECIAL_PURE_FUNCTION_NAME_PATTERNS
+	 */
+	public SARLExpressionHelper(String... additionalSpecialPureFunctionNamePatterns) {
+		this.pattern = buildPattern(additionalSpecialPureFunctionNamePatterns);
+	}
+
+	/** Construct the helper.
+	 *
+	 * @see #SPECIAL_PURE_FUNCTION_NAME_PATTERNS
 	 */
 	public SARLExpressionHelper() {
-		this.pattern = Pattern.compile(SPECIAL_PURE_FUNCTION_NAME_PATTERN);
+		this.pattern = buildPattern();
+	}
+
+	private static Pattern buildPattern(String... additionalPatterns) {
+		final StringBuilder fullPattern = new StringBuilder();
+		fullPattern.append("^"); //$NON-NLS-1$
+		boolean hasPattern = false;
+		for (final String pattern : SPECIAL_PURE_FUNCTION_NAME_PATTERNS) {
+			if (hasPattern) {
+				fullPattern.append("|"); //$NON-NLS-1$
+			} else {
+				hasPattern = true;
+			}
+			fullPattern.append("(?:"); //$NON-NLS-1$
+			fullPattern.append(pattern);
+			fullPattern.append(")"); //$NON-NLS-1$
+		}
+		if (additionalPatterns != null && additionalPatterns.length > 0) {
+			for (final String pattern : additionalPatterns) {
+				if (hasPattern) {
+					fullPattern.append("|"); //$NON-NLS-1$
+				} else {
+					hasPattern = true;
+				}
+				fullPattern.append("(?:"); //$NON-NLS-1$
+				fullPattern.append(pattern);
+				fullPattern.append(")"); //$NON-NLS-1$
+			}
+		}
+		fullPattern.append("$"); //$NON-NLS-1$
+		return Pattern.compile(fullPattern.toString());
 	}
 
 	@Override

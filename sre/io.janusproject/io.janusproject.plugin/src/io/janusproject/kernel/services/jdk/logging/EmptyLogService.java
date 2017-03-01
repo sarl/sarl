@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@ import io.janusproject.services.logging.LogService;
 
 /**
  * This class provides an implementation of the {@link LogService} that outputs nothing.
+ *
+ * <p>This service is thread-safe.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -93,7 +95,17 @@ public class EmptyLogService extends AbstractService implements LogService {
 	}
 
 	@Override
+	public void warning(Throwable exception) {
+		//
+	}
+
+	@Override
 	public void error(String message, Object... params) {
+		//
+	}
+
+	@Override
+	public void error(Throwable exception) {
 		//
 	}
 

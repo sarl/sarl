@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,8 +35,10 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.util.Collections3;
 import io.sarl.util.OpenEventSpace;
@@ -57,6 +59,8 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 
 	private final Address agentAddressInInnerDefaultSpace;
 
+	private ClearableReference<Skill> skillBufferInternalEventBusCapacity;
+
 	/**
 	 * Context inside the agent.
 	 */
@@ -72,6 +76,17 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	InnerContextSkill(Agent agent, Address agentAddressInInnerDefaultSpace) {
 		super(agent);
 		this.agentAddressInInnerDefaultSpace = agentAddressInInnerDefaultSpace;
+	}
+
+	/** Replies the InternalEventBusCapacity skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final InternalEventBusCapacity getInternalEventBusCapacitySkill() {
+		if (this.skillBufferInternalEventBusCapacity == null || this.skillBufferInternalEventBusCapacity.get() == null) {
+			this.skillBufferInternalEventBusCapacity = $getSkill(InternalEventBusCapacity.class);
+		}
+		return $castSkill(InternalEventBusCapacity.class, this.skillBufferInternalEventBusCapacity);
 	}
 
 	@Override
@@ -107,15 +122,17 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	}
 
 	@Override
-	protected void uninstall() {
-		final AgentContext context = this.innerContext;
-		this.innerContext = null;
-		if (context != null) {
-			// Unregister the agent from the default space
-			final EventListener listener = getSkill(InternalEventBusCapacity.class).asEventListener();
-			((OpenEventSpace) context.getDefaultSpace()).unregister(listener);
-			// Destroy the context
-			this.contextService.removeContext(context);
+	protected void uninstall(UninstallationStage stage) {
+		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
+			final AgentContext context = this.innerContext;
+			this.innerContext = null;
+			if (context != null) {
+				// Unregister the agent from the default space
+				final EventListener listener = getInternalEventBusCapacitySkill().asEventListener();
+				((OpenEventSpace) context.getDefaultSpace()).unregister(listener);
+				// Destroy the context
+				this.contextService.removeContext(context);
+			}
 		}
 	}
 
@@ -127,7 +144,7 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 					this.agentAddressInInnerDefaultSpace.getSpaceId().getContextID(),
 					this.agentAddressInInnerDefaultSpace.getSpaceId().getID());
 			// Register the agent in the default space
-			final EventListener listener = getSkill(InternalEventBusCapacity.class).asEventListener();
+			final EventListener listener = getInternalEventBusCapacitySkill().asEventListener();
 			final OpenEventSpace defSpace = (OpenEventSpace) this.innerContext.getDefaultSpace();
 			defSpace.register(listener);
 		}

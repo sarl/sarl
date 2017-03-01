@@ -763,11 +763,13 @@ describe "Built-in Capacity Reference" {
 			 *     emit(new Event, Scopes::addresses(a1, a2))
 			 * 
 			 * 
+			 * <p>The complete list of the functions that are provided by the `Scopes` class is
+			 * accessible on the <a href="http://www.sarl.io/docs/api/index.html?io/sarl/util/Scopes.html">Scopes API documentation</a>.
 			 * 
 			 * <p>You are free to create new implementation of `Scope`
 			 * in order to filter the receivers of an event according to your
 			 * own criteria.
-			 *  
+			 *
 			 * @filter(.*) 
 			 */
 			fact "Sending an Event to Specific Agents in the Default Space"{
@@ -787,6 +789,7 @@ describe "Built-in Capacity Reference" {
 							emit(e, Scopes::addresses(a1, a2))
 						}
 					}".parseSuccessfully
+				"http://www.sarl.io/docs/api/index.html?io/sarl/util/Scopes.html" should beApiURL ""
 			}
 
 			/* The `DefaultContextInteractions` provides a collection of utility functions
@@ -1389,6 +1392,16 @@ describe "Built-in Capacity Reference" {
 			 * When a behavior is registered, it is receiving the events
 			 * in the default space of the inner context of the agent, or
 			 * received by the agent itself.
+			 *
+			 * <p>An example of call to the registration function is:
+			 * 
+			 *     var beh = new MyBehavior
+			 *     registerBehavior(beh)
+			 *
+			 * <p>According to the SARL syntax reference, the example could be also written as: 
+			 * 
+			 *     var beh = new MyBehavior
+			 *     beh.registerBehavior
 			 * 
 			 * @filter(.*) 
 			 */
@@ -1439,6 +1452,55 @@ describe "Built-in Capacity Reference" {
 							var c : Behavior
 							b = new B(this)
 							c = unregisterBehavior(b)
+						}
+					}".parseSuccessfully
+			}
+
+			/* Assuming that a behavior was already defined,
+			 * it is possible for an agent to register this behavior that may received only the events
+			 * matching a specific filtering function. For registering such a behavior with its filter,
+			 * the following function could be used:
+			 * 
+			 *     def registerBehavior(attitude : Behavior, filter : (Event) -> boolean) : Behavior
+			 *
+			 * 
+			 * <p>This function takes the behavior to be registered, and replies the
+			 * same behavior.
+			 * When a behavior is registered, it is receiving the events that are matching the given
+			 * filter in the default space of the inner context of the agent, or
+			 * received by the agent itself.
+			 * The filtering function is invoked for each event that should be given to the behavior.
+			 * If the filtering function replies {@code true}, the event is really dispatching into the
+			 * behavior. If the function replies {@code false}, the event is discarded to the behavior.
+			 *
+			 * <p>An example of call to the registration function is:
+			 * 
+			 *     var beh = new MyBehavior
+			 *     registerBehavior(beh, [event | event instanceof MyEvent])
+			 *
+			 * <p>According to the SARL syntax reference, the example could be also written as: 
+			 * 
+			 *     var beh = new MyBehavior
+			 *     beh.registerBehavior [event | event instanceof MyEvent]
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Registering a Behavior with an event filter"{
+				// Test the URL in the introduction of this section
+				"BehaviorReferenceSpec.html" should beAccessibleFrom this
+				//
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Behaviors
+					import io.sarl.lang.core.Behavior
+					behavior B {
+					}
+					agent A {
+						uses Behaviors
+						def myaction {
+							var b : B
+							var c : Behavior
+							b = new B(this)
+							c = registerBehavior(b) [true]
 						}
 					}".parseSuccessfully
 			}

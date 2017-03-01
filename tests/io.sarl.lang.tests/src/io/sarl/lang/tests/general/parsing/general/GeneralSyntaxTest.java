@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,6 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 		validate(mas).assertWarning(
 				XtypePackage.eINSTANCE.getXImportDeclaration(),
 				IssueCodes.IMPORT_WILDCARD_DEPRECATED,
-				35, 47,
 				"The use of wildcard imports is deprecated");
 	}
 
@@ -79,7 +78,6 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlScript(),
 				SyntaxIssueCodes.USED_RESERVED_KEYWORD,
-				26, 1,
 				"'behavior' is a reserved keyword which is not allowed as identifier.");
 	}
 
@@ -91,7 +89,6 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlScript(),
 				SyntaxIssueCodes.USED_RESERVED_KEYWORD,
-				26, 1,
 				"'null' is a reserved keyword which is not allowed as identifier.");
 	}
 

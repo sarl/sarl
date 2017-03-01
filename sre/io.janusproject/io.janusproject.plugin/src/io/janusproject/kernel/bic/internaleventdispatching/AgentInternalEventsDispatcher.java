@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,23 +23,22 @@ package io.janusproject.kernel.bic.internaleventdispatching;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.StreamSupport;
 
 import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
 import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.OutputParameter;
-import org.eclipse.xtext.xbase.lib.Pair;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import io.janusproject.services.executor.ExecutorService;
 
 import io.sarl.eventdispatching.BehaviorGuardEvaluator;
 import io.sarl.eventdispatching.BehaviorGuardEvaluatorRegistry;
-import io.sarl.lang.core.DeadEvent;
 import io.sarl.lang.core.Event;
 
 /**
@@ -63,26 +62,6 @@ public class AgentInternalEventsDispatcher {
 	private final BehaviorGuardEvaluatorRegistry behaviorGuardEvaluatorRegistry;
 
 	/**
-	 * Per-thread queue of events to dispatch.
-	 */
-	private final ThreadLocal<Queue<Pair<Event, Collection<Runnable>>>> queue = new ThreadLocal<Queue<Pair<Event, Collection<Runnable>>>>() {
-		@Override
-		protected Queue<Pair<Event, Collection<Runnable>>> initialValue() {
-			return Queues.newArrayDeque();
-		}
-	};
-
-	/**
-	 * Per-thread dispatch state, used to avoid reentrant event dispatching.
-	 */
-	private final ThreadLocal<Boolean> dispatching = new ThreadLocal<Boolean>() {
-		@Override
-		protected Boolean initialValue() {
-			return Boolean.FALSE;
-		}
-	};
-
-	/**
 	 * The executor used to execute behavior methods in dedicated thread.
 	 */
 	private final ExecutorService executor;
@@ -101,11 +80,17 @@ public class AgentInternalEventsDispatcher {
 	/**
 	 * Registers all {@code PerceptGuardEvaluator} methods on {@code object} to receive events.
 	 *
+	 * <p>If the filter is provided, it will be used for determining if the given behavior accepts a specific event.
+	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
+	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context.
+	 *
 	 * @param object object whose {@code PerceptGuardEvaluator} methods should be registered.
+	 * @param filter - the filter function. It could be {@code null}.
+	 * @param callback function which is invoked just after the first registration of the object. It could be {@code null}.
 	 */
-	public void register(Object object) {
+	public void register(Object object, Function1<? super Event, ? extends Boolean> filter, Procedure1<Object> callback) {
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
-			this.behaviorGuardEvaluatorRegistry.register(object);
+			this.behaviorGuardEvaluatorRegistry.register(object, filter, callback);
 		}
 	}
 
@@ -113,27 +98,30 @@ public class AgentInternalEventsDispatcher {
 	 * Unregisters all {@code PerceptGuardEvaluator} methods on a registered {@code object}.
 	 *
 	 * @param object object whose {@code PerceptGuardEvaluator} methods should be unregistered.
+	 * @param callback function which is invoked just before the object is unregistered.
 	 * @throws IllegalArgumentException if the object was not previously registered.
 	 */
-	public void unregister(Object object) {
+	public void unregister(Object object, Procedure1<Object> callback) {
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
-			this.behaviorGuardEvaluatorRegistry.unregister(object);
+			this.behaviorGuardEvaluatorRegistry.unregister(object, callback);
 		}
 	}
 
 	/**
 	 * Unregisters all {@code PerceptGuardEvaluator} methods on all registered objects.
 	 *
+	 * @param callback function which is invoked just before the object is unregistered.
 	 * @throws IllegalArgumentException if the object was not previously registered.
 	 */
-	public void unregisterAll() {
+	public void unregisterAll(Procedure1<Object> callback) {
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
-			this.behaviorGuardEvaluatorRegistry.unregisterAll();
+			this.behaviorGuardEvaluatorRegistry.unregisterAll(callback);
 		}
 	}
 
 	/**
-	 * Posts an event to all registered {@code BehaviorGuardEvaluator}, the dispatch of this event will be done synchronously.
+	 * Posts an event to all registered {@code BehaviorGuardEvaluator}.
+	 * The dispatch of this event will be done synchronously.
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
 	 *
@@ -141,16 +129,16 @@ public class AgentInternalEventsDispatcher {
 	 */
 	public void immediateDispatch(Event event) {
 		assert event != null;
-		Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
+		Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
 			behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
 					.getBehaviorGuardEvaluators(event);
 		}
-		if (behaviorGuardEvaluators != null && !behaviorGuardEvaluators.isEmpty()) {
+		if (behaviorGuardEvaluators != null) {
 			final Collection<Runnable> behaviorsMethodsToExecute;
 			try {
 				behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
-				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(event, behaviorsMethodsToExecute);
+				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute);
 			} catch (RuntimeException exception) {
 				throw exception;
 			} catch (InterruptedException | ExecutionException | InvocationTargetException e) {
@@ -170,33 +158,68 @@ public class AgentInternalEventsDispatcher {
 	}
 
 	/**
-	 * Posts an event to all registered {@code BehaviorGuardEvaluator}, the dispatch of this event will be done asynchronously.
+	 * Posts an event to the registered {@code BehaviorGuardEvaluator} of the given listener only.
+	 * The dispatch of this event will be done synchronously.
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
 	 *
-	 * <p>
-	 * If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
-	 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
-	 * </p>
+	 * @param listener - the listener to dispatch to.
+	 * @param event - an event to dispatch synchronously.
+	 */
+	public void immediateDispatchTo(Object listener, Event event) {
+		assert event != null;
+		Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
+		synchronized (this.behaviorGuardEvaluatorRegistry) {
+			behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
+					.getBehaviorGuardEvaluatorsFor(event, listener);
+		}
+		if (behaviorGuardEvaluators != null) {
+			final Collection<Runnable> behaviorsMethodsToExecute;
+			try {
+				behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
+				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute);
+			} catch (RuntimeException exception) {
+				throw exception;
+			} catch (InterruptedException | ExecutionException | InvocationTargetException e) {
+				throw new RuntimeException(e);
+			}
+
+		}
+		/*
+		 * <p>If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
+		 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
+		 */
+		// XXX: not in the SARL specifications. Should we fire the DeadEvent?
+		/*else if (!(event instanceof DeadEvent)) {
+			// the event had no subscribers and was not itself a DeadEvent
+			immediateDispatch(new DeadEvent(event));
+		}*/
+	}
+
+	/**
+	 * Posts an event to all registered {@code BehaviorGuardEvaluator}.
+	 * The dispatch of this event will be done asynchronously.
+	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
+	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
+	 *
 	 * @param event - an event to dispatch asynchronously.
 	 */
 	public void asyncDispatch(Event event) {
 		assert event != null;
 		this.executor.execute(() -> {
-			Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
+			Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
 			synchronized (AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry) {
 				behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
 						.getBehaviorGuardEvaluators(event);
 			}
-			if (behaviorGuardEvaluators != null && !behaviorGuardEvaluators.isEmpty()) {
-
+			if (behaviorGuardEvaluators != null) {
 				final Collection<Runnable> behaviorsMethodsToExecute;
 				try {
 					behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
 				} catch (InvocationTargetException e) {
 					throw new RuntimeException(e);
 				}
-				executeAsynchronouslyBehaviorMethods(event, behaviorsMethodsToExecute);
+				executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute);
 
 			}
 			// XXX: Not in the SAR specification, should we fire the DeadEvent?
@@ -217,12 +240,12 @@ public class AgentInternalEventsDispatcher {
 	 * @throws InvocationTargetException - exception when you try to execute a method by reflection and this method doesn't exist.
 	 */
 	private static Collection<Runnable> evaluateGuards(final Event event,
-			final Collection<BehaviorGuardEvaluator> behaviorGuardEvaluators) throws InvocationTargetException {
+			final Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators) throws InvocationTargetException {
 
 		final MultiCollection<Runnable> behaviorsMethodsToExecute = new MultiCollection<>();
 
 		try {
-			behaviorGuardEvaluators.parallelStream().forEach((evaluator) -> {
+			StreamSupport.stream(behaviorGuardEvaluators.spliterator(), true).forEach((evaluator) -> {
 				try {
 					final Collection<Runnable> behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
 					evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
@@ -250,14 +273,12 @@ public class AgentInternalEventsDispatcher {
 	 *
 	 * <p>This function may fail if one of the called handlers has failed. Errors are logged by the executor service too.
 	 *
-	 * @param event - the event occurrence that has activated the specified behaviors, used just for indexing purpose but not
-	 *        passed to runnable here, they were created according to this occurrence
 	 * @param behaviorsMethodsToExecute - the collection of Behaviors runnable that must be executed.
 	 * @throws InterruptedException - something interrupt the waiting of the event handler terminations.
 	 * @throws ExecutionException - when the event handlers cannot be called; or when one of the event handler has failed during
 	 *     its run.
 	 */
-	private void executeBehaviorMethodsInParalellWithSynchroAtTheEnd(Event event, Collection<Runnable> behaviorsMethodsToExecute)
+	private void executeBehaviorMethodsInParalellWithSynchroAtTheEnd(Collection<Runnable> behaviorsMethodsToExecute)
 			throws InterruptedException, ExecutionException {
 
 		final CountDownLatch doneSignal = new CountDownLatch(behaviorsMethodsToExecute.size());
@@ -299,30 +320,12 @@ public class AgentInternalEventsDispatcher {
 	 *
 	 * <p>This function never fails. Errors in the event handlers are logged by the executor service.
 	 *
-	 * @param event - the event occurrence that has activated the specified behaviors, used just for indexing purpose but not
-	 *        passed to runnable here, they were created according to this occurrence
 	 * @param behaviorsMethodsToExecute - the collection of Behaviors runnable that must be executed.
 	 */
-	private void executeAsynchronouslyBehaviorMethods(Event event, Collection<Runnable> behaviorsMethodsToExecute) {
-
-		final Queue<Pair<Event, Collection<Runnable>>> queueForThread = this.queue.get();
-		queueForThread.offer(new Pair<>(event, behaviorsMethodsToExecute));
-
-		if (!this.dispatching.get().booleanValue()) {
-			this.dispatching.set(Boolean.TRUE);
-			try {
-				Pair<Event, Collection<Runnable>> nextEvent;
-				while ((nextEvent = queueForThread.poll()) != null) {
-					for (final Runnable runnable : nextEvent.getValue()) {
-						this.executor.execute(runnable);
-					}
-				}
-			} finally {
-				this.dispatching.remove();
-				this.queue.remove();
-			}
+	private void executeAsynchronouslyBehaviorMethods(Collection<Runnable> behaviorsMethodsToExecute) {
+		for (final Runnable runnable : behaviorsMethodsToExecute) {
+			this.executor.execute(runnable);
 		}
-
 	}
 
 }

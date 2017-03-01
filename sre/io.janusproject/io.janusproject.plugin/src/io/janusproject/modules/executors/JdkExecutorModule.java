@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,16 +22,22 @@
 package io.janusproject.modules.executors;
 
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 
+import io.janusproject.JanusConfig;
 import io.janusproject.kernel.services.jdk.executors.JdkExecutorService;
-import io.janusproject.kernel.services.jdk.executors.JdkScheduledThreadPoolExecutor;
-import io.janusproject.kernel.services.jdk.executors.JdkThreadFactory;
-import io.janusproject.kernel.services.jdk.executors.JdkThreadPoolExecutor;
+import io.janusproject.kernel.services.jdk.executors.JdkRejectedExecutionHandler;
 import io.janusproject.kernel.services.jdk.executors.JdkUncaughtExceptionHandler;
 import io.janusproject.services.executor.ExecutorService;
 
@@ -50,14 +56,106 @@ public class JdkExecutorModule extends AbstractModule {
 	protected void configure() {
 		// Thread catchers
 		bind(UncaughtExceptionHandler.class).to(JdkUncaughtExceptionHandler.class).in(Singleton.class);
+		bind(RejectedExecutionHandler.class).to(JdkRejectedExecutionHandler.class).in(Singleton.class);
 
 		// Bind the background objects
-		bind(ThreadFactory.class).to(JdkThreadFactory.class).in(Singleton.class);
-		bind(java.util.concurrent.ExecutorService.class).to(JdkThreadPoolExecutor.class).in(Singleton.class);
-		bind(ScheduledExecutorService.class).to(JdkScheduledThreadPoolExecutor.class).in(Singleton.class);
+		//bind(ThreadFactory.class).to(JdkThreadFactory.class).in(Singleton.class);
+		//bind(java.util.concurrent.ExecutorService.class).to(JdkThreadPoolExecutor.class).in(Singleton.class);
+		//bind(ScheduledExecutorService.class).to(JdkScheduledThreadPoolExecutor.class).in(Singleton.class);
+		bind(java.util.concurrent.ExecutorService.class).toProvider(ExecutorProvider.class).in(Singleton.class);
+		bind(ScheduledExecutorService.class).toProvider(ScheduledExecutorProvider.class).in(Singleton.class);
 
 		// Bind the service
 		bind(ExecutorService.class).to(JdkExecutorService.class).in(Singleton.class);
+	}
+
+	/** Provider of a low-level executor service.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class ExecutorProvider implements Provider<java.util.concurrent.ExecutorService> {
+
+		private RejectedExecutionHandler rejectedExecutionHandler;
+
+		/** Constructor.
+		 */
+		public ExecutorProvider() {
+			//
+		}
+
+		/** Change the handler for rejected executions.
+		 *
+		 * @param handler the handler.
+		 */
+		@Inject
+		public void setRejectedExecutionHandler(RejectedExecutionHandler handler) {
+			this.rejectedExecutionHandler = handler;
+		}
+
+		@SuppressWarnings("cast")
+		@Override
+		public java.util.concurrent.ExecutorService get() {
+			final int minPoolSize = JanusConfig.getSystemPropertyAsInteger(JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME,
+					JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE);
+			final int maxPoolSize = JanusConfig.getSystemPropertyAsInteger(JanusConfig.MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME,
+					JanusConfig.MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE);
+			final int keepAliveDuration = JanusConfig.getSystemPropertyAsInteger(JanusConfig.THREAD_KEEP_ALIVE_DURATION_NAME,
+					JanusConfig.THREAD_KEEP_ALIVE_DURATION_VALUE);
+			final ThreadPoolExecutor executor = new ThreadPoolExecutor(
+					Math.max(0, Math.min(minPoolSize, maxPoolSize)),
+					Math.max(1, Math.max(minPoolSize, maxPoolSize)),
+					keepAliveDuration, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+			//final java.util.concurrent.ExecutorService executor = Executors.newWorkStealingPool(minPoolSize);
+			if (this.rejectedExecutionHandler != null && executor instanceof ThreadPoolExecutor) {
+				((ThreadPoolExecutor) executor).setRejectedExecutionHandler(this.rejectedExecutionHandler);
+			}
+			return executor;
+		}
+
+	}
+
+	/** Provider of a low-level scheduled executor service.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class ScheduledExecutorProvider implements Provider<ScheduledExecutorService> {
+
+		private RejectedExecutionHandler rejectedExecutionHandler;
+
+		/** Constructor.
+		 */
+		public ScheduledExecutorProvider() {
+			//
+		}
+
+		/** Change the handler for rejected executions.
+		 *
+		 * @param handler the handler.
+		 */
+		@Inject
+		public void setRejectedExecutionHandler(RejectedExecutionHandler handler) {
+			this.rejectedExecutionHandler = handler;
+		}
+
+		@Override
+		public ScheduledExecutorService get() {
+			final int minPoolSize = JanusConfig.getSystemPropertyAsInteger(JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME,
+					JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE);
+			final int maxPoolSize = JanusConfig.getSystemPropertyAsInteger(JanusConfig.MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME,
+					JanusConfig.MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE);
+			final ScheduledExecutorService executor = Executors.newScheduledThreadPool(Math.max(1, Math.min(minPoolSize, maxPoolSize)));
+			if (this.rejectedExecutionHandler != null && executor instanceof ThreadPoolExecutor) {
+				((ThreadPoolExecutor) executor).setRejectedExecutionHandler(this.rejectedExecutionHandler);
+			}
+			return executor;
+		}
+
 	}
 
 }
