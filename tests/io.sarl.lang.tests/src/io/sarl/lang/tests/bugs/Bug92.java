@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package io.sarl.lang.tests.bugs;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
@@ -26,10 +25,8 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmPrimitiveType;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.TypesFactory;
-import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -266,6 +263,7 @@ public class Bug92 extends AbstractSarlTest {
 				"");
 		final String expected1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -274,6 +272,30 @@ public class Bug92 extends AbstractSarlTest {
 				"  public abstract Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy);",
 				"  ",
 				"  public abstract void setVoltage(final Double currentVoltage);",
+				"  ",
+				"  public static class ContextAwareCapacityWrapper<C extends ComputeEnergyCapacity> extends Capacity.ContextAwareCapacityWrapper<C> implements ComputeEnergyCapacity {",
+				"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+				"      super(capacity, caller);",
+				"    }",
+				"    ",
+				"    public Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {",
+				"      try {",
+				"        ensureCallerInLocalThread();",
+				"        return this.capacity.getEnergy(currentTime, deltaTime, wantedEnergy);",
+				"      } finally {",
+				"        resetCallerInLocalThread();",
+				"      }",
+				"    }",
+				"    ",
+				"    public void setVoltage(final Double currentVoltage) {",
+				"      try {",
+				"        ensureCallerInLocalThread();",
+				"        this.capacity.setVoltage(currentVoltage);",
+				"      } finally {",
+				"        resetCallerInLocalThread();",
+				"      }",
+				"    }",
+				"  }",
 				"}",
 				"");
 		final String expected2 = multilineString(
@@ -281,8 +303,8 @@ public class Bug92 extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.Capacity;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.util.ClearableReference;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -299,16 +321,16 @@ public class Bug92 extends AbstractSarlTest {
 				"  @Extension",
 				"  @ImportedCapacityFeature(ComputeEnergyCapacity.class)",
 				"  @SyntheticMember",
-				"  private transient ComputeEnergyCapacity $CAPACITY_USE$COMPUTEENERGYCAPACITY;",
+				"  private transient ClearableReference<Skill> $CAPACITY_USE$COMPUTEENERGYCAPACITY;",
 				"  ",
-				"  @Inline(value = \"$CAPACITY_USE$COMPUTEENERGYCAPACITY == null ? (this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = getSkill(ComputeEnergyCapacity.class)) : this.$CAPACITY_USE$COMPUTEENERGYCAPACITY\")",
+				"  @Inline(value = \"$castSkill(ComputeEnergyCapacity.class, (this.$CAPACITY_USE$COMPUTEENERGYCAPACITY == null || this.$CAPACITY_USE$COMPUTEENERGYCAPACITY.get() == null) ? (this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = $getSkill(ComputeEnergyCapacity.class)) : this.$CAPACITY_USE$COMPUTEENERGYCAPACITY)\", imported = ComputeEnergyCapacity.class)",
 				"  @SyntheticMember",
 				"  @Pure",
 				"  private ComputeEnergyCapacity $CAPACITY_USE$COMPUTEENERGYCAPACITY$CALLER() {",
-				"    if (this.$CAPACITY_USE$COMPUTEENERGYCAPACITY == null) {",
-				"      this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = getSkill(ComputeEnergyCapacity.class);",
+				"    if (this.$CAPACITY_USE$COMPUTEENERGYCAPACITY == null || this.$CAPACITY_USE$COMPUTEENERGYCAPACITY.get() == null) {",
+				"      this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = $getSkill(ComputeEnergyCapacity.class);",
 				"    }",
-				"    return this.$CAPACITY_USE$COMPUTEENERGYCAPACITY;",
+				"    return $castSkill(ComputeEnergyCapacity.class, this.$CAPACITY_USE$COMPUTEENERGYCAPACITY);",
 				"  }",
 				"  ",
 				"  /**",
@@ -321,20 +343,6 @@ public class Bug92 extends AbstractSarlTest {
 				"  @SyntheticMember",
 				"  public DeviceAgent(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
 				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"  ",
-				"  @SyntheticMember",
-				"  @Override",
-				"  protected <S extends Skill> S $setSkill(final S skill, final Class<? extends Capacity>... capacities) {",
-				"    this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = null;",
-				"    return super.$setSkill(skill, capacities);",
-				"  }",
-				"  ",
-				"  @SyntheticMember",
-				"  @Override",
-				"  protected <S extends Capacity> S clearSkill(final Class<S> capacity) {",
-				"    this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = null;",
-				"    return super.clearSkill(capacity);",
 				"  }",
 				"}",
 				"");
@@ -388,6 +396,7 @@ public class Bug92 extends AbstractSarlTest {
 				);
 		final String expected1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -396,6 +405,30 @@ public class Bug92 extends AbstractSarlTest {
 				"  public abstract Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy);",
 				"  ",
 				"  public abstract void setVoltage(final Double currentVoltage);",
+				"  ",
+				"  public static class ContextAwareCapacityWrapper<C extends ComputeEnergyCapacity> extends Capacity.ContextAwareCapacityWrapper<C> implements ComputeEnergyCapacity {",
+				"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+				"      super(capacity, caller);",
+				"    }",
+				"    ",
+				"    public Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy) {",
+				"      try {",
+				"        ensureCallerInLocalThread();",
+				"        return this.capacity.getEnergy(currentTime, deltaTime, wantedEnergy);",
+				"      } finally {",
+				"        resetCallerInLocalThread();",
+				"      }",
+				"    }",
+				"    ",
+				"    public void setVoltage(final Double currentVoltage) {",
+				"      try {",
+				"        ensureCallerInLocalThread();",
+				"        this.capacity.setVoltage(currentVoltage);",
+				"      } finally {",
+				"        resetCallerInLocalThread();",
+				"      }",
+				"    }",
+				"  }",
 				"}",
 				"");
 		final String expected2 = multilineString(
@@ -403,8 +436,8 @@ public class Bug92 extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.Capacity;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.util.ClearableReference;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -421,16 +454,16 @@ public class Bug92 extends AbstractSarlTest {
 				"  @Extension",
 				"  @ImportedCapacityFeature(ComputeEnergyCapacity.class)",
 				"  @SyntheticMember",
-				"  private transient ComputeEnergyCapacity $CAPACITY_USE$COMPUTEENERGYCAPACITY;",
+				"  private transient ClearableReference<Skill> $CAPACITY_USE$COMPUTEENERGYCAPACITY;",
 				"  ",
-				"  @Inline(value = \"$CAPACITY_USE$COMPUTEENERGYCAPACITY == null ? (this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = getSkill(ComputeEnergyCapacity.class)) : this.$CAPACITY_USE$COMPUTEENERGYCAPACITY\")",
+				"  @Inline(value = \"$castSkill(ComputeEnergyCapacity.class, (this.$CAPACITY_USE$COMPUTEENERGYCAPACITY == null || this.$CAPACITY_USE$COMPUTEENERGYCAPACITY.get() == null) ? (this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = $getSkill(ComputeEnergyCapacity.class)) : this.$CAPACITY_USE$COMPUTEENERGYCAPACITY)\", imported = ComputeEnergyCapacity.class)",
 				"  @SyntheticMember",
 				"  @Pure",
 				"  private ComputeEnergyCapacity $CAPACITY_USE$COMPUTEENERGYCAPACITY$CALLER() {",
-				"    if (this.$CAPACITY_USE$COMPUTEENERGYCAPACITY == null) {",
-				"      this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = getSkill(ComputeEnergyCapacity.class);",
+				"    if (this.$CAPACITY_USE$COMPUTEENERGYCAPACITY == null || this.$CAPACITY_USE$COMPUTEENERGYCAPACITY.get() == null) {",
+				"      this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = $getSkill(ComputeEnergyCapacity.class);",
 				"    }",
-				"    return this.$CAPACITY_USE$COMPUTEENERGYCAPACITY;",
+				"    return $castSkill(ComputeEnergyCapacity.class, this.$CAPACITY_USE$COMPUTEENERGYCAPACITY);",
 				"  }",
 				"  ",
 				"  /**",
@@ -443,20 +476,6 @@ public class Bug92 extends AbstractSarlTest {
 				"  @SyntheticMember",
 				"  public DeviceAgent(final BuiltinCapacitiesProvider builtinCapacityProvider, final UUID parentID, final UUID agentID) {",
 				"    super(builtinCapacityProvider, parentID, agentID);",
-				"  }",
-				"  ",
-				"  @SyntheticMember",
-				"  @Override",
-				"  protected <S extends Skill> S $setSkill(final S skill, final Class<? extends Capacity>... capacities) {",
-				"    this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = null;",
-				"    return super.$setSkill(skill, capacities);",
-				"  }",
-				"  ",
-				"  @SyntheticMember",
-				"  @Override",
-				"  protected <S extends Capacity> S clearSkill(final Class<S> capacity) {",
-				"    this.$CAPACITY_USE$COMPUTEENERGYCAPACITY = null;",
-				"    return super.clearSkill(capacity);",
 				"  }",
 				"}",
 				"");

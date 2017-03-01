@@ -24,7 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -61,8 +61,11 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpaceSpecification;
+import io.sarl.lang.core.Skill;
+import io.sarl.lang.core.Skill.UninstallationStage;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.lang.util.ClearableReference;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.OpenEventSpace;
@@ -258,9 +261,17 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void uninstall() throws Exception {
+	public void uninstall_Pre() throws Exception {
 		this.reflect.invoke(this.skill, "install");
-		this.reflect.invoke(this.skill, "uninstall");
+		this.reflect.invoke(this.skill, "uninstall", UninstallationStage.PRE_DESTROY_EVENT);
+		ArgumentCaptor<EventListener> argument = ArgumentCaptor.forClass(EventListener.class);
+		verify(this.defaultSpace, never()).unregister(argument.capture());
+	}
+
+	@Test
+	public void uninstall_Post() throws Exception {
+		this.reflect.invoke(this.skill, "install");
+		this.reflect.invoke(this.skill, "uninstall", UninstallationStage.POST_DESTROY_EVENT);
 		ArgumentCaptor<EventListener> argument = ArgumentCaptor.forClass(EventListener.class);
 		verify(this.defaultSpace, new Times(1)).unregister(argument.capture());
 		assertSame(this.eventListener, argument.getValue());
@@ -422,10 +433,10 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		}
 
 		@Override
-		protected <S extends Capacity> S getSkill(Class<S> capacity) {
+		protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 			if (Behaviors.class.equals(capacity))
-				return capacity.cast(this.test.behaviorCapacity);
-			return capacity.cast(this.test.busCapacity);
+				return new ClearableReference(this.test.behaviorCapacity);
+			return new ClearableReference(this.test.busCapacity);
 		}
 
 	}

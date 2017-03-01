@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,6 +110,7 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.InferredTypeIndicator;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
@@ -137,6 +138,7 @@ import io.sarl.lang.compiler.IInlineExpressionCompiler;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
@@ -160,6 +162,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
+import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
 
@@ -702,8 +705,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				appendGeneratedAnnotation(constructor, context);
 			}
 
-			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
-
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
 
@@ -778,8 +779,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						toStringConcatenation("super(owner);")); //$NON-NLS-1$
 				appendGeneratedAnnotation(constructor, context);
 			}
-
-			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
@@ -962,8 +961,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				appendGeneratedAnnotation(constructor, context);
 			}
 
-			appendOverridingHiddenSetSkillOperation(context, source, inferredJvmType);
-
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
 
@@ -1026,6 +1023,88 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
 		} finally {
 			closeContext(context);
+		}
+
+		// Generate the internal class for context-aware wrappers
+
+		// Change the modifiers on the generated type.
+		final JvmGenericType innerType = this.typesFactory.createJvmGenericType();
+		innerType.setInterface(false);
+		innerType.setAbstract(false);
+		innerType.setVisibility(JvmVisibility.PUBLIC);
+		innerType.setStatic(true);
+		innerType.setStrictFloatingPoint(false);
+		innerType.setFinal(false);
+		final String innerTypeName = Capacity.ContextAwareCapacityWrapper.class.getSimpleName();
+		innerType.setSimpleName(innerTypeName);
+
+		inferredJvmType.getMembers().add(innerType);
+
+		final JvmTypeParameter typeParameter = this.typesFactory.createJvmTypeParameter();
+		typeParameter.setName("C"); //$NON-NLS-1$
+		final JvmUpperBound constraint = this.typesFactory.createJvmUpperBound();
+		constraint.setTypeReference(this._typeReferenceBuilder.typeRef(inferredJvmType));
+		typeParameter.getConstraints().add(constraint);
+		innerType.getTypeParameters().add(typeParameter);
+
+		final JvmTypeReference extendedType = inferredJvmType.getExtendedInterfaces().iterator().next();
+		final JvmTypeReference superType = this._typeReferenceBuilder.typeRef(
+				extendedType.getQualifiedName() + "$" + innerTypeName, //$NON-NLS-1$
+				this._typeReferenceBuilder.typeRef(typeParameter));
+		innerType.getSuperTypes().add(superType);
+
+		innerType.getSuperTypes().add(this._typeReferenceBuilder.typeRef(inferredJvmType));
+
+		final JvmConstructor constructor = this.typesFactory.createJvmConstructor();
+		constructor.setVisibility(JvmVisibility.PUBLIC);
+		innerType.getMembers().add(constructor);
+		final JvmFormalParameter parameter1 = this.typesFactory.createJvmFormalParameter();
+		parameter1.setName("capacity"); //$NON-NLS-1$
+		parameter1.setParameterType(this._typeReferenceBuilder.typeRef(typeParameter));
+		constructor.getParameters().add(parameter1);
+		final JvmFormalParameter parameter2 = this.typesFactory.createJvmFormalParameter();
+		parameter2.setName("caller"); //$NON-NLS-1$
+		parameter2.setParameterType(this._typeReferenceBuilder.typeRef(AgentTrait.class));
+		constructor.getParameters().add(parameter2);
+		setBody(constructor, (it) -> {
+			it.append("super(capacity, caller);"); //$NON-NLS-1$
+		});
+
+		final Set<ActionPrototype> createdActions = new TreeSet<>();
+		for (final JvmGenericType sourceType : Iterables.concat(
+				Collections.singletonList(inferredJvmType),
+				Iterables.transform(Iterables.skip(inferredJvmType.getExtendedInterfaces(), 1), (it) -> {
+					return (JvmGenericType) it.getType();
+				}))) {
+			copyNonStaticPublicJvmOperations(sourceType, innerType, createdActions, (operation, it) -> {
+				it.append("try {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("  ensureCallerInLocalThread();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("  "); //$NON-NLS-1$
+				if (operation.getReturnType() != null && !Objects.equal("void", operation.getReturnType().getIdentifier())) { //$NON-NLS-1$
+					it.append("return "); //$NON-NLS-1$
+				}
+				it.append("this.capacity."); //$NON-NLS-1$
+				it.append(operation.getSimpleName());
+				it.append("("); //$NON-NLS-1$
+				boolean first = true;
+				for (final JvmFormalParameter fparam : operation.getParameters()) {
+					if (first) {
+						first = false;
+					} else {
+						it.append(", "); //$NON-NLS-1$
+					}
+					it.append(fparam.getName());
+				}
+				it.append(");"); //$NON-NLS-1$
+				it.newLine();
+				it.append("} finally {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("  resetCallerInLocalThread();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("}"); //$NON-NLS-1$
+			});
 		}
 	}
 
@@ -1679,21 +1758,23 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (type instanceof JvmGenericType
 					/*&& this.inheritanceHelper.isSubTypeOf(capacityType, Capacity.class, SarlCapacity.class)*/
 					&& !context.getGeneratedCapacityUseFields().contains(capacityType.getIdentifier())) {
-				// Generate the extension field
+				// Generate the buffer field
 				final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacityType.getIdentifier());
 				final JvmField field = this.typesFactory.createJvmField();
 				field.setVisibility(JvmVisibility.PRIVATE);
 				field.setSimpleName(fieldName);
 				field.setTransient(true);
-				field.setType(this.typeBuilder.cloneWithProxies(capacityType));
+				final JvmType clearableReferenceType = this.typeReferences.findDeclaredType(ClearableReference.class, container);
+				final JvmTypeReference skillClearableReference = this.typeReferences.createTypeRef(
+						clearableReferenceType,
+						this.typeReferences.createTypeRef(this.typeReferences.findDeclaredType(Skill.class, container)));
+				field.setType(skillClearableReference);
 
 				this.associator.associatePrimary(source, field);
 
 				addAnnotationSafe(field, Extension.class);
 				field.getAnnotations().add(annotationClassRef(ImportedCapacityFeature.class,
 						Collections.singletonList(capacityType)));
-
-				// Add the annotation dedicated to this particular method
 				appendGeneratedAnnotation(field, getContext(container));
 
 				container.getMembers().add(field);
@@ -1709,25 +1790,34 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.associator.associatePrimary(source, operation);
 
 				setBody(operation, (it) -> {
-					it.append("if (this.").append(fieldName).append(" == null) {"); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append("if (this.").append(fieldName).append(" == null || this."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append(fieldName).append(".get() == null) {"); //$NON-NLS-1$
 					it.increaseIndentation();
 					it.newLine();
-					it.append("this.").append(fieldName).append(" = getSkill("); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append("this.").append(fieldName).append(" = ") //$NON-NLS-1$ //$NON-NLS-2$
+							.append(Utils.HIDDEN_MEMBER_CHARACTER).append("getSkill("); //$NON-NLS-1$
 					it.append(capacityType.getType()).append(".class);"); //$NON-NLS-1$
 					it.decreaseIndentation();
 					it.newLine();
 					it.append("}"); //$NON-NLS-1$
 					it.newLine();
-					it.append("return this.").append(fieldName).append(";"); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append("return ").append(Utils.HIDDEN_MEMBER_CHARACTER) //$NON-NLS-1$
+							.append("castSkill(").append(capacityType.getType()).append(".class, this.") //$NON-NLS-1$ //$NON-NLS-2$
+							.append(fieldName).append(");"); //$NON-NLS-1$
 				});
 
 				// Add the annotation dedicated to this particular method
 				if (context.isAtLeastJava8()) {
+					final String inlineExpression = Utils.HIDDEN_MEMBER_CHARACTER
+							+ "castSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
+							+ ".class, (this." + fieldName //$NON-NLS-1$
+							+ " == null || this." + fieldName //$NON-NLS-1$
+							+ ".get() == null) ? (this." + fieldName //$NON-NLS-1$
+							+ " = " + Utils.HIDDEN_MEMBER_CHARACTER + "getSkill(" //$NON-NLS-1$ //$NON-NLS-2$
+							+ capacityType.getSimpleName()
+							+ ".class)) : this." + fieldName + ")"; //$NON-NLS-1$ //$NON-NLS-2$;
 					this.inlineExpressionCompiler.appendInlineAnnotation(
-							operation, source.eResource().getResourceSet(), fieldName
-							+ " == null ? (this." + fieldName //$NON-NLS-1$
-							+ " = getSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
-							+ ".class)) : this." + fieldName); //$NON-NLS-1$
+							operation, source.eResource().getResourceSet(), inlineExpression, capacityType);
 				}
 				appendGeneratedAnnotation(operation, context);
 				addAnnotationSafe(operation, Pure.class);
@@ -1747,103 +1837,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void transform(SarlRequiredCapacity source, JvmGenericType container) {
 		//
-	}
-
-	/** Append the overriding of the hidden setSkill function.
-	 *
-	 * @param context the current generation context.
-	 * @param source the source object.
-	 * @param target the inferred JVM object.
-	 */
-	protected void appendOverridingHiddenSetSkillOperation(GenerationContext context, XtendTypeDeclaration source,
-			JvmGenericType target) {
-		final Set<String> usedCapacities = context.getGeneratedCapacityUseFields();
-		if (!usedCapacities.isEmpty()) {
-			appendSetSkillOperation(usedCapacities, target);
-			appendClearSkillOperation(usedCapacities, target);
-		}
-	}
-
-	private void appendClearSkillOperation(Set<String> usedCapacities, JvmGenericType target) {
-		final JvmOperation clearer = this.typesFactory.createJvmOperation();
-		clearer.setVisibility(JvmVisibility.PROTECTED);
-		final JvmTypeParameter typeParameter = this.typesFactory.createJvmTypeParameter();
-		typeParameter.setName("S"); //$NON-NLS-1$
-		final JvmTypeConstraint constraint1 = this.typesFactory.createJvmUpperBound();
-		constraint1.setTypeReference(this.typeReferences.getTypeForName(Capacity.class, target));
-		typeParameter.getConstraints().add(constraint1);
-		typeParameter.setDeclarator(clearer);
-		clearer.getTypeParameters().add(typeParameter);
-		final JvmTypeReference returnType = this.typeReferences.createTypeRef(typeParameter);
-		clearer.setReturnType(cloneWithTypeParametersAndProxies(returnType, clearer));
-		clearer.setSimpleName("clearSkill"); //$NON-NLS-1$
-
-		target.getMembers().add(clearer);
-
-		final JvmFormalParameter capacityParameter = this.typesFactory.createJvmFormalParameter();
-		capacityParameter.setName("capacity"); //$NON-NLS-1$
-		final JvmTypeReference capacityParameterType = this.typeReferences.getTypeForName(Class.class, target, returnType);
-		capacityParameter.setParameterType(this.typeBuilder.cloneWithProxies(capacityParameterType));
-		clearer.getParameters().add(capacityParameter);
-
-		setBody(clearer, (it) -> {
-			for (final String capacityId : usedCapacities) {
-				it.append("this."); //$NON-NLS-1$
-				it.append(Utils.createNameForHiddenCapacityImplementationAttribute(capacityId));
-				it.append(" = null;"); //$NON-NLS-1$
-				it.newLine();
-			}
-			it.append("return super.clearSkill(capacity);"); //$NON-NLS-1$
-		});
-
-		appendGeneratedAnnotation(clearer, getContext(target));
-		addAnnotationSafe(clearer, Override.class);
-	}
-
-	private void appendSetSkillOperation(Set<String> usedCapacities, JvmGenericType target) {
-		final JvmOperation setter = this.typesFactory.createJvmOperation();
-		setter.setVisibility(JvmVisibility.PROTECTED);
-		final JvmTypeParameter typeParameter = this.typesFactory.createJvmTypeParameter();
-		typeParameter.setName("S"); //$NON-NLS-1$
-		final JvmTypeConstraint constraint1 = this.typesFactory.createJvmUpperBound();
-		constraint1.setTypeReference(this.typeReferences.getTypeForName(Skill.class, target));
-		typeParameter.getConstraints().add(constraint1);
-		typeParameter.setDeclarator(setter);
-		setter.getTypeParameters().add(typeParameter);
-		final JvmTypeReference returnType = this.typeReferences.createTypeRef(typeParameter);
-		setter.setReturnType(cloneWithTypeParametersAndProxies(returnType, setter));
-		setter.setSimpleName(Utils.HIDDEN_MEMBER_CHARACTER + "setSkill"); //$NON-NLS-1$
-
-		target.getMembers().add(setter);
-
-		final JvmFormalParameter skillParameter = this.typesFactory.createJvmFormalParameter();
-		skillParameter.setName("skill"); //$NON-NLS-1$
-		skillParameter.setParameterType(cloneWithTypeParametersAndProxies(returnType, setter));
-		setter.getParameters().add(skillParameter);
-
-		final JvmFormalParameter capacityParameter = this.typesFactory.createJvmFormalParameter();
-		capacityParameter.setName("capacities"); //$NON-NLS-1$
-		final JvmTypeReference constraint2 = this.typeReferences.wildCardExtends(
-				this.typeReferences.getTypeForName(Capacity.class, target));
-		final JvmTypeReference capacityParameterType = this.typeReferences.createArrayType(
-				this.typeReferences.getTypeForName(Class.class, target, constraint2));
-		capacityParameter.setParameterType(this.typeBuilder.cloneWithProxies(capacityParameterType));
-		setter.getParameters().add(capacityParameter);
-		setter.setVarArgs(true);
-
-		setBody(setter, (it) -> {
-			for (final String capacityId : usedCapacities) {
-				it.append("this."); //$NON-NLS-1$
-				it.append(Utils.createNameForHiddenCapacityImplementationAttribute(capacityId));
-				it.append(" = null;"); //$NON-NLS-1$
-				it.newLine();
-			}
-			it.append("return super.").append(Utils.HIDDEN_MEMBER_CHARACTER); //$NON-NLS-1$
-			it.append("setSkill(skill, capacities);"); //$NON-NLS-1$
-		});
-
-		appendGeneratedAnnotation(setter, getContext(target));
-		addAnnotationSafe(setter, Override.class);
 	}
 
 	/** Generate the code for the given SARL members in a agent-oriented container.
@@ -2433,7 +2426,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		boolean hasDefaultValue = false;
 		for (int i = 0; i < params.size(); ++i) {
 			final XtendParameter param = params.get(i);
+			assert param != null;
 			final InferredStandardParameter inferredParam = paramSpec.get(i);
+			assert inferredParam != null;
 			final String paramName = param.getName();
 			final JvmTypeReference paramType = param.getParameterType();
 
@@ -2850,6 +2845,57 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return code.trim();
 		}
 		return code;
+	}
+
+	/** Copy the JVM operations from the source to the destination.
+	 *
+	 * @param source the source.
+	 * @param target the destination.
+	 * @param createdActions the set of actions that are created before (input) or during (output) the invocation.
+	 * @param bodyBuilder the builder of the target's operations.
+	 * @since 0.5
+	 */
+	protected void copyNonStaticPublicJvmOperations(JvmGenericType source, JvmGenericType target,
+			Set<ActionPrototype> createdActions, Procedure2<JvmOperation, ITreeAppendable> bodyBuilder) {
+		final Iterable<JvmOperation> operations = Iterables.transform(Iterables.filter(source.getMembers(), (it) -> {
+			if (it instanceof JvmOperation) {
+				final JvmOperation op = (JvmOperation) it;
+				return !op.isStatic() && op.getVisibility() == JvmVisibility.PUBLIC;
+			}
+			return false;
+		}), (it) -> (JvmOperation) it);
+		for (final JvmOperation operation : operations) {
+			final ActionParameterTypes types = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
+					operation.isVarArgs(), operation.getParameters());
+			final ActionPrototype actSigKey = this.sarlSignatureProvider.createActionPrototype(
+					operation.getSimpleName(), types);
+			if (createdActions.add(actSigKey)) {
+				final JvmOperation newOp = this.typesFactory.createJvmOperation();
+				target.getMembers().add(newOp);
+				newOp.setAbstract(false);
+				newOp.setDefault(operation.isDefault());
+				newOp.setDeprecated(operation.isDeprecated());
+				newOp.setFinal(false);
+				newOp.setNative(false);
+				newOp.setReturnType(this.typeBuilder.cloneWithProxies(operation.getReturnType()));
+				newOp.setSimpleName(operation.getSimpleName());
+				newOp.setStatic(false);
+				newOp.setStrictFloatingPoint(operation.isStrictFloatingPoint());
+				newOp.setSynchronized(operation.isSynchronized());
+				newOp.setVisibility(JvmVisibility.PUBLIC);
+
+				for (final JvmFormalParameter parameter : operation.getParameters()) {
+					final JvmFormalParameter newParam = this.typesFactory.createJvmFormalParameter();
+					newOp.getParameters().add(newParam);
+					newParam.setName(parameter.getSimpleName());
+					newParam.setParameterType(this.typeBuilder.cloneWithProxies(parameter.getParameterType()));
+				}
+
+				newOp.setVarArgs(operation.isVarArgs());
+
+				setBody(newOp, (it) -> bodyBuilder.apply(operation, it));
+			}
+		}
 	}
 
 }

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
 
+import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidParameterException;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.inject.Inject;
+
+import com.google.common.base.Throwables;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +47,7 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.UnimplementedCapacityException;
+import io.sarl.lang.util.ClearableReference;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -59,6 +64,9 @@ public class AgentTest extends AbstractSarlTest {
 
 	@NonNullByDefault
 	private AgentMock agent;
+	
+	@Inject
+	private ReflectExtensions reflect;
 
 	private static Address mockAddress(UUID agentID) {
 		Address adr = mock(Address.class);
@@ -75,7 +83,13 @@ public class AgentTest extends AbstractSarlTest {
 
 	private void assertNoSkill(Class<? extends Capacity> c) {
 		try {
-			this.agent.getSkill(c);
+			try {
+				this.reflect.invoke(this.agent, "getSkill", c);
+			} catch (InvocationTargetException e) {
+				throw Throwables.propagate(e.getTargetException());
+			} catch (Exception e) {
+				throw Throwables.propagate(e);
+			}
 			fail("Expecting the exception UnimplementedCapacityException, but got no exception."); //$NON-NLS-1$
 		} catch (UnimplementedCapacityException exception) {
 			//
@@ -83,12 +97,26 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	private void assertSkill(Class<? extends Capacity> c, Skill expected) {
-		Object r = this.agent.getSkill(c);
+		Object r;
+		try {
+			r = this.reflect.invoke(this.agent, "getSkill", c);
+		} catch (InvocationTargetException e) {
+			throw Throwables.propagate(e.getTargetException());
+		} catch (Exception e) {
+			throw Throwables.propagate(e);
+		}
 		assertSame(expected, r);
 	}
 
 	private void assertSkill(Class<? extends Capacity> c) {
-		Object r = this.agent.getSkill(c);
+		Object r;
+		try {
+			r = this.reflect.invoke(this.agent, "getSkill", c);
+		} catch (InvocationTargetException e) {
+			throw Throwables.propagate(e.getTargetException());
+		} catch (Exception e) {
+			throw Throwables.propagate(e);
+		}
 		assertNotNull(r);
 	}
 
@@ -403,10 +431,12 @@ public class AgentTest extends AbstractSarlTest {
 		this.agent.setSkill_Fake(s4);
 
 		this.agent.clearSkill(Capacity1.class);
-		assertEquals(0, s4.uninstallCalls());
+		assertEquals(0, s4.uninstallPreCalls());
+		assertEquals(0, s4.uninstallPostCalls());
 
 		this.agent.clearSkill(Capacity2.class);
-		assertEquals(1, s4.uninstallCalls());
+		assertEquals(1, s4.uninstallPreCalls());
+		assertEquals(1, s4.uninstallPostCalls());
 	}
 
 	/** Only for making public several protected methods.
@@ -429,13 +459,9 @@ public class AgentTest extends AbstractSarlTest {
 			return setSkill(skill, capacity);
 		}
 
-		public <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... capacity) {
-			return super.$setSkill(skill, capacity);
-		}
-
 		@Override
-		public <S extends Capacity> S getSkill(Class<S> capacity) {
-			return super.getSkill(capacity);
+		public ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+			return super.$getSkill(capacity);
 		}
 
 		@Override
@@ -535,7 +561,8 @@ public class AgentTest extends AbstractSarlTest {
 	 */
 	private static class Skill4 extends Skill1 implements Capacity2 {
 		private final AtomicInteger installCalls = new AtomicInteger();
-		private final AtomicInteger uninstallCalls = new AtomicInteger();
+		private final AtomicInteger uninstallPreCalls = new AtomicInteger();
+		private final AtomicInteger uninstallPostCalls = new AtomicInteger();
 		public Skill4() {
 			//
 		}
@@ -545,15 +572,22 @@ public class AgentTest extends AbstractSarlTest {
 			this.installCalls.incrementAndGet();
 		}
 		@Override
-		protected void uninstall() {
-			super.uninstall();
-			this.uninstallCalls.incrementAndGet();
+		protected void uninstall(UninstallationStage stage) {
+			super.uninstall(stage);
+			if (stage == UninstallationStage.PRE_DESTROY_EVENT) {
+				this.uninstallPreCalls.incrementAndGet();
+			} else {
+				this.uninstallPostCalls.incrementAndGet();
+			}
 		}
 		public int installCalls() {
 			return this.installCalls.getAndSet(0);
 		}
-		public int uninstallCalls() {
-			return this.uninstallCalls.getAndSet(0);
+		public int uninstallPreCalls() {
+			return this.uninstallPreCalls.getAndSet(0);
+		}
+		public int uninstallPostCalls() {
+			return this.uninstallPostCalls.getAndSet(0);
 		}
 	}
 

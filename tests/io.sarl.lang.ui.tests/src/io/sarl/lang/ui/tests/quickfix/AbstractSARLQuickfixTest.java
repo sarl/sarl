@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,7 +115,8 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			while (issueIterator.hasNext()) {
 				Issue nextIssue = issueIterator.next();
 				if (issueLabels.length() > 0) {
-					issueLabels.append(",\n"); //$NON-NLS-1$
+					issueLabels.append(","); //$NON-NLS-1$
+					issueLabels.append(getLineSeparator());
 				}
 				issueLabels.append(nextIssue.getCode());
 				issueLabels.append(" - \""); //$NON-NLS-1$
@@ -127,7 +128,8 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 				}
 			}
 			if (issueLabels.length() > 0) {
-				issueLabels.append(".\n"); //$NON-NLS-1$
+				issueLabels.append("."); //$NON-NLS-1$
+				issueLabels.append(getLineSeparator());
 			}
 			if (issue == null) {
 				fail("The issue '" + issueCode //$NON-NLS-1$
@@ -283,6 +285,13 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			return this.resolutions.size();
 		}
 
+		private static String unifiesNewLineCharacters(String content) {
+			String result = Strings.emptyIfNull(content);
+			result = result.replaceAll("\r\n", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			result = result.replaceAll("\r", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			return result.trim();
+		}
+
 		/** Test the existence of a valid quick fix.
 		 *
 		 * @param expectedLabel - the expected label for the quick fix.
@@ -294,7 +303,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 				String... expectedResolutions) {
 			try {
 				assert (expectedResolutions.length > 0);
-				
+
 				IssueResolution resolution = findResolution(expectedLabel, true, true);
 
 				assertEquals(expectedLabel, resolution.getLabel());
@@ -307,7 +316,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 				String oldContent = Objects.toString(document.toString());
 
 				final IModification modification = resolution.getModification();
-				
+
 				modification.apply(modificationContext);
 
 				String newContent = document.toString();
@@ -315,18 +324,21 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 				if (Objects.equals(newContent, oldContent)) {
 					// Save the resource for ensuring EMF changes are comitted.
 					try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-						SaveOptions.Builder options = SaveOptions.newBuilder();
-						options.noValidation();
-						this.scriptResource.save(baos, options.getOptions().toOptionsMap());
+						SaveOptions options = new SaveOptions(false, false) {
+							//
+						};
+						this.scriptResource.save(baos, options.toOptionsMap());
 						baos.flush();
 						newContent = baos.toString();
 					}
-					newContent = Objects.toString(newContent).trim();
+					newContent = Objects.toString(newContent);
 				}
+
+				newContent = unifiesNewLineCharacters(newContent);
 				
 				final Set<String> expected = new TreeSet<>();
 				for (final String expectedResolution : expectedResolutions) {
-					final String ex = Strings.notNull(expectedResolution).trim();
+					final String ex = unifiesNewLineCharacters(expectedResolution);
 					expected.add(ex);
 				}
 				
@@ -480,7 +492,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	private static class TestLineTracker implements ILineTracker {
 
 		/** The predefined delimiters of this tracker */
-		private final static String[] STR_DELIMITERS = { "\r", "\n", "\r\n" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		private final static String[] STR_DELIMITERS = { System.getProperty("line.separator"), "\r", "\n" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 		private final StringBuilder content = new StringBuilder();
 		private String[] lines = null;

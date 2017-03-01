@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,14 @@
 package io.janusproject.kernel.services.jdk.kerneldiscovery;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.google.common.util.concurrent.Service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import io.janusproject.services.AbstractDependentService;
 import io.janusproject.services.AsyncStateService;
 import io.janusproject.services.executor.ExecutorService;
@@ -41,6 +42,8 @@ import io.janusproject.util.TwoStepConstruction;
  * Service that is providing the access to the repository of the Janus kernels.
  *
  * <p>This implementation is not able to discovered other kernels.
+ *
+ * <p>This service is thread-safe.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -65,6 +68,14 @@ public class StandardKernelDiscoveryService extends AbstractDependentService
 		//
 	}
 
+	/** Replies the mutex for synchronizing this service.
+	 *
+	 * @return the mutex.
+	 */
+	protected final Object getServiceMutex() {
+		return this;
+	}
+
 	/**
 	 * Do the post initialization.
 	 *
@@ -84,7 +95,12 @@ public class StandardKernelDiscoveryService extends AbstractDependentService
 
 	@Override
 	public boolean isReadyForOtherServices() {
-		return isRunning() && this.isReady;
+		if (isRunning()) {
+			synchronized (getServiceMutex()) {
+				return this.isReady;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -94,14 +110,16 @@ public class StandardKernelDiscoveryService extends AbstractDependentService
 
 	@Override
 	public URI getCurrentKernel() {
-		return this.localURI;
+		synchronized (getServiceMutex()) {
+			return this.localURI;
+		}
 	}
 
 	@Override
-	public synchronized Collection<URI> getKernels() {
-		final Collection<URI> col = new ArrayList<>();
-		col.add(this.localURI);
-		return col;
+	public Collection<URI> getKernels() {
+		synchronized (getServiceMutex()) {
+			return Collections.singleton(this.localURI);
+		}
 	}
 
 	@Override
@@ -115,13 +133,15 @@ public class StandardKernelDiscoveryService extends AbstractDependentService
 	}
 
 	@Override
-	protected synchronized void doStart() {
+	protected void doStart() {
 		notifyStarted();
 	}
 
 	@Override
-	protected synchronized void doStop() {
-		this.isReady = false;
+	protected void doStop() {
+		synchronized (getServiceMutex()) {
+			this.isReady = false;
+		}
 		notifyStopped();
 	}
 
@@ -149,7 +169,7 @@ public class StandardKernelDiscoveryService extends AbstractDependentService
 			// Outside the synchronizing statement to avoid deadlock
 			final URI uri = StandardKernelDiscoveryService.this.network.getURI();
 			if (StandardKernelDiscoveryService.this.localURI == null) {
-				synchronized (StandardKernelDiscoveryService.this) {
+				synchronized (getServiceDependencies()) {
 					StandardKernelDiscoveryService.this.localURI = uri;
 					StandardKernelDiscoveryService.this.isReady = true;
 				}

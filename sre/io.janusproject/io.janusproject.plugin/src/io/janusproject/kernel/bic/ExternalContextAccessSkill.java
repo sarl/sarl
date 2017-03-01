@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import java.util.UUID;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+
 import io.janusproject.services.contextspace.ContextSpaceService;
 
 import io.sarl.core.Behaviors;
@@ -40,8 +41,10 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.util.Collections3;
 import io.sarl.util.OpenEventSpace;
@@ -64,11 +67,37 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	@Inject
 	private ContextSpaceService contextRepository;
 
+	private ClearableReference<Skill> skillBufferInternalEventBusCapacity;
+
+	private ClearableReference<Skill> skillBufferBehaviors;
+
 	/**
 	 * @param agent - owner of the skill.
 	 */
 	ExternalContextAccessSkill(Agent agent) {
 		super(agent);
+	}
+
+	/** Replies the InternalEventBusCapacity skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final InternalEventBusCapacity getInternalEventBusCapacitySkill() {
+		if (this.skillBufferInternalEventBusCapacity == null || this.skillBufferInternalEventBusCapacity.get() == null) {
+			this.skillBufferInternalEventBusCapacity = $getSkill(InternalEventBusCapacity.class);
+		}
+		return $castSkill(InternalEventBusCapacity.class, this.skillBufferInternalEventBusCapacity);
+	}
+
+	/** Replies the Behaviors skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final Behaviors getBehaviorsSkill() {
+		if (this.skillBufferBehaviors == null || this.skillBufferBehaviors.get() == null) {
+			this.skillBufferBehaviors = $getSkill(Behaviors.class);
+		}
+		return $castSkill(Behaviors.class, this.skillBufferBehaviors);
 	}
 
 	@Override
@@ -91,10 +120,12 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	}
 
 	@Override
-	protected void uninstall() {
-		// Leave all contexts including the default one.
-		for (final UUID contextID : this.contexts) {
-			leave(contextID);
+	protected void uninstall(UninstallationStage stage) {
+		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
+			// Leave all contexts including the default one.
+			for (final UUID contextID : this.contexts) {
+				leave(contextID);
+			}
 		}
 	}
 
@@ -133,7 +164,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 
 		this.contexts.add(futureContext);
 
-		((OpenEventSpace) ac.getDefaultSpace()).register(getSkill(InternalEventBusCapacity.class).asEventListener());
+		((OpenEventSpace) ac.getDefaultSpace()).register(getInternalEventBusCapacitySkill().asEventListener());
 
 		fireContextJoined(futureContext, futureContextDefaultSpaceID);
 		fireMemberJoined(ac);
@@ -146,8 +177,8 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 * @param futureContext - ID of the newly joined context
 	 * @param futureContextDefaultSpaceID - ID of the default space of the newly joined context
 	 */
-	protected void fireContextJoined(UUID futureContext, UUID futureContextDefaultSpaceID) {
-		getSkill(Behaviors.class).wake(new ContextJoined(futureContext, futureContextDefaultSpaceID));
+	protected final void fireContextJoined(UUID futureContext, UUID futureContextDefaultSpaceID) {
+		getBehaviorsSkill().wake(new ContextJoined(futureContext, futureContextDefaultSpaceID));
 	}
 
 	/**
@@ -156,7 +187,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 *
 	 * @param newJoinedContext - the newly joined context to notify its members
 	 */
-	protected void fireMemberJoined(AgentContext newJoinedContext) {
+	protected final void fireMemberJoined(AgentContext newJoinedContext) {
 		final EventSpace defSpace = newJoinedContext.getDefaultSpace();
 		defSpace.emit(new MemberJoined(defSpace.getAddress(getOwner().getID()), newJoinedContext.getID(), getOwner().getID(),
 				getOwner().getClass().getName()));
@@ -178,7 +209,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 		fireContextLeft(contextID);
 		fireMemberLeft(ac);
 
-		((OpenEventSpace) ac.getDefaultSpace()).unregister(getSkill(InternalEventBusCapacity.class).asEventListener());
+		((OpenEventSpace) ac.getDefaultSpace()).unregister(getInternalEventBusCapacitySkill().asEventListener());
 
 		this.contexts.remove(contextID);
 	}
@@ -189,8 +220,8 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 *
 	 * @param contextID - the ID of context that will be left
 	 */
-	protected void fireContextLeft(UUID contextID) {
-		getSkill(Behaviors.class).wake(new ContextLeft(contextID));
+	protected final void fireContextLeft(UUID contextID) {
+		getBehaviorsSkill().wake(new ContextLeft(contextID));
 	}
 
 	/**
@@ -199,7 +230,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 *
 	 * @param leftContext - the context that will be left
 	 */
-	protected void fireMemberLeft(AgentContext leftContext) {
+	protected final void fireMemberLeft(AgentContext leftContext) {
 		final EventSpace defSpace = leftContext.getDefaultSpace();
 		defSpace.emit(
 				new MemberLeft(defSpace.getAddress(getOwner().getID()), getOwner().getID(), getOwner().getClass().getName()));

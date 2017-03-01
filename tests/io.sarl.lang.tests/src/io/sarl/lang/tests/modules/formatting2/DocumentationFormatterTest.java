@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,49 +15,16 @@
  */
 package io.sarl.lang.tests.modules.formatting2;
 
-import java.io.InputStream;
-import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Named;
-import javax.swing.text.StyledEditorKit.BoldAction;
-
 import com.google.inject.Inject;
-import junit.framework.TestSuite;
-import org.eclipse.xtext.junit4.formatter.FormatterTestRequest;
-import org.eclipse.xtext.junit4.formatter.FormatterTester;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.lib.Procedures;
-import org.junit.Assume;
-import org.junit.AssumptionViolatedException;
 import org.junit.ComparisonFailure;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
-import org.junit.rules.TestName;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-import org.junit.runners.model.InitializationError;
-import org.junit.runners.model.Statement;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import io.sarl.lang.documentation.IDocumentationFormatter;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.TestScope;
 
 /** Abstract test of a SARL documentation formatter.
  *
@@ -132,7 +99,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withEnclosingSymbols_noExternalText() throws Exception {
-			String source = "/*    The first\n     line    */";
+			String source = multilineString(
+					"/*    The first",
+					"     line    */");
 			String expected = multilineString(
 					"/* The first",
 					"\t * line",
@@ -142,7 +111,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withEnclosingSymbols_externalText() throws Exception {
-			String source = "    /*    The first\n     line    */";
+			String source = multilineString(
+					"    /*    The first",
+					"     line    */");
 			String expected = multilineString(
 					"    /* The first",
 					"\t * line",
@@ -152,7 +123,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withoutEnclosingSymbols() throws Exception {
-			String source = "    The first\n     line    ";
+			String source = multilineString(
+					"    The first",
+					"     line    ");
 			String expected = multilineString(
 					"/* The first",
 					"\t * line",
@@ -176,7 +149,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void sl_withoutStartSymbols_carriageReturn() throws Exception {
-			String source = "    The first     \n    line    ";
+			String source = multilineString(
+					"    The first     ",
+					"    line    ");
 			String expected = multilineString(
 					"// The first",
 					"\t// line");
@@ -185,7 +160,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void sl_withStartSymbols_carriageReturn() throws Exception {
-			String source = "    //    The first     \n    line    ";
+			String source = multilineString(
+					"    //    The first     ",
+					"    line    ");
 			String expected = multilineString(
 					"    // The first",
 					"\t// line");
@@ -266,7 +243,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withEnclosingSymbols_noExternalText() throws Exception {
-			String source = "/*    The first\n     line    */";
+			String source = multilineString(
+					"/*    The first",
+					"     line    */");
 			String expected = multilineString(
 					"/* The first",
 					" * line",
@@ -276,7 +255,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withEnclosingSymbols_externalText() throws Exception {
-			String source = "    /*    The first\n     line    */";
+			String source = multilineString(
+					"    /*    The first",
+					"     line    */");
 			String expected = multilineString(
 					"    /* The first",
 					" * line",
@@ -286,7 +267,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void ml_multiline_withoutEnclosingSymbols() throws Exception {
-			String source = "    The first\n     line    ";
+			String source = multilineString(
+					"    The first",
+					"     line    ");
 			String expected = multilineString(
 					"/* The first",
 					" * line",
@@ -310,7 +293,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void sl_withoutStartSymbols_carriageReturn() throws Exception {
-			String source = "    The first     \n    line    ";
+			String source = multilineString(
+					"    The first     ",
+					"    line    ");
 			String expected = multilineString(
 					"// The first",
 					"// line");
@@ -319,7 +304,9 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void sl_withStartSymbols_carriageReturn() throws Exception {
-			String source = "    //    The first     \n    line    ";
+			String source = multilineString(
+					"    //    The first     ",
+					"    line    ");
 			String expected = multilineString(
 					"    // The first",
 					"// line");
@@ -342,8 +329,14 @@ public class DocumentationFormatterTest {
 
 		@Test
 		public void sl_commentFromEcoreSerializer() throws Exception {
-			String source = "\n//TODO Auto-generated code.\n";
-			String expected = "\n// TODO Auto-generated code.\n";
+			String source = multilineString(
+					"",
+					"//TODO Auto-generated code.",
+					"");
+			String expected = multilineString(
+					"",
+					"// TODO Auto-generated code.",
+					"");
 			assertSLFormatted(source, expected);
 		}
 

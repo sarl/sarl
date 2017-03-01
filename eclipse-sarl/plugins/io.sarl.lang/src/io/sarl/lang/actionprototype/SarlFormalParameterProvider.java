@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,9 @@ class SarlFormalParameterProvider implements FormalParameterProvider {
 
 	@Override
 	public String getFormalParameterName(int position) {
-		return this.parameters.get(position).getName();
+		final XtendParameter param = this.parameters.get(position);
+		assert param != null;
+		return param.getName();
 	}
 
 	@Override
@@ -71,8 +73,10 @@ class SarlFormalParameterProvider implements FormalParameterProvider {
 
 	@Override
 	public JvmTypeReference getFormalParameterTypeReference(int position, boolean isVarargs) {
-		JvmTypeReference type = this.parameters.get(position).getParameterType();
-		if (isVarargs) {
+		final XtendParameter param = this.parameters.get(position);
+		assert param != null;
+		JvmTypeReference type = param.getParameterType();
+		if (type != null && isVarargs) {
 			type = this.references.createArrayType(type);
 		}
 		return type;

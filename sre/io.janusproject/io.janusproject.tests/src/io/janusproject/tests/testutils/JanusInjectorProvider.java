@@ -23,10 +23,11 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
+
 import io.janusproject.modules.StandardJanusPlatformModule;
 
 import io.sarl.lang.SARLStandaloneSetup;
-import io.sarl.lang.tests.SARLInjectorProvider;
+import io.sarl.tests.api.ExtendedSARLInjectorProvider;
 
 /**
  * The injection provider for Janus unit tests.
@@ -36,7 +37,7 @@ import io.sarl.lang.tests.SARLInjectorProvider;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class JanusInjectorProvider extends SARLInjectorProvider {
+public class JanusInjectorProvider extends ExtendedSARLInjectorProvider {
 
 	@Override
 	protected Injector internalCreateInjector() {
@@ -45,7 +46,7 @@ public class JanusInjectorProvider extends SARLInjectorProvider {
 			@Override
 			public Injector createInjector() {
 				return Guice.createInjector(
-						Modules.override(createRuntimeModule()).with(createJanusModule()));
+						Modules.override(createRuntimeModule()).with(createJanusModule()), createRuntimeTestModule());
 			}
 		}.createInjectorAndDoEMFRegistration();
 	}

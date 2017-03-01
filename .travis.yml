@@ -26,17 +26,14 @@ matrix:
       - "export DISPLAY=:99.0"
       - "sh -e /etc/init.d/xvfb start"
       - sleep 3 # give xvfb some time to start
-      - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx2g\"" > $HOME/.mavenrc
+      - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx3g\"" > $HOME/.mavenrc
       env: DISPLAY=:99.0
 
     - os: osx
-      osx_image: xcode8
+      osx_image: xcode8.2 # see https://docs.travis-ci.com/user/osx-ci-environment/
       before_install:
-      - "sh -e ./build-tools/scripts/travis-download-maven.sh"
-      - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
-      - export PATH=$M2_HOME/bin:$PATH
       - mvn -Xmx32m --version
-      - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx2g -Dmaven.test.skip=true\"" > $HOME/.mavenrc
+      - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx3g\"" > $HOME/.mavenrc
 
 install: true
 

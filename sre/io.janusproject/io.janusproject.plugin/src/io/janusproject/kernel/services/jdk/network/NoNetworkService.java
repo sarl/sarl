@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import java.util.List;
 import com.google.common.util.concurrent.Service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import io.janusproject.services.network.AbstractNetworkingService;
 import io.janusproject.services.network.NetworkServiceListener;
 import io.janusproject.services.network.NetworkUtil;
@@ -63,21 +64,31 @@ public class NoNetworkService extends AbstractNetworkingService {
 		//
 	}
 
+	/** Replies the mutex for synchronizing on the service.
+	 *
+	 * @return the mutex.
+	 */
+	protected final Object getServiceMutex() {
+		return this;
+	}
+
 	@Override
-	public synchronized URI getURI() {
-		return this.localHost;
+	public URI getURI() {
+		synchronized (getServiceMutex()) {
+			return this.localHost;
+		}
 	}
 
 	@Override
 	public void addNetworkServiceListener(NetworkServiceListener listener) {
-		synchronized (this.listeners) {
+		synchronized (getServiceMutex()) {
 			this.listeners.add(listener);
 		}
 	}
 
 	@Override
 	public void removeNetworkServiceListener(NetworkServiceListener listener) {
-		synchronized (this.listeners) {
+		synchronized (getServiceMutex()) {
 			this.listeners.remove(listener);
 		}
 	}
@@ -103,16 +114,20 @@ public class NoNetworkService extends AbstractNetworkingService {
 	}
 
 	@Override
-	protected synchronized void doStart() {
+	protected void doStart() {
 		final InetAddress adr = NetworkUtil.getLoopbackAddress();
+		final URI newLocalHost;
 		if (adr == null) {
 			try {
-				this.localHost = NetworkUtil.toURI("tcp://127.0.0.1:0"); //$NON-NLS-1$
+				newLocalHost = NetworkUtil.toURI("tcp://127.0.0.1:0"); //$NON-NLS-1$
 			} catch (URISyntaxException e) {
 				throw new Error(e);
 			}
 		} else {
-			this.localHost = NetworkUtil.toURI(adr, 0);
+			newLocalHost = NetworkUtil.toURI(adr, 0);
+		}
+		synchronized (getServiceMutex()) {
+			this.localHost = newLocalHost;
 		}
 		notifyStarted();
 	}

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,9 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import com.google.common.base.Throwables;
 import com.google.inject.Inject;
+
 import io.janusproject.services.logging.LogService;
 import io.janusproject.util.LoggerCreator;
 
@@ -107,7 +109,7 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 			if (exception != null) {
 				final LogRecord lr = new LogRecord(Level.SEVERE, loggeableMessage);
 		        lr.setParameters(parameters);
-		        lr.setThrown(exception);
+		        lr.setThrown(Throwables.getRootCause(exception));
 				this.logger.log(lr);
 			} else {
 				this.logger.log(Level.SEVERE, loggeableMessage, parameters);

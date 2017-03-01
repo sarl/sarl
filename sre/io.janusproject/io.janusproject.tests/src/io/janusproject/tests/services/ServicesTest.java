@@ -82,7 +82,6 @@ public class ServicesTest extends AbstractJanusTest {
 	@Nullable
 	private SpawnService s6;
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Before
 	public void setUp() {
 		this.encounteredServices = new LinkedList<>();
@@ -224,7 +223,6 @@ public class ServicesTest extends AbstractJanusTest {
 		/**
 		 * {@inheritDoc}
 		 */
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public Service answer(InvocationOnMock invocation) throws Throwable {
 			ServicesTest.this.encounteredServices.add(this.service);

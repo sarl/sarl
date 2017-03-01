@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@
 package io.janusproject.services.spawn;
 
 import java.util.EventListener;
+import java.util.UUID;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
@@ -40,11 +41,12 @@ public interface SpawnServiceListener extends EventListener {
 	/**
 	 * Invoked when the agent is spawned.
 	 *
+	 * @param spawningAgent the identifier of the agent which spawns the given agent.
 	 * @param parent - the context in which the agent was created.
-	 * @param agentID - the agent.
+	 * @param spawnedAgent - the agent.
 	 * @param initializationParameters - list of parameters that were passed to the agent.
 	 */
-	void agentSpawned(AgentContext parent, Agent agentID, Object[] initializationParameters);
+	void agentSpawned(UUID spawningAgent, AgentContext parent, Agent spawnedAgent, Object[] initializationParameters);
 
 	/**
 	 * Invoked when the agent is destroyed.

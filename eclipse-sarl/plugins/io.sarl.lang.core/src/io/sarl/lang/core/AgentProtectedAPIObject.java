@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,8 @@ package io.sarl.lang.core;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import io.sarl.lang.util.ClearableReference;
 
 /** This class defines the protected API that is provided to the agents and the agent traits.
  *
@@ -57,6 +59,19 @@ abstract class AgentProtectedAPIObject {
 	@Pure
 	protected abstract <S extends Capacity> S getSkill(Class<S> capacity);
 
+	/** Replies the skill corresponding to the given capacity.
+	 *
+	 * <p>The return may never be <code>null</code>. If not capacity
+	 * was set, the exception {@link UnimplementedCapacityException}
+	 * is thrown.
+	 *
+	 * @param capacity - the capacity to search for the implementation.
+	 * @return the reference to the skill, never <code>null</code>
+	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
+	 */
+	@Pure
+	protected abstract ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity);
+
 	/** Defines the implementation of the "capacity maps-to skill" operator.
 	 *
 	 * @param <S> - type of skill to be mapped to.
@@ -75,17 +90,6 @@ abstract class AgentProtectedAPIObject {
 	 */
 	@SuppressWarnings("unchecked")
 	protected abstract <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities);
-
-	/**
-	 * Set the skill for the {@link Capacity} <code>capacity</code>.
-	 *
-	 * @param <S> - type of the skill.
-	 * @param capacities the capacity or the capacities to set.
-	 * @param skill implementaion of <code>capacity</code>.
-	 * @return the skill that was set.
-	 */
-	@SuppressWarnings("unchecked")
-    protected abstract <S extends Skill> S $setSkill(S skill, Class<? extends Capacity>... capacities);
 
 	/**
 	 * Clears the Skill associated with the capacity.

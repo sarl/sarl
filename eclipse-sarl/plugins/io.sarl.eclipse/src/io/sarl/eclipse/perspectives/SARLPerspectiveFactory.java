@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,6 +110,14 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlCapacity"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlEvent"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlSkill"); //$NON-NLS-1$
+
+		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlClass"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlInterface"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlEnumeration"); //$NON-NLS-1$
+		layout.addNewWizardShortcut("io.sarl.eclipse.wizard.newSarlAnnotation"); //$NON-NLS-1$
+
+		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewEnumCreationWizard"); //$NON-NLS-1$
+
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewSourceFolderCreationWizard");	 //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder"); //$NON-NLS-1$

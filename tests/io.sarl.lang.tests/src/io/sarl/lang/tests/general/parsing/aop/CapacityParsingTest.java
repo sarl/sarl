@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -178,7 +178,6 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED,
-					49, 2,
 					"Invalid supertype. Expecting an interface");
 		}
 
@@ -195,7 +194,6 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED,
-					53, 2,
 					"Invalid supertype. Expecting an interface");
 		}
 
@@ -214,7 +212,6 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED,
-					65, 2,
 					"Invalid supertype. Expecting an interface");
 		}
 
@@ -233,7 +230,6 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED,
-					69, 2,
 					"Invalid supertype. Expecting an interface");
 		}
 
@@ -252,7 +248,6 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED,
-					73, 2,
 					"Invalid supertype. Expecting an interface");
 		}
 
@@ -518,8 +513,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 7,
-					"Illegal modifier for the capacity C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public & package are permitted");
 		}
 
 		@Test
@@ -531,8 +525,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 9,
-					"Illegal modifier for the capacity C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public & package are permitted");
 		}
 
 		@Test
@@ -562,8 +555,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8,
-					"Illegal modifier for the capacity C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public & package are permitted");
 		}
 
 		@Test
@@ -575,8 +567,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 6,
-					"Illegal modifier for the capacity C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public & package are permitted");
 		}
 
 		@Test
@@ -588,8 +579,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8,
-					"Illegal modifier for the capacity C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public & package are permitted");
 		}
 
 		@Test
@@ -601,8 +591,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 5,
-					"Illegal modifier for the capacity C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public & package are permitted");
 		}
 
 		@Test
@@ -614,8 +603,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8,
-					"Illegal modifier for the capacity C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public & package are permitted");
 		}
 
 		@Test
@@ -627,8 +615,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 6,
-					"Illegal modifier for the capacity C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public & package are permitted");
 		}
 
 		@Test
@@ -640,8 +627,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 8,
-					"Illegal modifier for the capacity C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public & package are permitted");
 		}
 
 		@Test
@@ -653,8 +639,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 12,
-					"Illegal modifier for the capacity C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public & package are permitted");
 		}
 
 		@Test
@@ -666,8 +651,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					32, 9,
-					"Illegal modifier for the capacity C1; only public & package are permitted");
+					"Illegal modifier for the definition of C1; only public & package are permitted");
 		}
 
 		@Test
@@ -679,8 +663,7 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					39, 7,
-					"The capacity C1 can only set one of public / package / protected / private");
+					"The definition of C1 can only set one of public / package / protected / private");
 		}
 
 	}
@@ -714,7 +697,6 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE,
-					74, 8,
 					"The method name() of type C2 must override a superclass method");
 		}
 
@@ -743,7 +725,6 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
-					74, 8,
 					"Duplicate method myaction(int) in type C1");
 		}
 
@@ -760,7 +741,6 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
-					109, 8,
 					"Duplicate method myaction(int) in type S1");
 		}
 
@@ -814,8 +794,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 7);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -827,8 +806,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 9);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -840,8 +818,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 7);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -879,8 +856,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -892,8 +868,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -905,8 +880,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -918,8 +892,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 5);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -931,8 +904,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -944,8 +916,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 6);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -957,8 +928,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 8);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -970,8 +940,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 12);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -983,8 +952,7 @@ public class CapacityParsingTest {
 					"}"), false);
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					47, 9);
+					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
@@ -997,7 +965,6 @@ public class CapacityParsingTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
-					57, 7,
 					"public / package / protected / private");
 		}
 

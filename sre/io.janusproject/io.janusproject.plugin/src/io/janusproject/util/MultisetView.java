@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,10 +33,13 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
+
 import io.janusproject.util.DataViewDelegate.Delegator;
 
 /**
  * A view if the multiset of the keys in a {@link AbstractDMultiMapView}.
+ *
+ * <p>This class is not thread-safe.
  *
  * @param <K> - the keys.
  * @param <V> - the values.

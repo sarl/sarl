@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,8 @@
  */
 package io.sarl.lang.tests.bugs;
 
-import static org.junit.Assert.assertEquals;
-
 import com.google.inject.Inject;
-import org.eclipse.xtext.util.IAcceptor;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -72,6 +68,7 @@ public class Bug312 {
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -104,6 +101,48 @@ public class Bug312 {
 					"  @DefaultValueUse(\"Vector2i,boolean\")",
 					"  @SyntheticMember",
 					"  public abstract void move(final Vector2i direction2);",
+					"  ",
+					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+					"      super(capacity, caller);",
+					"    }",
+					"    ",
+					"    public void move(final Vector2f direction1, final boolean changeHeading1) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.move(direction1, changeHeading1);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"    ",
+					"    public void move(final Vector2i direction2, final boolean changeHeading2) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.move(direction2, changeHeading2);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"    ",
+					"    public void move(final Vector2f direction1) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.move(direction1);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"    ",
+					"    public void move(final Vector2i direction2) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.move(direction2);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"  }",
 					"}",
 					"");
 			this.compiler.compile(this.snippet, (r) -> assertEquals(expected, r.getGeneratedCode("C1")));
