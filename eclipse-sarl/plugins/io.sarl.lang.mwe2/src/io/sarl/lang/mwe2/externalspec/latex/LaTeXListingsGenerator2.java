@@ -311,6 +311,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 		final String langName = getLanguageSimpleName().toUpperCase();
 		append(sty, "\\lstdefinelanguage'{'{0}'}{'%", langName); //$NON-NLS-1$
+		append(sty, "   morecomment=[l]'{'//'}',"); //$NON-NLS-1$
 		append(sty, "   morecomment=[s]'{'/*'}{'*/'}',"); //$NON-NLS-1$
 		append(sty, "   morestring=[b]\","); //$NON-NLS-1$
 		append(sty, "   morekeywords='{'{0}'}',", Joiner.on(",").join(texKeywords)); //$NON-NLS-1$ //$NON-NLS-2$
