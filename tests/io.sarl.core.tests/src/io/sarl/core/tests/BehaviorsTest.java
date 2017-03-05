@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@
  */
 package io.sarl.core.tests;
 
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,6 +29,7 @@ import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
+import io.sarl.lang.core.Scope;
 
 /**
  * @author $Author: sgalland$
@@ -34,45 +37,49 @@ import io.sarl.lang.core.EventListener;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class BehaviorsTest extends AbstractSarlCoreTest<Capacity> {
 
-	/**
-	 */
 	@Before
 	public void setUp() {
 		loadSARL("io.sarl.core.Behaviors", Capacity.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void memberCount() {
-		assertEquals(4, this.type.getDeclaredMethods().length);
+		assertEquals(8, this.type.getDeclaredMethods().length);
 	}
 
-	/**
-	 */
+	@Test
+	public void hasRegisteredBehavior() {
+		assertMethod("hasRegisteredBehavior", boolean.class); //$NON-NLS-1$
+	}
+
+	@Test
+	public void getRegisteredBehaviors() {
+		assertMethod("getRegisteredBehaviors", Collection.class); //$NON-NLS-1$
+	}
+
 	@Test
 	public void registerBehavior() {
 		assertMethod("registerBehavior", Behavior.class, Behavior.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void unregisterBehavior() {
 		assertMethod("unregisterBehavior", Behavior.class, Behavior.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
-	public void wake() {
+	public void wake_noScope() {
 		assertMethod("wake", void.class, Event.class); //$NON-NLS-1$
 	}
 
-	/**
-	 */
+	@Test
+	public void wake_scope() {
+		assertMethod("wake", void.class, Event.class, Scope.class); //$NON-NLS-1$
+	}
+
 	@Test
 	public void asEventListener() {
 		assertMethod("asEventListener", EventListener.class); //$NON-NLS-1$

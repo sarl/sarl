@@ -27,8 +27,8 @@
 		<!-- Version of the Xtext API -->
 		<sarl.version>0.5.0-SNAPSHOT</sarl.version>
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.10.0</xtext.version>
-		<xtext.versionRange>[2.10.0,2.10.1)</xtext.versionRange><!-- For generating 
+		<xtext.version>2.11.0</xtext.version>
+		<xtext.versionRange>[2.11.0,2.11.1)</xtext.versionRange><!-- For generating 
 			a correct version range you need to create a range integrating ONLY the current 
 			version and excluding all other possible versions especially the greater 
 			ones -->
@@ -45,13 +45,15 @@
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module -->
 		<tycho.version>0.26.0</tycho.version>
+		<!--  -->
+		<efxclipse.version>2.4.0</efxclipse.version>
 
 		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<buildId>${maven.build.timestamp}</buildId>
 		<!-- Year of the release of SARL (used in Eclipse about, license management 
 			and documentation) -->
-		<year>2016</year>
+		<year>2017</year>
 		<!-- URL of the SARL project (use in POM, Eclipse about and documentation) -->
 		<sarlUrl>http://www.sarl.io</sarlUrl>
 		<!-- Default encoding of the source files -->
@@ -260,6 +262,11 @@
 			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>xtext-maven-plugin</artifactId>
+				<version>${xtext.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.testing</artifactId>
 				<version>${xtext.version}</version>
 			</dependency>
 			<dependency>

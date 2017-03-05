@@ -70,6 +70,27 @@ import io.sarl.tests.api.Nullable;
 @SuppressWarnings("all")
 public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 
+	/** Standard timeout in seconds.
+	 *
+	 * @see #EXTRA_TIMEOUT
+	 * @see #NO_TIMEOUT
+	 */
+	public static final int STANDARD_TIMEOUT = 40;
+	
+	/** Extra timeout in seconds.
+	 *
+	 * @see #STANDARD_TIMEOUT
+	 * @see #NO_TIMEOUT
+	 */
+	public static final int EXTRA_TIMEOUT = 240;
+
+	/** No timeout.
+	 *
+	 * @see #STANDARD_TIMEOUT
+	 * @see #EXTRA_TIMEOUT
+	 */
+	public static final int NO_TIMEOUT = -1;
+
 	/**
 	 * Reference to the instance of the Janus kernel.
 	 */
@@ -200,7 +221,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
 	protected void runJanus(Class<? extends TestingAgent> type, boolean enableLogging) throws Exception {
-		runJanus(type, enableLogging, true, -1);
+		runJanus(type, enableLogging, true, NO_TIMEOUT);
 	}
 
 	/**
@@ -213,7 +234,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
 	protected void runJanus(Class<? extends TestingAgent> type) throws Exception {
-		runJanus(type, true, true, -1);
+		runJanus(type, true, true, NO_TIMEOUT);
 	}
 
 	/**
@@ -223,6 +244,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * @param enableLogging - indicates if the logging is enable or not.
 	 * @param offline - indicates if the Janus platform is offline
 	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 *     See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
 	protected void runJanus(Class<? extends TestingAgent> type, boolean enableLogging, boolean offline, int timeout)
@@ -265,7 +287,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			module = Modules.override(new StandardJanusPlatformModule()).with(new ErrorLogTestingModule(this.results));
 		}
 		Boot.setOffline(offline);
-		this.janusKernel = Boot.startJanus(module, type, getAgentInitializationParameters());
+		this.janusKernel = Boot.startJanusWithModule(module, type, getAgentInitializationParameters());
 		Logger current = this.janusKernel.getLogger();
 		while (current.getParent() != null && current.getParent() != current) {
 			current = current.getParent();
@@ -280,6 +302,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * Wait for the end of the Janus platform.
 	 * 
 	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 *     See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
 	public void waitForTheKernel(int timeout) throws Exception {
@@ -304,6 +327,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * Wait for the end of the Janus platform.
 	 * 
 	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 *     See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
 	 * @param predicate the predicate to use as stop condition.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
@@ -390,15 +414,33 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		 * 
 		 * @param result - the result.
 		 */
-		protected void addResult(Object result) {
+		protected synchronized void addResult(Object result) {
 			this.results.add(result);
 		}
 		
 		/**
+		 * Replies the number of results provided by the ran platform.
+		 *
+		 * @return the number of results.
+		 */
+		protected int getNumberOfResults() {
+			return this.results.size();
+		}
+
+		/**
+		 * Add a result.
+		 * 
+		 * @param result - the result.
+		 */
+		protected synchronized void addResults(Collection<?> results) {
+			this.results.addAll(results);
+		}
+
+		/**
 		 * Replies result at the given index of the run of the agent.
 		 * @return the results.
 		 */
-		protected List<Object> getResults() {
+		protected synchronized List<Object> getResults() {
 			if (this.results != null) {
 				return Collections.unmodifiableList(this.results);
 			}
@@ -430,7 +472,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			this.results = (List<Object>) occurrence.parameters[0];
 			try {
 				if (runAgentTest()) {
-					getSkill(Lifecycle.class).killMe();
+					getSkill(Schedules.class).in(1000, (it) -> forceKillMe());
 				}
 			} catch (Throwable exception) {
 				if (!(exception instanceof ChuckNorrisException)) {
@@ -438,6 +480,10 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 				}
 				throw exception;
 			}
+		}
+
+		protected void forceKillMe() {
+			getSkill(Lifecycle.class).killMe();
 		}
 
 		/**

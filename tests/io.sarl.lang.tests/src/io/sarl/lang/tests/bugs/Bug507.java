@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,12 +69,10 @@ public class Bug507 extends AbstractSarlUiTest {
 		validator.assertWarning(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.DEPRECATED_MEMBER_REFERENCE,
-				196, 7,
 				"method println(Object) from the type Logging");
 		validator.assertWarning(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.DEPRECATED_MEMBER_REFERENCE,
-				240, 7,
 				"method println(Object) from the type Logging");
 	}
 
@@ -123,12 +121,10 @@ public class Bug507 extends AbstractSarlUiTest {
 		validator.assertWarning(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.DEPRECATED_MEMBER_REFERENCE,
-				159, 23,
 				"Discouraged feature call: println");
 		validator.assertWarning(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.DEPRECATED_MEMBER_REFERENCE,
-				203, 22,
 				"Discouraged feature call: println");
 	}
 

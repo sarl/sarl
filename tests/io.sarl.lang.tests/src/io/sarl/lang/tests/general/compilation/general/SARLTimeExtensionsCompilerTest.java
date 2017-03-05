@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package io.sarl.lang.tests.general.compilation.general;
 
 import com.google.inject.Inject;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -36,7 +36,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 	private CompilationTestHelper compiler;
 
 	@Test
-	public void testMilliseconds() throws Exception {
+	public void milliseconds() throws Exception {
 		String source = multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
@@ -59,7 +59,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
-				"    return Integer.valueOf(1234);",
+				"    return Long.valueOf((1234));",
 				"  }",
 				"  ",
 				"  /**",
@@ -90,7 +90,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void testSeconds() throws Exception {
+	public void seconds() throws Exception {
 		String source = multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
@@ -113,7 +113,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
-				"    return Long.valueOf(Integer.valueOf(1234) * TimeExtensionsConstants.MILLIS_IN_SECOND);",
+				"    return Long.valueOf((1234) * 1000);",
 				"  }",
 				"  ",
 				"  /**",
@@ -144,7 +144,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void testMinutes() throws Exception {
+	public void minutes() throws Exception {
 		String source = multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
@@ -167,7 +167,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
-				"    return Long.valueOf(Integer.valueOf(1234) * TimeExtensionsConstants.MILLIS_IN_MINUTE);",
+				"    return Long.valueOf((1234) * 60000);",
 				"  }",
 				"  ",
 				"  /**",
@@ -198,7 +198,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void testHours() throws Exception {
+	public void hours() throws Exception {
 		String source = multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
@@ -221,7 +221,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
-				"    return Long.valueOf(Integer.valueOf(1234) * TimeExtensionsConstants.MILLIS_IN_HOUR);",
+				"    return Long.valueOf((1234) * 3600000);",
 				"  }",
 				"  ",
 				"  /**",
@@ -252,7 +252,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void testDays() throws Exception {
+	public void days() throws Exception {
 		String source = multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
@@ -275,7 +275,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
-				"    return Long.valueOf(Integer.valueOf(1234) * TimeExtensionsConstants.MILLIS_IN_DAY);",
+				"    return Long.valueOf((1234) * 86400000);",
 				"  }",
 				"  ",
 				"  /**",
@@ -306,7 +306,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void testWeeks() throws Exception {
+	public void weeks() throws Exception {
 		String source = multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
@@ -329,7 +329,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
-				"    return Long.valueOf(Integer.valueOf(1234) * TimeExtensionsConstants.MILLIS_IN_WEEK);",
+				"    return Long.valueOf((1234) * 604800000);",
 				"  }",
 				"  ",
 				"  /**",

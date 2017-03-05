@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,10 @@
  * limitations under the License.
  */
 package io.sarl.lang.core.tests.core;
+
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 import io.sarl.lang.core.Behavior;
 
@@ -36,6 +40,17 @@ public class BehaviorTest extends AbstractAgentTraitBehaviorTest {
 		return new Behavior(getAgent()) {
 			//
 		};
+	}
+
+	@Test
+	public void contextAwareSkill() throws Exception {
+		Skill1 skill = new Skill1();
+		getAgent().setSkill_Fake(skill, Capacity1.class);
+		//
+		Object result = invoke(getInstance(), "getSkill", Capacity1.class);
+		//
+		assertInstanceOf(Capacity1.class, result);
+		assertInstanceOf(Capacity1.ContextAwareCapacityWrapper.class, result);
 	}
 
 }

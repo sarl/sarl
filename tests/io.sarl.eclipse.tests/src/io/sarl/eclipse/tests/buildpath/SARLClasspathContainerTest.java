@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,17 +93,19 @@ public class SARLClasspathContainerTest extends AbstractSarlUiTest {
 	public void getBundleDependencies_withEclipse() {
 		Iterable<String> iterable = this.container.getBundleDependencies();
 		assertNotNull(iterable);
-		assertContains(iterable,
-				"io.sarl.lang.core",
-				"javax.inject",
-				"org.eclipse.xtext.xbase.lib",
-				"com.google.guava",
-				"org.eclipse.osgi",
-				"org.eclipse.osgi.compatibility.state",
-				//
-				"io.sarl.util",
-				//
-				"io.sarl.core");
+		assertPartlyContains(iterable,
+			"aopalliance",
+			"com.google.guava",
+			"com.google.inject",
+			"com.google.inject.multibindings",
+			"io.sarl.core",
+			"io.sarl.lang.core",
+			"io.sarl.util",
+			"javax.inject",
+			"org.eclipse.osgi",
+			"org.eclipse.osgi.compatibility.state",
+			"org.eclipse.xtext.xbase.lib"
+			);
 	}
 
 	@Test
@@ -111,7 +113,7 @@ public class SARLClasspathContainerTest extends AbstractSarlUiTest {
 	public void getBundleDependencies_withTycho() {
 		Iterable<String> iterable = this.container.getBundleDependencies();
 		assertNotNull(iterable);
-		assertContains(iterable,
+		assertPartlyContains(iterable,
 				"io.sarl.lang.core",
 				"javax.inject",
 				"org.eclipse.xtext.xbase.lib",
@@ -129,7 +131,7 @@ public class SARLClasspathContainerTest extends AbstractSarlUiTest {
 	public void getClasspathEntries_withEclipse() {
 		IClasspathEntry[] iterable = this.container.getClasspathEntries();
 		assertNotNull(iterable);
-		assertEquals(8, iterable.length);
+		assertEquals(12, iterable.length);
 	}
 
 	@Test

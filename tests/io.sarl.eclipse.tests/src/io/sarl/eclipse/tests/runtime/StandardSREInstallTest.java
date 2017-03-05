@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -143,6 +143,7 @@ public class StandardSREInstallTest {
 			this.jarFile = FileLocator.toFileURL(this.jarFile);
 			URI uri = this.jarFile.toURI();
 			this.path = URIUtil.toPath(uri);
+			assert this.path != null;
 			this.sre.setJarFile(this.path);
 		}
 
@@ -232,8 +233,8 @@ public class StandardSREInstallTest {
 				trans.transform(source, xmlStream);
 				String content = new String(baos.toByteArray());
 				String[] expected = new String[] { "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
-						"<root libraryPath=\"" + this.path.toOSString() + "\" standalone=\"true\">",
-						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString()
+						"<root libraryPath=\"" + this.path.toPortableString() + "\" standalone=\"true\">",
+						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toPortableString()
 								+ "\"/>",
 						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"a.jar\"/>",
 						"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"b.jar\"/>",
@@ -250,9 +251,9 @@ public class StandardSREInstallTest {
 		@Test
 		public void setFromXML() throws Exception {
 			String[] expected = new String[] { "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
-					"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toOSString()
+					"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toPortableString()
 							+ "\" standalone=\"true\">",
-					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString()
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toPortableString()
 							+ "\"/>",
 					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"x.jar\"/>",
 					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"y.jar\"/>",
@@ -460,7 +461,7 @@ public class StandardSREInstallTest {
 				trans.transform(source, xmlStream);
 				String content = new String(baos.toByteArray());
 				String[] expected = new String[] { "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
-						"<root libraryPath=\"" + this.path.toOSString() + "\" standalone=\"false\"/>", };
+						"<root libraryPath=\"" + this.path.toPortableString() + "\" standalone=\"false\"/>", };
 				StringBuilder b = new StringBuilder();
 				for (String s : expected) {
 					b.append(s);
@@ -473,9 +474,9 @@ public class StandardSREInstallTest {
 		@Test
 		public void setFromXML() throws Exception {
 			String[] expected = new String[] { "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>",
-					"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toOSString()
+					"<SRE name=\"Hello\" mainClass=\"io.sarl.Boot\" libraryPath=\"" + this.path.toPortableString()
 							+ "\" standalone=\"true\">",
-					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toOSString()
+					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"" + this.path.toPortableString()
 							+ "\"/>",
 					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"x.jar\"/>",
 					"<libraryLocation packageRootPath=\"\" sourcePath=\"\" systemLibraryPath=\"y.jar\"/>",

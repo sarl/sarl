@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,10 @@
  */
 package io.sarl.lang.tests.general.compilation.general;
 
-import static org.junit.Assert.assertEquals;
-
 import com.google.inject.Inject;
 import org.eclipse.xtext.util.IAcceptor;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -302,6 +300,7 @@ public class VarArgsCompilerTest {
 					);
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
@@ -309,6 +308,21 @@ public class VarArgsCompilerTest {
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public abstract void myaction(final int... arg);",
+					"  ",
+					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+					"      super(capacity, caller);",
+					"    }",
+					"    ",
+					"    public void myaction(final int... arg) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.myaction(arg);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"  }",
 					"}",
 					""
 					);
@@ -324,6 +338,7 @@ public class VarArgsCompilerTest {
 					);
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
@@ -331,6 +346,21 @@ public class VarArgsCompilerTest {
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public abstract void myaction(final char arg1, final boolean arg2, final int... arg3);",
+					"  ",
+					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+					"      super(capacity, caller);",
+					"    }",
+					"    ",
+					"    public void myaction(final char arg1, final boolean arg2, final int... arg3) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.myaction(arg1, arg2, arg3);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"  }",
 					"}",
 					""
 					);
@@ -421,11 +451,17 @@ public class VarArgsCompilerTest {
 					);
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
+					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+					"      super(capacity, caller);",
+					"    }",
+					"  }",
 					"}",
 					""
 					);

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ public interface SpawnService extends DependentService {
 	 * Spawn agents of the given type, and pass the parameters to its initialization function.
 	 *
 	 * @param nbAgents the number of agents to spawn.
+	 * @param spawningAgent the agent which is spawning.
 	 * @param parent - the parent entity that is creating the agents.
 	 * @param agentClazz - the type of the agents to spawn.
 	 * @param agentId - the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
@@ -52,7 +53,7 @@ public interface SpawnService extends DependentService {
 	 * @param params - the list of the parameters to pass to the agent initialization function.
 	 * @return the identifiers of the agents, never <code>null</code>.
 	 */
-	List<UUID> spawn(int nbAgents, AgentContext parent, UUID agentId, Class<? extends Agent> agentClazz, Object... params);
+	List<UUID> spawn(int nbAgents, UUID spawningAgent, AgentContext parent, UUID agentId, Class<? extends Agent> agentClazz, Object... params);
 
 	/**
 	 * Kill the agent with the given identifier.

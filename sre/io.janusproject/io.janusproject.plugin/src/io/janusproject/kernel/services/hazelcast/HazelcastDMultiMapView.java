@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,8 @@ import io.janusproject.util.MultisetView;
 
 /**
  * A view from the Hazelcast multimap to DMultiMap.
+ *
+ * <p>This class is not thread-safe.
  *
  * @param <K> - type of the keys.
  * @param <V> - type of the values.
@@ -92,7 +94,7 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 	}
 
 	@Override
-	public synchronized Set<V> removeAll(Object key) {
+	public Set<V> removeAll(Object key) {
 		return (Set<V>) super.removeAll(key);
 	}
 

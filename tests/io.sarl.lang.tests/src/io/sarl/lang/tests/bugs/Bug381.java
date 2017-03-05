@@ -1,7 +1,7 @@
 /*
  * $Id$
  * 
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,10 @@
  */
 package io.sarl.lang.tests.bugs;
 
-import static org.junit.Assert.assertEquals;
-
 import com.google.inject.Inject;
 import org.eclipse.xtext.util.IAcceptor;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper.Result;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -153,8 +151,8 @@ public class Bug381 {
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-					"import io.sarl.lang.core.ClearableReference;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.util.ClearableReference;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -215,8 +213,8 @@ public class Bug381 {
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-					"import io.sarl.lang.core.ClearableReference;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.util.ClearableReference;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -277,8 +275,8 @@ public class Bug381 {
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-					"import io.sarl.lang.core.ClearableReference;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.util.ClearableReference;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -343,8 +341,8 @@ public class Bug381 {
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-					"import io.sarl.lang.core.ClearableReference;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.util.ClearableReference;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -405,8 +403,8 @@ public class Bug381 {
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-					"import io.sarl.lang.core.ClearableReference;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.util.ClearableReference;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -471,8 +469,8 @@ public class Bug381 {
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-					"import io.sarl.lang.core.ClearableReference;",
 					"import io.sarl.lang.core.Skill;",
+					"import io.sarl.lang.util.ClearableReference;",
 					"import java.util.UUID;",
 					"import javax.inject.Inject;",
 					"import org.eclipse.xtext.xbase.lib.Extension;",

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
@@ -128,6 +127,22 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		this.sarlSpecificationChecker = sarlSpecificationChecker;
 	}
 
+	/** Replies the mutex for synchronizing on agent repository.
+	 *
+	 * @return the mutex.
+	 */
+	protected final Object getAgentRepositoryMutex() {
+		return this.agents;
+	}
+
+	/** Replies the mutex for synchronizing on agent-lifecycle listeners.
+	 *
+	 * @return the mutex.
+	 */
+	protected final Object getAgentLifecycleListenerMutex() {
+		return this.agentLifecycleListeners;
+	}
+
 	@Override
 	public final Class<? extends Service> getServiceType() {
 		return SpawnService.class;
@@ -145,14 +160,15 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	}
 
 	@Override
-	public List<UUID> spawn(int nbAgents, AgentContext parent, UUID agentID, Class<? extends Agent> agentClazz, Object... params) {
+	public List<UUID> spawn(int nbAgents, UUID spawningAgent, AgentContext parent, UUID agentID,
+			Class<? extends Agent> agentClazz, Object... params) {
 		if (isRunning() && nbAgents > 0) {
 			try {
 				// Check if the version of the SARL agent class is compatible.
 				ensureSarlSpecificationVersion(agentClazz);
 				// Create the shared injector that is also able to create the agent instance.
-				final JustInTimeAgentInjectionModule agentInjectionModule = new JustInTimeAgentInjectionModule(agentClazz,
-						parent.getID(), nbAgents > 1 ? null : agentID);
+				final JustInTimeAgentInjectionModule agentInjectionModule = new JustInTimeAgentInjectionModule(this.injector, agentClazz,
+						parent.getID(), agentID);
 				final Injector agentInjector = this.injector.createChildInjector(agentInjectionModule);
 				// Create the list of the spawned agents during this function execution
 				final List<Agent> agents = new ArrayList<>(nbAgents);
@@ -175,7 +191,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 					synchronized (agents) {
 						agents.add(agent);
 					}
-					fireAgentSpawnedInAgent(parent, agent, params);
+					fireAgentSpawnedInAgent(spawningAgent, parent, agent, params);
 				};
 				// Create a single agent with a sequential call; or multiple agents in parallel
 				if (nbAgents > 1) {
@@ -185,7 +201,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 					agentCreator.run();
 				}
 				// Fire the general spawning event
-				fireAgentSpawnedOutsideAgent(parent, agentClazz, agents, params);
+				fireAgentSpawnedOutsideAgent(spawningAgent, parent, agentClazz, agents, params);
 				return Collections.unmodifiableList(Lists.transform(agents, (it) -> it.getID()));
 			} catch (Throwable e) {
 				throw new CannotSpawnException(agentClazz, e);
@@ -196,22 +212,24 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 	/** Notify the listeners about the agents' spawning.
 	 *
+	 * @param spawningAgent the spawning agent.
 	 * @param context the context in which the agents were spawned.
 	 * @param agentClazz the type of the spwnaed agents.
 	 * @param agents the spawned agents.
 	 * @param initializationParameters the initialization parameters.
 	 */
-	protected void fireAgentSpawnedOutsideAgent(AgentContext context, Class<? extends Agent> agentClazz, List<Agent> agents,
+	protected void fireAgentSpawnedOutsideAgent(UUID spawningAgent, AgentContext context, Class<? extends Agent> agentClazz, List<Agent> agents,
 			Object... initializationParameters) {
 		// Notify the listeners on the spawn events (not restricted to a single agent)
 		for (final SpawnServiceListener l : this.globalListeners.getListeners(SpawnServiceListener.class)) {
-			l.agentSpawned(context, agents, initializationParameters);
+			l.agentSpawned(spawningAgent, context, agents, initializationParameters);
 		}
 
 		// Send the event in the default space.
 		final EventSpace defSpace = context.getDefaultSpace();
 		assert defSpace != null : "A context does not contain a default space"; //$NON-NLS-1$
-		final Address source = new Address(defSpace.getSpaceID(), context.getID());
+		final Address source = new Address(defSpace.getSpaceID(),
+				spawningAgent == null ? context.getID() : spawningAgent);
 		assert source != null;
 		defSpace.emit(new AgentSpawned(source, agentClazz.getName(),
 				Collections2.transform(agents, (it) -> it.getID())));
@@ -219,11 +237,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 	/** Notify the agent's listeners about its spawning.
 	 *
+	 * @param spawningAgent the spawning agent.
 	 * @param context the context in which the agent was spawned.
 	 * @param agent the spawned agent.
 	 * @param initializationParameters the initialization parameters.
 	 */
-	protected void fireAgentSpawnedInAgent(AgentContext context, Agent agent, Object... initializationParameters) {
+	protected void fireAgentSpawnedInAgent(UUID spawningAgent, AgentContext context, Agent agent, Object... initializationParameters) {
 		// Notify the listeners on the lifecycle events on
 		// the just spawned agent.
 		// Usually, only BICs and the AgentLifeCycleSupport in
@@ -236,48 +255,8 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		if (list != null) {
 			final List<Agent> singleton = Collections.singletonList(agent);
 			for (final SpawnServiceListener l : list.getListeners(SpawnServiceListener.class)) {
-				l.agentSpawned(context, singleton, initializationParameters);
+				l.agentSpawned(spawningAgent, context, singleton, initializationParameters);
 			}
-		}
-	}
-
-	/**
-	 * Simple structure to store the result of various tests that must be done synchronously before killing agents.
-	 * @author $Author: ngaud$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 *
-	 */
-	private class KillAgentResultStructure {
-		Boolean canKill = Boolean.FALSE;
-
-		Boolean isLast = Boolean.FALSE;
-
-		Agent killAgent;
-
-		KillAgentResultStructure() {
-			//
-		}
-	}
-
-	private KillAgentResultStructure $killAgent(UUID agentID) {
-		// We should check if it is possible to kill the agent BEFORE killing it.
-		final KillAgentResultStructure k;
-		synchronized (this.agents) {
-			final Agent agent = this.agents.get(agentID);
-			if (agent != null) {
-				k = new KillAgentResultStructure();
-				if (canKillAgent(agent)) {
-					this.agents.remove(agentID);
-					k.isLast = Boolean.valueOf(this.agents.isEmpty());
-					k.canKill = Boolean.TRUE;
-					k.killAgent = agent;
-					return k;
-				}
-				return k;
-			}
-			return null;
 		}
 	}
 
@@ -285,22 +264,38 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	public void killAgent(UUID agentID) throws AgentKillException {
 		final boolean error = !isRunning();
 
-		final KillAgentResultStructure synchroTests = $killAgent(agentID);
-		if (synchroTests != null && synchroTests.canKill.booleanValue()) {
-			fireAgentDestroyed(synchroTests.killAgent);
+		// We should check if it is possible to kill the agent BEFORE killing it.
+		final boolean foundAgent;
+		boolean canKill = false;
+		boolean isLast = false;
+		Agent killAgent = null;
+		synchronized (getAgentRepositoryMutex()) {
+			final Agent agent = this.agents.get(agentID);
+			foundAgent = agent != null;
+			if (foundAgent) {
+				if (canKillAgent(agent)) {
+					this.agents.remove(agentID);
+					isLast = this.agents.isEmpty();
+					canKill = true;
+					killAgent = agent;
+				}
+			}
+		}
 
-			if (synchroTests.isLast.booleanValue()) {
+		if (canKill) {
+			assert killAgent != null;
+
+			fireAgentDestroyed(killAgent);
+
+			if (isLast) {
 				fireKernelAgentDestroy();
 			}
 			if (error) {
 				throw new SpawnServiceStopException(agentID);
 			}
-		} else {
-			if (synchroTests == null) {
-				throw new AgentKillException(agentID);
-			}
+		} else if (!foundAgent) {
+			throw new AgentKillException(agentID);
 		}
-
 	}
 
 	/**
@@ -308,8 +303,11 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 *
 	 * @return the registered agents.
 	 */
-	public synchronized SynchronizedSet<UUID> getAgents() {
-		return Collections3.synchronizedSet(this.agents.keySet(), this);
+	public SynchronizedSet<UUID> getAgents() {
+		final Object mutex = getAgentRepositoryMutex();
+		synchronized (mutex) {
+			return Collections3.synchronizedSet(this.agents.keySet(), mutex);
+		}
 	}
 
 	/**
@@ -319,9 +317,11 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 *            is the identifier of the agent.
 	 * @return the registered agent, or <code>null</code>.
 	 */
-	synchronized Agent getAgent(UUID id) {
+	Agent getAgent(UUID id) {
 		assert id != null;
-		return this.agents.get(id);
+		synchronized (getAgentRepositoryMutex()) {
+			return this.agents.get(id);
+		}
 	}
 
 	@Override
@@ -354,7 +354,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 	@Override
 	public void addSpawnServiceListener(UUID id, SpawnServiceListener agentLifecycleListener) {
-		synchronized (this.agentLifecycleListeners) {
+		synchronized (getAgentLifecycleListenerMutex()) {
 			ListenerCollection<SpawnServiceListener> listeners = this.agentLifecycleListeners.get(id);
 			if (listeners == null) {
 				listeners = new ListenerCollection<>();
@@ -371,7 +371,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 	@Override
 	public void removeSpawnServiceListener(UUID id, SpawnServiceListener agentLifecycleListener) {
-		synchronized (this.agentLifecycleListeners) {
+		synchronized (getAgentLifecycleListenerMutex()) {
 			final ListenerCollection<SpawnServiceListener> listeners = this.agentLifecycleListeners.get(id);
 			if (listeners != null) {
 				listeners.remove(SpawnServiceListener.class, agentLifecycleListener);
@@ -395,13 +395,18 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 * @return <code>true</code> if the given agent can be killed, otherwise <code>false</code>.
 	 */
 	@SuppressWarnings("static-method")
-	public synchronized boolean canKillAgent(Agent agent) {
+	public boolean canKillAgent(Agent agent) {
 		try {
 			final AgentContext ac = BuiltinCapacityUtil.getContextIn(agent);
 			if (ac != null) {
-				final Set<UUID> participants = ac.getDefaultSpace().getParticipants();
-				if (participants != null && (participants.size() > 1 || (participants.size() == 1 && !participants.contains(agent.getID())))) {
-					return false;
+				final SynchronizedSet<UUID> participants = ac.getDefaultSpace().getParticipants();
+				if (participants != null) {
+					synchronized (participants.mutex()) {
+						if (participants.size() > 1 || (participants.size() == 1
+								&& !participants.contains(agent.getID()))) {
+							return false;
+						}
+					}
 				}
 			}
 			return true;
@@ -418,7 +423,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 */
 	protected void fireAgentDestroyed(Agent agent) {
 		final ListenerCollection<SpawnServiceListener> list;
-		synchronized (this.agentLifecycleListeners) {
+		synchronized (getAgentLifecycleListenerMutex()) {
 			list = this.agentLifecycleListeners.get(agent.getID());
 		}
 		final SpawnServiceListener[] ilisteners;
@@ -454,15 +459,15 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	}
 
 	@Override
-	protected synchronized void doStart() {
+	protected void doStart() {
 		// Assume that when the service is starting, the kernel agent is up.
 		fireKernelAgentSpawn();
 		notifyStarted();
 	}
 
 	@Override
-	protected synchronized void doStop() {
-		synchronized (this.agentLifecycleListeners) {
+	protected void doStop() {
+		synchronized (getAgentLifecycleListenerMutex()) {
 			this.agentLifecycleListeners.clear();
 		}
 		notifyStopped();
@@ -537,6 +542,34 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * This exception is thrown when an agent cannot be spawned.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class CannotSpawnException extends RuntimeException {
+
+		private static final long serialVersionUID = -380402400888610762L;
+
+		/**
+		 * @param agentClazz
+		 *            - the type of the agent to spawn.
+		 * @param cause
+		 *            - the cause of the exception.
+		 */
+		public CannotSpawnException(Class<? extends Agent> agentClazz, Throwable cause) {
+			super(MessageFormat.format(Messages.StandardSpawnService_3, agentClazz,
+					(cause == null) ? null : cause.getLocalizedMessage()), cause);
+		}
+
+	}
+
+	/**
+>>>>>>> 56f825119b44c32e7c8f1ac93f6fc18329c9ac72
 	 * An injection module that is able to inject the parent ID and agent ID when creating an agent.
 	 *
 	 * @author $Author: sgalland$
@@ -546,42 +579,22 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 */
 	private static class JustInTimeAgentInjectionModule extends AbstractModule implements Provider<Agent> {
 
+		private final Injector injector;
+
 		private final Class<? extends Agent> agentType;
-
-		private final Constructor<? extends Agent> constructor1;
-
-		private final Constructor<? extends Agent> constructor2;
 
 		private final UUID parentID;
 
 		private final UUID agentID;
 
-		JustInTimeAgentInjectionModule(Class<? extends Agent> agentType, UUID parentID, UUID agentID) {
+		JustInTimeAgentInjectionModule(Injector injector, Class<? extends Agent> agentType, UUID parentID, UUID agentID) {
+			assert injector != null;
 			assert agentType != null;
 			assert parentID != null;
+			this.injector = injector;
 			this.agentType = agentType;
 			this.parentID = parentID;
-			this.agentID = agentID;
-			Constructor<? extends Agent> cons;
-			Exception e1 = null;
-			try {
-				cons = this.agentType.getConstructor(UUID.class, UUID.class);
-			} catch (NoSuchMethodException | SecurityException | IllegalArgumentException exception) {
-				cons = null;
-				e1 = exception;
-			}
-			this.constructor1 = cons;
-			Exception e2 = null;
-			try {
-				cons = this.agentType.getConstructor(BuiltinCapacitiesProvider.class, UUID.class, UUID.class);
-			} catch (NoSuchMethodException | SecurityException | IllegalArgumentException exception) {
-				cons = null;
-				e2 = exception;
-			}
-			this.constructor2 = cons;
-			if (this.constructor1 == null && this.constructor2 == null) {
-				throw new CannotSpawnException(this.agentType, e1 == null ? e2 : e1);
-			}
+			this.agentID = (agentID == null) ? UUID.randomUUID() : agentID;
 		}
 
 		@Override
@@ -591,13 +604,13 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		@Override
 		public Agent get() {
-			assert this.constructor1 != null || this.constructor2 != null;
 			try {
-				if (this.constructor1 != null) {
-					return this.constructor1.newInstance(this.parentID, this.agentID);
-				}
-				return this.constructor2.newInstance(null, this.parentID, this.agentID);
-			} catch (InstantiationException | IllegalAccessException | InvocationTargetException exception) {
+				final BuiltinCapacitiesProvider capacityProvider = this.injector.getInstance(BuiltinCapacitiesProvider.class);
+				final Constructor<? extends Agent> constructor = this.agentType.getConstructor(BuiltinCapacitiesProvider.class, UUID.class,
+						UUID.class);
+				return constructor.newInstance(capacityProvider, this.parentID, this.agentID);
+			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException exception) {
 				throw new CannotSpawnException(this.agentType, exception);
 			}
 		}

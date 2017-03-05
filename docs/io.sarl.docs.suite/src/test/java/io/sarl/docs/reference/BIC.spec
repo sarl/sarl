@@ -725,11 +725,13 @@ describe "Built-in Capacity Reference" {
 			 *     emit(new Event, Scopes::addresses(a1, a2))
 			 * 
 			 * 
+			 * <p>The complete list of the functions that are provided by the `Scopes` class is
+			 * accessible on the <a href="http://www.sarl.io/docs/api/index.html?io/sarl/util/Scopes.html">Scopes API documentation</a>.
 			 * 
 			 * <p>You are free to create new implementation of `Scope`
 			 * in order to filter the receivers of an event according to your
 			 * own criteria.
-			 *  
+			 *
 			 * @filter(.*) 
 			 */
 			fact "Sending an Event to Specific Agents in the Default Space"{
@@ -749,6 +751,7 @@ describe "Built-in Capacity Reference" {
 							emit(e, Scopes::addresses(a1, a2))
 						}
 					}".parseSuccessfully
+				"http://www.sarl.io/docs/api/index.html?io/sarl/util/Scopes.html" should beApiURL ""
 			}
 
 			/* The `DefaultContextInteractions` provides a collection of utility functions
@@ -1057,6 +1060,49 @@ describe "Built-in Capacity Reference" {
 					}".parseSuccessfully
 			}
 
+			/* For running a task once time, the following functions are
+			 * provided:
+			 * 
+			 *     def execute(procedure : (Agent) => void) : AgentTask
+			 *     def execute(task : AgentTask,
+			 *                 procedure : (Agent) => void) : AgentTask
+			 * 
+			 * 
+			 * <p>The first function submits the given procedure (a lambda expression as defined in
+			 * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html)) to
+			 * an executor provided by the runtime platform. The execution of the procedure
+			 * will be executed once time as soon as possible.
+			 * This function replies the agent task for controlling its execution.
+			 * 
+			 * <p>The second function behaves in a similar way as the first, except that it
+			 * accepts an agent task as parameter. This task will attach to the given
+			 * procedure. The replied task is the same as the task given as parameter.
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Launching a Task for a single run"{
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				//
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
+					import io.sarl.core.Schedules
+					import io.sarl.core.AgentTask
+					import io.sarl.lang.core.Agent
+					agent A {
+						uses Schedules, Logging
+						def myaction {
+							var t1 : AgentTask
+							var t2 : AgentTask
+							t1 = execute [ a : Agent |
+								println(a)
+							]
+							t1 = t2.execute [ a : Agent |
+								println(a)
+							]
+						}
+					}".parseSuccessfully
+			}
+
 			/* For running a task in a given delay, the following functions are
 			 * provided:
 			 * 
@@ -1102,7 +1148,7 @@ describe "Built-in Capacity Reference" {
 					}".parseSuccessfully
 			}
 
-			/* For running a periodic task, the following functions are
+			/* For running a periodic task with a fixed starting rate, the following functions are
 			 * provided:
 			 * 
 			 *     def every(period : long,
@@ -1148,7 +1194,7 @@ describe "Built-in Capacity Reference" {
 			 * 
 			 * @filter(.*) 
 			 */
-			fact "Launching a Periodic Task"{
+			fact "Launching a Periodic Task at a Fixed Rate"{
 				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
 				//
 				"	package io.sarl.docs.reference.bic
@@ -1165,6 +1211,73 @@ describe "Built-in Capacity Reference" {
 								println(a)
 							]
 							t1 = t2.every(1000) [ a : Agent |
+								println(a)
+							]
+						}
+					}".parseSuccessfully
+			}
+
+			/* For running a periodic task with a fixed duration between the runs, the following functions are
+			 * provided:
+			 * 
+			 *     def atFixedDelay(period : long,
+			 *               procedure : (Agent) => void) : AgentTask
+			 *     def atFixedDelay(period : AgentTask,
+			 *               delay : long,
+			 *               procedure : (Agent) => void) : AgentTask
+			 * 
+			 * 
+			 * <p>The first function submits the given procedure (a lambda expression as defined in
+			 * the [General Syntax Reference](GeneralSyntaxReferenceSpec.html)) to
+			 * an executor provided by the runtime platform. The execution of the procedure
+			 * will be launched periodically with a duration between the runs of the given number of milliseconds.
+			 * This function replies the agent task for controlling its execution.
+			 * 
+			 * <p>The second function behaves in a similar way as the first, except that it
+			 * accepts an agent task as parameter. This task will attach to the given
+			 * procedure. The replied task is the same as the task given as parameter.
+			 * 
+			 * <p>The `atFixedDelay` function has not the same issue ass the `every` function
+			 * regarding the possibility to have several runs in parallel.
+			 * The `atFixedDelay` ensures that only one run of the procedure will be executed at a giveen time.
+			 *
+			 * <p>For example, the following code may be illustrated by the table below.
+			 *
+			 *				
+			 *     atFixedDelay(500) [ sleep(2000) ]
+			 *
+			 *
+			 *
+			 * <table>
+			 * <thead>
+			 * <tr><th>t=</th><th>0</th><th>500</th><th>1000</th><th>1500</th><th>2000</th><th>2500</th><th>3000</th><th>3500</th><th>4000</th><th>4500</th><t5>5000</th><th>5500</th><th>6000</th><th>6500</th></tr>
+			 * </thead>
+			 * <tbody>
+			 * <tr><td>A</td><td>X</td><td>X</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td><td></td></tr><td></td><td></td><td></td><td></td><td></td>
+			 * <tr><td>B</td><td></td><td></td><td></td><td></td><td></td><td>X</td><td>X</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td><td></td></tr>
+			 * <tr><td>C</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
+			 * </tbody>
+			 * </table>
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Launching a Periodic Task with a Fixed Delay between the Runs"{
+				"GeneralSyntaxReferenceSpec.html" should beAccessibleFrom this
+				//
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Logging
+					import io.sarl.core.Schedules
+					import io.sarl.core.AgentTask
+					import io.sarl.lang.core.Agent
+					agent A {
+						uses Schedules, Logging
+						def myaction {
+							var t1 : AgentTask
+							var t2 : AgentTask
+							t1 = atFixedDelay(1000) [ a : Agent |
+								println(a)
+							]
+							t1 = t2.atFixedDelay(1000) [ a : Agent |
 								println(a)
 							]
 						}
@@ -1214,6 +1327,65 @@ describe "Built-in Capacity Reference" {
 					}".parseSuccessfully
 			}
 
+			/* Sometimes, it may be useful to execute a task if a condition is true or false.
+			 * The `AgentTask` type, which is representing an instance of agent task provides
+			 * functions for assosiating a condition, named the guard, to the task:
+			 * 
+			 *     def getGuard : (Agent) => boolean
+			 *     def setGuard(condition : (Agent) => boolean)
+			 *
+			 *
+			 * <p>The first function replies the guard associated to the task, or <code>null</code> if
+			 * there is no associated guard. The second function enables you to change the associated guard.
+			 * 
+			 * <p>Additionaly, the `AgentTask` type provides utility functions for easier guard association:  
+			 * 
+			 *     def ifTrue(condition : (Agent) => boolean) : AgentTask
+			 *     def unless(condition : (Agent) => boolean) : AgentTask
+			 *
+			 *
+			 * <p>The `ifTrue` function is equivalent to `setGuard`, except that it is replying the current agent task.
+			 * The `unless` function sets the guard of the task to the negation of the given condition. It replies
+			 * the current task.
+			 *
+			 * <caution>The `ifTrue` and `unless` functions should not be used on the result of the scheduling functions.
+			 * Indeed, if you call these two function on the value replied by `execute` for example, the execution platform
+			 * could have launched the task before the guard is set. Consider the following code
+			 * 
+			 *     execute [ doSomething ].unless [ myVar > 5 ]
+			 *  
+			 * The call to `execute` is done before the call to `unless`. It means that the execution platform could have
+			 * already checked if a guard is assosiated and <code>true</code>, before the `unless` function sets the guard.
+			 * </caution>
+			 *
+			 * The best practice for setting the task guards is to create a task, set the guard, and execute the task:
+			 *
+			 *     // Create the task instance
+			 *     var myTask = task(null)
+			 *     // Set the guard
+			 *     myTask.unless [ myVar > 5 ]
+			 *     // Execute the task
+			 *     myTask.execute [ doSomething ]
+			 *
+			 *
+			 * @filter(.*) 
+			 */
+			fact "Conditional Execution of a Task"{
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Schedules
+					import io.sarl.core.AgentTask
+					agent A {
+						uses Schedules
+						def myaction {
+							var myTask = task(null)
+							var guard = myTask.guard
+							myTask.guard = [it | true ]
+							myTask.ifTrue [it | true]
+							myTask.unless [it | true]
+						}
+					}".parseSuccessfully
+			}
+
 		}
 
 		/* The built-in capacity `Behaviors` provides the tools to the agents 
@@ -1238,6 +1410,16 @@ describe "Built-in Capacity Reference" {
 			 * When a behavior is registered, it is receiving the events
 			 * in the default space of the inner context of the agent, or
 			 * received by the agent itself.
+			 *
+			 * <p>An example of call to the registration function is:
+			 * 
+			 *     var beh = new MyBehavior
+			 *     registerBehavior(beh)
+			 *
+			 * <p>According to the SARL syntax reference, the example could be also written as: 
+			 * 
+			 *     var beh = new MyBehavior
+			 *     beh.registerBehavior
 			 * 
 			 * @filter(.*) 
 			 */
@@ -1292,21 +1474,73 @@ describe "Built-in Capacity Reference" {
 					}".parseSuccessfully
 			}
 
+			/* Assuming that a behavior was already defined,
+			 * it is possible for an agent to register this behavior that may received only the events
+			 * matching a specific filtering function. For registering such a behavior with its filter,
+			 * the following function could be used:
+			 * 
+			 *     def registerBehavior(attitude : Behavior, filter : (Event) -> boolean) : Behavior
+			 *
+			 * 
+			 * <p>This function takes the behavior to be registered, and replies the
+			 * same behavior.
+			 * When a behavior is registered, it is receiving the events that are matching the given
+			 * filter in the default space of the inner context of the agent, or
+			 * received by the agent itself.
+			 * The filtering function is invoked for each event that should be given to the behavior.
+			 * If the filtering function replies {@code true}, the event is really dispatching into the
+			 * behavior. If the function replies {@code false}, the event is discarded to the behavior.
+			 *
+			 * <p>An example of call to the registration function is:
+			 * 
+			 *     var beh = new MyBehavior
+			 *     registerBehavior(beh, [event | event instanceof MyEvent])
+			 *
+			 * <p>According to the SARL syntax reference, the example could be also written as: 
+			 * 
+			 *     var beh = new MyBehavior
+			 *     beh.registerBehavior [event | event instanceof MyEvent]
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Registering a Behavior with an event filter"{
+				// Test the URL in the introduction of this section
+				"BehaviorReferenceSpec.html" should beAccessibleFrom this
+				//
+				"	package io.sarl.docs.reference.bic
+					import io.sarl.core.Behaviors
+					import io.sarl.lang.core.Behavior
+					behavior B {
+					}
+					agent A {
+						uses Behaviors
+						def myaction {
+							var b : B
+							var c : Behavior
+							b = new B(this)
+							c = registerBehavior(b) [true]
+						}
+					}".parseSuccessfully
+			}
+
 			/* A behavior is executed through its event handlers.
 			 * Consequently, for running a behavior, it is mandatory
 			 * to wake it with an event. This particular feature is
 			 * supported by:
 			 * 
-			 *     def wake(evt : Event)
+			 *     def wake(evt : Event, scope : Scope<Address> = null)
 			 *
 			 * 
 			 * <p>This function emits the given event into the inner context
 			 * of the agent (in the default space).
 			 * 
-			 * <importantnote> It is not
-			 * possible to execute a particular behavior explicitly.
-			 * All the behaviors that are waiting for a given event will 
-			 * be executed by this function.</importantnote>
+			 * <p>If a scope is provided, it is used for filtering the agents that will
+			 * receive the event. The filterable agents are the current agent itself, and
+			 * all the sub-agents (sub-holons) that were created inside the current agent.
+			 *
+			 * <importantnote>Because a behavior has no associated address, it cannot be
+			 * filtered by the scope. All the agent's behaviors that are waiting for a given event will 
+			 * be executed.</importantnote>
 			 * 
 			 * @filter(.*) 
 			 */
@@ -1314,6 +1548,8 @@ describe "Built-in Capacity Reference" {
 				"	package io.sarl.docs.reference.bic
 					import io.sarl.core.Behaviors
 					import io.sarl.lang.core.Event
+					import io.sarl.lang.core.Scope
+					import io.sarl.lang.core.Address
 					event E
 					agent A {
 						uses Behaviors
@@ -1321,6 +1557,9 @@ describe "Built-in Capacity Reference" {
 							var e : Event
 							e = new E
 							wake(e)
+							wake(e, null)
+							var scope : Scope<Address> = null
+							wake(e, scope)
 						}
 					}".parseSuccessfully
 			}
@@ -1347,6 +1586,33 @@ describe "Built-in Capacity Reference" {
 						def myaction {
 							var l : EventListener
 							l = asEventListener
+						}
+					}".parseSuccessfully
+			}
+
+			/* Two functions are provided for accessing to the collection of the registered behaviors:
+			 * 
+			 *     def hasRegisteredBehavior : boolean
+			 *     def getRegisteredBehaviors : Collection<Behavior>
+			 * 
+			 * 
+			 * <p>The `hasRegisteredBehavior` replies a boolean value, which is indicating if
+			 * a behavior is registered.
+			 * The `getRegisteredBehaviors` replies an unmodifiable collection of the registered behaviors. 
+			 * 
+			 * @filter(.*) 
+			 */
+			fact "Accessing to the collection of the registered behaviors"{
+				"	package io.sarl.docs.reference.bic
+					import java.util.Collection
+					import io.sarl.core.Behaviors
+					import io.sarl.lang.core.Behavior
+					import io.sarl.lang.core.EventListener
+					agent A {
+						uses Behaviors
+						def myaction {
+							var b : boolean = hasRegisteredBehavior
+							var c : Collection<Behavior> = getRegisteredBehaviors
 						}
 					}".parseSuccessfully
 			}

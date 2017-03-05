@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -126,7 +126,6 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				196, 16,
 				"Unreachable expression");
 	}
 
@@ -150,7 +149,6 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				210, 16,
 				"Unreachable expression");
 	}
 
@@ -177,7 +175,6 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				273, 16,
 				"Unreachable expression");
 	}
 
@@ -274,7 +271,6 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 		validate(mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
-				218, 16,
 				"Unreachable expression");
 	}
 

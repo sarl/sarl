@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,8 +40,7 @@ import io.janusproject.util.ClassFinder;
  * This class enables to log information by ensuring that the values of the parameters are not evaluated until the information
  * should be really log, according to the log level. The logger is injected.
  *
- * <p>The LogService considers the parameters of the functions as:
- * <ul>
+ * <p>The LogService considers the parameters of the functions as:<ul>
  * <li>the message is the the message in the property file;</li>
  * <li>the parameters are the values that will replace the strings {0}, {1}, {2}... in the text extracted from the
  * resource property.</li>
@@ -55,6 +54,7 @@ import io.janusproject.util.ClassFinder;
  *
  * <p>For all the other objects, the {@link #toString()} function is invoked.
  *
+ * <p>This service is thread-safe.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -131,7 +131,7 @@ public class StandardLogService extends AbstractDependentService implements LogS
 		return record;
 	}
 
-	private synchronized void writeInLog(Level level, boolean exception, String message, Object... params) {
+	private void writeInLog(Level level, boolean exception, String message, Object... params) {
 		if (isLogEnabled() && this.logger.isLoggable(level)) {
 			final LoggerCaller caller = this.loggerCallerProvider.getLoggerCaller();
 			final String text = MessageFormat.format(message, params);
@@ -146,7 +146,7 @@ public class StandardLogService extends AbstractDependentService implements LogS
 	}
 
 	@Override
-	public synchronized void log(LogRecord record) {
+	public void log(LogRecord record) {
 		if (isLogEnabled()) {
 			this.logger.log(record);
 		}
@@ -183,30 +183,40 @@ public class StandardLogService extends AbstractDependentService implements LogS
 	}
 
 	@Override
+	public void warning(Throwable exception) {
+		writeInLog(Level.WARNING, true, exception.getLocalizedMessage(), exception);
+	}
+
+	@Override
 	public void error(String message, Object... params) {
 		writeInLog(Level.SEVERE, true, message, params);
 	}
 
 	@Override
-	public synchronized Logger getLogger() {
+	public void error(Throwable exception) {
+		writeInLog(Level.SEVERE, true, exception.getLocalizedMessage(), exception);
+	}
+
+	@Override
+	public Logger getLogger() {
 		return this.logger;
 	}
 
 	@Inject
 	@Override
-	public synchronized void setLogger(Logger logger) {
+	public void setLogger(Logger logger) {
 		if (logger != null) {
 			this.logger = logger;
 		}
 	}
 
 	@Override
-	public synchronized void setFilter(Filter filter) {
+	public void setFilter(Filter filter) {
 		this.logger.setFilter(filter);
 	}
 
 	@Override
-	public synchronized Filter getFilter() {
+	public Filter getFilter() {
 		return this.logger.getFilter();
 	}
 

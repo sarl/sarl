@@ -7,13 +7,13 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright 2014-2016 the original authors and authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -82,7 +82,7 @@ public interface ISarlAgentBuilder {
 	ISarlConstructorBuilder addSarlConstructor();
 
 	/** Create a SarlBehaviorUnit.
-	 * @param name - the typename of the SarlBehaviorUnit.
+	 * @param name - the type of the SarlBehaviorUnit.
 	 * @return the builder.
 	 */
 	ISarlBehaviorUnitBuilder addSarlBehaviorUnit(String name);
@@ -148,6 +148,16 @@ public interface ISarlAgentBuilder {
 	 * @return the builder.
 	 */
 	ISarlAnnotationTypeBuilder addSarlAnnotationType(String name);
+
+	/** Create a SarlCapacityUses.
+	 * @param name - the types referenced by the SarlCapacityUses.
+	 */
+	void addSarlCapacityUses(String... name);
+
+	/** Create a SarlRequiredCapacity.
+	 * @param name - the types referenced by the SarlRequiredCapacity.
+	 */
+	void addSarlRequiredCapacity(String... name);
 
 }
 

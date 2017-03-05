@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,12 @@ package io.sarl.lang.ui;
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
 import org.eclipse.xtext.ui.editor.contentassist.XtextContentAssistProcessor;
+import org.eclipse.xtext.ui.editor.hover.IEObjectHover;
 
-import io.sarl.lang.ui.bugfixes.Bug406ImportingTypesProposalProvider;
+import io.sarl.lang.bugfixes.Bug187SARLDispatchingEObjectTextHover;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -68,10 +68,10 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		.to("io.sarl.lang.ui.scoping.SARLEditorScope"); //$NON-NLS-1$
 	}
 
-	// TODO: Remove when https://github.com/eclipse/xtext-eclipse/issues/28 is fixed.
+	// TODO: Remove when Xtext PR 187 is merged - https://github.com/eclipse/xtext-eclipse/pull/187
 	@Override
-	public Class<? extends ITypesProposalProvider> bindITypesProposalProvider() {
-		return Bug406ImportingTypesProposalProvider.class;
+	public Class<? extends IEObjectHover> bindIEObjectHover() {
+		return Bug187SARLDispatchingEObjectTextHover.class;
 	}
 
 }

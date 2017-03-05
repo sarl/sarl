@@ -19,19 +19,23 @@
  */
 package io.janusproject.tests.kernel.bic;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
-import io.janusproject.kernel.Kernel;
-import io.janusproject.kernel.bic.MicroKernelSkill;
-import io.janusproject.services.network.NetworkService;
-import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
+import io.janusproject.kernel.Kernel;
+import io.janusproject.kernel.bic.MicroKernelSkill;
+import io.janusproject.services.network.NetworkService;
+import io.janusproject.tests.testutils.AbstractJanusTest;
+
+import io.sarl.lang.core.Skill.UninstallationStage;
 
 /**
  * @author $Author: sgalland$
@@ -62,9 +66,16 @@ public class MicroKernelSkillTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void uninstall() throws Exception {
+	public void uninstall_Pre() throws Exception {
 		assertSame(this.kernel, this.reflect.invoke(this.skill, "getKernel"));
-		this.reflect.invoke(this.skill, "uninstall");
+		this.reflect.invoke(this.skill, "uninstall", UninstallationStage.PRE_DESTROY_EVENT);
+		assertNotNull(this.reflect.invoke(this.skill, "getKernel"));
+	}
+
+	@Test
+	public void uninstall_Post() throws Exception {
+		assertSame(this.kernel, this.reflect.invoke(this.skill, "getKernel"));
+		this.reflect.invoke(this.skill, "uninstall", UninstallationStage.POST_DESTROY_EVENT);
 		assertNull(this.reflect.invoke(this.skill, "getKernel"));
 	}
 

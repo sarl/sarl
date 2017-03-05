@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,8 @@ import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Lifecycle;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
+import io.sarl.lang.core.Skill;
+import io.sarl.lang.util.ClearableReference;
 
 /**
  * Skill that permits to manage the life cycle of the agents.
@@ -52,6 +54,8 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 	@Inject
 	private SpawnService spawnService;
 
+	private ClearableReference<Skill> skillBufferInternalEventBusCapacity;
+
 	/**
 	 * Constructs the skill.
 	 *
@@ -59,6 +63,17 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 	 */
 	LifecycleSkill(Agent agent) {
 		super(agent);
+	}
+
+	/** Replies the InternalEventBusCapacity skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final InternalEventBusCapacity getInternalEventBusCapacitySkill() {
+		if (this.skillBufferInternalEventBusCapacity == null || this.skillBufferInternalEventBusCapacity.get() == null) {
+			this.skillBufferInternalEventBusCapacity = $getSkill(InternalEventBusCapacity.class);
+		}
+		return $castSkill(InternalEventBusCapacity.class, this.skillBufferInternalEventBusCapacity);
 	}
 
 	@Override
@@ -73,6 +88,7 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 	public UUID spawn(Class<? extends Agent> agentType, Object... params) {
 		final List<UUID> ids = this.spawnService.spawn(
 				1,
+				getOwner().getID(),
 				getSkill(DefaultContextInteractions.class).getDefaultContext(),
 				null, agentType, params);
 		if (ids.isEmpty()) {
@@ -84,13 +100,16 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 	@Override
 	public Collection<UUID> spawn(int nbAgents, Class<? extends Agent> agentType, Object... params) {
 		return this.spawnService.spawn(nbAgents,
+				getOwner().getID(),
 				getSkill(DefaultContextInteractions.class).getDefaultContext(),
 				null, agentType, params);
 	}
 
 	@Override
 	public UUID spawnInContext(Class<? extends Agent> agentType, AgentContext context, Object... params) {
-		final List<UUID> ids = this.spawnService.spawn(1, context, null, agentType, params);
+		final List<UUID> ids = this.spawnService.spawn(1,
+				getOwner().getID(),
+				context, null, agentType, params);
 		if (ids.isEmpty()) {
 			return null;
 		}
@@ -100,12 +119,16 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 	@Override
 	public Collection<UUID> spawnInContext(int nbAgents, Class<? extends Agent> agentClass, AgentContext context,
 			Object... params) {
-		return this.spawnService.spawn(nbAgents, context, null, agentClass, params);
+		return this.spawnService.spawn(nbAgents,
+				getOwner().getID(),
+				context, null, agentClass, params);
 	}
 
 	@Override
 	public UUID spawnInContextWithID(Class<? extends Agent> agentClass, UUID agentID, AgentContext context, Object... params) {
-		final List<UUID> ids = this.spawnService.spawn(1, context, agentID, agentClass, params);
+		final List<UUID> ids = this.spawnService.spawn(1,
+				getOwner().getID(),
+				context, agentID, agentClass, params);
 		if (ids.isEmpty()) {
 			return null;
 		}
@@ -116,8 +139,10 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 	public void killMe() {
 		// The agent should be killed by a specific asynchronous event.
 		// This event is supported by the internal event bus implementation.
-		final InternalEventBusCapacity busCapacity = getSkill(InternalEventBusCapacity.class);
+		final InternalEventBusCapacity busCapacity = getInternalEventBusCapacitySkill();
 		busCapacity.selfEvent(new AsynchronousAgentKillingEvent());
+		// Never return from the killMe
+		Thread.yield();
 		throw new ChuckNorrisException();
 	}
 

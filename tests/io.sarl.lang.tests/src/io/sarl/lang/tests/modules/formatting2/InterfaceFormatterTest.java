@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,10 @@
  */
 package io.sarl.lang.tests.modules.formatting2;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Named;
-
-import com.google.inject.Inject;
-import junit.framework.TestSuite;
-import org.eclipse.xtext.junit4.formatter.FormatterTestRequest;
-import org.eclipse.xtext.junit4.formatter.FormatterTester;
-import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.lib.Procedures;
 import org.junit.Test;
-import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-import org.junit.runners.model.InitializationError;
-
-import io.sarl.tests.api.AbstractSarlTest;
 
 /** Tests for formatting interfaces.
  *
@@ -89,7 +74,9 @@ public class InterfaceFormatterTest {
 
 		@Test
 		public void threeAnnotations() throws Exception {
-			String source = "@Pure@Beta\n@Hello    interface EntityX{}";
+			String source = multilineString(
+					"@Pure@Beta",
+					"@Hello    interface EntityX{}");
 			String expected = multilineString(
 					"@Pure @Beta",
 					"@Hello interface EntityX {",
@@ -211,7 +198,10 @@ public class InterfaceFormatterTest {
 
 		@Test
 		public void mlStandardComment1() throws Exception {
-			String source = "/*Hello world.\n* That's the second line.\n*/interface A{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"* That's the second line.",
+					"*/interface A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -224,7 +214,9 @@ public class InterfaceFormatterTest {
 
 		@Test
 		public void mlStandardComment2() throws Exception {
-			String source = "/*Hello world.\nThat's the second line.*/interface A{}";
+			String source = multilineString(
+					"/*Hello world.",
+					"That's the second line.*/interface A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
@@ -263,7 +255,9 @@ public class InterfaceFormatterTest {
 
 		@Test
 		public void mlJavaComment() throws Exception {
-			String source = "/**Hello world.\nThat's the second line.*/interface A{}";
+			String source = multilineString(
+					"/**Hello world.",
+					"That's the second line.*/interface A{}");
 			String expected = multilineString(
 					"/** Hello world.",
 					" * That's the second line.",
@@ -276,7 +270,10 @@ public class InterfaceFormatterTest {
 
 		@Test
 		public void slComment() throws Exception {
-			String source = "\n//Hello world.\ninterface A{}";
+			String source = multilineString(
+					"",
+					"//Hello world.",
+					"interface A{}");
 			String expected = multilineString(
 					"// Hello world.",
 					"interface A {",

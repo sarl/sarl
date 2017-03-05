@@ -1,0 +1,116 @@
+= How to contribute
+:toc: right
+:toc-placement!:
+:hide-uri-scheme:
+
+image:http://www.sarl.io/images/SARL-logo.png[width=100]
+
+Any contribution to the SARL is welcome.
+For setting up the development environment of SARL, please follow our recommendations in the following sections.
+
+[align="center",width="40%",frame="topbot",cols="2*^",options="header"]
+|==========================
+2+| Build Status 
+| Linux and OSX |image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
+| Windows |image:https://ci.appveyor.com/api/projects/status/github/sarl/sarl?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/sarl]
+|==========================
+
+== 1. Issues
+
+Issues related to SARL are tracked on link:https://github.com/sarl/sarl/issues[GitHub]
+You must use this issue tracker to report and follow your issues.
+
+In the issue description, provide the following information:
+
+* Your operating system (and version);
+* The version of SARL you are using;
+* Your language and/or locale (e.g. "en-US");
+* Clear steps to reproduce the bug (including a reduced-case user script, if applicable),;
+* Any error messages seen in the Error Console;
+* A description of what you expected to happen;
+* A description of what actually happened;
+
+Note: You can use the wizard in the SARL product for submitting an issue with the technical information already filled. The menu is accessible by selecting the menu `Help > Submit issue to SARL tracker`. This wizard required to hae a valid Github account.
+
+== 2. Guidelines for SARL developpers and contributors
+
+This section describes how to set up the Eclipse development environment for contributing to SARL.
+
+=== 2.1. Obtaining the SARL Source Code
+
+We recommend to fork the SARL project into your own Github account, in order to make easier the pull request that is needed for sending your contribution.
+Forking the SARL project must be done through the Github web interface: click on the `Fork` button on the SARL project page.
+
+
+For obtaining the code of SARL, you must clone your fork from Github to your local harddisk:
+```bash
+git clone https://github.com/<your_github_login>/sarl
+```
+
+We recommend to use the git tool on command-line until you're becoming expert with the git tools that is embedded in Eclipse.
+
+=== 2.2. First Compilation the SARL Source Code
+
+Maven is the standard tool for compiling SARL.
+
+We recommended to launch the Maven compilation process on the command line before importing the code in the Eclipse environment.
+The command line to use (see below) compiles the SARL project and install the Maven modules into your local `.m2` repository.
+This step is mandatory for compiling the embedded SARL run-time environment (Janus). Indeed, it needs the current SARL tools
+to be installed for being compiled.
+
+The command line is:
+```bash
+mvn clean install -Dmaven.test.skip=true -Dcheckstyle.skip=true
+```
+
+=== 2.3. Installing the Eclipse Development Environment
+
+For setting up the development environment, you should follow the steps:
+
+* Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the Xtext tools.
+* Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
+* Import the Eclipse preferences for SARL developers, which are stored into the `dev-tools` folder.
+* Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
+** Select the folder in which you have cloned the SARL project (see Section 5.1);
+** Click on `Finish`.
+* Set the Eclipse target platform, i.e. the definition of the Eclipse plugins to be imported by the project.
+** Open the target platform file `io.sarl.lang.targetplatform.target` in the project `io.sarl.lang.targetplatform`;
+** Wait for all the entries in the target file to be refreshed, i.e each location must contains the list of the features to be imported;
+** Click on `Set as Target Platform` at the upper right corner of the file editor.
+* Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
+* The Checkstyle plugin may need to install specific connectors. Do an action that is similar as the one in the previous step.
+* Clean and compile the project: `Menu Project > Clean`. 
+
+=== 5.4. Compilation of SARL before Contributing
+
+Prior to any sending of your contribution (see Section 5.5), you must ensure that your local copy of SARL compiles without error.
+
+The best and "sure" way to proceed is to use Maven on the command line, because it is the tool used by our compilation server for validating your contribution.
+
+Type on the command-line:
+```bash
+mvn clean install
+```
+
+This command line will launch the compilation, checkstyle and unit tests. It must be successfull.
+
+=== 5.5. Sending the Contribution
+
+For sending your contribution to the SARL master repository, you must request a pull (PR) to the link:https://github.com/sarl/sarl/[GitHub repository].
+
+For being merged, your must ensure the following points:
+
+* Your PR must be compilable with Maven.
+* Your PR must pass the compilation process successfully, including the code compilation, unit tests, and code style checking. This process is supported by link:https://travis-ci.org/sarl/sarl[Travis-CI] for linux and OSX platforms, and link:https://ci.appveyor.com/project/gallandarakhneorg/sarl[AppVeyor] for Windows platforms.
+* You must sign the link:./build-tools/licences/CLA.md[Contributor License Agreement] on GitHub. It is supported by link:https://cla-assistant.io/sarl/sarl[cla-assistant].
+* Your PR should be reviewed by one or more of the main contributors for ensure it is following the development rules and philosophy related to SARL.
+
+The page of your PR on Github is displaying the status of your PR.
+If one point is failing, please follows the steps:
+
+* Go on the link:https://travis-ci.org/sarl/sarl[Travis-CI] or link:https://ci.appveyor.com/project/gallandarakhneorg/sarl[AppVeyor] console for obtaining the cause of the failure.
+* Fix the code of your PR on your local copy.
+* Commit on your local repository, compile, and test until you have fixed the issue.
+* Push the changes on the same PR with `git push -f`, i.e. the same Git repository as the one used for the PR. *Do not create a new PR for the fix.*
+* The GitHub platform will relaunch the CI process automatically.
+

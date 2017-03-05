@@ -17,6 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.janusproject.tests;
 
 import static org.junit.Assert.*;
@@ -1022,8 +1023,8 @@ public class BootTest {
 			ArgumentCaptor<Integer> length = ArgumentCaptor.forClass(Integer.class);
 			verify(this.logger, times(1)).write(array.capture(), offset.capture(), length.capture());
 			final String message = new String(array.getValue(), offset.getValue(), length.getValue());
-			assertEquals("Janus: " + JanusVersion.JANUS_RELEASE_VERSION + "\nSARL specification: "
-					+ SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\n", message);
+			assertEquals("Janus: " + JanusVersion.JANUS_RELEASE_VERSION + getLineSeparator() + "SARL specification: "
+					+ SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + getLineSeparator(), message);
 			verify(this.logger, times(1)).flush();
 			verify(this.logger, times(1)).close();
 			verifyNoMoreInteractions(this.logger);
@@ -1042,7 +1043,7 @@ public class BootTest {
 
 		@Test
 		public void startJanus() throws Exception {
-			Kernel kernel = Boot.startJanus(TestModule.class, AgentMock.class, "param1", "param2", "param3");
+			Kernel kernel = Boot.startJanusWithModuleType(TestModule.class, AgentMock.class, "param1", "param2", "param3");
 
 			assertNotNull(kernel);
 
@@ -1075,13 +1076,13 @@ public class BootTest {
 
 		@Test
 		public void getBootAgentIdentifier_started() throws Exception {
-			Boot.startJanus(TestModule.class, AgentMock.class);
+			Boot.startJanusWithModuleType(TestModule.class, AgentMock.class);
 			assertEquals(ID, Boot.getBootAgentIdentifier());
 		}
 
 		@Test
 		public void getBootAgentIdentifier_startedAgain() throws Exception {
-			Boot.startJanus(TestModule.class, AgentMock.class);
+			Boot.startJanusWithModuleType(TestModule.class, AgentMock.class);
 			assertEquals(ID, Boot.getBootAgentIdentifier());
 			assertEquals(ID, Boot.getBootAgentIdentifier());
 		}

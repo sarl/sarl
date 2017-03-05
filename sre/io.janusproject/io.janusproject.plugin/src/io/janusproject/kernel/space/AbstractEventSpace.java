@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.SpaceID;
+import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.util.Collections3;
 import io.sarl.util.Scopes;
@@ -51,11 +52,6 @@ import io.sarl.util.Scopes;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractEventSpace extends SpaceBase {
-
-	/**
-	 * List of participants in this space. DO MISS TO BE SYNCHRONIZED ON THE PARTICIPANT REPOSITORY.
-	 */
-	protected final UniqueAddressParticipantRepository<Address> participants;
 
 	/**
 	 * Logging service.
@@ -76,6 +72,11 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	private NetworkService network;
 
 	/**
+	 * List of participants in this space.
+	 */
+	private final UniqueAddressParticipantRepository<Address> participants;
+
+	/**
 	 * Constructs an event space.
 	 *
 	 * @param id - identifier of the space.
@@ -85,6 +86,14 @@ public abstract class AbstractEventSpace extends SpaceBase {
 		super(id);
 		this.participants = new UniqueAddressParticipantRepository<>(getSpaceID().getID().toString() + "-participants", //$NON-NLS-1$
 				factory);
+	}
+
+	/** Replies the internal datastructure that stores the participants to this space.
+	 *
+	 * @return the internal data structure.
+	 */
+	protected UniqueAddressParticipantRepository<Address> getParticipantInternalDataStructure() {
+		return this.participants;
 	}
 
 	/**
@@ -104,9 +113,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 * @return the address.
 	 */
 	public Address getAddress(UUID id) {
-		synchronized (this.participants) {
-			return this.participants.getAddress(id);
-		}
+		return getParticipantInternalDataStructure().getAddress(id);
 	}
 
 	/**
@@ -122,10 +129,10 @@ public abstract class AbstractEventSpace extends SpaceBase {
 		assert event != null;
 		assert event.getSource() != null : "Every event must have a source"; //$NON-NLS-1$
 		assert this.getSpaceID().equals(event.getSource().getSpaceId()) : "The source address must belong to this space"; //$NON-NLS-1$
-
 		try {
-			this.network.publish(scope, event);
-			doEmit(event, scope);
+			final Scope<Address> scopeInstance = (scope == null) ? Scopes.<Address>allParticipants() : scope;
+			this.network.publish(scopeInstance, event);
+			doEmit(event, scopeInstance);
 		} catch (Throwable e) {
 			this.logger.error(Messages.AbstractEventSpace_0, event, scope, e);
 		}
@@ -141,7 +148,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 * @see #emit(Event, Scope)
 	 */
 	public final void emit(Event event) {
-		emit(event, Scopes.<Address>allParticipants());
+		emit(event, null);
 	}
 
 	/**
@@ -153,8 +160,12 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 * @param scope - description of the scope of the event, i.e. the receivers of the event.
 	 */
 	protected void doEmit(Event event, Scope<? super Address> scope) {
-		synchronized (this.participants) {
-			for (final EventListener agent : this.participants.getListeners()) {
+		assert scope != null;
+		assert event != null;
+		final UniqueAddressParticipantRepository<Address> particips = getParticipantInternalDataStructure();
+		final SynchronizedCollection<EventListener> listeners = particips.getListeners();
+		synchronized (listeners.mutex()) {
+			for (final EventListener agent : listeners) {
 				if (scope.matches(getAddress(agent))) {
 					// TODO Verify the agent is still alive and running
 					this.executorService.submit(new AsyncRunner(agent, event));
@@ -165,9 +176,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 
 	@Override
 	public SynchronizedSet<UUID> getParticipants() {
-		synchronized (this.participants) {
-			return Collections3.unmodifiableSynchronizedSet(this.participants.getParticipantIDs());
-		}
+		return Collections3.unmodifiableSynchronizedSet(getParticipantInternalDataStructure().getParticipantIDs());
 	}
 
 	@Override

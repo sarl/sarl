@@ -7,13 +7,13 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright 2014-2016 the original authors and authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -611,7 +611,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) 'return' expression=XExpression
 	 *     (rule start) (ambiguity) 'switch' '(' declaredParam=JvmFormalParameter
 	 *     (rule start) (ambiguity) 'switch' declaredParam=JvmFormalParameter
-	 *     (rule start) (ambiguity) 'switch' switch=XExpressionOrSimpleConstructorCall
+	 *     (rule start) (ambiguity) 'switch' switch=XExpression
 	 *     (rule start) (ambiguity) 'synchronized' '(' param=XExpression
 	 *     (rule start) (ambiguity) 'throw' expression=XExpression
 	 *     (rule start) (ambiguity) 'try' expression=XExpression
@@ -666,7 +666,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) 'return' expression=XExpression
 	 *     (rule start) (ambiguity) 'switch' '(' declaredParam=JvmFormalParameter
 	 *     (rule start) (ambiguity) 'switch' declaredParam=JvmFormalParameter
-	 *     (rule start) (ambiguity) 'switch' switch=XExpressionOrSimpleConstructorCall
+	 *     (rule start) (ambiguity) 'switch' switch=XExpression
 	 *     (rule start) (ambiguity) 'synchronized' '(' param=XExpression
 	 *     (rule start) (ambiguity) 'throw' expression=XExpression
 	 *     (rule start) (ambiguity) 'try' expression=XExpression

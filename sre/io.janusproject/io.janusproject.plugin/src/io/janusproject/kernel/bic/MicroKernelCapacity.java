@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ package io.janusproject.kernel.bic;
 
 import com.google.common.util.concurrent.Service;
 
+import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Capacity;
 
 /**
@@ -43,5 +44,39 @@ public interface MicroKernelCapacity extends Capacity {
 	 * @return the service, or <code>null</code>.
 	 */
 	<S extends Service> S getService(Class<S> type);
+
+	/** Context aware implementation of the {@link MicroKernelCapacity}.
+	 *
+	 * @param <C> type of the capacity.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.5
+	 */
+	class ContextAwareCapacityWrapper<C extends MicroKernelCapacity>
+			extends Capacity.ContextAwareCapacityWrapper<C>
+			implements MicroKernelCapacity {
+
+		/** Constructor.
+		 *
+		 * @param capacity the original capacity implementation.
+		 * @param caller the caller of the capacity.
+		 */
+		public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {
+			super(capacity, caller);
+		}
+
+		@Override
+		public <S extends Service> S getService(Class<S> type) {
+			try {
+				ensureCallerInLocalThread();
+				return this.capacity.getService(type);
+			} finally {
+				resetCallerInLocalThread();
+			}
+		}
+
+	}
 
 }

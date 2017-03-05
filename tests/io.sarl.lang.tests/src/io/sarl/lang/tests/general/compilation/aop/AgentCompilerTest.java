@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package io.sarl.lang.tests.general.compilation.aop;
 
 import com.google.inject.Inject;
-import org.eclipse.xtext.xbase.compiler.CompilationTestHelper;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -1720,6 +1720,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		String source = "capacity C1 { def myfunction(v : double) } agent A1 { uses C1 def caller { myfunction(5) } }";
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
@@ -1727,6 +1728,21 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final double v);",
+				"  ",
+				"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
+				"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+				"      super(capacity, caller);",
+				"    }",
+				"    ",
+				"    public void myfunction(final double v) {",
+				"      try {",
+				"        ensureCallerInLocalThread();",
+				"        this.capacity.myfunction(v);",
+				"      } finally {",
+				"        resetCallerInLocalThread();",
+				"      }",
+				"    }",
+				"  }",
 				"}",
 				""
 				);
@@ -1736,8 +1752,8 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.ClearableReference;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.util.ClearableReference;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -1802,6 +1818,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		String source = "capacity C1 { def myfunction(v : Class<?>) } agent A1 { uses C1 def caller { myfunction(Integer) } }";
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
@@ -1809,6 +1826,21 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final Class<?> v);",
+				"  ",
+				"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
+				"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+				"      super(capacity, caller);",
+				"    }",
+				"    ",
+				"    public void myfunction(final Class<?> v) {",
+				"      try {",
+				"        ensureCallerInLocalThread();",
+				"        this.capacity.myfunction(v);",
+				"      } finally {",
+				"        resetCallerInLocalThread();",
+				"      }",
+				"    }",
+				"  }",
 				"}",
 				""
 				);
@@ -1818,8 +1850,8 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.ClearableReference;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.util.ClearableReference;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -1884,6 +1916,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 		String source = "capacity C1 { def myfunction(v : Class<?>) } agent A1 { uses C1 def caller { myfunction(typeof(Integer)) } }";
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
@@ -1891,6 +1924,21 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final Class<?> v);",
+				"  ",
+				"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
+				"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+				"      super(capacity, caller);",
+				"    }",
+				"    ",
+				"    public void myfunction(final Class<?> v) {",
+				"      try {",
+				"        ensureCallerInLocalThread();",
+				"        this.capacity.myfunction(v);",
+				"      } finally {",
+				"        resetCallerInLocalThread();",
+				"      }",
+				"    }",
+				"  }",
 				"}",
 				""
 				);
@@ -1900,8 +1948,8 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.ClearableReference;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.util.ClearableReference;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -1971,6 +2019,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				+ " } }";
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
@@ -1978,6 +2027,21 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final Class<?> v1, final int... v2);",
+				"  ",
+				"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
+				"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+				"      super(capacity, caller);",
+				"    }",
+				"    ",
+				"    public void myfunction(final Class<?> v1, final int... v2) {",
+				"      try {",
+				"        ensureCallerInLocalThread();",
+				"        this.capacity.myfunction(v1, v2);",
+				"      } finally {",
+				"        resetCallerInLocalThread();",
+				"      }",
+				"    }",
+				"  }",
 				"}",
 				""
 				);
@@ -1987,8 +2051,8 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.ClearableReference;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.util.ClearableReference;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -2064,6 +2128,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				+ " } }";
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
@@ -2071,6 +2136,21 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final int... v2);",
+				"  ",
+				"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
+				"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+				"      super(capacity, caller);",
+				"    }",
+				"    ",
+				"    public void myfunction(final int... v2) {",
+				"      try {",
+				"        ensureCallerInLocalThread();",
+				"        this.capacity.myfunction(v2);",
+				"      } finally {",
+				"        resetCallerInLocalThread();",
+				"      }",
+				"    }",
+				"  }",
 				"}",
 				""
 				);
@@ -2080,8 +2160,8 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.ClearableReference;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.util.ClearableReference;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -2678,8 +2758,8 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.ClearableReference;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.util.ClearableReference;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",
@@ -2756,8 +2836,8 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
-				"import io.sarl.lang.core.ClearableReference;",
 				"import io.sarl.lang.core.Skill;",
+				"import io.sarl.lang.util.ClearableReference;",
 				"import java.util.UUID;",
 				"import javax.inject.Inject;",
 				"import org.eclipse.xtext.xbase.lib.Extension;",

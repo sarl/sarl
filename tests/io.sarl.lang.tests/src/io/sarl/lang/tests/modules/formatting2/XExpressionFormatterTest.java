@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,10 @@
  */
 package io.sarl.lang.tests.modules.formatting2;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Named;
-
-import com.google.inject.Inject;
-import junit.framework.TestSuite;
-import org.eclipse.xtext.junit4.formatter.FormatterTestRequest;
-import org.eclipse.xtext.junit4.formatter.FormatterTester;
-import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.lib.Procedures;
 import org.junit.Test;
-import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-import org.junit.runners.model.InitializationError;
-
-import io.sarl.tests.api.AbstractSarlTest;
 
 /** Tests for formatting several XExpressions.
  *

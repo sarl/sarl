@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -903,7 +903,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					55, 1,
 					"extraneous input '*' expecting ')'");
 		}
 
@@ -1010,7 +1009,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXStringLiteral(),
 					IssueCodes.INCOMPATIBLE_TYPES,
-					65, 3,
 					"Type mismatch: cannot convert from String to int");
 		}
 
@@ -1092,7 +1090,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					38, 1,
 					"extraneous input '*' expecting ')'");
 		}
 
@@ -1354,7 +1351,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					64, 1,
 					"extraneous input '*' expecting ')'");
 		}
 
@@ -1496,7 +1492,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					99, 1,
 					"extraneous input '*' expecting ')'");
 		}
 
@@ -2021,7 +2016,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					125, 1,
 					"extraneous input '*' expecting ')'");
 		}
 
@@ -2353,7 +2347,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
-					105, 2,
 					"The class S1 must be defined abstract because it does not implement its inherited abstract methods");
 		}
 
@@ -2374,7 +2367,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
-					105, 2,
 					"The class S1 must be defined abstract because it does not implement its inherited abstract methods");
 		}
 
@@ -2394,7 +2386,6 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					XbasePackage.eINSTANCE.getXStringLiteral(),
 					IssueCodes.INCOMPATIBLE_TYPES,
-					54, 3,
 					"Type mismatch: cannot convert from String to int");
 		}
 

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -877,7 +877,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 		 * <p>The tinyMAS implementation of the SRE must fire these two events according
 		 * to the tinyMAS agent life-cycle. In this platform, the starting of the agents
 		 * is supported by the `start` function. And the destruction of the agents is supported
-		 * by the `stop` function.
+		 * by the `stop` function.k
 		 *
 		 * <p>For firing the `Initialize` event, we need to create an instance of this event into
 		 * the `start` function. But, from the SARL API documentation, the `Initialize` event
@@ -894,11 +894,13 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 		 */
 		fact "Initialize and Destroy events" {
 			'''
+			var spawnerID : UUID
 			var parameters : Object[]
 			
-			new (defaultSpace : TMDefaultSpace, sarlAgent : io.sarl.lang.core.Agent, parameters : Object[]) {
+			new (defaultSpace : TMDefaultSpace, sarlAgent : io.sarl.lang.core.Agent, spawnerID : UUID, parameters : Object[]) {
 				this.defaultSpace = new WeakReference(defaultSpace)
 				this.sarlAgent = sarlAgent
+				this.spawnerID = spawnerID
 				this.parameters = parameters
 			}
 
@@ -906,11 +908,9 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				super.start
 				this.evaluatorRegistry.register(getSarlAgent())
 				
-				var initializeEvent = new Initialize
-				if (this.parameters !== null) {
-					initializeEvent.parameters = this.parameters
-					this.parameters = null
-				}
+				var initializeEvent = new Initialize(this.spawnerID, this.parameters)
+				this.spawnerID = null
+				this.parameters = null
 				receiveEvent(initializeEvent)
 			}
 
@@ -972,6 +972,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 		 *
 		 *  * `defaultSpace`: the instance of the default space in which the SARL agent will interact.
 		 *  * `agentType` : the type of SARL agent to create.
+		 *  * `spawerID` : the identifier of the agent's spanwer, or <code>null</code> if the platform has spawned the agent.
 		 *  * `parentID` : the identifier of the agent's parent, usually the identifier of the default context in the timeMAS SRE.
 		 *  * `agentID` : the identifier to give to the created agent, or <code>null</code> if the identifier must be randomly selected.
 		 *  * `params` : the initialization parameters to pass to the created SARL agent.
@@ -1001,6 +1002,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 			static def createAgent(
 					defaultSpace : TMDefaultSpace, 
 					agentType : Class<? extends io.sarl.lang.core.Agent>,
+					spawnerID : UUID,
 					parentID : UUID,
 					agentID : UUID,
 					params : Object*)
@@ -1011,7 +1013,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 					var theAgentType = agentType as Class<? extends io.sarl.lang.core.Agent>
 					var cons = theAgentType.getConstructor(typeof(BuiltinCapacitiesProvider), typeof(UUID), typeof(UUID))
 					var sarlAgent = cons.newInstance(null, parentID, theAgentID)
-					var tmAgent = new TMSarlAgent(defaultSpace, sarlAgent, params)
+					var tmAgent = new TMSarlAgent(defaultSpace, sarlAgent, spawnerID, params)
 					return tmAgent
 				}
 				return null
@@ -1091,10 +1093,11 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 					kernel : Kernel,
 					defaultSpace : TMDefaultSpace, 
 					agentType : Class<? extends io.sarl.lang.core.Agent>,
+					spawnerID : UUID,
 					parentID : UUID,
 					agentID : UUID,
 					params : Object*) : UUID {
-				var ^agent = createAgent(defaultSpace, agentType, parentID, agentID, params)
+				var ^agent = createAgent(defaultSpace, agentType, spawnerID, parentID, agentID, params)
 				if (^agent !== null) {
 					spawn(kernel, ^agent)
 					return ^agent.ID
@@ -1114,6 +1117,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				static def createAgent(
 					^space : TMDefaultSpace,
 					agentType : Class<? extends io.sarl.lang.core.Agent>,
+					spanwerID : UUID,
 					parentID : UUID,
 					agentID : UUID,
 					params : Object*) : TMSarlAgent {
@@ -1284,12 +1288,14 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 
 				def spawn(
 						anAgent : Class<? extends io.sarl.lang.core.Agent>,
+						spawnerID : UUID,
 						agentID : UUID,
 						params : Object*)
 						: UUID {
 					val ^agent = Spawner::createAgent(
 							this,
 							anAgent,
+							spawnerID,
 							TINYMAS_DEFAULT_SPACE_ID,
 							agentID,
 							params)
@@ -1315,7 +1321,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				class Spawner {
 					static def createAgent(a : TMDefaultSpace,
 						b :  Class<? extends io.sarl.lang.core.Agent>,
-						c : UUID, d : UUID, e : Object*) : TMSarlAgent { null }
+						z : UUID, c : UUID, d : UUID, e : Object*) : TMSarlAgent { null }
 				}
 				class TMDefaultSpace {
 					static var TINYMAS_DEFAULT_SPACE_ID : UUID
@@ -1376,7 +1382,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 							params : Object*)
 							: UUID {
 						if (context.ID == defaultSpace.agentContext.ID) {
-							return defaultSpace.spawn(agentClass, null, params)
+							return defaultSpace.spawn(agentClass, owner.ID, null, params)
 						}
 						return null
 					}
@@ -1406,7 +1412,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 							params : Object*)
 							: UUID {
 						if (context.ID == defaultSpace.agentContext.ID) {
-							return defaultSpace.spawn(agentClass, agentID, params)
+							return defaultSpace.spawn(agentClass, owner.ID, agentID, params)
 						}
 						return null
 					}
@@ -1434,6 +1440,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 						: UUID
 				}
 				interface TMSarlAgent {
+					def getID : UUID
 					def killMe
 				}
 				class NoReturnCodeException extends RuntimeException { }
@@ -1676,6 +1683,39 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				typeof(DefaultContextInteractions) should haveDeprecatedMethod "receive(java.util.UUID,io.sarl.lang.core.Event)"
 			}
 
+			/* Spawning an agent in the default context could be done by calling the `spawn` function of
+			 * the `DefaultContextInteractions` capacity.
+			 * This function delegates its behavior to the `spawn` function that is already defined
+			 * in the tinyMAS-SARL default space class.
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
+			 */
+			fact "Spawning agents in the default context" {
+				'''
+				def spawn(agentType : Class<? extends io.sarl.lang.core.Agent>, params : Object*) : UUID {
+					(defaultSpace as TMDefaultSpace).spawn(agentType, owner.ID, null, params)
+				}
+				'''.parseSuccessfully(
+				'''
+				package io.sarl.docs.tutorials.tinyMASSRE
+				import java.util.UUID
+				import io.sarl.lang.core.EventSpace
+				import io.sarl.lang.core.Agent
+				import io.sarl.core.DefaultContextInteractions
+				interface TMDefaultSpace extends EventSpace {
+					def spawn(agentType : Class<? extends io.sarl.lang.core.Agent>,
+						spawnerID : UUID, agentID : UUID, params : Object*) : UUID
+				}
+				abstract class DefaultContextInteractionsSkill implements DefaultContextInteractions {
+					def getDefaultSpace : EventSpace { null }
+					def getOwner : Agent { null }
+				''',
+				// TEXT
+				'''
+				}
+				''')
+			}
+
 		}
 
 		/* The `Behaviors` capacity enables the agent to have
@@ -1796,20 +1836,79 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 			 * Its implementation retrieves the SARL event listener of the agent by calling
 			 * the `asEventListener` function. And, it invokes the receiving function of
 			 * the listener with the event as argument.
+			 *
+			 * <p>If a scope is provided, it must be used for filtering the receivers which have
+			 * an address. In the context of the tinyMAS platform, only the agent fits this requirement.
+			 * Consequently, the scope is matched against the agent's address in its internal context
+			 * (not the agent's address in the default space of its default context).
+			 * The `getInnerAddress` function computes the agent's address in the agent internal context.
 			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Waking the behaviors with an event" {
 				'''
-				def wake(^event : Event) {
-					asEventListener.receiveEvent(^event)
+				def wake(^event : Event, scope : Scope<Address> = null) {
+					if (scope === null || scope.matches(innerAddress)) {
+						asEventListener.receiveEvent(^event)
+					}
+				}
+
+				private def getInnerAddress : Address {
+					var id = (owner as TMSarlAgent).ID
+					return new Address(
+							new SpaceID(id, UUID.randomUUID, typeof(EventSpaceSpecification)),
+							id)
 				}
 				'''.parseSuccessfully(
 				'''
 				package io.sarl.docs.tutorials.tinyMASSRE
+				import java.util.UUID
 				import io.sarl.lang.core.Event
+				import io.sarl.lang.core.EventSpaceSpecification
+				import io.sarl.lang.core.Scope
+				import io.sarl.lang.core.Address
+				import io.sarl.lang.core.SpaceID
+				import io.sarl.core.Behaviors
+				interface TMSarlAgent {
+					def getID : UUID
+				}
+				abstract class BehaviorsSkill implements Behaviors {
+					def getOwner : io.sarl.lang.core.Agent
+				''',
+				// TEXT
+				'''
+				}
+				''')
+			}
+
+			/* Two functions must be implemented for accessing to the internal list of the behaviors:
+			 * <ul>
+			 * <li>`hasRegisteredBehavior` indicates if a behavior is registered; and</li>
+			 * <li>`getRegisteredBehaviors` replies an unmodifiable collection of the registered behaviors.</li>
+			 * </ul>
+			 * 
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
+			 */
+			fact "Accessing to the collection of the registered behaviors" {
+				'''
+				def hasRegisteredBehavior : boolean {
+					!this.behaviors.isEmpty
+				}
+
+				def getRegisteredBehaviors : Collection<Behavior> {
+					new ArrayList(this.behaviors)
+				}
+				'''.parseSuccessfully(
+				'''
+				package io.sarl.docs.tutorials.tinyMASSRE
+				import java.util.UUID
+				import java.util.Collection
+				import java.util.List
+				import java.util.ArrayList
+				import io.sarl.lang.core.Behavior
 				import io.sarl.core.Behaviors
 				abstract class BehaviorsSkill implements Behaviors {
+					var behaviors : List<Behavior>
 				''',
 				// TEXT
 				'''
@@ -2009,9 +2108,15 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				 */
 				fact "Proper un-installation of the skill" {
 					'''
-					protected def uninstall {
-						for (beh : this.behaviors) {
-							(owner as TMSarlAgent).evaluatorRegistry.unregister(beh)
+					protected def uninstall(stage : UninstallationStage) {
+						switch (stage) {
+						case PRE_DESTROY_EVENT: {
+							}
+						case POST_DESTROY_EVENT: {
+								for (beh : this.behaviors) {
+									(owner as TMSarlAgent).evaluatorRegistry.unregister(beh)
+								}
+							}
 						}
 					}
 					'''.parseSuccessfully(
@@ -2019,6 +2124,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 					package io.sarl.docs.tutorials.tinyMASSRE
 					import java.util.List
 					import io.sarl.lang.core.Behavior
+					import io.sarl.lang.core.Skill.UninstallationStage
 					import io.sarl.core.Behaviors
 					interface Registry {
 						def unregister(obj : Object)
@@ -2208,11 +2314,54 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				''')
 			}
 
+			/* It is possible to execute a task only one time by calling the `execute` function.
+			 * In the tinyMAs implementation, the `execute` function schedule the task for the
+			 * next simulation step.
+			 *
+			 * @filter(.* = '''|'''|.parseSuccessfully.*)
+			 */
+			fact "Executed an agent task once" {
+				'''
+				def execute(task : AgentTask = null, procedure : (io.sarl.lang.core.Agent) => void) : AgentTask {
+					return in(
+						task,
+						(owner as TMSarlAgent).getSimulationStepDuration(TimeUnit::MILLISECONDS) as long,
+						procedure)
+				}
+				'''.parseSuccessfully(
+				'''
+				package io.sarl.docs.tutorials.tinyMASSRE
+				import java.util.UUID
+				import java.util.Collection
+				import java.util.ArrayList
+				import java.util.Map
+				import java.util.TreeMap
+				import java.util.concurrent.TimeUnit
+				import io.sarl.lang.core.Agent
+				import io.sarl.core.AgentTask
+				import io.sarl.core.Schedules
+				class Task extends AgentTask {
+				}
+				interface TMSarlAgent {
+					def getSimulationStepDuration(u : TimeUnit) : double
+				}
+				abstract class SchedulesSkill implements Schedules {
+					def getOwner : Agent { null }
+				''',
+				// TEXT
+				'''
+				}
+				''')
+			}
+
 			/* It is possible to schedule periodic tasks by calling the `every` function.
 			 * The definition of this function is similar to the definition of
 			 * the `in` function, except that the `period` field of the `Task` is set
 			 * with the period duration, which is given as parameter. 
 			 *
+			 * <p>The `atFixedDelay` function delegates to the `every` function because the task running
+			 * algorithm implies that these two types of execution approach will be the same on tinyMAS.
+			 * 
 			 * @filter(.* = '''|'''|.parseSuccessfully.*)
 			 */
 			fact "Scheduling a periodic agent task" {
@@ -2230,6 +2379,10 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 					}
 					scheduleTask(time, theTask)
 					return theTask
+				}
+
+				def atFixedDelay(task : AgentTask = null, delay : long, procedure : (io.sarl.lang.core.Agent) => void) : AgentTask {
+					return task.every(delay, procedure)
 				}
 				'''.parseSuccessfully(
 				'''
@@ -2550,11 +2703,9 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 						method.invoke(sarlAgent, typeof(Schedules), this.scheduleSkill)
 						method.invoke(sarlAgent, typeof(Time), this.timeSkill)
 
-						var initializeEvent = new Initialize
-						if (this.parameters !== null) {
-							initializeEvent.parameters = this.parameters
-							this.parameters = null
-						}
+						var initializeEvent = new Initialize(this.spawnerID, this.parameters)
+						this.spawnerID = null
+						this.parameters = null
 						receiveEvent(initializeEvent)
 					}
 
@@ -2562,6 +2713,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 				'''.parseSuccessfully(
 				'''
 				package io.sarl.docs.tutorials.tinyMASSRE
+				import java.util.UUID
 				import io.sarl.lang.core.EventListener
 				import io.sarl.core.Initialize
 				import io.sarl.lang.core.Event
@@ -2589,6 +2741,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 					protected var scheduleSkill : SchedulesSkill
 					protected var timeSkill : TimeSkill
 					protected var evaluatorRegistry : Registry
+					protected var spawnerID : UUID
 					protected var parameters : Object[]
 
 					def getSarlAgent : io.sarl.lang.core.Agent { null }
@@ -2973,6 +3126,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 							kernel,
 							defaultSpace,
 							agentType as Class<? extends io.sarl.lang.core.Agent>,
+							null,
 							TMDefaultSpace.TINYMAS_DEFAULT_SPACE_ID,
 							null,
 							params)
@@ -3005,7 +3159,7 @@ describe "Creating a SARL Run-time Environment for the tinyMAS platform"{
 			class Spawner {
 				static def spawn(kernel : Kernel, defaultSpace : TMDefaultSpace,
 						agentType : Class<? extends io.sarl.lang.core.Agent>,
-						id : UUID, u : Object, params : Object*) : UUID { null }
+						spawnerId : UUID, parentId : UUID, id : UUID, params : Object*) : UUID { null }
 			}
 			class TMDefaultSpace {
 				protected static var TINYMAS_DEFAULT_SPACE_ID : UUID

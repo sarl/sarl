@@ -19,9 +19,6 @@
  */
 package io.janusproject.tests.testutils;
 
-import io.janusproject.services.logging.LogService;
-
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -33,8 +30,12 @@ import java.util.logging.Logger;
 import com.google.common.util.concurrent.AbstractService;
 import com.google.common.util.concurrent.Service;
 
+import io.janusproject.services.logging.LogService;
+
 /**
  * This class provides an implementation of the {@link LogService} that throws an exception when logging an error.
+ *
+ * <p>This service is thread-safe.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -52,6 +53,14 @@ public class ExceptionLogService extends AbstractService implements LogService {
 	public ExceptionLogService(List<Object> results) {
 		this.results = results;
 		this.logger = Logger.getLogger(ExceptionLogService.class.getName());
+	}
+
+	/** Replies the mutex to be used for being synchronized on the results.
+	 *
+	 * @return the mutex.
+	 */
+	protected Object getResultMutex() {
+		return this;
 	}
 
 	@Override
@@ -95,24 +104,42 @@ public class ExceptionLogService extends AbstractService implements LogService {
 	}
 
 	@Override
+	public void warning(Throwable exception) {
+		//
+	}
+
+	@Override
 	public void error(String message, Object... params) {
-		this.results.add(new LoggedException(message));
-		getLogger().severe(MessageFormat.format(message, params));
+		final Exception ex = new LoggedException(message);
+		synchronized(getResultMutex()) {
+			this.results.add(ex);
+		}
+	}
+
+	@Override
+	public void error(Throwable exception) {
+		synchronized(getResultMutex()) {
+			this.results.add(exception);
+		}
 	}
 
 	@Override
 	public void log(LogRecord record) {
 		if (record.getLevel() == Level.SEVERE) {
-			this.results.add(new LoggedException(record.getMessage(), record.getThrown()));
-			getLogger().log(record);
+			final Exception ex = new LoggedException(record.getMessage(), record.getThrown());
+			synchronized(getResultMutex()) {
+				this.results.add(ex);
+			}
 		}
 	}
 
 	@Override
 	public void log(Level level, String message, Object... params) {
 		if (level == Level.SEVERE) {
-			this.results.add(new LoggedException(message));
-			getLogger().severe(MessageFormat.format(message, params));
+			final Exception ex = new LoggedException(message);
+			synchronized(getResultMutex()) {
+				this.results.add(ex);
+			}
 		}
 	}
 

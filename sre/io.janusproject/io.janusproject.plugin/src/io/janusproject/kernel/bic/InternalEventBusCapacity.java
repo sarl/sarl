@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2016 the original authors or authors.
+ * Copyright (C) 2014-2017 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,14 @@
 
 package io.janusproject.kernel.bic;
 
+import java.util.Collection;
+
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.lang.core.Address;
+import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
@@ -51,15 +56,60 @@ public interface InternalEventBusCapacity extends Capacity {
 	 * Register the given object on the event bus for receiving any event.
 	 *
 	 * @param listener - the listener on the SARL events.
+	 * @deprecated see {@link #registerEventListener(Object, boolean, Function1)}.
 	 */
+	@Deprecated
 	void registerEventListener(Object listener);
+
+	/**
+	 * Register the given object on the event bus for receiving any event.
+	 *
+	 * <p>If the filter is provided, it will be used for determining if the given behavior accepts a specific event.
+	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
+	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context.
+	 *
+	 * @param listener - the listener on the SARL events.
+	 * @param fireInitializeEvent - indicates if the {@code Initialize} event should be fired to the listener if the agent is alive.
+	 * @param filter - the filter function.
+	 * @since 0.5
+	 */
+	void registerEventListener(Object listener, boolean fireInitializeEvent, Function1<? super Event, ? extends Boolean> filter);
 
 	/**
 	 * Unregister the given object on the event bus for receiving any event.
 	 *
 	 * @param listener - the listener on the SARL events.
+	 * @deprecated see {@link #unregisterEventListener(Object, boolean)}.
 	 */
+	@Deprecated
 	void unregisterEventListener(Object listener);
+
+	/**
+	 * Unregister the given object on the event bus for receiving any event.
+	 *
+	 * @param listener - the listener on the SARL events.
+	 * @param fireDestroyEvent - indicates if the {@code Destroy} event should be fired to the listener if the agent is alive.
+	 * @since 0.5
+	 */
+	void unregisterEventListener(Object listener, boolean fireDestroyEvent);
+
+	/**
+	 * Replies if at least one event listener of the given type was registered.
+	 *
+	 * @param type the type of the expected event listener.
+	 * @return <code>true</code> if one event listener of the given type is registered; otherwise <code>false</code>.
+	 */
+	boolean hasRegisteredEventListener(Class<?> type);
+
+	/**
+	 * Fill the given collection with the events listeners of the given type.
+	 *
+	 * @param <T> the type of the expected event listener.
+	 * @param type the type of the expected event listener.
+	 * @param collection the collection to fill.
+	 * @return the number of added elements.
+	 */
+	<T> int getRegisteredEventListeners(Class<T> type, Collection<? super T> collection);
 
 	/**
 	 * Sends an event to itself using its defaultInnerAddress as source. Used for platform level event dispatching (i.e.
@@ -93,17 +143,194 @@ public interface InternalEventBusCapacity extends Capacity {
 	 */
 	enum OwnerState {
 		/**
+		 * The owner of the event bus is unstarted: before initialization process.
+		 */
+		UNSTARTED {
+			@Override
+			public boolean isEventHandling() {
+				return true;
+			}
+		},
+
+		/**
 		 * The owner of the event bus is under creation.
 		 */
-		NEW,
+		INITIALIZING {
+			@Override
+			public boolean isEventHandling() {
+				return true;
+			}
+		},
+
 		/**
 		 * The owner of the event bus is running.
 		 */
-		RUNNING,
+		ALIVE {
+			@Override
+			public boolean isEventHandling() {
+				return true;
+			}
+		},
+
+		/**
+		 * The owner of the event bus is under destruction.
+		 */
+		DYING {
+			@Override
+			public boolean isEventHandling() {
+				return false;
+			}
+		},
+
 		/**
 		 * The owner of the event bus was destroyed.
 		 */
-		DESTROYED,
+		DEAD {
+			@Override
+			public boolean isEventHandling() {
+				return false;
+			}
+		};
+
+		/** Replies if the state accepts event handling.
+		 *
+		 * @return {@code true} if the state accept event handling.
+		 * @since 0.5
+		 */
+		public abstract boolean isEventHandling();
+	}
+
+	/** Context aware implementation of the {@link InternalEventBusCapacity}.
+	 *
+	 * @param <C> type of the capacity.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.5
+	 */
+	class ContextAwareCapacityWrapper<C extends InternalEventBusCapacity>
+			extends Capacity.ContextAwareCapacityWrapper<C>
+			implements InternalEventBusCapacity {
+
+		/** Constructor.
+		 *
+		 * @param capacity the original capacity implementation.
+		 * @param caller the caller of the capacity.
+		 */
+		public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {
+			super(capacity, caller);
+		}
+
+		@Override
+		public OwnerState getOwnerState() {
+			try {
+				ensureCallerInLocalThread();
+				return this.capacity.getOwnerState();
+			} finally {
+				resetCallerInLocalThread();
+			}
+		}
+
+		/** {@inheritDoc}.
+		 * @deprecated see {@link #getRegisteredEventListeners(Class, Collection)}
+		 */
+		@Override
+		@Deprecated
+		public void registerEventListener(Object listener) {
+			try {
+				ensureCallerInLocalThread();
+				this.capacity.registerEventListener(listener);
+			} finally {
+				resetCallerInLocalThread();
+			}
+		}
+
+		@Override
+		public void registerEventListener(Object listener, boolean fireInitializeEvent,
+				Function1<? super Event, ? extends Boolean> filter) {
+			try {
+				ensureCallerInLocalThread();
+				this.capacity.registerEventListener(listener, fireInitializeEvent, filter);
+			} finally {
+				resetCallerInLocalThread();
+			}
+		}
+
+		/** {@inheritDoc}.
+		 * @deprecated see {@link #unregisterEventListener(Object, boolean)}
+		 */
+		@Override
+		@Deprecated
+		public void unregisterEventListener(Object listener) {
+			try {
+				ensureCallerInLocalThread();
+				this.capacity.unregisterEventListener(listener);
+			} finally {
+				resetCallerInLocalThread();
+			}
+		}
+
+		@Override
+		public void unregisterEventListener(Object listener, boolean fireDestroyEvent) {
+			try {
+				ensureCallerInLocalThread();
+				this.capacity.unregisterEventListener(listener, fireDestroyEvent);
+			} finally {
+				resetCallerInLocalThread();
+			}
+		}
+
+		@Override
+		public boolean hasRegisteredEventListener(Class<?> type) {
+			try {
+				ensureCallerInLocalThread();
+				return this.capacity.hasRegisteredEventListener(type);
+			} finally {
+				resetCallerInLocalThread();
+			}
+		}
+
+		@Override
+		public <T> int getRegisteredEventListeners(Class<T> type, Collection<? super T> collection) {
+			try {
+				ensureCallerInLocalThread();
+				return this.capacity.getRegisteredEventListeners(type, collection);
+			} finally {
+				resetCallerInLocalThread();
+			}
+		}
+
+		@Override
+		public void selfEvent(Event event) {
+			try {
+				ensureCallerInLocalThread();
+				this.capacity.selfEvent(event);
+			} finally {
+				resetCallerInLocalThread();
+			}
+		}
+
+		@Override
+		public EventListener asEventListener() {
+			try {
+				ensureCallerInLocalThread();
+				return this.capacity.asEventListener();
+			} finally {
+				resetCallerInLocalThread();
+			}
+		}
+
+		@Override
+		public Address getInnerDefaultSpaceAddress() {
+			try {
+				ensureCallerInLocalThread();
+				return this.capacity.getInnerDefaultSpaceAddress();
+			} finally {
+				resetCallerInLocalThread();
+			}
+		}
+
 	}
 
 }

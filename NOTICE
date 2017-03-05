@@ -1,4 +1,4 @@
-Copyright 2014-2016 the original authors or authors.
+Copyright 2014-2017 the original authors or authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,5 +14,10 @@ limitations under the License.
 
 
 This project uses:
-- Xtext
+- Eclipse Xtext
 - Eclipse RCP
+- Hazelcast
+- ZeroMQ
+- Google Guava
+- Google Guice
+- Google Gson
