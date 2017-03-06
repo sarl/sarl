@@ -41,8 +41,8 @@ image:https://cla-assistant.io/readme/badge/sarl/sarl?style=flat-square[link=htt
 [align="center",width="40%",frame="topbot",cols="2*^",options="header"]
 |==========================
 2+| Build Status 
-| Linux and OSX |image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
-| Windows |image:https://ci.appveyor.com/api/projects/status/github/sarl/sarl?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/sarl]
+| Linux footnote:[Ubuntu 14.04 LTS Server Edition 64 bit] and OSX footnote:[OSX 10.12 and Xcode 8.2] |image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
+| Windows footnote:[Visual Studio 2015] |image:https://ci.appveyor.com/api/projects/status/github/sarl/sarl?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/sarl]
 |==========================
 
 
@@ -187,6 +187,6 @@ SARL is distributed under the link:./LICENSE[Apache v2 license], and is copyrigt
 
 The following projects have sucessfully used SARL:
 
-* link:https://github.com/gallandarakhne.org/jaak[Jaak Simulation Library]
+* link:https://github.com/gallandarakhneorg/jaak[Jaak Simulation Library]
 * link:https://bitbucket.org/sarlrmit/sarl-controller/src[SARL Elevator Simulator Controller]
 
