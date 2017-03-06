@@ -167,8 +167,8 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 				// Check if the version of the SARL agent class is compatible.
 				ensureSarlSpecificationVersion(agentClazz);
 				// Create the shared injector that is also able to create the agent instance.
-				final JustInTimeAgentInjectionModule agentInjectionModule = new JustInTimeAgentInjectionModule(this.injector, agentClazz,
-						parent.getID(), agentID);
+				final JustInTimeAgentInjectionModule agentInjectionModule = new JustInTimeAgentInjectionModule(
+						agentClazz, parent.getID(), agentID);
 				final Injector agentInjector = this.injector.createChildInjector(agentInjectionModule);
 				// Create the list of the spawned agents during this function execution
 				final List<Agent> agents = new ArrayList<>(nbAgents);
@@ -231,8 +231,9 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		final Address source = new Address(defSpace.getSpaceID(),
 				spawningAgent == null ? context.getID() : spawningAgent);
 		assert source != null;
-		defSpace.emit(new AgentSpawned(source, agentClazz.getName(),
-				Collections2.transform(agents, (it) -> it.getID())));
+		final AgentSpawned event = new AgentSpawned(source, agentClazz.getName(),
+				Collections2.transform(agents, (it) -> it.getID()));
+		defSpace.emit(event);
 	}
 
 	/** Notify the agent's listeners about its spawning.
@@ -579,22 +580,42 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 */
 	private static class JustInTimeAgentInjectionModule extends AbstractModule implements Provider<Agent> {
 
-		private final Injector injector;
-
 		private final Class<? extends Agent> agentType;
+
+		private final Constructor<? extends Agent> constructor1;
+
+		private final Constructor<? extends Agent> constructor2;
 
 		private final UUID parentID;
 
 		private final UUID agentID;
 
-		JustInTimeAgentInjectionModule(Injector injector, Class<? extends Agent> agentType, UUID parentID, UUID agentID) {
-			assert injector != null;
+		JustInTimeAgentInjectionModule(Class<? extends Agent> agentType, UUID parentID, UUID agentID) {
 			assert agentType != null;
 			assert parentID != null;
-			this.injector = injector;
 			this.agentType = agentType;
 			this.parentID = parentID;
 			this.agentID = (agentID == null) ? UUID.randomUUID() : agentID;
+			Constructor<? extends Agent> cons;
+			Exception e1 = null;
+			try {
+				cons = this.agentType.getConstructor(UUID.class, UUID.class);
+			} catch (NoSuchMethodException | SecurityException | IllegalArgumentException exception) {
+				cons = null;
+				e1 = exception;
+			}
+			this.constructor1 = cons;
+			Exception e2 = null;
+			try {
+				cons = this.agentType.getConstructor(BuiltinCapacitiesProvider.class, UUID.class, UUID.class);
+			} catch (NoSuchMethodException | SecurityException | IllegalArgumentException exception) {
+				cons = null;
+				e2 = exception;
+			}
+			this.constructor2 = cons;
+			if (this.constructor1 == null && this.constructor2 == null) {
+				throw new CannotSpawnException(this.agentType, e1 == null ? e2 : e1);
+			}
 		}
 
 		@Override
@@ -604,13 +625,13 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		@Override
 		public Agent get() {
+			assert this.constructor1 != null || this.constructor2 != null;
 			try {
-				final BuiltinCapacitiesProvider capacityProvider = this.injector.getInstance(BuiltinCapacitiesProvider.class);
-				final Constructor<? extends Agent> constructor = this.agentType.getConstructor(BuiltinCapacitiesProvider.class, UUID.class,
-						UUID.class);
-				return constructor.newInstance(capacityProvider, this.parentID, this.agentID);
-			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException exception) {
+				if (this.constructor1 != null) {
+					return this.constructor1.newInstance(this.parentID, this.agentID);
+				}
+				return this.constructor2.newInstance(null, this.parentID, this.agentID);
+			} catch (InstantiationException | IllegalAccessException | InvocationTargetException exception) {
 				throw new CannotSpawnException(this.agentType, exception);
 			}
 		}

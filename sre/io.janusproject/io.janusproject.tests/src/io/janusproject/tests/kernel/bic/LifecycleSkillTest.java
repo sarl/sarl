@@ -67,7 +67,7 @@ import io.sarl.tests.api.Nullable;
 public class LifecycleSkillTest extends AbstractJanusTest {
 
 	@Nullable
-	private UUID agentId;
+	private UUID agentID;
 
 	@Mock
 	private SpawnService spawnService;
@@ -86,7 +86,7 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.agentId = UUID.randomUUID();
+		this.agentID = UUID.randomUUID();
 		Mockito.doReturn(this.context).when(this.defaultContextInteractions).getDefaultContext();
 		Agent agent = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null) {
 			@Override
@@ -102,7 +102,7 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 
 			@Override
 			public UUID getID() {
-				return LifecycleSkillTest.this.agentId;
+				return LifecycleSkillTest.this.agentID;
 			}
 		};
 		this.reflect.invoke(this.skill, "setOwner", agent);
@@ -119,9 +119,9 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Class> argument4 = ArgumentCaptor.forClass(Class.class);
 		ArgumentCaptor<Object> argument5 = ArgumentCaptor.forClass(Object.class);
 		verify(this.spawnService, times(1)).spawn(argument0.capture(), argument1.capture(), argument2.capture(),
-				argument3.capture(), argument4.capture(), argument4.capture());
+				argument3.capture(), argument4.capture(), argument5.capture());
 		assertEquals(1, argument0.getValue());
-		assertNull(argument1.getValue());
+		assertSame(this.agentID, argument1.getValue());
 		assertSame(this.context, argument2.getValue());
 		assertNull(argument3.getValue());
 		assertEquals(Agent.class, argument4.getValue());
@@ -141,7 +141,7 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 		verify(this.spawnService, times(1)).spawn(argument0.capture(), argument1.capture(), argument2.capture(),
 				argument3.capture(), argument4.capture(), argument5.capture());
 		assertEquals(1, argument0.getValue());
-		assertEquals(this.agentId, argument1.getValue());
+		assertEquals(this.agentID, argument1.getValue());
 		assertSame(this.context, argument2.getValue());
 		assertNull(argument3.getValue());
 		assertEquals(Agent.class, argument4.getValue());
@@ -152,7 +152,7 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 	public void spawnInContextWithID_1() {
 		Class type = Agent.class;
 		// Class<? extends Agent> agentClass, UUID agentID, AgentContext context, Object... 
-		this.skill.spawnInContextWithID(type, this.agentId, this.context, 1, "String"); //$NON-NLS-1$
+		this.skill.spawnInContextWithID(type, this.agentID, this.context, 1, "String"); //$NON-NLS-1$
 		ArgumentCaptor<Integer> argument0 = ArgumentCaptor.forClass(Integer.class);
 		ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<AgentContext> argument2 = ArgumentCaptor.forClass(AgentContext.class);
@@ -162,9 +162,9 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 		verify(this.spawnService, times(1)).spawn(argument0.capture(), argument1.capture(), argument2.capture(),
 				argument3.capture(), argument4.capture(), argument5.capture());
 		assertEquals(1, argument0.getValue());
-		assertNull(argument1.getValue());
+		assertSame(this.agentID, argument1.getValue());
 		assertSame(this.context, argument2.getValue());
-		assertSame(this.agentId, argument3.getValue());
+		assertSame(this.agentID, argument3.getValue());
 		assertEquals(Agent.class, argument4.getValue());
 		assertArrayEquals(new Object[] { 1, "String" }, argument5.getAllValues().toArray()); //$NON-NLS-1$
 	}

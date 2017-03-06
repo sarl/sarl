@@ -1081,7 +1081,7 @@ describe "Agent Reference"{
 			 * In the following example, the agent is creating the
 			 * `Ski` skill. This instance is associated with
 			 * the corresponding capacity `Cap` with the
-			 * function `setSkill(Class<? extends Capacity>, Skill)`.
+			 * function `setSkill(Skill, Class<? extends Capacity>*)`.
 			 * 
 			 * <p>When the function `setSkill` is returning, the agent
 			 * becomes able to use the skill.
@@ -1093,7 +1093,7 @@ describe "Agent Reference"{
 				agent MyAgent {
 					on Initialize {
 						var theSkill = new Ski
-						setSkill( Cap, theSkill )
+						setSkill( theSkill, Cap )
 					}
 				}
 				'''.parseSuccessfully(
@@ -1167,7 +1167,7 @@ describe "Agent Reference"{
 			 * a built-in capacity.
 			 * 
 			 * <p>However, in rare cases, it is possible to use the function
-			 * `setSkill(Class<? extends Capacity>, Skill)` for
+			 * `setSkill(Skill, Class<? extends Capacity>*)` for
 			 * changing the implementation of a built-in capacity.
 			 * 
 			 * @filter(.*) 
@@ -1200,7 +1200,7 @@ describe "Agent Reference"{
 				agent MyAgent {
 					on Initialize {
 						var s = new Ski
-						setSkill( Cap, s )
+						setSkill( s, Cap )
 					}
 					on SomeEvent {
 						// Retreive the capacity implementation
@@ -1363,7 +1363,7 @@ describe "Agent Reference"{
 					uses Cap
 					on Initialize {
 						var s = new Ski
-						setSkill( Cap, s )
+						setSkill( s, Cap )
 					}
 					on SomeEvent {
 						// Run the action of the skill

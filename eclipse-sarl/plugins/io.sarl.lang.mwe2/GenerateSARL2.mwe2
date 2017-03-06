@@ -522,6 +522,10 @@ Workflow {
     				override = true
    				}
     			runtime = {
+    				bind = "org.eclipse.xtext.xbase.typesystem.computation.ITypeComputer"
+    				to = "io.sarl.lang.typesystem.SARLTypeComputer"
+ 				}
+    			runtime = {
     				bind = "org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider"
     				to = "io.sarl.lang.generator.SARLGeneratorConfigProvider"
    				}
@@ -797,10 +801,6 @@ Workflow {
     			runtime = {
     				bind = "org.eclipse.xtext.generator.IShouldGenerate"
     				to = "org.eclipse.xtext.generator.IShouldGenerate$Always"
- 				}
-    			runtime = {
-    				bind = "org.eclipse.xtext.xbase.typesystem.computation.ITypeComputer"
-    				to = "org.eclipse.xtend.core.typesystem.XtendTypeComputer"
  				}
     			runtime = {
     				bind = "org.eclipse.xtext.conversion.IValueConverterService"

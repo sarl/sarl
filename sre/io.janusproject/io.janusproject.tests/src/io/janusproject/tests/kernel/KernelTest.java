@@ -110,12 +110,13 @@ public class KernelTest extends AbstractJanusTest {
 		//
 		when(this.spawnService.isRunning()).thenReturn(true);
 		when(this.spawnService.state()).thenReturn(State.RUNNING);
-		when(this.spawnService.spawn(
+		doReturn(Collections.singletonList(this.uuid)).when(this.spawnService).spawn(
 				ArgumentMatchers.anyInt(),
-				ArgumentMatchers.any(),
-				ArgumentMatchers.any(),
-				ArgumentMatchers.any(),
-				ArgumentMatchers.any())).thenReturn(Collections.singletonList(this.uuid));
+				anyInstanceOrNull(UUID.class),
+				ArgumentMatchers.any(AgentContext.class),
+				anyInstanceOrNull(UUID.class),
+				ArgumentMatchers.any(Class.class),
+				ArgumentMatchers.any());
 		when(this.executorService.isRunning()).thenReturn(true);
 		when(this.executorService.state()).thenReturn(State.RUNNING);
 		when(this.contextService.isRunning()).thenReturn(true);
@@ -189,7 +190,7 @@ public class KernelTest extends AbstractJanusTest {
 		ArgumentCaptor<Class> argument4 = ArgumentCaptor.forClass(Class.class);
 		ArgumentCaptor<String> argument5 = ArgumentCaptor.forClass(String.class);
 		verify(this.spawnService).spawn(argument0.capture(), argument1.capture(), argument2.capture(), argument3.capture(),
-				argument4.capture(), argument4.capture());
+				argument4.capture(), argument5.capture());
 		assertEquals(2, argument0.getValue());
 		assertNull(argument1.getValue());
 		assertSame(this.agentContext, argument2.getValue());

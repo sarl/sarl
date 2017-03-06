@@ -84,10 +84,15 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runners.model.Statement;
+import org.mockito.ArgumentMatcher;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.matchers.InstanceOf;
+import org.mockito.internal.matchers.Null;
+import org.mockito.internal.matchers.Or;
 import org.mockito.internal.util.Primitives;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -1569,6 +1574,19 @@ public abstract class AbstractSarlTest {
 			}
 		}
 		throw new ComparisonFailure("Not same versions", expected.toString(), actual.toString());
+	}
+
+	/** Mockito matcher that matches {@code null} or an instance of the given type.
+	 *
+	 * @param type the expected type.
+	 * @return the default value for the given type.
+	 */
+	public static <T> T anyInstanceOrNull(Class<T> type) {
+		List<ArgumentMatcher> matchers = Arrays.asList(
+				Null.NULL,
+				new InstanceOf.VarArgAware(type));
+		ArgumentMatcher<T> or = new Or(matchers);
+		return ArgumentMatchers.argThat(or);
 	}
 
 	/** Validation helper on a specific resource.

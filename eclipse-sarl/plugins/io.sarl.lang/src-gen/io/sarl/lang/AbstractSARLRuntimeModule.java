@@ -99,6 +99,7 @@ import io.sarl.lang.serializer.SARLSemanticSequencer;
 import io.sarl.lang.services.SARLGrammarAccess;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
+import io.sarl.lang.typesystem.SARLTypeComputer;
 import io.sarl.lang.validation.ConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.DefaultFeatureCallValidator;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
@@ -132,7 +133,6 @@ import org.eclipse.xtend.core.resource.XtendResourceDescriptionStrategy;
 import org.eclipse.xtend.core.scoping.AnonymousClassConstructorScopes;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.typesystem.TypeDeclarationAwareBatchTypeResolver;
-import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
 import org.eclipse.xtend.core.validation.CachingResourceValidatorImpl;
 import org.eclipse.xtend.core.validation.XtendImplicitReturnFinder;
 import org.eclipse.xtend.core.xtend.XtendFactory;
@@ -599,6 +599,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ITypeComputer> bindITypeComputer() {
+		return SARLTypeComputer.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
 		return SARLConfigurableIssueCodesProvider.class;
 	}
@@ -667,11 +672,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
 		return XtendQualifiedNameProvider.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public Class<? extends ITypeComputer> bindITypeComputer() {
-		return XtendTypeComputer.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

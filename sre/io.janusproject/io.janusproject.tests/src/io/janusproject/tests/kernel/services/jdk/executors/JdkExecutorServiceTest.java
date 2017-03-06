@@ -223,7 +223,9 @@ public final class JdkExecutorServiceTest extends AbstractDependentServiceTest<J
 		this.service.execute(this.runnable);
 		ArgumentCaptor<Runnable> argument = ArgumentCaptor.forClass(Runnable.class);
 		Mockito.verify(this.executorService, Mockito.only()).execute(argument.capture());
-		assertSame(this.runnable, argument.getValue());
+		assertNotNull(argument.getValue());
+		assertInstanceOf(JanusRunnable.class, argument.getValue());
+		assertSame(this.runnable, ((JanusRunnable) argument.getValue()).getWrappedRunnable());
 	}
 
 	private void initExecutor() {
