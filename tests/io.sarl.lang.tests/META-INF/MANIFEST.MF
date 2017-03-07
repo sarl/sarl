@@ -25,4 +25,5 @@ Export-Package: io.sarl.lang.tests.bugs,
  io.sarl.lang.tests.modules.compiler.batch,
  io.sarl.lang.tests.modules.formatting2,
  io.sarl.lang.tests.modules.sarl.impl,
- io.sarl.lang.tests.modules.serializer
+ io.sarl.lang.tests.modules.serializer,
+ io.sarl.lang.tests.modules.validation

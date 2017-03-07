@@ -268,10 +268,11 @@ public class BindingFactory {
 	 * @param functionName the name of the binding function. It may be <code>null</code> for the default name.
 	 * @param to the concrete type.
 	 * @param isSingleton indicates if the instance is a singleton.
-	 * @param isEager indicates if the instance is an eager singleton.
+	 * @param isEager indicates if the instance is an eager singleton
 	 * @return the binding element.
 	 */
-	protected Binding bindToType(TypeReference bind, String functionName, TypeReference to,
+	protected Binding bindToType(
+			TypeReference bind, String functionName, TypeReference to,
 			boolean isSingleton, boolean isEager) {
 		final BindKey type;
 		final BindValue value;

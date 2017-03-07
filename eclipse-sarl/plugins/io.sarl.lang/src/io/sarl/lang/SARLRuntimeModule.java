@@ -21,15 +21,23 @@
 
 package io.sarl.lang;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import com.google.inject.Binder;
+import com.google.inject.Injector;
 import com.google.inject.name.Names;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 import org.eclipse.xtext.validation.CompositeEValidator;
+import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 
 import io.sarl.lang.bugfixes.bug356.Bug356ImportedNamespaceScopeProvider;
 import io.sarl.lang.bugfixes.bug356.Bug356QualifiedNameConverter;
+import io.sarl.lang.bugfixes.xtext299.XtextBug299ConfigurableIssueSeveritiesProvider;
+import io.sarl.lang.validation.ConfigurableIssueSeveritiesProvider;
+import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 
 /**
  * Use this class to register components to be used at runtime / without the
@@ -50,6 +58,26 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 		super.configure(binder);
 		binder.bind(boolean.class).annotatedWith(Names.named(CompositeEValidator.USE_EOBJECT_VALIDATOR))
 				.toInstance(false);
+		// Configure a system singleton for issue severities provider
+		final Provider<ConfigurableIssueSeveritiesProvider> provider = new Provider<ConfigurableIssueSeveritiesProvider>() {
+
+			@Inject
+			private Injector injector;
+
+			private ConfigurableIssueSeveritiesProvider severityProvider;
+
+			@Override
+			public ConfigurableIssueSeveritiesProvider get() {
+				if (this.severityProvider == null) {
+					this.severityProvider = new XtextBug299ConfigurableIssueSeveritiesProvider();
+					this.injector.injectMembers(this.severityProvider);
+				}
+				return this.severityProvider;
+			}
+		};
+		binder.bind(ConfigurableIssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
+		binder.bind(IssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
+		binder.bind(IConfigurableIssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
 	}
 
 	@Override

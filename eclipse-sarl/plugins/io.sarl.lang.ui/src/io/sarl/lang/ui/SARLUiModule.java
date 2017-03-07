@@ -21,15 +21,22 @@
 
 package io.sarl.lang.ui;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import com.google.inject.Binder;
+import com.google.inject.Injector;
 import com.google.inject.name.Names;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
 import org.eclipse.xtext.ui.editor.contentassist.XtextContentAssistProcessor;
 import org.eclipse.xtext.ui.editor.hover.IEObjectHover;
+import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 
 import io.sarl.lang.bugfixes.Bug187SARLDispatchingEObjectTextHover;
+import io.sarl.lang.ui.validation.UIConfigurableIssueSeveritiesProvider;
+import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -53,6 +60,26 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	@Override
 	public void configure(Binder binder) {
 		super.configure(binder);
+		// Configure a system singleton for issue severities provider
+		final Provider<UIConfigurableIssueSeveritiesProvider> provider = new Provider<UIConfigurableIssueSeveritiesProvider>() {
+
+			@Inject
+			private Injector injector;
+
+			private UIConfigurableIssueSeveritiesProvider severityProvider;
+
+			@Override
+			public UIConfigurableIssueSeveritiesProvider get() {
+				if (this.severityProvider == null) {
+					this.severityProvider = new UIConfigurableIssueSeveritiesProvider();
+					this.injector.injectMembers(this.severityProvider);
+				}
+				return this.severityProvider;
+			}
+		};
+		binder.bind(UIConfigurableIssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
+		binder.bind(IssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
+		binder.bind(IConfigurableIssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
 		// Configure the automatic auto-completion on specific characters: "." and ":"
 		binder.bind(String.class).annotatedWith(com.google.inject.name.Names.named(XtextContentAssistProcessor.COMPLETION_AUTO_ACTIVATION_CHARS))
 			.toInstance(AUTOMATIC_PROPOSAL_CHARACTERS);

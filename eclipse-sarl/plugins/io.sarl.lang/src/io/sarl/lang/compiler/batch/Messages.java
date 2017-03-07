@@ -44,7 +44,10 @@ public class Messages extends NLS {
 	public static String Main_16;
 	public static String Main_17;
 	public static String Main_18;
+	public static String Main_19;
 	public static String Main_2;
+	public static String Main_20;
+	public static String Main_21;
 	public static String Main_3;
 	public static String Main_4;
 	public static String Main_5;

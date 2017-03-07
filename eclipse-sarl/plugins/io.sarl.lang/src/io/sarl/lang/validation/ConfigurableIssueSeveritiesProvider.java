@@ -56,7 +56,7 @@ import org.eclipse.xtext.validation.SeverityConverter;
 @Singleton
 public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider implements IConfigurableIssueSeveritiesProvider {
 
-	private final Map<PreferenceKey, Severity> overridingSeverities = Collections.synchronizedMap(new HashMap<>());
+	private final Map<String, Severity> overridingSeverities = Collections.synchronizedMap(new HashMap<>());
 
 	@Inject
 	private ConfigurableIssueCodesProvider issueCodesProvider;
@@ -76,9 +76,9 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 			final PreferenceKey key = this.issueCodesProvider.getConfigurableIssueCodes().get(code);
 			if (key != null) {
 				if (severity == null) {
-					this.overridingSeverities.remove(key);
+					this.overridingSeverities.remove(key.getId());
 				} else {
-					this.overridingSeverities.put(key, severity);
+					this.overridingSeverities.put(key.getId(), severity);
 				}
 			}
 		}
@@ -87,6 +87,13 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 	@Override
 	public void setAllSeverities(Severity severity) {
 		this.overridingSeverities.clear();
+		if (severity != null) {
+			for (final PreferenceKey key : this.issueCodesProvider.getConfigurableIssueCodes().values()) {
+				if (key != null) {
+					this.overridingSeverities.put(key.getId(), severity);
+				}
+			}
+		}
 	}
 
 	/** Configurable value provider.
@@ -101,14 +108,14 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 
 		private final IPreferenceValuesProvider original;
 
-		private final Map<PreferenceKey, Severity> overridingSeverities;
+		private final Map<String, Severity> overridingSeverities;
 
 		/** Constructor.
 		 *
 		 * @param original the original value provider.
 		 * @param overridingSeverities the overridings.
 		 */
-		public ConfigurableValueProvider(IPreferenceValuesProvider original, Map<PreferenceKey, Severity> overridingSeverities) {
+		public ConfigurableValueProvider(IPreferenceValuesProvider original, Map<String, Severity> overridingSeverities) {
 			this.original = original;
 			this.overridingSeverities = overridingSeverities;
 		}
@@ -133,14 +140,14 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 
 		private final IPreferenceValues original;
 
-		private final Map<PreferenceKey, Severity> overridingSeverities;
+		private final Map<String, Severity> overridingSeverities;
 
 		/** Constructor.
 		 *
 		 * @param original the original values.
 		 * @param overridingSeverities the overridings.
 		 */
-		public ConfigurableValues(IPreferenceValues original, Map<PreferenceKey, Severity> overridingSeverities) {
+		public ConfigurableValues(IPreferenceValues original, Map<String, Severity> overridingSeverities) {
 			this.original = original;
 			this.overridingSeverities = overridingSeverities;
 		}
@@ -148,7 +155,7 @@ public class ConfigurableIssueSeveritiesProvider extends IssueSeveritiesProvider
 		@Override
 		public String getPreference(PreferenceKey key) {
 			if (key != null) {
-				final Severity severity = this.overridingSeverities.get(key);
+				final Severity severity = this.overridingSeverities.get(key.getId());
 				if (severity != null) {
 					switch (severity) {
 					case ERROR:

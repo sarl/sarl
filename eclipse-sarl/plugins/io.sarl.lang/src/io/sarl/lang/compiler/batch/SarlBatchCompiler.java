@@ -105,6 +105,7 @@ import io.sarl.lang.SARLConfig;
 import io.sarl.lang.generator.GeneratorConfig2;
 import io.sarl.lang.generator.GeneratorConfigProvider2;
 import io.sarl.lang.generator.IGeneratorConfigProvider2;
+import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 
 /** The compiler from SARL that could be used for batch tasks (Maven, CLI).
  *
@@ -204,6 +205,9 @@ public class SarlBatchCompiler {
 
 	@Inject
 	private GeneratorDelegate generator;
+
+	@Inject
+	private IConfigurableIssueSeveritiesProvider issueSeverityProvider;
 
 	@Inject
 	@Named(Constants.LANGUAGE_NAME)
@@ -1738,6 +1742,29 @@ public class SarlBatchCompiler {
 			} catch (Exception e) {
 				this.log.warn(Messages.SarlBatchCompiler_18, e);
 			}
+		}
+	}
+
+	/** Change the severity level of a warning.
+	 *
+	 * @param warningId the identifier of the warning. If {@code null} or empty, this function does nothing.
+	 * @param severity the new severity. If {@code null} this function does nothing.
+	 * @since 0.5
+	 */
+	public void setWarningSeverity(String warningId, Severity severity) {
+		if (!Strings.isEmpty(warningId) && severity != null) {
+			this.issueSeverityProvider.setSeverity(warningId, severity);
+		}
+	}
+
+	/** Change the severity level of for all the warnings.
+	 *
+	 * @param severity the new severity. If {@code null} this function does nothing.
+	 * @since 0.5
+	 */
+	public void setAllWarningSeverities(Severity severity) {
+		if (severity != null) {
+			this.issueSeverityProvider.setAllSeverities(severity);
 		}
 	}
 

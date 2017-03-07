@@ -56,7 +56,7 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 @Singleton
 public class UIConfigurableIssueSeveritiesProvider extends XbaseIssueSeveritiesProvider implements IConfigurableIssueSeveritiesProvider {
 
-	private final Map<PreferenceKey, Severity> overridingSeverities = Collections.synchronizedMap(new HashMap<>());
+	private final Map<String, Severity> overridingSeverities = Collections.synchronizedMap(new HashMap<>());
 
 	@Inject
 	private ConfigurableIssueCodesProvider issueCodesProvider;
@@ -76,9 +76,9 @@ public class UIConfigurableIssueSeveritiesProvider extends XbaseIssueSeveritiesP
 			final PreferenceKey key = this.issueCodesProvider.getConfigurableIssueCodes().get(code);
 			if (key != null) {
 				if (severity == null) {
-					this.overridingSeverities.remove(key);
+					this.overridingSeverities.remove(key.getId());
 				} else {
-					this.overridingSeverities.put(key, severity);
+					this.overridingSeverities.put(key.getId(), severity);
 				}
 			}
 		}
@@ -87,6 +87,13 @@ public class UIConfigurableIssueSeveritiesProvider extends XbaseIssueSeveritiesP
 	@Override
 	public void setAllSeverities(Severity severity) {
 		this.overridingSeverities.clear();
+		if (severity != null) {
+			for (final PreferenceKey key : this.issueCodesProvider.getConfigurableIssueCodes().values()) {
+				if (key != null) {
+					this.overridingSeverities.put(key.getId(), severity);
+				}
+			}
+		}
 	}
 
 }

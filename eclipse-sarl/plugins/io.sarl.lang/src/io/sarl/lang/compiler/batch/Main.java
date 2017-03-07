@@ -37,6 +37,7 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
 
 import io.sarl.lang.SARLStandaloneSetup;
@@ -105,6 +106,14 @@ public final class Main {
 	private static final String CLI_OPTION_WRITE_STORAGES = "writestorages"; //$NON-NLS-1$
 
 	private static final String CLI_OPTION_GENERATE_INLINES = "inlines"; //$NON-NLS-1$
+
+	private static final String CLI_OPTION_NOWARNING = "nowarn"; //$NON-NLS-1$
+
+	private static final String CLI_OPTION_WARNINGISERROR = "werror"; //$NON-NLS-1$
+
+	private static final String CLI_OPTION_WARNING_LEVEL_SHORT = "w"; //$NON-NLS-1$
+
+	private static final String CLI_OPTION_WARNING_LEVEL_LONG = "warn"; //$NON-NLS-1$
 
 	private static final int SUCCESS_CODE = 0;
 
@@ -261,6 +270,16 @@ public final class Main {
 				case CLI_OPTION_GENERATE_INLINES:
 					compiler.setGenerateInlineAnnotation(getBooleanValue(opt));
 					break;
+				case CLI_OPTION_NOWARNING:
+					compiler.setAllWarningSeverities(Severity.IGNORE);
+					break;
+				case CLI_OPTION_WARNINGISERROR:
+					compiler.setAllWarningSeverities(Severity.ERROR);
+					break;
+				case CLI_OPTION_WARNING_LEVEL_LONG:
+					compiler.setWarningSeverity(opt.getValue(0),
+							parseWarningSeverity(opt.getValue(1)));
+					break;
 				default:
 				}
 			}
@@ -277,6 +296,29 @@ public final class Main {
 		} catch (ParseException e) {
 			showError(e);
 		}
+	}
+
+	private static Severity parseWarningSeverity(String code) {
+		if (!Strings.isEmpty(code)) {
+			final String lccode = code.toLowerCase();
+			switch (lccode) {
+			case "err": //$NON-NLS-1$
+			case "error": //$NON-NLS-1$
+				return Severity.ERROR;
+			case "warn": //$NON-NLS-1$
+			case "warning": //$NON-NLS-1$
+				return Severity.WARNING;
+			case "info": //$NON-NLS-1$
+			case "information": //$NON-NLS-1$
+				return Severity.INFO;
+			case "ign": //$NON-NLS-1$
+			case "ignore": //$NON-NLS-1$
+			case "none": //$NON-NLS-1$
+				return Severity.IGNORE;
+			default:
+			}
+		}
+		return null;
 	}
 
 	private static boolean getBooleanValue(Option option) {
@@ -332,6 +374,16 @@ public final class Main {
 				Messages.Main_8);
 		options.addOption(CLI_OPTION_HELP, false,
 				Messages.Main_9);
+		options.addOption(CLI_OPTION_NOWARNING, false,
+				Messages.Main_19);
+		options.addOption(CLI_OPTION_WARNINGISERROR, false,
+				Messages.Main_20);
+		final Option wloption = new Option(CLI_OPTION_WARNING_LEVEL_SHORT, CLI_OPTION_WARNING_LEVEL_LONG, true,
+				Messages.Main_21);
+		wloption.setArgs(2);
+		wloption.setOptionalArg(false);
+		wloption.setValueSeparator('=');
+		options.addOption(wloption);
 		return options;
 	}
 

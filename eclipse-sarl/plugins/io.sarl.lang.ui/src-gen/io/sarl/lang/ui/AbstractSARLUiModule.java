@@ -64,8 +64,6 @@ import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 import io.sarl.lang.ui.refactoring.rename.SARLRenameStrategyProvider;
 import io.sarl.lang.ui.tasks.SarlTaskTagProvider;
 import io.sarl.lang.ui.validation.SARLUIValidator;
-import io.sarl.lang.ui.validation.UIConfigurableIssueSeveritiesProvider;
-import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 import org.eclipse.compare.IViewerCreator;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -195,7 +193,6 @@ import org.eclipse.xtext.ui.resource.IResourceUIServiceProvider;
 import org.eclipse.xtext.ui.resource.ResourceServiceDescriptionLabelProvider;
 import org.eclipse.xtext.ui.shared.Access;
 import org.eclipse.xtext.ui.validation.AbstractValidatorConfigurationBlock;
-import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 import org.eclipse.xtext.xbase.annotations.ui.DefaultXbaseWithAnnotationsUiModule;
 import org.eclipse.xtext.xbase.imports.IUnresolvedTypeResolver;
 import org.eclipse.xtext.xbase.ui.editor.XbaseDocumentProvider;
@@ -592,20 +589,8 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	@SingletonBinding
-	public Class<? extends IConfigurableIssueSeveritiesProvider> bindIConfigurableIssueSeveritiesProvider() {
-		return UIConfigurableIssueSeveritiesProvider.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ITemplateProposalProvider> bindITemplateProposalProvider() {
 		return SARLTemplateProposalProvider.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	@SingletonBinding
-	public Class<? extends IssueSeveritiesProvider> bindIssueSeveritiesProvider() {
-		return UIConfigurableIssueSeveritiesProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
