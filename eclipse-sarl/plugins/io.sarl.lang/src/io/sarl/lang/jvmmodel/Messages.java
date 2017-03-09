@@ -32,11 +32,7 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "io.sarl.lang.jvmmodel.messages"; //$NON-NLS-1$
-	public static String SARLJvmModelInferrer_0;
-	public static String SARLJvmModelInferrer_1;
 	public static String SARLJvmModelInferrer_2;
-	public static String SARLJvmModelInferrer_3;
-	public static String SARLJvmModelInferrer_4;
 	public static String SARLJvmModelInferrer_5;
 	public static String SARLJvmModelInferrer_7;
 	public static String SARLJvmModelInferrer_8;

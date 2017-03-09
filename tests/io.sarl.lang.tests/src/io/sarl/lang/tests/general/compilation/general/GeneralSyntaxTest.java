@@ -45,6 +45,7 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 				"");
 		String expected = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
@@ -52,6 +53,11 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 				"  public abstract void turnOn();",
 				"  ",
 				"  public abstract void turnOff();",
+				"  ",
+				"  @SyntheticMember",
+				"  public Light() {",
+				"    super();",
+				"  }",
 				"}",
 				""
 				);

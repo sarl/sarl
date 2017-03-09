@@ -52,6 +52,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC3 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
@@ -60,6 +61,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"    C2 x = new C2();",
 				"    int y = 1;",
 				"    return y;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C3() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -85,6 +91,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC2 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
@@ -93,6 +100,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"    C1 x = new C1();",
 				"    int y = 1;",
 				"    return y;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C2() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -121,6 +133,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC3 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
@@ -129,6 +142,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"    C2 x = new C2();",
 				"    int y = x.fct();",
 				"    return y;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C3() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -154,6 +172,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC2 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 				"@SuppressWarnings(\"all\")",
@@ -162,6 +181,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"    C1 x = new C1();",
 				"    int y = 1;",
 				"    return y;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C2() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -180,6 +204,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -188,6 +213,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"true\", constantExpression = true)",
 				"  public boolean fct() {",
 				"    return true;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -206,6 +236,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -214,6 +245,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"false\", constantExpression = true)",
 				"  public boolean fct() {",
 				"    return false;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -232,6 +268,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -240,6 +277,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"null\", constantExpression = true)",
 				"  public Object fct() {",
 				"    return null;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -258,6 +300,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -266,6 +309,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"123.456\", constantExpression = true)",
 				"  public double fct() {",
 				"    return 123.456;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -284,6 +332,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -292,6 +341,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"140.45600000000002\", constantExpression = true)",
 				"  public double fct() {",
 				"    return (123.456 + (34 / 2));",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -310,6 +364,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -318,6 +373,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"\\\"abc\\\"\", constantExpression = true)",
 				"  public String fct() {",
 				"    return \"abc\";",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -336,6 +396,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -344,6 +405,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"\\\"abcxyz\\\"\", constantExpression = true)",
 				"  public String fct() {",
 				"    return (\"abc\" + \"xyz\");",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -362,6 +428,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -370,6 +437,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"Integer.class\", constantExpression = true)",
 				"  public Class<Integer> fct() {",
 				"    return Integer.class;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -388,6 +460,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -396,6 +469,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"Integer.class\", constantExpression = true)",
 				"  public Class<Integer> fct() {",
 				"    return Integer.class;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -414,6 +492,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -422,6 +501,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"(Integer)null\", constantExpression = true)",
 				"  public Integer fct() {",
 				"    return ((Integer) null);",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
 				"  }",
 				"}",
 				""
@@ -440,6 +524,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"");
 		final String expectedC1 = multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Inline;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -448,6 +533,11 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"null instanceof Integer\", constantExpression = true)",
 				"  public boolean fct() {",
 				"    return (null instanceof Integer);",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
 				"  }",
 				"}",
 				""

@@ -60,6 +60,7 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
@@ -67,11 +68,17 @@ public class PureFunctionTest {
 					"  public double fct() {",
 					"    return Math.random();",
 					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C1() {",
+					"    super();",
+					"  }",
 					"}",
 					""
 					);
 			final String expectedC2 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
@@ -79,6 +86,11 @@ public class PureFunctionTest {
 					"  @Override",
 					"  public double fct() {",
 					"    return Math.random();",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C2() {",
+					"    super();",
 					"  }",
 					"}",
 					""
@@ -101,6 +113,7 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
@@ -108,11 +121,17 @@ public class PureFunctionTest {
 					"  public double fct() {",
 					"    return Math.random();",
 					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C1() {",
+					"    super();",
+					"  }",
 					"}",
 					""
 					);
 			final String expectedC2 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -122,6 +141,11 @@ public class PureFunctionTest {
 					"  @Override",
 					"  public double fct() {",
 					"    return 0;",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C2() {",
+					"    super();",
 					"  }",
 					"}",
 					""
@@ -147,23 +171,35 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public void fct() {",
 					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C1() {",
+					"    super();",
+					"  }",
 					"}",
 					""
 					);
 			final String expectedC2 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public class C2 extends C1 {",
 					"  @Override",
 					"  public void fct() {",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C2() {",
+					"    super();",
 					"  }",
 					"}",
 					""
@@ -191,16 +227,23 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public abstract class C1 {",
 					"  public abstract double fct();",
+					"  ",
+					"  @SyntheticMember",
+					"  public C1() {",
+					"    super();",
+					"  }",
 					"}",
 					""
 					);
 			final String expectedC2 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
@@ -208,6 +251,11 @@ public class PureFunctionTest {
 					"  @Override",
 					"  public double fct() {",
 					"    return Math.random();",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C2() {",
+					"    super();",
 					"  }",
 					"}",
 					""
@@ -230,16 +278,23 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SuppressWarnings(\"all\")",
 					"public abstract class C1 {",
 					"  public abstract double fct();",
+					"  ",
+					"  @SyntheticMember",
+					"  public C1() {",
+					"    super();",
+					"  }",
 					"}",
 					""
 					);
 			final String expectedC2 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -249,6 +304,11 @@ public class PureFunctionTest {
 					"  @Override",
 					"  public double fct() {",
 					"    return 0;",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C2() {",
+					"    super();",
 					"  }",
 					"}",
 					""
@@ -271,6 +331,7 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
@@ -281,6 +342,11 @@ public class PureFunctionTest {
 					"  @Pure",
 					"  public double getXXX() {",
 					"    return 9;",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C1() {",
+					"    super();",
 					"  }",
 					"}",
 					""
@@ -297,6 +363,7 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
@@ -307,6 +374,11 @@ public class PureFunctionTest {
 					"  @Pure",
 					"  public boolean isXXX() {",
 					"    return false;",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C1() {",
+					"    super();",
 					"  }",
 					"}",
 					""
@@ -323,6 +395,7 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
@@ -333,6 +406,11 @@ public class PureFunctionTest {
 					"  @Pure",
 					"  public boolean hasXXX() {",
 					"    return false;",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C1() {",
+					"    super();",
 					"  }",
 					"}",
 					""
@@ -349,6 +427,7 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
@@ -359,6 +438,11 @@ public class PureFunctionTest {
 					"  @Pure",
 					"  public String toString() {",
 					"    return \"\";",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C1() {",
+					"    super();",
 					"  }",
 					"}",
 					""
@@ -375,6 +459,7 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
@@ -385,6 +470,11 @@ public class PureFunctionTest {
 					"  @Pure",
 					"  public int hashCode() {",
 					"    return 0;",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C1() {",
+					"    super();",
 					"  }",
 					"}",
 					""
@@ -401,6 +491,7 @@ public class PureFunctionTest {
 					"");
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
@@ -411,6 +502,11 @@ public class PureFunctionTest {
 					"  @Pure",
 					"  public boolean equals(final Object a) {",
 					"    return false;",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public C1() {",
+					"    super();",
 					"  }",
 					"}",
 					""

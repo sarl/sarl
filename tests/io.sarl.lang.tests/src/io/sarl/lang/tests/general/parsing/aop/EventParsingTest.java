@@ -554,7 +554,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}"
 					));
 			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlEvent(),
+					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED,
 					"The blank final field field2 may not have been initialized");
 		}

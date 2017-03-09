@@ -34,9 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.annotation.Generated;
@@ -45,6 +45,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.MembersInjector;
 import com.google.inject.Singleton;
@@ -136,11 +137,9 @@ import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.compiler.IInlineExpressionCompiler;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
-import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Behavior;
-import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
@@ -291,6 +290,54 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	/** Generation contexts.
 	 */
 	private LinkedList<GenerationContext> bufferedContexes = new LinkedList<>();
+
+	/** Add annotation safely.
+	 *
+	 * <p>This function creates an annotation reference. If the type for the annotation is not found;
+	 * no annotation is added.
+	 *
+	 * @param target the receiver of the annotation.
+	 * @param annotationType the type of the annotation.
+	 * @param values the annotations values.
+	 * @return the annotation reference or <code>null</code> if the annotation cannot be added.
+	 */
+	private JvmAnnotationReference addAnnotationSafe(JvmAnnotationTarget target, Class<?> annotationType, String... values) {
+		assert target != null;
+		assert annotationType != null;
+		try {
+			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(annotationType, values);
+			if (annotationRef != null) {
+				if (target.getAnnotations().add(annotationRef)) {
+					return annotationRef;
+				}
+			}
+		} catch (IllegalArgumentException exception) {
+			// Ignore
+		}
+		return null;
+	}
+
+	/** Create an annotation with classes as values.
+	 *
+	 * @param type - the type of the annotation.
+	 * @param values - the values.
+	 * @return the reference to the JVM annotation.
+	 */
+	private JvmAnnotationReference annotationClassRef(Class<? extends Annotation> type,
+			List<? extends JvmTypeReference> values) {
+		try {
+			final JvmAnnotationReference annot = this._annotationTypesBuilder.annotationRef(type);
+			final JvmTypeAnnotationValue annotationValue = this.services.getTypesFactory().createJvmTypeAnnotationValue();
+			for (final JvmTypeReference value : values) {
+				annotationValue.getValues().add(this.typeBuilder.cloneWithProxies(value));
+			}
+			annot.getExplicitValues().add(annotationValue);
+			return annot;
+		} catch (IllegalArgumentException exception) {
+			// ignore
+		}
+		return null;
+	}
 
 	@Override
 	protected void setBody(JvmExecutable executable, XExpression expression) {
@@ -471,6 +518,56 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	}
 
 	@Override
+	protected final void addDefaultConstructor(XtendClass source, JvmGenericType target) {
+		// This function is called for adding the default constructor in a class.
+		// This function does nothing, and should not be call from the SARL model inferrer.
+	}
+
+	/** Add the default constructors.
+	 *
+	 * <p>The default constructors have the same signature as the constructors of the super class.
+	 *
+	 * <p>This function adds the default constructors if no constructor was already added. This condition
+	 * is determined with a call to {@link GenerationContext#hasConstructor()}.
+	 *
+	 * @param source the SARL element in which no constructor was specified. This SARL element should be
+	 *     associated to the {@code target} element.
+	 * @param target the JVM type that is receiving the default constructor.
+	 * @see GenerationContext#hasConstructor()
+	 */
+	protected void addDefaultConstructors(XtendTypeDeclaration source, JvmGenericType target) {
+		final GenerationContext context = getContext(target);
+		if (!context.hasConstructor()) {
+
+			// Special case: if a value was not set, we cannot create implicit constructors
+			// in order to have the issue message "The blank final field may not have been initialized".
+
+			final boolean notInitializedValueField = Iterables.any(source.getMembers(), (it) -> {
+				if (it instanceof XtendField) {
+					final XtendField op = (XtendField) it;
+					if (op.isFinal() && op.getInitialValue() == null) {
+						return true;
+					}
+				}
+				return false;
+			});
+
+			if (!notInitializedValueField) {
+				// Add the default constructors for the agent, if not already added
+				final JvmTypeReference reference = target.getExtendedClass();
+				if (reference != null) {
+					final JvmType type = reference.getType();
+					if (type instanceof JvmGenericType) {
+						copyVisibleJvmConstructors(
+								(JvmGenericType) type,
+								target, source, Sets.newTreeSet());
+					}
+				}
+			}
+		}
+	}
+
+	@Override
 	protected void initialize(XtendClass source, JvmGenericType inferredJvmType) {
 		// Issue #356: do not generate if the class has no name.
 		assert source != null;
@@ -503,6 +600,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					source,
 					inferredJvmType,
 					context);
+
+			// Add the default constructors for the behavior, if not already added
+			addDefaultConstructors(source, inferredJvmType);
+
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
 		} finally {
@@ -672,60 +773,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						context);
 			}
 
-			// Add the default constructors for the agent, if not already added
-			if (!context.hasConstructor()) {
-				// new(builtinCapacityProvider : BuiltinCapacitiesProvider, parentID : UUID, agentID : UUID)
-				final JvmConstructor constructor1 = this.typesFactory.createJvmConstructor();
-				inferredJvmType.getMembers().add(constructor1);
-				this.associator.associate(source, constructor1);
-				constructor1.setSimpleName(source.getName());
-				constructor1.setVisibility(JvmVisibility.PUBLIC);
-				this.typeBuilder.setDocumentation(constructor1, MessageFormat.format(
-						Messages.SARLJvmModelInferrer_7, "builtinCapacityProvider", //$NON-NLS-1$
-						"parentID", "agentID")); //$NON-NLS-1$ //$NON-NLS-2$
-				JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName("builtinCapacityProvider"); //$NON-NLS-1$
-				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(BuiltinCapacitiesProvider.class));
-				this.associator.associate(source, jvmParam);
-				constructor1.getParameters().add(jvmParam);
-				jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName("parentID"); //$NON-NLS-1$
-				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(UUID.class));
-				this.associator.associate(source, jvmParam);
-				constructor1.getParameters().add(jvmParam);
-				jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName("agentID"); //$NON-NLS-1$
-				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(UUID.class));
-				this.associator.associate(source, jvmParam);
-				constructor1.getParameters().add(jvmParam);
-				setBody(constructor1,
-						toStringConcatenation("super(builtinCapacityProvider, parentID, agentID);")); //$NON-NLS-1$
-				addAnnotationSafe(constructor1, javax.inject.Inject.class);
-				appendGeneratedAnnotation(constructor1, context);
-
-				// new(parentID : UUID, agentID : UUID)
-				final JvmConstructor constructor2 = this.typesFactory.createJvmConstructor();
-				inferredJvmType.getMembers().add(constructor2);
-				this.associator.associate(source, constructor2);
-				constructor2.setSimpleName(source.getName());
-				constructor2.setVisibility(JvmVisibility.PUBLIC);
-				this.typeBuilder.setDocumentation(constructor2, MessageFormat.format(
-						Messages.SARLJvmModelInferrer_6,
-						"parentID", "agentID")); //$NON-NLS-1$ //$NON-NLS-2$
-				jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName("parentID"); //$NON-NLS-1$
-				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(UUID.class));
-				this.associator.associate(source, jvmParam);
-				constructor2.getParameters().add(jvmParam);
-				jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName("agentID"); //$NON-NLS-1$
-				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(UUID.class));
-				this.associator.associate(source, jvmParam);
-				constructor2.getParameters().add(jvmParam);
-				setBody(constructor2,
-						toStringConcatenation("super(parentID, agentID);")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor2, context);
-			}
+			// Add the default constructors for the behavior, if not already added
+			addDefaultConstructors(source, inferredJvmType);
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
@@ -781,26 +830,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 
 			// Add the default constructors for the behavior, if not already added
-
-			if (!context.hasConstructor()) {
-				// new(owner: Agent)
-				final JvmConstructor constructor = this.typesFactory.createJvmConstructor();
-				inferredJvmType.getMembers().add(constructor);
-				this.associator.associate(source, constructor);
-				constructor.setSimpleName(source.getName());
-				constructor.setVisibility(JvmVisibility.PUBLIC);
-				this.typeExtensions.setSynthetic(constructor, true);
-				this.typeBuilder.setDocumentation(constructor, MessageFormat.format(
-						Messages.SARLJvmModelInferrer_5, "owner")); //$NON-NLS-1$
-				final JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName("owner"); //$NON-NLS-1$
-				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(Agent.class));
-				this.associator.associate(source, jvmParam);
-				constructor.getParameters().add(jvmParam);
-				setBody(constructor,
-						toStringConcatenation("super(owner);")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor, context);
-			}
+			addDefaultConstructors(source, inferredJvmType);
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
@@ -855,38 +885,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						context);
 			}
 
-			if (!context.hasConstructor()) {
-				// Add the default constructors for the behavior, if not already added
-
-				// new()
-				JvmConstructor constructor = this.typesFactory.createJvmConstructor();
-				inferredJvmType.getMembers().add(constructor);
-				this.associator.associate(source, constructor);
-				constructor.setSimpleName(source.getName());
-				constructor.setVisibility(JvmVisibility.PUBLIC);
-				this.typeExtensions.setSynthetic(constructor, true);
-				this.typeBuilder.setDocumentation(constructor, Messages.SARLJvmModelInferrer_0);
-				setBody(constructor, toStringConcatenation("super();")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor, context);
-
-				// new(source: Address)
-				constructor = this.typesFactory.createJvmConstructor();
-				inferredJvmType.getMembers().add(constructor);
-				this.associator.associate(source, constructor);
-				constructor.setSimpleName(source.getName());
-				constructor.setVisibility(JvmVisibility.PUBLIC);
-				this.typeExtensions.setSynthetic(constructor, true);
-				this.typeBuilder.setDocumentation(constructor,
-						MessageFormat.format(Messages.SARLJvmModelInferrer_1, "source")); //$NON-NLS-1$
-				final JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName("source"); //$NON-NLS-1$
-				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(Address.class));
-				this.associator.associate(source, jvmParam);
-				constructor.getParameters().add(jvmParam);
-				setBody(constructor,
-						toStringConcatenation("super(source);")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor, context);
-			}
+			// Add the default constructors for the behavior, if not already added
+			addDefaultConstructors(source, inferredJvmType);
 
 			// Add functions dedicated to comparisons (equals, hashCode, etc.)
 			appendComparisonFunctions(context, source, inferredJvmType);
@@ -952,36 +952,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 
 			// Add the default constructors for the behavior, if not already added
-			if (!context.hasConstructor()) {
-				// new()
-				JvmConstructor constructor = this.typesFactory.createJvmConstructor();
-				inferredJvmType.getMembers().add(constructor);
-				this.associator.associate(source, constructor);
-				constructor.setSimpleName(source.getName());
-				constructor.setVisibility(JvmVisibility.PUBLIC);
-				this.typeExtensions.setSynthetic(constructor, true);
-				this.typeBuilder.setDocumentation(constructor, Messages.SARLJvmModelInferrer_4);
-				setBody(constructor, toStringConcatenation("super();")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor, context);
-
-				// new(owner: Agent)
-				constructor = this.typesFactory.createJvmConstructor();
-				inferredJvmType.getMembers().add(constructor);
-				this.associator.associate(source, constructor);
-				constructor.setSimpleName(source.getName());
-				constructor.setVisibility(JvmVisibility.PUBLIC);
-				this.typeExtensions.setSynthetic(constructor, true);
-				this.typeBuilder.setDocumentation(constructor,
-						MessageFormat.format(Messages.SARLJvmModelInferrer_3, "owner")); //$NON-NLS-1$
-				final JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName("owner"); //$NON-NLS-1$
-				jvmParam.setParameterType(this._typeReferenceBuilder.typeRef(Agent.class));
-				this.associator.associate(source, jvmParam);
-				constructor.getParameters().add(jvmParam);
-				setBody(constructor,
-						toStringConcatenation("super(owner);")); //$NON-NLS-1$
-				appendGeneratedAnnotation(constructor, context);
-			}
+			addDefaultConstructors(source, inferredJvmType);
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
@@ -1236,7 +1207,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						final List<String> args = translateSarlFormalParametersForSyntheticOperation(
 								constructor2, container, isVarArgs, otherSignature);
 
-						addAnnotationSafe(constructor2, DefaultValueUse.class,
+						addAnnotationSafe(
+								constructor2, DefaultValueUse.class,
 								constructorSignatures.getFormalParameterTypes().toString());
 						appendGeneratedAnnotation(constructor2, context);
 
@@ -1530,7 +1502,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									Override.class) == null
 									&& SARLJvmModelInferrer.this.typeReferences.findDeclaredType(
 											Override.class, source) != null) {
-								addAnnotationSafe(operation, Override.class);
+								addAnnotationSafe(
+										operation, Override.class);
 							}
 
 							final List<String> args = translateSarlFormalParametersForSyntheticOperation(
@@ -1549,7 +1522,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								});
 							}
 
-							addAnnotationSafe(operation2, DefaultValueUse.class,
+							addAnnotationSafe(
+									operation2, DefaultValueUse.class,
 									actionSignatures.getFormalParameterTypes().toString());
 							appendGeneratedAnnotation(operation2, context);
 
@@ -1557,12 +1531,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							// is also an early-exit operation.
 							//TODO: Generalize the detection of the EarlyExit
 							if (isEarlyExit) {
-								addAnnotationSafe(operation2, EarlyExit.class);
+								addAnnotationSafe(
+										operation2, EarlyExit.class);
 							}
 
 							// Put the fired SARL events as Java annotations for beeing usable by the SARL validator.
 							if (!firedEvents.isEmpty()) {
-								operation2.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
+								operation2.getAnnotations().add(
+										annotationClassRef(FiredEvent.class, firedEvents));
 							}
 
 							// Copy the other annotations from the original operations
@@ -2168,52 +2144,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (!Strings.isNullOrEmpty(sarlCode)) {
 			addAnnotationSafe(target, SarlSourceCode.class, sarlCode);
 		}
-	}
-
-	/** Add annotation safely.
-	 *
-	 * <p>This function creates an annotation reference. If the type for the annotation is not found;
-	 * no annotation is added.
-	 *
-	 * @param target the receiver of the annotation.
-	 * @param annotationType the type of the annotation.
-	 * @param values the annotations values.
-	 * @return the annotation reference or <code>null</code> if the annotation cannot be added.
-	 */
-	protected JvmAnnotationReference addAnnotationSafe(JvmAnnotationTarget target, Class<?> annotationType, String... values) {
-		assert target != null;
-		assert annotationType != null;
-		try {
-			final JvmAnnotationReference annotationRef = this._annotationTypesBuilder.annotationRef(annotationType, values);
-			if (annotationRef != null) {
-				target.getAnnotations().add(annotationRef);
-			}
-		} catch (IllegalArgumentException exception) {
-			// Ignore
-		}
-		return null;
-	}
-
-	/** Create an annotation with classes as values.
-	 *
-	 * @param type - the type of the annotation.
-	 * @param values - the values.
-	 * @return the reference to the JVM annotation.
-	 */
-	private JvmAnnotationReference annotationClassRef(Class<? extends Annotation> type,
-			List<? extends JvmTypeReference> values) {
-		try {
-			final JvmAnnotationReference annot = this._annotationTypesBuilder.annotationRef(type);
-			final JvmTypeAnnotationValue annotationValue = this.services.getTypesFactory().createJvmTypeAnnotationValue();
-			for (final JvmTypeReference value : values) {
-				annotationValue.getValues().add(this.typeBuilder.cloneWithProxies(value));
-			}
-			annot.getExplicitValues().add(annotationValue);
-			return annot;
-		} catch (IllegalArgumentException exception) {
-			// ignore
-		}
-		return null;
 	}
 
 	/** Append the guard evaluators.
@@ -2826,7 +2756,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param targetOperation the target for the documentation.
 	 * @return <code>true</code> if a documentation was added.
 	 */
-	protected boolean copyAndCleanDocumentationTo(JvmOperation sourceOperation, JvmOperation targetOperation) {
+	protected boolean copyAndCleanDocumentationTo(JvmExecutable sourceOperation, JvmExecutable targetOperation) {
 		assert sourceOperation != null;
 		assert targetOperation != null;
 
@@ -2916,6 +2846,97 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				newOp.setVarArgs(operation.isVarArgs());
 
 				setBody(newOp, (it) -> bodyBuilder.apply(operation, it));
+			}
+		}
+	}
+
+	/** Copy the JVM constructors from the source to the destination.
+	 *
+	 * @param source the source.
+	 * @param target the destination.
+	 * @param sarlSource the SARL source element. If {@code null}, the generated constructors will not be associated to the SARL element.
+	 * @param createdConstructors the set of constructors that are created before (input) or during (output) the invocation.
+	 * @since 0.5
+	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	protected void copyVisibleJvmConstructors(JvmGenericType source, JvmGenericType target,
+			XtendTypeDeclaration sarlSource, Set<ActionParameterTypes> createdConstructors) {
+		final boolean samePackage = Objects.equal(source.getPackageName(), target.getPackageName());
+		final Iterable<JvmConstructor> constructors = Iterables.transform(Iterables.filter(source.getMembers(), (it) -> {
+			if (it instanceof JvmConstructor) {
+				final JvmConstructor op = (JvmConstructor) it;
+				return op.getVisibility() != JvmVisibility.PRIVATE
+						&& (op.getVisibility() != JvmVisibility.DEFAULT || samePackage);
+			}
+			return false;
+		}), (it) -> (JvmConstructor) it);
+
+		// Sort the constructor in order to always add them in the same order.
+		final SortedSet<Pair<JvmConstructor, ActionParameterTypes>> sortedConstructors = new TreeSet<>(
+				(elt1, elt2) -> elt1.getValue().compareTo(elt2.getValue()));
+		for (final JvmConstructor constructor : constructors) {
+			final ActionParameterTypes types = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
+					constructor.isVarArgs(), constructor.getParameters());
+			sortedConstructors.add(new Pair<>(constructor, types));
+		}
+
+		for (final Pair<JvmConstructor, ActionParameterTypes> pair : sortedConstructors) {
+			if (createdConstructors.add(pair.getValue())) {
+				final JvmConstructor constructor = pair.getKey();
+				final JvmConstructor newCons = this.typesFactory.createJvmConstructor();
+
+				for (final JvmFormalParameter parameter : constructor.getParameters()) {
+					final JvmFormalParameter newParam = this.typesFactory.createJvmFormalParameter();
+					newParam.setName(parameter.getSimpleName());
+					newParam.setParameterType(this.typeBuilder.cloneWithProxies(parameter.getParameterType()));
+					for (final JvmAnnotationReference annotationReference : parameter.getAnnotations()) {
+						if (this.annotationUtils.findAnnotation(newParam, annotationReference.getAnnotation().getQualifiedName()) == null) {
+							final JvmAnnotationReference annotation = EcoreUtil.copy(annotationReference);
+							if (annotation != null) {
+								newParam.getAnnotations().add(annotation);
+							}
+						}
+					}
+					newCons.getParameters().add(newParam);
+				}
+
+				newCons.setDeprecated(constructor.isDeprecated());
+				newCons.setSimpleName(target.getSimpleName());
+				newCons.setVisibility(constructor.getVisibility());
+				newCons.setVarArgs(constructor.isVarArgs());
+
+				setBody(newCons, (it) -> {
+					it.append(this.grammarKeywordAccess.getSuperKeyword());
+					it.append("("); //$NON-NLS-1$
+					boolean first = true;
+					for (final JvmFormalParameter parameter : newCons.getParameters()) {
+						if (first) {
+							first = false;
+						} else {
+							it.append(", "); //$NON-NLS-1$
+						}
+						it.append(parameter.getSimpleName());
+					}
+					it.append(");"); //$NON-NLS-1$
+				});
+
+				copyAndCleanDocumentationTo(constructor, newCons);
+
+				appendGeneratedAnnotation(newCons, getContext(target));
+
+				for (final JvmAnnotationReference annotationReference : constructor.getAnnotations()) {
+					if (this.annotationUtils.findAnnotation(newCons, annotationReference.getAnnotation().getQualifiedName()) == null) {
+						final JvmAnnotationReference annotation = EcoreUtil.copy(annotationReference);
+						if (annotation != null) {
+							newCons.getAnnotations().add(annotation);
+						}
+					}
+				}
+
+				target.getMembers().add(newCons);
+				if (sarlSource != null) {
+					this.associator.associate(sarlSource, constructor);
+				}
 			}
 		}
 	}

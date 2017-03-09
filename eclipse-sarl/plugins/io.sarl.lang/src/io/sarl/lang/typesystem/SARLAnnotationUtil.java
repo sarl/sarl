@@ -24,16 +24,19 @@ package io.sarl.lang.typesystem;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
 import com.google.inject.Singleton;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
+import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.common.types.JvmAnnotationValue;
 import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.xbase.annotations.typing.XAnnotationUtil;
 
@@ -159,6 +162,27 @@ public class SARLAnnotationUtil {
 			}
 		}
 		return values;
+	}
+
+	/** Find an annotation.
+	 *
+	 * @param annotationTarget the annotation target.
+	 * @param lookupType the name of the type to look for.
+	 * @return the annotation or {@code null}.
+	 * @see AnnotationLookup#findAnnotation(JvmAnnotationTarget, Class)
+	 */
+	@SuppressWarnings("static-method")
+	public JvmAnnotationReference findAnnotation(JvmAnnotationTarget annotationTarget, String lookupType) {
+		// avoid creating an empty list for all given targets but check for #eIsSet first
+		if (annotationTarget.eIsSet(TypesPackage.Literals.JVM_ANNOTATION_TARGET__ANNOTATIONS)) {
+			for (final JvmAnnotationReference annotation: annotationTarget.getAnnotations()) {
+				final JvmAnnotationType annotationType = annotation.getAnnotation();
+				if (annotationType != null && Objects.equals(lookupType, annotationType.getQualifiedName())) {
+					return annotation;
+				}
+			}
+		}
+		return null;
 	}
 
 }

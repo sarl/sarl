@@ -27,6 +27,8 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.inject.Inject;
+
 import com.google.common.reflect.TypeToken;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
@@ -67,6 +69,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * @param agentID - the identifier of the agent, or
 	 *                  <code>null</code> for computing it randomly.
 	 */
+	@Inject
 	public Agent(
 			BuiltinCapacitiesProvider provider,
 			UUID parentID,
