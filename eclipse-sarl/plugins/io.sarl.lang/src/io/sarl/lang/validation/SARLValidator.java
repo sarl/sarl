@@ -55,7 +55,6 @@ import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME;
 import static org.eclipse.xtend.core.validation.IssueCodes.JDK_NOT_ON_CLASSPATH;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT_IN_ANONYMOUS;
-import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_CONSTRUCTOR;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE;
 import static org.eclipse.xtend.core.validation.IssueCodes.MISSING_STATIC_MODIFIER;
 import static org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR;
@@ -106,7 +105,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.validation.ModifierValidator;
 import org.eclipse.xtend.core.validation.XtendValidator;
@@ -908,12 +906,12 @@ public class SARLValidator extends AbstractSARLValidator {
 			}
 
 			final ActionParameterTypes voidKey = this.sarlActionSignatures.createParameterTypesForVoid();
-			boolean hasDeclaredConstructor = false;
+			//boolean hasDeclaredConstructor = false;
 
 			for (final XtendMember member : container.getMembers()) {
 				if (member instanceof SarlConstructor) {
 					final SarlConstructor constructor = (SarlConstructor) member;
-					hasDeclaredConstructor = true;
+					//hasDeclaredConstructor = true;
 					boolean invokeDefaultConstructor = true;
 					final XExpression body = constructor.getExpression();
 					if (body instanceof XBlockExpression) {
@@ -942,7 +940,9 @@ public class SARLValidator extends AbstractSARLValidator {
 				}
 			}
 
-			if (!hasDeclaredConstructor) {
+			// The following code is no more needed because of the constructor inheritance mechanism which
+			// is implemented into the JVM model inferrer.
+			/*if (!hasDeclaredConstructor) {
 				for (final ActionParameterTypes defaultSignature : defaultSignatures) {
 					if (!superConstructors.containsKey(defaultSignature)) {
 						final List<String> issueData = new ArrayList<>();
@@ -954,7 +954,7 @@ public class SARLValidator extends AbstractSARLValidator {
 								container, feature, MISSING_CONSTRUCTOR, toArray(issueData, String.class));
 					}
 				}
-			}
+			}*/
 		}
 	}
 

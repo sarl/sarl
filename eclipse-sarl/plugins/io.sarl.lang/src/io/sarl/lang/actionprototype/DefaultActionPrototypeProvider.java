@@ -88,8 +88,11 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 		final boolean isVarArg = parameterIndex >= lastParameterIndex && fillSignatureKeyOutputParameter.isVarArg();
 		final String name = params.getFormalParameterName(parameterIndex);
 		final JvmTypeReference type = params.getFormalParameterTypeReference(parameterIndex, isVarArg);
-		fillSignatureKeyOutputParameter.add(type.getIdentifier());
 		final Map<ActionParameterTypes, List<InferredStandardParameter>> tmpSignatures = new TreeMap<>();
+		if (type == null) {
+			return new Pair<>(tmpSignatures, isOptional);
+		}
+		fillSignatureKeyOutputParameter.add(type.getIdentifier());
 		if (signatures.isEmpty()) {
 			// First parameter
 			if (isOptional) {
