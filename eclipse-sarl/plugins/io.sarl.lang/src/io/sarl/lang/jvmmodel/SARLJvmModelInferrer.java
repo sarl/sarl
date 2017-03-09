@@ -21,6 +21,7 @@
 
 package io.sarl.lang.jvmmodel;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -158,6 +159,7 @@ import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
@@ -286,6 +288,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Inject
 	private IInlineExpressionCompiler inlineExpressionCompiler;
+
+	@Inject
+	private InheritanceHelper inheritanceHelper;
 
 	/** Generation contexts.
 	 */
@@ -604,6 +609,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
 
+			// Add serialVersionUID field if the generated type is serializable
+			appendSerialNumberIfSerializable(context, source, inferredJvmType);
+
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
 		} finally {
@@ -776,6 +784,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
 
+			// Add serialVersionUID field if the generated type is serializable
+			appendSerialNumberIfSerializable(context, source, inferredJvmType);
+
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
 
@@ -831,6 +842,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
+
+			// Add serialVersionUID field if the generated type is serializable
+			appendSerialNumberIfSerializable(context, source, inferredJvmType);
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
@@ -894,8 +908,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add functions dedicated to String representation(toString, etc.)
 			appendToStringFunctions(context, source, inferredJvmType);
 
-			// Add the serial number
-			appendSerialNumber(context, source, inferredJvmType);
+			// Add serialVersionUID field if the generated type is serializable
+			appendSerialNumberIfSerializable(context, source, inferredJvmType);
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
@@ -953,6 +967,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
+
+			// Add serialVersionUID field if the generated type is serializable
+			appendSerialNumberIfSerializable(context, source, inferredJvmType);
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
@@ -2312,10 +2329,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	/** Append the serial number field.
 	 *
 	 * <p>The serial number field is computed from the given context and from the generated fields.
+	 * The field is added if no field with name "serialVersionUID" was defined.
+	 *
+	 * <p>This function does not test if the field container is serializable.
 	 *
 	 * @param context the current generation context.
 	 * @param source the source object.
 	 * @param target the inferred JVM object.
+	 * @see #appendSerialNumberIfSerializable(GenerationContext, XtendTypeDeclaration, JvmGenericType)
 	 */
 	protected void appendSerialNumber(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
 		for (final JvmField field : Iterables.filter(target.getMembers(), JvmField.class)) {
@@ -2339,6 +2360,21 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		appendGeneratedAnnotation(field, context);
 		this.typeExtensions.setSynthetic(field, true);
 		this.readAndWriteTracking.markInitialized(field, null);
+	}
+
+	/** Append the serial number field if and only if the container type is serializable.
+	 *
+	 * <p>The serial number field is computed from the given context and from the generated fields.
+	 *
+	 * @param context the current generation context.
+	 * @param source the source object.
+	 * @param target the inferred JVM object.
+	 * @see #appendSerialNumber(GenerationContext, XtendTypeDeclaration, JvmGenericType)
+	 */
+	protected void appendSerialNumberIfSerializable(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
+		if (!target.isInterface() && this.inheritanceHelper.isSubTypeOf(target, Serializable.class, null)) {
+			appendSerialNumber(context, source, target);
+		}
 	}
 
 	/** Append the SARL specification version as a private field of the given container.

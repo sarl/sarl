@@ -1575,24 +1575,6 @@ public class BehaviorParsingTest {
 				"	}",
 				"}",
 				"behavior B2 extends B1 {",
-				"}"
-			));
-			validate(mas).assertError(
-				SarlPackage.eINSTANCE.getSarlBehavior(),
-				org.eclipse.xtend.core.validation.IssueCodes.MISSING_CONSTRUCTOR,
-				"Undefined default constructor in the super-type");
-		}
-
-		@Test
-		public void missedImplicitSuperConstructor_3() throws Exception {
-			SarlScript mas = file(multilineString(
-				"package io.sarl.test",
-				"behavior B1 {",
-				"	new (a : int) {",
-				"		super(null)",
-				"	}",
-				"}",
-				"behavior B2 extends B1 {",
 				"	new (a : int) {",
 				"	}",
 				"}"
@@ -1602,6 +1584,22 @@ public class BehaviorParsingTest {
 				org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
 				"Undefined default constructor in the super-type");
 		}
+
+		@Test
+		public void notMissedImplicitSuperConstructor() throws Exception {
+			SarlScript mas = file(multilineString(
+				"package io.sarl.test",
+				"behavior B1 {",
+				"	new (a : int) {",
+				"		super(null)",
+				"	}",
+				"}",
+				"behavior B2 extends B1 {",
+				"}"
+			));
+			validate(mas).assertNoErrors();
+		}
+
 
 		@Test
 		public void invalidArgumentTypeToSuperConstructor() throws Exception {

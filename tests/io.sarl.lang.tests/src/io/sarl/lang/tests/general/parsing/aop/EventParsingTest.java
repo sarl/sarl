@@ -1003,23 +1003,6 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}",
 					"}",
 					"event E2 extends E1 {",
-					"}"
-					));
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlEvent(),
-					org.eclipse.xtend.core.validation.IssueCodes.MISSING_CONSTRUCTOR,
-					"Undefined default constructor in the super-type.");
-		}
-
-		@Test
-		public void missedImplicitSuperConstructor_3() throws Exception {
-			SarlScript mas = file(multilineString(
-					"package io.sarl.test",
-					"event E1 {",
-					"new (a : int) {",
-					"}",
-					"}",
-					"event E2 extends E1 {",
 					"new (a : int) {",
 					"}",
 					"}"
@@ -1028,6 +1011,20 @@ public class EventParsingTest extends AbstractSarlTest {
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
 					"Undefined default constructor in the super-type");
+		}
+
+		@Test
+		public void notMissedImplicitSuperConstructor() throws Exception {
+			SarlScript mas = file(multilineString(
+					"package io.sarl.test",
+					"event E1 {",
+					"new (a : int) {",
+					"}",
+					"}",
+					"event E2 extends E1 {",
+					"}"
+					));
+			validate(mas).assertNoErrors();
 		}
 
 		@Test

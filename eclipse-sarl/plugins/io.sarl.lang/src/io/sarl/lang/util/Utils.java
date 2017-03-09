@@ -551,6 +551,39 @@ public final class Utils {
 		return reference;
 	}
 
+	/** Convert a type reference to a lightweight type reference.
+	 *
+	 * @param type - type to convert.
+	 * @param services - services used for the conversion
+	 * @return the lightweight type reference.
+	 */
+	public static LightweightTypeReference toLightweightTypeReference(
+			JvmType type, CommonTypeComputationServices services) {
+		return toLightweightTypeReference(type, services, false);
+	}
+
+
+	/** Convert a type to a lightweight type reference.
+	 *
+	 * @param type - type to convert.
+	 * @param services - services used for the conversion
+	 * @param keepUnboundWildcardInformation - indicates if the unbound wild card
+	 *        information must be keeped in the lightweight reference.
+	 * @return the lightweight type reference.
+	 */
+	public static LightweightTypeReference toLightweightTypeReference(
+			JvmType type, CommonTypeComputationServices services,
+			boolean keepUnboundWildcardInformation) {
+		if (type == null) {
+			return null;
+		}
+		final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(services, type);
+		final LightweightTypeReferenceFactory factory = new LightweightTypeReferenceFactory(owner,
+				keepUnboundWildcardInformation);
+		final LightweightTypeReference reference = factory.toLightweightReference(type);
+		return reference;
+	}
+
 	/** Compare the two strings as they are version numbers.
 	 *
 	 * @param v1 - first version to compare.

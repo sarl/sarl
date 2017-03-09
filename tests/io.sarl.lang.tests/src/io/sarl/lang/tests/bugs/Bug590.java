@@ -130,6 +130,9 @@ public class Bug590 extends AbstractSarlTest {
 				"  public LocaleMessageFormat(final String arg0, final Locale arg1) {",
 				"    super(arg0, arg1);",
 				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  private final static long serialVersionUID = -211302830L;",
 				"}",
 				""));
 	}
@@ -169,6 +172,9 @@ public class Bug590 extends AbstractSarlTest {
 				"  public LocaleMessageFormat(final String arg0, final Locale arg1) {",
 				"    super(arg0, arg1);",
 				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  private final static long serialVersionUID = -211302830L;",
 				"}",
 				""),
 				it.getGeneratedCode("io.sarl.lang.tests.bug590.LocaleMessageFormat"));
@@ -192,6 +198,9 @@ public class Bug590 extends AbstractSarlTest {
 					"  public LocaleMessageFormat2(final String arg0, final Locale arg1) {",
 					"    super(arg0, arg1);",
 					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  private final static long serialVersionUID = 1L;",
 					"}",
 					""),
 					it.getGeneratedCode("io.sarl.lang.tests.bug590.LocaleMessageFormat2"));
@@ -233,6 +242,9 @@ public class Bug590 extends AbstractSarlTest {
 				"  public LocaleMessageFormat(final String arg0, final Locale arg1) {",
 				"    super(arg0, arg1);",
 				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  private final static long serialVersionUID = -211302830L;",
 				"}",
 				""),
 				it.getGeneratedCode("io.sarl.lang.tests.bug590.LocaleMessageFormat"));
@@ -256,6 +268,9 @@ public class Bug590 extends AbstractSarlTest {
 					"  public LocaleMessageFormat2(final String arg0, final Locale arg1) {",
 					"    super(arg0, arg1);",
 					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  private final static long serialVersionUID = 1L;",
 					"}",
 					""),
 					it.getGeneratedCode("io.sarl.lang.tests.bug590.LocaleMessageFormat2"));
@@ -285,6 +300,7 @@ public class Bug590 extends AbstractSarlTest {
 				"package io.sarl.lang.tests.bug590;",
 				"",
 				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import java.text.MessageFormat;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -298,6 +314,9 @@ public class Bug590 extends AbstractSarlTest {
 				"  public LocaleMessageFormat() {",
 				"    super(null);",
 				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  private final static long serialVersionUID = -211300601L;",
 				"}",
 				""));
 	}
