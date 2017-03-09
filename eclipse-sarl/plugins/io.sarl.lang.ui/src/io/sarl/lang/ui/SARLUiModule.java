@@ -21,11 +21,10 @@
 
 package io.sarl.lang.ui;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
 import com.google.inject.Binder;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import com.google.inject.name.Names;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.ui.editor.XtextEditor;
@@ -53,6 +52,36 @@ public class SARLUiModule extends AbstractSARLUiModule {
 
 	private static final String AUTOMATIC_PROPOSAL_CHARACTERS = ".:"; //$NON-NLS-1$
 
+	/** Provider of {@link UIConfigurableIssueSeveritiesProvider}.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.5
+	 */
+	private static class UIConfigurableIssueSeveritiesProviderProvider implements Provider<UIConfigurableIssueSeveritiesProvider> {
+
+		private UIConfigurableIssueSeveritiesProvider severityProvider;
+
+		@Inject
+		private Injector injector;
+
+		UIConfigurableIssueSeveritiesProviderProvider() {
+			//
+		}
+
+		@Override
+		public UIConfigurableIssueSeveritiesProvider get() {
+			if (this.severityProvider == null) {
+				this.severityProvider = new UIConfigurableIssueSeveritiesProvider();
+				this.injector.injectMembers(this.severityProvider);
+			}
+			return this.severityProvider;
+		}
+
+	}
+
 	public SARLUiModule(AbstractUIPlugin plugin) {
 		super(plugin);
 	}
@@ -60,29 +89,15 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	@Override
 	public void configure(Binder binder) {
 		super.configure(binder);
-		// Configure a system singleton for issue severities provider
-		final Provider<UIConfigurableIssueSeveritiesProvider> provider = new Provider<UIConfigurableIssueSeveritiesProvider>() {
-
-			@Inject
-			private Injector injector;
-
-			private UIConfigurableIssueSeveritiesProvider severityProvider;
-
-			@Override
-			public UIConfigurableIssueSeveritiesProvider get() {
-				if (this.severityProvider == null) {
-					this.severityProvider = new UIConfigurableIssueSeveritiesProvider();
-					this.injector.injectMembers(this.severityProvider);
-				}
-				return this.severityProvider;
-			}
-		};
-		binder.bind(UIConfigurableIssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
-		binder.bind(IssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
-		binder.bind(IConfigurableIssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
 		// Configure the automatic auto-completion on specific characters: "." and ":"
 		binder.bind(String.class).annotatedWith(com.google.inject.name.Names.named(XtextContentAssistProcessor.COMPLETION_AUTO_ACTIVATION_CHARS))
 			.toInstance(AUTOMATIC_PROPOSAL_CHARACTERS);
+
+		// Configure a system singleton for issue severities provider
+		final UIConfigurableIssueSeveritiesProviderProvider provider = new UIConfigurableIssueSeveritiesProviderProvider();
+		binder.bind(UIConfigurableIssueSeveritiesProvider.class).toProvider(provider);
+		binder.bind(IssueSeveritiesProvider.class).toProvider(provider);
+		binder.bind(IConfigurableIssueSeveritiesProvider.class).toProvider(provider);
 	}
 
 	public void configureDebugMode(Binder binder) {

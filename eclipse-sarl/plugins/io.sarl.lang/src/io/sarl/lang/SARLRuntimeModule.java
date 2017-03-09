@@ -22,10 +22,10 @@
 package io.sarl.lang;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
 
 import com.google.inject.Binder;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import com.google.inject.name.Names;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.scoping.IScopeProvider;
@@ -53,31 +53,46 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
  */
 public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 
+	/** Provider of {@link ConfigurableIssueSeveritiesProvider}.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.5
+	 */
+	private static class ConfigurableIssueSeveritiesProviderProvider implements Provider<ConfigurableIssueSeveritiesProvider> {
+
+		private ConfigurableIssueSeveritiesProvider severityProvider;
+
+		@Inject
+		private Injector injector;
+
+		ConfigurableIssueSeveritiesProviderProvider() {
+			//
+		}
+
+		@Override
+		public ConfigurableIssueSeveritiesProvider get() {
+			if (this.severityProvider == null) {
+				this.severityProvider = new XtextBug299ConfigurableIssueSeveritiesProvider();
+				this.injector.injectMembers(this.severityProvider);
+			}
+			return this.severityProvider;
+		}
+
+	}
+
 	@Override
 	public void configure(Binder binder) {
 		super.configure(binder);
 		binder.bind(boolean.class).annotatedWith(Names.named(CompositeEValidator.USE_EOBJECT_VALIDATOR))
 				.toInstance(false);
 		// Configure a system singleton for issue severities provider
-		final Provider<ConfigurableIssueSeveritiesProvider> provider = new Provider<ConfigurableIssueSeveritiesProvider>() {
-
-			@Inject
-			private Injector injector;
-
-			private ConfigurableIssueSeveritiesProvider severityProvider;
-
-			@Override
-			public ConfigurableIssueSeveritiesProvider get() {
-				if (this.severityProvider == null) {
-					this.severityProvider = new XtextBug299ConfigurableIssueSeveritiesProvider();
-					this.injector.injectMembers(this.severityProvider);
-				}
-				return this.severityProvider;
-			}
-		};
-		binder.bind(ConfigurableIssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
-		binder.bind(IssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
-		binder.bind(IConfigurableIssueSeveritiesProvider.class).toProvider(provider).asEagerSingleton();
+		final ConfigurableIssueSeveritiesProviderProvider provider = new ConfigurableIssueSeveritiesProviderProvider();
+		binder.bind(ConfigurableIssueSeveritiesProvider.class).toProvider(provider);
+		binder.bind(IssueSeveritiesProvider.class).toProvider(provider);
+		binder.bind(IConfigurableIssueSeveritiesProvider.class).toProvider(provider);
 	}
 
 	@Override
