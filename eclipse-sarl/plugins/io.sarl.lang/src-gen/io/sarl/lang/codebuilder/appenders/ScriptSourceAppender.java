@@ -25,6 +25,7 @@ package io.sarl.lang.codebuilder.appenders;
 
 import io.sarl.lang.codebuilder.builders.ISarlAgentBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlAnnotationTypeBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlArtifactBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlBehaviorBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlCapacityBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlClassBuilder;
@@ -152,6 +153,14 @@ public class ScriptSourceAppender extends AbstractSourceAppender implements IScr
 	 */
 	public ISarlSpaceBuilder addSarlSpace(String name) {
 		 return this.builder.addSarlSpace(name);
+	}
+
+	/** Create a SarlArtifact builder.
+	 * @param name - the name of the SarlArtifact.
+	 * @return the builder.
+	 */
+	public ISarlArtifactBuilder addSarlArtifact(String name) {
+		 return this.builder.addSarlArtifact(name);
 	}
 
 	/** Create a SarlClass builder.

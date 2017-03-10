@@ -207,6 +207,19 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	}
 
 	@Inject
+	private Provider<ISarlArtifactBuilder> sarlArtifactProvider;
+
+	/** Create a SarlArtifact builder.
+	 * @param name - the name of the SarlArtifact.
+	 * @return the builder.
+	 */
+	public ISarlArtifactBuilder addSarlArtifact(String name) {
+		ISarlArtifactBuilder builder = this.sarlArtifactProvider.get();
+		builder.eInit(getScript(), name, getTypeResolutionContext());
+		return builder;
+	}
+
+	@Inject
 	private Provider<ISarlClassBuilder> sarlClassProvider;
 
 	/** Create a SarlClass builder.

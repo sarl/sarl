@@ -104,6 +104,12 @@ public interface IScriptBuilder {
 	 */
 	ISarlSpaceBuilder addSarlSpace(String name);
 
+	/** Create a SarlArtifact builder.
+	 * @param name - the name of the SarlArtifact.
+	 * @return the builder.
+	 */
+	ISarlArtifactBuilder addSarlArtifact(String name);
+
 	/** Create a SarlClass builder.
 	 * @param name - the name of the SarlClass.
 	 * @return the builder.

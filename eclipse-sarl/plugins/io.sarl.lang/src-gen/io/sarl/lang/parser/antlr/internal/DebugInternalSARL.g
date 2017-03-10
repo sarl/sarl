@@ -131,6 +131,13 @@ ruleType:
 		    |
 		ruleCommonModifier
 		*
+		'artifact'
+		ruleValidID
+		'{'
+		'}'
+		    |
+		ruleCommonModifier
+		*
 		'class'
 		ruleValidID
 		(

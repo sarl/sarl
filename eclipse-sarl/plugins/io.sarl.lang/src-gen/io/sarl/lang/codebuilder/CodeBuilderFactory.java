@@ -34,6 +34,7 @@ import io.sarl.lang.codebuilder.appenders.ExpressionSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlActionSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlAgentSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlAnnotationTypeSourceAppender;
+import io.sarl.lang.codebuilder.appenders.SarlArtifactSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlBehaviorSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlBehaviorUnitSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlCapacitySourceAppender;
@@ -52,6 +53,7 @@ import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlAgentBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlAnnotationTypeBuilder;
+import io.sarl.lang.codebuilder.builders.ISarlArtifactBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlBehaviorBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlBehaviorUnitBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlCapacityBuilder;
@@ -719,6 +721,55 @@ public class CodeBuilderFactory {
 	@Pure
 	public SarlSpaceSourceAppender buildSarlSpace(String name, Resource resource) {
 		SarlSpaceSourceAppender a = new SarlSpaceSourceAppender(createSarlSpace(name, resource));
+		getInjector().injectMembers(a);
+		return a;
+	}
+
+	/** Create the factory for a Sarl SarlArtifact.
+	 * @param name the name of the SarlArtifact
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlArtifactBuilder createSarlArtifact(String name, ResourceSet resourceSet) {
+		 return createSarlArtifact(name, createResource(resourceSet));
+	}
+
+	/** Create the factory for a Sarl SarlArtifact.
+	 * @param name the name of the SarlArtifact
+	 * @param resource the resource that must be used for
+	 *    containing the generated element, and resolving types from names.
+	 * @return the factory.
+	 */
+	@Pure
+	public ISarlArtifactBuilder createSarlArtifact(String name, Resource resource) {
+		IScriptBuilder scriptBuilder = createScript(getFooPackageName(), resource);
+		return scriptBuilder.addSarlArtifact(name);
+	}
+
+	/** Create the appender for a Sarl SarlArtifact.
+	 * @param name the name of the SarlArtifact
+	 * @param resourceSet the set of the resources that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlArtifactSourceAppender buildSarlArtifact(String name, ResourceSet resourceSet) {
+		SarlArtifactSourceAppender a = new SarlArtifactSourceAppender(createSarlArtifact(name, resourceSet));
+		getInjector().injectMembers(a);
+		return a;
+	}
+
+	/** Create the appender for a Sarl SarlArtifact.
+	 * @param name the name of the SarlArtifact
+	 * @param resource the resource that must be used for
+	 *    containing the generated resource, and resolving types from names.
+	 * @return the appender.
+	 */
+	@Pure
+	public SarlArtifactSourceAppender buildSarlArtifact(String name, Resource resource) {
+		SarlArtifactSourceAppender a = new SarlArtifactSourceAppender(createSarlArtifact(name, resource));
 		getInjector().injectMembers(a);
 		return a;
 	}

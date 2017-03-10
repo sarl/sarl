@@ -160,6 +160,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 				return createSarlSpaceAdapter();
 			}
 			@Override
+			public Adapter caseSarlArtifact(SarlArtifact object)
+			{
+				return createSarlArtifactAdapter();
+			}
+			@Override
 			public Adapter caseSarlAgent(SarlAgent object)
 			{
 				return createSarlAgentAdapter();
@@ -482,6 +487,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createSarlSpaceAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlArtifact <em>Artifact</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see io.sarl.lang.sarl.SarlArtifact
+	 * @generated
+	 */
+	public Adapter createSarlArtifactAdapter()
 	{
 		return null;
 	}

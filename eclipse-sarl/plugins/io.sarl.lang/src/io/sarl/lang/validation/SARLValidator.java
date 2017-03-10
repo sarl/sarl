@@ -170,6 +170,7 @@ import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
+import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
@@ -356,6 +357,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		result.put(SarlEvent.class, ElementType.TYPE);
 		result.put(SarlBehavior.class, ElementType.TYPE);
 		result.put(SarlSpace.class, ElementType.TYPE);
+		result.put(SarlArtifact.class, ElementType.TYPE);
 		result.put(SarlClass.class, ElementType.TYPE);
 		result.put(SarlInterface.class, ElementType.TYPE);
 		result.put(SarlEnumeration.class, ElementType.TYPE);
@@ -433,6 +435,19 @@ public class SARLValidator extends AbstractSARLValidator {
 					Messages.SARLValidator_0,
 					this.grammarAccess.getSpaceKeyword()),
 					space,
+					null);
+	}
+
+	/** Artifact keyword is reserved.
+	 *
+	 * @param artifact - the artifact to check.
+	 */
+	@Check
+	public void checkArtifactUse(SarlArtifact artifact) {
+		error(MessageFormat.format(
+					Messages.SARLValidator_0,
+					this.grammarAccess.getSpaceKeyword()),
+					artifact,
 					null);
 	}
 

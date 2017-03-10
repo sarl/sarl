@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
+import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
@@ -164,6 +165,9 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					return; 
 				}
 				else break;
+			case SarlPackage.SARL_ARTIFACT:
+				sequence_Type(context, (SarlArtifact) semanticObject); 
+				return; 
 			case SarlPackage.SARL_BEHAVIOR:
 				sequence_Type(context, (SarlBehavior) semanticObject); 
 				return; 
@@ -752,7 +756,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 				}
 				else break;
 			case XtendPackage.XTEND_TYPE_DECLARATION:
-				sequence_Type_SarlAgent_2_2_0_SarlAnnotationType_2_9_0_SarlBehavior_2_3_0_SarlCapacity_2_1_0_SarlClass_2_6_0_SarlEnumeration_2_8_0_SarlEvent_2_0_0_SarlInterface_2_7_0_SarlSkill_2_4_0_SarlSpace_2_5_0(context, (XtendTypeDeclaration) semanticObject); 
+				sequence_Type_SarlAgent_2_2_0_SarlAnnotationType_2_10_0_SarlArtifact_2_6_0_SarlBehavior_2_3_0_SarlCapacity_2_1_0_SarlClass_2_7_0_SarlEnumeration_2_9_0_SarlEvent_2_0_0_SarlInterface_2_8_0_SarlSkill_2_4_0_SarlSpace_2_5_0(context, (XtendTypeDeclaration) semanticObject); 
 				return; 
 			case XtendPackage.XTEND_VARIABLE_DECLARATION:
 				sequence_XVariableDeclaration(context, (XtendVariableDeclaration) semanticObject); 
@@ -1408,15 +1412,16 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     Type.SarlBehavior_2_3_0 returns XtendTypeDeclaration
 	 *     Type.SarlSkill_2_4_0 returns XtendTypeDeclaration
 	 *     Type.SarlSpace_2_5_0 returns XtendTypeDeclaration
-	 *     Type.SarlClass_2_6_0 returns XtendTypeDeclaration
-	 *     Type.SarlInterface_2_7_0 returns XtendTypeDeclaration
-	 *     Type.SarlEnumeration_2_8_0 returns XtendTypeDeclaration
-	 *     Type.SarlAnnotationType_2_9_0 returns XtendTypeDeclaration
+	 *     Type.SarlArtifact_2_6_0 returns XtendTypeDeclaration
+	 *     Type.SarlClass_2_7_0 returns XtendTypeDeclaration
+	 *     Type.SarlInterface_2_8_0 returns XtendTypeDeclaration
+	 *     Type.SarlEnumeration_2_9_0 returns XtendTypeDeclaration
+	 *     Type.SarlAnnotationType_2_10_0 returns XtendTypeDeclaration
 	 *
 	 * Constraint:
 	 *     annotations+=XAnnotation*
 	 */
-	protected void sequence_Type_SarlAgent_2_2_0_SarlAnnotationType_2_9_0_SarlBehavior_2_3_0_SarlCapacity_2_1_0_SarlClass_2_6_0_SarlEnumeration_2_8_0_SarlEvent_2_0_0_SarlInterface_2_7_0_SarlSkill_2_4_0_SarlSpace_2_5_0(ISerializationContext context, XtendTypeDeclaration semanticObject) {
+	protected void sequence_Type_SarlAgent_2_2_0_SarlAnnotationType_2_10_0_SarlArtifact_2_6_0_SarlBehavior_2_3_0_SarlCapacity_2_1_0_SarlClass_2_7_0_SarlEnumeration_2_9_0_SarlEvent_2_0_0_SarlInterface_2_8_0_SarlSkill_2_4_0_SarlSpace_2_5_0(ISerializationContext context, XtendTypeDeclaration semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1426,9 +1431,21 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     Type returns SarlAnnotationType
 	 *
 	 * Constraint:
-	 *     (annotationInfo=Type_SarlAnnotationType_2_9_0 modifiers+=CommonModifier* name=ValidID members+=AnnotationField*)
+	 *     (annotationInfo=Type_SarlAnnotationType_2_10_0 modifiers+=CommonModifier* name=ValidID members+=AnnotationField*)
 	 */
 	protected void sequence_Type(ISerializationContext context, SarlAnnotationType semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Type returns SarlArtifact
+	 *
+	 * Constraint:
+	 *     (annotationInfo=Type_SarlArtifact_2_6_0 modifiers+=CommonModifier* name=ValidID)
+	 */
+	protected void sequence_Type(ISerializationContext context, SarlArtifact semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1469,7 +1486,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *
 	 * Constraint:
 	 *     (
-	 *         annotationInfo=Type_SarlClass_2_6_0 
+	 *         annotationInfo=Type_SarlClass_2_7_0 
 	 *         modifiers+=CommonModifier* 
 	 *         name=ValidID 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
@@ -1487,7 +1504,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     Type returns SarlEnumeration
 	 *
 	 * Constraint:
-	 *     (annotationInfo=Type_SarlEnumeration_2_8_0 modifiers+=CommonModifier* name=ValidID (members+=XtendEnumLiteral members+=XtendEnumLiteral*)?)
+	 *     (annotationInfo=Type_SarlEnumeration_2_9_0 modifiers+=CommonModifier* name=ValidID (members+=XtendEnumLiteral members+=XtendEnumLiteral*)?)
 	 */
 	protected void sequence_Type(ISerializationContext context, SarlEnumeration semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1512,7 +1529,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *
 	 * Constraint:
 	 *     (
-	 *         annotationInfo=Type_SarlInterface_2_7_0 
+	 *         annotationInfo=Type_SarlInterface_2_8_0 
 	 *         modifiers+=CommonModifier* 
 	 *         name=ValidID 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 

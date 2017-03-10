@@ -47,6 +47,13 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getInnerVarIDAccess().getDefKeyword_5().getValue();
 	}
 
+	/** Keyword: {@code artifact}.
+	 * Source: io.sarl.lang.SARL
+	 */
+	public String getArtifactKeyword() {
+		return this.grammarAccess.getTypeAccess().getArtifactKeyword_2_6_2().getValue();
+	}
+
 	/** Keyword: {@code protected}.
 	 * Source: io.sarl.lang.SARL
 	 */
@@ -835,6 +842,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getFinalKeyword());
 			kws.add(getSuperKeyword());
 			kws.add(getProtectedKeyword());
+			kws.add(getArtifactKeyword());
 			kws.add(getPrivateKeyword());
 			kws.add(getAnnotationKeyword());
 			kws.add(getFinallyKeyword());
@@ -911,6 +919,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getRequiresKeyword());
 			kws.add(getWithKeyword());
 			kws.add(getItKeyword());
+			kws.add(getArtifactKeyword());
 			kws.add(getAnnotationKeyword());
 			kws.add(getSpaceKeyword());
 			kws.add(getOnKeyword());

@@ -38,6 +38,7 @@ import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XConstructorCall;
 
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlEvent;
@@ -131,6 +132,17 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 	@SuppressWarnings("static-method")
 	protected String _signature(SarlSpace space, boolean typeAtEnd) {
 		return space.getName();
+	}
+
+	/** Replies the signature for a SARL artifact.
+	 *
+	 * @param artifact the SARL element.
+	 * @param typeAtEnd ignored
+	 * @return the signature
+	 */
+	@SuppressWarnings("static-method")
+	protected String _signature(SarlArtifact artifact, boolean typeAtEnd) {
+		return artifact.getName();
 	}
 
 	@Override

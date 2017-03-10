@@ -78,6 +78,11 @@ Type returns xtend::XtendTypeDeclaration:
 		modifiers+=CommonModifier*
 		'space' name=ValidID '{' '}'
 	|
+		// Artifact
+		{SarlArtifact.annotationInfo = current}
+		modifiers+=CommonModifier*
+		'artifact' name=ValidID '{' '}'
+	|
 		// Class
 		{SarlClass.annotationInfo = current}
 		modifiers+=CommonModifier*

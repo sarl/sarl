@@ -1179,6 +1179,88 @@ public interface SarlPackage extends EPackage
 	int SARL_SPACE_FEATURE_COUNT = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlArtifactImpl <em>Artifact</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see io.sarl.lang.sarl.impl.SarlArtifactImpl
+	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlArtifact()
+	 * @generated
+	 */
+	int SARL_ARTIFACT = 14;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ARTIFACT__ANNOTATIONS = XtendPackage.XTEND_TYPE_DECLARATION__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotation Info</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ARTIFACT__ANNOTATION_INFO = XtendPackage.XTEND_TYPE_DECLARATION__ANNOTATION_INFO;
+
+	/**
+	 * The feature id for the '<em><b>Modifiers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ARTIFACT__MODIFIERS = XtendPackage.XTEND_TYPE_DECLARATION__MODIFIERS;
+
+	/**
+	 * The feature id for the '<em><b>Declaring Type</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ARTIFACT__DECLARING_TYPE = XtendPackage.XTEND_TYPE_DECLARATION__DECLARING_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ARTIFACT__NAME = XtendPackage.XTEND_TYPE_DECLARATION__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Members</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ARTIFACT__MEMBERS = XtendPackage.XTEND_TYPE_DECLARATION__MEMBERS;
+
+	/**
+	 * The feature id for the '<em><b>Extends</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ARTIFACT__EXTENDS = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Artifact</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_ARTIFACT_FEATURE_COUNT = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlAgentImpl <em>Agent</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1186,7 +1268,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAgent()
 	 * @generated
 	 */
-	int SARL_AGENT = 14;
+	int SARL_AGENT = 15;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1268,7 +1350,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlCapacity()
 	 * @generated
 	 */
-	int SARL_CAPACITY = 15;
+	int SARL_CAPACITY = 16;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1350,7 +1432,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBehavior()
 	 * @generated
 	 */
-	int SARL_BEHAVIOR = 16;
+	int SARL_BEHAVIOR = 17;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1432,7 +1514,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlSkill()
 	 * @generated
 	 */
-	int SARL_SKILL = 17;
+	int SARL_SKILL = 18;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1523,7 +1605,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlFormalParameter()
 	 * @generated
 	 */
-	int SARL_FORMAL_PARAMETER = 18;
+	int SARL_FORMAL_PARAMETER = 19;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1816,6 +1898,27 @@ public interface SarlPackage extends EPackage
 	 * @generated
 	 */
 	EReference getSarlSpace_Extends();
+
+	/**
+	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlArtifact <em>Artifact</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Artifact</em>'.
+	 * @see io.sarl.lang.sarl.SarlArtifact
+	 * @generated
+	 */
+	EClass getSarlArtifact();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link io.sarl.lang.sarl.SarlArtifact#getExtends <em>Extends</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Extends</em>'.
+	 * @see io.sarl.lang.sarl.SarlArtifact#getExtends()
+	 * @see #getSarlArtifact()
+	 * @generated
+	 */
+	EReference getSarlArtifact_Extends();
 
 	/**
 	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlAgent <em>Agent</em>}'.
@@ -2159,6 +2262,24 @@ public interface SarlPackage extends EPackage
 		 * @generated
 		 */
 		EReference SARL_SPACE__EXTENDS = eINSTANCE.getSarlSpace_Extends();
+
+		/**
+		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlArtifactImpl <em>Artifact</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see io.sarl.lang.sarl.impl.SarlArtifactImpl
+		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlArtifact()
+		 * @generated
+		 */
+		EClass SARL_ARTIFACT = eINSTANCE.getSarlArtifact();
+
+		/**
+		 * The meta object literal for the '<em><b>Extends</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SARL_ARTIFACT__EXTENDS = eINSTANCE.getSarlArtifact_Extends();
 
 		/**
 		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlAgentImpl <em>Agent</em>}' class.

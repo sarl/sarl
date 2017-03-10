@@ -146,6 +146,7 @@ import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
@@ -427,7 +428,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:npathcomplexity")
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	protected JvmDeclaredType doInferTypeSceleton(
 			XtendTypeDeclaration declaration,
 			IJvmDeclaredTypeAcceptor acceptor, boolean preIndexingPhase,
@@ -436,11 +437,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return null;
 		}
 
-		final JvmDeclaredType type = super.doInferTypeSceleton(declaration, acceptor, preIndexingPhase,
-				xtendFile, doLater);
-		if (type != null) {
-			return type;
-		}
 		if (declaration instanceof SarlAgent) {
 			final SarlAgent sarlAgent = (SarlAgent) declaration;
 			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
@@ -519,7 +515,22 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 			return javaType;
 		}
-		return null;
+		if (declaration instanceof SarlArtifact) {
+			final SarlArtifact sarlArtifact = (SarlArtifact) declaration;
+			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
+			if (!preIndexingPhase) {
+				doLater.add(new Runnable() {
+					@Override
+					public void run() {
+						initialize(sarlArtifact, javaType);
+					}
+				});
+			}
+			return javaType;
+		}
+
+		return super.doInferTypeSceleton(declaration, acceptor, preIndexingPhase,
+				xtendFile, doLater);
 	}
 
 	@Override
@@ -598,8 +609,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					context.getInheritedOperationsToImplement(),
 					null,
 					this.sarlSignatureProvider);
+
 			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+
 			// Add SARL synthetic functions
 			appendSyntheticDefaultValuedParameterMethods(
 					source,
@@ -1132,6 +1145,22 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return;
 		}
 		// TODO: Generate the space
+	}
+
+	/** Initialize the SARL artifact type.
+	 *
+	 * @param source the source.
+	 * @param inferredJvmType the JVM type.
+	 */
+	@SuppressWarnings("static-method")
+	protected void initialize(SarlArtifact source, JvmGenericType inferredJvmType) {
+		// Issue #356: do not generate if the space has no name.
+		assert source != null;
+		assert inferredJvmType != null;
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
+		// TODO: Generate the artifact
 	}
 
 	@Override

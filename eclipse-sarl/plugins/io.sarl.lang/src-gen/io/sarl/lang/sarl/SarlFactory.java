@@ -149,6 +149,15 @@ public interface SarlFactory extends EFactory
 	SarlSpace createSarlSpace();
 
 	/**
+	 * Returns a new object of class '<em>Artifact</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Artifact</em>'.
+	 * @generated
+	 */
+	SarlArtifact createSarlArtifact();
+
+	/**
 	 * Returns a new object of class '<em>Agent</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -59,5 +59,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSpace/extends"/>
       <genOperations ecoreOperation="SARL.ecore#//SarlSpace/isAbstract"/>
     </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//SarlArtifact">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlArtifact/extends"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlArtifact/isAbstract"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
