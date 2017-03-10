@@ -597,8 +597,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 		// Create the generation context that is used by the other transformation functions.
 		final GenerationContext context = openContext(source, inferredJvmType, Arrays.asList(
-				SarlField.class, SarlConstructor.class, SarlAction.class,
-				SarlBehaviorUnit.class, SarlCapacityUses.class, SarlRequiredCapacity.class));
+				SarlField.class, SarlConstructor.class, SarlAction.class));
 		try {
 			// Initialize the context with inheriting features
 			Utils.populateInheritanceContext(
@@ -625,45 +624,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add serialVersionUID field if the generated type is serializable
 			appendSerialNumberIfSerializable(context, source, inferredJvmType);
 
-			// Add the specification version of SARL
-			appendSARLSpecificationVersion(context, source, inferredJvmType);
-		} finally {
-			closeContext(context);
-		}
-	}
-
-	@Override
-	protected void initialize(XtendAnnotationType source, JvmAnnotationType inferredJvmType) {
-		// Issue #356: do not generate if the annotation type has no name.
-		assert source != null;
-		assert inferredJvmType != null;
-		if (Strings.isNullOrEmpty(source.getName())) {
-			return;
-		}
-		// Issue #363: do not generate the annotation if the SARL library is incompatible.
-		if (!Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
-			return;
-		}
-		// Create the generation context that is used by the other transformation functions.
-		final GenerationContext context = openContext(source, inferredJvmType,
-				Collections.singleton(SarlEnumLiteral.class));
-		try {
-			// Initialize the context with inheriting features
-			Utils.populateInheritanceContext(
-					inferredJvmType,
-					context.getInheritedFinalOperations(),
-					context.getInheritedOverridableOperations(),
-					null,
-					context.getInheritedOperationsToImplement(),
-					null,
-					this.sarlSignatureProvider);
-			// Standard OOP generation
-			super.initialize(source, inferredJvmType);
-			// Add SARL synthetic functions
-			appendSyntheticDefaultValuedParameterMethods(
-					source,
-					inferredJvmType,
-					context);
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
 		} finally {
@@ -705,6 +665,45 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					context);
 			// Add the @FunctionalInterface
 			appendFunctionalInterfaceAnnotation(inferredJvmType);
+			// Add the specification version of SARL
+			appendSARLSpecificationVersion(context, source, inferredJvmType);
+		} finally {
+			closeContext(context);
+		}
+	}
+
+	@Override
+	protected void initialize(XtendAnnotationType source, JvmAnnotationType inferredJvmType) {
+		// Issue #356: do not generate if the annotation type has no name.
+		assert source != null;
+		assert inferredJvmType != null;
+		if (Strings.isNullOrEmpty(source.getName())) {
+			return;
+		}
+		// Issue #363: do not generate the annotation if the SARL library is incompatible.
+		if (!Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, source)) {
+			return;
+		}
+		// Create the generation context that is used by the other transformation functions.
+		final GenerationContext context = openContext(source, inferredJvmType,
+				Collections.singleton(SarlEnumLiteral.class));
+		try {
+			// Initialize the context with inheriting features
+			Utils.populateInheritanceContext(
+					inferredJvmType,
+					context.getInheritedFinalOperations(),
+					context.getInheritedOverridableOperations(),
+					null,
+					context.getInheritedOperationsToImplement(),
+					null,
+					this.sarlSignatureProvider);
+			// Standard OOP generation
+			super.initialize(source, inferredJvmType);
+			// Add SARL synthetic functions
+			appendSyntheticDefaultValuedParameterMethods(
+					source,
+					inferredJvmType,
+					context);
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
 		} finally {
@@ -2376,18 +2375,16 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 		final JvmField field = this.typesFactory.createJvmField();
 		field.setSimpleName("serialVersionUID"); //$NON-NLS-1$
-		target.getMembers().add(field);
-		this.associator.associatePrimary(source, field);
 		field.setVisibility(JvmVisibility.PRIVATE);
 		field.setStatic(true);
 		field.setTransient(false);
 		field.setVolatile(false);
 		field.setFinal(true);
+		target.getMembers().add(field);
 		field.setType(this.typeBuilder.cloneWithProxies(this._typeReferenceBuilder.typeRef(long.class)));
 		final long serial = context.getSerial();
 		this.typeBuilder.setInitializer(field, toStringConcatenation(serial + "L")); //$NON-NLS-1$
 		appendGeneratedAnnotation(field, context);
-		this.typeExtensions.setSynthetic(field, true);
 		this.readAndWriteTracking.markInitialized(field, null);
 	}
 
