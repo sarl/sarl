@@ -1184,6 +1184,14 @@ public class SARLValidator extends AbstractSARLValidator {
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					VARIABLE_NAME_DISALLOWED,
 					validName);
+		} else if (this.grammarAccess.getOccurrenceKeyword().equals(field.getName())) {
+			error(MessageFormat.format(
+					Messages.SARLValidator_41,
+					this.grammarAccess.getOccurrenceKeyword()),
+					field,
+					XTEND_FIELD__NAME,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					VARIABLE_NAME_DISALLOWED);
 		}
 	}
 
@@ -1223,6 +1231,42 @@ public class SARLValidator extends AbstractSARLValidator {
 						VARIABLE_NAME_SHADOWING,
 						newName);
 			}
+		}
+	}
+
+	/** Check if the given parameter has a valid name.
+	 *
+	 * @param parameter - the parameter to test.
+	 * @see SARLFeatureNameValidator
+	 */
+	@Check(CheckType.FAST)
+	public void checkParameterName(SarlFormalParameter parameter) {
+		if (this.grammarAccess.getOccurrenceKeyword().equals(parameter.getName())) {
+			error(MessageFormat.format(
+					Messages.SARLValidator_14,
+					this.grammarAccess.getOccurrenceKeyword()),
+					parameter,
+					XtendPackage.Literals.XTEND_PARAMETER__NAME,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					VARIABLE_NAME_DISALLOWED);
+		}
+	}
+
+	/** Check if the given local variable has a valid name.
+	 *
+	 * @param variable - the variable to test.
+	 * @see SARLFeatureNameValidator
+	 */
+	@Check(CheckType.FAST)
+	public void checkParameterName(XVariableDeclaration variable) {
+		if (this.grammarAccess.getOccurrenceKeyword().equals(variable.getName())) {
+			error(MessageFormat.format(
+					Messages.SARLValidator_15,
+					this.grammarAccess.getOccurrenceKeyword()),
+					variable,
+					XbasePackage.Literals.XVARIABLE_DECLARATION__NAME,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					VARIABLE_NAME_DISALLOWED);
 		}
 	}
 
