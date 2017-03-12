@@ -2497,8 +2497,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		for (int i = 0; i < params.size(); ++i) {
 			final XtendParameter param = params.get(i);
 			assert param != null;
-			final InferredStandardParameter inferredParam = paramSpec.get(i);
-			assert inferredParam != null;
 			final String paramName = param.getName();
 			final JvmTypeReference paramType = param.getParameterType();
 
@@ -2507,10 +2505,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				translateParameter(owner, param);
 				final JvmFormalParameter lastParam = owner.getParameters().get(owner.getParameters().size() - 1);
 				// Treat the default value
-				if (param instanceof SarlFormalParameter && ((SarlFormalParameter) param).getDefaultValue() != null) {
+				if (i < paramSpec.size() && param instanceof SarlFormalParameter
+						&& ((SarlFormalParameter) param).getDefaultValue() != null) {
 					final XExpression defaultValue = ((SarlFormalParameter) param).getDefaultValue();
 					assert defaultValue != null;
 					hasDefaultValue = true;
+					final InferredStandardParameter inferredParam = paramSpec.get(i);
+					assert inferredParam != null;
 					final String namePostPart = inferredParam.getDefaultValueAnnotationValue();
 					final String name = this.sarlSignatureProvider.createFieldNameForDefaultValueID(namePostPart);
 					// FIXME: Hide these attributes into an inner interface.
