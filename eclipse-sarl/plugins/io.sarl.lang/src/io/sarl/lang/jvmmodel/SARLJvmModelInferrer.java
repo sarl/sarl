@@ -55,6 +55,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.jvmmodel.SyntheticNameClashResolver;
 import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
+import org.eclipse.xtend.core.xtend.AnonymousClass;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
@@ -580,6 +581,61 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					}
 				}
 			}
+		}
+	}
+
+	/** {@inheritDoc}.
+	 *
+	 * <p>The function is overridden in order to interleave the instructions from Xtend and the ones needed
+	 * for SARL.
+	 */
+	@Override
+	public void inferLocalClass(AnonymousClass anonymousClass, String localClassName, JvmFeature container) {
+		// Issue #356: do not generate if the class has no name.
+		assert anonymousClass != null;
+		assert container != null;
+		if (Strings.isNullOrEmpty(localClassName)) {
+			return;
+		}
+		// Issue #363: do not generate the class if the SARL library is incompatible.
+		if (!Utils.isCompatibleSARLLibraryOnClasspath(this.typeReferences, anonymousClass)) {
+			return;
+		}
+
+		// Create the inner type
+		// --- Begin Xtend Part
+		final JvmGenericType inferredJvmType = this.typesFactory.createJvmGenericType();
+		inferredJvmType.setSimpleName(localClassName);
+		inferredJvmType.setAnonymous(!hasAdditionalMembers(anonymousClass));
+		inferredJvmType.setFinal(true);
+		inferredJvmType.setVisibility(JvmVisibility.DEFAULT);
+		inferredJvmType.getSuperTypes().add(this.typeBuilder.inferredType(anonymousClass));
+		container.getLocalClasses().add(inferredJvmType);
+		this.associator.associatePrimary(anonymousClass, inferredJvmType);
+		// --- End Xtend Part
+
+		// Create the generation context that is used by the other transformation functions.
+		final GenerationContext context = openContext(anonymousClass, inferredJvmType, Arrays.asList(
+				SarlField.class, SarlConstructor.class, SarlAction.class));
+		try {
+			// --- Begin Xtend Part
+			for (final XtendMember member : anonymousClass.getMembers()) {
+				if (context.isSupportedMember(member)) {
+					transform(member, inferredJvmType, true);
+				}
+			}
+
+			appendSyntheticDispatchMethods(anonymousClass, inferredJvmType);
+			this.nameClashResolver.resolveNameClashes(inferredJvmType);
+			// --- End Xtend Part
+
+			// Add SARL synthetic functions
+			appendSyntheticDefaultValuedParameterMethods(
+					anonymousClass,
+					inferredJvmType,
+					context);
+		} finally {
+			closeContext(context);
 		}
 	}
 
