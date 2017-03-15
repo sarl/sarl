@@ -21,6 +21,12 @@
 
 package io.sarl.lang.validation;
 
+import org.eclipse.xtend.core.xtend.XtendAnnotationType;
+import org.eclipse.xtend.core.xtend.XtendClass;
+import org.eclipse.xtend.core.xtend.XtendEnum;
+import org.eclipse.xtend.core.xtend.XtendInterface;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 
@@ -41,13 +47,22 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 		//
 	}
 
+	private static boolean isInsideOOTypeDeclaration(XAbstractFeatureCall call) {
+		final XtendTypeDeclaration declaration = EcoreUtil2.getContainerOfType(call, XtendTypeDeclaration.class);
+		return declaration != null
+			&& (declaration instanceof XtendClass
+				|| declaration instanceof XtendEnum
+				|| declaration instanceof XtendInterface
+				|| declaration instanceof XtendAnnotationType);
+	}
+
 	@Override
 	public boolean isDisallowedCall(XAbstractFeatureCall call) {
 		if (call != null && call.getFeature() != null) {
 			final JvmIdentifiableElement feature = call.getFeature();
 			final String id = feature.getQualifiedName();
 			if ("java.lang.System.exit".equals(id)) { //$NON-NLS-1$
-				return true;
+				return !isInsideOOTypeDeclaration(call);
 			}
 			if (Utils.isHiddenMember(feature.getSimpleName())
 				&& !Utils.isNameForHiddenCapacityImplementationCallingMethod(feature.getSimpleName())) {
@@ -70,6 +85,8 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 				case "java.lang.System.console": //$NON-NLS-1$
 				case "java.lang.System.inheritedChannel": //$NON-NLS-1$
 					return true;
+				case "java.lang.System.exit": //$NON-NLS-1$
+					return isInsideOOTypeDeclaration(call);
 				default:
 					if (id.startsWith("org.eclipse.xtext.xbase.lib.InputOutput")) { //$NON-NLS-1$
 						return true;

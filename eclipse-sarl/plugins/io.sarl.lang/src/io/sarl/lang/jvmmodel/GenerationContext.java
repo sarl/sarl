@@ -71,6 +71,10 @@ abstract class GenerationContext {
 	 */
 	private int behaviorUnitIndex;
 
+	/** Index of the late generated localType.
+	 */
+	private int localTypeIndex;
+
 	/** Set of capacities for which a capacuty-use field was generated.
 	 */
 	private final Set<String> generatedCapacityUseFields = CollectionLiterals.<String>newHashSet();
@@ -97,7 +101,11 @@ abstract class GenerationContext {
 
 	/** List of elements that must be generated at the end of the generation process.
 	 */
-	private final List<Runnable> differedCodeGeneration = CollectionLiterals.newLinkedList();
+	private final List<Runnable> preFinalization = CollectionLiterals.newLinkedList();
+
+	/** List of elements that must be generated after the generation process.
+	 */
+	private final List<Runnable> postFinalization = CollectionLiterals.newLinkedList();
 
 	/** Guard evaluators to generate. The keys are the event identifiers. The values are the code snipsets for
 	 * evaluating guards and returning the event handler runnables.
@@ -128,6 +136,10 @@ abstract class GenerationContext {
 	 */
 	private GeneratorConfig2 generatorConfig2;
 
+	/** Parent context.
+	 */
+	private GenerationContext parent;
+
 	/** Construct a information about the generation.
 	 *
 	 * @param owner the object for which the context is created.
@@ -141,6 +153,24 @@ abstract class GenerationContext {
 	@Override
 	public String toString() {
 		return "Generation context for: " + getTypeIdentifier(); //$NON-NLS-1$
+	}
+
+	/** Replies the parent context if any.
+	 *
+	 * @return the parent context or {@code null}.
+	 * @since 0.5
+	 */
+	public GenerationContext getParentContext() {
+		return this.parent;
+	}
+
+	/** Change the parent context if any.
+	 *
+	 * @param parent the parent context or {@code null}.
+	 * @since 0.5
+	 */
+	public void setParentContext(GenerationContext parent) {
+		this.parent = parent;
 	}
 
 	/** Replies the identifier of the associated type.
@@ -285,21 +315,36 @@ abstract class GenerationContext {
 		return this.operationsToImplement;
 	}
 
-	/** Add an element that must be generated at the end of the generation process.
-	 *
-	 * @param element the element to generate at the end.
-	 */
-	public void addDifferedGenerationElement(Runnable element) {
-		this.differedCodeGeneration.add(element);
-	}
-
 	/** Replies the collection of the elements that must be generated at the end of
 	 * the generation process.
 	 *
+	 * <p>The differed generation element are the element's components that should be
+	 * created after all the elements from the SARL input. The runnable codes
+	 * are run at the end of the JVM element generation.
+	 *
 	 * @return the original collection of elements.
+	 * @since 0.5
 	 */
-	public List<Runnable> getDifferedGenerationElements() {
-		return this.differedCodeGeneration;
+	public List<Runnable> getPreFinalizationElements() {
+		return this.preFinalization;
+	}
+
+	/** Replies the collection of the elements that must be generated after
+	 * the generation process of the current SARL element.
+	 *
+	 * <p>The differed generation element are the element's components that could be
+	 * generated after the complete JVM type is generated. They are extended the
+	 * JVM type definition with additionnal elements (annotations...)
+	 *
+	 * @return the original collection of elements.
+	 * @since 0.5
+	 */
+	public List<Runnable> getPostFinalizationElements() {
+		final GenerationContext prt = getParentContext();
+		if (prt != null) {
+			return prt.getPostFinalizationElements();
+		}
+		return this.postFinalization;
 	}
 
 	/** Replies the index of the late created action.
@@ -333,6 +378,23 @@ abstract class GenerationContext {
 	public void setBehaviorUnitIndex(int index) {
 		this.behaviorUnitIndex = index;
 	}
+
+	/** Replies the index of the late created local type.
+	 *
+	 * @return the index.
+	 */
+	public int getLocalTypeIndex() {
+		return this.localTypeIndex;
+	}
+
+	/** Set the index of the late created local type.
+	 *
+	 * @param index the index.
+	 */
+	public void setLocalTypeIndex(int index) {
+		this.localTypeIndex = index;
+	}
+
 
 	/** Replies if the given member is supported in the current context.
 	 *

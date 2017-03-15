@@ -76,33 +76,47 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 		"size", //$NON-NLS-1$
 	};
 
-	private Pattern pattern;
+	/** Regular expression patterns that matches the names of functions usually
+	 * considered as not pure.
+	 */
+	public static final String[] SPECIAL_NOTPURE_FUNCTION_NAME_PATTERNS = {
+		"set(?:[A-Z1-9].*)?", //$NON-NLS-1$
+		"print(?:(?:ln)|(?:[A-Z1-9].*))?", //$NON-NLS-1$
+	};
+
+	private Pattern purePattern;
+
+	private Pattern notPurePattern;
 
 	@Inject
 	private CommonTypeComputationServices services;
 
 	/** Construct the helper.
 	 *
-	 * @param additionalSpecialPureFunctionNamePatterns the patterns for the functions that are considered as pure functions.
 	 * @see #SPECIAL_PURE_FUNCTION_NAME_PATTERNS
+	 * @see #SPECIAL_NOTPURE_FUNCTION_NAME_PATTERNS
 	 */
-	public SARLExpressionHelper(String... additionalSpecialPureFunctionNamePatterns) {
-		this.pattern = buildPattern(additionalSpecialPureFunctionNamePatterns);
+	public SARLExpressionHelper() {
+		this.purePattern = buildPurePattern(SPECIAL_PURE_FUNCTION_NAME_PATTERNS);
+		this.notPurePattern = buildPurePattern(SPECIAL_NOTPURE_FUNCTION_NAME_PATTERNS);
 	}
 
 	/** Construct the helper.
 	 *
+	 * @param additionalSpecialPureFunctionNamePatterns the patterns for the functions that are considered as pure functions.
 	 * @see #SPECIAL_PURE_FUNCTION_NAME_PATTERNS
+	 * @see #SPECIAL_NOTPURE_FUNCTION_NAME_PATTERNS
 	 */
-	public SARLExpressionHelper() {
-		this.pattern = buildPattern();
+	public SARLExpressionHelper(String... additionalSpecialPureFunctionNamePatterns) {
+		this.purePattern = buildPurePattern(SPECIAL_PURE_FUNCTION_NAME_PATTERNS, additionalSpecialPureFunctionNamePatterns);
+		this.notPurePattern = buildPurePattern(SPECIAL_NOTPURE_FUNCTION_NAME_PATTERNS);
 	}
 
-	private static Pattern buildPattern(String... additionalPatterns) {
+	private static Pattern buildPurePattern(String[] patterns, String... additionalPatterns) {
 		final StringBuilder fullPattern = new StringBuilder();
 		fullPattern.append("^"); //$NON-NLS-1$
 		boolean hasPattern = false;
-		for (final String pattern : SPECIAL_PURE_FUNCTION_NAME_PATTERNS) {
+		for (final String pattern : patterns) {
 			if (hasPattern) {
 				fullPattern.append("|"); //$NON-NLS-1$
 			} else {
@@ -135,11 +149,10 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 			// Several operations are not marked with @Pure but they have a clear semantic without border effects,
 			// e.g. the "is", "get" functions.
 			if (feature != null && !feature.eIsProxy() && feature instanceof JvmOperation) {
-				final JvmOperation op = (JvmOperation) feature;
-				final String name = op.getSimpleName();
-				if (name != null && this.pattern.matcher(name).find() && hasPrimitiveParameters(op)) {
-					return false;
-				}
+				final JvmOperation operation = (JvmOperation) feature;
+				return isNamePatternForNotPureOperation(operation)
+						|| !isNamePatternForPureOperation(operation)
+						|| !hasPrimitiveParameters(operation);
 			}
 			return true;
 		}
@@ -196,6 +209,9 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 
 	/** Check if the given operation could be annoted with "@Pure".
 	 *
+	 * <p>This function is usually used by the inferrers for automatically generating the pure function
+	 * annotation.
+	 *
 	 * @param operation - the operation to test.
 	 * @param body - the body of the operation.
 	 * @return <code>true</code> if one of the components of the given expression has a side effect;
@@ -206,8 +222,34 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 		if (operation == null || operation.isAbstract() || body == null) {
 			return false;
 		}
+		if (isNamePatternForNotPureOperation(operation)) {
+			return false;
+		}
+		return isNamePatternForPureOperation(operation) || !hasSideEffects(body);
+	}
+
+	/** Replies if the given operation has a name which is assumed to be for a pure function by default.
+	 *
+	 * @param operation the operation to test.
+	 * @return {@code true} if the operation has a side effects.
+	 * @since 0.5
+	 * @see #isNamePatternForNotPureOperation(JvmOperation)
+	 */
+	public boolean isNamePatternForPureOperation(JvmOperation operation) {
 		final String name = operation.getSimpleName();
-		return (name != null && this.pattern.matcher(name).find()) || !hasSideEffects(body);
+		return name != null && this.purePattern.matcher(name).find();
+	}
+
+	/** Replies if the given operation has a name which is assumed to be for a pure function by default.
+	 *
+	 * @param operation the operation to test.
+	 * @return {@code true} if the operation has no side effect.
+	 * @since 0.5
+	 * @see #isNamePatternForPureOperation(JvmOperation)
+	 */
+	public boolean isNamePatternForNotPureOperation(JvmOperation operation) {
+		final String name = operation.getSimpleName();
+		return name != null && this.notPurePattern.matcher(name).find();
 	}
 
 }

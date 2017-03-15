@@ -21,12 +21,9 @@
 
 package io.sarl.lang.validation;
 
-import javax.inject.Inject;
-
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.validation.LogicalContainerAwareFeatureNameValidator;
 
-import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.util.Utils;
 
 /** Validator of the feature names.
@@ -38,9 +35,6 @@ import io.sarl.lang.util.Utils;
  */
 public class SARLFeatureNameValidator extends LogicalContainerAwareFeatureNameValidator {
 
-	@Inject
-	private SARLGrammarKeywordAccess grammarAccess;
-
 	/** Construct a validator for the feature's names.
 	 */
 	public SARLFeatureNameValidator() {
@@ -50,16 +44,7 @@ public class SARLFeatureNameValidator extends LogicalContainerAwareFeatureNameVa
 	@Override
 	public boolean isDisallowedName(QualifiedName name) {
 		final String id = name.getLastSegment();
-		if (Utils.isHiddenMember(id)
-				|| super.isDisallowedName(name)) {
-			return true;
-		}
-		return this.grammarAccess.isPureKeyword(id);
-	}
-
-	@Override
-	public boolean isDiscouragedName(QualifiedName name) {
-		return super.isDiscouragedName(name);
+		return Utils.isHiddenMember(id) || super.isDisallowedName(name);
 	}
 
 }
