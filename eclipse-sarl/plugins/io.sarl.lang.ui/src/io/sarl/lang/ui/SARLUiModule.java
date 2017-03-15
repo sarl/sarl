@@ -29,7 +29,6 @@ import com.google.inject.name.Names;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
-import org.eclipse.xtext.ui.editor.contentassist.XtextContentAssistProcessor;
 import org.eclipse.xtext.ui.editor.hover.IEObjectHover;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 
@@ -50,7 +49,7 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 @SuppressWarnings({"static-method", "javadoc", "checkstyle:javadocmethod"})
 public class SARLUiModule extends AbstractSARLUiModule {
 
-	private static final String AUTOMATIC_PROPOSAL_CHARACTERS = ".:"; //$NON-NLS-1$
+	//TODO private static final String AUTOMATIC_PROPOSAL_CHARACTERS = "."; //$NON-NLS-1$
 
 	/** Provider of {@link UIConfigurableIssueSeveritiesProvider}.
 	 *
@@ -90,8 +89,9 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	public void configure(Binder binder) {
 		super.configure(binder);
 		// Configure the automatic auto-completion on specific characters: "." and ":"
-		binder.bind(String.class).annotatedWith(com.google.inject.name.Names.named(XtextContentAssistProcessor.COMPLETION_AUTO_ACTIVATION_CHARS))
-			.toInstance(AUTOMATIC_PROPOSAL_CHARACTERS);
+		//TODO binder.bind(String.class).annotatedWith(com.google.inject.name.Names.named(
+		//  XtextContentAssistProcessor.COMPLETION_AUTO_ACTIVATION_CHARS))
+		//	.toInstance(AUTOMATIC_PROPOSAL_CHARACTERS);
 
 		// Configure a system singleton for issue severities provider
 		final UIConfigurableIssueSeveritiesProviderProvider provider = new UIConfigurableIssueSeveritiesProviderProvider();
