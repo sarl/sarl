@@ -21,25 +21,43 @@
 
 package io.sarl.lang.compiler;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.compiler.XtendCompiler;
+import org.eclipse.xtext.common.types.JvmAnnotationAnnotationValue;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationValue;
 import org.eclipse.xtext.common.types.JvmBooleanAnnotationValue;
+import org.eclipse.xtext.common.types.JvmByteAnnotationValue;
+import org.eclipse.xtext.common.types.JvmCharAnnotationValue;
+import org.eclipse.xtext.common.types.JvmCustomAnnotationValue;
+import org.eclipse.xtext.common.types.JvmDoubleAnnotationValue;
+import org.eclipse.xtext.common.types.JvmEnumAnnotationValue;
 import org.eclipse.xtext.common.types.JvmExecutable;
+import org.eclipse.xtext.common.types.JvmFloatAnnotationValue;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmIntAnnotationValue;
+import org.eclipse.xtext.common.types.JvmLongAnnotationValue;
+import org.eclipse.xtext.common.types.JvmShortAnnotationValue;
 import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XAssignment;
+import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XNumberLiteral;
+import org.eclipse.xtext.xbase.XStringLiteral;
+import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
@@ -80,6 +98,69 @@ public class SarlCompiler extends XtendCompiler {
 	@Inject
 	private IBatchTypeResolver batchTypeResolver;
 
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	private static String getAnnotationStringValue(JvmAnnotationValue value) {
+		if (value instanceof JvmAnnotationAnnotationValue) {
+			return ((JvmAnnotationAnnotationValue) value).getValues().get(0).getAnnotation().getIdentifier();
+		}
+		if (value instanceof JvmBooleanAnnotationValue) {
+			return ((JvmBooleanAnnotationValue) value).getValues().get(0).toString();
+		}
+		if (value instanceof JvmByteAnnotationValue) {
+			return ((JvmByteAnnotationValue) value).getValues().get(0).toString();
+		}
+		if (value instanceof JvmCharAnnotationValue) {
+			return ((JvmCharAnnotationValue) value).getValues().get(0).toString();
+		}
+		if (value instanceof JvmCustomAnnotationValue) {
+			final EObject evalue = ((JvmCustomAnnotationValue) value).getValues().get(0);
+			if (evalue instanceof XStringLiteral) {
+				return ((XStringLiteral) evalue).getValue();
+			}
+			if (evalue instanceof XNumberLiteral) {
+				return ((XNumberLiteral) evalue).getValue();
+			}
+			if (evalue instanceof XBooleanLiteral) {
+				return ((XNumberLiteral) evalue).getValue();
+			}
+			if (evalue instanceof XTypeLiteral) {
+				return ((XTypeLiteral) evalue).getType().getIdentifier();
+			}
+		}
+		if (value instanceof JvmDoubleAnnotationValue) {
+			return ((JvmDoubleAnnotationValue) value).getValues().get(0).toString();
+		}
+		if (value instanceof JvmEnumAnnotationValue) {
+			return ((JvmEnumAnnotationValue) value).getValues().get(0).getSimpleName();
+		}
+		if (value instanceof JvmFloatAnnotationValue) {
+			return ((JvmFloatAnnotationValue) value).getValues().get(0).toString();
+		}
+		if (value instanceof JvmIntAnnotationValue) {
+			return ((JvmIntAnnotationValue) value).getValues().get(0).toString();
+		}
+		if (value instanceof JvmLongAnnotationValue) {
+			return ((JvmLongAnnotationValue) value).getValues().get(0).toString();
+		}
+		if (value instanceof JvmShortAnnotationValue) {
+			return ((JvmShortAnnotationValue) value).getValues().get(0).toString();
+		}
+		if (value instanceof JvmStringAnnotationValue) {
+			return ((JvmStringAnnotationValue) value).getValues().get(0);
+		}
+		if (value instanceof JvmTypeAnnotationValue) {
+			return ((JvmTypeAnnotationValue) value).getValues().get(0).getIdentifier();
+		}
+		return null;
+	}
+
+	private static Collection<JvmTypeReference> getAnnotationTypeValue(JvmAnnotationValue value) {
+		if (value instanceof JvmTypeAnnotationValue) {
+			return ((JvmTypeAnnotationValue) value).getValues();
+		}
+		return Collections.emptyList();
+	}
+
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected synchronized void appendInlineFeatureCall(XAbstractFeatureCall call, ITreeAppendable target) {
@@ -88,11 +169,21 @@ public class SarlCompiler extends XtendCompiler {
 		String formatString = null;
 		final List<JvmTypeReference> importedTypes = Lists.newArrayListWithCapacity(2);
 		for (final JvmAnnotationValue annotationValue: inlineAnnotation.getValues()) {
-			if (INLINE_VALUE_NAME.equals(annotationValue.getValueName())) {
-				formatString = ((JvmStringAnnotationValue) annotationValue).getValues().get(0);
-			} else if (INLINE_IMPORTED_NAME.equals(annotationValue.getValueName())) {
-				final JvmTypeAnnotationValue typeAnnotationValue = (JvmTypeAnnotationValue) annotationValue;
-				importedTypes.addAll(typeAnnotationValue.getValues());
+			final String valueName = annotationValue.getValueName();
+			if (Strings.isNullOrEmpty(valueName)) {
+				// Special case: the annotation value as no associated operation.
+				// If it appends, we could assumes that the operation is "value()"
+				if (!Strings.isNullOrEmpty(formatString)) {
+					throw new IllegalStateException();
+				}
+				formatString = getAnnotationStringValue(annotationValue);
+			} else if (INLINE_VALUE_NAME.equals(valueName)) {
+				if (!Strings.isNullOrEmpty(formatString)) {
+					throw new IllegalStateException();
+				}
+				formatString = getAnnotationStringValue(annotationValue);
+			} else if (INLINE_IMPORTED_NAME.equals(valueName)) {
+				importedTypes.addAll(getAnnotationTypeValue(annotationValue));
 			}
 		}
 
