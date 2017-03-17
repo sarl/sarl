@@ -63,6 +63,7 @@ import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.core.xtend.XtendEnum;
+import org.eclipse.xtend.core.xtend.XtendExecutable;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendFunction;
@@ -1392,7 +1393,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		final JvmConstructor constructor = this.typesFactory.createJvmConstructor();
 		container.getMembers().add(constructor);
 		this.associator.associatePrimary(source, constructor);
-		this.typeBuilder.copyDocumentationTo(source, constructor);
 		final JvmVisibility visibility = source.getVisibility();
 		constructor.setSimpleName(container.getSimpleName());
 		constructor.setVisibility(visibility);
@@ -1424,6 +1424,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			context.getGeneratedConstructors().put(sigKey, constructor);
 		}
 
+		copyAndCleanDocumentationTo(source, constructor);
+
 		Runnable differedGeneration  = () -> {
 			// Generate the Java functions that correspond to the action with the parameter default values applied.
 			for (final Entry<ActionParameterTypes, List<InferredStandardParameter>> entry
@@ -1434,7 +1436,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					// Generate the additional constructor that is invoke the main constructor previously generated.
 					final JvmConstructor constructor2 = SARLJvmModelInferrer.this.typesFactory.createJvmConstructor();
 					container.getMembers().add(constructor2);
-					SARLJvmModelInferrer.this.typeBuilder.copyDocumentationTo(source, constructor2);
+					copyAndCleanDocumentationTo(source, constructor2);
 					final JvmVisibility vis = source.getVisibility();
 					constructor2.setSimpleName(container.getSimpleName());
 					constructor2.setVisibility(vis);
@@ -1535,7 +1537,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (!operation.isAbstract() && !operation.isStatic() && container.isInterface()) {
 				operation.setDefault(true);
 			}
-			this.typeBuilder.copyDocumentationTo(source, operation);
 
 			// Type parameters
 			copyAndFixTypeParameters(source.getTypeParameters(), operation);
@@ -1696,6 +1697,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Add the main operation into the list of overridable operations
 				context.getInheritedOverridableOperations().put(actSigKey, operation);
 			}
+
+			copyAndCleanDocumentationTo(source, operation);
 
 			@SuppressWarnings("checkstyle:anoninnerlength")
 			Runnable differedGeneration = () -> {
@@ -3018,22 +3021,64 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return false;
 		}
 
-		final Set<String> targetParams = new TreeSet<>();
-		for (final JvmFormalParameter param : targetOperation.getParameters()) {
-			targetParams.add(param.getSimpleName());
-		}
-
-		for (final JvmFormalParameter param : sourceOperation.getParameters()) {
-			final String id = param.getSimpleName();
-			if (!targetParams.contains(id)) {
-				comment = comment.replaceAll(
-						"\\Q@param\\E\\s+\\Q" + id + "\\E", //$NON-NLS-1$//$NON-NLS-2$
-						"@optionalparam " + id); //$NON-NLS-1$
-			}
-		}
+		comment = cleanDocumentation(comment,
+				Iterables.transform(sourceOperation.getParameters(), (it) -> it.getSimpleName()),
+				Iterables.transform(targetOperation.getParameters(), (it) -> it.getSimpleName()));
 
 		SARLJvmModelInferrer.this.typeBuilder.setDocumentation(targetOperation, comment);
 		return true;
+	}
+
+	/** Copy and clean the given documentation by removing any unecessary <code>@param</code>.
+	 *
+	 * @param sourceOperation the source for the documentation.
+	 * @param targetOperation the target for the documentation.
+	 * @return <code>true</code> if a documentation was added.
+	 */
+	protected boolean copyAndCleanDocumentationTo(XtendExecutable sourceOperation, JvmExecutable targetOperation) {
+		assert sourceOperation != null;
+		assert targetOperation != null;
+
+		String comment = SARLJvmModelInferrer.this.typeBuilder.getDocumentation(sourceOperation);
+		if (Strings.isNullOrEmpty(comment)) {
+			return false;
+		}
+
+		comment = cleanDocumentation(comment,
+				Iterables.transform(sourceOperation.getParameters(), (it) -> it.getName()),
+				Iterables.transform(targetOperation.getParameters(), (it) -> it.getSimpleName()));
+
+		SARLJvmModelInferrer.this.typeBuilder.setDocumentation(targetOperation, comment);
+		return true;
+	}
+
+	/** Copy and clean the given documentation by removing any unecessary <code>@param</code>.
+	 *
+	 * @param sourceParameters the parameters of the source.
+	 * @param targetParameters the parameters of the target.
+	 * @return <code>true</code> if a documentation was added.
+	 */
+	private static String cleanDocumentation(String comment, Iterable<String> sourceParameters, Iterable<String> targetParameters) {
+		String clean = comment;
+		if (!Strings.isNullOrEmpty(clean)) {
+			final Set<String> parameterNames = new TreeSet<>();
+			if (sourceParameters != null) {
+				for (final String param : sourceParameters) {
+					parameterNames.add(param);
+				}
+			}
+			if (targetParameters != null) {
+				for (final String param : targetParameters) {
+					parameterNames.remove(param);
+				}
+			}
+			for (final String parameterName : parameterNames) {
+				clean = clean.replaceFirst(
+					"\\Q@param\\E\\s+\\Q" + parameterName + "\\E\\s*", //$NON-NLS-1$//$NON-NLS-2$
+					"@optionalparam " + parameterName + " "); //$NON-NLS-1$//$NON-NLS-2$
+			}
+		}
+		return clean;
 	}
 
 	private String reentrantSerialize(EObject object) {

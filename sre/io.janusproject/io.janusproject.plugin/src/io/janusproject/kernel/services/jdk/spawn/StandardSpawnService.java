@@ -543,8 +543,6 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	}
 
 	/**
-<<<<<<< HEAD
-=======
 	 * This exception is thrown when an agent cannot be spawned.
 	 *
 	 * @author $Author: sgalland$
@@ -570,7 +568,6 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	}
 
 	/**
->>>>>>> 56f825119b44c32e7c8f1ac93f6fc18329c9ac72
 	 * An injection module that is able to inject the parent ID and agent ID when creating an agent.
 	 *
 	 * @author $Author: sgalland$

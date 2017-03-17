@@ -63,7 +63,7 @@ public interface ExecutorService extends DependentService {
 	 * a single thread.
 	 *
 	 * <p>This function is equivalent to:
-	 * <code><pre>
+	 * <pre><code>
 	 * for(i in [ 1 .. (nbExecutions/runGroupSize) ])
 	 * do
 	 *     execute({
@@ -72,7 +72,7 @@ public interface ExecutorService extends DependentService {
 	 *         }
 	 *     })
 	 * done
-	 * </pre></code>
+	 * </code></pre>
 	 *
 	 * <p>Caution: if a {@code task} is failing, the exception will be output as an uncaught exception.
 	 *

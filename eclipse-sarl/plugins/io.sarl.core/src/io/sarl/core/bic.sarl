@@ -520,6 +520,7 @@ capacity Schedules {
 	 * should be run in an infinite loop until it is canceled, or the owning agent is killed.
 	 *
 	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
+	 * @param delay the delay in milliseconds.
 	 * @param procedure the procedure to launch. The parameter of the procedure is the agent.
 	 * @return the given task.
 	 * @since 0.5

@@ -141,7 +141,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	 *
 	 * @param listener the new {@code BehaviorGuardEvaluator} to add
 	 * @param callback function which is invoked just after the first registration of the object. It could be {@code null}.
-	 * @sincce 0.5
+	 * @since 0.5
 	 */
 	public void register(Object listener, Procedure1<Object> callback) {
 		register(listener, null, callback);
@@ -165,7 +165,7 @@ public class BehaviorGuardEvaluatorRegistry {
 	 *
 	 * @param listener the new {@code BehaviorGuardEvaluator} to add
 	 * @param filter the filter function.
-	 * @sincce 0.5
+	 * @since 0.5
 	 */
 	public void register(Object listener, Function1<? super Event, ? extends Boolean> filter) {
 		register(listener, filter, null);

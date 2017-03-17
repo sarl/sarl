@@ -36,11 +36,11 @@ import io.sarl.lang.core.Agent
  */
 class AgentTask {
 
-	/** a gaurd that is always true.
+	/** A guard that is always true.
 	 */
 	public static val TRUE_GUARD : (Agent) => Boolean = [ Boolean.TRUE ]
 
-	/** a gaurd that is always false.
+	/** A guard that is always false.
 	 */
 	public static val FALSE_GUARD : (Agent) => Boolean = [ Boolean.FALSE ]
 
@@ -73,7 +73,7 @@ class AgentTask {
 	 *
 	 * @param procedure - code of the procedure to associate to the task.
 	 */
-	def setProcedure(procedure : (Agent) => void) {
+	def setProcedure(procedure : (Agent) => void) : void {
 		this.procedure = procedure
 	}
 
@@ -91,7 +91,7 @@ class AgentTask {
 	 * @see #unless
 	 * @see #ifTrue
 	 */
-	def setGuard(guard : (Agent) => Boolean) {
+	def setGuard(guard : (Agent) => Boolean) : void {
 		this.guard = guard
 	}
 
@@ -107,7 +107,7 @@ class AgentTask {
 	 *
 	 * @param name - name of the task.
 	 */
-	def setName(name : String) {
+	def setName(name : String) : void {
 		this.name = name
 	}
 
