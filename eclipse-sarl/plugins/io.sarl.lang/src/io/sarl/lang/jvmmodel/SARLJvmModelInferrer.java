@@ -24,6 +24,7 @@ package io.sarl.lang.jvmmodel;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,6 +39,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Generated;
@@ -107,7 +109,6 @@ import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator;
-import org.eclipse.xtext.xbase.jvmmodel.JvmTypeExtensions;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -239,11 +240,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Inject
 	private SARLExpressionHelper expressionHelper;
 
-	/** JVM type services.
-	 */
-	@Inject
-	private JvmTypeExtensions typeExtensions;
-
 	/** Computer of early-exits for SARL.
 	 */
 	@Inject
@@ -300,6 +296,28 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	/** Generation contexts.
 	 */
 	private LinkedList<GenerationContext> bufferedContexes = new LinkedList<>();
+
+	/** Log an internal error but do not fail.
+	 *
+	 * @param exception the exception to log.
+	 */
+	protected void logInternalError(Throwable exception) {
+		if (exception != null) {
+			this.log.log(Level.WARNING, Messages.SARLJvmModelInferrer_0, exception);
+		}
+	}
+
+	/** Log an internal error but do not fail.
+	 *
+	 * @param message the internal message.
+	 */
+	protected void logInternalError(String message) {
+		if (!Strings.isNullOrEmpty(message)) {
+			this.log.log(Level.WARNING,
+					MessageFormat.format(Messages.SARLJvmModelInferrer_1,
+							Messages.SARLJvmModelInferrer_0, message));
+		}
+	}
 
 	/** Add annotation safely.
 	 *
@@ -490,7 +508,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				return candidate;
 			}
 		}
-		throw new IllegalStateException("generation context cannot be found for: " + type.getIdentifier()); //$NON-NLS-1$
+		throw new GenerationContextNotFoundInternalError(type);
 	}
 
 	@Override
@@ -502,101 +520,138 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(declaration.getName())) {
 			return null;
 		}
+		try {
+			// Autowrap the provided runnable elements in order to avoid the internal exceptions
+			// to stop the JVM generation too early.
+			final List<Runnable> doLaterExceptionSafe = new AbstractList<Runnable>() {
+				@Override
+				public void add(int index, Runnable element) {
+					doLater.add(index, wrap(element));
+				}
 
-		if (declaration instanceof SarlAgent) {
-			final SarlAgent sarlAgent = (SarlAgent) declaration;
-			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
-			if (!preIndexingPhase) {
-				doLater.add(new Runnable() {
-					@Override
-					public void run() {
-						initialize(sarlAgent, javaType);
-					}
-				});
-			}
-			return javaType;
-		}
-		if (declaration instanceof SarlBehavior) {
-			final SarlBehavior sarlBehavior = (SarlBehavior) declaration;
-			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
-			if (!preIndexingPhase) {
-				doLater.add(new Runnable() {
-					@Override
-					public void run() {
-						initialize(sarlBehavior, javaType);
-					}
-				});
-			}
-			return javaType;
-		}
-		if (declaration instanceof SarlEvent) {
-			final SarlEvent sarlEvent = (SarlEvent) declaration;
-			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
-			if (!preIndexingPhase) {
-				doLater.add(new Runnable() {
-					@Override
-					public void run() {
-						initialize(sarlEvent, javaType);
-					}
-				});
-			}
-			return javaType;
-		}
-		if (declaration instanceof SarlSkill) {
-			final SarlSkill sarlSkill = (SarlSkill) declaration;
-			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
-			if (!preIndexingPhase) {
-				doLater.add(new Runnable() {
-					@Override
-					public void run() {
-						initialize(sarlSkill, javaType);
-					}
-				});
-			}
-			return javaType;
-		}
-		if (declaration instanceof SarlCapacity) {
-			final SarlCapacity sarlCapacity = (SarlCapacity) declaration;
-			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
-			if (!preIndexingPhase) {
-				doLater.add(new Runnable() {
-					@Override
-					public void run() {
-						initialize(sarlCapacity, javaType);
-					}
-				});
-			}
-			return javaType;
-		}
-		if (declaration instanceof SarlSpace) {
-			final SarlSpace sarlSpace = (SarlSpace) declaration;
-			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
-			if (!preIndexingPhase) {
-				doLater.add(new Runnable() {
-					@Override
-					public void run() {
-						initialize(sarlSpace, javaType);
-					}
-				});
-			}
-			return javaType;
-		}
-		if (declaration instanceof SarlArtifact) {
-			final SarlArtifact sarlArtifact = (SarlArtifact) declaration;
-			final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
-			if (!preIndexingPhase) {
-				doLater.add(new Runnable() {
-					@Override
-					public void run() {
-						initialize(sarlArtifact, javaType);
-					}
-				});
-			}
-			return javaType;
-		}
+				@Override
+				public Runnable set(int index, Runnable element) {
+					return unwrap(doLater.set(index, wrap(element)));
+				}
 
-		return super.doInferTypeSceleton(declaration, acceptor, preIndexingPhase,
-				xtendFile, doLater);
+				@Override
+				public Runnable remove(int index) {
+					return unwrap(doLater.remove(index));
+				}
+
+				@Override
+				public Runnable get(int index) {
+					return unwrap(doLater.get(index));
+				}
+
+				@Override
+				public int size() {
+					return doLater.size();
+				}
+
+				private Runnable wrap(Runnable runnable) {
+					return new SafeRunnable(runnable);
+				}
+
+				private Runnable unwrap(Runnable runnable) {
+					final SafeRunnable wrapper = (SafeRunnable) runnable;
+					return wrapper == null ? null : wrapper.wrapped;
+				}
+
+				/** Safe runnable.
+				 *
+				 * @author $Author: sgalland$
+				 * @version $FullVersion$
+				 * @mavengroupid $GroupId$
+				 * @mavenartifactid $ArtifactId$
+				 */
+				final class SafeRunnable implements Runnable {
+
+					@SuppressWarnings("checkstyle:visibilitymodifier")
+					public final Runnable wrapped;
+
+					SafeRunnable(Runnable wrapped) {
+						this.wrapped = wrapped;
+					}
+
+					@Override
+					public void run() {
+						try {
+							this.wrapped.run();
+						} catch (InternalError internalError) {
+							throw internalError;
+						} catch (Exception exception) {
+							logInternalError(exception);
+						}
+					}
+				}
+			};
+
+			if (declaration instanceof SarlAgent) {
+				final SarlAgent sarlAgent = (SarlAgent) declaration;
+				final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
+				if (!preIndexingPhase) {
+					doLaterExceptionSafe.add(() -> initialize(sarlAgent, javaType));
+				}
+				return javaType;
+			}
+			if (declaration instanceof SarlBehavior) {
+				final SarlBehavior sarlBehavior = (SarlBehavior) declaration;
+				final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
+				if (!preIndexingPhase) {
+					doLaterExceptionSafe.add(() -> initialize(sarlBehavior, javaType));
+				}
+				return javaType;
+			}
+			if (declaration instanceof SarlEvent) {
+				final SarlEvent sarlEvent = (SarlEvent) declaration;
+				final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
+				if (!preIndexingPhase) {
+					doLaterExceptionSafe.add(() -> initialize(sarlEvent, javaType));
+				}
+				return javaType;
+			}
+			if (declaration instanceof SarlSkill) {
+				final SarlSkill sarlSkill = (SarlSkill) declaration;
+				final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
+				if (!preIndexingPhase) {
+					doLaterExceptionSafe.add(() -> initialize(sarlSkill, javaType));
+				}
+				return javaType;
+			}
+			if (declaration instanceof SarlCapacity) {
+				final SarlCapacity sarlCapacity = (SarlCapacity) declaration;
+				final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
+				if (!preIndexingPhase) {
+					doLaterExceptionSafe.add(() -> initialize(sarlCapacity, javaType));
+				}
+				return javaType;
+			}
+			if (declaration instanceof SarlSpace) {
+				final SarlSpace sarlSpace = (SarlSpace) declaration;
+				final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
+				if (!preIndexingPhase) {
+					doLaterExceptionSafe.add(() -> initialize(sarlSpace, javaType));
+				}
+				return javaType;
+			}
+			if (declaration instanceof SarlArtifact) {
+				final SarlArtifact sarlArtifact = (SarlArtifact) declaration;
+				final JvmGenericType javaType = this.typesFactory.createJvmGenericType();
+				if (!preIndexingPhase) {
+					doLaterExceptionSafe.add(() -> initialize(sarlArtifact, javaType));
+				}
+				return javaType;
+			}
+
+			return super.doInferTypeSceleton(declaration, acceptor, preIndexingPhase,
+					xtendFile, doLaterExceptionSafe);
+		} catch (InternalError internalError) {
+			throw internalError;
+		} catch (Exception exception) {
+			logInternalError(exception);
+			return null;
+		}
 	}
 
 	@Override
@@ -669,41 +724,47 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 		// Create the inner type
 		// --- Begin Xtend Part
-		final JvmGenericType inferredJvmType = this.typesFactory.createJvmGenericType();
-		inferredJvmType.setSimpleName(localClassName);
-		inferredJvmType.setAnonymous(!hasAdditionalMembers(anonymousClass));
-		inferredJvmType.setFinal(true);
-		inferredJvmType.setVisibility(JvmVisibility.DEFAULT);
-		inferredJvmType.getSuperTypes().add(this.typeBuilder.inferredType(anonymousClass));
-		container.getLocalClasses().add(inferredJvmType);
-		this.associator.associatePrimary(anonymousClass, inferredJvmType);
-		// --- End Xtend Part
-
-		// Create the generation context that is used by the other transformation functions.
-		final GenerationContext parentContext = getContext(
-				EcoreUtil2.getContainerOfType(container, JvmType.class));
-		final GenerationContext context = openContext(anonymousClass, inferredJvmType, Arrays.asList(
-				SarlField.class, SarlConstructor.class, SarlAction.class));
-		context.setParentContext(parentContext);
 		try {
-			// --- Begin Xtend Part
-			for (final XtendMember member : anonymousClass.getMembers()) {
-				if (context.isSupportedMember(member)) {
-					transform(member, inferredJvmType, true);
-				}
-			}
-
-			appendSyntheticDispatchMethods(anonymousClass, inferredJvmType);
-			this.nameClashResolver.resolveNameClashes(inferredJvmType);
+			final JvmGenericType inferredJvmType = this.typesFactory.createJvmGenericType();
+			inferredJvmType.setSimpleName(localClassName);
+			inferredJvmType.setAnonymous(!hasAdditionalMembers(anonymousClass));
+			inferredJvmType.setFinal(true);
+			inferredJvmType.setVisibility(JvmVisibility.DEFAULT);
+			inferredJvmType.getSuperTypes().add(this.typeBuilder.inferredType(anonymousClass));
+			container.getLocalClasses().add(inferredJvmType);
+			this.associator.associatePrimary(anonymousClass, inferredJvmType);
 			// --- End Xtend Part
 
-			// Add SARL synthetic functions
-			appendSyntheticDefaultValuedParameterMethods(
-					anonymousClass,
-					inferredJvmType,
-					context);
-		} finally {
-			closeContext(context);
+			// Create the generation context that is used by the other transformation functions.
+			final GenerationContext parentContext = getContext(
+					EcoreUtil2.getContainerOfType(container, JvmType.class));
+			final GenerationContext context = openContext(anonymousClass, inferredJvmType, Arrays.asList(
+					SarlField.class, SarlConstructor.class, SarlAction.class));
+			context.setParentContext(parentContext);
+			try {
+				// --- Begin Xtend Part
+				for (final XtendMember member : anonymousClass.getMembers()) {
+					if (context.isSupportedMember(member)) {
+						transform(member, inferredJvmType, true);
+					}
+				}
+
+				appendSyntheticDispatchMethods(anonymousClass, inferredJvmType);
+				this.nameClashResolver.resolveNameClashes(inferredJvmType);
+				// --- End Xtend Part
+
+				// Add SARL synthetic functions
+				appendSyntheticDefaultValuedParameterMethods(
+						anonymousClass,
+						inferredJvmType,
+						context);
+			} finally {
+				closeContext(context);
+			}
+		} catch (InternalError internalError) {
+			throw internalError;
+		} catch (Exception exception) {
+			logInternalError(exception);
 		}
 	}
 
@@ -1292,14 +1353,20 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Override
 	protected void transform(XtendMember sourceMember,
 			JvmGenericType container, boolean allowDispatch) {
-		if (sourceMember instanceof SarlBehaviorUnit) {
-			transform((SarlBehaviorUnit) sourceMember, container);
-		} else if (sourceMember instanceof SarlCapacityUses) {
-			transform((SarlCapacityUses) sourceMember, container);
-		} else if (sourceMember instanceof SarlRequiredCapacity) {
-			transform((SarlRequiredCapacity) sourceMember, container);
-		} else {
-			super.transform(sourceMember, container, allowDispatch);
+		try {
+			if (sourceMember instanceof SarlBehaviorUnit) {
+				transform((SarlBehaviorUnit) sourceMember, container);
+			} else if (sourceMember instanceof SarlCapacityUses) {
+				transform((SarlCapacityUses) sourceMember, container);
+			} else if (sourceMember instanceof SarlRequiredCapacity) {
+				transform((SarlRequiredCapacity) sourceMember, container);
+			} else {
+				super.transform(sourceMember, container, allowDispatch);
+			}
+		} catch (InternalError internalError) {
+			throw internalError;
+		} catch (Exception exception) {
+			logInternalError(exception);
 		}
 	}
 
@@ -1414,7 +1481,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		final GenerationContext context = getContext(container);
 		if (context != null) {
 			final String name = source.getName();
-			if (name != null) {
+			if (!Strings.isNullOrEmpty(name)) {
 				context.incrementSerial(name.hashCode());
 			}
 			final JvmTypeReference type = source.getType();
@@ -1758,7 +1825,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void transform(final SarlBehaviorUnit source, JvmGenericType container) {
 		final GenerationContext context = getContext(container);
-		if (source.getName() != null && source.getName().getSimpleName() != null && context != null) {
+		if (source.getName() != null && !Strings.isNullOrEmpty(source.getName().getSimpleName()) && context != null) {
 			final XExpression guard = source.getGuard();
 
 			final boolean isTrueGuard;
@@ -1814,8 +1881,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (!this.services.getExpressionHelper().hasSideEffects(source.getExpression())) {
 				addAnnotationSafe(bodyOperation, Pure.class);
 			}
-			// Synthetic flag
-			this.typeExtensions.setSynthetic(bodyOperation, true);
 
 			final Collection<Procedure1<ITreeAppendable>> evaluators = context.getGuardEvalationCodeFor(source);
 			assert evaluators != null;
@@ -1870,8 +1935,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Annotations
 				appendGeneratedAnnotation(guardOperation, context);
 				addAnnotationSafe(guardOperation, Pure.class);
-				// Synthetic flag
-				this.typeExtensions.setSynthetic(guardOperation, true);
 
 				//------------------
 				// Handler function
@@ -1901,7 +1964,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			context.setBehaviorUnitIndex(context.getBehaviorUnitIndex() + 1);
 			context.incrementSerial(bodyMethodName.hashCode());
 		} else {
-			this.log.fine(Messages.SARLJvmModelInferrer_10);
+			logInternalError(Messages.SARLJvmModelInferrer_10);
 		}
 	}
 
@@ -2237,8 +2300,16 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			JvmGenericType owner, Class<?> defaultJvmType, Class<? extends XtendTypeDeclaration> defaultSarlType,
 			List<? extends JvmParameterizedTypeReference> supertypes) {
 		boolean explicitType = false;
+		final String ownerId = owner.getIdentifier();
 		for (final JvmParameterizedTypeReference superType : supertypes) {
-			if (!Objects.equal(owner.getIdentifier(), superType.getIdentifier())
+			String superTypeId;
+			try {
+				superTypeId = superType.getIdentifier();
+			} catch (Exception ex) {
+				logInternalError(ex);
+				superTypeId = null;
+			}
+			if (!Objects.equal(ownerId, superTypeId)
 					&& superType.getType() instanceof JvmGenericType
 					/*&& this.inheritanceHelper.isProxyOrSubTypeOf(superType, defaultJvmType, defaultSarlType, isInterface)*/) {
 				owner.getSuperTypes().add(this.typeBuilder.cloneWithProxies(superType));
@@ -2383,7 +2454,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 				this.associator.associatePrimary(source, operation);
 				this.typeBuilder.copyDocumentationTo(source, operation);
-				this.typeExtensions.setSynthetic(operation, true);
 			}
 		}
 	}
@@ -2419,14 +2489,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			JvmOperation op = toEqualsMethod(source, target, declaredInstanceFields);
 			if (op != null) {
 				appendGeneratedAnnotation(op, context);
-				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
 				target.getMembers().add(op);
 			}
 
 			op = toHashCodeMethod(source, declaredInstanceFields);
 			if (op != null) {
 				appendGeneratedAnnotation(op, context);
-				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
 				target.getMembers().add(op);
 			}
 		}
@@ -2471,7 +2539,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (op != null) {
 				appendGeneratedAnnotation(op, context);
 				addAnnotationSafe(op, Pure.class);
-				SARLJvmModelInferrer.this.typeExtensions.setSynthetic(op, true);
 				target.getMembers().add(op);
 			}
 		}
@@ -3122,6 +3189,40 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				target.getMembers().add(newCons);
 			}
 		}
+	}
+
+	/** Internal error.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private abstract static class InternalError extends RuntimeException {
+
+		private static final long serialVersionUID = 4637115741105214351L;
+
+		InternalError(String message) {
+			super(message);
+		}
+
+	}
+
+	/** Internal error.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class GenerationContextNotFoundInternalError extends InternalError {
+
+		private static final long serialVersionUID = 2275793506661573859L;
+
+		GenerationContextNotFoundInternalError(JvmIdentifiableElement type) {
+			super("generation context cannot be found for: " + type.getIdentifier()); //$NON-NLS-1$
+		}
+
 	}
 
 }

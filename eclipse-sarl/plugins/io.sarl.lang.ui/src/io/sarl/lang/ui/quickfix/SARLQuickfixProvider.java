@@ -609,7 +609,6 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 			offset = endOffset;
 		}
 		final IXtextDocument document = context.getXtextDocument();
-		final String docContent = document.toString();
 		// Include spaces in the region
 		final int docEndOffset = document.getLength();
 		int endOffset = offset + length;
