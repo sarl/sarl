@@ -146,6 +146,12 @@ public final class IssueCodes {
 	public static final String DISCOURAGED_OCCURRENCE_READONLY_USE =
 			ISSUE_CODE_PREFIX + "discouraged_occurrence_readonly_use"; //$NON-NLS-1$
 
+	/**
+	 * The use of the {@code @Inline} annotation inside the SARL code may cause errornous side-effects.
+	 */
+	public static final String MANUAL_INLINE_DEFINITION =
+			ISSUE_CODE_PREFIX + "manual_inline_definition"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

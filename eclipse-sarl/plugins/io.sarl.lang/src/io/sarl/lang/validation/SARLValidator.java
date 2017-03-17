@@ -151,6 +151,7 @@ import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
 import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
@@ -2063,6 +2064,31 @@ public class SARLValidator extends AbstractSARLValidator {
 									annotation,
 									IssueCodes.USED_RESERVED_SARL_ANNOTATION);
 						}
+					}
+				}
+			}
+		}
+	}
+
+	/** Check for {@code @Inline} annotation usage.
+	 *
+	 * @param annotationTarget thee target to test.
+	 */
+	@Check
+	public void checkManualInlineDefinition(XtendAnnotationTarget annotationTarget) {
+		if (!isIgnored(IssueCodes.MANUAL_INLINE_DEFINITION)) {
+			if (annotationTarget.getAnnotations().isEmpty() || !isRelevantAnnotationTarget(annotationTarget)) {
+				return;
+			}
+			final String inlineAnnotation = Inline.class.getName();
+			for (final XAnnotation annotation : annotationTarget.getAnnotations()) {
+				final JvmType type = annotation.getAnnotationType();
+				if (type != null && !type.eIsProxy()) {
+					if (Objects.equal(type.getIdentifier(), inlineAnnotation)) {
+						addIssue(
+								Messages.SARLValidator_16,
+								annotation,
+								IssueCodes.MANUAL_INLINE_DEFINITION);
 					}
 				}
 			}

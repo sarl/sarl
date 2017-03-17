@@ -106,6 +106,8 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 	@Override
 	protected void fillRestrictedApiSection(ComboBoxBuilder builder) {
 		super.fillRestrictedApiSection(builder);
+		builder.addComboBox(IssueCodes.MANUAL_INLINE_DEFINITION,
+				Messages.SARLValidatorConfigurationBlock_8);
 		builder.addComboBox(IssueCodes.USED_RESERVED_SARL_ANNOTATION,
 				Messages.SARLValidatorConfigurationBlock_7);
 	}

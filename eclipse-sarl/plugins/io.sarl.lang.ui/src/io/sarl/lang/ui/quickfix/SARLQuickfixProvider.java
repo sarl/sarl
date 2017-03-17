@@ -146,7 +146,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 * @param code the code of the warning.
 	 * @return <code>true</code> if the warning could be ignored, <code>false</code> otherwise.
 	 */
-	protected boolean isIgnorable(String code) {
+	public boolean isIgnorable(String code) {
 		return this.issueCodesProvider.getConfigurableIssueCodes().containsKey(code);
 	}
 
@@ -608,19 +608,31 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 			length = length + (offset - endOffset);
 			offset = endOffset;
 		}
-		// Include spaces in the region
 		final IXtextDocument document = context.getXtextDocument();
-		final int doclen = document.getLength();
+		final String docContent = document.toString();
+		// Include spaces in the region
+		final int docEndOffset = document.getLength();
 		int endOffset = offset + length;
-		while (endOffset < doclen && Character.isWhitespace(document.getChar(endOffset))) {
-			++endOffset;
-			++length;
-		}
-		while (offset >= 0 && Character.isWhitespace(document.getChar(offset))) {
+		while (offset > 0 && isBasicSpace(document.getChar(offset - 1))) {
 			--offset;
 			++length;
 		}
+		while (endOffset < docEndOffset && isBasicSpace(document.getChar(endOffset))) {
+			++endOffset;
+			++length;
+		}
 		document.replace(offset, length, ""); //$NON-NLS-1$
+	}
+
+	/** Replies if the gien character is a simple space character or a tabulation character.
+	 * Line feeds and other white space characters that are supported by {@link Character#isWhitespace(char)}
+	 * are not considered as basic space by the current function.
+	 *
+	 * @param character the character to test.
+	 * @return {@code true} if the given character is a basic space or a tabulation character.
+	 */
+	public boolean isBasicSpace(char character) {
+		return character == ' ' || character == '\t';
 	}
 
 	/** Quick fix for "Duplicate type".
@@ -937,6 +949,16 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.USED_RESERVED_SARL_ANNOTATION)
 	public void fixDiscouragedAnnotationUse(final Issue issue, IssueResolutionAcceptor acceptor) {
+		AnnotationRemoveModification.accept(this, issue, acceptor);
+	}
+
+	/** Quick fix for the manual definition of inline statements.
+	 *
+	 * @param issue - the issue.
+	 * @param acceptor - the quick fix acceptor.
+	 */
+	@Fix(io.sarl.lang.validation.IssueCodes.MANUAL_INLINE_DEFINITION)
+	public void fixManualInlineDefinition(final Issue issue, IssueResolutionAcceptor acceptor) {
 		AnnotationRemoveModification.accept(this, issue, acceptor);
 	}
 

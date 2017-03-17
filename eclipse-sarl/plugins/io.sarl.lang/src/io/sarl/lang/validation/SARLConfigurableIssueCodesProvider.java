@@ -102,11 +102,15 @@ public class SARLConfigurableIssueCodesProvider extends XtendConfigurableIssueCo
 				SeverityConverter.SEVERITY_WARNING));
 
 		acceptor.accept(create(
+				IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE,
+				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
 				IssueCodes.USED_RESERVED_SARL_ANNOTATION,
 				SeverityConverter.SEVERITY_WARNING));
 
 		acceptor.accept(create(
-				IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE,
+				IssueCodes.MANUAL_INLINE_DEFINITION,
 				SeverityConverter.SEVERITY_WARNING));
 	}
 
