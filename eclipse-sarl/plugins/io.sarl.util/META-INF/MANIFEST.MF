@@ -1,14 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: io.sarl.util;singleton:=true
-Bundle-Version: 0.5.0
+Bundle-Version: 0.6.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: io.sarl.eventdispatching,
  io.sarl.sarlspecification,
  io.sarl.util
-Require-Bundle: io.sarl.lang.core;bundle-version="0.5.0";visibility:=reexport,
+Require-Bundle: io.sarl.lang.core;bundle-version="0.6.0";visibility:=reexport,
  org.eclipse.osgi;bundle-version="3.11.2",
  com.google.inject;bundle-version="4.1.0"
 

@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
-Bundle-Version: 0.5.0
+Bundle-Version: 0.6.0.qualifier
 Bundle-SymbolicName: io.sarl.lang.ui.tests; singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: io.sarl.tests.api;bundle-version="0.5.0",
- io.sarl.tests.testdata;bundle-version="0.5.0",
+Require-Bundle: io.sarl.tests.api;bundle-version="0.6.0",
+ io.sarl.tests.testdata;bundle-version="0.6.0",
  org.eclipse.xtend.ide;bundle-version="2.11.0",
  org.eclipse.xtext.junit4;bundle-version="2.11.0",
  org.eclipse.xtext.ui.ecore;bundle-version="2.11.0",

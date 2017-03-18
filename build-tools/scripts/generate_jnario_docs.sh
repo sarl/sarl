@@ -5,23 +5,18 @@
 
 ROOTDIR=`dirname "$0"`
 ROOTDIR=`dirname "$ROOTDIR"`
+ROOTDIR=`dirname "$ROOTDIR"`
 
 # Ensure the modules are installed
-echo "*** GENERAL COMPILATION"
+echo "*** Testing the Jnario specifications"
 cd "$ROOTDIR"
-if mvn -Dmaven.test.skip=true clean install
+if mvn clean install
 then
-	echo "*** Testing the Jnario specifications"
-	cd "./docs/io.sarl.docs.suite"
-	if mvn test install
+	echo "*** Generating the documentation"
+    cd "./docs/io.sarl.docs.suite"
+	if mvn io.sarl.maven:io.sarl.maven.docs.generator:generate
 	then
-		echo "*** Generating the documentation"
-		if mvn io.sarl.maven:io.sarl.maven.docs.generator:generate
-		then
-			rm -rfv ./classes*
-		else
-			exit 255
-		fi
+		rm -rfv ./classes*
 	else
 		exit 255
 	fi
