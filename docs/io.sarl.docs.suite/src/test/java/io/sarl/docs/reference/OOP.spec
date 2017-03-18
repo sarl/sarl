@@ -32,6 +32,7 @@ import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
+import org.eclipse.xtext.common.types.JvmVisibility
 
 /**
  * @outline
@@ -352,7 +353,7 @@ describe "Basic Object-Oriented Programming Support" {
 			
 			/** A top class may be declared with one or more modifiers, which affect its runtime behavior: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  the class is accessible from any other type;</li>
+			 *     <li>`public`:  the class is accessible from any other type (default);</li>
 			 *     <li>`package`: the class is accessible from only the types in the same package.</li>
 			 *     </ul></li>
 			 * <li>`abstract`: the class is abstract and cannot be instanced.</li>
@@ -381,11 +382,14 @@ describe "Basic Object-Oriented Programming Support" {
 				)
 				// Test URL in the enclosing section text.
 				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
+					// Test default visibility
+					var visib = "class C1 {}".parse.xtendTypes.get(0)
+					visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 			/** A nested class may be declared with one or more modifiers, which affect its runtime behavior: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  there are no restrictions on accessing the class;</li>
+			 *     <li>`public`:  there are no restrictions on accessing the class (default);</li>
 			 *     <li>`protected`:  the class is accessible within the same package, and derived classes;</li>
 			 *     <li>`package`: the class is accessible only within the same package as its class;</li>
 			 *     <li>`private`: the class is accessible only within its class.</li>
@@ -429,6 +433,9 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					""
 				)
+				// Test default visibility
+				var visib = "class C1 { class C2 {}}".parse.xtendTypes.get(0).members.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 			/** The modifiers for the fields in a class are: <ul>
@@ -436,7 +443,7 @@ describe "Basic Object-Oriented Programming Support" {
 			 *     <li>`public`:  there are no restrictions on accessing the field;</li>
 			 *     <li>`protected`:  the field is accessible within the same package, and derived classes;</li>
 			 *     <li>`package`: the field is accessible only within the same package as its class;</li>
-			 *     <li>`private`: the field is accessible only within its class.</li>
+			 *     <li>`private`: the field is accessible only within its class (default).</li>
 			 *     </ul></li>
 			 * <li>`static`: the field is a class field, not an instance field.</li>
 			 * <li>`transient`: the field is never serialized.</li>
@@ -460,11 +467,14 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					"}"
 				)
+				// Test default visibility
+				var visib = "class C1 {var field : int}".parse.xtendTypes.get(0).members.get(0)
+				visib should beVisibleWith JvmVisibility::PRIVATE
 			}
 
 			/** The modifiers for the methods in a class are: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  there are no restrictions on accessing the method;</li>
+			 *     <li>`public`:  there are no restrictions on accessing the method (default);</li>
 			 *     <li>`protected`:  the method is accessible within the same package, and derived classes;</li>
 			 *     <li>`package`: the method is accessible only within the same package as its class;</li>
 			 *     <li>`private`: the method is accessible only within its class.</li>
@@ -501,11 +511,14 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					"}"
 				)
+				// Test default visibility
+				var visib = "class C1 {def fct {}}".parse.xtendTypes.get(0).members.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 			/** The modifiers for the constructors of a class are: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  there are no restrictions on accessing the constructor;</li>
+			 *     <li>`public`:  there are no restrictions on accessing the constructor (default);</li>
 			 *     <li>`protected`:  the constructor is accessible within the same package, and derived classes;</li>
 			 *     <li>`package`: the constructor is accessible only within the same package as its class;</li>
 			 *     <li>`private`: the constructor is accessible only within its class.</li>
@@ -526,6 +539,9 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					"}"
 				)
+				// Test default visibility
+				var visib = "class C1 { new {} }".parse.xtendTypes.get(0).members.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 		}
@@ -559,14 +575,12 @@ describe "Basic Object-Oriented Programming Support" {
 		 * is not specified in the overriding
 		 * prototype since it could be inferred by the SARL compiler.</note>  
 		 *  
-		 * @filter(.* = '''|'''|.parseSuccessfully.*)
-		 * 
 		 * <p>For preventing a function to be overridden, you should add the modifier ```final```
 		 * in the signature of the method (as in Java).
+		 *
+		 * @filter(.* = '''|'''|.parseSuccessfully.*)
 		 */
 		fact "Method Overriding" {
-			"./GeneralSyntaxReferenceObjectMemberInvocationSpec.html" should beAccessibleFrom this
-			//
 			val model = '''
 			class PersonEx extends Person {
 				
@@ -638,6 +652,10 @@ describe "Basic Object-Oriented Programming Support" {
 					it should haveModifiers "override"
 				]
 			]
+
+			"./GeneralSyntaxReferenceObjectMemberInvocationSpec.html" should beAccessibleFrom this
+		}
+
 		}
 
 	}
@@ -912,7 +930,7 @@ describe "Basic Object-Oriented Programming Support" {
 			
 			/** A top interface may be declared with one or more modifiers, which affect its runtime behavior: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  the class is accessible from any other type;</li>
+			 *     <li>`public`:  the class is accessible from any other type (default);</li>
 			 *     <li>`package`: the class is accessible from only the types in the same package.</li>
 			 *     </ul></li>
 			 * <li>`abstract`: the interface is abstract (not needed since all the interfaces are abstract).</li>
@@ -938,11 +956,14 @@ describe "Basic Object-Oriented Programming Support" {
 				)
 				// Test URL in the enclosing section text.
 				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
+				// Test default visibility
+				var visib = "interface I1 {}".parse.xtendTypes.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 			/** A nested interface may be declared with one or more modifiers, which affect its runtime behavior: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  there are no restrictions on accessing the interface;</li>
+			 *     <li>`public`:  there are no restrictions on accessing the interface (public);</li>
 			 *     <li>`protected`:  the interface is accessible within the same package, and derived classes;</li>
 			 *     <li>`package`: the interface is accessible only within the same package as its class;</li>
 			 *     <li>`private`: the interface is accessible only within its class.</li>
@@ -983,13 +1004,15 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					""
 				)
+				var visib = "interface I1 { interface I2 {} }".parse.xtendTypes.get(0).members.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 			/** The modifiers for the fields in an interface are: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  there are no restrictions on accessing the field;</li>
+			 *     <li>`public`:  there are no restrictions on accessing the field (default);</li>
 			 *     </ul></li>
-			 * <li>`static`: the field is a class field, not an instance field.</li>
+			 * <li>`static`: the field is a class field, not an instance field (default).</li>
 			 * </ul>
 			 *
 			 * <caution>Only fields defined with `val` can be put in an interface.</caution>
@@ -1006,11 +1029,13 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					"}"
 				)
+				var visib = "interface I1 {var field = 3}".parse.xtendTypes.get(0).members.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 			/** The modifiers for the methods in an interface are: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  there are no restrictions on accessing the method;</li>
+			 *     <li>`public`:  there are no restrictions on accessing the method (default);</li>
 			 *     </ul></li>
 			 * <li>`abstract`: the method is abstract (not needed since all the interface methods are abstract).</li>
 			 * </ul>
@@ -1027,6 +1052,8 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					"}"
 				)
+				var visib = "interface I1 {def fct}".parse.xtendTypes.get(0).members.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 		}
@@ -1091,7 +1118,7 @@ describe "Basic Object-Oriented Programming Support" {
 			
 			/** A top enumeration may be declared with one or more modifiers, which affect its runtime behavior: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  the class is accessible from any other type;</li>
+			 *     <li>`public`:  the class is accessible from any other type (default);</li>
 			 *     <li>`package`: the class is accessible from only the types in the same package.</li>
 			 *     </ul></li>
 			 * </ul>
@@ -1113,11 +1140,13 @@ describe "Basic Object-Oriented Programming Support" {
 				)
 				// Test URL in the enclosing section text.
 				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
+				var visib = "enum E1 { CST1 }".parse.xtendTypes.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 			/** A nested interface may be declared with one or more modifiers, which affect its runtime behavior: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  there are no restrictions on accessing the enumeration;</li>
+			 *     <li>`public`:  there are no restrictions on accessing the enumeration (default);</li>
 			 *     <li>`protected`:  the enumeration is accessible within the same package, and derived classes;</li>
 			 *     <li>`package`: the enumeration is accessible only within the same package as its class;</li>
 			 *     <li>`private`: the enumeration is accessible only within its class.</li>
@@ -1157,6 +1186,8 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					""
 				)
+				var visib = "class C1 { enum E1 { CST1 } }".parse.xtendTypes.get(0).members.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 		}
@@ -1234,7 +1265,7 @@ describe "Basic Object-Oriented Programming Support" {
 			
 			/** A top annotation type may be declared with one or more modifiers, which affect its runtime behavior: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  the annotation type is accessible from any other type;</li>
+			 *     <li>`public`:  the annotation type is accessible from any other type (default);</li>
 			 *     <li>`package`: the annotation type is accessible from only the types in the same package.</li>
 			 *     </ul></li>
 			 * <li>`abstract`: the annotation type is abstract and cannot be instanced.</li>
@@ -1257,11 +1288,13 @@ describe "Basic Object-Oriented Programming Support" {
 				)
 				// Test URL in the enclosing section text.
 				"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
+				var visib = "annotation A1 {}".parse.xtendTypes.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 			/** A nested annotation type may be declared with one or more modifiers, which affect its runtime behavior: <ul>
 			 * <li>Access modifiers: <ul>
-			 *     <li>`public`:  there are no restrictions on accessing the annotation type;</li>
+			 *     <li>`public`:  there are no restrictions on accessing the annotation type (default);</li>
 			 *     <li>`protected`:  the annotation type is accessible within the same package, and derived classes;</li>
 			 *     <li>`package`: the annotation type is accessible only within the same package as its class;</li>
 			 *     <li>`private`: the annotation type is accessible only within its class.</li>
@@ -1299,6 +1332,8 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					""
 				)
+				var visib = "class CA { annotation A1 {} } ".parse.xtendTypes.get(0).members.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 			/** The modifiers for the values in an annotation type are: <ul>
@@ -1320,6 +1355,8 @@ describe "Basic Object-Oriented Programming Support" {
 					// TEXT
 					"}"
 				)
+				var visib = "annotation A1 { val val1 : int}".parse.xtendTypes.get(0).members.get(0)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
 		}

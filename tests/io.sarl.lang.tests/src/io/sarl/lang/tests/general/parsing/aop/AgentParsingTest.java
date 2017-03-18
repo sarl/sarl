@@ -984,7 +984,7 @@ public class AgentParsingTest {
 		public void fieldNameShadowing() throws Exception {
 			SarlScript mas = file(multilineString(
 					"agent A1 {",
-					"	val field1 : int = 5",
+					"	protected val field1 : int = 5",
 					"	def myaction(a : int) { }",
 					"}",
 					"agent A2 extends A1 {",
@@ -1114,7 +1114,7 @@ public class AgentParsingTest {
 			assertEquals("field", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertNull(attr1.getInitialValue());
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
 			assertFalse(attr1.isExtension());
 			assertFalse(attr1.isFinal());
 			assertFalse(attr1.isStatic());

@@ -24,10 +24,7 @@ package io.sarl.lang.sarl.impl;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmVisibility;
 
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlSkill;
 
 /**
  * <!-- begin-user-doc -->
@@ -62,11 +59,6 @@ public class SarlFieldImplCustom extends SarlFieldImpl {
 		final XtendTypeDeclaration declaration = getDeclaringType();
 		if (declaration instanceof SarlEvent) {
 			return JvmVisibility.PUBLIC;
-		}
-		if (declaration instanceof SarlSkill
-				|| declaration instanceof SarlBehavior
-				|| declaration instanceof SarlAgent) {
-			return JvmVisibility.PROTECTED;
 		}
 		return super.getDefaultVisibility();
 	}

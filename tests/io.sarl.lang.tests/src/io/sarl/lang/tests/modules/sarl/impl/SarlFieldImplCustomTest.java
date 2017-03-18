@@ -63,13 +63,13 @@ public class SarlFieldImplCustomTest extends AbstractSarlTest {
 	@Test
 	public void default_visibility_in_agent() throws Exception {
 		this.agent.getMembers().add(this.field);
-		assertEquals(JvmVisibility.PROTECTED, this.field.getVisibility());
+		assertEquals(JvmVisibility.PRIVATE, this.field.getVisibility());
 	}
 
 	@Test
 	public void default_visibility_in_behavior() throws Exception {
 		this.behavior.getMembers().add(this.field);
-		assertEquals(JvmVisibility.PROTECTED, this.field.getVisibility());
+		assertEquals(JvmVisibility.PRIVATE, this.field.getVisibility());
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class SarlFieldImplCustomTest extends AbstractSarlTest {
 	@Test
 	public void default_visibility_in_skill() throws Exception {
 		this.skill.getMembers().add(this.field);
-		assertEquals(JvmVisibility.PROTECTED, this.field.getVisibility());
+		assertEquals(JvmVisibility.PRIVATE, this.field.getVisibility());
 	}
 
 	@Test

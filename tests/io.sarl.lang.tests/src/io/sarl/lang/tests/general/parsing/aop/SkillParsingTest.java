@@ -1876,7 +1876,7 @@ public class SkillParsingTest {
 			assertEquals("field", attr1.getName());
 			assertTypeReferenceIdentifier(attr1.getType(), "int");
 			assertNull(attr1.getInitialValue());
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
 			assertFalse(attr1.isFinal());
 			assertFalse(attr1.isStatic());
 			assertFalse(attr1.isTransient());
@@ -2103,7 +2103,7 @@ public class SkillParsingTest {
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
-					"	val field1 : int = 5",
+					"	protected val field1 : int = 5",
 					"	def myaction(a : int) { }",
 					"}",
 					"skill S2 extends S1 implements C2 {",
@@ -2180,7 +2180,7 @@ public class SkillParsingTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			SarlField attr1 = (SarlField) skill.getMembers().get(0);
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
 		}
 
 		@Test
@@ -2246,7 +2246,7 @@ public class SkillParsingTest {
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			SarlField attr1 = (SarlField) skill.getMembers().get(0);
-			assertEquals(JvmVisibility.PROTECTED, attr1.getVisibility());
+			assertEquals(JvmVisibility.PRIVATE, attr1.getVisibility());
 		}
 
 	}

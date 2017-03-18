@@ -27,6 +27,7 @@ import io.sarl.lang.sarl.SarlAction
 import io.sarl.lang.sarl.SarlCapacity
 import io.sarl.lang.sarl.SarlSkill
 import org.eclipse.xtend.core.xtend.XtendConstructor
+import org.eclipse.xtext.common.types.JvmVisibility
 import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
@@ -805,7 +806,7 @@ describe "Skill Reference" {
 				
 				/** A Skill may be declared with one or more modifiers, which affect its runtime behavior: <ul>
 				 * <li>Access modifiers: <ul>
-				 *     <li>`public`:  the behavior is accessible from any other type;</li>
+				 *     <li>`public`:  the behavior is accessible from any other type (default);</li>
 				 *     <li>`package`: the behavior is accessible only from types in the same package.</li>
 				 *     </ul></li>
 				 * <li>`abstract`: this Skill is abstract and cannot be instantiated; 
@@ -815,7 +816,7 @@ describe "Skill Reference" {
 				 *
 				 * @filter(.* = '''|'''|.parseSuccessfully.*)
 				 */
-				fact "Behavior Modifiers" {
+				fact "Skill Modifiers" {
 					'''
 						public skill Example1 implements CapacityExample {
 						}
@@ -833,6 +834,8 @@ describe "Skill Reference" {
 					)
 					// Test URL in the enclosing section text.
 					"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
+				var visib = "capacity C1 {} skill S1 implements C1 {}".parse.xtendTypes.get(1)
+				visib should beVisibleWith JvmVisibility::PUBLIC
 				}
 	
 				/** The modifiers for the fields in a Skill are: <ul>
@@ -840,7 +843,7 @@ describe "Skill Reference" {
 				 *     <li>`public`:  the field is accessible from everywhere;</li>
 				 *     <li>`protected`:  the field is accessible within the same package, and in derived Agents;</li>
 				 *     <li>`package`: the field is accessible only within the same package as its Agent;</li>
-				 *     <li>`private`: the field is accessible only within its Agent.</li>
+				 *     <li>`private`: the field is accessible only within its Agent (default).</li>
 				 *     </ul></li>
 				 * </ul>
 				 *
@@ -859,11 +862,14 @@ describe "Skill Reference" {
 						// TEXT
 						"}"
 					)
+					// Test default visibility
+					var visib = "capacity C1 {} skill S1 implements C1 {var field : int}".parse.xtendTypes.get(1).members.get(0)
+					visib should beVisibleWith JvmVisibility::PRIVATE
 				}
 	
 				/** The modifiers for the methods in a Skill are: <ul>
 				 * <li>Access modifiers: <ul>
-				 *     <li>`public`:  there are no restrictions on accessing the method;</li>
+				 *     <li>`public`:  there are no restrictions on accessing the method (public);</li>
 				 *     <li>`protected`:  the method is accessible within the same package, and derived classes;</li>
 				 *     <li>`package`: the method is accessible only within the same package as its class;</li>
 				 *     <li>`private`: the method is accessible only within its class.</li>
@@ -899,6 +905,9 @@ describe "Skill Reference" {
 						// TEXT
 						"}"
 					)
+					// Test default visibility
+					var visib = "capacity C1 {} skill S1 implements C1 {def fct {}}".parse.xtendTypes.get(1).members.get(0)
+					visib should beVisibleWith JvmVisibility::PUBLIC
 				}
 	
 			}

@@ -50,6 +50,7 @@ import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstraintOwner;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
@@ -705,6 +706,30 @@ public class SARLParser {
 			}
 		}
 		return true;
+	}
+
+	/** Ensure that the given object has the given visibility.
+	 *
+	 * @param obj - the object to test.
+	 * @param visibility - the string that describes the visibility.
+	 * @return validation status
+	 */
+	public boolean should_beVisibleWith(EObject obj, Object visibility) {
+		if ((!(obj instanceof XtendMember)) || visibility == null) {
+			return false;
+		}
+		final JvmVisibility expected;
+		if (visibility instanceof JvmVisibility) {
+			expected = (JvmVisibility) visibility;
+		} else {
+			expected = JvmVisibility.getByName(visibility.toString());
+		}
+		if (expected == null) {
+			return false;
+		}
+		final XtendMember member = (XtendMember) obj;
+		final JvmVisibility actualVisibility = member.getVisibility();
+		return actualVisibility == expected;
 	}
 
 	/** Ensure that the given object is the SARL "def" statement (without body).

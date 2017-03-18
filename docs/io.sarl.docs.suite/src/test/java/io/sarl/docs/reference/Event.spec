@@ -30,6 +30,7 @@ import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
+import org.eclipse.xtext.common.types.JvmVisibility
 
 /* @outline
  *
@@ -421,7 +422,7 @@ describe "Event Reference"{
 				
 				/** An event may be declared with one or more modifiers, which affect its behavior: <ul>
 				 * <li>Access modifiers: <ul>
-				 *     <li>`public`:  the behavior is accessible from any other type;</li>
+				 *     <li>`public`:  the behavior is accessible from any other type (default);</li>
 				 *     <li>`package`: the behavior is accessible from only the types in the same package.</li>
 				 *     </ul></li>
 				 * <li>`final`: cannot be extended.</li>
@@ -444,6 +445,9 @@ describe "Event Reference"{
 					)
 					// Test URL in the enclosing section text.
 					"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
+					// Test default visibility
+					var visib = "event E1 {}".parse.xtendTypes.get(0)
+					visib should beVisibleWith JvmVisibility::PUBLIC
 				}
 	
 				/** The modifiers for the fields in an event are: <ul>
@@ -463,6 +467,9 @@ describe "Event Reference"{
 						// TEXT
 						"}"
 					)
+					// Test default visibility
+					var visib = "event E1 {var field : int}".parse.xtendTypes.get(0).members.get(0)
+					visib should beVisibleWith JvmVisibility::PUBLIC
 				}
 	
 			}

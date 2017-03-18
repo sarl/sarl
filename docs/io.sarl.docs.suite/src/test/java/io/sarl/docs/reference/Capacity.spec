@@ -29,6 +29,7 @@ import org.jnario.runner.CreateWith
 
 import static extension io.sarl.docs.utils.SpecificationTools.*
 import static extension org.junit.Assume.assumeFalse
+import org.eclipse.xtext.common.types.JvmVisibility
 
 /* @outline
  *
@@ -296,7 +297,7 @@ describe "Capacity Reference"{
 				/** A Capacity may be declared with one or more modifiers, 
 				 * which affect its runtime behavior: <ul>
 				 * <li>Access modifiers: <ul>
-				 *     <li>`public`:  the Capacity is accessible from any other type;</li>
+				 *     <li>`public`:  the Capacity is accessible from any other type (default);</li>
 				 *     <li>`package`: the Capacity is accessible only from types 
 				 *          in the same package.</li>
 				 *     </ul></li>
@@ -317,6 +318,9 @@ describe "Capacity Reference"{
 					)
 					// Test URL in the enclosing section text.
 					"./BasicObjectOrientedProgrammingSupportModifiersSpec.html" should beAccessibleFrom this
+					// Test default visibility
+					var visib = "capacity C1 {}".parse.xtendTypes.get(0)
+					visib should beVisibleWith JvmVisibility::PUBLIC
 				}
 	
 				/** The modifiers for the Actions (methods) in a Capacity are: <ul>
@@ -337,6 +341,9 @@ describe "Capacity Reference"{
 						// TEXT
 						"}"
 					)
+					// Test default visibility
+					var visib = "capacity C1 {def fct}".parse.xtendTypes.get(0).members.get(0)
+					visib should beVisibleWith JvmVisibility::PUBLIC
 				}
 	
 			}
