@@ -8,6 +8,8 @@ import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.xtend.core.xtend.XtendPackage;
 
+import org.eclipse.xtext.xbase.XbasePackage;
+
 /**
  * <!-- begin-user-doc -->
  * The <b>Package</b> for the model.
@@ -186,6 +188,25 @@ public interface SarlPackage extends EPackage
 	int SARL_FIELD_FEATURE_COUNT = XtendPackage.XTEND_FIELD_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlBreakExpressionImpl <em>Break Expression</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see io.sarl.lang.sarl.impl.SarlBreakExpressionImpl
+	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBreakExpression()
+	 * @generated
+	 */
+	int SARL_BREAK_EXPRESSION = 2;
+
+	/**
+	 * The number of structural features of the '<em>Break Expression</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_BREAK_EXPRESSION_FEATURE_COUNT = XbasePackage.XEXPRESSION_FEATURE_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlActionImpl <em>Action</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -193,7 +214,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAction()
 	 * @generated
 	 */
-	int SARL_ACTION = 2;
+	int SARL_ACTION = 3;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -320,7 +341,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlConstructor()
 	 * @generated
 	 */
-	int SARL_CONSTRUCTOR = 3;
+	int SARL_CONSTRUCTOR = 4;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -411,7 +432,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBehaviorUnit()
 	 * @generated
 	 */
-	int SARL_BEHAVIOR_UNIT = 4;
+	int SARL_BEHAVIOR_UNIT = 5;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -493,7 +514,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlCapacityUses()
 	 * @generated
 	 */
-	int SARL_CAPACITY_USES = 5;
+	int SARL_CAPACITY_USES = 6;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -557,7 +578,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlRequiredCapacity()
 	 * @generated
 	 */
-	int SARL_REQUIRED_CAPACITY = 6;
+	int SARL_REQUIRED_CAPACITY = 7;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -621,7 +642,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlClass()
 	 * @generated
 	 */
-	int SARL_CLASS = 7;
+	int SARL_CLASS = 8;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -721,7 +742,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlInterface()
 	 * @generated
 	 */
-	int SARL_INTERFACE = 8;
+	int SARL_INTERFACE = 9;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -812,7 +833,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlEnumeration()
 	 * @generated
 	 */
-	int SARL_ENUMERATION = 9;
+	int SARL_ENUMERATION = 10;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -885,7 +906,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAnnotationType()
 	 * @generated
 	 */
-	int SARL_ANNOTATION_TYPE = 10;
+	int SARL_ANNOTATION_TYPE = 11;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -958,7 +979,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlEnumLiteral()
 	 * @generated
 	 */
-	int SARL_ENUM_LITERAL = 11;
+	int SARL_ENUM_LITERAL = 12;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1022,7 +1043,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlEvent()
 	 * @generated
 	 */
-	int SARL_EVENT = 12;
+	int SARL_EVENT = 13;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1104,7 +1125,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlSpace()
 	 * @generated
 	 */
-	int SARL_SPACE = 13;
+	int SARL_SPACE = 14;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1186,7 +1207,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlArtifact()
 	 * @generated
 	 */
-	int SARL_ARTIFACT = 14;
+	int SARL_ARTIFACT = 15;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1268,7 +1289,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAgent()
 	 * @generated
 	 */
-	int SARL_AGENT = 15;
+	int SARL_AGENT = 16;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1350,7 +1371,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlCapacity()
 	 * @generated
 	 */
-	int SARL_CAPACITY = 16;
+	int SARL_CAPACITY = 17;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1432,7 +1453,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBehavior()
 	 * @generated
 	 */
-	int SARL_BEHAVIOR = 17;
+	int SARL_BEHAVIOR = 18;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1514,7 +1535,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlSkill()
 	 * @generated
 	 */
-	int SARL_SKILL = 18;
+	int SARL_SKILL = 19;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1605,7 +1626,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlFormalParameter()
 	 * @generated
 	 */
-	int SARL_FORMAL_PARAMETER = 19;
+	int SARL_FORMAL_PARAMETER = 20;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1690,6 +1711,16 @@ public interface SarlPackage extends EPackage
 	 * @generated
 	 */
 	EClass getSarlField();
+
+	/**
+	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlBreakExpression <em>Break Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Break Expression</em>'.
+	 * @see io.sarl.lang.sarl.SarlBreakExpression
+	 * @generated
+	 */
+	EClass getSarlBreakExpression();
 
 	/**
 	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlAction <em>Action</em>}'.
@@ -2078,6 +2109,16 @@ public interface SarlPackage extends EPackage
 		 * @generated
 		 */
 		EClass SARL_FIELD = eINSTANCE.getSarlField();
+
+		/**
+		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlBreakExpressionImpl <em>Break Expression</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see io.sarl.lang.sarl.impl.SarlBreakExpressionImpl
+		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBreakExpression()
+		 * @generated
+		 */
+		EClass SARL_BREAK_EXPRESSION = eINSTANCE.getSarlBreakExpression();
 
 		/**
 		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlActionImpl <em>Action</em>}' class.

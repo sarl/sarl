@@ -4691,6 +4691,109 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
 	}
+	public class BreakExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.BreakExpression");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cSarlBreakExpressionAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cBreakKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		
+		//BreakExpression xbase::XExpression:
+		//	{SarlBreakExpression}
+		//	'break';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{SarlBreakExpression} 'break'
+		public Group getGroup() { return cGroup; }
+		
+		//{SarlBreakExpression}
+		public Action getSarlBreakExpressionAction_0() { return cSarlBreakExpressionAction_0; }
+		
+		//'break'
+		public Keyword getBreakKeyword_1() { return cBreakKeyword_1; }
+	}
+	public class XPrimaryExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XPrimaryExpression");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cXConstructorCallParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cXBlockExpressionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cXSwitchExpressionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cXSynchronizedExpressionParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cXFeatureCallParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
+		private final RuleCall cXLiteralParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
+		private final RuleCall cXIfExpressionParserRuleCall_6 = (RuleCall)cAlternatives.eContents().get(6);
+		private final RuleCall cXForLoopExpressionParserRuleCall_7 = (RuleCall)cAlternatives.eContents().get(7);
+		private final RuleCall cXBasicForLoopExpressionParserRuleCall_8 = (RuleCall)cAlternatives.eContents().get(8);
+		private final RuleCall cXWhileExpressionParserRuleCall_9 = (RuleCall)cAlternatives.eContents().get(9);
+		private final RuleCall cXDoWhileExpressionParserRuleCall_10 = (RuleCall)cAlternatives.eContents().get(10);
+		private final RuleCall cXThrowExpressionParserRuleCall_11 = (RuleCall)cAlternatives.eContents().get(11);
+		private final RuleCall cXReturnExpressionParserRuleCall_12 = (RuleCall)cAlternatives.eContents().get(12);
+		private final RuleCall cXTryCatchFinallyExpressionParserRuleCall_13 = (RuleCall)cAlternatives.eContents().get(13);
+		private final RuleCall cXParenthesizedExpressionParserRuleCall_14 = (RuleCall)cAlternatives.eContents().get(14);
+		private final RuleCall cBreakExpressionParserRuleCall_15 = (RuleCall)cAlternatives.eContents().get(15);
+		
+		////-----------------------------------------------
+		//// BELOW THIS POINT, THE RULES FROM XTEXT ARE OVERLOADED
+		//// Variable declaration according to the SARL syntax (not the Xtext/Xtend)
+		//XPrimaryExpression xbase::XExpression:
+		//	XConstructorCall | XBlockExpression | XSwitchExpression | XSynchronizedExpression | XFeatureCall | XLiteral |
+		//	XIfExpression | XForLoopExpression | XBasicForLoopExpression | XWhileExpression | XDoWhileExpression |
+		//	XThrowExpression | XReturnExpression | XTryCatchFinallyExpression | XParenthesizedExpression | BreakExpression;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//XConstructorCall | XBlockExpression | XSwitchExpression | XSynchronizedExpression | XFeatureCall | XLiteral |
+		//XIfExpression | XForLoopExpression | XBasicForLoopExpression | XWhileExpression | XDoWhileExpression | XThrowExpression
+		//| XReturnExpression | XTryCatchFinallyExpression | XParenthesizedExpression | BreakExpression
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//XConstructorCall
+		public RuleCall getXConstructorCallParserRuleCall_0() { return cXConstructorCallParserRuleCall_0; }
+		
+		//XBlockExpression
+		public RuleCall getXBlockExpressionParserRuleCall_1() { return cXBlockExpressionParserRuleCall_1; }
+		
+		//XSwitchExpression
+		public RuleCall getXSwitchExpressionParserRuleCall_2() { return cXSwitchExpressionParserRuleCall_2; }
+		
+		//XSynchronizedExpression
+		public RuleCall getXSynchronizedExpressionParserRuleCall_3() { return cXSynchronizedExpressionParserRuleCall_3; }
+		
+		//XFeatureCall
+		public RuleCall getXFeatureCallParserRuleCall_4() { return cXFeatureCallParserRuleCall_4; }
+		
+		//XLiteral
+		public RuleCall getXLiteralParserRuleCall_5() { return cXLiteralParserRuleCall_5; }
+		
+		//XIfExpression
+		public RuleCall getXIfExpressionParserRuleCall_6() { return cXIfExpressionParserRuleCall_6; }
+		
+		//XForLoopExpression
+		public RuleCall getXForLoopExpressionParserRuleCall_7() { return cXForLoopExpressionParserRuleCall_7; }
+		
+		//XBasicForLoopExpression
+		public RuleCall getXBasicForLoopExpressionParserRuleCall_8() { return cXBasicForLoopExpressionParserRuleCall_8; }
+		
+		//XWhileExpression
+		public RuleCall getXWhileExpressionParserRuleCall_9() { return cXWhileExpressionParserRuleCall_9; }
+		
+		//XDoWhileExpression
+		public RuleCall getXDoWhileExpressionParserRuleCall_10() { return cXDoWhileExpressionParserRuleCall_10; }
+		
+		//XThrowExpression
+		public RuleCall getXThrowExpressionParserRuleCall_11() { return cXThrowExpressionParserRuleCall_11; }
+		
+		//XReturnExpression
+		public RuleCall getXReturnExpressionParserRuleCall_12() { return cXReturnExpressionParserRuleCall_12; }
+		
+		//XTryCatchFinallyExpression
+		public RuleCall getXTryCatchFinallyExpressionParserRuleCall_13() { return cXTryCatchFinallyExpressionParserRuleCall_13; }
+		
+		//XParenthesizedExpression
+		public RuleCall getXParenthesizedExpressionParserRuleCall_14() { return cXParenthesizedExpressionParserRuleCall_14; }
+		
+		//// Below the SARL specific expressions
+		//BreakExpression
+		public RuleCall getBreakExpressionParserRuleCall_15() { return cBreakExpressionParserRuleCall_15; }
+	}
 	public class XVariableDeclarationElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XVariableDeclaration");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -4723,9 +4826,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cRightAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cRightXExpressionParserRuleCall_3_1_0 = (RuleCall)cRightAssignment_3_1.eContents().get(0);
 		
-		////-----------------------------------------------
-		//// BELOW THIS POINT, THE RULES FROM XTEXT ARE OVERLOADED
-		//// Variable declaration according to the SARL syntax (not the Xtext/Xtend)
 		//XVariableDeclaration xbase::XExpression:
 		//	=> ({xtend::XtendVariableDeclaration} ((writeable?='var' | 'val') extension?='extension'?
 		//	| extension?='extension' (writeable?='var' | 'val'))) name=ValidID (':' type=JvmTypeReference)? ('='
@@ -5180,6 +5280,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private final AnnotationFieldElements pAnnotationField;
 	private final ParameterElements pParameter;
 	private final XtendEnumLiteralElements pXtendEnumLiteral;
+	private final BreakExpressionElements pBreakExpression;
+	private final XPrimaryExpressionElements pXPrimaryExpression;
 	private final XVariableDeclarationElements pXVariableDeclaration;
 	private final JvmFormalParameterElements pJvmFormalParameter;
 	private final FullJvmFormalParameterElements pFullJvmFormalParameter;
@@ -5217,6 +5319,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		this.pAnnotationField = new AnnotationFieldElements();
 		this.pParameter = new ParameterElements();
 		this.pXtendEnumLiteral = new XtendEnumLiteralElements();
+		this.pBreakExpression = new BreakExpressionElements();
+		this.pXPrimaryExpression = new XPrimaryExpressionElements();
 		this.pXVariableDeclaration = new XVariableDeclarationElements();
 		this.pJvmFormalParameter = new JvmFormalParameterElements();
 		this.pFullJvmFormalParameter = new FullJvmFormalParameterElements();
@@ -5506,9 +5610,32 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getXtendEnumLiteralAccess().getRule();
 	}
 	
+	//BreakExpression xbase::XExpression:
+	//	{SarlBreakExpression}
+	//	'break';
+	public BreakExpressionElements getBreakExpressionAccess() {
+		return pBreakExpression;
+	}
+	
+	public ParserRule getBreakExpressionRule() {
+		return getBreakExpressionAccess().getRule();
+	}
+	
 	////-----------------------------------------------
 	//// BELOW THIS POINT, THE RULES FROM XTEXT ARE OVERLOADED
 	//// Variable declaration according to the SARL syntax (not the Xtext/Xtend)
+	//XPrimaryExpression xbase::XExpression:
+	//	XConstructorCall | XBlockExpression | XSwitchExpression | XSynchronizedExpression | XFeatureCall | XLiteral |
+	//	XIfExpression | XForLoopExpression | XBasicForLoopExpression | XWhileExpression | XDoWhileExpression |
+	//	XThrowExpression | XReturnExpression | XTryCatchFinallyExpression | XParenthesizedExpression | BreakExpression;
+	public XPrimaryExpressionElements getXPrimaryExpressionAccess() {
+		return pXPrimaryExpression;
+	}
+	
+	public ParserRule getXPrimaryExpressionRule() {
+		return getXPrimaryExpressionAccess().getRule();
+	}
+	
 	//XVariableDeclaration xbase::XExpression:
 	//	=> ({xtend::XtendVariableDeclaration} ((writeable?='var' | 'val') extension?='extension'?
 	//	| extension?='extension' (writeable?='var' | 'val'))) name=ValidID (':' type=JvmTypeReference)? ('='
@@ -6750,7 +6877,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XMemberFeatureCall XExpression:
-	//	XPrimaryExpression (=> ({XAssignment.assignable=current} ('.' | explicitStatic?="::")
+	//	super::XPrimaryExpression (=> ({XAssignment.assignable=current} ('.' | explicitStatic?="::")
 	//	feature=[types::JvmIdentifiableElement|super::FeatureCallID] OpSingleAssign) value=XAssignment
 	//	| => ({XMemberFeatureCall.memberCallTarget=current} ("." | nullSafe?="?." | explicitStatic?="::")) ('<'
 	//	typeArguments+=JvmArgumentTypeReference (',' typeArguments+=JvmArgumentTypeReference)* '>')?
@@ -6764,18 +6891,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getXMemberFeatureCallRule() {
 		return getXMemberFeatureCallAccess().getRule();
-	}
-	
-	//XPrimaryExpression XExpression:
-	//	super::XConstructorCall | XBlockExpression | super::XSwitchExpression | XSynchronizedExpression | XFeatureCall |
-	//	XLiteral | XIfExpression | super::XForLoopExpression | XBasicForLoopExpression | XWhileExpression | XDoWhileExpression
-	//	| XThrowExpression | XReturnExpression | XTryCatchFinallyExpression | XParenthesizedExpression;
-	public XbaseGrammarAccess.XPrimaryExpressionElements getXPrimaryExpressionAccess() {
-		return gaXbase.getXPrimaryExpressionAccess();
-	}
-	
-	public ParserRule getXPrimaryExpressionRule() {
-		return getXPrimaryExpressionAccess().getRule();
 	}
 	
 	//XLiteral XExpression:

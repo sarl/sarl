@@ -41,6 +41,15 @@ public interface SarlFactory extends EFactory
 	SarlField createSarlField();
 
 	/**
+	 * Returns a new object of class '<em>Break Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Break Expression</em>'.
+	 * @generated
+	 */
+	SarlBreakExpression createSarlBreakExpression();
+
+	/**
 	 * Returns a new object of class '<em>Action</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

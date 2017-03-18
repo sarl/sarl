@@ -22,6 +22,7 @@
 package io.sarl.lang.controlflow;
 
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
 
 /** Compute the early-exit flag for the SARL statements.
@@ -49,6 +50,15 @@ public interface ISarlEarlyExitComputer extends IEarlyExitComputer {
 	 *     annotation, otherwise <code>false</code>.
 	 */
 	boolean isEarlyExitAnnotatedElement(Object element);
+
+	/** Replies if the given expression causes an early exist from a loop.
+	 *
+	 * @param expression - the expression.
+	 * @return <code>true</code> if the expression causes early exit of the loop statement,
+	 *     otherwise <code>false</code>.
+	 * @since 0.5
+	 */
+	boolean isEarlyExitLoop(XExpression expression);
 
 }
 

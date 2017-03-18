@@ -136,21 +136,38 @@ public final class IssueCodes {
 
 	/**
 	 * The occurrence use is invalid because the occurrence is a read-only variable.
+	 * @since 0.5
 	 */
 	public static final String INVALID_OCCURRENCE_READONLY_USE =
 			ISSUE_CODE_PREFIX + "invalid_occurrence_readonly_use"; //$NON-NLS-1$
 
 	/**
 	 * The occurrence use is invalid because the occurrence is a read-only variable.
+	 * @since 0.5
 	 */
 	public static final String DISCOURAGED_OCCURRENCE_READONLY_USE =
 			ISSUE_CODE_PREFIX + "discouraged_occurrence_readonly_use"; //$NON-NLS-1$
 
 	/**
 	 * The use of the {@code @Inline} annotation inside the SARL code may cause errornous side-effects.
+	 * @since 0.5
 	 */
 	public static final String MANUAL_INLINE_DEFINITION =
 			ISSUE_CODE_PREFIX + "manual_inline_definition"; //$NON-NLS-1$
+
+	/**
+	 * The use of the "break" statement is discouraged at this location.
+	 * @since 0.5
+	 */
+	public static final String DISCOURAGED_BREAK_KEYWORD_USE =
+			ISSUE_CODE_PREFIX + "discouraged_break_keyword_use"; //$NON-NLS-1$
+
+	/**
+	 * Invalid use of the "break" keyword.
+	 * @since 0.5
+	 */
+	public static final String INVALID_USE_OF_BREAK =
+			ISSUE_CODE_PREFIX + "invalid_use_of_break"; //$NON-NLS-1$
 
 	private IssueCodes() {
 		//

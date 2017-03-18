@@ -4177,6 +4177,30 @@ describe "General Syntax Reference" {
 			)
 		}
 
+		/* The `break` keyword is provides for breaking the enclosing loop.
+		 * When this keyword is run, the control flow exists for the nearest
+		 * enclosing loop, and run the statement that is jsut following the loop
+		 * expression in the sequence of instructions.
+		 * 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*) 
+		 */
+		fact "Break a loop"{
+			'''
+						var tab : String[]
+						for (v : tab) {
+							if (v == 1) {
+								break
+							}
+						}
+			'''.parseSuccessfully(
+				"package io.sarl.docs.reference.gsr
+				agent A {
+						def example {",
+				// TEXT
+				"} }"
+			)
+		}		
+
 	}
 
 	/* SARL supports exception throwing and catching.

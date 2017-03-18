@@ -1006,6 +1006,60 @@ ruleXtendEnumLiteral:
 	ruleValidID
 ;
 
+// Rule BreakExpression
+ruleBreakExpression:
+	'break'
+;
+
+// Rule XPrimaryExpression
+ruleXPrimaryExpression:
+	(
+		ruleXConstructorCall
+		    |
+		ruleXBlockExpression
+		    |
+		ruleXSwitchExpression
+		    |
+		(
+			('synchronized'
+			'('
+			)=>
+			ruleXSynchronizedExpression
+		)
+		    |
+		ruleXFeatureCall
+		    |
+		ruleXLiteral
+		    |
+		ruleXIfExpression
+		    |
+		(
+			('for'
+			'('
+			ruleSarlXLoopFormalParameter
+			':'
+			)=>
+			ruleXForLoopExpression
+		)
+		    |
+		ruleXBasicForLoopExpression
+		    |
+		ruleXWhileExpression
+		    |
+		ruleXDoWhileExpression
+		    |
+		ruleXThrowExpression
+		    |
+		ruleXReturnExpression
+		    |
+		ruleXTryCatchFinallyExpression
+		    |
+		ruleXParenthesizedExpression
+		    |
+		ruleBreakExpression
+	)
+;
+
 // Rule XVariableDeclaration
 ruleXVariableDeclaration:
 	(
@@ -2079,53 +2133,6 @@ ruleXMemberFeatureCall:
 	)*
 ;
 
-// Rule XPrimaryExpression
-ruleXPrimaryExpression:
-	(
-		ruleXConstructorCall
-		    |
-		ruleXBlockExpression
-		    |
-		ruleXSwitchExpression
-		    |
-		(
-			('synchronized'
-			'('
-			)=>
-			ruleXSynchronizedExpression
-		)
-		    |
-		ruleXFeatureCall
-		    |
-		ruleXLiteral
-		    |
-		ruleXIfExpression
-		    |
-		(
-			('for'
-			'('
-			ruleSarlXLoopFormalParameter
-			':'
-			)=>
-			ruleXForLoopExpression
-		)
-		    |
-		ruleXBasicForLoopExpression
-		    |
-		ruleXWhileExpression
-		    |
-		ruleXDoWhileExpression
-		    |
-		ruleXThrowExpression
-		    |
-		ruleXReturnExpression
-		    |
-		ruleXTryCatchFinallyExpression
-		    |
-		ruleXParenthesizedExpression
-	)
-;
-
 // Rule XLiteral
 ruleXLiteral:
 	(
@@ -2465,7 +2472,7 @@ ruleXThrowExpression:
 ruleXReturnExpression:
 	'return'
 	(
-		('abstract' | 'annotation' | 'class' | 'create' | 'def' | 'dispatch' | 'enum' | 'extends' | 'final' | 'implements' | 'import' | 'interface' | 'override' | 'package' | 'public' | 'private' | 'protected' | 'static' | 'throws' | 'strictfp' | 'native' | 'volatile' | 'synchronized' | 'transient' | 'AFTER' | 'BEFORE' | 'SEPARATOR' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING | RULE_RICH_TEXT | RULE_RICH_TEXT_START)=>
+		('abstract' | 'annotation' | 'class' | 'create' | 'def' | 'dispatch' | 'enum' | 'extends' | 'final' | 'implements' | 'import' | 'interface' | 'override' | 'package' | 'public' | 'private' | 'protected' | 'static' | 'throws' | 'strictfp' | 'native' | 'volatile' | 'synchronized' | 'transient' | 'AFTER' | 'BEFORE' | 'SEPARATOR' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | 'break' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING | RULE_RICH_TEXT | RULE_RICH_TEXT_START)=>
 		ruleXExpression
 	)?
 ;

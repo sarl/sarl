@@ -43,7 +43,7 @@ normal = '\^[$[:alnum:]_]+'
 # Highlight the type declarations
 (keyword,normal,classname) = `(\<(?:agent|behavior|capacity|class|enum|event|interface|skill|space))([[:blank:]]+)([$[:alnum:]_]+)`
 
-keyword = "abstract|agent|annotation|artifact|as|behavior|boolean|byte|capacity|case|catch|char|class|def|default|dispatch|do|double|else|enum|event|extends|extension|final|finally|fires|float|for|if|implements|import|instanceof|int|interface|long|native|new|on|override|package|private|protected|public|requires|return|short|skill|space|static|strictfp|super|switch|synchronized|throw|throws|transient|try|typeof|uses|val|var|void|volatile|while|with"
+keyword = "abstract|agent|annotation|artifact|as|behavior|boolean|break|byte|capacity|case|catch|char|class|def|default|dispatch|do|double|else|enum|event|extends|extension|final|finally|fires|float|for|if|implements|import|instanceof|int|interface|long|native|new|on|override|package|private|protected|public|requires|return|short|skill|space|static|strictfp|super|switch|synchronized|throw|throws|transient|try|typeof|uses|val|var|void|volatile|while|with"
 
 keyword = "false|it|null|occurrence|this|true|void"
 

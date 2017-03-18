@@ -69,6 +69,7 @@ import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationElementValuePair;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
 import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
@@ -1184,6 +1185,29 @@ public final class Utils {
 			elt = elt.eContainer();
 		}
 		return false;
+	}
+
+	/**
+	 * Returns the closest {@link EObject#eContainer() container object} that is validating the predicate.
+	 *
+	 * @param element the element to start from.
+	 * @param predicate the predicate to test.
+	 * @return the container or {@code null}.
+	 * @since 0.5
+	 * @see EcoreUtil2#getContainerOfType(EObject, Class)
+	 */
+	public static EObject getFirstContainerNotOfType(EObject element, Function1<EObject, Boolean> predicate) {
+		if (predicate == null || element == null) {
+			return null;
+		}
+		EObject elt = element.eContainer();
+		while (elt != null) {
+			if (predicate.apply(elt)) {
+				return elt;
+			}
+			elt = elt.eContainer();
+		}
+		return null;
 	}
 
 	/** Error code for the

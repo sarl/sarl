@@ -26,6 +26,8 @@ import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 
+import org.eclipse.xtext.xbase.XExpression;
+
 /**
  * <!-- begin-user-doc -->
  * The <b>Adapter Factory</b> for the model.
@@ -98,6 +100,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseSarlField(SarlField object)
 			{
 				return createSarlFieldAdapter();
+			}
+			@Override
+			public Adapter caseSarlBreakExpression(SarlBreakExpression object)
+			{
+				return createSarlBreakExpressionAdapter();
 			}
 			@Override
 			public Adapter caseSarlAction(SarlAction object)
@@ -210,6 +217,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 				return createXtendFieldAdapter();
 			}
 			@Override
+			public Adapter caseXExpression(XExpression object)
+			{
+				return createXExpressionAdapter();
+			}
+			@Override
 			public Adapter caseXtendExecutable(XtendExecutable object)
 			{
 				return createXtendExecutableAdapter();
@@ -307,6 +319,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createSarlFieldAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlBreakExpression <em>Break Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see io.sarl.lang.sarl.SarlBreakExpression
+	 * @generated
+	 */
+	public Adapter createSarlBreakExpressionAdapter()
 	{
 		return null;
 	}
@@ -637,6 +664,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createXtendFieldAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.xtext.xbase.XExpression <em>XExpression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.xtext.xbase.XExpression
+	 * @generated
+	 */
+	public Adapter createXExpressionAdapter()
 	{
 		return null;
 	}

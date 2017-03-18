@@ -24,6 +24,8 @@ import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 
+import org.eclipse.xtext.xbase.XExpression;
+
 /**
  * <!-- begin-user-doc -->
  * The <b>Switch</b> for the model's inheritance hierarchy.
@@ -102,6 +104,14 @@ public class SarlSwitch<T> extends Switch<T>
 				if (result == null) result = caseXtendField(sarlField);
 				if (result == null) result = caseXtendMember(sarlField);
 				if (result == null) result = caseXtendAnnotationTarget(sarlField);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SarlPackage.SARL_BREAK_EXPRESSION:
+			{
+				SarlBreakExpression sarlBreakExpression = (SarlBreakExpression)theEObject;
+				T result = caseSarlBreakExpression(sarlBreakExpression);
+				if (result == null) result = caseXExpression(sarlBreakExpression);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -319,6 +329,22 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseSarlField(SarlField object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Break Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Break Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSarlBreakExpression(SarlBreakExpression object)
 	{
 		return null;
 	}
@@ -671,6 +697,22 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseXtendField(XtendField object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>XExpression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>XExpression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXExpression(XExpression object)
 	{
 		return null;
 	}

@@ -81,8 +81,8 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 		builder.addComboBox(IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION, Messages.SARLValidatorConfigurationBlock_0);
 		builder.addComboBox(IssueCodes.REDUNDANT_CAPACITY_USE, Messages.SARLValidatorConfigurationBlock_10);
 		builder.addComboBox(IssueCodes.UNUSED_AGENT_CAPACITY, Messages.SARLValidatorConfigurationBlock_11);
-		builder.addComboBox(IssueCodes.DISCOURAGED_FUNCTION_NAME,
-				Messages.SARLValidatorConfigurationBlock_12);
+		builder.addComboBox(IssueCodes.DISCOURAGED_FUNCTION_NAME, Messages.SARLValidatorConfigurationBlock_12);
+		builder.addComboBox(IssueCodes.DISCOURAGED_BREAK_KEYWORD_USE, Messages.SARLValidatorConfigurationBlock_17);
 	}
 
 	@Override

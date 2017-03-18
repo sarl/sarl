@@ -7,6 +7,7 @@
     editorPluginID="io.sarl.lang.editor" runtimeVersion="2.11" usedGenPackages="../../org.eclipse.xtend.core/model/Xtend.genmodel#//xtend ../../org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types ../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase ../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype ../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xAnnotations">
   <genPackages prefix="Sarl" basePackage="io.sarl.lang" disposableProviderFactory="true"
       fileExtensions="sarl" ecorePackage="SARL.ecore#/">
+    <genClasses ecoreClass="SARL.ecore#//SarlBreakExpression"/>
     <genClasses ecoreClass="SARL.ecore#//SarlScript"/>
     <genClasses ecoreClass="SARL.ecore#//SarlField"/>
     <genClasses ecoreClass="SARL.ecore#//SarlAction">

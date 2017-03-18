@@ -37,6 +37,7 @@ import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 
+import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 
 /** Validation of the early-exit control flow.
@@ -61,11 +62,18 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 		return this.warningSuppressor.getIssueSeverities(context, eObject, severities);
 	}
 
+	/** {@inheritDoc}.
+	 *
+	 * <p>This function is overriden for:<ul>
+	 * <li>The XAbstractFeatureCall statements are not considered as potential early exit causes.
+	 *     in the super function. We need to mark the dead code for the XAbstractFeatureCall statements
+	 *     which refer to a function with the {@link EarlyExit} annotation.</li>
+	 * <li>Mark as dead the code after a "break" statement.</li>
+	 * </ul>
+	 */
 	@Override
 	@Check
 	public void checkDeadCode(XBlockExpression block) {
-		// The XAbstractFeatureCall are skipped in the super function.
-		// We need to mark the dead code for a early XAbstractFeatureCall.
 		final EList<XExpression> expressions = block.getExpressions();
 		final int size = expressions.size();
 		for (int i = 0; i < size - 1; ++i) {
@@ -82,6 +90,8 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 					markAsDeadCode(expressions.get(i + 1));
 				}
 				return;
+			} else if (this.earlyExitComputer.isEarlyExitLoop(expression)) {
+				markAsDeadCode(expressions.get(i + 1));
 			}
 		}
 	}

@@ -421,10 +421,35 @@ XtendEnumLiteral returns xtend::XtendEnumLiteral:
 	name=ValidID
 ;
 
+BreakExpression returns xbase::XExpression :
+	{SarlBreakExpression}
+	'break'
+;
+
 //-----------------------------------------------
 // BELOW THIS POINT, THE RULES FROM XTEXT ARE OVERLOADED
 
 // Variable declaration according to the SARL syntax (not the Xtext/Xtend)
+XPrimaryExpression returns xbase::XExpression:
+	XConstructorCall |
+	XBlockExpression |
+	XSwitchExpression |
+	XSynchronizedExpression |
+	XFeatureCall |
+	XLiteral |
+	XIfExpression |
+	XForLoopExpression |
+	XBasicForLoopExpression |
+	XWhileExpression |
+	XDoWhileExpression |
+	XThrowExpression |
+	XReturnExpression |
+	XTryCatchFinallyExpression |
+	XParenthesizedExpression |
+	// Below the SARL specific expressions
+	BreakExpression
+;
+
 XVariableDeclaration returns xbase::XExpression:
 	=>({xtend::XtendVariableDeclaration}
 	(

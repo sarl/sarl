@@ -140,12 +140,15 @@ import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.IssueSeverities;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XAbstractWhileExpression;
 import org.eclipse.xtext.xbase.XAssignment;
+import org.eclipse.xtext.xbase.XBasicForLoopExpression;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
+import org.eclipse.xtext.xbase.XForLoopExpression;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
@@ -174,6 +177,7 @@ import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlClass;
@@ -2189,6 +2193,34 @@ public class SARLValidator extends AbstractSARLValidator {
 			if (this.grammarAccess.getOccurrenceKeyword().equals(child.getFeature().getIdentifier())) {
 				checkUnmodifiableEventAccess(enable1, child);
 			}
+		}
+	}
+
+	/** Check for usage of break inside loops.
+	 *
+	 * @param expression the expression to analyze.
+	 */
+	@Check
+	public void checkBreakKeywordUse(SarlBreakExpression expression) {
+		final EObject container = Utils.getFirstContainerNotOfType(expression,
+				(it) -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
+				|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression);
+		if (container instanceof XExpression) {
+			if (!isIgnored(IssueCodes.DISCOURAGED_BREAK_KEYWORD_USE)
+					&& container instanceof XBasicForLoopExpression) {
+				addIssue(
+						Messages.SARLValidator_17,
+						expression,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						IssueCodes.DISCOURAGED_BREAK_KEYWORD_USE);
+			}
+		} else {
+			error(Messages.SARLValidator_18,
+					expression,
+					null,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					IssueCodes.INVALID_USE_OF_BREAK);
 		}
 	}
 

@@ -66,6 +66,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 		{
 			case SarlPackage.SARL_SCRIPT: return createSarlScript();
 			case SarlPackage.SARL_FIELD: return createSarlField();
+			case SarlPackage.SARL_BREAK_EXPRESSION: return createSarlBreakExpression();
 			case SarlPackage.SARL_ACTION: return createSarlAction();
 			case SarlPackage.SARL_CONSTRUCTOR: return createSarlConstructor();
 			case SarlPackage.SARL_BEHAVIOR_UNIT: return createSarlBehaviorUnit();
@@ -109,6 +110,17 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	{
 		SarlFieldImplCustom sarlField = new SarlFieldImplCustom();
 		return sarlField;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public SarlBreakExpression createSarlBreakExpression()
+	{
+		SarlBreakExpressionImpl sarlBreakExpression = new SarlBreakExpressionImpl();
+		return sarlBreakExpression;
 	}
 
 	/**

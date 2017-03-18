@@ -8,6 +8,7 @@ import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlClass;
@@ -58,6 +59,13 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @generated
 	 */
 	private EClass sarlFieldEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sarlBreakExpressionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -269,6 +277,16 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	public EClass getSarlField()
 	{
 		return sarlFieldEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getSarlBreakExpression()
+	{
+		return sarlBreakExpressionEClass;
 	}
 
 	/**
@@ -635,6 +653,8 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 		sarlFieldEClass = createEClass(SARL_FIELD);
 
+		sarlBreakExpressionEClass = createEClass(SARL_BREAK_EXPRESSION);
+
 		sarlActionEClass = createEClass(SARL_ACTION);
 		createEReference(sarlActionEClass, SARL_ACTION__FIRED_EVENTS);
 
@@ -713,8 +733,8 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 		// Obtain other dependent packages
 		XtendPackage theXtendPackage = (XtendPackage)EPackage.Registry.INSTANCE.getEPackage(XtendPackage.eNS_URI);
-		TypesPackage theTypesPackage = (TypesPackage)EPackage.Registry.INSTANCE.getEPackage(TypesPackage.eNS_URI);
 		XbasePackage theXbasePackage = (XbasePackage)EPackage.Registry.INSTANCE.getEPackage(XbasePackage.eNS_URI);
+		TypesPackage theTypesPackage = (TypesPackage)EPackage.Registry.INSTANCE.getEPackage(TypesPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -723,6 +743,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		// Add supertypes to classes
 		sarlScriptEClass.getESuperTypes().add(theXtendPackage.getXtendFile());
 		sarlFieldEClass.getESuperTypes().add(theXtendPackage.getXtendField());
+		sarlBreakExpressionEClass.getESuperTypes().add(theXbasePackage.getXExpression());
 		sarlActionEClass.getESuperTypes().add(theXtendPackage.getXtendFunction());
 		sarlConstructorEClass.getESuperTypes().add(theXtendPackage.getXtendConstructor());
 		sarlBehaviorUnitEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
@@ -746,6 +767,8 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		initEClass(sarlScriptEClass, SarlScript.class, "SarlScript", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(sarlFieldEClass, SarlField.class, "SarlField", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(sarlBreakExpressionEClass, SarlBreakExpression.class, "SarlBreakExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(sarlActionEClass, SarlAction.class, "SarlAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSarlAction_FiredEvents(), theTypesPackage.getJvmTypeReference(), null, "firedEvents", null, 0, -1, SarlAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

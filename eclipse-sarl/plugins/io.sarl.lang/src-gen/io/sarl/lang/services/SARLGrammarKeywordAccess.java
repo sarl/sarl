@@ -383,6 +383,13 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getOpPostfixAccess().getPlusSignPlusSignKeyword_0().getValue();
 	}
 
+	/** Keyword: {@code break}.
+	 * Source: io.sarl.lang.SARL
+	 */
+	public String getBreakKeyword() {
+		return this.grammarAccess.getBreakExpressionAccess().getBreakKeyword_1().getValue();
+	}
+
 	/** Keyword: {@code abstract}.
 	 * Source: io.sarl.lang.SARL
 	 */
@@ -850,6 +857,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getWhileKeyword());
 			kws.add(getSpaceKeyword());
 			kws.add(getInstanceofKeyword());
+			kws.add(getBreakKeyword());
 			kws.add(getPublicKeyword());
 			kws.add(getIsTrueTrueKeyword());
 			kws.add(getTryKeyword());

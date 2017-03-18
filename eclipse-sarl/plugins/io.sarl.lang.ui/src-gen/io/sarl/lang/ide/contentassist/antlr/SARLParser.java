@@ -74,6 +74,7 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 					put(grammarAccess.getMemberAccess().getAlternatives_2_2_9(), "rule__Member__Alternatives_2_2_9");
 					put(grammarAccess.getAnnotationFieldAccess().getAlternatives_2(), "rule__AnnotationField__Alternatives_2");
 					put(grammarAccess.getParameterAccess().getAlternatives_6(), "rule__Parameter__Alternatives_6");
+					put(grammarAccess.getXPrimaryExpressionAccess().getAlternatives(), "rule__XPrimaryExpression__Alternatives");
 					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_0_0_1(), "rule__XVariableDeclaration__Alternatives_0_0_1");
 					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_0_0_1_0_0(), "rule__XVariableDeclaration__Alternatives_0_0_1_0_0");
 					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_0_0_1_1_1(), "rule__XVariableDeclaration__Alternatives_0_0_1_1_1");
@@ -117,7 +118,6 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 					put(grammarAccess.getXMemberFeatureCallAccess().getAlternatives_1_0_0_0_1(), "rule__XMemberFeatureCall__Alternatives_1_0_0_0_1");
 					put(grammarAccess.getXMemberFeatureCallAccess().getAlternatives_1_1_0_0_1(), "rule__XMemberFeatureCall__Alternatives_1_1_0_0_1");
 					put(grammarAccess.getXMemberFeatureCallAccess().getAlternatives_1_1_3_1(), "rule__XMemberFeatureCall__Alternatives_1_1_3_1");
-					put(grammarAccess.getXPrimaryExpressionAccess().getAlternatives(), "rule__XPrimaryExpression__Alternatives");
 					put(grammarAccess.getXLiteralAccess().getAlternatives(), "rule__XLiteral__Alternatives");
 					put(grammarAccess.getXCollectionLiteralAccess().getAlternatives(), "rule__XCollectionLiteral__Alternatives");
 					put(grammarAccess.getXCasePartAccess().getAlternatives_3(), "rule__XCasePart__Alternatives_3");
@@ -320,6 +320,7 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 					put(grammarAccess.getParameterAccess().getGroup_2(), "rule__Parameter__Group_2__0");
 					put(grammarAccess.getParameterAccess().getGroup_6_1(), "rule__Parameter__Group_6_1__0");
 					put(grammarAccess.getXtendEnumLiteralAccess().getGroup(), "rule__XtendEnumLiteral__Group__0");
+					put(grammarAccess.getBreakExpressionAccess().getGroup(), "rule__BreakExpression__Group__0");
 					put(grammarAccess.getXVariableDeclarationAccess().getGroup(), "rule__XVariableDeclaration__Group__0");
 					put(grammarAccess.getXVariableDeclarationAccess().getGroup_0(), "rule__XVariableDeclaration__Group_0__0");
 					put(grammarAccess.getXVariableDeclarationAccess().getGroup_0_0(), "rule__XVariableDeclaration__Group_0_0__0");

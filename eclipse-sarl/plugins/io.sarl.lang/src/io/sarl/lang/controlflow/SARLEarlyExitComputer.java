@@ -33,9 +33,11 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.controlflow.DefaultEarlyExitComputer;
 
 import io.sarl.lang.annotation.EarlyExit;
+import io.sarl.lang.sarl.SarlBreakExpression;
 
 /** Compute the early-exit flag for the SARL statements.
  *
@@ -76,6 +78,11 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements I
 	public boolean isEarlyExitAnnotatedElement(Object element) {
 		return (element instanceof JvmAnnotationTarget)
 				&& (this.annotations.findAnnotation((JvmAnnotationTarget) element, EarlyExit.class) != null);
+	}
+
+	@Override
+	public boolean isEarlyExitLoop(XExpression expression) {
+		return expression instanceof SarlBreakExpression;
 	}
 
 }

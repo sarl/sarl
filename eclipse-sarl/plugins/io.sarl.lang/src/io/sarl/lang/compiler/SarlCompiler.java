@@ -64,6 +64,8 @@ import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
+import io.sarl.lang.sarl.SarlBreakExpression;
+
 
 /** The compiler from SARL to the target language.
  *
@@ -72,6 +74,8 @@ import org.eclipse.xtext.xbase.util.XExpressionHelper;
  *
  * <p>Additionally, this compiler supports the Inline annotation for non-static calls, by skipping the left
  * operand of a member feature call when the inline expression is constant.
+ *
+ * <p>The compiler supports the SARL keywords too: break.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -290,6 +294,26 @@ public class SarlCompiler extends XtendCompiler {
 			}
 			appendFeatureCall(call, child);
 		}
+	}
+
+	@Override
+	public void doInternalToJavaStatement(XExpression obj, ITreeAppendable appendable, boolean isReferenced) {
+		if (obj instanceof SarlBreakExpression) {
+			_toJavaStatement((SarlBreakExpression) obj, appendable, isReferenced);
+		} else {
+			super.doInternalToJavaStatement(obj, appendable, isReferenced);
+		}
+	}
+
+	/** Generate the JAva code for the break keyword.
+	 *
+	 * @param breakExpression the expression.
+	 * @param appendable the output.
+	 * @param isReferenced indicates if the expression is referenced.
+	 */
+	@SuppressWarnings("static-method")
+	protected void _toJavaStatement(SarlBreakExpression breakExpression, ITreeAppendable appendable, boolean isReferenced) {
+		appendable.newLine().append("break;"); //$NON-NLS-1$
 	}
 
 }

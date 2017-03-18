@@ -112,6 +112,10 @@ public class SARLConfigurableIssueCodesProvider extends XtendConfigurableIssueCo
 		acceptor.accept(create(
 				IssueCodes.MANUAL_INLINE_DEFINITION,
 				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.DISCOURAGED_BREAK_KEYWORD_USE,
+				SeverityConverter.SEVERITY_WARNING));
 	}
 
 }
