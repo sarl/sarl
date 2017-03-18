@@ -656,6 +656,38 @@ describe "Basic Object-Oriented Programming Support" {
 			"./GeneralSyntaxReferenceObjectMemberInvocationSpec.html" should beAccessibleFrom this
 		}
 
+		/** Local classes (or nested classes, i.e. classes defined inside an other type) have
+		 * the `static` modifier. It means that a nested class cannot have access to the
+		 * fields and methods of the instance of the enclosing type.
+		 * Only accesses to static members are allowed.
+		 *
+		 * 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*)
+		 */
+		fact "Accessing Local Variables of the Enclosing Scope" {
+			'''
+				class EnclosingClass {
+					static var field1 : int
+					static def fct1 {
+					}
+
+					static class NestedClass {
+						def fct2 : int {
+							// Explicit type specification for the field access
+							EnclosingClass::field1
+						}
+				
+						def fct3 {
+							// Implicit type specification for the function's call
+							fct1
+						}
+					}
+				}
+			'''.parseSuccessfully(
+				"package io.sarl.docs.reference.oop",
+				// TEXT
+				""
+			)
 		}
 
 	}
@@ -1359,6 +1391,149 @@ describe "Basic Object-Oriented Programming Support" {
 				visib should beVisibleWith JvmVisibility::PUBLIC
 			}
 
+		}
+
+	}
+
+	/** Anonymous classes enable you to make your code more concise.
+	 * They enable you to declare and instantiate a class at the same time.
+	 * They are like local classes except that they do not have a name.
+	 * Use them if you need to use a local class only once.
+	 */
+	describe "Anonymous Class" {
+
+		/** While local classes are class declarations, anonymous classes are expressions,
+		 * which means that you define the class in another expression.
+		 * 
+		 * <p>The following example, `HelloWorldAnonymousClasses`, uses anonymous classes in the
+		 * initialization statements of the local variables `frenchGreeting` and `spanishGreeting`:
+		 * 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*)
+		 */
+		fact "Declaring Anonymous Classes" {
+			'''
+			interface HelloWorld {
+			    def greetSomeone(someone : String)
+			}
+
+			class HelloWorldAnonymousClasses {
+			    def sayHello {
+			        var frenchGreeting = new HelloWorld {
+			            var name = "tout le monde"
+			            def greetSomeone(someone : String) {
+			                name = someone
+			                println("Salut " + name)
+			            }
+			        }
+			        
+			        var spanishGreeting = new HelloWorld {
+			            var name = "mundo"
+			            def greetSomeone(someone : String) {
+			                name = someone
+			                println("Hola, " + name)
+			            }
+			        }
+
+			        frenchGreeting.greetSomeone("Marc")
+			        spanishGreeting.greetSomeone("Marco")
+			    }
+			}
+			'''.parseSuccessfully(
+				"package io.sarl.docs.reference.oop",
+				// TEXT
+				""
+			)
+		}
+
+		/** As mentioned previously, an anonymous class is an expression.
+		 * The syntax of an anonymous class expression is like the invocation of a constructor,
+		 * except that there is a class definition contained in a block of code.
+		 * 
+		 * <p>Consider the instantiation of the frenchGreeting object ion the code below.
+		 *
+		 * <p>The anonymous class expression consists of the following:<ul>
+		 * <li>The `new` operator</li>
+		 * <li>The name of an interface to implement or a class to extend. In this example,
+		 * the anonymous class is implementing the interface `HelloWorld`.</li>
+		 * <li>Parentheses that contain the arguments to a constructor, just like a normal class
+		 * instance creation expression.
+		 * When you implement an interface, there is no constructor, so you do not need to put parameters,
+		 * as in this example.</li>
+		 * <li>A body, which is a class declaration body. More specifically, in the body, method
+		 * declarations are allowed but statements are not.</li>
+		 * </ul>
+		 * 
+		 * <p>Because an anonymous class definition is an expression, it must be part of a statement.
+		 * In this example, the anonymous class expression is part of the statement that instantiates
+		 * the frenchGreeting object.
+		 * 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*)
+		 */
+		fact "Syntax of Anonymous Classes" {
+			'''
+				var frenchGreeting = new HelloWorld {
+				    var name = "tout le monde"
+				    def greetSomeone(someone : String) {
+				        name = someone
+				        println("Salut " + name)
+				    }
+				}
+			'''.parseSuccessfully(
+				"package io.sarl.docs.reference.oop
+			    interface HelloWorld {
+			        def greetSomeone(someone : String)
+			    }
+				class HelloWorldAnonymousClasses {
+				    def sayHello {
+				",
+				// TEXT
+				"} }"
+			)
+		}
+
+		/** Anonymous classes can capture variables; they have the same access to
+		 * local variables of the enclosing scope:<ul>
+		 * <li>An anonymous class has access to the members of its enclosing class.</li>
+		 * <li>An anonymous class cannot access local variables in its enclosing scope that are
+		 * not declared as final or effectively final.</li>
+		 * <li>A declaration of a type (such as a variable) in an anonymous class shadows any
+		 * other declarations in the enclosing scope that have the same name.</li>
+		 * </ul>
+		 *
+		 * <p>Anonymous classes have restrictions with respect to their members:<ul>
+		 * <li>You cannot declare static initializers or member interfaces in an anonymous class.</li>
+		 * <li>An anonymous class can have static members provided that they are constant variables.</li>
+		 * </ul>
+		 * 
+		 * <li>Note that you can declare the following in anonymous classes: fields, extra methods
+		 * (even if they do not implement any methods of the supertype), instance initializers, 
+		 * local classes. However, you cannot declare constructors in an anonymous class.
+		 * 
+		 * @filter(.* = '''|'''|.parseSuccessfully.*)
+		 */
+		fact "Accessing Local Variables of the Enclosing Scope, and Declaring and Accessing Members of the Anonymous Class" {
+			'''
+				class HelloWorldAnonymousClasses {
+				  var name : String
+				  def sayHello {
+				    var frenchGreeting = new HelloWorld {
+				      def greetSomeone(someone : String) {
+				      	name = someone
+				        println("Salut " + name)
+				        
+				      }
+				    }
+				  }
+				}
+			'''.parseSuccessfully(
+				"package io.sarl.docs.reference.oop
+			    interface HelloWorld {
+			        def greetSomeone(someone : String)
+			    }
+				",
+				// TEXT
+				""
+			)
 		}
 
 	}
