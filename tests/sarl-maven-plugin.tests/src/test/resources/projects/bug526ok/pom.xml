@@ -5,8 +5,8 @@
 	<artifactId>testMaven</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
-		<janus.version>2.0.5.0-SNAPSHOT</janus.version>
-		<sarl.version>0.5.0-SNAPSHOT</sarl.version>
+		<janus.version>2.0.5.0</janus.version>
+		<sarl.version>0.5.0</sarl.version>
 	</properties>
 	<build>
 		<sourceDirectory>src/main/sarl</sourceDirectory>
@@ -75,7 +75,7 @@
 			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-				<version>2.10.0</version>
+				<version>2.11.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

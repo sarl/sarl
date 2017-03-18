@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.baseplatform"
       label="Base Platform for SARL Compiler"
-      version="0.5.0.qualifier">
+      version="0.5.0">
 
    <description url="http://www.sarl.io/about/">
       Contains the Eclipse plugins that constritute the base platform for a SARL product
