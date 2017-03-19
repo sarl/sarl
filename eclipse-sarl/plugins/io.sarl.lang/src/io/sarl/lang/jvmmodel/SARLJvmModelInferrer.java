@@ -192,6 +192,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	private static final String RUNNABLE_COLLECTION = Utils.createNameForHiddenLocalVariable("runnableCollection"); //$NON-NLS-1$
 
+	private static final String HASHCODE_FUNCTION_NAME = "hashCode"; //$NON-NLS-1$
+
+	private static final String EQUALS_FUNCTION_NAME = "equals"; //$NON-NLS-1$
+
+
+	private static final String SERIAL_FIELD_NAME = "serialVersionUID"; //$NON-NLS-1$
+
 	/** See the filter in the super class.
 	 */
 	private static final Predicate<JvmAnnotationReference> ANNOTATION_TRANSLATION_FILTER = (annotation) -> {
@@ -804,6 +811,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					inferredJvmType,
 					context);
 
+			// Add functions dedicated to comparisons (equals, hashCode, etc.)
+			appendComparisonFunctions(context, source, inferredJvmType);
+
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
 
@@ -979,6 +989,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						context);
 			}
 
+			// Add functions dedicated to comparisons (equals, hashCode, etc.)
+			appendComparisonFunctions(context, source, inferredJvmType);
+
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
 
@@ -1037,6 +1050,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						source,
 						context);
 			}
+
+			// Add functions dedicated to comparisons (equals, hashCode, etc.)
+			appendComparisonFunctions(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
@@ -1162,6 +1178,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						source,
 						context);
 			}
+
+			// Add functions dedicated to comparisons (equals, hashCode, etc.)
+			appendComparisonFunctions(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
@@ -2474,31 +2493,75 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	}
 
 	/** Create the functions that permits to compare the object.
+	 * The comparaison functions are {@link #equals(Object)} and {@link #hashCode()}.
 	 *
 	 * @param context the current generation context.
 	 * @param source the source object.
 	 * @param target the inferred JVM object.
 	 */
-	protected void appendComparisonFunctions(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
+		"checkstyle:nestedifdepth"})
+	protected void appendComparisonFunctions(GenerationContext context, XtendTypeDeclaration source,
+			JvmGenericType target) {
 		// Create a list of the declared non-static fields.
 		final List<JvmField> declaredInstanceFields = new ArrayList<>();
 		for (final JvmField field : target.getDeclaredFields()) {
-			if (!field.isStatic()) {
+			if (!field.isStatic() && !Utils.isHiddenMember(field.getSimpleName())) {
 				declaredInstanceFields.add(field);
 			}
 		}
 
 		if (!declaredInstanceFields.isEmpty()) {
-			JvmOperation op = toEqualsMethod(source, target, declaredInstanceFields);
-			if (op != null) {
-				appendGeneratedAnnotation(op, context);
-				target.getMembers().add(op);
+			boolean isEqualsUserDefined = false;
+			boolean isHashCodeUserDefined = false;
+			for (final JvmOperation operation : target.getDeclaredOperations()) {
+				if (Objects.equal(EQUALS_FUNCTION_NAME, operation.getSimpleName())
+						&& operation.getParameters().size() == 1
+						&& Objects.equal(Object.class.getName(),
+								operation.getParameters().get(0).getParameterType().getIdentifier())) {
+					isEqualsUserDefined = true;
+				} else if (Objects.equal(HASHCODE_FUNCTION_NAME, operation.getSimpleName())
+						&& operation.getParameters().isEmpty()) {
+					isHashCodeUserDefined = true;
+				}
 			}
 
-			op = toHashCodeMethod(source, declaredInstanceFields);
-			if (op != null) {
-				appendGeneratedAnnotation(op, context);
-				target.getMembers().add(op);
+			if (!isEqualsUserDefined || !isHashCodeUserDefined) {
+				final Map<ActionPrototype, JvmOperation> finalOperations = new TreeMap<>();
+				Utils.populateInheritanceContext(
+						target, finalOperations, null, null, null, null, this.sarlSignatureProvider);
+
+				boolean couldCreateEqualsFunction = true;
+				if (!isEqualsUserDefined) {
+					final ActionPrototype prototype = new ActionPrototype(EQUALS_FUNCTION_NAME,
+							this.sarlSignatureProvider.createParameterTypesFromString(Object.class.getName()));
+					couldCreateEqualsFunction = !finalOperations.containsKey(prototype);
+				}
+
+				boolean couldCreateHashCodeFunction = true;
+				if (!isHashCodeUserDefined) {
+					final ActionPrototype prototype = new ActionPrototype(HASHCODE_FUNCTION_NAME,
+							this.sarlSignatureProvider.createParameterTypesForVoid());
+					couldCreateHashCodeFunction = !finalOperations.containsKey(prototype);
+				}
+
+				if (couldCreateEqualsFunction && couldCreateHashCodeFunction) {
+					if (!isEqualsUserDefined) {
+						final JvmOperation op = toEqualsMethod(source, target, declaredInstanceFields);
+						if (op != null) {
+							appendGeneratedAnnotation(op, context);
+							target.getMembers().add(op);
+						}
+					}
+
+					if (!isHashCodeUserDefined) {
+						final JvmOperation op = toHashCodeMethod(source, declaredInstanceFields);
+						if (op != null) {
+							appendGeneratedAnnotation(op, context);
+							target.getMembers().add(op);
+						}
+					}
+				}
 			}
 		}
 	}
@@ -2560,14 +2623,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @see #appendSerialNumberIfSerializable(GenerationContext, XtendTypeDeclaration, JvmGenericType)
 	 */
 	protected void appendSerialNumber(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
-		for (final JvmField field : Iterables.filter(target.getMembers(), JvmField.class)) {
-			if ("serialVersionUID".equals(field.getSimpleName())) { //$NON-NLS-1$
+		for (final JvmField field : target.getDeclaredFields()) {
+			if (SERIAL_FIELD_NAME.equals(field.getSimpleName())) {
 				return;
 			}
 		}
 
 		final JvmField field = this.typesFactory.createJvmField();
-		field.setSimpleName("serialVersionUID"); //$NON-NLS-1$
+		field.setSimpleName(SERIAL_FIELD_NAME);
 		field.setVisibility(JvmVisibility.PRIVATE);
 		field.setStatic(true);
 		field.setTransient(false);
@@ -2758,7 +2821,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (sarlElement == null || declaredType == null) {
 			return null;
 		}
-		final JvmOperation result = this.typeBuilder.toMethod(sarlElement, "equals", //$NON-NLS-1$
+		final JvmOperation result = this.typeBuilder.toMethod(sarlElement, EQUALS_FUNCTION_NAME,
 				this._typeReferenceBuilder.typeRef(Boolean.TYPE), null);
 		if (result == null) {
 			return null;
@@ -2785,7 +2848,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				for (final JvmField field : jvmFields) {
 					generateToEqualForField(it, field);
 				}
-				it.newLine().append("return super.equals(obj);"); //$NON-NLS-1$
+				it.newLine().append("return super.").append(EQUALS_FUNCTION_NAME); //$NON-NLS-1$
+				it.append("(obj);"); //$NON-NLS-1$
 			}
 
 			private boolean arrayContains(String element, String... array) {
@@ -2827,7 +2891,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
 					it.decreaseIndentation();
 					it.newLine().append("} else if (!this." + field.getSimpleName() //$NON-NLS-1$
-					+ ".equals(other." + field.getSimpleName() //$NON-NLS-1$
+					+ "." + EQUALS_FUNCTION_NAME + "(other." + field.getSimpleName() //$NON-NLS-1$ //$NON-NLS-2$
 					+ "))").increaseIndentation(); //$NON-NLS-1$
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
 				}
@@ -2850,7 +2914,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (sarlElement == null) {
 			return null;
 		}
-		final JvmOperation result = this.typeBuilder.toMethod(sarlElement, "hashCode", //$NON-NLS-1$
+		final JvmOperation result = this.typeBuilder.toMethod(sarlElement, HASHCODE_FUNCTION_NAME,
 				this._typeReferenceBuilder.typeRef(Integer.TYPE), null);
 		if (result == null) {
 			return null;
@@ -2859,7 +2923,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		addAnnotationSafe(result, Pure.class);
 		setBody(result, (it) -> {
 			it.append("final int prime = 31;"); //$NON-NLS-1$
-			it.newLine().append("int result = super.hashCode();"); //$NON-NLS-1$
+			it.newLine().append("int result = super.").append(HASHCODE_FUNCTION_NAME); //$NON-NLS-1$
+			it.append("();"); //$NON-NLS-1$
 			for (final JvmField field : jvmFields) {
 				final String typeName = field.getType().getIdentifier();
 				if (Objects.equal(Boolean.TYPE.getName(), typeName)) {
@@ -2885,7 +2950,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				} else {
 					it.newLine().append("result = prime * result + ((this." //$NON-NLS-1$
 							+ field.getSimpleName() + "== null) ? 0 : this." + field.getSimpleName() //$NON-NLS-1$
-							+ ".hashCode());"); //$NON-NLS-1$
+							+ "." + HASHCODE_FUNCTION_NAME + "());"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 			it.newLine().append("return result;"); //$NON-NLS-1$

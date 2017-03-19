@@ -56,6 +56,65 @@ describe "Basic Object-Oriented Programming Support" {
 
 	@Inject extension SARLParser
 
+
+	/* Java and [Xtend](https://www.eclipse.org/xtend) are both object-oriented programming languages.
+	 * As SARL, Xtend is based on the [Xtext](https://www.eclipse.org/Xtext) libraries for compiling to the Java language.
+	 *
+	 * <p>The main features coming from the Java language are supported by SARL too.
+	 * The following table provides the major differences between the SARL, Java and Xtend languages regarding the supports of the object-oriented features.
+	 *
+	 * <table><thead>
+	 * <tr><th></th><th>SARL</th><th>Java</th><th><th>Xtend</th></tr>
+	 * </thead><tbody>
+	 * <tr><td>Object-oriented enumeration</td>
+	 * 			<td>No, only constants could be defined</td>
+	 * 			<td>Yes, constants and functions could be defined</td>
+	 * 			<td>No, only constants could be defined</td></tr>
+	 * <tr><td>Definition of dispatching functions</td>
+	 * 			<td>Yes</td>
+	 * 			<td>No</td>
+	 * 			<td>Yes</td></tr>
+	 * <tr><td>Extension methods</td>
+	 * 			<td>Yes</td>
+	 * 			<td>No</td>
+	 * 			<td>Yes</td></tr>
+	 * <tr><td>Automatic generation of equals() and hashCode()</td>
+	 * 			<td>Yes</td>
+	 * 			<td>No</td>
+	 * 			<td>No</td></tr>
+	 * <tr><td>Automatic generation of clone() when cloneable type</td>
+	 * 			<td>Yes</td>
+	 * 			<td>No</td>
+	 * 			<td>No</td></tr>
+	 * <tr><td>Automatic generation of serialVersionUID when serializable type</td>
+	 * 			<td>Yes</td>
+	 * 			<td>No</td>
+	 * 			<td>No</td></tr>
+	 * <tr><td>Definition of default values for the formal parameters</td>
+	 * 			<td>Yes</td>
+	 * 			<td>No</td>
+	 * 			<td>No</td></tr>
+	 * <tr><td>Definition of lambda expressions</td>
+	 * 			<td>Yes</td>
+	 * 			<td>Yes</td>
+	 * 			<td>Yes</td></tr>
+	 * <tr><td>Inference of types</td>
+	 * 			<td>Yes</td>
+	 * 			<td>No</td>
+	 * 			<td>Yes</td></tr>
+	 * <tr><td>Operator overriding</td>
+	 * 			<td>Yes</td>
+	 * 			<td>No</td>
+	 * 			<td>Yes</td></tr>
+	 * </tbody></table>
+	 *
+	 * @filter(.*) 
+	 */
+	fact "Comparison between SARL, Java and Xtend" {
+		"https://www.eclipse.org/xtend" should beURL _
+		"https://www.eclipse.org/Xtext" should beURL _
+	}
+
 	/** Objects are structures that contain both data and procedures.
 	 * Classes are definitions for the data format and available procedures
 	 * for a given type or class of objects. They may also contain data and
@@ -2011,7 +2070,9 @@ describe "Basic Object-Oriented Programming Support" {
 	 * @filter(.*) 
 	 */
 	fact "References" {
-		true
+		"https://www.eclipse.org/xtend/documentation.html" should beURL _
+		"https://www.eclipse.org/Xtext/documentation.html" should beURL _
+		"https://docs.oracle.com/javase/tutorial/" should beURL _
 	}
 
 	/* Specification: SARL General-purpose Agent-Oriented Programming Language ("Specification")<br/>
