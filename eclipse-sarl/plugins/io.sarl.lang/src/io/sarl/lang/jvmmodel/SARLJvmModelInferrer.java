@@ -121,6 +121,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.InferredTypeIndicator;
+import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
@@ -196,6 +197,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	private static final String EQUALS_FUNCTION_NAME = "equals"; //$NON-NLS-1$
 
+	private static final String CLONE_FUNCTION_NAME = "clone"; //$NON-NLS-1$
 
 	private static final String SERIAL_FIELD_NAME = "serialVersionUID"; //$NON-NLS-1$
 
@@ -814,6 +816,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add functions dedicated to comparisons (equals, hashCode, etc.)
 			appendComparisonFunctions(context, source, inferredJvmType);
 
+			// Add clone functions if the generated type is cloneable
+			appendCloneFunctionsIfCloneable(context, source, inferredJvmType);
+
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
 
@@ -992,6 +997,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add functions dedicated to comparisons (equals, hashCode, etc.)
 			appendComparisonFunctions(context, source, inferredJvmType);
 
+			// Add clone functions if the generated type is cloneable
+			appendCloneFunctionsIfCloneable(context, source, inferredJvmType);
+
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
 
@@ -1053,6 +1061,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add functions dedicated to comparisons (equals, hashCode, etc.)
 			appendComparisonFunctions(context, source, inferredJvmType);
+
+			// Add clone functions if the generated type is cloneable
+			appendCloneFunctionsIfCloneable(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
@@ -1122,6 +1133,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add functions dedicated to String representation(toString, etc.)
 			appendToStringFunctions(context, source, inferredJvmType);
 
+			// Add clone functions if the generated type is cloneable
+			appendCloneFunctionsIfCloneable(context, source, inferredJvmType);
+
 			// Add serialVersionUID field if the generated type is serializable
 			appendSerialNumberIfSerializable(context, source, inferredJvmType);
 
@@ -1181,6 +1195,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add functions dedicated to comparisons (equals, hashCode, etc.)
 			appendComparisonFunctions(context, source, inferredJvmType);
+
+			// Add clone functions if the generated type is cloneable
+			appendCloneFunctionsIfCloneable(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
@@ -2656,6 +2673,77 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	protected void appendSerialNumberIfSerializable(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
 		if (!target.isInterface() && this.inheritanceHelper.isSubTypeOf(target, Serializable.class, null)) {
 			appendSerialNumber(context, source, target);
+		}
+	}
+
+	/** Append the clone function.
+	 *
+	 * <p>The clone function replies a value of the current type, not {@code Object}.
+	 *
+	 * @param context the current generation context.
+	 * @param source the source object.
+	 * @param target the inferred JVM object.
+	 * @since 0.6
+	 * @see #appendCloneFunctionsIfCloneable(GenerationContext, XtendTypeDeclaration, JvmGenericType)
+	 */
+	protected void appendCloneFunctions(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
+		for (final JvmOperation operation : target.getDeclaredOperations()) {
+			if (CLONE_FUNCTION_NAME.equals(operation.getSimpleName())) {
+				return;
+			}
+		}
+
+		final ActionPrototype standardPrototype = new ActionPrototype(CLONE_FUNCTION_NAME,
+				this.sarlSignatureProvider.createParameterTypesForVoid());
+
+		final Map<ActionPrototype, JvmOperation> finalOperations = new TreeMap<>();
+		Utils.populateInheritanceContext(
+				target, finalOperations, null, null, null, null, this.sarlSignatureProvider);
+
+		if (!finalOperations.containsKey(standardPrototype)) {
+			final JvmTypeReference[] genericParameters = new JvmTypeReference[target.getTypeParameters().size()];
+			for (int i = 0; i < target.getTypeParameters().size(); ++i) {
+				final JvmTypeParameter typeParameter = target.getTypeParameters().get(i);
+				genericParameters[i] = this._typeReferenceBuilder.typeRef(typeParameter);
+			}
+			final JvmTypeReference myselfReference = this._typeReferenceBuilder.typeRef(target, genericParameters);
+			final JvmOperation operation = this.typeBuilder.toMethod(
+					source, CLONE_FUNCTION_NAME, myselfReference, null);
+			target.getMembers().add(operation);
+			operation.setVisibility(JvmVisibility.PUBLIC);
+			addAnnotationSafe(operation, Override.class);
+			addAnnotationSafe(operation, Pure.class);
+			final LightweightTypeReference myselfReference2 = Utils.toLightweightTypeReference(
+					operation.getReturnType(), this.services);
+			setBody(operation, (it) -> {
+				it.append("try {"); //$NON-NLS-1$
+				it.increaseIndentation().newLine();
+				it.append("return (").append(myselfReference2).append(") super.");  //$NON-NLS-1$//$NON-NLS-2$
+				it.append(CLONE_FUNCTION_NAME).append("();"); //$NON-NLS-1$
+				it.decreaseIndentation().newLine();
+				it.append("} catch (").append(Throwable.class).append(" exception) {"); //$NON-NLS-1$ //$NON-NLS-2$
+				it.increaseIndentation().newLine();
+				it.append("throw new ").append(Error.class).append("(exception);"); //$NON-NLS-1$ //$NON-NLS-2$
+				it.decreaseIndentation().newLine();
+				it.append("}"); //$NON-NLS-1$
+			});
+			appendGeneratedAnnotation(operation, context);
+		}
+	}
+
+	/** Append the clone function only if the type is a subtype of {@link Cloneable}.
+	 *
+	 * <p>The clone function replies a value of the current type, not {@code Object}.
+	 *
+	 * @param context the current generation context.
+	 * @param source the source object.
+	 * @param target the inferred JVM object.
+	 * @since 0.6
+	 * @see #appendCloneFunctions(GenerationContext, XtendTypeDeclaration, JvmGenericType)
+	 */
+	protected void appendCloneFunctionsIfCloneable(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
+		if (!target.isInterface() && this.inheritanceHelper.isSubTypeOf(target, Cloneable.class, null)) {
+			appendCloneFunctions(context, source, target);
 		}
 	}
 
