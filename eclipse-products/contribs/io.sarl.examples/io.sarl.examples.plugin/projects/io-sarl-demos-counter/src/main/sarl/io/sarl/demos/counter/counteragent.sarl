@@ -44,7 +44,7 @@ agent CounterAgent {
 		]
 	}
 
-	on Hello [ occurrence.source != defaultAddress && !started ] {
+	on Hello [ !isFromMe && !started ] {
 		info("Found another agent => " + occurrence.source)
 		info("I'm " + defaultAddress)
 		started = true
@@ -78,7 +78,7 @@ agent SecondAgent {
 		info("Starting")
 	}
 
-	on Hello [ occurrence.source != defaultAddress ] {/* test the emitter address to be sure it is not a self message */
+	on Hello [ !isFromMe ] {/* test the emitter address to be sure it is not a self message */
 		info("Say hello!")
 		emit(new Hello) 
 	}

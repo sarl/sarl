@@ -283,16 +283,26 @@ public class WorkbenchTestHelper {
 	 * @param createOnDemand - create the project if it does not exist yet.
 	 * @return the project.
 	 */
-	protected IProject getProject(boolean createOnDemand) {
-		String projectName = this.lastProjectName;
-		if (Strings.isNullOrEmpty(projectName)) {
-			projectName = TESTPROJECT_NAME;
+	public IProject getProject(boolean createOnDemand) {
+		return getProject(this.lastProjectName, createOnDemand);
+	}
+
+	/** Replies the project with the given name.
+	 * 
+	 * @param projectName the name of the project.
+	 * @param createOnDemand - create the project if it does not exist yet.
+	 * @return the project.
+	 */
+	public IProject getProject(String projectName, boolean createOnDemand) {
+		String prjName = projectName;
+		if (Strings.isNullOrEmpty(prjName)) {
+			prjName = TESTPROJECT_NAME;
 		}
-		IProject project = this.workspace.getRoot().getProject(projectName);
+		IProject project = this.workspace.getRoot().getProject(prjName);
 		if (createOnDemand && !project.exists()) {
 			try {
 				this.isLazyCreatedProject = true;
-				project = createPluginProject(projectName, this.projectCreator);
+				project = createPluginProject(prjName, this.projectCreator);
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
@@ -306,7 +316,7 @@ public class WorkbenchTestHelper {
 	 * @param createOnDemand - create the project if it does not exist yet.
 	 * @return the project.
 	 */
-	protected IProject getProject(Resource resource, boolean createOnDemand) {
+	public IProject getProject(Resource resource, boolean createOnDemand) {
 		if (resource != null) {
 			final URI uri = resource.getURI();
 			final String platformString = uri.toPlatformString(true);
@@ -358,7 +368,13 @@ public class WorkbenchTestHelper {
 		return project;
 	}
 
-	private static void create(org.eclipse.core.resources.IContainer container)
+	/** Create the container tree.
+	 *
+	 * @param container the container
+	 * @throws InvocationTargetException in case of error.
+	 * @throws InterruptedException in case of errir.
+	 */
+	public static void create(org.eclipse.core.resources.IContainer container)
 			throws InvocationTargetException, InterruptedException {
 		new WorkspaceModifyOperation() {
 
@@ -390,14 +406,40 @@ public class WorkbenchTestHelper {
 	public IFile createFileImpl(String fullFileName, String content) throws Exception {
 		final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fullFileName));
 		new WorkspaceModifyOperation() {
-			@SuppressWarnings({ "synthetic-access", "resource" })
 			@Override
 			protected void execute(IProgressMonitor monitor)
 					throws CoreException, InvocationTargetException,
 					InterruptedException {
 				create(file.getParent());
 				file.delete(true, new NullProgressMonitor());
-				file.create(new StringInputStream(content), true, new NullProgressMonitor());
+				try (final InputStream is = new StringInputStream(content)) {
+					file.create(is, true, new NullProgressMonitor());
+				} catch (Exception exception) {
+					//
+				}
+			}
+
+		}.run(new NullProgressMonitor());
+		getFiles().add(file);
+		return file;
+	}
+
+	/** Create a file.
+	 * 
+	 * @param file the name of the file to create.
+	 * @param content the content of the file.
+	 * @return the file.
+	 * @throws Exception
+	 */
+	public IFile createFileImpl(IFile file, InputStream content) throws Exception {
+		new WorkspaceModifyOperation() {
+			@Override
+			protected void execute(IProgressMonitor monitor)
+					throws CoreException, InvocationTargetException,
+					InterruptedException {
+				create(file.getParent());
+				file.delete(true, new NullProgressMonitor());
+				file.create(content, true, new NullProgressMonitor());
 			}
 
 		}.run(new NullProgressMonitor());
@@ -416,14 +458,52 @@ public class WorkbenchTestHelper {
 
 	/** Compute the full filename.
 	 * 
-	 * @param fileName the name without the file extension.
+	 * @param fileName the name with the file extension.
 	 * @return the full filename.
 	 * @see #getFullFileNameInProject(String)
 	 */
 	public String getFullFileNameInSources(String fileName) {
-		String extension = (fileName.indexOf(".") != -1) ? "" : "." + getFileExtension(); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-		String fullFileName = getProject().getName() + "/src/" + fileName + extension; //$NON-NLS-1$
+		final String extension = (fileName.indexOf(".") != -1) ? "" : "." + getFileExtension(); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		final String fullFileName = getProject().getName() + "/src/" + fileName + extension; //$NON-NLS-1$
 		return fullFileName;
+	}
+
+	/** Replies the file with the given name.
+	 * 
+	 * @param fileName the name.
+	 * @return the file.
+	 */
+	public IFile getFileInProject(String fileName) {
+		return getFileInRoot(getProject().getName(), fileName);
+	}
+
+	/** Replies the file with the given name.
+	 * 
+	 * @param projectName the name of the project
+	 * @param fileName the name.
+	 * @return the file.
+	 */
+	public IFile getFileInRoot(String projectName, String fileName) {
+		String fullFileName = projectName + "/" + fileName; //$NON-NLS-1$
+		return getFile(new Path(fullFileName));
+	}
+
+	/** Replies the file with the given name.
+	 * 
+	 * @param path the name of the file.
+	 * @return the file.
+	 */
+	public IFile getFile(IPath path) {
+		return this.workspace.getRoot().getFile(path);
+	}
+
+	/** Replies the folder with the given name.
+	 * 
+	 * @param path the name of the folder.
+	 * @return the folder.
+	 */
+	public IFolder getFolder(IPath path) {
+		return this.workspace.getRoot().getFolder(path);
 	}
 
 	/** Compute the full filename inside the proejct root directory.
@@ -486,6 +566,18 @@ public class WorkbenchTestHelper {
 			SarlScript xtendFile = (SarlScript) resource.getContents().get(0);
 			return xtendFile;
 		}
+	}
+
+	/** Create a SARL file.
+	 *
+	 * @param file the file.
+	 * @return the SARL script.
+	 * @throws Exception
+	 */
+	public SarlScript sarlScript(IFile file) throws Exception {
+		Resource resource = getResourceSet().createResource(uri(file));
+		resource.load(null);
+		return (SarlScript) resource.getContents().get(0);
 	}
 
 	/** Create a SARL file.

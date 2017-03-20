@@ -58,7 +58,7 @@ agent FactorialQueryAgent {
 
 	}
 
-	on Hello [occurrence.source != defaultAddress && !started] {
+	on Hello [!isFromMe && !started] {
 		started = true
 		task("discovery-task").cancel
 		info("Found Factorial")
@@ -84,7 +84,7 @@ agent FactorialAgent {
 		info("Factorial initialized")
 	}
 
-	on Hello [occurrence.source != defaultAddress] {
+	on Hello [!isFromMe] {
 		emit(new Hello)
 	}
 

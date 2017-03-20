@@ -34,7 +34,7 @@ agent AbstractAgent {
 		i--
 	}
 
-	def sayGoodBye {
+	def sayGoodBye : void {
 		info("Parent: Goodbye World!")
 	}
 	
