@@ -413,7 +413,7 @@ Parameter returns xtend::XtendParameter:
 	(extension?='extension' annotations+=XAnnotation*)?
 	name=ValidID ':' parameterType=JvmTypeReference 
 	(   (varArg?='*')
-	  | ('=' defaultValue=XLiteral))?
+	  | ('=' defaultValue=XExpression))?
 ;
 
 XtendEnumLiteral returns xtend::XtendEnumLiteral:

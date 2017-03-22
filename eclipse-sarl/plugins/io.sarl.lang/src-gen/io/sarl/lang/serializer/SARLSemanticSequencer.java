@@ -1411,7 +1411,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *         (extension?='extension' annotations+=XAnnotation*)? 
 	 *         name=ValidID 
 	 *         parameterType=JvmTypeReference 
-	 *         (varArg?='*' | defaultValue=XLiteral)?
+	 *         (varArg?='*' | defaultValue=XExpression)?
 	 *     )
 	 */
 	protected void sequence_Parameter(ISerializationContext context, SarlFormalParameter semanticObject) {

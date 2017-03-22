@@ -997,7 +997,7 @@ ruleParameter:
 		'*'
 		    |
 		'='
-		ruleXLiteral
+		ruleXExpression
 	)?
 ;
 

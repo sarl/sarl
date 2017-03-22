@@ -7379,9 +7379,9 @@ ruleParameter returns [EObject current=null]
 				(
 					(
 						{
-							newCompositeNode(grammarAccess.getParameterAccess().getDefaultValueXLiteralParserRuleCall_6_1_1_0());
+							newCompositeNode(grammarAccess.getParameterAccess().getDefaultValueXExpressionParserRuleCall_6_1_1_0());
 						}
-						lv_defaultValue_9_0=ruleXLiteral
+						lv_defaultValue_9_0=ruleXExpression
 						{
 							if ($current==null) {
 								$current = createModelElementForParent(grammarAccess.getParameterRule());
@@ -7390,7 +7390,7 @@ ruleParameter returns [EObject current=null]
 								$current,
 								"defaultValue",
 								lv_defaultValue_9_0,
-								"org.eclipse.xtext.xbase.Xbase.XLiteral");
+								"org.eclipse.xtext.xbase.Xbase.XExpression");
 							afterParserOrEnumRuleCall();
 						}
 					)

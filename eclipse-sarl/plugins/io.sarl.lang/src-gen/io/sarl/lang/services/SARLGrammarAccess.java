@@ -4597,15 +4597,15 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_6_1 = (Group)cAlternatives_6.eContents().get(1);
 		private final Keyword cEqualsSignKeyword_6_1_0 = (Keyword)cGroup_6_1.eContents().get(0);
 		private final Assignment cDefaultValueAssignment_6_1_1 = (Assignment)cGroup_6_1.eContents().get(1);
-		private final RuleCall cDefaultValueXLiteralParserRuleCall_6_1_1_0 = (RuleCall)cDefaultValueAssignment_6_1_1.eContents().get(0);
+		private final RuleCall cDefaultValueXExpressionParserRuleCall_6_1_1_0 = (RuleCall)cDefaultValueAssignment_6_1_1.eContents().get(0);
 		
 		//Parameter xtend::XtendParameter:
 		//	{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)?
-		//	name=ValidID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XLiteral)?;
+		//	name=ValidID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XExpression)?;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)? name=ValidID ':'
-		//parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XLiteral)?
+		//parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XExpression)?
 		public Group getGroup() { return cGroup; }
 		
 		//{SarlFormalParameter}
@@ -4647,7 +4647,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//JvmTypeReference
 		public RuleCall getParameterTypeJvmTypeReferenceParserRuleCall_5_0() { return cParameterTypeJvmTypeReferenceParserRuleCall_5_0; }
 		
-		//(varArg?='*' | '=' defaultValue=XLiteral)?
+		//(varArg?='*' | '=' defaultValue=XExpression)?
 		public Alternatives getAlternatives_6() { return cAlternatives_6; }
 		
 		//varArg?='*'
@@ -4656,17 +4656,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//'*'
 		public Keyword getVarArgAsteriskKeyword_6_0_0() { return cVarArgAsteriskKeyword_6_0_0; }
 		
-		//'=' defaultValue=XLiteral
+		//'=' defaultValue=XExpression
 		public Group getGroup_6_1() { return cGroup_6_1; }
 		
 		//'='
 		public Keyword getEqualsSignKeyword_6_1_0() { return cEqualsSignKeyword_6_1_0; }
 		
-		//defaultValue=XLiteral
+		//defaultValue=XExpression
 		public Assignment getDefaultValueAssignment_6_1_1() { return cDefaultValueAssignment_6_1_1; }
 		
-		//XLiteral
-		public RuleCall getDefaultValueXLiteralParserRuleCall_6_1_1_0() { return cDefaultValueXLiteralParserRuleCall_6_1_1_0; }
+		//XExpression
+		public RuleCall getDefaultValueXExpressionParserRuleCall_6_1_1_0() { return cDefaultValueXExpressionParserRuleCall_6_1_1_0; }
 	}
 	public class XtendEnumLiteralElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XtendEnumLiteral");
@@ -5591,7 +5591,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//Parameter xtend::XtendParameter:
 	//	{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)?
-	//	name=ValidID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XLiteral)?;
+	//	name=ValidID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XExpression)?;
 	public ParameterElements getParameterAccess() {
 		return pParameter;
 	}

@@ -44511,9 +44511,9 @@ rule__Parameter__DefaultValueAssignment_6_1_1
 	}
 :
 	(
-		{ before(grammarAccess.getParameterAccess().getDefaultValueXLiteralParserRuleCall_6_1_1_0()); }
-		ruleXLiteral
-		{ after(grammarAccess.getParameterAccess().getDefaultValueXLiteralParserRuleCall_6_1_1_0()); }
+		{ before(grammarAccess.getParameterAccess().getDefaultValueXExpressionParserRuleCall_6_1_1_0()); }
+		ruleXExpression
+		{ after(grammarAccess.getParameterAccess().getDefaultValueXExpressionParserRuleCall_6_1_1_0()); }
 	)
 ;
 finally {
