@@ -35,6 +35,7 @@ import org.arakhne.afc.util.OutputParameter;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
+import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.executor.ExecutorService;
 
 import io.sarl.eventdispatching.BehaviorGuardEvaluator;
@@ -315,6 +316,8 @@ public class AgentInternalEventsDispatcher {
 			this.executor.execute(() -> {
 				try {
 					runnable.run();
+				} catch (EarlyExitException e) {
+					// Be silent because this is the "early exit exception".
 				} catch (RuntimeException e) {
 					// Catch exception for notifying the caller
 					runException.set(e);
