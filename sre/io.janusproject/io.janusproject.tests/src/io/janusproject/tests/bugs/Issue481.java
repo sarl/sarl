@@ -46,7 +46,7 @@ import io.sarl.lang.core.Event;
  * @see https://github.com/sarl/sarl/issues/481
  */
 @SuppressWarnings("all")
-public class BugS481 extends AbstractJanusRunTest {
+public class Issue481 extends AbstractJanusRunTest {
 
 	private static final boolean LOG = false;
 	

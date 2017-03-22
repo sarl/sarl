@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package io.janusproject.tests.bugs;
+package io.janusproject.tests.bugs.janusproject;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -47,7 +47,7 @@ import io.sarl.lang.core.BuiltinCapacitiesProvider;
  * @see https://github.com/janus-project/janusproject/issues/91
  */
 @SuppressWarnings("all")
-public class BugJ91 extends AbstractJanusRunTest {
+public class Bug91 extends AbstractJanusRunTest {
 
 	@Before
 	public void setUp() {

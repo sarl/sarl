@@ -50,7 +50,7 @@ import io.sarl.lang.core.Event;
  * @see https://github.com/sarl/sarl/issues/458
  */
 @SuppressWarnings("all")
-public class BugS458 extends AbstractJanusRunTest {
+public class Bug458 extends AbstractJanusRunTest {
 
 	@Test
 	public void ExceptionInInit() throws Exception {

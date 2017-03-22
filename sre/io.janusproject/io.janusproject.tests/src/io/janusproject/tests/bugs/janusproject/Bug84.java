@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package io.janusproject.tests.bugs;
+package io.janusproject.tests.bugs.janusproject;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assume.assumeTrue;
@@ -48,7 +48,7 @@ import io.sarl.lang.core.BuiltinCapacitiesProvider;
  * @see https://github.com/janus-project/janusproject/issues/84
  */
 @SuppressWarnings("all")
-public class BugJ84 extends AbstractJanusRunTest {
+public class Bug84 extends AbstractJanusRunTest {
 
 	@Before
 	public void setUp() {

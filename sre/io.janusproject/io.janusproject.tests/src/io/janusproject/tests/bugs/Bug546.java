@@ -66,12 +66,12 @@ import io.sarl.util.Scopes;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	BugS546.NoRandomWaiting.class,
-	BugS546.RandomWaiting.class,
-	BugS546.HugeEventSetTest.class,
+	Bug546.NoRandomWaiting.class,
+	Bug546.RandomWaiting.class,
+	Bug546.HugeEventSetTest.class,
 })
 @SuppressWarnings("all")
-public class BugS546 {
+public class Bug546 {
 
 	private static final boolean LOG = false;
 	

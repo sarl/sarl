@@ -54,7 +54,7 @@ import io.sarl.lang.core.Event;
  * @see https://github.com/sarl/sarl/issues/224
  */
 @SuppressWarnings("all")
-public class BugS224 extends AbstractJanusRunTest {
+public class Issue224 extends AbstractJanusRunTest {
 
 	private static final int TIMEOUT = 1000;
 

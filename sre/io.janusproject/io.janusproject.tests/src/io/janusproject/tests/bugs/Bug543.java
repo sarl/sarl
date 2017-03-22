@@ -62,7 +62,7 @@ import io.sarl.lang.util.ClearableReference;
  * @see https://github.com/sarl/sarl/issues/543
  */
 @SuppressWarnings("all")
-public class BugS543 extends AbstractJanusRunTest {
+public class Bug543 extends AbstractJanusRunTest {
 
 	@Test
 	public void setSkill() throws Exception {
