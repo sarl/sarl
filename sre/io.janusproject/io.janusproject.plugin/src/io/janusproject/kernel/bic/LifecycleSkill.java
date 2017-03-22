@@ -27,7 +27,7 @@ import java.util.UUID;
 
 import com.google.inject.Inject;
 
-import io.janusproject.services.executor.ChuckNorrisException;
+import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.spawn.SpawnService;
 
 import io.sarl.core.DefaultContextInteractions;
@@ -143,7 +143,7 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 		busCapacity.selfEvent(new AsynchronousAgentKillingEvent());
 		// Never return from the killMe
 		Thread.yield();
-		throw new ChuckNorrisException();
+		throw new EarlyExitException();
 	}
 
 	/**

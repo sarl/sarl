@@ -30,7 +30,7 @@ import java.util.logging.LogRecord;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import io.janusproject.services.executor.ChuckNorrisException;
+import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.logging.LogService;
 
 /**
@@ -62,7 +62,7 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 			cause = cause.getCause();
 		}
 		final LogRecord record;
-		if (cause instanceof ChuckNorrisException || exception instanceof ChuckNorrisException) {
+		if (cause instanceof EarlyExitException || exception instanceof EarlyExitException) {
 			// Chuck Norris cannot be catched!
 			return;
 		}

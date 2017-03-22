@@ -38,7 +38,7 @@ import com.google.inject.Singleton;
 
 import io.janusproject.JanusConfig;
 import io.janusproject.services.AbstractDependentService;
-import io.janusproject.services.executor.ChuckNorrisException;
+import io.janusproject.services.executor.EarlyExitException;
 
 /**
  * Platform service that supports the execution resources.
@@ -185,7 +185,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 						for (int j = 0; j < runGroupSize; ++j) {
 							try {
 								task.run();
-							} catch (ChuckNorrisException e) {
+							} catch (EarlyExitException e) {
 								//
 							} catch (Throwable e) {
 								errors.incrementAndGet();
@@ -200,7 +200,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 						for (int j = 0; j < rest; ++j) {
 							try {
 								task.run();
-							} catch (ChuckNorrisException e) {
+							} catch (EarlyExitException e) {
 								//
 							} catch (Throwable e) {
 								errors.incrementAndGet();
@@ -215,7 +215,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 					this.exec.execute(() -> {
 						try {
 							task.run();
-						} catch (ChuckNorrisException e) {
+						} catch (EarlyExitException e) {
 							//
 						} catch (Throwable e) {
 							errors.incrementAndGet();
@@ -343,7 +343,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	}
 
 	/**
-	 * A specific Janus runnable that is catching the {@link ChuckNorrisException}.
+	 * A specific Janus runnable that is catching the {@link EarlyExitException}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -373,7 +373,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 		public void run() {
 			try {
 				this.runnable.run();
-			} catch (ChuckNorrisException ex) {
+			} catch (EarlyExitException ex) {
 				//
 			}
 		}
@@ -396,7 +396,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	}
 
 	/**
-	 * A specific Janus callable that is catching the {@link ChuckNorrisException}.
+	 * A specific Janus callable that is catching the {@link EarlyExitException}.
 	 *
 	 * @param <T> the type of the result.
 	 * @author $Author: sgalland$
@@ -427,7 +427,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 		public T call() throws Exception {
 			try {
 				return this.callable.call();
-			} catch (ChuckNorrisException e) {
+			} catch (EarlyExitException e) {
 				return null;
 			}
 		}

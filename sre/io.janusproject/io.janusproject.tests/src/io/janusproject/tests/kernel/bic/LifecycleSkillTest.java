@@ -42,7 +42,7 @@ import io.janusproject.kernel.bic.DefaultContextInteractionsSkill;
 import io.janusproject.kernel.bic.InternalEventBusCapacity;
 import io.janusproject.kernel.bic.InternalEventBusSkill;
 import io.janusproject.kernel.bic.LifecycleSkill;
-import io.janusproject.services.executor.ChuckNorrisException;
+import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 
@@ -174,7 +174,7 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 		try {
 			this.skill.killMe();
 			fail("killMe() must never return!"); //$NON-NLS-1$
-		} catch (ChuckNorrisException exception) {
+		} catch (EarlyExitException exception) {
 			// Expected exception
 		} catch (Exception e) {
 			throw e;

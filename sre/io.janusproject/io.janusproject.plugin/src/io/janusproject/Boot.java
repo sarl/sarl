@@ -52,7 +52,7 @@ import org.apache.commons.cli.ParseException;
 import org.arakhne.afc.vmutil.FileSystem;
 
 import io.janusproject.kernel.Kernel;
-import io.janusproject.services.executor.ChuckNorrisException;
+import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.network.NetworkConfig;
 import io.janusproject.util.LoggerCreator;
 
@@ -322,7 +322,7 @@ public final class Boot {
 			// Do nothing at exit
 			if (embedded) {
 				setExiter(() -> {
-					throw new ChuckNorrisException();
+					throw new EarlyExitException();
 				});
 			}
 			// Show the Janus logo?
@@ -429,7 +429,7 @@ public final class Boot {
 			assert agent != null;
 
 			startJanus(agent, freeArgs);
-		} catch (ChuckNorrisException exception) {
+		} catch (EarlyExitException exception) {
 			// Be silent
 			return;
 		} catch (Throwable e) {

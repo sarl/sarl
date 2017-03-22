@@ -32,14 +32,14 @@ package io.janusproject.services.executor;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class ChuckNorrisException extends RuntimeException {
+public final class EarlyExitException extends RuntimeException {
 
 	private static final long serialVersionUID = -3212775069868589362L;
 
 	/**
 	 * Construct.
 	 */
-	public ChuckNorrisException() {
+	public EarlyExitException() {
 		//
 	}
 

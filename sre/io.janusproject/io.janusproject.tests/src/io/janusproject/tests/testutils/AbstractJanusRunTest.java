@@ -48,7 +48,7 @@ import org.junit.runner.Description;
 import io.janusproject.Boot;
 import io.janusproject.kernel.Kernel;
 import io.janusproject.modules.StandardJanusPlatformModule;
-import io.janusproject.services.executor.ChuckNorrisException;
+import io.janusproject.services.executor.EarlyExitException;
 
 import io.sarl.core.Initialize;
 import io.sarl.core.Lifecycle;
@@ -475,7 +475,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 					getSkill(Schedules.class).in(1000, (it) -> forceKillMe());
 				}
 			} catch (Throwable exception) {
-				if (!(exception instanceof ChuckNorrisException)) {
+				if (!(exception instanceof EarlyExitException)) {
 					addResult(exception);
 				}
 				throw exception;

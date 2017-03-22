@@ -19,6 +19,7 @@
  */
 package io.janusproject.tests.testutils;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -110,10 +111,8 @@ public class ExceptionLogService extends AbstractService implements LogService {
 
 	@Override
 	public void error(String message, Object... params) {
-		final Exception ex = new LoggedException(message);
-		synchronized(getResultMutex()) {
-			this.results.add(ex);
-		}
+		final Exception ex = new LoggedException(MessageFormat.format(message, params));
+		error(ex);
 	}
 
 	@Override
@@ -121,6 +120,7 @@ public class ExceptionLogService extends AbstractService implements LogService {
 		synchronized(getResultMutex()) {
 			this.results.add(exception);
 		}
+		this.logger.log(Level.SEVERE, exception.getMessage(), exception);
 	}
 
 	@Override
@@ -130,6 +130,7 @@ public class ExceptionLogService extends AbstractService implements LogService {
 			synchronized(getResultMutex()) {
 				this.results.add(ex);
 			}
+			this.logger.log(Level.SEVERE, ex.getMessage(), ex);
 		}
 	}
 
@@ -140,6 +141,7 @@ public class ExceptionLogService extends AbstractService implements LogService {
 			synchronized(getResultMutex()) {
 				this.results.add(ex);
 			}
+			this.logger.log(Level.SEVERE, ex.getMessage(), ex);
 		}
 	}
 
@@ -165,7 +167,7 @@ public class ExceptionLogService extends AbstractService implements LogService {
 
 	@Override
 	public boolean isLoggeable(Level level) {
-		return level == Level.SEVERE;
+		return level.intValue() <= Level.SEVERE.intValue();
 	}
 
 	@Override
@@ -180,13 +182,13 @@ public class ExceptionLogService extends AbstractService implements LogService {
 
 	@Override
 	protected void doStart() {
-		this.logger.setLevel(Level.OFF);
+		this.logger.setLevel(Level.SEVERE);
 		notifyStarted();
 	}
 
 	@Override
 	protected void doStop() {
-		this.logger.setLevel(Level.OFF);
+		//this.logger.setLevel(Level.OFF);
 		notifyStopped();
 	}
 

@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import io.janusproject.kernel.services.jdk.executors.JdkUncaughtExceptionHandler;
-import io.janusproject.services.executor.ChuckNorrisException;
+import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
@@ -75,7 +75,7 @@ public class JdkUncaughtExceptionHandlerTest extends AbstractJanusTest {
 
 	@Test
 	public void uncaughtException_ChuckNorris() {
-		Exception e = new ChuckNorrisException();
+		Exception e = new EarlyExitException();
 		this.handler.uncaughtException(Thread.currentThread(), e);
 		Mockito.verifyZeroInteractions(this.logger);
 	}

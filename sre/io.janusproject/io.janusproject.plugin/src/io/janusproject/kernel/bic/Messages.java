@@ -43,7 +43,6 @@ public class Messages extends NLS {
 	public static String LoggingSkill_0;
 	public static String SchedulesSkill_0;
 	public static String SchedulesSkill_1;
-	public static String SchedulesSkill_2;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
