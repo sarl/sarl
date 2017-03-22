@@ -161,7 +161,9 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 			final Destroy event = new Destroy();
 			event.setSource(getInnerDefaultSpaceAddress());
 			this.eventDispatcher.unregisterAll((subscriber) -> {
-				this.eventDispatcher.immediateDispatchTo(subscriber, event);
+				if (subscriber != getOwner()) {
+					this.eventDispatcher.immediateDispatchTo(subscriber, event);
+				}
 			});
 		}
 	}
