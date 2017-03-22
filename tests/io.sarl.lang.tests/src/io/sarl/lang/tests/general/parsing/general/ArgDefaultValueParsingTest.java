@@ -98,7 +98,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					"extraneous input '*' expecting ')'");
+					"no viable alternative at input");
 		}
 
 		@Test
@@ -426,7 +426,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					"extraneous input '*' expecting ')'");
+					"no viable alternative at input");
 		}
 
 		@Test
@@ -608,7 +608,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					"extraneous input '*' expecting ')'");
+					"no viable alternative at input");
 		}
 
 		@Test
@@ -903,7 +903,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					"extraneous input '*' expecting ')'");
+					"no viable alternative at input");
 		}
 
 		@Test
@@ -1090,7 +1090,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					"extraneous input '*' expecting ')'");
+					"no viable alternative at input");
 		}
 
 		@Test
@@ -1351,7 +1351,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					"extraneous input '*' expecting ')'");
+					"no viable alternative at input");
 		}
 
 		@Test
@@ -1492,7 +1492,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					"extraneous input '*' expecting ')'");
+					"no viable alternative at input");
 		}
 
 		@Test
@@ -2016,7 +2016,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
-					"extraneous input '*' expecting ')'");
+					"no viable alternative at input");
 		}
 
 		@Test

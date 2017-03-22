@@ -817,7 +817,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			appendComparisonFunctions(context, source, inferredJvmType);
 
 			// Add clone functions if the generated type is cloneable
-			appendCloneFunctionsIfCloneable(context, source, inferredJvmType);
+			appendCloneFunctionIfCloneable(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
@@ -998,7 +998,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			appendComparisonFunctions(context, source, inferredJvmType);
 
 			// Add clone functions if the generated type is cloneable
-			appendCloneFunctionsIfCloneable(context, source, inferredJvmType);
+			appendCloneFunctionIfCloneable(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
@@ -1063,7 +1063,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			appendComparisonFunctions(context, source, inferredJvmType);
 
 			// Add clone functions if the generated type is cloneable
-			appendCloneFunctionsIfCloneable(context, source, inferredJvmType);
+			appendCloneFunctionIfCloneable(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
@@ -1134,7 +1134,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			appendToStringFunctions(context, source, inferredJvmType);
 
 			// Add clone functions if the generated type is cloneable
-			appendCloneFunctionsIfCloneable(context, source, inferredJvmType);
+			appendCloneFunctionIfCloneable(context, source, inferredJvmType);
 
 			// Add serialVersionUID field if the generated type is serializable
 			appendSerialNumberIfSerializable(context, source, inferredJvmType);
@@ -1197,7 +1197,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			appendComparisonFunctions(context, source, inferredJvmType);
 
 			// Add clone functions if the generated type is cloneable
-			appendCloneFunctionsIfCloneable(context, source, inferredJvmType);
+			appendCloneFunctionIfCloneable(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
 			addDefaultConstructors(source, inferredJvmType);
@@ -2684,9 +2684,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param source the source object.
 	 * @param target the inferred JVM object.
 	 * @since 0.6
-	 * @see #appendCloneFunctionsIfCloneable(GenerationContext, XtendTypeDeclaration, JvmGenericType)
+	 * @see #appendCloneFunctionIfCloneable(GenerationContext, XtendTypeDeclaration, JvmGenericType)
 	 */
-	protected void appendCloneFunctions(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
+	protected void appendCloneFunction(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
 		for (final JvmOperation operation : target.getDeclaredOperations()) {
 			if (CLONE_FUNCTION_NAME.equals(operation.getSimpleName())) {
 				return;
@@ -2739,11 +2739,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param source the source object.
 	 * @param target the inferred JVM object.
 	 * @since 0.6
-	 * @see #appendCloneFunctions(GenerationContext, XtendTypeDeclaration, JvmGenericType)
+	 * @see #appendCloneFunction(GenerationContext, XtendTypeDeclaration, JvmGenericType)
 	 */
-	protected void appendCloneFunctionsIfCloneable(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
+	protected void appendCloneFunctionIfCloneable(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
 		if (!target.isInterface() && this.inheritanceHelper.isSubTypeOf(target, Cloneable.class, null)) {
-			appendCloneFunctions(context, source, target);
+			appendCloneFunction(context, source, target);
 		}
 	}
 
