@@ -20,20 +20,22 @@
 package io.janusproject.tests.kernel.services.jdk.executors;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 import java.util.concurrent.CancellationException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import io.janusproject.kernel.services.jdk.executors.JdkUncaughtExceptionHandler;
-import io.janusproject.services.executor.EarlyExitException;
-import io.janusproject.services.logging.LogService;
-import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+
+import io.janusproject.kernel.services.jdk.executors.JdkUncaughtExceptionHandler;
+import io.janusproject.services.executor.ExecutorService;
+import io.janusproject.services.logging.LogService;
+import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.tests.api.Nullable;
 
@@ -74,10 +76,14 @@ public class JdkUncaughtExceptionHandlerTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void uncaughtException_ChuckNorris() {
-		Exception e = new EarlyExitException();
-		this.handler.uncaughtException(Thread.currentThread(), e);
-		Mockito.verifyZeroInteractions(this.logger);
+	public void uncaughtException_EarlyExit() {
+		try {
+			ExecutorService.neverReturn();
+			fail("Early exit exception is expected");
+		} catch (Exception e) {
+			this.handler.uncaughtException(Thread.currentThread(), e);
+			Mockito.verifyZeroInteractions(this.logger);
+		}
 	}
 
 	@Test

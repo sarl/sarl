@@ -37,8 +37,8 @@ import org.mockito.Mockito;
 import org.mockito.internal.verification.Times;
 
 import io.janusproject.kernel.services.jdk.executors.JdkExecutorService;
-import io.janusproject.kernel.services.jdk.executors.JdkExecutorService.JanusCallable;
-import io.janusproject.kernel.services.jdk.executors.JdkExecutorService.JanusRunnable;
+import io.janusproject.services.executor.JanusCallable;
+import io.janusproject.services.executor.JanusRunnable;
 import io.janusproject.tests.testutils.AbstractDependentServiceTest;
 import io.janusproject.tests.testutils.AvoidServiceStartForTest;
 import io.janusproject.tests.testutils.StartServiceForTest;

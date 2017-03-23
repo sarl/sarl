@@ -39,6 +39,14 @@ import io.janusproject.services.DependentService;
  */
 public interface ExecutorService extends DependentService {
 
+	/** This function simulate the never return from this call.
+	 * The {@link EarlyExitException} is thrown.
+	 * @since 0.6
+	 */
+	static void neverReturn() {
+		throw new EarlyExitException();
+	}
+
 	/**
 	 * Replies the JVM executor service used by service.
 	 *

@@ -53,6 +53,7 @@ import org.arakhne.afc.vmutil.FileSystem;
 
 import io.janusproject.kernel.Kernel;
 import io.janusproject.services.executor.EarlyExitException;
+import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.network.NetworkConfig;
 import io.janusproject.util.LoggerCreator;
 
@@ -322,7 +323,7 @@ public final class Boot {
 			// Do nothing at exit
 			if (embedded) {
 				setExiter(() -> {
-					throw new EarlyExitException();
+					ExecutorService.neverReturn();
 				});
 			}
 			// Show the Janus logo?

@@ -38,7 +38,8 @@ import com.google.inject.Singleton;
 
 import io.janusproject.JanusConfig;
 import io.janusproject.services.AbstractDependentService;
-import io.janusproject.services.executor.EarlyExitException;
+import io.janusproject.services.executor.JanusCallable;
+import io.janusproject.services.executor.JanusRunnable;
 
 /**
  * Platform service that supports the execution resources.
@@ -152,7 +153,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	 */
 	@SuppressWarnings("static-method")
 	protected Runnable createTask(Runnable runnable) {
-		return new JanusRunnable(runnable);
+		return JanusRunnable.newInstance(runnable);
 	}
 
 	/** Create a task with the given callable.
@@ -163,7 +164,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	 */
 	@SuppressWarnings("static-method")
 	protected <T> Callable<T> createTask(Callable<T> callable) {
-		return new JanusCallable<>(callable);
+		return JanusCallable.newInstance(callable);
 	}
 
 	@Override
@@ -174,6 +175,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	@Override
 	public int executeMultipleTimesInParallelAndWaitForTermination(Runnable task, int nbExecutions, int runGroupSize) throws InterruptedException {
 		assert runGroupSize >= 1;
+		final Runnable janusTask = createTask(task);
 		if (nbExecutions > 1) {
 			final AtomicInteger errors = new AtomicInteger();
 			final CountDownLatch doneSignal = new CountDownLatch(nbExecutions);
@@ -184,9 +186,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 					this.exec.execute(() -> {
 						for (int j = 0; j < runGroupSize; ++j) {
 							try {
-								task.run();
-							} catch (EarlyExitException e) {
-								//
+								janusTask.run();
 							} catch (Throwable e) {
 								errors.incrementAndGet();
 							} finally {
@@ -199,9 +199,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 					this.exec.execute(() -> {
 						for (int j = 0; j < rest; ++j) {
 							try {
-								task.run();
-							} catch (EarlyExitException e) {
-								//
+								janusTask.run();
 							} catch (Throwable e) {
 								errors.incrementAndGet();
 							} finally {
@@ -214,9 +212,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 				for (int i = 0; i < nbExecutions; ++i) {
 					this.exec.execute(() -> {
 						try {
-							task.run();
-						} catch (EarlyExitException e) {
-							//
+							janusTask.run();
 						} catch (Throwable e) {
 							errors.incrementAndGet();
 						} finally {
@@ -230,7 +226,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 			return nbExecutions - errors.get();
 		}
 		if (nbExecutions == 1) {
-			task.run();
+			janusTask.run();
 			return 1;
 		}
 		return 0;
@@ -338,113 +334,6 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 		@Override
 		public String toString() {
 			return "Janus Thread Purger"; //$NON-NLS-1$
-		}
-
-	}
-
-	/**
-	 * A specific Janus runnable that is catching the {@link EarlyExitException}.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	public static class JanusRunnable implements Runnable {
-
-		private final Runnable runnable;
-
-		/**
-		 * @param runnable the wrapped task.
-		 */
-		public JanusRunnable(Runnable runnable) {
-			this.runnable = runnable;
-		}
-
-		/** Replies the wrapped task.
-		 *
-		 * @return the runnable.
-		 */
-		public Runnable getWrappedRunnable() {
-			return this.runnable;
-		}
-
-		@Override
-		public void run() {
-			try {
-				this.runnable.run();
-			} catch (EarlyExitException ex) {
-				//
-			}
-		}
-
-		@Override
-		public String toString() {
-			return this.runnable.toString();
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			return this.runnable.equals(obj);
-		}
-
-		@Override
-		public int hashCode() {
-			return this.runnable.hashCode();
-		}
-
-	}
-
-	/**
-	 * A specific Janus callable that is catching the {@link EarlyExitException}.
-	 *
-	 * @param <T> the type of the result.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	public static class JanusCallable<T> implements Callable<T> {
-
-		private final Callable<T> callable;
-
-		/**
-		 * @param callable the wrapped task.
-		 */
-		JanusCallable(Callable<T> callable) {
-			this.callable = callable;
-		}
-
-		/** Replies the wrapped task.
-		 *
-		 * @return the callable.
-		 */
-		public Callable<T> getWrappedCallable() {
-			return this.callable;
-		}
-
-		@Override
-		public T call() throws Exception {
-			try {
-				return this.callable.call();
-			} catch (EarlyExitException e) {
-				return null;
-			}
-		}
-
-		@Override
-		public String toString() {
-			return this.callable.toString();
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			return this.callable.equals(obj);
-		}
-
-		@Override
-		public int hashCode() {
-			return this.callable.hashCode();
 		}
 
 	}
