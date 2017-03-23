@@ -63,6 +63,7 @@ public class Messages extends NLS {
 	public static String SARLArgumentsTab_2;
 	public static String SARLArgumentsTab_3;
 	public static String SARLArgumentsTab_4;
+	public static String SARLArgumentsTab_5;
 	public static String SARLMainLaunchConfigurationTab_0;
 	public static String SARLMainLaunchConfigurationTab_1;
 	public static String SARLMainLaunchConfigurationTab_2;

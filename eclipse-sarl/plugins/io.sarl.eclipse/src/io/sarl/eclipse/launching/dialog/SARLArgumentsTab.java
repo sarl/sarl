@@ -25,10 +25,10 @@ import javax.inject.Inject;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaArgumentsTab;
 import org.eclipse.jdt.internal.debug.ui.actions.ControlAccessibleListener;
-import org.eclipse.jdt.internal.debug.ui.launcher.LauncherMessages;
 import org.eclipse.jdt.internal.debug.ui.launcher.VMArgumentsBlock;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -158,7 +158,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 	}
 
 	private void createSREArgsVariableButton(Group group) {
-		final Button sreArgVariableButton = createPushButton(group, LauncherMessages.JavaArgumentsTab_5, null);
+		final Button sreArgVariableButton = createPushButton(group, "", null); //$NON-NLS-1$
 		sreArgVariableButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 		sreArgVariableButton.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")
@@ -205,6 +205,9 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 			final Group group = (Group) this.fVMArgumentsText.getParent();
 			group.setText(Messages.SARLArgumentsTab_3);
 			ControlAccessibleListener.addListener(this.fVMArgumentsText, group.getText());
+
+			// Add the message for the max memory
+			SWTFactory.createLabel(group, Messages.SARLArgumentsTab_5, 0);
 		}
 
 	}
