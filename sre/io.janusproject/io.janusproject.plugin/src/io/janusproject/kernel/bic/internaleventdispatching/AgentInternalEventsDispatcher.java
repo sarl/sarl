@@ -335,7 +335,21 @@ public class AgentInternalEventsDispatcher {
 		try {
 			doneSignal.await();
 		} catch (InterruptedException ex) {
-			// Be silent and continue the task of the caller.
+			// XXX: Improve because:
+			// This exception occurs when one of the launched task kills the agent before all the
+			// submitted tasks are finished. Keep in mind that killing an agent should kill the
+			// launched tasks.
+			// Example of code that is generating this issue:
+			//
+			// on Initialize {
+			//   in (100) [
+			//     killMe
+			//   ]
+			// }
+			//
+			// In this example, the killMe is launched before the Initialize code is finished;
+			// and because the Initialize event is fired through the current function, it
+			// causes the InterruptedException.
 		}
 
 		// Re-throw the run-time exception

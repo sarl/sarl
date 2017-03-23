@@ -40,6 +40,7 @@ import com.google.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
+import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.executor.ExecutorService;
 
 import io.sarl.core.AgentTask;
@@ -484,6 +485,8 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 				} else {
 					mustBeCanceled = true;
 				}
+			} catch (EarlyExitException ex) {
+				// Be silent
 			} catch (Throwable ex) {
 				getLoggingSkill().error(Messages.SchedulesSkill_1, ex, toString(), ex.getLocalizedMessage());
 				mustBeCanceled = true;

@@ -10,6 +10,7 @@ then
 	echo "Loading user configuration"
 	. "$HOME/.eclipse/eclipserc"
 elif [ -r "$HOME/.eclipserc" ]
+then
 	echo "Loading user configuration"
 	. "$HOME/.eclipserc"
 fi
