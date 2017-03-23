@@ -38,6 +38,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -133,7 +134,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
 			if (projectAnnotation == null || projectAnnotation.automaticProjectCreation()) {
 				try {
-					createDefaultTestProject(buildPath);
+					createDefaultTestProject(AbstractSarlUiTest.this.initialClasspath);
 				} catch (CoreException e) {
 					throw new RuntimeException(e);
 				}
@@ -171,27 +172,28 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	/** Create the default test project with the given classpath.
 	 *
 	 * @param classpath - the bundles on the classpath.
+	 * @return the project.
 	 * @throws CoreException if the project cannot be created.
 	 * @since 0.3.0
 	 */
-	protected void createDefaultTestProject(String[] classpath) throws CoreException {
-		createDefaultTestProject(classpath, WorkbenchTestHelper.TESTPROJECT_NAME);
+	protected IProject createDefaultTestProject(String[] classpath) throws CoreException {
+		return createDefaultTestProject(classpath, WorkbenchTestHelper.TESTPROJECT_NAME);
 	}
 
 	/** Create the default test project with the given classpath.
 	 *
 	 * @param classpath - the bundles on the classpath.
 	 * @param projectName - the name of the project.
+	 * @return the project.
 	 * @throws CoreException if the project cannot be created.
 	 * @since 0.3.0
 	 */
-	protected void createDefaultTestProject(String[] classpath, String projectName) throws CoreException {
+	protected IProject createDefaultTestProject(String[] classpath, String projectName) throws CoreException {
 		ProjectCreator creator = getInjector().getInstance(ProjectCreator.class);
 		if (classpath == null) {
-			this.workbenchHelper.createPluginProject(projectName, creator);
-		} else {
-			this.workbenchHelper.createPluginProject(projectName, creator, classpath);
+			return this.workbenchHelper.createPluginProject(projectName, creator);
 		}
+		return this.workbenchHelper.createPluginProject(projectName, creator, classpath);
 	}
 
 	/** Replies the injected injector.

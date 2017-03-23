@@ -21,6 +21,8 @@
 
 package io.sarl.lang.ui.tests.contentassist;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -50,28 +52,19 @@ import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal;
 import org.eclipse.xtext.ui.editor.contentassist.ReplacementTextApplier;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
+import org.eclipse.xtext.util.StringInputStream;
 import org.junit.Assert;
 import org.junit.ComparisonFailure;
 
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlUiTest;
 import io.sarl.tests.api.WorkbenchTestHelper;
 
 @SuppressWarnings("all")
 public abstract class AbstractContentAssistTest extends AbstractSarlUiTest implements ResourceLoadHelper {
 
-	private String fileExtension;
-
 	@Inject
 	private IGrammarAccess access;
-
-	/** Change the file extension for the scripts.
-	 *
-	 * @param extensions the file extentions, separated by comas.
-	 */
-	@Inject
-	protected void setExtensions(@Named(Constants.FILE_EXTENSIONS) String extensions) {
-		this.fileExtension = extensions.split(",")[0];
-	}
 
 	@Override
 	protected Module[] getInjectionModules() {
@@ -100,9 +93,12 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 				}
 			}
 			final WorkbenchTestHelper helper = helper();
-			final IFile file = helper.createFile("Test." + this.fileExtension, content.toString());
+			final String strContent = content.toString();
+			final IFile file = helper.createFile(helper.generateFilename(), strContent);
 			final XtextResource resource = (XtextResource) helper.getResourceSet().createResource(helper.uri(file));
-			resource.load(null);
+			try (InputStream is = new StringInputStream(strContent)) {
+				resource.load(is, null);
+			}
 			return resource;
 		} catch(Exception e) {
 			throw new RuntimeException(e);

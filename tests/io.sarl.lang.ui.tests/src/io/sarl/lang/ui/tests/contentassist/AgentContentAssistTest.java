@@ -28,6 +28,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.tests.api.TestClasspath;
+import io.sarl.tests.api.TestScope;
 
 @SuppressWarnings("all")
 public class AgentContentAssistTest extends AbstractContentAssistTest {
@@ -43,8 +44,14 @@ public class AgentContentAssistTest extends AbstractContentAssistTest {
 	}
 
 	@Test
-	@TestClasspath({"io.sarl.core"})
+	@TestScope(eclipse = true, tycho = false)
 	public void usesLifecycle() throws Exception {
+		// Create the fake lifecycle
+		helper().createFile(helper().generateFilename(), multilineString(
+				"package io.sarl.core",
+				"capacity Lifecycle {",
+				"  def killMe",
+				"}"));
 		newBuilder().append("uses Li").assertText("io.sarl.core.Lifecycle");
 	}
 
