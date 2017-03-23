@@ -125,7 +125,10 @@ public class Bug592 extends AbstractSarlTest {
 				"  def fct(param : int = myField) { }",
 				"}"));
 		final Validator validator = validate(mas);
-		validator.assertNoIssues();
+		validator.assertError(
+				XbasePackage.eINSTANCE.getXFeatureCall(),
+				IssueCodes.FORBIDDEN_REFERENCE,
+				"Forbidden reference to not final field myField from a default value");
 	}
 
 	@Test

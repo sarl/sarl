@@ -95,6 +95,7 @@ import java.util.TreeMap;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
@@ -1120,11 +1121,12 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkDefaultValueTypeCompatibleWithParameterType(SarlFormalParameter param) {
-		if (param.getDefaultValue() != null) {
+		final XExpression defaultValue = param.getDefaultValue();
+		if (defaultValue != null) {
 			final JvmTypeReference rawType = param.getParameterType();
 			assert rawType != null;
 			final LightweightTypeReference toType = toLightweightTypeReference(rawType, true);
-			final LightweightTypeReference fromType = getActualType(param.getDefaultValue());
+			final LightweightTypeReference fromType = getActualType(defaultValue);
 			if (!Utils.canCast(fromType, toType, true, false, true)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_38,
@@ -1135,6 +1137,48 @@ public class SARLValidator extends AbstractSARLValidator {
 						INCOMPATIBLE_TYPES,
 						canonicalName(fromType),
 						canonicalName(toType));
+			}
+		}
+	}
+
+	/** Check if the default values has not a reference to the not final fields.
+	 *
+	 * @param param - the formal parameter to check.
+	 */
+	@Check
+	public void checkDefaultValueFieldReference(SarlFormalParameter param) {
+		final XExpression defaultValue = param.getDefaultValue();
+		if (defaultValue != null) {
+			final Iterator<XFeatureCall> iter;
+			if (defaultValue instanceof XFeatureCall) {
+				iter = Iterators.singletonIterator((XFeatureCall) defaultValue);
+			} else {
+				iter = Iterators.filter(defaultValue.eAllContents(), XFeatureCall.class);
+			}
+			while (iter.hasNext()) {
+				final XFeatureCall call = iter.next();
+				final JvmIdentifiableElement feature = call.getFeature();
+				String invalidFieldName = null;
+				if (feature instanceof XtendField) {
+					final XtendField field = (XtendField) feature;
+					if (!field.isFinal()) {
+						invalidFieldName = field.getName();
+					}
+				} else if (feature instanceof JvmField) {
+					final JvmField field = (JvmField) feature;
+					if (!field.isFinal()) {
+						invalidFieldName = field.getSimpleName();
+					}
+				}
+				if (invalidFieldName != null) {
+					error(MessageFormat.format(
+							Messages.SARLValidator_19,
+							invalidFieldName),
+							call,
+							XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							FORBIDDEN_REFERENCE);
+				}
 			}
 		}
 	}
