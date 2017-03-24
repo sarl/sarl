@@ -11,11 +11,11 @@ Require-Bundle: io.sarl.m2e;bundle-version="0.6.0",
  io.sarl.tests.testdata;bundle-version="0.6.0",
  org.eclipse.xtext.junit4;bundle-version="2.11.0",
  org.eclipse.xtext.ui;bundle-version="2.11.0",
- org.eclipse.jdt.core;bundle-version="3.12.2",
+ org.eclipse.jdt.core;bundle-version="3.12.3",
  org.eclipse.m2e.maven.runtime;bundle-version="1.7.0",
  org.eclipse.m2e.core;bundle-version="1.7.0",
  org.mockito.mockito-core;bundle-version="2.0.111",
  org.eclipse.core.resources;bundle-version="3.11.1",
  org.eclipse.equinox.common;bundle-version="3.8.0",
- org.eclipse.swt;bundle-version="3.105.2"
+ org.eclipse.swt;bundle-version="3.105.3"
 Export-Package: io.sarl.m2e.tests

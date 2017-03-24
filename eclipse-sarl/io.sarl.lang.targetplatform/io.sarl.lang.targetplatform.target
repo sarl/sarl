@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="109">
+<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="110">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.platform.feature.group" version="4.6.2.v20161124-1529"/>
-<unit id="org.eclipse.platform.ide" version="4.6.2.M20161124-1400"/>
+<unit id="org.eclipse.platform.feature.group" version="4.6.3.v20170301-0400"/>
+<unit id="org.eclipse.platform.ide" version="4.6.3.M20170301-0400"/>
 <unit id="org.eclipse.m2e.feature.feature.group" version="1.7.0.20160603-1933"/>
-<unit id="org.eclipse.jdt.feature.group" version="3.12.2.v20161124-1400"/>
-<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.8.0.v201603091933"/>
-<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.8.0.v201608061842"/>
-<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.7.1.v201508262220"/>
-<unit id="org.eclipse.pde.source.feature.group" version="3.12.2.v20161124-1400"/>
-<unit id="org.eclipse.egit.feature.group" version="4.4.1.201607150455-r"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.12.3.v20170301-0400"/>
+<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.8.0.v201701191735"/>
+<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.8.2.v201702270442"/>
+<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.8.2.v201701191735"/>
+<unit id="org.eclipse.pde.source.feature.group" version="3.12.3.v20170301-0400"/>
+<unit id="org.eclipse.egit.feature.group" version="4.6.1.201703071140-r"/>
 <unit id="org.eclipse.equinox.executable.feature.group" version="3.6.300.v20161122-1740"/>
-<unit id="org.eclipse.epp.mpc.feature.group" version="1.5.3.v20161116-1851"/>
+<unit id="org.eclipse.epp.mpc.feature.group" version="1.5.4.v20170222-1941"/>
 <unit id="org.eclipse.xsd.feature.group" version="2.12.0.v20160526-0356"/>
 <repository location="http://download.eclipse.org/releases/neon"/>
 </location>

@@ -223,10 +223,10 @@
 
    <requires>
       <import plugin="io.sarl.lang.core" version="0.6.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.11.2" match="greaterOrEqual"/>
       <import plugin="com.google.inject" version="4.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.11.0" match="greaterOrEqual"/>
       <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.11.3" match="greaterOrEqual"/>
    </requires>
 
    <plugin
