@@ -5,8 +5,8 @@
 	<artifactId>testMaven</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
-		<janus.version>2.0.6.0-SNAPSHOT</janus.version>
-		<sarl.version>0.6.0-SNAPSHOT</sarl.version>
+		<janus.version>2.0.5.1</janus.version>
+		<sarl.version>0.5.1</sarl.version>
 	</properties>
 	<build>
 		<sourceDirectory>src/main/sarl</sourceDirectory>
