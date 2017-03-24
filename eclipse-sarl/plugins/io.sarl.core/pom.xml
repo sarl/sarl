@@ -68,10 +68,13 @@
 					<languages>
 						<language>
 							<setup>io.sarl.lang.SARLStandaloneSetup</setup>
+							<javaSupport>true</javaSupport>
 							<outputConfigurations>
 								<outputConfiguration>
 									<createOutputDirectory>true</createOutputDirectory>
 									<outputDirectory>src-gen/</outputDirectory>
+									<cleanUpDerivedResources>true</cleanUpDerivedResources>
+									<installDslAsPrimarySource>true</installDslAsPrimarySource>
 								</outputConfiguration>
 							</outputConfigurations>
 						</language>

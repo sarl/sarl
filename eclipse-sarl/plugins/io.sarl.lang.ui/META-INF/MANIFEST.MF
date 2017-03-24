@@ -22,7 +22,7 @@ Require-Bundle: io.sarl.lang;bundle-version="0.6.0";visibility:=reexport,
  org.eclipse.ui;bundle-version="3.108.1",
  org.eclipse.ui.editors;bundle-version="3.10.1",
  org.arakhne.afc.core.references;bundle-version="14.0.0",
- org.antlr.runtime
+ org.antlr.runtime;bundle-version="3.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Activator: io.sarl.lang.ui.internal.LangActivator
 Export-Package: io.sarl.lang.bugfixes,
@@ -35,6 +35,7 @@ Export-Package: io.sarl.lang.bugfixes,
  io.sarl.lang.ui.editor,
  io.sarl.lang.ui.highlighting,
  io.sarl.lang.ui.hover,
+ io.sarl.lang.ui.hyperlinking,
  io.sarl.lang.ui.images;x-friends:="io.sarl.lang.ui.tests",
  io.sarl.lang.ui.internal,
  io.sarl.lang.ui.labeling;x-friends:="io.sarl.lang.ui.tests",

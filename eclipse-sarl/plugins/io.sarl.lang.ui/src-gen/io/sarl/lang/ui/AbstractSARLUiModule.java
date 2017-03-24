@@ -44,6 +44,7 @@ import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.hover.SARLHoverSerializer;
 import io.sarl.lang.ui.hover.SARLHoverSignatureProvider;
 import io.sarl.lang.ui.hover.SARLHoverUIStrings;
+import io.sarl.lang.ui.hyperlinking.SARLHyperLinkingLabelProvider;
 import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
 import io.sarl.lang.ui.images.QualifiedPluginImageHelper;
 import io.sarl.lang.ui.labeling.SARLDescriptionLabelProvider;
@@ -92,7 +93,6 @@ import org.eclipse.xtend.ide.highlighting.XtendHighlightingConfiguration;
 import org.eclipse.xtend.ide.hover.XtendAnnotationHover;
 import org.eclipse.xtend.ide.hover.XtendHoverProvider;
 import org.eclipse.xtend.ide.hover.XtendHoverSerializer;
-import org.eclipse.xtend.ide.hyperlinking.HyperLinkingLabelProvider;
 import org.eclipse.xtend.ide.hyperlinking.XtendHyperlinkHelper;
 import org.eclipse.xtend.ide.macro.EclipseFileSystemSupportImpl;
 import org.eclipse.xtend.ide.refactoring.XtendRenameStrategy;
@@ -548,13 +548,13 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public void configureHyperlinkLabelProvider(Binder binder) {
-		binder.bind(ILabelProvider.class).annotatedWith(HyperlinkLabelProvider.class).to(HyperLinkingLabelProvider.class);
+	public Class<? extends HoverUiStrings> bindHoverUiStrings() {
+		return SARLHoverUIStrings.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends HoverUiStrings> bindHoverUiStrings() {
-		return SARLHoverUIStrings.class;
+	public void configureHyperlinkLabelProvider(Binder binder) {
+		binder.bind(ILabelProvider.class).annotatedWith(HyperlinkLabelProvider.class).to(SARLHyperLinkingLabelProvider.class);
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

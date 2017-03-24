@@ -558,12 +558,6 @@ Workflow {
     				to = "io.sarl.lang.ui.outline.SARLOutlinePage"
     			}
     			ui = {
-    				bind = "org.eclipse.jface.viewers.ILabelProvider"
-    				annotatedWith = "org.eclipse.xtext.ui.editor.hyperlinking.HyperlinkLabelProvider"
-    				to = "org.eclipse.xtend.ide.hyperlinking.HyperLinkingLabelProvider"
-    				functionName = "configureHyperlinkLabelProvider"
-   				}
-    			ui = {
     				bind = "org.eclipse.xtext.ui.editor.outline.actions.IOutlineContribution"
     				annotatedWithName = "SARLFieldOutlineFilter"
     				to = "io.sarl.lang.ui.outline.SARLFieldOutlineFilter"
@@ -673,6 +667,12 @@ Workflow {
     			ui = {
     				bind = "org.eclipse.xtext.xbase.validation.UIStrings"
     				to = "io.sarl.lang.ui.labeling.SARLUIStrings"
+   				}
+    			ui = {
+    				bind = "org.eclipse.jface.viewers.ILabelProvider"
+    				annotatedWith = "org.eclipse.xtext.ui.editor.hyperlinking.HyperlinkLabelProvider"
+    				to = "io.sarl.lang.ui.hyperlinking.SARLHyperLinkingLabelProvider"
+    				functionName = "configureHyperlinkLabelProvider"
    				}
 
     			both = {
@@ -836,7 +836,7 @@ Workflow {
     				to = "io.sarl.lang.parser.SARLSyntaxErrorMessageProvider"
     				singleton = true
     			}
-    			
+
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategyProvider"
     				to = "org.eclipse.xtend.ide.autoedit.AutoEditStrategyProvider"
