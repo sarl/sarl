@@ -1,81 +1,81 @@
 # Specific files
-/products/contribs/io.sarl.examples/io.sarl.examples.plugin/about.mappings
-/main/coreplugins/io.sarl.eclipse/about.mappings
-/main/coreplugins/io.sarl.lang.core/about.mappings
-/main/coreplugins/io.sarl.lang.ui/about.mappings
-/sre/io.janusproject/io.janusproject.plugin/about.mappings
-/products/io.sarl.lang.updatesite/io.sarl.lang.product.copy
+**/io.sarl.examples.plugin/about.mappings
+**/io.sarl.eclipse/about.mappings
+**/io.sarl.lang.core/about.mappings
+**/io.sarl.lang.ui/about.mappings
+**/io.janusproject.plugin/about.mappings
+**/io.sarl.lang.updatesite/io.sarl.lang.product.copy
 
 # Xtext generated files
-main/apiplugins/io.sarl.core/xtend-gen/
-main/apiplugins/io.sarl.core/src-gen/
-main/apiplugins/io.sarl.core/src/main/generated-sources/
-main/apiplugins/io.sarl.util/xtend-gen/
-main/apiplugins/io.sarl.util/src-gen/
-main/apiplugins/io.sarl.util/src/main/generated-sources/
-main/coreplugins/io.sarl.lang.ui/xtend-gen/
-main/coreplugins/io.sarl.lang.ui/src/main/xtend-gen/
-main/coreplugins/io.sarl.lang.ui/src/main/generated-sources/
-main/coreplugins/io.sarl.lang.ui/src/test/xtend-gen/
-main/coreplugins/io.sarl.lang.ui/src/test/generated-sources/
-main/coreplugins/io.sarl.lang/xtend-gen/
-main/coreplugins/io.sarl.lang/src/main/xtend-gen/
-main/coreplugins/io.sarl.lang/src/main/generated-sources/
-main/coreplugins/io.sarl.lang/src/test/xtend-gen/
-main/coreplugins/io.sarl.lang/src/test/generated-sources/
-main/coreplugins/io.sarl.lang/model/generated/
-docs/io.sarl.docs.suite/xtend-gen/
-docs/io.sarl.docs.suite/src/main/xtend-gen/
-docs/io.sarl.docs.suite/src/main/generated-sources/
-docs/io.sarl.docs.suite/src/test/xtend-gen/
-docs/io.sarl.docs.suite/src/test/generated-sources/
-tests/io.sarl.lang.tests/xtend-gen/
-tests/io.sarl.lang.tests/src/main/xtend-gen/
-tests/io.sarl.lang.tests/src/main/generated-sources/
-tests/io.sarl.lang.tests/src/test/xtend-gen/
-tests/io.sarl.lang.tests/src/test/generated-sources/
+**/io.sarl.core/xtend-gen/
+**/io.sarl.core/src-gen/
+**/io.sarl.core/src/main/generated-sources/
+**/io.sarl.util/xtend-gen/
+**/io.sarl.util/src-gen/
+**/io.sarl.util/src/main/generated-sources/
+**/io.sarl.lang.ui/xtend-gen/
+**/io.sarl.lang.ui/src/main/xtend-gen/
+**/io.sarl.lang.ui/src/main/generated-sources/
+**/io.sarl.lang.ui/src/test/xtend-gen/
+**/io.sarl.lang.ui/src/test/generated-sources/
+**/io.sarl.lang/xtend-gen/
+**/io.sarl.lang/src/main/xtend-gen/
+**/io.sarl.lang/src/main/generated-sources/
+**/io.sarl.lang/src/test/xtend-gen/
+**/io.sarl.lang/src/test/generated-sources/
+**/io.sarl.lang/model/generated/
+**/io.sarl.docs.suite/xtend-gen/
+**/io.sarl.docs.suite/src/main/xtend-gen/
+**/io.sarl.docs.suite/src/main/generated-sources/
+**/io.sarl.docs.suite/src/test/xtend-gen/
+**/io.sarl.docs.suite/src/test/generated-sources/
+**/io.sarl.lang.tests/xtend-gen/
+**/io.sarl.lang.tests/src/main/xtend-gen/
+**/io.sarl.lang.tests/src/main/generated-sources/
+**/io.sarl.lang.tests/src/test/xtend-gen/
+**/io.sarl.lang.tests/src/test/generated-sources/
 
 # Xtext templates
-*.xml_gen
-*.java_gen
+**/*.xml_gen
+**/*.java_gen
 
 # NetBean / Eclipse
 bin/
-*.java._trace
-*.java_trace
-*.smap
-.project
-.classpath
-.settings
-.metadata
+**/*.java._trace
+**/*.java_trace
+**/*.smap
+**/.project
+**/.classpath
+**/.settings
+**/.metadata
 
 #Specific cases of SARL Samples projects
-!contribs/io.sarl.examples/io.sarl.examples.plugin/projects/**/.project
-!contribs/io.sarl.examples/io.sarl.examples.plugin/projects/**/.classpath
+!**/io.sarl.examples.plugin/projects/**/.project
+!**/io.sarl.examples.plugin/projects/**/.classpath
 
 
 # Subversion and CVS
-.svn/
-.cvs/
+**/.svn/
+**/.cvs/
 
 # Maven
 target/
 
 # Checkstyle
-.checkstyle
+**/.checkstyle
 
 # Compiled files
-*.class
-*.dll
-*.exe
+**/*.class
+**/*.dll
+**/*.exe
 
 # Temp files
-*.bak
-*~
+**/*.bak
+**/*~
 workspace/
 
 #Others
-.DS_Store
+**/.DS_Store
 sarlide.sh
 dbg.log
 
