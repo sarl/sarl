@@ -165,6 +165,8 @@ A P2 repository is set up and accesible at the address: `http://updates.sarl.io`
 Issues related to SARL are tracked on link:https://github.com/sarl/sarl/issues[GitHub]
 You must use this issue tracker to report and follow your issues.
 
+Additionally, you could have a look on the SARL developers' working plan on link:https://huboard.com/sarl/sarl[Huboard].
+
 == 5. Contributions
 
 Any contribution to the SARL is welcome.
