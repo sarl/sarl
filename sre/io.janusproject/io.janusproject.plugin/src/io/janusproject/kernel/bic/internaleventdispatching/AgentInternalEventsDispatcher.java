@@ -35,7 +35,9 @@ import org.arakhne.afc.util.OutputParameter;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
+import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.executor.ExecutorService;
+import io.janusproject.services.executor.JanusRunnable;
 
 import io.sarl.eventdispatching.BehaviorGuardEvaluator;
 import io.sarl.eventdispatching.BehaviorGuardEvaluatorRegistry;
@@ -246,7 +248,6 @@ public class AgentInternalEventsDispatcher {
 					throw new RuntimeException(e);
 				}
 				executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute);
-
 			}
 			// XXX: Not in the SAR specification, should we fire the DeadEvent?
 			/*else if (!(event instanceof DeadEvent)) {
@@ -311,21 +312,26 @@ public class AgentInternalEventsDispatcher {
 		final OutputParameter<Throwable> runException = new OutputParameter<>();
 
 		for (final Runnable runnable : behaviorsMethodsToExecute) {
-			this.executor.execute(() -> {
-				try {
-					runnable.run();
-				} catch (RuntimeException e) {
-					// Catch exception for notifying the caller
-					runException.set(e);
-					// Do the standard behavior too -> logging
-					throw e;
-				} catch (Exception e) {
-					// Catch exception for notifying the caller
-					runException.set(e);
-					// Do the standard behavior too -> logging
-					throw new RuntimeException(e);
-				} finally {
-					doneSignal.countDown();
+			this.executor.execute(new JanusRunnable() {
+				@Override
+				public void run() {
+					try {
+						runnable.run();
+					} catch (EarlyExitException e) {
+						// Ignore this exception
+					} catch (RuntimeException e) {
+						// Catch exception for notifying the caller
+						runException.set(e);
+						// Do the standard behavior too -> logging
+						throw e;
+					} catch (Exception e) {
+						// Catch exception for notifying the caller
+						runException.set(e);
+						// Do the standard behavior too -> logging
+						throw new RuntimeException(e);
+					} finally {
+						doneSignal.countDown();
+					}
 				}
 			});
 		}

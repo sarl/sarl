@@ -232,8 +232,11 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		// Immediate synchronous dispatching of Initialize event
 		try {
 			setOwnerState(OwnerState.INITIALIZING);
-			this.eventDispatcher.immediateDispatch(event);
-			setOwnerState(OwnerState.ALIVE);
+			try {
+				this.eventDispatcher.immediateDispatch(event);
+			} finally {
+				setOwnerState(OwnerState.ALIVE);
+			}
 		} catch (Exception e) {
 			// Log the exception
 			final Logging loggingCapacity = getLoggingSkill();
@@ -259,8 +262,11 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		// Immediate synchronous dispatching of Destroy event
 		try {
 			setOwnerState(OwnerState.DYING);
-			this.eventDispatcher.immediateDispatch(event);
-			setOwnerState(OwnerState.DEAD);
+			try {
+				this.eventDispatcher.immediateDispatch(event);
+			} finally {
+				setOwnerState(OwnerState.DEAD);
+			}
 		} catch (Exception e) {
 			// Log the exception
 			final Logging loggingCapacity = getLoggingSkill();

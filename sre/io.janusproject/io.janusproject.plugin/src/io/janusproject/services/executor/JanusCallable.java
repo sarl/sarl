@@ -33,29 +33,16 @@ import java.util.concurrent.Callable;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-public final class JanusCallable<T> implements Callable<T> {
+public class JanusCallable<T> implements Callable<T> {
 
 	private final Callable<T> callable;
 
 	/**
 	 * @param callable the wrapped task.
 	 */
-	private JanusCallable(Callable<T> callable) {
+	public JanusCallable(Callable<T> callable) {
+		assert callable != null;
 		this.callable = callable;
-	}
-
-	/** Wrap the given callable into a JanusCallable.
-	 * If the given callable object is already a JanusCallable, it is directly replied.
-	 *
-	 * @param <T> the type of the result.
-	 * @param callable the wrapped task.
-	 * @return the callable for Janus.
-	 */
-	public static <T> Callable<T> newInstance(Callable<T> callable) {
-		if (callable instanceof JanusCallable) {
-			return callable;
-		}
-		return new JanusCallable<>(callable);
 	}
 
 	/** Replies the wrapped task.
@@ -68,6 +55,16 @@ public final class JanusCallable<T> implements Callable<T> {
 
 	@Override
 	public T call() throws Exception {
+		return callWithEarlyExitSupport();
+	}
+
+	/** Run the wrapped task with the early exist support.
+	 * The {@link EarlyExitException} is silently catched.
+	 *
+	 * @return the computed value.
+	 * @throws Exception the error in the wrapped task, exit {@link EarlyExitException}
+	 */
+	protected final T callWithEarlyExitSupport() throws Exception {
 		try {
 			return this.callable.call();
 		} catch (EarlyExitException e) {

@@ -30,29 +30,22 @@ package io.janusproject.services.executor;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-public final class JanusRunnable implements Runnable {
+public class JanusRunnable implements Runnable {
 
 	private final Runnable runnable;
 
 	/**
 	 * @param runnable the wrapped task.
 	 */
-	private JanusRunnable(Runnable runnable) {
+	public JanusRunnable(Runnable runnable) {
+		assert runnable != null;
 		this.runnable = runnable;
 	}
 
-	/** Wrap the given runnable into a JanusRunnable.
-	 * If the given runnable object is already a JanusRunnable, it is directly replied.
-	 *
-	 * @param <T> the type of the result.
-	 * @param runnable the wrapped task.
-	 * @return the runnable for Janus.
+	/** Constructor without wrapped task.
 	 */
-	public static <T> Runnable newInstance(Runnable runnable) {
-		if (runnable instanceof JanusRunnable) {
-			return runnable;
-		}
-		return new JanusRunnable(runnable);
+	protected JanusRunnable() {
+		this.runnable = null;
 	}
 
 	/** Replies the wrapped task.
@@ -65,6 +58,13 @@ public final class JanusRunnable implements Runnable {
 
 	@Override
 	public void run() {
+		runWithEarlyExitSupport();
+	}
+
+	/** Run the wrapped task with the early exist support.
+	 * The {@link EarlyExitException} is silently catched.
+	 */
+	protected final void runWithEarlyExitSupport() {
 		try {
 			this.runnable.run();
 		} catch (EarlyExitException ex) {

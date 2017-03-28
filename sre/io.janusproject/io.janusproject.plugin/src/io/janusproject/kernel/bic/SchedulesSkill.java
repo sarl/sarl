@@ -42,6 +42,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.executor.ExecutorService;
+import io.janusproject.services.executor.JanusRunnable;
 
 import io.sarl.core.AgentTask;
 import io.sarl.core.Logging;
@@ -429,7 +430,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@SuppressWarnings("synthetic-access")
-	private class AgentTaskRunner implements Runnable {
+	private class AgentTaskRunner extends JanusRunnable {
 
 		private final WeakReference<AgentTask> agentTaskRef;
 
@@ -516,7 +517,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@SuppressWarnings("synthetic-access")
-	private class AgentInfiniteLoopTask implements Runnable {
+	private class AgentInfiniteLoopTask extends JanusRunnable {
 		private WeakReference<AgentTask> agentTaskRef;
 
 		AgentInfiniteLoopTask(AgentTask task) {
@@ -565,6 +566,8 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 					}
 					Thread.yield();
 				}
+			} catch (EarlyExitException ex) {
+				// Ignore
 			} catch (Throwable ex) {
 				getLoggingSkill().error(Messages.SchedulesSkill_1, ex, toString(), ex.getLocalizedMessage());
 			} finally {

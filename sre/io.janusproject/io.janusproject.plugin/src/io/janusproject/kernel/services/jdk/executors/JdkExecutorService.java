@@ -153,7 +153,10 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	 */
 	@SuppressWarnings("static-method")
 	protected Runnable createTask(Runnable runnable) {
-		return JanusRunnable.newInstance(runnable);
+		if (runnable instanceof JanusRunnable) {
+			return runnable;
+		}
+		return new JanusRunnable(runnable);
 	}
 
 	/** Create a task with the given callable.
@@ -164,7 +167,10 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	 */
 	@SuppressWarnings("static-method")
 	protected <T> Callable<T> createTask(Callable<T> callable) {
-		return JanusCallable.newInstance(callable);
+		if (callable instanceof JanusCallable<?>) {
+			return callable;
+		}
+		return new JanusCallable<>(callable);
 	}
 
 	@Override
