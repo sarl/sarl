@@ -1,39 +1,39 @@
-# Debug file
-sarlide.sh
-
 # Specific files
-/eclipse-products/contribs/io.sarl.examples/io.sarl.examples.plugin/about.mappings
-/eclipse-sarl/plugins/io.sarl.eclipse/about.mappings
-/eclipse-sarl/plugins/io.sarl.lang.core/about.mappings
-/eclipse-sarl/plugins/io.sarl.lang.ui/about.mappings
+/products/contribs/io.sarl.examples/io.sarl.examples.plugin/about.mappings
+/main/coreplugins/io.sarl.eclipse/about.mappings
+/main/coreplugins/io.sarl.lang.core/about.mappings
+/main/coreplugins/io.sarl.lang.ui/about.mappings
 /sre/io.janusproject/io.janusproject.plugin/about.mappings
-/eclipse-products/io.sarl.lang.updatesite/io.sarl.lang.product.copy
+/products/io.sarl.lang.updatesite/io.sarl.lang.product.copy
 
 # Xtext generated files
-eclipse-sarl/plugins/io.sarl.core/xtend-gen/
-eclipse-sarl/plugins/io.sarl.core/src-gen/
-eclipse-sarl/plugins/io.sarl.core/src/main/generated-sources/
-eclipse-sarl/plugins/io.sarl.lang.ui/xtend-gen/
-eclipse-sarl/plugins/io.sarl.lang.ui/src/main/xtend-gen/
-eclipse-sarl/plugins/io.sarl.lang.ui/src/main/generated-sources/
-eclipse-sarl/plugins/io.sarl.lang.ui/src/test/xtend-gen/
-eclipse-sarl/plugins/io.sarl.lang.ui/src/test/generated-sources/
-eclipse-sarl/plugins/io.sarl.lang/xtend-gen/
-eclipse-sarl/plugins/io.sarl.lang/src/main/xtend-gen/
-eclipse-sarl/plugins/io.sarl.lang/src/main/generated-sources/
-eclipse-sarl/plugins/io.sarl.lang/src/test/xtend-gen/
-eclipse-sarl/plugins/io.sarl.lang/src/test/generated-sources/
-eclipse-sarl/plugins/io.sarl.lang/model/generated/
+main/apiplugins/io.sarl.core/xtend-gen/
+main/apiplugins/io.sarl.core/src-gen/
+main/apiplugins/io.sarl.core/src/main/generated-sources/
+main/apiplugins/io.sarl.util/xtend-gen/
+main/apiplugins/io.sarl.util/src-gen/
+main/apiplugins/io.sarl.util/src/main/generated-sources/
+main/coreplugins/io.sarl.lang.ui/xtend-gen/
+main/coreplugins/io.sarl.lang.ui/src/main/xtend-gen/
+main/coreplugins/io.sarl.lang.ui/src/main/generated-sources/
+main/coreplugins/io.sarl.lang.ui/src/test/xtend-gen/
+main/coreplugins/io.sarl.lang.ui/src/test/generated-sources/
+main/coreplugins/io.sarl.lang/xtend-gen/
+main/coreplugins/io.sarl.lang/src/main/xtend-gen/
+main/coreplugins/io.sarl.lang/src/main/generated-sources/
+main/coreplugins/io.sarl.lang/src/test/xtend-gen/
+main/coreplugins/io.sarl.lang/src/test/generated-sources/
+main/coreplugins/io.sarl.lang/model/generated/
 docs/io.sarl.docs.suite/xtend-gen/
 docs/io.sarl.docs.suite/src/main/xtend-gen/
 docs/io.sarl.docs.suite/src/main/generated-sources/
 docs/io.sarl.docs.suite/src/test/xtend-gen/
 docs/io.sarl.docs.suite/src/test/generated-sources/
-eclipse-sarl/tests/io.sarl.lang.tests/xtend-gen/
-eclipse-sarl/tests/io.sarl.lang.tests/src/main/xtend-gen/
-eclipse-sarl/tests/io.sarl.lang.tests/src/main/generated-sources/
-eclipse-sarl/tests/io.sarl.lang.tests/src/test/xtend-gen/
-eclipse-sarl/tests/io.sarl.lang.tests/src/test/generated-sources/
+tests/io.sarl.lang.tests/xtend-gen/
+tests/io.sarl.lang.tests/src/main/xtend-gen/
+tests/io.sarl.lang.tests/src/main/generated-sources/
+tests/io.sarl.lang.tests/src/test/xtend-gen/
+tests/io.sarl.lang.tests/src/test/generated-sources/
 
 # Xtext templates
 *.xml_gen
@@ -50,8 +50,8 @@ bin/
 .metadata
 
 #Specific cases of SARL Samples projects
-!eclipse-products/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/**/.project
-!eclipse-products/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/**/.classpath
+!contribs/io.sarl.examples/io.sarl.examples.plugin/projects/**/.project
+!contribs/io.sarl.examples/io.sarl.examples.plugin/projects/**/.classpath
 
 
 # Subversion and CVS
@@ -76,6 +76,6 @@ workspace/
 
 #Others
 .DS_Store
-run_dbg.bash
+sarlide.sh
 dbg.log
 

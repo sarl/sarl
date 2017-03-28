@@ -1,0 +1,104 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2017 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.util
+
+/**
+ * Static methods to convert different time units to milliseconds.
+ *
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @deprecated see SARLTimeExtensions
+ */
+@Deprecated
+public final class TimeExtensions {
+
+	static val MILLIS_IN_SECOND = 1000l
+
+	static val MILLIS_IN_MINUTE = 60l * MILLIS_IN_SECOND
+
+	static val MILLIS_IN_HOUR = 60l * MILLIS_IN_MINUTE
+
+	static val MILLIS_IN_DAY = 24l * MILLIS_IN_HOUR
+
+	static val MILLIS_IN_WEEK = 7l * MILLIS_IN_DAY
+
+	private new {
+	}
+
+	/** Convert milliseconds to milliseconds.
+	 *
+	 * @param milis - number of milliseconds to convert.
+	 * @return the number of milliseconds in <code>milis</code>.
+	 */
+	static def milliseconds(milis : Integer) : long {
+		milis
+	}
+
+	/** Convert seconds to milliseconds.
+	 *
+	 * @param secs - number of seconds to convert.
+	 * @return the number of milliseconds in seconds.
+	 */
+	static def seconds(secs : Integer) : long {
+		secs * MILLIS_IN_SECOND
+	}
+
+	/** Convert minutes to milliseconds.
+	 *
+	 * @param mins - number of minutes to convert.
+	 * @return the number of milliseconds in <code>mins</code>
+	 */
+	static def minutes(mins : Integer) : long {
+		mins * MILLIS_IN_MINUTE
+	}
+
+	/** Convert hours to milliseconds.
+	 *
+	 * @param hours - number of hours to convert.
+	 * @return the number of milliseconds in <code>hours</code>
+	 */
+	static def hours(hours : Integer) : long {
+		hours * MILLIS_IN_HOUR
+	}
+
+	/** Convert days to milliseconds.
+	 *
+	 * @param days - number of days to convert.
+	 * @return the number of days in <code>days</code>
+	 */
+	static def days(days : Integer) : long {
+		days * MILLIS_IN_DAY
+	}
+
+	/** Convert weeks to milliseconds.
+	 *
+	 * @param weeks - number of weeks to convert.
+	 * @return the number of milliseconds in <code>weeks</code>
+	 */
+	static def weeks(weeks : Integer) : long {
+		weeks * MILLIS_IN_WEEK
+	}
+
+}
+

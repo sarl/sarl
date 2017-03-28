@@ -42,7 +42,10 @@
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480017525200_6" label="Maven" name="Maven">
 <item elementID="=io.sarl.maven.batchcompiler" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.maven" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.maven.internal" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.maven.external" type="4"/>
 <item elementID="=io.sarl.maven.docs.generator" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=io.sarl.maven.baselib" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.maven.sdk" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.maven.sre" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=sarl-maven-plugin" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
@@ -51,6 +54,7 @@
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.examples" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.examples.feature" type="4"/>
 <item elementID="=io.sarl.examples.plugin" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=io.sarl.examples.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.products.contribs" type="4"/>
 </workingSet>
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480017551937_8" label="Product Engineering" name="Product Engineering">

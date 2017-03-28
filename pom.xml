@@ -221,6 +221,11 @@
 			</dependency>
 			<dependency>
 				<groupId>io.sarl.maven</groupId>
+				<artifactId>io.sarl.maven.baselib</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.maven</groupId>
 				<artifactId>io.sarl.maven.sdk</artifactId>
 				<version>${sarl.version}</version>
 			</dependency>
@@ -925,18 +930,18 @@
 				<module>build-tools</module>
 				<!-- The shared Rtcho configuration -->
 				<module>tycho-parent</module>
-				<!-- SARL tools and plugins -->
-				<module>eclipse-sarl</module>
-				<!-- Maven tools -->
-				<module>maven</module>
+				<!-- Main modules of the project -->
+				<module>main</module>
 				<!-- Tools for developers -->
 				<module>dev-tools</module>
 				<!-- External Tests -->
 				<module>tests</module>
 				<!-- SREs -->
 				<module>sre</module>
+				<!-- Developer contributions -->
+				<module>contribs</module>
 				<!-- Products aand update site -->
-				<module>eclipse-products</module>
+				<module>products</module>
 				<!-- Documentation -->
 				<module>docs</module>
 			</modules>
@@ -951,8 +956,7 @@
 			</activation>
 			<modules>
 				<module>tycho-parent</module>
-				<module>eclipse-sarl</module>
-				<module>maven</module>
+				<module>main</module>
 				<module>sre</module>
 			</modules>
 		</profile>

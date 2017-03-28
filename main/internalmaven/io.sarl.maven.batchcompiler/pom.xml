@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>io.sarl.maven</groupId>
+		<artifactId>io.sarl.maven.internal</artifactId>
+		<version>0.6.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>io.sarl.maven.batchcompiler</artifactId>
+	<packaging>jar</packaging>
+	<name>Batch Compiler</name>
+	<description>Batch compiler for SARL</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.baselib</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>io.sarl.lang</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>osgi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtend</groupId>
+			<artifactId>org.eclipse.xtend.core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+		</dependency>
+	</dependencies>
+
+	<!-- ======================================= -->
+	<!-- ==== Release Management === -->
+	<!-- ======================================= -->
+	<profiles>
+		<profile>
+			<id>maven-release-of-maven-sdk-plugin</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.arakhne.afc.maven</groupId>
+							<artifactId>tag-replacer</artifactId>
+							<configuration>
+								<sources>
+									<source>${project.basedir}/src/main/java</source>
+								</sources>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<configuration>
+								<sourcepath>${project.build.directory}/generated-sources/java</sourcepath>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+
+</project>

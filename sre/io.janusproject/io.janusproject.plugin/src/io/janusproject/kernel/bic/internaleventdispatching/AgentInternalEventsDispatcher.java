@@ -272,17 +272,16 @@ public class AgentInternalEventsDispatcher {
 
 		try {
 			StreamSupport.stream(behaviorGuardEvaluators.spliterator(), true).forEach((evaluator) -> {
-				try {
-					final Collection<Runnable> behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
-					evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
-					synchronized (behaviorsMethodsToExecute) {
-						behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget);
-					}
-				} catch (InvocationTargetException exception) {
-					throw new RuntimeException(exception);
+				final Collection<Runnable> behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
+				evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
+				synchronized (behaviorsMethodsToExecute) {
+					behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget);
 				}
 			});
-		} catch (RuntimeException exception) {
+		} catch (Exception exception) {
+			if (exception instanceof InvocationTargetException) {
+				throw (InvocationTargetException) exception;
+			}
 			final Throwable t = exception.getCause();
 			if (t instanceof InvocationTargetException) {
 				throw (InvocationTargetException) t;
