@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-package io.sarl.eventdispatching;
+package io.sarl.eventdispatching
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.osgi.util.NLS
 
 /** Messages.
  * @author $Author: sgalland$
@@ -29,17 +29,20 @@ import org.eclipse.osgi.util.NLS;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eventdispatching.messages"; //$NON-NLS-1$
-	public static String BehaviorGuardEvaluator_0;
-	public static String BehaviorGuardEvaluator_1;
-	public static String BehaviorGuardEvaluatorRegistry_0;
-	static {
+final class Messages extends NLS {
+
+	private static val BUNDLE_NAME = {
+		val name = "io.sarl.eventdispatching.messages"
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+		NLS.initializeMessages(name, typeof(Messages))
+		name
 	}
 
-	private Messages() {
+	public static var BehaviorGuardEvaluator_0 : String
+	public static var BehaviorGuardEvaluator_1 : String
+	public static var BehaviorGuardEvaluatorRegistry_0 : String
+
+	private new {
 	}
+
 }
