@@ -17,7 +17,6 @@
 			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<version>${sarl.version}</version>
 				<!-- Maven extension mechanism seems not working due to the tycho module type.
 				     The different goals must be explicitly provided. -->
 				<executions>

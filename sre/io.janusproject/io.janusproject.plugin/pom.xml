@@ -99,7 +99,6 @@
 			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>io.sarl.maven.sre</artifactId>
-				<version>${project.version}</version>
 				<configuration>
 					<sreName>JANUS</sreName>
 					<standaloneSRE>false</standaloneSRE>
