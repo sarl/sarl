@@ -20,6 +20,8 @@ For setting up the development environment of SARL, please follow our recommenda
 Issues related to SARL are tracked on link:https://github.com/sarl/sarl/issues[GitHub]
 You must use this issue tracker to report and follow your issues.
 
+Additionally, you could have a look on the SARL developers' working plan on link:https://huboard.com/sarl/sarl[Huboard].
+
 In the issue description, provide the following information:
 
 * Your operating system (and version);
