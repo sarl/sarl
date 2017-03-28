@@ -2101,7 +2101,7 @@ public class SkillCompilerTest {
 		}
 
 		@Test
-		public void inheritance() throws Exception {
+		public void inheritance_00() throws Exception {
 			final String expectedC1 = multilineString(
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
@@ -2170,6 +2170,145 @@ public class SkillCompilerTest {
 				public void accept(Result r) {
 					assertEquals(expectedC1,r.getGeneratedCode("CapTest1"));
 					assertEquals(expectedC2,r.getGeneratedCode("CapTest2"));
+				}
+			});
+		}
+
+		@Test
+		public void inheritance_01() throws Exception {
+			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.DefaultValue;",
+					"import io.sarl.lang.annotation.DefaultValueSource;",
+					"import io.sarl.lang.annotation.DefaultValueUse;",
+					"import io.sarl.lang.annotation.SarlSourceCode;",
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.AgentTrait;",
+					"import io.sarl.lang.core.Capacity;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SuppressWarnings(\"all\")",
+					"public interface CapTest1 extends Capacity {",
+					"  @DefaultValueSource",
+					"  public abstract int func1(@DefaultValue(\"CapTest1#FUNC1_0\") final int a);",
+					"  ",
+					"  /**",
+					"   * Default value for the parameter a",
+					"   */",
+					"  @SyntheticMember",
+					"  @SarlSourceCode(\"5\")",
+					"  public final static int $DEFAULT_VALUE$FUNC1_0 = 5;",
+					"  ",
+					"  @DefaultValueUse(\"int\")",
+					"  @SyntheticMember",
+					"  public default int func1() {",
+					"    return func1($DEFAULT_VALUE$FUNC1_0);",
+					"  }",
+					"  ",
+					"  public static class ContextAwareCapacityWrapper<C extends CapTest1> extends Capacity.ContextAwareCapacityWrapper<C> implements CapTest1 {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+					"      super(capacity, caller);",
+					"    }",
+					"    ",
+					"    public int func1(final int a) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        return this.capacity.func1(a);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"    ",
+					"    public int func1() {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        return this.capacity.func1();",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"  }",
+					"}",
+					""
+					);
+			final String expectedC2 = multilineString(
+					"import CapTest1;",
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.core.AgentTrait;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SuppressWarnings(\"all\")",
+					"public interface CapTest2 extends CapTest1 {",
+					"  public abstract void func2(final int a);",
+					"  ",
+					"  public static class ContextAwareCapacityWrapper<C extends CapTest2> extends CapTest1.ContextAwareCapacityWrapper<C> implements CapTest2 {",
+					"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {",
+					"      super(capacity, caller);",
+					"    }",
+					"    ",
+					"    public void func2(final int a) {",
+					"      try {",
+					"        ensureCallerInLocalThread();",
+					"        this.capacity.func2(a);",
+					"      } finally {",
+					"        resetCallerInLocalThread();",
+					"      }",
+					"    }",
+					"  }",
+					"}",
+					""
+					);
+			final String expectedS1 = multilineString(
+					"import io.sarl.lang.annotation.DefaultValue;",
+					"import io.sarl.lang.annotation.DefaultValueSource;",
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
+					"import io.sarl.lang.core.Agent;",
+					"import io.sarl.lang.core.Skill;",
+					"import org.eclipse.xtext.xbase.lib.Inline;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SuppressWarnings(\"all\")",
+					"public class SkillTest extends Skill implements CapTest2 {",
+					"  public void func2(final int a) {",
+					"  }",
+					"  ",
+					"  @DefaultValueSource",
+					"  @Inline(value = \"6\", constantExpression = true)",
+					"  public int func1(@DefaultValue(\"CapTest1#FUNC1_0\") final int a) {",
+					"    return 6;",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public SkillTest() {",
+					"    super();",
+					"  }",
+					"  ",
+					"  @SyntheticMember",
+					"  public SkillTest(final Agent arg0) {",
+					"    super(arg0);",
+					"  }",
+					"}",
+					""
+					);
+			String source = multilineString(
+					"capacity CapTest1 {",
+					"  def func1(a : int = 5) : int",
+					"}",
+					"capacity CapTest2 extends CapTest1 {",
+					"  def func2(a : int)",
+					"}",
+					"skill SkillTest implements CapTest2 {",
+					"  def func2(a : int) { }",
+					"  def func1(a : int) : int { 6 }",
+					"}"
+					);
+			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
+				@Override
+				public void accept(Result r) {
+					assertEquals(expectedC1,r.getGeneratedCode("CapTest1"));
+					assertEquals(expectedC2,r.getGeneratedCode("CapTest2"));
+					assertEquals(expectedS1,r.getGeneratedCode("SkillTest"));
 				}
 			});
 		}

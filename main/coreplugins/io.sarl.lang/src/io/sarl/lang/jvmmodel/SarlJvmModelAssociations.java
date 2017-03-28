@@ -31,11 +31,17 @@ import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.xbase.XExpression;
 
 import io.sarl.lang.sarl.SarlAgent;
+import io.sarl.lang.sarl.SarlAnnotationType;
+import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlClass;
+import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.sarl.SarlSpace;
 
 /** Associations between the SARL elements and the JVM elements.
  *
@@ -81,6 +87,54 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 * @return the SARL element.
 	 */
 	SarlSkill getSarlSkill(JvmGenericType jvmType);
+
+	/** Replies the SARL space associated to the given type.
+	 *
+	 * @param jvmType - the JVM type.
+	 * @return the SARL element.
+	 * @since 0.6
+	 */
+	SarlSpace getSarlSpace(JvmGenericType jvmType);
+
+	/** Replies the SARL artifact associated to the given type.
+	 *
+	 * @param jvmType - the JVM type.
+	 * @return the SARL element.
+	 * @since 0.6
+	 */
+	SarlArtifact getSarlArtifact(JvmGenericType jvmType);
+
+	/** Replies the SARL class associated to the given type.
+	 *
+	 * @param jvmType - the JVM type.
+	 * @return the SARL element.
+	 * @since 0.6
+	 */
+	SarlClass getSarlClass(JvmGenericType jvmType);
+
+	/** Replies the SARL interface associated to the given type.
+	 *
+	 * @param jvmType - the JVM type.
+	 * @return the SARL element.
+	 * @since 0.6
+	 */
+	SarlInterface getSarlInterface(JvmGenericType jvmType);
+
+	/** Replies the SARL enumeration associated to the given type.
+	 *
+	 * @param jvmType - the JVM type.
+	 * @return the SARL element.
+	 * @since 0.6
+	 */
+	SarlEnumeration getSarlEnumeration(JvmGenericType jvmType);
+
+	/** Replies the SARL annotation type associated to the given type.
+	 *
+	 * @param jvmType - the JVM type.
+	 * @return the SARL element.
+	 * @since 0.6
+	 */
+	SarlAnnotationType getSarlAnnotationType(JvmGenericType jvmType);
 
 	/** Replies the inferrer type for the given event.
 	 * @param obj the SARL object.
@@ -170,6 +224,60 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
 			if (primarySourceElement instanceof SarlCapacity) {
 				return (SarlCapacity) primarySourceElement;
+			}
+			return null;
+		}
+
+		@Override
+		public SarlSpace getSarlSpace(JvmGenericType jvmType) {
+			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlSpace) {
+				return (SarlSpace) primarySourceElement;
+			}
+			return null;
+		}
+
+		@Override
+		public SarlArtifact getSarlArtifact(JvmGenericType jvmType) {
+			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlArtifact) {
+				return (SarlArtifact) primarySourceElement;
+			}
+			return null;
+		}
+
+		@Override
+		public SarlClass getSarlClass(JvmGenericType jvmType) {
+			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlClass) {
+				return (SarlClass) primarySourceElement;
+			}
+			return null;
+		}
+
+		@Override
+		public SarlInterface getSarlInterface(JvmGenericType jvmType) {
+			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlInterface) {
+				return (SarlInterface) primarySourceElement;
+			}
+			return null;
+		}
+
+		@Override
+		public SarlEnumeration getSarlEnumeration(JvmGenericType jvmType) {
+			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlEnumeration) {
+				return (SarlEnumeration) primarySourceElement;
+			}
+			return null;
+		}
+
+		@Override
+		public SarlAnnotationType getSarlAnnotationType(JvmGenericType jvmType) {
+			final EObject primarySourceElement = getPrimarySourceElement(jvmType);
+			if (primarySourceElement instanceof SarlAnnotationType) {
+				return (SarlAnnotationType) primarySourceElement;
 			}
 			return null;
 		}

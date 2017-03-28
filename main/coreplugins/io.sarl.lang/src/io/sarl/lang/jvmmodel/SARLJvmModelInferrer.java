@@ -1558,21 +1558,30 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Create the main function
 			final JvmOperation operation = this.typesFactory.createJvmOperation();
 			container.getMembers().add(operation);
-			final boolean isAbstractOperation = source.isAbstract() || container.isInterface();
-			operation.setAbstract(isAbstractOperation);
-			operation.setNative(source.isNative());
-			operation.setSynchronized(source.isSynchonized());
-			operation.setStrictFloatingPoint(source.isStrictFloatingPoint());
-			if (!operation.isAbstract()) {
-				operation.setFinal(source.isFinal());
-			}
-			this.associator.associatePrimary(source, operation);
 			operation.setSimpleName(sourceName);
 			operation.setVisibility(visibility);
+			operation.setStrictFloatingPoint(source.isStrictFloatingPoint());
 			operation.setStatic(source.isStatic());
-			if (!operation.isAbstract() && !operation.isStatic() && container.isInterface()) {
-				operation.setDefault(true);
+			operation.setSynchronized(source.isSynchonized());
+			operation.setNative(source.isNative());
+			final boolean enableFunctionBody;
+			if (container.isInterface()) {
+				enableFunctionBody = context != null && context.isAtLeastJava8()
+						&& source.getExpression() != null && !operation.isAbstract()
+						&& !operation.isStatic()
+						&& !Utils.toLightweightTypeReference(container, this.services).isSubtypeOf(Capacity.class);
+				operation.setDefault(enableFunctionBody);
+				operation.setAbstract(!enableFunctionBody);
+				operation.setFinal(false);
+			} else {
+				operation.setDefault(false);
+				enableFunctionBody = context != null && !source.isAbstract();
+				operation.setAbstract(!enableFunctionBody);
+				operation.setFinal(enableFunctionBody && source.isFinal());
 			}
+			//final boolean isAbstractOperation = source.isAbstract() || container.isInterface();
+			//operation.setAbstract(isAbstractOperation);
+			this.associator.associatePrimary(source, operation);
 
 			// Type parameters
 			copyAndFixTypeParameters(source.getTypeParameters(), operation);
@@ -1644,7 +1653,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 
 			// Add the body
-			if (!operation.isAbstract() && !container.isInterface() && context != null) {
+			if (enableFunctionBody) {
 				setBody(operation, expression);
 			}
 
@@ -1782,7 +1791,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						final List<String> args = translateSarlFormalParametersForSyntheticOperation(
 								operation2, container, isVarArgs, otherSignature.getValue());
 
-						if (!operation2.isAbstract()) {
+						if (context != null && context.isAtLeastJava8()) {
+							operation2.setDefault(container.isInterface());
+							operation2.setAbstract(false);
 							setBody(operation2, (it) -> {
 								final JvmTypeReference type = operation2.getReturnType();
 								if (!SARLJvmModelInferrer.this.typeReferences.is(type, void.class)) {
@@ -1793,6 +1804,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								it.append(IterableExtensions.join(args, ", ")); //$NON-NLS-1$
 								it.append(");"); //$NON-NLS-1$
 							});
+						} else {
+							operation2.setDefault(false);
+							operation2.setAbstract(true);
 						}
 
 						addAnnotationSafe(

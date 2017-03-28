@@ -28,6 +28,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -281,6 +282,18 @@ public class InterfaceParsingTest {
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"The interface I1 can only set one of public / package / protected / private");
+		}
+
+		@Test
+		public void method_0() throws Exception {
+			SarlScript mas = file("interface I1 { def fct(a : int) : float { a + 1f } }");
+			validate(mas).assertNoErrors();
+		}
+
+		@Test
+		public void method_5() throws Exception {
+			SarlScript mas = file("interface I1 { def fct(a : int = 6) : float { a + 1f } }");
+			validate(mas).assertNoErrors();
 		}
 
 	}

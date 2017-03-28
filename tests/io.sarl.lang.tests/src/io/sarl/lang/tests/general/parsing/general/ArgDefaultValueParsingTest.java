@@ -2347,7 +2347,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
-					"The class S1 must be defined abstract because it does not implement its inherited abstract methods");
+					"The class S1 must be defined abstract because it does not implement myaction1(int)");
 		}
 
 		@Test
@@ -2367,7 +2367,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 			validate(mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
-					"The class S1 must be defined abstract because it does not implement its inherited abstract methods");
+					"The class S1 must be defined abstract because it does not implement myaction1(int)");
 		}
 
 	}

@@ -213,7 +213,15 @@ public final class Utils {
 									operation.isVarArgs(), operation.getParameters());
 							final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
 									operation.getSimpleName(), sig);
-							operationsToImplement.put(actionKey, operation);
+							if (operation.isDefault()) {
+								if (overridableOperations != null) {
+									overridableOperations.put(actionKey, operation);
+								}
+							} else {
+								if (operationsToImplement != null) {
+									operationsToImplement.put(actionKey, operation);
+								}
+							}
 						}
 					}
 				}
@@ -234,7 +242,7 @@ public final class Utils {
 									operation.isVarArgs(), operation.getParameters());
 							final ActionPrototype actionKey = sarlSignatureProvider.createActionPrototype(
 									feature.getSimpleName(), sig);
-							if (operation.isAbstract()) {
+							if (operation.isAbstract() && !operation.isDefault()) {
 								if (operationsToImplement != null) {
 									operationsToImplement.put(actionKey, operation);
 								}

@@ -170,7 +170,65 @@ public class InterfaceCompilerTest {
 					"  ",
 					"  @DefaultValueUse(\"int\")",
 					"  @SyntheticMember",
-					"  public abstract void fct();",
+					"  public default void fct() {",
+					"    fct($DEFAULT_VALUE$FCT_0);",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void method_4() throws Exception {
+			String source = "interface I1 { def fct(a : int) : float { a + 1f } }";
+			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"",
+					"@FunctionalInterface",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1 {",
+					"  public default float fct(final int a) {",
+					"    return (a + 1f);",
+					"  }",
+					"}",
+					""
+					);
+			this.compiler.assertCompilesTo(source, expected);
+		}
+
+		@Test
+		public void method_5() throws Exception {
+			String source = "interface I1 { def fct(a : int = 6) : float { a + 1f } }";
+			String expected = multilineString(
+					"import io.sarl.lang.annotation.DefaultValue;",
+					"import io.sarl.lang.annotation.DefaultValueSource;",
+					"import io.sarl.lang.annotation.DefaultValueUse;",
+					"import io.sarl.lang.annotation.SarlSourceCode;",
+					"import io.sarl.lang.annotation.SarlSpecification;",
+					"import io.sarl.lang.annotation.SyntheticMember;",
+					"",
+					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SuppressWarnings(\"all\")",
+					"public interface I1 {",
+					"  @DefaultValueSource",
+					"  public default float fct(@DefaultValue(\"I1#FCT_0\") final int a) {",
+					"    return (a + 1f);",
+					"  }",
+					"  ",
+					"  /**",
+					"   * Default value for the parameter a",
+					"   */",
+					"  @SyntheticMember",
+					"  @SarlSourceCode(\"6\")",
+					"  public final static int $DEFAULT_VALUE$FCT_0 = 6;",
+					"  ",
+					"  @DefaultValueUse(\"int\")",
+					"  @SyntheticMember",
+					"  public default float fct() {",
+					"    return fct($DEFAULT_VALUE$FCT_0);",
+					"  }",
 					"}",
 					""
 					);
@@ -364,7 +422,9 @@ public class InterfaceCompilerTest {
 					"    ",
 					"    @DefaultValueUse(\"int\")",
 					"    @SyntheticMember",
-					"    public abstract void fct();",
+					"    public default void fct() {",
+					"      fct($DEFAULT_VALUE$FCT_0);",
+					"    }",
 					"  }",
 					"  ",
 					"  @SyntheticMember",
@@ -628,7 +688,9 @@ public class InterfaceCompilerTest {
 					"    ",
 					"    @DefaultValueUse(\"int\")",
 					"    @SyntheticMember",
-					"    public abstract void fct();",
+					"    public default void fct() {",
+					"      fct($DEFAULT_VALUE$FCT_0);",
+					"    }",
 					"  }",
 					"  ",
 					"  @SyntheticMember",

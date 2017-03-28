@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.sarlspecification;
+package io.sarl.sarlspecification
 
-import com.google.inject.ImplementedBy;
+import com.google.inject.ImplementedBy
 
-import io.sarl.lang.SARLVersion;
+import io.sarl.lang.SARLVersion
 
 /** Check if a given agent class follows a specific version of the SARL specifications.
  *
@@ -33,8 +33,8 @@ import io.sarl.lang.SARLVersion;
  * @mavenartifactid $ArtifactId$
  * @since 0.5
  */
-@ImplementedBy(StandardSarlSpecificationChecker.class)
-public interface SarlSpecificationChecker {
+@ImplementedBy(typeof(StandardSarlSpecificationChecker))
+interface SarlSpecificationChecker {
 
 	/** Replies the supported SARL specification version of the given type.
 	 *
@@ -43,7 +43,7 @@ public interface SarlSpecificationChecker {
 	 *     {@link SARLVersion#SPECIFICATION_RELEASE_VERSION}. The value {@link Float#NaN} is replied
 	 *     if the given type has no marker related to the SARL specification version.
 	 */
-	float getSarlSpecificationVersion(Class<?> type);
+	def getSarlSpecificationVersion(type : Class<?>) : float
 
 	/** Compare the SARL specification version associated to the given type to the version of the
 	 * current SARL.
@@ -53,8 +53,8 @@ public interface SarlSpecificationChecker {
 	 *     zero if the two versions are equal, a positive integer value if type's version is greater
 	 *     than the version of the current SARL.
 	 */
-	default int compareToSarlSpecificationVersion(Class<?> type) {
-		return Float.compare(getSarlSpecificationVersion(type), SARLVersion.SPECIFICATION_RELEASE_VERSION);
+	def compareToSarlSpecificationVersion(type : Class<?>) : int {
+		type.sarlSpecificationVersion <=> SARLVersion::SPECIFICATION_RELEASE_VERSION
 	}
 
 	/** Replies if the given type is a SARL element that is following the specification of the current SARL version.
@@ -62,9 +62,9 @@ public interface SarlSpecificationChecker {
 	 * @param type the type to test.
 	 * @return <code>true</code> if the given type follows the specification of the current version.
 	 */
-	default boolean isValidSarlElement(Class<?> type) {
+	def isValidSarlElement(type : Class<?>) : boolean {
 		// TODO: Unless we have reach the version 1.0, all the versions are incompatible.
-		return getSarlSpecificationVersion(type) == SARLVersion.SPECIFICATION_RELEASE_VERSION;
+		type.sarlSpecificationVersion == SARLVersion::SPECIFICATION_RELEASE_VERSION
 	}
 
 }
