@@ -44,7 +44,7 @@ import org.eclipse.xtext.validation.SeverityConverter;
  * and programmatically changing the severity of the issues.
  * For the Eclipse implementation of the provider, the standard severity provider
  * gets the severity levels from the preferences.
- * But, this configurable issue severity provider shold not change the preferences.
+ * But, this configurable issue severity provider should not change the preferences.
  * The contract is to have internal overriding of the preferences in this provider.
  *
  * @author $Author: sgalland$
