@@ -33,10 +33,12 @@ import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.validation.CompositeEValidator;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
+import org.eclipse.xtext.xbase.typesystem.internal.DefaultReentrantTypeResolver;
 
 import io.sarl.lang.bugfixes.bug356.Bug356ImportedNamespaceScopeProvider;
 import io.sarl.lang.bugfixes.bug356.Bug356QualifiedNameConverter;
 import io.sarl.lang.bugfixes.bug621.Bug621SARLValidator;
+import io.sarl.lang.bugfixes.bug623.Bug623SARLReentrantTypeResolver;
 import io.sarl.lang.bugfixes.xtext299.XtextBug299ConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.ConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
@@ -113,6 +115,11 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	@SingletonBinding(eager = true)
 	public Class<? extends SARLValidator> bindSARLValidator() {
 		return Bug621SARLValidator.class;
+	}
+
+	@Override
+	public Class<? extends DefaultReentrantTypeResolver> bindDefaultReentrantTypeResolver() {
+		return Bug623SARLReentrantTypeResolver.class;
 	}
 
 }
