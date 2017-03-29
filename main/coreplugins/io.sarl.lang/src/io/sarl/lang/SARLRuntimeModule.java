@@ -30,14 +30,17 @@ import com.google.inject.name.Names;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
+import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.validation.CompositeEValidator;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 
 import io.sarl.lang.bugfixes.bug356.Bug356ImportedNamespaceScopeProvider;
 import io.sarl.lang.bugfixes.bug356.Bug356QualifiedNameConverter;
+import io.sarl.lang.bugfixes.bug621.Bug621SARLValidator;
 import io.sarl.lang.bugfixes.xtext299.XtextBug299ConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.ConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
+import io.sarl.lang.validation.SARLValidator;
 
 /**
  * Use this class to register components to be used at runtime / without the
@@ -104,6 +107,12 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	@Override
 	public Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
 		return Bug356QualifiedNameConverter.class;
+	}
+
+	@Override
+	@SingletonBinding(eager = true)
+	public Class<? extends SARLValidator> bindSARLValidator() {
+		return Bug621SARLValidator.class;
 	}
 
 }

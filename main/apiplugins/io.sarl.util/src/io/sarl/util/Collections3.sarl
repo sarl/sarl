@@ -19,19 +19,18 @@
  * limitations under the License.
  */
 
-package io.sarl.util;
+package io.sarl.util
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.AbstractSet;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
-
-import io.sarl.lang.util.SynchronizedCollection;
-import io.sarl.lang.util.SynchronizedSet;
+import io.sarl.lang.util.SynchronizedCollection
+import io.sarl.lang.util.SynchronizedSet
+import java.io.ObjectOutputStream
+import java.io.Serializable
+import java.util.AbstractSet
+import java.util.Collection
+import java.util.Collections
+import java.util.Iterator
+import java.util.Set
+import java.util.Spliterator
 
 /** Utilities on collections.
  *
@@ -40,19 +39,46 @@ import io.sarl.lang.util.SynchronizedSet;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class Collections3 {
+final class Collections3 {
 
 	/**
 	 * The empty set (immutable).  This set is serializable.
 	 *
 	 * @see #emptySynchronizedSet()
 	 */
-	public static final SynchronizedSet<Object> EMPTY_SET = new EmptySet();
+	public static val EMPTY_SET : SynchronizedSet<Object> = new EmptySet
 
-	private Collections3() {
-		//
+	private new {
 	}
 
+	/** Implementation of an empty set.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class EmptySet extends AbstractSet<Object> implements SynchronizedSet<Object>, Serializable {
+
+		val mutex = new Object
+
+		package new {
+		}
+
+		override mutex : Object {
+			return this.mutex;
+		}
+
+		override iterator : Iterator<Object> {
+			Collections::emptyIterator
+		}
+
+		override size : int {
+			0
+		}
+
+	}
+	
 	/** Copied from Collections.
 	 *
 	 * @param <E> - type of the elements in the collection.
@@ -63,145 +89,128 @@ public final class Collections3 {
 	 */
 	private static class SynchronizedCollectionWrapper<E> implements Serializable, SynchronizedCollection<E> {
 
-		private static final long serialVersionUID = -7369575596119505391L;
-
 		/** Backing Collection.
 		 */
-		final Collection<E> collection;
+		package val collection : Collection<E>
 
 		/** Object on which to synchronize.
 		 */
-		final Object mutex;
+		package val mutex : Object
 
-		SynchronizedCollectionWrapper(Collection<E> collection, Object mutex) {
-			this.collection = collection;
-			this.mutex = mutex;
+		new (collection : Collection<E>, mutex : Object) {
+			this.collection = collection
+			this.mutex = mutex
 		}
 
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
+		override equals(obj : Object) : boolean {
+			if (this === obj) {
+				return true
 			}
 			synchronized (this.mutex) {
-				return this.collection.equals(obj);
+				return this.collection == obj
 			}
 		}
 
-		@Override
-		public int hashCode() {
+		override hashCode : int {
 			synchronized (this.mutex) {
-				return this.collection.hashCode();
+				this.collection.hashCode
 			}
 		}
 
-		@Override
-		public int size() {
+		override size : int {
 			synchronized (this.mutex) {
-				return this.collection.size();
+				this.collection.size
 			}
 		}
 
-		@Override
-		public boolean isEmpty() {
+		override isEmpty : boolean {
 			synchronized (this.mutex) {
-				return this.collection.isEmpty();
+				this.collection.empty
 			}
 		}
 
-		@Override
-		public boolean contains(Object object) {
+		override contains(object : Object) : boolean {
 			synchronized (this.mutex) {
-				return this.collection.contains(object);
+				this.collection.contains(object)
 			}
 		}
 
-		@Override
-		public Object[] toArray() {
+		override toArray : Object[] {
 			synchronized (this.mutex) {
-				return this.collection.toArray();
+				this.collection.toArray
 			}
 		}
 
-		@Override
-		public <T> T[] toArray(T[] output) {
+		override toArray(output : T[]) : T[] with T {
 			synchronized (this.mutex) {
-				return this.collection.toArray(output);
+				this.collection.toArray(output)
 			}
 		}
 
-		@Override
-		public Iterator<E> iterator() {
+		override iterator : Iterator<E> {
 			// Must be manually synched by user!
-			return this.collection.iterator();
+			this.collection.iterator
 		}
 
-		@Override
-		public boolean add(E element) {
+		override add(element : E) : boolean {
 			synchronized (this.mutex) {
-				return this.collection.add(element);
+				this.collection.add(element)
 			}
 		}
 
-		@Override
-		public boolean remove(Object element) {
+		override remove(element : Object) : boolean {
 			synchronized (this.mutex) {
-				return this.collection.remove(element);
+				this.collection.remove(element)
 			}
 		}
 
-		@Override
-		public boolean containsAll(Collection<?> coll) {
+		override containsAll(coll : Collection<?>) : boolean {
 			synchronized (this.mutex) {
-				return this.collection.containsAll(coll);
+				this.collection.containsAll(coll)
 			}
 		}
 
-		@Override
-		public boolean addAll(Collection<? extends E> coll) {
+		override addAll(coll : Collection<? extends E>) : boolean {
 			synchronized (this.mutex) {
-				return this.collection.addAll(coll);
+				this.collection.addAll(coll)
 			}
 		}
 
-		@Override
-		public boolean removeAll(Collection<?> coll) {
+		override removeAll(coll : Collection<?>) : boolean {
 			synchronized (this.mutex) {
-				return this.collection.removeAll(coll);
+				this.collection.removeAll(coll)
 			}
 		}
 
-		@Override
-		public boolean retainAll(Collection<?> coll) {
+		override retainAll(coll : Collection<?>) : boolean {
 			synchronized (this.mutex) {
-				return this.collection.retainAll(coll);
+				this.collection.retainAll(coll)
 			}
 		}
 
-		@Override
-		public void clear() {
+		override clear {
 			synchronized (this.mutex) {
-				this.collection.clear();
+				this.collection.clear
 			}
 		}
 
-		@Override
-		public String toString() {
+		override toString : String {
 			synchronized (this.mutex) {
-				return this.collection.toString();
+				this.collection.toString
 			}
 		}
 
-		private void writeObject(ObjectOutputStream stream) throws IOException {
+		@SuppressWarnings("unused_private_member")
+		private def writeObject(stream : ObjectOutputStream) {
 			synchronized (this.mutex) {
-				stream.defaultWriteObject();
+				stream.defaultWriteObject
 			}
 		}
 
-		@Override
-		public Object mutex() {
-			return this.mutex;
+		override mutex : Object {
+			this.mutex
 		}
+
 	}
 
 	/** Iterator that disable modifications on the collection.
@@ -214,25 +223,18 @@ public final class Collections3 {
 	 */
 	private static class UnmodifiableIterator<E> implements Iterator<E> {
 
-		private final Iterator<E> iterator;
+		val iterator : Iterator<E>
 
-		UnmodifiableIterator(Iterator<E> iterator) {
-			this.iterator = iterator;
+		package new (iterator : Iterator<E>) {
+			this.iterator = iterator
 		}
 
-		@Override
-		public boolean hasNext() {
-			return this.iterator.hasNext();
+		override hasNext : boolean {
+			this.iterator.hasNext
 		}
 
-		@Override
-		public E next() {
-			return this.iterator.next();
-		}
-
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
+		override next : E {
+			this.iterator.next
 		}
 
 	}
@@ -248,83 +250,68 @@ public final class Collections3 {
 	private static class UnmodifiableSetWrapper<E>
 			implements Serializable, SynchronizedSet<E> {
 
-		private static final long serialVersionUID = -6836341328672221159L;
+		val collection : SynchronizedSet<E>
 
-		private final SynchronizedSet<E> collection;
-
-		UnmodifiableSetWrapper(SynchronizedSet<E> set) {
-			this.collection = set;
+		package new (set : SynchronizedSet<E>) {
+			this.collection = set
 		}
 
-		@Override
-		public int size() {
-			return this.collection.size();
+		override size : int {
+			this.collection.size
 		}
 
-		@Override
-		public boolean isEmpty() {
-			return this.collection.isEmpty();
+		override isEmpty : boolean {
+			this.collection.empty
 		}
 
-		@Override
-		public boolean contains(Object object) {
-			return this.collection.contains(object);
+		override contains(object : Object) : boolean {
+			this.collection.contains(object)
 		}
 
-		@Override
-		public Iterator<E> iterator() {
-			return new UnmodifiableIterator<>(this.collection.iterator());
+		override iterator : Iterator<E> {
+			new UnmodifiableIterator(this.collection.iterator)
 		}
 
-		@Override
-		public Object[] toArray() {
-			return this.collection.toArray();
+		override toArray : Object[] {
+			this.collection.toArray
 		}
 
-		@Override
-		public <T> T[] toArray(T[] output) {
-			return this.collection.toArray(output);
+		override toArray(output : T[]) : T[] with T {
+			this.collection.toArray(output)
 		}
 
-		@Override
-		public boolean add(E element) {
-			throw new UnsupportedOperationException();
+		override add(element : E) : boolean {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public boolean remove(Object element) {
-			throw new UnsupportedOperationException();
+		override  remove(element : Object) : boolean {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public boolean containsAll(Collection<?> collection) {
-			return this.collection.containsAll(collection);
+		override containsAll(collection : Collection<?>) : boolean {
+			this.collection.containsAll(collection)
 		}
 
-		@Override
-		public boolean addAll(Collection<? extends E> collection) {
-			throw new UnsupportedOperationException();
+		override addAll(collection : Collection<? extends E>) : boolean {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public boolean removeAll(Collection<?> collection) {
-			throw new UnsupportedOperationException();
+		override removeAll(collection : Collection<?>) : boolean {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public boolean retainAll(Collection<?> collection) {
-			throw new UnsupportedOperationException();
+		override retainAll(collection : Collection<?>) : boolean {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public void clear() {
-			throw new UnsupportedOperationException();
+		override clear {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public Object mutex() {
-			return this.collection.mutex();
+		override mutex : Object {
+			this.collection.mutex
 		}
+
 	}
 
 	/** Implementation of a synchronized set wrapper that disable modifications.
@@ -338,45 +325,36 @@ public final class Collections3 {
 	private static class UnmodifiableSynchronizedSetWrapper<E>
 			extends SynchronizedSetWrapper<E> {
 
-		private static final long serialVersionUID = 4528746726889467656L;
-
-		UnmodifiableSynchronizedSetWrapper(Set<E> set, Object mutex) {
-			super(set, mutex);
+		package new (set : Set<E>, mutex : Object) {
+			super(set, mutex)
 		}
 
-		@Override
-		public boolean add(E element) {
-			throw new UnsupportedOperationException();
+		override add(element : E) : boolean {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public boolean remove(Object object) {
-			throw new UnsupportedOperationException();
+		override remove(object : Object) : boolean {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public boolean addAll(Collection<? extends E> collection) {
-			throw new UnsupportedOperationException();
+		override addAll(collection : Collection<? extends E>) : boolean {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public boolean removeAll(Collection<?> collection) {
-			throw new UnsupportedOperationException();
+		override removeAll(collection : Collection<?>) : boolean {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public boolean retainAll(Collection<?> collection) {
-			throw new UnsupportedOperationException();
+		override retainAll(collection : Collection<?>) : boolean {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public void clear() {
-			throw new UnsupportedOperationException();
+		override clear {
+			throw new UnsupportedOperationException
 		}
 
-		@Override
-		public Iterator<E> iterator() {
-			return new UnmodifiableIterator<>(super.iterator());
+		override iterator : Iterator<E> {
+			new UnmodifiableIterator(super.iterator)
 		}
 
 	}
@@ -393,42 +371,8 @@ public final class Collections3 {
 			extends SynchronizedCollectionWrapper<E>
 			implements SynchronizedSet<E> {
 
-		private static final long serialVersionUID = -4653222127490655349L;
-
-		SynchronizedSetWrapper(Set<E> set, Object mutex) {
-			super(set, mutex);
-		}
-
-	}
-
-	/** Implementation of an empty set.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private static class EmptySet extends AbstractSet<Object> implements SynchronizedSet<Object>, Serializable {
-
-		private static final long serialVersionUID = -3127287187730958288L;
-
-		EmptySet() {
-			//
-		}
-
-		@Override
-		public Object mutex() {
-			return new Object();
-		}
-
-		@Override
-		public Iterator<Object> iterator() {
-			return Collections.emptyIterator();
-		}
-
-		@Override
-		public int size() {
-			return 0;
+		package new (set : Set<E>, mutex : Object) {
+			super(set, mutex)
 		}
 
 	}
@@ -442,30 +386,25 @@ public final class Collections3 {
 	 */
 	private static class SingletonSet<T> extends AbstractSet<T> implements SynchronizedSet<T>, Serializable {
 
-		private static final long serialVersionUID = -143726600219970259L;
-
-		private final T singleton;
+		val singleton : T
 
 		/**
 		 * @param singleton - the singleton.
 		 */
-		SingletonSet(T singleton) {
-			this.singleton = singleton;
+		package new (singleton : T) {
+			this.singleton = singleton
 		}
 
-		@Override
-		public Object mutex() {
-			return this;
+		override mutex : Object {
+			this
 		}
 
-		@Override
-		public Iterator<T> iterator() {
-			return Collections.singleton(this.singleton).iterator();
+		override iterator : Iterator<T> {
+			Collections::singleton(this.singleton).iterator
 		}
 
-		@Override
-		public int size() {
-			return 1;
+		override size : int {
+			1
 		}
 
 	}
@@ -497,8 +436,8 @@ public final class Collections3 {
 	 * @param mutex is the mutex to use for synchronizing.
 	 * @return a synchronized view of the specified set.
 	 */
-	public static <T> SynchronizedSet<T> synchronizedSet(Set<T> set, Object mutex) {
-		return new SynchronizedSetWrapper<>(set, mutex);
+	static def synchronizedSet(set : Set<T>, mutex : Object) : SynchronizedSet<T> with T {
+		new SynchronizedSetWrapper(set, mutex)
 	}
 
 	/**
@@ -534,8 +473,8 @@ public final class Collections3 {
 	 * @param mutex is the mutex to use for synchronizing.
 	 * @return a synchronized view of the specified collection.
 	 */
-	public static <T> SynchronizedCollection<T> synchronizedCollection(Collection<T> collection, Object mutex) {
-		return new SynchronizedCollectionWrapper<>(collection, mutex);
+	static def synchronizedCollection(collection : Collection<T>, mutex : Object) : SynchronizedCollection<T> with T {
+		new SynchronizedCollectionWrapper(collection, mutex)
 	}
 
 	/** Replies an empty synchronized set.
@@ -543,9 +482,8 @@ public final class Collections3 {
 	 * @param <T> - type of the set element.
 	 * @return an empty synchronized set.
 	 */
-	@SuppressWarnings("unchecked")
-	public static <T> SynchronizedSet<T> emptySynchronizedSet() {
-		return (SynchronizedSet<T>) EMPTY_SET;
+	static def emptySynchronizedSet : SynchronizedSet<T> with T {
+		EMPTY_SET as SynchronizedSet<T>
 	}
 
 	/** Replies an empty synchronized set.
@@ -554,8 +492,8 @@ public final class Collections3 {
 	 * @param element - the element to put in the singleton.
 	 * @return an empty synchronized set.
 	 */
-	public static <T> SynchronizedSet<T> synchronizedSingleton(T element) {
-		return new SingletonSet<>(element);
+	static def synchronizedSingleton(element : T) : SynchronizedSet<T> with T {
+		new SingletonSet(element)
 	}
 
 	/** Replies an unmodifiable synchronized set.
@@ -564,8 +502,8 @@ public final class Collections3 {
 	 * @param elements - the set to transform as unmodifiable set.
 	 * @return an unmodifiable synchronized set.
 	 */
-	public static <T> SynchronizedSet<T> unmodifiableSynchronizedSet(SynchronizedSet<T> elements) {
-		return new UnmodifiableSetWrapper<>(elements);
+	static def unmodifiableSynchronizedSet(elements : SynchronizedSet<T>) : SynchronizedSet<T> with T {
+		new UnmodifiableSetWrapper(elements)
 	}
 
 	/**
@@ -595,8 +533,8 @@ public final class Collections3 {
 	 * @param mutex is the mutex to use for synchronizing.
 	 * @return an unmodifiable synchronized set.
 	 */
-	public static <T> SynchronizedSet<T> unmodifiableSynchronizedSet(Set<T> elements, Object mutex) {
-		return new UnmodifiableSynchronizedSetWrapper<>(elements, mutex);
+	static def unmodifiableSynchronizedSet(elements : Set<T>, mutex : Object) : SynchronizedSet<T> with T {
+		new UnmodifiableSynchronizedSetWrapper(elements, mutex)
 	}
 
 }
