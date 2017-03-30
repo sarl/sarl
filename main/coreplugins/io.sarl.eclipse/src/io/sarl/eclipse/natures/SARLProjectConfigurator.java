@@ -292,6 +292,16 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 				srcGeneratedSourcesEntry);
 	}
 
+	private static void setDerived(IResource resource) {
+		if (resource != null) {
+			try {
+				resource.setDerived(true, null);
+			} catch (CoreException exception) {
+				//
+			}
+		}
+	}
+
 	private static List<CPListElement> buildClassPathEntries(IJavaProject project, IFolder[] sourcePaths,
 			IFolder[] generationPaths) {
 		final List<CPListElement> list = new ArrayList<>();
@@ -343,6 +353,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 				return null;
 			}
 		}
+		setDerived(folder);
 		monitor.done();
 		return folder;
 	}
@@ -373,6 +384,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 				return null;
 			}
 		}
+		setDerived(folder);
 		monitor.done();
 		return folder;
 	}

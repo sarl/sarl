@@ -134,12 +134,12 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		return MavenProjectUtils.getProjectRelativePath(project, file.getAbsolutePath());
 	}
 
-	private static IFolder ensureFolderExists(IMavenProjectFacade facade, IPath path,
+	private static IFolder ensureFolderExists(IMavenProjectFacade facade, IPath path, boolean derived,
 			IProgressMonitor monitor) throws CoreException {
 		final IFolder folder = facade.getProject().getFolder(path.makeRelativeTo(facade.getProject().getFullPath()));
 		assert folder != null;
 		if (!folder.exists()) {
-			M2EUtils.createFolder(folder, folder.isDerived(), monitor);
+			M2EUtils.createFolder(folder, derived || folder.isDerived(), monitor);
 		}
 		return folder;
 	}
@@ -168,7 +168,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		// Add the source folders
 		final IPath inputPath = makeFullPath(facade, config.getInput());
-		final IFolder inputFolder = ensureFolderExists(facade, inputPath, subMonitor);
+		final IFolder inputFolder = ensureFolderExists(facade, inputPath, false, subMonitor);
 		if (encoding != null && inputFolder != null && inputFolder.exists()) {
 			inputFolder.setDefaultCharset(encoding, monitor);
 		}
@@ -179,7 +179,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		subMonitor.worked(1);
 
 		final IPath outputPath = makeFullPath(facade, config.getOutput());
-		final IFolder outputFolder = ensureFolderExists(facade, outputPath, subMonitor);
+		final IFolder outputFolder = ensureFolderExists(facade, outputPath, true, subMonitor);
 		if (encoding != null && outputFolder != null && outputFolder.exists()) {
 			outputFolder.setDefaultCharset(encoding, monitor);
 		}
@@ -192,7 +192,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		// Add the test folders
 		final IPath testInputPath = makeFullPath(facade, config.getTestInput());
-		final IFolder testInputFolder = ensureFolderExists(facade, testInputPath, subMonitor);
+		final IFolder testInputFolder = ensureFolderExists(facade, testInputPath, false, subMonitor);
 		if (encoding != null && testInputFolder != null && testInputFolder.exists()) {
 			testInputFolder.setDefaultCharset(encoding, monitor);
 		}
@@ -203,7 +203,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		subMonitor.worked(1);
 
 		final IPath testOutputPath = makeFullPath(facade, config.getTestOutput());
-		final IFolder testOutputFolder = ensureFolderExists(facade, testOutputPath, subMonitor);
+		final IFolder testOutputFolder = ensureFolderExists(facade, testOutputPath, true, subMonitor);
 		if (encoding != null && testOutputFolder != null && testOutputFolder.exists()) {
 			testOutputFolder.setDefaultCharset(encoding, monitor);
 		}
