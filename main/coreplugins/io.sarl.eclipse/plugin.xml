@@ -509,4 +509,21 @@
             commandId="io.sarl.eclipse.logs.submitIssue" />
    </extension>
 
+   <!-- Package explorer -->
+   <extension point="org.eclipse.ui.views">
+		<category
+			id="io.sarl.lang.SARL"
+			name="%category.name"/>
+	   	<view
+	         id="io.sarl.eclipse.explorer.PackageExplorer"
+	         class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.explorer.SARLPackageExplorerPart"
+	         category="io.sarl.lang.SARL"
+	         allowMultiple="false"
+	         restorable="true"
+	         fastViewWidthRatio="0.2"
+	         name="%view.packageExplorer"
+	         icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/eview16/package.png">
+	   	</view>
+   </extension>
+
 </plugin>

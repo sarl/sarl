@@ -32,6 +32,7 @@ import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.progress.IProgressConstants;
 
 import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.explorer.SARLPackageExplorerPart;
 
 /**
  * Factory for the SARL Eclipse perspective.
@@ -56,7 +57,8 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 
 		final IFolderLayout folder = layout.createFolder("left", IPageLayout.LEFT, //$NON-NLS-1$
 				LEFT_PANEL_RATIO, editorArea);
-		folder.addView(JavaUI.ID_PACKAGES);
+		//folder.addView(JavaUI.ID_PACKAGES);
+		folder.addView(SARLPackageExplorerPart.ID_PACKAGES);
 		folder.addPlaceholder(JavaUI.ID_TYPE_HIERARCHY);
 		folder.addPlaceholder(JavaPlugin.ID_RES_NAV);
 		folder.addPlaceholder(IPageLayout.ID_PROJECT_EXPLORER);

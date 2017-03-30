@@ -33,6 +33,7 @@ Require-Bundle: io.sarl.lang.ui;bundle-version="0.6.0";visibility:=reexport,
 Bundle-Activator: io.sarl.eclipse.SARLEclipsePlugin
 Export-Package: io.sarl.eclipse,
  io.sarl.eclipse.buildpath,
+ io.sarl.eclipse.explorer,
  io.sarl.eclipse.launching.config,
  io.sarl.eclipse.launching.dialog,
  io.sarl.eclipse.launching.runner,
