@@ -21,7 +21,6 @@
 
 package io.janusproject.services.spawn;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,9 +58,10 @@ public interface SpawnService extends DependentService {
 	 * Kill the agent with the given identifier.
 	 *
 	 * @param agentID - the identifier of the agent to kill.
-	 * @throws AgentKillException - thrown when the agent cannot be killed.
+	 * @return {@code true} if the agent was killed by this call; {@code false} if the agent
+	 *     is unknown or already killed.
 	 */
-	void killAgent(UUID agentID) throws AgentKillException;
+	boolean killAgent(UUID agentID);
 
 	/**
 	 * Add a listener on the changes in the current state of an agent.
@@ -106,48 +106,5 @@ public interface SpawnService extends DependentService {
 	 * @param listener - listener on the spawning events in the local kernel.
 	 */
 	void removeKernelAgentSpawnListener(KernelAgentSpawnListener listener);
-
-	/**
-	 * Exception occurs when an agent cannot be killed.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	class AgentKillException extends Exception {
-
-		private static final long serialVersionUID = -7911946040378324212L;
-
-		private final UUID agent;
-
-		/**
-		 * @param agent - id of the agent that cannot be killed.
-		 */
-		public AgentKillException(UUID agent) {
-			super(MessageFormat.format(Messages.SpawnService_0, agent));
-			this.agent = agent;
-			fillInStackTrace();
-		}
-
-		/**
-		 * @param agent - id of the agent that cannot be killed.
-		 * @param cause - the exception that is the cause of the killing discarding.
-		 */
-		public AgentKillException(UUID agent, Throwable cause) {
-			super(MessageFormat.format(Messages.SpawnService_1, agent, cause), cause);
-			this.agent = agent;
-		}
-
-		/**
-		 * Replies the id of the agent that cannot be skilled.
-		 *
-		 * @return the agent id.
-		 */
-		public UUID getAgent() {
-			return this.agent;
-		}
-
-	}
 
 }

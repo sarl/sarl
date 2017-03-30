@@ -262,7 +262,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	}
 
 	@Override
-	public void killAgent(UUID agentID) throws AgentKillException {
+	public boolean killAgent(UUID agentID) {
 		final boolean error = !isRunning();
 
 		// We should check if it is possible to kill the agent BEFORE killing it.
@@ -294,9 +294,10 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 			if (error) {
 				throw new SpawnServiceStopException(agentID);
 			}
-		} else if (!foundAgent) {
-			throw new AgentKillException(agentID);
+			return true;
 		}
+
+		return false;
 	}
 
 	/**

@@ -146,36 +146,4 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 		ExecutorService.neverReturn();
 	}
 
-	/**
-	 * This runtie exception is thrown when an agent cannot be killed.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	public static class AgentKillException extends RuntimeException {
-
-		private static final long serialVersionUID = 3186824315988212481L;
-
-		/**
-		 * Construct.
-		 *
-		 * @param exception - cause
-		 */
-		AgentKillException(io.janusproject.services.spawn.SpawnService.AgentKillException exception) {
-			super(exception.getMessage(), exception);
-		}
-
-		/**
-		 * Replies the agent that cannot be killed.
-		 *
-		 * @return the agent.
-		 */
-		public UUID getAgent() {
-			return ((io.janusproject.services.spawn.SpawnService.AgentKillException) getCause()).getAgent();
-		}
-
-	}
-
 }

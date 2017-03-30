@@ -37,7 +37,6 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import io.janusproject.kernel.bic.internaleventdispatching.AgentInternalEventsDispatcher;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.services.spawn.SpawnService;
-import io.janusproject.services.spawn.SpawnService.AgentKillException;
 
 import io.sarl.core.AgentSpawned;
 import io.sarl.core.Destroy;
@@ -397,22 +396,18 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		}
 
 		@SuppressWarnings("synthetic-access")
-		private void killOwner(InternalEventBusSkill skill) {
-			try {
-				skill.spawnService.killAgent(this.aid);
-			} catch (AgentKillException e) {
-				skill.logger.error(Messages.InternalEventBusSkill_2, this.aid, e);
-			}
+		private boolean killOwner(InternalEventBusSkill skill) {
+			return skill.spawnService.killAgent(this.aid);
 		}
 
-		void killOrMarkAsKilled() {
+		boolean killOrMarkAsKilled() {
 			this.isKilled.set(true);
 			final OwnerState state = getOwnerState();
 			assert state != null;
 			if (state == OwnerState.ALIVE) {
-				killOwner(InternalEventBusSkill.this);
+				return killOwner(InternalEventBusSkill.this);
 			}
-
+			return false;
 		}
 
 	}
