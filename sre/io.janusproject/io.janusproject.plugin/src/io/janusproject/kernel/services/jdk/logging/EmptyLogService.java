@@ -32,6 +32,7 @@ import com.google.common.util.concurrent.AbstractService;
 import com.google.common.util.concurrent.Service;
 
 import io.janusproject.services.logging.LogService;
+import io.janusproject.util.LoggerCreator;
 
 /**
  * This class provides an implementation of the {@link LogService} that outputs nothing.
@@ -51,7 +52,7 @@ public class EmptyLogService extends AbstractService implements LogService {
 	 * Construct.
 	 */
 	public EmptyLogService() {
-		this.logger = Logger.getLogger(EmptyLogService.class.getName());
+		this.logger = LoggerCreator.createLogger(EmptyLogService.class.getName());
 	}
 
 	@Override

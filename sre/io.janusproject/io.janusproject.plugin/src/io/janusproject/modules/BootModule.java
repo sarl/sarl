@@ -22,36 +22,22 @@
 package io.janusproject.modules;
 
 import java.io.IOError;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Map.Entry;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import com.google.common.base.Strings;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
-import com.google.inject.MembersInjector;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
-import com.google.inject.TypeLiteral;
-import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
-import com.google.inject.spi.TypeEncounter;
-import com.google.inject.spi.TypeListener;
-import org.arakhne.afc.vmutil.FileSystem;
 
 import io.janusproject.JanusConfig;
 import io.janusproject.services.network.NetworkUtil;
-import io.janusproject.util.LoggerCreator;
 
 /**
  * The module configures the minimum requirements for the system variables.
@@ -65,10 +51,6 @@ public class BootModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        // Custom logger
-        LoggerCreator.useJanusMessageFormat();
-        bindListener(Matchers.any(), new LoggerMemberListener());
-
         // Bind the system properties.
         boolean foundPubUri = false;
         String name;
@@ -195,96 +177,6 @@ public class BootModule extends AbstractModule {
         @Override
         public String get() {
             return getPUBURIAsString();
-        }
-
-    }
-
-    /**
-     * Provider of logger.
-     *
-     * @author $Author: sgalland$
-     * @version $FullVersion$
-     * @mavengroupid $GroupId$
-     * @mavenartifactid $ArtifactId$
-     */
-    private static final class LoggerMemberListener implements TypeListener {
-
-        private final AtomicBoolean isInit = new AtomicBoolean(false);
-
-        /**
-         * Construct.
-         */
-        LoggerMemberListener() {
-            //
-        }
-
-        private static void init() {
-            final String propertyFileName = JanusConfig.getSystemProperty(JanusConfig.LOGGING_PROPERTY_FILE_NAME,
-                    JanusConfig.LOGGING_PROPERTY_FILE_VALUE);
-            if (propertyFileName != null && !propertyFileName.isEmpty()) {
-                final URL url = FileSystem.convertStringToURL(propertyFileName, true);
-                if (url != null) {
-                    try (InputStream is = url.openStream()) {
-                        LogManager.getLogManager().readConfiguration(is);
-                    } catch (IOException e) {
-                        throw new IOError(e);
-                    }
-                }
-            }
-        }
-
-        @Override
-        public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {
-            for (final Field field : type.getRawType().getDeclaredFields()) {
-                if (field.getType() == Logger.class) {
-                    if (!this.isInit.getAndSet(true)) {
-                        init();
-                    }
-                    encounter.register(new LoggerMemberInjector<I>(field));
-                }
-            }
-        }
-
-    }
-
-    /**
-     * Provider of logger.
-     *
-     * @param <T>
-     *            the type of the type of the field.
-     * @author $Author: sgalland$
-     * @version $FullVersion$
-     * @mavengroupid $GroupId$
-     * @mavenartifactid $ArtifactId$
-     */
-    private static final class LoggerMemberInjector<T> implements MembersInjector<T> {
-
-        private final Field field;
-
-        /**
-         * Construct.
-         *
-         * @param field
-         *            the field to inject.
-         */
-        LoggerMemberInjector(Field field) {
-            this.field = field;
-        }
-
-        @Override
-        public void injectMembers(T instance) {
-            final Logger logger = LoggerCreator.createLogger(JanusConfig.JANUS_DEFAULT_PLATFORM_NAME + " (" //$NON-NLS-1$
-                    + this.field.getDeclaringClass().getSimpleName() + ")"); //$NON-NLS-1$
-
-            final boolean accessible = this.field.isAccessible();
-            try {
-                this.field.setAccessible(true);
-                this.field.set(instance, logger);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                throw new RuntimeException(e);
-            } finally {
-                this.field.setAccessible(accessible);
-            }
         }
 
     }

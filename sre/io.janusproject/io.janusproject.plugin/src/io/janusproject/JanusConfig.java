@@ -85,20 +85,6 @@ public final class JanusConfig {
     public static final Boolean JANUS_LOGO_SHOW = Boolean.TRUE;
 
     /**
-     * Name of the property that contains the verbosity level of Janus.
-     *
-     * @see #LOGGING_PROPERTY_FILE_VALUE
-     */
-    public static final String LOGGING_PROPERTY_FILE_NAME = "java.util.logging.config.file"; //$NON-NLS-1$
-
-    /**
-     * The default name of the logging property file of Janus.
-     *
-     * @see #LOGGING_PROPERTY_FILE_NAME
-     */
-    public static final String LOGGING_PROPERTY_FILE_VALUE = "resource:io/janusproject/logging.properties"; //$NON-NLS-1$
-
-    /**
      * Name of the property that contains the identifier of the Janus context.
      *
      * @see #DEFAULT_CONTEXT_ID_VALUE
@@ -285,7 +271,6 @@ public final class JanusConfig {
         defaultValues.put(PUB_URI, ""); //$NON-NLS-1$
         defaultValues.put(RANDOM_DEFAULT_CONTEXT_ID_NAME, RANDOM_DEFAULT_CONTEXT_ID_VALUE.toString());
         defaultValues.put(VERBOSE_LEVEL_NAME, VERBOSE_LEVEL_VALUE);
-        defaultValues.put(LOGGING_PROPERTY_FILE_NAME, LOGGING_PROPERTY_FILE_VALUE);
         defaultValues.put(HAZELCAST_LOGGER_FACTORY_NAME, HAZELCAST_LOGGER_FACTORY_VALUE);
         defaultValues.put(MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME, Integer.toString(MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE));
         defaultValues.put(MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME, Integer.toString(MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE));
