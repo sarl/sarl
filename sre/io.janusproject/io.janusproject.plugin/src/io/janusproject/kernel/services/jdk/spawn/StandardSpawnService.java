@@ -48,6 +48,7 @@ import io.janusproject.kernel.bic.BuiltinCapacityUtil;
 import io.janusproject.services.AbstractDependentService;
 import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.services.executor.ExecutorService;
+import io.janusproject.services.logging.LogService;
 import io.janusproject.services.spawn.KernelAgentSpawnListener;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.services.spawn.SpawnServiceListener;
@@ -55,6 +56,7 @@ import io.janusproject.util.ListenerCollection;
 
 import io.sarl.core.AgentKilled;
 import io.sarl.core.AgentSpawned;
+import io.sarl.core.Logging;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
@@ -86,12 +88,22 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 */
 	private static final Method MAP_CAPACITY_FUNCTION;
 
+	/** Static reference to the private function for setting the build-in capacities.
+	 */
+	private static final Method GET_SKILL_FUNCTION;
+
 	static {
 		try {
 			MAP_CAPACITY_FUNCTION = Agent.class.getDeclaredMethod("mapCapacity", Class.class, Skill.class); //$NON-NLS-1$
 			MAP_CAPACITY_FUNCTION.setAccessible(true);
 		} catch (NoSuchMethodException | SecurityException e) {
 			throw new Error(Messages.StandardSpawnService_4, e);
+		}
+		try {
+			GET_SKILL_FUNCTION = Agent.class.getDeclaredMethod("getSkill", Class.class); //$NON-NLS-1$
+			GET_SKILL_FUNCTION.setAccessible(true);
+		} catch (NoSuchMethodException | SecurityException e) {
+			throw new Error(Messages.StandardSpawnService_6, e);
 		}
 	}
 
@@ -109,6 +121,9 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 	@Inject
 	private ExecutorService executor;
+
+	@Inject
+	private LogService logger;
 
 	@Inject
 	private BuiltinCapacitiesProvider builtinCapacityProvider;
@@ -267,9 +282,9 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		// We should check if it is possible to kill the agent BEFORE killing it.
 		final boolean foundAgent;
-		boolean canKill = false;
 		boolean isLast = false;
 		Agent killAgent = null;
+		final String warningMessage;
 		synchronized (getAgentRepositoryMutex()) {
 			final Agent agent = this.agents.get(agentID);
 			foundAgent = agent != null;
@@ -277,13 +292,17 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 				if (canKillAgent(agent)) {
 					this.agents.remove(agentID);
 					isLast = this.agents.isEmpty();
-					canKill = true;
 					killAgent = agent;
+					warningMessage = null;
+				} else {
+					warningMessage = Messages.StandardSpawnService_7;
 				}
+			} else {
+				warningMessage = Messages.StandardSpawnService_8;
 			}
 		}
 
-		if (canKill) {
+		if (warningMessage == null) {
 			assert killAgent != null;
 
 			fireAgentDestroyed(killAgent);
@@ -295,6 +314,17 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 				throw new SpawnServiceStopException(agentID);
 			}
 			return true;
+		}
+
+		if (killAgent != null) {
+			try {
+				final Logging skill = (Logging) GET_SKILL_FUNCTION.invoke(killAgent, Logging.class);
+				skill.warning(warningMessage);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				throw new Error(Messages.StandardSpawnService_9, e);
+			}
+		} else {
+			this.logger.warning(warningMessage);
 		}
 
 		return false;

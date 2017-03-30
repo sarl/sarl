@@ -39,6 +39,10 @@ public class Messages extends NLS {
 	public static String StandardSpawnService_3;
 	public static String StandardSpawnService_4;
 	public static String StandardSpawnService_5;
+	public static String StandardSpawnService_6;
+	public static String StandardSpawnService_7;
+	public static String StandardSpawnService_8;
+	public static String StandardSpawnService_9;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
