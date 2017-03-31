@@ -6,7 +6,7 @@
 
 	<groupId>io.sarl.maven.compiler.tests</groupId>
 	<artifactId>this-is-for-test-only</artifactId>
-	<version>0.6.0-SNAPSHOT</version>
+	<version>0.5.3</version>
 	<name>This is for Test ONLY</name>
 	
 	<dependencies>
@@ -22,7 +22,7 @@
 			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<version>0.6.0-SNAPSHOT</version>
+				<version>0.5.3</version>
 				<extensions>true</extensions>
 				<configuration>
 					<source>1.8</source>

@@ -36,13 +36,13 @@ public final class JanusVersion {
 
 	/** The version number of the current release of the Janus platform.
 	 */
-	public static final String JANUS_RELEASE_VERSION = "2.0.6.0"; //$NON-NLS-1$
+	public static final String JANUS_RELEASE_VERSION = "2.0.5.3"; //$NON-NLS-1$
 
 	/** Flag that indicates if the current Janus platform is a stable release.
 	 *
 	 * <p>A stable release is a platform that will be not more compiled and generated.
 	 */
-	public static final boolean IS_STABLE = false;
+	public static final boolean IS_STABLE = true;
 
 	private JanusVersion() {
 		//
