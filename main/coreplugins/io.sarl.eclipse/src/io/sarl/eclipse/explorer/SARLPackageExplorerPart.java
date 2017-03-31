@@ -24,7 +24,7 @@ package io.sarl.eclipse.explorer;
 import javax.inject.Inject;
 
 import org.eclipse.jdt.internal.ui.JavaPlugin;
-import org.eclipse.jdt.internal.ui.filters.EmptyPackageFilter;
+import org.eclipse.jdt.internal.ui.filters.EmptyInnerPackageFilter;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerContentProvider;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerLabelProvider;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart;
@@ -175,7 +175,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	 */
 	protected void restoreFilterAndSorter() {
 		final ProblemTreeViewer viewer = getViewer();
-		viewer.addFilter(new EmptyPackageFilter());
+		viewer.addFilter(new EmptyInnerPackageFilter());
 		viewer.addFilter(new HiddenFileFilter());
 	}
 
