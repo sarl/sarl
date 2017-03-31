@@ -55,6 +55,10 @@
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.examples.feature" type="4"/>
 <item elementID="=io.sarl.examples.plugin" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.examples.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.experienceindex" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.experienceindex.feature" type="4"/>
+<item elementID="=io.sarl.experienceindex.plugin" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=io.sarl.experienceindex.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.products.contribs" type="4"/>
 </workingSet>
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480017551937_8" label="Product Engineering" name="Product Engineering">
