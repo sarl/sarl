@@ -21,6 +21,11 @@
 package io.sarl.experienceindex;
 
 import io.sarl.experienceindex.Messages;
+import io.sarl.experienceindex.SeiCanceler;
+import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.annotation.DefaultValueSource;
+import io.sarl.lang.annotation.DefaultValueUse;
+import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import java.io.ByteArrayOutputStream;
@@ -365,6 +370,19 @@ public final class SarlExperienceIndex {
     }
   }
   
+  private static SeiCanceler wrap(final SeiCanceler canceller) {
+    SeiCanceler _xifexpression = null;
+    if ((canceller == null)) {
+      final SeiCanceler _function = () -> {
+        return false;
+      };
+      _xifexpression = _function;
+    } else {
+      _xifexpression = canceller;
+    }
+    return _xifexpression;
+  }
+  
   private final static SarlExperienceIndex.SEI SEI_SINGLETON = new SarlExperienceIndex.SEI();
   
   private SarlExperienceIndex() {
@@ -390,31 +408,46 @@ public final class SarlExperienceIndex {
   /**
    * Replies the current SEI.
    * 
+   * @param canceller the object that permits to stop the computation before its end.
    * @return the current SEI.
    */
+  @DefaultValueSource
   @Pure
-  public static strictfp SarlExperienceIndex.SEI getJanusExperienceIndex() {
+  public static SarlExperienceIndex.SEI getJanusExperienceIndex(@DefaultValue("io.sarl.experienceindex.SarlExperienceIndex#GETJANUSEXPERIENCEINDEX_0") final SeiCanceler canceller) {
     SarlExperienceIndex.SEI _xblockexpression = null;
     {
-      SarlExperienceIndex.baseScore();
+      SarlExperienceIndex.baseScore(canceller);
       _xblockexpression = SarlExperienceIndex.SEI_SINGLETON;
     }
     return _xblockexpression;
   }
   
   /**
+   * Default value for the parameter canceller
+   */
+  @SyntheticMember
+  @SarlSourceCode("null")
+  private final static SeiCanceler $DEFAULT_VALUE$GETJANUSEXPERIENCEINDEX_0 = null;
+  
+  /**
    * Compute the global SEI.
    * 
+   * @param canceller the object that permits to stop the computation before its end.
    * @return the global SEI.
    */
-  public static strictfp float baseScore() {
+  @DefaultValueSource
+  public static strictfp float baseScore(@DefaultValue("io.sarl.experienceindex.SarlExperienceIndex#BASESCORE_0") final SeiCanceler canceller) {
+    SeiCanceler clr = SarlExperienceIndex.wrap(canceller);
     float score = SarlExperienceIndex.SEI_SINGLETON.getBaseScore();
-    boolean _isNaN = Float.isNaN(score);
-    if (_isNaN) {
-      float _cpuScore = SarlExperienceIndex.cpuScore();
-      float _memoryScore = SarlExperienceIndex.memoryScore();
-      float _diskScore = SarlExperienceIndex.diskScore();
+    if (((!clr.isCanceled()) && Float.isNaN(score))) {
+      float _cpuScore = SarlExperienceIndex.cpuScore(canceller);
+      float _memoryScore = SarlExperienceIndex.memoryScore(canceller);
+      float _diskScore = SarlExperienceIndex.diskScore(canceller);
       final List<Float> scores = Collections.<Float>unmodifiableList(CollectionLiterals.<Float>newArrayList(Float.valueOf(_cpuScore), Float.valueOf(_memoryScore), Float.valueOf(_diskScore)));
+      boolean _isCanceled = clr.isCanceled();
+      if (_isCanceled) {
+        return Float.NaN;
+      }
       SarlExperienceIndex.normalize(((float[])Conversions.unwrapArray(scores, float.class)));
       score = SarlExperienceIndex.avg(((float[])Conversions.unwrapArray(scores, float.class)));
       SarlExperienceIndex.SEI_SINGLETON.setCpuScore((scores.get(0)).floatValue());
@@ -426,18 +459,27 @@ public final class SarlExperienceIndex {
   }
   
   /**
+   * Default value for the parameter canceller
+   */
+  @SyntheticMember
+  @SarlSourceCode("null")
+  private final static SeiCanceler $DEFAULT_VALUE$BASESCORE_0 = null;
+  
+  /**
    * Compute the CPU score.
    * 
+   * @param canceller the object that permits to stop the computation before its end.
    * @return the CPU score.
    */
-  public static strictfp float cpuScore() {
+  @DefaultValueSource
+  public static strictfp float cpuScore(@DefaultValue("io.sarl.experienceindex.SarlExperienceIndex#CPUSCORE_0") final SeiCanceler canceller) {
+    final SeiCanceler clr = SarlExperienceIndex.wrap(canceller);
     float score = SarlExperienceIndex.SEI_SINGLETON.getCpuScore();
-    boolean _isNaN = Float.isNaN(score);
-    if (_isNaN) {
-      float _computeCompressionScore = SarlExperienceIndex.computeCompressionScore();
-      float _computeEncryptionScore = SarlExperienceIndex.computeEncryptionScore();
-      float _computeArithmeticScore = SarlExperienceIndex.computeArithmeticScore();
-      float _computeMultiProcessorScore = SarlExperienceIndex.computeMultiProcessorScore();
+    if (((!clr.isCanceled()) && Float.isNaN(score))) {
+      float _computeCompressionScore = SarlExperienceIndex.computeCompressionScore(canceller);
+      float _computeEncryptionScore = SarlExperienceIndex.computeEncryptionScore(canceller);
+      float _computeArithmeticScore = SarlExperienceIndex.computeArithmeticScore(canceller);
+      float _computeMultiProcessorScore = SarlExperienceIndex.computeMultiProcessorScore(canceller);
       List<Float> scores = Collections.<Float>unmodifiableList(CollectionLiterals.<Float>newArrayList(Float.valueOf(_computeCompressionScore), Float.valueOf(_computeEncryptionScore), Float.valueOf(_computeArithmeticScore), Float.valueOf(_computeMultiProcessorScore)));
       final List<Float> _converted_scores = (List<Float>)scores;
       score = SarlExperienceIndex.avg(((float[])Conversions.unwrapArray(_converted_scores, float.class)));
@@ -447,7 +489,14 @@ public final class SarlExperienceIndex {
     return score;
   }
   
-  private static strictfp float computeMultiProcessorScore() {
+  /**
+   * Default value for the parameter canceller
+   */
+  @SyntheticMember
+  @SarlSourceCode("null")
+  private final static SeiCanceler $DEFAULT_VALUE$CPUSCORE_0 = null;
+  
+  private static strictfp float computeMultiProcessorScore(final SeiCanceler canceller) {
     float _xtrycatchfinallyexpression = (float) 0;
     try {
       float _xblockexpression = (float) 0;
@@ -468,14 +517,20 @@ public final class SarlExperienceIndex {
     return _xtrycatchfinallyexpression;
   }
   
-  private static strictfp float computeArithmeticScore() {
+  private static strictfp float computeArithmeticScore(final SeiCanceler canceller) {
     float _xtrycatchfinallyexpression = (float) 0;
     try {
       float _xblockexpression = (float) 0;
       {
         long s = System.nanoTime();
         for (int i = 0; (i < 100000000); i++) {
-          Math.atan2(123, 456);
+          {
+            Math.atan2(123, 456);
+            boolean _isCanceled = canceller.isCanceled();
+            if (_isCanceled) {
+              return Float.NaN;
+            }
+          }
         }
         long e = System.nanoTime();
         long arithDelay = (e - s);
@@ -496,7 +551,7 @@ public final class SarlExperienceIndex {
     return _xtrycatchfinallyexpression;
   }
   
-  private static strictfp float computeEncryptionScore() {
+  private static strictfp float computeEncryptionScore(final SeiCanceler canceller) {
     float _xtrycatchfinallyexpression = (float) 0;
     try {
       float _xblockexpression = (float) 0;
@@ -505,8 +560,14 @@ public final class SarlExperienceIndex {
         StringBuilder t = new StringBuilder();
         for (int i = 0; (i < 6000); i++) {
           for (int j = 0; (j < 1024); j++) {
-            int _nextInt = rnd.nextInt();
-            t.append(((char) _nextInt));
+            {
+              int _nextInt = rnd.nextInt();
+              t.append(((char) _nextInt));
+              boolean _isCanceled = canceller.isCanceled();
+              if (_isCanceled) {
+                return Float.NaN;
+              }
+            }
           }
         }
         t.trimToSize();
@@ -530,19 +591,49 @@ public final class SarlExperienceIndex {
         Object _newInstance = Array.newInstance(byte.class, DESKeySpec.DES_KEY_LEN);
         byte[] bkey = ((byte[]) _newInstance);
         for (int i = 0; (i < DESKeySpec.DES_KEY_LEN); i++) {
-          int _length = original.length;
-          int _modulo = (i % _length);
-          bkey[i] = original[_modulo];
+          {
+            int _length = original.length;
+            int _modulo = (i % _length);
+            bkey[i] = original[_modulo];
+            boolean _isCanceled = canceller.isCanceled();
+            if (_isCanceled) {
+              return Float.NaN;
+            }
+          }
         }
         SecretKeySpec kkey = new SecretKeySpec(bkey, "DES");
         Cipher cipher = Cipher.getInstance("DES");
         long s = System.nanoTime();
         MessageDigest.getInstance("MD5").digest(buffer);
+        boolean _isCanceled = canceller.isCanceled();
+        if (_isCanceled) {
+          return Float.NaN;
+        }
         MessageDigest.getInstance("SHA").digest(buffer);
+        boolean _isCanceled_1 = canceller.isCanceled();
+        if (_isCanceled_1) {
+          return Float.NaN;
+        }
         cipher.init(Cipher.ENCRYPT_MODE, kkey);
+        boolean _isCanceled_2 = canceller.isCanceled();
+        if (_isCanceled_2) {
+          return Float.NaN;
+        }
         byte[] output = cipher.doFinal(buffer);
+        boolean _isCanceled_3 = canceller.isCanceled();
+        if (_isCanceled_3) {
+          return Float.NaN;
+        }
         cipher.init(Cipher.DECRYPT_MODE, kkey);
+        boolean _isCanceled_4 = canceller.isCanceled();
+        if (_isCanceled_4) {
+          return Float.NaN;
+        }
         cipher.doFinal(output);
+        boolean _isCanceled_5 = canceller.isCanceled();
+        if (_isCanceled_5) {
+          return Float.NaN;
+        }
         long e = System.nanoTime();
         long encryptionDelay = (e - s);
         SarlExperienceIndex.garbage();
@@ -603,7 +694,7 @@ public final class SarlExperienceIndex {
     return _xblockexpression;
   }
   
-  private static strictfp float computeCompressionScore() {
+  private static strictfp float computeCompressionScore(final SeiCanceler canceller) {
     float _xtrycatchfinallyexpression = (float) 0;
     try {
       float _xblockexpression = (float) 0;
@@ -612,8 +703,14 @@ public final class SarlExperienceIndex {
         StringBuilder t = new StringBuilder();
         for (int i = 0; (i < 6000); i++) {
           for (int j = 0; (j < 1024); j++) {
-            int _nextInt = rnd.nextInt();
-            t.append(((char) _nextInt));
+            {
+              int _nextInt = rnd.nextInt();
+              t.append(((char) _nextInt));
+              boolean _isCanceled = canceller.isCanceled();
+              if (_isCanceled) {
+                return Float.NaN;
+              }
+            }
           }
         }
         t.trimToSize();
@@ -631,6 +728,10 @@ public final class SarlExperienceIndex {
           compressionDelay = (e - s);
         } finally {
           zos.close();
+        }
+        boolean _isCanceled = canceller.isCanceled();
+        if (_isCanceled) {
+          return Float.NaN;
         }
         SarlExperienceIndex.garbage();
         float score = ((compressionDelay * 5f) / SarlExperienceIndex.LOWER_COMPRESSION_DELAY);
@@ -652,18 +753,24 @@ public final class SarlExperienceIndex {
   /**
    * Compute the Memory score.
    * 
+   * @param canceller the object that permits to stop the computation before its end.
    * @return the Memory score.
    */
-  public static strictfp float memoryScore() {
+  @DefaultValueSource
+  public static strictfp float memoryScore(@DefaultValue("io.sarl.experienceindex.SarlExperienceIndex#MEMORYSCORE_0") final SeiCanceler canceller) {
+    final SeiCanceler clr = SarlExperienceIndex.wrap(canceller);
     float score = SarlExperienceIndex.SEI_SINGLETON.getMemoryScore();
-    boolean _isNaN = Float.isNaN(score);
-    if (_isNaN) {
+    if (((!clr.isCanceled()) && Float.isNaN(score))) {
       long s = System.nanoTime();
       float _megaBytes = SarlExperienceIndex.megaBytes(10);
       Object _newInstance = Array.newInstance(byte.class, ((int) _megaBytes));
       byte[] tab = ((byte[]) _newInstance);
       for (int i = 0; (i < tab.length); i++) {
         {
+          boolean _isCanceled = clr.isCanceled();
+          if (_isCanceled) {
+            return Float.NaN;
+          }
           tab[i] = ((byte) 123);
           byte t = 0;
           if ((i > 0)) {
@@ -678,7 +785,13 @@ public final class SarlExperienceIndex {
         }
       }
       for (int i = 0; (i < 10000); i++) {
-        new String("ABSD");
+        {
+          new String("ABSD");
+          boolean _isCanceled = clr.isCanceled();
+          if (_isCanceled) {
+            return Float.NaN;
+          }
+        }
       }
       long e = System.nanoTime();
       SarlExperienceIndex.garbage();
@@ -728,14 +841,23 @@ public final class SarlExperienceIndex {
   }
   
   /**
+   * Default value for the parameter canceller
+   */
+  @SyntheticMember
+  @SarlSourceCode("null")
+  private final static SeiCanceler $DEFAULT_VALUE$MEMORYSCORE_0 = null;
+  
+  /**
    * Compute the disk score.
    * 
+   * @param canceller the object that permits to stop the computation before its end.
    * @return the disk score.
    */
-  public static strictfp float diskScore() {
+  @DefaultValueSource
+  public static strictfp float diskScore(@DefaultValue("io.sarl.experienceindex.SarlExperienceIndex#DISKSCORE_0") final SeiCanceler canceller) {
+    final SeiCanceler clr = SarlExperienceIndex.wrap(canceller);
     float score = SarlExperienceIndex.SEI_SINGLETON.getDiskScore();
-    boolean _isNaN = Float.isNaN(score);
-    if (_isNaN) {
+    if (((!clr.isCanceled()) && Float.isNaN(score))) {
       try {
         File tempFile = File.createTempFile("SEI", ".bin");
         tempFile.deleteOnExit();
@@ -743,7 +865,13 @@ public final class SarlExperienceIndex {
         FileWriter fw = new FileWriter(tempFile);
         try {
           for (int i = 0; (i < ((1024 * 1024) * 20)); i++) {
-            fw.write("A");
+            {
+              fw.write("A");
+              boolean _isCanceled = clr.isCanceled();
+              if (_isCanceled) {
+                return Float.NaN;
+              }
+            }
           }
           fw.flush();
         } finally {
@@ -752,6 +880,10 @@ public final class SarlExperienceIndex {
         FileReader fr = new FileReader(tempFile);
         try {
           while ((fr.read() != (-1))) {
+            boolean _isCanceled = clr.isCanceled();
+            if (_isCanceled) {
+              return Float.NaN;
+            }
           }
         } finally {
           fr.close();
@@ -773,5 +905,73 @@ public final class SarlExperienceIndex {
       SarlExperienceIndex.SEI_SINGLETON.setDiskScore(score);
     }
     return score;
+  }
+  
+  /**
+   * Default value for the parameter canceller
+   */
+  @SyntheticMember
+  @SarlSourceCode("null")
+  private final static SeiCanceler $DEFAULT_VALUE$DISKSCORE_0 = null;
+  
+  /**
+   * Replies the current SEI.
+   * 
+   * @optionalparam canceller the object that permits to stop the computation before its end.
+   * @return the current SEI.
+   */
+  @DefaultValueUse("io.sarl.experienceindex.SeiCanceler")
+  @SyntheticMember
+  @Pure
+  public static SarlExperienceIndex.SEI getJanusExperienceIndex() {
+    return getJanusExperienceIndex($DEFAULT_VALUE$GETJANUSEXPERIENCEINDEX_0);
+  }
+  
+  /**
+   * Compute the global SEI.
+   * 
+   * @optionalparam canceller the object that permits to stop the computation before its end.
+   * @return the global SEI.
+   */
+  @DefaultValueUse("io.sarl.experienceindex.SeiCanceler")
+  @SyntheticMember
+  public static float baseScore() {
+    return baseScore($DEFAULT_VALUE$BASESCORE_0);
+  }
+  
+  /**
+   * Compute the CPU score.
+   * 
+   * @optionalparam canceller the object that permits to stop the computation before its end.
+   * @return the CPU score.
+   */
+  @DefaultValueUse("io.sarl.experienceindex.SeiCanceler")
+  @SyntheticMember
+  public static float cpuScore() {
+    return cpuScore($DEFAULT_VALUE$CPUSCORE_0);
+  }
+  
+  /**
+   * Compute the Memory score.
+   * 
+   * @optionalparam canceller the object that permits to stop the computation before its end.
+   * @return the Memory score.
+   */
+  @DefaultValueUse("io.sarl.experienceindex.SeiCanceler")
+  @SyntheticMember
+  public static float memoryScore() {
+    return memoryScore($DEFAULT_VALUE$MEMORYSCORE_0);
+  }
+  
+  /**
+   * Compute the disk score.
+   * 
+   * @optionalparam canceller the object that permits to stop the computation before its end.
+   * @return the disk score.
+   */
+  @DefaultValueUse("io.sarl.experienceindex.SeiCanceler")
+  @SyntheticMember
+  public static float diskScore() {
+    return diskScore($DEFAULT_VALUE$DISKSCORE_0);
   }
 }

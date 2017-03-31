@@ -37,6 +37,25 @@ import javax.crypto.Cipher
 import javax.crypto.spec.DESKeySpec
 import javax.crypto.spec.SecretKeySpec
 
+/** This class contains the different SEI of your machine.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+interface SeiCanceler {
+	/**
+	 * Returns whether cancelation of current operation has been requested.
+	 * Long-running operations should poll to see if cancelation
+	 * has been requested.
+	 *
+	 * @return {@code true} if cancellation has been requested,
+	 *    and {@code false} otherwise.
+	 */
+	def isCanceled : boolean
+}
+
 /** This class computes the SARL Experience Index (SEI) of your machine.
  *
  * <p>The SEI is inspirated by the <a href="https://en.wikipedia.org/wiki/Windows_System_Assessment_Tool">Windows
@@ -197,6 +216,11 @@ final class SarlExperienceIndex {
 			r.gc
 		}
 	}
+
+	private static def wrap(canceller : SeiCanceler) : SeiCanceler {
+		if (canceller === null) [ false ] else canceller
+	}
+
 	/** This class contains the different SEI of your machine.
 	 * 
 	 * @author $Author: sgalland$
@@ -213,6 +237,7 @@ final class SarlExperienceIndex {
 
 		package new {
 		}
+
 		/** Set the base score.
 		 * 
 		 * @param score
@@ -220,6 +245,7 @@ final class SarlExperienceIndex {
 		package def setBaseScore(score : float) : void {
 			this.base = score
 		}
+
 		/** Replies the base score.
 		 * 
 		 * @return the base score, or {@link Float#NaN} if
@@ -228,6 +254,7 @@ final class SarlExperienceIndex {
 		def getBaseScore : float {
 			this.base
 		}
+
 		/** Set the CPU score.
 		 * 
 		 * @param score
@@ -235,6 +262,7 @@ final class SarlExperienceIndex {
 		package def setCpuScore(score : float) : void {
 			this.cpu = score
 		}
+
 		/** Replies the CPU score.
 		 * 
 		 * @return the CPU score, or {@link Float#NaN} if
@@ -250,6 +278,7 @@ final class SarlExperienceIndex {
 		package def setMemoryScore(score : float) : void {
 			this.memory = score
 		}
+
 		/** Replies the Memory score.
 		 * 
 		 * @return the memory score, or {@link Float#NaN} if
@@ -258,6 +287,7 @@ final class SarlExperienceIndex {
 		def getMemoryScore : float {
 			this.memory
 		}
+
 		/** Set the disk score.
 		 * 
 		 * @param score
@@ -265,6 +295,7 @@ final class SarlExperienceIndex {
 		package def setDiskScore(score : float) : void {
 			this.disk = score
 		}
+
 		/** Replies the disk score.
 		 * 
 		 * @return the disk score, or {@link Float#NaN} if
@@ -289,7 +320,7 @@ final class SarlExperienceIndex {
 	@SuppressWarnings("discouraged_reference")
 	public strictfp static def main(args : String*) : void {
 		println(MessageFormat::format(Messages::SarlExperienceIndex_1, VERSION))
-		val SEI = getJanusExperienceIndex
+		val SEI = janusExperienceIndex
 		println(MessageFormat::format(Messages::SarlExperienceIndex_2, SEI.baseScore.wrap))
 		println(MessageFormat::format(Messages::SarlExperienceIndex_3, SEI.cpuScore))
 		println(MessageFormat::format(Messages::SarlExperienceIndex_4, SEI.memoryScore))
@@ -299,26 +330,31 @@ final class SarlExperienceIndex {
 
 	/** Replies the current SEI.
 	 *
+	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the current SEI.
 	 */
-	public strictfp static def getJanusExperienceIndex : SEI {
-		baseScore
+	public static def getJanusExperienceIndex(canceller : SeiCanceler = null) : SEI {
+		baseScore(canceller)
 		SEI_SINGLETON
 	}
 
 	/** Compute the global SEI.
 	 *
+	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the global SEI.
 	 */
-	public strictfp static def baseScore : float {
+	public strictfp static def baseScore(canceller : SeiCanceler = null) : float {
+		var clr = canceller.wrap
 		var score = SEI_SINGLETON.baseScore
-		if (Float::isNaN(score)) {
+		if (!clr.canceled && Float::isNaN(score)) {
 			// Ensure sub scores are computed
 			val scores = #[
-					cpuScore,
-					memoryScore,
-					diskScore
+					cpuScore(canceller),
+					memoryScore(canceller),
+					diskScore(canceller)
 			]
+
+			if (clr.canceled) return Float::NaN 
 
 			scores.normalize
 			score = scores.avg
@@ -333,16 +369,18 @@ final class SarlExperienceIndex {
 
 	/** Compute the CPU score.
 	 * 
+	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the CPU score.
 	 */
-	public strictfp static def cpuScore : float {
+	public strictfp static def cpuScore(canceller : SeiCanceler = null) : float {
+		val clr = canceller.wrap
 		var score = SEI_SINGLETON.cpuScore
-		if (Float::isNaN(score)) {
+		if (!clr.canceled && Float::isNaN(score)) {
 			var scores = #[
-					computeCompressionScore,
-					computeEncryptionScore,
-					computeArithmeticScore,
-					computeMultiProcessorScore
+					computeCompressionScore(canceller),
+					computeEncryptionScore(canceller),
+					computeArithmeticScore(canceller),
+					computeMultiProcessorScore(canceller)
 			]
 			score = scores.avg
 			score = score.normalize
@@ -351,7 +389,7 @@ final class SarlExperienceIndex {
 		return score
 	}
 
-	private strictfp static def computeMultiProcessorScore : float {
+	private strictfp static def computeMultiProcessorScore(canceller : SeiCanceler) : float {
 		try {
 			var r = Runtime::runtime
 			var n = r.availableProcessors
@@ -361,11 +399,12 @@ final class SarlExperienceIndex {
 		}
 	}
 
-	private strictfp static def computeArithmeticScore : float {
+	private strictfp static def computeArithmeticScore(canceller : SeiCanceler) : float {
 		try {
 			var s = System::nanoTime
 			for (var i = 0; i < 100000000; i++) {
 				Math::atan2(123, 456)
+				if (canceller.canceled) return Float::NaN
 			}
 			var e = System::nanoTime
 
@@ -382,13 +421,14 @@ final class SarlExperienceIndex {
 		}
 	}
 
-	private strictfp static def computeEncryptionScore : float {
+	private strictfp static def computeEncryptionScore(canceller : SeiCanceler) : float {
 		try {
 			var rnd = new Random
 			var t = new StringBuilder
 			for (var i = 0; i < 6000; i++) {
 				for(var j = 0; j < 1024; j++) {
 					t.append(rnd.nextInt as char)
+					if (canceller.canceled) return Float::NaN
 				}
 			}
 			t.trimToSize
@@ -410,6 +450,7 @@ final class SarlExperienceIndex {
 			var bkey = Array.newInstance(typeof(byte), DESKeySpec.DES_KEY_LEN) as byte[]
 			for (var i = 0; i < DESKeySpec.DES_KEY_LEN; i++) {
 				bkey.set(i, original.get(i % original.length))
+				if (canceller.canceled) return Float::NaN
 			}
 
 			var kkey = new SecretKeySpec(bkey, "DES")
@@ -418,14 +459,20 @@ final class SarlExperienceIndex {
 			var s = System::nanoTime
 	        //MD5
 			MessageDigest::getInstance("MD5").digest(buffer)
+			if (canceller.canceled) return Float::NaN
 	        //SHA
 			MessageDigest::getInstance("SHA").digest(buffer)
+			if (canceller.canceled) return Float::NaN
 			//DES Encryption
 			cipher.init(Cipher::ENCRYPT_MODE, kkey)
+			if (canceller.canceled) return Float::NaN
 			var output = cipher.doFinal(buffer)
+			if (canceller.canceled) return Float::NaN
 			//DES Decryption
 			cipher.init(Cipher::DECRYPT_MODE, kkey)
+			if (canceller.canceled) return Float::NaN
 			cipher.doFinal(output)
+			if (canceller.canceled) return Float::NaN
 	        var e = System::nanoTime
 
 	        var encryptionDelay = e - s
@@ -466,13 +513,14 @@ final class SarlExperienceIndex {
         hashString.toString
 	}
 
-	private strictfp static def computeCompressionScore : float {
+	private strictfp static def computeCompressionScore(canceller : SeiCanceler) : float {
 		try {
 			var rnd = new Random
 			var t = new StringBuilder
 			for (var i = 0; i < 6000; i++) {
 				for(var j = 0; j < 1024; j++) {
 					t.append(rnd.nextInt as char)
+					if (canceller.canceled) return Float::NaN
 				}
 			}
 			t.trimToSize
@@ -492,6 +540,8 @@ final class SarlExperienceIndex {
 				zos.close
 			}
 
+			if (canceller.canceled) return Float::NaN
+
 			garbage
 
 			var score = compressionDelay * 5f / LOWER_COMPRESSION_DELAY
@@ -505,14 +555,17 @@ final class SarlExperienceIndex {
 	
 	/** Compute the Memory score.
 	 *
+	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the Memory score.
 	 */
-	strictfp static def memoryScore : float {
+	strictfp static def memoryScore(canceller : SeiCanceler = null) : float {
+		val clr = canceller.wrap
 		var score = SEI_SINGLETON.memoryScore
-		if (Float::isNaN(score)) {
+		if (!clr.canceled && Float::isNaN(score)) {
 			var s = System::nanoTime
 			var tab = Array.newInstance(typeof(byte), 10.megaBytes as int) as byte[]
 			for (var i = 0; i < tab.length; i++) {
+				if (clr.canceled) return Float::NaN
 				tab.set(i, 123 as byte)
 				var t : byte
 				if (i > 0) t = tab.get(i - 1)
@@ -520,6 +573,7 @@ final class SarlExperienceIndex {
 			}
 			for (var i = 0; i < 10000; i++) {
 				new String("ABSD")
+				if (clr.canceled) return Float::NaN
 			}
 			var e = System::nanoTime
 
@@ -544,11 +598,13 @@ final class SarlExperienceIndex {
 
 	/** Compute the disk score.
 	 *
+	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the disk score.
 	 */
-	strictfp static def diskScore : float {
+	strictfp static def diskScore(canceller : SeiCanceler = null) : float {
+		val clr = canceller.wrap
 		var score = SEI_SINGLETON.diskScore
-		if (Float::isNaN(score)) {
+		if (!clr.canceled && Float::isNaN(score)) {
 			try {
 				var tempFile = File::createTempFile("SEI", ".bin")
 				tempFile.deleteOnExit
@@ -559,6 +615,7 @@ final class SarlExperienceIndex {
 				try {
 					for (var i = 0; i < 1024 * 1024 * 20; i++) {
 						fw.write('A')
+						if (clr.canceled) return Float::NaN
 					}
 					fw.flush
 				} finally {
@@ -568,7 +625,7 @@ final class SarlExperienceIndex {
 				var fr = new FileReader(tempFile)
 				try {
 					while (fr.read != -1) {
-						//
+						if (clr.canceled) return Float::NaN
 					}
 				} finally {
 					fr.close

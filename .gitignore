@@ -35,6 +35,9 @@
 **/io.sarl.lang.tests/src/main/generated-sources/
 **/io.sarl.lang.tests/src/test/xtend-gen/
 **/io.sarl.lang.tests/src/test/generated-sources/
+**/io.sarl.experienceindex.plugin/xtend-gen/
+**/io.sarl.experienceindex.plugin/src-gen/
+**/io.sarl.experienceindex.plugin/src/main/generated-sources/
 
 # Xtext templates
 **/*.xml_gen
