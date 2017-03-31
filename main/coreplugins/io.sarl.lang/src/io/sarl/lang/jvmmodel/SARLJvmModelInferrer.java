@@ -1768,7 +1768,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						operation2.setDeprecated(operation.isDeprecated());
 						operation2.setReturnType(
 								SARLJvmModelInferrer.this.typeBuilder.cloneWithProxies(selectedReturnType));
-						operation2.setFinal(!container.isInterface());
+						operation2.setStatic(operation.isStatic());
+						operation2.setFinal(!operation.isStatic() && !container.isInterface());
 						operation2.setNative(false);
 						operation2.setStrictFloatingPoint(false);
 						operation2.setSynchronized(false);
