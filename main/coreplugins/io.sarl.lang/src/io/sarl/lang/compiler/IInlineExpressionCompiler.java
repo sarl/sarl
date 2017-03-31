@@ -38,7 +38,7 @@ import org.eclipse.xtext.xbase.lib.Inline;
  * @since 0.4
  * @see Inline
  */
-@ImplementedBy(DefaultInlineExpressionCompiler.class)
+@ImplementedBy(JavaInlineExpressionCompiler.class)
 public interface IInlineExpressionCompiler {
 
 	/** Append the inline annotation to the given operation.

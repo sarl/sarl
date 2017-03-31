@@ -43,6 +43,7 @@ import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
+import org.eclipse.xtext.util.ReflectionUtil;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
@@ -65,7 +66,7 @@ import io.sarl.lang.generator.GeneratorConfig2;
 import io.sarl.lang.generator.GeneratorConfigProvider2;
 
 
-/** Compiler for crating inline expressions.
+/** Compiler for creating inline expressions with Java syntax.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -75,7 +76,7 @@ import io.sarl.lang.generator.GeneratorConfigProvider2;
  * @see Inline
  */
 @Singleton
-public class DefaultInlineExpressionCompiler implements IInlineExpressionCompiler {
+public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 
 	@Inject
 	private JvmAnnotationReferenceBuilder.Factory annotationRefBuilderFactory;
@@ -99,7 +100,7 @@ public class DefaultInlineExpressionCompiler implements IInlineExpressionCompile
 
 	/** Constructor.
 	 */
-	public DefaultInlineExpressionCompiler() {
+	public JavaInlineExpressionCompiler() {
 		this.generateDispatcher = new PolymorphicDispatcher<Void>(
 				"_generate", 3, 3, //$NON-NLS-1$
 				Collections.singletonList(this)) {
@@ -232,6 +233,17 @@ public class DefaultInlineExpressionCompiler implements IInlineExpressionCompile
 						output.appendStringConstant(evaluationResult.toString());
 					} else if (evaluationResult instanceof JvmTypeReference) {
 						output.appendTypeConstant(((JvmTypeReference) evaluationResult).getType());
+					} else if (evaluationResult instanceof Number) {
+						final Class<?> type = ReflectionUtil.getRawType(evaluationResult.getClass());
+						if (Byte.class.equals(type) || byte.class.equals(type)) {
+							output.appendConstant("(byte) (" + evaluationResult.toString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+						} else if (Short.class.equals(type) || short.class.equals(type)) {
+							output.appendConstant("(short) (" + evaluationResult.toString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+						} else if (Float.class.equals(type) || float.class.equals(type)) {
+							output.appendConstant(evaluationResult.toString() + "f"); //$NON-NLS-1$
+						} else {
+							output.appendConstant(evaluationResult.toString());
+						}
 					} else {
 						output.appendConstant(Objects.toString(evaluationResult));
 					}
