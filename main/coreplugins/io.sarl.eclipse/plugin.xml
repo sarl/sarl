@@ -488,15 +488,18 @@
             splashId="io.sarl.eclipse.splash">
       </splashHandlerProductBinding>
    </extension>
-   
+
   <!-- Submit Eclipse logs as SARL issue -->
    <extension point="org.eclipse.ui.menus">
-      <menuContribution locationURI="menu:help?after=helpEnd">
-         <command commandId="io.sarl.eclipse.logs.submitIssue"
-                  label="%action.submitIssue"
-                  icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/eview16/errorwarning_tab.png"
-                  style="push">
-         </command>
+      <menuContribution locationURI="menu:org.eclipse.ui.main.menu">
+         <menu id="io.sarl.eclipse.mainMenu"
+                  label="%menu.mainMenu">
+           <command commandId="io.sarl.eclipse.logs.submitIssue"
+                    label="%action.submitIssue"
+                    icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/eview16/errorwarning_tab.png"
+                    style="push">
+           </command>
+         </menu>
       </menuContribution>
    </extension>
    <extension point="org.eclipse.ui.commands">
