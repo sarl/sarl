@@ -23,6 +23,7 @@ package io.sarl.eclipse.explorer;
 
 import javax.inject.Inject;
 
+import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.filters.EmptyPackageFilter;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerContentProvider;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerLabelProvider;
@@ -30,7 +31,11 @@ import org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart;
 import org.eclipse.jdt.internal.ui.viewsupport.DecoratingJavaLabelProvider;
 import org.eclipse.jdt.internal.ui.viewsupport.ProblemTreeViewer;
 import org.eclipse.jdt.ui.IPackagesViewPart;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 
 /**
@@ -69,6 +74,16 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	 */
 	public static final String ID_PACKAGES = "io.sarl.eclipse.explorer.PackageExplorer"; //$NON-NLS-1$
 
+	private static final String TAG_LAYOUT = "layout"; //$NON-NLS-1$
+
+	private static final String TAG_GROUP_LIBRARIES = "group_libraries"; //$NON-NLS-1$
+
+	private static final int FLAT_LAYOUT = 0x2;
+
+	private static final boolean DEFAULT_SHOW_LIBRARIES = false;
+
+	private static final boolean DEFAULT_SHOW_FLAT = false;
+
 	private final ReflectExtensions reflect;
 
 	private final IPackageExplorerLabelProviderBuilder packageExplorerLabelProviderProvider;
@@ -83,6 +98,69 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	public SARLPackageExplorerPart(ReflectExtensions reflect, IPackageExplorerLabelProviderBuilder builder) {
 		this.reflect = reflect;
 		this.packageExplorerLabelProviderProvider = builder;
+		//
+		// Trick for overriding the dialog settings with nicer default values.
+		//
+		final IDialogSettings dialogSettings = getDialogSettings();
+		try {
+			this.reflect.set(this, "fShowLibrariesNode", //$NON-NLS-1$
+					dialogSettings.get(TAG_GROUP_LIBRARIES) == null ? DEFAULT_SHOW_LIBRARIES
+					: dialogSettings.getBoolean(TAG_GROUP_LIBRARIES));
+
+			try {
+				this.reflect.set(this, "fIsCurrentLayoutFlat", //$NON-NLS-1$
+						dialogSettings.getInt(TAG_LAYOUT) == FLAT_LAYOUT);
+			} catch (NumberFormatException e) {
+				this.reflect.set(this, "fIsCurrentLayoutFlat", DEFAULT_SHOW_FLAT); //$NON-NLS-1$
+			}
+		} catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+			throw new Error(e);
+		}
+	}
+
+	/** Replies the dialog settings for this view.
+	 *
+	 * @return the settings.
+	 */
+	protected IDialogSettings getDialogSettings() {
+		try {
+			return (IDialogSettings) this.reflect.get(this, "fDialogSettings"); //$NON-NLS-1$
+		} catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+			throw new Error(e);
+		}
+	}
+
+	/**
+	 * Returns the package explorer part of the active perspective. If
+	 * there isn't any package explorer part <code>null</code> is returned.
+	 *
+	 * @return the package explorer from the active perspective
+	 */
+	public static SARLPackageExplorerPart getFromActivePerspective() {
+		final IWorkbenchPage activePage = JavaPlugin.getActivePage();
+		if (activePage == null) {
+			return null;
+		}
+		final IViewPart view = activePage.findView(ID_PACKAGES);
+		if (view instanceof PackageExplorerPart) {
+			return (SARLPackageExplorerPart) view;
+		}
+		return null;
+	}
+
+	/**
+	 * Makes the package explorer part visible in the active perspective. If there
+	 * isn't a package explorer part registered <code>null</code> is returned.
+	 * Otherwise the opened view part is returned.
+	 *
+	 * @return the opened package explorer
+	 */
+	public static SARLPackageExplorerPart openInActivePerspective() {
+		try {
+			return (SARLPackageExplorerPart) JavaPlugin.getActivePage().showView(ID_PACKAGES);
+		} catch (PartInitException exception) {
+			return null;
+		}
 	}
 
 	@Override
