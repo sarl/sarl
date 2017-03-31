@@ -530,10 +530,6 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t\t\t}"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t\t\tthrow new "); //$NON-NLS-1$
-					it.append(TypeNotPresentException.class);
-					it.append("(typeName, null);"); //$NON-NLS-1$
-					it.newLine();
 					it.append("\t\t} catch ("); //$NON-NLS-1$
 					it.append(Exception.class);
 					it.append(" exception) {"); //$NON-NLS-1$
@@ -547,6 +543,10 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t\t\tresourceSet.getResources().remove(resource);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t\t}"); //$NON-NLS-1$
+					it.newLine();
+					it.append("\t\tthrow new "); //$NON-NLS-1$
+					it.append(TypeNotPresentException.class);
+					it.append("(typeName, null);"); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t}"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();

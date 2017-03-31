@@ -212,6 +212,7 @@ public class Jdt2Ecore {
 			Map<ActionParameterTypes, IMethod> superConstructors,
 			String superClass,
 			List<String> superInterfaces) throws JavaModelException {
+		final Set<ActionPrototype> treatedElements = new TreeSet<>();
 		final SARLEclipsePlugin plugin = SARLEclipsePlugin.getDefault();
 		final List<IStatus> statuses = new ArrayList<>();
 		// Get the operations that must be implemented
@@ -229,8 +230,16 @@ public class Jdt2Ecore {
 						final ActionPrototype actionKey = this.actionPrototypeProvider.createActionPrototype(
 								operation.getElementName(),
 								sig);
-						if (!operationsToImplement.containsKey(actionKey)) {
-							operationsToImplement.put(actionKey, operation);
+						if (treatedElements.add(actionKey)) {
+							if (Flags.isDefaultMethod(operation.getFlags())) {
+								if (!overridableOperations.containsKey(actionKey)) {
+									overridableOperations.put(actionKey, operation);
+								}
+							} else {
+								if (!operationsToImplement.containsKey(actionKey)) {
+									operationsToImplement.put(actionKey, operation);
+								}
+							}
 						}
 					}
 				}
@@ -255,24 +264,26 @@ public class Jdt2Ecore {
 									Flags.isVarargs(operation.getFlags()), getFormalParameterProvider(operation));
 							final ActionPrototype actionKey = this.actionPrototypeProvider.createActionPrototype(
 									operation.getElementName(), sig);
-							final int flags = operation.getFlags();
-							if (Flags.isAbstract(flags)) {
-								if (operationsToImplement != null) {
-									operationsToImplement.put(actionKey, operation);
-								}
-							} else if (Flags.isFinal(flags)) {
-								if (finalOperations != null) {
-									finalOperations.put(actionKey, operation);
-								}
-								if (operationsToImplement != null) {
-									operationsToImplement.remove(actionKey);
-								}
-							} else {
-								if (overridableOperations != null) {
-									overridableOperations.put(actionKey, operation);
-								}
-								if (operationsToImplement != null) {
-									operationsToImplement.remove(actionKey);
+							if (treatedElements.add(actionKey)) {
+								final int flags = operation.getFlags();
+								if (Flags.isAbstract(flags) && !Flags.isDefaultMethod(flags)) {
+									if (operationsToImplement != null) {
+										operationsToImplement.put(actionKey, operation);
+									}
+								} else if (Flags.isFinal(flags)) {
+									if (finalOperations != null) {
+										finalOperations.put(actionKey, operation);
+									}
+									if (operationsToImplement != null) {
+										operationsToImplement.remove(actionKey);
+									}
+								} else {
+									if (overridableOperations != null) {
+										overridableOperations.put(actionKey, operation);
+									}
+									if (operationsToImplement != null) {
+										operationsToImplement.remove(actionKey);
+									}
 								}
 							}
 						} else if (checkForConstructors && operation.isConstructor() && superConstructors != null) {
@@ -288,7 +299,7 @@ public class Jdt2Ecore {
 						if (!Flags.isStatic(field.getFlags())
 								&& !Utils.isHiddenMember(field.getElementName())
 								&& isVisible(typeFinder, type, field)) {
-							inheritedFields.put(field.getElementName(), field);
+							inheritedFields.putIfAbsent(field.getElementName(), field);
 						}
 					}
 				}

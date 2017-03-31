@@ -1284,7 +1284,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		IExpressionBuilder expr = block.addExpression();
 		expr.setExpression("info(\"Install " + elementTypeName + "\")");  //$NON-NLS-1$//$NON-NLS-2$
 
-		action = actionAdder.apply(INSTALL_SKILL_NAME);
+		action = actionAdder.apply(UNINSTALL_SKILL_NAME);
 		block = action.getExpression();
 		block.setInnerDocumentation(MessageFormat.format(
 				Messages.AbstractNewSarlElementWizardPage_20,

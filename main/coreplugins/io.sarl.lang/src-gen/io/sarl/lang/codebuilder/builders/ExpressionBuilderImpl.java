@@ -141,12 +141,12 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 					return pref;
 				}
 			}
-			throw new TypeNotPresentException(typeName, null);
 		} catch (Exception exception) {
 			throw new TypeNotPresentException(typeName, exception);
 		} finally {
 			resourceSet.getResources().remove(resource);
 		}
+		throw new TypeNotPresentException(typeName, null);
 	}
 
 	/** Create an expression but does not change the container.

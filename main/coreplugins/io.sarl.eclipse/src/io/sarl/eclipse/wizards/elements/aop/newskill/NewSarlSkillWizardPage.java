@@ -108,6 +108,11 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 		}
 		skill.setDocumentation(comment);
 		mon.worked(1);
+		createStandardSARLLifecycleFunctionTemplates(
+				"skill",
+				(it) -> skill.addSarlAction(it),
+				(it) -> skill.addSarlCapacityUses(it));
+		mon.worked(2);
 		createInheritedMembers(
 				Skill.class.getCanonicalName(),
 				skill.getSarlSkill(),
@@ -116,11 +121,6 @@ public class NewSarlSkillWizardPage extends AbstractNewSarlElementWizardPage {
 				(name) -> skill.addOverrideSarlAction(name),
 				getSuperClass(),
 				getSuperInterfaces());
-		mon.worked(2);
-		createStandardSARLLifecycleFunctionTemplates(
-				"skill",
-				(it) -> skill.addSarlAction(it),
-				(it) -> skill.addSarlCapacityUses(it));
 		mon.worked(3);
 		scriptBuilder.build(appender);
 		mon.done();
