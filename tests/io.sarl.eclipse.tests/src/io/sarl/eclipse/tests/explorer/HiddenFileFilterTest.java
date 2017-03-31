@@ -66,7 +66,8 @@ public class HiddenFileFilterTest extends AbstractSarlTest {
 		IFile element = mock(IFile.class);
 		when(element.isHidden()).thenReturn(true);
 		when(element.isDerived()).thenReturn(false);
-		when(element.getFullPath()).thenReturn(null);
+		when(element.isPhantom()).thenReturn(false);
+		when(element.getRawLocation()).thenReturn(null);
 		assertFalse(this.filter.select(this.viewer, parent, element));
 	}
 
@@ -75,7 +76,8 @@ public class HiddenFileFilterTest extends AbstractSarlTest {
 		IFile element = mock(IFile.class);
 		when(element.isHidden()).thenReturn(false);
 		when(element.isDerived()).thenReturn(true);
-		when(element.getFullPath()).thenReturn(null);
+		when(element.isPhantom()).thenReturn(false);
+		when(element.getRawLocation()).thenReturn(null);
 		assertFalse(this.filter.select(this.viewer, parent, element));
 	}
 
@@ -84,8 +86,9 @@ public class HiddenFileFilterTest extends AbstractSarlTest {
 		IFile element = mock(IFile.class);
 		when(element.isHidden()).thenReturn(false);
 		when(element.isDerived()).thenReturn(false);
+		when(element.isPhantom()).thenReturn(false);
 		IPath path = mock(IPath.class);
-		when(element.getFullPath()).thenReturn(path);
+		when(element.getRawLocation()).thenReturn(path);
 		File osfile = mock(File.class);
 		when(path.toFile()).thenReturn(osfile);
 		when(osfile.isHidden()).thenReturn(true);
@@ -97,8 +100,9 @@ public class HiddenFileFilterTest extends AbstractSarlTest {
 		IFile element = mock(IFile.class);
 		when(element.isHidden()).thenReturn(false);
 		when(element.isDerived()).thenReturn(false);
+		when(element.isPhantom()).thenReturn(false);
 		IPath path = mock(IPath.class);
-		when(element.getFullPath()).thenReturn(path);
+		when(element.getRawLocation()).thenReturn(path);
 		File osfile = mock(File.class);
 		when(path.toFile()).thenReturn(osfile);
 		when(osfile.isHidden()).thenReturn(false);
