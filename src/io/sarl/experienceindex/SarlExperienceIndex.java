@@ -4,7 +4,7 @@
  * Janus platform is an open-source multiagent platform.
  * More details on http://www.janusproject.io
  * 
- * Copyright (C) 2012-2014 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
+ * Copyright (C) 2014-2015 Sebastian RODRIGUEZ, Nicolas GAUD, Stéphane GALLAND.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.janusproject.benchmarking.jei;
+package io.sarl.experienceindex;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,10 +38,11 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.arakhne.afc.vmutil.locale.Locale;
 
-/** This class computes the Janus Experience Index (JEI) of your machine.
+/** This class computes the SARL Experience Index (SEI) of your machine.
  * <p>
- * The JEI is inspirated by the Windows Experience Index.
- * The JEI measures the capability of your computer's hardware and 
+ * The SEI is inspirated by the <a href="https://en.wikipedia.org/wiki/Windows_System_Assessment_Tool">Windows
+ * Experience Index</a>.
+ * The SEI measures the capability of your computer's hardware and 
  * software configuration and expresses this measurement as a number
  * called a base score. A higher base score generally means that your
  * computer will perform better and faster than a computer with a
@@ -102,9 +103,9 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class JanusExperienceIndex {
+public class SarlExperienceIndex {
 
-	/** Version of the JEI.
+	/** Version of the SEI.
 	 */
 	public static final String VERSION = "1.0"; //$NON-NLS-1$
 	
@@ -115,7 +116,7 @@ public class JanusExperienceIndex {
 	private static final float LOWER_DISK_DELAY = secondToNanosecond(5);
 	private static final int HIGHER_PROCESSOR_COUNT = 16;
 	
-	private static final JEI JEI_SINGLETON = new JEI();
+	private static final SEI SEI_SINGLETON = new SEI();
 
 	private static float secondToNanosecond(float s) {
 		return s*(1000*1000*1000);
@@ -133,27 +134,27 @@ public class JanusExperienceIndex {
 	 */
 	public static void main(String[] args) throws Exception {
 		System.out.println(Locale.getString("COMPUTING_SCORES", VERSION)); //$NON-NLS-1$
-		JEI jei = janusExperienceIndex();
-		System.out.println(Locale.getString("GLOBAL_BASE_SCORE", wrap(jei.getBaseScore()))); //$NON-NLS-1$
-		System.out.println(Locale.getString("CPU_SCORE", wrap(jei.getCpuScore()))); //$NON-NLS-1$
-		System.out.println(Locale.getString("MEMORY_SCORE", wrap(jei.getMemoryScore()))); //$NON-NLS-1$
-		System.out.println(Locale.getString("DISK_SCORE", wrap(jei.getDiskScore()))); //$NON-NLS-1$
+		SEI SEI = janusExperienceIndex();
+		System.out.println(Locale.getString("GLOBAL_BASE_SCORE", wrap(SEI.getBaseScore()))); //$NON-NLS-1$
+		System.out.println(Locale.getString("CPU_SCORE", wrap(SEI.getCpuScore()))); //$NON-NLS-1$
+		System.out.println(Locale.getString("MEMORY_SCORE", wrap(SEI.getMemoryScore()))); //$NON-NLS-1$
+		System.out.println(Locale.getString("DISK_SCORE", wrap(SEI.getDiskScore()))); //$NON-NLS-1$
 	}
 	
-	/** Replies the current JEI.
+	/** Replies the current SEI.
 	 * 
-	 * @return the current JEI.
+	 * @return the current SEI.
 	 */
-	public static JEI janusExperienceIndex() {
+	public static SEI janusExperienceIndex() {
 		baseScore();
-		return JEI_SINGLETON;
+		return SEI_SINGLETON;
 	}
 	
-	/** Compute the global JEI.
-	 * @return the global JEI.
+	/** Compute the global SEI.
+	 * @return the global SEI.
 	 */
 	public static float baseScore() {
-		float score = JEI_SINGLETON.getBaseScore();
+		float score = SEI_SINGLETON.getBaseScore();
 		if (Float.isNaN(score)) {
 			// Ensure sub scores are computed
 			float[] scores = new float[] {
@@ -165,10 +166,10 @@ public class JanusExperienceIndex {
 			normalize(scores);
 			score = avg(scores);
 
-			JEI_SINGLETON.setCpuScore(scores[0]);
-			JEI_SINGLETON.setMemoryScore(scores[1]);
-			JEI_SINGLETON.setDiskScore(scores[2]);
-			JEI_SINGLETON.setBaseScore(score);
+			SEI_SINGLETON.setCpuScore(scores[0]);
+			SEI_SINGLETON.setMemoryScore(scores[1]);
+			SEI_SINGLETON.setDiskScore(scores[2]);
+			SEI_SINGLETON.setBaseScore(score);
 		}		
 		return score;
 	}
@@ -231,7 +232,7 @@ public class JanusExperienceIndex {
 	 * @return the CPU score.
 	 */
 	public static float cpuScore() {
-		float score = JEI_SINGLETON.getCpuScore();
+		float score = SEI_SINGLETON.getCpuScore();
 		if (Float.isNaN(score)) {
 			float[] scores = new float[] {
 					computeCompressionScore(),
@@ -242,7 +243,7 @@ public class JanusExperienceIndex {
 			
 			score = avg(scores);
 			
-			JEI_SINGLETON.setCpuScore(normalize(score));
+			SEI_SINGLETON.setCpuScore(normalize(score));
 		}		
 		return score;
 	}	
@@ -428,7 +429,7 @@ public class JanusExperienceIndex {
 	 */
 	@SuppressWarnings("unused")
 	public static float memoryScore() {
-		float score = JEI_SINGLETON.getMemoryScore();
+		float score = SEI_SINGLETON.getMemoryScore();
 		if (Float.isNaN(score)) {
 			long e, s;
 			
@@ -460,7 +461,7 @@ public class JanusExperienceIndex {
 			else if (r.maxMemory()<=megaBytes(1024)) score = clamp(score, 1, 5);
 			else score = clamp(score, 1, 6);
 			
-			JEI_SINGLETON.setMemoryScore(normalize(score));
+			SEI_SINGLETON.setMemoryScore(normalize(score));
 		}		
 		return score;
 	}	
@@ -469,10 +470,10 @@ public class JanusExperienceIndex {
 	 * @return the disk score.
 	 */
 	public static float diskScore() {
-		float score = JEI_SINGLETON.getDiskScore();
+		float score = SEI_SINGLETON.getDiskScore();
 		if (Float.isNaN(score)) {
 			try {
-				File tempFile = File.createTempFile("jei", ".bin"); //$NON-NLS-1$ //$NON-NLS-2$
+				File tempFile = File.createTempFile("SEI", ".bin"); //$NON-NLS-1$ //$NON-NLS-2$
 				tempFile.deleteOnExit();
 				long e, s;
 					
@@ -501,19 +502,19 @@ public class JanusExperienceIndex {
 			catch(Exception _) {
 				score = Float.NaN;
 			}
-			JEI_SINGLETON.setDiskScore(normalize(score));
+			SEI_SINGLETON.setDiskScore(normalize(score));
 		}		
 		return score;
 	}	
 
-	/** This class contains the different JEI of your machine.
+	/** This class contains the different SEI of your machine.
 	 * 
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class JEI {
+	public static class SEI {
 		
 		private float base = Float.NaN;
 		private float cpu = Float.NaN;
@@ -522,7 +523,7 @@ public class JanusExperienceIndex {
 		
 		/**
 		 */
-		JEI() {
+		SEI() {
 			//
 		}
 		
