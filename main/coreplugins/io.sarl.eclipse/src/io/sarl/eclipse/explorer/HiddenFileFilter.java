@@ -23,7 +23,7 @@ package io.sarl.eclipse.explorer;
 
 import java.io.File;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
@@ -41,12 +41,12 @@ public class HiddenFileFilter extends ViewerFilter {
 
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
-		if (element instanceof IFile) {
-			final IFile file = (IFile) element;
-			if (file.isHidden() || file.isDerived()) {
+		if (element instanceof IResource) {
+			final IResource resource = (IResource) element;
+			if (resource.isHidden() || resource.isDerived() || resource.isPhantom()) {
 				return false;
 			}
-			final IPath path2 = file.getFullPath();
+			final IPath path2 = resource.getRawLocation();
 			if (path2 != null) {
 				final File rawFile = path2.toFile();
 				return rawFile != null && !rawFile.isHidden();
