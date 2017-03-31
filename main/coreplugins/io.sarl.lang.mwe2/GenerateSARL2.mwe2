@@ -60,7 +60,7 @@ var prettifyToolPath = "${externalToolPath}/prettify"
 var latexToolPath = "${externalToolPath}/latex"
 var gtkToolPath = "${externalToolPath}/gtk"
 var srchighlightToolPath  = "${externalToolPath}/source-highlight"
-var webjsPath = "${overallRootPath}/maven/io.sarl.maven.docs.generator/src/main/resources/org/jnario/doc/js"
+var webjsPath = "${overallRootPath}/main/externalmaven/io.sarl.maven.docs.generator/src/main/resources/org/jnario/doc/js"
 
 var file.extensions = "sarl"
 var fileEncoding = "UTF-8"
