@@ -33,7 +33,9 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.common.types.xtext.AbstractTypeScopeProvider;
 import org.eclipse.xtext.formatting.impl.AbstractTokenStream;
@@ -164,6 +166,14 @@ public abstract class AbstractSourceAppender {
 		}
 
 	}
+
+	/** Replies the type reference for the given name in the given context.
+	 */
+	public abstract JvmParameterizedTypeReference newTypeRef(String typeName);
+
+	/** Replies the type reference for the given name in the given context.
+	 */
+	public abstract JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
 
 }
 

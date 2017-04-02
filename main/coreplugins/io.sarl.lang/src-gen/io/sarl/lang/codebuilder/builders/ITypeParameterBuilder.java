@@ -23,8 +23,10 @@
  */
 package io.sarl.lang.codebuilder.builders;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -33,6 +35,19 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 @SuppressWarnings("all")
 public interface ITypeParameterBuilder {
+
+	/** Find the reference to the type with the given name.
+	 * @param typeName the fully qualified name of the type
+	 * @return the type reference.
+	 */
+	JvmParameterizedTypeReference newTypeRef(String typeName);
+
+	/** Find the reference to the type with the given name.
+	 * @param context the context for the type reference use
+	 * @param typeName the fully qualified name of the type
+	 * @return the type reference.
+	 */
+	JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
 
 	/** Initialize the type parameter.
 	 * <p>Caution: This initialization function does not add the type parameter in its container.

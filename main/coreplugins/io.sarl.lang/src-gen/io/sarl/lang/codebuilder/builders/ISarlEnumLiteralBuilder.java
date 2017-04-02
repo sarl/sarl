@@ -24,8 +24,10 @@
 package io.sarl.lang.codebuilder.builders;
 
 import io.sarl.lang.sarl.SarlEnumLiteral;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -33,6 +35,19 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 @SuppressWarnings("all")
 public interface ISarlEnumLiteralBuilder {
+
+	/** Find the reference to the type with the given name.
+	 * @param typeName the fully qualified name of the type
+	 * @return the type reference.
+	 */
+	JvmParameterizedTypeReference newTypeRef(String typeName);
+
+	/** Find the reference to the type with the given name.
+	 * @param context the context for the type reference use
+	 * @param typeName the fully qualified name of the type
+	 * @return the type reference.
+	 */
+	JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
 
 	/** Dispose the resource.
 	 */

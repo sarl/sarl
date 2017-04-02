@@ -28,6 +28,7 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlScript;
 import java.util.function.Predicate;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -123,8 +124,8 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 		return "event ____synthesis { var ____fakefield : " + typeName + " }";
 	}
 
-	static JvmParameterizedTypeReference parseType(EObject context, String typeName, AbstractBuilder caller) {
-		ResourceSet resourceSet = context.eResource().getResourceSet();
+	static JvmParameterizedTypeReference parseType(Notifier context, String typeName, AbstractBuilder caller) {
+		ResourceSet resourceSet = toResource(context).getResourceSet();
 		URI uri = caller.computeUnusedUri(resourceSet);
 		Resource resource = caller.getResourceFactory().createResource(uri);
 		resourceSet.getResources().add(resource);

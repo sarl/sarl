@@ -24,6 +24,7 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -289,7 +290,7 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("\tprivate "); //$NON-NLS-1$
 				it.append(JvmTypeReference.class);
 				it.append(" innerFindType("); //$NON-NLS-1$
-				it.append(EObject.class);
+				it.append(Notifier.class);
 				it.append(" context, String typeName) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tfinal "); //$NON-NLS-1$
@@ -330,7 +331,7 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("\tprotected "); //$NON-NLS-1$
 				it.append(JvmTypeReference.class);
 				it.append(" findType("); //$NON-NLS-1$
-				it.append(EObject.class);
+				it.append(Notifier.class);
 				it.append(" context, String typeName) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\tfinal "); //$NON-NLS-1$
@@ -339,9 +340,11 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t\tif (!isTypeReference(type)) {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\tfor (String packageName : getImportsConfiguration().getImplicitlyImportedPackages(("); //$NON-NLS-1$
+				it.append("\t\t\t"); //$NON-NLS-1$
 				it.append(XtextResource.class);
-				it.append(") context.eResource())) {"); //$NON-NLS-1$
+				it.append(" xtextResource = toResource(context);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\tfor (String packageName : getImportsConfiguration().getImplicitlyImportedPackages(xtextResource)) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\t"); //$NON-NLS-1$
 				it.append(JvmTypeReference.class);
@@ -366,10 +369,44 @@ public class AbstractBuilderBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
-				it.append("\tprotected "); //$NON-NLS-1$
+				it.append("\tprotected static "); //$NON-NLS-1$
+				it.append(XtextResource.class);
+				it.append(" toResource("); //$NON-NLS-1$
+				it.append(Notifier.class);
+				it.append(" context) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn ("); //$NON-NLS-1$
+				it.append(XtextResource.class);
+				it.append(") (context instanceof "); //$NON-NLS-1$
+				it.append(Resource.class);
+				it.append(" ? context : (("); //$NON-NLS-1$
+				it.append(EObject.class);
+				it.append(")context).eResource());"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies the type reference for the given name in the given context."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tpublic "); //$NON-NLS-1$
+				it.append(JvmParameterizedTypeReference.class);
+				it.append(" newTypeRef(String typeName) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn newTypeRef(eResource(), typeName);"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
+				it.append("\t/** Replies the type reference for the given name in the given context."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tpublic "); //$NON-NLS-1$
 				it.append(JvmParameterizedTypeReference.class);
 				it.append(" newTypeRef("); //$NON-NLS-1$
-				it.append(EObject.class);
+				it.append(Notifier.class);
 				it.append(" context, String typeName) {"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t"); //$NON-NLS-1$

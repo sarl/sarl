@@ -31,8 +31,10 @@ import io.sarl.lang.codebuilder.builders.ISarlInterfaceBuilder;
 import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlScript;
 import java.io.IOException;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -50,6 +52,23 @@ public class SarlAnnotationTypeSourceAppender extends AbstractSourceAppender imp
 
 	public void build(ISourceAppender appender) throws IOException {
 		build(this.builder.getSarlAnnotationType(), appender);
+	}
+
+	/** Find the reference to the type with the given name.
+	 * @param typeName the fully qualified name of the type
+	 * @return the type reference.
+	 */
+	public JvmParameterizedTypeReference newTypeRef(String typeName) {
+		return this.builder.newTypeRef(typeName);
+	}
+
+	/** Find the reference to the type with the given name.
+	 * @param context the context for the type reference use
+	 * @param typeName the fully qualified name of the type
+	 * @return the type reference.
+	 */
+	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
+		return this.builder.newTypeRef(context, typeName);
 	}
 
 	public IJvmTypeProvider getTypeResolutionContext() {

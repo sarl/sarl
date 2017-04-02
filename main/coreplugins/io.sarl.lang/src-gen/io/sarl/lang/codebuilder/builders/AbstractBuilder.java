@@ -29,6 +29,7 @@ import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlInterface;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -142,7 +143,7 @@ public abstract class AbstractBuilder {
 		return this.primitives;
 	}
 
-	private JvmTypeReference innerFindType(EObject context, String typeName) {
+	private JvmTypeReference innerFindType(Notifier context, String typeName) {
 		final IJvmTypeProvider provider = getTypeResolutionContext();
 		JvmType type = null;
 		if (provider != null) {
@@ -158,10 +159,11 @@ public abstract class AbstractBuilder {
 		return typeRefs.createTypeRef(type);
 	}
 
-	protected JvmTypeReference findType(EObject context, String typeName) {
+	protected JvmTypeReference findType(Notifier context, String typeName) {
 		final JvmTypeReference type = innerFindType(context, typeName);
 		if (!isTypeReference(type)) {
-			for (String packageName : getImportsConfiguration().getImplicitlyImportedPackages((XtextResource) context.eResource())) {
+			XtextResource xtextResource = toResource(context);
+			for (String packageName : getImportsConfiguration().getImplicitlyImportedPackages(xtextResource)) {
 				JvmTypeReference typeReference = innerFindType(context, packageName + "." + typeName);
 				if (isTypeReference(typeReference)) {
 					return typeReference;
@@ -172,7 +174,19 @@ public abstract class AbstractBuilder {
 		return type;
 	}
 
-	protected JvmParameterizedTypeReference newTypeRef(EObject context, String typeName) {
+	protected static XtextResource toResource(Notifier context) {
+		return (XtextResource) (context instanceof Resource ? context : ((EObject)context).eResource());
+	}
+
+	/** Replies the type reference for the given name in the given context.
+	 */
+	public JvmParameterizedTypeReference newTypeRef(String typeName) {
+		return newTypeRef(eResource(), typeName);
+	}
+
+	/** Replies the type reference for the given name in the given context.
+	 */
+	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
 		JvmTypeReference typeReference;
 		try {
 			typeReference = findType(context, typeName);

@@ -25,8 +25,10 @@ package io.sarl.lang.codebuilder.appenders;
 
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import java.io.IOException;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
@@ -47,6 +49,23 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 
 	public void build(ISourceAppender appender) throws IOException {
 		build(this.builder.getXExpression(), appender);
+	}
+
+	/** Find the reference to the type with the given name.
+	 * @param typeName the fully qualified name of the type
+	 * @return the type reference.
+	 */
+	public JvmParameterizedTypeReference newTypeRef(String typeName) {
+		return this.builder.newTypeRef(typeName);
+	}
+
+	/** Find the reference to the type with the given name.
+	 * @param context the context for the type reference use
+	 * @param typeName the fully qualified name of the type
+	 * @return the type reference.
+	 */
+	public JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName) {
+		return this.builder.newTypeRef(context, typeName);
 	}
 
 	public IJvmTypeProvider getTypeResolutionContext() {
