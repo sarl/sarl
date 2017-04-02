@@ -32,12 +32,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.inject.Injector;
 import org.eclipse.core.resources.IFile;
@@ -84,10 +86,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.Constants;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
 import org.eclipse.xtext.formatting.IWhitespaceInformationProvider;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
+import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable;
@@ -1177,6 +1183,27 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		return null;
 	}
 
+	private static void createInfoCall(IExpressionBuilder builder, String message) {
+		final JvmParameterizedTypeReference capacity = builder.newTypeRef(null, LOGGING_CAPACITY_NAME);
+		final String objectType = Object.class.getName();
+		final String objectArrayType = objectType + "[]"; //$NON-NLS-1$
+		final JvmOperation infoMethod = Iterables.find(
+				((JvmDeclaredType) capacity.getType()).getDeclaredOperations(), (it) -> {
+				if (Objects.equals(it.getSimpleName(), "info") //$NON-NLS-1$
+						&& it.getParameters().size() == 2) {
+					final String type1 = it.getParameters().get(0).getParameterType().getIdentifier();
+					final String type2 = it.getParameters().get(1).getParameterType().getIdentifier();
+					return Objects.equals(objectType, type1) && Objects.equals(objectArrayType, type2);
+				}
+				return false;
+			},
+			null);
+		if (infoMethod != null) {
+			builder.setExpression("info(\"" + message + "\")"); //$NON-NLS-1$ //$NON-NLS-2$
+			((XFeatureCall) builder.getXExpression()).setFeature(infoMethod);
+		}
+	}
+
 	/** Create the default standard SARL event templates.
 	 *
 	 * @param elementTypeName the name of the element type.
@@ -1208,7 +1235,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 					Messages.AbstractNewSarlElementWizardPage_9,
 					elementTypeName));
 			IExpressionBuilder expr = block.addExpression();
-			expr.setExpression("info(\"Start the " + elementTypeName + "\")");  //$NON-NLS-1$//$NON-NLS-2$
+			createInfoCall(expr, "The " + elementTypeName + " was started.");  //$NON-NLS-1$ //$NON-NLS-2$
 
 			unit = behaviorUnitAdder.apply(DESTROY_EVENT_NAME);
 			block = unit.getExpression();
@@ -1216,7 +1243,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 					Messages.AbstractNewSarlElementWizardPage_10,
 					elementTypeName));
 			expr = block.addExpression();
-			expr.setExpression("info(\"Stop the " + elementTypeName + "\")");  //$NON-NLS-1$//$NON-NLS-2$
+			createInfoCall(expr, "The " + elementTypeName + " was stopped.");  //$NON-NLS-1$ //$NON-NLS-2$
 
 			unit = behaviorUnitAdder.apply(AGENTSPAWNED_EVENT_NAME);
 			block = unit.getExpression();
@@ -1282,7 +1309,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				Messages.AbstractNewSarlElementWizardPage_19,
 				elementTypeName));
 		IExpressionBuilder expr = block.addExpression();
-		expr.setExpression("info(\"Install " + elementTypeName + "\")");  //$NON-NLS-1$//$NON-NLS-2$
+		createInfoCall(expr, "Installing the " + elementTypeName);  //$NON-NLS-1$
 
 		action = actionAdder.apply(UNINSTALL_SKILL_NAME);
 		block = action.getExpression();
@@ -1290,7 +1317,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				Messages.AbstractNewSarlElementWizardPage_20,
 				elementTypeName));
 		expr = block.addExpression();
-		expr.setExpression("info(\"Uninstall " + elementTypeName + "\")");  //$NON-NLS-1$//$NON-NLS-2$
+		createInfoCall(expr, "Uninstalling the " + elementTypeName);  //$NON-NLS-1$
 
 		return true;
 	}
