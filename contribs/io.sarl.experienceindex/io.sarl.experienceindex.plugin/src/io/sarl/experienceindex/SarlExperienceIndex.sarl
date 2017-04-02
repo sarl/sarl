@@ -37,25 +37,6 @@ import javax.crypto.Cipher
 import javax.crypto.spec.DESKeySpec
 import javax.crypto.spec.SecretKeySpec
 
-/** This class contains the different SEI of your machine.
- * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
-interface SeiCanceler {
-	/**
-	 * Returns whether cancelation of current operation has been requested.
-	 * Long-running operations should poll to see if cancelation
-	 * has been requested.
-	 *
-	 * @return {@code true} if cancellation has been requested,
-	 *    and {@code false} otherwise.
-	 */
-	def isCanceled : boolean
-}
-
 /** This class computes the SARL Experience Index (SEI) of your machine.
  *
  * <p>The SEI is inspirated by the <a href="https://en.wikipedia.org/wiki/Windows_System_Assessment_Tool">Windows
@@ -646,4 +627,23 @@ final class SarlExperienceIndex {
 		return score
 	}
 
+}
+
+/** This interace is a tool for canceling the SEI computation.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+interface SeiCanceler {
+	/**
+	 * Returns whether cancelation of current operation has been requested.
+	 * Long-running operations should poll to see if cancelation
+	 * has been requested.
+	 *
+	 * @return {@code true} if cancellation has been requested,
+	 *    and {@code false} otherwise.
+	 */
+	def isCanceled : boolean
 }
