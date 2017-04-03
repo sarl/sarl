@@ -2,7 +2,7 @@
 
 <plugin>
    <extension point="org.eclipse.ui.menus">
-      <menuContribution locationURI="menu:io.sarl.eclipse.mainMenu">
+      <menuContribution locationURI="menu:io.sarl.eclipse.mainMenu?after=endExtras">
          <command commandId="io.sarl.experienceindex.eclipse.sarlExperienceIndexEvaluator"
                   label="%action.sarlExperienceIndexEvaluator"
                   icon="icons/sei.png"
