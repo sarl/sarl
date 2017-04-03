@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: io.sarl.core;singleton:=true
-Bundle-Version: 0.6.0.qualifier
+Bundle-Version: 0.5.4
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: io.sarl.lang.core;bundle-version="0.6.0";visibility:=reexport
+Require-Bundle: io.sarl.lang.core;bundle-version="0.5.4";visibility:=reexport
 Export-Package: io.sarl.core
