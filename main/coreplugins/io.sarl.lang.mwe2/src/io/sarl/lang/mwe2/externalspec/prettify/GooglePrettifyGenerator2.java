@@ -22,9 +22,6 @@
 package io.sarl.lang.mwe2.externalspec.prettify;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -32,7 +29,8 @@ import com.google.inject.Injector;
 import org.eclipse.xtext.generator.IGeneratorFragment;
 import org.eclipse.xtext.util.Strings;
 
-import io.sarl.lang.mwe2.externalspec.AbstractExternalHighlightingFragment2;
+import io.sarl.lang.mwe2.externalspec.AbstractCsyntaxHighlightingFragment2;
+import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
 
 /**
  * A {@link IGeneratorFragment} that create the language specification for
@@ -42,8 +40,9 @@ import io.sarl.lang.mwe2.externalspec.AbstractExternalHighlightingFragment2;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see "https://github.com/google/code-prettify"
  */
-public class GooglePrettifyGenerator2 extends AbstractExternalHighlightingFragment2 {
+public class GooglePrettifyGenerator2 extends AbstractCsyntaxHighlightingFragment2 {
 
 	/** The default basename pattern for {@link MessageFormat}.
 	 */
@@ -157,14 +156,11 @@ public class GooglePrettifyGenerator2 extends AbstractExternalHighlightingFragme
 		}
 	}
 
-	private static void append(List<String> buffer, String text, Object... parameters) {
-		buffer.add(MessageFormat.format(text, parameters));
-	}
-
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	@Override
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation,
-			Set<String> ignored, Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
+	protected void generate(IStyleAppendable it, Set<String> literals, Set<String> expressionKeywords,
+			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,
+			Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
 		final Set<Character> characters = new TreeSet<>();
 		for (final String punct : punctuation) {
 			punct.chars().forEach((int candidate) -> characters.add(Character.valueOf((char) candidate)));
@@ -200,7 +196,8 @@ public class GooglePrettifyGenerator2 extends AbstractExternalHighlightingFragme
 		}
 
 		final StringBuilder keywordPattern = new StringBuilder();
-		for (final String keyword : keywords) {
+		for (final String keyword : sortedConcat(expressionKeywords, modifiers, primitiveTypes,
+				specialKeywords, typeDeclarationKeywords)) {
 			if (keywordPattern.length() > 0) {
 				keywordPattern.append("|"); //$NON-NLS-1$
 			}
@@ -215,38 +212,29 @@ public class GooglePrettifyGenerator2 extends AbstractExternalHighlightingFragme
 			literalPattern.append(literal);
 		}
 
-		final List<String> css = new ArrayList<>();
+		it.appendHeader();
 
-		final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
-		css.addAll(Arrays.asList(header));
-
-		append(css, "/* Style for {0} {1} */", getLanguageSimpleName(), getLanguageVersion()); //$NON-NLS-1$
-
-		append(css, "PR[''registerLangHandler'']("); //$NON-NLS-1$
-		append(css, "   PR[''createSimpleLexer'']("); //$NON-NLS-1$
-		append(css, "      ["); //$NON-NLS-1$
-		append(css, "         [PR[''PR_PLAIN''], /^[{0}]+/, null, ''{0}''],", this.whitespaces); //$NON-NLS-1$
-		append(css, "         [PR[''PR_PUNCTUATION''], /^[{0}]+/, null, ''{1}''],", punctuationCharacters1, //$NON-NLS-1$
+		it.appendNl("PR['registerLangHandler']("); //$NON-NLS-1$
+		it.appendNl("   PR['createSimpleLexer']("); //$NON-NLS-1$
+		it.appendNl("      ["); //$NON-NLS-1$
+		it.appendNl("         [PR[''PR_PLAIN''], /^[{0}]+/, null, ''{0}''],", this.whitespaces); //$NON-NLS-1$
+		it.appendNl("         [PR[''PR_PUNCTUATION''], /^[{0}]+/, null, ''{1}''],", punctuationCharacters1, //$NON-NLS-1$
 				punctuationCharacters2);
-		append(css, "      ],"); //$NON-NLS-1$
-		append(css, "      ["); //$NON-NLS-1$
-		append(css, "         [PR[''PR_STRING''], /{0}/],", this.doubleQuotedStrings); //$NON-NLS-1$
-		append(css, "         [PR[''PR_STRING''], /{0}/],", this.singleQuotedStrings); //$NON-NLS-1$
-		append(css, "         [PR[''PR_LITERAL''], /{0}/],", this.characterLiteral); //$NON-NLS-1$
-		append(css, "         [PR[''PR_KEYWORD''], /^(?:{0})\\b/],", keywordPattern); //$NON-NLS-1$
-		append(css, "         [PR[''PR_LITERAL''], /^(?:{0})\\b/],", literalPattern); //$NON-NLS-1$
-		append(css, "         [PR[''PR_LITERAL''], /{0}/i],", this.numberLiteral); //$NON-NLS-1$
-		append(css, "         [PR[''PR_TYPE''], /{0}/],", this.typePattern); //$NON-NLS-1$
-		append(css, "         [PR[''PR_PLAIN''], /{0}/],", this.plainTextPattern); //$NON-NLS-1$
-		append(css, "         [PR[''PR_COMMENT''], /{0}/],", this.commentPattern); //$NON-NLS-1$
-		append(css, "         [PR[''PR_PUNCTUATION''], /^(?:\\.+|\\/)/]"); //$NON-NLS-1$
-		append(css, "      ]),"); //$NON-NLS-1$
+		it.appendNl("      ],"); //$NON-NLS-1$
+		it.appendNl("      ["); //$NON-NLS-1$
+		it.appendNl("         [PR[''PR_STRING''], /{0}/],", this.doubleQuotedStrings); //$NON-NLS-1$
+		it.appendNl("         [PR[''PR_STRING''], /{0}/],", this.singleQuotedStrings); //$NON-NLS-1$
+		it.appendNl("         [PR[''PR_LITERAL''], /{0}/],", this.characterLiteral); //$NON-NLS-1$
+		it.appendNl("         [PR[''PR_KEYWORD''], /^(?:{0})\\b/],", keywordPattern); //$NON-NLS-1$
+		it.appendNl("         [PR[''PR_LITERAL''], /^(?:{0})\\b/],", literalPattern); //$NON-NLS-1$
+		it.appendNl("         [PR[''PR_LITERAL''], /{0}/i],", this.numberLiteral); //$NON-NLS-1$
+		it.appendNl("         [PR[''PR_TYPE''], /{0}/],", this.typePattern); //$NON-NLS-1$
+		it.appendNl("         [PR[''PR_PLAIN''], /{0}/],", this.plainTextPattern); //$NON-NLS-1$
+		it.appendNl("         [PR[''PR_COMMENT''], /{0}/],", this.commentPattern); //$NON-NLS-1$
+		it.appendNl("         [PR['PR_PUNCTUATION'], /^(?:\\.+|\\/)/]"); //$NON-NLS-1$
+		it.appendNl("      ]),"); //$NON-NLS-1$
 		final String language = getLanguageSimpleName().toLowerCase();
-		append(css, "   [''{0}'']);", language); //$NON-NLS-1$
-
-		final String basename = getBasename(
-				MessageFormat.format(getBasenameTemplate(), language));
-		writeFile(basename, css);
+		it.appendNl("   [''{0}'']);", language); //$NON-NLS-1$
 	}
 
 }

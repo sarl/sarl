@@ -26,9 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import com.google.common.base.Joiner;
 import com.google.common.io.Files;
@@ -36,10 +34,12 @@ import com.google.inject.Injector;
 import com.ibm.icu.text.SimpleDateFormat;
 import org.eclipse.xtext.generator.IGeneratorFragment;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xtext.generator.CodeConfig;
 
 import io.sarl.lang.mwe2.externalspec.AbstractExternalHighlightingFragment2;
 import io.sarl.lang.mwe2.externalspec.ExternalHighlightingConfig.Color;
 import io.sarl.lang.mwe2.externalspec.ExternalHighlightingConfig.ColorConfig;
+import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
 
 /**
  * A {@link IGeneratorFragment} that create the language specification for
@@ -50,7 +50,7 @@ import io.sarl.lang.mwe2.externalspec.ExternalHighlightingConfig.ColorConfig;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragment2 {
+public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragment2<IStyleAppendable> {
 
 	/** The default basename pattern for {@link MessageFormat}.
 	 */
@@ -135,6 +135,11 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 	private boolean showSpecialCharacters;
 
 	private Collection<String> requirements;
+
+	@Override
+	protected IStyleAppendable newStyleAppendable() {
+		return new TeXAppendable(getCodeConfig(), getLanguageSimpleName(), getLanguageVersion());
+	}
 
 	@Override
 	public String toString() {
@@ -256,151 +261,179 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		}
 	}
 
-	private static void append(List<String> buffer, String text, Object... parameters) {
-		buffer.add(MessageFormat.format(text, parameters));
-	}
-
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	@Override
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-	protected void generate(Set<String> literals, Set<String> keywords, Set<String> punctuation,
-			Set<String> ignored, Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
+	protected void generate(IStyleAppendable it, Set<String> literals, Set<String> expressionKeywords,
+			Set<String> modifiers, Set<String> primitiveTypes, Set<String> punctuation, Set<String> ignored,
+			Set<String> specialKeywords, Set<String> typeDeclarationKeywords) {
 		final ColorConfig colors = getHighlightingConfig().getColors();
 
-		final Set<String> texKeywords = new TreeSet<>(keywords);
-		texKeywords.addAll(literals);
+		final Set<String> texKeywords = sortedConcat(expressionKeywords, modifiers, primitiveTypes,
+				specialKeywords, typeDeclarationKeywords, literals);
 
-		final List<String> sty = new ArrayList<>();
-
-		final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
-		for (final String headerLine : header) {
-			sty.add(headerLine.replaceFirst("^\\s*[/]?[*][/]?", "%")); //$NON-NLS-1$//$NON-NLS-2$
-		}
+		it.appendHeader();
 
 		final String basename = getBasename(
 				MessageFormat.format(getBasenameTemplate(), getLanguageSimpleName().toLowerCase()));
 		final String simpleBasename = Files.getNameWithoutExtension(basename);
 
-		append(sty, "\\NeedsTeXFormat'{'LaTeX2e'}'[1995/12/01]"); //$NON-NLS-1$
+		it.appendNl("\\NeedsTeXFormat{LaTeX2e}[1995/12/01]"); //$NON-NLS-1$
 		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); //$NON-NLS-1$
-		append(sty, "\\ProvidesPackage'{'{0}'}'[{1}]", simpleBasename, dateFormat.format(new Date())); //$NON-NLS-1$
+		it.appendNl("\\ProvidesPackage'{'{0}'}'[{1}]", simpleBasename, dateFormat.format(new Date())); //$NON-NLS-1$
 
-		append(sty, "\\RequirePackage'{'algpseudocode'}'"); //$NON-NLS-1$
-		append(sty, "\\RequirePackage'{'listings'}'"); //$NON-NLS-1$
-		append(sty, "\\RequirePackage'{'xspace'}'"); //$NON-NLS-1$
+		it.appendNl("\\RequirePackage{algpseudocode}"); //$NON-NLS-1$
+		it.appendNl("\\RequirePackage{listings}"); //$NON-NLS-1$
+		it.appendNl("\\RequirePackage{xspace}"); //$NON-NLS-1$
 		Collection<String> requirements = this.requirements;
 		if (requirements == null) {
 			requirements = Arrays.asList(DEFAULT_REQUIREMENTS);
 		}
 		for (final String requirement : requirements) {
-			append(sty, "\\RequirePackage'{'{0}'}'", requirement); //$NON-NLS-1$
+			it.appendNl("\\RequirePackage'{'{0}'}'", requirement); //$NON-NLS-1$
 		}
 		if (getEnableColors()) {
-			append(sty, "\\RequirePackage'{'xcolor'}'"); //$NON-NLS-1$
+			it.appendNl("\\RequirePackage{xcolor}"); //$NON-NLS-1$
 		}
 
 		if (getEnableColors()) {
 			for (final Color color : colors.getColors().values()) {
-				append(sty, "\\definecolor'{'{0}'}{'RGB'}{'{1},{2},{3}'}'", //$NON-NLS-1$
+				it.appendNl("\\definecolor'{'{0}'}{'RGB'}{'{1},{2},{3}'}'", //$NON-NLS-1$
 						color.getName(), color.getRed(), color.getGreen(), color.getBlue());
 			}
-			append(sty, "\\colorlet'{'SARLcomment'}{'{0}'}'", colors.getCommentColor()); //$NON-NLS-1$
-			append(sty, "\\colorlet'{'SARLstring'}{'{0}'}'", colors.getStringColor()); //$NON-NLS-1$
-			append(sty, "\\colorlet'{'SARLkeyword'}{'{0}'}'", colors.getKeywordColor()); //$NON-NLS-1$
-			append(sty, "\\colorlet'{'SARLidentifier'}{'{0}'}'", colors.getIdentifierColor()); //$NON-NLS-1$
+			it.appendNl("\\colorlet'{'SARLcomment'}{'{0}'}'", colors.getCommentColor()); //$NON-NLS-1$
+			it.appendNl("\\colorlet'{'SARLstring'}{'{0}'}'", colors.getStringColor()); //$NON-NLS-1$
+			it.appendNl("\\colorlet'{'SARLkeyword'}{'{0}'}'", colors.getKeywordColor()); //$NON-NLS-1$
+			it.appendNl("\\colorlet'{'SARLidentifier'}{'{0}'}'", colors.getIdentifierColor()); //$NON-NLS-1$
 		}
 
 		final String langName = getLanguageSimpleName().toUpperCase();
-		append(sty, "\\lstdefinelanguage'{'{0}'}{'%", langName); //$NON-NLS-1$
-		append(sty, "   morecomment=[l]'{'//'}',"); //$NON-NLS-1$
-		append(sty, "   morecomment=[s]'{'/*'}{'*/'}',"); //$NON-NLS-1$
-		append(sty, "   morestring=[b]\","); //$NON-NLS-1$
-		append(sty, "   morekeywords='{'{0}'}',", Joiner.on(",").join(texKeywords)); //$NON-NLS-1$ //$NON-NLS-2$
-		append(sty, "'}'"); //$NON-NLS-1$
+		it.appendNl("\\lstdefinelanguage'{'{0}'}{'%", langName); //$NON-NLS-1$
+		it.appendNl("   morecomment=[l]{//},"); //$NON-NLS-1$
+		it.appendNl("   morecomment=[s]{/*}{*/},"); //$NON-NLS-1$
+		it.appendNl("   morestring=[b]\","); //$NON-NLS-1$
+		it.appendNl("   morekeywords='{'{0}'}',", Joiner.on(",").join(texKeywords)); //$NON-NLS-1$ //$NON-NLS-2$
+		it.appendNl("}"); //$NON-NLS-1$
 
-		append(sty, "\\lstset'{'%"); //$NON-NLS-1$
+		it.appendNl("\\lstset{%"); //$NON-NLS-1$
 
 		String floatBasicStyle = this.floatBasicStyle;
 		if (floatBasicStyle == null) {
 			floatBasicStyle = (getEnableColors()) ? DEFAULT_COLORIZED_FLOAT_BASIC_STYLE : DEFAULT_FLOAT_BASIC_STYLE;
 		}
 		floatBasicStyle = Strings.emptyIfNull(floatBasicStyle);
-		append(sty, "   basicstyle={0}, % the size of the fonts that are used for the code", floatBasicStyle); //$NON-NLS-1$
+		it.appendNl("   basicstyle={0}, % the size of the fonts that are used for the code", floatBasicStyle); //$NON-NLS-1$
 
-		append(sty, "   breakatwhitespace=false, % sets if automatic breaks should only happen at whitespace"); //$NON-NLS-1$
-		append(sty, "   breaklines=true, % sets automatic line breaking"); //$NON-NLS-1$
-		append(sty, "   captionpos=b, % sets the caption-position to bottom"); //$NON-NLS-1$
-		append(sty, "   deletekeywords='{'filter'}', % if you want to delete keywords from the given language"); //$NON-NLS-1$
-		append(sty, "   escapeinside='{'(*@'}{'@*)'}', % if you want to add LaTeX within your code"); //$NON-NLS-1$
-		append(sty, "   extendedchars=true, % lets you use non-ASCII characters; for 8-bits " //$NON-NLS-1$
-				+ "encodings only, does not work with UTF-8"); //$NON-NLS-1$
-		append(sty, "   frame=none, % no frame around the code"); //$NON-NLS-1$
-		append(sty, "   keepspaces=true, % keeps spaces in text, useful for keeping " //$NON-NLS-1$
-				+ "indentation of code (possibly needs columns=flexible)"); //$NON-NLS-1$
+		it.appendNl("   breakatwhitespace=false, % sets if automatic breaks should only happen at whitespace"); //$NON-NLS-1$
+		it.appendNl("   breaklines=true, % sets automatic line breaking"); //$NON-NLS-1$
+		it.appendNl("   captionpos=b, % sets the caption-position to bottom"); //$NON-NLS-1$
+		it.appendNl("   deletekeywords={filter}, % if you want to delete keywords from the given language"); //$NON-NLS-1$
+		it.appendNl("   escapeinside={(*@}{@*)}, % if you want to add LaTeX within your code"); //$NON-NLS-1$
+		it.append("   extendedchars=true, % lets you use non-ASCII characters; for 8-bits "); //$NON-NLS-1$
+		it.appendNl("encodings only, does not work with UTF-8"); //$NON-NLS-1$
+		it.appendNl("   frame=none, % no frame around the code"); //$NON-NLS-1$
+		it.append("   keepspaces=true, % keeps spaces in text, useful for keeping "); //$NON-NLS-1$
+		it.appendNl("indentation of code (possibly needs columns=flexible)"); //$NON-NLS-1$
 
 		String identifierStyle = this.identifierStyle;
 		if (identifierStyle == null) {
 			identifierStyle = (getEnableColors()) ? DEFAULT_COLORIZED_IDENTIFIER_STYLE : DEFAULT_IDENTIFIER_STYLE;
 		}
 		identifierStyle = Strings.emptyIfNull(identifierStyle);
-		append(sty, "   identifierstyle={0},", identifierStyle); //$NON-NLS-1$
+		it.appendNl("   identifierstyle={0},", identifierStyle); //$NON-NLS-1$
 
 		String commentStyle = this.commentStyle;
 		if (commentStyle == null) {
 			commentStyle = (getEnableColors()) ? DEFAULT_COLORIZED_COMMENT_STYLE : DEFAULT_COMMENT_STYLE;
 		}
 		commentStyle = Strings.emptyIfNull(commentStyle);
-		append(sty, "   commentstyle={0},", commentStyle); //$NON-NLS-1$
+		it.appendNl("   commentstyle={0},", commentStyle); //$NON-NLS-1$
 
 		String stringStyle = this.stringStyle;
 		if (stringStyle == null) {
 			stringStyle = (getEnableColors()) ? DEFAULT_COLORIZED_STRING_STYLE : DEFAULT_STRING_STYLE;
 		}
 		stringStyle = Strings.emptyIfNull(stringStyle);
-		append(sty, "   stringstyle={0},", stringStyle); //$NON-NLS-1$
+		it.appendNl("   stringstyle={0},", stringStyle); //$NON-NLS-1$
 
 		String keywordStyle = this.keywordStyle;
 		if (keywordStyle == null) {
 			keywordStyle = (getEnableColors()) ? DEFAULT_COLORIZED_KEYWORD_STYLE : DEFAULT_KEYWORD_STYLE;
 		}
 		keywordStyle = Strings.emptyIfNull(keywordStyle);
-		append(sty, "   keywordstyle={0}, % keyword style", keywordStyle); //$NON-NLS-1$
+		it.appendNl("   keywordstyle={0}, % keyword style", keywordStyle); //$NON-NLS-1$
 
-		append(sty, "   language={0}, % the default language of the code", langName); //$NON-NLS-1$
+		it.appendNl("   language={0}, % the default language of the code", langName); //$NON-NLS-1$
 
-		append(sty, "   showspaces={0}, % show spaces everywhere adding particular " //$NON-NLS-1$
-				+ "underscores; it overrides ''showstringspaces''", this.showSpecialCharacters); //$NON-NLS-1$
-		append(sty, "   showstringspaces={0}, % underline spaces within strings only", //$NON-NLS-1$
+		it.append("   showspaces={0}, % show spaces everywhere adding particular ", this.showSpecialCharacters); //$NON-NLS-1$
+		it.appendNl("underscores; it overrides 'showstringspaces'"); //$NON-NLS-1$
+		it.appendNl("   showstringspaces={0}, % underline spaces within strings only", //$NON-NLS-1$
 				this.showSpecialCharacters);
-		append(sty, "   showtabs={0}, % show tabs within strings adding particular underscores", //$NON-NLS-1$
+		it.appendNl("   showtabs={0}, % show tabs within strings adding particular underscores", //$NON-NLS-1$
 				this.showSpecialCharacters);
 		if (this.showLines) {
-			append(sty, "   numbers=left,% Numbers on left"); //$NON-NLS-1$
-			append(sty, "   firstnumber=1, % First line number"); //$NON-NLS-1$
-			append(sty, "   numberfirstline=false, %Start numbers at first line"); //$NON-NLS-1$
-			append(sty, "   stepnumber={0}, % the step between two line-numbers. " //$NON-NLS-1$
-					+ "If it''s 1, each line will be numbered", this.lineStep); //$NON-NLS-1$
+			it.appendNl("   numbers=left,% Numbers on left"); //$NON-NLS-1$
+			it.appendNl("   firstnumber=1, % First line number"); //$NON-NLS-1$
+			it.appendNl("   numberfirstline=false, %Start numbers at first line"); //$NON-NLS-1$
+			it.append("   stepnumber={0}, % the step between two line-numbers. ", this.lineStep); //$NON-NLS-1$
+			it.appendNl("If it's 1, each line will be numbered"); //$NON-NLS-1$
 		}
-		append(sty, "   tabsize={0}, % sets default tabsize to 2 spaces", this.tabSize); //$NON-NLS-1$
-		append(sty, "   title=\\lstname, % show the filename of files included with " //$NON-NLS-1$
-				+ "\\lstinputlisting; also try caption instead of title"); //$NON-NLS-1$
-		append(sty, "   frameround=fttt, % If framed, use this rounded corner style"); //$NON-NLS-1$
-		append(sty, "'}'"); //$NON-NLS-1$
+		it.appendNl("   tabsize={0}, % sets default tabsize to 2 spaces", this.tabSize); //$NON-NLS-1$
+		it.append("   title=\\lstname, % show the filename of files included with "); //$NON-NLS-1$
+		it.appendNl("\\lstinputlisting; also try caption instead of title"); //$NON-NLS-1$
+		it.appendNl("   frameround=fttt, % If framed, use this rounded corner style"); //$NON-NLS-1$
+		it.appendNl("}"); //$NON-NLS-1$
 
 		String inlineBasicStyle = this.inlineBasicStyle;
 		if (inlineBasicStyle == null) {
 			inlineBasicStyle = (getEnableColors()) ? DEFAULT_COLORIZED_INLINE_BASIC_STYLE : DEFAULT_INLINE_BASIC_STYLE;
 		}
 		inlineBasicStyle = Strings.emptyIfNull(inlineBasicStyle);
-		append(sty, "\\newcommand'{'\\code'}'[1]'{'" //$NON-NLS-1$
-				+ "\\ifmmode\\text'{'\\lstinline[basicstyle={0}]'{'#1'}}'" //$NON-NLS-1$
-				+ "\\else\\lstinline[basicstyle={0}]'{'#1'}'" //$NON-NLS-1$
-				+ "\\fi'}'", inlineBasicStyle); //$NON-NLS-1$
-		append(sty, "\\newcommand'{'\\sarl'}{'\\mbox'{'SARL'}'\\xspace'}'"); //$NON-NLS-1$
-		append(sty, "\\newcommand'{'\\sarlversion'}{'{0}'}'", getLanguageVersion()); //$NON-NLS-1$
+		it.append("\\newcommand{\\code}[1]{"); //$NON-NLS-1$
+		it.append("\\ifmmode\\text'{'\\lstinline[basicstyle={0}]'{'#1'}}'", inlineBasicStyle); //$NON-NLS-1$
+		it.append("\\else\\lstinline[basicstyle={0}]'{'#1'}'", inlineBasicStyle); //$NON-NLS-1$
+		it.appendNl("\\fi}"); //$NON-NLS-1$
+		it.appendNl("\\newcommand{\\sarl}{\\mbox{SARL}\\xspace}"); //$NON-NLS-1$
+		it.appendNl("\\newcommand'{'\\sarlversion'}{'{0}'}'", getLanguageVersion()); //$NON-NLS-1$
 
-		append(sty, "\\endinput"); //$NON-NLS-1$
+		it.appendNl("\\endinput"); //$NON-NLS-1$
+	}
 
-		writeFile(basename, sty);
+	/** Appendable for tex-based styles.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.6
+	 */
+	protected static class TeXAppendable extends AbstractAppendable {
+
+		/** Constructor.
+		 *
+		 * @param codeConfig the code configuration.
+		 * @param languageName the language name.
+		 * @param languageVersion the language version.
+		 */
+		protected TeXAppendable(CodeConfig codeConfig, String languageName, String languageVersion) {
+			super(codeConfig, languageName, languageVersion);
+		}
+
+		@Override
+		public void appendComment(String text, Object... parameters) {
+			final String comment = applyFormat(text, parameters);
+			for (final String line : comment.split("[\n\r]")) { //$NON-NLS-1$
+				appendNl("% " + line.trim()); //$NON-NLS-1$
+			}
+		}
+
+		@Override
+		public void appendHeader() {
+			final String[] header = Strings.emptyIfNull(getCodeConfig().getFileHeader()).split("[\n\r]+"); //$NON-NLS-1$
+			for (final String headerLine : header) {
+				appendNl(headerLine.replaceFirst("^\\s*[/]?[*][/]?", "%")); //$NON-NLS-1$//$NON-NLS-2$
+			}
+		}
+
 	}
 
 }
