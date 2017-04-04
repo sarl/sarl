@@ -35,6 +35,7 @@ import io.sarl.lang.mwe2.externalspec.prettify.*
 import io.sarl.lang.mwe2.externalspec.latex.* 
 import io.sarl.lang.mwe2.externalspec.gtk.* 
 import io.sarl.lang.mwe2.externalspec.gnusrchighlight.* 
+import io.sarl.lang.mwe2.externalspec.pygments.* 
 import io.sarl.lang.mwe2.codebuilder.* 
 import io.sarl.lang.mwe2.codebuilder.config.* 
 import io.sarl.lang.mwe2.keywords.* 
@@ -60,6 +61,7 @@ var prettifyToolPath = "${externalToolPath}/prettify"
 var latexToolPath = "${externalToolPath}/latex"
 var gtkToolPath = "${externalToolPath}/gtk"
 var srchighlightToolPath  = "${externalToolPath}/source-highlight"
+var pygmentsToolPath  = "${externalToolPath}/pygments"
 var webjsPath = "${overallRootPath}/main/externalmaven/io.sarl.maven.docs.generator/src/main/resources/org/jnario/doc/js"
 
 var file.extensions = "sarl"
@@ -114,6 +116,9 @@ Workflow {
 	}
    	component = DirectoryCleaner {
 		directory = "${srchighlightToolPath}"
+	}
+   	component = DirectoryCleaner {
+		directory = "${pygmentsToolPath}"
 	}
 
  	component = XtextGenerator auto-inject {
@@ -442,6 +447,12 @@ Workflow {
 			// Generate the GNU src-hightlite style
     		fragment = GnuSrcHighlightGenerator2 auto-inject {
 				output = srchighlightToolPath
+    		}
+
+			// Generate the Pygments style
+    		fragment = PygmentsGenerator2 auto-inject {
+				output = pygmentsToolPath
+				url = languageWebsite
     		}
 
     		// SARL specific bindings
