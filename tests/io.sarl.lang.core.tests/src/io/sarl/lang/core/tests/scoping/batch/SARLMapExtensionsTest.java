@@ -24,7 +24,7 @@ import static io.sarl.lang.scoping.batch.SARLMapExtensions.operator_add;
 import static io.sarl.lang.scoping.batch.SARLMapExtensions.operator_minus;
 import static io.sarl.lang.scoping.batch.SARLMapExtensions.operator_plus;
 import static io.sarl.lang.scoping.batch.SARLMapExtensions.operator_remove;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
@@ -99,6 +99,42 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
+	public void operator_removeMapPair_0() {
+		String v = UUID.randomUUID().toString();
+		boolean o;
+
+		o = operator_remove(this.map, new Pair<String, String>("k3", v));
+		assertFalse(o);
+		assertEquals(2, this.map.size());
+		assertEquals(this.value1, this.map.get("k1"));
+		assertEquals(this.value2, this.map.get("k2"));
+	}
+
+	@Test
+	public void operator_removeMapPair_1() {
+		String v = UUID.randomUUID().toString();
+		boolean o;
+
+		o = operator_remove(this.map, new Pair<String, String>("k2", v));
+		assertFalse(o);
+		assertEquals(2, this.map.size());
+		assertEquals(this.value1, this.map.get("k1"));
+		assertEquals(this.value2, this.map.get("k2"));
+	}
+
+	@Test
+	public void operator_removeMapPair_2() {
+		String v = UUID.randomUUID().toString();
+		boolean o;
+
+		o = operator_remove(this.map, new Pair<String, String>("k2", new String(this.value2)));
+		assertTrue(o);
+		assertEquals(1, this.map.size());
+		assertEquals(this.value1, this.map.get("k1"));
+		assertNull(this.map.get("k2"));
+	}
+
+	@Test
 	public void operator_plusMapPair_0() {
 		String v = UUID.randomUUID().toString();
 		Map<String, String> o;
@@ -128,6 +164,65 @@ public class SARLMapExtensionsTest {
 		assertEquals(2, o.size());
 		assertEquals(this.value1, o.get("k1"));
 		assertEquals(v, o.get("k2"));
+		assertNull(o.get("k3"));
+	}
+
+	@Test
+	public void operator_minusMapPair_0() {
+		String v = UUID.randomUUID().toString();
+		Map<String, String> o;
+
+		o = operator_minus(this.map, new Pair<String, String>("k3", v));
+
+		assertNotNull(o);
+		assertNotSame(this.map, o);
+		
+		assertEquals(2, this.map.size());
+		assertEquals(this.value1, this.map.get("k1"));
+		assertEquals(this.value2, this.map.get("k2"));
+		assertNull(this.map.get("k3"));
+		
+		assertEquals(2, o.size());
+		assertEquals(this.value1, o.get("k1"));
+		assertEquals(this.value2, o.get("k2"));
+		assertNull(o.get("k3"));
+	}
+
+	@Test
+	public void operator_minusMapPair_1() {
+		String v = UUID.randomUUID().toString();
+		Map<String, String> o = operator_minus(this.map, new Pair<String, String>("k2", v));
+		
+		assertNotNull(o);
+		assertNotSame(this.map, o);
+		
+		assertEquals(2, this.map.size());
+		assertEquals(this.value1, this.map.get("k1"));
+		assertEquals(this.value2, this.map.get("k2"));
+		assertNull(this.map.get("k3"));
+		
+		assertEquals(1, o.size());
+		assertEquals(this.value1, o.get("k1"));
+		assertNull(o.get("k2"));
+		assertNull(o.get("k3"));
+	}
+
+	@Test
+	public void operator_minusMapPair_3() {
+		String v = UUID.randomUUID().toString();
+		Map<String, String> o = operator_minus(this.map, new Pair<String, String>("k2", new String(this.value2)));
+		
+		assertNotNull(o);
+		assertNotSame(this.map, o);
+		
+		assertEquals(2, this.map.size());
+		assertEquals(this.value1, this.map.get("k1"));
+		assertEquals(this.value2, this.map.get("k2"));
+		assertNull(this.map.get("k3"));
+		
+		assertEquals(1, o.size());
+		assertEquals(this.value1, o.get("k1"));
+		assertNull(o.get("k2"));
 		assertNull(o.get("k3"));
 	}
 

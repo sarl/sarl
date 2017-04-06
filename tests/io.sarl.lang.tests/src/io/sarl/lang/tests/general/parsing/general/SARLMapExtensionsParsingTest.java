@@ -536,7 +536,7 @@ public class SARLMapExtensionsParsingTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.INCOMPATIBLE_TYPES,
-			"Type mismatch: cannot convert from int to Iterable<? super String>");
+			"Type mismatch: cannot convert from int to Pair");
 	}
 
 	@Test
@@ -629,7 +629,7 @@ public class SARLMapExtensionsParsingTest extends AbstractSarlTest {
 		validate(mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.INCOMPATIBLE_TYPES,
-			"Type mismatch: cannot convert from int to Map<? extends String, ? extends Integer>");
+			"Type mismatch: cannot convert from int to Pair");
 	}
 
 	@Test
