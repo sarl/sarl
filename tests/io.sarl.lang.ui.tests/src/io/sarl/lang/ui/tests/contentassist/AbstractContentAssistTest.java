@@ -186,7 +186,7 @@ public abstract class AbstractContentAssistTest extends AbstractSarlUiTest imple
 		return builder;
 	}
 
-	/** Assert that all the given texts are not in the proposal.
+	/** Assert that all the given texts are in the proposal.
 	 *
 	 * <p>In opposite to {@link ContentAssistProcessorTestBuilder#assertText(String...)}, this function
 	 * is not failing if the more text than the given ones are proposed.
