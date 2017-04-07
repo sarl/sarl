@@ -82,13 +82,14 @@ import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.ui.contentassist.general.SARLContentProposalProrities;
 import io.sarl.lang.ui.images.SARLImages;
 import io.sarl.lang.util.Utils;
 
 /** Provides proposal for the content assist mechanism.
  *
  * <p>This provider:<ul>
- * <li>restricts the proposals according to the context;</li>
+ * <li>restricts the proposals according to the context when possible;</li>
  * <li>avoid to propose the hidden features (with "$" inside their names);</li>
  * <li>provides a valid name after the "package" keyword.</li>
  * </ul>
@@ -581,7 +582,8 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 						this.keywords.getItKeyword(),
 						new StyledString(this.keywords.getItKeyword()),
 						this.imageHelper.getImage(this.images.forLocalVariable(0)),
-						HIGH_PRIORITY, context.getPrefix(), context);
+						SARLContentProposalProrities.CONTEXTUAL_KEYWORD_PRIORITY,
+						context.getPrefix(), context);
 				acceptor.accept(itProposal);
 				createLocalVariableAndImplicitProposals(body, context, acceptor);
 			}

@@ -41,6 +41,20 @@ import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
 @Singleton
 public class SARLImages extends XtendImages {
 
+	private static final boolean USE_LIGHT_ICONS = false;
+
+	private static final String[] IMAGE_NAMES;
+
+	static {
+		IMAGE_NAMES = new String[SarlElementType.values().length];
+		IMAGE_NAMES[SarlElementType.AGENT.ordinal()] = "sarl-agent.png"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.BEHAVIOR.ordinal()] = "sarl-behavior.png"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.CAPACITY.ordinal()] = "sarl-capacity.png"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.SKILL.ordinal()] = "sarl-skill.png"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.EVENT.ordinal()] = "sarl-event.png"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.BEHAVIOR_UNIT.ordinal()] = "sarl-behavior-unit.png"; //$NON-NLS-1$
+	}
+
 	@Inject
 	private IImageDescriptorHelper imageHelper;
 
@@ -53,27 +67,39 @@ public class SARLImages extends XtendImages {
 	 * @param useLightIcons - indicates of light icons should be used.
 	 * @return the image descriptor.
 	 */
-	protected ImageDescriptor getTypeImageDescriptor(
+	public ImageDescriptor getTypeImageDescriptor(
 			SarlElementType type,
 			boolean isInner, boolean isInInterfaceOrAnnotation, int flags, boolean useLightIcons) {
 		if (type != null) {
-			switch (type) {
-			case AGENT:
-				return this.imageHelper.getImageDescriptor("sarl-agent.png"); //$NON-NLS-1$
-			case BEHAVIOR:
-				return this.imageHelper.getImageDescriptor("sarl-behavior.png"); //$NON-NLS-1$
-			case CAPACITY:
-				return this.imageHelper.getImageDescriptor("sarl-capacity.png"); //$NON-NLS-1$
-			case SKILL:
-				return this.imageHelper.getImageDescriptor("sarl-skill.png"); //$NON-NLS-1$
-			case EVENT:
-				return this.imageHelper.getImageDescriptor("sarl-event.png"); //$NON-NLS-1$
-			case BEHAVIOUR_UNIT:
-				return this.imageHelper.getImageDescriptor("sarl-behavior-unit.png"); //$NON-NLS-1$
-			default:
-			}
+			return this.imageHelper.getImageDescriptor(IMAGE_NAMES[type.ordinal()]);
 		}
 		return JavaElementImageProvider.getTypeImageDescriptor(isInner, isInInterfaceOrAnnotation, flags, useLightIcons);
+	}
+
+	/** Replies the image descriptor for the given element.
+	 *
+	 * @param type - the type of the SARL element, or <code>null</code> if unknown.
+	 * @param isInner - indicates if the element is inner.
+	 * @return the image descriptor.
+	 */
+	public ImageDescriptor getTypeImageDescriptor(
+			SarlElementType type,
+			boolean isInner) {
+		return getTypeImageDescriptor(type, isInner, false, 0, USE_LIGHT_ICONS);
+	}
+
+	/** Replies the image descriptor for the given element.
+	 *
+	 * @param type - the type of the SARL element, or <code>null</code> if unknown.
+	 * @param isInner - indicates if the element is inner.
+	 * @param flags - the adornments.
+	 * @return the image descriptor.
+	 */
+	public ImageDescriptor getTypeImageDescriptor(
+			SarlElementType type,
+			boolean isInner,
+			int flags) {
+		return getTypeImageDescriptor(type, isInner, false, flags, USE_LIGHT_ICONS);
 	}
 
 	/** Replies the image descriptor for the "agents".
@@ -85,7 +111,7 @@ public class SARLImages extends XtendImages {
 	 */
 	public ImageDescriptor forAgent(JvmVisibility visibility, int flags) {
 		return getDecorated(getTypeImageDescriptor(
-				SarlElementType.AGENT, false, false, toFlags(visibility), false), flags);
+				SarlElementType.AGENT, false, false, toFlags(visibility), USE_LIGHT_ICONS), flags);
 	}
 
 	/** Replies the image descriptor for the "behaviors".
@@ -97,7 +123,7 @@ public class SARLImages extends XtendImages {
 	 */
 	public ImageDescriptor forBehavior(JvmVisibility visibility, int flags) {
 		return getDecorated(getTypeImageDescriptor(
-				SarlElementType.BEHAVIOR, false, false, toFlags(visibility), false), flags);
+				SarlElementType.BEHAVIOR, false, false, toFlags(visibility), USE_LIGHT_ICONS), flags);
 	}
 
 	/** Replies the image descriptor for the "capacities".
@@ -109,7 +135,7 @@ public class SARLImages extends XtendImages {
 	 */
 	public ImageDescriptor forCapacity(JvmVisibility visibility, int flags) {
 		return getDecorated(getTypeImageDescriptor(
-				SarlElementType.CAPACITY, false, false, toFlags(visibility), false), flags);
+				SarlElementType.CAPACITY, false, false, toFlags(visibility), USE_LIGHT_ICONS), flags);
 	}
 
 	/** Replies the image descriptor for the "skills".
@@ -121,7 +147,7 @@ public class SARLImages extends XtendImages {
 	 */
 	public ImageDescriptor forSkill(JvmVisibility visibility, int flags) {
 		return getDecorated(getTypeImageDescriptor(
-				SarlElementType.SKILL, false, false, toFlags(visibility), false), flags);
+				SarlElementType.SKILL, false, false, toFlags(visibility), USE_LIGHT_ICONS), flags);
 	}
 
 	/** Replies the image descriptor for the "events".
@@ -133,7 +159,7 @@ public class SARLImages extends XtendImages {
 	 */
 	public ImageDescriptor forEvent(JvmVisibility visibility, int flags) {
 		return getDecorated(getTypeImageDescriptor(
-				SarlElementType.EVENT, false, false, toFlags(visibility), false), flags);
+				SarlElementType.EVENT, false, false, toFlags(visibility), USE_LIGHT_ICONS), flags);
 	}
 
 	/** Replies the image descriptor for the "behavior units".
@@ -142,8 +168,8 @@ public class SARLImages extends XtendImages {
 	 */
 	public ImageDescriptor forBehaviorUnit() {
 		return getDecorated(getTypeImageDescriptor(
-				SarlElementType.BEHAVIOUR_UNIT, false, false,
-				toFlags(JvmVisibility.PUBLIC), false), 0);
+				SarlElementType.BEHAVIOR_UNIT, false, false,
+				toFlags(JvmVisibility.PUBLIC), USE_LIGHT_ICONS), 0);
 	}
 
 	/** Replies the image descriptor for the "SARL script".
@@ -195,7 +221,7 @@ public class SARLImages extends XtendImages {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	protected enum SarlElementType {
+	public enum SarlElementType {
 		/** Agent.
 		 */
 		AGENT,
@@ -213,7 +239,7 @@ public class SARLImages extends XtendImages {
 		SKILL,
 		/** Behavior unit.
 		 */
-		BEHAVIOUR_UNIT;
+		BEHAVIOR_UNIT;
 	}
 
 }

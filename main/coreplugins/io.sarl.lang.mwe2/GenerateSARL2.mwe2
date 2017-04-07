@@ -550,7 +550,12 @@ Workflow {
 
     			ui = {
     				bind = "org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProcessor"
-    				to = "io.sarl.lang.ui.contentassist.SARLJavaDocContentAssistProcessor"
+    				to = "io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.contentassist.IContentProposalPriorities"
+    				to = "io.sarl.lang.ui.contentassist.general.SARLContentProposalProrities"
+    				override = true
     			}
     			ui = {
     				bind = "org.eclipse.jface.viewers.ILabelDecorator"
@@ -627,15 +632,15 @@ Workflow {
     			}
     			ui = {
     				bind = "org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider"
-    				to = "io.sarl.lang.ui.contentassist.SARLImportingTypesProposalProvider"
+    				to = "io.sarl.lang.ui.contentassist.imports.SARLImportingTypesProposalProvider"
     			}
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.templates.XtextTemplateContextType"
-    				to = "io.sarl.lang.ui.contentassist.SARLTemplateContextType"
+    				to = "io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType"
     			}
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.contentassist.ITemplateProposalProvider"
-    				to = "io.sarl.lang.ui.contentassist.SARLTemplateProposalProvider"
+    				to = "io.sarl.lang.ui.contentassist.templates.SARLTemplateProposalProvider"
     			}
     			ui = {
     				bind = "org.eclipse.xtext.ui.refactoring.IRenameStrategy$Provider"

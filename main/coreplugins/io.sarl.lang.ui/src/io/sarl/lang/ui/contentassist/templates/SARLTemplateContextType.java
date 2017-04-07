@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ui.contentassist;
+package io.sarl.lang.ui.contentassist.templates;
 
 import org.eclipse.xtext.ui.editor.templates.CrossReferenceTemplateVariableResolver;
 import org.eclipse.xtext.xbase.ui.templates.XbaseTemplateContextType;

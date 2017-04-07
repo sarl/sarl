@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ui.contentassist;
+package io.sarl.lang.ui.contentassist.javadoc;
 
 import org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProcessor;
 

@@ -34,11 +34,12 @@ import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;
 import io.sarl.lang.ui.builder.EclipseGeneratorConfigProvider2;
 import io.sarl.lang.ui.builder.ProjectRelativeFileSystemAccess;
 import io.sarl.lang.ui.contentassist.SARLContentAssistFactory;
-import io.sarl.lang.ui.contentassist.SARLImportingTypesProposalProvider;
-import io.sarl.lang.ui.contentassist.SARLJavaDocContentAssistProcessor;
 import io.sarl.lang.ui.contentassist.SARLProposalProvider;
-import io.sarl.lang.ui.contentassist.SARLTemplateContextType;
-import io.sarl.lang.ui.contentassist.SARLTemplateProposalProvider;
+import io.sarl.lang.ui.contentassist.general.SARLContentProposalProrities;
+import io.sarl.lang.ui.contentassist.imports.SARLImportingTypesProposalProvider;
+import io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor;
+import io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType;
+import io.sarl.lang.ui.contentassist.templates.SARLTemplateProposalProvider;
 import io.sarl.lang.ui.editor.SARLSourceViewer;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.hover.SARLHoverSerializer;
@@ -151,6 +152,7 @@ import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategyProvider;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.FQNPrefixMatcher;
 import org.eclipse.xtext.ui.editor.contentassist.IContentAssistantFactory;
+import org.eclipse.xtext.ui.editor.contentassist.IContentProposalPriorities;
 import org.eclipse.xtext.ui.editor.contentassist.IContentProposalProvider;
 import org.eclipse.xtext.ui.editor.contentassist.IProposalConflictHelper;
 import org.eclipse.xtext.ui.editor.contentassist.ITemplateProposalProvider;
@@ -540,6 +542,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IGeneratorConfigProvider2> bindIGeneratorConfigProvider2() {
 		return EclipseGeneratorConfigProvider2.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IContentProposalPriorities> bindIContentProposalPriorities() {
+		return SARLContentProposalProrities.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
