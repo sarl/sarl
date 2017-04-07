@@ -21,8 +21,9 @@
 
 package io.sarl.sarlspecification
 
-import com.google.inject.ImplementedBy
+import org.osgi.framework.Version
 
+import io.sarl.lang.^annotation.SarlSpecification
 import io.sarl.lang.SARLVersion
 
 /** Check if a given agent class follows a specific version of the SARL specifications.
@@ -33,7 +34,6 @@ import io.sarl.lang.SARLVersion
  * @mavenartifactid $ArtifactId$
  * @since 0.5
  */
-@ImplementedBy(typeof(StandardSarlSpecificationChecker))
 interface SarlSpecificationChecker {
 
 	/** Replies the supported SARL specification version of the given type.
@@ -43,7 +43,25 @@ interface SarlSpecificationChecker {
 	 *     {@link SARLVersion#SPECIFICATION_RELEASE_VERSION}. The value {@link Float#NaN} is replied
 	 *     if the given type has no marker related to the SARL specification version.
 	 */
-	def getSarlSpecificationVersion(type : Class<?>) : float
+	def getSarlSpecificationVersion(type : Class<?>) : float {
+		if (type !== null) {
+			var annotationInstance = type.getAnnotation(typeof(SarlSpecification))
+			if (annotationInstance !== null) {
+				val versionString = annotationInstance.value
+				val version = Version::parseVersion(versionString)
+				if (Version::emptyVersion != version) {
+					var minor = version.minor
+					var factor = 1f
+					while (minor > 0) {
+						factor *= 10
+						minor /= 10
+					}
+					return version.major + version.minor / factor
+				}
+			}
+		}
+		return Float::NaN
+	}
 
 	/** Compare the SARL specification version associated to the given type to the version of the
 	 * current SARL.

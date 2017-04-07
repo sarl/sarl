@@ -29,7 +29,7 @@ import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.SarlSpecification;
-import io.sarl.sarlspecification.StandardSarlSpecificationChecker;
+import io.sarl.sarlspecification.SarlSpecificationChecker;
 
 /**
  * @author $Author: sgalland$
@@ -40,11 +40,11 @@ import io.sarl.sarlspecification.StandardSarlSpecificationChecker;
 @SuppressWarnings("all")
 public class StandardSarlSpecificationCheckerTest {
 
-	private StandardSarlSpecificationChecker checker;
+	private SarlSpecificationChecker checker;
 	
 	@Before
 	public void setUp() {
-		this.checker = new StandardSarlSpecificationChecker();
+		this.checker = new SarlSpecificationChecker() {};
 	}
 	
 	@After
