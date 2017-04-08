@@ -45,22 +45,6 @@ public class SARLContentProposalProrities extends XbaseContentProposalPriorities
 	 */
 	public static final int CONTEXTUAL_KEYWORD_PRIORITY = 1000;
 
-	/** Priority for the cross references from local SARL elements.
-	 */
-	public static final int SARL_LOCAL_CROSSREFERENCE_PRIORITY = 900;
-
-	/** Priority for the cross references from inherited SARL elements.
-	 */
-	public static final int SARL_INHERITED_CROSSREFERENCE_PRIORITY = 800;
-
-	/** Priority for the cross references from SARL elements in the same resource.
-	 */
-	public static final int SARL_RESOURCE_CROSSREFERENCE_PRIORITY = 700;
-
-	/** Priority for the cross references from SARL elements outside the same resource.
-	 */
-	public static final int SARL_CROSSREFERENCE_PRIORITY = 600;
-
 	/** Priority for the cross references (from Java).
 	 */
 	public static final int CROSSREFERENCE_PRIORITY = 500;
@@ -76,22 +60,6 @@ public class SARLContentProposalProrities extends XbaseContentProposalPriorities
 	/** Priority for contextual keywords.
 	 */
 	protected int contextualKeywordPriority = CONTEXTUAL_KEYWORD_PRIORITY;
-
-	/** Priority for SARL elements in the current type.
-	 */
-	protected int localSarlElementPriority = SARL_LOCAL_CROSSREFERENCE_PRIORITY;
-
-	/** Priority for SARL elements in the inherited type.
-	 */
-	protected int inheritedSarlElementPriority = SARL_INHERITED_CROSSREFERENCE_PRIORITY;
-
-	/** Priority for SARL elements in the current resource.
-	 */
-	protected int resourceSarlElementPriority = SARL_RESOURCE_CROSSREFERENCE_PRIORITY;
-
-	/** Priority for SARL elements ouside the current resource.
-	 */
-	protected int sarlElementPriority = SARL_CROSSREFERENCE_PRIORITY;
 
 	/**
 	 * Constructor.

@@ -102,12 +102,6 @@ import io.sarl.lang.util.Utils;
 @SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SARLProposalProvider extends AbstractSARLProposalProvider {
 
-	/** High priority for proposals.
-	 *
-	 * <p>TODO: Replace by any constants defined in Xtext, if exist.
-	 */
-	private static final int HIGH_PRIORITY = 1000;
-
 	@Inject
 	private TypeReferences typeReferences;
 
