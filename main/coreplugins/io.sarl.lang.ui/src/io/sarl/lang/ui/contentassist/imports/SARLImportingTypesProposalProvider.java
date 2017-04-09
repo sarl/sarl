@@ -23,7 +23,9 @@ package io.sarl.lang.ui.contentassist.imports;
 
 import org.eclipse.xtext.xbase.ui.contentassist.ImportingTypesProposalProvider;
 
-/** Provider of types to be imported.
+/** Provider of proposals for the types to be imported.
+ * This provider is part of the content assist mechanism. Its goal is not to provide
+ * features that are not types.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -32,5 +34,7 @@ import org.eclipse.xtext.xbase.ui.contentassist.ImportingTypesProposalProvider;
  */
 @SuppressWarnings("all")
 public class SARLImportingTypesProposalProvider extends ImportingTypesProposalProvider {
-	//
+
+		
+
 }

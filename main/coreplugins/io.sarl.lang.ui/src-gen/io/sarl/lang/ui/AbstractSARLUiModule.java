@@ -35,7 +35,7 @@ import io.sarl.lang.ui.builder.EclipseGeneratorConfigProvider2;
 import io.sarl.lang.ui.builder.ProjectRelativeFileSystemAccess;
 import io.sarl.lang.ui.contentassist.SARLContentAssistFactory;
 import io.sarl.lang.ui.contentassist.SARLProposalProvider;
-import io.sarl.lang.ui.contentassist.general.SARLContentProposalProrities;
+import io.sarl.lang.ui.contentassist.general.SARLContentProposalPriorities;
 import io.sarl.lang.ui.contentassist.imports.SARLImportingTypesProposalProvider;
 import io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType;
@@ -546,7 +546,7 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IContentProposalPriorities> bindIContentProposalPriorities() {
-		return SARLContentProposalProrities.class;
+		return SARLContentProposalPriorities.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

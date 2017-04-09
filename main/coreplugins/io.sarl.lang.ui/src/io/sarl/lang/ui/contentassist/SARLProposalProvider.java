@@ -82,7 +82,7 @@ import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
-import io.sarl.lang.ui.contentassist.general.SARLContentProposalProrities;
+import io.sarl.lang.ui.contentassist.general.SARLContentProposalPriorities;
 import io.sarl.lang.ui.images.SARLImages;
 import io.sarl.lang.util.Utils;
 
@@ -576,7 +576,7 @@ public class SARLProposalProvider extends AbstractSARLProposalProvider {
 						this.keywords.getItKeyword(),
 						new StyledString(this.keywords.getItKeyword()),
 						this.imageHelper.getImage(this.images.forLocalVariable(0)),
-						SARLContentProposalProrities.CONTEXTUAL_KEYWORD_PRIORITY,
+						SARLContentProposalPriorities.CONTEXTUAL_KEYWORD_PRIORITY,
 						context.getPrefix(), context);
 				acceptor.accept(itProposal);
 				createLocalVariableAndImplicitProposals(body, context, acceptor);

@@ -16,7 +16,6 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 module io.sarl.lang.GenerateSARL2
 
@@ -554,7 +553,7 @@ Workflow {
     			}
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.contentassist.IContentProposalPriorities"
-    				to = "io.sarl.lang.ui.contentassist.general.SARLContentProposalProrities"
+    				to = "io.sarl.lang.ui.contentassist.general.SARLContentProposalPriorities"
     				override = true
     			}
     			ui = {

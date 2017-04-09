@@ -39,7 +39,7 @@ import org.eclipse.xtext.xbase.ui.contentassist.XbaseContentProposalPriorities;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-public class SARLContentProposalProrities extends XbaseContentProposalPriorities {
+public class SARLContentProposalPriorities extends XbaseContentProposalPriorities {
 
 	/** Priority for the contextual keywords, such as "it".
 	 */
@@ -64,7 +64,7 @@ public class SARLContentProposalProrities extends XbaseContentProposalPriorities
 	/**
 	 * Constructor.
 	 */
-	public SARLContentProposalProrities() {
+	public SARLContentProposalPriorities() {
 		// Override the standard priorities.
 		this.crossReferencePriority = CROSSREFERENCE_PRIORITY;
 		this.keywordPriority = KEYWORD_PRIORITY;
