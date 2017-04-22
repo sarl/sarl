@@ -8,62 +8,35 @@
 		<version>0.6.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>io.sarl.maven.docs.generator</artifactId>
-	<packaging>maven-plugin</packaging>
-	<name>Documentation Generator</name>
-	<description>Provides Maven tools for generating the SARL documentation.</description>
+	<artifactId>io.sarl.maven.docs.testing</artifactId>
+	<name>Documentation Testing API</name>
+	<description>Provides API for testing documentation</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.docs.testing</artifactId>
+			<artifactId>io.sarl.maven.sdk</artifactId>
 		</dependency>
-
 		<dependency>
-			<groupId>com.vladsch.flexmark</groupId>
-			<artifactId>flexmark</artifactId>
-			<version>0.18.7</version>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.batchcompiler</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<scope>compile</scope>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>vmutils</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>util</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.maven.plugin-tools</groupId>
-			<artifactId>maven-plugin-annotations</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.xtext</groupId>
+					<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-plugin-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<configuration>
-					<sourceDirectories>
-						<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
-					</sourceDirectories>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 	<!-- ======================================= -->
 	<!-- ==== Release Management === -->

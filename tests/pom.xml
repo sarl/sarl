@@ -28,6 +28,7 @@
 		<module>io.sarl.eclipse.tests</module>
 		<module>io.sarl.m2e.tests</module>
 		<module>sarl-maven-plugin.tests</module>
+		<module>io.sarl.maven.docs.generator.tests</module>
 	</modules>
 
 	<!-- ======================================= -->

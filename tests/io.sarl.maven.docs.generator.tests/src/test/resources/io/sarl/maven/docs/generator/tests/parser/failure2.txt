@@ -1,0 +1,11 @@
+This document contains a SARL code that is not compiling.
+
+	[:Failure:]
+		package io.sarl.docs.tests
+		agent MyAgent {
+			uses Logging
+			on Initialize {
+				info("Hello")
+			}
+		}
+	[:End:]
