@@ -27,10 +27,8 @@
 
 import re
 
-from pygments.lexer import Lexer, RegexLexer, include, bygroups, using, this, combined, default, words
+from pygments.lexer import Lexer, RegexLexer, include, bygroups, using, this
 from pygments.token import Text, Comment, Operator, Keyword, Name, String, Number, Punctuation
-from pygments.util import shebang_matches
-from pygments import unistring as uni
 
 class SarlLexer(RegexLexer):
 	"""
