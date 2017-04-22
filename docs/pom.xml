@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>io.sarl.docs.suite</module>
+		<module>io.sarl.docs.markdown</module>
 	</modules>
 
 </project>

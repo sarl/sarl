@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>io.sarl.docs</artifactId>
+		<groupId>io.sarl</groupId>
+		<version>0.6.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>io.sarl.docs</groupId>
+	<artifactId>io.sarl.docs.markdown</artifactId>
+	<packaging>jar</packaging>
+	<name>Mardown Documentation</name>
+
+	<properties>
+		<!-- URL of the maven repository of Janus -->
+		<janus.maven.repository.url>http://maven.janusproject.io</janus.maven.repository.url>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.docs.testing</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.eclipse</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.janusproject</groupId>
+			<artifactId>io.janusproject.kernel</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/documentation</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>io.sarl.maven</groupId>
+				<artifactId>io.sarl.maven.docs.generator</artifactId>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<id>docs-initialize</id>
+						<goals>
+							<goal>initialize</goal>
+						</goals>
+						<phase>initialize</phase>
+					</execution>
+					<execution>
+						<id>docs-generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>compile</phase>
+					</execution>
+					<execution>
+						<id>docs-validate</id>
+						<goals>
+							<goal>generatetests</goal>
+						</goals>
+						<phase>generate-test-sources</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<addYamlHeader>true</addYamlHeader>
+					<githubExtension>true</githubExtension>
+
+					<md2html>true</md2html>
+
+					<autoSectionNumbering>true</autoSectionNumbering>
+					<addSectionLabels>true</addSectionLabels>
+					<outlineStyleId>page_outline</outlineStyleId>
+
+					<!-- <testSourceDirectory>src/test/generated</testSourceDirectory> -->
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
