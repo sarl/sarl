@@ -217,6 +217,8 @@ public class SarlBatchCompiler {
 
 	private IssueMessageFormatter messageFormatter;
 
+	private Collection<ICompilatedResourceReceiver> resourceReceivers = new LinkedList<>();
+
 	private final List<File> tempFolders = new ArrayList<>();
 
 	private Comparator<Issue> issueComparator = new DefaultIssueComparator();
@@ -279,6 +281,35 @@ public class SarlBatchCompiler {
 	 */
 	public void setIssueMessageFormatter(IssueMessageFormatter formatter) {
 		this.messageFormatter = formatter;
+	}
+
+	/** Add a receiver on the successfully compiled resources.
+	 *
+	 * @param receiver the receiver.
+	 * @since 0.6
+	 */
+	public void addCompiledResourceReceiver(ICompilatedResourceReceiver receiver) {
+		this.resourceReceivers.add(receiver);
+	}
+
+	/** Remove a receiver on the successfully compiled resources.
+	 *
+	 * @param receiver the receiver.
+	 * @since 0.6
+	 */
+	public void removeCompiledResourceReceiver(ICompilatedResourceReceiver receiver) {
+		this.resourceReceivers.remove(receiver);
+	}
+
+	/** Replies the message for the given issue.
+	 *
+	 * @param resource the compiled resource.
+	 * @since 0.6
+	 */
+	private void notifiesCompiledResourceReceiver(Resource resource) {
+		for (final ICompilatedResourceReceiver receiver : this.resourceReceivers) {
+			receiver.receiveCompiledResource(resource);
+		}
 	}
 
 	/** Replies the logger.
@@ -1040,6 +1071,7 @@ public class SarlBatchCompiler {
 				return;
 			}
 			this.generator.generate(resource, javaIoFileSystemAccess, context);
+			notifiesCompiledResourceReceiver(resource);
 		}
 	}
 
