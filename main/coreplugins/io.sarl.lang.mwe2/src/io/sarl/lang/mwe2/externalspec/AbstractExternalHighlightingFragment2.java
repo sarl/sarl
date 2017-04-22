@@ -51,6 +51,7 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.access.impl.Primitives;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.AbstractStringBuilderBasedAppendable;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.AbstractXtextGeneratorFragment;
 import org.eclipse.xtext.xtext.generator.CodeConfig;
@@ -416,6 +417,7 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 		final String language = getLanguageSimpleName().toLowerCase();
 		final String basename = getBasename(MessageFormat.format(getBasenameTemplate(), language));
 		writeFile(basename, appendable);
+		generateAdditionalFiles(basename);
 	}
 
 	/** Generate the external specification.
@@ -436,18 +438,39 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 			Set<String> literals, Set<String> expressionKeywords, Set<String> modifiers, Set<String> primitiveTypes,
 			Set<String> punctuation, Set<String> ignored, Set<String> specialKeywords, Set<String> typeDeclarationKeywords);
 
+	/** Generate additional files.
+	 *
+	 * @param basename the basename for the language style.
+	 */
+	protected void generateAdditionalFiles(String basename) {
+		//
+	}
+
 	/** Write the given lines into the file.
 	 *
 	 * @param basename the basename of the file.
 	 * @param content the content of the style file.
 	 */
 	protected void writeFile(String basename, T content) {
+		writeFile(basename, content, null);
+	}
+
+	/** Write the given lines into the file.
+	 *
+	 * @param basename the basename of the file.
+	 * @param content the content of the style file.
+	 * @param filter the output directory.
+	 */
+	protected void writeFile(String basename, T content, Function1<File, File> filter) {
 		// Create the file.
 		// Encode
 		final byte[] bytes = content.toString().getBytes(Charset.forName(getCodeConfig().getEncoding()));
 
 		for (final String output : getOutputs()) {
-			final File directory = new File(output).getAbsoluteFile();
+			File directory = new File(output).getAbsoluteFile();
+			if (filter != null) {
+				directory = filter.apply(directory);
+			}
 			try {
 				directory.mkdirs();
 				final File outputFile = new File(directory, basename);

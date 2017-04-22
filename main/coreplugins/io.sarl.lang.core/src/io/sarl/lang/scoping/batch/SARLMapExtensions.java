@@ -148,6 +148,22 @@ public final class SARLMapExtensions {
 		return map.remove(key);
 	}
 
+	/** Remove the given pair into the map.
+	 *
+	 * <p>If the given key is inside the map, but is not mapped to the given value, the
+	 * map will not be changed.
+	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
+	 * @param map - the map to update.
+	 * @param entry - the entry (key, value) to remove from the map.
+	 * @return {@code true} if the pair was removed.
+	 */
+	@Inline(value = "$1.remove($2.getKey(), $2.getValue())", statementExpression = true)
+	public static <K, V> boolean operator_remove(Map<K, V> map, Pair<? extends K, ? extends V> entry) {
+		return map.remove(entry.getKey(), entry.getValue());
+	}
+
 	/** Remove pairs with the given keys from the map.
 	 *
 	 *
@@ -160,6 +176,25 @@ public final class SARLMapExtensions {
 		for (final Object key : keysToRemove) {
 			map.remove(key);
 		}
+	}
+
+	/** Remove the given pair from a given map for obtaining a new map.
+	 *
+	 * <p>The replied map is a view on the given map. It means that any change
+	 * in the original map is reflected to the result of this operation.
+	 *
+	 * @param <K> - type of the map keys.
+	 * @param <V> - type of the map values.
+	 * @param left - the map to consider.
+	 * @param right - the entry (key, value) to remove from the map.
+	 * @return an immutable map with the content of the map and with the given entry.
+	 * @throws IllegalArgumentException - when the right operand key exists in the left operand.
+	 */
+	@Pure
+	@Inline(value = "SARLMapExtensions.operator_minus($1, $2.getKey())",
+			imported = { SARLMapExtensions.class, Collections.class })
+	public static <K, V> Map<K, V> operator_minus(Map<K, V> left, final Pair<? extends K, ? extends V> right) {
+		return operator_minus(left, right.getKey());
 	}
 
 	/** Replies the elements of the given map except the pair with the given key.
@@ -200,7 +235,7 @@ public final class SARLMapExtensions {
 	 * @return the map with the content of the left map except the pairs of the right map.
 	 */
 	@Pure
-	@Inline(value = "SARLMapExtensions.operator_minus(left, right.keySet())", imported = SARLMapExtensions.class)
+	@Inline(value = "SARLMapExtensions.operator_minus($0, $1.keySet())", imported = SARLMapExtensions.class)
 	public static <K, V> Map<K, V> operator_minus(Map<K, V> left, Map<? extends K, ? extends V> right) {
 		return operator_minus(left, right.keySet());
 	}

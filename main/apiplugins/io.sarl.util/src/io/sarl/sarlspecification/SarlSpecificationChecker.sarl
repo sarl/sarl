@@ -86,3 +86,18 @@ interface SarlSpecificationChecker {
 	}
 
 }
+
+
+/** Check if a given agent class follows a specific version of the SARL specifications.
+ *
+ * <p>This implementation uses the default implementation given by the interface.
+ *
+ * @author $Author: ssgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.5
+ */
+final class StandardSarlSpecificationChecker implements SarlSpecificationChecker {
+	//
+}

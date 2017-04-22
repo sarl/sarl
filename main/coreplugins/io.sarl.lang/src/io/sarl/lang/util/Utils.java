@@ -22,6 +22,7 @@
 package io.sarl.lang.util;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -31,6 +32,7 @@ import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -41,6 +43,7 @@ import java.util.regex.Pattern;
 import com.google.common.base.Strings;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.core.Flags;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
@@ -1247,6 +1250,68 @@ public final class Utils {
 		/** The byte code (the class) of {@link SARLVersion} does not contains the expected field.
 		 */
 		INVALID_SARL_VERSION_BYTECODE,
+	}
+
+	/** Dump the object.
+	 *
+	 * @param object the object.
+	 * @param includeStaticField indicates if the static fields should be included.
+	 * @return the string representation of the object.
+	 * @since 0.6
+	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	public static String dump(Object object, boolean includeStaticField) {
+		if (object == null) {
+			return new String();
+		}
+		final StringBuilder buffer = new StringBuilder();
+		final LinkedList<Class<?>> types = new LinkedList<>();
+		types.add(object.getClass());
+		while (!types.isEmpty()) {
+			final Class<?> type = types.removeFirst();
+
+			final Class<?> supertype = type.getSuperclass();
+			if (supertype != null && !supertype.equals(Object.class)) {
+				types.add(supertype);
+			}
+
+			if (buffer.length() > 0) {
+				buffer.append("\n"); //$NON-NLS-1$
+			}
+			final Field[] fields = type.getDeclaredFields();
+			buffer.append(type.getSimpleName()).append(" {\n"); //$NON-NLS-1$
+
+			boolean firstRound = true;
+
+			for (final Field field : fields) {
+				if (!includeStaticField && Flags.isStatic(field.getModifiers())) {
+					continue;
+				}
+				if (!firstRound) {
+					buffer.append(",\n"); //$NON-NLS-1$
+				}
+				firstRound = false;
+				field.setAccessible(true);
+				try {
+					final Object fieldObj = field.get(object);
+					final String value;
+					if (null == fieldObj) {
+						value = "null"; //$NON-NLS-1$
+					} else {
+						value = fieldObj.toString();
+					}
+					buffer.append('\t').append(field.getName()).append('=').append('"');
+					buffer.append(org.eclipse.xtext.util.Strings.convertToJavaString(value));
+					buffer.append("\"\n"); //$NON-NLS-1$
+				} catch (IllegalAccessException ignore) {
+					//this should never happen
+				}
+
+			}
+
+			buffer.append('}');
+		}
+		return buffer.toString();
 	}
 
 }

@@ -85,10 +85,8 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		it.newLine();
 		it.appendNl("import re"); //$NON-NLS-1$
 		it.newLine();
-		it.appendNl("from pygments.lexer import Lexer, RegexLexer, include, bygroups, using, this, combined, default, words"); //$NON-NLS-1$
+		it.appendNl("from pygments.lexer import Lexer, RegexLexer, include, bygroups, using, this"); //$NON-NLS-1$
 		it.appendNl("from pygments.token import Text, Comment, Operator, Keyword, Name, String, Number, Punctuation"); //$NON-NLS-1$
-		it.appendNl("from pygments.util import shebang_matches"); //$NON-NLS-1$
-		it.appendNl("from pygments import unistring as uni"); //$NON-NLS-1$
 		it.newLine();
 		it.appendNl("class SarlLexer(RegexLexer):"); //$NON-NLS-1$
 		it.appendNl("\t\"\"\""); //$NON-NLS-1$
@@ -232,6 +230,66 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		//it.appendNl("\t\t\t(r'.', String)"); //$NON-NLS-1$
 		//it.appendNl("\t\t],"); //$NON-NLS-1$
 		it.appendNl("\t}"); //$NON-NLS-1$
+		it.newLine();
+	}
+
+	@Override
+	protected void generateAdditionalFiles(String basename) {
+		IStyleAppendable appendable;
+
+		appendable = newStyleAppendable();
+		generatePythonPackage(appendable, basename);
+		writeFile("__init__.py", appendable); //$NON-NLS-1$
+
+		appendable = newStyleAppendable();
+		generatePythonSetup(appendable, basename);
+		writeFile("setup.py", appendable, (it) -> it.getParentFile()); //$NON-NLS-1$
+	}
+
+	/** Create the content of the "setup.py" file.
+	 *
+	 * @param it the content.
+	 * @param basename the basename.
+	 */
+	protected void generatePythonSetup(IStyleAppendable it, String basename) {
+		it.appendNl("# -*- coding: {0} -*-", getCodeConfig().getEncoding().toLowerCase()); //$NON-NLS-1$
+		it.appendHeader();
+		it.newLine();
+		it.append("from setuptools import setup"); //$NON-NLS-1$
+		it.newLine().newLine();
+		it.append("setup ("); //$NON-NLS-1$
+		it.increaseIndentation().newLine();
+		it.append("name='").append(basename).append("lexer',"); //$NON-NLS-1$ //$NON-NLS-2$
+		it.newLine();
+		it.append("version='").append(getLanguageVersion()).append("',"); //$NON-NLS-1$ //$NON-NLS-2$
+		it.newLine();
+		it.append("packages=['").append(basename).append("lexer'],"); //$NON-NLS-1$ //$NON-NLS-2$
+		it.newLine();
+		it.append("entry_points ="); //$NON-NLS-1$
+		it.newLine();
+		it.append("\"\"\""); //$NON-NLS-1$
+		it.newLine();
+		it.append("[pygments.lexers]"); //$NON-NLS-1$
+		it.newLine();
+		it.append("sarllexer = ").append(basename).append("lexer.").append(basename); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append(":SarlLexer"); //$NON-NLS-1$
+		it.newLine();
+		it.append("\"\"\","); //$NON-NLS-1$
+		it.decreaseIndentation().newLine();
+		it.append(")"); //$NON-NLS-1$
+		it.newLine();
+	}
+
+	/** Create the content of the "__init__.py" file.
+	 *
+	 * @param it the content.
+	 * @param basename the basename.
+	 */
+	protected void generatePythonPackage(IStyleAppendable it, String basename) {
+		it.appendNl("# -*- coding: {0} -*-", getCodeConfig().getEncoding().toLowerCase()); //$NON-NLS-1$
+		it.appendHeader();
+		it.newLine();
+		it.append("__all__ = [ ]"); //$NON-NLS-1$
 		it.newLine();
 	}
 
