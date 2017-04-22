@@ -24,8 +24,9 @@
 
 	<properties>
 
-		<!-- Version of the Xtext API -->
+		<!-- Version of the SARL API -->
 		<sarl.version>0.6.0-SNAPSHOT</sarl.version>
+		<janus.version>2.${sarl.version}</janus.version>
 		<!-- Version of the Xtext API -->
 		<xtext.version>2.11.0</xtext.version>
 		<xtext.versionRange>[2.11.0,2.11.1)</xtext.versionRange><!-- For generating 
@@ -211,6 +212,11 @@
 			</dependency>
 			<dependency>
 				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.eclipse</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
 				<artifactId>io.sarl.core</artifactId>
 				<version>${sarl.version}</version>
 			</dependency>
@@ -246,13 +252,23 @@
 			</dependency>
 			<dependency>
 				<groupId>io.sarl</groupId>
-				<artifactId>io.sarl.eclipse</artifactId>
+				<artifactId>io.sarl.lang.sarlc</artifactId>
 				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.sarl</groupId>
-				<artifactId>io.sarl.lang.sarlc</artifactId>
+				<groupId>io.sarl.maven</groupId>
+				<artifactId>io.sarl.maven.docs.generator</artifactId>
 				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.maven</groupId>
+				<artifactId>io.sarl.maven.docs.testing</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.janusproject</groupId>
+				<artifactId>io.janusproject.kernel</artifactId>
+				<version>${janus.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
@@ -399,6 +415,12 @@
 				<plugin>
 					<groupId>io.sarl.maven</groupId>
 					<artifactId>io.sarl.maven.sre</artifactId>
+					<version>${sarl.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>io.sarl.maven</groupId>
+					<artifactId>io.sarl.maven.docs.generator</artifactId>
 					<version>${sarl.version}</version>
 				</plugin>
 

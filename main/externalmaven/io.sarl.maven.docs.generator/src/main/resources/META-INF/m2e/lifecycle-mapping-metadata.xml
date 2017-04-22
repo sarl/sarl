@@ -3,11 +3,13 @@
 		<pluginExecution>
 			<pluginExecutionFilter>
 				<goals>
+					<goal>initialize</goal>
 					<goal>generate</goal>
+					<goal>generatetests</goal>
 				</goals>
 			</pluginExecutionFilter>
 			<action>
-				<ignore />
+				<execute />
 			</action>
 		</pluginExecution>
 	</pluginExecutions>
