@@ -217,6 +217,8 @@ public class SarlBatchCompiler {
 
 	private IssueMessageFormatter messageFormatter;
 
+	private Collection<IssueMessageListener> messageListeners = new LinkedList<>();
+
 	private Collection<ICompilatedResourceReceiver> resourceReceivers = new LinkedList<>();
 
 	private final List<File> tempFolders = new ArrayList<>();
@@ -281,6 +283,37 @@ public class SarlBatchCompiler {
 	 */
 	public void setIssueMessageFormatter(IssueMessageFormatter formatter) {
 		this.messageFormatter = formatter;
+	}
+
+	/** Add a listener on the issue messages.
+	 *
+	 * @param listener the listener.
+	 * @since 0.6
+	 */
+	public void addIssueMessageListener(IssueMessageListener listener) {
+		this.messageListeners.add(listener);
+	}
+
+	/** Add a listener on the issue messages.
+	 *
+	 * @param listener the listener.
+	 * @since 0.6
+	 */
+	public void removeIssueMessageListener(IssueMessageListener listener) {
+		this.messageListeners.remove(listener);
+	}
+
+	/** Replies the message for the given issue.
+	 *
+	 * @param issue the issue.
+	 * @param uri URI to the problem.
+	 * @param message the formatted message.
+	 * @since 0.6
+	 */
+	private void notifiesIssueMessageListeners(Issue issue, org.eclipse.emf.common.util.URI uri, String message) {
+		for (final IssueMessageListener listener : this.messageListeners) {
+			listener.onIssue(issue, uri, message);
+		}
 	}
 
 	/** Add a receiver on the successfully compiled resources.
@@ -1038,6 +1071,7 @@ public class SarlBatchCompiler {
 			default:
 				break;
 			}
+			notifiesIssueMessageListeners(issue, issue.getUriToProblem(), issueMessage);
 		}
 	}
 
