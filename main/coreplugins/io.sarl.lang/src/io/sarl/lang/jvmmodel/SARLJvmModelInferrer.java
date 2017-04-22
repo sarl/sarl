@@ -2908,6 +2908,22 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		target.getAnnotations().addAll(addition);
 	}
 
+	/** Replies the type parameters for the given type.
+	 *
+	 * @param type the type.
+	 * @return the type parameters for the given type.
+	 */
+	@SuppressWarnings("static-method")
+	protected List<JvmTypeParameter> getTypeParametersFor(XtendTypeDeclaration type) {
+		if (type instanceof XtendClass) {
+			return ((XtendClass) type).getTypeParameters();
+		}
+		if (type instanceof XtendInterface) {
+			return ((XtendInterface) type).getTypeParameters();
+		}
+		return Collections.emptyList();
+	}
+
 	/** Generate the "equals()" operation.
 	 * This function was deprecated in Xbase, and should be provided by DSL
 	 * providers now.
@@ -2946,8 +2962,24 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
 				it.newLine().append("if (getClass() != obj.getClass())").increaseIndentation(); //$NON-NLS-1$
 				it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
-				it.newLine().append(declaredType.getSimpleName() + " other = (" //$NON-NLS-1$
-						+ declaredType.getSimpleName() + ") obj;"); //$NON-NLS-1$
+				final StringBuilder currentTypeName = new StringBuilder();
+				currentTypeName.append(declaredType.getSimpleName());
+				final List<JvmTypeParameter> typeParameters = getTypeParametersFor(sarlElement);
+				if (!typeParameters.isEmpty()) {
+					currentTypeName.append("<"); //$NON-NLS-1$
+					boolean first = true;
+					for (final JvmTypeParameter typeParameter : typeParameters) {
+						if (first) {
+							first = false;
+						} else {
+							currentTypeName.append(", "); //$NON-NLS-1$
+						}
+						currentTypeName.append(typeParameter.getName());
+					}
+					currentTypeName.append(">"); //$NON-NLS-1$
+				}
+				it.newLine().append(currentTypeName).append(" other = ("); //$NON-NLS-1$
+				it.append(currentTypeName).append(") obj;"); //$NON-NLS-1$
 				for (final JvmField field : jvmFields) {
 					generateToEqualForField(it, field);
 				}
