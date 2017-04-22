@@ -33,9 +33,7 @@
 			a correct version range you need to create a range integrating ONLY the current 
 			version and excluding all other possible versions especially the greater 
 			ones -->
-		<!-- Version of the Jnario API -->
-		<jnario.version>1.0.0</jnario.version>
-		<jnario.report.version>1.0.1</jnario.report.version>
+		
 		<!-- Version of the OSGi module that provides the NLS -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
@@ -294,16 +292,6 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jnario</groupId>
-				<artifactId>report</artifactId>
-				<version>${jnario.report.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jnario</groupId>
-				<artifactId>org.jnario.standalone</artifactId>
-				<version>${jnario.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.arakhne.afc.core</groupId>

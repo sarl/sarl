@@ -14,7 +14,6 @@
 	<name>Documentation Parent</name>
 
 	<modules>
-		<module>io.sarl.docs.suite</module>
 		<module>io.sarl.docs.markdown</module>
 	</modules>
 
