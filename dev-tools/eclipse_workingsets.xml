@@ -70,7 +70,6 @@
 </workingSet>
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480017558193_9" label="Documentation" name="Documentation">
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.docs" type="4"/>
-<item elementID="=io.sarl.docs.suite" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.docs.markdown" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480001462136_0" label="Window Working Set" name="Aggregate for window 1480001462135"/>
