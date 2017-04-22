@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="421.22678"
+   height="280.3396"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="holonic_auction.svg"
+   inkscape:export-filename="/home/sgalland/git/sarl/docs/io.sarl.docs.suite/src/test/resources/io/sarl/docs/tutorials/holonic_auction.png"
+   inkscape:export-xdpi="107"
+   inkscape:export-ydpi="107">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow2Lend"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc"
+         id="path5605"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,5.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker3039"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc"
+         id="path3041"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,5.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker3043"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc"
+         id="path3045"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,5.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker3047"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc"
+         id="path3049"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,5.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker3051"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc"
+         id="path3053"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,5.5,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="204.9221"
+     inkscape:cy="119.48462"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="876"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-188.83745,-90.674406)">
+    <path
+       id="path6402-6"
+       style="fill:#b7dde8;stroke:#000000;stroke-width:1.55139589000000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;fill-opacity:1"
+       d="m 348.46686,184.55242 125.19372,81.79739 -0.77326,103.88851 -276.02997,-0.11441 -0.60187,-103.7741 127.67849,-81.79739"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc" />
+    <g
+       id="g4067"
+       transform="translate(92.505467,114.08236)">
+      <path
+         transform="matrix(0.694239,0,0,0.713329,90.38233,10.05247)"
+         d="m 104.7903,229.64684 c 0,8.61954 -7.48663,15.60706 -16.721857,15.60706 -9.235226,0 -16.721857,-6.98752 -16.721857,-15.60706 0,-8.61955 7.486631,-15.60707 16.721857,-15.60707 9.235227,0 16.721857,6.98752 16.721857,15.60707 z"
+         sodipodi:ry="15.607066"
+         sodipodi:rx="16.721857"
+         sodipodi:cy="229.64684"
+         sodipodi:cx="88.068443"
+         id="path2984-4-1"
+         style="fill:#faeec9;fill-opacity:1;fill-rule:nonzero;stroke:#290000;stroke-width:1.42102122;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+      <rect
+         ry="2.1258495"
+         rx="6.6667728"
+         y="184.91074"
+         x="139.19374"
+         height="45.001003"
+         width="24.658279"
+         id="rect2986-6-6"
+         style="fill:#faeec9;fill-opacity:1;fill-rule:nonzero;stroke:#290000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <g
+       id="g4204" />
+    <g
+       transform="matrix(-1,0,0,1,662.84499,-2.8937881)"
+       id="g4142-7"
+       style="stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none" />
+    <text
+       xml:space="preserve"
+       style="font-size:22px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="250.2347"
+       y="113.2452"
+       id="text4363"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4365"
+         x="250.2347"
+         y="113.2452">Auctioneer</tspan></text>
+    <path
+       inkscape:connector-curvature="0"
+       style="fill:#000000;stroke:#000000;stroke-width:1.59130477999999997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:6.36521901999999962, 6.36521901999999962;stroke-dashoffset:0"
+       d="M 541.11204,185.0701 189.6331,184.88118"
+       id="path6402-6-5"
+       inkscape:export-filename="/home/srodriguez/workspaces/presentations/pres-sarl-2014-set/images/concepts-projection.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="547.82886"
+       y="326.44135"
+       id="text4445-5"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/srodriguez/workspaces/presentations/pres-sarl-2014-set/images/concepts-projection.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         x="547.82886"
+         y="326.44135"
+         id="tspan4940">Default Space</tspan></text>
+    <g
+       id="g4971"
+       inkscape:export-filename="/home/srodriguez/workspaces/presentations/pres-sarl-2014-set/images/concepts-projection.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       transform="translate(0,6)"
+       style="fill:#000000">
+      <text
+         sodipodi:linespacing="125%"
+         id="text4946"
+         y="168.79076"
+         x="471.07025"
+         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="168.79076"
+           x="471.07025"
+           id="tspan4948"
+           sodipodi:role="line">Level n</tspan></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text4946-1"
+         y="205.56384"
+         x="471.07025"
+         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="205.56384"
+           x="471.07025"
+           id="tspan4948-8"
+           sodipodi:role="line">Level n-1</tspan></text>
+    </g>
+    <g
+       id="g4067-1"
+       transform="translate(236.88077,114.08236)">
+      <path
+         transform="matrix(0.694239,0,0,0.713329,90.38233,10.05247)"
+         d="m 104.7903,229.64684 c 0,8.61954 -7.48663,15.60706 -16.721857,15.60706 -9.235226,0 -16.721857,-6.98752 -16.721857,-15.60706 0,-8.61955 7.486631,-15.60707 16.721857,-15.60707 9.235227,0 16.721857,6.98752 16.721857,15.60707 z"
+         sodipodi:ry="15.607066"
+         sodipodi:rx="16.721857"
+         sodipodi:cy="229.64684"
+         sodipodi:cx="88.068443"
+         id="path2984-4-1-2"
+         style="fill:#faeec9;fill-opacity:1;fill-rule:nonzero;stroke:#290000;stroke-width:1.42102122;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+      <rect
+         ry="2.1258495"
+         rx="6.6667728"
+         y="184.91074"
+         x="139.19374"
+         height="45.001003"
+         width="24.658279"
+         id="rect2986-6-6-8"
+         style="fill:#faeec9;fill-opacity:1;fill-rule:nonzero;stroke:#290000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <g
+       id="g4067-3"
+       transform="translate(289.40871,112.25221)">
+      <path
+         transform="matrix(0.694239,0,0,0.713329,90.38233,10.05247)"
+         d="m 104.7903,229.64684 c 0,8.61954 -7.48663,15.60706 -16.721857,15.60706 -9.235226,0 -16.721857,-6.98752 -16.721857,-15.60706 0,-8.61955 7.486631,-15.60707 16.721857,-15.60707 9.235227,0 16.721857,6.98752 16.721857,15.60707 z"
+         sodipodi:ry="15.607066"
+         sodipodi:rx="16.721857"
+         sodipodi:cy="229.64684"
+         sodipodi:cx="88.068443"
+         id="path2984-4-1-9"
+         style="fill:#faeec9;fill-opacity:1;fill-rule:nonzero;stroke:#290000;stroke-width:1.42102122;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+      <rect
+         ry="2.1258495"
+         rx="6.6667728"
+         y="184.91074"
+         x="139.19374"
+         height="45.001003"
+         width="24.658279"
+         id="rect2986-6-6-1"
+         style="fill:#faeec9;fill-opacity:1;fill-rule:nonzero;stroke:#290000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="246.40202"
+       y="360.52814"
+       id="text4363-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4365-9"
+         x="246.40202"
+         y="360.52814">Bidder 1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="390.84964"
+       y="266.58395"
+       id="text4363-8-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4365-9-0"
+         x="390.84964"
+         y="266.58395">Bidder 2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="437.33698"
+       y="360.52814"
+       id="text4363-8-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4365-9-1"
+         x="437.33698"
+         y="360.52814">Bidder 3</tspan></text>
+    <g
+       id="g4067-15"
+       transform="translate(184.79684,-69.765403)">
+      <path
+         transform="matrix(0.694239,0,0,0.713329,90.38233,10.05247)"
+         d="m 104.7903,229.64684 c 0,8.61954 -7.48663,15.60706 -16.721857,15.60706 -9.235226,0 -16.721857,-6.98752 -16.721857,-15.60706 0,-8.61955 7.486631,-15.60707 16.721857,-15.60707 9.235227,0 16.721857,6.98752 16.721857,15.60707 z"
+         sodipodi:ry="15.607066"
+         sodipodi:rx="16.721857"
+         sodipodi:cy="229.64684"
+         sodipodi:cx="88.068443"
+         id="path2984-4-1-7"
+         style="fill:#faeec9;fill-opacity:1;fill-rule:nonzero;stroke:#290000;stroke-width:1.42102122;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+      <rect
+         ry="2.1258495"
+         rx="6.6667728"
+         y="184.91074"
+         x="139.19374"
+         height="228.84877"
+         width="24.658279"
+         id="rect2986-6-6-81"
+         style="fill:#faeec9;fill-opacity:1;fill-rule:nonzero;stroke:#290000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <rect
+       style="fill:#ff8d4f;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.87282658px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect3111-7-3"
+       width="248.99925"
+       height="7.4693656"
+       x="216.52983"
+       y="319.29733"
+       rx="3.3173835"
+       ry="2.1163173"
+       inkscape:export-filename="/home/srodriguez/workspaces/presentations/pres-sarl-2014-set/images/concepts-projection.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="265"
+       y="240.21931"
+       id="text4402"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/srodriguez/workspaces/presentations/pres-sarl-2014-set/images/concepts-projection.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan4404"
+         x="265"
+         y="240.21931">InnerContext</tspan></text>
+  </g>
+</svg>
