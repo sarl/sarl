@@ -28,7 +28,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -105,6 +104,7 @@ import io.sarl.lang.SARLConfig;
 import io.sarl.lang.generator.GeneratorConfig2;
 import io.sarl.lang.generator.GeneratorConfigProvider2;
 import io.sarl.lang.generator.IGeneratorConfigProvider2;
+import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 
 /** The compiler from SARL that could be used for batch tasks (Maven, CLI).
@@ -213,7 +213,7 @@ public class SarlBatchCompiler {
 	@Named(Constants.LANGUAGE_NAME)
 	private String languageName;
 
-	private Logger log;
+	private Logger logger;
 
 	private IssueMessageFormatter messageFormatter;
 
@@ -228,7 +228,7 @@ public class SarlBatchCompiler {
 	/** Constructor the batch compiler.
 	 */
 	public SarlBatchCompiler() {
-		this.log = Logger.getLogger(getClass().getName());
+		this.logger = Logger.getLogger(getClass().getName());
 	}
 
 	/** Set the comparator of issues that is used for sorting the issues before they are logged.
@@ -286,7 +286,7 @@ public class SarlBatchCompiler {
 	 * @return the logger.
 	 */
 	public Logger getLogger() {
-		return this.log;
+		return this.logger;
 	}
 
 	/** Set the logger.
@@ -294,7 +294,7 @@ public class SarlBatchCompiler {
 	 * @param logger the logger.
 	 */
 	public void setLogger(Logger logger) {
-		this.log = logger == null ? Logger.getLogger(getClass().getName()) : logger;
+		this.logger = logger == null ? Logger.getLogger(getClass().getName()) : logger;
 	}
 
 	/** Set the provider of resource sets.
@@ -870,8 +870,8 @@ public class SarlBatchCompiler {
 			if (!configureWorkspace(resourceSet, cancel)) {
 				return false;
 			}
-			if (this.log.isDebugEnabled()) {
-				this.log.debug(dump(getGeneratorConfig()));
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug(Utils.dump(getGeneratorConfig(), false));
 			}
 			if (this.generatorConfigProvider instanceof GeneratorConfigProvider) {
 				((GeneratorConfigProvider) this.generatorConfigProvider).install(resourceSet, getGeneratorConfig());
@@ -882,8 +882,8 @@ public class SarlBatchCompiler {
 			if (this.generatorConfigProvider2 instanceof GeneratorConfigProvider2) {
 				((GeneratorConfigProvider2) this.generatorConfigProvider2).install(resourceSet, getGeneratorConfig2());
 			}
-			if (this.log.isDebugEnabled()) {
-				this.log.debug(dump(getGeneratorConfig2()));
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug(Utils.dump(getGeneratorConfig2(), false));
 			}
 			if (cancel.isCanceled()) {
 				return false;
@@ -914,13 +914,13 @@ public class SarlBatchCompiler {
 					if (cancel.isCanceled()) {
 						return false;
 					}
-					this.log.warn(Messages.SarlBatchCompiler_2);
+					this.logger.warn(Messages.SarlBatchCompiler_2);
 				}
 				if (!preCompileJava(stubSourceDirectory, stubClassDirectory, cancel)) {
 					if (cancel.isCanceled()) {
 						return false;
 					}
-					this.log.debug(Messages.SarlBatchCompiler_3);
+					this.logger.debug(Messages.SarlBatchCompiler_3);
 				}
 			} finally {
 				this.compilerPhases.setIndexing(resourceSet, false);
@@ -964,57 +964,6 @@ public class SarlBatchCompiler {
 		return true;
 	}
 
-	/** Dump the object.
-	 *
-	 * @param object the object.
-	 * @return the string representation of the object.
-	 */
-	protected static String dump(Object object) {
-		if (object == null) {
-			return new String();
-		}
-		final StringBuilder buffer = new StringBuilder();
-		final LinkedList<Class<?>> types = new LinkedList<>();
-		types.add(object.getClass());
-		while (types.isEmpty()) {
-			final Class<?> type = types.removeFirst();
-
-			final Class<?> supertype = type.getSuperclass();
-			if (supertype != null && supertype.equals(Object.class)) {
-				types.add(supertype);
-			}
-
-			final Field[] fields = type.getDeclaredFields();
-			buffer.append(object.getClass().getSimpleName()).append(" {"); //$NON-NLS-1$
-
-			boolean firstRound = true;
-
-			for (final Field field : fields) {
-				if (!firstRound) {
-					buffer.append(", "); //$NON-NLS-1$
-				}
-				firstRound = false;
-				field.setAccessible(true);
-				try {
-					final Object fieldObj = field.get(object);
-					final String value;
-					if (null == fieldObj) {
-						value = "null"; //$NON-NLS-1$
-					} else {
-						value = fieldObj.toString();
-					}
-					buffer.append(field.getName()).append('=').append('\'').append(value).append('\'');
-				} catch (IllegalAccessException ignore) {
-					//this should never happen
-				}
-
-			}
-
-			buffer.append('}');
-		}
-		return buffer.toString();
-	}
-
 	/** Create a message for the issue.
 	 *
 	 * @param issue the issue.
@@ -1046,13 +995,13 @@ public class SarlBatchCompiler {
 			final String issueMessage = createIssueMessage(issue);
 			switch (issue.getSeverity()) {
 			case ERROR:
-				this.log.error(issueMessage);
+				this.logger.error(issueMessage);
 				break;
 			case WARNING:
-				this.log.warn(issueMessage);
+				this.logger.warn(issueMessage);
 				break;
 			case INFO:
-				this.log.info(issueMessage);
+				this.logger.info(issueMessage);
 				break;
 			case IGNORE:
 			default:
@@ -1068,7 +1017,7 @@ public class SarlBatchCompiler {
 	 */
 	protected void generateJavaFiles(Iterable<Resource> validatedResources, CancelIndicator cancelIndicator) {
 		assert cancelIndicator != null;
-		this.log.info(MessageFormat.format(Messages.SarlBatchCompiler_28, getOutputPath()));
+		this.logger.info(MessageFormat.format(Messages.SarlBatchCompiler_28, getOutputPath()));
 		final JavaIoFileSystemAccess javaIoFileSystemAccess = this.javaIoFileSystemAccessProvider.get();
 		javaIoFileSystemAccess.setOutputPath(getOutputPath().getAbsolutePath());
 		javaIoFileSystemAccess.setWriteTrace(isWriteTraceFiles());
@@ -1082,7 +1031,7 @@ public class SarlBatchCompiler {
 			if (cancelIndicator.isCanceled()) {
 				return;
 			}
-			this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_23, resource.getURI().lastSegment()));
+			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_23, resource.getURI().lastSegment()));
 			if (isWriteStorageFiles() && resource instanceof StorageAwareResource) {
 				final StorageAwareResource storageAwareResource = (StorageAwareResource) resource;
 				storageAwareResource.getResourceStorageFacade().saveResource(storageAwareResource, javaIoFileSystemAccess);
@@ -1101,20 +1050,20 @@ public class SarlBatchCompiler {
 	 */
 	protected void generateJvmElements(ResourceSet resourceSet, CancelIndicator cancelIndicator) {
 		assert cancelIndicator != null;
-		this.log.info(Messages.SarlBatchCompiler_21);
+		this.logger.info(Messages.SarlBatchCompiler_21);
 		final List<Resource> resources = new LinkedList<>(resourceSet.getResources());
 		for (final Resource resource : resources) {
 			if (cancelIndicator.isCanceled()) {
 				return;
 			}
-			this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_26, resource.getURI().lastSegment()));
+			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_26, resource.getURI().lastSegment()));
 			resource.getContents();
 		}
 		for (final Resource resource : resources) {
 			if (cancelIndicator.isCanceled()) {
 				return;
 			}
-			this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_27, resource.getURI().lastSegment()));
+			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_27, resource.getURI().lastSegment()));
 			EcoreUtil2.resolveLazyCrossReferences(resource, CancelIndicator.NullImpl);
 		}
 	}
@@ -1136,7 +1085,7 @@ public class SarlBatchCompiler {
 				return false;
 			}
 			if (isSourceFile(resource)) {
-				this.log.info(MessageFormat.format(Messages.SarlBatchCompiler_22, resource.getURI().lastSegment()));
+				this.logger.info(MessageFormat.format(Messages.SarlBatchCompiler_22, resource.getURI().lastSegment()));
 				final IResourceServiceProvider resourceServiceProvider = IResourceServiceProvider.Registry.INSTANCE
 						.getResourceServiceProvider(resource.getURI());
 				if (resourceServiceProvider != null) {
@@ -1220,17 +1169,17 @@ public class SarlBatchCompiler {
 		assert cancelIndicator != null;
 		final File classOutputPath = getClassOutputPath();
 		if (classOutputPath == null) {
-			this.log.info(Messages.SarlBatchCompiler_24);
+			this.logger.info(Messages.SarlBatchCompiler_24);
 			return true;
 		}
-		this.log.info(Messages.SarlBatchCompiler_25);
+		this.logger.info(Messages.SarlBatchCompiler_25);
 		final Iterable<File> sources = Iterables.concat(getSourcePaths(), Collections.singleton(getOutputPath()));
-		if (this.log.isDebugEnabled()) {
-			this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_29, toPathString(sources)));
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_29, toPathString(sources)));
 		}
 		final List<File> classpath = getClassPath();
-		if (this.log.isDebugEnabled()) {
-			this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_30, toPathString(classpath)));
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_30, toPathString(classpath)));
 		}
 		return runJavaCompiler(classOutputPath, sources, classpath, true, cancelIndicator);
 	}
@@ -1336,8 +1285,8 @@ public class SarlBatchCompiler {
 		}
 		commandLine.add(cmd.toString());
 
-		if (this.log.isDebugEnabled()) {
-			this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_6, Strings.concat(" ", commandLine))); //$NON-NLS-1$
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_6, Strings.concat(" ", commandLine))); //$NON-NLS-1$
 		}
 
 		if (cancelIndicator.isCanceled()) {
@@ -1364,7 +1313,7 @@ public class SarlBatchCompiler {
 			@Override
 			public void write(char[] data, int offset, int count) throws IOException {
 				final String message = String.copyValueOf(data, offset, count);
-				SarlBatchCompiler.this.log.debug(message);
+				SarlBatchCompiler.this.logger.debug(message);
 			}
 
 			@Override
@@ -1386,7 +1335,7 @@ public class SarlBatchCompiler {
 			@Override
 			public void write(char[] data, int offset, int count) throws IOException {
 				final String message = String.copyValueOf(data, offset, count);
-				SarlBatchCompiler.this.log.error(message);
+				SarlBatchCompiler.this.logger.error(message);
 			}
 
 			@Override
@@ -1413,7 +1362,7 @@ public class SarlBatchCompiler {
 		if (cancelIndicator.isCanceled()) {
 			return null;
 		}
-		this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_19, outputDirectory));
+		this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_19, outputDirectory));
 		final JavaIoFileSystemAccess fileSystemAccess = this.javaIoFileSystemAccessProvider.get();
 		if (cancelIndicator.isCanceled()) {
 			return null;
@@ -1424,7 +1373,7 @@ public class SarlBatchCompiler {
 			if (cancelIndicator.isCanceled()) {
 				return null;
 			}
-			this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_20, resource.getURI()));
+			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_20, resource.getURI()));
 			final IResourceDescription description = this.resourceDescriptionManager.getResourceDescription(resource);
 			this.stubGenerator.doGenerateStubs(fileSystemAccess, description);
 		}
@@ -1456,8 +1405,8 @@ public class SarlBatchCompiler {
 				if (cancelIndicator.isCanceled()) {
 					return;
 				}
-				if (this.log.isDebugEnabled()) {
-					this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_7, uri));
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_7, uri));
 				}
 				resourceSet.getResource(uri, true);
 			}
@@ -1491,7 +1440,7 @@ public class SarlBatchCompiler {
 	protected boolean cleanFolder(File parentFolder, FileFilter filter, boolean continueOnError,
 			boolean deleteParentFolder) {
 		try {
-			this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_9, parentFolder.toString()));
+			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_9, parentFolder.toString()));
 			return Files.cleanFolder(parentFolder, null, continueOnError, deleteParentFolder);
 		} catch (FileNotFoundException e) {
 			return true;
@@ -1506,9 +1455,9 @@ public class SarlBatchCompiler {
 	protected boolean checkConfiguration(CancelIndicator cancelIndicator) {
 		assert cancelIndicator != null;
 		final File output = getOutputPath();
-		this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_35, output));
+		this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_35, output));
 		if (output == null) {
-			this.log.error(Messages.SarlBatchCompiler_36);
+			this.logger.error(Messages.SarlBatchCompiler_36);
 			return false;
 		}
 		for (final File sourcePath : getSourcePaths()) {
@@ -1516,15 +1465,15 @@ public class SarlBatchCompiler {
 				return false;
 			}
 			try {
-				this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_37, sourcePath));
+				this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_37, sourcePath));
 				if (isContainedIn(output.getCanonicalFile(), sourcePath.getCanonicalFile())) {
-					this.log.error(MessageFormat.format(
+					this.logger.error(MessageFormat.format(
 							Messages.SarlBatchCompiler_10,
 							output, sourcePath));
 					return false;
 				}
 			} catch (IOException e) {
-				this.log.error(Messages.SarlBatchCompiler_11, e);
+				this.logger.error(Messages.SarlBatchCompiler_11, e);
 			}
 		}
 		return true;
@@ -1561,10 +1510,10 @@ public class SarlBatchCompiler {
 
 		if (this.baseUri != null) {
 			if (this.baseUri.isFile()) {
-				this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_32, this.baseUri));
+				this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_32, this.baseUri));
 				return new File(this.baseUri.toFileString());
 			}
-			this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_33, this.baseUri));
+			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_33, this.baseUri));
 		}
 
 		LinkedList<String> longuestPrefix = null;
@@ -1625,20 +1574,20 @@ public class SarlBatchCompiler {
 			return false;
 		}
 
-		this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_31, this.baseUri));
+		this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_31, this.baseUri));
 
 		final File commonRoot = determineCommonRoot(outputFile, sourceFolders, cancelIndicator);
 		if (cancelIndicator.isCanceled()) {
 			return false;
 		}
 
-		this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_34, commonRoot));
+		this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_34, commonRoot));
 		if (commonRoot == null) {
-			this.log.error(Messages.SarlBatchCompiler_12);
+			this.logger.error(Messages.SarlBatchCompiler_12);
 			for (final File sourceFile : sourceFolders) {
-				this.log.error(MessageFormat.format(Messages.SarlBatchCompiler_13, sourceFile));
+				this.logger.error(MessageFormat.format(Messages.SarlBatchCompiler_13, sourceFile));
 			}
-			this.log.error(MessageFormat.format(Messages.SarlBatchCompiler_14, outputFile));
+			this.logger.error(MessageFormat.format(Messages.SarlBatchCompiler_14, outputFile));
 			return false;
 		}
 		this.projectConfig = new FileProjectConfig(commonRoot, commonRoot.getName());
@@ -1652,7 +1601,7 @@ public class SarlBatchCompiler {
 			return false;
 		}
 		if (relativizedTarget.isAbsolute()) {
-			this.log.error(MessageFormat.format(Messages.SarlBatchCompiler_15, outputFile, commonRoot));
+			this.logger.error(MessageFormat.format(Messages.SarlBatchCompiler_15, outputFile, commonRoot));
 			return false;
 		}
 		final CharMatcher slash = CharMatcher.is('/');
@@ -1665,7 +1614,7 @@ public class SarlBatchCompiler {
 			}
 			final URI relSource = commonURI.relativize(source.toURI());
 			if (relSource.isAbsolute()) {
-				this.log.error(MessageFormat.format(Messages.SarlBatchCompiler_16, source, commonRoot));
+				this.logger.error(MessageFormat.format(Messages.SarlBatchCompiler_16, source, commonRoot));
 				return false;
 			}
 			this.projectConfig.addSourceFolder(slash.trimTrailingFrom(relSource.getPath()));
@@ -1700,8 +1649,8 @@ public class SarlBatchCompiler {
 		} else {
 			classpath = Iterables.concat(getClassPath(), getSourcePaths());
 		}
-		if (this.log.isDebugEnabled()) {
-			this.log.debug(MessageFormat.format(Messages.SarlBatchCompiler_17, classpath));
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_17, classpath));
 		}
 		if (cancelIndicator.isCanceled()) {
 			return;
@@ -1766,7 +1715,7 @@ public class SarlBatchCompiler {
 			try {
 				((Closeable) classLoader).close();
 			} catch (Exception e) {
-				this.log.warn(Messages.SarlBatchCompiler_18, e);
+				this.logger.warn(Messages.SarlBatchCompiler_18, e);
 			}
 		}
 	}
