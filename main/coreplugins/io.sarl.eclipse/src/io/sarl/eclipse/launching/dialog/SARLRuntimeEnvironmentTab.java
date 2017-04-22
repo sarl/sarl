@@ -58,6 +58,7 @@ import io.sarl.eclipse.runtime.ProjectProvider;
 import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
+import io.sarl.lang.SARLVersion;
 
 /**
  * Configuration tab for the JRE and the SARL runtime environment.
@@ -253,13 +254,13 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 				return false;
 			}
 			final Version jreVersion = Version.parseVersion(version);
-			final Version minVersion = Version.parseVersion(SARLEclipseConfig.MINIMAL_JRE_VERSION);
+			final Version minVersion = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION);
 			if (jreVersion.compareTo(minVersion) < 0) {
 				setErrorMessage(MessageFormat.format(
 						Messages.RuntimeEnvironmentTab_4,
 						install.getName(),
 						version,
-						SARLEclipseConfig.MINIMAL_JRE_VERSION));
+						SARLVersion.MINIMAL_JDK_VERSION));
 				return false;
 			}
 		}

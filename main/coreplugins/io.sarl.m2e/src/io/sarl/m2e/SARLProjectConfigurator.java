@@ -71,6 +71,7 @@ import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.util.Utilities;
 import io.sarl.lang.SARLConfig;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.ui.preferences.SARLPreferences;
 
 /** Project configuration for the M2E.
@@ -376,9 +377,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	private static void forceMavenCompilerConfiguration(IMavenProjectFacade facade, SARLConfiguration config) {
 		final Properties props = facade.getMavenProject().getProperties();
 		setVersion(props, "maven.compiler.source", config.getInputCompliance(), //$NON-NLS-1$
-				SARLEclipseConfig.MINIMAL_JRE_VERSION);
+				SARLVersion.MINIMAL_JDK_VERSION);
 		setVersion(props, "maven.compiler.target", config.getOutputCompliance(), //$NON-NLS-1$
-				SARLEclipseConfig.MINIMAL_JRE_VERSION);
+				SARLVersion.MINIMAL_JDK_VERSION);
 		final String encoding = config.getEncoding();
 		if (encoding != null && !encoding.isEmpty()) {
 			props.setProperty("maven.compiler.encoding", encoding); //$NON-NLS-1$

@@ -71,10 +71,6 @@ public final class SARLEclipseConfig {
 	 */
 	public static final int ERR_UNSPECIFIED_AGENT_NAME = 501;
 
-	/** Minimal version of the JRE supported by the SARL launch application.
-	 */
-	public static final String MINIMAL_JRE_VERSION = "1.8"; //$NON-NLS-1$
-
 	/** Filename of the image that may be used at
 	 * the top of the wizard dialog when creating new SARL project.
 	 */
