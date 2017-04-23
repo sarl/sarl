@@ -28,6 +28,8 @@ import java.nio.file.Path;
 
 import org.apache.maven.it.Verifier;
 import org.apache.maven.shared.utils.io.FileUtils;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -40,6 +42,12 @@ import io.sarl.lang.SARLVersion;
  */
 @SuppressWarnings("all")
 public class Bug504 extends AbstractMojoTest {
+
+	@BeforeClass
+	public static void setUp() throws Exception {
+		// The test can be run only if SARL is available online.
+		touchSarlWebSites();
+	}
 
 	@Test
 	public void compile() throws Exception {

@@ -25,14 +25,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.Properties;
 
 import org.apache.maven.it.Verifier;
 import org.apache.maven.shared.utils.cli.CommandLineUtils;
 import org.apache.maven.shared.utils.io.FileUtils;
+import org.junit.Assume;
+import org.junit.internal.Throwables;
 
 /** Abstract test of Maven Mojo.
  *
@@ -42,6 +46,75 @@ import org.apache.maven.shared.utils.io.FileUtils;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractMojoTest {
+
+	private static final int NETWORK_TIMEOUT = 5000;
+	
+	private static Boolean IS_SARL_WEBSITE_AVAILABLE = null;
+	
+	/** Test if the SARL website(s) are available on Internet.
+	 *
+	 * <p>The UTBM network infrastructure (hosting a part of the SARL servers)
+	 * is not safe and is shut down several times per year.
+	 *
+	 * @throws Exception the error status.
+	 */
+	public static void touchSarlWebSites() throws Exception {
+		Boolean bool = IS_SARL_WEBSITE_AVAILABLE;
+		if (bool != null) {
+			Assume.assumeTrue("SARL webiste are not available on Internet", bool.booleanValue()); //$NON-NLS-1$
+			return;
+		}
+		bool = Boolean.FALSE;
+		try {
+			touchRemotePage("http://dependencies.sarl.io/", false); //$NON-NLS-1$
+			bool = Boolean.TRUE;
+		} finally {
+			IS_SARL_WEBSITE_AVAILABLE = bool;
+		}
+	}
+
+	/** Test if a remote page is accessible on Internet.
+	 *
+	 * @param url the url to test.
+	 * @param failureIfNotAccessible if {@code true} the function fails with an error; otherwise
+	 *     it fails with an false assumption.
+	 * @throws Exception the error status.
+	 */
+	public static void touchRemotePage(String url, boolean failureIfNotAccessible) throws Exception {
+		assert url != null;
+		touchRemotePage(new URL(url), failureIfNotAccessible);
+	}
+
+	/** Test if a remote page is accessible on Internet.
+	 *
+	 * @param url the url to test.
+	 * @param failureIfNotAccessible if {@code true} the function fails with an error; otherwise
+	 *     it fails with an false assumption.
+	 * @throws Exception the error status.
+	 */
+	public static void touchRemotePage(URL url, boolean failureIfNotAccessible) throws Exception {
+		assert url != null;
+		try {
+			final URLConnection con = url.openConnection();
+			HttpURLConnection httpCon = (HttpURLConnection) con;
+			httpCon.setRequestMethod("HEAD"); //$NON-NLS-1$
+			httpCon.setConnectTimeout(NETWORK_TIMEOUT);
+			httpCon.setReadTimeout(NETWORK_TIMEOUT);
+			httpCon.connect();
+			final int code = httpCon.getResponseCode();
+			httpCon.disconnect();
+			if (code != HttpURLConnection.HTTP_OK) {
+				throw new IOException("Remote server replies unexpected code " + code //$NON-NLS-1$
+						+ " when accessing to " + url.toExternalForm()); //$NON-NLS-1$
+			}
+		} catch (Exception e) {
+			if (failureIfNotAccessible) {
+				Throwables.rethrowAsException(e);
+			} else {
+				Assume.assumeNoException(e);
+			}
+		}
+	}
 
 	/** Helper for writting a multiline string in unit tests.
 	 *

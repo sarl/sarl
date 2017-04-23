@@ -20,14 +20,15 @@
  */
 package io.sarl.maven.compiler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
-import org.apache.maven.plugin.MojoFailureException;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -38,6 +39,12 @@ import org.junit.Test;
  */
 @SuppressWarnings("all")
 public class Bug526 extends AbstractMojoTest {
+
+	@BeforeClass
+	public static void setUp() throws Exception {
+		// The test can be run only if SARL is available online.
+		touchSarlWebSites();
+	}
 
 	@Test(expected = VerificationException.class)
 	public void invalidGuavaAndXtextLibraries() throws Exception {

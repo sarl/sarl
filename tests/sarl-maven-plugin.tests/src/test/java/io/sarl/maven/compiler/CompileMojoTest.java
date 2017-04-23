@@ -34,6 +34,7 @@ import org.apache.maven.it.Verifier;
 import org.apache.maven.plugin.MojoFailureException;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -46,6 +47,13 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class CompileMojoTest extends AbstractMojoTest {
 
+	@BeforeClass
+	public static void setUp() throws Exception {
+		// The test can be run only if SARL is available online.
+		touchSarlWebSites();
+	}
+
+	@Test
 	public void invalidXtext() throws Exception {
 		executeMojo("prj1", "compile");
 	}
