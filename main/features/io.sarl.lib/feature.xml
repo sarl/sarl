@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.lib"
       label="Running Libraries for SARL"
-      version="0.6.0.qualifier"
+      version="0.5.5"
       plugin="io.sarl.lang.core">
 
    <description url="http://www.sarl.io/about/">
@@ -222,7 +222,7 @@
    </url>
 
    <requires>
-      <import plugin="io.sarl.lang.core" version="0.6.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang.core" version="0.5.5" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.11.3" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.11.0" match="greaterOrEqual"/>
       <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
