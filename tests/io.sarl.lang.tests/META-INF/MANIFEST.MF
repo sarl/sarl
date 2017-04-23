@@ -14,7 +14,8 @@ Require-Bundle: io.sarl.tests.api;bundle-version="0.6.0",
  org.arakhne.afc.core.vmutils;bundle-version="14.0.0",
  com.google.inject;bundle-version="4.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: io.sarl.lang.tests.bugs,
+Export-Package: io.sarl.lang.tests.bugs.to00399,
+ io.sarl.lang.tests.bugs.to00699,
  io.sarl.lang.tests.general.compilation.aop,
  io.sarl.lang.tests.general.compilation.general,
  io.sarl.lang.tests.general.compilation.oop,
