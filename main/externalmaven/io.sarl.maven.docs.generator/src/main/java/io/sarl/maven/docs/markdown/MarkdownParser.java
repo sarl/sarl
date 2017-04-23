@@ -53,6 +53,7 @@ import org.arakhne.afc.vmutil.URISchemeType;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
+import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.IntegerRange;
 
 import io.sarl.maven.docs.parser.AbstractMarkerLanguageParser;
@@ -145,17 +146,13 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	}
 
 	private void updateBlockFormatter() {
+		final Function2<String, String, String> formatter;
 		if (isGithubExtensionEnable()) {
-			getDocumentParser().setBlockCodeTemplate((languageName, content) -> {
-				return "```" + Strings.emptyIfNull(languageName).toLowerCase() + "\n" //$NON-NLS-1$ //$NON-NLS-2$
-						+ Pattern.compile("^", Pattern.MULTILINE).matcher(content).replaceAll("\t") //$NON-NLS-1$ //$NON-NLS-2$
-						+ "```\n"; //$NON-NLS-1$
-			});
+			formatter = SarlDocumentationParser.getFencedCodeBlockFormatter();
 		} else {
-			getDocumentParser().setBlockCodeTemplate((languageName, content) -> {
-				return Pattern.compile("^", Pattern.MULTILINE).matcher(content).replaceAll("\t"); //$NON-NLS-1$ //$NON-NLS-2$
-			});
+			formatter = SarlDocumentationParser.getBasicCodeBlockFormatter();
 		}
+		getDocumentParser().setBlockCodeTemplate(formatter);
 	}
 
 	@Override
@@ -537,9 +534,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 					sectionNumber = formatSectionNumber(sections);
 
 					if (Strings.isEmpty(sectionId)) {
-						sectionId = computeHeaderId(
-								isAutoSectionNumbering() ? sectionNumber : null,
-								title);
+						sectionId = computeHeaderId(sectionNumber, title);
 						if (!identifiers.add(sectionId)) {
 							int idNum = 1;
 							String nbId = sectionId + "-" + idNum; //$NON-NLS-1$
@@ -569,6 +564,19 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 					addOutlineEntry(outline, relLevel + 1, sectionNumber, title, sectionId, styledOutline);
 				} else {
+					if (Strings.isEmpty(sectionId)) {
+						sectionId = computeHeaderId(null, title);
+						if (!identifiers.add(sectionId)) {
+							int idNum = 1;
+							String nbId = sectionId + "-" + idNum; //$NON-NLS-1$
+							while (!identifiers.add(nbId)) {
+								++idNum;
+								nbId = sectionId + "-" + idNum; //$NON-NLS-1$
+							}
+							sectionId = nbId;
+						}
+					}
+
 					addOutlineEntry(outline, relLevel + 1, null, title, sectionId, styledOutline);
 				}
 				prevLevel = relLevel;

@@ -34,6 +34,7 @@ import com.google.inject.Injector;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.arakhne.afc.vmutil.FileSystem;
+import org.eclipse.xtext.util.Strings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,6 +77,7 @@ public class SarlDocumentationParserTest {
 		public void setUp() {
 			Injector injector = SARLStandaloneSetup.doSetup();
 			this.parser = injector.getInstance(SarlDocumentationParser.class);
+			this.parser.setBlockCodeTemplate(SarlDocumentationParser.getBasicCodeBlockFormatter());
 		}
 
 		@Test(expected = ParsingException.class)
@@ -233,7 +235,7 @@ public class SarlDocumentationParserTest {
 			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing.\n\n"
-					+ "```\nof code\n```\n\nthis is a fake text done for testing. this is a fake text done for "
+					+ "\tof code\n\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing. this is "
 					+ "a fake text done \nfor testing. this is a fake text done for testing. this is a fake text "
 					+ "done for testing. this is a fake text done\nfor testing. this is a fake text done for testing. "
@@ -248,7 +250,7 @@ public class SarlDocumentationParserTest {
 			assertEquals("this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing.\n\n"
-					+ "```\nof code\n```\n\nthis is a fake text done for testing. this is a fake text done for "
+					+ "\tof code\n\n\nthis is a fake text done for testing. this is a fake text done for "
 					+ "testing. this is a fake text done for testing. this is a fake text done for testing. this is "
 					+ "a fake text done \nfor testing. this is a fake text done for testing. this is a fake text "
 					+ "done for testing. this is a fake text done\nfor testing. this is a fake text done for testing. "
@@ -266,6 +268,7 @@ public class SarlDocumentationParserTest {
 		public void setUp() {
 			Injector injector = SARLStandaloneSetup.doSetup();
 			this.parser = injector.getInstance(SarlDocumentationParser.class);
+			this.parser.setBlockCodeTemplate(SarlDocumentationParser.getBasicCodeBlockFormatter());
 		}
 
 		@Test
@@ -362,9 +365,9 @@ public class SarlDocumentationParserTest {
 						+ "				info(\"Hello\")\n"
 						+ "			}\n"
 						+ "		}",
-						values.get(0));
+						values.get(0).getRight());
 				assertEquals("agent MyAgent {}",
-						values.get(1));
+						values.get(1).getRight());
 			});
 		}
 
