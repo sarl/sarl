@@ -2777,6 +2777,15 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		addAnnotationSafe(target, SarlSpecification.class, SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
 	}
 
+	/** Remove the type parameters from the given type.
+	 *
+	 * @param type the type.
+	 * @return the same type without the type parameters.
+	 */
+	protected JvmTypeReference skipTypeParameters(JvmTypeReference type) {
+		return this._typeReferenceBuilder.typeRef(type.getType());
+	}
+
 	/** Generate a list of formal parameters with annotations for the default values.
 	 *
 	 * @param context - the generation context.
@@ -2818,7 +2827,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					final String namePostPart = inferredParam.getDefaultValueAnnotationValue();
 					final String name = this.sarlSignatureProvider.createFieldNameForDefaultValueID(namePostPart);
 					// FIXME: Hide these attributes into an inner interface.
-					final JvmField field = this.typeBuilder.toField(defaultValue, name, paramType, (it) -> {
+					final JvmField field = this.typeBuilder.toField(defaultValue, name, skipTypeParameters(paramType), (it) -> {
 						SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it,
 								MessageFormat.format(Messages.SARLJvmModelInferrer_11, paramName));
 						it.setStatic(true);
