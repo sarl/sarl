@@ -48,6 +48,8 @@ import io.janusproject.services.executor.ExecutorService;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.EventSpaceSpecification;
+import io.sarl.sarlspecification.SarlSpecificationChecker;
+import io.sarl.sarlspecification.StandardSarlSpecificationChecker;
 import io.sarl.util.OpenEventSpaceSpecification;
 import io.sarl.util.RestrictedAccessEventSpaceSpecification;
 
@@ -67,6 +69,9 @@ public class MandatoryKernelModule extends AbstractModule {
 		requireBinding(Key.get(UUID.class, Names.named(JanusConfig.DEFAULT_CONTEXT_ID_NAME)));
 		requireBinding(Key.get(UUID.class, Names.named(JanusConfig.DEFAULT_SPACE_ID_NAME)));
 		requireBinding(Logger.class);
+
+		// Sarl specification checker
+		bind(SarlSpecificationChecker.class).to(StandardSarlSpecificationChecker.class).in(Singleton.class);
 
 		// Built-in Capacities
 		bind(BuiltinCapacitiesProvider.class).to(StandardBuiltinCapacitiesProvider.class).in(Singleton.class);
