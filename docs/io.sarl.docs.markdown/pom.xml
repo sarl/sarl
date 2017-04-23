@@ -56,7 +56,8 @@
 			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>io.sarl.maven.docs.generator</artifactId>
-				<extensions>true</extensions>
+				<!-- Cannot use <extensions>true</extensions> because the plugin is in the same project structure.
+					 Executions must be explicitly defined. -->
 				<executions>
 					<execution>
 						<id>docs-initialize</id>
