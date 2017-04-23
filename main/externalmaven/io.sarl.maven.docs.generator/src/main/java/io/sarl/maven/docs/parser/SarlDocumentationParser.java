@@ -143,6 +143,30 @@ public class SarlDocumentationParser {
 		this.languageName = null;
 	}
 
+	/** Replies the fenced code block formatter.
+	 *
+	 * <p>This code block formatter is usually used by Github.
+	 *
+	 * @return the formatter.
+	 */
+	public static Function2<String, String, String> getFencedCodeBlockFormatter() {
+		return (languageName, content) -> {
+			return "```" + Strings.nullToEmpty(languageName).toLowerCase() + "\n" //$NON-NLS-1$ //$NON-NLS-2$
+					+ Pattern.compile("^", Pattern.MULTILINE).matcher(content).replaceAll("\t") //$NON-NLS-1$ //$NON-NLS-2$
+					+ "```\n"; //$NON-NLS-1$
+		};
+	}
+
+	/** Replies the basic code block formatter.
+	 *
+	 * @return the formatter.
+	 */
+	public static Function2<String, String, String> getBasicCodeBlockFormatter() {
+		return (languageName, content) -> {
+			return Pattern.compile("^", Pattern.MULTILINE).matcher(content).replaceAll("\t"); //$NON-NLS-1$ //$NON-NLS-2$
+		};
+	}
+
 	/** Replies the name of the language.
 	 *
 	 * @return the language name, or {@code null} for ignoring the language name.
@@ -413,6 +437,9 @@ public class SarlDocumentationParser {
 
 	/** Set the template for block codes.
 	 *
+	 * <p>The first parameter of the function is the language name. The second parameter is
+	 * the code to format.
+	 *
 	 * @param template the template.
 	 */
 	public void setBlockCodeTemplate(Function2<String, String, String> template) {
@@ -420,6 +447,9 @@ public class SarlDocumentationParser {
 	}
 
 	/** Replies the template for block codes.
+	 *
+	 * <p>The first parameter of the function is the language name. The second parameter is
+	 * the code to format.
 	 *
 	 * @return the template.
 	 */
@@ -938,7 +968,7 @@ public class SarlDocumentationParser {
 			buffer.append("\n"); //$NON-NLS-1$
 		}
 		replacement = buffer.toString().replaceFirst("[\n\r]+$", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		if (!Strings.isNullOrEmpty(replacement)) {
+		if (!Strings.isNullOrEmpty(replacement) && !"\n".equals(replacement)) { //$NON-NLS-1$
 			if (blockFormat != null) {
 				return blockFormat.apply(languageName, replacement);
 			}

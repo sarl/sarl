@@ -51,7 +51,6 @@ import io.sarl.maven.docs.parser.SarlDocumentationParser.ParsingException;
 @RunWith(Suite.class)
 @SuiteClasses({
 	MarkdownParserTest.TransformTest.class,
-	MarkdownParserTest.ValidationTest.class,
 })
 @SuppressWarnings("all")
 public class MarkdownParserTest {
@@ -72,6 +71,7 @@ public class MarkdownParserTest {
 		public void setUp() {
 			Injector injector = SARLStandaloneSetup.doSetup();
 			this.parser = injector.getInstance(MarkdownParser.class);
+			this.parser.setOutlineStyleId(null);
 		}
 
 		@Test
@@ -81,10 +81,16 @@ public class MarkdownParserTest {
 			this.parser.setAutoSectionNumbering(true);
 			String value = this.parser.transform(file);
 			assertEquals("#1. Title\n\n##1.1. Title 0\n\nthis is a fake text done for testing. this is a fake text done "
-					+ "for testing. this is a fake text done for testing.\n\n\n* [1. Title](#title)\n"
-					+ "  * [1.1. Title 0](#title-0)\n* [2. Title 1](#title-1)\n  * [2.1. Title 2](#title-2)\n"
-					+ "    * [2.1.1. Title 3](#title-3)\n  * [2.2. Title 4](#title-4)\n  * [2.3. Title 5](#title-5)\n"
-					+ "* [3. Title 6](#title-6)\n\n\n\nthis is a fake text done for testing.\n\n#2. Title 1\n\n"
+					+ "for testing. this is a fake text done for testing.\n\n\n"
+					+ "> * [1. Title](#1-title)\n"
+					+ "> \t* [1.1. Title 0](#1-1-title-0)\n"
+					+ "> * [2. Title 1](#2-title-1)\n"
+					+ "> \t* [2.1. Title 2](#2-1-title-2)\n"
+					+ "> \t\t* [2.1.1. Title 3](#2-1-1-title-3)\n"
+					+ "> \t* [2.2. Title 4](#2-2-title-4)\n"
+					+ "> \t* [2.3. Title 5](#2-3-title-5)\n"
+					+ "> * [3. Title 6](#3-title-6)\n"
+					+ "\n\n\nthis is a fake text done for testing.\n\n#2. Title 1\n\n"
 					+ "this is a fake text done for testing. this is a fake text done for testing. this is a\n"
 					+ "\n##2.1. Title 2\n\nfake text done for testing. this is a fake text\n\n###2.1.1. Title 3\n\n"
 					+ "##2.2. Title 4\n\n##2.3. Title 5\n\ndone for testing. this is a fake text done\nfor testing. "
@@ -101,11 +107,13 @@ public class MarkdownParserTest {
 			this.parser.setAutoSectionNumbering(true);
 			String value = this.parser.transform(file);
 			assertEquals("# Title\n\n##1. Title 0\n\nthis is a fake text done for testing. this is a fake text done "
-					+ "for testing. this is a fake text done for testing.\n\n\n* [1. Title 0](#title-0)\n"
-					+ "* [2. Title 2](#title-2)\n"
-					+ "  * [2.1. Title 3](#title-3)\n"
-					+ "* [3. Title 4](#title-4)\n"
-					+ "* [4. Title 5](#title-5)\n\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\n"
+					+ "for testing. this is a fake text done for testing.\n\n\n"
+					+ "> * [1. Title 0](#1-title-0)\n"
+					+ "> * [2. Title 2](#2-title-2)\n"
+					+ "> \t* [2.1. Title 3](#2-1-title-3)\n"
+					+ "> * [3. Title 4](#3-title-4)\n"
+					+ "> * [4. Title 5](#4-title-5)\n"
+					+ "\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\n"
 					+ "this is a fake text done for testing. this is a fake text done for testing. this is a\n"
 					+ "\n##2. Title 2\n\nfake text done for testing. this is a fake text\n\n###2.1. Title 3\n\n"
 					+ "##3. Title 4\n\n##4. Title 5\n\ndone for testing. this is a fake text done\nfor testing. "
@@ -122,7 +130,8 @@ public class MarkdownParserTest {
 			this.parser.setAutoSectionNumbering(true);
 			String value = this.parser.transform(file);
 			assertEquals("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text done "
-					+ "for testing. this is a fake text done for testing.\n\n\n* [1. Title 3](#title-3)\n"
+					+ "for testing. this is a fake text done for testing.\n\n\n"
+					+ "> * [1. Title 3](#1-title-3)\n"
 					+ "\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\n"
 					+ "this is a fake text done for testing. this is a fake text done for testing. this is a\n"
 					+ "\n## Title 2\n\nfake text done for testing. this is a fake text\n\n###1. Title 3\n\n"
@@ -140,10 +149,16 @@ public class MarkdownParserTest {
 			this.parser.setAutoSectionNumbering(false);
 			String value = this.parser.transform(file);
 			assertEquals("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text "
-					+ "done for testing. this is a fake text done for testing.\n\n\n* [Title](#title)\n  "
-					+ "* [Title 0](#title-0)\n* [Title 1](#title-1)\n  * [Title 2](#title-2)\n    "
-					+ "* [Title 3](#title-3)\n  * [Title 4](#title-4)\n  * [Title 5](#title-5)\n* "
-					+ "[Title 6](#title-6)\n\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\nthis is a fake "
+					+ "done for testing. this is a fake text done for testing.\n\n\n"
+					+ "> * [Title](#title)\n"
+					+ "> \t* [Title 0](#title-0)\n"
+					+ "> * [Title 1](#title-1)\n"
+					+ "> \t* [Title 2](#title-2)\n"
+					+ "> \t\t* [Title 3](#title-3)\n"
+					+ "> \t* [Title 4](#title-4)\n"
+					+ "> \t* [Title 5](#title-5)\n"
+					+ "> * [Title 6](#title-6)\n"
+					+ "\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\nthis is a fake "
 					+ "text done for testing. this is a fake text done for testing. this is a\n\n## Title 2\n"
 					+ "\nfake text done for testing. this is a fake text\n\n### Title 3\n\n## Title 4\n"
 					+ "\n## Title 5\n\ndone for testing. this is a fake text done\nfor testing. this is a "
@@ -160,8 +175,12 @@ public class MarkdownParserTest {
 			this.parser.setAutoSectionNumbering(false);
 			String value = this.parser.transform(file);
 			assertEquals("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text "
-					+ "done for testing. this is a fake text done for testing.\n\n\n* [Title 0](#title-0)\n"
-					+ "* [Title 2](#title-2)\n  * [Title 3](#title-3)\n* [Title 4](#title-4)\n* [Title 5](#title-5)\n"
+					+ "done for testing. this is a fake text done for testing.\n\n\n"
+					+ "> * [Title 0](#title-0)\n"
+					+ "> * [Title 2](#title-2)\n"
+					+ "> \t* [Title 3](#title-3)\n"
+					+ "> * [Title 4](#title-4)\n"
+					+ "> * [Title 5](#title-5)\n"
 					+ "\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\nthis is a fake "
 					+ "text done for testing. this is a fake text done for testing. this is a\n\n## Title 2\n"
 					+ "\nfake text done for testing. this is a fake text\n\n### Title 3\n\n## Title 4\n"
@@ -180,7 +199,8 @@ public class MarkdownParserTest {
 			String value = this.parser.transform(file);
 			assertEquals("# Title\n\n## Title 0\n\nthis is a fake text done for testing. this is a fake text "
 					+ "done for testing. this is a fake text done for testing.\n\n\n"
-					+ "* [Title 3](#title-3)\n\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\nthis is a fake "
+					+ "> * [Title 3](#title-3)\n"
+					+ "\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\nthis is a fake "
 					+ "text done for testing. this is a fake text done for testing. this is a\n\n## Title 2\n"
 					+ "\nfake text done for testing. this is a fake text\n\n### Title 3\n\n## Title 4\n"
 					+ "\n## Title 5\n\ndone for testing. this is a fake text done\nfor testing. this is a "
@@ -199,87 +219,11 @@ public class MarkdownParserTest {
 					value);
 		}
 
-		@Test(expected = ParsingException.class)
-		public void invalidLocalHref() throws Exception {
-			File file = file("invalidhref.txt");
-			this.parser.transform(file);
-		}
-
 		@Test
 		public void image01() throws Exception {
 			File file = file("image.txt");
 			String value = this.parser.transform(file);
-			assertEquals("My link to [local MD file](./outline.html)\n\nMy link to [local file](./outline.txt)\n\n"
-					+ "My link to [remote file](http://www.sarl.io)",
-					value);
-		}
-
-		@Test(expected = ParsingException.class)
-		public void invalidImage() throws Exception {
-			File file = file("invalidimg.txt");
-			this.parser.transform(file);
-		}
-
-	}
-
-	public static class ValidationTest {
-
-		private MarkdownParser parser;
-
-		@Before
-		public void setUp() {
-			Injector injector = SARLStandaloneSetup.doSetup();
-			this.parser = injector.getInstance(MarkdownParser.class);
-		}
-
-		@Test
-		public void success01() {
-			
-		}
-
-		@Test
-		public void failure01() {
-			
-		}
-
-		@Test
-		public void fact01() {
-			
-		}
-
-		@Test
-		public void successFailureFact01() {
-			
-		}
-
-		@Test
-		public void referenceToLocalFile01() {
-			
-		}
-
-		@Test
-		public void referenceToLocalMdFile01() {
-			
-		}
-
-		@Test
-		public void referenceToMissedLocalFile01() {
-			
-		}
-
-		@Test
-		public void referenceToRemoteFile01() {
-			
-		}
-
-		@Test
-		public void image01() {
-			
-		}
-
-		@Test
-		public void missedImage01() {
-			
+			assertEquals("My link to ![local MD file](./outline.md)", value);
 		}
 
 	}
