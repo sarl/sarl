@@ -170,11 +170,8 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			String expectedLabel,
 			String expectedResolution,
 			String... expectedResolution2) {
-		QuickFixAsserts asserts = getQuickFixAsserts(issueCode, invalidCode);
-		String[] expected = new String[expectedResolution2.length + 1];
-		expected[0] = expectedResolution;
-		System.arraycopy(expectedResolution2, 0, expected, 1, expectedResolution2.length);
-		return asserts.assertQuickFix(expectedLabel, expected);
+		return assertQuickFix(false, issueCode, invalidCode, expectedLabel, expectedResolution,
+				expectedResolution2);
 	}
 
 	/** Assert the quick fix is changing the document in the expected way.
@@ -192,13 +189,58 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 			String expectedLabel,
 			String expectedResolution,
 			String... expectedResolution2) {
+		return assertQuickFixWithErrors(false, issueCode, invalidCode, expectedLabel, expectedResolution,
+				expectedResolution2);
+	}
+	
+	/** Assert the quick fix is changing the document in the expected way.
+	 *
+	 * @param changeOriginalDocument - change the original document.
+	 * @param issueCode - the code of the issue to test.
+	 * @param invalidCode - the code that is generating the issue.
+	 * @param expectedLabel - the expected label for the quick fix.
+	 * @param expectedResolution - the expected code after fixing.
+	 * @param expectedResolution2 - the expected code after fixing.
+	 * @return the matching resolved text.
+	 */
+	protected String assertQuickFix(
+			boolean changeOriginalDocument,
+			String issueCode,
+			String invalidCode,
+			String expectedLabel,
+			String expectedResolution,
+			String... expectedResolution2) {
+		QuickFixAsserts asserts = getQuickFixAsserts(issueCode, invalidCode);
+		String[] expected = new String[expectedResolution2.length + 1];
+		expected[0] = expectedResolution;
+		System.arraycopy(expectedResolution2, 0, expected, 1, expectedResolution2.length);
+		return asserts.assertQuickFix(changeOriginalDocument, expectedLabel, expected);
+	}
+
+	/** Assert the quick fix is changing the document in the expected way.
+	 *
+	 * @param changeOriginalDocument - change the original document.
+	 * @param issueCode - the code of the issue to test.
+	 * @param invalidCode - the code that is generating the issue.
+	 * @param expectedLabel - the expected label for the quick fix.
+	 * @param expectedResolution - the expected code after fixing.
+	 * @param expectedResolution2 - the expected code after fixing.
+	 * @return the matching resolved text.
+	 */
+	protected String assertQuickFixWithErrors(
+			boolean changeOriginalDocument,
+			String issueCode,
+			String invalidCode,
+			String expectedLabel,
+			String expectedResolution,
+			String... expectedResolution2) {
 		QuickFixAsserts asserts = getQuickFixAsserts(issueCode, invalidCode, false);
 		String[] expected = new String[expectedResolution2.length + 1];
 		expected[0] = expectedResolution;
 		System.arraycopy(expectedResolution2, 0, expected, 1, expectedResolution2.length);
-		return asserts.assertQuickFix(expectedLabel, expected);
+		return asserts.assertQuickFix(changeOriginalDocument, expectedLabel, expected);
 	}
-	
+
 	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -301,6 +343,20 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 		public String assertQuickFix(
 				String expectedLabel,
 				String... expectedResolutions) {
+			return assertQuickFix(false, expectedLabel, expectedResolutions);
+		}
+
+		/** Test the existence of a valid quick fix.
+		 *
+		 * @param changeOriginalDocument - change the original document
+		 * @param expectedLabel - the expected label for the quick fix.
+		 * @param expectedResolutions - the expected codes after fixing.
+		 * @return the matching resolved text.
+		 */
+		public String assertQuickFix(
+				boolean changeOriginalDocument,
+				String expectedLabel,
+				String... expectedResolutions) {
 			try {
 				assert (expectedResolutions.length > 0);
 
@@ -308,40 +364,48 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
 				assertEquals(expectedLabel, resolution.getLabel());
 
-				XtextResource xtextResource = new XtextResource(this.scriptResource.getURI());
-				xtextResource.setFragmentProvider(new TestFragmentProvider(this.scriptResource));
-				TestXtextDocument document = new TestXtextDocument(xtextResource, this.invalidCode);
-				TestModificationContext modificationContext = new TestModificationContext(document);
+				String newContent;
 
-				String oldContent = Objects.toString(document.toString());
+				if (changeOriginalDocument) {
+					resolution.apply();
+					IXtextDocument document = resolution.getModificationContext().getXtextDocument();
+					newContent = document.get();
+				} else {
+					XtextResource xtextResource = new XtextResource(this.scriptResource.getURI());
+					xtextResource.setFragmentProvider(new TestFragmentProvider(this.scriptResource));
+					TestXtextDocument document = new TestXtextDocument(xtextResource, this.invalidCode);
+					TestModificationContext modificationContext = new TestModificationContext(document);
 
-				final IModification modification = resolution.getModification();
+					String oldContent = Objects.toString(document);
 
-				modification.apply(modificationContext);
+					final IModification modification = resolution.getModification();
 
-				String newContent = document.toString();
-				newContent = Objects.toString(newContent).trim();
-				if (Objects.equals(newContent, oldContent)) {
-					// Save the resource for ensuring EMF changes are comitted.
-					try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-						SaveOptions options = new SaveOptions(false, false) {
-							//
-						};
-						this.scriptResource.save(baos, options.toOptionsMap());
-						baos.flush();
-						newContent = baos.toString();
+					modification.apply(modificationContext);
+
+					newContent = document.toString();
+					newContent = Objects.toString(newContent).trim();
+					if (Objects.equals(newContent, oldContent)) {
+						// Save the resource for ensuring EMF changes are comitted.
+						try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+							SaveOptions options = new SaveOptions(false, false) {
+								//
+							};
+							this.scriptResource.save(baos, options.toOptionsMap());
+							baos.flush();
+							newContent = baos.toString();
+						}
+						newContent = Objects.toString(newContent);
 					}
-					newContent = Objects.toString(newContent);
 				}
 
 				newContent = unifiesNewLineCharacters(newContent);
-				
+
 				final Set<String> expected = new TreeSet<>();
 				for (final String expectedResolution : expectedResolutions) {
 					final String ex = unifiesNewLineCharacters(expectedResolution);
 					expected.add(ex);
 				}
-				
+
 				String closeResolution = null;
 				int distance = Integer.MAX_VALUE;
 				for (String expectedResolution : expected) {

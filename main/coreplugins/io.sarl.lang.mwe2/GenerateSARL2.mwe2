@@ -692,6 +692,22 @@ Workflow {
     				to = "io.sarl.lang.ui.hyperlinking.SARLHyperLinkingLabelProvider"
     				functionName = "configureHyperlinkLabelProvider"
    				}
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.codebuilder.XtendMethodBuilder"
+    				to = "io.sarl.lang.ui.codebuilder.SarlMethodBuilder"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.codebuilder.XtendConstructorBuilder"
+    				to = "io.sarl.lang.ui.codebuilder.SarlConstructorBuilder"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.codebuilder.XtendParameterBuilder"
+    				to = "io.sarl.lang.ui.codebuilder.SarlParameterBuilder"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.ide.codebuilder.XtendFieldBuilder"
+    				to = "io.sarl.lang.ui.codebuilder.SarlFieldBuilder"
+   				}
 
     			both = {
     				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"
