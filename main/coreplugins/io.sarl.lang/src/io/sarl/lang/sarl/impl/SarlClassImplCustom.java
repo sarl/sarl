@@ -21,12 +21,9 @@
 
 package io.sarl.lang.sarl.impl;
 
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmVisibility;
 
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
-import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
 
 /**
  * <!-- begin-user-doc -->
@@ -58,13 +55,7 @@ public class SarlClassImplCustom extends SarlClassImpl {
 
 	@Override
 	protected JvmVisibility getDefaultVisibility() {
-		final XtendTypeDeclaration declaration = getDeclaringType();
-		if (declaration instanceof SarlSkill
-				|| declaration instanceof SarlBehavior
-				|| declaration instanceof SarlAgent) {
-			return JvmVisibility.PROTECTED;
-		}
-		return super.getDefaultVisibility();
+		return IDefaultVisibilityProvider.getClassDefaultVisibilityIn(getDeclaringType());
 	}
 
 }

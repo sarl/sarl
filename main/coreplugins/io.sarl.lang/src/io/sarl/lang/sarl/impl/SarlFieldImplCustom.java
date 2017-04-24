@@ -21,10 +21,9 @@
 
 package io.sarl.lang.sarl.impl;
 
-import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmVisibility;
 
-import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
 
 /**
  * <!-- begin-user-doc -->
@@ -56,11 +55,7 @@ public class SarlFieldImplCustom extends SarlFieldImpl {
 
 	@Override
 	protected JvmVisibility getDefaultVisibility() {
-		final XtendTypeDeclaration declaration = getDeclaringType();
-		if (declaration instanceof SarlEvent) {
-			return JvmVisibility.PUBLIC;
-		}
-		return super.getDefaultVisibility();
+		return IDefaultVisibilityProvider.getFieldDefaultVisibilityIn(getDeclaringType());
 	}
 
 }
