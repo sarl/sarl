@@ -33,6 +33,10 @@ import io.sarl.lang.ide.contentassist.antlr.SARLParser;
 import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;
 import io.sarl.lang.ui.builder.EclipseGeneratorConfigProvider2;
 import io.sarl.lang.ui.builder.ProjectRelativeFileSystemAccess;
+import io.sarl.lang.ui.codebuilder.SarlConstructorBuilder;
+import io.sarl.lang.ui.codebuilder.SarlFieldBuilder;
+import io.sarl.lang.ui.codebuilder.SarlMethodBuilder;
+import io.sarl.lang.ui.codebuilder.SarlParameterBuilder;
 import io.sarl.lang.ui.contentassist.SARLContentAssistFactory;
 import io.sarl.lang.ui.contentassist.SARLProposalProvider;
 import io.sarl.lang.ui.contentassist.general.SARLContentProposalPriorities;
@@ -80,6 +84,10 @@ import org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry;
 import org.eclipse.xtend.ide.XtendResourceUiServiceProvider;
 import org.eclipse.xtend.ide.autoedit.AutoEditStrategyProvider;
 import org.eclipse.xtend.ide.builder.UIResourceChangeRegistry;
+import org.eclipse.xtend.ide.codebuilder.XtendConstructorBuilder;
+import org.eclipse.xtend.ide.codebuilder.XtendFieldBuilder;
+import org.eclipse.xtend.ide.codebuilder.XtendMethodBuilder;
+import org.eclipse.xtend.ide.codebuilder.XtendParameterBuilder;
 import org.eclipse.xtend.ide.common.editor.bracketmatching.XtendBracePairProvider;
 import org.eclipse.xtend.ide.contentassist.EscapeSequenceAwarePrefixMatcher;
 import org.eclipse.xtend.ide.contentassist.antlr.FlexProposalConflictHelper;
@@ -484,6 +492,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends XtendConstructorBuilder> bindXtendConstructorBuilder() {
+		return SarlConstructorBuilder.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends UIStrings> bindUIStrings() {
 		return SARLUIStrings.class;
 	}
@@ -511,6 +524,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public void configureSARLFieldOutlineFilter(Binder binder) {
 		binder.bind(IOutlineContribution.class).annotatedWith(Names.named("SARLFieldOutlineFilter")).to(SARLFieldOutlineFilter.class);
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends XtendParameterBuilder> bindXtendParameterBuilder() {
+		return SarlParameterBuilder.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -565,6 +583,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends XtendMethodBuilder> bindXtendMethodBuilder() {
+		return SarlMethodBuilder.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public void configureSmartCaretPreferenceInitializer(Binder binder) {
 		binder.bind(IPreferenceStoreInitializer.class).annotatedWith(Names.named("smartCaretPreferenceInitializer")).to(SARLPreferenceStoreInitializer.class);
 	}
@@ -598,6 +621,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ITemplateProposalProvider> bindITemplateProposalProvider() {
 		return SARLTemplateProposalProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends XtendFieldBuilder> bindXtendFieldBuilder() {
+		return SarlFieldBuilder.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
