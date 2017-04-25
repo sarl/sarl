@@ -892,7 +892,7 @@ public class InterfaceParsingTest {
 			//
 			assertEquals("I1", interf.getName());
 			assertNullOrEmpty(interf.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, interf.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, interf.getVisibility());
 			assertEquals(0, interf.getMembers().size());
 			assertFalse(interf.isAnonymous());
 			assertFalse(interf.isFinal());
@@ -980,7 +980,7 @@ public class InterfaceParsingTest {
 			//
 			assertEquals("I1", interf.getName());
 			assertNullOrEmpty(interf.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, interf.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, interf.getVisibility());
 			assertEquals(0, interf.getMembers().size());
 			assertFalse(interf.isAnonymous());
 			assertFalse(interf.isFinal());
@@ -1002,7 +1002,7 @@ public class InterfaceParsingTest {
 			//
 			assertEquals("I1", interf.getName());
 			assertNullOrEmpty(interf.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, interf.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, interf.getVisibility());
 			assertEquals(0, interf.getMembers().size());
 			assertFalse(interf.isAnonymous());
 			assertFalse(interf.isFinal());
@@ -1050,7 +1050,7 @@ public class InterfaceParsingTest {
 			//
 			assertEquals("I1", interf.getName());
 			assertNullOrEmpty(interf.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, interf.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, interf.getVisibility());
 			assertEquals(0, interf.getMembers().size());
 			assertFalse(interf.isAnonymous());
 			assertFalse(interf.isFinal());
@@ -1183,7 +1183,7 @@ public class InterfaceParsingTest {
 			//
 			assertEquals("I1", interf.getName());
 			assertNullOrEmpty(interf.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, interf.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, interf.getVisibility());
 			assertEquals(0, interf.getMembers().size());
 			assertFalse(interf.isAnonymous());
 			assertFalse(interf.isFinal());
@@ -1275,7 +1275,7 @@ public class InterfaceParsingTest {
 			//
 			assertEquals("I1", interf.getName());
 			assertNullOrEmpty(interf.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, interf.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, interf.getVisibility());
 			assertEquals(0, interf.getMembers().size());
 			assertFalse(interf.isAnonymous());
 			assertFalse(interf.isFinal());
@@ -1298,7 +1298,7 @@ public class InterfaceParsingTest {
 			//
 			assertEquals("I1", interf.getName());
 			assertNullOrEmpty(interf.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, interf.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, interf.getVisibility());
 			assertEquals(0, interf.getMembers().size());
 			assertFalse(interf.isAnonymous());
 			assertFalse(interf.isFinal());
@@ -1349,7 +1349,7 @@ public class InterfaceParsingTest {
 			//
 			assertEquals("I1", interf.getName());
 			assertNullOrEmpty(interf.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, interf.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, interf.getVisibility());
 			assertEquals(0, interf.getMembers().size());
 			assertFalse(interf.isAnonymous());
 			assertFalse(interf.isFinal());

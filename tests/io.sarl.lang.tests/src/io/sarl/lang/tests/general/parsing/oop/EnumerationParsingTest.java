@@ -771,7 +771,7 @@ public class EnumerationParsingTest {
 			assertNotNull(enumeration);
 			//
 			assertEquals("E1", enumeration.getName());
-			assertEquals(JvmVisibility.PROTECTED, enumeration.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, enumeration.getVisibility());
 			assertEquals(1, enumeration.getMembers().size());
 			assertFalse(enumeration.isAnonymous());
 			assertTrue(enumeration.isFinal());
@@ -864,7 +864,7 @@ public class EnumerationParsingTest {
 			assertNotNull(enumeration);
 			//
 			assertEquals("E1", enumeration.getName());
-			assertEquals(JvmVisibility.PROTECTED, enumeration.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, enumeration.getVisibility());
 			assertEquals(1, enumeration.getMembers().size());
 			assertFalse(enumeration.isAnonymous());
 			assertTrue(enumeration.isFinal());
@@ -1019,7 +1019,7 @@ public class EnumerationParsingTest {
 			assertNotNull(enumeration);
 			//
 			assertEquals("E1", enumeration.getName());
-			assertEquals(JvmVisibility.PROTECTED, enumeration.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, enumeration.getVisibility());
 			assertEquals(1, enumeration.getMembers().size());
 			assertFalse(enumeration.isAnonymous());
 			assertTrue(enumeration.isFinal());
@@ -1117,7 +1117,7 @@ public class EnumerationParsingTest {
 			assertNotNull(enumeration);
 			//
 			assertEquals("E1", enumeration.getName());
-			assertEquals(JvmVisibility.PROTECTED, enumeration.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, enumeration.getVisibility());
 			assertEquals(1, enumeration.getMembers().size());
 			assertFalse(enumeration.isAnonymous());
 			assertTrue(enumeration.isFinal());

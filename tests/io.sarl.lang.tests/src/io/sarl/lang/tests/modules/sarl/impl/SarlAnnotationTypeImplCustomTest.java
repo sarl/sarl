@@ -69,7 +69,7 @@ public class SarlAnnotationTypeImplCustomTest extends AbstractSarlTest {
 	@Test
 	public void default_visibility_in_behavior() throws Exception {
 		this.behavior.getMembers().add(this.annotationType);
-		assertEquals(JvmVisibility.PROTECTED, this.annotationType.getVisibility());
+		assertEquals(JvmVisibility.PUBLIC, this.annotationType.getVisibility());
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class SarlAnnotationTypeImplCustomTest extends AbstractSarlTest {
 	@Test
 	public void default_visibility_in_skill() throws Exception {
 		this.skill.getMembers().add(this.annotationType);
-		assertEquals(JvmVisibility.PROTECTED, this.annotationType.getVisibility());
+		assertEquals(JvmVisibility.PUBLIC, this.annotationType.getVisibility());
 	}
 
 	@Test

@@ -853,7 +853,7 @@ public class BehaviorParsingTest {
 			//
 			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
 			assertEquals("name", act1.getName());
-			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
 			assertFalse(act1.isAbstract());
 			assertFalse(act1.isStatic());
 			assertFalse(act1.isDispatch());
@@ -880,7 +880,7 @@ public class BehaviorParsingTest {
 			//
 			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
 			assertEquals("name", act1.getName());
-			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
 			assertTrue(act1.isAbstract());
 			assertFalse(act1.isStatic());
 			assertFalse(act1.isDispatch());
@@ -907,7 +907,7 @@ public class BehaviorParsingTest {
 			//
 			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
 			assertEquals("name", act1.getName());
-			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
 			assertTrue(act1.isAbstract());
 			assertFalse(act1.isStatic());
 			assertFalse(act1.isDispatch());
@@ -946,7 +946,7 @@ public class BehaviorParsingTest {
 			//
 			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
 			assertEquals("name", act1.getName());
-			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
 			assertFalse(act1.isAbstract());
 			assertFalse(act1.isStatic());
 			assertTrue(act1.isDispatch());
@@ -973,7 +973,7 @@ public class BehaviorParsingTest {
 			//
 			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
 			assertEquals("name", act1.getName());
-			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
 			assertFalse(act1.isAbstract());
 			assertFalse(act1.isStatic());
 			assertFalse(act1.isDispatch());
@@ -1036,7 +1036,7 @@ public class BehaviorParsingTest {
 			//
 			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
 			assertEquals("name", act1.getName());
-			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
 			assertFalse(act1.isAbstract());
 			assertFalse(act1.isStatic());
 			assertFalse(act1.isDispatch());
@@ -1088,7 +1088,7 @@ public class BehaviorParsingTest {
 			//
 			SarlAction act1 = (SarlAction) beh.getMembers().get(0);
 			assertEquals("name", act1.getName());
-			assertEquals(JvmVisibility.PROTECTED, act1.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, act1.getVisibility());
 			assertFalse(act1.isAbstract());
 			assertFalse(act1.isStatic());
 			assertTrue(act1.isDispatch());

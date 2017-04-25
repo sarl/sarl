@@ -69,7 +69,7 @@ public class SarlEnumerationImplCustomTest extends AbstractSarlTest {
 	@Test
 	public void default_visibility_in_behavior() throws Exception {
 		this.behavior.getMembers().add(this.enumerationType);
-		assertEquals(JvmVisibility.PROTECTED, this.enumerationType.getVisibility());
+		assertEquals(JvmVisibility.PUBLIC, this.enumerationType.getVisibility());
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class SarlEnumerationImplCustomTest extends AbstractSarlTest {
 	@Test
 	public void default_visibility_in_skill() throws Exception {
 		this.skill.getMembers().add(this.enumerationType);
-		assertEquals(JvmVisibility.PROTECTED, this.enumerationType.getVisibility());
+		assertEquals(JvmVisibility.PUBLIC, this.enumerationType.getVisibility());
 	}
 
 	@Test

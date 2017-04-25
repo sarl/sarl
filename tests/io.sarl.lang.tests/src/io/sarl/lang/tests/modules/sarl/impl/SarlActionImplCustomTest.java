@@ -69,7 +69,7 @@ public class SarlActionImplCustomTest extends AbstractSarlTest {
 	@Test
 	public void default_visibility_in_behavior() throws Exception {
 		this.behavior.getMembers().add(this.action);
-		assertEquals(JvmVisibility.PROTECTED, this.action.getVisibility());
+		assertEquals(JvmVisibility.PUBLIC, this.action.getVisibility());
 	}
 
 	@Test

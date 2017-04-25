@@ -1026,7 +1026,7 @@ public class ClassParsingTest {
 			//
 			assertEquals("C1", clazz.getName());
 			assertNull(clazz.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, clazz.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, clazz.getVisibility());
 			assertEquals(0, clazz.getMembers().size());
 			assertTrue(clazz.isAbstract());
 			assertFalse(clazz.isAnonymous());
@@ -1049,7 +1049,7 @@ public class ClassParsingTest {
 			//
 			assertEquals("C1", clazz.getName());
 			assertNull(clazz.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, clazz.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, clazz.getVisibility());
 			assertEquals(0, clazz.getMembers().size());
 			assertFalse(clazz.isAbstract());
 			assertFalse(clazz.isAnonymous());
@@ -1085,7 +1085,7 @@ public class ClassParsingTest {
 			//
 			assertEquals("C1", clazz.getName());
 			assertNull(clazz.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, clazz.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, clazz.getVisibility());
 			assertEquals(0, clazz.getMembers().size());
 			assertFalse(clazz.isAbstract());
 			assertFalse(clazz.isAnonymous());
@@ -1108,7 +1108,7 @@ public class ClassParsingTest {
 			//
 			assertEquals("C1", clazz.getName());
 			assertNull(clazz.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, clazz.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, clazz.getVisibility());
 			assertEquals(0, clazz.getMembers().size());
 			assertFalse(clazz.isAbstract());
 			assertFalse(clazz.isAnonymous());
@@ -1340,7 +1340,7 @@ public class ClassParsingTest {
 			//
 			assertEquals("C1", clazz.getName());
 			assertNull(clazz.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, clazz.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, clazz.getVisibility());
 			assertEquals(0, clazz.getMembers().size());
 			assertTrue(clazz.isAbstract());
 			assertFalse(clazz.isAnonymous());
@@ -1364,7 +1364,7 @@ public class ClassParsingTest {
 			//
 			assertEquals("C1", clazz.getName());
 			assertNull(clazz.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, clazz.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, clazz.getVisibility());
 			assertEquals(0, clazz.getMembers().size());
 			assertFalse(clazz.isAbstract());
 			assertFalse(clazz.isAnonymous());
@@ -1402,7 +1402,7 @@ public class ClassParsingTest {
 			//
 			assertEquals("C1", clazz.getName());
 			assertNull(clazz.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, clazz.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, clazz.getVisibility());
 			assertEquals(0, clazz.getMembers().size());
 			assertFalse(clazz.isAbstract());
 			assertFalse(clazz.isAnonymous());
@@ -1426,7 +1426,7 @@ public class ClassParsingTest {
 			//
 			assertEquals("C1", clazz.getName());
 			assertNull(clazz.getExtends());
-			assertEquals(JvmVisibility.PROTECTED, clazz.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, clazz.getVisibility());
 			assertEquals(0, clazz.getMembers().size());
 			assertFalse(clazz.isAbstract());
 			assertFalse(clazz.isAnonymous());

@@ -800,7 +800,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			assertNotNull(annotationType);
 			//
 			assertEquals("A1", annotationType.getName());
-			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
 			assertEquals(0, annotationType.getMembers().size());
 			assertFalse(annotationType.isAnonymous());
 			assertFalse(annotationType.isFinal());
@@ -880,7 +880,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			assertNotNull(annotationType);
 			//
 			assertEquals("A1", annotationType.getName());
-			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
 			assertEquals(0, annotationType.getMembers().size());
 			assertFalse(annotationType.isAnonymous());
 			assertFalse(annotationType.isFinal());
@@ -900,7 +900,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			assertNotNull(annotationType);
 			//
 			assertEquals("A1", annotationType.getName());
-			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
 			assertEquals(0, annotationType.getMembers().size());
 			assertFalse(annotationType.isAnonymous());
 			assertFalse(annotationType.isFinal());
@@ -1055,7 +1055,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			assertNotNull(annotationType);
 			//
 			assertEquals("A1", annotationType.getName());
-			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
 			assertEquals(0, annotationType.getMembers().size());
 			assertFalse(annotationType.isAnonymous());
 			assertFalse(annotationType.isFinal());
@@ -1139,7 +1139,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			assertNotNull(annotationType);
 			//
 			assertEquals("A1", annotationType.getName());
-			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
 			assertEquals(0, annotationType.getMembers().size());
 			assertFalse(annotationType.isAnonymous());
 			assertFalse(annotationType.isFinal());
@@ -1160,7 +1160,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 			assertNotNull(annotationType);
 			//
 			assertEquals("A1", annotationType.getName());
-			assertEquals(JvmVisibility.PROTECTED, annotationType.getVisibility());
+			assertEquals(JvmVisibility.PUBLIC, annotationType.getVisibility());
 			assertEquals(0, annotationType.getMembers().size());
 			assertFalse(annotationType.isAnonymous());
 			assertFalse(annotationType.isFinal());

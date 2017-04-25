@@ -31,9 +31,7 @@ import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtext.common.types.JvmVisibility;
 
 import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlEvent;
-import io.sarl.lang.sarl.SarlSkill;
 
 /** Provide the default visibility modifier for elements.
  *
@@ -71,67 +69,6 @@ public interface IDefaultVisibilityProvider {
 		return Objects.equals(getDefaultJvmVisibility(element), visibility);
 	}
 
-
-	/** Replies the default visibility of an action when inside the given container.
-	 *
-	 * @param container the container.
-	 * @return the default visibility.
-	 * @since 0.6
-	 */
-	static JvmVisibility getActionDefaultVisibilityIn(EObject container) {
-		if (container instanceof SarlSkill
-				|| container instanceof SarlBehavior
-				|| container instanceof SarlAgent) {
-			return JvmVisibility.PROTECTED;
-		}
-		return JvmVisibility.PUBLIC;
-	}
-
-	/** Replies the default visibility of an annotation type when inside the given container.
-	 *
-	 * @param container the container.
-	 * @return the default visibility.
-	 * @since 0.6
-	 */
-	static JvmVisibility getAnnotationTypeDefaultVisibilityIn(EObject container) {
-		if (container instanceof SarlSkill
-				|| container instanceof SarlBehavior
-				|| container instanceof SarlAgent) {
-			return JvmVisibility.PROTECTED;
-		}
-		return JvmVisibility.PUBLIC;
-	}
-
-	/** Replies the default visibility of a class when inside the given container.
-	 *
-	 * @param container the container.
-	 * @return the default visibility.
-	 * @since 0.6
-	 */
-	static JvmVisibility getClassDefaultVisibilityIn(EObject container) {
-		if (container instanceof SarlSkill
-				|| container instanceof SarlBehavior
-				|| container instanceof SarlAgent) {
-			return JvmVisibility.PROTECTED;
-		}
-		return JvmVisibility.PUBLIC;
-	}
-
-	/** Replies the default visibility of an enumeration when inside the given container.
-	 *
-	 * @param container the container.
-	 * @return the default visibility.
-	 * @since 0.6
-	 */
-	static JvmVisibility getEnumerationDefaultVisibilityIn(EObject container) {
-		if (container instanceof SarlSkill
-				|| container instanceof SarlBehavior
-				|| container instanceof SarlAgent) {
-			return JvmVisibility.PROTECTED;
-		}
-		return JvmVisibility.PUBLIC;
-	}
-
 	/** Replies the default visibility of a field when inside the given container.
 	 *
 	 * @param container the container.
@@ -147,6 +84,58 @@ public interface IDefaultVisibilityProvider {
 		return JvmVisibility.PRIVATE;
 	}
 
+	/** Replies the default visibility of an action when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.6
+	 */
+	static JvmVisibility getActionDefaultVisibilityIn(EObject container) {
+		if (container instanceof SarlAgent) {
+			return JvmVisibility.PROTECTED;
+		}
+		return JvmVisibility.PUBLIC;
+	}
+
+	/** Replies the default visibility of an annotation type when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.6
+	 */
+	static JvmVisibility getAnnotationTypeDefaultVisibilityIn(EObject container) {
+		if (container instanceof SarlAgent) {
+			return JvmVisibility.PROTECTED;
+		}
+		return JvmVisibility.PUBLIC;
+	}
+
+	/** Replies the default visibility of a class when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.6
+	 */
+	static JvmVisibility getClassDefaultVisibilityIn(EObject container) {
+		if (container instanceof SarlAgent) {
+			return JvmVisibility.PROTECTED;
+		}
+		return JvmVisibility.PUBLIC;
+	}
+
+	/** Replies the default visibility of an enumeration when inside the given container.
+	 *
+	 * @param container the container.
+	 * @return the default visibility.
+	 * @since 0.6
+	 */
+	static JvmVisibility getEnumerationDefaultVisibilityIn(EObject container) {
+		if (container instanceof SarlAgent) {
+			return JvmVisibility.PROTECTED;
+		}
+		return JvmVisibility.PUBLIC;
+	}
+
 	/** Replies the default visibility of an interface when inside the given container.
 	 *
 	 * @param container the container.
@@ -154,9 +143,7 @@ public interface IDefaultVisibilityProvider {
 	 * @since 0.6
 	 */
 	static JvmVisibility getInterfaceDefaultVisibilityIn(EObject container) {
-		if (container instanceof SarlSkill
-				|| container instanceof SarlBehavior
-				|| container instanceof SarlAgent) {
+		if (container instanceof SarlAgent) {
 			return JvmVisibility.PROTECTED;
 		}
 		return JvmVisibility.PUBLIC;

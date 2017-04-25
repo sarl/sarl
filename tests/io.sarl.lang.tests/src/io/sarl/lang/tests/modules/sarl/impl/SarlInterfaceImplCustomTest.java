@@ -69,7 +69,7 @@ public class SarlInterfaceImplCustomTest extends AbstractSarlTest {
 	@Test
 	public void default_visibility_in_behavior() throws Exception {
 		this.behavior.getMembers().add(this.interfaceType);
-		assertEquals(JvmVisibility.PROTECTED, this.interfaceType.getVisibility());
+		assertEquals(JvmVisibility.PUBLIC, this.interfaceType.getVisibility());
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class SarlInterfaceImplCustomTest extends AbstractSarlTest {
 	@Test
 	public void default_visibility_in_skill() throws Exception {
 		this.skill.getMembers().add(this.interfaceType);
-		assertEquals(JvmVisibility.PROTECTED, this.interfaceType.getVisibility());
+		assertEquals(JvmVisibility.PUBLIC, this.interfaceType.getVisibility());
 	}
 
 	@Test
