@@ -30,18 +30,26 @@ import java.util.TreeMap;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.xtend.core.xtend.XtendParameter;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.xbase.lib.Pair;
 
+import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.util.Utils;
 
 /**
@@ -68,6 +76,9 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Inject
 	private AnnotationLookup annotationFinder;
+
+	@Inject
+	private SARLAnnotationUtil annotationUtils;
 
 	/** Construct a provider of action prototypes.
 	 */
@@ -266,7 +277,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	public final InferredPrototype createPrototypeFromJvmModel(QualifiedActionName id,
 			boolean isVarargs, List<JvmFormalParameter> parameters) {
 		return createPrototype(id, isVarargs,
-				new JvmFormalParameterProvider(parameters, this.annotationFinder));
+				new JvmFormalParameterProvider(parameters, this.annotationFinder, this));
 	}
 
 	@Override
@@ -405,6 +416,42 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 			b.append(Utils.createNameForHiddenDefaultValueAttribute(id));
 		}
 		return b.toString();
+	}
+
+	@Override
+	public String extractDefaultValueString(JvmFormalParameter parameter) {
+		final String fieldId = this.annotationUtils.findStringValue(parameter, DefaultValue.class);
+		if (!Strings.isNullOrEmpty(fieldId)) {
+			final JvmDeclaredType container = EcoreUtil2.getContainerOfType(parameter, JvmDeclaredType.class);
+			if (container != null) {
+				final int index = fieldId.indexOf('#');
+				final JvmDeclaredType target;
+				final String fieldName;
+				if (index > 0) {
+					final JvmType type = this.references.findDeclaredType(fieldId.substring(0, index), container);
+					if (type instanceof JvmDeclaredType) {
+						target = (JvmDeclaredType) type;
+					} else {
+						target = container;
+					}
+					fieldName = Utils.createNameForHiddenDefaultValueAttribute(fieldId.substring(index + 1));
+				} else {
+					target = container;
+					fieldName = Utils.createNameForHiddenDefaultValueAttribute(fieldId);
+				}
+
+				final JvmField field = Iterables.find(target.getDeclaredFields(),
+						(it) -> Objects.equal(it.getSimpleName(), fieldName),
+						null);
+				if (field != null) {
+					final String value = this.annotationUtils.findStringValue(field, SarlSourceCode.class);
+					if (!Strings.isNullOrEmpty(fieldId)) {
+						return value;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 }

@@ -33,6 +33,7 @@ import io.sarl.lang.ide.contentassist.antlr.SARLParser;
 import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;
 import io.sarl.lang.ui.builder.EclipseGeneratorConfigProvider2;
 import io.sarl.lang.ui.builder.ProjectRelativeFileSystemAccess;
+import io.sarl.lang.ui.codebuilder.SarlCodeBuilderFactory;
 import io.sarl.lang.ui.codebuilder.SarlConstructorBuilder;
 import io.sarl.lang.ui.codebuilder.SarlFieldBuilder;
 import io.sarl.lang.ui.codebuilder.SarlMethodBuilder;
@@ -84,6 +85,7 @@ import org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry;
 import org.eclipse.xtend.ide.XtendResourceUiServiceProvider;
 import org.eclipse.xtend.ide.autoedit.AutoEditStrategyProvider;
 import org.eclipse.xtend.ide.builder.UIResourceChangeRegistry;
+import org.eclipse.xtend.ide.codebuilder.CodeBuilderFactory;
 import org.eclipse.xtend.ide.codebuilder.XtendConstructorBuilder;
 import org.eclipse.xtend.ide.codebuilder.XtendFieldBuilder;
 import org.eclipse.xtend.ide.codebuilder.XtendMethodBuilder;
@@ -560,6 +562,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IGeneratorConfigProvider2> bindIGeneratorConfigProvider2() {
 		return EclipseGeneratorConfigProvider2.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends CodeBuilderFactory> bindCodeBuilderFactory() {
+		return SarlCodeBuilderFactory.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

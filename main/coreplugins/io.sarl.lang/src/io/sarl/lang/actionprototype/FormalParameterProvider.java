@@ -74,10 +74,29 @@ public interface FormalParameterProvider {
 
 	/** Replies the default value of the formal parameter at the given position.
 	 *
+	 * <p>This function replies the Xbase expression for the default value.
+	 *
+	 * <p>If this function  replies {@code null}, the string representation of the
+	 * default value may be still available. See {@link #getFormalParameterDefaultValueString(int)}.
+	 *
 	 * @param position - the position of the formal parameter.
 	 * @return the default value, or <code>null</code> if none.
+	 * @see #getFormalParameterDefaultValueString(int)
 	 */
 	XExpression getFormalParameterDefaultValue(int position);
+
+	/** Replies the default value of the formal parameter at the given position.
+	 *
+	 * <p>This function replies the string representation of the default value.
+	 *
+	 * <p>If this function  replies {@code null} or an empty string of characters, the Xbase representation of the
+	 * default value may be still available. See {@link #getFormalParameterDefaultValue(int)}.
+	 *
+	 * @param position - the position of the formal parameter.
+	 * @return the default value, or <code>null</code> if none.
+	 * @see #getFormalParameterDefaultValue(int)
+	 */
+	String getFormalParameterDefaultValueString(int position);
 
 	/** Replies the formal parameter at the given position.
 	 *

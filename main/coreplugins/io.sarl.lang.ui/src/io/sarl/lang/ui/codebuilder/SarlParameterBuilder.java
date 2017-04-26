@@ -24,6 +24,7 @@ package io.sarl.lang.ui.codebuilder;
 import javax.inject.Inject;
 
 import org.eclipse.xtend.ide.codebuilder.XtendParameterBuilder;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.typesystem.references.ArrayTypeReference;
 
@@ -45,6 +46,24 @@ public class SarlParameterBuilder extends XtendParameterBuilder {
 	@Inject
 	private SARLGrammarKeywordAccess keywords;
 
+	private String defaultValue;
+
+	/** Replies the default value for the parameter.
+	 *
+	 * @return the default value, or {@code null}.
+	 */
+	public String getDefaultValue() {
+		return this.defaultValue;
+	}
+
+	/** Change the default value for the parameter.
+	 *
+	 * @param defaultValue the default value, or {@code null}.
+	 */
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
 	@Override
 	public ISourceAppender build(ISourceAppender appendable) {
 		appendModifiers(appendable);
@@ -57,6 +76,11 @@ public class SarlParameterBuilder extends XtendParameterBuilder {
 			appendable.append(this.keywords.getWildcardAsteriskKeyword());
 		} else  {
 			appendType(appendable, getType(), Object.class.getName());
+			final String defaultVal = getDefaultValue();
+			if (!Strings.isEmpty(defaultVal)) {
+				appendable.append(" ").append(this.keywords.getEqualsSignKeyword()); //$NON-NLS-1$
+				appendable.append(" ").append(defaultVal); //$NON-NLS-1$
+			}
 		}
 		return appendable;
 	}

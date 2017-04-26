@@ -175,4 +175,13 @@ public interface IActionPrototypeProvider {
 	 */
 	String toJavaArgument(String callerQualifiedName, String argumentSpecification);
 
+	/** Replies the default value of the formal parameter at the given position.
+	 *
+	 * <p>This function replies the string representation of the default value.
+	 *
+	 * @param parameter - the parameter for which the default valud should be extracted.
+	 * @return the default value, or <code>null</code> if none.
+	 */
+	String extractDefaultValueString(JvmFormalParameter parameter);
+
 }

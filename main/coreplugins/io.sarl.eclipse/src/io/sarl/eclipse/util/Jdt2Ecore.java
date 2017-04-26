@@ -799,6 +799,11 @@ public class Jdt2Ecore {
 		}
 
 		@Override
+		public String getFormalParameterDefaultValueString(int position) {
+			return null;
+		}
+
+		@Override
 		public EObject getFormalParameter(int position) {
 			throw new UnsupportedOperationException();
 		}

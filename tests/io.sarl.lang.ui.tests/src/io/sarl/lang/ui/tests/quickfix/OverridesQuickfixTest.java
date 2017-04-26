@@ -107,20 +107,19 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	def fct3 : boolean",
 						"}",
 						"skill S1 implements C1 {",
-						"",
+						"	",
 						"	override fct1 {",
-						"		// TODO Auto-generated code.",
+						"		throw new UnsupportedOperationException(\"TODO: auto-generated method stub\")",
 						"	}",
-						"",
-						"	override fct2(a : int) {",
-						"		// TODO Auto-generated code.",
+						"	",
+						"	override fct2(i : int) {",
+						"		throw new UnsupportedOperationException(\"TODO: auto-generated method stub\")",
 						"	}",
-						"",
+						"	",
 						"	override fct3 : boolean {",
-						"		// TODO Auto-generated code.",
-						"		true",
+						"		throw new UnsupportedOperationException(\"TODO: auto-generated method stub\")",
 						"	}",
-						"",
+						"	",
 						"}"));
 	}
 
@@ -148,11 +147,11 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	def fct(a : int*)",
 						"}",
 						"skill S1 implements C1 {",
-						"",
-						"	override fct(a : int*) {",
-						"		// TODO Auto-generated code.",
+						"	",
+						"	override fct(is : int*) {",
+						"		throw new UnsupportedOperationException(\"TODO: auto-generated method stub\")",
 						"	}",
-						"",
+						"	",
 						"}"));
 	}
 
@@ -183,15 +182,15 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	def fct2(b : String, c : double*)",
 						"}",
 						"skill S1 implements C1 {",
-						"",
-						"	override fct1(a : int*) {",
-						"		// TODO Auto-generated code.",
+						"	",
+						"	override fct1(is : int*) {",
+						"		throw new UnsupportedOperationException(\"TODO: auto-generated method stub\")",
 						"	}",
-						"",
-						"	override fct2(b : String, c : double*) {",
-						"		// TODO Auto-generated code.",
+						"	",
+						"	override fct2(string : String, ds : double*) {",
+						"		throw new UnsupportedOperationException(\"TODO: auto-generated method stub\")",
 						"	}",
-						"",
+						"	",
 						"}"));
 	}
 
@@ -219,11 +218,11 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	def fct(a : int = 4)",
 						"}",
 						"skill S1 implements C1 {",
-						"",
-						"	override fct(a : int = 4) {",
-						"		// TODO Auto-generated code.",
+						"	",
+						"	override fct(i : int = 4) {",
+						"		throw new UnsupportedOperationException(\"TODO: auto-generated method stub\")",
 						"	}",
-						"",
+						"	",
 						"}"));
 	}
 
@@ -251,11 +250,11 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	def fct(a : int = 4, b : String)",
 						"}",
 						"skill S1 implements C1 {",
-						"",
-						"	override fct(a : int = 4, b : String) {",
-						"		// TODO Auto-generated code.",
+						"	",
+						"	override fct(i : int = 4, string : String) {",
+						"		throw new UnsupportedOperationException(\"TODO: auto-generated method stub\")",
 						"	}",
-						"",
+						"	",
 						"}"));
 	}
 
@@ -309,11 +308,11 @@ public class OverridesQuickfixTest extends AbstractSARLQuickfixTest {
 						"	def fct(a : int = 4, b : String, c : int*)",
 						"}",
 						"skill S1 implements C1 {",
-						"",
-						"	override fct(a : int = 4, b : String, c : int*) {",
-						"		// TODO Auto-generated code.",
+						"	",
+						"	override fct(i : int = 4, string : String, js : int*) {",
+						"		throw new UnsupportedOperationException(\"TODO: auto-generated method stub\")",
 						"	}",
-						"",
+						"	",
 						"}"));
 	}
 

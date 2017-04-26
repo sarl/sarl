@@ -21,6 +21,7 @@
 
 package io.sarl.lang.actionprototype;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
@@ -45,13 +46,18 @@ class JvmFormalParameterProvider implements FormalParameterProvider {
 
 	private final AnnotationLookup annotationFinder;
 
+	private final WeakReference<IActionPrototypeProvider> prototypeProvider;
+
 	/**
 	 * @param parameters the list of the formal parameters.
 	 * @param annotationFinder the finder of annotations.
+	 * @param prototypeProvider the provider of prototype which generates this parameter provider.
 	 */
-	JvmFormalParameterProvider(List<JvmFormalParameter> parameters, AnnotationLookup annotationFinder) {
+	JvmFormalParameterProvider(List<JvmFormalParameter> parameters, AnnotationLookup annotationFinder,
+			IActionPrototypeProvider prototypeProvider) {
 		this.parameters = parameters;
 		this.annotationFinder = annotationFinder;
+		this.prototypeProvider = new WeakReference<>(prototypeProvider);
 	}
 
 	@Override
@@ -82,7 +88,17 @@ class JvmFormalParameterProvider implements FormalParameterProvider {
 
 	@Override
 	public XExpression getFormalParameterDefaultValue(int position) {
-		throw new UnsupportedOperationException();
+		return null;
+	}
+
+	@Override
+	public String getFormalParameterDefaultValueString(int position) {
+		final JvmFormalParameter parameter = this.parameters.get(position);
+		final IActionPrototypeProvider provider = this.prototypeProvider.get();
+		if (provider != null) {
+			return provider.extractDefaultValueString(parameter);
+		}
+		return null;
 	}
 
 	@Override

@@ -60,8 +60,14 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 import org.eclipse.xtext.xbase.ui.document.DocumentSourceAppender.Factory.OptionalParameters;
 
+import io.sarl.lang.actionprototype.FormalParameterProvider;
+import io.sarl.lang.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.actionprototype.InferredPrototype;
+import io.sarl.lang.actionprototype.QualifiedActionName;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.typesystem.SARLAnnotationUtil;
+import io.sarl.lang.ui.codebuilder.SarlParameterBuilder;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 import io.sarl.lang.util.Utils;
 
@@ -86,6 +92,12 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 
 	@Inject
 	private CommonTypeComputationServices services;
+
+	@Inject
+	private IActionPrototypeProvider actionPrototypeProvider;
+
+	@Inject
+	private SARLAnnotationUtil annotationUtils;
 
 	private MissedMethodAddModification(String[] operationUris) {
 		this.operationUris = operationUris;
@@ -138,7 +150,8 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 		final Map<String, JvmTypeReference> typeParameterMap = buildTypeParameterMapping(container);
 
 		for (final JvmOperation operation : tools.getJvmOperationsFromURIs(container, this.operationUris)) {
-			if (!isGeneratedOperation(operation)) {
+			if (this.annotationUtils.findAnnotation(operation, SyntheticMember.class.getName()) == null
+					&& !isGeneratedOperation(operation)) {
 
 				appendable.newLine().newLine();
 
@@ -156,8 +169,27 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 
 				builder.setVisibility(operation.getVisibility());
 				builder.setTypeParameters(cloneTypeParameters(operation.getTypeParameters()));
+
+				final QualifiedActionName qualifiedActionName = this.actionPrototypeProvider.createQualifiedActionName(
+						declaringType,
+						operation.getSimpleName());
+				final InferredPrototype prototype = this.actionPrototypeProvider.createPrototypeFromJvmModel(
+						qualifiedActionName,
+						operation.isVarArgs(),
+						operation.getParameters());
+				final FormalParameterProvider formalParameters = prototype.getFormalParameters();
+
+				int i = 0;
 				for (final JvmFormalParameter parameter : operation.getParameters()) {
-					builder.newParameterBuilder().setType(cloneTypeReference(parameter.getParameterType(), typeParameterMap));
+					final SarlParameterBuilder paramBuilder = (SarlParameterBuilder) builder.newParameterBuilder();
+					paramBuilder.setType(cloneTypeReference(parameter.getParameterType(), typeParameterMap));
+					if (formalParameters.hasFormalParameterDefaultValue(i)) {
+						final String defaultValue = formalParameters.getFormalParameterDefaultValueString(i);
+						if (defaultValue != null) {
+							paramBuilder.setDefaultValue(defaultValue);
+						}
+					}
+					++i;
 				}
 				builder.setVarArgsFlag(operation.isVarArgs());
 

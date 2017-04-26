@@ -91,6 +91,13 @@ class SarlFormalParameterProvider implements FormalParameterProvider {
 		return false;
 	}
 
+	/** {@inheritDoc}
+	 */
+	@Override
+	public String getFormalParameterDefaultValueString(int position) {
+		return null;
+	}
+
 	@Override
 	public XExpression getFormalParameterDefaultValue(int position) {
 		final XtendParameter parameter = this.parameters.get(position);

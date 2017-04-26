@@ -21,9 +21,12 @@
 
 package io.sarl.lang.ui.codebuilder;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.eclipse.xtend.core.xtend.XtendPackage;
+import org.eclipse.xtend.ide.codebuilder.AbstractParameterBuilder;
 import org.eclipse.xtend.ide.codebuilder.XtendMethodBuilder;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
@@ -85,8 +88,12 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 
 	@Override
 	protected ISourceAppender appendParameters(ISourceAppender appendable) {
-		if (getParameterBuilders().isEmpty()) {
+		final List<AbstractParameterBuilder> builders = getParameterBuilders();
+		if (builders.isEmpty()) {
 			return appendable;
+		}
+		if (isAbstractFlag()) {
+			((SarlParameterBuilder) builders.get(builders.size())).setDefaultValue(null);
 		}
 		return super.appendParameters(appendable);
 	}
