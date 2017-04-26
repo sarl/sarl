@@ -11,7 +11,7 @@
 	<artifactId>io.janusproject.kernel</artifactId>
 	<name>Janus Platform for Maven</name>
 	<version>2.0.6.0-SNAPSHOT</version>
-	
+
 	<properties>
 		<cliRunnerName>janus</cliRunnerName>
 		<cliRunnerMainClass>io.janusproject.Boot</cliRunnerMainClass>
@@ -67,6 +67,12 @@
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>vmutils</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.xtext</groupId>
+					<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
