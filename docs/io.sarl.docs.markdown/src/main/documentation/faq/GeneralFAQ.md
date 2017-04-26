@@ -204,6 +204,21 @@ Two ways are available for solving this issue:
 [:Fact:]("[:compiler.level!]".shouldBeAtLeastJava)
 
 
+### Why does the content assistant not propose any suggestion on MacOS?
+
+By default in the SARL product, the shortcut key for invoking the content assistant is `Ctrl+Space` or `Apple+Space`.
+But, the Spotlight tool on MacOS is also using the same shortcut key.
+
+For enabling the SARL product content assist, we recommend to change its shortcut in the SARL product. Go to:
+
+* Window > Preferences
+* General > Keys
+* Content Assist
+* Change the shortcut key
+
+![Content assist shortcut change](./ctrlspaceprefs.png)
+
+
 ## Contribute to SARL
 
 ### Where are the sources for SARL?
