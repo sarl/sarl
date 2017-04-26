@@ -152,6 +152,7 @@ Style specifications are provided for:
 
 * link:./formatting-styles/prettify/lang-sarl.js[Google Prettify]
 * link:./formatting-styles/gtk/sarl.lang[Gtk source view] (including gedit)
+* link:./formatting-styles/pygments/sarlexer/sarl.py[Pygments]
 * link:./formatting-styles/source-highlight/sarl.lang[GNU source-highlight]
 * link:./formatting-styles/latex/sarl-beamer-listing.sty[LaTeX Beamer]
 * LaTeX listing: link:./formatting-styles/latex/sarl-listing.sty[monochrom], link:./formatting-styles/latex/sarl-colorized-listing.sty[color]
