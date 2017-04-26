@@ -57,7 +57,14 @@
 
 * [Basic Object-Oriented Programming Support](./reference/OOP.md)
 
-## Documentation Contributions
+## Other Tools
+
+### Syntax Highlightning
+
+* [Syntax highlighting styles for SARL inside other tools](./tools/SyntaxHighlightning.md)
+
+
+## Documentation Format
 
 * [Specific Markdown format for the documentation](./DocumentationContribution.md)
 
