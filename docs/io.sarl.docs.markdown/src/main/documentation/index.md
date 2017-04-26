@@ -63,6 +63,10 @@
 
 * [Syntax highlighting styles for SARL inside other tools](./tools/SyntaxHighlightning.md)
 
+### Command Line Tools
+
+* [sarlc](./tools/Sarlc.md): command-line SARL compiler.
+* [janus](./tools/Janus.md): launching SARL agents with the Janus platform.
 
 ## Documentation Format
 
