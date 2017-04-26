@@ -167,7 +167,7 @@
 
 			<properties>
 				<!-- Properties relative to the distant host where to upload the repo -->
-				<p2UploadFolder>${local.p2.repository.path}</p2UploadFolder>
+				<p2UploadFolder>${env.UPDATESSARLIO_URL}</p2UploadFolder>
 				<!-- Relative path to the repo being uploaded -->
 				<p2RepoPath>${project.build.directory}/repository/</p2RepoPath>
 			</properties>
@@ -186,6 +186,7 @@
 									<goal>upload</goal>
 								</goals>
 								<configuration>
+									<serverId>io.sarl.updates</serverId>
 									<fromDir>${p2RepoPath}</fromDir>
 									<includes>**</includes>
 									<toDir>${p2UploadToDir}</toDir>

@@ -65,10 +65,6 @@
 		<copyrighters>the original authors or authors</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
-		<!-- Local path to the Maven repository -->
-		<local.maven.repository.path>file:///var/www/sarl-maven-repository/</local.maven.repository.path>
-		<!-- Local path to the P2 repository -->
-		<local.p2.repository.path>file:///var/www/sarl-p2-repository/</local.p2.repository.path>
 	</properties>
 
 	<!-- ======================================= -->
@@ -175,12 +171,12 @@
 
 	<distributionManagement>
 		<repository>
-			<id>local-release-repository</id>
-			<url>${local.maven.repository.path}</url>
+			<id>io.sarl.maven</id>
+			<url>${env.MAVENSARLIO_URL}</url>
 		</repository>
 		<snapshotRepository>
-			<id>local-repository</id>
-			<url>${local.maven.repository.path}</url>
+			<id>io.sarl.maven</id>
+			<url>${env.MAVENSARLIO_URL}</url>
 		</snapshotRepository>
 	</distributionManagement>
 
@@ -388,6 +384,13 @@
 	<!-- ======================================= -->
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>2.12</version>
+			</extension>
+		</extensions>
 		<pluginManagement>
 			<plugins>
 				<plugin>
