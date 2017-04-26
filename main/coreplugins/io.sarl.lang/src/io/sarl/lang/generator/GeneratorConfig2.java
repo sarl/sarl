@@ -21,7 +21,6 @@
 
 package io.sarl.lang.generator;
 
-import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 
@@ -32,7 +31,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.4
- * @see Inline
  */
 public class GeneratorConfig2 {
 

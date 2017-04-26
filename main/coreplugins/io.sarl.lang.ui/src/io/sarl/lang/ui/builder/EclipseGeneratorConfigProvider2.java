@@ -28,7 +28,6 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 import org.eclipse.xtext.util.Pair;
-import org.eclipse.xtext.xbase.lib.Inline;
 
 import io.sarl.lang.generator.GeneratorConfig2;
 import io.sarl.lang.generator.IGeneratorConfigProvider2;
@@ -42,7 +41,6 @@ import io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.4
- * @see Inline
  */
 public class EclipseGeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 

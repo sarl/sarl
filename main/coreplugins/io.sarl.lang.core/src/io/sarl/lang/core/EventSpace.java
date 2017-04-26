@@ -60,6 +60,8 @@ public interface EventSpace extends Space {
 	 * @param event - the event to emit in the space.
 	 */
 	@Inline(value = "emit($1, null)")
-	void emit(Event event);
+	default void emit(Event event) {
+		emit(event, null);
+	}
 
 }

@@ -36,7 +36,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.util.internal.EmfAdaptable;
-import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 
@@ -47,7 +46,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.4
- * @see Inline
  */
 public class GeneratorConfigProvider2 implements IGeneratorConfigProvider2 {
 

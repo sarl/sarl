@@ -123,7 +123,6 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 *
 	 * @param event - the event to emit.
 	 * @param scope - description of the scope of the event, i.e. the receivers of the event.
-	 * @see #emit(Event)
 	 */
 	public final void emit(Event event, Scope<Address> scope) {
 		assert event != null;
@@ -137,18 +136,6 @@ public abstract class AbstractEventSpace extends SpaceBase {
 			this.logger.error(Messages.AbstractEventSpace_0, event, scope, e);
 		}
 
-	}
-
-	/**
-	 * Emit the given event.
-	 *
-	 * <p>This function emits on the internal event bus of the agent (call to {@link #doEmit(Event, Scope)}), and on the network.
-	 *
-	 * @param event - the event to emit.
-	 * @see #emit(Event, Scope)
-	 */
-	public final void emit(Event event) {
-		emit(event, null);
 	}
 
 	/**

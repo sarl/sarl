@@ -22,7 +22,6 @@
 package io.sarl.lang.generator;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.xbase.lib.Inline;
 
 
 /** Provider of a generator configuration v2.
@@ -32,7 +31,6 @@ import org.eclipse.xtext.xbase.lib.Inline;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.4
- * @see Inline
  */
 @FunctionalInterface
 public interface IGeneratorConfigProvider2 {

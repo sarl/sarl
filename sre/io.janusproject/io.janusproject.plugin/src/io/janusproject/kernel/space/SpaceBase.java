@@ -49,8 +49,13 @@ public abstract class SpaceBase implements Space, NetworkEventReceivingListener 
 		this.id = id;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @deprecated see {@link #getSpaceID()}.
+	 */
 	@Override
 	@Inline("getSpaceID()")
+	@Deprecated
 	public final SpaceID getID() {
 		return getSpaceID();
 	}
