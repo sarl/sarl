@@ -2116,12 +2116,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					context.getPostFinalizationElements().add(() -> {
 						final String inlineExpression = Utils.HIDDEN_MEMBER_CHARACTER
 								+ "castSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
-								+ ".class, (this." + fieldName //$NON-NLS-1$
-								+ " == null || this." + fieldName //$NON-NLS-1$
-								+ ".get() == null) ? (this." + fieldName //$NON-NLS-1$
-								+ " = " + Utils.HIDDEN_MEMBER_CHARACTER + "getSkill(" //$NON-NLS-1$ //$NON-NLS-2$
+								+ ".class, ($0" + fieldName //$NON-NLS-1$
+								+ " == null || $0" + fieldName //$NON-NLS-1$
+								+ ".get() == null) ? ($0" + fieldName //$NON-NLS-1$
+								+ " = $0" + Utils.HIDDEN_MEMBER_CHARACTER + "getSkill(" //$NON-NLS-1$ //$NON-NLS-2$
 								+ capacityType.getSimpleName()
-								+ ".class)) : this." + fieldName + ")"; //$NON-NLS-1$ //$NON-NLS-2$;
+								+ ".class)) : $0" + fieldName + ")"; //$NON-NLS-1$ //$NON-NLS-2$;
 						this.inlineExpressionCompiler.appendInlineAnnotation(
 								operation, source.eResource().getResourceSet(), inlineExpression, capacityType);
 					});

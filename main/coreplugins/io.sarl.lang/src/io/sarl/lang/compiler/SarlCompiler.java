@@ -75,6 +75,9 @@ import io.sarl.lang.sarl.SarlBreakExpression;
  * <p>Additionally, this compiler supports the Inline annotation for non-static calls, by skipping the left
  * operand of a member feature call when the inline expression is constant.
  *
+ * <p>This compiler supports also the "$0" parameter in inline expression. This parameter represents the
+ * current receiver, e.g. "this.".
+ *
  * <p>The compiler supports the SARL keywords too: break.
  *
  * @author $Author: sgalland$
@@ -228,31 +231,39 @@ public class SarlCompiler extends XtendCompiler {
 				target.append(INLINE_VARIABLE_PREFIX);
 			} else {
 				final int index = Integer.parseInt(indexOrDollar) - 1;
-				final int numberImports = importedTypes.size();
-				final int numberFormalParametersImports = numberFormalParameters + numberImports;
-				if (numberVariadicParameter != 0 && index < arguments.size() && index == (numberFormalParameters - 1)) {
-					XExpression argument = arguments.get(index);
-					appendArgument(argument, target, index > 0);
-					for (int i = index + 1; i < arguments.size(); ++i) {
-						target.append(", "); //$NON-NLS-1$
-						argument = arguments.get(i);
-						appendArgument(argument, target, true);
+				// Treat the $0 parameter in the inline expression
+				if (index < 0) {
+					final boolean hasReceiver = appendReceiver(call, target, true);
+					if (hasReceiver) {
+						target.append("."); //$NON-NLS-1$
 					}
-				} else if (index > numberFormalParametersImports) {
-					final List<LightweightTypeReference> typeArguments = resolvedTypes.getActualTypeArguments(call);
-					final LightweightTypeReference typeArgument = typeArguments.get(index - numberFormalParametersImports - 1);
-					serialize(typeArgument.getRawTypeReference().toTypeReference(), call, target);
-				} else if (index >= numberFormalParameters && index < numberFormalParametersImports) {
-					serialize(importedTypes.get(index - numberFormalParameters), call, target);
-				} else if (index == numberFormalParametersImports) {
-					appendTypeArguments(call, target);
-				} else if (index < arguments.size()) {
-					final XExpression argument = arguments.get(index);
-					appendArgument(argument, target, index > 0);
-				} else if (formalVariadicParameter != null) {
-					appendNullValue(formalVariadicParameter.getParameterType(), calledFeature, target);
 				} else {
-					throw new IllegalStateException();
+					final int numberImports = importedTypes.size();
+					final int numberFormalParametersImports = numberFormalParameters + numberImports;
+					if (numberVariadicParameter != 0 && index < arguments.size() && index == (numberFormalParameters - 1)) {
+						XExpression argument = arguments.get(index);
+						appendArgument(argument, target, index > 0);
+						for (int i = index + 1; i < arguments.size(); ++i) {
+							target.append(", "); //$NON-NLS-1$
+							argument = arguments.get(i);
+							appendArgument(argument, target, true);
+						}
+					} else if (index > numberFormalParametersImports) {
+						final List<LightweightTypeReference> typeArguments = resolvedTypes.getActualTypeArguments(call);
+						final LightweightTypeReference typeArgument = typeArguments.get(index - numberFormalParametersImports - 1);
+						serialize(typeArgument.getRawTypeReference().toTypeReference(), call, target);
+					} else if (index >= numberFormalParameters && index < numberFormalParametersImports) {
+						serialize(importedTypes.get(index - numberFormalParameters), call, target);
+					} else if (index == numberFormalParametersImports) {
+						appendTypeArguments(call, target);
+					} else if (index < arguments.size()) {
+						final XExpression argument = arguments.get(index);
+						appendArgument(argument, target, index > 0);
+					} else if (formalVariadicParameter != null) {
+						appendNullValue(formalVariadicParameter.getParameterType(), calledFeature, target);
+					} else {
+						throw new IllegalStateException();
+					}
 				}
 			}
 			prevEnd = matcher.end();
