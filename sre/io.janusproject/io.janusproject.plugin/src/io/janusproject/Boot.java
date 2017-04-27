@@ -594,7 +594,7 @@ public final class Boot {
 	public static String getProgramName() {
 		String programName = JanusConfig.getSystemProperty(JanusConfig.JANUS_PROGRAM_NAME, null);
 		if (Strings.isNullOrEmpty(programName)) {
-			programName = Boot.class.getName();
+			programName = JanusConfig.JANUS_PROGRAM_NAME_VALUE;
 		}
 		return programName;
 	}
