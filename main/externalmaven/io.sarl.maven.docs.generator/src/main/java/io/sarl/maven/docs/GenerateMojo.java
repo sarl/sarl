@@ -100,7 +100,7 @@ public class GenerateMojo extends AbstractDocumentationMojo {
 	}
 
 	@Override
-	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException {
+	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException, IOException {
 		final AbstractMarkerLanguageParser parser = super.createLanguageParser(inputFile);
 		if (parser instanceof MarkdownParser) {
 			final MarkdownParser mdParser = (MarkdownParser) parser;

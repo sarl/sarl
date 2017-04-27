@@ -67,6 +67,7 @@ import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
+import io.sarl.maven.docs.testing.ScriptExecutor;
 
 /** Generator of the marker language files for the modified marker language for SARL.
  *
@@ -108,6 +109,8 @@ public class SarlDocumentationParser {
 
 	private String languageName;
 
+	private ScriptExecutor scriptExecutor;
+
 	/** Constructor.
 	 */
 	public SarlDocumentationParser() {
@@ -141,6 +144,23 @@ public class SarlDocumentationParser {
 			}
 		}
 		this.languageName = null;
+	}
+
+	/** Change the script executor.
+	 *
+	 * @param executor the script executor.
+	 */
+	@Inject
+	public void setScriptExecutor(ScriptExecutor executor) {
+		this.scriptExecutor = executor;
+	}
+
+	/** Replies the script executor.
+	 *
+	 * @return the script executor.
+	 */
+	public ScriptExecutor getScriptExecutor() {
+		return this.scriptExecutor;
 	}
 
 	/** Replies the fenced code block formatter.
@@ -622,6 +642,7 @@ public class SarlDocumentationParser {
 	 */
 	public String transform(CharSequence content, File inputFile) {
 		final ParsingContext rootContextForReplacements = new ParsingContext();
+		initializeContext(rootContextForReplacements);
 		CharSequence rawContent = content;
 		Stage stage = Stage.first();
 		do {
@@ -709,6 +730,7 @@ public class SarlDocumentationParser {
 			}
 		});
 		final ParsingContext rootContextForReplacements = new ParsingContext(true);
+		initializeContext(rootContextForReplacements);
 		parse(content, inputFile, 0, Stage.FIRST, rootContextForReplacements, interceptor);
 		//
 		// STEP 2: Do macro replacement in the captured elements.
@@ -724,6 +746,16 @@ public class SarlDocumentationParser {
 		}
 
 		observer.apply(components);
+	}
+
+
+	/** Initialize the given context.
+	 *
+	 * @param context the context.
+	 */
+	protected void initializeContext(ParsingContext context) {
+		context.setLineNo(1);
+		context.setScriptExecutor(getScriptExecutor());
 	}
 
 	/** Parse the given source text.
@@ -1084,6 +1116,8 @@ public class SarlDocumentationParser {
 
 		private String outputLanguage;
 
+		private ScriptExecutor scriptExecutor;
+
 		/** Constructor with standard visibility configuration.
 		 */
 		public ParsingContext() {
@@ -1098,6 +1132,22 @@ public class SarlDocumentationParser {
 		 */
 		public ParsingContext(boolean forceVisibility) {
 			this.forceVisibility = forceVisibility;
+		}
+
+		/** Change the script executor.
+		 *
+		 * @param executor the script executor.
+		 */
+		public void setScriptExecutor(ScriptExecutor executor) {
+			this.scriptExecutor = executor;
+		}
+
+		/** Replies the script executor.
+		 *
+		 * @return the script executor.
+		 */
+		public ScriptExecutor getScriptExecutor() {
+			return this.scriptExecutor;
 		}
 
 		/** Change the name of the language.
@@ -1250,6 +1300,7 @@ public class SarlDocumentationParser {
 			this.isVisibleInblock = parentContext.isVisibleInblock;
 			this.forceVisibility = parentContext.forceVisibility;
 			this.lineno = parentContext.lineno;
+			this.scriptExecutor = parentContext.scriptExecutor;
 		}
 
 		/** Declare a replacement.
@@ -1945,6 +1996,72 @@ public class SarlDocumentationParser {
 			}
 		},
 
+		/** {@code [:Dynamic:](code)} returns the text to put in the documentation text.
+		 */
+		DYNAMIC {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_DYNAMIC_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return true;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				if (context.isInBlock()) {
+					reportError(context, Messages.SarlDocumentationParser_5, name());
+					return null;
+				}
+				String code = parameter;
+				if (Strings.isNullOrEmpty(code)) {
+					code = blockValue;
+				}
+				if (!Strings.isNullOrEmpty(code)) {
+					final ScriptExecutor executor = context.getScriptExecutor();
+					if (executor != null) {
+						try {
+							final Object result = executor.execute(context.getLineNo(), code);
+							if (result != null) {
+								final String stringResult = Strings.nullToEmpty(Objects.toString(result));
+								return stringResult;
+							}
+						} catch (Exception exception) {
+							Throwables.propagate(exception);
+						}
+					}
+				}
+				return ""; //$NON-NLS-1$
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
 		/** {@code [:On]} switches on the output of the code.
 		 */
 		ON {
@@ -2565,6 +2682,10 @@ public class SarlDocumentationParser {
 		/** Default pattern.
 		 */
 		static final String DEFAULT_FACT_PATTERN = "\\[:Fact:\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_DYNAMIC_PATTERN = "\\[:Dynamic:\\]"; //$NON-NLS-1$
 
 		/** Default pattern.
 		 */

@@ -46,8 +46,9 @@ public class DocumentationImplicitlyImportedFeatures extends SARLImplicitlyImpor
 	protected List<Class<?>> getExtensionClasses() {
 		final List<Class<?>> xtextList = super.getExtensionClasses();
 		// Insert at the beginning for ensuring the SARL extension is selected before any Xtext extension.
+		xtextList.add(0, MarkdownExtensions.class);
+		xtextList.add(0, FactExtensions.class);
 		xtextList.add(0, ShouldExtensions.class);
-		xtextList.add(1, FactExtensions.class);
 		return xtextList;
 	}
 

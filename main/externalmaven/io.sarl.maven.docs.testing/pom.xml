@@ -22,9 +22,13 @@
 			<artifactId>io.sarl.maven.batchcompiler</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>io.janusproject</groupId>
+			<artifactId>io.janusproject.kernel</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<scope>runtime</scope>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>

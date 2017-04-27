@@ -59,14 +59,16 @@ import org.apache.maven.toolchain.java.JavaToolChain;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.xtext.Constants;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 
-import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.maven.docs.markdown.MarkdownParser;
 import io.sarl.maven.docs.parser.AbstractMarkerLanguageParser;
 import io.sarl.maven.docs.parser.SarlDocumentationParser;
 import io.sarl.maven.docs.parser.SarlDocumentationParser.ParsingException;
+import io.sarl.maven.docs.testing.DocumentationSetup;
+import io.sarl.maven.docs.testing.ScriptExecutor;
 
 /** Abstract Maven MOJO for the documentation of the SARL project.
  *
@@ -77,6 +79,7 @@ import io.sarl.maven.docs.parser.SarlDocumentationParser.ParsingException;
  * @since 0.6
  */
 public abstract class AbstractDocumentationMojo extends AbstractMojo {
+
 	/** Name of the default source directory.
 	 */
 	public static final String DEFAULT_SOURCE_DIRECTORY = "src/main/documentation"; //$NON-NLS-1$
@@ -145,6 +148,12 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	@Parameter(defaultValue = "false", required = false)
 	protected boolean githubExtension;
 
+	/**
+	 * Java version number to support.
+	 */
+	@Parameter(required = false)
+	protected String source;
+
 	/** Injector.
 	 */
 	protected Injector injector;
@@ -199,7 +208,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		}
 
 		getLog().info(Messages.AbstractDocumentationMojo_0);
-		this.injector = SARLStandaloneSetup.doSetup();
+		this.injector = DocumentationSetup.doSetup();
 		assert this.injector != null;
 
 		if (this.reflect == null) {
@@ -352,8 +361,9 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @param inputFile the file to be parsed.
 	 * @return the parser.
 	 * @throws MojoExecutionException if the parser cannot be created.
+	 * @throws IOException if a classpath entry cannot be found.
 	 */
-	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException {
+	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException, IOException {
 		final AbstractMarkerLanguageParser parser;
 		if (isFileExtension(inputFile, MarkdownParser.MARKDOWN_FILE_EXTENSIONS)) {
 			parser = this.injector.getInstance(MarkdownParser.class);
@@ -361,7 +371,32 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 			throw new MojoExecutionException(MessageFormat.format(Messages.AbstractDocumentationMojo_3, inputFile));
 		}
 		parser.setGithubExtensionEnable(this.githubExtension);
+
 		final SarlDocumentationParser internalParser = parser.getDocumentParser();
+
+		final ScriptExecutor scriptExecutor = internalParser.getScriptExecutor();
+		final StringBuilder cp = new StringBuilder();
+		for (final File cpElement : getClassPath()) {
+			if (cp.length() > 0) {
+				cp.append(":"); //$NON-NLS-1$
+			}
+			cp.append(cpElement.getAbsolutePath());
+		}
+		scriptExecutor.setClassPath(cp.toString());
+		final String bootPath = getBootClassPath();
+		if (!Strings.isEmpty(bootPath)) {
+			scriptExecutor.setBootClassPath(bootPath);
+		}
+		JavaVersion version = null;
+		if (!Strings.isEmpty(this.source)) {
+			version = JavaVersion.fromQualifier(this.source);
+		}
+		if (version == null) {
+			version = JavaVersion.JAVA8;
+		}
+		scriptExecutor.setJavaSourceVersion(version.getQualifier());
+		scriptExecutor.setTempFolder(this.tempDirectory.getAbsoluteFile());
+
 		internalParser.addPropertyProvider(createProjectProperties());
 		internalParser.addPropertyProvider(this.session.getCurrentProject().getProperties());
 		internalParser.addPropertyProvider(this.session.getUserProperties());

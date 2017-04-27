@@ -91,7 +91,7 @@
 					<addSectionLabels>true</addSectionLabels>
 					<outlineStyleId>page_outline</outlineStyleId>
 
-					<!-- <testSourceDirectory>src/test/generated</testSourceDirectory> -->
+					<!--  <testSourceDirectory>src/main/generated-sources</testSourceDirectory>  -->
 				</configuration>
 			</plugin>
 		</plugins>

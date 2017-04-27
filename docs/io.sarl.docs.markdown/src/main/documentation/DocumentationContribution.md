@@ -116,6 +116,21 @@ If you want to avoid the generation of a Markdown block around the captured text
 This protection is implicit in the parameters and the content of the other macros that are described on this page.
 
 
+### Dynamic generation of the Markdown text
+
+Sometimes, it is useful to create the Markdown text via a script in order to introduce dynamic building of the documentation.
+The following macro provides you the ability to run a SARL script for generating the documentation.
+
+[:ParserOff]
+```text
+[:Dynamic:](expression)
+```
+[:ParserOn]
+
+The `Dynamic` macro is supposed to replies a value that could be interpreted as a string of characters.
+The given string of characters will replace the `Dynamic` macro into the generated Markdown text.
+
+
 ### Generate code from Java type
 
 You could generate a piece of code from a Java type with the following macro:

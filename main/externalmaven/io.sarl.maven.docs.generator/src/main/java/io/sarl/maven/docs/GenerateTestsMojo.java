@@ -34,7 +34,6 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +43,7 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
-import com.google.common.io.Files;
 import com.google.inject.Injector;
-import org.apache.log4j.Level;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -55,16 +52,11 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.settings.Proxy;
 import org.arakhne.afc.util.ListUtil;
 import org.arakhne.afc.vmutil.FileSystem;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.compiler.output.FakeTreeAppendable;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
-import org.eclipse.xtext.xbase.interpreter.IEvaluationResult;
-import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.ComparisonFailure;
@@ -74,11 +66,6 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
-import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
-import io.sarl.lang.compiler.batch.SarlBatchCompiler;
-import io.sarl.lang.sarl.SarlClass;
-import io.sarl.lang.sarl.SarlField;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.util.Utils;
 import io.sarl.maven.docs.markdown.MarkdownParser;
 import io.sarl.maven.docs.parser.AbstractMarkerLanguageParser;
@@ -86,6 +73,7 @@ import io.sarl.maven.docs.parser.DynamicValidationComponent;
 import io.sarl.maven.docs.parser.DynamicValidationContext;
 import io.sarl.maven.docs.parser.ValidationComponent;
 import io.sarl.maven.docs.testing.DocumentationSetup;
+import io.sarl.maven.docs.testing.ScriptExecutor;
 
 /** Maven MOJO that is generating the documentation tests for the SARL project.
  *
@@ -100,12 +88,6 @@ import io.sarl.maven.docs.testing.DocumentationSetup;
 public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 	private static final String BASE_PACKAGE = "io.sarl.maven.docs"; //$NON-NLS-1$
-
-	/**
-	 * Java version number to support.
-	 */
-	@Parameter(required = false)
-	protected String source;
 
 	/**
 	 * Indicates if the references to the local files should be validated.
@@ -166,7 +148,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 	}
 
 	@Override
-	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException {
+	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException, IOException {
 		final AbstractMarkerLanguageParser parser = super.createLanguageParser(inputFile);
 		if (parser instanceof MarkdownParser) {
 			final MarkdownParser mdParser = (MarkdownParser) parser;
@@ -264,7 +246,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.newLine();
 			it.append("public void ").append(actionName).append("() throws Exception {"); //$NON-NLS-1$ //$NON-NLS-2$
 			it.increaseIndentation().newLine();
-			it.append(List.class).append("<String> issues = compile(\""); //$NON-NLS-1$
+			it.append(List.class).append("<String> issues = getScriptExecutor().compile("); //$NON-NLS-1$
+			it.append(Integer.toString(component.getLineno())).append(", \""); //$NON-NLS-1$
 			it.append(Strings.convertToJavaString(component.getCode()));
 			it.append("\");"); //$NON-NLS-1$
 			it.newLine();
@@ -282,7 +265,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.newLine();
 			it.append("public void ").append(actionName).append("() throws Exception {"); //$NON-NLS-1$ //$NON-NLS-2$
 			it.increaseIndentation().newLine();
-			it.append(List.class).append("<String> issues = compile(\""); //$NON-NLS-1$
+			it.append(List.class).append("<String> issues = getScriptExecutor().compile("); //$NON-NLS-1$
+			it.append(Integer.toString(component.getLineno())).append(", \""); //$NON-NLS-1$
 			it.append(Strings.convertToJavaString(component.getCode()));
 			it.append("\");"); //$NON-NLS-1$
 			it.newLine();
@@ -307,7 +291,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.newLine();
 			it.append("try {"); //$NON-NLS-1$
 			it.increaseIndentation().newLine();
-			it.append("result = execute(").append(Integer.toString(component.getLineno())); //$NON-NLS-1$
+			it.append("result = getScriptExecutor().execute(").append(Integer.toString(component.getLineno())); //$NON-NLS-1$
 			it.append(", \"").append(Strings.convertToJavaString(component.getCode())); //$NON-NLS-1$
 			it.append("\");"); //$NON-NLS-1$
 			it.decreaseIndentation().newLine();
@@ -383,95 +367,17 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		it.append("protected static String STR_FAILURE = \"failure\";"); //$NON-NLS-1$
 		it.newLine();
 		it.append("protected static String STR_FACT = \"fact\";"); //$NON-NLS-1$
-		it.newLine();
+		it.newLine().newLine();
 		it.append("private static ").append(Injector.class).append(" injector = "); //$NON-NLS-1$ //$NON-NLS-2$
 		it.append(DocumentationSetup.class).append(".doSetup();"); //$NON-NLS-1$
-		it.newLine();
-		it.append("private static ").append(File.class).append(" createFile("); //$NON-NLS-1$ //$NON-NLS-2$
-		it.append(File.class).append(" sourceFolder, String content) throws ").append(IOException.class).append(" {"); //$NON-NLS-1$ //$NON-NLS-2$
+		it.newLine().newLine();
+		it.append("private ").append(ScriptExecutor.class).append(" scriptExecutor;"); //$NON-NLS-1$ //$NON-NLS-2$
+		it.newLine().newLine();
+		it.append("protected ").append(ScriptExecutor.class).append(" getScriptExecutor() {"); //$NON-NLS-1$ //$NON-NLS-2$
 		it.increaseIndentation().newLine();
-		it.append(File.class).append(" file = new ").append(File.class).append("(sourceFolder, \"test."); //$NON-NLS-1$ //$NON-NLS-2$
-		it.append(this.targetLanguageFileExtension).append("\");"); //$NON-NLS-1$
-		it.newLine();
-		it.append("file.getParentFile().mkdirs();"); //$NON-NLS-1$
-		it.newLine();
-		it.append(Files.class).append(".write(content.getBytes(), file);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("return file;"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.newLine();
-		it.append("private static ").append(File.class).append(" createRootFolder() throws "); //$NON-NLS-1$ //$NON-NLS-2$
-		it.append(IOException.class).append(" {"); //$NON-NLS-1$
+		it.append("if (this.scriptExecutor == null) {"); //$NON-NLS-1$
 		it.increaseIndentation().newLine();
-		it.append("return ").append(FileSystem.class).append(".createTempDirectory(\"sarldocs\", null, "); //$NON-NLS-1$ //$NON-NLS-2$
-		it.append(FileSystem.class).append(".convertStringToFile(\""); //$NON-NLS-1$
-		it.append(this.tempDirectory.getAbsolutePath()).append("\"));"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.newLine();
-		it.append("private static ").append(File.class).append(" createSourceFolder("); //$NON-NLS-1$ //$NON-NLS-2$
-		it.append(File.class).append(" root) {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append("return new ").append(File.class).append("(root, \"src\");"); //$NON-NLS-1$ //$NON-NLS-2$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.newLine();
-		it.append("private static ").append(File.class).append(" createGenFolder("); //$NON-NLS-1$ //$NON-NLS-2$
-		it.append(File.class).append(" root) {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append("return new ").append(File.class).append("(root, \"src-gen\");"); //$NON-NLS-1$ //$NON-NLS-2$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.newLine();
-		it.append("private static ").append(File.class).append(" createBinFolder("); //$NON-NLS-1$ //$NON-NLS-2$
-		it.append(File.class).append(" root) {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append("return new ").append(File.class).append("(root, \"bin\");"); //$NON-NLS-1$ //$NON-NLS-2$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.newLine();
-		it.append("protected static ").append(List.class).append("<String> compile(String code) throws Exception {"); //$NON-NLS-1$ //$NON-NLS-2$
-		it.increaseIndentation().newLine();
-		it.append(List.class).append("<String> issues = new ").append(ArrayList.class).append("<>();"); //$NON-NLS-1$ //$NON-NLS-2$
-		it.newLine();
-		it.append("compile(code, issues, null);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("return issues;"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.append("protected static ").append(File.class).append(" compile(String code, "); //$NON-NLS-1$ //$NON-NLS-2$
-		it.append(List.class).append("<String> issues, ").append(ICompilatedResourceReceiver.class); //$NON-NLS-1$
-		it.append(" receiver) throws Exception {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append(File.class).append(" rootFolder = createRootFolder();"); //$NON-NLS-1$
-		it.newLine();
-		it.append("try {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append(File.class).append(" sourceFolder = createSourceFolder(rootFolder);"); //$NON-NLS-1$
-		it.newLine();
-		it.append(File.class).append(" genFolder = createGenFolder(rootFolder);"); //$NON-NLS-1$
-		it.newLine();
-		it.append(File.class).append(" binFolder = createBinFolder(rootFolder);"); //$NON-NLS-1$
-		it.newLine();
-		it.append(SarlBatchCompiler.class).append(" compiler = injector.getInstance("); //$NON-NLS-1$
-		it.append(SarlBatchCompiler.class).append(".class);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compiler.setBasePath(rootFolder.getAbsolutePath());"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compiler.addSourcePath(sourceFolder);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compiler.setClassOutputPath(binFolder);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compiler.setOutputPath(genFolder);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compiler.setGenerateGeneratedAnnotation(false);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compiler.setGenerateInlineAnnotation(false);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compiler.setGenerateSyntheticSuppressWarnings(true);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compiler.setDeleteTempDirectory(false);"); //$NON-NLS-1$
+		it.append("this.scriptExecutor = this.injector.getInstance(").append(ScriptExecutor.class).append(".class);"); //$NON-NLS-1$ //$NON-NLS-2$
 		it.newLine();
 		final StringBuilder cp = new StringBuilder();
 		for (final File cpElement : getClassPath()) {
@@ -480,11 +386,15 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			}
 			cp.append(cpElement.getAbsolutePath());
 		}
-		it.append("compiler.setClassPath(\"").append(Strings.convertToJavaString(cp.toString())).append("\");"); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("scriptExecutor.setClassPath(\""); //$NON-NLS-1$
+		it.append(Strings.convertToJavaString(cp.toString()));
+		it.append("\");"); //$NON-NLS-1$
 		it.newLine();
 		final String bootPath = getBootClassPath();
 		if (!Strings.isEmpty(bootPath)) {
-			it.append("compiler.setBootClassPath(\"").append(Strings.convertToJavaString(bootPath)).append("\");"); //$NON-NLS-1$ //$NON-NLS-2$
+			it.append("scriptExecutor.setBootClassPath(\""); //$NON-NLS-1$
+			it.append(Strings.convertToJavaString(bootPath));
+			it.append("\");"); //$NON-NLS-1$
 			it.newLine();
 		}
 		JavaVersion version = null;
@@ -494,51 +404,21 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		if (version == null) {
 			version = JavaVersion.JAVA8;
 		}
-		it.append("compiler.setJavaSourceVersion(\"").append(version.getQualifier()).append("\");"); //$NON-NLS-1$ //$NON-NLS-2$
+		it.append("scriptExecutor.setJavaSourceVersion(\""); //$NON-NLS-1$
+		it.append(Strings.convertToJavaString(version.getQualifier()));
+		it.append("\");"); //$NON-NLS-1$
 		it.newLine();
-		it.append("compiler.setAllWarningSeverities(Severity.IGNORE);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compiler.setJavaCompilerVerbose(false);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compiler.getLogger().setLevel("); //$NON-NLS-1$
-		it.append(Level.class);
-		it.append(".OFF);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compiler.addIssueMessageListener((issue, uri, message) -> {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append("if (issue.isSyntaxError() || issue.getSeverity().compareTo("); //$NON-NLS-1$
-		it.append(Severity.class).append(".ERROR) >= 0) {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append("issues.add(message);"); //$NON-NLS-1$
+		it.append("scriptExecutor.setTempFolder(").append(FileSystem.class); //$NON-NLS-1$
+		it.append(".convertStringToFile(\""); //$NON-NLS-1$
+		it.append(Strings.convertToJavaString(this.tempDirectory.getAbsolutePath()));
+		it.append("\"));"); //$NON-NLS-1$
 		it.decreaseIndentation().newLine();
 		it.append("}"); //$NON-NLS-1$
 		it.decreaseIndentation().newLine();
-		it.append("});"); //$NON-NLS-1$
+		it.append("return this.scriptExecutor;"); //$NON-NLS-1$
 		it.newLine();
-		it.append("if (receiver != null) {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append("compiler.addCompiledResourceReceiver(receiver);"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
 		it.append("}"); //$NON-NLS-1$
-		it.newLine();
-		it.append(File.class).append(" file = createFile(sourceFolder, code);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("if (compiler.compile()) {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append("issues.clear();"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.newLine();
-		it.append("return file;"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
-		it.append("} finally {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		//it.append(FileSystem.class).append(".delete(rootFolder);"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.newLine();
+		it.newLine().newLine();
 		it.append("public void assertNoIssue(int lineno, ").append(List.class).append("<String> issues) {"); //$NON-NLS-1$ //$NON-NLS-2$
 		it.increaseIndentation().newLine();
 		it.append("if (issues != null && !issues.isEmpty()) {"); //$NON-NLS-1$
@@ -557,7 +437,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		it.append("}"); //$NON-NLS-1$
 		it.decreaseIndentation().newLine();
 		it.append("}"); //$NON-NLS-1$
-		it.newLine();
+		it.newLine().newLine();
 		it.append("public void assertIssues(int lineno, ").append(List.class).append("<String> issues) {"); //$NON-NLS-1$ //$NON-NLS-2$
 		it.increaseIndentation().newLine();
 		it.append("if (issues == null || issues.isEmpty()) {"); //$NON-NLS-1$
@@ -565,53 +445,6 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		it.append(Assert.class).append(".fail(\"Expecting issues but did not find one [line:\" + lineno + \"]\");"); //$NON-NLS-1$
 		it.decreaseIndentation().newLine();
 		it.append("}"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.newLine();
-		it.append("public Object execute(int lineno, String code) throws Exception {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append(List.class).append("<String> issues = new ").append(ArrayList.class).append("<>();"); //$NON-NLS-1$ //$NON-NLS-2$
-		it.newLine();
-		it.append(Collection.class).append("<").append(Resource.class).append("> resources = new "); //$NON-NLS-1$ //$NON-NLS-2$
-		it.append(ArrayList.class).append("<>();"); //$NON-NLS-1$
-		it.newLine();
-		it.append("compile(\"package x.x.x; class ____Fake_Class____ { var __fake_attr__ : Object = { \" + code " //$NON-NLS-1$
-				+ "+ \" }; }\", issues, (it) -> {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append("resources.add(it);"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
-		it.append("});"); //$NON-NLS-1$
-		it.newLine();
-		it.append("assertNoIssue(lineno, issues);"); //$NON-NLS-1$
-		it.newLine();
-		it.append(IExpressionInterpreter.class).append(" interpreter = this.injector.getInstance("); //$NON-NLS-1$
-		it.append(IExpressionInterpreter.class).append(".class);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("for (").append(Resource.class).append(" resource : resources) {"); //$NON-NLS-1$ //$NON-NLS-2$
-		it.increaseIndentation().newLine();
-		it.append(SarlScript.class).append(" script = (").append(SarlScript.class); //$NON-NLS-1$
-		it.append(") resource.getContents().get(0);"); //$NON-NLS-1$
-		it.newLine();
-		it.append(SarlClass.class).append(" clazz = (").append(SarlClass.class); //$NON-NLS-1$
-		it.append(") script.getXtendTypes().get(0);"); //$NON-NLS-1$
-		it.newLine();
-		it.append(SarlField.class).append(" field = (").append(SarlField.class).append(") clazz.getMembers().get(0);"); //$NON-NLS-1$ //$NON-NLS-2$
-		it.newLine();
-		it.append(XExpression.class).append(" xexpression = field.getInitialValue();"); //$NON-NLS-1$
-		it.newLine();
-		it.append(IEvaluationResult.class).append(" result = interpreter.evaluate(xexpression);"); //$NON-NLS-1$
-		it.newLine();
-		it.append("if (result.getException() == null) {"); //$NON-NLS-1$
-		it.increaseIndentation().newLine();
-		it.append("return result.getResult();"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.newLine();
-		it.append("return result.getException();"); //$NON-NLS-1$
-		it.decreaseIndentation().newLine();
-		it.append("}"); //$NON-NLS-1$
-		it.newLine();
-		it.append("return null;"); //$NON-NLS-1$
 		it.decreaseIndentation().newLine();
 		it.append("}"); //$NON-NLS-1$
 		it.newLine().newLine();
