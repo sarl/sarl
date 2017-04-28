@@ -141,6 +141,7 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 		return attitude;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void wake(Event evt) {
 		wake(evt, $DEFAULT_VALUE$WAKE_0);
