@@ -17,7 +17,17 @@ fi
 
 PASSPHRASE=`ssh-askpass "Please enter your password to the upload server:"`
 
+if [ -z "$PASSPHRASE" ]; then
+	echo "No passphrase" >&2
+	exit 255
+fi
+
 CDIR="`dirname $0`"
 
-exec "$CDIR/mvn-headless" clean deploy -Dmaven.test.skip=true -DskipTests=true -DMAVENSARLIO_USER="$MAVENSARLIO_USER" -DMAVENSARLIO_PWD="$PASSPHRASE" -DMAVENSARLIO_URL="$MAVENSARLIO_URL" -DUPDATESSARLIO_URL="$UPDATESARLIO_URL" -PuploadP2Repo --settings "$CDIR/../src/main/resources/maven/deploy-settings.xml" "$@"
+echo "MAVENSARLIO_URL=$MAVENSARLIO_URL"
+echo "UPDATESSARLIO_URL=$UPDATESSARLIO_URL"
+echo "MAVENSARLIO_USER=$MAVENSARLIO_USER"
+echo "MAVENSARLIO_PWD=$PASSPHRASE"
+
+exec "$CDIR/mvn-headless" clean deploy -Dmaven.test.skip=true -DskipTests=true -DMAVENSARLIO_USER="$MAVENSARLIO_USER" -DMAVENSARLIO_PWD="$PASSPHRASE" -DMAVENSARLIO_URL="$MAVENSARLIO_URL" -DUPDATESSARLIO_URL="$UPDATESARLIO_URL" -PuploadP2Repo "$@"
 

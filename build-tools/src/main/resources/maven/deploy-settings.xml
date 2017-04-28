@@ -1,12 +1,12 @@
 <settings>
     <servers>
         <server>
-            <id>io.sarl.maven</id>
+            <id>io.sarl.maven.upload</id>
             <username>${env.MAVENSARLIO_USER}</username>
             <password>${env.MAVENSARLIO_PWD}</password>
         </server>
 		<server>
-            <id>io.sarl.updates</id>
+            <id>io.sarl.updates.upload</id>
             <username>${env.MAVENSARLIO_USER}</username>
             <password>${env.MAVENSARLIO_PWD}</password>
         </server>

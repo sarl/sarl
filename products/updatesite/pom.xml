@@ -186,7 +186,7 @@
 									<goal>upload</goal>
 								</goals>
 								<configuration>
-									<serverId>io.sarl.updates</serverId>
+									<serverId>io.sarl.updates.upload</serverId>
 									<fromDir>${p2RepoPath}</fromDir>
 									<includes>**</includes>
 									<toDir>${p2UploadToDir}</toDir>
