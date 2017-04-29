@@ -20,6 +20,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -52,6 +53,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -64,6 +66,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private Map<String, Integer> map;",
@@ -141,6 +144,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -153,6 +157,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private Map<String, Integer> map;",
@@ -232,6 +237,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -242,6 +248,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private Map<String, Number> map1;",
@@ -301,6 +308,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -313,6 +321,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private Map<String, Integer> map;",
@@ -394,6 +403,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -406,6 +416,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private Map<String, Integer> map;",
@@ -489,6 +500,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -499,6 +511,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private Map<String, Integer> map1;",
@@ -560,6 +573,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -570,6 +584,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private Map<String, Integer> map1;",
@@ -631,6 +646,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -641,6 +657,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private Map<String, Integer> map1;",
@@ -703,6 +720,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -714,6 +732,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private Map<String, Integer> map;",
@@ -792,6 +811,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -804,6 +824,7 @@ public class SARLMapExtensionsCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private Map<String, Integer> map;",

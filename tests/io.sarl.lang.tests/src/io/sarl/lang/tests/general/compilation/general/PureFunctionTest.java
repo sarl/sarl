@@ -25,6 +25,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 
@@ -59,10 +60,12 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public double fct() {",
@@ -77,10 +80,12 @@ public class PureFunctionTest {
 					""
 					);
 			final String expectedC2 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C2 extends C1 {",
 					"  @Override",
@@ -112,10 +117,12 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public double fct() {",
@@ -130,11 +137,13 @@ public class PureFunctionTest {
 					""
 					);
 			final String expectedC2 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C2 extends C1 {",
 					"  @Override",
@@ -170,10 +179,12 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public void fct() {",
@@ -187,10 +198,12 @@ public class PureFunctionTest {
 					""
 					);
 			final String expectedC2 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C2 extends C1 {",
 					"  @Override",
@@ -226,10 +239,12 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public abstract class C1 {",
 					"  public abstract double fct();",
@@ -242,10 +257,12 @@ public class PureFunctionTest {
 					""
 					);
 			final String expectedC2 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C2 extends C1 {",
 					"  @Override",
@@ -277,10 +294,12 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public abstract class C1 {",
 					"  public abstract double fct();",
@@ -293,11 +312,13 @@ public class PureFunctionTest {
 					""
 					);
 			final String expectedC2 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C2 extends C1 {",
 					"  @Override",
@@ -330,12 +351,14 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  @Pure",
@@ -362,12 +385,14 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  @Pure",
@@ -394,12 +419,14 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  @Pure",
@@ -426,12 +453,14 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  @Pure",
@@ -458,12 +487,14 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  @Pure",
@@ -490,12 +521,14 @@ public class PureFunctionTest {
 					"}",
 					"");
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  @Pure",

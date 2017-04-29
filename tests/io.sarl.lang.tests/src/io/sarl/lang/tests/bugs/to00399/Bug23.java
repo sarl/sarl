@@ -20,6 +20,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -61,6 +62,7 @@ public class Bug23 extends AbstractSarlTest {
 	@Test
 	public void myAgentSpawnedCompile() throws Exception {
 		final String expectedMyAgentSpawned = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
@@ -69,6 +71,7 @@ public class Bug23 extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgentSpawned extends AgentSpawned {",
 				"  public UUID titi;",

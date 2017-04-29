@@ -20,6 +20,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -38,12 +39,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 	public void basicBehaviorCompile() throws Exception {
 		String source = "behavior B1 { }";
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  @SyntheticMember",
@@ -59,12 +62,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 	@Test
 	public void trueGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  @SyntheticMember",
@@ -84,6 +89,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				);
 		final String expectedB1 = multilineString(
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -91,6 +97,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"import java.util.Collection;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  @SyntheticMember",
@@ -130,12 +137,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 	@Test
 	public void falseGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  @SyntheticMember",
@@ -154,12 +163,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedB1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  @SyntheticMember",
@@ -186,6 +197,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 	@Test
 	public void generalGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
@@ -193,6 +205,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  public int i;",
@@ -251,6 +264,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				);
 		final String expectedB1 = multilineString(
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -259,6 +273,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  @SyntheticMember",
@@ -312,6 +327,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -319,6 +335,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  private final int myval = 1;",
@@ -367,6 +384,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -374,6 +392,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  private int myval = 1;",
@@ -422,12 +441,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  public void myfct() {",
@@ -451,6 +472,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -458,6 +480,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  private final int myval = 1;",
@@ -506,6 +529,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -513,6 +537,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  private int myval = 1;",
@@ -561,12 +586,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  private void myfct() {",
@@ -588,12 +615,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"behavior B1 { }"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  @SyntheticMember",
@@ -612,12 +641,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"public behavior B1 { }"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  @SyntheticMember",
@@ -636,12 +667,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"package behavior B1 { }"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"class B1 extends Behavior {",
 				"  @SyntheticMember",
@@ -660,12 +693,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"abstract behavior B1 { }"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public abstract class B1 extends Behavior {",
 				"  @SyntheticMember",
@@ -686,12 +721,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public abstract class B1 extends Behavior {",
 				"  public abstract void fct();",
@@ -712,12 +749,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"final behavior B1 { }"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public final class B1 extends Behavior {",
 				"  @SyntheticMember",
@@ -738,6 +777,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -745,6 +785,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  private int field;",
@@ -793,6 +834,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -800,6 +842,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  int field;",
@@ -848,6 +891,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -855,6 +899,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  protected int field;",
@@ -903,6 +948,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -910,6 +956,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  private int field;",
@@ -960,12 +1007,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			);
 		final String expectedB1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public abstract class B1 extends Behavior {",
 				"  public abstract void name();",
@@ -978,11 +1027,13 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				""
 			);
 		final String expectedB2 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B2 extends B1 {",
 				"  @Override",
@@ -1011,12 +1062,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  public void name() {",
@@ -1040,12 +1093,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  private void name() {",
@@ -1069,12 +1124,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  void name() {",
@@ -1098,12 +1155,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  protected void name() {",
@@ -1127,12 +1186,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public abstract class B1 extends Behavior {",
 				"  public abstract void name();",
@@ -1155,12 +1216,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  public static void name() {",
@@ -1184,12 +1247,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  public void _name(final Integer a) {",
@@ -1218,12 +1283,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  public final void name() {",
@@ -1247,12 +1314,14 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Behavior;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class B1 extends Behavior {",
 				"  public synchronized void name() {",

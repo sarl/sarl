@@ -22,6 +22,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -87,11 +88,13 @@ public class Bug623 extends AbstractSarlTest {
 		this.compiler.assertCompilesTo(SNIPSET1, multilineString(
 				"package io.sarl.lang.tests.bug623;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Functions.Function1;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class XXX {",
 				"  public void fct() {",
@@ -124,11 +127,13 @@ public class Bug623 extends AbstractSarlTest {
 		this.compiler.assertCompilesTo(SNIPSET2, multilineString(
 				"package io.sarl.lang.tests.bug623;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Functions.Function1;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class XXX {",
 				"  public void fct() {",
@@ -162,11 +167,13 @@ public class Bug623 extends AbstractSarlTest {
 		this.compiler.assertCompilesTo(SNIPSET3, multilineString(
 				"package io.sarl.lang.tests.bug623;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Functions.Function1;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class XXX {",
 				"  public int fct() {",

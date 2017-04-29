@@ -59,6 +59,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -67,6 +68,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void fct() {",
@@ -100,6 +102,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -108,6 +111,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void fct(final int a) {",
@@ -141,6 +145,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -151,6 +156,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private Procedure1<Object> field = ((Procedure1<Object>) (Object it) -> {",
@@ -201,6 +207,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -209,6 +216,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void fct(final int a) {",
@@ -250,6 +258,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -258,6 +267,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void fct(final int a) {",
@@ -301,6 +311,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -309,6 +320,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void fct(final int a) {",
@@ -350,6 +362,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -358,6 +371,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void fct(final int a) {",
@@ -399,6 +413,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -408,6 +423,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.IntegerRange;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void fct(final int a) {",
@@ -444,6 +460,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -453,6 +470,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.IntegerRange;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void fct(final int a) {",
@@ -491,6 +509,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -499,6 +518,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void fct(final int a) {",
@@ -534,6 +554,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -542,6 +563,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void fct(final int a) {",
@@ -582,6 +604,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -592,6 +615,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.IntegerRange;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void fct(final int a) {",

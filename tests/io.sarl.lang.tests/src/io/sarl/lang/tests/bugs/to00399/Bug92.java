@@ -32,6 +32,7 @@ import org.junit.Test;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -146,6 +147,7 @@ public class Bug92 extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -155,6 +157,7 @@ public class Bug92 extends AbstractSarlTest {
 						"import org.eclipse.xtext.xbase.lib.Pure;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  private double myDouble = 0d;",
@@ -208,6 +211,7 @@ public class Bug92 extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -217,6 +221,7 @@ public class Bug92 extends AbstractSarlTest {
 						"import org.eclipse.xtext.xbase.lib.Pure;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  private Double myDouble = Double.valueOf(0d);",
@@ -270,6 +275,7 @@ public class Bug92 extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -279,6 +285,7 @@ public class Bug92 extends AbstractSarlTest {
 						"import org.eclipse.xtext.xbase.lib.Pure;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  private double myDouble = 0d;",
@@ -340,11 +347,13 @@ public class Bug92 extends AbstractSarlTest {
 				"}",
 				"");
 		final String expected1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface ComputeEnergyCapacity extends Capacity {",
 				"  public abstract Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy);",
@@ -378,6 +387,7 @@ public class Bug92 extends AbstractSarlTest {
 				"");
 		final String expected2 = multilineString(
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
@@ -390,6 +400,7 @@ public class Bug92 extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class DeviceAgent extends EntityAgent {",
 				"  private Double busTime = Double.valueOf(0d);",
@@ -453,6 +464,7 @@ public class Bug92 extends AbstractSarlTest {
 				"}",
 				"");
 		final String expected3 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -461,6 +473,7 @@ public class Bug92 extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class EntityAgent extends Agent {",
 				"  @SyntheticMember",
@@ -500,11 +513,13 @@ public class Bug92 extends AbstractSarlTest {
 				"}"
 				);
 		final String expected1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface ComputeEnergyCapacity extends Capacity {",
 				"  public abstract Double getEnergy(final Double currentTime, final Double deltaTime, final Double wantedEnergy);",
@@ -538,6 +553,7 @@ public class Bug92 extends AbstractSarlTest {
 				"");
 		final String expected2 = multilineString(
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
@@ -550,6 +566,7 @@ public class Bug92 extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class DeviceAgent extends EntityAgent {",
 				"  private double busTime = 0d;",
@@ -613,6 +630,7 @@ public class Bug92 extends AbstractSarlTest {
 				"}",
 				"");
 		final String expected3 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -621,6 +639,7 @@ public class Bug92 extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class EntityAgent extends Agent {",
 				"  @SyntheticMember",

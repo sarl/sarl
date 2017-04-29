@@ -25,6 +25,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -52,10 +53,12 @@ public class ClassCompilerTest {
 		public void basic() throws Exception {
 			String source = "class C1 { }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  @SyntheticMember",
@@ -72,11 +75,13 @@ public class ClassCompilerTest {
 		public void variable() throws Exception {
 			String source = "class C1 { var v = 45 }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  private int v = 45;",
@@ -121,11 +126,13 @@ public class ClassCompilerTest {
 		public void value() throws Exception {
 			String source = "class C1 { val v = 45 }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  private final int v = 45;",
@@ -170,11 +177,13 @@ public class ClassCompilerTest {
 		public void method_0() throws Exception {
 			String source = "class C1 { def fct { 4 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  @Inline(value = \"4\", constantExpression = true)",
@@ -196,10 +205,12 @@ public class ClassCompilerTest {
 		public void method_1() throws Exception {
 			String source = "class C1 { def fct(a : int) { a } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public int fct(final int a) {",
@@ -220,11 +231,13 @@ public class ClassCompilerTest {
 		public void method_2() throws Exception {
 			String source = "class C1 { def fct(a : int*) { 5 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  @Inline(value = \"5\", constantExpression = true)",
@@ -249,12 +262,14 @@ public class ClassCompilerTest {
 					"import io.sarl.lang.annotation.DefaultValue;",
 					"import io.sarl.lang.annotation.DefaultValueSource;",
 					"import io.sarl.lang.annotation.DefaultValueUse;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  @DefaultValueSource",
@@ -306,12 +321,14 @@ public class ClassCompilerTest {
 			final String expectedPerson = multilineString(
 					"package io.sarl.docs.reference.oop;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import java.util.Objects;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Person {",
 					"  private String firstName;",
@@ -364,12 +381,14 @@ public class ClassCompilerTest {
 					"package io.sarl.docs.reference.oop;",
 					"",
 					"import io.sarl.docs.reference.oop.Person;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import java.util.Objects;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class PersonEx extends Person {",
 					"  private String title;",
@@ -488,13 +507,16 @@ public class ClassCompilerTest {
 		public void basic() throws Exception {
 			String source = "class Container { class C1 { } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  public class C1 {",
 					"    @SyntheticMember",
 					"    public C1() {",
@@ -516,14 +538,17 @@ public class ClassCompilerTest {
 		public void variable() throws Exception {
 			String source = "class Container { class C1 { var v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  public class C1 {",
 					"    private int v = 45;",
 					"    ",
@@ -573,14 +598,17 @@ public class ClassCompilerTest {
 		public void value() throws Exception {
 			String source = "class Container { class C1 { val v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  public class C1 {",
 					"    private final int v = 45;",
 					"    ",
@@ -630,14 +658,17 @@ public class ClassCompilerTest {
 		public void method_0() throws Exception {
 			String source = "class Container { class C1 { def fct { 4 } } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  public class C1 {",
 					"    @Inline(value = \"4\", constantExpression = true)",
 					"    public int fct() {",
@@ -664,13 +695,16 @@ public class ClassCompilerTest {
 		public void method_1() throws Exception {
 			String source = "class Container { class C1 { def fct(a : int) { a } } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  public class C1 {",
 					"    public int fct(final int a) {",
 					"      return a;",
@@ -696,14 +730,17 @@ public class ClassCompilerTest {
 		public void method_2() throws Exception {
 			String source = "class Container { class C1 { def fct(a : int*) { 5 } } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  public class C1 {",
 					"    @Inline(value = \"5\", constantExpression = true)",
 					"    public int fct(final int... a) {",
@@ -733,15 +770,18 @@ public class ClassCompilerTest {
 					"import io.sarl.lang.annotation.DefaultValue;",
 					"import io.sarl.lang.annotation.DefaultValueSource;",
 					"import io.sarl.lang.annotation.DefaultValueUse;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  public class C1 {",
 					"    @DefaultValueSource",
 					"    @Inline(value = \"5\", constantExpression = true)",
@@ -789,6 +829,7 @@ public class ClassCompilerTest {
 		public void basic() throws Exception {
 			String source = "agent Container { class C1 { } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -797,9 +838,11 @@ public class ClassCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  protected class C1 {",
 					"    @SyntheticMember",
 					"    public C1() {",
@@ -827,6 +870,7 @@ public class ClassCompilerTest {
 		public void variable() throws Exception {
 			String source = "agent Container { class C1 { var v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -836,9 +880,11 @@ public class ClassCompilerTest {
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  protected class C1 {",
 					"    private int v = 45;",
 					"    ",
@@ -894,6 +940,7 @@ public class ClassCompilerTest {
 		public void value() throws Exception {
 			String source = "agent Container { class C1 { val v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -903,9 +950,11 @@ public class ClassCompilerTest {
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  protected class C1 {",
 					"    private final int v = 45;",
 					"    ",
@@ -961,6 +1010,7 @@ public class ClassCompilerTest {
 		public void method_0() throws Exception {
 			String source = "agent Container { class C1 { def fct { 4 } } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -970,9 +1020,11 @@ public class ClassCompilerTest {
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  protected class C1 {",
 					"    @Inline(value = \"4\", constantExpression = true)",
 					"    public int fct() {",
@@ -1005,6 +1057,7 @@ public class ClassCompilerTest {
 		public void method_1() throws Exception {
 			String source = "agent Container { class C1 { def fct(a : int) { a } } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -1013,9 +1066,11 @@ public class ClassCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  protected class C1 {",
 					"    public int fct(final int a) {",
 					"      return a;",
@@ -1047,6 +1102,7 @@ public class ClassCompilerTest {
 		public void method_2() throws Exception {
 			String source = "agent Container { class C1 { def fct(a : int*) { 5 } } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -1056,9 +1112,11 @@ public class ClassCompilerTest {
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  protected class C1 {",
 					"    @Inline(value = \"5\", constantExpression = true)",
 					"    public int fct(final int... a) {",
@@ -1094,6 +1152,7 @@ public class ClassCompilerTest {
 					"import io.sarl.lang.annotation.DefaultValue;",
 					"import io.sarl.lang.annotation.DefaultValueSource;",
 					"import io.sarl.lang.annotation.DefaultValueUse;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
@@ -1104,9 +1163,11 @@ public class ClassCompilerTest {
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"  protected class C1 {",
 					"    @DefaultValueSource",
 					"    @Inline(value = \"5\", constantExpression = true)",
@@ -1168,11 +1229,13 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1<X extends Object> {",
 					"  private X x;",
@@ -1223,11 +1286,13 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1<X extends Number> {",
 					"  private X x;",
@@ -1279,12 +1344,14 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1<X extends Object, Y extends Object> {",
 					"  private X x;",
@@ -1342,12 +1409,14 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import org.eclipse.xtext.xbase.lib.Inline;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1<X extends Object, Y extends X> {",
 					"  private X x;",
@@ -1402,10 +1471,12 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public <X extends Object> void setX(final X param) {",
@@ -1432,10 +1503,12 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public <X extends Object> void setX(final X param) {",
@@ -1462,10 +1535,12 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public <X extends Number> void setX(final X param) {",
@@ -1492,10 +1567,12 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public <X extends Number> void setX(final X param) {",
@@ -1522,10 +1599,12 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public <X extends Object, Y extends Object> void setX(final X param) {",
@@ -1553,10 +1632,12 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public <X extends Object, Y extends Object> void setX(final X param) {",
@@ -1584,10 +1665,12 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public <X extends Object, Y extends X> void setX(final X param) {",
@@ -1615,10 +1698,12 @@ public class ClassCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class C1 {",
 					"  public <X extends Object, Y extends X> void setX(final X param) {",

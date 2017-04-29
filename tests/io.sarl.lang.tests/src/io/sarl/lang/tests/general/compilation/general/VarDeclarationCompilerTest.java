@@ -20,6 +20,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -45,6 +46,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -55,6 +57,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private List<Integer> list;",
@@ -124,6 +127,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -133,6 +137,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void myaction() {",
@@ -171,6 +176,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -181,6 +187,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private final List<Integer> list = null;",
@@ -247,6 +254,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -255,6 +263,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void myaction() {",
@@ -294,6 +303,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -304,6 +314,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private List<Integer> list;",
@@ -359,6 +370,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -369,6 +381,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  private List<Integer> list;",
@@ -425,6 +438,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -434,6 +448,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Exceptions;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void myaction() {",
@@ -483,6 +498,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -492,6 +508,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Exceptions;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void myaction() {",
@@ -541,6 +558,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -550,6 +568,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Functions.Function2;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected float mycall(final int a, final Function2<? super Float, ? super Integer, ? extends Float> f) {",

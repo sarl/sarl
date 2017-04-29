@@ -21,6 +21,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -39,12 +40,14 @@ public class EventCompilerTest extends AbstractSarlTest {
 	public void basicCompile_withBlock() throws Exception {
 		String source = "event E1 { }";
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  @SyntheticMember",
@@ -69,12 +72,14 @@ public class EventCompilerTest extends AbstractSarlTest {
 	public void basicCompile_withoutBlock() throws Exception {
 		String source = "event E1";
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  @SyntheticMember",
@@ -103,6 +108,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
@@ -111,6 +117,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  public String name;",
@@ -182,11 +189,13 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expectedE2 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E2 extends E1 {",
 				"  @SyntheticMember",
@@ -219,12 +228,14 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Event;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  public final int titi = 4;",
@@ -291,12 +302,14 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"event E1"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  @SyntheticMember",
@@ -322,12 +335,14 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"public event E1"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  @SyntheticMember",
@@ -353,12 +368,14 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"package event E1"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"class E1 extends Event {",
 				"  @SyntheticMember",
@@ -384,12 +401,14 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"final event E1"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public final class E1 extends Event {",
 				"  @SyntheticMember",
@@ -417,6 +436,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
@@ -424,6 +444,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  public int field;",
@@ -490,6 +511,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
@@ -497,6 +519,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  public int field;",
@@ -563,11 +586,13 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  public E1() {",
@@ -589,11 +614,13 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  public E1() {",
@@ -615,11 +642,13 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  private E1() {",
@@ -641,11 +670,13 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  E1() {",
@@ -667,11 +698,13 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  protected E1() {",

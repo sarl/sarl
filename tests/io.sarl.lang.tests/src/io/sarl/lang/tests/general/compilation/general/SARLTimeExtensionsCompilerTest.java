@@ -20,6 +20,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -48,6 +49,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -56,6 +58,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
@@ -91,6 +94,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -99,6 +103,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
@@ -134,6 +139,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -142,6 +148,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
@@ -177,6 +184,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -185,6 +193,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
@@ -220,6 +229,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -228,6 +238,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",
@@ -263,6 +274,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 		String expected = multilineString(
 				"package io.sarl.lang.tests.ste;",
 				"",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -271,6 +283,7 @@ public class SARLTimeExtensionsCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected Object myaction0() {",

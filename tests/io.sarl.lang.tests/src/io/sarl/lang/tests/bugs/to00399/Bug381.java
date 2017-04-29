@@ -27,6 +27,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -147,6 +148,7 @@ public class Bug381 {
 		public void withSarlSyntaxWithLocalType() throws Exception {
 			final String expected = multilineString(
 					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -160,6 +162,7 @@ public class Bug381 {
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
 					"  @Extension",
@@ -198,6 +201,7 @@ public class Bug381 {
 		public void withJavaSyntaxWithLocalType() throws Exception {
 			final String expected = multilineString(
 					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -211,6 +215,7 @@ public class Bug381 {
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
 					"  @Extension",
@@ -249,6 +254,7 @@ public class Bug381 {
 		public void withSarlSyntaxWithJREType() throws Exception {
 			final String expected = multilineString(
 					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -262,6 +268,7 @@ public class Bug381 {
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
 					"  @Extension",
@@ -304,6 +311,7 @@ public class Bug381 {
 		public void withJavaSyntaxWithJREType() throws Exception {
 			final String expected = multilineString(
 					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -317,6 +325,7 @@ public class Bug381 {
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
 					"  @Extension",
@@ -355,6 +364,7 @@ public class Bug381 {
 		public void withSarlSyntaxWithoutType() throws Exception {
 			final String expected = multilineString(
 					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -368,6 +378,7 @@ public class Bug381 {
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
 					"  @Extension",
@@ -410,6 +421,7 @@ public class Bug381 {
 		public void withJavaSyntaxWithoutType() throws Exception {
 			final String expected = multilineString(
 					"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -423,6 +435,7 @@ public class Bug381 {
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
 					"  @Extension",
