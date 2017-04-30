@@ -48,7 +48,6 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
-import org.eclipse.xtext.common.types.util.RawSuperTypes;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
@@ -63,11 +62,6 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
 import org.eclipse.xtext.xbase.validation.UIStrings;
 
-import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.Behavior;
-import io.sarl.lang.core.Capacity;
-import io.sarl.lang.core.Event;
-import io.sarl.lang.core.Skill;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -77,10 +71,12 @@ import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
 import io.sarl.lang.ui.images.SARLImages;
 
@@ -121,13 +117,13 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	private final ReentrantLock imageDescriptorLock = new ReentrantLock();
 
 	@Inject
-	private RawSuperTypes superTypeCollector;
-
-	@Inject
 	private CommonTypeComputationServices services;
 
 	@Inject
 	private SARLGrammarKeywordAccess keywords;
+
+	@Inject
+	private InheritanceHelper inheritanceHelper;
 
 	/**
 	 * @param delegate - the original provider.
@@ -556,15 +552,6 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 		return variableDeclaration.getName();
 	}
 
-	private boolean isAssignableTo(JvmGenericType source, Class<?> target, IJvmTypeProvider jvmTypeProvider) {
-		final String name = target.getName();
-		if (name.equals(source.getIdentifier())) {
-			return true;
-		}
-		final JvmType targetType = jvmTypeProvider.findTypeByName(name);
-		return this.superTypeCollector.collect(source).contains(targetType);
-	}
-
 	@Override
 	public Image getImageForQualifiedName(String qualifiedName, Notifier context, IJvmTypeProvider jvmTypeProvider) {
 		return convertToImage(getImageDescriptorForQualifiedName(qualifiedName, context, jvmTypeProvider));
@@ -587,25 +574,24 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 			if (type.eClass() == TypesPackage.Literals.JVM_GENERIC_TYPE) {
 				final JvmGenericType gtype = (JvmGenericType) type;
 				visibility = gtype.getVisibility();
-				if (gtype.isInterface()) {
-					if (isAssignableTo(gtype, Capacity.class, typeProvider)) {
-						// Remove the "abstract" ornment because capacities are always abstract.
-						adornments = (adornments & JavaElementImageDescriptor.ABSTRACT) ^ adornments;
-						return this.images.forCapacity(visibility, adornments);
-					}
-					return this.images.forInterface(visibility, this.adornments.get(gtype));
-				}
-				if (isAssignableTo(gtype, Agent.class, typeProvider)) {
+				final int ecoreCode = this.inheritanceHelper.getSarlElementEcoreType(gtype);
+				switch (ecoreCode) {
+				case SarlPackage.SARL_AGENT:
 					return this.images.forAgent(visibility, this.adornments.get(gtype));
-				}
-				if (isAssignableTo(gtype, Behavior.class, typeProvider)) {
+				case SarlPackage.SARL_BEHAVIOR:
 					return this.images.forBehavior(visibility, this.adornments.get(gtype));
-				}
-				if (isAssignableTo(gtype, Skill.class, typeProvider)) {
-					return this.images.forSkill(visibility, this.adornments.get(gtype));
-				}
-				if (isAssignableTo(gtype, Event.class, typeProvider)) {
+				case SarlPackage.SARL_CAPACITY:
+					// Remove the "abstract" ornment because capacities are always abstract.
+					adornments = (adornments & JavaElementImageDescriptor.ABSTRACT) ^ adornments;
+					return this.images.forCapacity(visibility, adornments);
+				case SarlPackage.SARL_EVENT:
 					return this.images.forEvent(visibility, this.adornments.get(gtype));
+				case SarlPackage.SARL_SKILL:
+					return this.images.forSkill(visibility, this.adornments.get(gtype));
+				default:
+					if (gtype.isInterface()) {
+						return this.images.forInterface(visibility, this.adornments.get(gtype));
+					}
 				}
 			} else if (type.eClass() == TypesPackage.Literals.JVM_ENUMERATION_TYPE) {
 				final JvmEnumerationType etype = (JvmEnumerationType) type;
@@ -614,7 +600,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 			} else if (type.eClass() == TypesPackage.Literals.JVM_ANNOTATION_TYPE) {
 				final JvmAnnotationType atype = (JvmAnnotationType) type;
 				visibility = atype.getVisibility();
-				return this.images.forEnum(visibility, adornments);
+				return this.images.forAnnotation(visibility, adornments);
 			} else {
 				visibility = JvmVisibility.DEFAULT;
 			}

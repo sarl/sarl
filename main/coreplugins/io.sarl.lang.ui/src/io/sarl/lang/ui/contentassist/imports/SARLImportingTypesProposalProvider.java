@@ -21,7 +21,18 @@
 
 package io.sarl.lang.ui.contentassist.imports;
 
+import javax.inject.Inject;
+
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider;
+import org.eclipse.xtext.conversion.IValueConverter;
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalFactory;
 import org.eclipse.xtext.xbase.ui.contentassist.ImportingTypesProposalProvider;
+
+import io.sarl.lang.typesystem.InheritanceHelper;
+import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
 
 /** Provider of proposals for the types to be imported.
  * This provider is part of the content assist mechanism. Its goal is not to provide
@@ -35,6 +46,24 @@ import org.eclipse.xtext.xbase.ui.contentassist.ImportingTypesProposalProvider;
 @SuppressWarnings("all")
 public class SARLImportingTypesProposalProvider extends ImportingTypesProposalProvider {
 
-		
+	@Inject
+	private IQualifiedNameImageProvider images;
+
+	@Inject
+	private InheritanceHelper inheritanceHelper;
+
+	@Override
+	protected void createTypeProposal(String typeName, int modifiers, boolean isInnerType,
+			ICompletionProposalFactory proposalFactory, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor, IJvmTypeProvider jvmTypeProvider,
+			IValueConverter<String> valueConverter) {
+		super.createTypeProposal(typeName, modifiers, isInnerType, proposalFactory, context, acceptor, jvmTypeProvider,
+				valueConverter);
+	}
+
+	@Override
+	protected Image computeImage(String typeName, boolean isInnerType, int modifiers) {
+		return super.computeImage(typeName, isInnerType, modifiers);
+	}
 
 }
