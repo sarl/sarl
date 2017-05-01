@@ -25,13 +25,16 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
+import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.util.Utils;
 
 /**
@@ -54,6 +57,9 @@ public class InheritanceHelper {
 
 	@Inject
 	private SarlJvmModelAssociations sarlAssociations;
+
+	@Inject
+	private SARLAnnotationUtil annotationUtil;
 
 	/** Replies if the type candidate is a subtype of the given super type.
 	 *
@@ -190,6 +196,73 @@ public class InheritanceHelper {
 			return true;
 		}
 		return isSubTypeOf(candidate, jvmSuperType, sarlSuperType);
+	}
+
+	/** Extract and replies the Ecore type, provided by {@link SarlPackage} for the given JvmElement.
+	 *
+	 * @param type the JVM type to test.
+	 * @return the code of the type, see {@link SarlPackage}; or {@code 0} if the code is unknown.
+	 * @since 0.6
+	 */
+	public int getSarlElementEcoreType(JvmGenericType type) {
+		final JvmAnnotationReference annotationRef = this.annotationUtil.findAnnotation(type, SarlElementType.class.getName());
+		if (annotationRef != null) {
+			final Integer intValue = this.annotationUtil.findIntValue(annotationRef);
+			if (intValue != null) {
+				return intValue.intValue();
+			}
+		}
+		return 0;
+	}
+
+	/** Replies if the given JVM element is a SARL agent.
+	 *
+	 * @param type the JVM type to test.
+	 * @return {@code true} if the given type is a SARL agent, or not.
+	 * @since 0.6
+	 */
+	public boolean isSarlAgent(JvmGenericType type) {
+		return !type.isInterface() && getSarlElementEcoreType(type) == SarlPackage.SARL_AGENT;
+	}
+
+	/** Replies if the given JVM element is a SARL behavior.
+	 *
+	 * @param type the JVM type to test.
+	 * @return {@code true} if the given type is a SARL behavior, or not.
+	 * @since 0.6
+	 */
+	public boolean isSarlBehavior(JvmGenericType type) {
+		return !type.isInterface() && getSarlElementEcoreType(type) == SarlPackage.SARL_BEHAVIOR;
+	}
+
+	/** Replies if the given JVM element is a SARL capacity.
+	 *
+	 * @param type the JVM type to test.
+	 * @return {@code true} if the given type is a SARL capacity, or not.
+	 * @since 0.6
+	 */
+	public boolean isSarlCapacity(JvmGenericType type) {
+		return type.isInterface() && getSarlElementEcoreType(type) == SarlPackage.SARL_CAPACITY;
+	}
+
+	/** Replies if the given JVM element is a SARL event.
+	 *
+	 * @param type the JVM type to test.
+	 * @return {@code true} if the given type is a SARL event, or not.
+	 * @since 0.6
+	 */
+	public boolean isSarlEvent(JvmGenericType type) {
+		return !type.isInterface() && getSarlElementEcoreType(type) == SarlPackage.SARL_EVENT;
+	}
+
+	/** Replies if the given JVM element is a SARL skill.
+	 *
+	 * @param type the JVM type to test.
+	 * @return {@code true} if the given type is a SARL skill, or not.
+	 * @since 0.6
+	 */
+	public boolean isSarlSkill(JvmGenericType type) {
+		return !type.isInterface() && getSarlElementEcoreType(type) == SarlPackage.SARL_SKILL;
 	}
 
 }

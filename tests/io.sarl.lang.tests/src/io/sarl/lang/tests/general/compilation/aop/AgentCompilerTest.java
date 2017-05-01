@@ -20,6 +20,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -39,6 +40,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	public void basicAgentCompile() throws Exception {
 		String source = "agent A1 { }";
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -47,6 +49,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  @SyntheticMember",
@@ -68,12 +71,14 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	@Test
 	public void trueGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  @SyntheticMember",
@@ -93,6 +98,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				);
 		final String expectedA1 = multilineString(
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -102,6 +108,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  @SyntheticMember",
@@ -147,12 +154,14 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	@Test
 	public void falseGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
 				"import io.sarl.lang.core.Event;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  @SyntheticMember",
@@ -171,6 +180,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -179,6 +189,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  @SyntheticMember",
@@ -211,6 +222,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	@Test
 	public void generalGuardBehaviorUnit() throws Exception {
 		final String expectedE1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Address;",
@@ -218,6 +230,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class E1 extends Event {",
 				"  public int i;",
@@ -276,6 +289,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				);
 		final String expectedA1 = multilineString(
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -286,6 +300,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  @SyntheticMember",
@@ -345,6 +360,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -354,6 +370,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import org.eclipse.xtext.xbase.lib.Pure;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  private final int myval = 1;",
@@ -408,6 +425,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -417,6 +435,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import org.eclipse.xtext.xbase.lib.Pure;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  private int myval = 1;",
@@ -471,6 +490,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -479,6 +499,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected void myfct() {",
@@ -508,6 +529,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -517,6 +539,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import org.eclipse.xtext.xbase.lib.Pure;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  private final int myval = 1;",
@@ -571,6 +594,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -580,6 +604,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import org.eclipse.xtext.xbase.lib.Pure;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  private int myval = 1;",
@@ -634,6 +659,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -642,6 +668,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  private void myfct() {",
@@ -669,6 +696,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"agent A1 { }"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -677,6 +705,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  @SyntheticMember",
@@ -701,6 +730,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"public agent A1 { }"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -709,6 +739,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  @SyntheticMember",
@@ -733,6 +764,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"package agent A1 { }"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -741,6 +773,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"class A1 extends Agent {",
 						"  @SyntheticMember",
@@ -765,6 +798,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"abstract agent A1 { }"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -773,6 +807,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public abstract class A1 extends Agent {",
 						"  @SyntheticMember",
@@ -799,6 +834,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -807,6 +843,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public abstract class A1 extends Agent {",
 						"  protected abstract void fct();",
@@ -833,6 +870,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"final agent A1 { }"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -841,6 +879,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public final class A1 extends Agent {",
 						"  @SyntheticMember",
@@ -867,6 +906,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -876,6 +916,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import org.eclipse.xtext.xbase.lib.Pure;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  private int field;",
@@ -930,6 +971,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -939,6 +981,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import org.eclipse.xtext.xbase.lib.Pure;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  int field;",
@@ -993,6 +1036,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1002,6 +1046,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import org.eclipse.xtext.xbase.lib.Pure;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected int field;",
@@ -1056,6 +1101,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1065,6 +1111,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import org.eclipse.xtext.xbase.lib.Pure;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  private int field;",
@@ -1121,6 +1168,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expectedA1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -1129,6 +1177,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public abstract class A1 extends Agent {",
 				"  protected abstract void name();",
@@ -1147,6 +1196,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				""
 				);
 		final String expectedA2 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
@@ -1154,6 +1204,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A2 extends A1 {",
 				"  @Override",
@@ -1188,6 +1239,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1196,6 +1248,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected void name() {",
@@ -1225,6 +1278,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1233,6 +1287,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  private void name() {",
@@ -1262,6 +1317,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1270,6 +1326,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  void name() {",
@@ -1299,6 +1356,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1307,6 +1365,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected void name() {",
@@ -1336,6 +1395,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1344,6 +1404,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public abstract class A1 extends Agent {",
 						"  protected abstract void name();",
@@ -1372,6 +1433,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1380,6 +1442,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected static void name() {",
@@ -1409,6 +1472,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1417,6 +1481,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected void _name(final Integer a) {",
@@ -1451,6 +1516,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1459,6 +1525,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected final void _name(final Integer a) {",
@@ -1493,6 +1560,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1501,6 +1569,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected final void name() {",
@@ -1530,6 +1599,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"}"
 						),
 				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
 						"import io.sarl.lang.annotation.SarlSpecification;",
 						"import io.sarl.lang.annotation.SyntheticMember;",
 						"import io.sarl.lang.core.Agent;",
@@ -1538,6 +1608,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 						"import javax.inject.Inject;",
 						"",
 						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 						"@SuppressWarnings(\"all\")",
 						"public class A1 extends Agent {",
 						"  protected synchronized void name() {",
@@ -1562,12 +1633,14 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	public void inlinedCapacityFunctionCall_nativeParameter() throws Exception {
 		String source = "capacity C1 { def myfunction(v : double) } agent A1 { uses C1 def caller { myfunction(5) } }";
 		final String expectedC1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final double v);",
@@ -1591,6 +1664,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				);
 		final String expectedA1 = multilineString(
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -1604,6 +1678,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void caller() {",
@@ -1649,12 +1724,14 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	public void inlinedCapacityFunctionCall_classParameter_baseName() throws Exception {
 		String source = "capacity C1 { def myfunction(v : Class<?>) } agent A1 { uses C1 def caller { myfunction(Integer) } }";
 		final String expectedC1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final Class<?> v);",
@@ -1678,6 +1755,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				);
 		final String expectedA1 = multilineString(
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -1691,6 +1769,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void caller() {",
@@ -1736,12 +1815,14 @@ public class AgentCompilerTest extends AbstractSarlTest {
 	public void inlinedCapacityFunctionCall_classParameter_typeof() throws Exception {
 		String source = "capacity C1 { def myfunction(v : Class<?>) } agent A1 { uses C1 def caller { myfunction(typeof(Integer)) } }";
 		final String expectedC1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final Class<?> v);",
@@ -1765,6 +1846,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				);
 		final String expectedA1 = multilineString(
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -1778,6 +1860,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void caller() {",
@@ -1828,12 +1911,14 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				+ "myfunction(typeof(String), #[])"
 				+ " } }";
 		final String expectedC1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final Class<?> v1, final int... v2);",
@@ -1857,6 +1942,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				);
 		final String expectedA1 = multilineString(
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -1870,6 +1956,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void caller() {",
@@ -1926,12 +2013,14 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				+ "myfunction(#[]);"
 				+ " } }";
 		final String expectedC1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void myfunction(final int... v2);",
@@ -1955,6 +2044,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				);
 		final String expectedA1 = multilineString(
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -1968,6 +2058,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void caller() {",
@@ -2032,6 +2123,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"}");
 		final String expectedMyAgent = multilineString(
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -2043,6 +2135,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgent extends Agent {",
 				"  @SyntheticMember",
@@ -2118,6 +2211,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import foo.test.Destroy;",
 				"import foo.test.Initialize;",
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -2127,6 +2221,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import javax.inject.Inject;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgent extends Agent {",
 				"  @SyntheticMember",
@@ -2191,6 +2286,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import foo.test.Destroy;",
 				"import foo.test.Initialize;",
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -2201,6 +2297,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.InputOutput;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgent extends Agent {",
 				"  @SyntheticMember",
@@ -2273,6 +2370,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import foo.test.Destroy;",
 				"import foo.test.Initialize;",
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -2284,6 +2382,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgent extends Agent {",
 				"  private int xxx;",
@@ -2404,6 +2503,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import foo.test.Destroy;",
 				"import foo.test.Initialize;",
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -2415,6 +2515,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgent extends Agent {",
 				"  private int xxx;",
@@ -2539,6 +2640,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"",
 				"import foo.test.C1;",
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -2552,6 +2654,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgent extends Agent {",
 				"  protected void testFct() {",
@@ -2606,6 +2709,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"",
 				"import foo.test.C1;",
 				"import io.sarl.lang.annotation.ImportedCapacityFeature;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -2619,6 +2723,7 @@ public class AgentCompilerTest extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgent extends Agent {",
 				"  protected void testFct() {",

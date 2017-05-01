@@ -24,6 +24,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -91,11 +92,13 @@ public class Bug459 {
 					multilineString(
 							"package io.sarl.lang.bug459;",
 							"",
+							"import io.sarl.lang.annotation.SarlElementType;",
 							"import io.sarl.lang.annotation.SarlSpecification;",
 							"import io.sarl.lang.core.AgentTrait;",
 							"import io.sarl.lang.core.Capacity;",
 							"",
 							"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+							"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 							"@SuppressWarnings(\"all\")",
 							"public interface C1 extends Capacity {",
 							"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
@@ -116,6 +119,7 @@ public class Bug459 {
 							"import io.sarl.lang.annotation.DefaultValue;",
 							"import io.sarl.lang.annotation.DefaultValueSource;",
 							"import io.sarl.lang.annotation.DefaultValueUse;",
+							"import io.sarl.lang.annotation.SarlElementType;",
 							"import io.sarl.lang.annotation.SarlSourceCode;",
 							"import io.sarl.lang.annotation.SarlSpecification;",
 							"import io.sarl.lang.annotation.SyntheticMember;",
@@ -123,6 +127,7 @@ public class Bug459 {
 							"import io.sarl.lang.core.Capacity;",
 							"",
 							"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+							"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 							"@SuppressWarnings(\"all\")",
 							"public interface C1 extends Capacity {",
 							"  @DefaultValueSource",
@@ -175,11 +180,13 @@ public class Bug459 {
 						assertEquals(multilineString(
 							"package io.sarl.lang.bug459;",
 							"",
+							"import io.sarl.lang.annotation.SarlElementType;",
 							"import io.sarl.lang.annotation.SarlSpecification;",
 							"import io.sarl.lang.bug459.C1;",
 							"import io.sarl.lang.core.AgentTrait;",
 							"",
 							"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+							"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 							"@SuppressWarnings(\"all\")",
 							"public interface C2 extends C1 {",
 							"  public static class ContextAwareCapacityWrapper<C extends C2> extends C1.ContextAwareCapacityWrapper<C> implements C2 {",
@@ -202,6 +209,7 @@ public class Bug459 {
 							"import io.sarl.lang.annotation.DefaultValue;",
 							"import io.sarl.lang.annotation.DefaultValueSource;",
 							"import io.sarl.lang.annotation.DefaultValueUse;",
+							"import io.sarl.lang.annotation.SarlElementType;",
 							"import io.sarl.lang.annotation.SarlSourceCode;",
 							"import io.sarl.lang.annotation.SarlSpecification;",
 							"import io.sarl.lang.annotation.SyntheticMember;",
@@ -209,6 +217,7 @@ public class Bug459 {
 							"import io.sarl.lang.core.AgentTrait;",
 							"",
 							"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+							"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 							"@SuppressWarnings(\"all\")",
 							"public interface C2 extends C1 {",
 							"  @DefaultValueSource",
@@ -262,12 +271,14 @@ public class Bug459 {
 						assertEquals(multilineString(
 							"package io.sarl.lang.bug459;",
 							"",
+							"import io.sarl.lang.annotation.SarlElementType;",
 							"import io.sarl.lang.annotation.SarlSpecification;",
 							"import io.sarl.lang.bug459.C1;",
 							"import io.sarl.lang.bug459.C2;",
 							"import io.sarl.lang.core.AgentTrait;",
 							"",
 							"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+							"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 							"@SuppressWarnings(\"all\")",
 							"public interface C3 extends C1, C2 {",
 							"  public static class ContextAwareCapacityWrapper<C extends C3> extends C1.ContextAwareCapacityWrapper<C> implements C3 {",
@@ -299,6 +310,7 @@ public class Bug459 {
 								"import io.sarl.lang.annotation.DefaultValue;",
 								"import io.sarl.lang.annotation.DefaultValueSource;",
 								"import io.sarl.lang.annotation.DefaultValueUse;",
+								"import io.sarl.lang.annotation.SarlElementType;",
 								"import io.sarl.lang.annotation.SarlSourceCode;",
 								"import io.sarl.lang.annotation.SarlSpecification;",
 								"import io.sarl.lang.annotation.SyntheticMember;",
@@ -307,6 +319,7 @@ public class Bug459 {
 								"import io.sarl.lang.core.AgentTrait;",
 								"",
 								"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+								"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 								"@SuppressWarnings(\"all\")",
 								"public interface C3 extends C1, C2 {",
 								"  @DefaultValueSource",
@@ -368,12 +381,14 @@ public class Bug459 {
 					multilineString(
 							"package io.sarl.lang.bug459;",
 							"",
+							"import io.sarl.lang.annotation.SarlElementType;",
 							"import io.sarl.lang.annotation.SarlSpecification;",
 							"import io.sarl.lang.core.AgentTrait;",
 							"import io.sarl.lang.core.Capacity;",
 							"",
 							"@FunctionalInterface",
 							"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+							"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 							"@SuppressWarnings(\"all\")",
 							"public interface C1 extends Capacity {",
 							"  public abstract char myfct(final int a, final String... b);",

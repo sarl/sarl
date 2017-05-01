@@ -60,7 +60,6 @@ var prettifyToolPath = "${externalToolPath}/prettify"
 var latexToolPath = "${externalToolPath}/latex"
 var gtkToolPath = "${externalToolPath}/gtk"
 var srchighlightToolPath  = "${externalToolPath}/source-highlight"
-var webjsPath = "${overallRootPath}/main/externalmaven/io.sarl.maven.docs.generator/src/main/resources/org/jnario/doc/js"
 var pygmentsToolPath  = "${externalToolPath}/pygments/sarllexer"
 
 var file.extensions = "sarl"
@@ -418,7 +417,6 @@ Workflow {
 			// Generate the Google Prettify style
     		fragment = GooglePrettifyGenerator2 auto-inject {
 				output = prettifyToolPath
-				output = webjsPath
     		}
 
 			// Generate the LaTeX Beamer style

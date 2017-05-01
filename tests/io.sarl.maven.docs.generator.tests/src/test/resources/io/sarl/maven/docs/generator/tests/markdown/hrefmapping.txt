@@ -1,0 +1,5 @@
+My link to [local MD file](./outline.md)
+
+My link to [local file](./outline.txt)
+
+My link to [remote file](http://www.sarl.io)

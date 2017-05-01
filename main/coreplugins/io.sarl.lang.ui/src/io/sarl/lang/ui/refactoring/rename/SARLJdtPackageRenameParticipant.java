@@ -24,6 +24,7 @@ package io.sarl.lang.ui.refactoring.rename;
 import static java.util.Collections.singletonList;
 import static org.eclipse.xtext.EcoreUtil2.getPlatformResourceOrNormalizedURI;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -236,6 +237,9 @@ public class SARLJdtPackageRenameParticipant extends AbstractProcessorBasedRenam
 
 		@Override
 		public RefactoringStatus validateNewName(String newName) {
+			if (!SARLEcorePackageRenameStrategy.PACKAGE_NAME_PATTERN.matcher(newName).find()) {
+				RefactoringStatus.createErrorStatus(MessageFormat.format(Messages.SARLJdtPackageRenameParticipant_0, newName));
+			}
 			return new RefactoringStatus();
 		}
 

@@ -25,6 +25,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -59,6 +60,7 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -67,6 +69,7 @@ public class VarArgsCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
 					"  protected void myaction(final int... arg) {",
@@ -99,6 +102,7 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -107,6 +111,7 @@ public class VarArgsCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class A1 extends Agent {",
 					"  protected void myaction(final char arg1, final boolean arg2, final int... arg3) {",
@@ -146,12 +151,14 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Behavior;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
 					"  public void myaction(final int... arg) {",
@@ -178,12 +185,14 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Behavior;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
 					"  public void myaction(final char arg1, final boolean arg2, final int... arg3) {",
@@ -211,10 +220,12 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Behavior;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
 					"  public B1(final int... arg) {",
@@ -238,10 +249,12 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Behavior;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_BEHAVIOR + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class B1 extends Behavior {",
 					"  public B1(final char arg1, final boolean arg2, final int... arg3) {",
@@ -269,12 +282,14 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public abstract void myaction(final int... arg);",
@@ -307,12 +322,14 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public abstract void myaction(final char arg1, final boolean arg2, final int... arg3);",
@@ -354,11 +371,13 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Event;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class E1 extends Event {",
 					"  public E1(final int... arg) {",
@@ -383,11 +402,13 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Event;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_EVENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class E1 extends Event {",
 					"  public E1(final char arg1, final boolean arg2, final int... arg3) {",
@@ -420,11 +441,13 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			final String expectedC1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.AgentTrait;",
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
@@ -436,12 +459,14 @@ public class VarArgsCompilerTest {
 					""
 					);
 			final String expectedS1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
 					"  public void myaction(final int... arg) {",
@@ -477,12 +502,14 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
 					"import io.sarl.lang.core.Skill;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
 					"  public void myaction(final char arg1, final boolean arg2, final int... arg3) {",
@@ -520,10 +547,12 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			final String expectedS1 = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Skill;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
 					"  public S1(final int... arg) {",
@@ -551,10 +580,12 @@ public class VarArgsCompilerTest {
 					"}"
 					);
 			final String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.core.Skill;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class S1 extends Skill implements C1 {",
 					"  public S1(final char arg1, final boolean arg2, final int... arg3) {",

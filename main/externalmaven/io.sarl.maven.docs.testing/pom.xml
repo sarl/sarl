@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>io.sarl.maven</groupId>
+		<artifactId>io.sarl.maven.external</artifactId>
+		<version>0.6.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>io.sarl.maven.docs.testing</artifactId>
+	<name>Documentation Testing API</name>
+	<description>Provides API for testing documentation</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.sdk</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.batchcompiler</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.janusproject</groupId>
+			<artifactId>io.janusproject.kernel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>vmutils</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.xtext</groupId>
+					<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+
+	<!-- ======================================= -->
+	<!-- ==== Release Management === -->
+	<!-- ======================================= -->
+	<profiles>
+		<profile>
+			<id>maven-release-of-maven-doc-generator-plugin</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.arakhne.afc.maven</groupId>
+							<artifactId>tag-replacer</artifactId>
+							<configuration>
+								<sources>
+									<source>${project.basedir}/src/main/java</source>
+								</sources>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<configuration>
+								<sourcepath>${project.build.directory}/generated-sources/java</sourcepath>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+
+</project>

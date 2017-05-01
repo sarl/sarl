@@ -89,6 +89,7 @@ import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmIntAnnotationValue;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
@@ -141,6 +142,7 @@ import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.annotation.FiredEvent;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
+import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
@@ -372,6 +374,41 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				if (target.getAnnotations().add(annotationRef)) {
 					return annotationRef;
 				}
+			}
+		} catch (IllegalArgumentException exception) {
+			// Ignore
+		}
+		return null;
+	}
+
+	/** Add annotation safely.
+	 *
+	 * <p>This function creates an annotation reference. If the type for the annotation is not found;
+	 * no annotation is added.
+	 *
+	 * @param target the receiver of the annotation.
+	 * @param annotationType the type of the annotation.
+	 * @param value the annotations value.
+	 * @return the annotation reference or <code>null</code> if the annotation cannot be added.
+	 */
+	private JvmAnnotationReference addAnnotationSafe(JvmAnnotationTarget target, Class<?> annotationType, int value) {
+		assert target != null;
+		assert annotationType != null;
+		try {
+			final JvmAnnotationReference result = this.typesFactory.createJvmAnnotationReference();
+			final JvmType jvmType = this.typeReferences.findDeclaredType(annotationType, target);
+			if (jvmType == null) {
+				return null;
+			}
+			if (!(jvmType instanceof JvmAnnotationType)) {
+				return null;
+			}
+			result.setAnnotation((JvmAnnotationType) jvmType);
+			final JvmIntAnnotationValue annotationValue = this.typesFactory.createJvmIntAnnotationValue();
+			annotationValue.getValues().add(value);
+			result.getExplicitValues().add(annotationValue);
+			if (target.getAnnotations().add(result)) {
+				return result;
 			}
 		} catch (IllegalArgumentException exception) {
 			// Ignore
@@ -851,6 +888,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendSARLElementType(source, inferredJvmType);
 		} finally {
 			closeContext(context);
 		}
@@ -881,17 +921,24 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					context.getInheritedOperationsToImplement(),
 					null,
 					this.sarlSignatureProvider);
+
 			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+
 			// Add SARL synthetic functions
 			appendSyntheticDefaultValuedParameterMethods(
 					source,
 					inferredJvmType,
 					context);
+
 			// Add the @FunctionalInterface
 			appendFunctionalInterfaceAnnotation(inferredJvmType);
+
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendSARLElementType(source, inferredJvmType);
 		} finally {
 			closeContext(context);
 		}
@@ -922,15 +969,21 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					context.getInheritedOperationsToImplement(),
 					null,
 					this.sarlSignatureProvider);
+
 			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+
 			// Add SARL synthetic functions
 			appendSyntheticDefaultValuedParameterMethods(
 					source,
 					inferredJvmType,
 					context);
+
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendSARLElementType(source, inferredJvmType);
 		} finally {
 			closeContext(context);
 		}
@@ -961,15 +1014,21 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					context.getInheritedOperationsToImplement(),
 					null,
 					this.sarlSignatureProvider);
+
 			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+
 			// Add SARL synthetic functions
 			appendSyntheticDefaultValuedParameterMethods(
 					source,
 					inferredJvmType,
 					context);
+
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendSARLElementType(source, inferredJvmType);
 		} finally {
 			closeContext(context);
 		}
@@ -1032,6 +1091,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendSARLElementType(source, inferredJvmType);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -1097,6 +1159,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendSARLElementType(source, inferredJvmType);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -1166,6 +1231,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
 
+			// Add the type of SARL Element
+			appendSARLElementType(source, inferredJvmType);
+
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
 		} finally {
@@ -1232,6 +1300,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
 
+			// Add the type of SARL Element
+			appendSARLElementType(source, inferredJvmType);
+
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
 		} finally {
@@ -1286,6 +1357,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the specification version of SARL
 			appendSARLSpecificationVersion(context, source, inferredJvmType);
+
+			// Add the type of SARL Element
+			appendSARLElementType(source, inferredJvmType);
 
 			// Resolving any name conflict with the generated JVM type
 			this.nameClashResolver.resolveNameClashes(inferredJvmType);
@@ -2786,11 +2860,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 	}
 
-	/** Append the SARL specification version as a private field of the given container.
+	/** Append the SARL specification version as an annotation to the given container.
 	 *
-	 * <p>The added field may be used by any underground platform for determining what is
+	 * <p>The added annotation may be used by any underground platform for determining what is
 	 * the version of the SARL specification that was used for generating the container.
-	 * The principle is inspired from the serialVersionUID from Java.
 	 *
 	 * @param context the current generation context.
 	 * @param source the source object.
@@ -2799,6 +2872,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	protected void appendSARLSpecificationVersion(GenerationContext context, XtendTypeDeclaration source,
 			JvmDeclaredType target) {
 		addAnnotationSafe(target, SarlSpecification.class, SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
+	}
+
+	/** Append the SARL element type as an annotation to the given container.
+	 *
+	 * <p>The added annotation may be used by any underground platform for determining what is
+	 * the type of the SARL element without invoking the costly "instanceof" operations.
+	 *
+	 * @param source the source object.
+	 * @param target the inferred JVM object.
+	 */
+	protected void appendSARLElementType(XtendTypeDeclaration source, JvmDeclaredType target) {
+		addAnnotationSafe(target, SarlElementType.class, source.eClass().getClassifierID());
 	}
 
 	/** Remove the type parameters from the given type.

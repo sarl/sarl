@@ -22,6 +22,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -89,6 +90,7 @@ public class Bug646 extends AbstractSarlTest {
 	private final String EXPECTED = multilineString(
 			"package io.sarl.lang.tests.bug646;",
 			"",
+			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
 			"import io.sarl.lang.tests.bug646.Shape2f;",
@@ -99,6 +101,7 @@ public class Bug646 extends AbstractSarlTest {
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class FrustumNodeIterator<T extends ShapedObject> {",
 			"  private Shape2f<?> geometricFrustum;",

@@ -248,10 +248,19 @@ public final class JanusConfig {
 
     /**
      * Name of the property that contains the name of the Janus main program from the external point of view.
+     *
+     * @see #JANUS_PROGRAM_NAME_VALUE
      */
     public static final String JANUS_PROGRAM_NAME = "janus.programName"; //$NON-NLS-1$
 
-    private JanusConfig() {
+    /** Default value of the property that contains the name of the Janus
+     * main program from the external point of view.
+     *
+     * @see #JANUS_PROGRAM_NAME
+     */
+    public static final String JANUS_PROGRAM_NAME_VALUE = "janus"; //$NON-NLS-1$
+
+	private JanusConfig() {
         //
     }
 
@@ -278,7 +287,7 @@ public final class JanusConfig {
         defaultValues.put(KERNEL_THREAD_PURGE_DELAY_NAME, Integer.toString(KERNEL_THREAD_PURGE_DELAY_VALUE));
         defaultValues.put(INJECTION_MODULE_NAME, INJECTION_MODULE_NAME_VALUE);
         defaultValues.put(JANUS_LOGO_SHOW_NAME, JANUS_LOGO_SHOW.toString());
-        defaultValues.put(JANUS_PROGRAM_NAME, ""); //$NON-NLS-1$
+        defaultValues.put(JANUS_PROGRAM_NAME, JANUS_PROGRAM_NAME_VALUE);
     }
 
     /**

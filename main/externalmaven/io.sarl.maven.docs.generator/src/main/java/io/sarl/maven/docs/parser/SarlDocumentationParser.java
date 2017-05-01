@@ -1,0 +1,2829 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2017 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.maven.docs.parser;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.inject.Named;
+
+import com.google.common.base.Strings;
+import com.google.common.base.Throwables;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import org.apache.commons.lang3.tuple.MutableTriple;
+import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.eclipse.jdt.core.Flags;
+import org.eclipse.xtext.Constants;
+import org.eclipse.xtext.xbase.lib.Functions;
+import org.eclipse.xtext.xbase.lib.Functions.Function2;
+import org.eclipse.xtext.xbase.lib.Procedures;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+
+import io.sarl.lang.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.util.OutParameter;
+import io.sarl.lang.util.Utils;
+import io.sarl.maven.docs.testing.ScriptExecutor;
+
+/** Generator of the marker language files for the modified marker language for SARL.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.6
+ */
+public class SarlDocumentationParser {
+
+	private static final String DEFAULT_INLINE_FORMAT = "`{0}`"; //$NON-NLS-1$
+
+	private static final String DEFAULT_OUTLINE_OUTPUT_TAG = "[::Outline::]"; //$NON-NLS-1$
+
+	private static final String DEFAULT_TAG_NAME_PATTERN = "\\[:(.*?)[:!]?\\]"; //$NON-NLS-1$
+
+	private static final int PATTERN_COMPILE_OPTIONS = Pattern.DOTALL | Pattern.MULTILINE;
+
+	private Injector injector;
+
+	private IActionPrototypeProvider actionPrototypeProvider;
+
+	private Map<Tag, String> rawPatterns = new HashMap<>();
+
+	private Map<Tag, Pattern> compiledPatterns = new HashMap<>();
+
+	private String inlineFormat;
+
+	private Function2<String, String, String> blockFormat;
+
+	private String outlineOutputTag;
+
+	private String dynamicNameExtractionPattern;
+
+	private Collection<Properties> additionalPropertyProviders = new ArrayList<>();
+
+	private String lineSeparator;
+
+	private String languageName;
+
+	private ScriptExecutor scriptExecutor;
+
+	/** Constructor.
+	 */
+	public SarlDocumentationParser() {
+		reset();
+	}
+
+	/** Change the injector.
+	 *
+	 * @param injector the injector.
+	 */
+	@Inject
+	public void setInjector(Injector injector) {
+		assert injector != null;
+		this.injector =  injector;
+	}
+
+	/** Change the name of the language.
+	 *
+	 * @param outputLanguage the language name, or {@code null} for ignoring the language name.
+	 */
+	@Inject
+	public void setOutputLanguage(@Named(Constants.LANGUAGE_NAME) String outputLanguage) {
+		if (!Strings.isNullOrEmpty(outputLanguage)) {
+			final String[] parts = outputLanguage.split("\\.+"); //$NON-NLS-1$
+			if (parts.length > 0) {
+				final String simpleName = parts[parts.length - 1];
+				if (!Strings.isNullOrEmpty(simpleName)) {
+					this.languageName = simpleName;
+					return;
+				}
+			}
+		}
+		this.languageName = null;
+	}
+
+	/** Change the script executor.
+	 *
+	 * @param executor the script executor.
+	 */
+	@Inject
+	public void setScriptExecutor(ScriptExecutor executor) {
+		this.scriptExecutor = executor;
+	}
+
+	/** Replies the script executor.
+	 *
+	 * @return the script executor.
+	 */
+	public ScriptExecutor getScriptExecutor() {
+		return this.scriptExecutor;
+	}
+
+	/** Replies the fenced code block formatter.
+	 *
+	 * <p>This code block formatter is usually used by Github.
+	 *
+	 * @return the formatter.
+	 */
+	public static Function2<String, String, String> getFencedCodeBlockFormatter() {
+		return (languageName, content) -> {
+			return "```" + Strings.nullToEmpty(languageName).toLowerCase() + "\n" //$NON-NLS-1$ //$NON-NLS-2$
+					+ Pattern.compile("^", Pattern.MULTILINE).matcher(content).replaceAll("\t") //$NON-NLS-1$ //$NON-NLS-2$
+					+ "```\n"; //$NON-NLS-1$
+		};
+	}
+
+	/** Replies the basic code block formatter.
+	 *
+	 * @return the formatter.
+	 */
+	public static Function2<String, String, String> getBasicCodeBlockFormatter() {
+		return (languageName, content) -> {
+			return Pattern.compile("^", Pattern.MULTILINE).matcher(content).replaceAll("\t"); //$NON-NLS-1$ //$NON-NLS-2$
+		};
+	}
+
+	/** Replies the name of the language.
+	 *
+	 * @return the language name, or {@code null} for ignoring the language name.
+	 */
+	public String getOutputLanguage() {
+		return this.languageName;
+	}
+
+	/** Change the provider of action prototypes.
+	 *
+	 * @param provider the provider.
+	 */
+	@Inject
+	public void setActionPrototypeProvider(IActionPrototypeProvider provider) {
+		assert provider != null;
+		this.actionPrototypeProvider =  provider;
+	}
+
+	/** Replies the provider of action prototypes.
+	 *
+	 * @return the provider.
+	 */
+	@Inject
+	public IActionPrototypeProvider getActionPrototypeProvider() {
+		return this.actionPrototypeProvider;
+	}
+
+	/** Reset to the default settings.
+	 */
+	public void reset() {
+		this.rawPatterns.clear();
+		this.compiledPatterns.clear();
+		this.inlineFormat = DEFAULT_INLINE_FORMAT;
+		this.blockFormat = null;
+		this.outlineOutputTag = DEFAULT_OUTLINE_OUTPUT_TAG;
+		this.dynamicNameExtractionPattern = DEFAULT_TAG_NAME_PATTERN;
+	}
+
+	/** Add a provider of properties that could be used for finding replacement values.
+	 *
+	 * @param properties the property provider.
+	 */
+	public void addPropertyProvider(Properties properties) {
+		this.additionalPropertyProviders.add(properties);
+	}
+
+	/** Replies additional providers of properties that could be used for finding replacement values.
+	 *
+	 * @return the property providers.
+	 */
+	public Iterable<Properties> getAdditionalPropertyProviders() {
+		return Collections.unmodifiableCollection(this.additionalPropertyProviders);
+	}
+
+	/** Change the pattern of the tag.
+	 *
+	 * @param tag the tag.
+	 * @param regex the regular expression.
+	 */
+	public void setPattern(Tag tag, String regex) {
+		if (Strings.isNullOrEmpty(regex)) {
+			this.rawPatterns.remove(tag);
+			this.compiledPatterns.remove(tag);
+		} else {
+			this.rawPatterns.put(tag, regex);
+			this.compiledPatterns.put(tag, Pattern.compile("^\\s*" + regex, PATTERN_COMPILE_OPTIONS)); //$NON-NLS-1$
+		}
+	}
+
+	/** Replies the pattern of the tag.
+	 *
+	 * @param tag the tag.
+	 * @return the regular expression pattern.
+	 */
+	public String getPattern(Tag tag) {
+		final String pattern = this.rawPatterns.get(tag);
+		if (pattern == null) {
+			return tag.getDefaultPattern();
+		}
+		return pattern;
+	}
+
+	/** Replies the tag that is matching the given text.
+	 *
+	 * @param text the text to match.
+	 * @return the tag or {@code null}.
+	 */
+	public Tag getTagForPattern(CharSequence text) {
+		for (final Tag tag : Tag.values()) {
+			Pattern pattern = this.compiledPatterns.get(tag);
+			if (pattern == null) {
+				pattern = Pattern.compile("^\\s*" + getPattern(tag), Pattern.DOTALL); //$NON-NLS-1$
+				this.compiledPatterns.put(tag, pattern);
+			}
+			final Matcher matcher = pattern.matcher(text);
+			if (matcher.find()) {
+				return tag;
+			}
+		}
+		return null;
+	}
+
+	/** Change the pattern for the failure tag.
+	 *
+	 * @param regex the regular expression.
+	 */
+	public final void setFailurePattern(String regex) {
+		setPattern(Tag.FAILURE, regex);
+	}
+
+	/** Replies the pattern for the failure tag.
+	 *
+	 * @return the regular expression.
+	 */
+	public final String getFailurePattern() {
+		return getPattern(Tag.FAILURE);
+	}
+
+	/** Change the pattern for the success tag.
+	 *
+	 * @param regex the regular expression.
+	 */
+	public final void setSuccessPattern(String regex) {
+		setPattern(Tag.SUCCESS, regex);
+	}
+
+	/** Replies the pattern for the success tag.
+	 *
+	 * @return the regular expression.
+	 */
+	public final String getSuccessPattern() {
+		return getPattern(Tag.SUCCESS);
+	}
+
+	/** Change the pattern for the definition tag.
+	 *
+	 * @param regex the regular expression.
+	 */
+	public final void setDefinitionPattern(String regex) {
+		setPattern(Tag.DEFINITION, regex);
+	}
+
+	/** Replies the pattern for the definition tag.
+	 *
+	 * @return the regular expression.
+	 */
+	public final String getDefinitionPattern() {
+		return getPattern(Tag.DEFINITION);
+	}
+
+	/** Change the pattern for the reference tag.
+	 *
+	 * @param regex the regular expression.
+	 */
+	public final void setReferencePattern(String regex) {
+		setPattern(Tag.REFERENCE, regex);
+	}
+
+	/** Replies the pattern for the reference tag.
+	 *
+	 * @return the regular expression.
+	 */
+	public final String getReferencePattern() {
+		return getPattern(Tag.REFERENCE);
+	}
+
+	/** Change the pattern for the "off" tag.
+	 *
+	 * @param regex the regular expression.
+	 */
+	public final void setOffPattern(String regex) {
+		setPattern(Tag.OFF, regex);
+	}
+
+	/** Replies the pattern for the "off" tag.
+	 *
+	 * @return the regular expression.
+	 */
+	public final String getOffPattern() {
+		return getPattern(Tag.OFF);
+	}
+
+	/** Change the pattern for the "on" tag.
+	 *
+	 * @param regex the regular expression.
+	 */
+	public final void setOnPattern(String regex) {
+		setPattern(Tag.ON, regex);
+	}
+
+	/** Replies the pattern for the "on" tag.
+	 *
+	 * @return the regular expression.
+	 */
+	public final String getOnPattern() {
+		return getPattern(Tag.ON);
+	}
+
+	/** Change the pattern for the fact tag.
+	 *
+	 * @param regex the regular expression.
+	 */
+	public final void setFactPattern(String regex) {
+		setPattern(Tag.FACT, regex);
+	}
+
+	/** Replies the pattern for the fact tag.
+	 *
+	 * @return the regular expression.
+	 */
+	public final String getFactPattern() {
+		return getPattern(Tag.FACT);
+	}
+
+	/** Change the pattern for the include tag.
+	 *
+	 * @param regex the regular expression.
+	 */
+	public final void setIncludePattern(String regex) {
+		setPattern(Tag.INCLUDE, regex);
+	}
+
+	/** Replies the pattern for the include tag.
+	 *
+	 * @return the regular expression.
+	 */
+	public final String getIncludePattern() {
+		return getPattern(Tag.INCLUDE);
+	}
+
+	/** Change the pattern for the outline tag.
+	 *
+	 * @param regex the regular expression.
+	 */
+	public final void setOutlinePattern(String regex) {
+		setPattern(Tag.OUTLINE, regex);
+	}
+
+	/** Replies the pattern for the outline tag.
+	 *
+	 * @return the regular expression.
+	 */
+	public final String getOutlinePattern() {
+		return getPattern(Tag.OUTLINE);
+	}
+
+	/** Set the template for inline codes.
+	 *
+	 * <p>The template should follow the {@link MessageFormat} specifications.
+	 *
+	 * @param template the template.
+	 */
+	public void setInlineCodeTemplate(String template) {
+		if (!Strings.isNullOrEmpty(template)) {
+			this.inlineFormat = template;
+		}
+	}
+
+	/** Replies the template for inline codes.
+	 *
+	 * <p>The template should follow the {@link MessageFormat} specifications.
+	 *
+	 * @return the template.
+	 */
+	public String getInlineCodeTemplate() {
+		return this.inlineFormat;
+	}
+
+	/** Set the template for block codes.
+	 *
+	 * <p>The first parameter of the function is the language name. The second parameter is
+	 * the code to format.
+	 *
+	 * @param template the template.
+	 */
+	public void setBlockCodeTemplate(Function2<String, String, String> template) {
+		this.blockFormat = template;
+	}
+
+	/** Replies the template for block codes.
+	 *
+	 * <p>The first parameter of the function is the language name. The second parameter is
+	 * the code to format.
+	 *
+	 * @return the template.
+	 */
+	public Function2<String, String, String> getBlockCodeTemplate() {
+		return this.blockFormat;
+	}
+
+	/** Change the outline output tag that will be output when the outline
+	 * tag is found in the input content.
+	 *
+	 * @param tag the tag for outline.
+	 */
+	protected void setOutlineOutputTag(String tag) {
+		this.outlineOutputTag = tag;
+	}
+
+	/** Replies the outline output tag that will be output when the outline
+	 * tag is found in the input content.
+	 *
+	 * @return the tag.
+	 */
+	public String getOutlineOutputTag() {
+		return this.outlineOutputTag;
+	}
+
+	/** Set the regular expression for extracting the dynamic name of a tag string.
+	 *
+	 * @param pattern the regex.
+	 */
+	public void setDynamicNameExtractionPattern(String pattern) {
+		if (!Strings.isNullOrEmpty(pattern)) {
+			this.dynamicNameExtractionPattern = pattern;
+		}
+	}
+
+	/** Replies the regular expression for extracting the dynamic name of a tag string.
+	 *
+	 * @return the regex.
+	 */
+	public String getDynamicNameExtractionPattern() {
+		return this.dynamicNameExtractionPattern;
+	}
+
+	/** Replies the OS-dependent line separator.
+	 *
+	 * @return the line separator from the {@code "line.separator"} property, or {@code "\n"}.
+	 */
+	public String getLineSeparator() {
+		if (Strings.isNullOrEmpty(this.lineSeparator)) {
+			final String nl = System.getProperty("line.separator"); //$NON-NLS-1$
+			if (Strings.isNullOrEmpty(nl)) {
+				return "\n"; //$NON-NLS-1$
+			}
+			return nl;
+		}
+		return this.lineSeparator;
+	}
+
+	/** Change the OS-dependent line separator.
+	 *
+	 * @param lineSeparator the line separator or {@code null} to use the system configuration.
+	 */
+	public void setLineSeparator(String lineSeparator) {
+		this.lineSeparator = lineSeparator;
+	}
+
+	private String buildGeneralTagPattern() {
+		final StringBuilder pattern = new StringBuilder();
+		int nbTags = 0;
+		for (final Tag tag : Tag.values()) {
+			if (nbTags >= 1) {
+				pattern.append("|"); //$NON-NLS-1$
+			}
+			pattern.append("(?:"); //$NON-NLS-1$
+			if (tag.isEnclosingSpaceCouldRemovable()) {
+				pattern.append("[ \\t]*"); //$NON-NLS-1$
+			}
+			pattern.append("("); //$NON-NLS-1$
+			pattern.append(getPattern(tag));
+			pattern.append(")"); //$NON-NLS-1$
+			if (tag.hasParameter()) {
+				pattern.append("(?:"); //$NON-NLS-1$
+				pattern.append("(?:\\(\\s*([^\\)]*?)\\s*\\))|"); //$NON-NLS-1$
+				pattern.append("(?:\\{\\s*([^\\}]*?)\\s*\\})|"); //$NON-NLS-1$
+				pattern.append("(?:\\|\\s*([^\\|]*?)\\s*\\|)|"); //$NON-NLS-1$
+				pattern.append("(?:\\$\\s*([^\\$]*?)\\s*\\$)"); //$NON-NLS-1$
+				pattern.append(")"); //$NON-NLS-1$
+			}
+			if (tag.isEnclosingSpaceCouldRemovable()) {
+				pattern.append("[ \\t]*"); //$NON-NLS-1$
+			}
+			pattern.append(")"); //$NON-NLS-1$
+			++nbTags;
+		}
+		if (nbTags > 0) {
+			pattern.insert(0, "(" + org.eclipse.xtext.util.Strings.convertToJavaString(getLineSeparator()) //$NON-NLS-1$
+				+ ")|"); //$NON-NLS-1$
+			return pattern.toString();
+		}
+		return null;
+	}
+
+	/** Extract the dynamic name of that from the raw text.
+	 *
+	 * @param tag the tag to extract for.
+	 * @param name the raw text.
+	 * @param dynamicName the dynamic name.
+	 */
+	protected void extractDynamicName(Tag tag, CharSequence name, OutParameter<String> dynamicName) {
+		if (tag.hasDynamicName()) {
+			final Pattern pattern = Pattern.compile(getDynamicNameExtractionPattern());
+			final Matcher matcher = pattern.matcher(name);
+			if (matcher.matches()) {
+				dynamicName.set(Strings.nullToEmpty(matcher.group(1)));
+				return;
+			}
+		}
+		dynamicName.set(name.toString());
+	}
+
+	private static int findFirstGroup(Matcher matcher, int startIdx) {
+		final int len = matcher.groupCount();
+		for (int i = startIdx + 1; i <= len; ++i) {
+			final String value = matcher.group(i);
+			if (value != null) {
+				return i;
+			}
+		}
+		return 1;
+	}
+
+	/** Read the given file and transform its content in order to have a raw text.
+	 *
+	 * @param inputFile the input file.
+	 * @return the raw file context.
+	 */
+	public String transform(File inputFile) {
+		final String content;
+		try (FileReader reader = new FileReader(inputFile)) {
+			content = read(reader);
+		} catch (IOException exception) {
+			reportError(Messages.SarlDocumentationParser_0, exception);
+			return null;
+		}
+		return transform(content, inputFile);
+	}
+
+	/** Read the given input stream and transform its content in order to have a raw text.
+	 *
+	 * @param reader the input stream.
+	 * @param inputFile the name of the input file for locating included features and formatting error messages.
+	 * @return the raw file context.
+	 */
+	public String transform(Reader reader, File inputFile) {
+		final String content;
+		try {
+			content = read(reader);
+		} catch (IOException exception) {
+			reportError(Messages.SarlDocumentationParser_0, exception);
+			return null;
+		}
+		return transform(content, inputFile);
+	}
+
+	/** Read the given input content and transform it in order to have a raw text.
+	 *
+	 * @param content the content to parse.
+	 * @param inputFile the name of the input file for locating included features and formatting error messages.
+	 * @return the raw file context.
+	 */
+	public String transform(CharSequence content, File inputFile) {
+		final ParsingContext rootContextForReplacements = new ParsingContext();
+		initializeContext(rootContextForReplacements);
+		CharSequence rawContent = content;
+		Stage stage = Stage.first();
+		do {
+			final ContentParserInterceptor interceptor = new ContentParserInterceptor();
+			// Reset the lineno because it is not reset between the different stages.
+			rootContextForReplacements.setLineNo(1);
+			final boolean hasChanged = parse(rawContent, inputFile, 0, stage, rootContextForReplacements, interceptor);
+			if (hasChanged) {
+				rawContent = interceptor.getResult();
+			}
+			stage = stage.next();
+		} while (stage != null);
+
+		return rawContent.toString().trim();
+	}
+
+	/** Read the given input content and extract validation components.
+	 *
+	 * @param inputFile the input file.
+	 * @param observer the oberserver to be called with extracted information. The parameter of the lambda maps
+	 *     the tags to the associated list of the extraction information.
+	 */
+	public void extractValidationComponents(File inputFile,
+			Procedure1<Map<Tag, List<MutableTriple<File, Integer, String>>>> observer) {
+		final String content;
+		try (FileReader reader = new FileReader(inputFile)) {
+			content = read(reader);
+		} catch (IOException exception) {
+			reportError(Messages.SarlDocumentationParser_0, exception);
+			return;
+		}
+		extractValidationComponents(content, inputFile, observer);
+	}
+
+	/** Read the given input content and extract validation components.
+	 *
+	 * @param reader the input stream.
+	 * @param inputFile the name of the input file for locating included features and formatting error messages.
+	 * @param observer the oberserver to be called with extracted information. The parameter of the lambda maps
+	 *     the tags to the associated list of the extraction information.
+	 */
+	public void extractValidationComponents(Reader reader, File inputFile,
+			Procedure1<Map<Tag, List<MutableTriple<File, Integer, String>>>> observer) {
+		final String content;
+		try {
+			content = read(reader);
+		} catch (IOException exception) {
+			reportError(Messages.SarlDocumentationParser_0, exception);
+			return;
+		}
+		extractValidationComponents(content, inputFile, observer);
+	}
+
+	/** Read the given input content and extract validation components.
+	 *
+	 * @param content the content to parse.
+	 * @param inputFile the name of the input file for locating included features and formatting error messages.
+	 * @param observer the oberserver to be called with extracted information. The parameter of the lambda maps
+	 *     the tags to the associated list of the extraction information.
+	 */
+	public void extractValidationComponents(CharSequence content, File inputFile,
+			Procedure1<Map<Tag, List<MutableTriple<File, Integer, String>>>> observer) {
+		//
+		// STEP 1: Extract the raw text
+		//
+		final Map<Tag, List<MutableTriple<File, Integer, String>>> components = new TreeMap<>();
+		final ContentParserInterceptor interceptor = new ContentParserInterceptor(new ParserInterceptor() {
+			@Override
+			public void tag(ParsingContext context, Tag tag, String dynamicName, String parameter,
+					String blockValue) {
+				if (tag.isOpeningTag() || tag.hasParameter()) {
+					List<MutableTriple<File, Integer, String>> values = components.get(tag);
+					if (values == null) {
+						values = new ArrayList<>();
+						components.put(tag, values);
+					}
+					if (tag.isOpeningTag()) {
+						values.add(new MutableTriple<>(context.getCurrentFile(),
+								context.getLineNo(), Strings.nullToEmpty(blockValue).trim()));
+					} else {
+						values.add(new MutableTriple<>(context.getCurrentFile(),
+								context.getLineNo(), Strings.nullToEmpty(parameter).trim()));
+					}
+				}
+			}
+		});
+		final ParsingContext rootContextForReplacements = new ParsingContext(true);
+		initializeContext(rootContextForReplacements);
+		parse(content, inputFile, 0, Stage.FIRST, rootContextForReplacements, interceptor);
+		//
+		// STEP 2: Do macro replacement in the captured elements.
+		//
+		final Collection<List<MutableTriple<File, Integer, String>>> allTexts = new ArrayList<>(components.values());
+		for (final List<MutableTriple<File, Integer, String>> values : allTexts) {
+			for (final MutableTriple<File, Integer, String> pair : values) {
+				final ContentParserInterceptor localInterceptor = new ContentParserInterceptor(interceptor);
+				parse(pair.getRight(), inputFile, 0, Stage.SECOND, rootContextForReplacements, localInterceptor);
+				final String newCapturedText = localInterceptor.getResult();
+				pair.setRight(newCapturedText);
+			}
+		}
+
+		observer.apply(components);
+	}
+
+
+	/** Initialize the given context.
+	 *
+	 * @param context the context.
+	 */
+	protected void initializeContext(ParsingContext context) {
+		context.setLineNo(1);
+		context.setScriptExecutor(getScriptExecutor());
+	}
+
+	/** Parse the given source text.
+	 *
+	 * @param source the source text.
+	 * @param file the file to be read.
+	 * @param startIndex the start index in the file.
+	 * @param stage the number of the stage to run.
+	 * @param parentContext the parent context, or {@code null} if none.
+	 * @param interceptor interceptor of the parsed elements.
+	 * @return {@code true} if a special tag was found.
+	 */
+	protected boolean parse(CharSequence source, File file, int startIndex, Stage stage,
+			ParsingContext parentContext, ParserInterceptor interceptor) {
+		final ParsingContext context = this.injector.getInstance(ParsingContext.class);
+		context.setParser(this);
+		context.setText(source);
+		context.setCurrentFile(file);
+		context.setStartIndex(startIndex);
+		context.setParserInterceptor(interceptor);
+		context.setInlineCodeFormat(getInlineCodeTemplate());
+		context.setBlockCodeFormat(getBlockCodeTemplate());
+		context.setOutlineOutputTag(getOutlineOutputTag());
+		context.setLineSeparator(getLineSeparator());
+		context.setOutputLanguage(getOutputLanguage());
+		context.setStage(stage);
+		final String regex = buildGeneralTagPattern();
+		if (!Strings.isNullOrEmpty(regex)) {
+			final Pattern patterns = Pattern.compile(regex, PATTERN_COMPILE_OPTIONS);
+			final Matcher matcher = patterns.matcher(source);
+			context.setMatcher(matcher);
+			if (parentContext != null) {
+				context.linkTo(parentContext);
+			}
+			return parse(context);
+		}
+		return false;
+	}
+
+	/** Parse the given source text.
+	 *
+	 * @param context the parsing context.
+	 * @return {@code true} if a special tag was found.
+	 */
+	protected boolean parse(ParsingContext context) {
+		try {
+			context.getParserInterceptor().openContext(context);
+			boolean specialTagFound = false;
+			final String lineSeparator = getLineSeparator();
+			while (context.getMatcher().find()) {
+				int groupIndex = findFirstGroup(context.getMatcher(), 0);
+				final String tagName = context.getMatcher().group(groupIndex);
+				if (lineSeparator.equals(tagName)) {
+					context.incrementLineNo();
+					continue;
+				}
+				final Tag tag = getTagForPattern(tagName);
+				if (tag != null) {
+					if (tag.isActive(context)) {
+						final String tagDynamicName;
+						if (tag.hasDynamicName()) {
+							final OutParameter<String> dname = new OutParameter<>();
+							extractDynamicName(tag, tagName, dname);
+							tagDynamicName = dname.get();
+						} else {
+							tagDynamicName = null;
+						}
+						final String parameterValue;
+						if (tag.hasParameter()) {
+							groupIndex = findFirstGroup(context.getMatcher(), groupIndex);
+							final String parameter = Strings.nullToEmpty(context.getMatcher().group(groupIndex));
+							final ContentParserInterceptor subInterceptor = new ContentParserInterceptor(context.getParserInterceptor());
+							final boolean inBlock = context.setInBlock(false);
+							final boolean inParam = context.setInParameter(true);
+							parse(parameter, context.getCurrentFile(),
+									context.getMatcher().start(groupIndex) + context.getStartIndex(),
+									context.getStage(),
+									context,
+									subInterceptor);
+							context.setInParameter(inParam);
+							context.setInBlock(inBlock);
+							parameterValue = Strings.emptyToNull(subInterceptor.getResult());
+						} else {
+							parameterValue = null;
+						}
+						final String blockContent;
+						if (tag.isOpeningTag()) {
+							groupIndex = findFirstGroup(context.getMatcher(), groupIndex);
+							final String tagContent = context.getMatcher().group(groupIndex);
+							final ContentParserInterceptor subInterceptor = new ContentParserInterceptor(context.getParserInterceptor());
+							final boolean inBlock = context.setInBlock(true);
+							final boolean inParam = context.setInParameter(false);
+							context.setVisibleInBlock(false);
+							parse(Strings.nullToEmpty(tagContent), context.getCurrentFile(),
+									context.getMatcher().start(groupIndex) + context.getStartIndex(),
+									context.getStage(),
+									context,
+									subInterceptor);
+							context.setInParameter(inParam);
+							context.setInBlock(inBlock);
+							blockContent = Strings.nullToEmpty(subInterceptor.getResult());
+						} else {
+							blockContent = null;
+						}
+						specialTagFound = true;
+						context.getParserInterceptor().tag(context, tag, tagDynamicName, parameterValue, blockContent);
+					} else {
+						// Ignore the tag for this stage.
+					}
+				} else {
+					reportError(context, Messages.SarlDocumentationParser_1, tagName);
+					return false;
+				}
+			}
+			context.getParserInterceptor().closeContext(context);
+			return specialTagFound;
+		} catch (ParsingException exception) {
+			throw exception;
+		} catch (Throwable exception) {
+			final Throwable rootException = Throwables.getRootCause(exception);
+			throw new ParsingException(
+					rootException.getClass().getName() + " - " + rootException.getLocalizedMessage(), //$NON-NLS-1$
+					context.getCurrentFile(),
+					context.getLineNo(),
+					rootException);
+		}
+	}
+
+	/** Report an error.
+	 *
+	 * @param context the context.
+	 * @param message the message in a format compatible with {@link MessageFormat}. The first argument is
+	 *     the filename. The second argument is the line number. The third argument is the position in the file.
+	 * @param parameter additional parameter, starting at {4}.
+	 */
+	protected static void reportError(ParsingContext context, String message, Object parameter) {
+		final File file = context.getCurrentFile();
+		final int offset = context.getMatcher().start() + context.getStartIndex();
+		final int lineno = context.getLineNo();
+		Throwable cause = null;
+		if (parameter instanceof Throwable) {
+			cause = (Throwable) parameter;
+		}
+		final String msg = MessageFormat.format(message, file, lineno, offset, parameter);
+		if (cause != null) {
+			throw new ParsingException(msg, file, lineno, cause);
+		}
+		throw new ParsingException(msg, file, lineno);
+	}
+
+	/** Report an error.
+	 *
+	 * @param message the message in a format compatible with {@link MessageFormat}.
+	 * @param parameters the parameters, starting at {1}.
+	 */
+	protected static void reportError(String message, Object... parameters) {
+		Throwable cause = null;
+		for (int i = 0; cause == null && i < parameters.length; ++i) {
+			if (parameters[i] instanceof Throwable) {
+				cause = (Throwable) parameters[i];
+			}
+		}
+		final String msg = MessageFormat.format(message, parameters);
+		if (cause != null) {
+			throw new ParsingException(msg, null, 1, cause);
+		}
+		throw new ParsingException(msg, null, 1);
+	}
+
+	/** Read the content of a file.
+	 *
+	 * @param context the current parsing context.
+	 * @param file the file to read.
+	 * @return the content.
+	 * @throws IOException if the content cannot be read.
+	 */
+	protected static String read(ParsingContext context, File file) throws IOException {
+		File filename = file;
+		if (context != null && !filename.isAbsolute()) {
+			filename = FileSystem.makeAbsolute(filename, context.getCurrentDirectory());
+		}
+		try (FileReader reader = new FileReader(filename)) {
+			return read(reader);
+		}
+	}
+
+	/** Read the content of a file.
+	 *
+	 * @param file the file to read.
+	 * @return the content.
+	 * @throws IOException if the content cannot be read.
+	 */
+	protected static String read(Reader file) throws IOException {
+		final StringBuilder content = new StringBuilder();
+		try (BufferedReader reader = new BufferedReader(file)) {
+			String line = reader.readLine();
+			boolean first = true;
+			while (line != null) {
+				if (first) {
+					first = false;
+				} else {
+					content.append("\n"); //$NON-NLS-1$
+				}
+				content.append(line);
+				line = reader.readLine();
+			}
+		}
+		return content.toString();
+	}
+
+	/** Format the given text in order to be suitable for being output as a block.
+	 *
+	 * @param content the text.
+	 * @param languageName the name of the output language.
+	 * @param blockFormat the formatting template.
+	 * @return the formatted text.
+	 */
+	protected static String formatBlockText(String content, String languageName, Function2<String, String, String> blockFormat) {
+		String replacement = Strings.nullToEmpty(content);
+		final String[] lines = replacement.trim().split("[\n\r]+"); //$NON-NLS-1$
+		int minIndent = Integer.MAX_VALUE;
+		final Pattern wpPattern = Pattern.compile("^(\\s*)[^\\s]"); //$NON-NLS-1$
+		for (int i = lines.length > 1 ? 1 : 0; i < lines.length; ++i) {
+			final String line = lines[i];
+			final Matcher matcher = wpPattern.matcher(line);
+			if (matcher.find()) {
+				final int n = matcher.group(1).length();
+				if (n < minIndent) {
+					minIndent = n;
+					if (minIndent <= 0) {
+						break;
+					}
+				}
+			}
+		}
+		final StringBuilder buffer = new StringBuilder();
+		buffer.append(lines[0]);
+		buffer.append("\n"); //$NON-NLS-1$
+		for (int i = 1; i < lines.length; ++i) {
+			final String line = lines[i];
+			buffer.append(line.replaceFirst("^\\s{0," + minIndent + "}", "")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			buffer.append("\n"); //$NON-NLS-1$
+		}
+		replacement = buffer.toString().replaceFirst("[\n\r]+$", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (!Strings.isNullOrEmpty(replacement) && !"\n".equals(replacement)) { //$NON-NLS-1$
+			if (blockFormat != null) {
+				return blockFormat.apply(languageName, replacement);
+			}
+			return replacement;
+		}
+		return ""; //$NON-NLS-1$
+	}
+
+	/** Exception in parser.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.6
+	 */
+	public static class ParsingException extends RuntimeException {
+
+		private static final long serialVersionUID = 6654436628872799744L;
+
+		private final File file;
+
+		private final int lineno;
+
+		/** Constructor.
+		 *
+		 * @param message the message.
+		 * @param file the file with error.
+		 * @param lineno the line number of the error.
+		 */
+		public ParsingException(String message, File file, int lineno) {
+			super(message);
+			this.file = file;
+			this.lineno = lineno;
+		}
+
+		/** Constructor.
+		 *
+		 * @param message the message.
+		 * @param file the file with error.
+		 * @param lineno the line number of the error.
+		 * @param cause the cause of the error.
+		 */
+		public ParsingException(String message, File file, int lineno, Throwable cause) {
+			super(message, cause);
+			this.file = file;
+			this.lineno = lineno;
+		}
+
+		/** Replies the file with error.
+		 *
+		 * @return the file.
+		 */
+		public File getFile() {
+			return this.file;
+		}
+
+		/** Replies the line number of the error.
+		 *
+		 * @return the line number.
+		 */
+		public int getLineno() {
+			return this.lineno;
+		}
+
+	}
+
+	/** Interceptor of the parsed elements.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.6
+	 */
+	public static class ParsingContext {
+
+		private Map<String, String> replacements = new TreeMap<>();
+
+		private CharSequence text;
+
+		private Matcher matcher;
+
+		private File currentFile;
+
+		private ParserInterceptor interceptor;
+
+		private String inlineCodeFormat;
+
+		private Function2<String, String, String> blockCodeFormat;
+
+		private String outlineOutputTag;
+
+		private int startIndex;
+
+		private Stage stage = Stage.FIRST;
+
+		private boolean inParameter;
+
+		private boolean inBlock;
+
+		private boolean isVisibleInblock;
+
+		private boolean forceVisibility;
+
+		private boolean[] isParsing = new boolean[] {true};
+
+		private WeakReference<SarlDocumentationParser> parser;
+
+		private int[] lineno = new int[] {1};
+
+		private String lineSeparator;
+
+		private String outputLanguage;
+
+		private ScriptExecutor scriptExecutor;
+
+		/** Constructor with standard visibility configuration.
+		 */
+		public ParsingContext() {
+			//
+		}
+
+		/** Constructor with specific visibility configuration.
+		 *
+		 * @param forceVisibility forces all the elements to be visible. The visiblilty tags such as
+		 *     {@link Tag#ON} and {@link Tag#OFF} will have no effect if the value of this argument is
+		 *     {@code true}.
+		 */
+		public ParsingContext(boolean forceVisibility) {
+			this.forceVisibility = forceVisibility;
+		}
+
+		/** Change the script executor.
+		 *
+		 * @param executor the script executor.
+		 */
+		public void setScriptExecutor(ScriptExecutor executor) {
+			this.scriptExecutor = executor;
+		}
+
+		/** Replies the script executor.
+		 *
+		 * @return the script executor.
+		 */
+		public ScriptExecutor getScriptExecutor() {
+			return this.scriptExecutor;
+		}
+
+		/** Change the name of the language.
+		 *
+		 * @param outputLanguage the language name, or {@code null} for ignoring the language name.
+		 */
+		public void setOutputLanguage(String outputLanguage) {
+			this.outputLanguage = outputLanguage;
+		}
+
+		/** Replies the name of the language.
+		 *
+		 * @return the language name, or {@code null} for ignoring the language name.
+		 */
+		public String getOutputLanguage() {
+			return this.outputLanguage;
+		}
+
+		/** Replies the line separator.
+		 *
+		 * @return the line separator.
+		 */
+		public String getLineSeparator() {
+			return this.lineSeparator;
+		}
+
+		/** Change the line separator in the context.
+		 *
+		 * @param lineSeparator the line separator.
+		 */
+		public void setLineSeparator(String lineSeparator) {
+			this.lineSeparator = lineSeparator;
+		}
+
+		/** Replies the line number.
+		 *
+		 * @return the line number.
+		 */
+		public int getLineNo() {
+			return this.lineno[0];
+		}
+
+		/** Increment the line number.
+		 */
+		public void incrementLineNo() {
+			++(this.lineno[0]);
+		}
+
+		/** Increment the line number.
+		 *
+		 * @param amount the amount.
+		 */
+		public void incrementLineNo(int amount) {
+			if (amount > 0) {
+				(this.lineno[0]) += amount;
+			}
+		}
+
+		/** Change the line number.
+		 *
+		 * @param lineno the line number.
+		 */
+		public void setLineNo(int lineno) {
+			this.lineno[0] = lineno;
+		}
+
+		@Override
+		public String toString() {
+			return this.interceptor.toString();
+		}
+
+		/** Set the flag that indicates if the text is visible when inside a block.
+		 *
+		 * @param visible {@code true} if the content should be visible.
+		 */
+		public void setVisibleInBlock(boolean visible) {
+			this.isVisibleInblock = visible;
+		}
+
+		/** Replies if the text is visible.
+		 *
+		 * @return {@code true} if the content is outside a block or the visibility flag is on.
+		 */
+		public boolean isVisible() {
+			return !isInBlock() || this.isVisibleInblock || this.forceVisibility;
+		}
+
+		/** Set the flag that indicates if the parser is on.
+		 *
+		 * @param enable {@code true} if parser is on.
+		 */
+		public void setParsing(boolean enable) {
+			this.isParsing[0] = enable;
+		}
+
+		/** Replies the flag that indicates if the parser is on.
+		 *
+		 * @return {@code true} if parser is on.
+		 */
+		public boolean isParsing() {
+			return this.isParsing[0];
+		}
+
+		/** Set if the parsing is for the content of a block tag.
+		 *
+		 * @param inblock {@code true} if the content is the content of a block.
+		 * @return the old value of the flag.
+		 */
+		public boolean setInBlock(boolean inblock) {
+			final boolean old = this.inBlock;
+			this.inBlock = inblock;
+			return old;
+		}
+
+		/** Replies if the parsing is for the content of a block tag.
+		 *
+		 * @return {@code true} if the content is the content of a block.
+		 */
+		public boolean isInBlock() {
+			return this.inBlock;
+		}
+
+		/** Set if the parsing is for the content of a tag parameter.
+		 *
+		 * @param inparam {@code true} if the content is the content of a parameter.
+		 * @return the old value of the flag.
+		 */
+		public boolean setInParameter(boolean inparam) {
+			final boolean old = this.inParameter;
+			this.inParameter = inparam;
+			return old;
+		}
+
+		/** Replies if the parsing is for the content of a tag parameter.
+		 *
+		 * @return {@code true} if the content is the content of a parameter.
+		 */
+		public boolean isInParameter() {
+			return this.inParameter;
+		}
+
+		/** Link this context to the given parent context.
+		 *
+		 * @param parentContext the parent context.
+		 */
+		public void linkTo(ParsingContext parentContext) {
+			this.replacements = parentContext.replacements;
+			this.inBlock = parentContext.inBlock;
+			this.isParsing = parentContext.isParsing;
+			this.isVisibleInblock = parentContext.isVisibleInblock;
+			this.forceVisibility = parentContext.forceVisibility;
+			this.lineno = parentContext.lineno;
+			this.scriptExecutor = parentContext.scriptExecutor;
+		}
+
+		/** Declare a replacement.
+		 *
+		 * @param id the identifier of the replacement.
+		 * @param to the replacement value.
+		 */
+		public void declareReplacement(String id, String to) {
+			this.replacements.put(id, to);
+		}
+
+		/** Get the replacement for the givene id.
+		 *
+		 * @param id the identifier of the replacement.
+		 * @return the replacement value, or {@code null} if none.
+		 */
+		public String getReplacement(String id) {
+			return this.replacements.get(id);
+		}
+
+		/** Change the stage.
+		 *
+		 * @param stage the stage level.
+		 */
+		protected void setStage(Stage stage) {
+			assert stage != null;
+			this.stage = stage;
+		}
+
+		/** Replies the stage.
+		 *
+		 * @return the stage level.
+		 */
+		public Stage getStage() {
+			return this.stage;
+		}
+
+		/** Change the text.
+		 *
+		 * @param text the text.
+		 */
+		protected void setText(CharSequence text) {
+			this.text = text;
+		}
+
+		/** Replies the text.
+		 *
+		 * @return the text.
+		 */
+		public CharSequence getText() {
+			return this.text;
+		}
+
+		/** Change the parser reference.
+		 *
+		 * @param parser the parser.
+		 */
+		protected void setParser(SarlDocumentationParser parser) {
+			this.parser = new WeakReference<>(parser);
+		}
+
+		/** Replies the parser reference.
+		 *
+		 * @return the start index.
+		 */
+		public SarlDocumentationParser getParser() {
+			return this.parser.get();
+		}
+
+		/** Change the start index of the context.
+		 *
+		 * @param startIndex the start index.
+		 */
+		protected void setStartIndex(int startIndex) {
+			this.startIndex = startIndex;
+		}
+
+		/** Replies the start index of the context.
+		 *
+		 * @return the start index.
+		 */
+		public int getStartIndex() {
+			return this.startIndex;
+		}
+
+		/** Change the inline code format.
+		 *
+		 * @param format the inline format.
+		 */
+		protected void setInlineCodeFormat(String format) {
+			this.inlineCodeFormat = format;
+		}
+
+		/** Replies the inline code format that is compatible with {@link MessageFormat}.
+		 *
+		 * <p>The first argument is the code to inline.
+		 *
+		 * @return the format.
+		 */
+		public String getInlineCodeFormat() {
+			return this.inlineCodeFormat;
+		}
+
+		/** Change the block code format.
+		 *
+		 * @param format the block code format.
+		 */
+		protected void setBlockCodeFormat(Function2<String, String, String> format) {
+			this.blockCodeFormat = format;
+		}
+
+		/** Replies the inline format that is compatible with {@link MessageFormat}.
+		 *
+		 * <p>The first argument is the code to put in a block.
+		 *
+		 * @return the format.
+		 */
+		public Function2<String, String, String> getBlockCodeFormat() {
+			return this.blockCodeFormat;
+		}
+
+		/** Change the outline output tag that will be output when the outline
+		 * tag is found in the input content.
+		 *
+		 * @param tag the tag for outline.
+		 */
+		protected void setOutlineOutputTag(String tag) {
+			this.outlineOutputTag = tag;
+		}
+
+		/** Replies the outline output tag that will be output when the outline
+		 * tag is found in the input content.
+		 *
+		 * @return the tag.
+		 */
+		public String getOutlineOutputTag() {
+			return this.outlineOutputTag;
+		}
+
+		/** Change the matcher.
+		 *
+		 * @param matcher the matcher.
+		 */
+		protected void setMatcher(Matcher matcher) {
+			this.matcher = matcher;
+		}
+
+		/** Replies the matcher.
+		 *
+		 * @return the matcher.
+		 */
+		public Matcher getMatcher() {
+			return this.matcher;
+		}
+
+		/** Change the current file.
+		 *
+		 * @param file the current file.
+		 */
+		protected void setCurrentFile(File file) {
+			this.currentFile = file;
+		}
+
+		/** Replies the current directory.
+		 *
+		 * @return the current directory.
+		 */
+		public File getCurrentDirectory() {
+			return this.currentFile.getParentFile();
+		}
+
+		/** Replies the current file.
+		 *
+		 * @return the current file.
+		 */
+		public File getCurrentFile() {
+			return this.currentFile;
+		}
+
+		/** Change the parser interceptor.
+		 *
+		 * @param interceptor the interceptor.
+		 */
+		protected void setParserInterceptor(ParserInterceptor interceptor) {
+			this.interceptor = interceptor;
+		}
+
+		/** Replies the parser interceptor.
+		 *
+		 * @return the parser interceptor.
+		 */
+		public ParserInterceptor getParserInterceptor() {
+			return this.interceptor;
+		}
+
+	}
+
+	/** Interceptor of the parsed elements.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.6
+	 */
+	public interface ParserInterceptor {
+
+		/** A context block has started.
+		 *
+		 * @param context the parsing context.
+		 */
+		default void openContext(ParsingContext context) {
+			//
+		}
+
+		/** A context block has finished.
+		 *
+		 * @param context the parsing context.
+		 */
+		default void closeContext(ParsingContext context) {
+			//
+		}
+
+		/** A simple tag was found.
+		 *
+		 * @param context the parsing context.
+		 * @param tag the found tag.
+		 * @param dynamicName the name of the tag if it could be dynamically defined, or {@code null} if not.
+		 * @param parameter the parameter value or {@code null} if no parameter was given
+		 *     or the parameter value is empty.
+		 * @param blockValue the value inside the block. It is {@code null} if the tag is not a block tag.
+		 */
+		default void tag(ParsingContext context, Tag tag, String dynamicName, String parameter, String blockValue) {
+			//
+		}
+
+		/** A outline tag is detected.
+		 *
+		 * @param context the parsing context.
+		 */
+		default void outline(ParsingContext context) {
+			//
+		}
+
+	}
+
+	/** Interceptor of the parsed elements for the parameters.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.6
+	 */
+	public static class DelegateParserInterceptor implements ParserInterceptor {
+
+		private ParserInterceptor delegate;
+
+		/** Constructor with no delegate.
+		 */
+		public DelegateParserInterceptor() {
+			//
+		}
+
+		/** Constructor delegate.
+		 *
+		 * @param delegate the delegate.
+		 */
+		public DelegateParserInterceptor(ParserInterceptor delegate) {
+			this.delegate = delegate;
+		}
+
+		/** Change the delegate.
+		 *
+		 * @param delegate the delegate.
+		 */
+		public void setDelegate(ParserInterceptor delegate) {
+			this.delegate = delegate;
+		}
+
+		/** Replies the delegate.
+		 *
+		 * @return the delegate.
+		 */
+		public ParserInterceptor getDelegate() {
+			return this.delegate;
+		}
+
+		@Override
+		public void openContext(ParsingContext context) {
+			final ParserInterceptor delegate = getDelegate();
+			if (delegate != null) {
+				delegate.openContext(context);
+			}
+		}
+
+		@Override
+		public void closeContext(ParsingContext context) {
+			final ParserInterceptor delegate = getDelegate();
+			if (delegate != null) {
+				delegate.closeContext(context);
+			}
+		}
+
+		@Override
+		public void tag(ParsingContext context, Tag tag, String dynamicName, String parameter, String blockValue) {
+			final ParserInterceptor delegate = getDelegate();
+			if (delegate != null) {
+				delegate.tag(context, tag, dynamicName, parameter, blockValue);
+			}
+		}
+
+		@Override
+		public void outline(ParsingContext context) {
+			final ParserInterceptor delegate = getDelegate();
+			if (delegate != null) {
+				delegate.outline(context);
+			}
+		}
+
+	}
+
+	/** Interceptor of the parsed elements for the parameters.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.6
+	 */
+	private static class ContentParserInterceptor extends DelegateParserInterceptor {
+
+		final StringBuffer buffer = new StringBuffer();
+
+		/** Constructor.
+		 *
+		 * @param delegate the delegate.
+		 */
+		ContentParserInterceptor(ParserInterceptor delegate) {
+			ParserInterceptor del = delegate;
+			while (del instanceof ContentParserInterceptor) {
+				del = ((ContentParserInterceptor) del).getDelegate();
+			}
+			setDelegate(del);
+		}
+
+		/** Constructor.
+		 */
+		ContentParserInterceptor() {
+			super();
+		}
+
+		@Override
+		public String toString() {
+			return getResult();
+		}
+
+		/** Replies the value of the buffer related to the transformation process.
+		 *
+		 * <p>The result should be the one that is expected as the generated file by this parser.
+		 *
+		 * @return the value.
+		 */
+		public String getResult() {
+			return this.buffer.toString();
+		}
+
+		private StringBuffer getVisibleBuffer(boolean isVisible) {
+			return isVisible ? this.buffer : new StringBuffer();
+		}
+
+		@Override
+		public void closeContext(ParsingContext context) {
+			context.getMatcher().appendTail(getVisibleBuffer(context.isVisible()));
+		}
+
+		@Override
+		public void tag(ParsingContext context, Tag tag, String dynamicName, String parameter, String blockValue) {
+			final boolean isVisible = context.isVisible();
+			final String replacement = tag.passThrough(context, dynamicName, parameter, blockValue);
+			context.getMatcher().appendReplacement(getVisibleBuffer(isVisible), replacement);
+			super.tag(context, tag, dynamicName, parameter, blockValue);
+		}
+
+	}
+
+	/** Definition of the special tags.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.6
+	 */
+	public enum Stage {
+		/** Stage 1: general parsing.
+		 */
+		FIRST {
+			@Override
+			public Stage next() {
+				return SECOND;
+			}
+		},
+
+		/** Stage 2: Replacements with captured texts.
+		 */
+		SECOND {
+			@Override
+			public Stage next() {
+				return null;
+			}
+		};
+
+		/** Replies the first stage.
+		 *
+		 * @return the first stage.
+		 */
+		public static Stage first() {
+			return FIRST;
+		}
+
+		/** Replies the next stage.
+		 *
+		 * @return the next stage.
+		 */
+		public abstract Stage next();
+
+	}
+
+	/** Definition of the special tags.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.6
+	 */
+	public enum Tag {
+
+		/** {@code [:ParserOn]} switches on the parser.
+		 */
+		PARSER_ON {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_PARSERON_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return false;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				context.setParsing(true);
+				return context.getStage() == Stage.SECOND ? "" : "[:ParserOn]"; //$NON-NLS-1$ //$NON-NLS-2$
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return true;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:ParserOff]} switches off the parser.
+		 */
+		PARSER_OFF {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_PARSEROFF_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return false;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				context.setParsing(false);
+				return context.getStage() == Stage.SECOND ? "" : "[:ParserOff]"; //$NON-NLS-1$ //$NON-NLS-2$
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return true;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:Outline:]} is replaced by the page's outline.
+		 */
+		OUTLINE {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_OUTLINE_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return false;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				context.getParserInterceptor().outline(context);
+				final String tag = context.getOutlineOutputTag();
+				if (!Strings.isNullOrEmpty(tag)) {
+					return Strings.nullToEmpty(context.getOutlineOutputTag());
+				}
+				return ""; //$NON-NLS-1$
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return true;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:Include:](path)} enables to include of files.
+		 */
+		INCLUDE {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_INCLUDE_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return true;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				if (parameter == null) {
+					reportError(context, Messages.SarlDocumentationParser_2, name());
+					return null;
+				}
+				final File filename = FileSystem.convertStringToFile(parameter);
+				try {
+					final String fileContent = read(context, filename);
+					final int oldLine = context.getLineNo();
+					final File oldFile = context.getCurrentFile();
+					context.setLineNo(1);
+					context.setCurrentFile(filename);
+					final ContentParserInterceptor subInterceptor = new ContentParserInterceptor(context.getParserInterceptor());
+					context.getParser().parse(
+							fileContent,
+							filename,
+							0,
+							context.getStage(),
+							context,
+							subInterceptor);
+					context.setLineNo(oldLine);
+					context.setCurrentFile(oldFile);
+					return subInterceptor.getResult();
+				} catch (IOException exception) {
+					reportError(context, Messages.SarlDocumentationParser_3, exception);
+					return null;
+				}
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:Fact:](expression)} tests the given expression to be true or not {@code null}.
+		 */
+		FACT {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_FACT_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return true;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				if (context.isInBlock()) {
+					reportError(context, Messages.SarlDocumentationParser_5, name());
+					return null;
+				}
+				return ""; //$NON-NLS-1$
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return true;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:Dynamic:](code)} returns the text to put in the documentation text.
+		 */
+		DYNAMIC {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_DYNAMIC_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return true;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				if (context.isInBlock()) {
+					reportError(context, Messages.SarlDocumentationParser_5, name());
+					return null;
+				}
+				String code = parameter;
+				if (Strings.isNullOrEmpty(code)) {
+					code = blockValue;
+				}
+				if (!Strings.isNullOrEmpty(code)) {
+					final ScriptExecutor executor = context.getScriptExecutor();
+					if (executor != null) {
+						try {
+							final Object result = executor.execute(context.getLineNo(), code);
+							if (result != null) {
+								final String stringResult = Strings.nullToEmpty(Objects.toString(result));
+								return stringResult;
+							}
+						} catch (Exception exception) {
+							Throwables.propagate(exception);
+						}
+					}
+				}
+				return ""; //$NON-NLS-1$
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:On]} switches on the output of the code.
+		 */
+		ON {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_ON_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return false;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				context.setVisibleInBlock(true);
+				return ""; //$NON-NLS-1$
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:Off]} switches off the output of the code.
+		 */
+		OFF {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_OFF_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return false;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				context.setVisibleInBlock(false);
+				return ""; //$NON-NLS-1$
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:Success:]} starts a block of code should be successfull when compiled.
+		 */
+		SUCCESS {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_SUCCESS_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return false;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return true;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				if (context.isInBlock()) {
+					reportError(context, Messages.SarlDocumentationParser_5, name());
+					return null;
+				}
+				return formatBlockText(blockValue, context.getOutputLanguage(), context.getBlockCodeFormat());
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return true;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:Failure:]} starts a block of code should not be successfull when compiled.
+		 */
+		FAILURE {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_FAILURE_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return false;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return true;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				if (context.isInBlock()) {
+					reportError(context, Messages.SarlDocumentationParser_5, name());
+					return null;
+				}
+				return formatBlockText(blockValue, context.getOutputLanguage(), context.getBlockCodeFormat());
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return true;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code &lt;--- comment --&gt;}.
+		 */
+		COMMENT {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_COMMENT_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return false;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				final String text = Strings.nullToEmpty(blockValue);
+				final String[] lines = text.split(Pattern.quote(context.getLineSeparator()));
+				context.incrementLineNo(lines.length);
+				return new String();
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return true;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return true;
+			}
+		},
+
+		/** {@code [:ShowType:]} outputs the Java type with a SARL syntax.
+		 */
+		SHOW_TYPE {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_SHOWTYPE_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return true;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				if (context.isInBlock() || context.isInParameter()) {
+					reportError(context, Messages.SarlDocumentationParser_5, name());
+					return null;
+				}
+				final Class<?> javaType;
+				try {
+					javaType = ReflectionUtil.forName(parameter);
+				} catch (ClassNotFoundException exception) {
+					reportError(context, Messages.SarlDocumentationParser_0, exception);
+					return null;
+				}
+				final String block;
+				if (javaType.isInterface()) {
+					block = extractInterface(context, javaType);
+				} else if (javaType.isEnum()) {
+					block = extractEnumeration(javaType);
+				} else if (javaType.isAnnotation()) {
+					block = extractAnnotation(context, javaType);
+				} else {
+					block = extractClass(context, javaType);
+				}
+				return formatBlockText(block, context.getOutputLanguage(), context.getBlockCodeFormat());
+			}
+
+			private String extractInterface(ParsingContext context, Class<?> type) {
+				final StringBuilder it = new StringBuilder();
+				it.append("interface ").append(type.getSimpleName()); //$NON-NLS-1$
+				if (type.getSuperclass() != null && !Object.class.equals(type.getSuperclass())) {
+					it.append(" extends ").append(type.getSuperclass().getSimpleName()); //$NON-NLS-1$
+				}
+				it.append(" {\n"); //$NON-NLS-1$
+				extractPublicMethods(context, it, type);
+				it.append("}"); //$NON-NLS-1$
+				return it.toString();
+			}
+
+			private String extractEnumeration(Class<?> type) {
+				final StringBuilder it = new StringBuilder();
+				it.append("enum ").append(type.getSimpleName()); //$NON-NLS-1$
+				it.append(" {\n"); //$NON-NLS-1$
+				for (final Object cst : type.getEnumConstants()) {
+					it.append("\t").append(((Enum<?>) cst).name()).append(",\n"); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+				it.append("}"); //$NON-NLS-1$
+				return it.toString();
+			}
+
+			private String extractAnnotation(ParsingContext context, Class<?> type) {
+				final StringBuilder it = new StringBuilder();
+				it.append("interface ").append(type.getSimpleName()); //$NON-NLS-1$
+				it.append(" {\n"); //$NON-NLS-1$
+				extractPublicMethods(context, it, type);
+				it.append("}"); //$NON-NLS-1$
+				return it.toString();
+			}
+
+			private String extractClass(ParsingContext context, Class<?> type) {
+				final StringBuilder it = new StringBuilder();
+				it.append("interface ").append(type.getSimpleName()); //$NON-NLS-1$
+				if (type.getSuperclass() != null && !Object.class.equals(type.getSuperclass())) {
+					it.append(" extends ").append(type.getSuperclass().getSimpleName()); //$NON-NLS-1$
+				}
+				if (type.getInterfaces().length > 0) {
+					if (type.getSuperclass() != null && !Object.class.equals(type.getSuperclass())) {
+						it.append("\n\t\t"); //$NON-NLS-1$
+					} else {
+						it.append(" "); //$NON-NLS-1$
+					}
+					it.append("implements "); //$NON-NLS-1$
+					boolean first = true;
+					for (final Class<?> interfaceType : type.getInterfaces()) {
+						if (first) {
+							first = false;
+						} else {
+							it.append(", "); //$NON-NLS-1$
+						}
+						it.append(interfaceType.getSimpleName());
+					}
+				}
+				it.append(" {\n"); //$NON-NLS-1$
+				extractPublicMethods(context, it, type);
+				it.append("}"); //$NON-NLS-1$
+				return it.toString();
+			}
+
+			private boolean isDeprecated(Method method) {
+				return Flags.isDeprecated(method.getModifiers()) || method.getAnnotation(Deprecated.class) != null;
+			}
+
+			private void extractPublicMethods(ParsingContext context, StringBuilder it, Class<?> type) {
+				for (final Method method : type.getDeclaredMethods()) {
+					if (Flags.isPublic(method.getModifiers()) && !Utils.isHiddenMember(method.getName())
+							&& !isDeprecated(method) && !method.isSynthetic()
+							&& method.getAnnotation(SyntheticMember.class) == null) {
+						it.append("\tdef ").append(method.getName()); //$NON-NLS-1$
+						if (method.getParameterCount() > 0) {
+							it.append("("); //$NON-NLS-1$
+							boolean first = true;
+							int i = 1;
+							for (final Parameter param : method.getParameters()) {
+								if (first) {
+									first = false;
+								} else {
+									it.append(", "); //$NON-NLS-1$
+								}
+								//it.append(param.getName());
+								//it.append(" : "); //$NON-NLS-1$
+								toType(it, param.getParameterizedType(), method.isVarArgs() && i == method.getParameterCount());
+								final DefaultValue defaultValue = param.getAnnotation(DefaultValue.class);
+								if (defaultValue != null) {
+									final String fieldName = context.getParser().getActionPrototypeProvider().toJavaArgument(
+											"", defaultValue.value()); //$NON-NLS-1$
+									it.append(" = "); //$NON-NLS-1$
+									it.append(fieldName);
+								}
+							}
+							it.append(")"); //$NON-NLS-1$
+							++i;
+						}
+						if (method.getGenericReturnType() != null && !Objects.equals(method.getGenericReturnType(), Void.class)
+								&& !Objects.equals(method.getGenericReturnType(), void.class)) {
+							it.append(" : "); //$NON-NLS-1$
+							toType(it, method.getGenericReturnType(), false);
+						}
+						it.append("\n"); //$NON-NLS-1$
+					}
+				}
+			}
+
+			@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+			private void toType(StringBuilder it, Type otype, boolean isVarArg) {
+				final Type type;
+				if (otype instanceof Class<?>) {
+					type = isVarArg ? ((Class<?>) otype).getComponentType() : otype;
+				} else {
+					type = otype;
+				}
+				if (type instanceof Class<?>) {
+					it.append(((Class<?>) type).getSimpleName());
+				} else if (type instanceof ParameterizedType) {
+					final ParameterizedType paramType = (ParameterizedType) type;
+					final Type ownerType = paramType.getOwnerType();
+					final boolean isForFunction = ownerType != null && Functions.class.getName().equals(ownerType.getTypeName());
+					final boolean isForProcedure = ownerType != null && Procedures.class.getName().equals(ownerType.getTypeName());
+					if (!isForFunction && !isForProcedure) {
+						it.append(((Class<?>) paramType.getRawType()).getSimpleName());
+						if (paramType.getActualTypeArguments().length > 0) {
+							it.append("<"); //$NON-NLS-1$
+							boolean first = true;
+							for (final Type subtype : paramType.getActualTypeArguments()) {
+								if (first) {
+									first = false;
+								} else {
+									it.append(", "); //$NON-NLS-1$
+								}
+								final StringBuilder it2 = new StringBuilder();
+								toType(it2, subtype, false);
+								it.append(it2);
+							}
+							it.append(">"); //$NON-NLS-1$
+						}
+					} else {
+						int nb = paramType.getActualTypeArguments().length;
+						if (isForFunction) {
+							--nb;
+						}
+						it.append("("); //$NON-NLS-1$
+						for (int i = 0; i < nb; ++i) {
+							final Type subtype = paramType.getActualTypeArguments()[i];
+							if (i > 0) {
+								it.append(", "); //$NON-NLS-1$
+							}
+							toType(it, subtype, false);
+						}
+						it.append(") => "); //$NON-NLS-1$
+						if (isForFunction) {
+							toType(it, paramType.getActualTypeArguments()[nb], false);
+						} else {
+							it.append("void"); //$NON-NLS-1$
+						}
+					}
+				} else if (type instanceof WildcardType) {
+					final Type[] types = ((WildcardType) type).getUpperBounds();
+					toType(it, types[0], false);
+				} else if (type instanceof GenericArrayType) {
+					toType(it, ((GenericArrayType) type).getGenericComponentType(), false);
+					it.append("[]"); //$NON-NLS-1$
+				} else {
+					it.append(Object.class.getSimpleName());
+				}
+				if (isVarArg) {
+					it.append("*"); //$NON-NLS-1$
+				}
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return true;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:id:]} is replaced by the saved text with the given id with code block.
+		 */
+		REFERENCE {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_REFERENCE_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return true;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return false;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				final String replacement = getCapturedValue(context, dynamicTag);
+				if (!context.isInBlock() && !context.isInParameter()) {
+					final String format = context.getInlineCodeFormat();
+					if (!Strings.isNullOrEmpty(format)) {
+						return MessageFormat.format(format, replacement);
+					}
+				}
+				return replacement;
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.SECOND;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:id!]} is replaced by the saved text with the given id without code block.
+		 */
+		RAW_REFERENCE {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_RAW_REFERENCE_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return true;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return false;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				return getCapturedValue(context, dynamicTag);
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.SECOND;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		},
+
+		/** {@code [:id](value)} saves the given text value with the given id.
+		 */
+		DEFINITION {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_DEFINITION_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return true;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return true;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				context.declareReplacement(dynamicTag, parameter);
+				return parameter;
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return false;
+			}
+		};
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_OUTLINE_PATTERN = "\\[:Outline:\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_INCLUDE_PATTERN = "\\[:Include:\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_FACT_PATTERN = "\\[:Fact:\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_DYNAMIC_PATTERN = "\\[:Dynamic:\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_ON_PATTERN = "\\[:On\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_OFF_PATTERN = "\\[:Off\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_REFERENCE_PATTERN = "\\[:[a-zA-Z0-9\\._]+:\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_RAW_REFERENCE_PATTERN = "\\[:[a-zA-Z0-9\\._]+\\!\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_DEFINITION_PATTERN = "\\[:[a-zA-Z0-9\\._]+\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_SUCCESS_PATTERN = "\\[:Success:\\](.*?)\\[:End:\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_FAILURE_PATTERN = "\\[:Failure:\\](.*?)\\[:End:\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_SHOWTYPE_PATTERN = "\\[:ShowType:\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_COMMENT_PATTERN = "\\<\\!\\-{3}(.*?)\\-{2}\\>"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_PARSERON_PATTERN = "\\[:ParserOn\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 */
+		static final String DEFAULT_PARSEROFF_PATTERN = "\\[:ParserOff\\]"; //$NON-NLS-1$
+
+		/** Replies the default pattern.
+		 *
+		 * @return the pattern.
+		 */
+		public abstract String getDefaultPattern();
+
+		/** Replies if the tag has a parameter.
+		 *
+		 * @return {@code true} if a parameter is needed for the tag.
+		 */
+		public abstract boolean hasParameter();
+
+		/** Replies if the tag has a dynamic name.
+		 *
+		 * @return {@code true} if the tag may have a dynamic name.
+		 */
+		public abstract boolean hasDynamicName();
+
+		/** Replies if the tag is an opening tag.
+		 *
+		 * @return {@code true} if the tag is opening a block.
+		 */
+		public abstract boolean isOpeningTag();
+
+		/** Replies if the tag has an internal group that should be given to the
+		 * {@link #passThrough(ParsingContext, String, String, String)}
+		 * as the block content.
+		 *
+		 * @return {@code true} if the tag contains a block of text.
+		 */
+		public abstract boolean isInternalTextAsBlockContent();
+
+		/** Replies the string representation when this tag is interpreted.
+		 *
+		 * <p>Usually, this function is called for obtaining the raw text,
+		 * without the tags.
+		 *
+		 * @param context the parsing context.
+		 * @param dynamicName the name of the tag if it could be dynamically defined, or {@code null}.
+		 * @param parameter the value of tag parameter, or {@code null} if no parameter value.
+		 * @param blockValue the value inside the block, or {@code null} if not a block tag.
+		 * @return the raw text for the tag.
+		 */
+		public abstract String passThrough(ParsingContext context, String dynamicName, String parameter, String blockValue);
+
+		/** Replies if the space around the tag could be removed or not.
+		 *
+		 * @return {@code true} of enclosing spaces could be removed.
+		 */
+		public abstract boolean isEnclosingSpaceCouldRemovable();
+
+		/** Replies if the tag is active regarding the current context.
+		 *
+		 * @param context the context.
+		 * @return {@code true} if the tag is active.
+		 */
+		public abstract boolean isActive(ParsingContext context);
+
+		/** Replies the captured value.
+		 *
+		 * @param context the parsing context.
+		 * @param tagName the name of the tag.
+		 * @return the captured value.
+		 */
+		protected static String getCapturedValue(ParsingContext context, String tagName) {
+			String replacement = null;
+			if (!Strings.isNullOrEmpty(tagName)) {
+				replacement = context.getReplacement(tagName);
+				if (replacement == null) {
+					for (final Properties provider : context.getParser().getAdditionalPropertyProviders()) {
+						if (provider != null) {
+							final Object obj = provider.getOrDefault(tagName, null);
+							if (obj != null) {
+								replacement = obj.toString();
+								break;
+							}
+						}
+					}
+				}
+				if (replacement == null) {
+					replacement = System.getProperty(tagName);
+				}
+				if (replacement == null) {
+					replacement = System.getenv(tagName);
+				}
+			}
+			if (replacement == null) {
+				reportError(context, Messages.SarlDocumentationParser_4, tagName);
+				return null;
+			}
+			return replacement;
+		}
+
+	}
+
+}

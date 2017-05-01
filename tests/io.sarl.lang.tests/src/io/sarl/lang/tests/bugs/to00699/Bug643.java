@@ -27,6 +27,7 @@ import io.sarl.lang.annotation.DefaultValueUse;
 import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -62,6 +63,7 @@ public class Bug643 extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.DefaultValue;",
 			"import io.sarl.lang.annotation.DefaultValueSource;",
 			"import io.sarl.lang.annotation.DefaultValueUse;",
+			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSourceCode;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -69,6 +71,7 @@ public class Bug643 extends AbstractSarlTest {
 			"import io.sarl.lang.tests.bug643.ShapedObject;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class TreeNode<T extends ShapedObject> {",
 			"  @DefaultValueSource",

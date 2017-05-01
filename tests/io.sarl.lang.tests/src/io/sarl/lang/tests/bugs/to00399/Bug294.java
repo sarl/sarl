@@ -31,6 +31,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionPrototype;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -86,6 +87,7 @@ public class Bug294 {
 					"import io.sarl.lang.annotation.DefaultValue;",
 					"import io.sarl.lang.annotation.DefaultValueSource;",
 					"import io.sarl.lang.annotation.DefaultValueUse;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
@@ -93,6 +95,7 @@ public class Bug294 {
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface PhysicEnvironment extends Capacity {",
 					"  @DefaultValueSource",
@@ -247,6 +250,7 @@ public class Bug294 {
 			final String expectedStandardPhysicEnvironment = multilineString(
 					"import io.sarl.lang.annotation.DefaultValue;",
 					"import io.sarl.lang.annotation.DefaultValueSource;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
@@ -254,6 +258,7 @@ public class Bug294 {
 					"import io.sarl.lang.core.Skill;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class StandardPhysicEnvironment extends Skill implements PhysicEnvironment {",
 					"  @DefaultValueSource",

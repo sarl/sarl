@@ -56,10 +56,12 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @SyntheticMember",
@@ -79,11 +81,13 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  private int field;",
@@ -133,10 +137,12 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  @SyntheticMember",
@@ -161,10 +167,12 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  private int field;",
@@ -190,10 +198,12 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  @SyntheticMember",
@@ -218,10 +228,12 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  private int field;",
@@ -248,10 +260,12 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  @SyntheticMember",
@@ -277,10 +291,12 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  private int field;",
@@ -306,11 +322,13 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Pure",
@@ -338,11 +356,13 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  private int field;",
@@ -384,11 +404,13 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  @Pure",
@@ -419,11 +441,13 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  private int field;",
@@ -454,11 +478,13 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Pure",
@@ -486,11 +512,13 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  private int field;",
@@ -538,11 +566,13 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  @Pure",
@@ -573,11 +603,13 @@ public class EqualsFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  private int field;",

@@ -23,6 +23,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -65,6 +66,7 @@ public class Bug312 {
 					"import io.sarl.lang.annotation.DefaultValue;",
 					"import io.sarl.lang.annotation.DefaultValueSource;",
 					"import io.sarl.lang.annotation.DefaultValueUse;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
@@ -72,6 +74,7 @@ public class Bug312 {
 					"import io.sarl.lang.core.Capacity;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface C1 extends Capacity {",
 					"  @DefaultValueSource",

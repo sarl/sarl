@@ -23,6 +23,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -50,9 +51,11 @@ public class InterfaceCompilerTest {
 		public void basic() throws Exception {
 			String source = "interface I1 { }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"}",
@@ -65,9 +68,11 @@ public class InterfaceCompilerTest {
 		public void variable() throws Exception {
 			String source = "interface I1 { var v = 45 }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public static int v = 45;",
@@ -81,9 +86,11 @@ public class InterfaceCompilerTest {
 		public void value() throws Exception {
 			String source = "interface I1 { val v = 45 }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public final static int v = 45;",
@@ -97,10 +104,12 @@ public class InterfaceCompilerTest {
 		public void method_0() throws Exception {
 			String source = "interface I1 { def fct }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract void fct();",
@@ -114,10 +123,12 @@ public class InterfaceCompilerTest {
 		public void method_1() throws Exception {
 			String source = "interface I1 { def fct(a : int) }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract void fct(final int a);",
@@ -131,10 +142,12 @@ public class InterfaceCompilerTest {
 		public void method_2() throws Exception {
 			String source = "interface I1 { def fct(a : int*) }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract void fct(final int... a);",
@@ -151,11 +164,13 @@ public class InterfaceCompilerTest {
 					"import io.sarl.lang.annotation.DefaultValue;",
 					"import io.sarl.lang.annotation.DefaultValueSource;",
 					"import io.sarl.lang.annotation.DefaultValueUse;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  @DefaultValueSource",
@@ -183,10 +198,12 @@ public class InterfaceCompilerTest {
 		public void method_4() throws Exception {
 			String source = "interface I1 { def fct(a : int) : float { a + 1f } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public default float fct(final int a) {",
@@ -205,11 +222,13 @@ public class InterfaceCompilerTest {
 					"import io.sarl.lang.annotation.DefaultValue;",
 					"import io.sarl.lang.annotation.DefaultValueSource;",
 					"import io.sarl.lang.annotation.DefaultValueUse;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  @DefaultValueSource",
@@ -246,13 +265,16 @@ public class InterfaceCompilerTest {
 		public void basic() throws Exception {
 			String source = "class Container { interface I1 { } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  public interface I1 {",
 					"  }",
 					"  ",
@@ -270,13 +292,16 @@ public class InterfaceCompilerTest {
 		public void variable() throws Exception {
 			String source = "class Container { interface I1 { var v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  public interface I1 {",
 					"    public static int v = 45;",
 					"  }",
@@ -295,13 +320,16 @@ public class InterfaceCompilerTest {
 		public void value() throws Exception {
 			String source = "class Container { interface I1 { val v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  public interface I1 {",
 					"    public final static int v = 45;",
 					"  }",
@@ -320,14 +348,17 @@ public class InterfaceCompilerTest {
 		public void method_0() throws Exception {
 			String source = "class Container { interface I1 { def fct } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @FunctionalInterface",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  public interface I1 {",
 					"    public abstract void fct();",
 					"  }",
@@ -346,14 +377,17 @@ public class InterfaceCompilerTest {
 		public void method_1() throws Exception {
 			String source = "class Container { interface I1 { def fct(a : int) } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @FunctionalInterface",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  public interface I1 {",
 					"    public abstract void fct(final int a);",
 					"  }",
@@ -372,14 +406,17 @@ public class InterfaceCompilerTest {
 		public void method_2() throws Exception {
 			String source = "class Container { interface I1 { def fct(a : int*) } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @FunctionalInterface",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  public interface I1 {",
 					"    public abstract void fct(final int... a);",
 					"  }",
@@ -401,14 +438,17 @@ public class InterfaceCompilerTest {
 					"import io.sarl.lang.annotation.DefaultValue;",
 					"import io.sarl.lang.annotation.DefaultValueSource;",
 					"import io.sarl.lang.annotation.DefaultValueUse;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  public interface I1 {",
 					"    @DefaultValueSource",
 					"    public abstract void fct(@DefaultValue(\"Container$I1#FCT_0\") final int a);",
@@ -448,6 +488,7 @@ public class InterfaceCompilerTest {
 		public void basic() throws Exception {
 			String source = "agent Container { interface I1 { } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -456,9 +497,11 @@ public class InterfaceCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  protected interface I1 {",
 					"  }",
 					"  ",
@@ -482,6 +525,7 @@ public class InterfaceCompilerTest {
 		public void variable() throws Exception {
 			String source = "agent Container { interface I1 { var v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -490,9 +534,11 @@ public class InterfaceCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  protected interface I1 {",
 					"    public static int v = 45;",
 					"  }",
@@ -517,6 +563,7 @@ public class InterfaceCompilerTest {
 		public void value() throws Exception {
 			String source = "agent Container { interface I1 { val v = 45 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -525,9 +572,11 @@ public class InterfaceCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  protected interface I1 {",
 					"    public final static int v = 45;",
 					"  }",
@@ -552,6 +601,7 @@ public class InterfaceCompilerTest {
 		public void method_0() throws Exception {
 			String source = "agent Container { interface I1 { def fct } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -560,10 +610,12 @@ public class InterfaceCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @FunctionalInterface",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  protected interface I1 {",
 					"    public abstract void fct();",
 					"  }",
@@ -588,6 +640,7 @@ public class InterfaceCompilerTest {
 		public void method_1() throws Exception {
 			String source = "agent Container { interface I1 { def fct(a : int) } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -596,10 +649,12 @@ public class InterfaceCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @FunctionalInterface",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  protected interface I1 {",
 					"    public abstract void fct(final int a);",
 					"  }",
@@ -624,6 +679,7 @@ public class InterfaceCompilerTest {
 		public void method_2() throws Exception {
 			String source = "agent Container { interface I1 { def fct(a : int*) } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -632,10 +688,12 @@ public class InterfaceCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @FunctionalInterface",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  protected interface I1 {",
 					"    public abstract void fct(final int... a);",
 					"  }",
@@ -663,6 +721,7 @@ public class InterfaceCompilerTest {
 					"import io.sarl.lang.annotation.DefaultValue;",
 					"import io.sarl.lang.annotation.DefaultValueSource;",
 					"import io.sarl.lang.annotation.DefaultValueUse;",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSourceCode;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
@@ -672,9 +731,11 @@ public class InterfaceCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"  protected interface I1 {",
 					"    @DefaultValueSource",
 					"    public abstract void fct(@DefaultValue(\"Container$I1#FCT_0\") final int a);",
@@ -727,9 +788,11 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1<X extends Object> {",
 					"  public abstract void setX(final X param);",
@@ -752,9 +815,11 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1<X extends Number> {",
 					"  public abstract void setX(final X param);",
@@ -778,9 +843,11 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1<X extends Object, Y extends Object> {",
 					"  public abstract Y getY();",
@@ -806,9 +873,11 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1<X extends Object, Y extends X> {",
 					"  public abstract Y getY();",
@@ -832,10 +901,12 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object> void setX(final X param);",
@@ -855,10 +926,12 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object> void setX(final X param);",
@@ -878,10 +951,12 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Number> void setX(final X param);",
@@ -901,10 +976,12 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Number> void setX(final X param);",
@@ -924,10 +1001,12 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object, Y extends Object> void setX(final X param);",
@@ -947,10 +1026,12 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object, Y extends Object> void setX(final X param);",
@@ -970,10 +1051,12 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object, Y extends X> void setX(final X param);",
@@ -993,10 +1076,12 @@ public class InterfaceCompilerTest {
 			String expected = multilineString(
 					"package io.sarl.lang.tests.test;",
 					"",
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface I1 {",
 					"  public abstract <X extends Object, Y extends X> void setX(final X param);",

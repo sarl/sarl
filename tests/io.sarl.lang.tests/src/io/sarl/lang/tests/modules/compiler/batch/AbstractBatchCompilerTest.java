@@ -31,6 +31,7 @@ import org.eclipse.xtext.util.Strings;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.AbstractSarlUiTest;
 
@@ -55,6 +56,7 @@ public abstract class AbstractBatchCompilerTest extends AbstractSarlTest {
 	private static final String JAVA_CODE = multilineString(
 			"package io.sarl.lang.tests.compiler.batch;",
 			"",
+			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
 			"import io.sarl.lang.core.Agent;",
@@ -63,6 +65,7 @@ public abstract class AbstractBatchCompilerTest extends AbstractSarlTest {
 			"import javax.inject.Inject;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class MyTestAgent extends Agent {",
 			"  protected int oneFunction() {",

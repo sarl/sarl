@@ -45,6 +45,7 @@
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.maven.internal" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.maven.external" type="4"/>
 <item elementID="=io.sarl.maven.docs.generator" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=io.sarl.maven.docs.testing" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.maven.baselib" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.maven.sdk" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.maven.sre" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
@@ -69,7 +70,7 @@
 </workingSet>
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480017558193_9" label="Documentation" name="Documentation">
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.docs" type="4"/>
-<item elementID="=io.sarl.docs.suite" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=io.sarl.docs.markdown" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480001462136_0" label="Window Working Set" name="Aggregate for window 1480001462135"/>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480017876201_10" label="Multiple Working Sets" name="Aggregate:Contributions:Documentation:Features:Maven:Plugins:Product Engineering:SRE:Tests:">

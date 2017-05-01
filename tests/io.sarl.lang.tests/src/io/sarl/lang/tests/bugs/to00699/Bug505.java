@@ -20,6 +20,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -99,12 +100,14 @@ public class Bug505 extends AbstractSarlTest {
 	@Test
 	public void snipset1Compilation() throws Exception {
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import java.util.Objects;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public abstract class TestClass {",
 				"  private String testString;",
@@ -158,10 +161,12 @@ public class Bug505 extends AbstractSarlTest {
 	@Test
 	public void snipset2Compilation() throws Exception {
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public abstract class TestClass {",
 				"  public void testMethod1() {",
@@ -189,10 +194,12 @@ public class Bug505 extends AbstractSarlTest {
 	@Test
 	public void snipset3Compilation() throws Exception {
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public abstract class TestClass {",
 				"  public void testMethod1() {",
@@ -220,12 +227,14 @@ public class Bug505 extends AbstractSarlTest {
 	@Test
 	public void snipset4Compilation() throws Exception {
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import java.util.Objects;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class TestClass {",
 				"  private String testString;",
@@ -279,6 +288,7 @@ public class Bug505 extends AbstractSarlTest {
 	@Test
 	public void snipset5Compilation() throws Exception {
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
@@ -289,6 +299,7 @@ public class Bug505 extends AbstractSarlTest {
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public abstract class TestAgent extends Agent {",
 				"  private String testString;",

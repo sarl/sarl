@@ -56,11 +56,13 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 implements Cloneable {",
 				"  @Override",
@@ -91,11 +93,13 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 implements Cloneable {",
 				"  @Pure",
@@ -122,11 +126,13 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  @Override",
@@ -162,11 +168,13 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  @Pure",
@@ -192,11 +200,13 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1<T extends Number> implements Cloneable {",
 				"  @Override",
@@ -227,11 +237,13 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1<T extends Number> implements Cloneable {",
 				"  @Pure",
@@ -258,11 +270,13 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1<T extends Number> extends C0 {",
 				"  @Override",
@@ -298,11 +312,13 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1<T extends Number> extends C0 {",
 				"  @Pure",
@@ -331,10 +347,12 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"}"
 				);
 		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 extends C0 {",
 				"  @SyntheticMember",

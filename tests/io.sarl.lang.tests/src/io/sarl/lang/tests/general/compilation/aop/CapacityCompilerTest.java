@@ -20,6 +20,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -39,11 +40,13 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 	public void basicCapacityCompile() throws Exception {
 		String source = "capacity C1 { }";
 		String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
@@ -64,11 +67,13 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"capacity C1 { }"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
@@ -88,11 +93,13 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"public capacity C1 { }"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
@@ -112,11 +119,13 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"private capacity C1 { }"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"interface C1 extends Capacity {",
 				"  public static class ContextAwareCapacityWrapper<C extends C1> extends Capacity.ContextAwareCapacityWrapper<C> implements C1 {",
@@ -140,12 +149,14 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"}"
 			);
 		final String expectedC1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void name();",
@@ -169,11 +180,13 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 			);
 		final String expectedC2 = multilineString(
 				"import C1;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C2 extends C1 {",
 				"  @Override",
@@ -211,12 +224,14 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"}"
 			),
 			multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.core.AgentTrait;",
 				"import io.sarl.lang.core.Capacity;",
 				"",
 				"@FunctionalInterface",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface C1 extends Capacity {",
 				"  public abstract void name();",

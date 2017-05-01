@@ -23,6 +23,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -49,9 +50,11 @@ public class EnumCompilerTest {
 		public void basic() throws Exception {
 			String source = "enum E1 { CST1, CST2 }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_ENUMERATION + ")",
 					"@SuppressWarnings(\"all\")",
 					"public enum E1 {",
 					"  CST1,",
@@ -74,13 +77,16 @@ public class EnumCompilerTest {
 		public void basic() throws Exception {
 			String source = "class Container { enum E1 { CST1, CST2 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_ENUMERATION + ")",
 					"  public enum E1 {",
 					"    CST1,",
 					"    ",
@@ -108,6 +114,7 @@ public class EnumCompilerTest {
 		public void basic() throws Exception {
 			String source = "agent Container { enum E1 { CST1, CST2 } }";
 			String expected = multilineString(
+					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import io.sarl.lang.annotation.SyntheticMember;",
 					"import io.sarl.lang.core.Agent;",
@@ -116,9 +123,11 @@ public class EnumCompilerTest {
 					"import javax.inject.Inject;",
 					"",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 					"@SuppressWarnings(\"all\")",
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+					"  @SarlElementType(" + SarlPackage.SARL_ENUMERATION + ")",
 					"  protected enum E1 {",
 					"    CST1,",
 					"    ",
