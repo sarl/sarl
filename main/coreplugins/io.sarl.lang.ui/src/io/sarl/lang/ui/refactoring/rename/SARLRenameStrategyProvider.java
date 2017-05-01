@@ -28,6 +28,8 @@ import org.eclipse.xtext.common.types.ui.refactoring.participant.JvmMemberRename
 import org.eclipse.xtext.ui.refactoring.IRenameStrategy;
 import org.eclipse.xtext.ui.refactoring.ui.IRenameElementContext;
 
+import io.sarl.lang.sarl.SarlScript;
+
 /** Provider of rename strategies in the SARL context.
  *
  * @author $Author: sgalland$
@@ -38,13 +40,21 @@ import org.eclipse.xtext.ui.refactoring.ui.IRenameElementContext;
 public class SARLRenameStrategyProvider extends JvmMemberRenameStrategy.Provider {
 
 	@Inject
-	private Provider<SARLJdtPackageRenameParticipant.Strategy> guicePackageStartegyProvider;
+	private Provider<SARLJdtPackageRenameParticipant.Strategy> guiceJdtPackageStrategyProvider;
+
+	@Inject
+	private Provider<SARLEcorePackageRenameStrategy> guiceEcorePackageStrategyProvider;
 
 	@Override
 	public IRenameStrategy get(EObject targetEObject, IRenameElementContext renameElementContext)
 			throws NoSuchStrategyException {
 		if (renameElementContext instanceof SARLJdtPackageRenameParticipant.Context) {
-			final SARLJdtPackageRenameParticipant.Strategy strategy = this.guicePackageStartegyProvider.get();
+			final SARLJdtPackageRenameParticipant.Strategy strategy = this.guiceJdtPackageStrategyProvider.get();
+			if (strategy.initialize(targetEObject, renameElementContext)) {
+				return strategy;
+			}
+		} else if (targetEObject instanceof SarlScript) {
+			final SARLEcorePackageRenameStrategy strategy = this.guiceEcorePackageStrategyProvider.get();
 			if (strategy.initialize(targetEObject, renameElementContext)) {
 				return strategy;
 			}
