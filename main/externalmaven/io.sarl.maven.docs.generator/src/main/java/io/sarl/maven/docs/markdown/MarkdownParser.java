@@ -56,6 +56,7 @@ import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.IntegerRange;
 
+import io.sarl.maven.docs.bugs.FileSystemAddons;
 import io.sarl.maven.docs.parser.AbstractMarkerLanguageParser;
 import io.sarl.maven.docs.parser.DynamicValidationComponent;
 import io.sarl.maven.docs.parser.DynamicValidationContext;
@@ -443,7 +444,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 						final String extension = FileSystem.extension(filename);
 						if (isMarkdownFileExtension(extension)) {
 							filename = FileSystem.replaceExtension(filename, ".html"); //$NON-NLS-1$
-							replacements.put(it.getUrl(), filename.toString());
+							replacements.put(it.getUrl(), FileSystemAddons.convertFileToURL(filename, true).getPath());
 						}
 					}
 				}));
