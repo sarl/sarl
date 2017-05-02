@@ -20,7 +20,7 @@ install:
   - cmd: java -version
 
 build_script:
-  - mvn -B -e -P!generateproduct clean install
+  - mvn -B -e -P!generateproduct -Dio.sarl.docs.tests.skip=true clean install
 
 cache:
   - C:\maven\ -> appveyor.yml
