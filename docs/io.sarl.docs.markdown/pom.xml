@@ -91,6 +91,8 @@
 					<addSectionLabels>true</addSectionLabels>
 					<outlineStyleId>page_outline</outlineStyleId>
 
+					<remoteLinkValidation>false</remoteLinkValidation>
+
 					<!--  <testSourceDirectory>src/main/generated-sources</testSourceDirectory>  -->
 				</configuration>
 			</plugin>
