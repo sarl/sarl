@@ -67,7 +67,7 @@ public class SarlParameterBuilder extends XtendParameterBuilder {
 	@Override
 	public ISourceAppender build(ISourceAppender appendable) {
 		appendModifiers(appendable);
-		appendable.append(getName()).append(" "); //$NON-NLS-1$
+		appendable.append(this.keywords.protectKeyword(getName())).append(" "); //$NON-NLS-1$
 		appendable.append(this.keywords.getColonKeyword()).append(" "); //$NON-NLS-1$
 		if (isVarArgsFlag()) {
 			appendType(appendable,

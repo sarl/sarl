@@ -15,11 +15,11 @@
  */
 package io.sarl.lang.ui.tests.bugs;
 
+import java.awt.event.ActionEvent;
+
 import org.eclipse.xtend.core.validation.IssueCodes;
-import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.junit.Test;
 
-import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.ui.tests.quickfix.AbstractSARLQuickfixTest;
 
 /** Issue: No generation of missed functions.
@@ -45,14 +45,6 @@ public class Bug647 extends AbstractSARLQuickfixTest {
 			"package io.sarl.lang.ui.tests.bugs.bug647",
 			"import java.util.Iterator",
 			"class ShapedObject { }",
-			"abstract class FrustrumIterator<T extends ShapedObject> implements Iterator<T>{",
-			"	",
-			"}");
-
-	private static final String FIXED2 = multilineString(
-			"package io.sarl.lang.ui.tests.bugs.bug647",
-			"import java.util.Iterator",
-			"class ShapedObject { }",
 			"class FrustrumIterator<T extends ShapedObject> implements Iterator<T>{",
 			"	",
 			"	override hasNext : boolean {",
@@ -65,17 +57,28 @@ public class Bug647 extends AbstractSARLQuickfixTest {
 			"	",
 			"}");
 
-	@Test
-	public void compilationFailure() throws Exception {
-		final Validator validator = validate(file(SNIPSET1));
-		validator.assertError(
-				SarlPackage.eINSTANCE.getSarlClass(),
-				IssueCodes.CLASS_MUST_BE_ABSTRACT,
-				"The class FrustrumIterator must be defined abstract ");
-	}
+	private static final String SNIPSET2 = multilineString(
+			"package io.sarl.lang.ui.tests.bugs.bug647",
+			"import java.awt.^event.ActionListener",
+			"class X implements ActionListener {",
+			"	",
+			"}");
+
+	private static final String FIXED2 = multilineString(
+			"package io.sarl.lang.ui.tests.bugs.bug647",
+			"import java.awt.^event.ActionListener",
+			"import java.awt.^event.ActionEvent",
+			"",
+			"class X implements ActionListener {",
+			"	",
+			"	override actionPerformed(e : ActionEvent) {",
+			"		throw new UnsupportedOperationException(\"TODO: auto-generated method stub\")",
+			"	}",
+			"	",
+			"}");
 
 	@Test
-	public void fixMakeClassAbstract() {
+	public void fixAddUnimplementedMethods1() {
 		assertQuickFix(true,
 				IssueCodes.CLASS_MUST_BE_ABSTRACT,
 				//
@@ -85,7 +88,7 @@ public class Bug647 extends AbstractSARLQuickfixTest {
 				//
 				// Label and description:
 				//
-				"Make class abstract",
+				"Add unimplemented methods",
 				//
 				// Expected fixed code:
 				//
@@ -93,13 +96,13 @@ public class Bug647 extends AbstractSARLQuickfixTest {
 	}
 
 	@Test
-	public void fixAddUnimplementedMethods() {
+	public void fixAddUnimplementedMethods2() throws Exception {
 		assertQuickFix(true,
 				IssueCodes.CLASS_MUST_BE_ABSTRACT,
 				//
 				// Code to fix:
 				//
-				SNIPSET1,
+				SNIPSET2,
 				//
 				// Label and description:
 				//

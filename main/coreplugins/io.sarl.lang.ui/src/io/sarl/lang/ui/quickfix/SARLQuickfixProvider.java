@@ -140,7 +140,6 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	@Inject
 	private AnnotationLookup annotationFinder;
 
-
 	/** Replies if the given code is for a ignorable warning.
 	 *
 	 * @param code the code of the warning.

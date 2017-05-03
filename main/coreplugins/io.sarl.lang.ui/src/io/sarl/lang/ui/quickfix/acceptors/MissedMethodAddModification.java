@@ -182,6 +182,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				int i = 0;
 				for (final JvmFormalParameter parameter : operation.getParameters()) {
 					final SarlParameterBuilder paramBuilder = (SarlParameterBuilder) builder.newParameterBuilder();
+					paramBuilder.setName(parameter.getSimpleName());
 					paramBuilder.setType(cloneTypeReference(parameter.getParameterType(), typeParameterMap));
 					if (formalParameters.hasFormalParameterDefaultValue(i)) {
 						final String defaultValue = formalParameters.getFormalParameterDefaultValueString(i);

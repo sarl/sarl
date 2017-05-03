@@ -58,7 +58,7 @@ public class SarlFieldBuilder extends XtendFieldBuilder {
 		if (isStaticFlag()) {
 			appendable.append(this.keywords.getStaticStaticKeyword()).append(" "); //$NON-NLS-1$
 		}
-		appendable.append(getFieldName());
+		appendable.append(this.keywords.protectKeyword(getFieldName()));
 		appendable.append(" ").append(this.keywords.getColonKeyword()).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
 		appendType(appendable, getFieldType(), Object.class.getName());
 		return appendable;
