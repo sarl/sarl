@@ -58,8 +58,6 @@ import io.sarl.lang.sarl.SarlScript;
  */
 public class SarlScriptExecutor implements ScriptExecutor {
 
-	private Injector injector;
-
 	private File tmpFolder = null;
 
 	private String classpath = Strings.emptyIfNull(null);
@@ -68,13 +66,20 @@ public class SarlScriptExecutor implements ScriptExecutor {
 
 	private String sourceVersion = Strings.emptyIfNull(null);
 
+	private SarlBatchCompiler compiler;
+
+	private IExpressionInterpreter interpreter;
+
 	/** Change the injector.
 	 *
 	 * @param injector the new injector.
 	 */
 	@Inject
 	public void setInjector(Injector injector) {
-		this.injector = injector;
+		if (injector != null) {
+			this.compiler = injector.getInstance(SarlBatchCompiler.class);
+			this.interpreter = injector.getInstance(IExpressionInterpreter.class);
+		}
 	}
 
 	@Override
@@ -133,22 +138,21 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		File sourceFolder = createSourceFolder(rootFolder);
 		File genFolder = createGenFolder(rootFolder);
 		File binFolder = createBinFolder(rootFolder);
-		SarlBatchCompiler compiler = this.injector.getInstance(SarlBatchCompiler.class);
-		compiler.setBasePath(rootFolder.getAbsolutePath());
-		compiler.addSourcePath(sourceFolder);
-		compiler.setClassOutputPath(binFolder);
-		compiler.setOutputPath(genFolder);
-		compiler.setGenerateGeneratedAnnotation(false);
-		compiler.setGenerateInlineAnnotation(false);
-		compiler.setGenerateSyntheticSuppressWarnings(true);
-		compiler.setDeleteTempDirectory(false);
-		compiler.setClassPath(this.classpath);
-		compiler.setBootClassPath(this.bootClasspath);
-		compiler.setJavaSourceVersion(this.sourceVersion);
-		compiler.setAllWarningSeverities(Severity.IGNORE);
-		compiler.setJavaCompilerVerbose(false);
-		compiler.getLogger().setLevel(Level.OFF);
-		compiler.addIssueMessageListener((issue, uri, message) -> {
+		this.compiler.setBasePath(rootFolder.getAbsolutePath());
+		this.compiler.addSourcePath(sourceFolder);
+		this.compiler.setClassOutputPath(binFolder);
+		this.compiler.setOutputPath(genFolder);
+		this.compiler.setGenerateGeneratedAnnotation(false);
+		this.compiler.setGenerateInlineAnnotation(false);
+		this.compiler.setGenerateSyntheticSuppressWarnings(true);
+		this.compiler.setDeleteTempDirectory(false);
+		this.compiler.setClassPath(this.classpath);
+		this.compiler.setBootClassPath(this.bootClasspath);
+		this.compiler.setJavaSourceVersion(this.sourceVersion);
+		this.compiler.setAllWarningSeverities(Severity.IGNORE);
+		this.compiler.setJavaCompilerVerbose(false);
+		this.compiler.getLogger().setLevel(Level.OFF);
+		this.compiler.addIssueMessageListener((issue, uri, message) -> {
 			if (issue.isSyntaxError() || issue.getSeverity().compareTo(Severity.ERROR) >= 0) {
 				final Integer line = issue.getLineNumber();
 				final int issueLine = (line == null ? 0 : line.intValue()) + lineno;
@@ -156,10 +160,10 @@ public class SarlScriptExecutor implements ScriptExecutor {
 			}
 		});
 		if (receiver != null) {
-			compiler.addCompiledResourceReceiver(receiver);
+			this.compiler.addCompiledResourceReceiver(receiver);
 		}
 		File file = createFile(sourceFolder, code);
-		if (compiler.compile()) {
+		if (this.compiler.compile()) {
 			issues.clear();
 		}
 		return file;
@@ -174,13 +178,12 @@ public class SarlScriptExecutor implements ScriptExecutor {
 					resources.add(it);
 				});
 		assertNoIssue(lineno, issues);
-		IExpressionInterpreter interpreter = this.injector.getInstance(IExpressionInterpreter.class);
 		for (Resource resource : resources) {
 			SarlScript script = (SarlScript) resource.getContents().get(0);
 			SarlClass clazz = (SarlClass) script.getXtendTypes().get(0);
 			SarlField field = (SarlField) clazz.getMembers().get(0);
 			XExpression xexpression = field.getInitialValue();
-			IEvaluationResult result = interpreter.evaluate(xexpression);
+			IEvaluationResult result = this.interpreter.evaluate(xexpression);
 			if (result.getException() == null) {
 				return result.getResult();
 			}
