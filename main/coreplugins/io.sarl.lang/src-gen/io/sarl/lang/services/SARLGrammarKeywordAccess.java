@@ -961,5 +961,16 @@ public class SARLGrammarKeywordAccess {
 		return getPureKeywords().contains(str);
 	}
 
+	/** Protect the given text if it is a keyword.
+	 * @param text the text to protect.
+	 * @return the protected text.
+	 */
+	public String protectKeyword(String text) {
+		if (!Strings.isEmpty(text) && isKeyword(text)) {
+			return "^" + text;
+		}
+		return text;
+	}
+
 }
 

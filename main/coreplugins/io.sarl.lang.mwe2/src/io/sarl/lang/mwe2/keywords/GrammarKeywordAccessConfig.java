@@ -44,11 +44,31 @@ public class GrammarKeywordAccessConfig implements IGuiceAwareGeneratorComponent
 
 	private Set<String> ignoredKeywords = new HashSet<>();
 
+	private String protectionSymbol = "^"; //$NON-NLS-1$
+
 	private boolean isDependencyGrammarInheritance;
 
 	@Override
 	public void initialize(Injector injector) {
 		//
+	}
+
+	/** Change the symbol for protected keywords.
+	 *
+	 * @param symbol the symbol.
+	 */
+	public void setKeywordProtectionSymbol(String symbol) {
+		if (!Strings.isNullOrEmpty(symbol)) {
+			this.protectionSymbol = symbol;
+		}
+	}
+
+	/** Change the symbol for protected keywords.
+	 *
+	 * @return the symbol.
+	 */
+	public String getKeywordProtectionSymbol() {
+		return this.protectionSymbol;
 	}
 
 	/** Set if the grammar that are included by the base grammar must provides their keywords.

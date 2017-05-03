@@ -573,6 +573,31 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 				it.append("\t}"); //$NON-NLS-1$
 				it.newLineIfNotEmpty();
 				it.newLine();
+				it.append("\t/** Protect the given text if it is a keyword."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @param text the text to protect."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t * @return the protected text."); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t */"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\tpublic String protectKeyword(String text) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\tif (!"); //$NON-NLS-1$
+				it.append(Strings.class);
+				it.append(".isEmpty(text) && isKeyword(text)) {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t\treturn \""); //$NON-NLS-1$
+				it.append(Strings.convertToJavaString(GrammarKeywordAccessFragment2.this.configuration.getKeywordProtectionSymbol()));
+				it.append("\" + text;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\t}"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t\treturn text;"); //$NON-NLS-1$
+				it.newLine();
+				it.append("\t}"); //$NON-NLS-1$
+				it.newLineIfNotEmpty();
+				it.newLine();
 			}
 		};
 	}
