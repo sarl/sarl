@@ -96,7 +96,7 @@ import io.sarl.lang.ui.images.SARLImages;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("checkstyle:classfanoutcomplexity")
-public class SARLLaunchShortcut implements ILaunchShortcut2 {
+public class LaunchAgentShortcut implements ILaunchShortcut2 {
 
 	@Inject
 	private IQualifiedNameProvider nameProvider;
@@ -461,6 +461,36 @@ public class SARLLaunchShortcut implements ILaunchShortcut2 {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
 
+	@Override
+	public ILaunchConfiguration[] getLaunchConfigurations(ISelection selection) {
+		// let the framework resolve configurations based on resource mapping
+		return null;
+	}
+
+	@Override
+	public ILaunchConfiguration[] getLaunchConfigurations(IEditorPart editorpart) {
+		// let the framework resolve configurations based on resource mapping
+		return null;
+	}
+
+	@Override
+	public IResource getLaunchableResource(ISelection selection) {
+		if (selection instanceof IStructuredSelection) {
+			final IStructuredSelection sel = (IStructuredSelection) selection;
+			return findResource(sel.toArray());
+		}
+		return null;
+	}
+
+	@Override
+	public IResource getLaunchableResource(IEditorPart editorpart) {
+		final XtextEditor xtextEditor = EditorUtils.getXtextEditor(editorpart);
+		if (xtextEditor != null) {
+			return xtextEditor.getResource();
+		}
+		return null;
+	}
+
 	/** Description of an agent to launch.
 	 *
 	 * @author $Author: sgalland$
@@ -510,30 +540,30 @@ public class SARLLaunchShortcut implements ILaunchShortcut2 {
 
 		@Override
 		public void addListener(ILabelProviderListener listener) {
-			SARLLaunchShortcut.this.labelProvider.addListener(listener);
+			LaunchAgentShortcut.this.labelProvider.addListener(listener);
 		}
 
 		@Override
 		public void dispose() {
-			SARLLaunchShortcut.this.labelProvider.dispose();
+			LaunchAgentShortcut.this.labelProvider.dispose();
 		}
 
 		@Override
 		public boolean isLabelProperty(Object element, String property) {
-			return SARLLaunchShortcut.this.labelProvider.isLabelProperty(element, property);
+			return LaunchAgentShortcut.this.labelProvider.isLabelProperty(element, property);
 		}
 
 		@Override
 		public void removeListener(ILabelProviderListener listener) {
-			SARLLaunchShortcut.this.labelProvider.removeListener(listener);
+			LaunchAgentShortcut.this.labelProvider.removeListener(listener);
 		}
 
 		@Override
 		public Image getImage(Object element) {
 			if (element instanceof AgentDescription) {
-				return SARLLaunchShortcut.this.images.forAgent(JvmVisibility.PRIVATE, 0).createImage();
+				return LaunchAgentShortcut.this.images.forAgent(JvmVisibility.PRIVATE, 0).createImage();
 			}
-			return SARLLaunchShortcut.this.labelProvider.getImage(element);
+			return LaunchAgentShortcut.this.labelProvider.getImage(element);
 		}
 
 		@Override
@@ -541,39 +571,9 @@ public class SARLLaunchShortcut implements ILaunchShortcut2 {
 			if (element instanceof AgentDescription) {
 				return ((AgentDescription) element).agentName;
 			}
-			return SARLLaunchShortcut.this.labelProvider.getText(element);
+			return LaunchAgentShortcut.this.labelProvider.getText(element);
 		}
 
-	}
-
-	@Override
-	public ILaunchConfiguration[] getLaunchConfigurations(ISelection selection) {
-		// let the framework resolve configurations based on resource mapping
-		return null;
-	}
-
-	@Override
-	public ILaunchConfiguration[] getLaunchConfigurations(IEditorPart editorpart) {
-		// let the framework resolve configurations based on resource mapping
-		return null;
-	}
-
-	@Override
-	public IResource getLaunchableResource(ISelection selection) {
-		if (selection instanceof IStructuredSelection) {
-			final IStructuredSelection sel = (IStructuredSelection) selection;
-			return findResource(sel.toArray());
-		}
-		return null;
-	}
-
-	@Override
-	public IResource getLaunchableResource(IEditorPart editorpart) {
-		final XtextEditor xtextEditor = EditorUtils.getXtextEditor(editorpart);
-		if (xtextEditor != null) {
-			return xtextEditor.getResource();
-		}
-		return null;
 	}
 
 }

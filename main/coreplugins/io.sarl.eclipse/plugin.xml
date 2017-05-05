@@ -201,45 +201,120 @@
             type="io.sarl.eclipse.debug.LaunchConfigType" />
     </extension>
 
+	<!-- Adapters for the application launchers -->
+	<extension point="org.eclipse.core.runtime.adapters">
+     <factory 
+        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.SarlJavaElementDelegateAdapterFactory"
+        adaptableType="org.eclipse.ui.IFileEditorInput">
+        <adapter type="io.sarl.eclipse.launching.shortcuts.SarlJavaElementDelegateMainLaunch"/>
+     </factory>
+     <factory 
+        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.SarlJavaElementDelegateAdapterFactory"
+        adaptableType="org.eclipse.ui.IEditorPart">
+        <adapter type="io.sarl.eclipse.launching.shortcuts.SarlJavaElementDelegateMainLaunch"/>
+     </factory>
+     <factory 
+        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.SarlJavaElementDelegateAdapterFactory" 
+        adaptableType="org.eclipse.core.resources.IResource">
+        <adapter type="io.sarl.eclipse.launching.shortcuts.SarlJavaElementDelegateMainLaunch"/>
+     </factory>
+     <factory 
+        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.SarlJavaElementDelegateAdapterFactory" 
+        adaptableType="org.eclipse.jdt.core.IJavaElement">
+        <adapter type="io.sarl.eclipse.launching.shortcuts.SarlJavaElementDelegateMainLaunch"/>
+     </factory>
+     <factory 
+        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.SarlJavaElementDelegateAdapterFactory"
+        adaptableType="io.sarl.eclipse.launching.shortcuts.SarlJavaElementDelegateMainLaunch">
+        <adapter type="org.eclipse.jdt.core.IJavaElement"/>
+     </factory>
+  </extension>
+
+    <!-- Property tester for launch shortcuts -->
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+	  <propertyTester
+	       type="org.eclipse.core.resources.IResource"
+	       namespace="io.sarl.eclipse"
+	       properties="hasAgent,hasMain"
+	       id="io.sarl.eclipse.shortcuts.PropertyTester.resources"
+	       class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.PropertyTester">
+	   </propertyTester>
+	  <propertyTester
+	       type="org.eclipse.ui.IFileEditorInput"
+	       namespace="io.sarl.eclipse"
+	       properties="hasAgent,hasMain"
+	       id="io.sarl.eclipse.shortcuts.PropertyTester.editors"
+	       class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.PropertyTester">
+	   </propertyTester>
+	  <propertyTester
+	       type="org.eclipse.jdt.core.IJavaElement"
+	       namespace="io.sarl.eclipse"
+	       properties="hasAgent,hasMain"
+	       id="io.sarl.eclipse.shortcuts.PropertyTester.javaelements"
+	       class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.PropertyTester">
+	   </propertyTester>
+	</extension>
+
     <!-- Launch shortcuts (Run As, Debug As) -->
  	<extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.SARLLaunchShortcut"
+        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.LaunchAgentShortcut"
         icon="icons/sarl_16.png"
-        id="io.sarl.eclipse.launching.shortcuts.SARLLaunchShortcut"
-        label="%launch.sarlApplication"
+        id="io.sarl.eclipse.launching.shortcuts.LaunchAgentShortcut"
+        label="%launch.agent"
         modes="run,debug">
         <contextualLaunch>
-         	<contextLabel mode="run" label="%launch.runas" />
-         	<contextLabel mode="debug" label="%launch.debugas" />
+         	<contextLabel mode="run" label="%launch.agent.runas" />
+         	<contextLabel mode="debug" label="%launch.agent.debugas" />
 	         <enablement>
 	           <with variable="selection">
 	               <count value="1"/>
 	               <iterate ifEmpty="false" operator="or">
-	                 <or>
-	                   <reference definitionId="io.sarl.lang.SARL.Editor.opened"/>
-	                   <and>
-	                      <instanceof value="org.eclipse.core.resources.IFile"/>
-						  <adapt type="org.eclipse.core.resources.IFile">
-                            <test property="org.eclipse.core.resources.extension" value="sarl"/>
-                          </adapt>	                      
-	                   </and>
-	                   <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
-	                   <instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
-	                   <instanceof value="org.eclipse.core.resources.IProject"/>
-	                   <and>
-	                   		<instanceof value="org.eclipse.jdt.core.IJavaProject"/>
-	             			<adapt type="org.eclipse.core.resources.IProject">
-	             				<test property="org.eclipse.core.resources.projectNature"
-	            					value="io.sarl.eclipse.SARLProjectNature"/>
-	             			</adapt>
-	                   </and>
-	                 </or>
+	                 <test property="io.sarl.eclipse.hasAgent"/>
 	               </iterate>
 	           </with>
 	       </enablement>
         </contextualLaunch>
+         <description
+       			description="%launch.agent.runas.description"
+               mode="run">
+         </description>
+         <description
+       			description="%launch.agent.debugas.description"
+               mode="debug">
+         </description>
+      </shortcut>
+      <shortcut
+        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.LaunchMainShortcut"
+        icon="icons/sarl_app.png"
+        id="io.sarl.eclipse.launching.shortcuts.LaunchJavaApplicationShortcut"
+        label="%launch.application"
+        helpContextId="org.eclipse.jdt.debug.ui.shortcut_local_java_application"
+        modes="run,debug">
+        <contextualLaunch>
+         	<contextLabel mode="run" label="%launch.application.runas" />
+         	<contextLabel mode="debug" label="%launch.application.debugas" />
+	         <enablement>
+	           <with variable="selection">
+	               <count value="1"/>
+	               <iterate ifEmpty="false" operator="or">
+	                 <test property="io.sarl.eclipse.hasMain"/>
+	               </iterate>
+	           </with>
+	       </enablement>
+        </contextualLaunch>
+        <configurationType
+               id="org.eclipse.jdt.launching.localJavaApplication">
+         </configurationType>
+         <description
+       			description="%launch.application.runas.description"
+               mode="run">
+         </description>
+         <description
+       			description="%launch.application.debugas.description"
+               mode="debug">
+         </description>
       </shortcut>
    </extension>
 
