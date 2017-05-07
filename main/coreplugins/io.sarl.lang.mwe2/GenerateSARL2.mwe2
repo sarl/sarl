@@ -54,6 +54,9 @@ var uiProjectPath = "${rootPath}/${uiProjectName}"
 var testProjectName = "io.sarl.tests.api"
 var testProjectPath = "${overallRootPath}/tests/${testProjectName}"
 
+var testUiProjectName = "${testProjectName}.ui"
+var testUiProjectPath = "${overallRootPath}/tests/${testUiProjectName}"
+
 var externalToolPath = "${overallRootPath}/formatting-styles"
 
 var prettifyToolPath = "${externalToolPath}/prettify"
@@ -101,7 +104,10 @@ Workflow {
 		directory = "${uiProjectPath}/src-gen"
 	}
   	component = DirectoryCleaner {
-		directory = "${testProjectPath}/src-gen"
+		directory = "${testProjectPath}/src/generated/java"
+	}
+  	component = DirectoryCleaner {
+		directory = "${testUiProjectPath}/src-gen"
 	}
    	component = DirectoryCleaner {
 		directory = "${prettifyToolPath}"
@@ -142,11 +148,10 @@ Workflow {
 				}
 				eclipsePluginTest = auto-inject {
 					enabled = true
-					root = testProjectPath
+					root = testUiProjectPath
 				}
 				mavenLayout = false
 				createEclipseMetaData = true
-				
 			}
 			// Code configuration
 			code = auto-inject {

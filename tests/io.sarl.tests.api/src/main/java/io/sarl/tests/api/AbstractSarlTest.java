@@ -44,6 +44,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
@@ -56,7 +59,7 @@ import com.google.inject.Injector;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
@@ -69,6 +72,7 @@ import org.eclipse.xtext.testing.XtextRunner;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.eclipse.xtext.util.JavaVersion;
+import org.eclipse.xtext.util.ReflectionUtil;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNullLiteral;
@@ -115,7 +119,6 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.tests.SARLInjectorProvider;
 
 /** Abstract class that is providing useful tools for unit tests.
  *
@@ -170,7 +173,7 @@ public abstract class AbstractSarlTest {
 	 * @return the mocked instance.
 	 * @see http://stackoverflow.com/questions/37702952/classnotfoundexception-with-mockito-2-in-osgi
 	 */
-	public static <T> @NonNull T mock(Class<T> type) {
+	public static <T> T mock(Class<T> type) {
 		if (type == null) {
 			return null;
 		}
@@ -290,6 +293,7 @@ public abstract class AbstractSarlTest {
 					Assume.assumeTrue(canAccessNetwork);
 				}
 			}
+			//
 			return super.apply(base, description);
 		}
 

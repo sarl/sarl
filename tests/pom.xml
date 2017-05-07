@@ -20,15 +20,19 @@
 	<modules>
 		<module>io.sarl.tests.testdata</module>
 		<module>io.sarl.tests.api</module>
-		<module>io.sarl.util.tests</module>
 		<module>io.sarl.lang.core.tests</module>
 		<module>io.sarl.lang.tests</module>
-		<module>io.sarl.lang.ui.tests</module>
+		<module>io.sarl.util.tests</module>
 		<module>io.sarl.core.tests</module>
-		<module>io.sarl.eclipse.tests</module>
-		<module>io.sarl.m2e.tests</module>
 		<module>sarl-maven-plugin.tests</module>
 		<module>io.sarl.maven.docs.generator.tests</module>
+		<!-- <module>io.sarl.tests.api.ui</module> 
+		<module>io.sarl.lang.ui.tests</module>
+		<module>io.sarl.eclipse.tests</module>
+		<module>io.sarl.m2e.tests</module>
+
+		
+		-->
 	</modules>
 
 	<!-- ======================================= -->
@@ -59,13 +63,10 @@
 					<artifactId>tycho-surefire-plugin</artifactId>
 					<version>${tycho.version}</version>
 					<configuration>
-						<useUIHarness>true</useUIHarness>
-						<useUIThread>true</useUIThread>
-						<runOrder>alphabetical</runOrder>
 						<product>io.sarl.eclipse.io_sarl_lang_product</product>
 						<application>org.eclipse.ui.ide.workbench</application>
 						<argLine>-Xms256M -Xmx${tycho-surefire-plugin-max-memory} -XX:+CMSClassUnloadingEnabled -ea ${tycho-surefire-plugin-os-jvm-flags}</argLine>
-						<redirectTestOutputToFile>true</redirectTestOutputToFile>
+						<redirectTestOutputToFile>false</redirectTestOutputToFile>
 						<showEclipseLog>false</showEclipseLog>
 					</configuration>
 				</plugin>

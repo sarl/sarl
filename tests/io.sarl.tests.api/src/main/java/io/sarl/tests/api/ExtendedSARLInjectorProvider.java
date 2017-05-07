@@ -20,11 +20,15 @@
  */
 package io.sarl.tests.api;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Provider;
+import com.google.inject.util.Modules;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.xbase.testing.OnTheFlyJavaCompiler2;
 
@@ -50,7 +54,7 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public Injector createInjector() {
-				return Guice.createInjector(createRuntimeModule(), createRuntimeTestModule());
+				return Guice.createInjector(Modules.override(createRuntimeModule()).with(createRuntimeTestModule()));
 			}
 		}.createInjectorAndDoEMFRegistration();
 	}
@@ -85,6 +89,24 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 			return new OnTheFlyJavaCompiler2(
 					SARLInjectorProvider.class.getClassLoader(),
 					JavaVersion.JAVA8);
+		}
+
+	}
+
+	/** Provider of the loggers.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class LoggerProvider implements Provider<Logger> {
+
+		@Override
+		public Logger get() {
+			final Logger logger = Logger.getAnonymousLogger();
+			logger.setLevel(Level.OFF);
+			return logger;
 		}
 
 	}

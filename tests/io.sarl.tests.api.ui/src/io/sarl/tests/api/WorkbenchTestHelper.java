@@ -68,7 +68,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -632,8 +631,7 @@ public class WorkbenchTestHelper {
 	 * @return the SARL script.
 	 * @throws Exception
 	 */
-	@SuppressWarnings("null")
-	public <T extends XtendTypeDeclaration> @NonNull T sarlTypeDeclaration(
+	public <T extends XtendTypeDeclaration> T sarlTypeDeclaration(
 			String fileName, Class<T> type,
 			String content) throws Exception {
 		SarlScript script = sarlScript(fileName, content);
@@ -656,7 +654,7 @@ public class WorkbenchTestHelper {
 	 * @return the SARL script.
 	 * @throws Exception
 	 */
-	public <T extends XtendTypeDeclaration> @NonNull T sarlTypeDeclaration(
+	public <T extends XtendTypeDeclaration> T sarlTypeDeclaration(
 			Class<T> type,
 			String content) throws Exception {
 		return sarlTypeDeclaration(generateFilename(), type, content);

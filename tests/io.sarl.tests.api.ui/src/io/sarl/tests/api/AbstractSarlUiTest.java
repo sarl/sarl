@@ -36,11 +36,9 @@ import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -357,7 +355,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 	 *
 	 * @return the helper.
 	 */
-	protected synchronized @NonNull WorkbenchTestHelper helper() {
+	protected synchronized WorkbenchTestHelper helper() {
 		if (this.workbenchHelper == null) {
 			this.workbenchHelper = getInjector().getInstance(WorkbenchTestHelper.class);
 		}

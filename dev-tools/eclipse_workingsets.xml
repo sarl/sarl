@@ -27,6 +27,7 @@
 <item elementID="=io.sarl.m2e.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.tests" type="4"/>
 <item elementID="=io.sarl.tests.api" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=io.sarl.tests.api.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.tests.testdata" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.util.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=sarl-maven-plugin.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
