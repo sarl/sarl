@@ -10,17 +10,15 @@
 
 	<groupId>io.sarl.lang</groupId>
 	<artifactId>io.sarl.lang.core.tests</artifactId>
-	<packaging>eclipse-test-plugin</packaging>
 
 	<name>Language Core Library Tests</name>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+	<dependencies>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.tests.api</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>
