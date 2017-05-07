@@ -338,8 +338,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param exception the exception to log.
 	 */
 	protected void logInternalError(Throwable exception) {
-		if (exception != null) {
-			this.log.log(Level.WARNING, Messages.SARLJvmModelInferrer_0, exception);
+		if (exception != null && this.log.isLoggable(Level.FINEST)) {
+			this.log.log(Level.FINEST, Messages.SARLJvmModelInferrer_0, exception);
 		}
 	}
 
@@ -348,8 +348,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param message the internal message.
 	 */
 	protected void logInternalError(String message) {
-		if (!Strings.isNullOrEmpty(message)) {
-			this.log.log(Level.WARNING,
+		if (this.log.isLoggable(Level.FINEST) && !Strings.isNullOrEmpty(message)) {
+			this.log.log(Level.FINEST,
 					MessageFormat.format(Messages.SARLJvmModelInferrer_1,
 							Messages.SARLJvmModelInferrer_0, message));
 		}
