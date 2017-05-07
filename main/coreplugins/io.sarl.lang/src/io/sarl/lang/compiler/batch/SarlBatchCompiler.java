@@ -505,7 +505,7 @@ public class SarlBatchCompiler {
 
 	/** Change the path where the Java files are generated.
 	 *
-	 * @param path the path.
+	 * @param path the path, or <code>null</code> for using the default path in {@link SARLConfig#FOLDER_SOURCE_GENERATED}..
 	 */
 	public void setOutputPath(File path) {
 		this.outputPath = path;
@@ -636,9 +636,25 @@ public class SarlBatchCompiler {
 	@Pure
 	public File getTempDirectory() {
 		if (this.tempPath == null) {
-			return new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
+			this.tempPath = createTempDirectory();
 		}
 		return this.tempPath;
+	}
+
+	/** Create the temp directory that should be used by the compiler.
+	 *
+	 * @return the temp directory, never {@code null}.
+	 */
+	@SuppressWarnings("static-method")
+	protected File createTempDirectory() {
+		final File tmpPath = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
+		int i = 0;
+		File tmp = new File(tmpPath, "sarlc" + i); //$NON-NLS-1$
+		while (tmp.exists()) {
+			++i;
+			tmp = new File(tmpPath, "sarlc" + i); //$NON-NLS-1$
+		}
+		return tmp;
 	}
 
 	/** Replies if the temp folder must be deleted at the end of the compilation.
