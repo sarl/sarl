@@ -16,7 +16,7 @@ agent AbstractAgent {
 
 	uses Logging
 
-	var i : int = 0;
+	protected var i : int = 0;
 
 	on Initialize {
 		info("1: Hello World in the super agent!")

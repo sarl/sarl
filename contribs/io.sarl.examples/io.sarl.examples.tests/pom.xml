@@ -8,46 +8,25 @@
 	</parent>
 
 	<artifactId>io.sarl.examples.tests</artifactId>
-	<packaging>eclipse-test-plugin</packaging>
 	<name>Example Tests</name>
 
-	<properties>
-		<tycho-surefire-plugin-os-jvm-flags></tycho-surefire-plugin-os-jvm-flags>
-		<tycho-surefire-plugin-max-memory>512M</tycho-surefire-plugin-max-memory>
-	</properties>
-
-	<profiles>
-		<profile>
-			<id>tycho-surefire-plugin-macosx-jvm-flags</id>
-			<activation>
-				<os>
-					<family>mac</family>
-				</os>
-			</activation>
-			<properties>
-				<tycho-surefire-plugin-os-jvm-flags>-XstartOnFirstThread</tycho-surefire-plugin-os-jvm-flags>
-			</properties>
-		</profile>
-	</profiles>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<configuration>
-					<useUIHarness>true</useUIHarness>
-					<useUIThread>false</useUIThread>
-					<runOrder>alphabetical</runOrder>
-					<product>io.sarl.eclipse.io_sarl_lang_product</product>
-					<application>org.eclipse.ui.ide.workbench</application>
-					<argLine>-Xms256M -Xmx${tycho-surefire-plugin-max-memory} -XX:+CMSClassUnloadingEnabled -ea ${tycho-surefire-plugin-os-jvm-flags}</argLine>
-					<redirectTestOutputToFile>true</redirectTestOutputToFile>
-					<showEclipseLog>false</showEclipseLog>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	<dependencies>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.tests.api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.sdk</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.examples</groupId>
+			<artifactId>io.sarl.examples.plugin</artifactId>
+			<version>${sarl.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>

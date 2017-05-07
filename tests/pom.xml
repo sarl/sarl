@@ -26,12 +26,13 @@
 		<module>io.sarl.core.tests</module>
 		<module>sarl-maven-plugin.tests</module>
 		<module>io.sarl.maven.docs.generator.tests</module>
-		<!-- <module>io.sarl.tests.api.ui</module> 
+
+		<!-- Included when Xtext 2.12 is available:
+
+		<module>io.sarl.tests.api.ui</module>
 		<module>io.sarl.lang.ui.tests</module>
 		<module>io.sarl.eclipse.tests</module>
 		<module>io.sarl.m2e.tests</module>
-
-		
 		-->
 	</modules>
 
