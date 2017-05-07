@@ -28,8 +28,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
-
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -43,12 +41,10 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 
 	/** Name of the loaded class.
 	 */
-	@NonNullByDefault
 	protected String classname;
 
 	/** Loaded type.
 	 */
-	@NonNullByDefault
 	protected Class<? extends T> type;
 
 	/** Load the given class, generated from the SARL code.

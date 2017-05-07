@@ -9,17 +9,20 @@
 	</parent>
 
 	<artifactId>io.sarl.core.tests</artifactId>
-	<packaging>eclipse-test-plugin</packaging>
 
 	<name>Core Library Tests</name>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+	<dependencies>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.tests.api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.sdk</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>

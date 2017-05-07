@@ -26,11 +26,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.junit.Before;
@@ -50,7 +48,6 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class AgentTaskTest extends AbstractSarlTest {
 
-	@NonNullByDefault
 	private AgentTask task;
 
 	@Before

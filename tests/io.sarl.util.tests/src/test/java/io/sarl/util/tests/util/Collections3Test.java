@@ -33,7 +33,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,13 +68,10 @@ public class Collections3Test {
 
 		public static class CollectionTest extends AbstractSarlTest {
 
-			@NonNullByDefault
 			private Object mutex;
 
-			@NonNullByDefault
 			private List<String> original;
 
-			@NonNullByDefault
 			private SynchronizedCollection<String> collection;
 
 			@Before
@@ -196,13 +192,9 @@ public class Collections3Test {
 
 		public static class SyncTest extends AbstractSarlTest {
 
-			@NonNullByDefault
 			private ExecutorService executors;
-			@NonNullByDefault
 			private Object mutex;
-			@NonNullByDefault
 			private List<String> original;
-			@NonNullByDefault
 			private Collection<String> collection;
 
 			@Before
@@ -261,11 +253,8 @@ public class Collections3Test {
 
 		public static class CollectionTest extends AbstractSarlTest {
 
-			@NonNullByDefault
 			private Object mutex;
-			@NonNullByDefault
 			private TreeSet<String> original;
-			@NonNullByDefault
 			private SynchronizedSet<String> collection;
 
 			@Before
@@ -407,16 +396,9 @@ public class Collections3Test {
 				return it.next();
 			}
 
-			@NonNullByDefault
 			private ExecutorService executors;
-
-			@NonNullByDefault
 			private Object mutex;
-
-			@NonNullByDefault
 			private TreeSet<String> original;
-
-			@NonNullByDefault
 			private Set<String> collection;
 
 			@Before

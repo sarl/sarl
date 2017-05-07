@@ -24,7 +24,6 @@ import static org.junit.Assert.assertSame;
 
 import java.util.UUID;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,10 +38,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 public class UnknownContextExceptionTest extends AbstractSarlTest {
 
-	@NonNullByDefault
 	private UUID id;
 
-	@NonNullByDefault
 	private UnknownContextException exception;
 
 	/**
