@@ -25,11 +25,6 @@
 **/io.sarl.lang/src/test/xtend-gen/
 **/io.sarl.lang/src/test/generated-sources/
 **/io.sarl.lang/model/generated/
-**/io.sarl.docs.suite/xtend-gen/
-**/io.sarl.docs.suite/src/main/xtend-gen/
-**/io.sarl.docs.suite/src/main/generated-sources/
-**/io.sarl.docs.suite/src/test/xtend-gen/
-**/io.sarl.docs.suite/src/test/generated-sources/
 **/io.sarl.lang.tests/xtend-gen/
 **/io.sarl.lang.tests/src/main/xtend-gen/
 **/io.sarl.lang.tests/src/main/generated-sources/
