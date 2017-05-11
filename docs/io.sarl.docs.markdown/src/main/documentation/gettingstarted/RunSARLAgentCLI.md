@@ -14,9 +14,9 @@ Three methods could be used for launching an agent with Janus:
 
 
 
-## Use the janus command-line tool
+## Use the [:januscmd!] command-line tool
 
-The SARL project provides a command-line tool for launching agents on the Janus runtime environment.
+The SARL project provides a [command-line tool for launching agents](../tools/Janus.md) on the Janus runtime environment.
 
 
 ### Download the janus command-line tool
@@ -29,13 +29,13 @@ For launching an agent, you must launch the command-line tool with the fully-qua
 name of the agent as parameter, [:janusagent:] in the following example.
 
 
-	janus [:janusagent](myapp.MyAgent)
+	[:januscmd](janus) [:janusagent](myapp.MyAgent)
 
 
 The janus command-line tool provides options that will enable you to tune the launching configuration:
 
 
-	janus --help
+	[:januscmd!] --help
 
 
 ## Use the standard java method

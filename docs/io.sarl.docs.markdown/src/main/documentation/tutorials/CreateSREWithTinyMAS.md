@@ -25,8 +25,9 @@ external contexts and inner contexts is not implemented.
 Before reading this document, it is recommended reading the
 [General Syntax Reference](../reference/GeneralSyntax.md).
 
+
 <div class="bt-download">
-<a href="https://github.com/gallandarakhneorg/tinymas"><img alt="Download the Source Code" src="[:sarlUrl!]/images/download-icon.png"/></a>
+<a href="https://github.com/gallandarakhneorg/tinymas"><img alt="See the source" src="[:sarlUrl!]/images/download-icon.png"/></a>
 </div>
 The elements that are explained in this tutorial are:
 
