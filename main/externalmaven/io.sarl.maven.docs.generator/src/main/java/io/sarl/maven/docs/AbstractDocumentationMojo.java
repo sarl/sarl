@@ -149,6 +149,12 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	protected boolean githubExtension;
 
 	/**
+	 * Indicates if the line continuation syntax is enabled or not.
+	 */
+	@Parameter(defaultValue = "true", required = false)
+	protected boolean isLineContinuationEnable;
+
+	/**
 	 * Java version number to support.
 	 */
 	@Parameter(required = false)
@@ -373,6 +379,12 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		parser.setGithubExtensionEnable(this.githubExtension);
 
 		final SarlDocumentationParser internalParser = parser.getDocumentParser();
+
+		if (this.isLineContinuationEnable) {
+			internalParser.setLineContinuation(SarlDocumentationParser.DEFAULT_LINE_CONTINUATION);
+		} else {
+			internalParser.addPropertyProvider(createProjectProperties());
+		}
 
 		final ScriptExecutor scriptExecutor = internalParser.getScriptExecutor();
 		final StringBuilder cp = new StringBuilder();

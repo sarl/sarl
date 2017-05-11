@@ -79,9 +79,17 @@ import io.sarl.maven.docs.testing.ScriptExecutor;
  */
 public class SarlDocumentationParser {
 
-	private static final String DEFAULT_INLINE_FORMAT = "`{0}`"; //$NON-NLS-1$
+	/** Default pattern for formatting inline code.
+	 */
+	public static final String DEFAULT_INLINE_FORMAT = "`{0}`"; //$NON-NLS-1$
 
-	private static final String DEFAULT_OUTLINE_OUTPUT_TAG = "[::Outline::]"; //$NON-NLS-1$
+	/** Default string to put for the outline location.
+	 */
+	public static final String DEFAULT_OUTLINE_OUTPUT_TAG = "[::Outline::]"; //$NON-NLS-1$
+
+	/** Default text for line continuation.
+	 */
+	public static final String DEFAULT_LINE_CONTINUATION = " "; //$NON-NLS-1$
 
 	private static final String DEFAULT_TAG_NAME_PATTERN = "\\[:(.*?)[:!]?\\]"; //$NON-NLS-1$
 
@@ -110,6 +118,8 @@ public class SarlDocumentationParser {
 	private String languageName;
 
 	private ScriptExecutor scriptExecutor;
+
+	private String lineContinuation;
 
 	/** Constructor.
 	 */
@@ -163,6 +173,22 @@ public class SarlDocumentationParser {
 		return this.scriptExecutor;
 	}
 
+	/** Replies the string of character to put in the text when line continuation  is detected.
+	 *
+	 * @return the line continuation string of characters, or {@code null} to ignore line continuations.
+	 */
+	public String getLineContinuation() {
+		return this.lineContinuation;
+	}
+
+	/** Change the string of character to put in the text when line continuation  is detected.
+	 *
+	 * @param lineContinuationText the line continuation string of characters, or {@code null} to ignore line continuations.
+	 */
+	public void setLineContinuation(String lineContinuationText) {
+		this.lineContinuation = lineContinuationText;
+	}
+
 	/** Replies the fenced code block formatter.
 	 *
 	 * <p>This code block formatter is usually used by Github.
@@ -172,7 +198,7 @@ public class SarlDocumentationParser {
 	public static Function2<String, String, String> getFencedCodeBlockFormatter() {
 		return (languageName, content) -> {
 			return "```" + Strings.nullToEmpty(languageName).toLowerCase() + "\n" //$NON-NLS-1$ //$NON-NLS-2$
-					+ Pattern.compile("^", Pattern.MULTILINE).matcher(content).replaceAll("\t") //$NON-NLS-1$ //$NON-NLS-2$
+					+ content
 					+ "```\n"; //$NON-NLS-1$
 		};
 	}
@@ -223,6 +249,7 @@ public class SarlDocumentationParser {
 		this.blockFormat = null;
 		this.outlineOutputTag = DEFAULT_OUTLINE_OUTPUT_TAG;
 		this.dynamicNameExtractionPattern = DEFAULT_TAG_NAME_PATTERN;
+		this.lineContinuation = DEFAULT_LINE_CONTINUATION;
 	}
 
 	/** Add a provider of properties that could be used for finding replacement values.
@@ -643,7 +670,7 @@ public class SarlDocumentationParser {
 	public String transform(CharSequence content, File inputFile) {
 		final ParsingContext rootContextForReplacements = new ParsingContext();
 		initializeContext(rootContextForReplacements);
-		CharSequence rawContent = content;
+		CharSequence rawContent = preProcessing(content);
 		Stage stage = Stage.first();
 		do {
 			final ContentParserInterceptor interceptor = new ContentParserInterceptor();
@@ -655,8 +682,34 @@ public class SarlDocumentationParser {
 			}
 			stage = stage.next();
 		} while (stage != null);
+		return postProcessing(rawContent);
+	}
 
-		return rawContent.toString().trim();
+	/** Do a pre processing of the text.
+	 *
+	 * @param text the text to pre process.
+	 * @return the pre-processed text.
+	 */
+	@SuppressWarnings("static-method")
+	protected CharSequence preProcessing(CharSequence text) {
+		return text;
+	}
+
+	/** Do a post processing of the text.
+	 *
+	 * @param text the text to post process.
+	 * @return the post-processed text.
+	 */
+	protected String postProcessing(CharSequence text) {
+		final String lineContinuation = getLineContinuation();
+		if (lineContinuation != null) {
+			final Pattern pattern = Pattern.compile(
+					"\\s*\\\\[\\n\\r]+\\s*", //$NON-NLS-1$
+					Pattern.DOTALL);
+			final Matcher matcher = pattern.matcher(text.toString().trim());
+			return matcher.replaceAll(lineContinuation);
+		}
+		return text.toString().trim();
 	}
 
 	/** Read the given input content and extract validation components.
