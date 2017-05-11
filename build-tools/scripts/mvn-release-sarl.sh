@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if [ -f "$HOME/.sarlrc" ]; then
+	. "$HOME/.sarlrc"
+fi
+
 if [ -z "$MAVENSARLIO_URL" ]; then
 	echo "You must define the MAVENSARLIO_URL environment variable to the URL of the Maven upload server , e.g. dav:https://myhost/dav" 1>&2
 	exit 255
