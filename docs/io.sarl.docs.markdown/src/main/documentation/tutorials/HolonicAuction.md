@@ -9,9 +9,8 @@ The architecture presented in this tutorial may be used for designing a system i
 taken after arbitration among components. 
 
 <div class="bt-download">
-<a href="[:sarl.maven.repository.url!]/last-demos-release.jar"><img alt="Download the Binary JAR file" src="[:sarlUrl!]/images/download-icon.png"/></a>
+<a href="[:githublnk](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-demos-holonicauction)"><img alt="See the code" src="[:sarlUrl!]/images/download-icon.png"/></a>
 </div>
-
 According to the vocabulary used in the SARL project, all the agents are holons. In the rest of this tutorial,
 the terms "agent" and "holon" are synonymous. 
 
@@ -27,7 +26,7 @@ The elements that are explained in this tutorial are:
 readers, the [Agent Reference](../reference/Agent.md) may be read.</note>
 
 The source code related to this tutorial may be found in the
-[SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/holonicauction).
+[Github of the SARL demos]([:githublnk!]).
 
 
 ## Principle of the English Auction

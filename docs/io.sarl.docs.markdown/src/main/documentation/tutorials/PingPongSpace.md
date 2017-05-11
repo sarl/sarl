@@ -8,7 +8,7 @@ Before reading this document, it is recommended reading the
 [General Syntax Reference](../reference/GeneralSyntax.md).
 
 <div class="bt-download">
-<a href="[:sarl.maven.repository.url!]/last-demos-release.jar"><img alt="Download the Binary JAR file" src="[:sarlUrl!]/images/download-icon.png"/></a>
+<a href="[:githublnk](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-demos-pingpongspace)"><img alt="See the code" src="[:sarlUrl!]/images/download-icon.png"/></a>
 </div>
 The elements that are explained in this tutorial are:
 
@@ -20,7 +20,7 @@ The elements that are explained in this tutorial are:
 * the definition of a _proactive_ behavior: waiting for partners.
 
 The source code related to this tutorial may be found in the
-[SARL demos](https://github.com/sarl/sarl-demos/tree/master/src/main/sarl/io/sarl/docs/tutorials/pingpongspace).
+[GitHub of the SARL demos]([:githublnk!]).
 
 
 ## Principle of the Application
