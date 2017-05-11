@@ -42,6 +42,26 @@
 ### General Syntax
 
 * [General Syntax Reference](./reference/GeneralSyntax.md)
+* Structural elements;
+	* [Script format](./reference/general/Script.md)
+	* [Function declaration](./reference/general/FuncDecls.md)
+* Constant expressions:
+	* [Numerical, string, and collection literals](./reference/general/Literals.md)
+* Structuring expressions:
+	* [Block expression](./reference/general/Block.md)
+	* [If-then-else expression](./reference/general/IfExpression.md)
+	* [Switch expression](./reference/general/SwitchExpression.md)
+	* [Loops](./reference/general/LoopExpression.md)
+	* [Lambda expressions](./reference/general/Lambda.md)
+* Standard expressions:
+	* [Variable and attribute declarations](./reference/general/VarDecls.md)
+	* [Operators](./reference/general/Operators.md)
+	* [Type casting](./reference/general/Cast.md)
+	* [Access to object members](./reference/general/MemberAccess.md)
+	* [Extension methods](./reference/general/Extension.md)
+	* [Synchronization expression](./reference/general/Synchronization.md)
+* Errors and exceptions:
+	* [Exceptions](./reference/general/Exception.md)
 
 ### Agent-Oriented Programming
 
