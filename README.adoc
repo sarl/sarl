@@ -19,7 +19,7 @@ image:http://www.sarl.io/images/compilation-process.png[align="center"]
 
 
 image:https://img.shields.io/badge/Documentation-API-ff69b4.svg?style=flat-square[link=http://www.sarl.io/docs/api/index.html]
-image:https://img.shields.io/badge/Documentation-Reference-red.svg?style=flat-square[link=http://www.sarl.io/docs/suite/io/sarl/docs/SARLDocumentationSuite.html]
+image:https://img.shields.io/badge/Documentation-Reference-red.svg?style=flat-square[link=http://www.sarl.io/docs/official/index.html]
 
 
 image:https://img.shields.io/badge/Requires-Java%208-yellowgreen.svg?style=flat-square[link=https://www.java.com]
