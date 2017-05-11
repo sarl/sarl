@@ -12,7 +12,7 @@ A command-line compiler is a tool that could be invoked from the command-line sh
 The [:name:] tool takes arguments:
 
 
-	[:name:] --dir <[:outfolder](output folder)> [OPTIONS] <[:srcfolder](source folder)>...
+	[:name!] --dir <[:outfolder](output folder)> [OPTIONS] <[:srcfolder](source folder)>...
 
 
 The [:outfolder:] is the name of the folder in which the generated Java files should be created by the SARL compiler.

@@ -67,41 +67,43 @@ Open the file `pom.xml`, and edit it for obtaining a content similar to the conf
 Replace the version number [:sarl.version:] of SARL with the one you want to use. You could search on the
 [Maven Central Repository](http://central.sonatype.org/) for the last available version.
 
-	 <project>
-	    ...
-	    <properties>
-	       ...
-	       <sarl.version>[:sarl.version!]</sarl.version>
-	    </properties>
-	    ...
-	    <build>
-	       <plugins>
-	          ...
-	          <plugin>
-	             <groupId>io.sarl.maven</groupId>
-	             <artifactId>sarl-maven-plugin</artifactId>
-	             <version>${sarl.version}</version>
-	             <extensions>true</extensions>
-	             <configuration>
-	                <source>[:compiler.level!]</source>
-	                <target>[:compiler.level!]</target>
-	                <encoding>[:project.encoding!]</encoding>
-	             </configuration>
-	          </plugin>
-	       </plugins>
-	    </build>
-	    ...
-	    <dependencies>
-	      ...
-	       <dependency>
-	          <groupId>io.sarl.maven</groupId>
-	          <artifactId>io.sarl.maven.sdk</artifactId>
-	          <version>${sarl.version}</version>
-	       </dependency>
-	       ...
-	    </dependencies>
-	    ...
-	 </project>
+```xml
+ <project>
+    ...
+    <properties>
+       ...
+       <sarl.version>[:sarl.version!]</sarl.version>
+    </properties>
+    ...
+    <build>
+       <plugins>
+          ...
+          <plugin>
+             <groupId>io.sarl.maven</groupId>
+             <artifactId>sarl-maven-plugin</artifactId>
+             <version>${sarl.version}</version>
+             <extensions>true</extensions>
+             <configuration>
+                <source>[:compiler.level!]</source>
+                <target>[:compiler.level!]</target>
+                <encoding>[:project.encoding!]</encoding>
+             </configuration>
+          </plugin>
+       </plugins>
+    </build>
+    ...
+    <dependencies>
+      ...
+       <dependency>
+          <groupId>io.sarl.maven</groupId>
+          <artifactId>io.sarl.maven.sdk</artifactId>
+          <version>${sarl.version}</version>
+       </dependency>
+       ...
+    </dependencies>
+    ...
+ </project>
+```
 
 
 The Maven configuration is based on the use of `sarl-maven-plugin`. This plugin is in charge of compiling the SARL and
@@ -125,41 +127,43 @@ Replace the version number ([:janus.version:]) of the [Janus platform](http://ww
 You could search on the [Maven Central Repository](http://central.sonatype.org/) for the last available version.
 
 
-	 <project>
-	   ...
-	    <properties>
-	       ...
-	       <janus.version>[:janus.version!]</janus.version>
-	    </properties>
-	    ...
-	    <build>
-	       <plugins>
-	          ...
-	          <plugin>
-	             <groupId>io.sarl.maven</groupId>
-	             <artifactId>sarl-maven-plugin</artifactId>
-	             <version>${sarl.version}</version>
-	             <extensions>true</extensions>
-	             <configuration>
-	                <source>[:compiler.level!]</source>
-	                <target>[:compiler.level!]</target>
-	                <encoding>[:project.encoding!]</encoding>
-	             </configuration>
-	          </plugin>
-	       </plugins>
-	    </build>
-	    ...
-	    <dependencies>
-	       ...
-	       <dependency>
-	          <groupId>io.janusproject</groupId>
-	          <artifactId>io.janusproject.kernel</artifactId>
-	          <version>${janus.version}</version>
-	       </dependency>
-	       ...
-	    </dependencies>
-	    ...
-	 </project>
+```xml
+ <project>
+   ...
+    <properties>
+       ...
+       <janus.version>[:janus.version!]</janus.version>
+    </properties>
+    ...
+    <build>
+       <plugins>
+          ...
+          <plugin>
+             <groupId>io.sarl.maven</groupId>
+             <artifactId>sarl-maven-plugin</artifactId>
+             <version>${sarl.version}</version>
+             <extensions>true</extensions>
+             <configuration>
+                <source>[:compiler.level!]</source>
+                <target>[:compiler.level!]</target>
+                <encoding>[:project.encoding!]</encoding>
+             </configuration>
+          </plugin>
+       </plugins>
+    </build>
+    ...
+    <dependencies>
+       ...
+       <dependency>
+          <groupId>io.janusproject</groupId>
+          <artifactId>io.janusproject.kernel</artifactId>
+          <version>${janus.version}</version>
+       </dependency>
+       ...
+    </dependencies>
+    ...
+ </project>
+```
 
 
 <important>If you want to have the dependencies to both `io.sarl.maven.sdk` and `io.janusproject.kernel` in your

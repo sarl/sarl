@@ -26,7 +26,7 @@ more than one agent, you should launch a first agent, which will create the othe
 You could change the behavior of the [:name:] tool with the command-line options.
 For obtaining a list of the options, type:
 
-	[:name:] -help
+	[:name!] -help
 
 
 ## Command-Line Options

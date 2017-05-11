@@ -96,88 +96,62 @@ The first column of the table gives the key point to consider for creating a SRE
 The second column provides the key SARL concepts.
 And the third column describes the basics of the implementation for tinyMAS.
 
-<table><thead>
-<tr><th>SARL Element</th><th>SARL Concept</th><th>tinyMAS Implementation</th></tr>
-</thead><tbody>
-<tr><td>Identifying the agents</td>
-			<td>`Address`</td>
-			<td>tinyMAS provides the concept of `AgentIdentifier`.
-				This identifier contains a reference to the kernel identifier, and
-				the UUID of the agent. The SARL Address is for a specific interaction
-				space. It contains the space identifier, and the UUID of the agent.
-				For making the implementation simple, we assume that there is
-				only the SARL default space available. The other spaces will not
-				be supported by a tinyMAS implementation.</td></tr>
-<tr><td>Agent abstraction</td>
-			<td>`Agent`</td>
-			<td>A specific implementation of the tinyMAS `Agent` should be coded.
-				This implementation must have a reference to the SARL `Agent`.
-				Additionally, the tinyMAS `Agent` will be the place to write
-				the support for the agent life-cycle and the built-in capacities.</td></tr>
-<tr><td>Exchanged information format for direct interaction</td>
-			<td>`Event`</td>
-			<td>The interaction in the tinyMAS platform is based on the concept of `Message`.
-				tinyMAS provides all the features for routing and delivering the messages.
-				Because the SARL agents are exchanging events by default, the tinyMAS
-				cannot be directly delivered to the SARL agents. Linking the `Message`
-				and `Event` concepts is done by considering that each `Event` occurrence
-				must be enveloped by a `Message`, i.e. the content of a tinyMAS message
-				is a SARL event.</td></tr>
-<tr><td>Receiving SARL events</td>
-			<td>Behavior units `on`</td>
-			<td>A specific module in tinyMAS must be written for invoking the
-				SARL behavior units on each SARL event that are in the received
-				tinyMAS messages.</td></tr>
-<tr><td>Default context definition</td>
-			<td>`Context`</td>
-			<td>In SARL, every agent exists in a context, named the default context.
-				It is mandatory for tinyMAS to provide an implementation for the
-				default context.</td></tr>
-<tr><td>Default space definition</td>
-			<td>`EventSpace`</td>
-			<td>In SARL, every agent could interact through the default interaction
-				space. It is mandatory for tinyMAS to provide an implementation for the
-				default space.</td></tr>
-<tr><td>Agent life-cycle</td>
-			<td></td>
-			<td>The agent life-cycle in tinyMAS is based on the calls to the functions
-				`start` for initialization, `live` for running the agent behavior, and
-				`end` for destroying the agent.
-				The agent life-cycle in SARL is different. It is based on the receiving
-				of events. The `Initialize` event represents the initialization of the agent.
-				The `Destroy` event represents the agent destruction. The other events
-				enable to create the agent behavior.
-				Because the tinyMAS agent is the one that will be executed by tinyMAS,
-				it is mandatory to generates the SARL events in the three tinyMAS life-cycle
-				functions, a.k.a. `start`, `live`, `end`.</td></tr>
-<tr><td>Managing platform events</td>
-			<td>`AgentSpawned`, `AgentKilled`</td>
-			<td>Several SARL events are assumed to be fired by the SRE. The two events
-				that will be supported by tinyMAS are `AgentSpawned` for agent spawning,
-				and `AgentKilled` for agent destruction.
-				The other SARL platform events are ignored by tinyMAS, e.g. `ContextJoined`,
-				`ContextLeft`, `MemberJoined`, `MemberLeft`.</td></tr>
-<tr><td>Agent Spawning</td>
-			<td>`spawn` functions</td>
-			<td>A specific agent spawning function must be written for creating
-				a tinyMAS agent that is embedding a SARL agent definition.
-				This spawning functions will be invoked by the built-in capacities
-				(see below).</td></tr>
-<tr><td>Built-in capacity implementation</td>
-			<td><a href="../reference/BuiltinCapacityReferenceSpec.html">BICs</a></td>
-			<td>It is assumed that every SARL agent always contains the skills for a
-			specific set of capacities, named the built-in capacities. These
-			skills are supposed to be provided by the SRE.
-			Consequently, each built-in capacity must have an implementation based
-			on the tinyMAS features.</td></tr>
-<tr><td>SRE Booting</td>
-			<td></td>
-			<td>An utility class for booting the tinyMAS SRE must be provided.
-				Usually, this boot class takes the fully qualified name of the
-				agent to launch, and the parameters to give to this agent.
-				The boot class is supposed to set up the tinyMAS platform for
-				being used as a SRE, and to launch SARL agents.</td></tr>
-</tbody></table>
+| SARL Element | SARL Concept | tinyMAS Implementation |
+| ------------ | ------------ | ---------------------- |
+| Identifying the agents | `Address` | tinyMAS provides the concept of `AgentIdentifier`. This identifier contains    \
+                                       a reference to the kernel identifier, and the UUID of the agent. The SARL      \
+                                       Address is for a specific interaction space. It contains the space identifier, \
+                                       and the UUID of the agent. For making the implementation simple, we assume     \
+                                       that there is only the SARL default space available. The other spaces will not \
+                                       be supported by a tinyMAS implementation.                                      |
+| Agent abstraction | `Agent` | A specific implementation of the tinyMAS `Agent` should be coded. This implementation \
+                                must have a reference to the SARL `Agent`. Additionally, the tinyMAS `Agent` will be  \
+                                the place to write the support for the agent life-cycle and the built-in capacities.  |
+| Exchanged information format for direct interaction | `Event` | The interaction in the tinyMAS platform is based on \
+                                                                  the concept of `Message`. tinyMAS provides all the  \
+                                                                  features for routing and delivering the messages.   \
+                                                                  Because the SARL agents are exchanging events by    \
+                                                                  default, the tinyMAS cannot be directly delivered   \
+                                                                  to the SARL agents. Linking the `Message` and       \
+                                                                  `Event` concepts is done by considering that each   \
+                                                                  `Event` occurrence must be enveloped by a           \
+                                                                  `Message`, i.e. the content of a tinyMAS message is \
+                                                                  a SARL event.                                       |
+| Receiving SARL events | Behavior units `on` | A specific module in tinyMAS must be written for invoking the SARL    \
+                                                behavior units on each SARL event that are in the received tinyMAS    \
+                                                messages.                                                             |
+| Default context definition | `Context` | In SARL, every agent exists in a context, named the default context. It is \
+                                           mandatory for tinyMAS to provide an implementation for the default         \
+                                           context.                                                                   |
+| Default space definition | `EventSpace` | In SARL, every agent could interact through the default interaction space.\
+                                            It is mandatory for tinyMAS to provide an implementation for the default  \
+                                            space.                                                                    |
+| Agent life-cycle |  | The agent life-cycle in tinyMAS is based on the calls to the functions `start` for            \
+                        initialization, `live` for running the agent behavior, and `end` for destroying the agent.    \
+                        The agent life-cycle in SARL is different. It is based on the receiving of events. The        \
+                        `Initialize` event represents the initialization of the agent. The `Destroy` event represents \
+                        the agent destruction. The other events enable to create the agent behavior. Because the      \
+                        tinyMAS agent is the one that will be executed by tinyMAS, it is mandatory to generates the   \
+                        SARL events in the three tinyMAS life-cycle functions, a.k.a. `start`, `live`, `end`.         |
+| Managing platform events | `AgentSpawned`, `AgentKilled` | Several SARL events are assumed to be fired by the SRE.  \
+                                                             The two events that will be supported by tinyMAS are     \
+                                                             `AgentSpawned` for agent spawning, and `AgentKilled` for \
+                                                             agent destruction. The other SARL platform events are    \
+                                                             ignored by tinyMAS, e.g. `ContextJoined`, `ContextLeft`, \
+                                                             `MemberJoined`, `MemberLeft`.                            |
+| Agent Spawning | `spawn` functions | A specific agent spawning function must be written for creating a tinyMAS      \
+                                       agent that is embedding a SARL agent definition. This spawning functions will  \
+                                       be invoked by the built-in capacities (see below).                             |
+| Built-in capacity implementation | [BICs](../reference/BIC.md) | It is assumed that every SARL agent always         \
+                                                                   contains the skills for a specific set of          \
+                                                                   capacities, named the built-in capacities. These   \
+                                                                   skills are supposed to be provided by the SRE.     \
+                                                                   Consequently, each built-in capacity must have an  \
+                                                                   implementation based on the tinyMAS features.      |
+ | SRE Booting |  | An utility class for booting the tinyMAS SRE must be provided. Usually, this boot class takes the \
+                    fully qualified name of the agent to launch, and the parameters to give to this agent. The boot   \
+                    class is supposed to set up the tinyMAS platform for being used as a SRE, and to launch SARL      \
+                    agents. |
 
 
 ## Mapping of the identifiers
@@ -1086,12 +1060,29 @@ It provides the support of the SARL agent life-cycle.
 Consider the agent execution mechanism in the tinyMAS platform: inside an infinite loop, each agent is run. This algorithmic
 principle may be described by the following algorithm:
 
-	while (true) {
-		for(a : whitePages.allAgents) {
-			a.live
+
+	[:Success:]
+		import java.util.Iterable
+		interface TinyMasAgent {
+			def live
 		}
-		[:refreshkernelstate](refreshKernelState)
-	} 
+		interface WhitePages {
+			def getAllAgents : Iterable<TinyMasAgent>
+		}
+		abstract class Scheduler {
+			abstract def getWhitePages : WhitePages
+			abstract def refreshKernelState
+			static def main {
+				[:On]while (true) {
+					for(a : whitePages.allAgents) {
+						a.live
+					}
+					[:refreshkernelstate](refreshKernelState)
+				}[:Off]
+			}
+		}
+	[:End:]
+
 
 The tinyMAS platform is designed for updating the kernel state after all the agent have been ran.
 Consequently, the tinyMAS platform does not support the creation of agents during the execution of another agent.
@@ -3143,42 +3134,43 @@ updates the existing manifest file with the SRE information.
 
 The following XML code gives an example of Maven configuration that enables to use the SRE Maven plugin.
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>io.sarl.maven</groupId>
-				<artifactId>io.sarl.maven.sre</artifactId>
-				<version>${sarl.version}</version>
-				<configuration>
-					<sreName>TinyMAS</sreName>
-					<commandLineOptions>
-						<hideInfo></hideInfo>
-						<hideLogo></hideLogo>
-						<showInfo></showInfo>
-						<showLogo></showLogo>
-						<defaultContextId></defaultContextId>
-						<randomContextId></randomContextId>
-						<bootAgentContextId></bootAgentContextId>
-						<offline></offline>
-						<embedded></embedded>
-						<noMoreOption></noMoreOption>
-						<standaloneSRE>true</standaloneSRE>
-					</commandLineOptions>
-					<mainClass>${cliRunnerMainClass}</mainClass>
-				</configuration>
-		
-				<executions>
-					<execution>
-						<id>update-manifest-standard</id>
-						<goals>
-							<goal>updatemanifest</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-	 	</plugins>
-	</build>
+```xml
+<build>
+	<plugins>
+		<plugin>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.sre</artifactId>
+			<version>${sarl.version}</version>
+			<configuration>
+				<sreName>TinyMAS</sreName>
+				<commandLineOptions>
+					<hideInfo></hideInfo>
+					<hideLogo></hideLogo>
+					<showInfo></showInfo>
+					<showLogo></showLogo>
+					<defaultContextId></defaultContextId>
+					<randomContextId></randomContextId>
+					<bootAgentContextId></bootAgentContextId>
+					<offline></offline>
+					<embedded></embedded>
+					<noMoreOption></noMoreOption>
+					<standaloneSRE>true</standaloneSRE>
+				</commandLineOptions>
+				<mainClass>${cliRunnerMainClass}</mainClass>
+			</configuration>
 
+			<executions>
+				<execution>
+					<id>update-manifest-standard</id>
+					<goals>
+						<goal>updatemanifest</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+ 	</plugins>
+</build>
+```
 
 
 [:Include:](../legal.inc)

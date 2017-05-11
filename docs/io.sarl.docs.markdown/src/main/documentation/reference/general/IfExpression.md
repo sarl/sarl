@@ -39,8 +39,7 @@ default value of the current type.
 				var [:e2!] : Object
 				def example1 : Object {
 					[:On]
-					if ([:p!]) 
-						[:e1!]
+					if ([:p!]) [:e1!]
 					[:Off]
 				}
 			}
@@ -53,7 +52,9 @@ This syntax is known as the [conditional operator, inline if, or ternary if](htt
 in many programming languages.
 In programming languages such as Java or C/C++, this conditional operator has the syntax:
 
-	a ? b : c
+```java
+a ? b : c
+```
 
 It evaluates to `b` if the value of `a` is true, otherwise to `c`.
 

@@ -10,7 +10,13 @@ The SARL default editor will open.
 
 Agents are defined using the [:agentkw:] keyword.
 
-[:agent:]
+		[:Success:]
+			[:packagekw](package) [:package](io.sarl.docs.gettingstarted.[:hat]$^$agent)
+			[:On][:agentkw](agent) MyAgent {
+			}[:Off]
+			agent SecondAgent {
+			}
+		[:End:]
 
 ## Package definition
 
@@ -22,14 +28,6 @@ The character [:hat:] in the package name permits to use a SARL keyword into a p
 <importantnote>The package keyword defines the package for all elements in the same SARL file (see the
 [General Syntax Reference](../reference/GeneralSyntax.md) for details).
 Therefore FirstAgent and SecondAgent belong to the same package, i.e. [:package:].</importantnote>
-
-		[:Success:]
-			[:packagekw](package) [:package](io.sarl.docs.gettingstarted.[:hat]$^$agent)
-			[:agent]$[:agentkw](agent) MyAgent {
-			}$
-			agent SecondAgent {
-			}
-		[:End:]
 
 ## Agent Perceptions
 
