@@ -14,6 +14,18 @@
 			parentCategory="io.sarl.eclipse.category.wizards" />
 	</extension>
 
+	<extension point="org.eclipse.ui.newWizards">
+		<category id="io.sarl.Tutorials"
+			name="%SARLTutorialsCategory"
+			parentCategory="org.eclipse.ui.Examples" />
+	</extension>
+
+	<extension point="org.eclipse.ui.newWizards">
+		<category id="io.sarl.project.Tutorials"
+			name="%SARLTutorialsProjectCategory"
+			parentCategory="io.sarl.eclipse.category.wizards" />
+	</extension>
+
 	<!-- ========= io.sarl.demos.basic.helloworld Example ========= -->
 	
 	<extension point="org.eclipse.ui.newWizards">
@@ -230,7 +242,100 @@
 			<fileToOpen location="io-sarl-demos-factorial/src/main/sarl/io/sarl/demos/factorial/basic/basicfactorial.sarl"/>
 		</example>
 	</extension>	
-				
+
+<!-- ========= io-sarl-tutorials-holonicauction Example ========= -->
+
+<extension point="org.eclipse.ui.newWizards">
+    <wizard id="io.sarl.tutorials.holonicauction"
+        name="%io_sarl_tutorials_holonicauction_Name"
+        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        category="org.eclipse.ui.Examples/io.sarl.Tutorials"
+        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        project="true">
+        <description>%io_sarl_tutorials_holonicauction_Description</description>
+    </wizard>
+</extension>
+
+<extension point="org.eclipse.ui.newWizards">
+    <wizard id="io.sarl.tutorials.holonicauction"
+        name="%io_sarl_tutorials_holonicauction_Name"
+        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        category="io.sarl.eclipse.category.wizards/io.sarl.project.Tutorials"
+        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        project="true">
+        <description>%io_sarl_tutorials_holonicauction_Description</description>
+    </wizard>
+</extension>
+
+<extension point="org.eclipse.emf.common.ui.examples">
+    <example wizardID="io.sarl.tutorials.holonicauction" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+        <projectDescriptor name="io-sarl-tutorials-holonicauction" contentURI="contents/io-sarl-tutorials-holonicauction.zip" description="%io_sarl_tutorials_holonicauction_Description"/>
+        <fileToOpen location="io-sarl-tutorials-holonicauction/src/main/sarl/io/sarl/examples/holonicauction/auctioneer.sarl"/>
+    </example>
+</extension>
+
+<!-- ========= io-sarl-tutorials-pingpong Example ========= -->
+
+<extension point="org.eclipse.ui.newWizards">
+    <wizard id="io.sarl.tutorials.pingpong"
+        name="%io_sarl_tutorials_pingpong_Name"
+        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        category="org.eclipse.ui.Examples/io.sarl.Tutorials"
+        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        project="true">
+        <description>%io_sarl_tutorials_pingpong_Description</description>
+    </wizard>
+</extension>
+
+<extension point="org.eclipse.ui.newWizards">
+    <wizard id="io.sarl.tutorials.pingpong"
+        name="%io_sarl_tutorials_pingpong_Name"
+        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        category="io.sarl.eclipse.category.wizards/io.sarl.project.Tutorials"
+        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        project="true">
+        <description>%io_sarl_tutorials_pingpong_Description</description>
+    </wizard>
+</extension>
+
+<extension point="org.eclipse.emf.common.ui.examples">
+    <example wizardID="io.sarl.tutorials.pingpong" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+        <projectDescriptor name="io-sarl-tutorials-pingpong" contentURI="contents/io-sarl-tutorials-pingpong.zip" description="%io_sarl_tutorials_pingpong_Description"/>
+        <fileToOpen location="io-sarl-tutorials-pingpong/src/main/sarl/io/sarl/examples/pingpong/boot.sarl"/>
+    </example>
+</extension>
+
+<!-- ========= io-sarl-tutorials-pingpongspace Example ========= -->
+
+<extension point="org.eclipse.ui.newWizards">
+    <wizard id="io.sarl.tutorials.pingpongspace"
+        name="%io_sarl_tutorials_pingpongspace_Name"
+        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        category="org.eclipse.ui.Examples/io.sarl.Tutorials"
+        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        project="true">
+        <description>%io_sarl_tutorials_pingpongspace_Description</description>
+    </wizard>
+</extension>
+
+<extension point="org.eclipse.ui.newWizards">
+    <wizard id="io.sarl.tutorials.pingpongspace"
+        name="%io_sarl_tutorials_pingpongspace_Name"
+        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        category="io.sarl.eclipse.category.wizards/io.sarl.project.Tutorials"
+        icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
+        project="true">
+        <description>%io_sarl_tutorials_pingpongspace_Description</description>
+    </wizard>
+</extension>
+
+<extension point="org.eclipse.emf.common.ui.examples">
+    <example wizardID="io.sarl.tutorials.pingpongspace" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
+        <projectDescriptor name="io-sarl-tutorials-pingpongspace" contentURI="contents/io-sarl-tutorials-pingpongspace.zip" description="%io_sarl_tutorials_pingpongspace_Description"/>
+        <fileToOpen location="io-sarl-tutorials-pingpongspace/src/main/sarl/io/sarl/examples/pingpongspace/boot.sarl"/>
+    </example>
+</extension>
+
 	<!-- ========= Intro (welcome page) Extensions ========= -->	
 	
 	<extension

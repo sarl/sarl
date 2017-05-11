@@ -98,6 +98,44 @@
 			</link>
 		</group>
 
+		<group style-id="quick-links" id="quick-links">
+		    <link style-id="content-link" label="Auction between holonic members"
+		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.tutorials.holonicauction%29"
+		        id="io.sarl.tutorials.holonicauction">
+		        <text>
+		            This project contains the code of the official tutorial related to holonic auctions.
+		            The auctioneer creates bidding agents into its inner context.
+		            The bidding agents send their offers to the parent agent, i.e. the auctioneer.
+		            The auctioneer selects the best offer.
+		        </text>
+		    </link>
+		</group>
+
+		<group style-id="quick-links" id="quick-links">
+		    <link style-id="content-link" label="Agent interaction with Ping-Pong protocol"
+		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.tutorials.pingpong%29"
+		        id="io.sarl.tutorials.pingpong">
+		        <text>
+		            This project contains the implementation of the simple interaction protocol named "Ping-Pong".
+		            An agent fire a ping event. The receiving agent replies with a pong event.
+		            Then, the pong event receiver replies with a new ping event, and so on.
+		        </text>
+		    </link>
+		</group>
+
+		<group style-id="quick-links" id="quick-links">
+		    <link style-id="content-link" label="Agent interaction inside a specific space with Ping-Pong protocol"
+		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.tutorials.pingpongspace%29"
+		        id="io.sarl.tutorials.pingpongspace">
+		        <text>
+		            This project contains the implementation of the simple interaction protocol named "Ping-Pong".
+		            An agent fire a ping event. The receiving agent replies with a pong event.
+		            Then, the pong event receiver replies with a new ping event, and so on.
+		            The events are exchanged inside a specific event space.
+		        </text>
+		    </link>
+		</group>
+
 	</extensionContent>
 
 

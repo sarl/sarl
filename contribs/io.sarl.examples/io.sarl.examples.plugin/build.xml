@@ -23,6 +23,9 @@
 		<zip_example name="io-sarl-demos-basic-holarchy" />
 		<zip_example name="io-sarl-demos-counter" />
 		<zip_example name="io-sarl-demos-factorial" />
+		<zip_example name="io-sarl-tutorials-holonicauction" />
+		<zip_example name="io-sarl-tutorials-pingpong" />
+		<zip_example name="io-sarl-tutorials-pingpongspace" />
 		<!--zip_example name="name-examples" excludes="**/*._trace,.antlr-generator*.jar"/>-->
 	</target>
 

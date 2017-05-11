@@ -1,0 +1,18 @@
+package io.sarl.examples.pingpongspace
+
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import java.util.UUID
+
+agent BootAgent {
+
+	uses Lifecycle
+
+	on Initialize {
+		var spaceId = UUID::randomUUID
+		spawn( PongAgent, spaceId )
+		spawn( PingAgent, spaceId )
+		killMe
+	}
+
+}

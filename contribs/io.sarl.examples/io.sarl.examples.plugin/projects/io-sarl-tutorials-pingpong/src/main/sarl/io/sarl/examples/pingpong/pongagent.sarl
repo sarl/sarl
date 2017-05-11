@@ -1,0 +1,20 @@
+package io.sarl.examples.pingpong
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.util.Scopes
+import io.sarl.core.Logging
+
+agent PongAgent {
+	
+	uses DefaultContextInteractions, Logging
+	
+	on Ping {
+		info("Receiving Ping #" + occurrence.index)
+		info("Sending Pong #" + occurrence.index)
+		emit(
+			new Pong( occurrence.index ),
+			Scopes.addresses( occurrence.source )
+		)
+		
+	}
+}

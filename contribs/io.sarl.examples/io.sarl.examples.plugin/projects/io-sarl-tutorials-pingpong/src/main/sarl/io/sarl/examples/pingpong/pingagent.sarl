@@ -1,0 +1,36 @@
+package io.sarl.examples.pingpong
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Schedules
+import io.sarl.util.Scopes
+import io.sarl.core.Logging
+
+agent PingAgent {
+
+	uses DefaultContextInteractions, Schedules, Logging
+
+	on Pong {
+		info("Receiving Pong #" + occurrence.index)
+		info("Sending Ping #" + (occurrence.index + 1))
+		emit(
+			new Ping( occurrence.index + 1 ),
+			Scopes.addresses( occurrence.source )
+		)
+	}
+
+	on Initialize {
+		info("Waiting for Pong Agent")
+		val taskVar = task("waiting_for_partner")
+		
+		taskVar.every(1000) [
+			if (defaultSpace.participants.size > 1) {
+				info("Pong Agent detected.")
+				info("Sending Ping #0")
+				emit( new Ping(0) )
+				taskVar.cancel
+			}
+		]
+	}
+
+}
