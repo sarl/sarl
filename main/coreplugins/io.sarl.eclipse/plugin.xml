@@ -624,4 +624,17 @@
 	   	</view>
    </extension>
 
+   <!-- Disable Xtend UI contributions by default. -->
+   <extension point="org.eclipse.ui.activities">
+		<activity id="io.sarl.eclipse.activities.xtendContributions" name="XtendContributionsActivity">  
+			<enabledWhen>  
+				<with variable="io.sarl.eclipse.Xtend.uiContributions">    
+					<equals value="true"/>
+				</with>
+			</enabledWhen>
+		</activity>
+		<activityPatternBinding activityId="io.sarl.eclipse.activities.xtendContributions"
+	                            pattern=".*[Xx]tend.*"/>
+   </extension>
+
 </plugin>
