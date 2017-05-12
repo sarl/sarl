@@ -71,11 +71,11 @@ import org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
-import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
+import io.sarl.lang.util.OutParameter;
 
 /**
  * The second page of the SARL new project wizard.
@@ -87,6 +87,7 @@ import io.sarl.eclipse.natures.SARLProjectConfigurator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	private static final String FILENAME_PROJECT = ".project"; //$NON-NLS-1$
@@ -295,26 +296,48 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		return result;
 	}
 
-	private Pair<IClasspathEntry[], IPath> keepExistingBuildPath(IProject project, IProgressMonitor monitor)
+	private void keepExistingBuildPath(IProject project, OutParameter<IClasspathEntry[]> classpath,
+			OutParameter<IPath> outputLocation, IProgressMonitor monitor)
 			throws CoreException {
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
 		IClasspathEntry[] entries = null;
-		IPath outputLocation = null;
+		IPath outLocation = null;
 		if (!project.getFile(FILENAME_CLASSPATH).exists()) {
+			// Determine the default values
+			if (classpath != null) {
+				final List<IClasspathEntry> cpEntries = new ArrayList<>();
+				final Collection<IClasspathEntry> originalEntries = SARLProjectConfigurator.getDefaultSourceClassPathEntries(
+								new Path(this.firstPage.getProjectName()).makeAbsolute());
+				cpEntries.addAll(originalEntries);
+				this.firstPage.putDefaultClasspathEntriesIn(cpEntries);
+				if (!cpEntries.isEmpty()) {
+					classpath.set(cpEntries.toArray(new IClasspathEntry[cpEntries.size()]));
+				}
+			}
+			if (outputLocation != null) {
+				outputLocation.set(this.firstPage.getOutputLocation());
+			}
+			// Override with the existing configuration
 			final ClassPathDetector detector = new ClassPathDetector(
-					this.currProject, subMonitor);
+					this.currProject, subMonitor.newChild(1));
 			entries = detector.getClasspath();
-			outputLocation = detector.getOutputLocation();
+			outLocation = detector.getOutputLocation();
 			if (entries.length == 0) {
 				entries = null;
 			}
-		} else {
-			monitor.worked(2);
 		}
-		return Pair.of(entries, outputLocation);
+		subMonitor.worked(2);
+		if (classpath != null && entries != null) {
+			classpath.set(entries);
+		}
+		if (outputLocation != null && outLocation != null) {
+			outputLocation.set(outLocation);
+		}
+		subMonitor.done();
 	}
 
-	private Pair<IClasspathEntry[], IPath> buildNewBuildPath(IProject project, IProgressMonitor monitor) throws CoreException {
+	private void buildNewBuildPath(IProject project, OutParameter<IClasspathEntry[]> classpath,
+			OutParameter<IPath> outputLocation, IProgressMonitor monitor) throws CoreException {
 		final List<IClasspathEntry> cpEntries = new ArrayList<>();
 		final IWorkspaceRoot root = project.getWorkspace().getRoot();
 
@@ -337,16 +360,21 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 		final IClasspathEntry[] entries = cpEntries.toArray(new IClasspathEntry[cpEntries.size()]);
 
-		final IPath outputLocation = this.firstPage.getOutputLocation();
-		if (outputLocation.segmentCount() > 1) {
-			final IFolder folder = root.getFolder(outputLocation);
+		final IPath outLocation = this.firstPage.getOutputLocation();
+		if (outLocation.segmentCount() > 1) {
+			final IFolder folder = root.getFolder(outLocation);
 			CoreUtility.createDerivedFolder(
 					folder,
 					true, true,
 					subMonitor.newChild(1));
 		}
 
-		return Pair.of(entries, outputLocation);
+		if (classpath != null) {
+			classpath.set(entries);
+		}
+		if (outputLocation != null) {
+			outputLocation.set(outLocation);
+		}
 	}
 
 	/**
@@ -367,24 +395,20 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 		theMonitor.beginTask(NewWizardMessages.NewJavaProjectWizardPageTwo_monitor_init_build_path, 2);
 
 		try {
-			IClasspathEntry[] entries = null;
-			IPath outputLocation = null;
+			final OutParameter<IClasspathEntry[]> entries = new OutParameter<>();
+			final OutParameter<IPath> outputLocation = new OutParameter<>();
 			final IProject project = javaProject.getProject();
 
 			if (this.keepContent) {
-				final Pair<IClasspathEntry[], IPath> pair = keepExistingBuildPath(project, theMonitor);
-				entries = pair.getKey();
-				outputLocation = pair.getValue();
+				keepExistingBuildPath(project, entries, outputLocation, theMonitor);
 			} else {
-				final Pair<IClasspathEntry[], IPath> pair = buildNewBuildPath(project, theMonitor);
-				entries = pair.getKey();
-				outputLocation = pair.getValue();
+				buildNewBuildPath(project, entries, outputLocation, theMonitor);
 			}
 			if (theMonitor.isCanceled()) {
 				throw new OperationCanceledException();
 			}
 
-			init(javaProject, outputLocation, entries, false);
+			init(javaProject, outputLocation.get(), entries.get(), false);
 		} catch (CoreException e) {
 			throw e;
 		} catch (Throwable e) {
