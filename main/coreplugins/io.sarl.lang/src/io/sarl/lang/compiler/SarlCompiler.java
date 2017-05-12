@@ -24,6 +24,8 @@ package io.sarl.lang.compiler;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,6 +66,7 @@ import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
+import io.sarl.lang.jvmmodel.Messages;
 import io.sarl.lang.sarl.SarlBreakExpression;
 
 
@@ -79,6 +82,9 @@ import io.sarl.lang.sarl.SarlBreakExpression;
  * current receiver, e.g. "this.".
  *
  * <p>The compiler supports the SARL keywords too: break.
+ *
+ * <p>This compiler catches exceptions when generating statements for expressions in order to let the compiler
+ * to generate as much as possible.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -98,6 +104,9 @@ public class SarlCompiler extends XtendCompiler {
 
 	private static final Pattern INLINE_VARIABLE_PATTERN = Pattern.compile("\\" + INLINE_VARIABLE_PREFIX //$NON-NLS-1$
 			+ "(\\" + INLINE_VARIABLE_PREFIX + "|[0-9]+)"); //$NON-NLS-1$ //$NON-NLS-2$
+
+	@Inject
+	private Logger log;
 
 	@Inject
 	private XExpressionHelper expressionHelper;
@@ -312,7 +321,12 @@ public class SarlCompiler extends XtendCompiler {
 		if (obj instanceof SarlBreakExpression) {
 			_toJavaStatement((SarlBreakExpression) obj, appendable, isReferenced);
 		} else {
-			super.doInternalToJavaStatement(obj, appendable, isReferenced);
+			try {
+				super.doInternalToJavaStatement(obj, appendable, isReferenced);
+			} catch (IllegalStateException exception) {
+				// Log the exception but do not fail the generation.
+				logInternalError(exception);
+			}
 		}
 	}
 
@@ -325,6 +339,16 @@ public class SarlCompiler extends XtendCompiler {
 	@SuppressWarnings("static-method")
 	protected void _toJavaStatement(SarlBreakExpression breakExpression, ITreeAppendable appendable, boolean isReferenced) {
 		appendable.newLine().append("break;"); //$NON-NLS-1$
+	}
+
+	/** Log an internal error but do not fail.
+	 *
+	 * @param exception the exception to log.
+	 */
+	protected void logInternalError(Throwable exception) {
+		if (exception != null && this.log.isLoggable(Level.FINEST)) {
+			this.log.log(Level.FINEST, Messages.SARLJvmModelInferrer_0, exception);
+		}
 	}
 
 }

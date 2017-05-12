@@ -555,6 +555,11 @@ Workflow {
     				to = "io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor"
     			}
     			ui = {
+    				bind = "org.eclipse.xtext.generator.IShouldGenerate"
+    				to = "org.eclipse.xtext.generator.IShouldGenerate$Always"
+    				override = true
+    			}
+    			ui = {
     				bind = "org.eclipse.xtext.ui.editor.contentassist.IContentProposalPriorities"
     				to = "io.sarl.lang.ui.contentassist.general.SARLContentProposalPriorities"
     				override = true

@@ -34,3 +34,4 @@ Import-Package: org.junit.runner;version="4.5.0",
  org.hamcrest.core,
  org.junit;version="4.5.0"
 Bundle-Activator: io.sarl.tests.api.TestPluginActivator
+Export-Package: io.sarl.lang.ui.tests;x-internal=true
