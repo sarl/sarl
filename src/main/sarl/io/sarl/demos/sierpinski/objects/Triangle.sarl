@@ -1,0 +1,32 @@
+package io.sarl.demos.sierpinski.objects
+
+class Triangle {
+	private var bottomLeft: Vector2D
+	private var bottomRight: Vector2D
+	private var top: Vector2D
+	
+	new (){
+		bottomLeft = new Vector2D
+		bottomRight = new Vector2D
+		top = new Vector2D
+	}
+	
+	new (bottomLeft: Vector2D, bottomRight: Vector2D, top: Vector2D){
+		this.bottomLeft = bottomLeft
+		this.top = top
+		this.bottomRight = bottomRight
+	}
+	
+	public def getBottomLeft(): Vector2D {
+		return bottomLeft
+	}
+	
+	public def getBottomRight(): Vector2D {
+		return bottomRight
+	}
+	
+	public def getTop(): Vector2D {
+		return top
+	}
+	
+}

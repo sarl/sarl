@@ -1,0 +1,110 @@
+/** 
+ * 
+ */
+package io.sarl.demos.sierpinski.agents
+
+import io.sarl.core.Initialize
+import io.sarl.core.MemberLeft
+import io.sarl.demos.sierpinski.events.Multiply
+import io.sarl.core.Lifecycle
+import io.sarl.core.InnerContextAccess
+import io.sarl.demos.sierpinski.objects.Vector2D
+import io.sarl.demos.sierpinski.objects.Square
+import io.sarl.demos.sierpinski.gui.FXMLViewerController
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.util.OpenEventSpaceSpecification
+import java.util.UUID
+import io.sarl.core.Behaviors
+import io.sarl.demos.sierpinski.objects.Positions
+import io.sarl.demos.sierpinski.objects.Triangle
+import io.sarl.core.Logging
+import io.sarl.util.OpenEventSpace
+
+agent Fractal {
+	uses InnerContextAccess, Lifecycle, DefaultContextInteractions, Behaviors
+	uses Logging
+	
+	var triangle: Triangle
+	var screenSurface: Square
+	var screenWidth: Double
+	var positions: Positions
+	var guiSpace: OpenEventSpace
+
+	on Initialize {
+		if (occurrence.parameters.size >= 2){
+			screenSurface = occurrence.parameters.get(0) as Square
+			positions = occurrence.parameters.get(1) as Positions
+			if (occurrence.parameters.size.equals(3)){
+				var ctrl = occurrence.parameters.get(2) as FXMLViewerController
+				guiSpace =  defaultContext.createSpace(OpenEventSpaceSpecification, UUID.randomUUID)
+				ctrl.setGUISpace(guiSpace)
+				guiSpace.register(asEventListener)
+			}
+		} else {
+			screenSurface = new Square
+			positions = new Positions
+		}
+		screenWidth = screenSurface.width
+		this.generatePoints
+	}
+	
+	def generatePoints(){
+		triangle = new Triangle(
+			screenSurface.bottomLeft,
+			screenSurface.bottomRight,
+			new Vector2D(screenSurface.bottomLeft.x + screenWidth/2, screenSurface.topLeft.y)
+		)
+		positions.addTriangle(triangle)
+		info("Parent : " + parentID)
+	}
+	
+	def multiplication(){
+		var screen1 = new Square(
+			triangle.bottomLeft,
+			screenWidth/2
+		)
+		var screen2 = new Square(
+			new Vector2D(screenSurface.bottomLeft.x + screenWidth/4, screenSurface.bottomLeft.y + screenWidth/2),
+			screenWidth/2
+		)
+		var screen3 = new Square(
+			new Vector2D(triangle.top.x, screenSurface.bottomLeft.y),
+			screenWidth/2
+		)
+
+		spawnInContext(Fractal, innerContext, screen1, positions)
+		spawnInContext(Fractal, innerContext, screen2, positions)
+		spawnInContext(Fractal, innerContext, screen3, positions)
+	}
+	
+	def emitMultiply(){
+		var m = new Multiply
+		m.source = innerContext.defaultSpace.getAddress(ID)
+		innerContext.defaultSpace.emit(m)
+	}
+	
+	on Multiply[guiSpace !== null && occurrence.source.spaceId == guiSpace.spaceID && !hasMemberAgent]{
+		this.multiplication
+	}
+
+	on Multiply [guiSpace !== null && occurrence.source.spaceId == guiSpace.spaceID && hasMemberAgent] {
+		this.emitMultiply
+	}
+
+	on Multiply[occurrence.isInDefaultSpace && !hasMemberAgent] {
+		this.multiplication
+	}
+	
+	on Multiply[occurrence.isInDefaultSpace && hasMemberAgent] {
+		this.emitMultiply
+	}
+	
+	
+//	on Multiply[hasMemberAgent && memberAgentCount >= 3 && (occurrence.emmiter == parentID || guiSpace !== null)]{
+//		innerContext.defaultSpace.emit(new Multiply(ID))
+//	}
+
+//	on MemberLeft [!isFromMe(occurrence) && !hasMemberAgent] {
+//		killMe
+//	}
+}

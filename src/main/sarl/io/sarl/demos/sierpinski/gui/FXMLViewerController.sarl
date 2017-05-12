@@ -1,0 +1,104 @@
+package io.sarl.demos.sierpinski.gui
+
+import io.sarl.lang.core.EventListener
+import java.util.UUID
+import io.sarl.util.OpenEventSpace
+import javafx.fxml.FXML
+import javafx.scene.canvas.Canvas
+import javafx.scene.control.Button
+import io.sarl.lang.core.Event
+import javafx.^event.ActionEvent
+import io.sarl.demos.sierpinski.agents.Fractal
+import io.janusproject.Boot
+import io.sarl.demos.sierpinski.objects.Square
+import io.sarl.demos.sierpinski.events.Multiply
+import io.sarl.demos.sierpinski.objects.Positions
+import javafx.scene.canvas.GraphicsContext
+import javafx.animation.PauseTransition
+import javafx.util.Duration
+import javafx.scene.paint.Color
+import io.sarl.demos.sierpinski.objects.Vector2D
+import io.sarl.lang.core.Address
+
+class FXMLViewerController implements EventListener {
+	
+	static class Launcher {
+		static def main(screen: Square, controller: FXMLViewerController){
+			Boot::offline = true
+			Boot::startJanus(typeof(Fractal), screen, controller.positions, controller)
+			controller.draw
+		}
+	}
+
+	private val id: UUID = UUID.randomUUID()
+
+	private var positions: Positions = new Positions
+	
+	private var ispace: OpenEventSpace
+	private var setuped = false
+	
+	@FXML private var drawZone: Canvas
+	@FXML private var multiplyButton: Button
+	
+	@FXML public def exitApplication(ievent: ActionEvent){
+//		ispace.emit(new Exit())
+//		Platform.ext()
+	}
+	
+	@FXML protected def actionSetup() {
+		if (!setuped){
+			multiplyButton.setDisable(false)
+			Launcher.main(
+				new Square(new Vector2D(0.0, 0.0),
+					600.0
+				), this )
+			setuped = true
+		}
+	}
+	
+	@FXML protected def actionMultiply() {
+		var m = new Multiply
+		m.source = new Address(ispace.spaceID, id)
+		this.ispace.emit(m)
+	}
+	
+	public def getPositions(){
+		return this.positions
+	}
+	
+	private def draw(){
+		var gc: GraphicsContext = drawZone.graphicsContext2D
+		var wait: PauseTransition = new PauseTransition(Duration.seconds(0.03))
+		
+		gc.setStroke(Color.ORANGERED)
+		gc.setLineWidth(3)
+		
+		wait.setOnFinished [ e | 
+			try {
+				gc.clearRect(0, 0, drawZone.width, drawZone.height)
+				positions.triangles.forEach[ t | 
+					gc.strokeLine(t.bottomLeft.x, t.bottomLeft.y, t.top.x, t.top.y)
+					gc.strokeLine(t.top.x, t.top.y, t.bottomRight.x, t.bottomRight.y)
+					gc.strokeLine(t.bottomRight.x, t.bottomRight.y, t.bottomLeft.x, t.bottomLeft.y)
+				]
+			} catch (exception: Exception){}
+			wait.playFromStart
+		]
+		wait.play
+	}
+	
+	public def setGUISpace(ispace: OpenEventSpace){
+		this.ispace = ispace
+		this.ispace.register(this)
+	}
+	
+	@Override
+	public def getID(): UUID {
+		return this.id
+	}
+	
+	@Override
+	public def receiveEvent(ievent: Event){
+		
+	}
+}

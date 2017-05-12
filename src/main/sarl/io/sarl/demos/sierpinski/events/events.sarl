@@ -1,0 +1,14 @@
+package io.sarl.demos.sierpinski.events
+
+import java.util.UUID
+
+event Multiply {
+	var emmiter: UUID
+	new (emmiter: UUID){
+		this.emmiter = emmiter
+	}
+	new (){
+		emmiter = null
+	}
+}
+event Exit
