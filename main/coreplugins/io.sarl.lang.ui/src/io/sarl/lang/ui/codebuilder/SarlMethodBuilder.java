@@ -73,7 +73,7 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 		appendable.append(this.keywords.protectKeyword(getMethodName()));
 		appendParameters(appendable);
 		final LightweightTypeReference retType = getReturnType();
-		if (!retType.isPrimitiveVoid()) {
+		if (retType != null && !retType.isPrimitiveVoid()) {
 			appendable.append(" "); //$NON-NLS-1$
 			appendable.append(this.keywords.getColonKeyword());
 			appendable.append(" "); //$NON-NLS-1$
