@@ -1063,7 +1063,6 @@ principle may be described by the following algorithm:
 
 
 	[:Success:]
-		import java.util.Iterable
 		interface TinyMasAgent {
 			def live
 		}
@@ -1071,8 +1070,8 @@ principle may be described by the following algorithm:
 			def getAllAgents : Iterable<TinyMasAgent>
 		}
 		abstract class Scheduler {
-			abstract def getWhitePages : WhitePages
-			abstract def refreshKernelState
+			static def getWhitePages : WhitePages { null }
+			static def refreshKernelState { }
 			static def main {
 				[:On]while (true) {
 					for(a : whitePages.allAgents) {
