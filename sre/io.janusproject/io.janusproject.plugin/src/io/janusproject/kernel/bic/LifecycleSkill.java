@@ -56,6 +56,8 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 
 	private ClearableReference<Skill> skillBufferInternalEventBusCapacity;
 
+	private ClearableReference<Skill> skillDefaultContextInteraction;
+
 	/**
 	 * Constructs the skill.
 	 *
@@ -76,6 +78,17 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 		return $castSkill(InternalEventBusCapacity.class, this.skillBufferInternalEventBusCapacity);
 	}
 
+	/** Replies the InternalEventBusCapacity skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final DefaultContextInteractions getDefaultContextInteractionsSkill() {
+		if (this.skillDefaultContextInteraction == null || this.skillDefaultContextInteraction.get() == null) {
+			this.skillDefaultContextInteraction = $getSkill(DefaultContextInteractions.class);
+		}
+		return $castSkill(DefaultContextInteractions.class, this.skillDefaultContextInteraction);
+	}
+
 	@Override
 	public int getInstallationOrder() {
 		if (installationOrder < 0) {
@@ -89,7 +102,7 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 		final List<UUID> ids = this.spawnService.spawn(
 				1,
 				getOwner().getID(),
-				getSkill(DefaultContextInteractions.class).getDefaultContext(),
+				getDefaultContextInteractionsSkill().getDefaultContext(),
 				null, agentType, params);
 		if (ids.isEmpty()) {
 			return null;
@@ -101,7 +114,7 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 	public Collection<UUID> spawn(int nbAgents, Class<? extends Agent> agentType, Object... params) {
 		return this.spawnService.spawn(nbAgents,
 				getOwner().getID(),
-				getSkill(DefaultContextInteractions.class).getDefaultContext(),
+				getDefaultContextInteractionsSkill().getDefaultContext(),
 				null, agentType, params);
 	}
 
