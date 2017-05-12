@@ -17,6 +17,8 @@ install:
       }
   - cmd: mvn --version
   - cmd: java -version
+  - cmd: echo "$MAVEN_OPTS"
+  - cmd: echo "$JAVA_OPTS"
 
 build_script:
   - mvn -B -e -P!generateproduct -Dio.sarl.docs.tests.skip=true clean install
