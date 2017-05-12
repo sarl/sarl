@@ -31,7 +31,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.examples.helloworld"
 			name="%HelloworldExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -42,7 +42,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.examples.helloworld"
 			name="%HelloworldExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -62,7 +62,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.examples.behaviors"
 			name="%BehaviorsExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -73,7 +73,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.examples.behaviors"
 			name="%BehaviorsExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -93,7 +93,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.demos.basic.behaviorinheritance"
 			name="%BehaviorsInheritanceExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -104,7 +104,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.demos.basic.behaviorinheritance"
 			name="%BehaviorsInheritanceExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -124,7 +124,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.demos.basic.countdown"
 			name="%CountdownExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -135,7 +135,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.demos.basic.countdown"
 			name="%CountdownExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -155,7 +155,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.demos.basic.holarchy"
 			name="%HolarchyExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -166,7 +166,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.demos.basic.holarchy"
 			name="%HolarchyExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -186,7 +186,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.demos.counter"
 			name="%CounterExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -197,7 +197,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.demos.counter"
 			name="%CounterExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -217,7 +217,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.demos.factorial"
 			name="%FactorialExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -228,7 +228,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.demos.factorial"
 			name="%FactorialExample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -248,7 +248,7 @@
 <extension point="org.eclipse.ui.newWizards">
     <wizard id="io.sarl.tutorials.holonicauction"
         name="%io_sarl_tutorials_holonicauction_Name"
-        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
         category="org.eclipse.ui.Examples/io.sarl.Tutorials"
         icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
         project="true">
@@ -259,7 +259,7 @@
 <extension point="org.eclipse.ui.newWizards">
     <wizard id="io.sarl.tutorials.holonicauction"
         name="%io_sarl_tutorials_holonicauction_Name"
-        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
         category="io.sarl.eclipse.category.wizards/io.sarl.project.Tutorials"
         icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
         project="true">
@@ -279,7 +279,7 @@
 <extension point="org.eclipse.ui.newWizards">
     <wizard id="io.sarl.tutorials.pingpong"
         name="%io_sarl_tutorials_pingpong_Name"
-        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
         category="org.eclipse.ui.Examples/io.sarl.Tutorials"
         icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
         project="true">
@@ -290,7 +290,7 @@
 <extension point="org.eclipse.ui.newWizards">
     <wizard id="io.sarl.tutorials.pingpong"
         name="%io_sarl_tutorials_pingpong_Name"
-        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
         category="io.sarl.eclipse.category.wizards/io.sarl.project.Tutorials"
         icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
         project="true">
@@ -310,7 +310,7 @@
 <extension point="org.eclipse.ui.newWizards">
     <wizard id="io.sarl.tutorials.pingpongspace"
         name="%io_sarl_tutorials_pingpongspace_Name"
-        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
         category="org.eclipse.ui.Examples/io.sarl.Tutorials"
         icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
         project="true">
@@ -321,7 +321,7 @@
 <extension point="org.eclipse.ui.newWizards">
     <wizard id="io.sarl.tutorials.pingpongspace"
         name="%io_sarl_tutorials_pingpongspace_Name"
-        class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+        class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
         category="io.sarl.eclipse.category.wizards/io.sarl.project.Tutorials"
         icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
         project="true">
