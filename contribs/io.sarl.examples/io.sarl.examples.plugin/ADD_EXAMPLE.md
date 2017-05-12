@@ -22,7 +22,7 @@ Add in the `plugin.xml` file:
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.examples.myexample"
 			name="%io_sarl_demos_myexample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">
@@ -33,7 +33,7 @@ Add in the `plugin.xml` file:
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.examples.myexample"
 			name="%io_sarl_demos_myexample_Name"
-			class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="io.sarl.eclipse.category.wizards/io.sarl.project.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">

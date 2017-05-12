@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <introContent>
 
-
-
-
 	<extensionContent id="io.sarl.examples.introExtension"
 		name="SARL Overview Extension" path="samples/@">
 
-		<html src="./samples.html"></html>
+		<html src="./examples_intro.html"/>
 
 		<group style-id="quick-links" id="quick-links">
-
 			<link style-id="content-link" label="A Helloworld Agent in SARL"
 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.examples.helloworld%29"
 				id="Helloworld-Sample">
@@ -19,11 +15,6 @@
 					later.
 				</text>
 			</link>
-		</group>
-
-
-		<group style-id="quick-links" id="quick-links">
-
 			<link style-id="content-link" label="Agent with a behavior"
 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.examples.behaviors%29"
 				id="Behavior-Sample">
@@ -32,10 +23,6 @@
 					compute a factorial.
 				</text>
 			</link>
-		</group>
-
-		<group style-id="quick-links" id="quick-links">
-
 			<link style-id="content-link"
 				label="Agent with a behavior extending an existing behavior"
 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.basic.behaviorinheritance%29"
@@ -45,11 +32,6 @@
 					inheritance and corresponding overload in SARL.
 				</text>
 			</link>
-		</group>
-
-
-		<group style-id="quick-links" id="quick-links">
-
 			<link style-id="content-link"
 				label="A simple Agent decrementing an integer before dying"
 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.basic.countdown%29"
@@ -59,10 +41,6 @@
 					process doing something from a given behavior.
 				</text>
 			</link>
-		</group>
-
-		<group style-id="quick-links" id="quick-links">
-
 			<link style-id="content-link" label="A first example of holarchy"
 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.basic.holarchy%29"
 				id="Behavior-Sample">
@@ -70,10 +48,6 @@
 					Creation of complete hierarchy of holons.
 				</text>
 			</link>
-		</group>
-
-		<group style-id="quick-links" id="quick-links">
-
 			<link style-id="content-link" label="Two simple agents in basic interaction"
 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.counter%29"
 				id="Counter-Sample">
@@ -82,10 +56,6 @@
 					to 3 before dying and sending message to the second.
 				</text>
 			</link>
-		</group>
-
-		<group style-id="quick-links" id="quick-links">
-
 			<link style-id="content-link" label="Two examples of factorial computation"
 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.factorial%29"
 				id="Factorial-Sample">
@@ -98,6 +68,8 @@
 			</link>
 		</group>
 
+		<html src="./tutorials_intro.html"/>
+
 		<group style-id="quick-links" id="quick-links">
 		    <link style-id="content-link" label="Auction between holonic members"
 		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.tutorials.holonicauction%29"
@@ -109,9 +81,6 @@
 		            The auctioneer selects the best offer.
 		        </text>
 		    </link>
-		</group>
-
-		<group style-id="quick-links" id="quick-links">
 		    <link style-id="content-link" label="Agent interaction with Ping-Pong protocol"
 		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.tutorials.pingpong%29"
 		        id="io.sarl.tutorials.pingpong">
@@ -121,9 +90,6 @@
 		            Then, the pong event receiver replies with a new ping event, and so on.
 		        </text>
 		    </link>
-		</group>
-
-		<group style-id="quick-links" id="quick-links">
 		    <link style-id="content-link" label="Agent interaction inside a specific space with Ping-Pong protocol"
 		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.tutorials.pingpongspace%29"
 		        id="io.sarl.tutorials.pingpongspace">
@@ -137,7 +103,5 @@
 		</group>
 
 	</extensionContent>
-
-
 
 </introContent>
