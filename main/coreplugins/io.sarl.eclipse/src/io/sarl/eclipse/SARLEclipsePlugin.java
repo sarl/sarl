@@ -125,6 +125,9 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 		ImageDescriptor descriptor = getImageRegistry().getDescriptor(imagePath);
 		if (descriptor == null) {
 			descriptor = AbstractUIPlugin.imageDescriptorFromPlugin(SARLEclipsePlugin.PLUGIN_ID, imagePath);
+			if (descriptor != null) {
+				getImageRegistry().put(imagePath, descriptor);
+			}
 		}
 		return descriptor;
 	}

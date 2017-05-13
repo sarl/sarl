@@ -41,8 +41,9 @@ final class Messages extends NLS {
 	}
 
 	public static var SarlExperienceIndexEvaluatorHandler_0 : String
-	public static var SarlExperienceIndexEvaluatorHandler_1 : String
-	public static var SarlExperienceIndexEvaluatorHandler_2 : String
+	public static var SarlExperienceIndexResultDialog_0 : String
+	public static var SarlExperienceIndexResultDialog_1 : String
+	public static var SarlExperienceIndexResultDialog_2 : String
 
 	private new {
 	}

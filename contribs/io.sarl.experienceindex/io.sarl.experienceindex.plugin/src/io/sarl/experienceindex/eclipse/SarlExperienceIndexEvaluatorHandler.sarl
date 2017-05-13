@@ -21,8 +21,6 @@
 
 package io.sarl.experienceindex.eclipse
 
-import java.text.MessageFormat
-
 import org.eclipse.core.commands.AbstractHandler
 import org.eclipse.core.commands.ExecutionEvent
 import org.eclipse.core.commands.ExecutionException
@@ -30,7 +28,6 @@ import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.IStatus
 import org.eclipse.core.runtime.Status
 import org.eclipse.core.runtime.jobs.Job
-import org.eclipse.jface.dialogs.MessageDialog
 import org.eclipse.ui.PlatformUI
 
 import io.sarl.experienceindex.SarlExperienceIndex
@@ -64,16 +61,10 @@ class SarlExperienceIndexEvaluatorHandler extends AbstractHandler {
 		override run(monitor : IProgressMonitor) : IStatus {
 			val experienceIndex = SarlExperienceIndex::getJanusExperienceIndex [ monitor.canceled ]
 			if (!monitor.canceled) {
-				val message = MessageFormat::format(Messages::SarlExperienceIndexEvaluatorHandler_2,
-									experienceIndex.baseScore,
-									experienceIndex.cpuScore,
-									experienceIndex.memoryScore,
-									experienceIndex.diskScore)
 				PlatformUI::workbench.display.asyncExec [
-					MessageDialog::openInformation(
+					SarlExperienceIndexResultDialog::open(
 							null,
-							Messages::SarlExperienceIndexEvaluatorHandler_1,
-							message)
+							experienceIndex)
 				]
 			}
 			Status::OK_STATUS

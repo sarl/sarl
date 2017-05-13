@@ -22,7 +22,8 @@
 package io.sarl.experienceindex.eclipse
 
 import org.eclipse.ui.plugin.AbstractUIPlugin
-
+import org.eclipse.jface.resource.ImageDescriptor
+import org.eclipse.swt.graphics.Image
 
 /**
  * Plugin.
@@ -37,7 +38,7 @@ class SarlExperienceIndexPlugin extends AbstractUIPlugin {
 
 	/** Identifier of the plugin.
 	 */
-	public static val PLUGIN_ID = "io.sarl.experienceindex"
+	public static val PLUGIN_ID = "io.sarl.experienceindex.plugin"
 
 	static var instance : SarlExperienceIndexPlugin
 
@@ -61,6 +62,40 @@ class SarlExperienceIndexPlugin extends AbstractUIPlugin {
 	 */
 	static def getDefault : SarlExperienceIndexPlugin {
 		instance
+	}
+
+	/** Replies the image descriptor for the given image path.
+	 *
+	 * @param imagePath - path of the image.
+	 * @return the image descriptor.
+	 */
+	def getImageDescriptor(imagePath : String) : ImageDescriptor {
+		var descriptor = this.imageRegistry.getDescriptor(imagePath)
+		if (descriptor === null) {
+			descriptor = AbstractUIPlugin::imageDescriptorFromPlugin(PLUGIN_ID, imagePath)
+			if (descriptor !== null) {
+				this.imageRegistry.put(imagePath, descriptor)
+			}
+		}
+		return descriptor
+	}
+
+	/** Replies the image for the given image path.
+	 *
+	 * @param imagePath - path of the image.
+	 * @return the image.
+	 */
+	def getImage(imagePath : String) : Image {
+		var descriptor = this.imageRegistry.getDescriptor(imagePath)
+		if (descriptor === null) {
+			descriptor = AbstractUIPlugin::imageDescriptorFromPlugin(PLUGIN_ID, imagePath)
+			if (descriptor !== null) {
+				var img = descriptor.createImage
+				this.imageRegistry.put(imagePath, img)
+				return img
+			}
+		}
+		return null
 	}
 
 }
