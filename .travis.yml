@@ -8,11 +8,11 @@ sudo: required
 # Environment variables for all the OS
 env:
   global:
-    - MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.defaultLogLevel=warn -XX:+CMSClassUnloadingEnabled -Xmx3g"
+    - MAVEN_OPTS: "-XX:+CMSClassUnloadingEnabled -Xmx3g" #-Dorg.slf4j.simpleLogger.defaultLogLevel=warn 
+    - MAVEN_COMPILATION_OPTS: "\"-e -P!generateproduct -Dio.sarl.docs.tests.skip=true\""
     - MAVEN_DEPLOYMENT_SETTING: "./build-tools/src/main/resources/maven/deploy-settings.xml"
     - MAVEN_DEPLOYMENT_OPTS: "\"-DskipTests -Dmaven.test.skip=true -Dcheckstyle.skip=true\""
-    - MAVEN_COMPILATION_OPTS: "\"-e -P!generateproduct -Dio.sarl.docs.tests.skip=true\""
-    - HTTPS_KEYSTORE_FILE: "./build-tools/keyring/https.keystore"
+    - HTTPS_KEYSTORE_FILE: "./build-tools/keyring/https.jks"
     - secure: "e+S71qmexycXKKiRLzc/B12HO64XiGxB9nWW5vifuOI22qjsma6T2z4z+v5qWgSG0O5SEHjQCw+rXDjoqjD0hA8qHpiaFb5vuKS69ulBFfTM5QT4+5F3RX/xepYfrUZlAner7ES7UrYnwDOlASrARiy1HLmcWHcruLosWWgev9Y="
     - secure: "grzZIv0E+OjSYyB81LH9j2KjH2SCspvsRY54KXD0dP7QmFb8pNbWClhV0TpGevaU4uocDn2ZhlXQdCEpzpesHo0LcPKz+b03xPg6ydbXvMuFXzJ4fFEUfi5iaRGuDDIFm/IPGEMRYyv62poUMFiKpwgECvFjE4ECG8NPegpZnz8="
     - secure: "aIOrF7Oa3r2ZWuRC6YwSuw1UnDoBLz8uLjNmtq3ZIJzukI93NfjmnJcr+d278nvqOWm/eR+UPkE8fB8PgWamAoxYRK60bjP9ScvaudqR4cztwKMzHLetR1+h0yt3qRS3sl2ImdY2k0UkZDLe+sW7ColCnC1pKM4ty9mbs2tBbvk="
@@ -37,10 +37,10 @@ matrix:
       - PATH: "$M2_HOME/bin:$PATH"
       - DISPLAY: ":99.0"
       before_install:
+      - echo "MAVEN_OPTS=\"$MAVEN_OPTS\"" > $HOME/.mavenrc
       - "sh -e ./build-tools/scripts/travis-download-maven.sh"
       - "sh -e /etc/init.d/xvfb start"
       - sleep 3 # give xvfb some time to start
-      - echo "MAVEN_OPTS=\"$MAVEN_OPTS\"" > $HOME/.mavenrc
     - os: osx
       osx_image: xcode8.2 # see https://docs.travis-ci.com/user/osx-ci-environment/
       before_install:
@@ -52,7 +52,7 @@ script: "mvn -B $MAVEN_COMPILATION_OPTS clean install"
 
 # Deployment of the SNAPSHOT version.
 after_success:
-  - "[[ ${TRAVIS_OS_NAME} == 'linux' ]] && [[ ${TRAVIS_PULL_REQUEST} == 'false' ]] && [[ ${TRAVIS_TAG} == '' ]] && [[ ${TRAVIS_BRANCH} == 'master' ]] && echo \"MAVEN_OPTS=\\\"$MAVEN_OPTS -Djavax.net.ssl.trustStore=$HTTPS_KEYSTORE_FILE -Djavax.net.ssl.trustStorePassword=$HTTPS_KEYSTORE_PWD -Djavax.net.ssl.keyStore=$HTTPS_KEYSTORE_FILE -Djavax.net.ssl.keyStorePassword=$HTTPS_KEYSTORE_PWD\\\"\" > $HOME/.mavenrc && mvn -B $MAVEN_DEPLOYMENT_OPTS deploy  --settings $MAVEN_DEPLOYMENT_SETTING"
+  - "sh -e ./build-tools/scripts/travis-maven-deploy.sh"
 
 #after_failure: "sh -e ./build-tools/scripts/print-surefire-reports.sh"
 
