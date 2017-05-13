@@ -52,7 +52,7 @@ script: "mvn -B $MAVEN_COMPILATION_OPTS clean install"
 
 # Deployment of the SNAPSHOT version.
 after_success:
-  - "[[ ${TRAVIS_OS_NAME} == 'linux' ]] && [[ ${TRAVIS_PULL_REQUEST} == 'false' ]] && [[ ${TRAVIS_TAG} == '' ]] && [[ ${TRAVIS_BRANCH} == 'master' ]] && echo "MAVEN_OPTS=\"$MAVEN_OPTS -Djavax.net.ssl.trustStore=$HTTPS_KEYSTORE_FILE -Djavax.net.ssl.trustStorePassword=$HTTPS_KEYSTORE_PWD -Djavax.net.ssl.keyStore=$HTTPS_KEYSTORE_FILE -Djavax.net.ssl.keyStorePassword=$HTTPS_KEYSTORE_PWD\"" > $HOME/.mavenrc && mvn -B $MAVEN_DEPLOYMENT_OPTS deploy  --settings $MAVEN_DEPLOYMENT_SETTING"
+  - "[[ ${TRAVIS_OS_NAME} == 'linux' ]] && [[ ${TRAVIS_PULL_REQUEST} == 'false' ]] && [[ ${TRAVIS_TAG} == '' ]] && [[ ${TRAVIS_BRANCH} == 'master' ]] && echo \"MAVEN_OPTS=\\\"$MAVEN_OPTS -Djavax.net.ssl.trustStore=$HTTPS_KEYSTORE_FILE -Djavax.net.ssl.trustStorePassword=$HTTPS_KEYSTORE_PWD -Djavax.net.ssl.keyStore=$HTTPS_KEYSTORE_FILE -Djavax.net.ssl.keyStorePassword=$HTTPS_KEYSTORE_PWD\\\"\" > $HOME/.mavenrc && mvn -B $MAVEN_DEPLOYMENT_OPTS deploy  --settings $MAVEN_DEPLOYMENT_SETTING"
 
 #after_failure: "sh -e ./build-tools/scripts/print-surefire-reports.sh"
 
