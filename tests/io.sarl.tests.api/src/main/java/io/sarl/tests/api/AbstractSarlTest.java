@@ -44,9 +44,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import javax.inject.Provider;
 
@@ -58,6 +55,8 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -217,6 +216,14 @@ public abstract class AbstractSarlTest {
 						|| cmd.startsWith("org.eclipse.jdt.internal.junit."));
 	}
 
+	/** Change the log level at the global level.
+	 *
+	 * @param level the new level.
+	 */
+	protected static void setGlobalLogLevel(Level level) {
+		LogManager.getRootLogger().setLevel(level);
+	}
+
 	/** This rule permits to clean automatically the fields
 	 * at the end of the test.
 	 */
@@ -254,7 +261,7 @@ public abstract class AbstractSarlTest {
 		}
 		@Override
 		public Statement apply(Statement base, Description description) {
-			org.apache.log4j.LogManager.getRootLogger().setLevel(org.apache.log4j.Level.WARN);
+			setGlobalLogLevel(Level.WARN);
 			// This test is working only in Eclipse, or Maven/Tycho.
 			TestScope scope = description.getAnnotation(TestScope.class);
 			if (scope == null) {
