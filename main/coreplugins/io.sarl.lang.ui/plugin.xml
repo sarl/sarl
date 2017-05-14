@@ -619,6 +619,7 @@
 
    <extension
          point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <!--
       <renameParticipant
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:io.sarl.lang.ui.refactoring.rename.SARLJdtPackageRenameParticipant"
             id="io.sarl.lang.ui.refactoring.externalPackageRenameParticipant"
@@ -629,6 +630,7 @@
            </instanceof>
          </enablement>
       </renameParticipant>
+      -->
       <renameParticipant
             class="io.sarl.lang.ui.SARLExecutableExtensionFactory:io.sarl.lang.ui.refactoring.rename.SARLFileRenameParticipant"
             id="io.sarl.lang.ui.refactoring.fileRenameParticipant"
