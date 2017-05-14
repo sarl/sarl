@@ -48,6 +48,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.inject.Provider;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
@@ -151,21 +153,19 @@ public abstract class AbstractSarlTest {
 	public static final int DEFAULT_DECIMAL_COUNT = 6;
 
 	@Inject
-	private ValidationTestHelper validationHelper;
+	protected ReflectExtensions reflect;
 
 	@Inject
 	private Injector injector;
 
 	@Inject
-	private ParseHelper<SarlScript> parser;
+	private Provider<ValidationTestHelper> validationHelper;
 
 	@Inject
-	private SarlJvmModelAssociations associations;
+	private Provider<ParseHelper<SarlScript>> parser;
 
-	/** Utility for reflection.
-	 */
 	@Inject
-	public ReflectExtensions reflect;
+	private Provider<SarlJvmModelAssociations> associations;
 
 	/** Temporary fixing a bug in the class loading of Mockito 2.
 	 * 
@@ -334,6 +334,16 @@ public abstract class AbstractSarlTest {
 		}
 
 	};
+
+	@Override
+	protected void finalize() throws Throwable {
+		this.injector = null;
+		this.reflect = null;
+		this.validationHelper = null;
+		this.parser = null;
+		this.associations = null;
+		this.rootSarlWatchter = null;
+	}
 
 	/** Helpfer for setting a field, even if it is not visible.
 	 *
@@ -1275,7 +1285,7 @@ public abstract class AbstractSarlTest {
 	/** Create an instance of class.
 	 */
 	protected SarlScript file(String string, boolean validate) throws Exception {
-		SarlScript script = this.parser.parse(string);
+		SarlScript script = this.parser.get().parse(string);
 		if (validate) {
 			Resource resource = script.eResource();
 			ResourceSet resourceSet = resource.getResourceSet();
@@ -1303,7 +1313,7 @@ public abstract class AbstractSarlTest {
 	/** Validate the given resource and reply the issues.
 	 */
 	protected List<Issue> issues(Resource resource) {
-		return this.validationHelper.validate(resource);
+		return this.validationHelper.get().validate(resource);
 	}
 
 	/** Validate the given file and reply the validator.
@@ -1384,14 +1394,14 @@ public abstract class AbstractSarlTest {
 	 */
 	protected JvmOperation jvmOperation(String string, String... prefix) throws Exception {
 		SarlAction action = function(string, prefix);
-		return (JvmOperation) this.associations.getPrimaryJvmElement(action);
+		return (JvmOperation) this.associations.get().getPrimaryJvmElement(action);
 	}
 
 	/** Create an instance of JVM function.
 	 */
 	protected JvmOperation jvmOperation(String string, boolean validate, String... prefix) throws Exception {
 		SarlAction action = function(string, validate, prefix);
-		return (JvmOperation) this.associations.getPrimaryJvmElement(action);
+		return (JvmOperation) this.associations.get().getPrimaryJvmElement(action);
 	}
 
 	/** Create an instance of function signature.
@@ -1416,14 +1426,14 @@ public abstract class AbstractSarlTest {
 	 */
 	protected JvmOperation jvmOperationSignature(String string, String... prefix) throws Exception {
 		SarlAction action = functionSignature(string, prefix);
-		return (JvmOperation) this.associations.getPrimaryJvmElement(action);
+		return (JvmOperation) this.associations.get().getPrimaryJvmElement(action);
 	}
 
 	/** Create an instance of JVM function.
 	 */
 	protected JvmOperation jvmOperationSignature(String string, boolean validate, String... prefix) throws Exception {
 		SarlAction action = functionSignature(string, validate, prefix);
-		return (JvmOperation) this.associations.getPrimaryJvmElement(action);
+		return (JvmOperation) this.associations.get().getPrimaryJvmElement(action);
 	}
 
 	/** Create an instance of constructor.
@@ -1448,14 +1458,14 @@ public abstract class AbstractSarlTest {
 	 */
 	protected JvmConstructor jvmConstructor(String string, String... prefix) throws Exception {
 		SarlConstructor constructor = constructor(string, prefix);
-		return (JvmConstructor) this.associations.getPrimaryJvmElement(constructor);
+		return (JvmConstructor) this.associations.get().getPrimaryJvmElement(constructor);
 	}
 
 	/** Create an instance of JVM constructor.
 	 */
 	protected JvmConstructor jvmConstructor(String string, boolean validate, String... prefix) throws Exception {
 		SarlConstructor constructor = constructor(string, validate, prefix);
-		return (JvmConstructor) this.associations.getPrimaryJvmElement(constructor);
+		return (JvmConstructor) this.associations.get().getPrimaryJvmElement(constructor);
 	}
 
 	/** Create an instance of field.
@@ -1639,79 +1649,88 @@ public abstract class AbstractSarlTest {
 	 */
 	private class XtextValidator implements Validator {
 
-		private final Resource resource;
+		private Resource resource;
+
+		private ValidationTestHelper testHelper;
 
 		/**
 		 * @param resource - the resource to validate.
 		 */
 		private XtextValidator(Resource resource) {
 			this.resource = resource;
+			this.testHelper = AbstractSarlTest.this.validationHelper.get();
+		}
+
+		@Override
+		protected void finalize() throws Throwable {
+			this.resource = null;
+			this.testHelper = null;
 		}
 
 		public List<Issue> getIssues() {
-			return AbstractSarlTest.this.validationHelper.validate(this.resource);
+			return this.testHelper.validate(this.resource);
 		}
 
 		public Validator assertNoIssues() {
-			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource);
+			this.testHelper.assertNoIssues(this.resource);
 			return this;
 		}
 
 		public Validator assertNoErrors() {
-			AbstractSarlTest.this.validationHelper.assertNoErrors(this.resource);
+			this.testHelper.assertNoErrors(this.resource);
 			return this;
 		}
 
 		public Validator assertNoError(String issuecode) {
-			AbstractSarlTest.this.validationHelper.assertNoError(this.resource, issuecode);
+			this.testHelper.assertNoError(this.resource, issuecode);
 			return this;
 		}
 
 		public Validator assertNoErrors(EClass objectType, String code, String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertNoErrors(this.resource, objectType, code, messageParts);
+			this.testHelper.assertNoErrors(this.resource, objectType, code, messageParts);
 			return this;
 		}
 
 		public Validator assertNoErrors(String code) {
-			AbstractSarlTest.this.validationHelper.assertNoErrors(this.resource, code);
+			this.testHelper.assertNoErrors(this.resource, code);
 			return this;
 		}
 
 		public Validator assertNoIssues(EClass objectType) {
-			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType);
+			this.testHelper.assertNoIssues(this.resource, objectType);
 			return this;
 		}
 
 		public Validator assertNoIssue(EClass objectType, String issuecode) {
-			AbstractSarlTest.this.validationHelper.assertNoIssue(this.resource, objectType, issuecode);
+			this.testHelper.assertNoIssue(this.resource, objectType, issuecode);
 			return this;
 		}
 
 		public Validator assertError(EClass objectType, String code, String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertError(this.resource, objectType, code, messageParts);
+			this.testHelper.assertError(this.resource, objectType, code, messageParts);
 			return this;
 		}
 
 		public Validator assertIssue(EClass objectType, String code, Severity severity, String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertIssue(this.resource, objectType, code, severity, messageParts);
+			this.testHelper.assertIssue(this.resource, objectType, code, severity, messageParts);
 			return this;
 		}
 
 		public Validator assertNoIssues(EClass objectType, String code, Severity severity, String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertNoIssues(this.resource, objectType, code, severity, messageParts);
+			this.testHelper.assertNoIssues(this.resource, objectType, code, severity, messageParts);
 			return this;
 		}
 
 		public Validator assertWarning(EClass objectType, String code, String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertWarning(this.resource, objectType, code, messageParts);
+			this.testHelper.assertWarning(this.resource, objectType, code, messageParts);
 			return this;
 		}
 
 		public Validator assertNoWarnings(EClass objectType, String code, String... messageParts) {
-			AbstractSarlTest.this.validationHelper.assertNoWarnings(this.resource, objectType, code, messageParts);
+			this.testHelper.assertNoWarnings(this.resource, objectType, code, messageParts);
 			return this;
 		}
-		
+
 	}
 
 	/**
