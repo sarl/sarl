@@ -254,6 +254,7 @@ public abstract class AbstractSarlTest {
 		}
 		@Override
 		public Statement apply(Statement base, Description description) {
+			org.apache.log4j.LogManager.getRootLogger().setLevel(org.apache.log4j.Level.WARN);
 			// This test is working only in Eclipse, or Maven/Tycho.
 			TestScope scope = description.getAnnotation(TestScope.class);
 			if (scope == null) {
