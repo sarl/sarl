@@ -45,6 +45,7 @@
 * Structural elements;
 	* [Script format](./reference/general/Script.md)
 	* [Function declaration](./reference/general/FuncDecls.md)
+	* [Synthetic Functions](./reference/general/SyntheticFunctions.md)
 * Constant expressions:
 	* [Numerical, string, and collection literals](./reference/general/Literals.md)
 * Structuring expressions:

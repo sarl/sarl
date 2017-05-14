@@ -128,6 +128,11 @@ directive or by specifying a constructor.
 			}
 		[:End:]
 
+If no constructor is defined in the event type and a super-type is declared, implicit constructors will be assumed.
+Implicit constructors has the same prototypes as the constructors of the super type.
+Details on implicit constructors are given in the reference documentation related to the
+[synthetic functions](./general/SyntheticFunctions.md).
+
 
 ### Extending Events
 
