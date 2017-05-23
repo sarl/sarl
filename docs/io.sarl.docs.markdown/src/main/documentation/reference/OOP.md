@@ -25,7 +25,7 @@ The main features coming from the Java language are supported by SARL too. The f
 differences between the SARL, Java and Xtend languages regarding the supports of the object-oriented features.
 
 <table><thead>
-<tr><th></th><th>SARL</th><th>Java</th><th><th>Xtend</th></tr>
+<tr><th></th><th>SARL</th><th>Java</th><th>Xtend</th></tr>
 </thead><tbody>
 <tr><td>Object-oriented enumeration</td>
 			<td>No, only constants could be defined</td>
