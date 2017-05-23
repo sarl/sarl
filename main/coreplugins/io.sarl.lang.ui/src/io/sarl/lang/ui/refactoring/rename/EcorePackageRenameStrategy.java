@@ -25,6 +25,7 @@ import java.text.MessageFormat;
 import java.util.regex.Pattern;
 
 import com.google.inject.Inject;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -38,6 +39,7 @@ import org.eclipse.xtext.ui.refactoring.impl.RefactoringException;
 import org.eclipse.xtext.ui.refactoring.ui.IRenameElementContext;
 import org.eclipse.xtext.util.ITextRegion;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
 import io.sarl.lang.sarl.SarlScript;
 
@@ -49,7 +51,7 @@ import io.sarl.lang.sarl.SarlScript;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-public class SARLEcorePackageRenameStrategy implements DefaultRenameStrategyProvider.IInitializable {
+public class EcorePackageRenameStrategy implements DefaultRenameStrategyProvider.IInitializable {
 
 	/** Pattern for a package name.
 	 */
@@ -60,14 +62,27 @@ public class SARLEcorePackageRenameStrategy implements DefaultRenameStrategyProv
 
 	private String currentPackageName;
 
-	private IRenameElementContext context;
+	private Function1<ResourceSet, URI> uriProvider;
+
+	/**
+	 * Validate the package name.
+	 *
+	 * @param newName the package name to be validated.
+	 * @return the status of the validation.
+	 */
+	public static RefactoringStatus validatePackageName(String newName) {
+		if (!PACKAGE_NAME_PATTERN.matcher(newName).find()) {
+			RefactoringStatus.createErrorStatus(MessageFormat.format(Messages.SARLJdtPackageRenameParticipant_0, newName));
+		}
+		return new RefactoringStatus();
+	}
 
 	@Override
 	public boolean initialize(EObject targetEObject, IRenameElementContext renameElementContext) {
 		if (targetEObject instanceof SarlScript) {
 			final SarlScript script = (SarlScript) targetEObject;
 			this.currentPackageName = Strings.emptyIfNull(script.getPackage());
-			this.context = renameElementContext;
+			this.uriProvider = (it) -> renameElementContext.getTargetElementURI();
 			return true;
 		}
 		return false;
@@ -80,10 +95,7 @@ public class SARLEcorePackageRenameStrategy implements DefaultRenameStrategyProv
 
 	@Override
 	public RefactoringStatus validateNewName(String newName) {
-		if (!PACKAGE_NAME_PATTERN.matcher(newName).find()) {
-			RefactoringStatus.createErrorStatus(MessageFormat.format(Messages.SARLJdtPackageRenameParticipant_0, newName));
-		}
-		return new RefactoringStatus();
+		return validatePackageName(newName);
 	}
 
 	/** Change the package name.
@@ -92,7 +104,7 @@ public class SARLEcorePackageRenameStrategy implements DefaultRenameStrategyProv
 	 * @param resourceSet the set of resource to use.
 	 */
 	protected void setPackageName(String newName, ResourceSet resourceSet) {
-		final EObject object = resourceSet.getEObject(this.context.getTargetElementURI(), true);
+		final EObject object = resourceSet.getEObject(this.uriProvider.apply(resourceSet), true);
 		if (object instanceof SarlScript) {
 			((SarlScript) object).setPackage(newName);
 		} else {
@@ -103,7 +115,7 @@ public class SARLEcorePackageRenameStrategy implements DefaultRenameStrategyProv
 	@Override
 	public void createDeclarationUpdates(String newName, ResourceSet resourceSet,
 			IRefactoringUpdateAcceptor updateAcceptor) {
-		updateAcceptor.accept(this.context.getTargetElementURI(),
+		updateAcceptor.accept(this.uriProvider.apply(resourceSet),
 				getDeclarationTextEdit(newName, resourceSet));
 	}
 
@@ -124,7 +136,7 @@ public class SARLEcorePackageRenameStrategy implements DefaultRenameStrategyProv
 	 * @return the text update.
 	 */
 	protected TextEdit getDeclarationTextEdit(String newName, ResourceSet resourceSet) {
-		final EObject object = resourceSet.getEObject(this.context.getTargetElementURI(), true);
+		final EObject object = resourceSet.getEObject(this.uriProvider.apply(resourceSet), true);
 		if (object instanceof SarlScript) {
 			final ITextRegion region = getOriginalPackageRegion((SarlScript) object);
 			if (region != null) {

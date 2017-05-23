@@ -24,8 +24,8 @@ package io.sarl.lang.ui.refactoring.rename;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.common.types.ui.refactoring.participant.JvmMemberRenameStrategy;
 import org.eclipse.xtext.ui.refactoring.IRenameStrategy;
+import org.eclipse.xtext.ui.refactoring.impl.DefaultRenameStrategyProvider;
 import org.eclipse.xtext.ui.refactoring.ui.IRenameElementContext;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -37,21 +37,17 @@ import io.sarl.lang.sarl.SarlScript;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLRenameStrategyProvider extends JvmMemberRenameStrategy.Provider {
+public class SARLRenameStrategyProvider extends DefaultRenameStrategyProvider {
 
 	@Inject
-	private Provider<SARLEcorePackageRenameStrategy> guiceEcorePackageStrategyProvider;
+	private Provider<EcorePackageRenameStrategy> guiceEcorePackageStrategyProvider;
 
 	@Override
-	public IRenameStrategy get(EObject targetEObject, IRenameElementContext renameElementContext)
-			throws NoSuchStrategyException {
+	protected IRenameStrategy createRenameStrategy(EObject targetEObject, IRenameElementContext renameElementContext) {
 		if (targetEObject instanceof SarlScript) {
-			final SARLEcorePackageRenameStrategy strategy = this.guiceEcorePackageStrategyProvider.get();
-			if (strategy.initialize(targetEObject, renameElementContext)) {
-				return strategy;
-			}
+			return this.guiceEcorePackageStrategyProvider.get();
 		}
-		return super.get(targetEObject, renameElementContext);
+		return super.createRenameStrategy(targetEObject, renameElementContext);
 	}
 
 }
