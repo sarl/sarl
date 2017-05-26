@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="608.0" prefWidth="813.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.sarl.demos.sierpinski.gui.FXMLViewerController">
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="608.0" prefWidth="813.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.sarl.demos.sierpinski.gui.FXMLViewerController">
    <children>
       <Canvas fx:id="drawZone" height="600.0" layoutX="199.0" layoutY="4.0" rotate="180.0" scaleX="-1.0" width="600.0" />
       <Button layoutX="26.0" layoutY="45.0" mnemonicParsing="false" onAction="#actionSetup" text="Setup" />

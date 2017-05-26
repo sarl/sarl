@@ -42,11 +42,12 @@ class FXMLViewerController implements EventListener {
 	@FXML private var multiplyButton: Button
 	
 	@FXML public def exitApplication(){
-		var e = new Exit()
-		this.multiplyButton.setDisable(true)
-		e.source = new Address(ispace.spaceID, id)
-		this.ispace.emit(e)
-//		Platform.ext()
+		if (setuped){
+			var e = new Exit()
+			this.multiplyButton.setDisable(true)
+			e.source = new Address(ispace.spaceID, id)
+			this.ispace.emit(e)
+		}
 	}
 	
 	@FXML protected def actionSetup() {

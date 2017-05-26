@@ -20,6 +20,7 @@ class FractalesFXApplications extends Application {
 		loader.setBuilderFactory(new JavaFXBuilderFactory)
 		var root: Parent = loader.load(location.openStream) as Parent
 		var scene: Scene = new Scene(root)
+		scene.stylesheets.add(class.getResource("ViewerController.css").toExternalForm)
 		stage.setTitle("SARL Demo: Sierpinski Fractal Animation")
 		stage.setScene(scene)
 		stage.show
