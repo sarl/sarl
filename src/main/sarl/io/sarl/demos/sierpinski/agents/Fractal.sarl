@@ -19,6 +19,7 @@ import io.sarl.demos.sierpinski.objects.Positions
 import io.sarl.demos.sierpinski.objects.Triangle
 import io.sarl.core.Logging
 import io.sarl.util.OpenEventSpace
+import io.sarl.demos.sierpinski.events.Exit
 
 agent Fractal {
 	uses InnerContextAccess, Lifecycle, DefaultContextInteractions, Behaviors
@@ -83,6 +84,12 @@ agent Fractal {
 		innerContext.defaultSpace.emit(m)
 	}
 	
+	def emitExit(){
+		var e = new Exit
+		e.source = innerContext.defaultSpace.getAddress(ID);
+		innerContext.defaultSpace.emit(e)
+	}
+	
 	on Multiply[guiSpace !== null && occurrence.source.spaceId == guiSpace.spaceID && !hasMemberAgent]{
 		this.multiplication
 	}
@@ -99,12 +106,24 @@ agent Fractal {
 		this.emitMultiply
 	}
 	
+	on Exit[guiSpace !== null && occurrence.source.spaceId == guiSpace.spaceID && !hasMemberAgent]{
+		killMe;
+	}
 	
-//	on Multiply[hasMemberAgent && memberAgentCount >= 3 && (occurrence.emmiter == parentID || guiSpace !== null)]{
-//		innerContext.defaultSpace.emit(new Multiply(ID))
-//	}
-
-//	on MemberLeft [!isFromMe(occurrence) && !hasMemberAgent] {
-//		killMe
-//	}
+	on Exit[guiSpace !== null && occurrence.source.spaceId == guiSpace.spaceID && hasMemberAgent]{
+		this.emitExit
+	}
+	
+	on Exit[occurrence.isInDefaultSpace && !hasMemberAgent]{
+		killMe
+	}
+	
+	on Exit[occurrence.isInDefaultSpace && hasMemberAgent]{
+		this.emitExit
+	}
+	
+	on MemberLeft[!hasMemberAgent]{
+		killMe
+	}
+	
 }

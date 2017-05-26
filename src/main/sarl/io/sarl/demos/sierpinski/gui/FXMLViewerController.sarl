@@ -19,6 +19,7 @@ import javafx.util.Duration
 import javafx.scene.paint.Color
 import io.sarl.demos.sierpinski.objects.Vector2D
 import io.sarl.lang.core.Address
+import io.sarl.demos.sierpinski.events.Exit
 
 class FXMLViewerController implements EventListener {
 	
@@ -40,8 +41,11 @@ class FXMLViewerController implements EventListener {
 	@FXML private var drawZone: Canvas
 	@FXML private var multiplyButton: Button
 	
-	@FXML public def exitApplication(ievent: ActionEvent){
-//		ispace.emit(new Exit())
+	@FXML public def exitApplication(){
+		var e = new Exit()
+		this.multiplyButton.setDisable(true)
+		e.source = new Address(ispace.spaceID, id)
+		this.ispace.emit(e)
 //		Platform.ext()
 	}
 	
