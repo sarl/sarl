@@ -22,7 +22,11 @@
 % limitations under the License.
 %
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesPackage{sarl-beamer-listing}[2017/04/04]
+\ProvidesPackage{sarl-beamer-listing}[2017/05/30]
+\newif\ifusesarlcolors\usesarlcolorstrue
+\DeclareOption{sarlcolors}{\global\usesarlcolorstrue}
+\DeclareOption{nosarlcolors}{\global\usesarlcolorsfalse}
+\ProcessOptions*
 \RequirePackage{algpseudocode}
 \RequirePackage{listings}
 \RequirePackage{xspace}
@@ -70,4 +74,9 @@
 \newcommand{\code}[1]{\ifmmode\text{\lstinline[basicstyle=\usebeamertemplate{code inline style}]{#1}}\else\lstinline[basicstyle=\usebeamertemplate{code inline style}]{#1}\fi}
 \newcommand{\sarl}{\mbox{SARL}\xspace}
 \newcommand{\sarlversion}{0.6}
+\ifusesarlcolors
+  \setbeamercolor*{code keyword}{fg=SARLkeyword}
+  \setbeamercolor*{code string}{fg=SARLstring}
+  \setbeamercolor*{code comment}{fg=SARLcomment}
+\fi
 \endinput

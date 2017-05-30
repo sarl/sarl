@@ -281,6 +281,10 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); //$NON-NLS-1$
 		it.appendNl("\\ProvidesPackage'{'{0}'}'[{1}]", simpleBasename, dateFormat.format(new Date())); //$NON-NLS-1$
 
+		if (generateOptions(it)) {
+			it.appendNl("\\ProcessOptions*"); //$NON-NLS-1$
+		}
+
 		it.appendNl("\\RequirePackage{algpseudocode}"); //$NON-NLS-1$
 		it.appendNl("\\RequirePackage{listings}"); //$NON-NLS-1$
 		it.appendNl("\\RequirePackage{xspace}"); //$NON-NLS-1$
@@ -395,7 +399,32 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		it.appendNl("\\newcommand{\\sarl}{\\mbox{SARL}\\xspace}"); //$NON-NLS-1$
 		it.appendNl("\\newcommand'{'\\sarlversion'}{'{0}'}'", getLanguageVersion()); //$NON-NLS-1$
 
+		generateExtension(it);
+
 		it.appendNl("\\endinput"); //$NON-NLS-1$
+	}
+
+	/** Generate the package definition extensions.
+	 *
+	 * @param it the target.
+	 * @since 0.6
+	 */
+	protected void generateExtension(IStyleAppendable it) {
+		//
+	}
+
+	/** Generate the optional extensions.
+	 *
+	 * @param it the target.
+	 * @return {@code true} if options are generated.
+	 * @since 0.6
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean generateOptions(IStyleAppendable it) {
+		it.appendNl("\\newif\\ifusesarlcolors\\usesarlcolorstrue"); //$NON-NLS-1$
+		it.appendNl("\\DeclareOption{sarlcolors}{\\global\\usesarlcolorstrue}"); //$NON-NLS-1$
+		it.appendNl("\\DeclareOption{nosarlcolors}{\\global\\usesarlcolorsfalse}"); //$NON-NLS-1$
+		return true;
 	}
 
 	/** Appendable for tex-based styles.

@@ -26,6 +26,8 @@ import java.text.MessageFormat;
 import com.google.inject.Injector;
 import org.eclipse.xtext.generator.IGeneratorFragment;
 
+import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
+
 /**
  * A {@link IGeneratorFragment} that create the language specification for
  * the LaTeX Beamer.
@@ -53,6 +55,17 @@ public class LaTeXBeamerGenerator2 extends LaTeXListingsGenerator2 {
 		setStringStyle("\\usebeamercolor[fg]{code string}"); //$NON-NLS-1$
 		setKeywordStyle("\\usebeamertemplate*{code keyword style}\\usebeamercolor[fg]{code keyword}"); //$NON-NLS-1$
 		setBasenameTemplate(BEAMER_BASENAME_PATTERN);
+	}
+
+	@Override
+	protected void generateExtension(IStyleAppendable it) {
+		it.append("\\ifusesarlcolors"); //$NON-NLS-1$
+		it.increaseIndentation().newLine();
+		it.appendNl("\\setbeamercolor*{code keyword}{fg=SARLkeyword}"); //$NON-NLS-1$
+		it.appendNl("\\setbeamercolor*{code string}{fg=SARLstring}"); //$NON-NLS-1$
+		it.append("\\setbeamercolor*{code comment}{fg=SARLcomment}"); //$NON-NLS-1$
+		it.decreaseIndentation().newLine();
+		it.appendNl("\\fi"); //$NON-NLS-1$
 	}
 
 	@Override
