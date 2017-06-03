@@ -100,15 +100,29 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 
 	/** Constructor.
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	public JavaInlineExpressionCompiler() {
 		this.generateDispatcher = new PolymorphicDispatcher<Void>(
-				"_generate", 3, 3, //$NON-NLS-1$
+				"_generate", 4, 4, //$NON-NLS-1$
 				Collections.singletonList(this)) {
 			@Override
 			protected Void handleNoSuchMethod(Object... params) {
 				return null;
 			}
 		};
+	}
+
+	private JvmTypeReference getFunctionTypeReference(XtendFunction function) {
+		if (function != null) {
+			final JvmTypeReference reference = function.getReturnType();
+			if (reference != null) {
+				final JvmType type = reference.getType();
+				if (type != null) {
+					return reference;
+				}
+			}
+		}
+		return this.typeReferences.getTypeForName(Object.class, function);
 	}
 
 	/** Create an appendable.
@@ -130,6 +144,9 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 			} else {
 				content = null;
 			}
+		}
+		if (content instanceof XReturnExpression) {
+			content = ((XReturnExpression) content).getExpression();
 		}
 		return content;
 	}
@@ -200,7 +217,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	public void appendInlineAnnotation(JvmAnnotationTarget target, XtendExecutable source) {
 		final ImportManager imports = new ImportManager();
 		final InlineAnnotationTreeAppendable result = newAppendable(imports);
-		generate(source.getExpression(), source, result);
+		generate(source.getExpression(), null, source, result);
 
 		final String content = result.getContent();
 		if (!Strings.isEmpty(content)) {
@@ -217,18 +234,22 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	/** Append the inline annotation to the given operation.
 	 *
 	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the inline code.
 	 */
-	protected void generate(XExpression expression, XtendExecutable feature, InlineAnnotationTreeAppendable output) {
+	protected void generate(XExpression expression, XExpression parentExpression, XtendExecutable feature,
+			InlineAnnotationTreeAppendable output) {
 		final XExpression realExpression = filterSingleOperation(expression);
 		if (realExpression != null) {
 			final GeneratorConfig2 config = this.configProvider.get(feature);
 			if (config.isUseExpressionInterpreterForInlineAnnotation()
 					&& feature instanceof XtendFunction) {
 				try {
+					final XtendFunction function = (XtendFunction) feature;
 					final Object evaluationResult = this.expressionInterpreter.evaluate(realExpression,
-							((XtendFunction) feature).getReturnType());
+							getFunctionTypeReference(function));
 					if (evaluationResult instanceof CharSequence) {
 						output.appendStringConstant(evaluationResult.toString());
 					} else if (evaluationResult instanceof JvmTypeReference) {
@@ -252,74 +273,110 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 					// Ignore all the exceptions
 				}
 			}
-			this.generateDispatcher.invoke(realExpression, feature, output);
+			this.generateDispatcher.invoke(realExpression, parentExpression, feature, output);
 		}
 	}
 
 	/** Append the inline code for the given XBooleanLiteral.
 	 *
 	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
 	 */
 	@SuppressWarnings("static-method")
-	protected void _generate(XBooleanLiteral expression, XtendExecutable feature, InlineAnnotationTreeAppendable output) {
+	protected void _generate(XBooleanLiteral expression, XExpression parentExpression, XtendExecutable feature,
+			InlineAnnotationTreeAppendable output) {
 		output.appendConstant(Boolean.toString(expression.isIsTrue()));
 	}
 
 	/** Append the inline code for the given XNullLiteral.
 	 *
 	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
 	 */
-	@SuppressWarnings("static-method")
-	protected void _generate(XNullLiteral expression, XtendExecutable feature, InlineAnnotationTreeAppendable output) {
-		output.appendConstant(Objects.toString(null));
+	protected void _generate(XNullLiteral expression, XExpression parentExpression, XtendExecutable feature,
+			InlineAnnotationTreeAppendable output) {
+		if (parentExpression == null && feature instanceof XtendFunction) {
+			final XtendFunction function = (XtendFunction) feature;
+			output.append("("); //$NON-NLS-1$
+			final JvmTypeReference reference = getFunctionTypeReference(function);
+			if (reference != null) {
+				final JvmType type = reference.getType();
+				if (type != null) {
+					output.append(type);
+				} else {
+					output.append(Object.class);
+				}
+			} else {
+				output.append(Object.class);
+			}
+			output.append(")"); //$NON-NLS-1$
+			output.append(Objects.toString(null));
+			output.setConstant(true);
+		} else {
+			output.appendConstant(Objects.toString(null));
+		}
 	}
 
 	/** Append the inline code for the given XNumberLiteral.
 	 *
 	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
 	 */
 	@SuppressWarnings("static-method")
-	protected void _generate(XNumberLiteral expression, XtendExecutable feature, InlineAnnotationTreeAppendable output) {
+	protected void _generate(XNumberLiteral expression, XExpression parentExpression, XtendExecutable feature,
+			InlineAnnotationTreeAppendable output) {
 		output.appendConstant(expression.getValue());
 	}
 
 	/** Append the inline code for the given XStringLiteral.
 	 *
 	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
 	 */
 	@SuppressWarnings("static-method")
-	protected void _generate(XStringLiteral expression, XtendExecutable feature, InlineAnnotationTreeAppendable output) {
+	protected void _generate(XStringLiteral expression, XExpression parentExpression, XtendExecutable feature,
+			InlineAnnotationTreeAppendable output) {
 		output.appendStringConstant(expression.getValue());
 	}
 
 	/** Append the inline code for the given XTypeLiteral.
 	 *
 	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
 	 */
 	@SuppressWarnings("static-method")
-	protected void _generate(XTypeLiteral expression, XtendExecutable feature, InlineAnnotationTreeAppendable output) {
+	protected void _generate(XTypeLiteral expression, XExpression parentExpression, XtendExecutable feature,
+			InlineAnnotationTreeAppendable output) {
 		output.appendTypeConstant(expression.getType());
 	}
 
 	/** Append the inline code for the given XCastedExpression.
 	 *
 	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
 	 */
-	protected void _generate(XCastedExpression expression, XtendExecutable feature, InlineAnnotationTreeAppendable output) {
+	protected void _generate(XCastedExpression expression, XExpression parentExpression, XtendExecutable feature,
+			InlineAnnotationTreeAppendable output) {
 		final InlineAnnotationTreeAppendable child = newAppendable(output.getImportManager());
-		generate(expression.getTarget(), feature, child);
+		generate(expression.getTarget(), expression, feature, child);
 		final String childContent = child.getContent();
 		if (!Strings.isEmpty(childContent)) {
 			output.append("("); //$NON-NLS-1$
@@ -333,17 +390,20 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	/** Append the inline code for the given XInstanceOfExpression.
 	 *
 	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
 	 */
-	protected void _generate(XInstanceOfExpression expression, XtendExecutable feature,
+	protected void _generate(XInstanceOfExpression expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
 		final InlineAnnotationTreeAppendable child = newAppendable(output.getImportManager());
-		generate(expression.getExpression(), feature, child);
+		generate(expression.getExpression(), expression, feature, child);
 		final String childContent = child.getContent();
 		if (!Strings.isEmpty(childContent)) {
+			output.append("("); //$NON-NLS-1$
 			output.append(childContent);
-			output.append(" instanceof "); //$NON-NLS-1$
+			output.append(") instanceof "); //$NON-NLS-1$
 			output.append(expression.getType().getType());
 			output.setConstant(child.isConstant());
 		}
@@ -352,11 +412,14 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	/** Append the inline code for the given XReturnLiteral.
 	 *
 	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
 	 */
-	protected void _generate(XReturnExpression expression, XtendExecutable feature, InlineAnnotationTreeAppendable output) {
-		generate(expression.getExpression(), feature, output);
+	protected void _generate(XReturnExpression expression, XExpression parentExpression, XtendExecutable feature,
+			InlineAnnotationTreeAppendable output) {
+		generate(expression.getExpression(), parentExpression, feature, output);
 	}
 
 	/**

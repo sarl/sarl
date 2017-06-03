@@ -99,7 +99,7 @@ public class Bug383 {
 					"   */",
 					"  @DefaultValueSource",
 					"  @Pure",
-					"  @Inline(value = \"null\", constantExpression = true)",
+					"  @Inline(value = \"(String)null\", constantExpression = true)",
 					"  protected String getInstance(final String type, @DefaultValue(\"A1#GETINSTANCE_0\") final String defaultValue) {",
 					"    return null;",
 					"  }",
