@@ -1,0 +1,211 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2017 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.lang.generator.extra;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.inject.Named;
+
+import com.google.inject.Inject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.generator.GeneratorContext;
+import org.eclipse.xtext.generator.IFileSystemAccess;
+import org.eclipse.xtext.generator.IFileSystemAccess2;
+import org.eclipse.xtext.generator.IGenerator;
+import org.eclipse.xtext.generator.IGenerator2;
+import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.util.CancelIndicator;
+
+/** The generator from SARL to the default target language and an extra target language.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.6
+ */
+public class ExtraLanguageGenerator implements IGenerator, IGenerator2 {
+
+	/** Name of the injected element for the main generator.
+	 */
+	public static final String MAIN_GENERATOR_NAME = "io.sarl.lang.generator.extra.MAIN"; //$NON-NLS-1$
+
+	private IGenerator2 mainGenerator;
+
+	private IExtraLanguageGeneratorProvider extraGeneratorProvider;
+
+	private Logger logger;
+
+	/** Change the logger.
+	 *
+	 * @param logger the logger.
+	 */
+	@Inject
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
+
+	/** Replies the logger.
+	 *
+	 * @return the logger.
+	 */
+	public Logger getLogger() {
+		return this.logger;
+	}
+
+	/** Change the provider of the extra generators.
+	 *
+	 * @param provider the provider.
+	 */
+	@Inject
+	public void setExtraGeneratorProvider(IExtraLanguageGeneratorProvider provider) {
+		this.extraGeneratorProvider = provider;
+	}
+
+	/** Replies the provider of the extra generators.
+	 *
+	 * @return the provider.
+	 */
+	public IExtraLanguageGeneratorProvider getExtraGeneratorProvider() {
+		return this.extraGeneratorProvider;
+	}
+
+	/** Change the main generator that should be used for generating files from SARL resource.
+	 *
+	 * @param generator the generator.
+	 */
+	@Inject
+	public void setMainGenerator(@Named(MAIN_GENERATOR_NAME) IGenerator2 generator) {
+		this.mainGenerator = generator;
+	}
+
+	/** Change the main generator that should be usedd dfor generating files from SARL resource.
+	 *
+	 * @return the generator.
+	 */
+	public IGenerator2 getMainGenerator() {
+		return this.mainGenerator;
+	}
+
+	/** Generate the file(s) from the input resource.
+	 *
+	 * @param input the input resource.
+	 * @param fsa the file system access.
+	 * @param context the generator context.
+	 */
+	public final void generate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		try {
+			beforeGenerate(input, fsa, context);
+			doGenerate(input, fsa, context);
+		} finally {
+			afterGenerate(input, fsa, context);
+		}
+	}
+
+	/** Create the extra generator context from the given context.
+	 *
+	 * @param context the original context.
+	 * @return the extra context.
+	 */
+	protected ExtraGeneratorContext getExtraGeneratorContext(IGeneratorContext context) {
+		if (context instanceof ExtraGeneratorContext) {
+			return (ExtraGeneratorContext) context;
+		}
+		final ExtraGeneratorContext extraContext = new ExtraGeneratorContext(
+				context,
+				getExtraGeneratorProvider().getGenerators(context));
+		return extraContext;
+	}
+
+	@Override
+	public final void doGenerate(Resource input, IFileSystemAccess fsa) {
+		final IFileSystemAccess2 casted = (IFileSystemAccess2) fsa;
+		final GeneratorContext originalContext = new GeneratorContext();
+		originalContext.setCancelIndicator(CancelIndicator.NullImpl);
+		final ExtraGeneratorContext context = getExtraGeneratorContext(originalContext);
+		try {
+			beforeGenerate(input, casted, context);
+			doGenerate(input, casted, context);
+		} finally {
+			afterGenerate(input, casted, context);
+		}
+	}
+
+	@Override
+	public void doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		final ExtraGeneratorContext extraContext = getExtraGeneratorContext(context);
+		final IGenerator2 mainGenerator = getMainGenerator();
+		if (mainGenerator != null) {
+			mainGenerator.doGenerate(input, fsa, extraContext.getDelegate());
+		}
+		final Iterable<IGenerator2> generators = extraContext.getExtraGenerators();
+		if (generators != null) {
+			for (final IGenerator2 generator : generators) {
+				try {
+					generator.doGenerate(input, fsa, extraContext);
+				} catch (Throwable exception) {
+					getLogger().log(Level.SEVERE, exception.getLocalizedMessage(), exception);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		final ExtraGeneratorContext extraContext = getExtraGeneratorContext(context);
+		final IGenerator2 mainGenerator = getMainGenerator();
+		if (mainGenerator != null) {
+			mainGenerator.beforeGenerate(input, fsa, extraContext.getDelegate());
+		}
+		final Iterable<IGenerator2> generators = extraContext.getExtraGenerators();
+		if (generators != null) {
+			for (final IGenerator2 generator : generators) {
+				try {
+					generator.beforeGenerate(input, fsa, extraContext);
+				} catch (Throwable exception) {
+					getLogger().log(Level.SEVERE, exception.getLocalizedMessage(), exception);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		final ExtraGeneratorContext extraContext = getExtraGeneratorContext(context);
+		final IGenerator2 mainGenerator = getMainGenerator();
+		if (mainGenerator != null) {
+			mainGenerator.afterGenerate(input, fsa, extraContext.getDelegate());
+		}
+		final Iterable<IGenerator2> generators = extraContext.getExtraGenerators();
+		if (generators != null) {
+			for (final IGenerator2 generator : generators) {
+				try {
+					generator.afterGenerate(input, fsa, extraContext);
+				} catch (Throwable exception) {
+					getLogger().log(Level.SEVERE, exception.getLocalizedMessage(), exception);
+				}
+			}
+		}
+	}
+
+}

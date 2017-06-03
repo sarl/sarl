@@ -297,7 +297,6 @@
       <import plugin="org.eclipse.emf.mwe2.runtime" version="2.9.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext"/>
       <import plugin="org.eclipse.xtext.builder.standalone"/>
-      <import plugin="com.google.guava" version="14.0.0"/>
       <import plugin="com.google.inject" version="3.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui.testing"/>
       <import plugin="org.eclipse.ui" version="3.5.0" match="compatible"/>
@@ -614,7 +613,14 @@
          id="com.google.guava"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="19.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.guava"
+         download-size="0"
+         install-size="0"
+         version="15.0.0"
          unpack="false"/>
 
 </feature>
