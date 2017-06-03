@@ -38,7 +38,7 @@ import io.sarl.lang.mwe2.externalspec.pygments.*
 import io.sarl.lang.mwe2.codebuilder.* 
 import io.sarl.lang.mwe2.codebuilder.config.* 
 import io.sarl.lang.mwe2.keywords.* 
-import io.sarl.lang.mwe2.bugfixes.* 
+import io.sarl.lang.mwe2.bugfixes.unpublished.* 
 
 var overallRootPath = "../../.."
 var rootPath = ".."

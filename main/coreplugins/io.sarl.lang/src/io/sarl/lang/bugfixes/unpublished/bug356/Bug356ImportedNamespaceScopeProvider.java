@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.bug356;
+package io.sarl.lang.bugfixes.unpublished.bug356;
 
 import java.util.List;
 

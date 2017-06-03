@@ -17,31 +17,20 @@
 		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang.core</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-			</exclusions>
+		</dependency>
+		<!-- Force the version of Guava because the Xbase is no more forcing a specific version (version range use) -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 		</dependency>
- 		<dependency> 
- 			<groupId>com.google.guava</groupId> 
- 			<artifactId>guava</artifactId> 
- 		</dependency> 
 	</dependencies>
 
 	<!-- ======================================= -->

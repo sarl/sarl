@@ -21,22 +21,10 @@
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.core</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.util</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 	</dependencies>
 

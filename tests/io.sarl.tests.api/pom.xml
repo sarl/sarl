@@ -65,6 +65,12 @@
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>vmutils</artifactId>
+			<exclusions>
+				<exclusion>
+		          <groupId>com.google.guava</groupId>
+		          <artifactId>guava</artifactId>
+		        </exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 

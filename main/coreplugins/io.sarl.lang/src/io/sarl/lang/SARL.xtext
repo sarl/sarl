@@ -34,6 +34,7 @@ SarlScript returns xtend::XtendFile:
 	xtendTypes+=Type*
 ;
 
+@Override 
 Type returns xtend::XtendTypeDeclaration:
 	{xtend::XtendTypeDeclaration} annotations+=XAnnotation*
 	(	// Event
@@ -277,6 +278,7 @@ AOPMember returns xtend::XtendMember:
 ;
 
 // Members for the object-oriented types
+@Override 
 Member returns xtend::XtendMember:
 	{xtend::XtendMember} annotations+=XAnnotation*
 	(
@@ -364,6 +366,7 @@ Member returns xtend::XtendMember:
 	)
 ;
 
+@Override 
 AnnotationField returns xtend::XtendMember:
 	{xtend::XtendMember} annotations+=XAnnotation*
 	(
@@ -408,6 +411,7 @@ AnnotationField returns xtend::XtendMember:
 	)
 ;
 
+@Override 
 Parameter returns xtend::XtendParameter:
 	{SarlFormalParameter} annotations+=XAnnotation*
 	(extension?='extension' annotations+=XAnnotation*)?
@@ -416,6 +420,7 @@ Parameter returns xtend::XtendParameter:
 	  | ('=' defaultValue=XExpression))?
 ;
 
+@Override 
 XtendEnumLiteral returns xtend::XtendEnumLiteral:
 	{SarlEnumLiteral}
 	name=ValidID
@@ -430,6 +435,7 @@ BreakExpression returns xbase::XExpression :
 // BELOW THIS POINT, THE RULES FROM XTEXT ARE OVERLOADED
 
 // Variable declaration according to the SARL syntax (not the Xtext/Xtend)
+@Override 
 XPrimaryExpression returns xbase::XExpression:
 	XConstructorCall |
 	XBlockExpression |
@@ -450,6 +456,7 @@ XPrimaryExpression returns xbase::XExpression:
 	BreakExpression
 ;
 
+@Override 
 XVariableDeclaration returns xbase::XExpression:
 	=>({xtend::XtendVariableDeclaration}
 	(
@@ -466,16 +473,19 @@ XVariableDeclaration returns xbase::XExpression:
 ;
 
 // Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
+@Override 
 JvmFormalParameter returns xtend::XtendFormalParameter:
 	extension?='extension'? name=ValidID (=> ':' (parameterType=JvmTypeReference))?
 ;
 	
 // Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
+@Override 
 FullJvmFormalParameter returns xtend::XtendFormalParameter:
 	extension?='extension'? name=ValidID ':' parameterType=JvmTypeReference
 ;
 
 // The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)
+@Override 
 XForLoopExpression returns xbase::XExpression:
 	=>({xbase::XForLoopExpression}
 	'for' '(' declaredParam=SarlXLoopFormalParameter ':') forExpression=XExpression ')'
@@ -490,6 +500,7 @@ SarlXLoopFormalParameter returns xtend::XtendFormalParameter:
 ;
 
 // The type of the switch's variable is following the SARL syntax (not the Xtext/Xtend)
+@Override 
 XSwitchExpression returns xbase::XExpression:
 	{xbase::XSwitchExpression}
 	'switch' (=>('(' declaredParam=JvmFormalParameter '=') switch=XExpression ')'

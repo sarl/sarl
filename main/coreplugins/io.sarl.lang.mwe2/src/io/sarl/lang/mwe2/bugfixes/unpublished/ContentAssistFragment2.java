@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.mwe2.bugfixes;
+package io.sarl.lang.mwe2.bugfixes.unpublished;
 
 import org.eclipse.xtext.Grammar;
 import org.eclipse.xtext.GrammarUtil;

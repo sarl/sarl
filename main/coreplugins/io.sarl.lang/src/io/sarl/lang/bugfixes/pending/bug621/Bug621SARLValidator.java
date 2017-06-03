@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.bug621;
+package io.sarl.lang.bugfixes.pending.bug621;
 
 import static org.eclipse.xtend.core.validation.IssueCodes.CONFLICTING_DEFAULT_METHODS;
 import static org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD;

@@ -35,11 +35,10 @@ import org.eclipse.xtext.validation.CompositeEValidator;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 import org.eclipse.xtext.xbase.typesystem.internal.DefaultReentrantTypeResolver;
 
-import io.sarl.lang.bugfixes.bug356.Bug356ImportedNamespaceScopeProvider;
-import io.sarl.lang.bugfixes.bug356.Bug356QualifiedNameConverter;
-import io.sarl.lang.bugfixes.bug621.Bug621SARLValidator;
-import io.sarl.lang.bugfixes.bug623.Bug623SARLReentrantTypeResolver;
-import io.sarl.lang.bugfixes.xtext299.XtextBug299ConfigurableIssueSeveritiesProvider;
+import io.sarl.lang.bugfixes.pending.bug621.Bug621SARLValidator;
+import io.sarl.lang.bugfixes.refused.bug623.Bug623SARLReentrantTypeResolver;
+import io.sarl.lang.bugfixes.unpublished.bug356.Bug356ImportedNamespaceScopeProvider;
+import io.sarl.lang.bugfixes.unpublished.bug356.Bug356QualifiedNameConverter;
 import io.sarl.lang.validation.ConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.SARLValidator;
@@ -80,7 +79,7 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 		@Override
 		public ConfigurableIssueSeveritiesProvider get() {
 			if (this.severityProvider == null) {
-				this.severityProvider = new XtextBug299ConfigurableIssueSeveritiesProvider();
+				this.severityProvider = new ConfigurableIssueSeveritiesProvider();
 				this.injector.injectMembers(this.severityProvider);
 			}
 			return this.severityProvider;

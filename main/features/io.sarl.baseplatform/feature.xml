@@ -299,6 +299,7 @@
       <import plugin="org.eclipse.xtext.builder.standalone"/>
       <import plugin="com.google.guava" version="14.0.0"/>
       <import plugin="com.google.inject" version="3.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui.testing"/>
       <import plugin="org.eclipse.ui" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.core.resources" version="3.4.0" match="compatible"/>
@@ -346,6 +347,8 @@
       <import plugin="org.eclipse.core.runtime" version="3.0.0" match="compatible"/>
       <import plugin="org.eclipse.core.net" version="1.2.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.security" version="1.0.0" match="compatible"/>
+      <import plugin="org.apache.httpcomponents.httpclient" version="4.0.0"/>
+      <import plugin="org.apache.httpcomponents.httpcore" version="4.0.0"/>
       <import plugin="org.apache.commons.logging" version="1.0.0" match="compatible"/>
       <import plugin="org.apache.commons.codec" version="1.6.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.0.0" match="compatible"/>
@@ -382,8 +385,6 @@
       <import plugin="org.eclipse.core.databinding.property" version="1.2.0" match="compatible"/>
       <import plugin="org.eclipse.emf.databinding" version="1.3.0" match="compatible"/>
       <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
-      <import plugin="org.apache.httpcomponents.httpclient" version="4.0.0"/>
-      <import plugin="org.apache.httpcomponents.httpcore" version="4.0.0"/>
    </requires>
 
    <plugin
@@ -576,13 +577,6 @@
          unpack="false"/>
 
    <plugin
-         id="com.google.guava"
-         download-size="0"
-         install-size="0"
-         version="15.0.0.v201403281430"
-         unpack="false"/>
-
-   <plugin
          id="aopalliance"
          download-size="0"
          install-size="0"
@@ -611,6 +605,13 @@
 
    <plugin
          id="org.eclipse.emf.databinding.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.guava"
          download-size="0"
          install-size="0"
          version="0.0.0"

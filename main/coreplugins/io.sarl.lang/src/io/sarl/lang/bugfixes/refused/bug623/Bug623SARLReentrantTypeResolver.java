@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.bug623;
+package io.sarl.lang.bugfixes.refused.bug623;
 
 import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;

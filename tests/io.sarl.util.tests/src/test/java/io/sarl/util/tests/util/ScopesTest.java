@@ -21,7 +21,7 @@
 
 package io.sarl.util.tests.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -30,7 +30,6 @@ import org.mockito.Mock;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Scope;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.util.AddressScope;
 import io.sarl.util.Scopes;
 
 /**

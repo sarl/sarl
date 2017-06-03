@@ -19,8 +19,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.sdk</artifactId>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.core</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

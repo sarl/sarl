@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.bug356;
+package io.sarl.lang.bugfixes.unpublished.bug356;
 
 import com.google.common.base.Strings;
 import org.eclipse.xtext.naming.QualifiedName;
