@@ -34,7 +34,6 @@ import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.generator.IGenerator2;
 import org.eclipse.xtext.generator.IGeneratorContext;
-import org.eclipse.xtext.util.CancelIndicator;
 
 /** The generator from SARL to the default target language and an extra target language.
  *
@@ -44,7 +43,7 @@ import org.eclipse.xtext.util.CancelIndicator;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-public class ExtraLanguageGenerator implements IGenerator, IGenerator2 {
+public class ExtraLanguageSupportGenerator implements IGenerator, IGenerator2 {
 
 	/** Name of the injected element for the main generator.
 	 */
@@ -122,27 +121,10 @@ public class ExtraLanguageGenerator implements IGenerator, IGenerator2 {
 		}
 	}
 
-	/** Create the extra generator context from the given context.
-	 *
-	 * @param context the original context.
-	 * @return the extra context.
-	 */
-	protected ExtraGeneratorContext getExtraGeneratorContext(IGeneratorContext context) {
-		if (context instanceof ExtraGeneratorContext) {
-			return (ExtraGeneratorContext) context;
-		}
-		final ExtraGeneratorContext extraContext = new ExtraGeneratorContext(
-				context,
-				getExtraGeneratorProvider().getGenerators(context));
-		return extraContext;
-	}
-
 	@Override
 	public final void doGenerate(Resource input, IFileSystemAccess fsa) {
 		final IFileSystemAccess2 casted = (IFileSystemAccess2) fsa;
-		final GeneratorContext originalContext = new GeneratorContext();
-		originalContext.setCancelIndicator(CancelIndicator.NullImpl);
-		final ExtraGeneratorContext context = getExtraGeneratorContext(originalContext);
+		final GeneratorContext context = new GeneratorContext();
 		try {
 			beforeGenerate(input, casted, context);
 			doGenerate(input, casted, context);
@@ -153,16 +135,15 @@ public class ExtraLanguageGenerator implements IGenerator, IGenerator2 {
 
 	@Override
 	public void doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		final ExtraGeneratorContext extraContext = getExtraGeneratorContext(context);
 		final IGenerator2 mainGenerator = getMainGenerator();
 		if (mainGenerator != null) {
-			mainGenerator.doGenerate(input, fsa, extraContext.getDelegate());
+			mainGenerator.doGenerate(input, fsa, context);
 		}
-		final Iterable<IGenerator2> generators = extraContext.getExtraGenerators();
+		final Iterable<IGenerator2> generators = getExtraGeneratorProvider().getGenerators(context, input);
 		if (generators != null) {
 			for (final IGenerator2 generator : generators) {
 				try {
-					generator.doGenerate(input, fsa, extraContext);
+					generator.doGenerate(input, fsa, context);
 				} catch (Throwable exception) {
 					getLogger().log(Level.SEVERE, exception.getLocalizedMessage(), exception);
 				}
@@ -172,16 +153,15 @@ public class ExtraLanguageGenerator implements IGenerator, IGenerator2 {
 
 	@Override
 	public void beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		final ExtraGeneratorContext extraContext = getExtraGeneratorContext(context);
 		final IGenerator2 mainGenerator = getMainGenerator();
 		if (mainGenerator != null) {
-			mainGenerator.beforeGenerate(input, fsa, extraContext.getDelegate());
+			mainGenerator.beforeGenerate(input, fsa, context);
 		}
-		final Iterable<IGenerator2> generators = extraContext.getExtraGenerators();
+		final Iterable<IGenerator2> generators = getExtraGeneratorProvider().getGenerators(context, input);
 		if (generators != null) {
 			for (final IGenerator2 generator : generators) {
 				try {
-					generator.beforeGenerate(input, fsa, extraContext);
+					generator.beforeGenerate(input, fsa, context);
 				} catch (Throwable exception) {
 					getLogger().log(Level.SEVERE, exception.getLocalizedMessage(), exception);
 				}
@@ -191,16 +171,15 @@ public class ExtraLanguageGenerator implements IGenerator, IGenerator2 {
 
 	@Override
 	public void afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		final ExtraGeneratorContext extraContext = getExtraGeneratorContext(context);
 		final IGenerator2 mainGenerator = getMainGenerator();
 		if (mainGenerator != null) {
-			mainGenerator.afterGenerate(input, fsa, extraContext.getDelegate());
+			mainGenerator.afterGenerate(input, fsa, context);
 		}
-		final Iterable<IGenerator2> generators = extraContext.getExtraGenerators();
+		final Iterable<IGenerator2> generators = getExtraGeneratorProvider().getGenerators(context, input);
 		if (generators != null) {
 			for (final IGenerator2 generator : generators) {
 				try {
-					generator.afterGenerate(input, fsa, extraContext);
+					generator.afterGenerate(input, fsa, context);
 				} catch (Throwable exception) {
 					getLogger().log(Level.SEVERE, exception.getLocalizedMessage(), exception);
 				}

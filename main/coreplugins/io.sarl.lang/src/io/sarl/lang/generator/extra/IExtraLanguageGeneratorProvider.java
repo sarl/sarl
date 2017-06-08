@@ -22,6 +22,7 @@
 package io.sarl.lang.generator.extra;
 
 import com.google.inject.ImplementedBy;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IGenerator2;
 import org.eclipse.xtext.generator.IGeneratorContext;
 
@@ -41,8 +42,9 @@ public interface IExtraLanguageGeneratorProvider {
 	/** Replies the generators that should be used for generating the extra language output files.
 	 *
 	 * @param context the generator context.
+	 * @param resource the resource.
 	 * @return the list of the generators.
 	 */
-	Iterable<IGenerator2> getGenerators(IGeneratorContext context);
+	Iterable<IGenerator2> getGenerators(IGeneratorContext context, Resource resource);
 
 }

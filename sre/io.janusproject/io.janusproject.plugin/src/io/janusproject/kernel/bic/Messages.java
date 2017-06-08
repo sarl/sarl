@@ -32,7 +32,7 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.janusproject.kernel.bic.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 	public static String ExternalContextAccessSkill_0;
 	public static String ExternalContextAccessSkill_1;
 	public static String InternalEventBusSkill_0;

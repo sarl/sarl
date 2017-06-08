@@ -34,6 +34,7 @@ Export-Package: io.sarl.lang,
  io.sarl.lang.documentation,
  io.sarl.lang.formatting2,
  io.sarl.lang.generator,
+ io.sarl.lang.generator.extra,
  io.sarl.lang.jvmmodel,
  io.sarl.lang.parser,
  io.sarl.lang.parser.antlr,
@@ -46,5 +47,6 @@ Export-Package: io.sarl.lang,
  io.sarl.lang.services,
  io.sarl.lang.typesystem,
  io.sarl.lang.util,
- io.sarl.lang.validation
+ io.sarl.lang.validation,
+ io.sarl.lang.validation.extra
 Import-Package: org.apache.log4j

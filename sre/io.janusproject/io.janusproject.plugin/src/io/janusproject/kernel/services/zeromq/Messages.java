@@ -31,7 +31,7 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.janusproject.kernel.services.zeromq.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 	public static String ZeroMQNetworkService_0;
 	public static String ZeroMQNetworkService_1;
 	public static String ZeroMQNetworkService_10;

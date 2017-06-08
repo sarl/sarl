@@ -2246,7 +2246,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkBreakKeywordUse(SarlBreakExpression expression) {
-		final EObject container = Utils.getFirstContainerNotOfType(expression,
+		final EObject container = Utils.getFirstContainerForPredicate(expression,
 				(it) -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
 				|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression);
 		if (container instanceof XExpression) {

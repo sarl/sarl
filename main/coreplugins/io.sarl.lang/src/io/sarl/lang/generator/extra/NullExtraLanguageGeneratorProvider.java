@@ -23,10 +23,9 @@ package io.sarl.lang.generator.extra;
 
 import java.util.Collections;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IGenerator2;
 import org.eclipse.xtext.generator.IGeneratorContext;
-
-import io.sarl.lang.generator.extra.python3.Python3Generator;
 
 /** Implementation of the provider of the extra language generators that replies no generator.
  *
@@ -38,11 +37,9 @@ import io.sarl.lang.generator.extra.python3.Python3Generator;
  */
 public class NullExtraLanguageGeneratorProvider implements IExtraLanguageGeneratorProvider {
 
-	private final Python3Generator generator = new Python3Generator();
-
 	@Override
-	public Iterable<IGenerator2> getGenerators(IGeneratorContext context) {
-		return Collections.singletonList(this.generator);
+	public Iterable<IGenerator2> getGenerators(IGeneratorContext context, Resource resource) {
+		return Collections.emptyList();
 	}
 
 }

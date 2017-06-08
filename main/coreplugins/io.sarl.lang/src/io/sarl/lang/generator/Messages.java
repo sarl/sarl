@@ -33,7 +33,7 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public final class Messages extends NLS {
 
-	private static final String BUNDLE_NAME = "io.sarl.lang.generator.messages";
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages";
 
 	public static String GeneratorConfigProvider2_0;
 

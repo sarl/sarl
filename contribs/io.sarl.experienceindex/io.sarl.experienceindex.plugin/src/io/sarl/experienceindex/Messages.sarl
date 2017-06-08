@@ -34,7 +34,7 @@ import org.eclipse.osgi.util.NLS
 final class Messages extends NLS {
 
 	private static val BUNDLE_NAME = {
-		val name = "io.sarl.experienceindex.messages"
+		val name = typeof(Messages).getPackage.name + ".messages"
 		// initialize resource bundle
 		NLS.initializeMessages(name, typeof(Messages))
 		name
