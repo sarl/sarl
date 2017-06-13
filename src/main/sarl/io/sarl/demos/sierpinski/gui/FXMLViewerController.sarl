@@ -20,8 +20,14 @@ import io.sarl.demos.sierpinski.objects.Vector2D
 import io.sarl.lang.core.Address
 import io.sarl.demos.sierpinski.events.Exit
 
+/*
+ * Controller of the GUI
+ */
 class FXMLViewerController implements EventListener {
 	
+	/*
+	 * Inner class used to launch janus kernel and first Fractal agent
+	 */
 	static class Launcher {
 		static def main(screen: Square, controller: FXMLViewerController){
 			Boot::offline = true
@@ -40,6 +46,9 @@ class FXMLViewerController implements EventListener {
 	@FXML private var drawZone: Canvas
 	@FXML private var multiplyButton: Button
 	
+	/*
+	 * Exit janus kernel by sending kill signal to agents
+	 */
 	@FXML public def exitApplication(){
 		if (setuped){
 			var e = new Exit()
@@ -49,6 +58,9 @@ class FXMLViewerController implements EventListener {
 		}
 	}
 	
+	/*
+	 * Emit a multiply signal
+	 */
 	@FXML protected def actionMultiply() {
 		if (!setuped){
 			Launcher.main(
@@ -62,10 +74,16 @@ class FXMLViewerController implements EventListener {
 		this.ispace.emit(m)
 	}
 	
+	/*
+	 * Get position object
+	 */
 	public def getPositions(){
 		return this.positions
 	}
 	
+	/*
+	 * Draw fractals on canvas
+	 */
 	private def draw(){
 		var gc: GraphicsContext = drawZone.graphicsContext2D
 		var wait: PauseTransition = new PauseTransition(Duration.seconds(0.03))
@@ -87,16 +105,25 @@ class FXMLViewerController implements EventListener {
 		wait.play
 	}
 	
+	/*
+	 * Allow to first agent to register gui on a space
+	 */
 	public def setGUISpace(ispace: OpenEventSpace){
 		this.ispace = ispace
 		this.ispace.register(this)
 	}
 	
+	/*
+	 * Get object ID on the space
+	 */
 	@Override
 	public def getID(): UUID {
 		return this.id
 	}
 	
+	/*
+	 * Needed for EventListner implementation
+	 */
 	@Override
 	public def receiveEvent(ievent: Event){
 		

@@ -1,5 +1,8 @@
 package io.sarl.demos.sierpinski.objects
 
+/*
+ * Triangle object created by Fractal
+ */
 class Triangle {
 	private var bottomLeft: Vector2D
 	private var bottomRight: Vector2D

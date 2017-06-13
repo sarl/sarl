@@ -4,6 +4,10 @@ import java.util.List
 import java.util.ArrayList
 import java.util.Collections
 
+/*
+ * Object referencing every Fractal position
+ * Used by the GUI for printing in canvas
+ */
 public class Positions {
 	private var frac: List<Triangle>
 	

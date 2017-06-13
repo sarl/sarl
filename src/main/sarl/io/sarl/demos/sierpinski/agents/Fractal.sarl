@@ -21,6 +21,11 @@ import io.sarl.core.Logging
 import io.sarl.util.OpenEventSpace
 import io.sarl.demos.sierpinski.events.Exit
 
+/*
+ * Fractal agent
+ * Can communicate with the GUI if not contained in an other agent
+ * Contains other Fractal agent in its inner context
+ */
 agent Fractal {
 	uses InnerContextAccess, Lifecycle, DefaultContextInteractions, Behaviors
 	uses Logging
@@ -31,10 +36,14 @@ agent Fractal {
 	var positions: Positions
 	var guiSpace: OpenEventSpace
 
+	/*
+	 * Initialization step
+	 */
 	on Initialize {
 		if (occurrence.parameters.size >= 2){
 			screenSurface = occurrence.parameters.get(0) as Square
 			positions = occurrence.parameters.get(1) as Positions
+			// Detect if created by the GUI or not
 			if (occurrence.parameters.size.equals(3)){
 				var ctrl = occurrence.parameters.get(2) as FXMLViewerController
 				guiSpace =  defaultContext.createSpace(OpenEventSpaceSpecification, UUID.randomUUID)
@@ -49,6 +58,9 @@ agent Fractal {
 		this.generatePoints
 	}
 	
+	/*
+	 * Generate triangle points
+	 */
 	def generatePoints(){
 		triangle = new Triangle(
 			screenSurface.bottomLeft,
@@ -59,6 +71,9 @@ agent Fractal {
 		info("Parent : " + parentID)
 	}
 	
+	/*
+	 * Multiply itself and create child Fractal
+	 */
 	def multiplication(){
 		var screen1 = new Square(
 			triangle.bottomLeft,
@@ -78,50 +93,83 @@ agent Fractal {
 		spawnInContext(Fractal, innerContext, screen3, positions)
 	}
 	
+	/*
+	 * Create and emit Multiply signal
+	 */
 	def emitMultiply(){
 		var m = new Multiply
 		m.source = innerContext.defaultSpace.getAddress(ID)
 		innerContext.defaultSpace.emit(m)
 	}
 	
+	/*
+	 * Create and emit Exit signal
+	 */
 	def emitExit(){
 		var e = new Exit
 		e.source = innerContext.defaultSpace.getAddress(ID);
 		innerContext.defaultSpace.emit(e)
 	}
 	
+	/*
+	 * Multiply itself if signal comes from the GUI and have no member agent
+	 */
 	on Multiply[guiSpace !== null && occurrence.source.spaceId == guiSpace.spaceID && !hasMemberAgent]{
 		this.multiplication
 	}
 
+	/*
+	 * Transmit GUI emit signal if connected to GUI and have member agent
+	 */
 	on Multiply [guiSpace !== null && occurrence.source.spaceId == guiSpace.spaceID && hasMemberAgent] {
 		this.emitMultiply
 	}
 
+	/*
+	 * Multiply itself if not connected to GUI and have no member agent
+	 */
 	on Multiply[occurrence.isInDefaultSpace && !hasMemberAgent] {
 		this.multiplication
 	}
 	
+	/*
+	 * Emit multiply signal in inner context if not connected to GUI and have member agents
+	 */
 	on Multiply[occurrence.isInDefaultSpace && hasMemberAgent] {
 		this.emitMultiply
 	}
 	
+	/*
+	 * Kill itself if have no member agent and is connected to the GUI
+	 */
 	on Exit[guiSpace !== null && occurrence.source.spaceId == guiSpace.spaceID && !hasMemberAgent]{
 		killMe;
 	}
 	
+	/*
+	 * Transmit a new Exit signal if have member agent and is connected to the GUI
+	 */
 	on Exit[guiSpace !== null && occurrence.source.spaceId == guiSpace.spaceID && hasMemberAgent]{
 		this.emitExit
 	}
 	
+	/*
+	 * Kill itself if have no member agent and is not connected to the GUI
+	 */
 	on Exit[occurrence.isInDefaultSpace && !hasMemberAgent]{
 		killMe
 	}
 	
+	/*
+	 * Emit a new Exit signal in inner context if have member agent and is not connected to the GUI
+	 */
 	on Exit[occurrence.isInDefaultSpace && hasMemberAgent]{
 		this.emitExit
 	}
 	
+	/*
+	 * Kill itself when all member agent are killed
+	 */
 	on MemberLeft[!hasMemberAgent]{
 		killMe
 	}

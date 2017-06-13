@@ -1,5 +1,9 @@
 package io.sarl.demos.sierpinski.objects
 
+/*
+ * Simple 2D vector
+ * Contains x and y position
+ */
 public class Vector2D {
 	private var y: Double
 	private var x: Double

@@ -10,6 +10,9 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
 
+/*
+ * Sierpinski fractal demo
+ */
 class FractalesFXApplications extends Application {
 	private var loader : FXMLLoader
 

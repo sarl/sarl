@@ -1,5 +1,8 @@
 package io.sarl.demos.sierpinski.objects
 
+/*
+ * Square object used to simulate a screen to print Triangle on
+ */
 public class Square {
 	private var bottomLeft : Vector2D
 	private var topLeft : Vector2D
