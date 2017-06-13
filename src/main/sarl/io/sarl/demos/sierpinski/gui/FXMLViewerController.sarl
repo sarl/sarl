@@ -7,7 +7,6 @@ import javafx.fxml.FXML
 import javafx.scene.canvas.Canvas
 import javafx.scene.control.Button
 import io.sarl.lang.core.Event
-import javafx.^event.ActionEvent
 import io.sarl.demos.sierpinski.agents.Fractal
 import io.janusproject.Boot
 import io.sarl.demos.sierpinski.objects.Square
@@ -50,18 +49,14 @@ class FXMLViewerController implements EventListener {
 		}
 	}
 	
-	@FXML protected def actionSetup() {
+	@FXML protected def actionMultiply() {
 		if (!setuped){
-			multiplyButton.setDisable(false)
 			Launcher.main(
 				new Square(new Vector2D(0.0, 0.0),
 					600.0
 				), this )
 			setuped = true
 		}
-	}
-	
-	@FXML protected def actionMultiply() {
 		var m = new Multiply
 		m.source = new Address(ispace.spaceID, id)
 		this.ispace.emit(m)
