@@ -55,11 +55,15 @@ import io.sarl.pythongenerator.generator.PyInitializers;
  */
 public class PyValidator extends AbstractExtraLanguageValidator {
 
+	/** Error handler for the type conversions.
+	 */
 	private final Procedure3<EObject, JvmType, String> typeErrorHandler = (source, invalidType, name) -> {
 		error(MessageFormat.format(Messages.PyValidator_0, name), source);
 	};
 
-	private final Function2<EObject, JvmIdentifiableElement, Boolean> featureErrorHandlerr = (source, element) -> {
+	/** Error handler for the feature conversions.
+	 */
+	private final Function2<EObject, JvmIdentifiableElement, Boolean> featureErrorHandler = (source, element) -> {
 		final String message;
 		if (element instanceof JvmConstructor) {
 			message = MessageFormat.format(Messages.PyValidator_1, this.simpleNameProvider.getSimpleName(element));
@@ -109,7 +113,7 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 	 */
 	@Check
 	public void checkMemberFeatureCallMapping(XMemberFeatureCall featureCall) {
-		doCheckMemberFeatureCallMapping(featureCall, this.typeErrorHandler, this.featureErrorHandlerr);
+		doCheckMemberFeatureCallMapping(featureCall, this.typeErrorHandler, this.featureErrorHandler);
 	}
 
 	/** Check that member feature calls have a convertion mapping.
@@ -118,7 +122,7 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 	 */
 	@Check
 	public void checkMemberFeatureCallMapping(XFeatureCall featureCall) {
-		doCheckMemberFeatureCallMapping(featureCall, this.typeErrorHandler, this.featureErrorHandlerr);
+		doCheckMemberFeatureCallMapping(featureCall, this.typeErrorHandler, this.featureErrorHandler);
 	}
 
 }
