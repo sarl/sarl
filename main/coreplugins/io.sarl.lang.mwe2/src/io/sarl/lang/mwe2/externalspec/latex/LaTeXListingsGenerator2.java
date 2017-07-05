@@ -308,6 +308,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 			it.appendNl("\\colorlet'{'SARLstring'}{'{0}'}'", colors.getStringColor()); //$NON-NLS-1$
 			it.appendNl("\\colorlet'{'SARLkeyword'}{'{0}'}'", colors.getKeywordColor()); //$NON-NLS-1$
 			it.appendNl("\\colorlet'{'SARLidentifier'}{'{0}'}'", colors.getIdentifierColor()); //$NON-NLS-1$
+			it.appendNl("\\colorlet'{'SARLlinenumber'}{'{0}'}'", colors.getLineNumberColor()); //$NON-NLS-1$
 		}
 
 		final String langName = getLanguageSimpleName().toUpperCase();
@@ -385,6 +386,8 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		it.append("   title=\\lstname, % show the filename of files included with "); //$NON-NLS-1$
 		it.appendNl("\\lstinputlisting; also try caption instead of title"); //$NON-NLS-1$
 		it.appendNl("   frameround=fttt, % If framed, use this rounded corner style"); //$NON-NLS-1$
+		it.appendNl("   xleftmargin=20pt,"); //$NON-NLS-1$
+		it.appendNl("   numberstyle=\\color{SARLlinenumber}\\tiny,"); //$NON-NLS-1$
 		it.appendNl("}"); //$NON-NLS-1$
 
 		String inlineBasicStyle = this.inlineBasicStyle;

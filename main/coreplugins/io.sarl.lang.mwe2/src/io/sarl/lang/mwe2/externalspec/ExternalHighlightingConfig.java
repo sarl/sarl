@@ -382,6 +382,8 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 
 		private String identifierColor;
 
+		private String lineNumberColor;
+
 		/** Set a color.
 		 *
 		 * @param color the color.
@@ -474,6 +476,25 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 				return DEFAULT_COLOR;
 			}
 			return this.identifierColor;
+		}
+
+		/** Set the color of the line numbers.
+		 *
+		 * @param name the name of the color to use.
+		 */
+		public void setLineNumberColor(String name) {
+			this.lineNumberColor = name;
+		}
+
+		/** Replies the color of the line numbers.
+		 *
+		 * @return the name of the color to use.
+		 */
+		public String getLineNumberColor() {
+			if (Strings.isEmpty(this.lineNumberColor)) {
+				return DEFAULT_COLOR;
+			}
+			return this.lineNumberColor;
 		}
 
 	}

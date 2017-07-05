@@ -22,7 +22,7 @@
 % limitations under the License.
 %
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesPackage{sarl-colorized-listing}[2017/05/30]
+\ProvidesPackage{sarl-colorized-listing}[2017/07/05]
 \newif\ifusesarlcolors\usesarlcolorstrue
 \DeclareOption{sarlcolors}{\global\usesarlcolorstrue}
 \DeclareOption{nosarlcolors}{\global\usesarlcolorsfalse}
@@ -44,6 +44,7 @@
 \colorlet{SARLstring}{SARLmagenta}
 \colorlet{SARLkeyword}{SARLblue}
 \colorlet{SARLidentifier}{SARLdarkgray}
+\colorlet{SARLlinenumber}{SARLblue}
 \lstdefinelanguage{SARL}{%
    morecomment=[l]{//},
    morecomment=[s]{/*}{*/},
@@ -75,6 +76,8 @@
    tabsize=2, % sets default tabsize to 2 spaces
    title=\lstname, % show the filename of files included with \lstinputlisting; also try caption instead of title
    frameround=fttt, % If framed, use this rounded corner style
+   xleftmargin=20pt,
+   numberstyle=\color{SARLlinenumber}\tiny,
 }
 \newcommand{\code}[1]{\ifmmode\text{\lstinline[basicstyle=\normalcolor]{#1}}\else\lstinline[basicstyle=\normalcolor]{#1}\fi}
 \newcommand{\sarl}{\mbox{SARL}\xspace}

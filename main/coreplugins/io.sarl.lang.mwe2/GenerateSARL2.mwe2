@@ -290,6 +290,7 @@ Workflow {
     				stringColor = "SARLmagenta"
     				keywordColor = "SARLblue"
     				identifierColor = "SARLdarkgray"
+    				lineNumberColor = "SARLblue"
     			}
 			}
 		}

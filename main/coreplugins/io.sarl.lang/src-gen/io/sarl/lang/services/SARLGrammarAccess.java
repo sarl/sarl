@@ -304,7 +304,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cMembersAnnotationFieldParserRuleCall_2_10_5_0 = (RuleCall)cMembersAssignment_2_10_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_2_10_6 = (Keyword)cGroup_2_10.eContents().get(6);
 		
-		//Type xtend::XtendTypeDeclaration:
+		//@ Override Type xtend::XtendTypeDeclaration:
 		//	{xtend::XtendTypeDeclaration} annotations+=XAnnotation* ({SarlEvent.annotationInfo=current} modifiers+=CommonModifier*
 		//	'event' name=ValidID ('extends' extends=JvmParameterizedTypeReference)? ('{' members+=EventMember* '}')?
 		//	| {SarlCapacity.annotationInfo=current} modifiers+=CommonModifier*
@@ -3211,8 +3211,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cMembersAnnotationFieldParserRuleCall_2_6_5_0 = (RuleCall)cMembersAssignment_2_6_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_2_6_6 = (Keyword)cGroup_2_6.eContents().get(6);
 		
-		//// Members for the object-oriented types
-		//Member xtend::XtendMember:
+		//@ Override Member xtend::XtendMember:
 		//	{xtend::XtendMember} annotations+=XAnnotation* ({SarlField.annotationInfo=current} modifiers+=CommonModifier*
 		//	(modifiers+='extension' (modifiers+=FieldModifier | modifiers+=CommonModifier)*
 		//	name=ValidID ':' type=JvmTypeReference
@@ -4184,7 +4183,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cMembersAnnotationFieldParserRuleCall_2_4_5_0 = (RuleCall)cMembersAssignment_2_4_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_2_4_6 = (Keyword)cGroup_2_4.eContents().get(6);
 		
-		//AnnotationField xtend::XtendMember:
+		//@ Override AnnotationField xtend::XtendMember:
 		//	{xtend::XtendMember} annotations+=XAnnotation* ({SarlField.annotationInfo=current} modifiers+=CommonModifier*
 		//	modifiers+=FieldModifier
 		//	modifiers+=CommonModifier*
@@ -4599,7 +4598,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cDefaultValueAssignment_6_1_1 = (Assignment)cGroup_6_1.eContents().get(1);
 		private final RuleCall cDefaultValueXExpressionParserRuleCall_6_1_1_0 = (RuleCall)cDefaultValueAssignment_6_1_1.eContents().get(0);
 		
-		//Parameter xtend::XtendParameter:
+		//@ Override Parameter xtend::XtendParameter:
 		//	{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)?
 		//	name=ValidID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XExpression)?;
 		@Override public ParserRule getRule() { return rule; }
@@ -4675,7 +4674,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		
-		//XtendEnumLiteral xtend::XtendEnumLiteral:
+		//@ Override XtendEnumLiteral xtend::XtendEnumLiteral:
 		//	{SarlEnumLiteral} name=ValidID;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -4731,10 +4730,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cXParenthesizedExpressionParserRuleCall_14 = (RuleCall)cAlternatives.eContents().get(14);
 		private final RuleCall cBreakExpressionParserRuleCall_15 = (RuleCall)cAlternatives.eContents().get(15);
 		
-		////-----------------------------------------------
-		//// BELOW THIS POINT, THE RULES FROM XTEXT ARE OVERLOADED
-		//// Variable declaration according to the SARL syntax (not the Xtext/Xtend)
-		//XPrimaryExpression xbase::XExpression:
+		//@ Override XPrimaryExpression xbase::XExpression:
 		//	XConstructorCall | XBlockExpression | XSwitchExpression | XSynchronizedExpression | XFeatureCall | XLiteral |
 		//	XIfExpression | XForLoopExpression | XBasicForLoopExpression | XWhileExpression | XDoWhileExpression |
 		//	XThrowExpression | XReturnExpression | XTryCatchFinallyExpression | XParenthesizedExpression | BreakExpression;
@@ -4826,7 +4822,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cRightAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cRightXExpressionParserRuleCall_3_1_0 = (RuleCall)cRightAssignment_3_1.eContents().get(0);
 		
-		//XVariableDeclaration xbase::XExpression:
+		//@ Override XVariableDeclaration xbase::XExpression:
 		//	=> ({xtend::XtendVariableDeclaration} ((writeable?='var' | 'val') extension?='extension'?
 		//	| extension?='extension' (writeable?='var' | 'val'))) name=ValidID (':' type=JvmTypeReference)? ('='
 		//	right=XExpression)?;
@@ -4934,8 +4930,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cParameterTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
 		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_2_1_0 = (RuleCall)cParameterTypeAssignment_2_1.eContents().get(0);
 		
-		//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
-		//JvmFormalParameter xtend::XtendFormalParameter:
+		//@ Override JvmFormalParameter xtend::XtendFormalParameter:
 		//	extension?='extension'? name=ValidID (=> ':' parameterType=JvmTypeReference)?;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -4977,8 +4972,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cParameterTypeAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cParameterTypeJvmTypeReferenceParserRuleCall_3_0 = (RuleCall)cParameterTypeAssignment_3.eContents().get(0);
 		
-		//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
-		//FullJvmFormalParameter xtend::XtendFormalParameter:
+		//@ Override FullJvmFormalParameter xtend::XtendFormalParameter:
 		//	extension?='extension'? name=ValidID ':' parameterType=JvmTypeReference;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -5025,8 +5019,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cEachExpressionXExpressionParserRuleCall_3_0_0 = (RuleCall)cEachExpressionAssignment_3_0.eContents().get(0);
 		private final Keyword cSemicolonKeyword_3_1 = (Keyword)cAlternatives_3.eContents().get(1);
 		
-		//// The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)
-		//XForLoopExpression xbase::XExpression:
+		//@ Override XForLoopExpression xbase::XExpression:
 		//	=> ({xbase::XForLoopExpression}
 		//	'for' '(' declaredParam=SarlXLoopFormalParameter ':') forExpression=XExpression ')' (eachExpression=XExpression |
 		//	';');
@@ -5164,8 +5157,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cDefaultXExpressionParserRuleCall_5_2_0 = (RuleCall)cDefaultAssignment_5_2.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
-		//// The type of the switch's variable is following the SARL syntax (not the Xtext/Xtend)
-		//XSwitchExpression xbase::XExpression:
+		//@ Override XSwitchExpression xbase::XExpression:
 		//	{xbase::XSwitchExpression}
 		//	'switch' (=> ('(' declaredParam=JvmFormalParameter '=') switch=XExpression ')'
 		//	| => (declaredParam=JvmFormalParameter '=')? switch=XExpression) '{'
@@ -5380,7 +5372,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getSarlScriptAccess().getRule();
 	}
 	
-	//Type xtend::XtendTypeDeclaration:
+	//@ Override Type xtend::XtendTypeDeclaration:
 	//	{xtend::XtendTypeDeclaration} annotations+=XAnnotation* ({SarlEvent.annotationInfo=current} modifiers+=CommonModifier*
 	//	'event' name=ValidID ('extends' extends=JvmParameterizedTypeReference)? ('{' members+=EventMember* '}')?
 	//	| {SarlCapacity.annotationInfo=current} modifiers+=CommonModifier*
@@ -5515,8 +5507,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getAOPMemberAccess().getRule();
 	}
 	
-	//// Members for the object-oriented types
-	//Member xtend::XtendMember:
+	//@ Override Member xtend::XtendMember:
 	//	{xtend::XtendMember} annotations+=XAnnotation* ({SarlField.annotationInfo=current} modifiers+=CommonModifier*
 	//	(modifiers+='extension' (modifiers+=FieldModifier | modifiers+=CommonModifier)*
 	//	name=ValidID ':' type=JvmTypeReference
@@ -5561,7 +5552,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getMemberAccess().getRule();
 	}
 	
-	//AnnotationField xtend::XtendMember:
+	//@ Override AnnotationField xtend::XtendMember:
 	//	{xtend::XtendMember} annotations+=XAnnotation* ({SarlField.annotationInfo=current} modifiers+=CommonModifier*
 	//	modifiers+=FieldModifier
 	//	modifiers+=CommonModifier*
@@ -5589,7 +5580,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getAnnotationFieldAccess().getRule();
 	}
 	
-	//Parameter xtend::XtendParameter:
+	//@ Override Parameter xtend::XtendParameter:
 	//	{SarlFormalParameter} annotations+=XAnnotation* (extension?='extension' annotations+=XAnnotation*)?
 	//	name=ValidID ':' parameterType=JvmTypeReference (varArg?='*' | '=' defaultValue=XExpression)?;
 	public ParameterElements getParameterAccess() {
@@ -5600,7 +5591,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getParameterAccess().getRule();
 	}
 	
-	//XtendEnumLiteral xtend::XtendEnumLiteral:
+	//@ Override XtendEnumLiteral xtend::XtendEnumLiteral:
 	//	{SarlEnumLiteral} name=ValidID;
 	public XtendEnumLiteralElements getXtendEnumLiteralAccess() {
 		return pXtendEnumLiteral;
@@ -5621,10 +5612,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getBreakExpressionAccess().getRule();
 	}
 	
-	////-----------------------------------------------
-	//// BELOW THIS POINT, THE RULES FROM XTEXT ARE OVERLOADED
-	//// Variable declaration according to the SARL syntax (not the Xtext/Xtend)
-	//XPrimaryExpression xbase::XExpression:
+	//@ Override XPrimaryExpression xbase::XExpression:
 	//	XConstructorCall | XBlockExpression | XSwitchExpression | XSynchronizedExpression | XFeatureCall | XLiteral |
 	//	XIfExpression | XForLoopExpression | XBasicForLoopExpression | XWhileExpression | XDoWhileExpression |
 	//	XThrowExpression | XReturnExpression | XTryCatchFinallyExpression | XParenthesizedExpression | BreakExpression;
@@ -5636,7 +5624,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getXPrimaryExpressionAccess().getRule();
 	}
 	
-	//XVariableDeclaration xbase::XExpression:
+	//@ Override XVariableDeclaration xbase::XExpression:
 	//	=> ({xtend::XtendVariableDeclaration} ((writeable?='var' | 'val') extension?='extension'?
 	//	| extension?='extension' (writeable?='var' | 'val'))) name=ValidID (':' type=JvmTypeReference)? ('='
 	//	right=XExpression)?;
@@ -5648,8 +5636,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getXVariableDeclarationAccess().getRule();
 	}
 	
-	//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
-	//JvmFormalParameter xtend::XtendFormalParameter:
+	//@ Override JvmFormalParameter xtend::XtendFormalParameter:
 	//	extension?='extension'? name=ValidID (=> ':' parameterType=JvmTypeReference)?;
 	public JvmFormalParameterElements getJvmFormalParameterAccess() {
 		return pJvmFormalParameter;
@@ -5659,8 +5646,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getJvmFormalParameterAccess().getRule();
 	}
 	
-	//// Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
-	//FullJvmFormalParameter xtend::XtendFormalParameter:
+	//@ Override FullJvmFormalParameter xtend::XtendFormalParameter:
 	//	extension?='extension'? name=ValidID ':' parameterType=JvmTypeReference;
 	public FullJvmFormalParameterElements getFullJvmFormalParameterAccess() {
 		return pFullJvmFormalParameter;
@@ -5670,8 +5656,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getFullJvmFormalParameterAccess().getRule();
 	}
 	
-	//// The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)
-	//XForLoopExpression xbase::XExpression:
+	//@ Override XForLoopExpression xbase::XExpression:
 	//	=> ({xbase::XForLoopExpression}
 	//	'for' '(' declaredParam=SarlXLoopFormalParameter ':') forExpression=XExpression ')' (eachExpression=XExpression |
 	//	';');
@@ -5695,8 +5680,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getSarlXLoopFormalParameterAccess().getRule();
 	}
 	
-	//// The type of the switch's variable is following the SARL syntax (not the Xtext/Xtend)
-	//XSwitchExpression xbase::XExpression:
+	//@ Override XSwitchExpression xbase::XExpression:
 	//	{xbase::XSwitchExpression}
 	//	'switch' (=> ('(' declaredParam=JvmFormalParameter '=') switch=XExpression ')'
 	//	| => (declaredParam=JvmFormalParameter '=')? switch=XExpression) '{'
