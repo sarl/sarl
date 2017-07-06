@@ -44,8 +44,8 @@
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module -->
 		<tycho.version>0.26.0</tycho.version>
-		<!--  -->
-		<efxclipse.version>2.4.0</efxclipse.version>
+		<!-- Java FX version (used for accessing the jfx repository) -->
+		<efxclipse.version>3.0.0</efxclipse.version>
 
 		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
