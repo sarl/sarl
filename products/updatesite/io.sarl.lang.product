@@ -266,8 +266,8 @@
       <feature id="io.sarl.pythongenerator.feature" version="0.6.0.qualifier"/>
       <feature id="io.sarl.examples.feature" version="0.6.0.qualifier"/>
       <feature id="io.sarl.experienceindex.feature" version="0.6.0.qualifier"/>
-      <feature id="org.eclipse.fx.ide.basic.feature" version="2.4.0.201605112122"/>
-      <feature id="org.eclipse.fx.runtime.min.feature" version="2.4.0.201605100504"/>
+      <feature id="org.eclipse.fx.ide.basic.feature" version="3.0.0.201705220750"/>
+      <feature id="org.eclipse.fx.runtime.min.feature" version="3.0.0.201705220748"/>
       <feature id="io.sarl.lib.source" version="0.6.0.qualifier"/>
       <feature id="io.janusproject.feature.source" version="0.6.0.qualifier"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>

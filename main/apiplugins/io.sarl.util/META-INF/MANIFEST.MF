@@ -9,5 +9,5 @@ Export-Package: io.sarl.eventdispatching,
  io.sarl.sarlspecification,
  io.sarl.util
 Require-Bundle: io.sarl.lang.core;bundle-version="0.6.0";visibility:=reexport,
- org.eclipse.osgi;bundle-version="3.11.3"
+ org.eclipse.osgi;bundle-version="3.12.0"
 

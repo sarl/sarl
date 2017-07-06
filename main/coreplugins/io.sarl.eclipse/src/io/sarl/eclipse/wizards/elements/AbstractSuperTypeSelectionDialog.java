@@ -37,12 +37,12 @@ import org.eclipse.jdt.core.search.TypeNameMatch;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.dialogs.OpenTypeSelectionDialog;
 import org.eclipse.jdt.internal.ui.dialogs.StatusInfo;
-import org.eclipse.jdt.internal.ui.viewsupport.BasicElementLabels;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.osgi.util.TextProcessor;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -59,6 +59,8 @@ import io.sarl.eclipse.util.Utilities;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractSuperTypeSelectionDialog<T extends NewTypeWizardPage> extends OpenTypeSelectionDialog {
+
+	private static final String JAVA_ELEMENT_DELIMITERS = TextProcessor.getDefaultDelimiters() + "<>(),?{} "; //$NON-NLS-1$
 
 	private static final int ADD_ID = IDialogConstants.CLIENT_ID + 1;
 
@@ -200,10 +202,10 @@ public abstract class AbstractSuperTypeSelectionDialog<T extends NewTypeWizardPa
 
 				if (addTypeToWizardPage(this.typeWizardPage, qualifiedName)) {
 					message = MessageFormat.format(Messages.AbstractSuperTypeSelectionDialog_2,
-							BasicElementLabels.getJavaElementName(qualifiedName));
+							TextProcessor.process(qualifiedName, JAVA_ELEMENT_DELIMITERS));
 				} else {
 					message = MessageFormat.format(Messages.AbstractSuperTypeSelectionDialog_3,
-							BasicElementLabels.getJavaElementName(qualifiedName));
+							TextProcessor.process(qualifiedName, JAVA_ELEMENT_DELIMITERS));
 				}
 				updateStatus(new StatusInfo(IStatus.INFO, message));
 			}

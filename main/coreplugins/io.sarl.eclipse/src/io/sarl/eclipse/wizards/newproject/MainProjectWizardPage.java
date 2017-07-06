@@ -56,7 +56,6 @@ import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart;
 import org.eclipse.jdt.internal.ui.preferences.CompliancePreferencePage;
 import org.eclipse.jdt.internal.ui.preferences.PropertyAndPreferencePage;
-import org.eclipse.jdt.internal.ui.viewsupport.BasicElementLabels;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.internal.ui.wizards.buildpaths.BuildPathSupport;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
@@ -86,6 +85,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.TextProcessor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -1258,8 +1258,8 @@ public class MainProjectWizardPage extends WizardPage {
 				} else {
 					this.fHintText.setText(MessageFormat.format(
 							NewWizardMessages.NewJavaProjectWizardPageOne_DetectGroup_differendWorkspaceCC_message,
-							BasicElementLabels.getVersionName(defaultCompliance),
-							BasicElementLabels.getVersionName(selectedCompliance)));
+							TextProcessor.process(defaultCompliance),
+							TextProcessor.process(selectedCompliance)));
 					this.fHintText.setVisible(true);
 					this.icon.setImage(Dialog.getImage(Dialog.DLG_IMG_MESSAGE_INFO));
 					this.icon.setVisible(true);
@@ -1281,8 +1281,8 @@ public class MainProjectWizardPage extends WizardPage {
 					|| JavaModelUtil.is50OrHigher(jvmCompliance))) {
 				this.fHintText.setText(MessageFormat.format(
 						NewWizardMessages.NewJavaProjectWizardPageOne_DetectGroup_jre_message,
-						BasicElementLabels.getVersionName(selectedCompliance),
-						BasicElementLabels.getVersionName(jvmCompliance)));
+						TextProcessor.process(selectedCompliance),
+						TextProcessor.process(jvmCompliance)));
 				this.fHintText.setVisible(true);
 				this.icon.setImage(Dialog.getImage(Dialog.DLG_IMG_MESSAGE_WARNING));
 				this.icon.setVisible(true);
@@ -1447,7 +1447,7 @@ public class MainProjectWizardPage extends WizardPage {
 							null,
 							MessageFormat.format(
 									NewWizardMessages.NewJavaProjectWizardPageOne_Message_invalidProjectNameForWorkspaceRoot,
-									BasicElementLabels.getResourceName(existingName)));
+									TextProcessor.process(existingName)));
 				}
 			}
 			return handle;
