@@ -94,6 +94,21 @@
 					<remoteLinkValidation>false</remoteLinkValidation>
 
 					<!--  <testSourceDirectory>src/main/generated-sources</testSourceDirectory>  -->
+
+					<!--  Default values are provided in order to avoid any execution exception when the initialization
+					      Groovy script is not run, e.g. in Eclipse IDE -->
+					<propertyDefaultValues>
+						<sarl.specification.release_version>0.0</sarl.specification.release_version>
+						<sarl.release_version>0.0.0</sarl.release_version>
+						<sarl.release_version.osgi>0.0.0.qualifier</sarl.release_version.osgi>
+						<sarl.release_version.maven>0.0.0-SNAPSHOT</sarl.release_version.maven>
+						<sarl.specification.release_date>0000-00-00</sarl.specification.release_date>
+						<sarl.specification.release_status>Draft Release</sarl.specification.release_status>
+						<sarl.is_stable_version>false</sarl.is_stable_version>
+						<janus.version>0.0.0-SNAPSHOT</janus.version>
+						<janus.release_version>0.0.0.0</janus.release_version>
+						<janus.version2>0.0.0.0-SNAPSHOT</janus.version2>
+ 					</propertyDefaultValues>
 				</configuration>
 			</plugin>
 		</plugins>
