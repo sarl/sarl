@@ -850,6 +850,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 	 * @param forAppender <code>true</code> if the generation is for the ISourceAppender.
 	 * @return the top elements.
 	 */
+	@SuppressWarnings("unlikely-arg-type")
 	protected List<TopElementDescription> generateTopElements(boolean forInterface, boolean forAppender) {
 		final Set<String> memberElements = determineMemberElements();
 		final Collection<EObject> topElementContainers = new ArrayList<>();

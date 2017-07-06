@@ -37,7 +37,9 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -111,7 +113,7 @@ public class SarlDocumentationParser {
 
 	private String dynamicNameExtractionPattern;
 
-	private Collection<Properties> additionalPropertyProviders = new ArrayList<>();
+	private Deque<Properties> additionalPropertyProvidersByPriority = new LinkedList<>();
 
 	private String lineSeparator;
 
@@ -254,18 +256,32 @@ public class SarlDocumentationParser {
 
 	/** Add a provider of properties that could be used for finding replacement values.
 	 *
+	 * <p>The given provider will be consider prior to the already declared providers.
+	 *
 	 * @param properties the property provider.
 	 */
-	public void addPropertyProvider(Properties properties) {
-		this.additionalPropertyProviders.add(properties);
+	public void addHighPropertyProvider(Properties properties) {
+		this.additionalPropertyProvidersByPriority.addFirst(properties);
+	}
+
+	/** Add a provider of properties that could be used for finding replacement values.
+	 *
+	 * <p>The given provider will be consider after the already declared providers.
+	 *
+	 * @param properties the property provider.
+	 */
+	public void addLowPropertyProvider(Properties properties) {
+		this.additionalPropertyProvidersByPriority.addLast(properties);
 	}
 
 	/** Replies additional providers of properties that could be used for finding replacement values.
 	 *
+	 * <p>The providers are provided from the higher priority to the lower priority.
+	 *
 	 * @return the property providers.
 	 */
-	public Iterable<Properties> getAdditionalPropertyProviders() {
-		return Collections.unmodifiableCollection(this.additionalPropertyProviders);
+	public Iterable<Properties> getPropertyProvidersByPriority() {
+		return Collections.unmodifiableCollection(this.additionalPropertyProvidersByPriority);
 	}
 
 	/** Change the pattern of the tag.
@@ -2853,7 +2869,7 @@ public class SarlDocumentationParser {
 			if (!Strings.isNullOrEmpty(tagName)) {
 				replacement = context.getReplacement(tagName);
 				if (replacement == null) {
-					for (final Properties provider : context.getParser().getAdditionalPropertyProviders()) {
+					for (final Properties provider : context.getParser().getPropertyProvidersByPriority()) {
 						if (provider != null) {
 							final Object obj = provider.getOrDefault(tagName, null);
 							if (obj != null) {

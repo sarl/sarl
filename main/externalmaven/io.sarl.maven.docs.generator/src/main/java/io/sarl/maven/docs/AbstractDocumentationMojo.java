@@ -168,6 +168,12 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 */
 	protected List<String> inferredSourceDirectories;
 
+	/**
+	 * The default values for the properties if they are not provided by any other source.
+	 */
+	@Parameter(required = false)
+	private Properties propertyDefaultValues;
+
 	@Component
 	private ToolchainManager toolchainManager;
 
@@ -369,6 +375,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @throws MojoExecutionException if the parser cannot be created.
 	 * @throws IOException if a classpath entry cannot be found.
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException, IOException {
 		final AbstractMarkerLanguageParser parser;
 		if (isFileExtension(inputFile, MarkdownParser.MARKDOWN_FILE_EXTENSIONS)) {
@@ -383,7 +390,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		if (this.isLineContinuationEnable) {
 			internalParser.setLineContinuation(SarlDocumentationParser.DEFAULT_LINE_CONTINUATION);
 		} else {
-			internalParser.addPropertyProvider(createProjectProperties());
+			internalParser.addLowPropertyProvider(createProjectProperties());
 		}
 
 		final ScriptExecutor scriptExecutor = internalParser.getScriptExecutor();
@@ -409,35 +416,43 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		scriptExecutor.setJavaSourceVersion(version.getQualifier());
 		scriptExecutor.setTempFolder(this.tempDirectory.getAbsoluteFile());
 
-		internalParser.addPropertyProvider(createProjectProperties());
-		internalParser.addPropertyProvider(this.session.getCurrentProject().getProperties());
-		internalParser.addPropertyProvider(this.session.getUserProperties());
-		internalParser.addPropertyProvider(this.session.getSystemProperties());
-		internalParser.addPropertyProvider(createGeneratorProperties());
+		internalParser.addLowPropertyProvider(createProjectProperties());
+		internalParser.addLowPropertyProvider(this.session.getCurrentProject().getProperties());
+		internalParser.addLowPropertyProvider(this.session.getUserProperties());
+		internalParser.addLowPropertyProvider(this.session.getSystemProperties());
+		internalParser.addLowPropertyProvider(createGeneratorProperties());
+		final Properties defaultValues = createDefaultValueProperties();
+		if (defaultValues != null) {
+			internalParser.addLowPropertyProvider(defaultValues);
+		}
 		return parser;
+	}
+
+	private Properties createDefaultValueProperties() {
+		return this.propertyDefaultValues;
 	}
 
 	private Properties createProjectProperties() {
 		final Properties props = new Properties();
 		final MavenProject prj = this.session.getCurrentProject();
-		props.put("project.groupId", prj.getGroupId()); //$NON-NLS-1$
-		props.put("project.artifactId", prj.getArtifactId()); //$NON-NLS-1$
-		props.put("project.basedir", prj.getBasedir()); //$NON-NLS-1$
-		props.put("project.description", prj.getDescription()); //$NON-NLS-1$
-		props.put("project.id", prj.getId()); //$NON-NLS-1$
-		props.put("project.inceptionYear", prj.getInceptionYear()); //$NON-NLS-1$
-		props.put("project.name", prj.getName()); //$NON-NLS-1$
-		props.put("project.version", prj.getVersion()); //$NON-NLS-1$
-		props.put("project.url", prj.getUrl()); //$NON-NLS-1$
-		props.put("project.encoding", this.encoding); //$NON-NLS-1$
+		props.put("project.groupId", Strings.emptyIfNull(prj.getGroupId())); //$NON-NLS-1$
+		props.put("project.artifactId", Strings.emptyIfNull(prj.getArtifactId())); //$NON-NLS-1$
+		props.put("project.basedir", prj.getBasedir() != null ? prj.getBasedir().getAbsolutePath() : ""); //$NON-NLS-1$ //$NON-NLS-2$
+		props.put("project.description", Strings.emptyIfNull(prj.getDescription())); //$NON-NLS-1$
+		props.put("project.id", Strings.emptyIfNull(prj.getId())); //$NON-NLS-1$
+		props.put("project.inceptionYear", Strings.emptyIfNull(prj.getInceptionYear())); //$NON-NLS-1$
+		props.put("project.name", Strings.emptyIfNull(prj.getName())); //$NON-NLS-1$
+		props.put("project.version", Strings.emptyIfNull(prj.getVersion())); //$NON-NLS-1$
+		props.put("project.url", Strings.emptyIfNull(prj.getUrl())); //$NON-NLS-1$
+		props.put("project.encoding", Strings.emptyIfNull(this.encoding)); //$NON-NLS-1$
 		return props;
 	}
 
 	private Properties createGeneratorProperties() {
 		final Properties props = new Properties();
 		final PluginDescriptor descriptor = (PluginDescriptor) getPluginContext().get("pluginDescriptor"); //$NON-NLS-1$
-		props.put("generator.name", descriptor.getArtifactId()); //$NON-NLS-1$
-		props.put("generator.version", descriptor.getVersion()); //$NON-NLS-1$
+		props.put("generator.name", Strings.emptyIfNull(descriptor.getArtifactId())); //$NON-NLS-1$
+		props.put("generator.version", Strings.emptyIfNull(descriptor.getVersion())); //$NON-NLS-1$
 		return props;
 	}
 

@@ -33,10 +33,10 @@ import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -115,7 +115,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	private Boolean isAutobuild;
 
-	private Set<IFileStore> orginalFolders;
+	private Map<String, IFileStore> orginalFolders;
 
 	/**
 	 * Constructor for the {@link NewJavaProjectWizardPageTwo}.
@@ -438,15 +438,15 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private void rememberExisitingFolders(URI projectLocation) {
-		this.orginalFolders = new HashSet<>();
+		this.orginalFolders = new TreeMap<>();
 
 		try {
 			final IFileStore[] children = EFS.getStore(projectLocation).childStores(EFS.NONE, null);
 			for (int i = 0; i < children.length; i++) {
 				final IFileStore child = children[i];
 				final IFileInfo info = child.fetchInfo();
-				if (info.isDirectory() && info.exists() && !this.orginalFolders.contains(child.getName())) {
-					this.orginalFolders.add(child);
+				if (info.isDirectory() && info.exists() && !this.orginalFolders.containsKey(info.getName())) {
+					this.orginalFolders.put(info.getName(), child);
 				}
 			}
 		} catch (CoreException e) {
@@ -455,10 +455,10 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	}
 
 	private void restoreExistingFolders(URI projectLocation) {
-		final Set<IFileStore> foldersToKeep = new HashSet<>(this.orginalFolders);
+		final Map<String, IFileStore> foldersToKeep = new TreeMap<>(this.orginalFolders);
 		// workaround for bug 319054: Eclipse deletes all files when I cancel
 		// a project creation (symlink in project location path)
-		for (final IFileStore originalFileStore : this.orginalFolders) {
+		for (final IFileStore originalFileStore : this.orginalFolders.values()) {
 			try {
 				final File localFile = originalFileStore.toLocalFile(EFS.NONE, null);
 				if (localFile != null) {
@@ -466,7 +466,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 					final IFileStore canonicalFileStore =
 							originalFileStore.getFileSystem().fromLocalFile(canonicalFile);
 					if (!originalFileStore.equals(canonicalFileStore)) {
-						foldersToKeep.add(canonicalFileStore);
+						foldersToKeep.put(canonicalFileStore.fetchInfo().getName(), canonicalFileStore);
 					}
 				}
 			} catch (IOException e) {
@@ -481,13 +481,13 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 			for (int i = 0; i < children.length; i++) {
 				final IFileStore child = children[i];
 				final IFileInfo info = child.fetchInfo();
-				if (info.isDirectory() && info.exists() && !foldersToKeep.contains(child)) {
+				if (info.isDirectory() && info.exists() && !foldersToKeep.containsKey(info.getName())) {
 					child.delete(EFS.NONE, null);
-					this.orginalFolders.remove(child);
+					this.orginalFolders.remove(info.getName());
 				}
 			}
 
-			for (Iterator<IFileStore> iterator = this.orginalFolders.iterator(); iterator.hasNext();) {
+			for (Iterator<IFileStore> iterator = this.orginalFolders.values().iterator(); iterator.hasNext();) {
 				final IFileStore deleted = iterator.next();
 				deleted.mkdir(EFS.NONE, null);
 			}

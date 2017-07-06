@@ -150,7 +150,7 @@ public class Jdt2Ecore {
 		final String fromTypeName = fromType.getFullyQualifiedName();
 		final String memberType = target.getDeclaringType().getFullyQualifiedName();
 		if (Flags.isPrivate(flags)) {
-			return target.getDeclaringType().equals(fromTypeName);
+			return target.getDeclaringType().getFullyQualifiedName().equals(fromTypeName);
 		}
 		if (Flags.isProtected(flags)) {
 			IType t = fromType;
