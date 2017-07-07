@@ -26,6 +26,12 @@ import java.lang.reflect.Method;
 import javax.inject.Singleton;
 
 import com.google.inject.Inject;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.Diagnostician;
@@ -54,6 +60,12 @@ import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
  */
 @Singleton
 public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements ILabelDecorator {
+
+	private static final String START_OFFSET_ATTRIBUTE = "charStart"; //$NON-NLS-1$
+
+	private static final String END_OFFSET_ATTRIBUTE = "charEnd"; //$NON-NLS-1$
+
+	private static final String SEVERITY_ATTRIBUTE = "severity"; //$NON-NLS-1$
 
 	private static final Method GET_NODE_METHOD;
 
@@ -118,6 +130,60 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 		return false;
 	}
 
+	private static int findPlatformSeverity(ICompositeNode node, Resource resource) {
+		try {
+			final String platformString = resource.getURI().toPlatformString(true);
+			final IFile myFile = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromPortableString(platformString));
+			final int nodeStart = node.getOffset();
+			final int nodeEnd = node.getEndOffset();
+			int maxSeverity = IMarker.SEVERITY_INFO - 1;
+			for (final IMarker marker : myFile.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_ZERO)) {
+				final int start = marker.getAttribute(START_OFFSET_ATTRIBUTE, -1);
+				if (start >= 0) {
+					final int end = marker.getAttribute(END_OFFSET_ATTRIBUTE, start);
+					if (end >= nodeStart && nodeEnd >= start) {
+						final int markerSeverity = marker.getAttribute(SEVERITY_ATTRIBUTE, 0);
+						if (markerSeverity == IMarker.SEVERITY_ERROR) {
+							return JavaElementImageDescriptor.ERROR;
+						} else if (markerSeverity > maxSeverity) {
+							maxSeverity = markerSeverity;
+						}
+					}
+				}
+			}
+			switch (maxSeverity) {
+			case IMarker.SEVERITY_WARNING:
+				return JavaElementImageDescriptor.WARNING;
+			case IMarker.SEVERITY_INFO:
+				return JavaElementImageDescriptor.INFO;
+			default:
+				// Error is handled into the loop
+			}
+		} catch (CoreException e) {
+			//
+		}
+		return 0;
+	}
+
+	private static int findXtextSeverity(XtendMember element, ICompositeNode node, Resource resource) {
+		if (hasParserIssue(node, resource.getErrors())) {
+			return JavaElementImageDescriptor.ERROR;
+		}
+		final Diagnostic diagnostic = Diagnostician.INSTANCE.validate(element);
+		final int diagnosticSeverity = diagnostic.getSeverity();
+        if (diagnosticSeverity == Diagnostic.ERROR) {
+        	return JavaElementImageDescriptor.ERROR;
+        }
+        if (diagnosticSeverity == Diagnostic.WARNING
+        	|| hasParserIssue(node, resource.getWarnings())) {
+        	return JavaElementImageDescriptor.WARNING;
+        }
+        if (diagnosticSeverity == Diagnostic.INFO) {
+        	return JavaElementImageDescriptor.INFO;
+        }
+        return 0;
+	}
+
 	/** Replies the diagnotic adornment for the given element.
 	 *
 	 * @param element the model element.
@@ -125,33 +191,26 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 	 */
 	@SuppressWarnings("static-method")
 	protected int getIssueAdornment(XtendMember element) {
-		final ICompositeNode node = NodeModelUtils.getNode(element);
-		if (node == null) {
-			return 0;
-		}
 		// Error markers are more important than warning markers.
 		// Order of checks:
 		// - parser error (from the resource) or semantic error (from Diagnostician)
 		// - parser warning or semantic warning
+		// - semantic information
+		final ICompositeNode node = NodeModelUtils.getNode(element);
+		if (node == null) {
+			return 0;
+		}
+		// Platform markers
 		final Resource resource = element.eResource();
-		if (hasParserIssue(node, resource.getErrors())) {
-			return JavaElementImageDescriptor.ERROR;
+		final int platformSeverity = findPlatformSeverity(node, resource);
+		if (platformSeverity != 0) {
+			return platformSeverity;
 		}
-		final Diagnostic diagnostic = Diagnostician.INSTANCE.validate(element);
-        switch (diagnostic.getSeverity()) {
-        case Diagnostic.ERROR:
-        	return JavaElementImageDescriptor.ERROR;
-        case Diagnostic.WARNING:
-        	return JavaElementImageDescriptor.WARNING;
-        default:
-        }
-		if (hasParserIssue(node, resource.getWarnings())) {
-			return JavaElementImageDescriptor.WARNING;
-		}
-		return 0;
+		// Xtext based markers (in case the resource has no marker yet)
+		return findXtextSeverity(element, node, resource);
 	}
 
-	/**Replies the size of the images.
+	/** Replies the size of the images.
 	 *
 	 * @return {@link JavaElementImageProvider#SMALL_SIZE} or {@link JavaElementImageProvider#BIG_SIZE}
 	 */
