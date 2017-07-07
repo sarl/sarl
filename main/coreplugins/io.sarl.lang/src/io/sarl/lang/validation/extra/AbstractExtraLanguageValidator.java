@@ -21,6 +21,7 @@
 
 package io.sarl.lang.validation.extra;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
@@ -83,11 +84,20 @@ public abstract class AbstractExtraLanguageValidator extends AbstractXbaseValida
 	 * @param source the source of the error.
 	 */
 	protected void error(String message, EObject source) {
-		error(message, source,
+		error(MessageFormat.format(getErrorMessageFormat(), message), source,
 				null,
 				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 				IssueCodes.INVALID_EXTRA_LANGUAGE_GENERATION);
 	}
+
+	/** Replies the message format to be used for building an alert message.
+	 *
+	 * <p>The replied format must be compatible with {@link MessageFormat#format(Object)} with the
+	 * first argument <code>{0}</code> equals to the text of the alert message.
+	 *
+	 * @return the alert message format.
+	 */
+	protected abstract String getErrorMessageFormat();
 
 	/** Replies the initializer for the type converter.
 	 *

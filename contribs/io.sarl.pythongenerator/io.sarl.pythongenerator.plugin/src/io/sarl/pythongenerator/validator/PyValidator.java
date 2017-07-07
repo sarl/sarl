@@ -97,6 +97,11 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 		return PyGeneratorPlugin.PLUGIN_ID;
 	}
 
+	@Override
+	protected String getErrorMessageFormat() {
+		return Messages.PyValidator_4;
+	}
+
 	/** Check that import mapping are known.
 	 *
 	 * @param importDeclaration the declaration.
