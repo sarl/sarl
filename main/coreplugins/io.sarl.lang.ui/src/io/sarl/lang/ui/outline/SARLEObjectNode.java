@@ -27,9 +27,7 @@ import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 
 /**
- * Customize the outline page's node.
- *
- * <p>This outline node provide the "static" modifier visibility.
+ * Customize the outline page.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
