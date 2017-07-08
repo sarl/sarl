@@ -96,18 +96,18 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	@Inject
 	private GeneratorConfigProvider2 configProvider;
 
-	private final PolymorphicDispatcher<Void> generateDispatcher;
+	private final PolymorphicDispatcher<Boolean> generateDispatcher;
 
 	/** Constructor.
 	 */
 	@SuppressWarnings("checkstyle:magicnumber")
 	public JavaInlineExpressionCompiler() {
-		this.generateDispatcher = new PolymorphicDispatcher<Void>(
+		this.generateDispatcher = new PolymorphicDispatcher<Boolean>(
 				"_generate", 4, 4, //$NON-NLS-1$
 				Collections.singletonList(this)) {
 			@Override
-			protected Void handleNoSuchMethod(Object... params) {
-				return null;
+			protected Boolean handleNoSuchMethod(Object... params) {
+				return Boolean.FALSE;
 			}
 		};
 	}
@@ -238,8 +238,9 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the inline code.
+	 * @return {@code true} if a text was appended.
 	 */
-	protected void generate(XExpression expression, XExpression parentExpression, XtendExecutable feature,
+	protected boolean generate(XExpression expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
 		final XExpression realExpression = filterSingleOperation(expression);
 		if (realExpression != null) {
@@ -250,31 +251,77 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 					final XtendFunction function = (XtendFunction) feature;
 					final Object evaluationResult = this.expressionInterpreter.evaluate(realExpression,
 							getFunctionTypeReference(function));
-					if (evaluationResult instanceof CharSequence) {
-						output.appendStringConstant(evaluationResult.toString());
-					} else if (evaluationResult instanceof JvmTypeReference) {
-						output.appendTypeConstant(((JvmTypeReference) evaluationResult).getType());
-					} else if (evaluationResult instanceof Number) {
-						final Class<?> type = ReflectionUtil.getRawType(evaluationResult.getClass());
-						if (Byte.class.equals(type) || byte.class.equals(type)) {
-							output.appendConstant("(byte) (" + evaluationResult.toString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
-						} else if (Short.class.equals(type) || short.class.equals(type)) {
-							output.appendConstant("(short) (" + evaluationResult.toString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
-						} else if (Float.class.equals(type) || float.class.equals(type)) {
-							output.appendConstant(evaluationResult.toString() + "f"); //$NON-NLS-1$
-						} else {
-							output.appendConstant(evaluationResult.toString());
+					if (evaluationResult != null) {
+						final Boolean res = this.generateDispatcher.invoke(evaluationResult, parentExpression, feature, output);
+						if (res != null && res == Boolean.TRUE) {
+							return true;
 						}
-					} else {
-						output.appendConstant(Objects.toString(evaluationResult));
 					}
-					return;
 				} catch (Exception exception) {
 					// Ignore all the exceptions
 				}
 			}
-			this.generateDispatcher.invoke(realExpression, parentExpression, feature, output);
+			final Boolean res = this.generateDispatcher.invoke(realExpression, parentExpression, feature, output);
+			return res != null && res.booleanValue();
 		}
+		return false;
+	}
+
+	/** Append the inline code for the given character sequence.
+	 *
+	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
+	 * @param feature the feature that contains the expression.
+	 * @param output the output.
+	 * @return {@code true} if a text was appended.
+	 */
+	@SuppressWarnings("static-method")
+	protected Boolean _generate(CharSequence expression, XExpression parentExpression, XtendExecutable feature,
+			InlineAnnotationTreeAppendable output) {
+		output.appendStringConstant(expression.toString());
+		return Boolean.TRUE;
+	}
+
+	/** Append the inline code for the given type.
+	 *
+	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
+	 * @param feature the feature that contains the expression.
+	 * @param output the output.
+	 * @return {@code true} if a text was appended.
+	 */
+	@SuppressWarnings("static-method")
+	protected Boolean _generate(JvmTypeReference expression, XExpression parentExpression, XtendExecutable feature,
+			InlineAnnotationTreeAppendable output) {
+		output.appendTypeConstant(expression.getType());
+		return Boolean.TRUE;
+	}
+
+	/** Append the inline code for the given number value.
+	 *
+	 * @param expression the expression of the operation.
+	 * @param parentExpression is the expression that contains this one, or {@code null} if the current expression is
+	 *     the root expression.
+	 * @param feature the feature that contains the expression.
+	 * @param output the output.
+	 * @return {@code true} if a text was appended.
+	 */
+	@SuppressWarnings("static-method")
+	protected Boolean _generate(Number expression, XExpression parentExpression, XtendExecutable feature,
+			InlineAnnotationTreeAppendable output) {
+		final Class<?> type = ReflectionUtil.getRawType(expression.getClass());
+		if (Byte.class.equals(type) || byte.class.equals(type)) {
+			output.appendConstant("(byte) (" + expression.toString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+		} else if (Short.class.equals(type) || short.class.equals(type)) {
+			output.appendConstant("(short) (" + expression.toString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+		} else if (Float.class.equals(type) || float.class.equals(type)) {
+			output.appendConstant(expression.toString() + "f"); //$NON-NLS-1$
+		} else {
+			output.appendConstant(expression.toString());
+		}
+		return Boolean.TRUE;
 	}
 
 	/** Append the inline code for the given XBooleanLiteral.
@@ -284,11 +331,13 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
+	 * @return {@code true} if a text was appended.
 	 */
 	@SuppressWarnings("static-method")
-	protected void _generate(XBooleanLiteral expression, XExpression parentExpression, XtendExecutable feature,
+	protected Boolean _generate(XBooleanLiteral expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
 		output.appendConstant(Boolean.toString(expression.isIsTrue()));
+		return Boolean.TRUE;
 	}
 
 	/** Append the inline code for the given XNullLiteral.
@@ -298,8 +347,9 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
+	 * @return {@code true} if a text was appended.
 	 */
-	protected void _generate(XNullLiteral expression, XExpression parentExpression, XtendExecutable feature,
+	protected Boolean _generate(XNullLiteral expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
 		if (parentExpression == null && feature instanceof XtendFunction) {
 			final XtendFunction function = (XtendFunction) feature;
@@ -321,6 +371,7 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 		} else {
 			output.appendConstant(Objects.toString(null));
 		}
+		return Boolean.TRUE;
 	}
 
 	/** Append the inline code for the given XNumberLiteral.
@@ -330,11 +381,13 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
+	 * @return {@code true} if a text was appended.
 	 */
 	@SuppressWarnings("static-method")
-	protected void _generate(XNumberLiteral expression, XExpression parentExpression, XtendExecutable feature,
+	protected Boolean _generate(XNumberLiteral expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
 		output.appendConstant(expression.getValue());
+		return Boolean.TRUE;
 	}
 
 	/** Append the inline code for the given XStringLiteral.
@@ -344,11 +397,13 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
+	 * @return {@code true} if a text was appended.
 	 */
 	@SuppressWarnings("static-method")
-	protected void _generate(XStringLiteral expression, XExpression parentExpression, XtendExecutable feature,
+	protected Boolean _generate(XStringLiteral expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
 		output.appendStringConstant(expression.getValue());
+		return Boolean.TRUE;
 	}
 
 	/** Append the inline code for the given XTypeLiteral.
@@ -358,11 +413,13 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
+	 * @return {@code true} if a text was appended.
 	 */
 	@SuppressWarnings("static-method")
-	protected void _generate(XTypeLiteral expression, XExpression parentExpression, XtendExecutable feature,
+	protected Boolean _generate(XTypeLiteral expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
 		output.appendTypeConstant(expression.getType());
+		return Boolean.TRUE;
 	}
 
 	/** Append the inline code for the given XCastedExpression.
@@ -372,11 +429,12 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
+	 * @return {@code true} if a text was appended.
 	 */
-	protected void _generate(XCastedExpression expression, XExpression parentExpression, XtendExecutable feature,
+	protected Boolean _generate(XCastedExpression expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
 		final InlineAnnotationTreeAppendable child = newAppendable(output.getImportManager());
-		generate(expression.getTarget(), expression, feature, child);
+		boolean bool = generate(expression.getTarget(), expression, feature, child);
 		final String childContent = child.getContent();
 		if (!Strings.isEmpty(childContent)) {
 			output.append("("); //$NON-NLS-1$
@@ -384,7 +442,9 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 			output.append(")"); //$NON-NLS-1$
 			output.append(childContent);
 			output.setConstant(child.isConstant());
+			bool = true;
 		}
+		return bool;
 	}
 
 	/** Append the inline code for the given XInstanceOfExpression.
@@ -394,11 +454,12 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
+	 * @return {@code true} if a text was appended.
 	 */
-	protected void _generate(XInstanceOfExpression expression, XExpression parentExpression, XtendExecutable feature,
+	protected Boolean _generate(XInstanceOfExpression expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
 		final InlineAnnotationTreeAppendable child = newAppendable(output.getImportManager());
-		generate(expression.getExpression(), expression, feature, child);
+		boolean bool = generate(expression.getExpression(), expression, feature, child);
 		final String childContent = child.getContent();
 		if (!Strings.isEmpty(childContent)) {
 			output.append("("); //$NON-NLS-1$
@@ -406,7 +467,9 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 			output.append(") instanceof "); //$NON-NLS-1$
 			output.append(expression.getType().getType());
 			output.setConstant(child.isConstant());
+			bool = true;
 		}
+		return bool;
 	}
 
 	/** Append the inline code for the given XReturnLiteral.
@@ -416,10 +479,11 @@ public class JavaInlineExpressionCompiler implements IInlineExpressionCompiler {
 	 *     the root expression.
 	 * @param feature the feature that contains the expression.
 	 * @param output the output.
+	 * @return {@code true} if a text was appended.
 	 */
-	protected void _generate(XReturnExpression expression, XExpression parentExpression, XtendExecutable feature,
+	protected Boolean _generate(XReturnExpression expression, XExpression parentExpression, XtendExecutable feature,
 			InlineAnnotationTreeAppendable output) {
-		generate(expression.getExpression(), parentExpression, feature, output);
+		return generate(expression.getExpression(), parentExpression, feature, output);
 	}
 
 	/**
