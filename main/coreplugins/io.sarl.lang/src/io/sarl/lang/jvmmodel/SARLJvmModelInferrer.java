@@ -105,9 +105,11 @@ import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.serializer.sequencer.IContextFinder;
+import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor;
@@ -159,6 +161,7 @@ import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlConstructor;
@@ -858,6 +861,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Initialize the context with inheriting features
 			Utils.populateInheritanceContext(
 					inferredJvmType,
+					source.getExtends(),
+					source.getImplements(),
 					context.getInheritedFinalOperations(),
 					context.getInheritedOverridableOperations(),
 					null,
@@ -915,6 +920,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Initialize the context with inheriting features
 			Utils.populateInheritanceContext(
 					inferredJvmType,
+					null,
+					source.getExtends(),
 					context.getInheritedFinalOperations(),
 					context.getInheritedOverridableOperations(),
 					null,
@@ -1728,12 +1735,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						&& expression != null
 						&& ((!(expression instanceof XBlockExpression))
 								|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
-					returnType = this.typeBuilder.inferredType(expression);
+					returnType = inferFunctionReturnType(expression);
 				}
 			} else if (expression != null
 					&& ((!(expression instanceof XBlockExpression))
 							|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
-				returnType = this.typeBuilder.inferredType(expression);
+				returnType = inferFunctionReturnType(expression);
 			}
 			final JvmTypeReference selectedReturnType;
 			if (returnType == null) {
@@ -3576,6 +3583,34 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				target.getMembers().add(newCons);
 			}
 		}
+	}
+
+	/** Infer the function's return type.
+	 *
+	 * @param body the body of the function.
+	 * @return the return type.
+	 */
+	protected JvmTypeReference inferFunctionReturnType(XExpression body) {
+		XExpression expr = body;
+		boolean stop = false;
+		while (!stop && expr instanceof XBlockExpression) {
+			final XBlockExpression block = (XBlockExpression) expr;
+			switch (block.getExpressions().size()) {
+			case 0:
+				expr = null;
+				break;
+			case 1:
+				expr = block.getExpressions().get(0);
+				break;
+			default:
+				stop = true;
+			}
+		}
+		if (expr == null || expr instanceof XAssignment || expr instanceof XVariableDeclaration
+				|| expr instanceof SarlBreakExpression) {
+			return this._typeReferenceBuilder.typeRef(Void.TYPE);
+		}
+		return this.typeBuilder.inferredType(body);
 	}
 
 	/** Internal error.

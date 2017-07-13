@@ -38,6 +38,10 @@ import org.eclipse.xtext.common.types.TypesPackage;
 
 import org.eclipse.xtext.xbase.XbasePackage;
 
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
+
+import org.eclipse.xtext.xtype.XtypePackage;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model <b>Package</b>.
@@ -243,6 +247,10 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 		// Initialize simple dependencies
 		XtendPackage.eINSTANCE.eClass();
+		TypesPackage.eINSTANCE.eClass();
+		XbasePackage.eINSTANCE.eClass();
+		XtypePackage.eINSTANCE.eClass();
+		XAnnotationsPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theSarlPackage.createPackageContents();
