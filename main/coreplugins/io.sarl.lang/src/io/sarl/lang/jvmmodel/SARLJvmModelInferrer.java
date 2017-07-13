@@ -1634,7 +1634,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	@Override
 	@SuppressWarnings({"checkstyle:methodlength", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity"})
+			"checkstyle:npathcomplexity", "checkstyle:booleanexpressioncomplexity"})
 	protected void transform(final XtendFunction source, final JvmGenericType container, boolean allowDispatch) {
 		final GenerationContext context = getContext(container);
 
@@ -1763,6 +1763,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					&& context.isAtLeastJava8()
 					&& context.getGeneratorConfig2().isGenerateInlineAnnotation()
 					&& !source.isAbstract() && !container.isInterface()
+					&& (source.isStatic() || source.isFinal() || container.isFinal())
 					&& context.getParentContext() == null
 					&& this.annotationFinder.findAnnotation(operation, Inline.class) == null) {
 				context.getPostFinalizationElements().add(

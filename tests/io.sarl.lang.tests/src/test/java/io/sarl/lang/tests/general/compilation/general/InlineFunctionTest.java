@@ -164,10 +164,51 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	}
 	
 	@Test
-	public void inlineWithDirectAnnotation() throws Exception {
+	public void inlineWithDirectAnnotation01() throws Exception {
 		String source = multilineString(
 				"class C1 {",
 				"  def fct : int { return 1 }",
+				"}",
+				"class C2 {",
+				"  def fct2 : int {",
+				"    var x = new C1",
+				"    var y = x.fct",
+				"    return y",
+				"  }",
+				"}",
+				"");
+		final String expectedC2 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
+				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+				"@SuppressWarnings(\"all\")",
+				"public class C2 {",
+				"  public int fct2() {",
+				"    C1 x = new C1();",
+				"    int y = x.fct();",
+				"    return y;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C2() {",
+				"    super();",
+				"  }",
+				"}",
+				""
+				);
+		this.compiler.compile(source, (r) -> {
+			assertEquals(expectedC2, r.getGeneratedCode("C2"));
+		});
+	}
+
+	@Test
+	public void inlineWithDirectAnnotation02() throws Exception {
+		String source = multilineString(
+				"class C1 {",
+				"  final def fct : int { return 1 }",
 				"}",
 				"class C2 {",
 				"  def fct2 : int {",
@@ -208,7 +249,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	public void booleanLiteral_true() throws Exception {
 		String source = multilineString(
 				"class C1 {",
-				"  def fct { return true }",
+				"  static def fct { return true }",
 				"}",
 				"");
 		final String expectedC1 = multilineString(
@@ -222,7 +263,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Inline(value = \"true\", constantExpression = true)",
-				"  public boolean fct() {",
+				"  public static boolean fct() {",
 				"    return true;",
 				"  }",
 				"  ",
@@ -242,7 +283,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	public void booleanLiteral_false() throws Exception {
 		String source = multilineString(
 				"class C1 {",
-				"  def fct { return false }",
+				"  static def fct { return false }",
 				"}",
 				"");
 		final String expectedC1 = multilineString(
@@ -256,7 +297,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Inline(value = \"false\", constantExpression = true)",
-				"  public boolean fct() {",
+				"  public static boolean fct() {",
 				"    return false;",
 				"  }",
 				"  ",
@@ -276,7 +317,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	public void nullLiteral() throws Exception {
 		String source = multilineString(
 				"class C1 {",
-				"  def fct { return null }",
+				"  static def fct { return null }",
 				"}",
 				"");
 		final String expectedC1 = multilineString(
@@ -290,7 +331,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Inline(value = \"(Object)null\", constantExpression = true)",
-				"  public Object fct() {",
+				"  public static Object fct() {",
 				"    return null;",
 				"  }",
 				"  ",
@@ -310,7 +351,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	public void numberLiteral() throws Exception {
 		String source = multilineString(
 				"class C1 {",
-				"  def fct { return 123.456 }",
+				"  static def fct { return 123.456 }",
 				"}",
 				"");
 		final String expectedC1 = multilineString(
@@ -324,7 +365,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Inline(value = \"123.456\", constantExpression = true)",
-				"  public double fct() {",
+				"  public static double fct() {",
 				"    return 123.456;",
 				"  }",
 				"  ",
@@ -344,7 +385,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	public void numericExpression() throws Exception {
 		String source = multilineString(
 				"class C1 {",
-				"  def fct { return 123.456 + 34 / 2 }",
+				"  static def fct { return 123.456 + 34 / 2 }",
 				"}",
 				"");
 		final String expectedC1 = multilineString(
@@ -358,7 +399,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Inline(value = \"140.45600000000002\", constantExpression = true)",
-				"  public double fct() {",
+				"  public static double fct() {",
 				"    return (123.456 + (34 / 2));",
 				"  }",
 				"  ",
@@ -378,7 +419,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	public void stringLiteral() throws Exception {
 		String source = multilineString(
 				"class C1 {",
-				"  def fct { return \"abc\" }",
+				"  static def fct { return \"abc\" }",
 				"}",
 				"");
 		final String expectedC1 = multilineString(
@@ -392,7 +433,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Inline(value = \"\\\"abc\\\"\", constantExpression = true)",
-				"  public String fct() {",
+				"  public static String fct() {",
 				"    return \"abc\";",
 				"  }",
 				"  ",
@@ -409,10 +450,42 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void stringExpression() throws Exception {
+	public void stringExpression01() throws Exception {
 		String source = multilineString(
 				"class C1 {",
 				"  def fct { return \"abc\" + \"xyz\" }",
+				"}",
+				"");
+		final String expectedC1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
+				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+				"@SuppressWarnings(\"all\")",
+				"public class C1 {",
+				"  public String fct() {",
+				"    return (\"abc\" + \"xyz\");",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
+				"  }",
+				"}",
+				""
+				);
+		this.compiler.compile(source, (r) -> {
+			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+		});
+	}
+
+	@Test
+	public void stringExpression02() throws Exception {
+		String source = multilineString(
+				"class C1 {",
+				"  final def fct { return \"abc\" + \"xyz\" }",
 				"}",
 				"");
 		final String expectedC1 = multilineString(
@@ -425,6 +498,40 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
+				"  @Inline(value = \"\\\"abcxyz\\\"\", constantExpression = true)",
+				"  public final String fct() {",
+				"    return (\"abc\" + \"xyz\");",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public C1() {",
+				"    super();",
+				"  }",
+				"}",
+				""
+				);
+		this.compiler.compile(source, (r) -> {
+			assertEquals(expectedC1, r.getGeneratedCode("C1"));
+		});
+	}
+
+	@Test
+	public void stringExpression03() throws Exception {
+		String source = multilineString(
+				"final class C1 {",
+				"  def fct { return \"abc\" + \"xyz\" }",
+				"}",
+				"");
+		final String expectedC1 = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import org.eclipse.xtext.xbase.lib.Inline;",
+				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+				"@SuppressWarnings(\"all\")",
+				"public final class C1 {",
 				"  @Inline(value = \"\\\"abcxyz\\\"\", constantExpression = true)",
 				"  public String fct() {",
 				"    return (\"abc\" + \"xyz\");",
@@ -446,7 +553,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	public void typeLiteral() throws Exception {
 		String source = multilineString(
 				"class C1 {",
-				"  def fct { return typeof(Integer) }",
+				"  static def fct { return typeof(Integer) }",
 				"}",
 				"");
 		final String expectedC1 = multilineString(
@@ -460,7 +567,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Inline(value = \"Integer.class\", constantExpression = true)",
-				"  public Class<Integer> fct() {",
+				"  public static Class<Integer> fct() {",
 				"    return Integer.class;",
 				"  }",
 				"  ",
@@ -480,7 +587,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	public void typeExpression() throws Exception {
 		String source = multilineString(
 				"class C1 {",
-				"  def fct { return Integer }",
+				"  static def fct { return Integer }",
 				"}",
 				"");
 		final String expectedC1 = multilineString(
@@ -494,7 +601,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Inline(value = \"Integer.class\", constantExpression = true)",
-				"  public Class<Integer> fct() {",
+				"  public static Class<Integer> fct() {",
 				"    return Integer.class;",
 				"  }",
 				"  ",
@@ -514,7 +621,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	public void castOperator() throws Exception {
 		String source = multilineString(
 				"class C1 {",
-				"  def fct { return null as Integer }",
+				"  static def fct { return null as Integer }",
 				"}",
 				"");
 		final String expectedC1 = multilineString(
@@ -528,7 +635,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Inline(value = \"(Integer)null\", constantExpression = true)",
-				"  public Integer fct() {",
+				"  public static Integer fct() {",
 				"    return ((Integer) null);",
 				"  }",
 				"  ",
@@ -548,7 +655,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 	public void instanceofOperator() throws Exception {
 		String source = multilineString(
 				"class C1 {",
-				"  def fct { return null instanceof Integer }",
+				"  static def fct { return null instanceof Integer }",
 				"}",
 				"");
 		final String expectedC1 = multilineString(
@@ -562,7 +669,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class C1 {",
 				"  @Inline(value = \"(null) instanceof Integer\", constantExpression = true)",
-				"  public boolean fct() {",
+				"  public static boolean fct() {",
 				"    return (null instanceof Integer);",
 				"  }",
 				"  ",
