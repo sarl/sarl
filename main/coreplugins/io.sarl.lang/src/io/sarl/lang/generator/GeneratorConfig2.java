@@ -44,6 +44,11 @@ public class GeneratorConfig2 {
 	 */
 	private boolean useExpressionInterpreterForInlineAnnotation = true;
 
+	/**
+	 * Whether <code>@Pure</code> shall be generated.
+	 */
+	private boolean generatePureAnnotation = true;
+
 	/** Replies if the <code>@Inline</code> shall be generated.
 	 *
 	 * @return <code>true</code> if annotation shall be generated.
@@ -76,6 +81,23 @@ public class GeneratorConfig2 {
 	 */
 	public void setUseExpressionInterpreterForInlineAnnotation(final boolean generateInlineAnnotation) {
 		this.useExpressionInterpreterForInlineAnnotation = generateInlineAnnotation;
+	}
+
+	/** Replies if the <code>@Pure</code> shall be generated.
+	 *
+	 * @return <code>true</code> if annotation shall be generated.
+	 */
+	@Pure
+	public boolean isGeneratePureAnnotation() {
+		return this.generatePureAnnotation;
+	}
+
+	/** Set if the <code>@Pure</code> shall be generated.
+	 *
+	 * @param generatePureAnnotation <code>true</code> if annotation shall be generated.
+	 */
+	public void setGeneratePureAnnotation(final boolean generatePureAnnotation) {
+		this.generatePureAnnotation = generatePureAnnotation;
 	}
 
 }

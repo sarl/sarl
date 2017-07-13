@@ -103,6 +103,7 @@ import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.common.types.util.TypeReferences;
+import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.serializer.sequencer.IContextFinder;
 import org.eclipse.xtext.xbase.XBlockExpression;
@@ -147,6 +148,7 @@ import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.compiler.IInlineExpressionCompiler;
+import io.sarl.lang.compiler.SarlCompiler;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentTrait;
@@ -154,6 +156,7 @@ import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.generator.SARLJvmGenerator;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlArtifact;
@@ -170,9 +173,9 @@ import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
-import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
 import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.JvmVisibilityComparator;
@@ -183,6 +186,13 @@ import io.sarl.lang.util.Utils;
  * <p>The JVM model should contain all elements that would appear in the Java code
  * which is generated from the source model. Other models link against
  * the JVM model rather than the source model.
+ *
+ * <p>The roles of the different generation tools are:<ul>
+ * <li>{@link SARLJvmModelInferrer}: Generating the expected Java Ecore model from the SARL Ecore model.</li>
+ * <li>{@link ILinker}: Create links among the SARL Ecore models.<li>
+ * <li>{@link SARLJvmGenerator}: Generate the Java code from the Java Ecore model.</li>
+ * <li>{@link SarlCompiler}: Generate the Java code for the XExpression objects.</li>
+ * </ul>
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
@@ -271,10 +281,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Inject
 	private CommonTypeComputationServices services;
 
-	/** Extended helper for using XExpressions.
+	/** Helper for defining operations.
 	 */
 	@Inject
-	private SARLExpressionHelper expressionHelper;
+	private IOperationHelper operationHelper;
 
 	/** Computer of early-exits for SARL.
 	 */
@@ -858,6 +868,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Initialize the context with inheriting features
 			Utils.populateInheritanceContext(
 					inferredJvmType,
+					source.getExtends(),
+					source.getImplements(),
 					context.getInheritedFinalOperations(),
 					context.getInheritedOverridableOperations(),
 					null,
@@ -915,6 +927,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Initialize the context with inheriting features
 			Utils.populateInheritanceContext(
 					inferredJvmType,
+					null,
+					source.getExtends(),
 					context.getInheritedFinalOperations(),
 					context.getInheritedOverridableOperations(),
 					null,
@@ -961,6 +975,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				Collections.singleton(SarlEnumLiteral.class));
 		try {
 			// Initialize the context with inheriting features
+			//TODO: Remove the following call
 			Utils.populateInheritanceContext(
 					inferredJvmType,
 					context.getInheritedFinalOperations(),
@@ -1006,6 +1021,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				Collections.singleton(SarlField.class));
 		try {
 			// Initialize the context with inheriting features
+			//TODO: Remove the following call
 			Utils.populateInheritanceContext(
 					inferredJvmType,
 					context.getInheritedFinalOperations(),
@@ -1634,7 +1650,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	@Override
 	@SuppressWarnings({"checkstyle:methodlength", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity"})
+			"checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	protected void transform(final XtendFunction source, final JvmGenericType container, boolean allowDispatch) {
 		final GenerationContext context = getContext(container);
 
@@ -1707,20 +1723,27 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					source.getParameters(),
 					container.isInterface(), paramList);
 
+			// Get the super function
+			final JvmOperation inheritedOperation;
+			if (context != null) {
+				JvmOperation tmpInheritedOperation = context.getInheritedFinalOperations().get(actSigKey);
+				if (tmpInheritedOperation == null) {
+					tmpInheritedOperation = context.getInheritedOverridableOperations().get(actSigKey);
+				}
+				if (tmpInheritedOperation == null) {
+					tmpInheritedOperation = context.getInheritedOperationsToImplement().get(actSigKey);
+				}
+				inheritedOperation = tmpInheritedOperation;
+			} else {
+				inheritedOperation = null;
+			}
+
 			// Infer the return type
 			final XExpression expression = source.getExpression();
-
 			JvmTypeReference returnType = null;
 			if (source.getReturnType() != null) {
 				returnType = source.getReturnType();
 			} else if (context != null) {
-				JvmOperation inheritedOperation = context.getInheritedFinalOperations().get(actSigKey);
-				if (inheritedOperation == null) {
-					inheritedOperation = context.getInheritedOverridableOperations().get(actSigKey);
-				}
-				if (inheritedOperation == null) {
-					inheritedOperation = context.getInheritedOperationsToImplement().get(actSigKey);
-				}
 				if (inheritedOperation != null) {
 					returnType = inheritedOperation.getReturnType();
 				}
@@ -1759,8 +1782,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			translateAnnotationsTo(source.getAnnotations(), operation);
 
 			// Add @Inline annotation
-			if (context != null
-					&& context.isAtLeastJava8()
+			if (context != null && context.isAtLeastJava8()
 					&& context.getGeneratorConfig2().isGenerateInlineAnnotation()
 					&& !source.isAbstract() && !container.isInterface()
 					&& context.getParentContext() == null
@@ -1769,17 +1791,29 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						() -> this.inlineExpressionCompiler.appendInlineAnnotation(operation, source));
 			}
 
-			// Standard annotations
+			// Add @Override annotation
 			if (source.isOverride()
 					&& this.annotationFinder.findAnnotation(operation, Override.class) == null
 					&& this.typeReferences.findDeclaredType(Override.class, source) != null) {
 				addAnnotationSafe(operation, Override.class);
 			}
-			if (this.expressionHelper.isPurableOperation(operation, expression)
-					&& this.annotationFinder.findAnnotation(operation, Pure.class) == null
+
+			// Add @Pure annotation
+			final boolean addDynamicPureAnnotationGenerator;
+			if (context != null && context.getGeneratorConfig2().isGeneratePureAnnotation()
 					&& this.typeReferences.findDeclaredType(Pure.class, source) != null) {
-				// The function is pure
-				addAnnotationSafe(operation, Pure.class);
+				addDynamicPureAnnotationGenerator = inheritedOperation == null;
+				this.operationHelper.attachAdapter(operation, (it) -> {
+					if (inheritedOperation != null) {
+						if (it.isPureOperation(inheritedOperation) && !it.isPureOperation(operation)) {
+							addAnnotationSafe(operation, Pure.class);
+						}
+					} else if (it.isPurableOperation(source) && !it.isPureOperation(operation)) {
+						addAnnotationSafe(operation, Pure.class);
+					}
+				});
+			} else {
+				addDynamicPureAnnotationGenerator = false;
 			}
 
 			final List<JvmTypeReference> firedEvents;
@@ -1947,6 +1981,15 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								}
 							}
 						}
+						if (addDynamicPureAnnotationGenerator) {
+							this.operationHelper.attachAdapter(operation2, (it) -> {
+								it.adaptIfPossible(operation);
+								if (it.isPureOperation(operation)
+										&& !it.isPureOperation(operation2)) {
+									addAnnotationSafe(operation2, Pure.class);
+								}
+							});
+						}
 
 						// Copy and clean the documentation
 						copyAndCleanDocumentationTo(operation, operation2);
@@ -2030,7 +2073,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Annotations
 			translateAnnotationsTo(source.getAnnotations(), bodyOperation);
 			appendGeneratedAnnotation(bodyOperation, context);
-			if (!this.services.getExpressionHelper().hasSideEffects(source.getExpression())) {
+			if (context.getGeneratorConfig2().isGeneratePureAnnotation()
+					&& !this.services.getExpressionHelper().hasSideEffects(source.getExpression())) {
 				addAnnotationSafe(bodyOperation, Pure.class);
 			}
 
@@ -2086,7 +2130,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				setBody(guardOperation, guard);
 				// Annotations
 				appendGeneratedAnnotation(guardOperation, context);
-				addAnnotationSafe(guardOperation, Pure.class);
+				if (context.getGeneratorConfig2().isGeneratePureAnnotation()) {
+					addAnnotationSafe(guardOperation, Pure.class);
+				}
 
 				//------------------
 				// Handler function
@@ -2201,7 +2247,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					});
 				}
 				appendGeneratedAnnotation(operation, context);
-				addAnnotationSafe(operation, Pure.class);
+				if (context.getGeneratorConfig2().isGeneratePureAnnotation()) {
+					addAnnotationSafe(operation, Pure.class);
+				}
 
 				container.getMembers().add(operation);
 
@@ -2677,7 +2725,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 				if (couldCreateEqualsFunction && couldCreateHashCodeFunction) {
 					if (!isEqualsUserDefined) {
-						final JvmOperation op = toEqualsMethod(source, target, declaredInstanceFields);
+						final JvmOperation op = toEqualsMethod(source, target, declaredInstanceFields,
+								context.getGeneratorConfig2().isGeneratePureAnnotation());
 						if (op != null) {
 							appendGeneratedAnnotation(op, context);
 							target.getMembers().add(op);
@@ -2685,7 +2734,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					}
 
 					if (!isHashCodeUserDefined) {
-						final JvmOperation op = toHashCodeMethod(source, declaredInstanceFields);
+						final JvmOperation op = toHashCodeMethod(source, declaredInstanceFields,
+								context.getGeneratorConfig2().isGeneratePureAnnotation());
 						if (op != null) {
 							appendGeneratedAnnotation(op, context);
 							target.getMembers().add(op);
@@ -2734,7 +2784,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				});
 			if (op != null) {
 				appendGeneratedAnnotation(op, context);
-				addAnnotationSafe(op, Pure.class);
+				if (context.getGeneratorConfig2().isGeneratePureAnnotation()) {
+					addAnnotationSafe(op, Pure.class);
+				}
 				target.getMembers().add(op);
 			}
 		}
@@ -2825,7 +2877,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			target.getMembers().add(operation);
 			operation.setVisibility(JvmVisibility.PUBLIC);
 			addAnnotationSafe(operation, Override.class);
-			addAnnotationSafe(operation, Pure.class);
+			if (context.getGeneratorConfig2().isGeneratePureAnnotation()) {
+				addAnnotationSafe(operation, Pure.class);
+			}
 			final LightweightTypeReference myselfReference2 = Utils.toLightweightTypeReference(
 					operation.getReturnType(), this.services);
 			setBody(operation, (it) -> {
@@ -3064,12 +3118,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param sarlElement - the SARL element for which the "equals function must be generated.
 	 * @param declaredType - the declating type.
 	 * @param jvmFields - the fields declared in the container.
+	 * @param generatePureAnnotation indicates if the <code>@Pure</code> annotation should be generated.
 	 * @return the "equals" function.
 	 */
 	private JvmOperation toEqualsMethod(
 			XtendTypeDeclaration sarlElement,
 			final JvmDeclaredType declaredType,
-			final Iterable<JvmField> jvmFields) {
+			final Iterable<JvmField> jvmFields,
+			boolean generatePureAnnotation) {
 		if (sarlElement == null || declaredType == null) {
 			return null;
 		}
@@ -3080,7 +3136,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return null;
 		}
 		addAnnotationSafe(result, Override.class);
-		addAnnotationSafe(result, Pure.class);
+		if (generatePureAnnotation) {
+			addAnnotationSafe(result, Pure.class);
+		}
 
 		final JvmFormalParameter param = this.typesFactory.createJvmFormalParameter();
 		param.setName("obj"); //$NON-NLS-1$
@@ -3178,7 +3236,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		"checkstyle:booleanexpressioncomplexity"})
 	private JvmOperation toHashCodeMethod(
 			XtendTypeDeclaration sarlElement,
-			final Iterable<JvmField> jvmFields) {
+			final Iterable<JvmField> jvmFields,
+			boolean generatePureAnnotation) {
 		if (sarlElement == null) {
 			return null;
 		}
@@ -3188,7 +3247,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return null;
 		}
 		addAnnotationSafe(result, Override.class);
-		addAnnotationSafe(result, Pure.class);
+		if (generatePureAnnotation) {
+			addAnnotationSafe(result, Pure.class);
+		}
 		setBody(result, (it) -> {
 			final TypeReferences refs = SARLJvmModelInferrer.this.typeReferences;
 			it.append("int result = super.").append(HASHCODE_FUNCTION_NAME); //$NON-NLS-1$

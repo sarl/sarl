@@ -85,6 +85,7 @@ import io.sarl.lang.formatting2.SARLFormatterPreferenceKeys;
 import io.sarl.lang.generator.GeneratorConfigProvider2;
 import io.sarl.lang.generator.IGeneratorConfigProvider2;
 import io.sarl.lang.generator.SARLGeneratorConfigProvider;
+import io.sarl.lang.generator.SARLJvmGenerator;
 import io.sarl.lang.generator.SarlOutputConfigurationProvider;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
@@ -110,7 +111,6 @@ import io.sarl.lang.validation.SARLFeatureNameValidator;
 import io.sarl.lang.validation.SARLValidator;
 import java.util.Properties;
 import org.eclipse.xtend.core.compiler.UnicodeAwarePostProcessor;
-import org.eclipse.xtend.core.compiler.XtendGenerator;
 import org.eclipse.xtend.core.conversion.IntUnderscoreValueConverter;
 import org.eclipse.xtend.core.conversion.JavaIDValueConverter;
 import org.eclipse.xtend.core.conversion.StringValueConverter;
@@ -596,6 +596,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends JvmModelGenerator> bindJvmModelGenerator() {
+		return SARLJvmGenerator.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
 		return SARLConfigurableIssueCodesProvider.class;
 	}
@@ -762,11 +767,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public void configureIResourceDescriptions(Binder binder) {
 		binder.bind(IResourceDescriptions.class).to(EagerResourceSetBasedResourceDescriptions.class);
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public Class<? extends JvmModelGenerator> bindJvmModelGenerator() {
-		return XtendGenerator.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

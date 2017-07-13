@@ -116,6 +116,15 @@ public class Bug589 extends AbstractSarlTest {
 			"  }",
 			"}");
 
+	private static final String SNIPSET10 = multilineString(
+			"package io.sarl.lang.tests.bug589",
+			"event MyEvent { var x : int }",
+			"agent TestAgent {",
+			"  def myfct(p : MyEvent) : boolean { p.x = 3 }",
+			"  on MyEvent [occurrence.myfct] {",
+			"  }",
+			"}");
+
 	@Inject
 	private CompilationTestHelper compiler;
 
@@ -137,10 +146,7 @@ public class Bug589 extends AbstractSarlTest {
 	public void snipset3() throws Exception {
 		SarlScript mas = file(SNIPSET3);
 		final Validator validator = validate(mas);
-		validator.assertError(
-				XbasePackage.eINSTANCE.getXMemberFeatureCall(),
-				IssueCodes.INVALID_INNER_EXPRESSION,
-				"side effect is not allowed");
+		validator.assertNoIssues();
 	}
 
 	@Test
@@ -183,6 +189,16 @@ public class Bug589 extends AbstractSarlTest {
 		SarlScript mas = file(SNIPSET9);
 		final Validator validator = validate(mas);
 		validator.assertNoIssues();
+	}
+
+	@Test
+	public void snipset10() throws Exception {
+		SarlScript mas = file(SNIPSET10);
+		final Validator validator = validate(mas);
+		validator.assertError(
+				XbasePackage.eINSTANCE.getXMemberFeatureCall(),
+				IssueCodes.INVALID_INNER_EXPRESSION,
+				"side effect is not allowed");
 	}
 
 }

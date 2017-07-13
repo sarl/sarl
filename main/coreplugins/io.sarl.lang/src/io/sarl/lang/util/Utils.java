@@ -204,9 +204,46 @@ public final class Utils {
 			Map<ActionPrototype, JvmOperation> operationsToImplement,
 			Map<ActionParameterTypes, JvmConstructor> superConstructors,
 			IActionPrototypeProvider sarlSignatureProvider) {
+		populateInheritanceContext(
+				jvmElement,
+				jvmElement.getExtendedClass(),
+				jvmElement.getExtendedInterfaces(),
+				finalOperations, overridableOperations, inheritedFields,
+				operationsToImplement, superConstructors, sarlSignatureProvider);
+	}
+
+	/** Analyzing the type hierarchy of the given element, and
+	 * extract any type-related information.
+	 *
+	 * @param jvmElement - the element to analyze
+	 * @param extendedClass the extended class.
+	 * @param extendedInterfaces the extended interfaces.
+	 * @param finalOperations - filled with the final operations inherited by the element.
+	 * @param overridableOperations - filled with the oervrideable operations inherited by the element.
+	 * @param inheritedFields - filled with the fields inherited by the element.
+	 * @param operationsToImplement - filled with the abstract operations inherited by the element.
+	 * @param superConstructors - filled with the construstors of the super type.
+	 * @param sarlSignatureProvider - provider of tools related to action signatures.
+	 * @see OverrideHelper
+	 */
+	@SuppressWarnings({
+		"checkstyle:cyclomaticcomplexity",
+		"checkstyle:npathcomplexity",
+		"checkstyle:nestedifdepth",
+		"checkstyle:parameternumber"})
+	public static void populateInheritanceContext(
+			JvmDeclaredType jvmElement,
+			JvmTypeReference extendedClass,
+			Iterable<JvmTypeReference> extendedInterfaces,
+			Map<ActionPrototype, JvmOperation> finalOperations,
+			Map<ActionPrototype, JvmOperation> overridableOperations,
+			Map<String, JvmField> inheritedFields,
+			Map<ActionPrototype, JvmOperation> operationsToImplement,
+			Map<ActionParameterTypes, JvmConstructor> superConstructors,
+			IActionPrototypeProvider sarlSignatureProvider) {
 		// Get the operations that must be implemented
 		if (operationsToImplement != null) {
-			for (final JvmTypeReference interfaceReference : jvmElement.getExtendedInterfaces()) {
+			for (final JvmTypeReference interfaceReference : extendedInterfaces) {
 				for (final JvmFeature feature : ((JvmGenericType) interfaceReference.getType()).getAllFeatures()) {
 					if (!"java.lang.Object".equals(//$NON-NLS-1$
 							feature.getDeclaringType().getQualifiedName())) {
@@ -232,8 +269,8 @@ public final class Utils {
 		}
 
 		// Check on the implemented features, inherited from the super type
-		if (jvmElement.getExtendedClass() != null) {
-			final JvmGenericType parentType = (JvmGenericType) jvmElement.getExtendedClass().getType();
+		if (extendedClass != null) {
+			final JvmGenericType parentType = (JvmGenericType) extendedClass.getType();
 			for (final JvmFeature feature : parentType.getAllFeatures()) {
 				if (!"java.lang.Object".equals(feature.getDeclaringType().getQualifiedName()) //$NON-NLS-1$
 						&& isVisible(jvmElement, feature)

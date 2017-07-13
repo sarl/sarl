@@ -22,6 +22,7 @@
 package io.sarl.lang.ui.preferences;
 
 import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_INLINE;
+import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_PURE;
 import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_USE_EXPRESSION_INTERPRETER;
 
 import org.eclipse.swt.events.SelectionAdapter;
@@ -51,6 +52,9 @@ public class SARLBuilderConfigurationBlock extends XbaseBuilderConfigurationBloc
 		final Button useExpressionInterpreter = addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_1,
 				PREF_USE_EXPRESSION_INTERPRETER, BOOLEAN_VALUES, INDENT_AMOUNT);
 		useExpressionInterpreter.setEnabled(generateInlineButton.getSelection());
+
+		addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_2,
+				PREF_GENERATE_PURE, BOOLEAN_VALUES, 0);
 
 		generateInlineButton.addSelectionListener(new SelectionAdapter() {
 			@Override

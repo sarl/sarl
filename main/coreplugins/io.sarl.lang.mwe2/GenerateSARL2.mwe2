@@ -492,6 +492,10 @@ Workflow {
     				to = "io.sarl.lang.formatting2.SARLFormatterPreferenceKeys"
     			}
     			runtime = {
+    				bind = "org.eclipse.xtext.xbase.compiler.JvmModelGenerator"
+    				to = "io.sarl.lang.generator.SARLJvmGenerator"
+   				}
+    			runtime = {
     				bind = "org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer"
     				to = "io.sarl.lang.controlflow.SARLEarlyExitComputer"
     			}
@@ -833,10 +837,6 @@ Workflow {
     				bind = "org.eclipse.xtext.conversion.IValueConverterService"
     				to = "org.eclipse.xtend.core.conversion.XtendValueConverterService"
  				}
-    			runtime = {
-    				bind = "org.eclipse.xtext.xbase.compiler.JvmModelGenerator"
-    				to = "org.eclipse.xtend.core.compiler.XtendGenerator"
-   				}
     			runtime = {
     				bind = "org.eclipse.xtext.resource.IResourceDescription$Manager"
     				to = "org.eclipse.xtend.core.resource.XtendResourceDescriptionManager"
