@@ -192,10 +192,6 @@ public final class Utils {
 	 * @param sarlSignatureProvider - provider of tools related to action signatures.
 	 * @see OverrideHelper
 	 */
-	@SuppressWarnings({
-		"checkstyle:cyclomaticcomplexity",
-		"checkstyle:npathcomplexity",
-		"checkstyle:nestedifdepth"})
 	public static void populateInheritanceContext(
 			JvmDeclaredType jvmElement,
 			Map<ActionPrototype, JvmOperation> finalOperations,
@@ -242,7 +238,7 @@ public final class Utils {
 			Map<ActionParameterTypes, JvmConstructor> superConstructors,
 			IActionPrototypeProvider sarlSignatureProvider) {
 		// Get the operations that must be implemented
-		if (operationsToImplement != null) {
+		if (operationsToImplement != null && extendedInterfaces != null) {
 			for (final JvmTypeReference interfaceReference : extendedInterfaces) {
 				for (final JvmFeature feature : ((JvmGenericType) interfaceReference.getType()).getAllFeatures()) {
 					if (!"java.lang.Object".equals(//$NON-NLS-1$
