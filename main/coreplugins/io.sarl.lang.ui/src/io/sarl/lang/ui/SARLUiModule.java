@@ -27,12 +27,31 @@ import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.xtend.core.compiler.XtendGenerator;
+import org.eclipse.xtext.builder.preferences.BuilderConfigurationBlock;
+import org.eclipse.xtext.generator.IGenerator;
+import org.eclipse.xtext.generator.IGenerator2;
+import org.eclipse.xtext.generator.IOutputConfigurationProvider;
+import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 
+import io.sarl.lang.bugfixes.pending.bug621.Bug621SARLExtraLanguageValidator;
+import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter.FeatureNameConverterRuleReader;
+import io.sarl.lang.generator.extra.ExtraLanguageSupportGenerator;
+import io.sarl.lang.generator.extra.ExtraLanguageTypeConverter.TypeConverterRuleReader;
+import io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider;
+import io.sarl.lang.ui.bugfixes.pending.xtexteclipse282.Issue282BuilderConfigurationBlock;
+import io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageGeneratorProvider;
+import io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageOutputConfigurationProvider;
+import io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageValidatorProvider;
+import io.sarl.lang.ui.generator.extra.preferences.PreferenceBasedFeatureNameConverterRuleReader;
+import io.sarl.lang.ui.generator.extra.preferences.PreferenceBasedTypeConverterRuleReader;
 import io.sarl.lang.ui.validation.UIConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
+import io.sarl.lang.validation.SARLValidator;
+import io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -96,6 +115,9 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		binder.bind(UIConfigurableIssueSeveritiesProvider.class).toProvider(provider);
 		binder.bind(IssueSeveritiesProvider.class).toProvider(provider);
 		binder.bind(IConfigurableIssueSeveritiesProvider.class).toProvider(provider);
+		// Configure the extra generator/validator provider.
+		binder.bind(IGenerator2.class).annotatedWith(Names.named(ExtraLanguageSupportGenerator.MAIN_GENERATOR_NAME))
+				.to(XtendGenerator.class);
 	}
 
 	public void configureDebugMode(Binder binder) {
@@ -106,6 +128,43 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		// matches ID of org.eclipse.ui.contexts extension registered in plugin.xml
 		binder.bindConstant().annotatedWith(Names.named(XtextEditor.KEY_BINDING_SCOPE))
 		.to("io.sarl.lang.ui.scoping.SARLEditorScope"); //$NON-NLS-1$
+	}
+
+	/** TODO: Remove when xtext-eclipse/282 is fixed.
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Class<? extends BuilderConfigurationBlock> bindBuilderConfigurationBlock() {
+		return Issue282BuilderConfigurationBlock.class;
+	}
+
+	public Class<? extends IOutputConfigurationProvider> bindIOutputConfigurationProvider() {
+		return ExtensionPointExtraLanguageOutputConfigurationProvider.class;
+	}
+
+	public Class<? extends IGenerator> bindIGenerator() {
+		return ExtraLanguageSupportGenerator.class;
+	}
+
+	@SingletonBinding(eager = true)
+	public Class<? extends SARLValidator> bindSARLValidator() {
+		return Bug621SARLExtraLanguageValidator.class;
+	}
+
+	public Class<? extends IExtraLanguageGeneratorProvider> bindIExtraLanguageGeneratorProvider() {
+		return ExtensionPointExtraLanguageGeneratorProvider.class;
+	}
+
+	public Class<? extends IExtraLanguageValidatorProvider> bindIExtraLanguageValidatorProvider() {
+		return ExtensionPointExtraLanguageValidatorProvider.class;
+	}
+
+	public Class<? extends TypeConverterRuleReader> bindTypeConverterRuleReader() {
+		return PreferenceBasedTypeConverterRuleReader.class;
+	}
+
+	public Class<? extends FeatureNameConverterRuleReader> bindFeatureNameConverterRuleReader() {
+		return PreferenceBasedFeatureNameConverterRuleReader.class;
 	}
 
 }

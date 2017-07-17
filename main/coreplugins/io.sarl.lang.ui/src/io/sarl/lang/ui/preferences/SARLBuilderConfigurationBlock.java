@@ -24,11 +24,20 @@ package io.sarl.lang.ui.preferences;
 import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_INLINE;
 import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_USE_EXPRESSION_INTERPRETER;
 
+import java.util.Set;
+
+import com.google.common.collect.Sets;
+import com.google.inject.Inject;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
+import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.xbase.ui.builder.XbaseBuilderConfigurationBlock;
+
+import io.sarl.lang.generator.extra.ExtraLanguageOutputConfigurations;
 
 /** Preference page that permits to configure the SARL builder.
  *
@@ -40,6 +49,9 @@ import org.eclipse.xtext.xbase.ui.builder.XbaseBuilderConfigurationBlock;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLBuilderConfigurationBlock extends XbaseBuilderConfigurationBlock {
+
+	@Inject
+	private EclipseOutputConfigurationProvider configurationProvider;
 
 	@Override
 	protected void createGeneralSectionItems(Composite composite) {
@@ -58,6 +70,16 @@ public class SARLBuilderConfigurationBlock extends XbaseBuilderConfigurationBloc
 				useExpressionInterpreter.setEnabled(generateInlineButton.getSelection());
 			}
 		});
+	}
+
+	/** Replies the output configurations for the given project.
+	 *
+	 * @param project the project.
+	 * @return the output configurations associated to the given project.
+	 */
+	protected Set<OutputConfiguration> getOutputConfigurations(IProject project) {
+		final Set<OutputConfiguration> original = this.configurationProvider.getOutputConfigurations(getProject());
+		return Sets.filter(original, (it) -> !ExtraLanguageOutputConfigurations.isExtraLanguageOutputConfiguration(it.getName()));
 	}
 
 }

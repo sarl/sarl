@@ -32,7 +32,7 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.sarl.eclipse.runtime.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 	public static String SARLRuntime_0;
 	public static String SARLRuntime_1;
 	public static String SARLRuntime_2;

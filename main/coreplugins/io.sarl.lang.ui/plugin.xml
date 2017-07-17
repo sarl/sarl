@@ -647,4 +647,6 @@
       </renameParticipant>
    </extension>
 
-</plugin>
+   <extension-point id="extraGenerators" name="%extraGenerators" schema="schema/extraGenerators.exsd"/>
+ 
+ </plugin>

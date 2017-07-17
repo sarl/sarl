@@ -31,7 +31,7 @@ import org.eclipse.osgi.util.NLS;
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "io.janusproject.kernel.services.jdk.contextspace.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 	public static String Context_0;
 	public static String Context_1;
 	public static String StandardContextSpaceService_0;

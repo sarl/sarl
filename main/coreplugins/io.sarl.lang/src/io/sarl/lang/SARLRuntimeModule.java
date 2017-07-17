@@ -111,14 +111,14 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	}
 
 	@Override
-	@SingletonBinding(eager = true)
-	public Class<? extends SARLValidator> bindSARLValidator() {
-		return Bug621SARLValidator.class;
+	public Class<? extends DefaultReentrantTypeResolver> bindDefaultReentrantTypeResolver() {
+		return Bug623SARLReentrantTypeResolver.class;
 	}
 
 	@Override
-	public Class<? extends DefaultReentrantTypeResolver> bindDefaultReentrantTypeResolver() {
-		return Bug623SARLReentrantTypeResolver.class;
+	@SingletonBinding(eager = true)
+	public Class<? extends SARLValidator> bindSARLValidator() {
+		return Bug621SARLValidator.class;
 	}
 
 }
