@@ -30,9 +30,10 @@ import java.nio.ByteOrder;
 
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
-import com.hazelcast.nio.Version;
 import com.hazelcast.nio.serialization.Data;
 import com.hazelcast.nio.serialization.StreamSerializer;
+import com.hazelcast.version.Version;
+
 import io.janusproject.tests.testutils.AbstractJanusTest;
 
 /**
