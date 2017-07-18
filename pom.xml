@@ -43,7 +43,7 @@
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module -->
-		<tycho.version>0.26.0</tycho.version>
+		<tycho.version>1.0.0</tycho.version>
 		<!-- Java FX version (used for accessing the jfx repository) -->
 		<efxclipse.version>3.0.0</efxclipse.version>
 
