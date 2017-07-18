@@ -112,7 +112,7 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 		doTypeMappingCheck(importDeclaration, type, this.typeErrorHandler);
 	}
 
-	/** Check that member feature calls have a convertion mapping.
+	/** Check that member feature calls have a conversion mapping.
 	 *
 	 * @param featureCall the feature call.
 	 */

@@ -6,7 +6,7 @@
       <extraGenerator
             configuration="io.sarl.pythongenerator.PyExecutableExtensionFactory:io.sarl.pythongenerator.configuration.PyOutputConfigurationProvider"
             generator="io.sarl.pythongenerator.PyExecutableExtensionFactory:io.sarl.pythongenerator.generator.PyGeneratorProvider"
-            validator="io.sarl.pythongenerator.PyExecutableExtensionFactory:io.sarl.pythongenerator.validator.PyValidator"
+            validator="io.sarl.pythongenerator.PyExecutableExtensionFactory:io.sarl.pythongenerator.validator.PyValidatorProvider"
             preferences="io.sarl.pythongenerator.PyExecutableExtensionFactory:io.sarl.pythongenerator.configuration.PyPreferenceInitializer">
       </extraGenerator>
    </extension>

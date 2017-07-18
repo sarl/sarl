@@ -33,7 +33,6 @@
    <launcher name="eclipse-sarl">
       <linux icon="icons/sarl.xpm"/>
       <macosx icon="icons/sarl.icns"/>
-      <solaris/>
       <win useIco="true">
          <ico path="icons/sarl.ico"/>
          <bmp/>
