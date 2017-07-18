@@ -53,5 +53,6 @@ Export-Package: io.sarl.lang.ide,
  io.sarl.lang.ui.quickfix.acceptors;x-friends:="io.sarl.lang.ui.tests",
  io.sarl.lang.ui.refactoring.rename,
  io.sarl.lang.ui.tasks;x-friends:="io.sarl.lang.ui.tests",
- io.sarl.lang.ui.validation;x-friends:="io.sarl.lang.ui.tests"
+ io.sarl.lang.ui.validation;x-friends:="io.sarl.lang.ui.tests",
+ io.sarl.lang.ui.validation.extra
 Import-Package: org.apache.log4j

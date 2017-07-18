@@ -19,10 +19,12 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ui.generator.extra;
+package io.sarl.lang.ui.validation.extra;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Singleton;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -47,32 +49,41 @@ import io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@Singleton
 public class ExtensionPointExtraLanguageValidatorProvider implements IExtraLanguageValidatorProvider {
 
 	private static final String EXTENSION_POINT_VALIDATOR_ATTRIBUTE = "validator"; //$NON-NLS-1$
 
+	private List<IExtraLanguageValidatorProvider> providers;
+
 	@Override
 	public Iterable<EValidator> getValidators(Resource resource) {
 		final List<EValidator> validators = new ArrayList<>();
-		final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
-		if (extensionPoint != null) {
-			Object obj;
-			for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
-				try {
-					obj = element.createExecutableExtension(EXTENSION_POINT_VALIDATOR_ATTRIBUTE);
-					if (obj instanceof IExtraLanguageValidatorProvider) {
-						for (final EValidator validator : ((IExtraLanguageValidatorProvider) obj).getValidators(resource)) {
-							validators.add(validator);
+		if (this.providers == null) {
+			this.providers = new ArrayList<>();
+			final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+					SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
+			if (extensionPoint != null) {
+				Object obj;
+				for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+					try {
+						obj = element.createExecutableExtension(EXTENSION_POINT_VALIDATOR_ATTRIBUTE);
+						if (obj instanceof IExtraLanguageValidatorProvider) {
+							this.providers.add((IExtraLanguageValidatorProvider) obj);
 						}
+					} catch (CoreException exception) {
+						LangActivator.getInstance().getLog().log(new Status(
+								IStatus.WARNING,
+								LangActivator.getInstance().getBundle().getSymbolicName(),
+								exception.getLocalizedMessage(),
+								exception));
 					}
-				} catch (CoreException exception) {
-					LangActivator.getInstance().getLog().log(new Status(
-							IStatus.WARNING,
-							LangActivator.getInstance().getBundle().getSymbolicName(),
-							exception.getLocalizedMessage(),
-							exception));
 				}
+			}
+		}
+		for (final IExtraLanguageValidatorProvider provider:  this.providers) {
+			for (final EValidator validator : provider.getValidators(resource)) {
+				validators.add(validator);
 			}
 		}
 		return validators;

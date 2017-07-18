@@ -24,6 +24,7 @@ package io.sarl.pythongenerator.validator;
 import java.text.MessageFormat;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmConstructor;
@@ -53,6 +54,7 @@ import io.sarl.pythongenerator.generator.PyInitializers;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@Singleton
 public class PyValidator extends AbstractExtraLanguageValidator {
 
 	/** Error handler for the type conversions.
@@ -72,7 +74,7 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 		} else if (element instanceof JvmOperation) {
 			message = MessageFormat.format(Messages.PyValidator_3, this.simpleNameProvider.getSimpleName(element));
 		} else {
-			// This type of Jvm element is not supposed to be converted
+			// This type of JVM element is not supposed to be converted
 			return false;
 		}
 		error(message, source);
@@ -121,7 +123,7 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 		doCheckMemberFeatureCallMapping(featureCall, this.typeErrorHandler, this.featureErrorHandler);
 	}
 
-	/** Check that member feature calls have a convertion mapping.
+	/** Check that member feature calls have a conversion mapping.
 	 *
 	 * @param featureCall the feature call.
 	 */

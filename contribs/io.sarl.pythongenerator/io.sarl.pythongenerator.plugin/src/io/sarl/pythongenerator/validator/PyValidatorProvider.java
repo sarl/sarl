@@ -21,17 +21,11 @@
 
 package io.sarl.pythongenerator.validator;
 
-import java.util.Collections;
+import javax.inject.Singleton;
 
-import javax.inject.Inject;
+import com.google.inject.Injector;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.emf.ecore.EValidator;
-import org.eclipse.emf.ecore.resource.Resource;
-
-import io.sarl.lang.ui.generator.extra.ProjectAdapter;
-import io.sarl.lang.ui.generator.extra.preferences.ExtraLanguagePreferenceAccess;
-import io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider;
+import io.sarl.lang.ui.validation.extra.AbstractExtraLanguageValidatorProvider;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 
 /** Provider the Python validator if is it enabled.
@@ -42,23 +36,17 @@ import io.sarl.pythongenerator.PyGeneratorPlugin;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-public class PyValidatorProvider implements IExtraLanguageValidatorProvider {
-
-	@Inject
-	private PyValidator validator;
-
-	@Inject
-	private ExtraLanguagePreferenceAccess preferences;
+@Singleton
+public class PyValidatorProvider extends AbstractExtraLanguageValidatorProvider<PyValidator> {
 
 	@Override
-	public Iterable<EValidator> getValidators(Resource resource) {
-		final IProject project = ProjectAdapter.getProject(resource);
-		if (this.preferences.isGeneratorEnabled(
-				PyGeneratorPlugin.PLUGIN_ID,
-				project)) {
-			return Collections.singletonList(this.validator);
-		}
-		return Collections.emptyList();
+	protected PyValidator createValidatorInstance(Injector injector) {
+		return injector.getInstance(PyValidator.class);
+	}
+
+	@Override
+	protected String getPluginID() {
+		return PyGeneratorPlugin.PLUGIN_ID;
 	}
 
 }

@@ -21,6 +21,8 @@
 
 package io.sarl.lang.ui.generator.extra;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import com.google.inject.Singleton;
@@ -51,28 +53,35 @@ public class ExtensionPointExtraLanguageOutputConfigurationProvider extends Sarl
 
 	private static final String EXTENSION_POINT_CONFIGURATION_ATTRIBUTE = "configuration"; //$NON-NLS-1$
 
+	private List<IOutputConfigurationProvider> providers;
+
 	@Override
 	public Set<OutputConfiguration> getOutputConfigurations() {
 		final Set<OutputConfiguration> configurations = super.getOutputConfigurations();
-		final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
-		if (extensionPoint != null) {
-			Object obj;
-			for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
-				try {
-					obj = element.createExecutableExtension(EXTENSION_POINT_CONFIGURATION_ATTRIBUTE);
-					if (obj instanceof IOutputConfigurationProvider) {
-						final IOutputConfigurationProvider provider = (IOutputConfigurationProvider) obj;
-						configurations.addAll(provider.getOutputConfigurations());
+		if (this.providers == null) {
+			this.providers = new ArrayList<>();
+			final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+					SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
+			if (extensionPoint != null) {
+				Object obj;
+				for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+					try {
+						obj = element.createExecutableExtension(EXTENSION_POINT_CONFIGURATION_ATTRIBUTE);
+						if (obj instanceof IOutputConfigurationProvider) {
+							this.providers.add((IOutputConfigurationProvider) obj);
+						}
+					} catch (CoreException exception) {
+						LangActivator.getInstance().getLog().log(new Status(
+								IStatus.WARNING,
+								LangActivator.getInstance().getBundle().getSymbolicName(),
+								exception.getLocalizedMessage(),
+								exception));
 					}
-				} catch (CoreException exception) {
-					LangActivator.getInstance().getLog().log(new Status(
-							IStatus.WARNING,
-							LangActivator.getInstance().getBundle().getSymbolicName(),
-							exception.getLocalizedMessage(),
-							exception));
 				}
 			}
+		}
+		for (final IOutputConfigurationProvider provider : this.providers) {
+			configurations.addAll(provider.getOutputConfigurations());
 		}
 		return configurations;
 	}

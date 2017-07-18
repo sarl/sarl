@@ -24,6 +24,8 @@ package io.sarl.lang.ui.generator.extra;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Singleton;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -48,33 +50,42 @@ import io.sarl.lang.ui.internal.LangActivator;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
+@Singleton
 public class ExtensionPointExtraLanguageGeneratorProvider implements IExtraLanguageGeneratorProvider {
 
 	private static final String EXTENSION_POINT_GENERATOR_ATTRIBUTE = "generator"; //$NON-NLS-1$
 
+	private List<IExtraLanguageGeneratorProvider> providers;
+
 	@Override
 	public Iterable<IGenerator2> getGenerators(IGeneratorContext context, Resource resource) {
 		final List<IGenerator2> generators = new ArrayList<>();
-		final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
-		if (extensionPoint != null) {
-			Object obj;
-			for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
-				//final String typeName = element.getAttribute(EXTENSION_POINT_GENERATOR_ATTRIBUTE);
-				try {
-					obj = element.createExecutableExtension(EXTENSION_POINT_GENERATOR_ATTRIBUTE);
-					if (obj instanceof IExtraLanguageGeneratorProvider) {
-						for (final IGenerator2 gen : ((IExtraLanguageGeneratorProvider) obj).getGenerators(context, resource)) {
-							generators.add(gen);
+		if (this.providers == null) {
+			this.providers = new ArrayList<>();
+			final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+					SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
+			if (extensionPoint != null) {
+				Object obj;
+				for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+					//final String typeName = element.getAttribute(EXTENSION_POINT_GENERATOR_ATTRIBUTE);
+					try {
+						obj = element.createExecutableExtension(EXTENSION_POINT_GENERATOR_ATTRIBUTE);
+						if (obj instanceof IExtraLanguageGeneratorProvider) {
+							this.providers.add((IExtraLanguageGeneratorProvider) obj);
 						}
+					} catch (CoreException exception) {
+						LangActivator.getInstance().getLog().log(new Status(
+								IStatus.WARNING,
+								LangActivator.getInstance().getBundle().getSymbolicName(),
+								exception.getLocalizedMessage(),
+								exception));
 					}
-				} catch (CoreException exception) {
-					LangActivator.getInstance().getLog().log(new Status(
-							IStatus.WARNING,
-							LangActivator.getInstance().getBundle().getSymbolicName(),
-							exception.getLocalizedMessage(),
-							exception));
 				}
+			}
+		}
+		for (final IExtraLanguageGeneratorProvider provider : this.providers) {
+			for (final IGenerator2 gen : provider.getGenerators(context, resource)) {
+				generators.add(gen);
 			}
 		}
 		return generators;

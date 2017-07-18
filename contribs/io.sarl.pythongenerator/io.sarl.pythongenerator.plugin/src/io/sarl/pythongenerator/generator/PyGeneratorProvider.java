@@ -21,18 +21,11 @@
 
 package io.sarl.pythongenerator.generator;
 
-import java.util.Collections;
+import javax.inject.Singleton;
 
-import javax.inject.Inject;
+import com.google.inject.Injector;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.generator.IGenerator2;
-import org.eclipse.xtext.generator.IGeneratorContext;
-
-import io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider;
-import io.sarl.lang.ui.generator.extra.ProjectAdapter;
-import io.sarl.lang.ui.generator.extra.preferences.ExtraLanguagePreferenceAccess;
+import io.sarl.lang.ui.generator.extra.AbstractExtraLanguageGeneratorProvider;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 
 /** Provider the Python generator if is it enabled.
@@ -43,23 +36,17 @@ import io.sarl.pythongenerator.PyGeneratorPlugin;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-public class PyGeneratorProvider implements IExtraLanguageGeneratorProvider {
-
-	@Inject
-	private PyGenerator generator;
-
-	@Inject
-	private ExtraLanguagePreferenceAccess preferences;
+@Singleton
+public class PyGeneratorProvider extends AbstractExtraLanguageGeneratorProvider<PyGenerator> {
 
 	@Override
-	public Iterable<IGenerator2> getGenerators(IGeneratorContext context, Resource resource) {
-		final IProject project = ProjectAdapter.getProject(resource);
-		if (this.preferences.isGeneratorEnabled(
-				PyGeneratorPlugin.PLUGIN_ID,
-				project)) {
-			return Collections.singletonList(this.generator);
-		}
-		return Collections.emptyList();
+	protected PyGenerator createGeneratorInstance(Injector injector) {
+		return injector.getInstance(PyGenerator.class);
+	}
+
+	@Override
+	protected String getPluginID() {
+		return PyGeneratorPlugin.PLUGIN_ID;
 	}
 
 }

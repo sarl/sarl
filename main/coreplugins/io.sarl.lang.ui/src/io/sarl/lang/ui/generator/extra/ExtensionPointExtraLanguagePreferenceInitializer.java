@@ -21,6 +21,9 @@
 
 package io.sarl.lang.ui.generator.extra;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.inject.Singleton;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -48,27 +51,34 @@ public class ExtensionPointExtraLanguagePreferenceInitializer implements IPrefer
 
 	private static final String EXTENSION_POINT_PREFERENCE_INITIALIZER_ATTRIBUTE = "preferences"; //$NON-NLS-1$
 
+	private List<IPreferenceStoreInitializer> initializers;
+
 	@Override
 	public void initialize(IPreferenceStoreAccess access) {
-		final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-				SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
-		if (extensionPoint != null) {
-			Object obj;
-			for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
-				try {
-					obj = element.createExecutableExtension(EXTENSION_POINT_PREFERENCE_INITIALIZER_ATTRIBUTE);
-					if (obj instanceof IPreferenceStoreInitializer) {
-						final IPreferenceStoreInitializer provider = (IPreferenceStoreInitializer) obj;
-						provider.initialize(access);
+		if (this.initializers == null) {
+			this.initializers = new ArrayList<>();
+			final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+					SARLUiConfig.NAMESPACE, SARLUiConfig.EXTENSION_POINT_EXTRA_LANGUAGE_GENERATORS);
+			if (extensionPoint != null) {
+				Object obj;
+				for (final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+					try {
+						obj = element.createExecutableExtension(EXTENSION_POINT_PREFERENCE_INITIALIZER_ATTRIBUTE);
+						if (obj instanceof IPreferenceStoreInitializer) {
+							this.initializers.add((IPreferenceStoreInitializer) obj);
+						}
+					} catch (CoreException exception) {
+						LangActivator.getInstance().getLog().log(new Status(
+								IStatus.WARNING,
+								LangActivator.getInstance().getBundle().getSymbolicName(),
+								exception.getLocalizedMessage(),
+								exception));
 					}
-				} catch (CoreException exception) {
-					LangActivator.getInstance().getLog().log(new Status(
-							IStatus.WARNING,
-							LangActivator.getInstance().getBundle().getSymbolicName(),
-							exception.getLocalizedMessage(),
-							exception));
 				}
 			}
+		}
+		for (final IPreferenceStoreInitializer initializer : this.initializers) {
+			initializer.initialize(access);
 		}
 	}
 
