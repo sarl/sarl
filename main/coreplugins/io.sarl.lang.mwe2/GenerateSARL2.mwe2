@@ -516,6 +516,10 @@ Workflow {
     				to = "io.sarl.lang.generator.SarlOutputConfigurationProvider"
     			}
     			runtime = {
+    				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"
+    				to = "io.sarl.lang.generator.SarlOutputConfigurationProvider"
+    			}
+    			runtime = {
     				bind = "org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator"
     				to = "io.sarl.lang.jvmmodel.SarlJvmModelAssociations$Impl"
     			}
@@ -551,6 +555,14 @@ Workflow {
     				to = "io.sarl.lang.generator.GeneratorConfigProvider2"
    				}
 
+    			ui = {
+    				bind = "org.eclipse.xtext.generator.IOutputConfigurationProvider"
+    				to = "io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageOutputConfigurationProvider"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"
+    				to = "io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageOutputConfigurationProvider"
+    			}
     			ui = {
     				bind = "org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProcessor"
     				to = "io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor"
@@ -721,11 +733,26 @@ Workflow {
     				bind = "org.eclipse.xtend.ide.codebuilder.XtendFieldBuilder"
     				to = "io.sarl.lang.ui.codebuilder.SarlFieldBuilder"
    				}
-
-    			both = {
-    				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"
-    				to = "io.sarl.lang.generator.SarlOutputConfigurationProvider"
-    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.generator.IGenerator"
+    				to = "io.sarl.lang.generator.extra.ExtraLanguageSupportGenerator"
+   				}
+    			ui = {
+    				bind = "io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider"
+    				to = "io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageGeneratorProvider"
+   				}
+    			ui = {
+    				bind = "io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider"
+    				to = "io.sarl.lang.ui.validation.extra.ExtensionPointExtraLanguageValidatorProvider"
+   				}
+    			ui = {
+    				bind = "io.sarl.lang.generator.extra.ExtraLanguageTypeConverter$TypeConverterRuleReader"
+    				to = "io.sarl.lang.ui.generator.extra.preferences.PreferenceBasedTypeConverterRuleReader"
+   				}
+    			ui = {
+    				bind = "io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter$FeatureNameConverterRuleReader"
+    				to = "io.sarl.lang.ui.generator.extra.preferences.PreferenceBasedFeatureNameConverterRuleReader"
+   				}
     		}
 
     		// Xtend-extension bindings

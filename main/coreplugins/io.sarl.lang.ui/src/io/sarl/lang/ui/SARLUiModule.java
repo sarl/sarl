@@ -29,29 +29,15 @@ import com.google.inject.name.Names;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtend.core.compiler.XtendGenerator;
 import org.eclipse.xtext.builder.preferences.BuilderConfigurationBlock;
-import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.generator.IGenerator2;
-import org.eclipse.xtext.generator.IOutputConfigurationProvider;
-import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 
-import io.sarl.lang.bugfixes.pending.bug621.Bug621SARLExtraLanguageValidator;
-import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter.FeatureNameConverterRuleReader;
 import io.sarl.lang.generator.extra.ExtraLanguageSupportGenerator;
-import io.sarl.lang.generator.extra.ExtraLanguageTypeConverter.TypeConverterRuleReader;
-import io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider;
 import io.sarl.lang.ui.bugfixes.pending.xtexteclipse282.Issue282BuilderConfigurationBlock;
-import io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageGeneratorProvider;
-import io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageOutputConfigurationProvider;
-import io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageValidatorProvider;
-import io.sarl.lang.ui.generator.extra.preferences.PreferenceBasedFeatureNameConverterRuleReader;
-import io.sarl.lang.ui.generator.extra.preferences.PreferenceBasedTypeConverterRuleReader;
 import io.sarl.lang.ui.validation.UIConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
-import io.sarl.lang.validation.SARLValidator;
-import io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -136,35 +122,6 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	@Override
 	public Class<? extends BuilderConfigurationBlock> bindBuilderConfigurationBlock() {
 		return Issue282BuilderConfigurationBlock.class;
-	}
-
-	public Class<? extends IOutputConfigurationProvider> bindIOutputConfigurationProvider() {
-		return ExtensionPointExtraLanguageOutputConfigurationProvider.class;
-	}
-
-	public Class<? extends IGenerator> bindIGenerator() {
-		return ExtraLanguageSupportGenerator.class;
-	}
-
-	@SingletonBinding(eager = true)
-	public Class<? extends SARLValidator> bindSARLValidator() {
-		return Bug621SARLExtraLanguageValidator.class;
-	}
-
-	public Class<? extends IExtraLanguageGeneratorProvider> bindIExtraLanguageGeneratorProvider() {
-		return ExtensionPointExtraLanguageGeneratorProvider.class;
-	}
-
-	public Class<? extends IExtraLanguageValidatorProvider> bindIExtraLanguageValidatorProvider() {
-		return ExtensionPointExtraLanguageValidatorProvider.class;
-	}
-
-	public Class<? extends TypeConverterRuleReader> bindTypeConverterRuleReader() {
-		return PreferenceBasedTypeConverterRuleReader.class;
-	}
-
-	public Class<? extends FeatureNameConverterRuleReader> bindFeatureNameConverterRuleReader() {
-		return PreferenceBasedFeatureNameConverterRuleReader.class;
 	}
 
 }

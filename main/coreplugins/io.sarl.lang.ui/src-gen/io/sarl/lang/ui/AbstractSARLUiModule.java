@@ -27,7 +27,10 @@ import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
 import io.sarl.lang.generator.IGeneratorConfigProvider2;
-import io.sarl.lang.generator.SarlOutputConfigurationProvider;
+import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter;
+import io.sarl.lang.generator.extra.ExtraLanguageSupportGenerator;
+import io.sarl.lang.generator.extra.ExtraLanguageTypeConverter;
+import io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider;
 import io.sarl.lang.ide.contentassist.antlr.PartialSARLContentAssistParser;
 import io.sarl.lang.ide.contentassist.antlr.SARLParser;
 import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;
@@ -46,6 +49,10 @@ import io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateProposalProvider;
 import io.sarl.lang.ui.editor.SARLSourceViewer;
+import io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageGeneratorProvider;
+import io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageOutputConfigurationProvider;
+import io.sarl.lang.ui.generator.extra.preferences.PreferenceBasedFeatureNameConverterRuleReader;
+import io.sarl.lang.ui.generator.extra.preferences.PreferenceBasedTypeConverterRuleReader;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.hover.SARLHoverSerializer;
 import io.sarl.lang.ui.hover.SARLHoverSignatureProvider;
@@ -71,6 +78,8 @@ import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 import io.sarl.lang.ui.refactoring.rename.SARLRenameStrategyProvider;
 import io.sarl.lang.ui.tasks.SarlTaskTagProvider;
 import io.sarl.lang.ui.validation.SARLUIValidator;
+import io.sarl.lang.ui.validation.extra.ExtensionPointExtraLanguageValidatorProvider;
+import io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider;
 import org.eclipse.compare.IViewerCreator;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -127,6 +136,8 @@ import org.eclipse.xtext.common.types.xtext.ui.ITypesProposalProvider;
 import org.eclipse.xtext.common.types.xtext.ui.JdtBasedSimpleTypeScopeProvider;
 import org.eclipse.xtext.generator.AbstractFileSystemAccess2;
 import org.eclipse.xtext.generator.IContextualOutputConfigurationProvider;
+import org.eclipse.xtext.generator.IGenerator;
+import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.generator.IShouldGenerate;
 import org.eclipse.xtext.ide.LexerIdeBindings;
 import org.eclipse.xtext.ide.editor.bracketmatching.IBracePairProvider;
@@ -536,13 +547,18 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IOutputConfigurationProvider> bindIOutputConfigurationProvider() {
+		return ExtensionPointExtraLanguageOutputConfigurationProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends XtendParameterBuilder> bindXtendParameterBuilder() {
 		return SarlParameterBuilder.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IContextualOutputConfigurationProvider> bindIContextualOutputConfigurationProvider() {
-		return SarlOutputConfigurationProvider.class;
+		return ExtensionPointExtraLanguageOutputConfigurationProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -638,6 +654,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IExtraLanguageValidatorProvider> bindIExtraLanguageValidatorProvider() {
+		return ExtensionPointExtraLanguageValidatorProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IShouldGenerate> bindIShouldGenerate() {
 		return IShouldGenerate.Always.class;
 	}
@@ -645,6 +666,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends XtendFieldBuilder> bindXtendFieldBuilder() {
 		return SarlFieldBuilder.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ExtraLanguageTypeConverter.TypeConverterRuleReader> bindExtraLanguageTypeConverter$TypeConverterRuleReader() {
+		return PreferenceBasedTypeConverterRuleReader.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -663,8 +689,23 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ExtraLanguageFeatureNameConverter.FeatureNameConverterRuleReader> bindExtraLanguageFeatureNameConverter$FeatureNameConverterRuleReader() {
+		return PreferenceBasedFeatureNameConverterRuleReader.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IExtraLanguageGeneratorProvider> bindIExtraLanguageGeneratorProvider() {
+		return ExtensionPointExtraLanguageGeneratorProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends OutlineFilterAndSorter.IComparator> bindOutlineFilterAndSorter$IComparator() {
 		return SARLOutlineNodeComparator.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IGenerator> bindIGenerator() {
+		return ExtraLanguageSupportGenerator.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
