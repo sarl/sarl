@@ -477,7 +477,7 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
             this.uriCandidate = null;
             connections = this.bufferedConnections;
             this.bufferedConnections = null;
-            this.poller = new Poller(1);
+            this.poller = this.context.createPoller(1);
 
             this.kernelService.addKernelDiscoveryServiceListener(this.serviceListener);
             this.spaceService.addSpaceRepositoryListener(this.serviceListener);
