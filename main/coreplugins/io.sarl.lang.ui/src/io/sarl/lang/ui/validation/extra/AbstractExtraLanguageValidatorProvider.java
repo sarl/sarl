@@ -23,13 +23,13 @@ package io.sarl.lang.ui.validation.extra;
 
 import java.lang.ref.SoftReference;
 import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.google.inject.Injector;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import io.sarl.lang.ui.generator.extra.ProjectAdapter;
@@ -72,7 +72,7 @@ public abstract class AbstractExtraLanguageValidatorProvider<T extends AbstractE
 	protected abstract String getPluginID();
 
 	@Override
-	public Iterable<EValidator> getValidators(Resource resource) {
+	public List<AbstractExtraLanguageValidator> getValidators(Resource resource) {
 		final IProject project = ProjectAdapter.getProject(resource);
 		if (this.preferences.isGeneratorEnabled(
 				getPluginID(),

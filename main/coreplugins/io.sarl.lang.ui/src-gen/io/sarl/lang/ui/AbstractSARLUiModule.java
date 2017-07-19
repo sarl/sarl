@@ -28,7 +28,7 @@ import com.google.inject.Provider;
 import com.google.inject.name.Names;
 import io.sarl.lang.generator.IGeneratorConfigProvider2;
 import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter;
-import io.sarl.lang.generator.extra.ExtraLanguageSupportGenerator;
+import io.sarl.lang.generator.extra.ExtraLanguageGeneratorSupport;
 import io.sarl.lang.generator.extra.ExtraLanguageTypeConverter;
 import io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider;
 import io.sarl.lang.ide.contentassist.antlr.PartialSARLContentAssistParser;
@@ -705,7 +705,7 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IGenerator> bindIGenerator() {
-		return ExtraLanguageSupportGenerator.class;
+		return ExtraLanguageGeneratorSupport.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

@@ -32,11 +32,11 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import io.sarl.lang.ui.SARLUiConfig;
 import io.sarl.lang.ui.internal.LangActivator;
+import io.sarl.lang.validation.extra.AbstractExtraLanguageValidator;
 import io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider;
 
 /** Implementation of the provider of the extra language generators that replies no generator.
@@ -57,8 +57,8 @@ public class ExtensionPointExtraLanguageValidatorProvider implements IExtraLangu
 	private List<IExtraLanguageValidatorProvider> providers;
 
 	@Override
-	public Iterable<EValidator> getValidators(Resource resource) {
-		final List<EValidator> validators = new ArrayList<>();
+	public List<AbstractExtraLanguageValidator> getValidators(Resource resource) {
+		final List<AbstractExtraLanguageValidator> validators = new ArrayList<>();
 		if (this.providers == null) {
 			this.providers = new ArrayList<>();
 			final IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
@@ -82,7 +82,7 @@ public class ExtensionPointExtraLanguageValidatorProvider implements IExtraLangu
 			}
 		}
 		for (final IExtraLanguageValidatorProvider provider:  this.providers) {
-			for (final EValidator validator : provider.getValidators(resource)) {
+			for (final AbstractExtraLanguageValidator validator : provider.getValidators(resource)) {
 				validators.add(validator);
 			}
 		}

@@ -735,7 +735,7 @@ Workflow {
    				}
     			ui = {
     				bind = "org.eclipse.xtext.generator.IGenerator"
-    				to = "io.sarl.lang.generator.extra.ExtraLanguageSupportGenerator"
+    				to = "io.sarl.lang.generator.extra.ExtraLanguageGeneratorSupport"
    				}
     			ui = {
     				bind = "io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider"

@@ -34,7 +34,7 @@ import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 
-import io.sarl.lang.generator.extra.ExtraLanguageSupportGenerator;
+import io.sarl.lang.generator.extra.ExtraLanguageGeneratorSupport;
 import io.sarl.lang.ui.bugfixes.pending.xtexteclipse282.Issue282BuilderConfigurationBlock;
 import io.sarl.lang.ui.validation.UIConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
@@ -102,7 +102,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		binder.bind(IssueSeveritiesProvider.class).toProvider(provider);
 		binder.bind(IConfigurableIssueSeveritiesProvider.class).toProvider(provider);
 		// Configure the extra generator/validator provider.
-		binder.bind(IGenerator2.class).annotatedWith(Names.named(ExtraLanguageSupportGenerator.MAIN_GENERATOR_NAME))
+		binder.bind(IGenerator2.class).annotatedWith(Names.named(ExtraLanguageGeneratorSupport.MAIN_GENERATOR_NAME))
 				.to(XtendGenerator.class);
 	}
 

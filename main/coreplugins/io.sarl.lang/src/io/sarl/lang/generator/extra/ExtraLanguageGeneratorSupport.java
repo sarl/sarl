@@ -43,7 +43,7 @@ import org.eclipse.xtext.generator.IGeneratorContext;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-public class ExtraLanguageSupportGenerator implements IGenerator, IGenerator2 {
+public class ExtraLanguageGeneratorSupport implements IGenerator, IGenerator2 {
 
 	/** Name of the injected element for the main generator.
 	 */

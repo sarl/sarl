@@ -31,10 +31,15 @@ import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtend.core.xtend.XtendFile;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.ide.validator.XtendUIValidator;
+import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.ComposedChecks;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
+import org.eclipse.xtext.xbase.XbasePackage;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
+import org.eclipse.xtext.xtype.XtypePackage;
 
-import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.validation.extra.ExtraLanguageValidatorSupport;
 
 /** Validator based on the Eclipse UI.
  *
@@ -43,17 +48,18 @@ import io.sarl.lang.sarl.SarlPackage;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@ComposedChecks(validators = {ExtraLanguageValidatorSupport.class})
 public class SARLUIValidator extends XtendUIValidator {
 
 	@Override
 	protected List<EPackage> getEPackages() {
 		final List<EPackage> packages = super.getEPackages();
-		packages.add(SarlPackage.eINSTANCE);
-		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtend")); //$NON-NLS-1$
-		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xbase")); //$NON-NLS-1$
-		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/common/JavaVMTypes")); //$NON-NLS-1$
-		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/xtext/xbase/Xtype")); //$NON-NLS-1$
-		packages.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/Xtext/Xbase/XAnnotations")); //$NON-NLS-1$
+		packages.add(io.sarl.lang.sarl.SarlPackage.eINSTANCE);
+		packages.add(XtendPackage.eINSTANCE);
+		packages.add(XbasePackage.eINSTANCE);
+		packages.add(TypesPackage.eINSTANCE);
+		packages.add(XtypePackage.eINSTANCE);
+		packages.add(XAnnotationsPackage.eINSTANCE);
 		return packages;
 	}
 

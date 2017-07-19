@@ -21,32 +21,49 @@
 
 package io.sarl.lang.validation.extra;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.inject.Inject;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Injector;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.TypesPackage;
+import org.eclipse.xtext.util.SimpleCache;
+import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.validation.AbstractDeclarativeValidator;
+import org.eclipse.xtext.validation.EValidatorRegistrar;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
+import org.eclipse.xtext.xbase.XbasePackage;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
-import org.eclipse.xtext.xbase.validation.AbstractXbaseValidator;
+import org.eclipse.xtext.xtype.XtypePackage;
 
 import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter;
 import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter.ConversionType;
 import io.sarl.lang.generator.extra.ExtraLanguageTypeConverter;
 import io.sarl.lang.generator.extra.IExtraLanguageConversionInitializer;
 import io.sarl.lang.generator.extra.IExtraLanguageGeneratorContext;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.IssueCodes;
 
@@ -58,9 +75,28 @@ import io.sarl.lang.validation.IssueCodes;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-public abstract class AbstractExtraLanguageValidator extends AbstractXbaseValidator {
+public abstract class AbstractExtraLanguageValidator extends AbstractDeclarativeValidator {
 
 	private static final String CHECKED_FEATURE_CALLS = "io.sarl.lang.validation.extra.CheckedFeatureCalls"; //$NON-NLS-1$
+
+	private static final Field CHECK_METHODS_FIELD;
+
+	private static final Field METHODS_FOR_TYPE_FIELD;
+
+	private static final Method COLLECT_METHODS_METHOD;
+
+	static {
+		try {
+			CHECK_METHODS_FIELD = AbstractDeclarativeValidator.class.getDeclaredField("checkMethods"); //$NON-NLS-1$
+			CHECK_METHODS_FIELD.setAccessible(true);
+			METHODS_FOR_TYPE_FIELD = AbstractDeclarativeValidator.class.getDeclaredField("methodsForType"); //$NON-NLS-1$
+			METHODS_FOR_TYPE_FIELD.setAccessible(true);
+			COLLECT_METHODS_METHOD = AbstractDeclarativeValidator.class.getDeclaredMethod("collectMethods", Class.class); //$NON-NLS-1$
+			COLLECT_METHODS_METHOD.setAccessible(true);
+		} catch (Exception exception) {
+			throw new Error(exception);
+		}
+	}
 
 	private ExtraLanguageTypeConverter typeConverter;
 
@@ -68,6 +104,54 @@ public abstract class AbstractExtraLanguageValidator extends AbstractXbaseValida
 
 	@Inject
 	private Injector injector;
+
+	/** Replies the collected check methods.
+	 *
+	 * @param type the type to search for.
+	 * @return the collected check methods.
+	 */
+	@SuppressWarnings("unchecked")
+	List<MethodWrapper> getMethodsForType(Class<?> type) {
+		try {
+			ensureMethodWrappers();
+			final SimpleCache<Class<?>, List<MethodWrapper>> cache =
+					(SimpleCache<Class<?>, List<MethodWrapper>>) METHODS_FOR_TYPE_FIELD.get(this);
+			return cache.get(type);
+		} catch (Exception exception) {
+			throw new Error(exception);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void ensureMethodWrappers() throws Exception {
+		Set<MethodWrapper> set = (Set<MethodWrapper>) CHECK_METHODS_FIELD.get(this);
+		if (set == null) {
+			synchronized (this) {
+				if (CHECK_METHODS_FIELD.get(this) == null) {
+					set = Sets.newLinkedHashSet();
+					set.addAll((List<MethodWrapper>) COLLECT_METHODS_METHOD.invoke(this, getClass()));
+					CHECK_METHODS_FIELD.set(this, set);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void register(EValidatorRegistrar registrar) {
+		//
+	}
+
+	@Override
+	protected List<EPackage> getEPackages() {
+		final List<EPackage> result = new ArrayList<>(super.getEPackages());
+		result.add(SarlPackage.eINSTANCE);
+		result.add(XtendPackage.eINSTANCE);
+		result.add(XbasePackage.eINSTANCE);
+		result.add(TypesPackage.eINSTANCE);
+		result.add(XtypePackage.eINSTANCE);
+		result.add(XAnnotationsPackage.eINSTANCE);
+		return result;
+	}
 
 	@Override
 	public void setInjector(Injector injector) {
@@ -84,10 +168,46 @@ public abstract class AbstractExtraLanguageValidator extends AbstractXbaseValida
 	 * @param source the source of the error.
 	 */
 	protected void error(String message, EObject source) {
-		error(MessageFormat.format(getErrorMessageFormat(), message), source,
+		error(message, source,
 				null,
 				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 				IssueCodes.INVALID_EXTRA_LANGUAGE_GENERATION);
+	}
+
+	@Override
+	protected void error(String message, EObject source, EStructuralFeature feature, String code, String... issueData) {
+		super.error(MessageFormat.format(getErrorMessageFormat(), message), source, feature,
+				Strings.isEmpty(code) ? IssueCodes.INVALID_EXTRA_LANGUAGE_GENERATION : code, issueData);
+	}
+
+	@Override
+	protected void error(String message, EObject source, EStructuralFeature feature, int index, String code,
+			String... issueData) {
+		super.error(MessageFormat.format(getErrorMessageFormat(), message), source, feature, index,
+				Strings.isEmpty(code) ? IssueCodes.INVALID_EXTRA_LANGUAGE_GENERATION : code, issueData);
+	}
+
+	@Override
+	protected void info(String message, EObject source, EStructuralFeature feature, int index, String code,
+			String... issueData) {
+		super.info(MessageFormat.format(getErrorMessageFormat(), message), source, feature, index, code, issueData);
+	}
+
+	@Override
+	protected void info(String message, EObject source, EStructuralFeature feature, String code, String... issueData) {
+		super.info(MessageFormat.format(getErrorMessageFormat(), message), source, feature, code, issueData);
+	}
+
+	@Override
+	protected void warning(String message, EObject source, EStructuralFeature feature, int index, String code,
+			String... issueData) {
+		super.warning(MessageFormat.format(getErrorMessageFormat(), message), source, feature, index, code, issueData);
+	}
+
+	@Override
+	protected void warning(String message, EObject source, EStructuralFeature feature, String code,
+			String... issueData) {
+		super.warning(MessageFormat.format(getErrorMessageFormat(), message), source, feature, code, issueData);
 	}
 
 	/** Replies the message format to be used for building an alert message.
@@ -257,7 +377,7 @@ public abstract class AbstractExtraLanguageValidator extends AbstractXbaseValida
 		final XAbstractFeatureCall rootFeatureCall;
 		if (container instanceof XMemberFeatureCall || container instanceof XFeatureCall) {
 			rootFeatureCall = (XAbstractFeatureCall) Utils.getFirstContainerForPredicate(featureCall,
-				(it) -> it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall));
+					(it) -> it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall));
 		} else {
 			rootFeatureCall = featureCall;
 		}

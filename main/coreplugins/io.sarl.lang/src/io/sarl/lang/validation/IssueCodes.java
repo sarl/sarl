@@ -170,7 +170,7 @@ public final class IssueCodes {
 			ISSUE_CODE_PREFIX + "invalid_use_of_break"; //$NON-NLS-1$
 
 	/**
-	 * Invalid extr-language generation.
+	 * Invalid extra-language generation.
 	 * @since 0.6
 	 */
 	public static final String INVALID_EXTRA_LANGUAGE_GENERATION =

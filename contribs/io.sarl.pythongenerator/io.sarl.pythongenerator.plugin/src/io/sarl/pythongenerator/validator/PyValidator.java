@@ -36,10 +36,12 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
+import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.featurecalls.IdentifiableSimpleNameProvider;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
 import org.eclipse.xtext.xtype.XImportDeclaration;
+import org.eclipse.xtext.xtype.XtypePackage;
 
 import io.sarl.lang.generator.extra.IExtraLanguageConversionInitializer;
 import io.sarl.lang.validation.extra.AbstractExtraLanguageValidator;
@@ -59,8 +61,16 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 
 	/** Error handler for the type conversions.
 	 */
-	private final Procedure3<EObject, JvmType, String> typeErrorHandler = (source, invalidType, name) -> {
-		error(MessageFormat.format(Messages.PyValidator_0, name), source);
+	private final Procedure3<EObject, JvmType, String> typeErrorHandler1 = (source, invalidType, name) -> {
+		error(MessageFormat.format(Messages.PyValidator_0, name), source,
+				XtypePackage.eINSTANCE.getXImportDeclaration_ImportedType());
+	};
+
+	/** Error handler for the type conversions.
+	 */
+	private final Procedure3<EObject, JvmType, String> typeErrorHandler2 = (source, invalidType, name) -> {
+		error(MessageFormat.format(Messages.PyValidator_0, name), source,
+				XbasePackage.eINSTANCE.getXAbstractFeatureCall_Feature());
 	};
 
 	/** Error handler for the feature conversions.
@@ -77,7 +87,7 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 			// This type of JVM element is not supposed to be converted
 			return false;
 		}
-		error(message, source);
+		error(message, source, XbasePackage.eINSTANCE.getXAbstractFeatureCall_Feature());
 		return true;
 	};
 
@@ -111,7 +121,7 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 	@Check
 	public void checkImportsMapping(XImportDeclaration importDeclaration) {
 		final JvmDeclaredType type = importDeclaration.getImportedType();
-		doTypeMappingCheck(importDeclaration, type, this.typeErrorHandler);
+		doTypeMappingCheck(importDeclaration, type, this.typeErrorHandler1);
 	}
 
 	/** Check that member feature calls have a conversion mapping.
@@ -120,7 +130,7 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 	 */
 	@Check
 	public void checkMemberFeatureCallMapping(XMemberFeatureCall featureCall) {
-		doCheckMemberFeatureCallMapping(featureCall, this.typeErrorHandler, this.featureErrorHandler);
+		doCheckMemberFeatureCallMapping(featureCall, this.typeErrorHandler2, this.featureErrorHandler);
 	}
 
 	/** Check that member feature calls have a conversion mapping.
@@ -129,7 +139,7 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 	 */
 	@Check
 	public void checkMemberFeatureCallMapping(XFeatureCall featureCall) {
-		doCheckMemberFeatureCallMapping(featureCall, this.typeErrorHandler, this.featureErrorHandler);
+		doCheckMemberFeatureCallMapping(featureCall, this.typeErrorHandler2, this.featureErrorHandler);
 	}
 
 }

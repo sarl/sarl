@@ -21,8 +21,9 @@
 
 package io.sarl.lang.validation.extra;
 
+import java.util.List;
+
 import com.google.inject.ImplementedBy;
-import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 
 /** Provider of the extra language validators.
@@ -43,6 +44,6 @@ public interface IExtraLanguageValidatorProvider {
 	 * @param resource the resource for which the validators should be retreived.
 	 * @return the list of the generators.
 	 */
-	Iterable<EValidator> getValidators(Resource resource);
+	List<AbstractExtraLanguageValidator> getValidators(Resource resource);
 
 }

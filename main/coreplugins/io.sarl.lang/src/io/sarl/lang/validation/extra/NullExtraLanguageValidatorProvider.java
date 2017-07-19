@@ -22,8 +22,8 @@
 package io.sarl.lang.validation.extra;
 
 import java.util.Collections;
+import java.util.List;
 
-import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 
 /** Implementation of the provider of the extra language validators that replies no generator.
@@ -37,7 +37,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 public class NullExtraLanguageValidatorProvider implements IExtraLanguageValidatorProvider {
 
 	@Override
-	public Iterable<EValidator> getValidators(Resource resource) {
+	public List<AbstractExtraLanguageValidator> getValidators(Resource resource) {
 		return Collections.emptyList();
 	}
 
