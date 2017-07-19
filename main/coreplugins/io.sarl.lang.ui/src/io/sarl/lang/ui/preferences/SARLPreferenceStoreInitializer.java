@@ -32,6 +32,8 @@ import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 import org.eclipse.xtext.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 
+import io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguagePreferenceInitializer;
+
 /** Initialize the preference store with SARL specific information.
  *
  * @author $Author: sgalland$
@@ -46,6 +48,9 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 
 	@Inject
 	private ConfigurableIssueCodesProvider issueCodes;
+
+	@Inject
+	private ExtensionPointExtraLanguagePreferenceInitializer extraLanguagePreferenceInitializer;
 
 	@Override
 	public void initialize(IPreferenceStoreAccess preferenceStoreAccess) {
@@ -62,6 +67,8 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 				PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION,
 				preferenceStore.getBoolean(org.eclipse.jdt.ui.PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION));
 
+		// Initialize the generators for the extra languages.
+		setupExtraLanguageGeneratorDefaults(preferenceStoreAccess);
 	}
 
 	private void setupIssueCodesDefaults(IPreferenceStoreAccess preferenceStoreAccess) {
@@ -69,6 +76,10 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 		for (final PreferenceKey prefKey : this.issueCodes.getConfigurableIssueCodes().values()) {
 			store.setDefault(prefKey.getId(), prefKey.getDefaultValue());
 		}
+	}
+
+	private void setupExtraLanguageGeneratorDefaults(IPreferenceStoreAccess preferenceStoreAccess) {
+		this.extraLanguagePreferenceInitializer.initialize(preferenceStoreAccess);
 	}
 
 	@Override

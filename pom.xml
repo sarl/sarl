@@ -43,7 +43,7 @@
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module -->
-		<tycho.version>0.26.0</tycho.version>
+		<tycho.version>1.0.0</tycho.version>
 		<!-- Java FX version (used for accessing the jfx repository) -->
 		<efxclipse.version>3.0.0</efxclipse.version>
 
@@ -319,12 +319,12 @@
 			<dependency>
 				<groupId>com.hazelcast</groupId>
 				<artifactId>hazelcast</artifactId>
-				<version>3.8-EA</version>
+				<version>3.9-EA</version>
 			</dependency>
 			<dependency>
 				<groupId>org.zeromq</groupId>
 				<artifactId>jeromq</artifactId>
-				<version>0.3.6</version>
+				<version>0.4.2</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
@@ -580,7 +580,7 @@
 						<dependency>
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
-							<version>7.2</version>
+							<version>7.6</version>
 						</dependency>
 					</dependencies>
 				</plugin>

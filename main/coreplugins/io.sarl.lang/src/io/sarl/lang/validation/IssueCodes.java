@@ -169,6 +169,13 @@ public final class IssueCodes {
 	public static final String INVALID_USE_OF_BREAK =
 			ISSUE_CODE_PREFIX + "invalid_use_of_break"; //$NON-NLS-1$
 
+	/**
+	 * Invalid extra-language generation.
+	 * @since 0.6
+	 */
+	public static final String INVALID_EXTRA_LANGUAGE_GENERATION =
+			ISSUE_CODE_PREFIX + "invalid_extra_language_generation"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

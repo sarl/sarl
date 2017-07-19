@@ -25,6 +25,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.intro.IIntroManager;
+import org.eclipse.ui.intro.IIntroPart;
 
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
 
@@ -54,6 +57,28 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 				// Monitor
 				mon.newChild(1));
 		mon.done();
+	}
+
+	@Override
+	public boolean performFinish() {
+		if (super.performFinish()) {
+			// Close the welcome page.
+			closeWelcomePage();
+			return true;
+		}
+		return false;
+	}
+
+	/** Close the welcome page.
+	 */
+	protected static void closeWelcomePage() {
+		final IIntroManager introManager = PlatformUI.getWorkbench().getIntroManager();
+		if (introManager != null) {
+			final IIntroPart intro = introManager.getIntro();
+			if (intro != null) {
+				introManager.closeIntro(intro);
+			}
+		}
 	}
 
 }
