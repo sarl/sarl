@@ -81,10 +81,7 @@ public class ExtraLanguageValidatorSupport extends AbstractDeclarativeValidator 
 			final ValidationMessageAcceptor acceptor = getMessageAcceptor();
 			final StateAccess stateAccess = setMessageAcceptor(acceptor);
 			for (final AbstractExtraLanguageValidator validator : validators) {
-				validator.setMessageAcceptor(acceptor);
-				for (final MethodWrapper wrapper : validator.getMethodsForType(currentObject.getClass())) {
-					wrapper.invoke(stateAccess.getState());
-				}
+				validator.validate(stateAccess, acceptor);
 			}
 		}
 	}
