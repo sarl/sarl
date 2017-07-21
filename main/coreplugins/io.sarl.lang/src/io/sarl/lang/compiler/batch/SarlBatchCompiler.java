@@ -859,6 +859,23 @@ public class SarlBatchCompiler {
 		getGeneratorConfig2().setUseExpressionInterpreterForInlineAnnotation(generateInlineAnnotation);
 	}
 
+	/** Replies if the <code>@Pure</code> shall be generated.
+	 *
+	 * @return <code>true</code> if annotation shall be generated.
+	 */
+	@Pure
+	public boolean isGeneratePureAnnotation() {
+		return getGeneratorConfig2().isGeneratePureAnnotation();
+	}
+
+	/** Set if the <code>@Pure</code> shall be generated.
+	 *
+	 * @param generatePureAnnotation <code>true</code> if annotation shall be generated.
+	 */
+	public void setGeneratePureAnnotation(final boolean generatePureAnnotation) {
+		getGeneratorConfig2().setGeneratePureAnnotation(generatePureAnnotation);
+	}
+
 	/** Change the source path.
 	 *
 	 * <p>The source path is a list the names of folders that are separated by {@link File#pathSeparator}.

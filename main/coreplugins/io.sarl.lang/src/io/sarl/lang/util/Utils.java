@@ -212,8 +212,8 @@ public final class Utils {
 	 * extract any type-related information.
 	 *
 	 * @param jvmElement - the element to analyze
-	 * @param extendedClass the extended class or {@code null} if none.
-	 * @param extendedInterfaces the extended interfaces or {@code null} if none.
+	 * @param extendedClass the extended class.
+	 * @param extendedInterfaces the extended interfaces.
 	 * @param finalOperations - filled with the final operations inherited by the element.
 	 * @param overridableOperations - filled with the oervrideable operations inherited by the element.
 	 * @param inheritedFields - filled with the fields inherited by the element.

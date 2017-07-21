@@ -107,6 +107,8 @@ public final class Main {
 
 	private static final String CLI_OPTION_GENERATE_INLINES = "inlines"; //$NON-NLS-1$
 
+	private static final String CLI_OPTION_GENERATE_PURES = "pures"; //$NON-NLS-1$
+
 	private static final String CLI_OPTION_NOWARNING = "nowarn"; //$NON-NLS-1$
 
 	private static final String CLI_OPTION_WARNINGISERROR = "werror"; //$NON-NLS-1$
@@ -269,6 +271,9 @@ public final class Main {
 					break;
 				case CLI_OPTION_GENERATE_INLINES:
 					compiler.setGenerateInlineAnnotation(getBooleanValue(opt));
+					break;
+				case CLI_OPTION_GENERATE_PURES:
+					compiler.setGeneratePureAnnotation(getBooleanValue(opt));
 					break;
 				case CLI_OPTION_NOWARNING:
 					compiler.setAllWarningSeverities(Severity.IGNORE);

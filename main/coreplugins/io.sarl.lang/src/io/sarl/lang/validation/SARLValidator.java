@@ -192,7 +192,7 @@ import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
-import io.sarl.lang.typesystem.SARLExpressionHelper;
+import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
@@ -345,7 +345,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private LocalClassAwareTypeNames localClassAwareTypeNames;
 
 	@Inject
-	private SARLExpressionHelper expressionHelper;
+	private IOperationHelper operationHelper;
 
 	@Inject
 	private IProgrammaticWarningSuppressor warningSuppressor;
@@ -1514,7 +1514,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkBehaviorUnitGuardType(SarlBehaviorUnit behaviorUnit) {
 		final XExpression guard = behaviorUnit.getGuard();
 		if (guard != null) {
-			if (this.expressionHelper.hasDeepSideEffects(guard)) {
+			if (this.operationHelper.hasSideEffects(null, guard)) {
 				error(Messages.SARLValidator_53,
 						guard,
 						null,

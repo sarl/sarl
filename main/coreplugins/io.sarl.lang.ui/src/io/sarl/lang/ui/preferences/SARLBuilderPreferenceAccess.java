@@ -48,6 +48,11 @@ public class SARLBuilderPreferenceAccess {
 	public static final String PREF_USE_EXPRESSION_INTERPRETER =
 			"io.sarl.builder.useExpressionInterpreterForInlineAnnotation"; //$NON-NLS-1$
 
+	/**
+	 * Preference identifier for generating <code>@Pure</code>.
+	 */
+	public static final String PREF_GENERATE_PURE = "io.sarl.builder.generatePureAnnotation"; //$NON-NLS-1$
+
 	/** Load the generator configuration from the preferences.
 	 *
 	 * @param generatorConfig the configuration to set up.
@@ -64,6 +69,9 @@ public class SARLBuilderPreferenceAccess {
 					&& preferenceStore.contains(PREF_USE_EXPRESSION_INTERPRETER)) {
 				generatorConfig.setUseExpressionInterpreterForInlineAnnotation(preferenceStore.getBoolean(
 						PREF_USE_EXPRESSION_INTERPRETER));
+			}
+			if (preferenceStore.contains(PREF_GENERATE_PURE)) {
+				generatorConfig.setGeneratePureAnnotation(preferenceStore.getBoolean(PREF_GENERATE_PURE));
 			}
 		}
 	}
@@ -82,6 +90,7 @@ public class SARLBuilderPreferenceAccess {
 			final IPreferenceStore store = preferenceStoreAccess.getWritablePreferenceStore();
 			store.setDefault(PREF_GENERATE_INLINE, true);
 			store.setDefault(PREF_USE_EXPRESSION_INTERPRETER, true);
+			store.setDefault(PREF_GENERATE_PURE, true);
 		}
 
 	}

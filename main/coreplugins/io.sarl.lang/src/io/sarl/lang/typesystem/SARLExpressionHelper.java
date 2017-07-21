@@ -21,9 +21,6 @@
 
 package io.sarl.lang.typesystem;
 
-import java.util.List;
-import java.util.regex.Pattern;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -33,12 +30,6 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
-import org.eclipse.xtext.xbase.XBlockExpression;
-import org.eclipse.xtext.xbase.XCastedExpression;
-import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.XInstanceOfExpression;
-import org.eclipse.xtext.xbase.XSynchronizedExpression;
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import io.sarl.lang.util.Utils;
@@ -55,92 +46,17 @@ import io.sarl.lang.util.Utils;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @see "http://www.eclipse.org/Xtext/documentation.html#validation"
+ * @see IOperationHelper
+ * @see SARLOperationHelper
  */
 @Singleton
 public class SARLExpressionHelper extends XtendExpressionHelper {
 
-	/** Regular expression patterns that matches the names of functions usually
-	 * considered as pure.
-	 */
-	public static final String[] SPECIAL_PURE_FUNCTION_NAME_PATTERNS = {
-		"clone", //$NON-NLS-1$
-		"contains(?:[A-Z1-9].*)?", //$NON-NLS-1$
-		"equals", //$NON-NLS-1$
-		"get(?:[A-Z1-9].*)?", //$NON-NLS-1$
-		"has[A-Z1-9].*", //$NON-NLS-1$
-		"hashCode", //$NON-NLS-1$
-		"is[A-Z].*", //$NON-NLS-1$
-		"iterator", //$NON-NLS-1$
-		"length", //$NON-NLS-1$
-		"to[A-Z1-9].*", //$NON-NLS-1$
-		"size", //$NON-NLS-1$
-	};
-
-	/** Regular expression patterns that matches the names of functions usually
-	 * considered as not pure.
-	 */
-	public static final String[] SPECIAL_NOTPURE_FUNCTION_NAME_PATTERNS = {
-		"set(?:[A-Z1-9].*)?", //$NON-NLS-1$
-		"print(?:(?:ln)|(?:[A-Z1-9].*))?", //$NON-NLS-1$
-	};
-
-	private Pattern purePattern;
-
-	private Pattern notPurePattern;
+	@Inject
+	private IPureOperationNameValidator nameValidator;
 
 	@Inject
 	private CommonTypeComputationServices services;
-
-	/** Construct the helper.
-	 *
-	 * @see #SPECIAL_PURE_FUNCTION_NAME_PATTERNS
-	 * @see #SPECIAL_NOTPURE_FUNCTION_NAME_PATTERNS
-	 */
-	public SARLExpressionHelper() {
-		this.purePattern = buildPurePattern(SPECIAL_PURE_FUNCTION_NAME_PATTERNS);
-		this.notPurePattern = buildPurePattern(SPECIAL_NOTPURE_FUNCTION_NAME_PATTERNS);
-	}
-
-	/** Construct the helper.
-	 *
-	 * @param additionalSpecialPureFunctionNamePatterns the patterns for the functions that are considered as pure functions.
-	 * @see #SPECIAL_PURE_FUNCTION_NAME_PATTERNS
-	 * @see #SPECIAL_NOTPURE_FUNCTION_NAME_PATTERNS
-	 */
-	public SARLExpressionHelper(String... additionalSpecialPureFunctionNamePatterns) {
-		this.purePattern = buildPurePattern(SPECIAL_PURE_FUNCTION_NAME_PATTERNS, additionalSpecialPureFunctionNamePatterns);
-		this.notPurePattern = buildPurePattern(SPECIAL_NOTPURE_FUNCTION_NAME_PATTERNS);
-	}
-
-	private static Pattern buildPurePattern(String[] patterns, String... additionalPatterns) {
-		final StringBuilder fullPattern = new StringBuilder();
-		fullPattern.append("^"); //$NON-NLS-1$
-		boolean hasPattern = false;
-		for (final String pattern : patterns) {
-			if (hasPattern) {
-				fullPattern.append("|"); //$NON-NLS-1$
-			} else {
-				hasPattern = true;
-			}
-			fullPattern.append("(?:"); //$NON-NLS-1$
-			fullPattern.append(pattern);
-			fullPattern.append(")"); //$NON-NLS-1$
-		}
-		if (additionalPatterns != null && additionalPatterns.length > 0) {
-			for (final String pattern : additionalPatterns) {
-				if (hasPattern) {
-					fullPattern.append("|"); //$NON-NLS-1$
-				} else {
-					hasPattern = true;
-				}
-				fullPattern.append("(?:"); //$NON-NLS-1$
-				fullPattern.append(pattern);
-				fullPattern.append(")"); //$NON-NLS-1$
-			}
-		}
-		fullPattern.append("$"); //$NON-NLS-1$
-		return Pattern.compile(fullPattern.toString());
-	}
 
 	@Override
 	public boolean hasSideEffects(XAbstractFeatureCall featureCall, boolean inspectContents) {
@@ -150,8 +66,8 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 			// e.g. the "is", "get" functions.
 			if (feature != null && !feature.eIsProxy() && feature instanceof JvmOperation) {
 				final JvmOperation operation = (JvmOperation) feature;
-				return isNamePatternForNotPureOperation(operation)
-						|| !isNamePatternForPureOperation(operation)
+				return this.nameValidator.isNamePatternForNotPureOperation(operation)
+						|| !this.nameValidator.isNamePatternForPureOperation(operation)
 						|| !hasPrimitiveParameters(operation);
 			}
 			return true;
@@ -167,89 +83,6 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 			}
 		}
 		return true;
-	}
-
-	/** Replies if the given expression has a side effect in the context of a guard.
-	 *
-	 * <p>This function differs from {@link #hasSideEffects(XExpression)} because it explore the
-	 * syntax tree for determining if one action has a side effect.
-	 *
-	 * @param expr the expression to test.
-	 * @return <code>true</code> if a side effect was detected.
-	 */
-	public boolean hasDeepSideEffects(XExpression expr) {
-		XExpression rawExpr = expr;
-		boolean changed;
-		do {
-			changed = false;
-			if (rawExpr instanceof XInstanceOfExpression) {
-				return false;
-			}
-			if (rawExpr instanceof XSynchronizedExpression) {
-				rawExpr = ((XSynchronizedExpression) rawExpr).getExpression();
-				changed = true;
-			} else if (rawExpr instanceof XCastedExpression) {
-				final XCastedExpression castedExpression = (XCastedExpression) rawExpr;
-				rawExpr = castedExpression.getTarget();
-				changed = true;
-			} else if (rawExpr instanceof XBlockExpression) {
-				final List<XExpression> list = ((XBlockExpression) rawExpr).getExpressions();
-				if (list != null && !list.isEmpty()) {
-					for (final XExpression subExpr : list) {
-						if (hasDeepSideEffects(subExpr)) {
-							return true;
-						}
-					}
-				}
-				return false;
-			}
-		} while (changed);
-		return hasSideEffects(rawExpr);
-	}
-
-	/** Check if the given operation could be annoted with "@Pure".
-	 *
-	 * <p>This function is usually used by the inferrers for automatically generating the pure function
-	 * annotation.
-	 *
-	 * @param operation - the operation to test.
-	 * @param body - the body of the operation.
-	 * @return <code>true</code> if one of the components of the given expression has a side effect;
-	 *     otherwise <code>false</code>.
-	 * @see Pure
-	 */
-	public boolean isPurableOperation(JvmOperation operation, XExpression body) {
-		if (operation == null || operation.isAbstract() || body == null) {
-			return false;
-		}
-		if (isNamePatternForNotPureOperation(operation)) {
-			return false;
-		}
-		return isNamePatternForPureOperation(operation) || !hasSideEffects(body);
-	}
-
-	/** Replies if the given operation has a name which is assumed to be for a pure function by default.
-	 *
-	 * @param operation the operation to test.
-	 * @return {@code true} if the operation has a side effects.
-	 * @since 0.5
-	 * @see #isNamePatternForNotPureOperation(JvmOperation)
-	 */
-	public boolean isNamePatternForPureOperation(JvmOperation operation) {
-		final String name = operation.getSimpleName();
-		return name != null && this.purePattern.matcher(name).find();
-	}
-
-	/** Replies if the given operation has a name which is assumed to be for a pure function by default.
-	 *
-	 * @param operation the operation to test.
-	 * @return {@code true} if the operation has no side effect.
-	 * @since 0.5
-	 * @see #isNamePatternForPureOperation(JvmOperation)
-	 */
-	public boolean isNamePatternForNotPureOperation(JvmOperation operation) {
-		final String name = operation.getSimpleName();
-		return name != null && this.notPurePattern.matcher(name).find();
 	}
 
 }
