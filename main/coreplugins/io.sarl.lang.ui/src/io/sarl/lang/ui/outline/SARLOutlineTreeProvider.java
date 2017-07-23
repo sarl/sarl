@@ -76,6 +76,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 */
 	protected void _createChildren(DocumentRootNode parentNode, SarlScript modelElement) {
 		if (!Strings.isNullOrEmpty(modelElement.getPackage())) {
+			// Create the node for the package declaration.
 			createEStructuralFeatureNode(
 					parentNode, modelElement,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
@@ -85,9 +86,11 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 					modelElement.getPackage(),
 					true);
 		}
+		// Create the nodes for the import declarations.
 		if (modelElement.getImportSection() != null && !modelElement.getImportSection().getImportDeclarations().isEmpty()) {
 			createNode(parentNode, modelElement.getImportSection());
 		}
+		// Create a node per type declaration.
 		for (final XtendTypeDeclaration topElement : modelElement.getXtendTypes()) {
 			createNode(parentNode, topElement);
 		}
@@ -99,13 +102,24 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 * @param modelElement - the feature container for which a node should be created.
 	 */
 	protected void _createNode(DocumentRootNode parentNode, XtendTypeDeclaration modelElement) {
-		final EStructuralFeatureNode elementNode = createEStructuralFeatureNode(
-				parentNode,
+		//
+		// The text region is set to the model element, not to the model element's name as in the
+		// default implementation of createStructuralFeatureNode().
+		// The text region computation is overridden in order to have a correct link to the editor.
+		//
+		final boolean isFeatureSet = modelElement.eIsSet(XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME);
+		final EStructuralFeatureNode elementNode = new EStructuralFeatureNode(
 				modelElement,
 				XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME,
+				parentNode,
 				this.imageDispatcher.invoke(modelElement),
 				this.textDispatcher.invoke(modelElement),
-				modelElement.getMembers().isEmpty());
+				modelElement.getMembers().isEmpty() || !isFeatureSet);
+		final EObject primarySourceElement = this.associations.getPrimarySourceElement(modelElement);
+		final ICompositeNode parserNode = NodeModelUtils.getNode(
+				(primarySourceElement == null) ? modelElement : primarySourceElement);
+		elementNode.setTextRegion(parserNode.getTextRegion());
+		//
 		if (!modelElement.getMembers().isEmpty()) {
 			EObjectNode capacityUseNode = null;
 			EObjectNode capacityRequirementNode = null;
