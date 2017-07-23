@@ -25,6 +25,8 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend.ide.outline.XtendOutlinePage;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
@@ -47,7 +49,11 @@ public class SARLOutlinePage extends XtendOutlinePage {
 		final List<IOutlineNode> result = newArrayList(rootNode);
 		for (final IOutlineNode firstLevelNode: rootNode.getChildren()) {
 			if (firstLevelNode instanceof EStructuralFeatureNode) {
-				result.add(firstLevelNode);
+				final EStructuralFeatureNode snode = (EStructuralFeatureNode) firstLevelNode;
+				final EStructuralFeature feature = snode.getEStructuralFeature();
+				if (XtendTypeDeclaration.class.isAssignableFrom(feature.getContainerClass())) {
+					result.add(firstLevelNode);
+				}
 			}
 		}
 		return result;
