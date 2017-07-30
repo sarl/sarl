@@ -239,7 +239,7 @@ Below, the implementation extends one of the abstract classes provided by the [J
 				
 				def bindBody(entity : EventListener) {
 					this.entities.put(entity.ID, new PhysicObject)
-					var a = new Address(ID, entity.ID)
+					var a = new Address(spaceID, entity.ID)
 					synchronized (this.participantInternalDataStructure) {
 						return this.participantInternalDataStructure.registerParticipant(a, entity)
 					}

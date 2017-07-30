@@ -215,8 +215,8 @@ the container).
 				uses ExternalContextAccess
 				var myspace : Space
 				def testOtherFunctions(e : Event) : boolean {
- 					return [:isinspace!](e, myspace.ID)
-					    || [:isinspace!](e, myspace.ID.ID)
+ 					return [:isinspace!](e, myspace.spaceID)
+					    || [:isinspace!](e, myspace.spaceID.ID)
 				}
 				[:On]
 				on [:eventtype1](AnEvent) [ [:isinspace!](occurrence, [:spacetype1](myspace)) ] {

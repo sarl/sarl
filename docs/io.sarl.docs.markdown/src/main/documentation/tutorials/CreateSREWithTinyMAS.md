@@ -1414,7 +1414,7 @@ with the event source identifier as argument.
 				}
 
 				def isDefaultSpace(^space : Space) : boolean {
-					^space.ID == defaultSpace.spaceID
+					^space.spaceID == defaultSpace.spaceID
 				}
 
 				def isDefaultSpace(^space : SpaceID) : boolean {
@@ -1472,7 +1472,7 @@ The obtained code is:
 			import io.sarl.util.Scopes
 			abstract class DefaultContextInteractionsSkill implements DefaultContextInteractions {
 				def getDefaultSpace : EventSpace { null }
-				def getOwner : Agent
+				def getOwner : Agent { null }
 			[:On]
 				def emit(^event : Event, scope : Scope<Address> = null) {
 					if (^event.source === null) {
@@ -2932,8 +2932,8 @@ The obtained code is:
 							agentType = null
 						}
 						var spawnEvent = new AgentSpawned(source,
-								Identifiers::toUUID(id),
-								agentType)
+								agentType,
+								Identifiers::toUUID(id))
 						containingBoot.defaultSpace.emit(spawnEvent)
 					}
 

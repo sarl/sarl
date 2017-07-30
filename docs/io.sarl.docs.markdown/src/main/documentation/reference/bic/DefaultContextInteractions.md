@@ -350,8 +350,8 @@ the `event.[:isindefaultspace!]` is equivalent to `[:isindefaultspace!](event)`.
  					return isDefaultContext(defaultContext)
 					    || isDefaultContext(defaultContext.ID)
 					    || isDefaultSpace(defaultSpace)
-					    || isDefaultSpace(defaultSpace.ID)
-					    || isDefaultSpace(defaultSpace.ID.ID)
+					    || isDefaultSpace(defaultSpace.spaceID)
+					    || isDefaultSpace(defaultSpace.spaceID.ID)
 				}
 				[:On]
 				on [:eventtype1](AnEvent) [ occurrence.inDefaultSpace ] {
