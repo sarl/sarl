@@ -48,7 +48,7 @@ public class ExternalContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(7, this.type.getDeclaredMethods().length);
+		assertEquals(9, this.type.getDeclaredMethods().length);
 	}
 
 	/**

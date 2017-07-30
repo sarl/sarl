@@ -154,7 +154,8 @@ public class Issue224 extends AbstractJanusRunTest {
 		protected boolean runAgentTest() {
 			addResult(this);
 			getSkill(Behaviors.class).registerBehavior(this.behavior);
-			getSkill(Schedules.class).in(TIMEOUT, (agent) -> getSkill(Lifecycle.class).killMe());
+			getSkill(Schedules.class).in(TIMEOUT, (agent) -> 
+				getSkill(Lifecycle.class).killMe());
 			return false;
 		}
 

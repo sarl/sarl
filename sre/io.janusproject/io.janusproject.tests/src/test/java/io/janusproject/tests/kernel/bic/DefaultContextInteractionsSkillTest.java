@@ -67,6 +67,9 @@ import io.sarl.util.Scopes;
 public class DefaultContextInteractionsSkillTest extends AbstractJanusTest {
 
 	@Nullable
+	private Agent agent;
+
+	@Nullable
 	private EventSpace defaultSpace;
 
 	@Nullable
@@ -109,7 +112,7 @@ public class DefaultContextInteractionsSkillTest extends AbstractJanusTest {
 
 		this.lifeCapacity = mock(Lifecycle.class);
 
-		Agent agent = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null) {
+		this.agent = new Agent(Mockito.mock(BuiltinCapacitiesProvider.class), UUID.randomUUID(), null) {
 			@Override
 			protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 				return new ClearableReference(DefaultContextInteractionsSkillTest.this.lifeCapacity);
@@ -149,14 +152,13 @@ public class DefaultContextInteractionsSkillTest extends AbstractJanusTest {
 		Event event = mock(Event.class);
 		Scope<Address> scope = Scopes.allParticipants();
 		this.skill.emit(event, scope);
-		ArgumentCaptor<Event> argument1 = ArgumentCaptor.forClass(Event.class);
-		ArgumentCaptor<Scope> argument2 = ArgumentCaptor.forClass(Scope.class);
-		verify(this.defaultSpace, new Times(1)).emit(argument1.capture(), argument2.capture());
-		assertSame(event, argument1.getValue());
-		assertSame(scope, argument2.getValue());
-		ArgumentCaptor<Address> argument3 = ArgumentCaptor.forClass(Address.class);
-		verify(event).setSource(argument3.capture());
-		assertEquals(this.address, argument3.getValue());
+		ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
+		ArgumentCaptor<Scope> argument3 = ArgumentCaptor.forClass(Scope.class);
+		verify(this.defaultSpace, new Times(1)).emit(argument1.capture(), argument2.capture(), argument3.capture());
+		assertEquals(this.agent.getID(), argument1.getValue());
+		assertSame(event, argument2.getValue());
+		assertSame(scope, argument3.getValue());
 	}
 
 	@Test
@@ -164,12 +166,13 @@ public class DefaultContextInteractionsSkillTest extends AbstractJanusTest {
 		this.reflect.invoke(this.skill, "install");
 		Event event = mock(Event.class);
 		this.skill.emit(event);
-		ArgumentCaptor<Event> argument1 = ArgumentCaptor.forClass(Event.class);
-		verify(this.defaultSpace, new Times(1)).emit(argument1.capture());
-		assertSame(event, argument1.getValue());
-		ArgumentCaptor<Address> argument2 = ArgumentCaptor.forClass(Address.class);
-		verify(event).setSource(argument2.capture());
-		assertEquals(this.address, argument2.getValue());
+		ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
+		ArgumentCaptor<Scope> argument3 = ArgumentCaptor.forClass(Scope.class);
+		verify(this.defaultSpace, new Times(1)).emit(argument1.capture(), argument2.capture(), argument3.capture());
+		assertEquals(this.agent.getID(), argument1.getValue());
+		assertSame(event, argument2.getValue());
+		assertNull(argument3.getValue());
 	}
 
 	@Test

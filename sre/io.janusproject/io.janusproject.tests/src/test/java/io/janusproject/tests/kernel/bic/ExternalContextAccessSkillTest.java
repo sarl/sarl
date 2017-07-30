@@ -188,18 +188,20 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 			AgentContext ctx = this.skill.getContext(c.getID());
 			assertSame(c, ctx);
 			//
-			ArgumentCaptor<Event> argument1 = ArgumentCaptor.forClass(Event.class);
-			verify(c.getDefaultSpace(), new Times(1)).emit(argument1.capture());
-			Event evt = argument1.getValue();
+			ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
+			ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
+			verify(c.getDefaultSpace(), new Times(1)).emit(argument1.capture(), argument2.capture());
+			assertNull(argument1.getValue());
+			Event evt = argument2.getValue();
 			assertNotNull(evt);
 			assertTrue(evt instanceof MemberJoined);
 			assertEquals(c.getID(), ((MemberJoined) evt).parentContextID);
 			assertEquals(this.agent.getID(), ((MemberJoined) evt).agentID);
 			//
-			ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
+			ArgumentCaptor<Event> argument3 = ArgumentCaptor.forClass(Event.class);
 			++nb;
-			verify(this.behaviorCapacity, new Times(nb)).wake(argument2.capture());
-			evt = argument2.getValue();
+			verify(this.behaviorCapacity, new Times(nb)).wake(argument3.capture());
+			evt = argument3.getValue();
 			assertNotNull(evt);
 			assertTrue(evt instanceof ContextJoined);
 			assertEquals(c.getID(), ((ContextJoined) evt).holonContextID);
@@ -231,19 +233,21 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 				assertTrue(remaining.contains(ctx));
 			}
 			//
-			ArgumentCaptor<Event> argument1 = ArgumentCaptor.forClass(Event.class);
+			ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
+			ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
 			// 2 times: 1 for MemberJoined, 1 for MemberLeft
-			verify(c.getDefaultSpace(), new Times(2)).emit(argument1.capture());
-			Event evt = argument1.getValue();
+			verify(c.getDefaultSpace(), new Times(2)).emit(argument1.capture(), argument2.capture());
+			assertNull(argument1.getValue());
+			Event evt = argument2.getValue();
 			assertNotNull(evt);
 			assertTrue(evt instanceof MemberLeft);
 			assertEquals(this.agent.getID(), ((MemberLeft) evt).agentID);
 			//
-			ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
+			ArgumentCaptor<Event> argument3 = ArgumentCaptor.forClass(Event.class);
 			++nb;
 			// Nb times includes the joins and the leaves
-			verify(this.behaviorCapacity, new Times(nb)).wake(argument2.capture());
-			evt = argument2.getValue();
+			verify(this.behaviorCapacity, new Times(nb)).wake(argument3.capture());
+			evt = argument3.getValue();
 			assertNotNull(evt);
 			assertTrue(evt instanceof ContextLeft);
 			assertEquals(c.getID(), ((ContextLeft) evt).holonContextID);

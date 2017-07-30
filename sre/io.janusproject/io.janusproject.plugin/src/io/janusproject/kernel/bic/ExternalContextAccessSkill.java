@@ -37,10 +37,12 @@ import io.sarl.core.ContextLeft;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.MemberJoined;
 import io.sarl.core.MemberLeft;
+import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
+import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
@@ -189,7 +191,10 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 */
 	protected final void fireMemberJoined(AgentContext newJoinedContext) {
 		final EventSpace defSpace = newJoinedContext.getDefaultSpace();
-		defSpace.emit(new MemberJoined(defSpace.getAddress(getOwner().getID()), newJoinedContext.getID(), getOwner().getID(),
+		defSpace.emit(
+				// No need to give an event source because the event's source is explicitly set below.
+				null,
+				new MemberJoined(defSpace.getAddress(getOwner().getID()), newJoinedContext.getID(), getOwner().getID(),
 				getOwner().getClass().getName()));
 	}
 
@@ -233,6 +238,8 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	protected final void fireMemberLeft(AgentContext leftContext) {
 		final EventSpace defSpace = leftContext.getDefaultSpace();
 		defSpace.emit(
+				// No need to give an event source because the event's source is explicitly set below.
+				null,
 				new MemberLeft(defSpace.getAddress(getOwner().getID()), getOwner().getID(), getOwner().getClass().getName()));
 	}
 
@@ -249,6 +256,11 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	@Override
 	public boolean isInSpace(Event event, UUID spaceID) {
 		return spaceID.equals(event.getSource().getSpaceId().getID());
+	}
+
+	@Override
+	public void emit(EventSpace space, Event event, Scope<Address> scope) {
+		space.emit(getID(), event, scope);
 	}
 
 }
