@@ -18,7 +18,7 @@ For instance, the [:emit:] action is a shortcut for:
 				def myaction {
 					var ^event : Event = null
 					[:On]
-					defaultContext.defaultSpace.emit(^event)
+					defaultContext.defaultSpace.emit(getID, ^event)
 					[:Off]
 				}
 			}
@@ -133,7 +133,7 @@ The call to [:emit:] is equivalent to:
 				def myaction {
 					var ^event : Event = null
 					[:On]
-					defaultContext.defaultSpace.emit(^event)
+					defaultContext.defaultSpace.emit(getID, ^event)
 					[:Off]
 				}
 			}

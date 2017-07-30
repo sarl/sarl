@@ -1478,7 +1478,7 @@ The obtained code is:
 					if (^event.source === null) {
 						^event.source = defaultSpace.getAddress(owner.ID)
 					}
-					defaultSpace.emit(^event, scope)
+					defaultSpace.emit(owner.ID, ^event, scope)
 				}
 
 				def willReceive(receiver : UUID, ^event : Event) {

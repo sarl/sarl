@@ -71,8 +71,8 @@ Spaces that are based on event propagation mechanism are defined as:
 
 		[:ShowType:]{io.sarl.lang.core.[:eventspacedef](EventSpace)}
 		[:Fact:]{typeof(io.sarl.lang.core.EventSpace).shouldHaveMethod("[:getadrfct](getAddress)(java.util.UUID) : io.sarl.lang.core.Address")}
-		[:Fact:]{typeof(io.sarl.lang.core.EventSpace).shouldHaveMethod("[:emitfct](emit)(io.sarl.lang.core.Event, io.sarl.lang.core.[:scopedef](Scope))")}
-		[:Fact:]{typeof(io.sarl.lang.core.EventSpace).shouldHaveMethod("emit(io.sarl.lang.core.Event)")}
+		[:Fact:]{typeof(io.sarl.lang.core.EventSpace).shouldHaveMethod("[:emitfct](emit)(java.util.UUID,io.sarl.lang.core.Event, io.sarl.lang.core.[:scopedef](Scope))")}
+		[:Fact:]{typeof(io.sarl.lang.core.EventSpace).shouldHaveMethod("emit(java.util.UUID,io.sarl.lang.core.Event)")}
 
 
 The [:getadrfct:] function replies the address in the space of the agent that has the given identifier.
