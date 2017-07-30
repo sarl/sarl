@@ -126,13 +126,6 @@ public class SarlScriptExecutor implements ScriptExecutor {
 	}
 
 	@Override
-	public List<String> compile(int lineno, String code) throws Exception {
-		List<String> issues = new ArrayList<>();
-		compile(lineno, code, issues, null);
-		return issues;
-	}
-
-	@Override
 	public File compile(int lineno, String code, List<String> issues, ICompilatedResourceReceiver receiver) throws Exception {
 		File rootFolder = createRootFolder();
 		File sourceFolder = createSourceFolder(rootFolder);
