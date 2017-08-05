@@ -78,9 +78,9 @@ public class ExtraLanguageValidatorSupport extends AbstractDeclarativeValidator 
 		final List<AbstractExtraLanguageValidator> validators = this.validatorProvider.getValidators(
 				currentObject.eResource());
 		if (!validators.isEmpty()) {
-			final ValidationMessageAcceptor acceptor = getMessageAcceptor();
-			final StateAccess stateAccess = setMessageAcceptor(acceptor);
 			for (final AbstractExtraLanguageValidator validator : validators) {
+				final ValidationMessageAcceptor acceptor = getMessageAcceptor();
+				final StateAccess stateAccess = setMessageAcceptor(acceptor);
 				validator.validate(stateAccess, acceptor);
 			}
 		}

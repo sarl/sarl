@@ -1319,6 +1319,17 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
+	private String returnType(EObject source) {
+		if (source instanceof XtendFunction) {
+			final XtendFunction fct = (XtendFunction) source;
+			final JvmTypeReference type = fct.getReturnType();
+			if (type != null) {
+				return type.getIdentifier();
+			}
+		}
+		return this.grammarAccess.getVoidKeyword();
+	}
+
 	/** Caution: This function is overridden for translating the MISSING_OVERRIDE error into a warning,
 	 * and emit a warning when a return type should be specified.
 	 *
@@ -1349,7 +1360,9 @@ public class SARLValidator extends AbstractSARLValidator {
 					exceptionMismatch.add(inherited);
 				} else if (details.contains(OverrideCheckDetails.RETURN_MISMATCH)) {
 					error(MessageFormat.format(Messages.SARLValidator_45,
-							inherited.getSimpleSignature()),
+							inherited.getSimpleSignature(),
+							inherited.getResolvedReturnType().getIdentifier(),
+							returnType(sourceElement)),
 							sourceElement,
 							returnTypeFeature(sourceElement), INCOMPATIBLE_RETURN_TYPE,
 							inherited.getResolvedReturnType().getIdentifier());
