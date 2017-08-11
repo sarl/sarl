@@ -237,5 +237,10 @@ public class GooglePrettifyGenerator2 extends AbstractCsyntaxHighlightingFragmen
 		it.appendNl("   [''{0}'']);", language); //$NON-NLS-1$
 	}
 
+	@Override
+	protected Object getReadmeFileContent(String basename) {
+		return null;
+	}
+
 }
 

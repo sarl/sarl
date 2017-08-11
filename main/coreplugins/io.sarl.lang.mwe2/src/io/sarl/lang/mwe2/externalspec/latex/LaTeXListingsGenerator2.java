@@ -416,6 +416,11 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		//
 	}
 
+	@Override
+	protected Object getReadmeFileContent(String basename) {
+		return null;
+	}
+
 	/** Generate the optional extensions.
 	 *
 	 * @param it the target.

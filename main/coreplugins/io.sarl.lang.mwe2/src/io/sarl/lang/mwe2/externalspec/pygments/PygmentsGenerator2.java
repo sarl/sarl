@@ -234,7 +234,7 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 	}
 
 	@Override
-	protected void generateAdditionalFiles(String basename) {
+	protected void generateAdditionalFiles(String basename, IStyleAppendable writtenAppendable) {
 		IStyleAppendable appendable;
 
 		appendable = newStyleAppendable();
@@ -243,7 +243,7 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 
 		appendable = newStyleAppendable();
 		generatePythonSetup(appendable, basename);
-		writeFile("setup.py", appendable, (it) -> it.getParentFile()); //$NON-NLS-1$
+		writeFile("setup.py", appendable, (folder, bname) -> folder.getParentFile()); //$NON-NLS-1$
 	}
 
 	/** Create the content of the "setup.py" file.
@@ -291,6 +291,11 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		it.newLine();
 		it.append("__all__ = [ ]"); //$NON-NLS-1$
 		it.newLine();
+	}
+
+	@Override
+	protected Object getReadmeFileContent(String basename) {
+		return null;
 	}
 
 }

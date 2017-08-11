@@ -144,5 +144,10 @@ public class GnuSrcHighlightGenerator2 extends AbstractScriptHighlightingFragmen
 		it.appendNl("cbracket = \"[|]\""); //$NON-NLS-1$
 	}
 
+	@Override
+	protected Object getReadmeFileContent(String basename) {
+		return null;
+	}
+
 }
 

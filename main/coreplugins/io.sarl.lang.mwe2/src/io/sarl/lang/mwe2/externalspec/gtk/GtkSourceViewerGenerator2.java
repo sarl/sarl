@@ -360,5 +360,15 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 		tag19.close();
 	}
 
+	@Override
+	protected Object getReadmeFileContent(String basename) {
+		return concat(
+				"1. MANUAL INSTALLATION", //$NON-NLS-1$
+				"", //$NON-NLS-1$
+				"Copy the " + basename + " file into one of the folders:", //$NON-NLS-1$ //$NON-NLS-2$
+				"* $HOME/.local/share/gtksourceview-3.0/language-specs/", //$NON-NLS-1$
+				"* $HOME/.local/share/gtksourceview-2.0/language-specs/"); //$NON-NLS-1$
+	}
+
 }
 

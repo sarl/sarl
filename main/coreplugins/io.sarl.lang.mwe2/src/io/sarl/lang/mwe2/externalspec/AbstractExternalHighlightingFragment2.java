@@ -51,7 +51,7 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.access.impl.Primitives;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.AbstractStringBuilderBasedAppendable;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.AbstractXtextGeneratorFragment;
 import org.eclipse.xtext.xtext.generator.CodeConfig;
@@ -79,6 +79,12 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 
 	private static final Pattern MODIFIER_RULE_PATTERN = Pattern.compile("^[a-zA-Z]+Modifier$"); //$NON-NLS-1$
 
+	private static final String README_BASENAME = "README"; //$NON-NLS-1$
+
+	private static final String REGEX_SPECIAL_CHARS = "[\\<\\(\\[\\{\\\\\\^\\-\\=\\$\\!\\|\\]\\}\\)\\?\\*\\+\\.\\>\\:\\=\\!]"; //$NON-NLS-1$
+
+	private static final String REGEX_SPECIAL_CHARS_PROTECT = "\\\\$0"; //$NON-NLS-1$
+
 	@Inject(optional = true)
 	private GrammarKeywordAccessConfig grammarKeywordAccessConfig;
 
@@ -101,6 +107,65 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	private boolean enableColors = true;
 
 	private final List<String> mimeTypes = new ArrayList<>();
+
+	private Function2<File, String, File> outputDirectoryFilter;
+
+	/** Replies the default output directory filter.
+	 *
+	 * @return the filter, or {@code null}.
+	 * @since 0.6
+	 */
+	public Function2<File, String, File> getOutputDirectoryFilter() {
+		return this.outputDirectoryFilter;
+	}
+
+	/** Change the default output directory filter.
+	 *
+	 * @param filter the filter, or {@code null} for avoiding default filtering.
+	 * @since 0.6
+	 */
+	public void setOutputDirectoryFilter(Function2<File, String, File> filter) {
+		this.outputDirectoryFilter = filter;
+	}
+
+	/** Protect the given regular expression.
+	 *
+	 * @param regex the expression to protect.
+	 * @return the protected expression.
+	 */
+	protected static String quoteRegex(String regex) {
+		if (regex == null) {
+			return ""; //$NON-NLS-1$
+		}
+		return regex.replaceAll(REGEX_SPECIAL_CHARS, REGEX_SPECIAL_CHARS_PROTECT);
+	}
+
+	/** Build a regular expression that is matching one of the given elements.
+	 *
+	 * @param elements the elements to match.
+	 * @return the regular expression
+	 */
+	protected static String orRegex(Iterable<String> elements) {
+		final StringBuilder regex = new StringBuilder();
+		for (final String element : elements) {
+			if (regex.length() > 0) {
+				regex.append("|"); //$NON-NLS-1$
+			}
+			regex.append("(?:"); //$NON-NLS-1$
+			regex.append(quoteRegex(element));
+			regex.append(")"); //$NON-NLS-1$
+		}
+		return regex.toString();
+	}
+
+	/** Build a regular expression that is matching one of the given keywords.
+	 *
+	 * @param keywords the keywords to match.
+	 * @return the regular expression
+	 */
+	protected static String keywordRegex(Iterable<String> keywords) {
+		return "\\b(?:" + orRegex(keywords) + ")\\b"; //$NON-NLS-1$ //$NON-NLS-2$
+	}
 
 	/** Concat the given iterables.
 	 *
@@ -417,7 +482,8 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 		final String language = getLanguageSimpleName().toLowerCase();
 		final String basename = getBasename(MessageFormat.format(getBasenameTemplate(), language));
 		writeFile(basename, appendable);
-		generateAdditionalFiles(basename);
+		generateAdditionalFiles(basename, appendable);
+		generateReadme(basename);
 	}
 
 	/** Generate the external specification.
@@ -441,9 +507,98 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	/** Generate additional files.
 	 *
 	 * @param basename the basename for the language style.
+	 * @param appendable the written appendable.
 	 */
-	protected void generateAdditionalFiles(String basename) {
+	protected void generateAdditionalFiles(String basename, T appendable) {
 		//
+	}
+
+	/** Replies the content of the README file.
+	 *
+	 * @param basename the basename of the generated file.
+	 * @return the content of the readme.
+	 */
+	protected abstract Object getReadmeFileContent(String basename);
+
+	/** Contact the given strings of characters.
+	 *
+	 * @param lines the lines.
+	 * @return the concatenation result.
+	 */
+	public static CharSequence concat(CharSequence... lines) {
+		return new CharSequence() {
+
+			private final StringBuilder content = new StringBuilder();
+
+			private int next;
+
+			private int length = -1;
+
+			@Override
+			public String toString() {
+				ensure(length());
+				return this.content.toString();
+			}
+
+			private void ensure(int index) {
+				while (this.next < lines.length && index >= this.content.length()) {
+					if (lines[this.next] != null) {
+						this.content.append(lines[this.next]).append("\n"); //$NON-NLS-1$
+					}
+					++this.next;
+				}
+			}
+
+			@Override
+			public CharSequence subSequence(int start, int end) {
+				ensure(end - 1);
+				return this.content.subSequence(start, end);
+			}
+
+			@Override
+			public int length() {
+				if (this.length < 0) {
+					int len = 0;
+					for (final CharSequence seq : lines) {
+						len += seq.length() + 1;
+					}
+					len = Math.max(0, len - 1);
+					this.length = len;
+				}
+				return this.length;
+			}
+
+			@Override
+			public char charAt(int index) {
+				ensure(index);
+				return this.content.charAt(index);
+			}
+		};
+	}
+
+	/** Generate the README file.
+	 *
+	 * @param basename the basename of the generated file.
+	 * @since 0.6
+	 */
+	protected void generateReadme(String basename) {
+		final Object content = getReadmeFileContent(basename);
+		if (content != null) {
+			final String textualContent = content.toString();
+			if (!Strings.isEmpty(textualContent)) {
+				final byte[] bytes = textualContent.getBytes();
+				for (final String output : getOutputs()) {
+					final File directory = new File(output).getAbsoluteFile();
+					try {
+						directory.mkdirs();
+						final File outputFile = new File(directory, README_BASENAME);
+						Files.write(Paths.get(outputFile.getAbsolutePath()), bytes);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		}
 	}
 
 	/** Write the given lines into the file.
@@ -452,29 +607,28 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 * @param content the content of the style file.
 	 */
 	protected void writeFile(String basename, T content) {
-		writeFile(basename, content, null);
+		writeFile(basename, content, getOutputDirectoryFilter());
 	}
 
 	/** Write the given lines into the file.
 	 *
 	 * @param basename the basename of the file.
 	 * @param content the content of the style file.
-	 * @param filter the output directory.
+	 * @param outputDirectoryFilter the output directory.
 	 */
-	protected void writeFile(String basename, T content, Function1<File, File> filter) {
+	protected void writeFile(String basename, T content, Function2<File, String, File> outputDirectoryFilter) {
 		// Create the file.
 		// Encode
 		final byte[] bytes = content.toString().getBytes(Charset.forName(getCodeConfig().getEncoding()));
 
 		for (final String output : getOutputs()) {
 			File directory = new File(output).getAbsoluteFile();
-			if (filter != null) {
-				directory = filter.apply(directory);
+			if (outputDirectoryFilter != null) {
+				directory = outputDirectoryFilter.apply(directory, basename);
 			}
 			try {
-				directory.mkdirs();
 				final File outputFile = new File(directory, basename);
-
+				outputFile.getParentFile().mkdirs();
 				Files.write(Paths.get(outputFile.getAbsolutePath()), bytes);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
