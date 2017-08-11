@@ -212,9 +212,9 @@ public class PygmentsGenerator2 extends AbstractScriptHighlightingFragment2 {
 		// Punctuation
 		it.appendNl("\t\t\t (r'[~^*!%&\\[\\](){}<>\\|+=:;,./?-]', Operator),"); //$NON-NLS-1$
 
-		it.appendNl("\t\t\t (r'[0-9][0-9]*\\.[0-9]+([eE][0-9]+)?[fd]?', Number.Float),"); //$NON-NLS-1$
-		it.appendNl("\t\t\t (r'0x[0-9a-fA-F]+', Number.Hex),"); //$NON-NLS-1$
-		it.appendNl("\t\t\t (r'[0-9]+L?', Number.Integer),"); //$NON-NLS-1$
+		it.appendNl("\t\t\t (r'[0-9][0-9]*\\.[0-9]+([eE][0-9]+)?[fFdD]?', Number.Float),"); //$NON-NLS-1$
+		it.appendNl("\t\t\t (r'0[xX][0-9a-fA-F]+', Number.Hex),"); //$NON-NLS-1$
+		it.appendNl("\t\t\t (r'[0-9]+[lL]?', Number.Integer),"); //$NON-NLS-1$
 		it.appendNl("\t\t\t (r'\\n', Text)"); //$NON-NLS-1$
 		it.appendNl("\t\t],"); //$NON-NLS-1$
 

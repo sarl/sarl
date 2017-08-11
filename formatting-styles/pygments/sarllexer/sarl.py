@@ -70,9 +70,9 @@ class SarlLexer(RegexLexer):
 			 (r'[a-zA-Z_]\w*:', Name.Label),
 			 (r'[a-zA-Z_$]\w*', Name),
 			 (r'[~^*!%&\[\](){}<>\|+=:;,./?-]', Operator),
-			 (r'[0-9][0-9]*\.[0-9]+([eE][0-9]+)?[fd]?', Number.Float),
-			 (r'0x[0-9a-fA-F]+', Number.Hex),
-			 (r'[0-9]+L?', Number.Integer),
+			 (r'[0-9][0-9]*\.[0-9]+([eE][0-9]+)?[fFdD]?', Number.Float),
+			 (r'0[xX][0-9a-fA-F]+', Number.Hex),
+			 (r'[0-9]+[lL]?', Number.Integer),
 			 (r'\n', Text)
 		],
 		'class': [
