@@ -26,7 +26,7 @@
 -->
 <!-- Style for SARL 0.6 -->
 
-<language id="sarl" _name="SARL" version="2.0" _section="Sources">
+<language id="sarl" _name="SARL" version="2.0" _section="Source">
  <metadata>
   <property name="mimetypes">text/x-sarl</property>
   <property name="globs">*.sarl</property>
@@ -69,7 +69,7 @@
     
    </include>
    
-  </include>
+  </context>
   <context id="q-string" style-ref="string" end-at-line-end="true" class="string" class-disabled="no-spell-check">
    <start>'</start>
    <end>'</end>

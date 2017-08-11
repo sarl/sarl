@@ -74,7 +74,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 				"id", getLanguageSimpleName().toLowerCase(), //$NON-NLS-1$
 				"_name", getLanguageSimpleName(), //$NON-NLS-1$
 				"version", XML_FORMAT_VERSION, //$NON-NLS-1$
-				"_section", "Sources"); //$NON-NLS-1$ //$NON-NLS-2$
+				"_section", "Source"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		IXmlStyleCloseable tag2 = tag1.open("metadata"); //$NON-NLS-1$
 		generateMetadata(tag2);
@@ -228,7 +228,7 @@ public class GtkSourceViewerGenerator2 extends AbstractXmlHighlightingFragment2 
 		tag3.appendTagWithValue("match", "\\%{escaped-character}"); //$NON-NLS-1$ //$NON-NLS-2$
 		tag3.close();
 		tag2.close();
-		tag2.close();
+		tag1.close();
 
 		final IXmlStyleCloseable tag4 = it.open("context", //$NON-NLS-1$
 				"id", "q-string", //$NON-NLS-1$ //$NON-NLS-2$
