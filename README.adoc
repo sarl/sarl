@@ -157,6 +157,7 @@ Style specifications are provided for:
 ** LaTeX listing: link:./formatting-styles/latex/sarl-listing.sty[monochrom], link:./formatting-styles/latex/sarl-colorized-listing.sty[color]
 ** link:./formatting-styles/latex/sarl-beamer-listing.sty[LaTeX Beamer]
 * link:./formatting-styles/pygments/sarlexer/sarl.py[Pygments]
+* link:./formatting-styles/vim/sarl.vim[Vim] 
 
 == 3. P2 Repository
 

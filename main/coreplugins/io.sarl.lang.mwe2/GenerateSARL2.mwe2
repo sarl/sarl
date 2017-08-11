@@ -35,6 +35,7 @@ import io.sarl.lang.mwe2.externalspec.latex.*
 import io.sarl.lang.mwe2.externalspec.gtk.* 
 import io.sarl.lang.mwe2.externalspec.gnusrchighlight.* 
 import io.sarl.lang.mwe2.externalspec.pygments.* 
+import io.sarl.lang.mwe2.externalspec.vim.* 
 import io.sarl.lang.mwe2.codebuilder.* 
 import io.sarl.lang.mwe2.codebuilder.config.* 
 import io.sarl.lang.mwe2.keywords.* 
@@ -64,6 +65,7 @@ var latexToolPath = "${externalToolPath}/latex"
 var gtkToolPath = "${externalToolPath}/gtk"
 var srchighlightToolPath  = "${externalToolPath}/source-highlight"
 var pygmentsToolPath  = "${externalToolPath}/pygments/sarllexer"
+var vimToolPath  = "${externalToolPath}/vim"
 
 var file.extensions = "sarl"
 var languageWebsite = "http://www.sarl.io"
@@ -123,6 +125,9 @@ Workflow {
 	}
    	component = DirectoryCleaner {
 		directory = "${pygmentsToolPath}"
+	}
+   	component = DirectoryCleaner {
+		directory = "${vimToolPath}"
 	}
 
  	component = XtextGenerator auto-inject {
@@ -456,6 +461,11 @@ Workflow {
     		fragment = PygmentsGenerator2 auto-inject {
 				output = pygmentsToolPath
 				url = languageWebsite
+    		}
+
+			// Generate the Vim style
+    		fragment = VimGenerator2 auto-inject {
+				output = vimToolPath
     		}
 
     		// SARL specific bindings

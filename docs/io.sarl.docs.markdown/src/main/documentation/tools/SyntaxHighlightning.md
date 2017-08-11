@@ -95,5 +95,18 @@ For installing the SARL style, you should:
 * call: `python setup.py install`
 
 
+## Vim Editor
+
+[Vim Editor](http://www.vim.org/) is is a highly configurable text editor built to make creating and
+changing any kind of text very efficient.
+
+The SARL style is available on [GitHub](https://raw.githubusercontent.com/sarl/sarl/master/formatting-styles/vim/sarl.vim)
+
+For using the SARL style, you should:
+
+* copy the SARL style into the folder `$HOME/.vim/ftdetect`.
+
+
+
 [:Include:](../legal.inc)
 
