@@ -10,6 +10,14 @@ and syntax errors are visually distinct. Highlighting does not affect the meanin
 Several style specifications are provided for syntax highlighting in other tools than the SARL product.
 
 
+## Atom Editor
+
+[Atom Editor](https://atom.io/) is is a highly configurable text editor.
+This editor uses the TextMate language syntax.
+
+The SARL style is available on [GitHub](https://raw.githubusercontent.com/sarl/sarl/master/formatting-styles/textmate/sarl.tmLanguage)
+
+
 ## GNU source-highlight
 
 [GNU source-highlight](https://www.gnu.org/software/src-highlite/) is the GNU source code highlightner.
@@ -93,6 +101,25 @@ For installing the SARL style, you should:
 * open a command-line shell;
 * go into the folder where your have downloaded the `setup.py` script;
 * call: `python setup.py install`
+
+
+## Sublime Text Editor
+
+[Sublime Text Editor](https://www.sublimetext.com/) is a sophisticated text editor for code and markup.
+This editor uses the TextMate language syntax.
+
+The SARL style is available on [GitHub](https://raw.githubusercontent.com/sarl/sarl/master/formatting-styles/textmate/sarl.tmLanguage)
+
+For using the SARL style, you should:
+
+* copy the SARL style into the folder `$HOME/.config/sublime-text-3/Packages/User/SARL/`.
+
+
+## TextMate Editor
+
+[TextMate Editor](https://macromates.com/) is a sophisticated text editor for MacOS platforms.
+
+The SARL style is available on [GitHub](https://raw.githubusercontent.com/sarl/sarl/master/formatting-styles/textmate/sarl.tmLanguage)
 
 
 ## Vim Editor

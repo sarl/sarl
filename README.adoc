@@ -150,6 +150,7 @@ CAUTION: Do not forget to set the `extensions` flag to `true`.
 Several style specifications are provided for syntax highlighting in third party tools.
 Style specifications are provided for:
 
+* link:./formatting-styles/textmate/sarl.tmLanguage[Atom] (TextMate language definition)
 * link:./formatting-styles/source-highlight/sarl.lang[GNU source-highlight]
 * link:./formatting-styles/prettify/lang-sarl.js[Google Prettify]
 * link:./formatting-styles/gtk/sarl.lang[Gtk source view] (including gedit)
@@ -157,6 +158,8 @@ Style specifications are provided for:
 ** LaTeX listing: link:./formatting-styles/latex/sarl-listing.sty[monochrom], link:./formatting-styles/latex/sarl-colorized-listing.sty[color]
 ** link:./formatting-styles/latex/sarl-beamer-listing.sty[LaTeX Beamer]
 * link:./formatting-styles/pygments/sarlexer/sarl.py[Pygments]
+* link:./formatting-styles/textmate/sarl.tmLanguage[Sublime Text] (TextMate language definition)
+* link:./formatting-styles/textmate/sarl.tmLanguage[TextMate] (or link:./formatting-styles/textmate/sarl.plist[plist definition]) 
 * link:./formatting-styles/vim/sarl.vim[Vim] 
 
 == 3. P2 Repository

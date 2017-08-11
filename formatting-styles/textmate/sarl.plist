@@ -1,0 +1,138 @@
+{
+  foldingStartMarker = '\{\s*(//.*)?$';
+  __sarlVersion = '0.6';
+  scopeName = 'source.sarl';
+  patterns = (
+    {
+      endCaptures = {
+        0 = {
+          name = 'punctuation.definition.comment.sarl'
+        }
+      };
+      patterns = (
+        {
+          match = '^\s*(\*)(?!/)';
+          name = 'punctuation.definition.comment.sarl'
+        }
+      );
+      name = 'comment.block.sarl';
+      end = '(\*/)';
+      comment = 'Multiline comments';
+      beginCaptures = {
+        0 = {
+          name = 'punctuation.definition.comment.sarl'
+        }
+      };
+      begin = '(/\*+)'
+    },
+    {
+      captures = {
+        1 = {
+          name = 'comment.line.double-slash.sarl'
+        };
+        2 = {
+          name = 'comment.line.sarl'
+        }
+      };
+      match = '\s*(//)(.*)$';
+      comment = 'Single-line comment'
+    },
+    {
+      endCaptures = {
+        0 = {
+          name = 'punctuation.definition.string.begin.sarl'
+        }
+      };
+      patterns = (
+        {
+          match = '\\.';
+          name = 'constant.character.escape.sarl'
+        }
+      );
+      name = 'string.quoted.double.sarl';
+      end = '"';
+      comment = 'Double quoted strings of characters';
+      beginCaptures = {
+        0 = {
+          name = 'punctuation.definition.string.end.sarl'
+        }
+      };
+      begin = '"'
+    },
+    {
+      endCaptures = {
+        0 = {
+          name = 'punctuation.definition.string.begin.sarl'
+        }
+      };
+      patterns = (
+        {
+          match = '\\.';
+          name = 'constant.character.escape.sarl'
+        }
+      );
+      name = 'string.quoted.single.sarl';
+      end = '''';
+      comment = 'Single quoted strings of characters';
+      beginCaptures = {
+        0 = {
+          name = 'punctuation.definition.string.end.sarl'
+        }
+      };
+      begin = ''''
+    },
+    {
+      match = '(?:[0-9][0-9]*\.[0-9]+([eE][0-9]+)?[fFdD]?)|(?:0[xX][0-9a-fA-F]+)|(?:[0-9]+[lL]?)';
+      name = 'constant.numeric.sarl';
+      comment = 'Numbers'
+    },
+    {
+      match = '\@[_a-zA-Z$][_0-9a-zA-Z$]*';
+      name = 'support.type.sarl';
+      comment = 'Annotations'
+    },
+    {
+      match = '\b(?:(?:false)|(?:it)|(?:null)|(?:occurrence)|(?:this)|(?:true)|(?:void))\b';
+      name = 'constant.language.sarl';
+      comment = 'SARL Literals and Constants'
+    },
+    {
+      match = '\b(?:(?:boolean)|(?:byte)|(?:char)|(?:double)|(?:float)|(?:int)|(?:long)|(?:short)|(?:void))\b(?:\s*\[\s*\])*';
+      name = 'storage.type.primitive.sarl';
+      comment = 'Primitive types'
+    },
+    {
+      match = '\b(?:(?:import)|(?:package))\b';
+      name = 'keyword.other.special.sarl';
+      comment = 'Special Keywords'
+    },
+    {
+      match = '\b(?:(?:abstract)|(?:def)|(?:dispatch)|(?:final)|(?:native)|(?:override)|(?:private)|(?:protected)|(?:public)|(?:static)|(?:strictfp)|(?:synchronized)|(?:transient)|(?:val)|(?:var)|(?:volatile))\b';
+      name = 'storage.modifier.sarl';
+      comment = 'Modifiers'
+    },
+    {
+      match = '\b(?:(?:agent)|(?:annotation)|(?:artifact)|(?:behavior)|(?:capacity)|(?:class)|(?:enum)|(?:event)|(?:interface)|(?:skill)|(?:space))\b';
+      name = 'keyword.other.declaration.sarl';
+      comment = 'Type Declarations'
+    },
+    {
+      match = '\b(?:(?:as)|(?:break)|(?:case)|(?:catch)|(?:default)|(?:do)|(?:else)|(?:extends)|(?:extension)|(?:finally)|(?:fires)|(?:for)|(?:if)|(?:implements)|(?:instanceof)|(?:new)|(?:on)|(?:requires)|(?:return)|(?:super)|(?:switch)|(?:throw)|(?:throws)|(?:try)|(?:typeof)|(?:uses)|(?:while)|(?:with))\b';
+      name = 'keyword.control.sarl';
+      comment = 'Standard Keywords'
+    },
+    {
+      match = '(?:\!)|(?:\!\=)|(?:\!\=\=)|(?:#)|(?:%)|(?:%\=)|(?:&)|(?:&&)|(?:\()|(?:\))|(?:\*)|(?:\*\*)|(?:\*/)|(?:\*\=)|(?:\+)|(?:\+\+)|(?:\+\=)|(?:,)|(?:\-)|(?:\-\-)|(?:\-\=)|(?:\-\>)|(?:\.)|(?:\.\.)|(?:\.\.\.)|(?:\.\.\<)|(?:/)|(?:/\*)|(?://)|(?:/\=)|(?:\:)|(?:\:\:)|(?:;)|(?:\<)|(?:\<\>)|(?:\=)|(?:\=\=)|(?:\=\=\=)|(?:\=\>)|(?:\>)|(?:\>\=)|(?:\?)|(?:\?\.)|(?:\?\:)|(?:@)|(?:\[)|(?:\\)|(?:\])|(?:\^)|(?:\{)|(?:\|)|(?:\|\|)|(?:\})';
+      name = 'keyword.operator.sarl';
+      comment = 'Operators and Punctuations'
+    }
+  );
+  name = 'SARL';
+  firstLineMatch = '^//.*\bsarl\b.';
+  foldingStopMarker = '^\s*\}';
+  version = '0.6';
+  uuid = 'E95E1CA2-7D0E-39AA-83EB-5A611CE4122F';
+  fileTypes = (
+    'sarl'
+  )
+}

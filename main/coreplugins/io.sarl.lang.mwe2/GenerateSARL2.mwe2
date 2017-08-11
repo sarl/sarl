@@ -35,6 +35,7 @@ import io.sarl.lang.mwe2.externalspec.latex.*
 import io.sarl.lang.mwe2.externalspec.gtk.* 
 import io.sarl.lang.mwe2.externalspec.gnusrchighlight.* 
 import io.sarl.lang.mwe2.externalspec.pygments.* 
+import io.sarl.lang.mwe2.externalspec.textmate.* 
 import io.sarl.lang.mwe2.externalspec.vim.* 
 import io.sarl.lang.mwe2.codebuilder.* 
 import io.sarl.lang.mwe2.codebuilder.config.* 
@@ -65,6 +66,7 @@ var latexToolPath = "${externalToolPath}/latex"
 var gtkToolPath = "${externalToolPath}/gtk"
 var srchighlightToolPath  = "${externalToolPath}/source-highlight"
 var pygmentsToolPath  = "${externalToolPath}/pygments/sarllexer"
+var textmateToolPath  = "${externalToolPath}/textmate"
 var vimToolPath  = "${externalToolPath}/vim"
 
 var file.extensions = "sarl"
@@ -125,6 +127,9 @@ Workflow {
 	}
    	component = DirectoryCleaner {
 		directory = "${pygmentsToolPath}"
+	}
+   	component = DirectoryCleaner {
+		directory = "${textmateToolPath}"
 	}
    	component = DirectoryCleaner {
 		directory = "${vimToolPath}"
@@ -461,6 +466,11 @@ Workflow {
     		fragment = PygmentsGenerator2 auto-inject {
 				output = pygmentsToolPath
 				url = languageWebsite
+    		}
+
+			// Generate the TextMate style
+    		fragment = TextMateGenerator2 auto-inject {
+				output = textmateToolPath
     		}
 
 			// Generate the Vim style

@@ -1,0 +1,4 @@
+1. MANUAL INSTALLATION
+
+Copy the sarl.plistfile into one of the following folders:
+* Sublime Text 3: $HOME/.config/sublime-text-3/Packages/User/SARL/
