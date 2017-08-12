@@ -4,8 +4,9 @@
 
 	<parent>
 		<groupId>io.sarl</groupId>
-		<artifactId>io.sarl.main</artifactId>
 		<version>0.5.6</version>
+		<artifactId>io.sarl</artifactId>
+		<relativePath>../..</relativePath>
 	</parent>
 
 	<groupId>io.sarl.maven</groupId>

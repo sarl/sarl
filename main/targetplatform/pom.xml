@@ -4,8 +4,9 @@
 
 	<parent>
 		<groupId>io.sarl</groupId>
-		<artifactId>io.sarl.main</artifactId>
 		<version>0.5.6</version>
+		<artifactId>io.sarl.tycho-parent</artifactId>
+		<relativePath>../../tycho-parent</relativePath>
 	</parent>
 
 	<artifactId>io.sarl.lang.targetplatform</artifactId>
