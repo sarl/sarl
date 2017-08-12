@@ -59,7 +59,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 
 	/** The default basename pattern for {@link MessageFormat}.
 	 */
-	public static final String BASENAME_PATTERN_OLD = "{0}.plist"; //$NON-NLS-1$
+	public static final String BASENAME_PATTERN_OLD = "{0}.property-list"; //$NON-NLS-1$
 
 	/** The default basename pattern for {@link MessageFormat}.
 	 */
