@@ -21,6 +21,8 @@
 
 package io.sarl.lang.mwe2.externalspec.textmate;
 
+import java.io.File;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +35,7 @@ import java.util.UUID;
 import com.google.inject.Injector;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.generator.IGeneratorFragment;
+import org.eclipse.xtext.util.Files;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
@@ -61,6 +64,10 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	/** The default basename pattern for {@link MessageFormat}.
 	 */
 	public static final String BASENAME_PATTERN_NEW = "{0}.tmLanguage"; //$NON-NLS-1$
+
+	/** Name of the license file.
+	 */
+	public static final String LICENSE_FILE = "LICENSE"; //$NON-NLS-1$
 
 	private static final String FIRST_LINE_MATCHING = "^//.*\\bsarl\\b."; //$NON-NLS-1$
 
@@ -189,11 +196,44 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	@Override
 	protected void generateAdditionalFiles(String oldBasename, ITmStyleAppendable writtenAppendable) {
 		if (writtenAppendable instanceof CombinedTmAppendable) {
-			final CombinedTmAppendable appendable = (CombinedTmAppendable) writtenAppendable;
-			final String language = getLanguageSimpleName().toLowerCase();
-			final String newBasename = getBasename(MessageFormat.format(BASENAME_PATTERN_NEW, language));
-			writeFile(newBasename, appendable.getNewSyntaxContent());
+			generatePlistFile((CombinedTmAppendable) writtenAppendable);
 		}
+		generateLicenseFile();
+	}
+
+	/** Generate the Plist file.
+	 *
+	 * @param it the appendable used for generated the "tmLanguage" file.
+	 */
+	protected void generatePlistFile(CombinedTmAppendable it) {
+		final String language = getLanguageSimpleName().toLowerCase();
+		final String newBasename = getBasename(MessageFormat.format(BASENAME_PATTERN_NEW, language));
+		writeFile(newBasename, it.getNewSyntaxContent());
+	}
+
+	/** Generate the LICENSE file.
+	 */
+	protected void generateLicenseFile() {
+		final CharSequence licenseText = getLicenseText();
+		if (licenseText != null) {
+			final String text = licenseText.toString();
+			if (!Strings.isEmpty(text)) {
+				writeFile(LICENSE_FILE, text.getBytes());
+			}
+		}
+	}
+
+	/** Replies the text of the license to write to the generated output.
+	 *
+	 * @return the text.
+	 */
+	protected CharSequence getLicenseText() {
+		final URL url = getClass().getResource(LICENSE_FILE);
+		if (url != null) {
+			final File filename = new File(url.getPath());
+			return Files.readFileIntoString(filename.getAbsolutePath());
+		}
+		return null;
 	}
 
 	/** Create the patterns.
@@ -462,10 +502,23 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	@Override
 	protected Object getReadmeFileContent(String basename) {
 		return concat(
-				"1. MANUAL INSTALLATION", //$NON-NLS-1$
+				"SARL highlighting for TextMate", //$NON-NLS-1$
+				"==============================", //$NON-NLS-1$
+				"", //$NON-NLS-1$
+				"A TextMate package to apply syntax highlighting for the SARL language.", //$NON-NLS-1$
+				"", //$NON-NLS-1$
+				"1. INSTALLATION", //$NON-NLS-1$
+				"", //$NON-NLS-1$
+				"1.1. Manual", //$NON-NLS-1$
 				"", //$NON-NLS-1$
 				"Copy the " + basename + "file into one of the following folders:", //$NON-NLS-1$ //$NON-NLS-2$
-				"* Sublime Text 3: $HOME/.config/sublime-text-3/Packages/User/SARL/"); //$NON-NLS-1$
+				"* Sublime Text 3: $HOME/.config/sublime-text-3/Packages/User/SARL/", //$NON-NLS-1$
+				"", //$NON-NLS-1$
+				"1.2 With Sublime TextPackage Control", //$NON-NLS-1$
+				"", //$NON-NLS-1$
+				"If you have the Package Control package installed, you can install the highlighting format", //$NON-NLS-1$
+				"from inside Sublime Text itself. Open the Command Palette and select \"Package Control: ", //$NON-NLS-1$
+				"Install Package\", then search for \"SARL\"."); //$NON-NLS-1$
 	}
 
 	/** Definition of a pattern.

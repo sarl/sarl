@@ -620,7 +620,27 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 		// Create the file.
 		// Encode
 		final byte[] bytes = content.toString().getBytes(Charset.forName(getCodeConfig().getEncoding()));
+		writeFile(basename, bytes, outputDirectoryFilter);
+	}
 
+	/** Write the given lines into the file.
+	 *
+	 * @param basename the basename of the file.
+	 * @param content the content of the style file.
+	 * @since 0.6
+	 */
+	protected void writeFile(String basename, byte[] content) {
+		writeFile(basename, content, getOutputDirectoryFilter());
+	}
+
+	/** Write the given lines into the file.
+	 *
+	 * @param basename the basename of the file.
+	 * @param content the content of the style file.
+	 * @param outputDirectoryFilter the output directory.
+	 * @since 0.6
+	 */
+	protected void writeFile(String basename, byte[] content, Function2<File, String, File> outputDirectoryFilter) {
 		for (final String output : getOutputs()) {
 			File directory = new File(output).getAbsoluteFile();
 			if (outputDirectoryFilter != null) {
@@ -629,7 +649,7 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 			try {
 				final File outputFile = new File(directory, basename);
 				outputFile.getParentFile().mkdirs();
-				Files.write(Paths.get(outputFile.getAbsolutePath()), bytes);
+				Files.write(Paths.get(outputFile.getAbsolutePath()), content);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
