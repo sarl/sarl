@@ -73,10 +73,16 @@
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.xtext.xbase.lib</id>
 							<restrictTo>
-								<versionRange>${xtext.versionRange}</versionRange>
+								<versionRange>[${xtext.version},${xtext.version.next})</versionRange>
 							</restrictTo>
 						</filter>
-
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.zeromq.jeromq</id>
+							<restrictTo>
+								<version>${zeromq.version}</version>
+							</restrictTo>
+						</filter>
 					</filters>
 					<!-- The following dependency-resolution is added for obtaining a runnable
 					     product on MacOS  -->
@@ -211,6 +217,26 @@
 	<!-- ===================== -->
 
 	<repositories>
+		<!-- Use the different P2 repositories in place of the P2 composite repository.
+		     The list of the available P2 repositories is available at:
+		     https://eclipse.org/Xtext/documentation/350_continuous_integration.html
+		     -->
+		<repository>
+			<id>org.eclipse.modeling.tmf.xtext.updates</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version}/</url>
+		</repository>
+		<repository>
+			<id>org.eclipse.modeling.emft.mwe.updates</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/modeling/emft/mwe/updates/releases/${mwe2.version}/</url>
+		</repository>
+		<repository>
+			<id>org.eclipse.modeling.m2t.xpand.updates</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/modeling/m2t/xpand/updates/releases/${xpand.version}/</url>
+		</repository>
+		<!-- Eclipse and related libraries -->
 		<repository>
 			<id>org.eclipse.ide.oxygen</id>
 			<layout>p2</layout>
@@ -221,21 +247,19 @@
 			<layout>p2</layout>
 			<url>http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/</url>
 		</repository>
-		<repository>
-			<id>org.eclipse.modeling.tmf.xtext.updates</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</url>
-		</repository>
+		<!-- Arakhne libraries -->
 		<repository>
 			<id>org.arakhne.p2</id>
 			<layout>p2</layout>
 			<url>http://download.tuxfamily.org/arakhne/p2/</url>
 		</repository>
+		<!-- SARL dependencies -->
 		<repository>
 			<id>io.sarl.dependencies</id>
 			<layout>p2</layout>
 			<url>http://dependencies.sarl.io</url>
 		</repository>
+		<!-- JavaFX libraries -->
 		<repository>
 			<id>org.eclipse.efxeclipse.updates</id>
 			<layout>p2</layout>
