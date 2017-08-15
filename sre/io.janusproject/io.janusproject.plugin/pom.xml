@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.janusproject.sre</groupId>
 		<artifactId>io.janusproject</artifactId>
-		<version>0.5.6</version>
+		<version>0.5.7</version>
 	</parent>
 
 	<groupId>io.janusproject</groupId>

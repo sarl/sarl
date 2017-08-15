@@ -5,7 +5,7 @@
 
 	<groupId>io.sarl</groupId>
 	<artifactId>io.sarl</artifactId>
-	<version>0.5.6</version>
+	<version>0.5.7</version>
 
 	<name>SARL Agent Oriented Programming Language</name>
 	<url>${sarlUrl}</url>
@@ -25,7 +25,7 @@
 	<properties>
 
 		<!-- Version of the SARL API -->
-		<sarl.version>0.5.6</sarl.version>
+		<sarl.version>0.5.7</sarl.version>
 		<janus.version>2.${sarl.version}</janus.version>
 
 		<!-- The versions of the following Xtext libraries are available at:

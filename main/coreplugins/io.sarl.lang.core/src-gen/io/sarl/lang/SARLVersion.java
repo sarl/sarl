@@ -55,7 +55,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
-	public static final String SARL_RELEASE_VERSION = "0.5.6"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION = "0.5.7"; //$NON-NLS-1$
 
 	/** The version number in OSGI format of the current release of the SARL library.
 	 *
@@ -64,7 +64,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
-	public static final String SARL_RELEASE_VERSION_OSGI = "0.5.6"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_OSGI = "0.5.7"; //$NON-NLS-1$
 
 	/** The version number in Maven format of the current release of the SARL library.
 	 *
@@ -73,7 +73,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 */
-	public static final String SARL_RELEASE_VERSION_MAVEN = "0.5.6"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_MAVEN = "0.5.7"; //$NON-NLS-1$
 
 	/** The status of the SARL specification.
 	 *

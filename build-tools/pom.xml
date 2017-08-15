@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>io.sarl</artifactId>
 		<groupId>io.sarl</groupId>
-		<version>0.5.6</version>
+		<version>0.5.7</version>
 	</parent>
 
 	<artifactId>build-tools</artifactId>
