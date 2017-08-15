@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
 
-PLUGIN_MODULES=("./eclipse-sarl/plugins/io.sarl.lang.core" "./eclipse-sarl/plugins/io.sarl.core" "./eclipse-sarl/plugins/io.sarl.util" "./sre/io.janusproject/io.janusproject.plugin")
+PLUGIN_MODULES=("./main/coreplugins/io.sarl.lang.core" "./main/apiplugins/io.sarl.core" "./main/apiplugins/io.sarl.util" "./sre/io.janusproject/io.janusproject.plugin")
 
 SOURCE_PATH=""
 for module in "${PLUGIN_MODULES[@]}"
 do
-	module_path="${module}/target/generated-sources/java"
-	if [ -z "${SOURCE_PATH}" ]
+	pom_path="${module}/pom.xml"
+	if [ -f "${pom_path}" ]
 	then
-		SOURCE_PATH="${module_path}"
+		module_path="${module}/target/generated-sources/java"
+		if [ -z "${SOURCE_PATH}" ]
+		then
+			SOURCE_PATH="${module_path}"
+		else
+			SOURCE_PATH="${SOURCE_PATH}:${module_path}"
+		fi
 	else
-		SOURCE_PATH="${SOURCE_PATH}:${module_path}"
+		echo "${module} no found." >&2
+		exit 255
 	fi
 done
 
