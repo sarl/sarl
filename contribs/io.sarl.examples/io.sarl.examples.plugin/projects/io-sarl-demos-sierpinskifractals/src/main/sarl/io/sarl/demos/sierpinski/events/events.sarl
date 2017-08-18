@@ -1,0 +1,11 @@
+package io.sarl.demos.sierpinski.events
+
+/*
+ * Multiply signal to make Fractal agent multiply
+ */
+event Multiply
+
+/*
+ * Make Fractal agent kill itself and its content
+ */
+event Exit

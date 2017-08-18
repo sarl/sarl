@@ -1,0 +1,131 @@
+package io.sarl.demos.sierpinski.gui
+
+import io.sarl.lang.core.EventListener
+import java.util.UUID
+import io.sarl.util.OpenEventSpace
+import javafx.fxml.FXML
+import javafx.scene.canvas.Canvas
+import javafx.scene.control.Button
+import io.sarl.lang.core.Event
+import io.sarl.demos.sierpinski.agents.Fractal
+import io.janusproject.Boot
+import io.sarl.demos.sierpinski.objects.Square
+import io.sarl.demos.sierpinski.events.Multiply
+import io.sarl.demos.sierpinski.objects.Positions
+import javafx.scene.canvas.GraphicsContext
+import javafx.animation.PauseTransition
+import javafx.util.Duration
+import javafx.scene.paint.Color
+import io.sarl.demos.sierpinski.objects.Vector2D
+import io.sarl.lang.core.Address
+import io.sarl.demos.sierpinski.events.Exit
+
+/*
+ * Controller of the GUI
+ */
+class FXMLViewerController implements EventListener {
+	
+	/*
+	 * Inner class used to launch janus kernel and first Fractal agent
+	 */
+	static class Launcher {
+		static def main(screen: Square, controller: FXMLViewerController){
+			Boot::offline = true
+			Boot::startJanus(typeof(Fractal), screen, controller.positions, controller)
+			controller.draw
+		}
+	}
+
+	private val id: UUID = UUID.randomUUID()
+
+	private var positions: Positions = new Positions
+	
+	private var ispace: OpenEventSpace
+	private var setuped = false
+	
+	@FXML private var drawZone: Canvas
+	@FXML private var multiplyButton: Button
+	
+	/*
+	 * Exit janus kernel by sending kill signal to agents
+	 */
+	@FXML public def exitApplication(){
+		if (setuped){
+			var e = new Exit()
+			this.multiplyButton.setDisable(true)
+			e.source = new Address(ispace.spaceID, id)
+			this.ispace.emit(e)
+		}
+	}
+	
+	/*
+	 * Emit a multiply signal
+	 */
+	@FXML protected def actionMultiply() {
+		if (!setuped){
+			Launcher.main(
+				new Square(new Vector2D(0.0, 0.0),
+					600.0
+				), this )
+			setuped = true
+		}
+		var m = new Multiply
+		m.source = new Address(ispace.spaceID, id)
+		this.ispace.emit(m)
+	}
+	
+	/*
+	 * Get position object
+	 */
+	public def getPositions(){
+		return this.positions
+	}
+	
+	/*
+	 * Draw fractals on canvas
+	 */
+	private def draw(){
+		var gc: GraphicsContext = drawZone.graphicsContext2D
+		var wait: PauseTransition = new PauseTransition(Duration.seconds(0.03))
+		
+		gc.setStroke(Color.ORANGERED)
+		gc.setLineWidth(3)
+		
+		wait.setOnFinished [ e | 
+			try {
+				gc.clearRect(0, 0, drawZone.width, drawZone.height)
+				positions.triangles.forEach[ t | 
+					gc.strokeLine(t.bottomLeft.x, t.bottomLeft.y, t.top.x, t.top.y)
+					gc.strokeLine(t.top.x, t.top.y, t.bottomRight.x, t.bottomRight.y)
+					gc.strokeLine(t.bottomRight.x, t.bottomRight.y, t.bottomLeft.x, t.bottomLeft.y)
+				]
+			} catch (exception: Exception){}
+			wait.playFromStart
+		]
+		wait.play
+	}
+	
+	/*
+	 * Allow to first agent to register gui on a space
+	 */
+	public def setGUISpace(ispace: OpenEventSpace){
+		this.ispace = ispace
+		this.ispace.register(this)
+	}
+	
+	/*
+	 * Get object ID on the space
+	 */
+	@Override
+	public def getID(): UUID {
+		return this.id
+	}
+	
+	/*
+	 * Needed for EventListner implementation
+	 */
+	@Override
+	public def receiveEvent(ievent: Event){
+		
+	}
+}

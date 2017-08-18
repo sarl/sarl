@@ -1,0 +1,66 @@
+package io.sarl.demos.sierpinski.objects
+
+/*
+ * Square object used to simulate a screen to print Triangle on
+ */
+public class Square {
+	private var bottomLeft : Vector2D
+	private var topLeft : Vector2D
+	private var bottomRight : Vector2D
+	private var topRight : Vector2D
+
+	new () {
+		bottomLeft = new Vector2D
+		topLeft = new Vector2D
+		bottomRight = new Vector2D
+		topRight = new Vector2D
+	}
+
+	new (BottomLeft: Vector2D, length: Double){
+		this.bottomLeft = BottomLeft
+		this.bottomRight = new Vector2D(BottomLeft.x + length, bottomLeft.y)
+		this.topRight = new Vector2D(bottomRight.x, bottomRight.y + length)
+		this.topLeft = new Vector2D(bottomLeft.x, bottomLeft.y + length)
+	}
+
+	def getBottomLeft() : Vector2D {
+		return bottomLeft
+	}
+
+	def getBottomRight() : Vector2D {
+		return bottomRight
+	}
+
+	def getTopLeft() : Vector2D {
+		return topLeft
+	}
+
+	def getTopRight() : Vector2D {
+		return topRight
+	}
+
+	def setBottomLeft(v : Vector2D) {
+		bottomLeft = v
+	}
+
+	def setBottomRight(v : Vector2D) {
+		bottomRight = v
+	}
+
+	def setTopLeft(v : Vector2D) {
+		topLeft = v
+	}
+
+	def setTopRight(v : Vector2D) {
+		topRight = v
+	}
+
+	def getWidth() : Double {
+		return bottomRight.x - bottomLeft.x
+	}
+
+	def toString(): String {
+		return bottomLeft + " " + topLeft + " " + topRight + " " + bottomLeft
+	}
+
+}

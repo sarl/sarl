@@ -1,0 +1,42 @@
+package io.sarl.demos.sierpinski.objects
+
+/*
+ * Simple 2D vector
+ * Contains x and y position
+ */
+public class Vector2D {
+	private var y: Double
+	private var x: Double
+
+	new () {
+		x = 0.0
+		y = 0.0
+	}
+
+	new (x : Double, y : Double) {
+		this.x = x
+		this.y = y
+	}
+
+	public def getX() : Double {
+		return this.x
+	}
+
+	public def getY() : Double {
+		return this.y
+	}
+
+	public def setX(x : Double) {
+		this.x = x
+	}
+
+	public def setY(y : Double) {
+		this.y = y
+	}
+	
+	public def toString(): String{
+		return "(x: " + x + ", y: " + y + ")"
+	}
+}
+ 
+

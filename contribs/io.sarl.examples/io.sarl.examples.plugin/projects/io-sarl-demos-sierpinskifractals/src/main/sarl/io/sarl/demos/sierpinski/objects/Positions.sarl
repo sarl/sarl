@@ -1,0 +1,25 @@
+package io.sarl.demos.sierpinski.objects
+
+import java.util.List
+import java.util.ArrayList
+import java.util.Collections
+
+/*
+ * Object referencing every Fractal position
+ * Used by the GUI for printing in canvas
+ */
+public class Positions {
+	private var frac: List<Triangle>
+	
+	new (){
+		frac = new ArrayList
+	}
+	
+	public def addTriangle(t: Triangle){
+		synchronized(frac){frac.add(t)}
+	}
+	
+	public def getTriangles(): List<Triangle>  {
+		synchronized(frac){return Collections.unmodifiableList(frac)}
+	}
+}
