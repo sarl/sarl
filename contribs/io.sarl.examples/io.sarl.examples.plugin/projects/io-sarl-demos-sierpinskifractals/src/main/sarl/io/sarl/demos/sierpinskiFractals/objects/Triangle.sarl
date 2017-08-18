@@ -1,14 +1,15 @@
-package io.sarl.demos.sierpinski.objects
+package io.sarl.demos.sierpinskiFractals.objects
 
 /*
  * Triangle object created by Fractal
  */
 class Triangle {
-	private var bottomLeft: Vector2D
-	private var bottomRight: Vector2D
-	private var top: Vector2D
 	
-	new (){
+	val bottomLeft : Vector2D
+	val bottomRight : Vector2D
+	val top : Vector2D
+	
+	new {
 		bottomLeft = new Vector2D
 		bottomRight = new Vector2D
 		top = new Vector2D
@@ -20,16 +21,16 @@ class Triangle {
 		this.bottomRight = bottomRight
 	}
 	
-	public def getBottomLeft(): Vector2D {
-		return bottomLeft
+	def getBottomLeft : Vector2D {
+		this.bottomLeft
 	}
 	
-	public def getBottomRight(): Vector2D {
-		return bottomRight
+	def getBottomRight : Vector2D {
+		this.bottomRight
 	}
 	
-	public def getTop(): Vector2D {
-		return top
+	def getTop : Vector2D {
+		this.top
 	}
 	
 }

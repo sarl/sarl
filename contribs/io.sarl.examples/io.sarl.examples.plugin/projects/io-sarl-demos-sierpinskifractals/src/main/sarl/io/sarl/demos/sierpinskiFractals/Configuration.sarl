@@ -1,0 +1,20 @@
+package io.sarl.demos.sierpinskiFractals
+
+import io.sarl.demos.sierpinskiFractals.objects.Square
+import io.sarl.demos.sierpinskiFractals.objects.Vector2D
+
+/** General configuration.
+ */
+final class Configuration {
+
+	/** 
+	 * Default area.
+	 */
+	public static val GLOBAL_AREA = new Square(
+		new Vector2D(0.0, 0.0),
+		600.0)
+	
+	private new() {
+	}
+
+}

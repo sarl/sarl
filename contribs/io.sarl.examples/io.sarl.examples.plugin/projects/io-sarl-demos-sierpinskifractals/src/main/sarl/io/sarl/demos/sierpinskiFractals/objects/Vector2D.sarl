@@ -1,0 +1,44 @@
+package io.sarl.demos.sierpinskiFractals.objects
+
+/*
+ * Simple 2D vector
+ * Contains x and y position
+ */
+public class Vector2D {
+	
+	var y: double
+	var x: double
+
+	new {
+		x = 0.0
+		y = 0.0
+	}
+
+	new (x : double, y : double) {
+		this.x = x
+		this.y = y
+	}
+
+	def getX : double {
+		this.x
+	}
+
+	def getY : double {
+		this.y
+	}
+
+	def setX(x : double) {
+		this.x = x
+	}
+
+	def setY(y : double) {
+		this.y = y
+	}
+	
+	def toString: String {
+		"(x: " + x + ", y: " + y + ")"
+	}
+
+}
+ 
+
