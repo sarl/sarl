@@ -106,11 +106,11 @@ The boolean operators are listed below. Each operator takes one or two boolean v
 replies the boolean value resulting from the operational semantic of the operator. 
 
 
-| Operator        | Function Name  | Operator Semantic          |
-| --------------- | -------------- | -------------------------- |
-| a || b          | operator\_or   | If a then true else b.     | [:Fact:]$true || false$
-| a &amp;&amp;& b | operator\_and  | If a then b else false.    | [:Fact:]$true && true$
-| ! a             | operator\_not  | If a then false else true. | [:Fact:]$!false$
+| Operator         | Function Name  | Operator Semantic          |
+| ---------------- | -------------- | -------------------------- |
+| a &#124;&#124; b | operator\_or   | If a then true else b.     | [:Fact:]$true || false$
+| a &amp;&amp; b   | operator\_and  | If a then b else false.    | [:Fact:]$true && true$
+| ! a              | operator\_not  | If a then false else true. | [:Fact:]$!false$
 
 
 Each operator has an associated function name. This function contains
