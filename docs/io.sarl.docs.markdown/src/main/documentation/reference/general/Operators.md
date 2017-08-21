@@ -149,6 +149,17 @@ the concrete implementation of the operational semantic of the
 operator. This function can be redefined as explained in the 
 [operator overloading section](#operator_overloading).
 
+Additional bitwise operators are available into the SARL library, but not associated to any operator:
+
+
+| Operator         | Operator Semantic                     |
+| ---------------- | ------------------------------------- |
+| a.bitwiseAnd(b)  | Do a bit-per-bit AND operation.       | [:Fact:]$1.bitwiseAnd(2)$
+| a.bitwiseOr(b)   | Do a bit-per-bit OR operation.        | [:Fact:]$1.bitwiseOr(2)$
+| a.bitwiseXor(b)  | Do a bit-per-bit XOR operation.       | [:Fact:]$1.bitwiseXor(2)$
+| a.bitwiseNot     | Do a bit-per-bit NEGATION operation.  | [:Fact:]$1.bitwiseNot$
+
+
 
 ## String Operators
 
