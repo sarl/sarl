@@ -64,13 +64,37 @@ public final class SREutils {
 		return trait.getSreSpecificData(type);
 	}
 
+	/** Replies the data associated to this agent by the SRE.
+	 *
+	 * @param <S> the type of the data.
+	 * @param type the type of the data.
+	 * @param agent the agent.
+	 * @return the SRE-specific data.
+	 */
+	@Pure
+	public static <S> S getSreSpecificData(Agent agent, Class<S> type) {
+		assert agent != null;
+		return agent.getSreSpecificData(type);
+	}
+
 	/** Change the data associated to this agent trait by the SRE.
 	 *
 	 * @param trait the trait.
 	 * @param data the SRE-specific data.
 	 */
 	public static void setSreSpecificData(AgentTrait trait, Object data) {
+		assert trait != null;
 		trait.setSreSpecificData(data);
+	}
+
+	/** Change the data associated to this agent by the SRE.
+	 *
+	 * @param agent the agent.
+	 * @param data the SRE-specific data.
+	 */
+	public static void setSreSpecificData(Agent agent, Object data) {
+		assert agent != null;
+		agent.setSreSpecificData(data);
 	}
 
 }

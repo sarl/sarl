@@ -37,6 +37,29 @@ import io.sarl.lang.util.ClearableReference;
  */
 abstract class AgentProtectedAPIObject {
 
+	private transient Object sreSpecificData;
+
+	/** Replies the data associated to this agent trait by the SRE.
+	 *
+	 * @param <S> the type of the data.
+	 * @param type the type of the data.
+	 * @return the SRE-specific data.
+	 * @since 0.5
+	 */
+	@Pure
+	<S> S getSreSpecificData(Class<S> type) {
+		return type.cast(this.sreSpecificData);
+	}
+
+	/** Change the data associated to this agent trait by the SRE.
+	 *
+	 * @param data the SRE-specific data.
+	 * @since 0.5
+	 */
+	void setSreSpecificData(Object data) {
+		this.sreSpecificData = data;
+	}
+
 	/**
 	 * Returns a String representation of the Event E1 attributes only.
 	 *
