@@ -75,7 +75,7 @@ For setting up the development environment, you should follow the steps:
 * Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
 * Import the Eclipse preferences for SARL developers, which are stored into the `dev-tools` folder.
 * Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
-** Select the folder in which you have cloned the SARL project (see Section 5.1);
+** Select the folder in which you have cloned the SARL project (see Section 2.1);
 ** Click on `Finish`.
 * Set the Eclipse target platform, i.e. the definition of the Eclipse plugins to be imported by the project.
 ** Open the target platform file `io.sarl.lang.targetplatform.target` in the project `io.sarl.lang.targetplatform`;
@@ -85,9 +85,9 @@ For setting up the development environment, you should follow the steps:
 * The Checkstyle plugin may need to install specific connectors. Do an action that is similar as the one in the previous step.
 * Clean and compile the project: `Menu Project > Clean`. 
 
-=== 5.4. Compilation of SARL before Contributing
+=== 2.4. Compilation of SARL before Contributing
 
-Prior to any sending of your contribution (see Section 5.5), you must ensure that your local copy of SARL compiles without error.
+Prior to any sending of your contribution (see Section 2.5), you must ensure that your local copy of SARL compiles without error.
 
 The best and "sure" way to proceed is to use Maven on the command line, because it is the tool used by our compilation server for validating your contribution.
 
@@ -98,7 +98,7 @@ mvn clean install
 
 This command line will launch the compilation, checkstyle and unit tests. It must be successfull.
 
-=== 5.5. Sending the Contribution
+=== 2.5. Sending the Contribution
 
 For sending your contribution to the SARL master repository, you must request a pull (PR) to the link:https://github.com/sarl/sarl/[GitHub repository].
 
