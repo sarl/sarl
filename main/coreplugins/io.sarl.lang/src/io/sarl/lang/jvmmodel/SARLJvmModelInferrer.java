@@ -90,6 +90,7 @@ import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmIntAnnotationValue;
+import org.eclipse.xtext.common.types.JvmLowerBound;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
@@ -1386,90 +1387,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			closeContext(context);
 		}
 
-		// Generate the internal class for context-aware wrappers
-
-		// Change the modifiers on the generated type.
-		final JvmGenericType innerType = this.typesFactory.createJvmGenericType();
-		innerType.setInterface(false);
-		innerType.setAbstract(false);
-		innerType.setVisibility(JvmVisibility.PUBLIC);
-		innerType.setStatic(true);
-		innerType.setStrictFloatingPoint(false);
-		innerType.setFinal(false);
-		final String innerTypeName = Capacity.ContextAwareCapacityWrapper.class.getSimpleName();
-		innerType.setSimpleName(innerTypeName);
-
-		inferredJvmType.getMembers().add(innerType);
-
-		final JvmTypeParameter typeParameter = this.typesFactory.createJvmTypeParameter();
-		typeParameter.setName("C"); //$NON-NLS-1$
-		final JvmUpperBound constraint = this.typesFactory.createJvmUpperBound();
-		constraint.setTypeReference(this._typeReferenceBuilder.typeRef(inferredJvmType));
-		typeParameter.getConstraints().add(constraint);
-		innerType.getTypeParameters().add(typeParameter);
-
-		final Iterator<JvmTypeReference> extendedTypeIterator = inferredJvmType.getExtendedInterfaces().iterator();
-		if (extendedTypeIterator.hasNext()) {
-			final JvmTypeReference extendedType = extendedTypeIterator.next();
-			final JvmTypeReference superType = this._typeReferenceBuilder.typeRef(
-					extendedType.getQualifiedName() + "$" + innerTypeName, //$NON-NLS-1$
-					this._typeReferenceBuilder.typeRef(typeParameter));
-			innerType.getSuperTypes().add(superType);
-		}
-
-		innerType.getSuperTypes().add(this._typeReferenceBuilder.typeRef(inferredJvmType));
-
-		final JvmConstructor constructor = this.typesFactory.createJvmConstructor();
-		constructor.setVisibility(JvmVisibility.PUBLIC);
-		innerType.getMembers().add(constructor);
-		final JvmFormalParameter parameter1 = this.typesFactory.createJvmFormalParameter();
-		parameter1.setName("capacity"); //$NON-NLS-1$
-		parameter1.setParameterType(this._typeReferenceBuilder.typeRef(typeParameter));
-		constructor.getParameters().add(parameter1);
-		final JvmFormalParameter parameter2 = this.typesFactory.createJvmFormalParameter();
-		parameter2.setName("caller"); //$NON-NLS-1$
-		parameter2.setParameterType(this._typeReferenceBuilder.typeRef(AgentTrait.class));
-		constructor.getParameters().add(parameter2);
-		setBody(constructor, (it) -> {
-			it.append("super(capacity, caller);"); //$NON-NLS-1$
-		});
-
-		final Set<ActionPrototype> createdActions = new TreeSet<>();
-		for (final JvmGenericType sourceType : Iterables.concat(
-				Collections.singletonList(inferredJvmType),
-				Iterables.transform(Iterables.skip(inferredJvmType.getExtendedInterfaces(), 1), (it) -> {
-					return (JvmGenericType) it.getType();
-				}))) {
-			copyNonStaticPublicJvmOperations(sourceType, innerType, createdActions, (operation, it) -> {
-				it.append("try {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("  ensureCallerInLocalThread();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("  "); //$NON-NLS-1$
-				if (operation.getReturnType() != null && !Objects.equal("void", operation.getReturnType().getIdentifier())) { //$NON-NLS-1$
-					it.append("return "); //$NON-NLS-1$
-				}
-				it.append("this.capacity."); //$NON-NLS-1$
-				it.append(operation.getSimpleName());
-				it.append("("); //$NON-NLS-1$
-				boolean first = true;
-				for (final JvmFormalParameter fparam : operation.getParameters()) {
-					if (first) {
-						first = false;
-					} else {
-						it.append(", "); //$NON-NLS-1$
-					}
-					it.append(fparam.getName());
-				}
-				it.append(");"); //$NON-NLS-1$
-				it.newLine();
-				it.append("} finally {"); //$NON-NLS-1$
-				it.newLine();
-				it.append("  resetCallerInLocalThread();"); //$NON-NLS-1$
-				it.newLine();
-				it.append("}"); //$NON-NLS-1$
-			});
-		}
+		// Generate the context aware wrapper
+		appendCapacityContextAwareWrapper(source, inferredJvmType);
 	}
 
 	/** Initialize the SARL space type.
@@ -3511,6 +3430,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param bodyBuilder the builder of the target's operations.
 	 * @since 0.5
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	protected void copyNonStaticPublicJvmOperations(JvmGenericType source, JvmGenericType target,
 			Set<ActionPrototype> createdActions, Procedure2<JvmOperation, ITreeAppendable> bodyBuilder) {
 		final Iterable<JvmOperation> operations = Iterables.transform(Iterables.filter(source.getMembers(), (it) -> {
@@ -3528,26 +3448,57 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (createdActions.add(actSigKey)) {
 				final JvmOperation newOp = this.typesFactory.createJvmOperation();
 				target.getMembers().add(newOp);
+
 				newOp.setAbstract(false);
-				newOp.setDefault(operation.isDefault());
-				newOp.setDeprecated(operation.isDeprecated());
 				newOp.setFinal(false);
 				newOp.setNative(false);
-				newOp.setReturnType(this.typeBuilder.cloneWithProxies(operation.getReturnType()));
-				newOp.setSimpleName(operation.getSimpleName());
 				newOp.setStatic(false);
-				newOp.setStrictFloatingPoint(operation.isStrictFloatingPoint());
-				newOp.setSynchronized(operation.isSynchronized());
+				newOp.setSynchronized(false);
 				newOp.setVisibility(JvmVisibility.PUBLIC);
+
+				newOp.setDefault(operation.isDefault());
+				newOp.setDeprecated(operation.isDeprecated());
+				newOp.setSimpleName(operation.getSimpleName());
+				newOp.setStrictFloatingPoint(operation.isStrictFloatingPoint());
+
+				// Copy the generic types in two steps: first step is the name's copy.
+				for (final JvmTypeParameter typeParameter : operation.getTypeParameters()) {
+					final JvmTypeParameter typeParameterCopy = this.typesFactory.createJvmTypeParameter();
+					typeParameterCopy.setName(typeParameter.getName());
+					newOp.getTypeParameters().add(typeParameterCopy);
+				}
+				// Second step is the constraints' copy
+				for (int i = 0; i < operation.getTypeParameters().size(); ++i) {
+					final JvmTypeParameter typeParameter = operation.getTypeParameters().get(i);
+					final JvmTypeParameter typeParameterCopy = newOp.getTypeParameters().get(i);
+					for (final JvmTypeConstraint constraint : typeParameter.getConstraints()) {
+						JvmTypeConstraint cst = null;
+						if (constraint instanceof JvmLowerBound) {
+							cst = this.typesFactory.createJvmLowerBound();
+						} else if (constraint instanceof JvmUpperBound) {
+							cst = this.typesFactory.createJvmUpperBound();
+						}
+						if (cst != null) {
+							typeParameterCopy.getConstraints().add(cst);
+							cst.setTypeReference(cloneWithTypeParametersAndProxies(constraint.getTypeReference(), newOp));
+						}
+					}
+				}
+
+				for (final JvmTypeReference exception : operation.getExceptions()) {
+					newOp.getExceptions().add(cloneWithTypeParametersAndProxies(exception, newOp));
+				}
 
 				for (final JvmFormalParameter parameter : operation.getParameters()) {
 					final JvmFormalParameter newParam = this.typesFactory.createJvmFormalParameter();
 					newOp.getParameters().add(newParam);
 					newParam.setName(parameter.getSimpleName());
-					newParam.setParameterType(this.typeBuilder.cloneWithProxies(parameter.getParameterType()));
+					newParam.setParameterType(cloneWithTypeParametersAndProxies(parameter.getParameterType(), newOp));
 				}
 
 				newOp.setVarArgs(operation.isVarArgs());
+
+				newOp.setReturnType(cloneWithTypeParametersAndProxies(operation.getReturnType(), newOp));
 
 				setBody(newOp, (it) -> bodyBuilder.apply(operation, it));
 			}
@@ -3668,6 +3619,96 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return this._typeReferenceBuilder.typeRef(Void.TYPE);
 		}
 		return this.typeBuilder.inferredType(body);
+	}
+
+	/** Initialize the SARL capacity context-aware wrapper.
+	 *
+	 * @param source the source.
+	 * @param inferredJvmType the JVM type.
+	 * @since 0.6
+	 */
+	protected void appendCapacityContextAwareWrapper(SarlCapacity source, JvmGenericType inferredJvmType) {
+		final JvmGenericType innerType = this.typesFactory.createJvmGenericType();
+		innerType.setInterface(false);
+		innerType.setAbstract(false);
+		innerType.setVisibility(JvmVisibility.PUBLIC);
+		innerType.setStatic(true);
+		innerType.setStrictFloatingPoint(false);
+		innerType.setFinal(false);
+		final String innerTypeName = Capacity.ContextAwareCapacityWrapper.class.getSimpleName();
+		innerType.setSimpleName(innerTypeName);
+
+		inferredJvmType.getMembers().add(innerType);
+
+		final JvmTypeParameter typeParameter = this.typesFactory.createJvmTypeParameter();
+		typeParameter.setName("C"); //$NON-NLS-1$
+		final JvmUpperBound constraint = this.typesFactory.createJvmUpperBound();
+		constraint.setTypeReference(this._typeReferenceBuilder.typeRef(inferredJvmType));
+		typeParameter.getConstraints().add(constraint);
+		innerType.getTypeParameters().add(typeParameter);
+
+		final Iterator<JvmTypeReference> extendedTypeIterator = inferredJvmType.getExtendedInterfaces().iterator();
+		if (extendedTypeIterator.hasNext()) {
+			final JvmTypeReference extendedType = extendedTypeIterator.next();
+			final JvmTypeReference superType = this._typeReferenceBuilder.typeRef(
+					extendedType.getQualifiedName() + "$" + innerTypeName, //$NON-NLS-1$
+					this._typeReferenceBuilder.typeRef(typeParameter));
+			innerType.getSuperTypes().add(superType);
+		}
+
+		innerType.getSuperTypes().add(this._typeReferenceBuilder.typeRef(inferredJvmType));
+
+		final JvmConstructor constructor = this.typesFactory.createJvmConstructor();
+		constructor.setVisibility(JvmVisibility.PUBLIC);
+		innerType.getMembers().add(constructor);
+		final JvmFormalParameter parameter1 = this.typesFactory.createJvmFormalParameter();
+		parameter1.setName("capacity"); //$NON-NLS-1$
+		parameter1.setParameterType(this._typeReferenceBuilder.typeRef(typeParameter));
+		constructor.getParameters().add(parameter1);
+		final JvmFormalParameter parameter2 = this.typesFactory.createJvmFormalParameter();
+		parameter2.setName("caller"); //$NON-NLS-1$
+		parameter2.setParameterType(this._typeReferenceBuilder.typeRef(AgentTrait.class));
+		constructor.getParameters().add(parameter2);
+		setBody(constructor, (it) -> {
+			it.append("super(capacity, caller);"); //$NON-NLS-1$
+		});
+
+		final Set<ActionPrototype> createdActions = new TreeSet<>();
+		for (final JvmGenericType sourceType : Iterables.concat(
+				Collections.singletonList(inferredJvmType),
+				Iterables.transform(Iterables.skip(inferredJvmType.getExtendedInterfaces(), 1), (it) -> {
+					return (JvmGenericType) it.getType();
+				}))) {
+			copyNonStaticPublicJvmOperations(sourceType, innerType, createdActions, (operation, it) -> {
+				it.append("try {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("  ensureCallerInLocalThread();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("  "); //$NON-NLS-1$
+				if (operation.getReturnType() != null && !Objects.equal("void", operation.getReturnType().getIdentifier())) { //$NON-NLS-1$
+					it.append("return "); //$NON-NLS-1$
+				}
+				it.append("this.capacity."); //$NON-NLS-1$
+				it.append(operation.getSimpleName());
+				it.append("("); //$NON-NLS-1$
+				boolean first = true;
+				for (final JvmFormalParameter fparam : operation.getParameters()) {
+					if (first) {
+						first = false;
+					} else {
+						it.append(", "); //$NON-NLS-1$
+					}
+					it.append(fparam.getName());
+				}
+				it.append(");"); //$NON-NLS-1$
+				it.newLine();
+				it.append("} finally {"); //$NON-NLS-1$
+				it.newLine();
+				it.append("  resetCallerInLocalThread();"); //$NON-NLS-1$
+				it.newLine();
+				it.append("}"); //$NON-NLS-1$
+			});
+		}
 	}
 
 	/** Internal error.
