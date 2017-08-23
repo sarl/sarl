@@ -53,6 +53,7 @@ import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.MembersInjector;
 import com.google.inject.Singleton;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -1821,18 +1822,21 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						operation2.setVarArgs(operation.isVarArgs());
 						operation2.setAbstract(operation.isAbstract());
 						operation2.setDeprecated(operation.isDeprecated());
-						operation2.setReturnType(
-								SARLJvmModelInferrer.this.typeBuilder.cloneWithProxies(selectedReturnType));
 						operation2.setStatic(operation.isStatic());
 						operation2.setFinal(!operation.isStatic() && !container.isInterface());
 						operation2.setNative(false);
 						operation2.setStrictFloatingPoint(false);
 						operation2.setSynchronized(false);
 
+						copyTypeParametersFromJvmOperation(operation, operation2);
+
 						for (final JvmTypeReference exception : operation.getExceptions()) {
 							operation2.getExceptions().add(SARLJvmModelInferrer.this.typeBuilder
 									.cloneWithProxies(exception));
 						}
+
+						operation2.setReturnType(
+								cloneWithTypeParametersAndProxies(selectedReturnType, operation2));
 
 						translateAnnotationsTo(source.getAnnotations(), operation2);
 						if (source.isOverride()
@@ -2865,11 +2869,24 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Remove the type parameters from the given type.
 	 *
+	 * <p><table>
+	 * <thead><tr><th>Referenced type</th><th>Input</th><th>Replied referenced type</th><th>Output</th></tr></thead>
+	 * <tbody>
+	 * <tr><td>Type with generic type parameter</td><td>{@code T<G>}</td><td>the type itself</td><td>{@code T}</td></tr>
+	 * <tr><td>Type without generic type parameter</td><td>{@code T}</td><td>the type itself</td><td>{@code T}</td></tr>
+	 * <tr><td>Type parameter without bound</td><td>{@code <S>}</td><td>{@code Object}</td><td>{@code Object}</td></tr>
+	 * <tr><td>Type parameter with lower bound</td><td>{@code <S super B>}</td><td>{@code Object}</td><td>{@code Object}</td></tr>
+	 * <tr><td>Type parameter with upper bound</td><td>{@code <S extends B>}</td><td>the bound type</td><td>{@code B}</td></tr>
+	 * </tbody>
+	 * </table>
+	 *
 	 * @param type the type.
+	 * @param context the context in which the reference is located.
 	 * @return the same type without the type parameters.
 	 */
-	protected JvmTypeReference skipTypeParameters(JvmTypeReference type) {
-		return this._typeReferenceBuilder.typeRef(type.getType());
+	protected JvmTypeReference skipTypeParameters(JvmTypeReference type, Notifier context) {
+		final LightweightTypeReference ltr = Utils.toLightweightTypeReference(type, this.services);
+		return ltr.getRawTypeReference().toJavaCompliantTypeReference();
 	}
 
 	/** Generate a list of formal parameters with annotations for the default values.
@@ -2912,8 +2929,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					assert inferredParam != null;
 					final String namePostPart = inferredParam.getDefaultValueAnnotationValue();
 					final String name = this.sarlSignatureProvider.createFieldNameForDefaultValueID(namePostPart);
+					final JvmTypeReference fieldType = skipTypeParameters(paramType, actionContainer);
 					// FIXME: Hide these attributes into an inner interface.
-					final JvmField field = this.typeBuilder.toField(defaultValue, name, skipTypeParameters(paramType), (it) -> {
+					final JvmField field = this.typeBuilder.toField(defaultValue, name, fieldType, (it) -> {
 						SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it,
 								MessageFormat.format(Messages.SARLJvmModelInferrer_11, paramName));
 						it.setStatic(true);
@@ -2956,20 +2974,30 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			boolean varargs, List<InferredStandardParameter> signature) {
 		final List<String> arguments = CollectionLiterals.newArrayList();
 		for (final InferredStandardParameter parameterSpec : signature) {
+			final JvmTypeReference paramType = parameterSpec.getType();
 			if (parameterSpec instanceof InferredValuedParameter) {
-				arguments.add(
-						this.sarlSignatureProvider.toJavaArgument(
-								actionContainer.getIdentifier(),
-								((InferredValuedParameter) parameterSpec).getCallingArgument()));
+				final StringBuilder argumentValue = new StringBuilder();
+				if (paramType.getType() instanceof JvmTypeParameter) {
+					argumentValue.append("("); //$NON-NLS-1$
+					argumentValue.append(paramType.getSimpleName());
+					argumentValue.append(") "); //$NON-NLS-1$
+				}
+				argumentValue.append(this.sarlSignatureProvider.toJavaArgument(
+						actionContainer.getIdentifier(),
+						((InferredValuedParameter) parameterSpec).getCallingArgument()));
+				arguments.add(argumentValue.toString());
 			} else {
 				final EObject param = parameterSpec.getParameter();
 				final String paramName = parameterSpec.getName();
-				final JvmTypeReference paramType = parameterSpec.getType();
 				if (!Strings.isNullOrEmpty(paramName) && paramType != null) {
 					final JvmFormalParameter lastParam = this.typesFactory.createJvmFormalParameter();
 					owner.getParameters().add(lastParam);
 					lastParam.setName(paramName);
-					lastParam.setParameterType(this.typeBuilder.cloneWithProxies(paramType));
+					if (owner instanceof JvmOperation) {
+						lastParam.setParameterType(cloneWithTypeParametersAndProxies(paramType, (JvmOperation) owner));
+					} else {
+						lastParam.setParameterType(this.typeBuilder.cloneWithProxies(paramType));
+					}
 					this.associator.associate(param, lastParam);
 					arguments.add(paramName);
 				}
@@ -3250,7 +3278,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		// Do the clone according to the type of the entity.
 		assert typeCandidate != null;
 		final JvmTypeReference returnType;
-		if (InferredTypeIndicator.isInferred(typeCandidate) || !cloneType) {
+		if (!cloneType) {
 			returnType = typeCandidate;
 		} else {
 			returnType = this.typeBuilder.cloneWithProxies(typeCandidate);
@@ -3422,6 +3450,42 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return code;
 	}
 
+	/** Copy the type parameters from a JvmOperation.
+	 *
+	 * <p>This function differs from {@link #copyAndFixTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
+	 * and {@link #copyTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
+	 * in the fact that the type parameters were already generated and fixed. The current function supper generic types by
+	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmOperation)}.
+	 *
+	 * @param fromOperation the operation from which the type parameters are copied.
+	 * @param toOperation the operation that will receives the new type parameters.
+	 */
+	protected void copyTypeParametersFromJvmOperation(JvmOperation fromOperation, JvmOperation toOperation) {
+		// Copy the generic types in two steps: first step is the name's copy.
+		for (final JvmTypeParameter typeParameter : fromOperation.getTypeParameters()) {
+			final JvmTypeParameter typeParameterCopy = this.typesFactory.createJvmTypeParameter();
+			typeParameterCopy.setName(typeParameter.getName());
+			toOperation.getTypeParameters().add(typeParameterCopy);
+		}
+		// Second step is the constraints' copy
+		for (int i = 0; i < fromOperation.getTypeParameters().size(); ++i) {
+			final JvmTypeParameter typeParameter = fromOperation.getTypeParameters().get(i);
+			final JvmTypeParameter typeParameterCopy = toOperation.getTypeParameters().get(i);
+			for (final JvmTypeConstraint constraint : typeParameter.getConstraints()) {
+				JvmTypeConstraint cst = null;
+				if (constraint instanceof JvmLowerBound) {
+					cst = this.typesFactory.createJvmLowerBound();
+				} else if (constraint instanceof JvmUpperBound) {
+					cst = this.typesFactory.createJvmUpperBound();
+				}
+				if (cst != null) {
+					typeParameterCopy.getConstraints().add(cst);
+					cst.setTypeReference(cloneWithTypeParametersAndProxies(constraint.getTypeReference(), toOperation));
+				}
+			}
+		}
+	}
+
 	/** Copy the JVM operations from the source to the destination.
 	 *
 	 * @param source the source.
@@ -3461,29 +3525,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				newOp.setSimpleName(operation.getSimpleName());
 				newOp.setStrictFloatingPoint(operation.isStrictFloatingPoint());
 
-				// Copy the generic types in two steps: first step is the name's copy.
-				for (final JvmTypeParameter typeParameter : operation.getTypeParameters()) {
-					final JvmTypeParameter typeParameterCopy = this.typesFactory.createJvmTypeParameter();
-					typeParameterCopy.setName(typeParameter.getName());
-					newOp.getTypeParameters().add(typeParameterCopy);
-				}
-				// Second step is the constraints' copy
-				for (int i = 0; i < operation.getTypeParameters().size(); ++i) {
-					final JvmTypeParameter typeParameter = operation.getTypeParameters().get(i);
-					final JvmTypeParameter typeParameterCopy = newOp.getTypeParameters().get(i);
-					for (final JvmTypeConstraint constraint : typeParameter.getConstraints()) {
-						JvmTypeConstraint cst = null;
-						if (constraint instanceof JvmLowerBound) {
-							cst = this.typesFactory.createJvmLowerBound();
-						} else if (constraint instanceof JvmUpperBound) {
-							cst = this.typesFactory.createJvmUpperBound();
-						}
-						if (cst != null) {
-							typeParameterCopy.getConstraints().add(cst);
-							cst.setTypeReference(cloneWithTypeParametersAndProxies(constraint.getTypeReference(), newOp));
-						}
-					}
-				}
+				copyTypeParametersFromJvmOperation(operation, newOp);
 
 				for (final JvmTypeReference exception : operation.getExceptions()) {
 					newOp.getExceptions().add(cloneWithTypeParametersAndProxies(exception, newOp));
