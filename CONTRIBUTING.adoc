@@ -67,6 +67,10 @@ The command line is:
 mvn clean install -Dmaven.test.skip=true -Dcheckstyle.skip=true
 ```
 
+If you obtained a compilation error with the message: `Cannot run program "[...]/launch4j-maven-plugin-[...]-workdir-linux/bin/windres": error=2, No such file or directory`, it means that the launch4j Maven plugin cannot find a library into your operating system.
+According to the link:https://github.com/lukaszlenart/launch4j-maven-plugin/issues/4[Issue 4 of launch4j-maven-plugin], you should install the following libraries: `zlib`, `ncurses`, `bzip2`.
+
+
 === 2.3. Installing the Eclipse Development Environment
 
 For setting up the development environment, you should follow the steps:
