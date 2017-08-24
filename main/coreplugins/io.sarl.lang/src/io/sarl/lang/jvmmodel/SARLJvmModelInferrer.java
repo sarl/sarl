@@ -1601,13 +1601,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			operation.setStatic(source.isStatic());
 			operation.setSynchronized(source.isSynchonized());
 			operation.setNative(source.isNative());
-			final boolean enableFunctionBody;
+			boolean enableFunctionBody;
 			if (container.isInterface()) {
-				enableFunctionBody = context != null && context.isAtLeastJava8()
-						&& source.getExpression() != null && !operation.isAbstract()
-						&& !operation.isStatic()
-						&& !Utils.toLightweightTypeReference(container, this.services).isSubtypeOf(Capacity.class);
-				operation.setDefault(enableFunctionBody);
+				enableFunctionBody = false;
+				if (context != null && context.isAtLeastJava8()
+						&& !Utils.toLightweightTypeReference(container, this.services).isSubtypeOf(Capacity.class)) {
+					if (operation.isStatic()) {
+						enableFunctionBody = true;
+					} else if (source.getExpression() != null && !operation.isAbstract()) {
+						enableFunctionBody = true;
+					}
+				}
+				operation.setDefault(enableFunctionBody && !operation.isStatic());
 				operation.setAbstract(!enableFunctionBody);
 				operation.setFinal(false);
 			} else {
