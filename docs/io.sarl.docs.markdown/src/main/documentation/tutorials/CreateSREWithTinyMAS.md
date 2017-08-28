@@ -984,6 +984,7 @@ The code is self-explaining.
 		[:Success:]
 			package io.sarl.docs.tutorials.tinyMASSRE
 			import java.util.UUID
+			import java.util.logging.Logger
 			import io.sarl.core.Logging
 			interface AgentIdentifier {
 				def setStringRepresentation(a : String)
@@ -1023,6 +1024,9 @@ The code is self-explaining.
 				def setLogLevel(level : int) {
 				}
 
+				def getLogger : Logger {
+					null
+				}
 
 				def error(message : Object, exception : Throwable = null, parameters : Object*) {
 					System::out.println("[" + getId.getString + "] ERROR: " + message)
