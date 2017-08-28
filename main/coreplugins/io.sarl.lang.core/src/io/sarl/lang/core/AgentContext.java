@@ -25,7 +25,7 @@ import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.lang.util.SynchronizedCollection;
+import io.sarl.lang.util.SynchronizedIterable;
 
 /**
  * An AgentContext defines the boundary of a sub-system, and gathers a collection of Spaces.
@@ -58,7 +58,7 @@ public interface AgentContext {
 	 * @return the spaces.
 	 */
 	@Pure
-	SynchronizedCollection<? extends Space> getSpaces();
+	SynchronizedIterable<? extends Space> getSpaces();
 
 	/** Replies all the spaces that are implementing the given specification.
 	 *
@@ -67,7 +67,7 @@ public interface AgentContext {
 	 * @return the spaces associated to the given space specification.
 	 */
 	@Pure
-	<S extends Space> SynchronizedCollection<S> getSpaces(Class<? extends SpaceSpecification<S>> spec);
+	<S extends Space> SynchronizedIterable<S> getSpaces(Class<? extends SpaceSpecification<S>> spec);
 
 
 	/** Create an instance of space following the given specification.

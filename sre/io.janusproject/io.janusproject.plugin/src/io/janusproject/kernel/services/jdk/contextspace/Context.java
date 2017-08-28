@@ -39,6 +39,8 @@ import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
 import io.sarl.lang.util.SynchronizedCollection;
+import io.sarl.lang.util.SynchronizedIterable;
+import io.sarl.util.Collections3;
 import io.sarl.util.OpenEventSpace;
 import io.sarl.util.OpenEventSpaceSpecification;
 
@@ -125,13 +127,15 @@ public class Context implements AgentContext {
 	}
 
 	@Override
-	public <S extends Space> SynchronizedCollection<S> getSpaces(Class<? extends SpaceSpecification<S>> spec) {
-		return this.spaceRepository.getSpaces(spec);
+	public <S extends Space> SynchronizedIterable<S> getSpaces(Class<? extends SpaceSpecification<S>> spec) {
+		final SynchronizedCollection<S> col = this.spaceRepository.getSpaces(spec);
+		return Collections3.unmodifiableSynchronizedIterable(col, col.mutex());
 	}
 
 	@Override
-	public SynchronizedCollection<? extends io.sarl.lang.core.Space> getSpaces() {
-		return this.spaceRepository.getSpaces();
+	public SynchronizedIterable<? extends io.sarl.lang.core.Space> getSpaces() {
+		final SynchronizedCollection<? extends io.sarl.lang.core.Space> col = this.spaceRepository.getSpaces();
+		return Collections3.unmodifiableSynchronizedIterable(col, col.mutex());
 	}
 
 	@Override

@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -91,6 +92,14 @@ public class ContextTest extends AbstractJanusTest {
 
 	@Nullable
 	private SpaceRepositoryListener privateListener;
+
+	private <T> List<T> toArrayList(Iterable<T> iterable) {
+		final List<T> col = new ArrayList<>();
+		for (final T obj : iterable) {
+			col.add(obj);
+		}
+		return col;
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -223,7 +232,7 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		assertNotNull(space);
 		assertEquals(id, space.getSpaceID().getID());
-		c = this.context.getSpaces();
+		c = toArrayList(this.context.getSpaces());
 		assertNotNull(c);
 		assertEquals(2, c.size());
 		Collection<UUID> ids = new ArrayList<>();
@@ -258,7 +267,7 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		assertNotNull(space);
 		assertEquals(id, space.getSpaceID().getID());
-		c = this.context.getSpaces();
+		c = toArrayList(this.context.getSpaces());
 		assertNotNull(c);
 		assertEquals(2, c.size());
 		Collection<UUID> ids = new ArrayList<>();
@@ -296,7 +305,7 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		assertNotNull(space);
 		assertEquals(id, space.getSpaceID().getID());
-		c = this.context.getSpaces();
+		c = toArrayList(this.context.getSpaces());
 		assertNotNull(c);
 		assertEquals(2, c.size());
 		Collection<UUID> ids = new ArrayList<>();
@@ -329,7 +338,7 @@ public class ContextTest extends AbstractJanusTest {
 	@Test
 	public void getSpaces() {
 		Collection<? extends Space> c;
-		c = this.context.getSpaces();
+		c = toArrayList(this.context.getSpaces());
 		assertNotNull(c);
 		assertEquals(1, c.size());
 		assertEquals(this.spaceId, c.iterator().next().getSpaceID().getID());
@@ -337,7 +346,7 @@ public class ContextTest extends AbstractJanusTest {
 		UUID id = UUID.randomUUID();
 		this.context.createSpace(OpenEventSpaceSpecification.class, id);
 		//
-		c = this.context.getSpaces();
+		c = toArrayList(this.context.getSpaces());
 		assertNotNull(c);
 		assertEquals(2, c.size());
 		Collection<UUID> ids = new ArrayList<>();
@@ -352,7 +361,7 @@ public class ContextTest extends AbstractJanusTest {
 	@Test
 	public void getSpacesClass() {
 		Collection<OpenEventSpace> c;
-		c = this.context.getSpaces(OpenEventSpaceSpecification.class);
+		c = toArrayList(this.context.getSpaces(OpenEventSpaceSpecification.class));
 		assertNotNull(c);
 		assertEquals(1, c.size());
 		assertEquals(this.spaceId, c.iterator().next().getSpaceID().getID());
@@ -360,7 +369,7 @@ public class ContextTest extends AbstractJanusTest {
 		UUID id = UUID.randomUUID();
 		this.context.createSpace(OpenEventSpaceSpecification.class, id);
 		//
-		c = this.context.getSpaces(OpenEventSpaceSpecification.class);
+		c = toArrayList(this.context.getSpaces(OpenEventSpaceSpecification.class));
 		assertNotNull(c);
 		assertEquals(2, c.size());
 		Collection<UUID> ids = new ArrayList<>();
