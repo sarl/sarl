@@ -122,6 +122,7 @@ In the following pages, you could find details on the different elements of the 
 	* [Synchronization expression](./general/Synchronization.md)
 * Errors and exceptions:
 	* [Exceptions](./general/Exception.md)
+	* [Assertions](./general/Assertion.md)
 
 
 
