@@ -25,6 +25,7 @@ import java.util.Collection
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.Collection
+import java.util.logging.Logger
 
 import io.sarl.core.AgentTask
 import io.sarl.lang.core.EventSpace
@@ -812,6 +813,13 @@ capacity Logging {
 	 *         <code>5</code> for debug.
 	 */
 	def setLogLevel(level : int)
+
+	/** Replies the backend logger.
+	 *
+	 * @return the backend logger.
+	 */
+	@Pure
+	def getLogger : Logger
 
 }
 
