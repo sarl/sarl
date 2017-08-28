@@ -28,6 +28,30 @@
   </eClassifiers>
   <eClassifiers
       xsi:type="ecore:EClass"
+      name="SarlAssertExpression"
+      eSuperTypes="../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression">
+    <eAnnotations
+        source="http://www.eclipse.org/emf/2002/GenModel">
+      <details
+          key="documentation"
+          value="@since 0.6"/>
+    </eAnnotations>
+    <eStructuralFeatures
+        xsi:type="ecore:EReference"
+        name="condition"
+        eType="ecore:EClass ../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        containment="true"/>
+    <eStructuralFeatures
+        xsi:type="ecore:EAttribute"
+        name="message"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures
+        xsi:type="ecore:EAttribute"
+        name="isStatic"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers
+      xsi:type="ecore:EClass"
       name="SarlAction"
       eSuperTypes="../../org.eclipse.xtend.core/model/Xtend.ecore#//XtendFunction">
     <eStructuralFeatures

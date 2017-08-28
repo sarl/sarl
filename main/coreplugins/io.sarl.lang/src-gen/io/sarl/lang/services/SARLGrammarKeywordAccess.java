@@ -327,6 +327,13 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getInnerVarIDAccess().getNativeKeyword_21().getValue();
 	}
 
+	/** Keyword: {@code assert}.
+	 * Source: io.sarl.lang.SARL
+	 */
+	public String getAssertKeyword() {
+		return this.grammarAccess.getAssertExpressionAccess().getAssertKeyword_1().getValue();
+	}
+
 	/** Keyword: {@code [}.
 	 * Source: io.sarl.lang.SARL
 	 */
@@ -635,6 +642,13 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getXTryCatchFinallyExpressionAccess().getTryKeyword_1().getValue();
 	}
 
+	/** Keyword: {@code assume}.
+	 * Source: io.sarl.lang.SARL
+	 */
+	public String getIsStaticAssumeKeyword() {
+		return this.grammarAccess.getAssumeExpressionAccess().getIsStaticAssumeKeyword_1_0().getValue();
+	}
+
 	/** Keyword: {@code >=}.
 	 * Source: io.sarl.lang.SARL
 	 */
@@ -855,6 +869,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getFinallyKeyword());
 			kws.add(getReturnKeyword());
 			kws.add(getWhileKeyword());
+			kws.add(getAssertKeyword());
 			kws.add(getSpaceKeyword());
 			kws.add(getInstanceofKeyword());
 			kws.add(getBreakKeyword());
@@ -888,6 +903,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getThrowsKeyword());
 			kws.add(getCatchKeyword());
 			kws.add(getDoKeyword());
+			kws.add(getIsStaticAssumeKeyword());
 			kws.add(getBehaviorKeyword());
 			kws.add(getExtensionExtensionKeyword());
 			kws.add(getStaticStaticKeyword());
@@ -941,6 +957,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getDefKeyword());
 			kws.add(getFiresKeyword());
 			kws.add(getOverrideKeyword());
+			kws.add(getIsStaticAssumeKeyword());
 			kws.add(getBehaviorKeyword());
 			kws.add(getExtensionExtensionKeyword());
 			kws.add(getValKeyword());

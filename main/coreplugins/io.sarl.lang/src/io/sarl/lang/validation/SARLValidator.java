@@ -176,6 +176,7 @@ import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlArtifact;
+import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlBreakExpression;
@@ -193,6 +194,7 @@ import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.IOperationHelper;
+import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
@@ -386,6 +388,9 @@ public class SARLValidator extends AbstractSARLValidator {
 		final EObject container = expr.eContainer();
 		if (container instanceof SarlBreakExpression) {
 			return false;
+		}
+		if (container instanceof SarlAssertExpression) {
+			return true;
 		}
 		return super.isValueExpectedRecursive(expr);
 	}
@@ -2287,6 +2292,55 @@ public class SARLValidator extends AbstractSARLValidator {
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes.INVALID_USE_OF_BREAK);
+		}
+	}
+
+	/** Check for usage of assert keyword.
+	 *
+	 * @param expression the expression to analyze.
+	 */
+	@Check
+	public void checkAssertKeywordUse(SarlAssertExpression expression) {
+		final XExpression condition = expression.getCondition();
+		if (condition != null) {
+			final LightweightTypeReference fromType = getActualType(condition);
+			if (!fromType.isAssignableFrom(Boolean.TYPE)) {
+				error(MessageFormat.format(
+						Messages.SARLValidator_38,
+						getNameOfTypes(fromType), boolean.class.getName()),
+						condition,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						INCOMPATIBLE_TYPES);
+				return;
+			}
+			if (getExpressionHelper() instanceof SARLExpressionHelper) {
+				final SARLExpressionHelper helper = (SARLExpressionHelper) getExpressionHelper();
+				final Boolean constant = helper.toBooleanPrimitiveWrapperConstant(condition);
+				if (constant == Boolean.TRUE && !isIgnored(DISCOURAGED_BOOLEAN_EXPRESSION)) {
+					addIssue(Messages.SARLValidator_51,
+							condition,
+							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							DISCOURAGED_BOOLEAN_EXPRESSION);
+					return;
+				}
+			}
+		}
+	}
+
+	/** Check for usage of assert keyword.
+	 *
+	 * @param expression the expression to analyze.
+	 */
+	@Check
+	public void checkAssumeKeywordUse(SarlAssertExpression expression) {
+		if (expression.isIsStatic()) {
+			error(MessageFormat.format(
+					Messages.SARLValidator_0,
+					this.grammarAccess.getIsStaticAssumeKeyword()),
+					expression,
+					null);
 		}
 	}
 

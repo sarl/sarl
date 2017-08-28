@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.compiler.XtendCompiler;
 import org.eclipse.xtext.common.types.JvmAnnotationAnnotationValue;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -53,6 +54,7 @@ import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.linking.ILinker;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XAssignment;
@@ -61,7 +63,9 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XTypeLiteral;
+import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
+import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
@@ -70,7 +74,9 @@ import org.eclipse.xtext.xbase.util.XExpressionHelper;
 import io.sarl.lang.generator.SARLJvmGenerator;
 import io.sarl.lang.jvmmodel.Messages;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
+import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
+import io.sarl.lang.typesystem.SARLExpressionHelper;
 
 
 /** The compiler from SARL to the target language.
@@ -124,6 +130,12 @@ public class SarlCompiler extends XtendCompiler {
 
 	@Inject
 	private IBatchTypeResolver batchTypeResolver;
+
+	@Inject
+	private IGeneratorConfigProvider generatorConfigProvider;
+
+	@Inject
+	private SARLExpressionHelper sarlExpressionHelper;
 
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	private static String getAnnotationStringValue(JvmAnnotationValue value) {
@@ -331,6 +343,8 @@ public class SarlCompiler extends XtendCompiler {
 	public void doInternalToJavaStatement(XExpression obj, ITreeAppendable appendable, boolean isReferenced) {
 		if (obj instanceof SarlBreakExpression) {
 			_toJavaStatement((SarlBreakExpression) obj, appendable, isReferenced);
+		} else if (obj instanceof SarlAssertExpression) {
+			_toJavaStatement((SarlAssertExpression) obj, appendable, isReferenced);
 		} else {
 			try {
 				super.doInternalToJavaStatement(obj, appendable, isReferenced);
@@ -345,6 +359,8 @@ public class SarlCompiler extends XtendCompiler {
 	public void internalToConvertedExpression(XExpression obj, ITreeAppendable appendable) {
 		if (obj instanceof SarlBreakExpression) {
 			_toJavaExpression((SarlBreakExpression) obj, appendable);
+		} else if (obj instanceof SarlAssertExpression) {
+			_toJavaExpression((SarlAssertExpression) obj, appendable);
 		} else {
 			try {
 				super.internalToConvertedExpression(obj, appendable);
@@ -366,6 +382,52 @@ public class SarlCompiler extends XtendCompiler {
 		appendable.newLine().append("break;"); //$NON-NLS-1$
 	}
 
+	/** Generate the Java code to the preparation statements for the assert keyword.
+	 *
+	 * @param assertExpression the expression.
+	 * @param appendable the output.
+	 * @param isReferenced indicates if the expression is referenced.
+	 */
+	protected void _toJavaStatement(SarlAssertExpression assertExpression, ITreeAppendable appendable, boolean isReferenced) {
+		if (!assertExpression.isIsStatic() && assertExpression.getCondition() != null && isAtLeastJava8(assertExpression)) {
+			final XExpression condition = assertExpression.getCondition();
+			final LightweightTypeReference actualType = getLightweightType(condition);
+			if (actualType != null) {
+				appendable.newLine().append("assert "); //$NON-NLS-1$
+				final Boolean booleanConstant = this.sarlExpressionHelper.toBooleanPrimitiveWrapperConstant(condition);
+				if (booleanConstant != null) {
+					appendable.append(booleanConstant.toString());
+				} else {
+					appendable.append("(("); //$NON-NLS-1$
+					appendable.append(Function0.class);
+					appendable.append("<Boolean>) () -> {"); //$NON-NLS-1$
+					appendable.increaseIndentation();
+					internalToJavaStatement(condition, appendable, true);
+					appendable.newLine();
+					appendable.append("return "); //$NON-NLS-1$
+					internalToConvertedExpression(condition, appendable, actualType);
+					appendable.append(";"); //$NON-NLS-1$
+					appendable.decreaseIndentation().newLine();
+					appendable.append("}).apply().booleanValue()"); //$NON-NLS-1$
+				}
+				if (!Strings.isEmpty(assertExpression.getMessage())) {
+					appendable.append(" : \""); //$NON-NLS-1$
+					appendable.append(Strings.convertToJavaString(assertExpression.getMessage()));
+					appendable.append("\""); //$NON-NLS-1$
+				}
+				appendable.append(";"); //$NON-NLS-1$
+			}
+		}
+	}
+
+	/** Replies if the generation is for Java version 8 at least.
+	 *
+	 * @param context the context.
+	 * @return {@code true} if Java 8 or newer.
+	 */
+	protected boolean isAtLeastJava8(EObject context) {
+		return this.generatorConfigProvider.get(EcoreUtil.getRootContainer(context)).getJavaSourceVersion().isAtLeast(JavaVersion.JAVA8);
+	}
 
 	/** Generate the Java code related to the expression for the break keyword.
 	 *
@@ -377,12 +439,35 @@ public class SarlCompiler extends XtendCompiler {
 		appendable.append("/* error - couldn't compile nested break */"); //$NON-NLS-1$
 	}
 
+	/** Generate the Java code related to the expression for the assert keyword.
+	 *
+	 * @param assertExpression the expression.
+	 * @param appendable the output.
+	 */
+	protected void _toJavaExpression(SarlAssertExpression assertExpression, ITreeAppendable appendable) {
+		if (!assertExpression.isIsStatic() && isAtLeastJava8(assertExpression)) {
+			appendable.append("/* error - couldn't compile nested assert */"); //$NON-NLS-1$
+		}
+	}
+
 	@Override
 	protected boolean internalCanCompileToJavaExpression(XExpression expression, ITreeAppendable appendable) {
 		if (expression instanceof SarlBreakExpression) {
 			return true;
 		}
+		if (expression instanceof SarlAssertExpression) {
+			return true;
+		}
 		return super.internalCanCompileToJavaExpression(expression, appendable);
+	}
+
+	@Override
+	protected boolean isVariableDeclarationRequired(XExpression expression, ITreeAppendable appendable, boolean recursive) {
+		final EObject container = expression.eContainer();
+		if (container instanceof SarlAssertExpression) {
+			return false;
+		}
+		return super.isVariableDeclarationRequired(expression, appendable, recursive);
 	}
 
 	/** Log an internal error but do not fail.

@@ -6,6 +6,7 @@ import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlArtifact;
+import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlBreakExpression;
@@ -26,6 +27,7 @@ import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -70,6 +72,13 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @generated
 	 */
 	private EClass sarlBreakExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sarlAssertExpressionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -295,6 +304,46 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	public EClass getSarlBreakExpression()
 	{
 		return sarlBreakExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getSarlAssertExpression()
+	{
+		return sarlAssertExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getSarlAssertExpression_Condition()
+	{
+		return (EReference)sarlAssertExpressionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getSarlAssertExpression_Message()
+	{
+		return (EAttribute)sarlAssertExpressionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getSarlAssertExpression_IsStatic()
+	{
+		return (EAttribute)sarlAssertExpressionEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -663,6 +712,11 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 		sarlBreakExpressionEClass = createEClass(SARL_BREAK_EXPRESSION);
 
+		sarlAssertExpressionEClass = createEClass(SARL_ASSERT_EXPRESSION);
+		createEReference(sarlAssertExpressionEClass, SARL_ASSERT_EXPRESSION__CONDITION);
+		createEAttribute(sarlAssertExpressionEClass, SARL_ASSERT_EXPRESSION__MESSAGE);
+		createEAttribute(sarlAssertExpressionEClass, SARL_ASSERT_EXPRESSION__IS_STATIC);
+
 		sarlActionEClass = createEClass(SARL_ACTION);
 		createEReference(sarlActionEClass, SARL_ACTION__FIRED_EVENTS);
 
@@ -752,6 +806,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		sarlScriptEClass.getESuperTypes().add(theXtendPackage.getXtendFile());
 		sarlFieldEClass.getESuperTypes().add(theXtendPackage.getXtendField());
 		sarlBreakExpressionEClass.getESuperTypes().add(theXbasePackage.getXExpression());
+		sarlAssertExpressionEClass.getESuperTypes().add(theXbasePackage.getXExpression());
 		sarlActionEClass.getESuperTypes().add(theXtendPackage.getXtendFunction());
 		sarlConstructorEClass.getESuperTypes().add(theXtendPackage.getXtendConstructor());
 		sarlBehaviorUnitEClass.getESuperTypes().add(theXtendPackage.getXtendMember());
@@ -777,6 +832,11 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		initEClass(sarlFieldEClass, SarlField.class, "SarlField", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(sarlBreakExpressionEClass, SarlBreakExpression.class, "SarlBreakExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(sarlAssertExpressionEClass, SarlAssertExpression.class, "SarlAssertExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSarlAssertExpression_Condition(), theXbasePackage.getXExpression(), null, "condition", null, 0, 1, SarlAssertExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSarlAssertExpression_Message(), ecorePackage.getEString(), "message", null, 0, 1, SarlAssertExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSarlAssertExpression_IsStatic(), ecorePackage.getEBoolean(), "isStatic", null, 0, 1, SarlAssertExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sarlActionEClass, SarlAction.class, "SarlAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSarlAction_FiredEvents(), theTypesPackage.getJvmTypeReference(), null, "firedEvents", null, 0, -1, SarlAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

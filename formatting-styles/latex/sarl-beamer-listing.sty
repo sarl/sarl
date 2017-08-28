@@ -22,7 +22,7 @@
 % limitations under the License.
 %
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesPackage{sarl-beamer-listing}[2017/08/11]
+\ProvidesPackage{sarl-beamer-listing}[2017/08/27]
 \newif\ifusesarlcolors\usesarlcolorstrue
 \DeclareOption{sarlcolors}{\global\usesarlcolorstrue}
 \DeclareOption{nosarlcolors}{\global\usesarlcolorsfalse}
@@ -48,7 +48,7 @@
    morecomment=[l]{//},
    morecomment=[s]{/*}{*/},
    morestring=[b]",
-   morekeywords={abstract,agent,annotation,artifact,as,behavior,boolean,break,byte,capacity,case,catch,char,class,def,default,dispatch,do,double,else,enum,event,extends,extension,false,final,finally,fires,float,for,if,implements,import,instanceof,int,interface,it,long,native,new,null,occurrence,on,override,package,private,protected,public,requires,return,short,skill,space,static,strictfp,super,switch,synchronized,this,throw,throws,transient,true,try,typeof,uses,val,var,void,volatile,while,with},
+   morekeywords={abstract,agent,annotation,artifact,as,assert,assume,behavior,boolean,break,byte,capacity,case,catch,char,class,def,default,dispatch,do,double,else,enum,event,extends,extension,false,final,finally,fires,float,for,if,implements,import,instanceof,int,interface,it,long,native,new,null,occurrence,on,override,package,private,protected,public,requires,return,short,skill,space,static,strictfp,super,switch,synchronized,this,throw,throws,transient,true,try,typeof,uses,val,var,void,volatile,while,with},
 }
 \lstset{%
    basicstyle=\usebeamertemplate{code basic style}, % the size of the fonts that are used for the code

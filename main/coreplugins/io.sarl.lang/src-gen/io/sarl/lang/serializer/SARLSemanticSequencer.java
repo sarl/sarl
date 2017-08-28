@@ -28,6 +28,7 @@ import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlArtifact;
+import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlBreakExpression;
@@ -169,6 +170,54 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 			case SarlPackage.SARL_ARTIFACT:
 				sequence_Type(context, (SarlArtifact) semanticObject); 
 				return; 
+			case SarlPackage.SARL_ASSERT_EXPRESSION:
+				if (rule == grammarAccess.getXPrimaryExpressionRule()
+						|| rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
+						|| rule == grammarAccess.getRichStringPartRule()
+						|| rule == grammarAccess.getXAnnotationElementValueOrCommaListRule()
+						|| action == grammarAccess.getXAnnotationElementValueOrCommaListAccess().getXListLiteralElementsAction_1_1_0()
+						|| rule == grammarAccess.getXAnnotationElementValueRule()
+						|| rule == grammarAccess.getXAnnotationOrExpressionRule()
+						|| rule == grammarAccess.getXExpressionRule()
+						|| rule == grammarAccess.getXAssignmentRule()
+						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXOrExpressionRule()
+						|| action == grammarAccess.getXOrExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXAndExpressionRule()
+						|| action == grammarAccess.getXAndExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXEqualityExpressionRule()
+						|| action == grammarAccess.getXEqualityExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXRelationalExpressionRule()
+						|| action == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0()
+						|| action == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXOtherOperatorExpressionRule()
+						|| action == grammarAccess.getXOtherOperatorExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXAdditiveExpressionRule()
+						|| action == grammarAccess.getXAdditiveExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXMultiplicativeExpressionRule()
+						|| action == grammarAccess.getXMultiplicativeExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXUnaryOperationRule()
+						|| rule == grammarAccess.getXCastedExpressionRule()
+						|| action == grammarAccess.getXCastedExpressionAccess().getXCastedExpressionTargetAction_1_0_0_0()
+						|| rule == grammarAccess.getXPostfixOperationRule()
+						|| action == grammarAccess.getXPostfixOperationAccess().getXPostfixOperationOperandAction_1_0_0()
+						|| rule == grammarAccess.getXMemberFeatureCallRule()
+						|| action == grammarAccess.getXMemberFeatureCallAccess().getXAssignmentAssignableAction_1_0_0_0_0()
+						|| action == grammarAccess.getXMemberFeatureCallAccess().getXMemberFeatureCallMemberCallTargetAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXParenthesizedExpressionRule()
+						|| rule == grammarAccess.getXExpressionOrVarDeclarationRule()) {
+					sequence_AssertExpression_AssumeExpression(context, (SarlAssertExpression) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getAssertExpressionRule()) {
+					sequence_AssertExpression(context, (SarlAssertExpression) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getAssumeExpressionRule()) {
+					sequence_AssumeExpression(context, (SarlAssertExpression) semanticObject); 
+					return; 
+				}
+				else break;
 			case SarlPackage.SARL_BEHAVIOR:
 				sequence_Type(context, (SarlBehavior) semanticObject); 
 				return; 
@@ -1081,6 +1130,76 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     )
 	 */
 	protected void sequence_AnnotationField(ISerializationContext context, SarlInterface semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     XPrimaryExpression returns SarlAssertExpression
+	 *     XExpressionOrSimpleConstructorCall returns SarlAssertExpression
+	 *     RichStringPart returns SarlAssertExpression
+	 *     XAnnotationElementValueOrCommaList returns SarlAssertExpression
+	 *     XAnnotationElementValueOrCommaList.XListLiteral_1_1_0 returns SarlAssertExpression
+	 *     XAnnotationElementValue returns SarlAssertExpression
+	 *     XAnnotationOrExpression returns SarlAssertExpression
+	 *     XExpression returns SarlAssertExpression
+	 *     XAssignment returns SarlAssertExpression
+	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns SarlAssertExpression
+	 *     XOrExpression returns SarlAssertExpression
+	 *     XOrExpression.XBinaryOperation_1_0_0_0 returns SarlAssertExpression
+	 *     XAndExpression returns SarlAssertExpression
+	 *     XAndExpression.XBinaryOperation_1_0_0_0 returns SarlAssertExpression
+	 *     XEqualityExpression returns SarlAssertExpression
+	 *     XEqualityExpression.XBinaryOperation_1_0_0_0 returns SarlAssertExpression
+	 *     XRelationalExpression returns SarlAssertExpression
+	 *     XRelationalExpression.XInstanceOfExpression_1_0_0_0_0 returns SarlAssertExpression
+	 *     XRelationalExpression.XBinaryOperation_1_1_0_0_0 returns SarlAssertExpression
+	 *     XOtherOperatorExpression returns SarlAssertExpression
+	 *     XOtherOperatorExpression.XBinaryOperation_1_0_0_0 returns SarlAssertExpression
+	 *     XAdditiveExpression returns SarlAssertExpression
+	 *     XAdditiveExpression.XBinaryOperation_1_0_0_0 returns SarlAssertExpression
+	 *     XMultiplicativeExpression returns SarlAssertExpression
+	 *     XMultiplicativeExpression.XBinaryOperation_1_0_0_0 returns SarlAssertExpression
+	 *     XUnaryOperation returns SarlAssertExpression
+	 *     XCastedExpression returns SarlAssertExpression
+	 *     XCastedExpression.XCastedExpression_1_0_0_0 returns SarlAssertExpression
+	 *     XPostfixOperation returns SarlAssertExpression
+	 *     XPostfixOperation.XPostfixOperation_1_0_0 returns SarlAssertExpression
+	 *     XMemberFeatureCall returns SarlAssertExpression
+	 *     XMemberFeatureCall.XAssignment_1_0_0_0_0 returns SarlAssertExpression
+	 *     XMemberFeatureCall.XMemberFeatureCall_1_1_0_0_0 returns SarlAssertExpression
+	 *     XParenthesizedExpression returns SarlAssertExpression
+	 *     XExpressionOrVarDeclaration returns SarlAssertExpression
+	 *
+	 * Constraint:
+	 *     ((condition=XExpression message=STRING?) | (isStatic?='assume' condition=XExpression message=STRING?))
+	 */
+	protected void sequence_AssertExpression_AssumeExpression(ISerializationContext context, SarlAssertExpression semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AssertExpression returns SarlAssertExpression
+	 *
+	 * Constraint:
+	 *     (condition=XExpression message=STRING?)
+	 */
+	protected void sequence_AssertExpression(ISerializationContext context, SarlAssertExpression semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AssumeExpression returns SarlAssertExpression
+	 *
+	 * Constraint:
+	 *     (isStatic?='assume' condition=XExpression message=STRING?)
+	 */
+	protected void sequence_AssumeExpression(ISerializationContext context, SarlAssertExpression semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

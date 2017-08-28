@@ -30,6 +30,10 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XFeatureCall;
+import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import io.sarl.lang.util.Utils;
@@ -83,6 +87,37 @@ public class SARLExpressionHelper extends XtendExpressionHelper {
 			}
 		}
 		return true;
+	}
+
+
+	/** Convert the boolean constant to the object equivalent if possible.
+	 *
+	 * @param expression the expression to convert.
+	 * @return one of the boolean constants {@link Boolean#TRUE} or {@link Boolean#FALSE},
+	 *     or {@code null} if the expression is not a constant boolean expression.
+	 */
+	@SuppressWarnings("static-method")
+	public Boolean toBooleanPrimitiveWrapperConstant(XExpression expression) {
+		if (expression instanceof XBooleanLiteral) {
+			return ((XBooleanLiteral) expression).isIsTrue() ? Boolean.TRUE : Boolean.FALSE;
+		}
+		if (expression instanceof XMemberFeatureCall) {
+			final XMemberFeatureCall call = (XMemberFeatureCall) expression;
+			final XExpression receiver = call.getMemberCallTarget();
+			if (receiver instanceof XFeatureCall) {
+				final XFeatureCall call2 = (XFeatureCall) receiver;
+				final String call2Identifier = call2.getConcreteSyntaxFeatureName();
+				if (Boolean.class.getSimpleName().equals(call2Identifier) || Boolean.class.getName().equals(call2Identifier)) {
+					final String callIdentifier = call.getConcreteSyntaxFeatureName();
+					if ("TRUE".equals(callIdentifier)) { //$NON-NLS-1$
+						return Boolean.TRUE;
+					} else if ("FALSE".equals(callIdentifier)) { //$NON-NLS-1$
+						return Boolean.FALSE;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 }

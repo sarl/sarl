@@ -321,6 +321,10 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 					put(grammarAccess.getParameterAccess().getGroup_6_1(), "rule__Parameter__Group_6_1__0");
 					put(grammarAccess.getXtendEnumLiteralAccess().getGroup(), "rule__XtendEnumLiteral__Group__0");
 					put(grammarAccess.getBreakExpressionAccess().getGroup(), "rule__BreakExpression__Group__0");
+					put(grammarAccess.getAssertExpressionAccess().getGroup(), "rule__AssertExpression__Group__0");
+					put(grammarAccess.getAssertExpressionAccess().getGroup_3(), "rule__AssertExpression__Group_3__0");
+					put(grammarAccess.getAssumeExpressionAccess().getGroup(), "rule__AssumeExpression__Group__0");
+					put(grammarAccess.getAssumeExpressionAccess().getGroup_3(), "rule__AssumeExpression__Group_3__0");
 					put(grammarAccess.getXVariableDeclarationAccess().getGroup(), "rule__XVariableDeclaration__Group__0");
 					put(grammarAccess.getXVariableDeclarationAccess().getGroup_0(), "rule__XVariableDeclaration__Group_0__0");
 					put(grammarAccess.getXVariableDeclarationAccess().getGroup_0_0(), "rule__XVariableDeclaration__Group_0_0__0");
@@ -839,6 +843,11 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 					put(grammarAccess.getParameterAccess().getVarArgAssignment_6_0(), "rule__Parameter__VarArgAssignment_6_0");
 					put(grammarAccess.getParameterAccess().getDefaultValueAssignment_6_1_1(), "rule__Parameter__DefaultValueAssignment_6_1_1");
 					put(grammarAccess.getXtendEnumLiteralAccess().getNameAssignment_1(), "rule__XtendEnumLiteral__NameAssignment_1");
+					put(grammarAccess.getAssertExpressionAccess().getConditionAssignment_2(), "rule__AssertExpression__ConditionAssignment_2");
+					put(grammarAccess.getAssertExpressionAccess().getMessageAssignment_3_1(), "rule__AssertExpression__MessageAssignment_3_1");
+					put(grammarAccess.getAssumeExpressionAccess().getIsStaticAssignment_1(), "rule__AssumeExpression__IsStaticAssignment_1");
+					put(grammarAccess.getAssumeExpressionAccess().getConditionAssignment_2(), "rule__AssumeExpression__ConditionAssignment_2");
+					put(grammarAccess.getAssumeExpressionAccess().getMessageAssignment_3_1(), "rule__AssumeExpression__MessageAssignment_3_1");
 					put(grammarAccess.getXVariableDeclarationAccess().getWriteableAssignment_0_0_1_0_0_0(), "rule__XVariableDeclaration__WriteableAssignment_0_0_1_0_0_0");
 					put(grammarAccess.getXVariableDeclarationAccess().getExtensionAssignment_0_0_1_0_1(), "rule__XVariableDeclaration__ExtensionAssignment_0_0_1_0_1");
 					put(grammarAccess.getXVariableDeclarationAccess().getExtensionAssignment_0_0_1_1_0(), "rule__XVariableDeclaration__ExtensionAssignment_0_0_1_1_0");

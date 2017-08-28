@@ -431,12 +431,27 @@ BreakExpression returns xbase::XExpression :
 	'break'
 ;
 
+AssertExpression returns xbase::XExpression :
+	{SarlAssertExpression}
+	'assert' (->condition=XExpression) (->',' message=STRING)?
+;
+
+AssumeExpression returns xbase::XExpression :
+	{SarlAssertExpression}
+	isStatic?='assume' (->condition=XExpression) (->',' message=STRING)?
+;
+
 //-----------------------------------------------
 // BELOW THIS POINT, THE RULES FROM XTEXT ARE OVERLOADED
 
 // Variable declaration according to the SARL syntax (not the Xtext/Xtend)
 @Override 
 XPrimaryExpression returns xbase::XExpression:
+	// Below the SARL specific expressions
+	BreakExpression |
+	AssertExpression |
+	AssumeExpression |
+	// Below the expressions inherited from Xtext/Xtend
 	XConstructorCall |
 	XBlockExpression |
 	XSwitchExpression |
@@ -451,9 +466,7 @@ XPrimaryExpression returns xbase::XExpression:
 	XThrowExpression |
 	XReturnExpression |
 	XTryCatchFinallyExpression |
-	XParenthesizedExpression |
-	// Below the SARL specific expressions
-	BreakExpression
+	XParenthesizedExpression
 ;
 
 @Override 

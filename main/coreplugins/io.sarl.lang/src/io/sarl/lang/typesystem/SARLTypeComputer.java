@@ -36,6 +36,7 @@ import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputationState;
 import org.eclipse.xtext.xbase.typesystem.internal.AmbiguousFeatureLinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
+import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 
 /** Customized type computer for SARL specific expressions.
@@ -108,6 +109,8 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	public void computeTypes(XExpression expression, ITypeComputationState state) {
 		if (expression instanceof SarlBreakExpression) {
 			_computeTypes((SarlBreakExpression) expression, state);
+		} else if (expression instanceof SarlAssertExpression) {
+			_computeTypes((SarlAssertExpression) expression, state);
 		} else {
 			super.computeTypes(expression, state);
 		}
@@ -122,6 +125,14 @@ public class SARLTypeComputer extends XtendTypeComputer {
 		final LightweightTypeReference primitiveVoid = getPrimitiveVoid(state);
 		state.acceptActualType(primitiveVoid);
 	}
+
+	/** Compute the type of an assert expression.
+	 *
+	 * @param object the expression.
+	 * @param state the state of the type resolver.
+	 */
+	protected void _computeTypes(SarlAssertExpression object, ITypeComputationState state) {
+		state.withExpectation(getTypeForName(Boolean.class, state)).computeTypes(object.getCondition());
 	}
 
 }
