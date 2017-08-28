@@ -21,16 +21,14 @@
 
 package io.sarl.lang.util;
 
-import java.util.Collection;
-
-/** A collection that is synchronized (thread-safe).
+/** An itterable that is synchronized (thread-safe).
  *
- * <p>All the operations on the collection are synchronized with an internal mutex,
+ * <p>All the operations on the iterable are synchronized with an internal mutex,
  * except <code>iterator()</code>.
  *
- * <p>The iterator replies by this collection must be synchronized by hand by
+ * <p>The iterator replies by this set must be synchronized by hand by
  * the user of the iterator: <pre><code>
- * SynchronizedCollection&lt;Object&gt; c;
+ * SynchronizedIterable&lt;Object&gt; c;
  * synchronized(c.mutex()) {
  *   Iterator&lt;Object&gt; iterator = c.iterator();
  *   while (iterator.hasNext()) {
@@ -40,13 +38,20 @@ import java.util.Collection;
  * }
  * </code></pre>
  *
- * @param <E> - type of the elements in the collection.
- * @author $Author: ngaud$
+ * @param <E> - type of the elements in the set.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.6
  */
-public interface SynchronizedCollection<E> extends SynchronizedIterable<E>, Collection<E> {
-	//
+public interface SynchronizedIterable<E> extends Iterable<E> {
+
+	/**
+	 * Replies the mutex that is used to synchronized the access to this set.
+	 *
+	 * @return the mutex.
+	 */
+	Object mutex();
+
 }
