@@ -33,7 +33,6 @@ import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputationState;
-import org.eclipse.xtext.xbase.typesystem.conformance.ConformanceFlags;
 import org.eclipse.xtext.xbase.typesystem.internal.AmbiguousFeatureLinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
@@ -114,14 +113,15 @@ public class SARLTypeComputer extends XtendTypeComputer {
 		}
 	}
 
-	/** Computethe type of a break expression.
+	/** Compute the type of a break expression.
 	 *
 	 * @param object the expression.
 	 * @param state the state of the type resolver.
 	 */
 	protected void _computeTypes(SarlBreakExpression object, ITypeComputationState state) {
 		final LightweightTypeReference primitiveVoid = getPrimitiveVoid(state);
-		state.acceptActualType(primitiveVoid, ConformanceFlags.EXPLICIT_VOID_RETURN);
+		state.acceptActualType(primitiveVoid);
+	}
 	}
 
 }

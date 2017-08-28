@@ -381,6 +381,15 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
+	@Override
+	protected boolean isValueExpectedRecursive(XExpression expr) {
+		final EObject container = expr.eContainer();
+		if (container instanceof SarlBreakExpression) {
+			return false;
+		}
+		return super.isValueExpectedRecursive(expr);
+	}
+
 	/** Copied from the Xtend validtor.
 	 *
 	 * <p>TODO: Change the visilibility in the Xtend validator.

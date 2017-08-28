@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
@@ -54,6 +53,7 @@ import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.linking.ILinker;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
@@ -102,6 +102,7 @@ import io.sarl.lang.sarl.SarlBreakExpression;
  * @mavenartifactid $ArtifactId$
  * @since 0.4
  */
+@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SarlCompiler extends XtendCompiler {
 
 	private static final String INLINE_VARIABLE_PREFIX = "$"; //$NON-NLS-1$
@@ -196,15 +197,15 @@ public class SarlCompiler extends XtendCompiler {
 		final List<JvmTypeReference> importedTypes = Lists.newArrayListWithCapacity(2);
 		for (final JvmAnnotationValue annotationValue: inlineAnnotation.getValues()) {
 			final String valueName = annotationValue.getValueName();
-			if (Strings.isNullOrEmpty(valueName)) {
+			if (Strings.isEmpty(valueName)) {
 				// Special case: the annotation value as no associated operation.
 				// If it appends, we could assumes that the operation is "value()"
-				if (!Strings.isNullOrEmpty(formatString)) {
+				if (!Strings.isEmpty(formatString)) {
 					throw new IllegalStateException();
 				}
 				formatString = getAnnotationStringValue(annotationValue);
 			} else if (INLINE_VALUE_NAME.equals(valueName)) {
-				if (!Strings.isNullOrEmpty(formatString)) {
+				if (!Strings.isEmpty(formatString)) {
 					throw new IllegalStateException();
 				}
 				formatString = getAnnotationStringValue(annotationValue);
@@ -340,7 +341,21 @@ public class SarlCompiler extends XtendCompiler {
 		}
 	}
 
-	/** Generate the JAva code for the break keyword.
+	@Override
+	public void internalToConvertedExpression(XExpression obj, ITreeAppendable appendable) {
+		if (obj instanceof SarlBreakExpression) {
+			_toJavaExpression((SarlBreakExpression) obj, appendable);
+		} else {
+			try {
+				super.internalToConvertedExpression(obj, appendable);
+			} catch (IllegalStateException exception) {
+				// Log the exception but do not fail the generation.
+				logInternalError(exception);
+			}
+		}
+	}
+
+	/** Generate the Java code related to the preparation statements for the break keyword.
 	 *
 	 * @param breakExpression the expression.
 	 * @param appendable the output.
@@ -349,6 +364,25 @@ public class SarlCompiler extends XtendCompiler {
 	@SuppressWarnings("static-method")
 	protected void _toJavaStatement(SarlBreakExpression breakExpression, ITreeAppendable appendable, boolean isReferenced) {
 		appendable.newLine().append("break;"); //$NON-NLS-1$
+	}
+
+
+	/** Generate the Java code related to the expression for the break keyword.
+	 *
+	 * @param breakExpression the expression.
+	 * @param appendable the output.
+	 */
+	@SuppressWarnings("static-method")
+	protected void _toJavaExpression(SarlBreakExpression breakExpression, ITreeAppendable appendable) {
+		appendable.append("/* error - couldn't compile nested break */"); //$NON-NLS-1$
+	}
+
+	@Override
+	protected boolean internalCanCompileToJavaExpression(XExpression expression, ITreeAppendable appendable) {
+		if (expression instanceof SarlBreakExpression) {
+			return true;
+		}
+		return super.internalCanCompileToJavaExpression(expression, appendable);
 	}
 
 	/** Log an internal error but do not fail.
