@@ -129,6 +129,8 @@ import org.eclipse.xtext.xbase.typesystem.InferredTypeIndicator;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
+import org.eclipse.xtext.xtype.XFunctionTypeRef;
+import org.eclipse.xtext.xtype.XtypeFactory;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.actionprototype.ActionParameterTypes;
@@ -3175,13 +3177,24 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		boolean cloneType = true;
 		JvmTypeReference typeCandidate = type;
 
+		final List<JvmTypeParameter> typeParameters = forOperation.getTypeParameters();
 		// Use also cloneType as a flag that indicates if the type was already found in type parameters.
-		if (cloneType && type instanceof JvmParameterizedTypeReference) {
-			// Try to clone the type parameters.
-			final List<JvmTypeParameter> typeParameters = forOperation.getTypeParameters();
-			if (!typeParameters.isEmpty()) {
+		if (!typeParameters.isEmpty() && cloneType) {
+			if (type instanceof JvmParameterizedTypeReference) {
+				// Try to clone the type parameters.
 				cloneType = false;
 				typeCandidate = cloneAndAssociate(type, typeParameters);
+			} else if (type instanceof XFunctionTypeRef) {
+				// Try to clone the function reference.
+				final XFunctionTypeRef functionRef = (XFunctionTypeRef) type;
+				cloneType = false;
+				final XFunctionTypeRef cloneReference = XtypeFactory.eINSTANCE.createXFunctionTypeRef();
+				for (final JvmTypeReference paramType : functionRef.getParamTypes()) {
+					cloneReference.getParamTypes().add(cloneAndAssociate(paramType, typeParameters));
+				}
+				cloneReference.setReturnType(cloneAndAssociate(functionRef.getReturnType(), typeParameters));
+				cloneReference.setInstanceContext(functionRef.isInstanceContext());
+				typeCandidate = cloneReference;
 			}
 		}
 

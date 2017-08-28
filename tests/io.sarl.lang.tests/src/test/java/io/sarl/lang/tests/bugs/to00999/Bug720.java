@@ -155,6 +155,46 @@ public class Bug720 extends AbstractSarlTest {
 			"}",
 			"");
 
+	private static final String SNIPSET4 = multilineString(
+			"package io.sarl.lang.tests.bug720",
+			"capacity ExampleCapacity", 
+			"{", 
+			"    def exampleMethod(plan : (T) => void) with T", 
+			"}");
+
+	private final String EXPECTED4 = multilineString(
+			"package io.sarl.lang.tests.bug720;",
+			"",
+			"import io.sarl.lang.annotation.SarlElementType;", 
+			"import io.sarl.lang.annotation.SarlSpecification;", 
+			"import io.sarl.lang.core.AgentTrait;", 
+			"import io.sarl.lang.core.Capacity;",
+			"import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;",
+			"", 
+			"@FunctionalInterface", 
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING+ "\")", 
+			"@SarlElementType(" + SarlPackage.SARL_CAPACITY + ")", 
+			"@SuppressWarnings(\"all\")", 
+			"public interface ExampleCapacity extends Capacity {", 
+			"  public abstract <T extends Object> void exampleMethod(final Procedure1<? super T> plan);", 
+			"  ", 
+			"  public static class ContextAwareCapacityWrapper<C extends ExampleCapacity> extends Capacity.ContextAwareCapacityWrapper<C> implements ExampleCapacity {", 
+			"    public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {", 
+			"      super(capacity, caller);", 
+			"    }", 
+			"    ", 
+			"    public <T extends Object> void exampleMethod(final Procedure1<? super T> plan) {", 
+			"      try {", 
+			"        ensureCallerInLocalThread();", 
+			"        this.capacity.exampleMethod(plan);", 
+			"      } finally {", 
+			"        resetCallerInLocalThread();", 
+			"      }", 
+			"    }", 
+			"  }", 
+			"}",
+			"");
+
 	@Inject
 	private CompilationTestHelper compiler;
 
@@ -200,6 +240,21 @@ public class Bug720 extends AbstractSarlTest {
 		this.compiler.compile(SNIPSET3, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug720.ExampleCapacity");
 			assertEquals(EXPECTED3, actual);
+		});
+	}
+
+	@Test
+	public void parsing_04() throws Exception {
+		SarlScript mas = file(SNIPSET4);
+		final Validator validator = validate(mas);
+		validator.assertNoErrors();
+	}
+
+	@Test
+	public void compiling_04() throws Exception {
+		this.compiler.compile(SNIPSET4, (it) -> {
+			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug720.ExampleCapacity");
+			assertEquals(EXPECTED4, actual);
 		});
 	}
 
