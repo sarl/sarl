@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl</artifactId>
-		<version>0.5.7</version>
+		<version>0.5.8</version>
 	</parent>
 
 	<artifactId>io.sarl.tycho-parent</artifactId>

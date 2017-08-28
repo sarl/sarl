@@ -2,7 +2,7 @@
 <feature
       id="io.janusproject.feature"
       label="Janus SARL Runtime Environment"
-      version="0.5.7"
+      version="0.5.8"
       plugin="io.janusproject.plugin">
 
    <description url="http://www.sarl.io/about/">
@@ -222,9 +222,9 @@
    </url>
 
    <requires>
-      <import plugin="io.sarl.core" version="0.5.7" match="greaterOrEqual"/>
-      <import plugin="io.sarl.util" version="0.5.7" match="greaterOrEqual"/>
-      <import plugin="io.sarl.eclipse" version="0.5.7" match="greaterOrEqual"/>
+      <import plugin="io.sarl.core" version="0.5.8" match="greaterOrEqual"/>
+      <import plugin="io.sarl.util" version="0.5.8" match="greaterOrEqual"/>
+      <import plugin="io.sarl.eclipse" version="0.5.8" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.11.3" match="greaterOrEqual"/>
       <import plugin="com.hazelcast" version="3.8.0" match="greaterOrEqual"/>
       <import plugin="org.zeromq.jeromq" version="0.3.6" match="greaterOrEqual"/>

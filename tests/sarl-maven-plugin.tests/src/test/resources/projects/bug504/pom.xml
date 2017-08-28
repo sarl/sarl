@@ -6,12 +6,12 @@
 
 	<groupId>io.sarl.maven.compiler.tests</groupId>
 	<artifactId>this-is-for-test-only</artifactId>
-	<version>0.5.7</version>
+	<version>0.5.8</version>
 	<name>This is for Test ONLY</name>
 	
 	<properties>
-        <janus.version>0.5.7</janus.version>
-        <sarl.version>0.5.7</sarl.version>
+        <janus.version>0.5.8</janus.version>
+        <sarl.version>0.5.8</sarl.version>
         <json.version>20160810</json.version>
         <compiler.level>1.8</compiler.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,7 +22,7 @@
 			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<version>0.5.7</version>
+				<version>0.5.8</version>
 				<extensions>true</extensions>
 				<configuration>
 					<source>${compiler.level}</source>
