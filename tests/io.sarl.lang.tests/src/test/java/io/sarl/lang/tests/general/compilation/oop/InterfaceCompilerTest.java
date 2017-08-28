@@ -202,7 +202,6 @@ public class InterfaceCompilerTest {
 					"import io.sarl.lang.annotation.SarlSpecification;",
 					"import org.eclipse.xtext.xbase.lib.Pure;",
 					"",
-					"@FunctionalInterface",
 					"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
