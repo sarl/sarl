@@ -36,7 +36,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IGenerator2;
 import org.eclipse.xtext.generator.IGeneratorContext;
 
-import io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider;
+import io.sarl.lang.compilation.generator.extra.IExtraLanguageGeneratorProvider;
 import io.sarl.lang.ui.SARLUiConfig;
 import io.sarl.lang.ui.internal.LangActivator;
 

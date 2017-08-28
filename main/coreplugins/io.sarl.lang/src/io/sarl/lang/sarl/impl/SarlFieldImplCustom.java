@@ -23,7 +23,7 @@ package io.sarl.lang.sarl.impl;
 
 import org.eclipse.xtext.common.types.JvmVisibility;
 
-import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
+import io.sarl.lang.compilation.jvmmodel.IDefaultVisibilityProvider;
 
 /**
  * <!-- begin-user-doc -->

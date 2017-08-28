@@ -65,7 +65,7 @@ import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.xtext.ui.preferences.ScrolledPageContent;
 
-import io.sarl.lang.generator.extra.ExtraLanguageOutputConfigurations;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageOutputConfigurations;
 import io.sarl.lang.ui.generator.extra.preferences.ExtraLanguagePreferenceAccess;
 import io.sarl.lang.ui.internal.LangActivator;
 

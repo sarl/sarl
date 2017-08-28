@@ -32,7 +32,7 @@ import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
-import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
+import io.sarl.lang.compilation.jvmmodel.IDefaultVisibilityProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 

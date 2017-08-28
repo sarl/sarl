@@ -62,6 +62,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
 import org.eclipse.xtext.xbase.validation.UIStrings;
 
+import io.sarl.lang.compilation.typesystem.InheritanceHelper;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -76,7 +77,6 @@ import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
-import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
 import io.sarl.lang.ui.images.SARLImages;
 

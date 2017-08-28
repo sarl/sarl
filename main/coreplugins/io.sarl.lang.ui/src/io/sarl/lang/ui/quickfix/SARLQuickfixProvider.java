@@ -66,15 +66,14 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 
-import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.DefaultValueUse;
-import io.sarl.lang.parser.SyntaxIssueCodes;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.quickfix.acceptors.ActionAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.AnnotationRemoveModification;
@@ -94,6 +93,7 @@ import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeReplaceModification;
 import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification;
+import io.sarl.lang.validation.SyntaxIssueCodes;
 
 /**
  * Custom quickfixes.

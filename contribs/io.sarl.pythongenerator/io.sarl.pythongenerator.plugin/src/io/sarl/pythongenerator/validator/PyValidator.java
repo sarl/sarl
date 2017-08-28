@@ -43,7 +43,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XtypePackage;
 
-import io.sarl.lang.generator.extra.IExtraLanguageConversionInitializer;
+import io.sarl.lang.compilation.generator.extra.IExtraLanguageConversionInitializer;
 import io.sarl.lang.validation.extra.AbstractExtraLanguageValidator;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 import io.sarl.pythongenerator.generator.PyInitializers;

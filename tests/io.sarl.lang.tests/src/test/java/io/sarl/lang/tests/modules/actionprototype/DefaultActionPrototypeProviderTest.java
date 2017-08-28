@@ -59,19 +59,19 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.actionprototype.DefaultActionPrototypeProvider;
-import io.sarl.lang.actionprototype.FormalParameterProvider;
-import io.sarl.lang.actionprototype.InferredPrototype;
-import io.sarl.lang.actionprototype.InferredStandardParameter;
-import io.sarl.lang.actionprototype.InferredValuedParameter;
-import io.sarl.lang.actionprototype.QualifiedActionName;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.ActionPrototype;
+import io.sarl.lang.sarl.actionprototype.DefaultActionPrototypeProvider;
+import io.sarl.lang.sarl.actionprototype.FormalParameterProvider;
+import io.sarl.lang.sarl.actionprototype.InferredPrototype;
+import io.sarl.lang.sarl.actionprototype.InferredStandardParameter;
+import io.sarl.lang.sarl.actionprototype.InferredValuedParameter;
+import io.sarl.lang.sarl.actionprototype.QualifiedActionName;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**

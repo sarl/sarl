@@ -83,12 +83,12 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.osgi.framework.Version;
 
 import io.sarl.lang.SARLVersion;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.ActionPrototype;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /**
@@ -1195,7 +1195,10 @@ public final class Utils {
 		if (type != null && type.isInterface()) {
 			final Map<ActionPrototype, JvmOperation> operations = new HashMap<>();
 			populateInterfaceElements(type, operations, null, sarlSignatureProvider);
-			return operations.size() == 1;
+			if (operations.size() == 1) {
+				final JvmOperation op = operations.values().iterator().next();
+				return !op.isStatic() && !op.isDefault();
+			}
 		}
 		return false;
 	}

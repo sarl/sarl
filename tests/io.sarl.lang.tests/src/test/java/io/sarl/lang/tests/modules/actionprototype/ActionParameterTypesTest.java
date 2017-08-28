@@ -20,10 +20,10 @@
  */
 package io.sarl.lang.tests.modules.actionprototype;
 
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-
 import org.junit.Test;
+
+import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 
 import static org.junit.Assert.*;
 

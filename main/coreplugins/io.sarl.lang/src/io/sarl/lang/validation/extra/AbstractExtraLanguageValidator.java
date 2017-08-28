@@ -58,11 +58,11 @@ import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
 
-import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter;
-import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter.ConversionType;
-import io.sarl.lang.generator.extra.ExtraLanguageTypeConverter;
-import io.sarl.lang.generator.extra.IExtraLanguageConversionInitializer;
-import io.sarl.lang.generator.extra.IExtraLanguageGeneratorContext;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageFeatureNameConverter;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageFeatureNameConverter.ConversionType;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageTypeConverter;
+import io.sarl.lang.compilation.generator.extra.IExtraLanguageConversionInitializer;
+import io.sarl.lang.compilation.generator.extra.IExtraLanguageGeneratorContext;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.IssueCodes;
 

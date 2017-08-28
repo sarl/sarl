@@ -21,9 +21,9 @@
 
 package io.sarl.pythongenerator.generator;
 
-import io.sarl.lang.generator.extra.ExtraLanguageAppendable;
-import io.sarl.lang.generator.extra.ExtraLanguageImportManager;
-import io.sarl.lang.generator.extra.ExtraLanguageTypeConverter;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageAppendable;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageImportManager;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageTypeConverter;
 
 /** Appendable dedicated to Python.
  *

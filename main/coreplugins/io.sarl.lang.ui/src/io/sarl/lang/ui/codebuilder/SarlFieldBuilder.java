@@ -28,7 +28,7 @@ import org.eclipse.xtend.ide.codebuilder.XtendFieldBuilder;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 
-import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
+import io.sarl.lang.compilation.jvmmodel.IDefaultVisibilityProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 

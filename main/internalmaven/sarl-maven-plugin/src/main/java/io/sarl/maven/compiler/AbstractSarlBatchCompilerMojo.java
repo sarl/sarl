@@ -56,7 +56,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 
 import io.sarl.lang.SARLStandaloneSetup;
-import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+import io.sarl.lang.compilation.compiler.batch.SarlBatchCompiler;
 import io.sarl.maven.compiler.MavenLogger.MavenLoggerFactory;
 
 /** Abstract mojo that is able to use the SARL batch compiler.

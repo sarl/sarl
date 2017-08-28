@@ -30,8 +30,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import io.sarl.lang.SARLVersion;
-import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.sarl.SarlPackage;
+import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**

@@ -29,8 +29,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 import org.eclipse.xtext.util.Pair;
 
-import io.sarl.lang.generator.GeneratorConfig2;
-import io.sarl.lang.generator.IGeneratorConfigProvider2;
+import io.sarl.lang.compilation.generator.GeneratorConfig2;
+import io.sarl.lang.compilation.generator.IGeneratorConfigProvider2;
 import io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess;
 
 

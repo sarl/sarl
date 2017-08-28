@@ -35,7 +35,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.generator.OutputConfiguration;
 
-import io.sarl.lang.generator.SarlOutputConfigurationProvider;
+import io.sarl.lang.compilation.generator.SarlOutputConfigurationProvider;
 import io.sarl.lang.ui.SARLUiConfig;
 import io.sarl.lang.ui.internal.LangActivator;
 

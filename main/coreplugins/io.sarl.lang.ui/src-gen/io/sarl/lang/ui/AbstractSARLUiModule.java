@@ -26,11 +26,12 @@ package io.sarl.lang.ui;
 import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
-import io.sarl.lang.generator.IGeneratorConfigProvider2;
-import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter;
-import io.sarl.lang.generator.extra.ExtraLanguageGeneratorSupport;
-import io.sarl.lang.generator.extra.ExtraLanguageTypeConverter;
-import io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider;
+
+import io.sarl.lang.compilation.generator.IGeneratorConfigProvider2;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageFeatureNameConverter;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageGeneratorSupport;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageTypeConverter;
+import io.sarl.lang.compilation.generator.extra.IExtraLanguageGeneratorProvider;
 import io.sarl.lang.ide.contentassist.antlr.PartialSARLContentAssistParser;
 import io.sarl.lang.ide.contentassist.antlr.SARLParser;
 import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;

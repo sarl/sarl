@@ -53,7 +53,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.SARLVersion;
-import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+import io.sarl.lang.compilation.compiler.batch.SarlBatchCompiler;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /** Class for testing the examples.

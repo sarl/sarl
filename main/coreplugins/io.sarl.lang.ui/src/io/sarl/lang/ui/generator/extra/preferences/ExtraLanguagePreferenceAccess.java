@@ -35,7 +35,7 @@ import org.eclipse.xtext.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.xtext.ui.editor.preferences.PreferenceStoreAccessImpl;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 
-import io.sarl.lang.generator.extra.IExtraLanguageConversionInitializer;
+import io.sarl.lang.compilation.generator.extra.IExtraLanguageConversionInitializer;
 import io.sarl.lang.ui.generator.extra.properties.AbstractGeneratorConfigurationBlock;
 
 /** Preferences for the extra language generators.

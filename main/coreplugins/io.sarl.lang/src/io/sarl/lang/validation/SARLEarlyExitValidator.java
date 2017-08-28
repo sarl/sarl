@@ -38,7 +38,7 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 
 import io.sarl.lang.annotation.EarlyExit;
-import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
+import io.sarl.lang.compilation.controlflow.ISarlEarlyExitComputer;
 
 /** Validation of the early-exit control flow.
  *

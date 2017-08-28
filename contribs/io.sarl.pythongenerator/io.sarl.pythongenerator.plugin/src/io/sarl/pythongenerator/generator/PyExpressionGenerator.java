@@ -70,10 +70,10 @@ import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.typesystem.references.FunctionTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
-import io.sarl.lang.generator.extra.AbstractExpressionGenerator;
-import io.sarl.lang.generator.extra.IExtraLanguageConversionInitializer;
-import io.sarl.lang.generator.extra.IExtraLanguageGeneratorContext;
-import io.sarl.lang.generator.extra.IRootGenerator;
+import io.sarl.lang.compilation.generator.extra.AbstractExpressionGenerator;
+import io.sarl.lang.compilation.generator.extra.IExtraLanguageConversionInitializer;
+import io.sarl.lang.compilation.generator.extra.IExtraLanguageGeneratorContext;
+import io.sarl.lang.compilation.generator.extra.IRootGenerator;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.pythongenerator.PyGeneratorPlugin;

@@ -31,11 +31,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.xbase.lib.Pair;
 
-import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter;
-import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter.FeatureNameConverterRuleReader;
-import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter.FeaturePattern;
-import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter.FeatureReplacement;
-import io.sarl.lang.generator.extra.IExtraLanguageGeneratorContext;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageFeatureNameConverter;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageFeatureNameConverter.FeatureNameConverterRuleReader;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageFeatureNameConverter.FeaturePattern;
+import io.sarl.lang.compilation.generator.extra.ExtraLanguageFeatureNameConverter.FeatureReplacement;
+import io.sarl.lang.compilation.generator.extra.IExtraLanguageGeneratorContext;
 import io.sarl.lang.ui.generator.extra.ProjectAdapter;
 
 /** Reader of the feature name conversion rules from the preferences.

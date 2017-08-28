@@ -33,8 +33,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IGenerator2;
 import org.eclipse.xtext.generator.IGeneratorContext;
 
-import io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider;
-import io.sarl.lang.generator.extra.IRootGenerator;
+import io.sarl.lang.compilation.generator.extra.IExtraLanguageGeneratorProvider;
+import io.sarl.lang.compilation.generator.extra.IRootGenerator;
 import io.sarl.lang.ui.generator.extra.preferences.ExtraLanguagePreferenceAccess;
 
 /** Abstract implementation of a generator provider.

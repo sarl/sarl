@@ -105,14 +105,14 @@ import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.util.Jdt2Ecore.ActionBuilder;
 import io.sarl.eclipse.util.Jdt2Ecore.ConstructorBuilder;
 import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlBehaviorUnitBuilder;
 import io.sarl.lang.formatting2.FormatterFacade;
+import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 
 /**
  * Abstract implementation of a wizard page for creating new SARL elements.
