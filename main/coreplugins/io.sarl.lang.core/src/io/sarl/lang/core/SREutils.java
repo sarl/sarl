@@ -23,6 +23,8 @@ package io.sarl.lang.core;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.util.ClearableReference;
+
 /** Utilities for accessing to the part of the SARL API that is dedicated to the
  * SARL run-time environments (SRE).
  *
@@ -95,6 +97,35 @@ public final class SREutils {
 	public static void setSreSpecificData(Agent agent, Object data) {
 		assert agent != null;
 		agent.setSreSpecificData(data);
+	}
+
+	/** Replies the internal skill reference of an agent.
+	 *
+	 * @param agent the agent.
+	 * @param type the type of the capacity.
+	 * @return the skill reference
+	 * @throws UnimplementedCapacityException if the agent has not a skill for the given capacity.
+	 * @since 0.6
+	 */
+	@Pure
+	public static ClearableReference<Skill> getInternalSkillReference(Agent agent, Class<? extends Capacity> type) {
+		return agent.$getSkill(type);
+	}
+
+	/** Casts the internal skill reference of an agent.
+	 *
+	 * @param <S> the type of the capacity.
+	 * @param agent the agent.
+	 * @param reference the reference to cast.
+	 * @param type the type of the capacity.
+	 * @return the skill reference
+	 * @throws UnimplementedCapacityException if the agent has not a skill for the given capacity.
+	 * @since 0.6
+	 */
+	@Pure
+	public static <S extends Capacity> S castInternalSkillReference(Agent agent,
+			ClearableReference<Skill> reference, Class<S> type) {
+		return agent.$castSkill(type, reference);
 	}
 
 }
