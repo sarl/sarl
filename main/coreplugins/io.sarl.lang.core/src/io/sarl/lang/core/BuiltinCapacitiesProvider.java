@@ -62,7 +62,6 @@ public interface BuiltinCapacitiesProvider {
 	 *     The first argument is the agent. The second
 	 *     argument is the builtin capacity. The third argument is the skill instance.
 	 */
-	@Pure
 	void builtinCapacities(Agent agent, Procedure2<Class<? extends Capacity>, Skill> skillMappingCallback);
 
 }
