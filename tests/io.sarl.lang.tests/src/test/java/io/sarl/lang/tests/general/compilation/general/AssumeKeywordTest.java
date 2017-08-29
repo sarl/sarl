@@ -405,4 +405,119 @@ public class AssumeKeywordTest extends AbstractSarlTest {
 		this.compiler.assertCompilesTo(source, expected);
 	}
 
+	@Test
+	public void assumeWithNotFinalLocalVariable() throws Exception {
+		String source = multilineString(
+				"agent A1 {",
+				"  def fct(b : boolean) : Object {",
+				"    val x = 1",
+				"    var y = x + 1",
+				"    var node = new Object",
+				"    if (b) {",
+				"      node = new Integer(1)",
+				"    }",
+				"    assume node.toString !== null && b && x < 100 && y > 0",
+				"    return node",
+				"  }",
+				"}"
+				);
+		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.Agent;",
+				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+				"import java.util.UUID;",
+				"import javax.inject.Inject;",
+				"import org.eclipse.xtext.xbase.lib.Pure;",
+				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
+				"@SuppressWarnings(\"all\")",
+				"public class A1 extends Agent {",
+				"  @Pure",
+				"  protected Object fct(final boolean b) {",
+				"    final int x = 1;", 
+				"    int y = (x + 1);", 
+				"    Object node = new Object();", 
+				"    if (b) {", 
+				"      Integer _integer = new Integer(1);", 
+				"      node = _integer;", 
+				"    }", 
+				"    return node;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public A1(final UUID arg0, final UUID arg1) {",
+				"    super(arg0, arg1);",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  @Inject",
+				"  public A1(final BuiltinCapacitiesProvider arg0, final UUID arg1, final UUID arg2) {",
+				"    super(arg0, arg1, arg2);",
+				"  }",
+				"}",
+				"");
+		this.compiler.assertCompilesTo(source, expected);
+	}
+
+	@Test
+	public void multipleAssumesWithNotFinalLocalVariable() throws Exception {
+		String source = multilineString(
+				"agent A1 {",
+				"  def fct(b : boolean) : Object {",
+				"    val x = 1",
+				"    var y = x + 1",
+				"    var node = new Object",
+				"    if (b) {",
+				"      node = new Integer(1)",
+				"    }",
+				"    assume node.toString !== null && b",
+				"    assume x < 100 && y > 0",
+				"    return node",
+				"  }",
+				"}"
+				);
+		final String expected = multilineString(
+				"import io.sarl.lang.annotation.SarlElementType;",
+				"import io.sarl.lang.annotation.SarlSpecification;",
+				"import io.sarl.lang.annotation.SyntheticMember;",
+				"import io.sarl.lang.core.Agent;",
+				"import io.sarl.lang.core.BuiltinCapacitiesProvider;",
+				"import java.util.UUID;",
+				"import javax.inject.Inject;",
+				"import org.eclipse.xtext.xbase.lib.Pure;",
+				"",
+				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
+				"@SuppressWarnings(\"all\")",
+				"public class A1 extends Agent {",
+				"  @Pure",
+				"  protected Object fct(final boolean b) {",
+				"    final int x = 1;", 
+				"    int y = (x + 1);", 
+				"    Object node = new Object();", 
+				"    if (b) {", 
+				"      Integer _integer = new Integer(1);", 
+				"      node = _integer;", 
+				"    }", 
+				"    return node;",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  public A1(final UUID arg0, final UUID arg1) {",
+				"    super(arg0, arg1);",
+				"  }",
+				"  ",
+				"  @SyntheticMember",
+				"  @Inject",
+				"  public A1(final BuiltinCapacitiesProvider arg0, final UUID arg1, final UUID arg2) {",
+				"    super(arg0, arg1, arg2);",
+				"  }",
+				"}",
+				"");
+		this.compiler.assertCompilesTo(source, expected);
+	}
+
 }

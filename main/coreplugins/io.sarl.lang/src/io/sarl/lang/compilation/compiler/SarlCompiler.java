@@ -408,44 +408,51 @@ public class SarlCompiler extends XtendCompiler {
 
 					final String className = appendable.declareUniqueNameVariable(assertExpression, "$AssertEvaluator$"); //$NON-NLS-1$
 
-					appendable.newLine().append("class ").append(className).append(" {"); //$NON-NLS-1$ //$NON-NLS-2$
-					appendable.increaseIndentation().newLine();
-					appendable.append("final boolean $$result;").newLine(); //$NON-NLS-1$
-					appendable.append(className).append("("); //$NON-NLS-1$
-					boolean first = true;
-					for (final Entry<XVariableDeclaration, XFeatureCall> localVariable : localVariables.entrySet()) {
-						if (first) {
-							first = false;
-						} else {
-							appendable.append(", "); //$NON-NLS-1$
+					appendable.openScope();
+					try {
+						reassignThisInClosure(appendable, findKnownTopLevelType(Object.class, assertExpression));
+
+						appendable.newLine().append("class ").append(className).append(" {"); //$NON-NLS-1$ //$NON-NLS-2$
+						appendable.increaseIndentation().newLine();
+						appendable.append("final boolean $$result;").newLine(); //$NON-NLS-1$
+						appendable.append(className).append("("); //$NON-NLS-1$
+						boolean first = true;
+						for (final Entry<XVariableDeclaration, XFeatureCall> localVariable : localVariables.entrySet()) {
+							if (first) {
+								first = false;
+							} else {
+								appendable.append(", "); //$NON-NLS-1$
+							}
+							final JvmTypeReference localVariableType = getType(localVariable.getValue());
+							appendable.append("final ").append(toLightweight(localVariableType, assertExpression)); //$NON-NLS-1$
+							appendable.append(" ").append(localVariable.getKey().getName()); //$NON-NLS-1$
 						}
-						final JvmTypeReference localVariableType = getType(localVariable.getValue());
-						appendable.append("final ").append(toLightweight(localVariableType, assertExpression)); //$NON-NLS-1$
-						appendable.append(" ").append(localVariable.getKey().getName()); //$NON-NLS-1$
-					}
-					appendable.append(") {"); //$NON-NLS-1$
-					appendable.increaseIndentation();
-					internalToJavaStatement(condition, appendable, true);
-					appendable.newLine();
-					appendable.append("this.$$result = "); //$NON-NLS-1$
-					internalToConvertedExpression(condition, appendable, actualType);
-					appendable.append(";"); //$NON-NLS-1$
-					appendable.decreaseIndentation().newLine();
-					appendable.append("}"); //$NON-NLS-1$
-					appendable.decreaseIndentation().newLine();
-					appendable.append("}"); //$NON-NLS-1$
-					appendable.newLine();
-					appendable.append("assert new ").append(className).append("("); //$NON-NLS-1$ //$NON-NLS-2$
-					first = true;
-					for (final XVariableDeclaration localVariable : localVariables.keySet()) {
-						if (first) {
-							first = false;
-						} else {
-							appendable.append(", "); //$NON-NLS-1$
+						appendable.append(") {"); //$NON-NLS-1$
+						appendable.increaseIndentation();
+						internalToJavaStatement(condition, appendable, true);
+						appendable.newLine();
+						appendable.append("this.$$result = "); //$NON-NLS-1$
+						internalToConvertedExpression(condition, appendable, actualType);
+						appendable.append(";"); //$NON-NLS-1$
+						appendable.decreaseIndentation().newLine();
+						appendable.append("}"); //$NON-NLS-1$
+						appendable.decreaseIndentation().newLine();
+						appendable.append("}"); //$NON-NLS-1$
+						appendable.newLine();
+						appendable.append("assert new ").append(className).append("("); //$NON-NLS-1$ //$NON-NLS-2$
+						first = true;
+						for (final XVariableDeclaration localVariable : localVariables.keySet()) {
+							if (first) {
+								first = false;
+							} else {
+								appendable.append(", "); //$NON-NLS-1$
+							}
+							appendable.append(localVariable.getName());
 						}
-						appendable.append(localVariable.getName());
+						appendable.append(").$$result"); //$NON-NLS-1$
+					} finally {
+						appendable.closeScope();
 					}
-					appendable.append(").$$result"); //$NON-NLS-1$
 				}
 				if (!Strings.isEmpty(assertExpression.getMessage())) {
 					appendable.append(" : \""); //$NON-NLS-1$
