@@ -86,7 +86,7 @@ import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.ui.images.SARLImages;
+import io.sarl.lang.ui.info.images.SARLImages;
 
 /** Shortcut for launching a SARL agent.
  *

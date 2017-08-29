@@ -32,7 +32,7 @@ import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 import org.eclipse.xtext.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 
-import io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguagePreferenceInitializer;
+import io.sarl.lang.ui.compilation.generator.extra.ExtensionPointExtraLanguagePreferenceInitializer;
 
 /** Initialize the preference store with SARL specific information.
  *

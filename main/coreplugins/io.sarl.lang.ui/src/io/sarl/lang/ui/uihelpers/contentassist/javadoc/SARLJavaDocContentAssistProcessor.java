@@ -19,34 +19,17 @@
  * limitations under the License.
  */
 
-package io.sarl.pythongenerator.generator;
+package io.sarl.lang.ui.uihelpers.contentassist.javadoc;
 
-import javax.inject.Singleton;
+import org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProcessor;
 
-import com.google.inject.Injector;
-
-import io.sarl.lang.ui.compilation.generator.extra.AbstractExtraLanguageGeneratorProvider;
-import io.sarl.pythongenerator.PyGeneratorPlugin;
-
-/** Provider the Python generator if is it enabled.
+/** Provides proposals for the JavaDoc.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.6
  */
-@Singleton
-public class PyGeneratorProvider extends AbstractExtraLanguageGeneratorProvider<PyGenerator> {
-
-	@Override
-	protected PyGenerator createGeneratorInstance(Injector injector) {
-		return injector.getInstance(PyGenerator.class);
-	}
-
-	@Override
-	protected String getPluginID() {
-		return PyGeneratorPlugin.PLUGIN_ID;
-	}
-
+public class SARLJavaDocContentAssistProcessor extends XtendJavaDocContentAssistProcessor {
+	//
 }

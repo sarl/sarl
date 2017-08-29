@@ -19,34 +19,36 @@
  * limitations under the License.
  */
 
-package io.sarl.pythongenerator.generator;
+package io.sarl.lang.ui.info.hover;
 
-import javax.inject.Singleton;
+import javax.inject.Inject;
 
-import com.google.inject.Injector;
+import org.eclipse.xtext.common.types.JvmFormalParameter;
+import org.eclipse.xtext.xbase.ui.hover.HoverUiStrings;
 
-import io.sarl.lang.ui.compilation.generator.extra.AbstractExtraLanguageGeneratorProvider;
-import io.sarl.pythongenerator.PyGeneratorPlugin;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.ui.info.labeling.SARLUIStrings;
 
-/** Provider the Python generator if is it enabled.
+/**
+ * UI Strings for hovers.
+ *
+ * <p>This class extends the standard Xtend serializer by replacing the example of code, written
+ * in Java or Xtend, by the same example with the SARL syntax.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.6
+ * @since 0.5
  */
-@Singleton
-public class PyGeneratorProvider extends AbstractExtraLanguageGeneratorProvider<PyGenerator> {
+public class SARLHoverUIStrings extends HoverUiStrings {
+
+	@Inject
+	private SARLGrammarKeywordAccess keywords;
 
 	@Override
-	protected PyGenerator createGeneratorInstance(Injector injector) {
-		return injector.getInstance(PyGenerator.class);
-	}
-
-	@Override
-	protected String getPluginID() {
-		return PyGeneratorPlugin.PLUGIN_ID;
+	protected String parametersToString(Iterable<? extends JvmFormalParameter> elements, boolean isVarArgs, boolean includeName) {
+		return SARLUIStrings.getParameterString(elements, isVarArgs, includeName, this.keywords, this);
 	}
 
 }

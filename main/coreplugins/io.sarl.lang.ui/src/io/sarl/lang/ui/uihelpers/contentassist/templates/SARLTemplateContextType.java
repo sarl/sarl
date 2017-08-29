@@ -19,34 +19,24 @@
  * limitations under the License.
  */
 
-package io.sarl.pythongenerator.generator;
+package io.sarl.lang.ui.uihelpers.contentassist.templates;
 
-import javax.inject.Singleton;
+import org.eclipse.xtext.ui.editor.templates.CrossReferenceTemplateVariableResolver;
+import org.eclipse.xtext.xbase.ui.templates.XbaseTemplateContextType;
 
-import com.google.inject.Injector;
-
-import io.sarl.lang.ui.compilation.generator.extra.AbstractExtraLanguageGeneratorProvider;
-import io.sarl.pythongenerator.PyGeneratorPlugin;
-
-/** Provider the Python generator if is it enabled.
+/** SARL context in which templates are resolved.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.6
  */
-@Singleton
-public class PyGeneratorProvider extends AbstractExtraLanguageGeneratorProvider<PyGenerator> {
+public class SARLTemplateContextType extends XbaseTemplateContextType {
 
 	@Override
-	protected PyGenerator createGeneratorInstance(Injector injector) {
-		return injector.getInstance(PyGenerator.class);
-	}
-
-	@Override
-	protected String getPluginID() {
-		return PyGeneratorPlugin.PLUGIN_ID;
+	public void setCrossReferenceResolver(CrossReferenceTemplateVariableResolver resolver) {
+		// don't register the CrossReferenceTemplateVariableResolver for Xtend, then for SARL
+		// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=462917
 	}
 
 }

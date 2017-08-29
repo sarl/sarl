@@ -19,35 +19,43 @@
  * limitations under the License.
  */
 
-package io.sarl.pythongenerator.ui;
+package io.sarl.lang.ui.uihelpers.editor;
 
-import com.google.inject.Inject;
+import com.google.inject.ImplementedBy;
+import org.eclipse.jface.text.formatter.IContentFormatter;
+import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
-import io.sarl.lang.ui.compilation.generator.extra.properties.AbstractExtraLanguagePropertyPage;
-import io.sarl.pythongenerator.PyGeneratorPlugin;
-
-/** Property page for configuring the Python generator.
+/** A service that enables to do auto-formatting when a document changed.
+ *
+ * <p>FIXME: Remove if Xtext accept the patch https://github.com/eclipse/xtext-eclipse/pull/63
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.6
  */
-public class PropertyPage extends AbstractExtraLanguagePropertyPage {
+@ImplementedBy(DocumentAutoFormatter.class)
+public interface IDocumentAutoFormatter {
 
-	/** Inject the configuration block.
+	/** Create an instance of document auto formatter.
 	 *
-	 * @param block the block.
+	 * @param document the Xtext document associated to this auto-formatter.
+	 * @param contentFormatter the formatter of content to be used.
 	 */
-	@Inject
-	public void setGeneratorConfigurationBlock(GeneratorConfigurationBlock block) {
-		setInternalConfigurationBlock(block);
+	default void bind(IXtextDocument document, IContentFormatter contentFormatter) {
+		//
 	}
 
-	@Override
-	protected String getGeneratorPageID() {
-		return PyGeneratorPlugin.PLUGIN_ID;
+	/** Start auto-formating.
+	 */
+	default void beginAutoFormat() {
+		//
+	}
+
+	/** End auto-formating.
+	 */
+	default void endAutoFormat() {
+		//
 	}
 
 }

@@ -19,11 +19,10 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ui.validation.extra;
+package io.sarl.lang.ui.compilation.generator.extra;
 
 import java.lang.ref.SoftReference;
 import java.util.Collections;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,15 +30,16 @@ import javax.inject.Singleton;
 import com.google.inject.Injector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.generator.IGenerator2;
+import org.eclipse.xtext.generator.IGeneratorContext;
 
-import io.sarl.lang.ui.compilation.generator.extra.ProjectAdapter;
+import io.sarl.lang.compilation.generator.extra.IExtraLanguageGeneratorProvider;
+import io.sarl.lang.compilation.generator.extra.IRootGenerator;
 import io.sarl.lang.ui.compilation.generator.extra.preferences.ExtraLanguagePreferenceAccess;
-import io.sarl.lang.validation.extra.AbstractExtraLanguageValidator;
-import io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider;
 
-/** Abstract implementation of a validator provider.
+/** Abstract implementation of a generator provider.
  *
- * @param <T> the type of the validator.
+ * @param <T> the type of the root generator.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -47,8 +47,8 @@ import io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider;
  * @since 0.6
  */
 @Singleton
-public abstract class AbstractExtraLanguageValidatorProvider<T extends AbstractExtraLanguageValidator>
-	implements IExtraLanguageValidatorProvider {
+public abstract class AbstractExtraLanguageGeneratorProvider<T extends IRootGenerator>
+		implements IExtraLanguageGeneratorProvider {
 
 	@Inject
 	private Injector injector;
@@ -56,14 +56,14 @@ public abstract class AbstractExtraLanguageValidatorProvider<T extends AbstractE
 	@Inject
 	private ExtraLanguagePreferenceAccess preferences;
 
-	private SoftReference<T> validator;
+	private SoftReference<T> generator;
 
-	/** Create a validator instance.
+	/** Create a generator instance.
 	 *
 	 * @param injector the injector.
 	 * @return the instance.
 	 */
-	protected abstract T createValidatorInstance(Injector injector);
+	protected abstract T createGeneratorInstance(Injector injector);
 
 	/** Replies the plugin identifier.
 	 *
@@ -72,20 +72,20 @@ public abstract class AbstractExtraLanguageValidatorProvider<T extends AbstractE
 	protected abstract String getPluginID();
 
 	@Override
-	public List<AbstractExtraLanguageValidator> getValidators(Resource resource) {
+	public Iterable<IGenerator2> getGenerators(IGeneratorContext context, Resource resource) {
 		final IProject project = ProjectAdapter.getProject(resource);
 		if (this.preferences.isGeneratorEnabled(
 				getPluginID(),
 				project)) {
-			T val;
+			T gen;
 			synchronized (this) {
-				val = this.validator == null ? null : this.validator.get();
-				if (val == null) {
-					val = createValidatorInstance(this.injector);
-					this.validator = new SoftReference<>(val);
+				gen = this.generator == null ? null : this.generator.get();
+				if (gen == null) {
+					gen = createGeneratorInstance(this.injector);
+					this.generator = new SoftReference<>(gen);
 				}
 			}
-			return Collections.singletonList(val);
+			return Collections.singletonList(gen);
 		}
 		return Collections.emptyList();
 	}

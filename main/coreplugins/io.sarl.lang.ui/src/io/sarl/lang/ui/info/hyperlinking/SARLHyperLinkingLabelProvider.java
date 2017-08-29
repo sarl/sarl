@@ -19,34 +19,43 @@
  * limitations under the License.
  */
 
-package io.sarl.pythongenerator.generator;
+package io.sarl.lang.ui.info.hyperlinking;
 
-import javax.inject.Singleton;
+import java.text.MessageFormat;
 
-import com.google.inject.Injector;
+import javax.inject.Inject;
 
-import io.sarl.lang.ui.compilation.generator.extra.AbstractExtraLanguageGeneratorProvider;
-import io.sarl.pythongenerator.PyGeneratorPlugin;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 
-/** Provider the Python generator if is it enabled.
+import io.sarl.lang.ui.info.labeling.SARLLabelProvider;
+
+/**
+ * Label provider for hyperlinks.
  *
- * @author $Author: sgalland$
+ * @author $Author: srodriguez$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.6
+ * @since 0.5
  */
-@Singleton
-public class PyGeneratorProvider extends AbstractExtraLanguageGeneratorProvider<PyGenerator> {
+public class SARLHyperLinkingLabelProvider extends SARLLabelProvider {
 
-	@Override
-	protected PyGenerator createGeneratorInstance(Injector injector) {
-		return injector.getInstance(PyGenerator.class);
+	/** Constructor.
+	 *
+	 * @param delegate the delegate.
+	 */
+	@Inject
+	public SARLHyperLinkingLabelProvider(AdapterFactoryLabelProvider delegate) {
+		super(delegate);
 	}
 
 	@Override
-	protected String getPluginID() {
-		return PyGeneratorPlugin.PLUGIN_ID;
+	public String getText(Object element) {
+		final String result = super.getText(element);
+		if (result != null) {
+			return MessageFormat.format(Messages.SARLHyperLinkingLabelProvider_0, result);
+		}
+		return null;
 	}
 
 }

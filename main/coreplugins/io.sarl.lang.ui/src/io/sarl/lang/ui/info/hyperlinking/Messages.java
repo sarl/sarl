@@ -19,34 +19,25 @@
  * limitations under the License.
  */
 
-package io.sarl.pythongenerator.generator;
+package io.sarl.lang.ui.info.hyperlinking;
 
-import javax.inject.Singleton;
+import org.eclipse.osgi.util.NLS;
 
-import com.google.inject.Injector;
-
-import io.sarl.lang.ui.compilation.generator.extra.AbstractExtraLanguageGeneratorProvider;
-import io.sarl.pythongenerator.PyGeneratorPlugin;
-
-/** Provider the Python generator if is it enabled.
- *
+/** Localized Messages.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.6
  */
-@Singleton
-public class PyGeneratorProvider extends AbstractExtraLanguageGeneratorProvider<PyGenerator> {
-
-	@Override
-	protected PyGenerator createGeneratorInstance(Injector injector) {
-		return injector.getInstance(PyGenerator.class);
+@SuppressWarnings("all")
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+	public static String SARLHyperLinkingLabelProvider_0;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
-	@Override
-	protected String getPluginID() {
-		return PyGeneratorPlugin.PLUGIN_ID;
+	private Messages() {
 	}
-
 }

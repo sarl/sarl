@@ -19,16 +19,9 @@
  * limitations under the License.
  */
 
-package io.sarl.pythongenerator.generator;
+package io.sarl.lang.ui.compilation.generator.extra.properties;
 
-import javax.inject.Singleton;
-
-import com.google.inject.Injector;
-
-import io.sarl.lang.ui.compilation.generator.extra.AbstractExtraLanguageGeneratorProvider;
-import io.sarl.pythongenerator.PyGeneratorPlugin;
-
-/** Provider the Python generator if is it enabled.
+/** Control wrapper that may be automatically considered in the optiona dialog.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -36,17 +29,10 @@ import io.sarl.pythongenerator.PyGeneratorPlugin;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@Singleton
-public class PyGeneratorProvider extends AbstractExtraLanguageGeneratorProvider<PyGenerator> {
+public interface IExtraControl {
 
-	@Override
-	protected PyGenerator createGeneratorInstance(Injector injector) {
-		return injector.getInstance(PyGenerator.class);
-	}
-
-	@Override
-	protected String getPluginID() {
-		return PyGeneratorPlugin.PLUGIN_ID;
-	}
+	/** Update the controls.
+	 */
+	void updateControls();
 
 }

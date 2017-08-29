@@ -19,16 +19,14 @@
  * limitations under the License.
  */
 
-package io.sarl.pythongenerator.generator;
+package io.sarl.lang.ui.compilation.codebuilder;
 
-import javax.inject.Singleton;
+import org.eclipse.xtend.ide.codebuilder.CodeBuilderFactory;
 
-import com.google.inject.Injector;
 
-import io.sarl.lang.ui.compilation.generator.extra.AbstractExtraLanguageGeneratorProvider;
-import io.sarl.pythongenerator.PyGeneratorPlugin;
-
-/** Provider the Python generator if is it enabled.
+/** Factory for the ICodeBuilder builders.
+ *
+ * <p>This implementation generates the code according to the SARL syntax (not the Xtend syntax).
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -36,17 +34,6 @@ import io.sarl.pythongenerator.PyGeneratorPlugin;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@Singleton
-public class PyGeneratorProvider extends AbstractExtraLanguageGeneratorProvider<PyGenerator> {
-
-	@Override
-	protected PyGenerator createGeneratorInstance(Injector injector) {
-		return injector.getInstance(PyGenerator.class);
-	}
-
-	@Override
-	protected String getPluginID() {
-		return PyGeneratorPlugin.PLUGIN_ID;
-	}
-
+public class SarlCodeBuilderFactory extends CodeBuilderFactory {
+	//
 }

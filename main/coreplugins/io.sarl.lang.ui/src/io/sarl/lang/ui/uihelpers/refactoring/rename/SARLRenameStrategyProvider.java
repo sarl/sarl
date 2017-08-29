@@ -19,35 +19,35 @@
  * limitations under the License.
  */
 
-package io.sarl.pythongenerator.ui;
+package io.sarl.lang.ui.uihelpers.refactoring.rename;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.ui.refactoring.IRenameStrategy;
+import org.eclipse.xtext.ui.refactoring.impl.DefaultRenameStrategyProvider;
+import org.eclipse.xtext.ui.refactoring.ui.IRenameElementContext;
 
-import io.sarl.lang.ui.compilation.generator.extra.properties.AbstractExtraLanguagePropertyPage;
-import io.sarl.pythongenerator.PyGeneratorPlugin;
+import io.sarl.lang.sarl.SarlScript;
 
-/** Property page for configuring the Python generator.
+/** Provider of rename strategies in the SARL context.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.6
  */
-public class PropertyPage extends AbstractExtraLanguagePropertyPage {
+public class SARLRenameStrategyProvider extends DefaultRenameStrategyProvider {
 
-	/** Inject the configuration block.
-	 *
-	 * @param block the block.
-	 */
 	@Inject
-	public void setGeneratorConfigurationBlock(GeneratorConfigurationBlock block) {
-		setInternalConfigurationBlock(block);
-	}
+	private Provider<EcorePackageRenameStrategy> guiceEcorePackageStrategyProvider;
 
 	@Override
-	protected String getGeneratorPageID() {
-		return PyGeneratorPlugin.PLUGIN_ID;
+	protected IRenameStrategy createRenameStrategy(EObject targetEObject, IRenameElementContext renameElementContext) {
+		if (targetEObject instanceof SarlScript) {
+			return this.guiceEcorePackageStrategyProvider.get();
+		}
+		return super.createRenameStrategy(targetEObject, renameElementContext);
 	}
 
 }

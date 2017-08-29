@@ -32,7 +32,7 @@ import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.util.Strings;
 
-import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
+import io.sarl.lang.ui.info.images.IQualifiedNameImageProvider;
 
 /** Extension for the type selector.
  *
