@@ -26,7 +26,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
+import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
@@ -98,8 +100,16 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	 */
 	protected boolean isIgnorableCallToFeature(JvmIdentifiableElement feature) {
 		if (feature instanceof JvmOperation) {
-			final JvmAnnotationReference reference = this.annotationLookup.findAnnotation(
-					(JvmOperation) feature, Deprecated.class);
+			JvmAnnotationTarget target = (JvmOperation) feature;
+			JvmAnnotationReference reference = this.annotationLookup.findAnnotation(target, Deprecated.class);
+			if (reference == null) {
+				do {
+					target = EcoreUtil2.getContainerOfType(target.eContainer(), JvmAnnotationTarget.class);
+					if (target != null) {
+						reference = this.annotationLookup.findAnnotation(target, Deprecated.class);
+					}
+				} while (reference == null && target != null);
+			}
 			return reference != null;
 		}
 		return false;

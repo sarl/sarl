@@ -2938,7 +2938,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					final String namePostPart = inferredParam.getDefaultValueAnnotationValue();
 					final String name = this.sarlSignatureProvider.createFieldNameForDefaultValueID(namePostPart);
 					final JvmTypeReference fieldType = skipTypeParameters(paramType, actionContainer);
-					// FIXME: Hide these attributes into an inner interface.
 					final JvmField field = this.typeBuilder.toField(defaultValue, name, fieldType, (it) -> {
 						SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it,
 								MessageFormat.format(Messages.SARLJvmModelInferrer_11, paramName));
