@@ -1140,7 +1140,30 @@ public class SARLValidator extends AbstractSARLValidator {
 			final JvmTypeReference rawType = param.getParameterType();
 			assert rawType != null;
 			final LightweightTypeReference toType = toLightweightTypeReference(rawType, true);
-			final LightweightTypeReference fromType = getActualType(defaultValue);
+			if (toType == null) {
+				error(MessageFormat.format(
+						Messages.SARLValidator_20,
+						param.getName()),
+						param,
+						XtendPackage.Literals.XTEND_PARAMETER__PARAMETER_TYPE,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_TYPE);
+				return;
+			}
+			LightweightTypeReference fromType = getExpectedType(defaultValue);
+			if (fromType == null) {
+				fromType = getActualType(defaultValue);
+				if (fromType == null) {
+					error(MessageFormat.format(
+							Messages.SARLValidator_21,
+							param.getName()),
+							param,
+							SARL_FORMAL_PARAMETER__DEFAULT_VALUE,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_TYPE);
+					return;
+				}
+			}
 			if (!Utils.canCast(fromType, toType, true, false, true)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_38,

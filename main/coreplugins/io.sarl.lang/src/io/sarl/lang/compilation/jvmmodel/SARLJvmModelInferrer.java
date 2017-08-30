@@ -106,8 +106,8 @@ import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.linking.ILinker;
-import org.eclipse.xtext.serializer.ISerializer;
-import org.eclipse.xtext.serializer.sequencer.IContextFinder;
+import org.eclipse.xtext.nodemodel.ICompositeNode;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
@@ -309,11 +309,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Inject
 	private SARLAnnotationUtil annotationUtils;
 
-	/** SARL Serializer.
-	 */
-	@Inject
-	private ISerializer sarlSerializer;
-
 	@Inject
 	private TypesFactory typesFactory;
 
@@ -334,9 +329,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Inject
 	private LanguageInfo languageInfo;
-
-	@Inject
-	private IContextFinder contextFinder;
 
 	@Inject
 	private SARLGrammarKeywordAccess grammarKeywordAccess;
@@ -3452,20 +3444,17 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return clean;
 	}
 
+	@SuppressWarnings("static-method")
 	private String reentrantSerialize(EObject object) {
-		Set<?> contexts = this.contextFinder.findByContentsAndContainer(object, null);
-		// This is a bug fix for a bug that I cannot explain.
-		// I some cases, the context of the given expression cannot be retreive directly.
-		// A second call to the finding function solves the problem.
-		while (contexts == null || contexts.isEmpty()) {
-			Thread.yield();
-			contexts = this.contextFinder.findByContentsAndContainer(object, null);
+		final ICompositeNode node = NodeModelUtils.getNode(object);
+		if (node != null) {
+			String text = node.getText();
+			if (text != null) {
+				text = text.trim();
+			}
+			return Strings.emptyToNull(text);
 		}
-		final String code = this.sarlSerializer.serialize(object);
-		if (code != null) {
-			return code.trim();
-		}
-		return code;
+		return null;
 	}
 
 	/** Copy the type parameters from a JvmOperation.
