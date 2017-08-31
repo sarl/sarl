@@ -244,8 +244,12 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		return false;
 	}
 
-	@Override
-	protected Image _image(Object modelElement) {
+	/** Get the image for the Xtend members.
+	 *
+	 * @param modelElement the member.
+	 * @return the image.
+	 */
+	protected Image _image(XtendMember modelElement) {
 		final Image img = super._image(modelElement);
 		return this.diagnoticDecorator.decorateImage(img, modelElement);
 	}
