@@ -78,6 +78,11 @@
 
 * [Basic Object-Oriented Programming Support](./reference/OOP.md)
 
+## Compilation and Generation Infrastructure
+
+* [Basics of the SARL Compilation Process](./compilation/Basics.md)
+* [Generation to the Python Language](./compilation/PythonGeneration.md)
+
 ## Other Tools
 
 ### Syntax Highlightning

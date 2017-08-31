@@ -10,7 +10,7 @@ SRE executes or interprets compiled SARL code on an "hardware platform."
 The figure below illustrates the compilation process of a SARL program in which the
 run-time environment is involved.
 
-![SARL Generation Process](http://www.sarl.io/images/compilation-process.png)
+![SARL Generation Process](../compilation/compilation_process.png)
 
 The Tiny Multiagent Platform (tinyMAS) is a very small software platform, which permits to implement
 and run agent-based systems. This platform was written by St&eacute;phane GALLAND and Nicolas GAUD for the
