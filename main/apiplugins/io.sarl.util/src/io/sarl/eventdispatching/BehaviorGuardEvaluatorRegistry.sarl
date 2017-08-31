@@ -649,6 +649,25 @@ class BehaviorGuardEvaluatorRegistry {
 		addedObjects.size
 	}
 
+	/** Extract the registered listeners with the given type.
+	 * 
+	 * @param <T> the type of the listeners.
+	 * @param type the type of the listeners.
+	 * @return the listeners.
+	 * @since 0.6
+	 */
+	def getRegisteredEventListeners(type : Class<T>) : Iterable<T> with T {
+		val addedObjects = new TreeSet [ elt1, elt2 |
+			if (elt1 === elt2) {
+				return 0
+			}
+			System::identityHashCode(elt1) <=> System::identityHashCode(elt2)
+		]
+		return this.behaviorGuardEvaluators.values.map[it.value].flatten.map[it.target].filter [
+			type.isInstance(it) && addedObjects.add(it)
+		].map[type.cast(it)]
+	}
+
 	/**
 	 * Flattens a class's type hierarchy into a set of {@code Class} objects including all super-classes (transitively) and all interfaces implemented
 	 * by these super-classes.
