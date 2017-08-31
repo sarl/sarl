@@ -27,7 +27,7 @@ import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
-import io.sarl.lang.util.SynchronizedCollection;
+import io.sarl.lang.util.SynchronizedIterable;
 
 /**
  * Utilities that are dedicated to the built-in capacities.
@@ -60,7 +60,7 @@ public final class BuiltinCapacityUtil {
 	 * @return the contexts of the agents.
 	 * @throws Exception - when it is not possible to retreive the contexts.
 	 */
-	public static SynchronizedCollection<AgentContext> getContextsOf(Agent agent) throws Exception {
+	public static SynchronizedIterable<AgentContext> getContextsOf(Agent agent) throws Exception {
 		final Method method = getMethodGetSkill();
 		final ExternalContextAccess skill = (ExternalContextAccess) method.invoke(agent, ExternalContextAccess.class);
 		assert skill != null;

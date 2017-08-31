@@ -25,8 +25,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -46,6 +49,7 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.SynchronizedCollection;
+import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
 
@@ -79,9 +83,9 @@ public class BuiltinCapacityUtilTest extends AbstractJanusTest {
 	public void getContextsOf_emptycontextlist() throws Exception {
 		Mockito.when(this.contextSkill.getAllContexts())
 				.thenReturn(Collections3.synchronizedCollection(Collections.<AgentContext> emptyList(), this));
-		SynchronizedCollection<AgentContext> c = BuiltinCapacityUtil.getContextsOf(this.agent);
+		SynchronizedIterable<AgentContext> c = BuiltinCapacityUtil.getContextsOf(this.agent);
 		assertNotNull(c);
-		assertTrue(c.isEmpty());
+		assertFalse(c.iterator().hasNext());
 	}
 
 	@Test
@@ -89,11 +93,16 @@ public class BuiltinCapacityUtilTest extends AbstractJanusTest {
 		AgentContext context = mock(AgentContext.class);
 		Mockito.when(this.contextSkill.getAllContexts())
 				.thenReturn(Collections3.synchronizedCollection(Collections.singletonList(context), this));
-		SynchronizedCollection<AgentContext> c = BuiltinCapacityUtil.getContextsOf(this.agent);
+		SynchronizedIterable<AgentContext> c = BuiltinCapacityUtil.getContextsOf(this.agent);
 		assertNotNull(c);
-		assertFalse(c.isEmpty());
-		assertEquals(1, c.size());
-		assertTrue(c.contains(context));
+		List<AgentContext> list = new ArrayList<>();
+		Iterator<AgentContext> iterator = c.iterator();
+		while (iterator.hasNext()) {
+			list.add(iterator.next());
+		}
+		assertFalse(list.isEmpty());
+		assertEquals(1, list.size());
+		assertTrue(list.contains(context));
 	}
 
 	@Test
@@ -102,12 +111,17 @@ public class BuiltinCapacityUtilTest extends AbstractJanusTest {
 		AgentContext context2 = mock(AgentContext.class);
 		Mockito.when(this.contextSkill.getAllContexts())
 				.thenReturn(Collections3.synchronizedCollection(Arrays.asList(context1, context2), this));
-		SynchronizedCollection<AgentContext> c = BuiltinCapacityUtil.getContextsOf(this.agent);
+		SynchronizedIterable<AgentContext> c = BuiltinCapacityUtil.getContextsOf(this.agent);
 		assertNotNull(c);
-		assertFalse(c.isEmpty());
-		assertEquals(2, c.size());
-		assertTrue(c.contains(context1));
-		assertTrue(c.contains(context2));
+		List<AgentContext> list = new ArrayList<>();
+		Iterator<AgentContext> iterator = c.iterator();
+		while (iterator.hasNext()) {
+			list.add(iterator.next());
+		}
+		assertFalse(list.isEmpty());
+		assertEquals(2, list.size());
+		assertTrue(list.contains(context1));
+		assertTrue(list.contains(context2));
 	}
 
 	@Test

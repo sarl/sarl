@@ -63,7 +63,7 @@ import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Skill;
-import io.sarl.lang.util.SynchronizedCollection;
+import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.sarlspecification.SarlSpecificationChecker;
 import io.sarl.util.Collections3;
@@ -467,7 +467,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		final SpawnServiceListener[] ilisteners2 = this.globalListeners.getListeners(SpawnServiceListener.class);
 
 		try {
-			final SynchronizedCollection<AgentContext> sc = BuiltinCapacityUtil.getContextsOf(agent);
+			final SynchronizedIterable<AgentContext> sc = BuiltinCapacityUtil.getContextsOf(agent);
 			synchronized (sc.mutex()) {
 				for (final AgentContext context : sc) {
 					final EventSpace defSpace = context.getDefaultSpace();

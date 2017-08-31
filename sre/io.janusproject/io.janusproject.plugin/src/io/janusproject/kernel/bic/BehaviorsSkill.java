@@ -38,6 +38,8 @@ import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.SynchronizedIterable;
+import io.sarl.util.Collections3;
 
 /**
  * Janus implementation of SARL's {@link Behaviors} built-in capacity.
@@ -117,10 +119,10 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 	}
 
 	@Override
-	public Collection<Behavior> getRegisteredBehaviors() {
+	public SynchronizedIterable<Behavior> getRegisteredBehaviors() {
 		final Collection<Behavior> behaviors = new ArrayList<>();
 		getSkill(InternalEventBusCapacity.class).getRegisteredEventListeners(Behavior.class, behaviors);
-		return behaviors;
+		return Collections3.unmodifiableSynchronizedIterable(behaviors, behaviors);
 	}
 
 	@Override

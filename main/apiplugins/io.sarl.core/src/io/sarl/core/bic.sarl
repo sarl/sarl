@@ -21,7 +21,6 @@
 package io.sarl.core
 
 import java.text.MessageFormat
-import java.util.Collection
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.Collection
@@ -40,6 +39,7 @@ import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.util.SynchronizedCollection
 import io.sarl.lang.util.SynchronizedSet
+import io.sarl.lang.util.SynchronizedIterable
 
 /**
  * Provides functions for accessing and managing the external contexts of an agent.
@@ -52,7 +52,7 @@ capacity ExternalContextAccess {
 	 * @return the list of the agent contexts.
 	 */	 
 	@Pure
-	def getAllContexts : SynchronizedCollection<AgentContext>
+	def getAllContexts : SynchronizedIterable<AgentContext>
 
 	/**
 	 * Replies the AgentContext for the given ID.
@@ -180,7 +180,7 @@ capacity InnerContextAccess {
 	 * @return the identifiers of the members of the internal context of the current agent.
 	 */	 
 	@Pure
-	def getMemberAgents : SynchronizedSet<UUID>
+	def getMemberAgents : SynchronizedIterable<UUID>
 
 	/** Replies if the given space is the default space of the inner context.
 	 *
@@ -248,7 +248,7 @@ capacity Behaviors {
 	 * @return the unmodifiable collection of the registered behavior.
 	 * @since 0.5
 	 */
-	def getRegisteredBehaviors : Collection<Behavior>
+	def getRegisteredBehaviors : SynchronizedIterable<Behavior>
 
 	/**
 	 * Register a Behavior for the owner agent.
@@ -328,7 +328,7 @@ capacity Lifecycle {
 	 * @fires AgentSpawned in DefaultSpace
 	 * @since 0.5
 	 */
-	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) : Collection<UUID> fires AgentSpawned
+	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) : Iterable<UUID> fires AgentSpawned
 
 	/**
 	 * Spawns a new member agent in the parent's context (parentID).
@@ -353,7 +353,7 @@ capacity Lifecycle {
 	 * @fires AgentSpawned inside the default context of the parent. The source of the event is this agent.
 	 * @since 0.5
 	 */
-	def spawnInContext(nbAgents : int, agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) : Collection<UUID> fires AgentSpawned
+	def spawnInContext(nbAgents : int, agentClass : Class <? extends Agent>, context : AgentContext, params : Object*) : Iterable<UUID> fires AgentSpawned
 
 	/**
 	 * Spawns a new member agent in the parent's context (parentID).
@@ -393,7 +393,7 @@ capacity Schedules {
 	 * @return the names of the active tasks.
 	 * @since 0.5
 	 */
-	def getActiveTasks : Collection<String>
+	def getActiveTasks : SynchronizedSet<String>
 	
 	/**
 	 * Schedule a given task to be executed after the specified delay.

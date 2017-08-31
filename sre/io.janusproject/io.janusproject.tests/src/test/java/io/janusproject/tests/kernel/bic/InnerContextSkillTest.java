@@ -26,8 +26,11 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -59,7 +62,7 @@ import io.sarl.lang.core.Skill.UninstallationStage;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.ClearableReference;
-import io.sarl.lang.util.SynchronizedSet;
+import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
@@ -191,9 +194,9 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 
 	@Test
 	public void getMemberAgents_nomember() {
-		SynchronizedSet<UUID> set = this.skill.getMemberAgents();
+		SynchronizedIterable<UUID> set = this.skill.getMemberAgents();
 		assertNotNull(set);
-		assertTrue(set.isEmpty());
+		assertFalse(set.iterator().hasNext());
 	}
 
 	@Test
@@ -201,11 +204,16 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 		UUID otherAgent = UUID.randomUUID();
 		when(this.innerSpace.getParticipants())
 				.thenReturn(Collections3.synchronizedSet(new HashSet<>(Arrays.asList(this.agentId, otherAgent)), this));
-		SynchronizedSet<UUID> set = this.skill.getMemberAgents();
+		SynchronizedIterable<UUID> set = this.skill.getMemberAgents();
 		assertNotNull(set);
-		assertFalse(set.isEmpty());
-		assertEquals(1, set.size());
-		assertTrue(set.contains(otherAgent));
+		final List<UUID> list = new ArrayList<>();
+		Iterator<UUID> iterator = set.iterator();
+		while (iterator.hasNext()) {
+			list.add(iterator.next());
+		}
+		assertFalse(list.isEmpty());
+		assertEquals(1, list.size());
+		assertTrue(list.contains(otherAgent));
 	}
 
 	@Test(expected = NullPointerException.class)
