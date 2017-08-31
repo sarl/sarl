@@ -30,7 +30,7 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
-import io.sarl.lang.util.SynchronizedSet;
+import io.sarl.lang.util.SynchronizedIterable;
 
 /**
  * @author $Author: sgalland$
@@ -79,7 +79,7 @@ public class InnerContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void getMemberAgents() {
-		assertMethod("getMemberAgents", SynchronizedSet.class); //$NON-NLS-1$
+		assertMethod("getMemberAgents", SynchronizedIterable.class); //$NON-NLS-1$
 	}
 
 	/**

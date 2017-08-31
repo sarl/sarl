@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Capacity;
-import io.sarl.lang.util.SynchronizedCollection;
+import io.sarl.lang.util.SynchronizedIterable;
 
 /**
  * @author $Author: sgalland$
@@ -55,7 +55,7 @@ public class ExternalContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void getAllContexts() {
-		assertMethod("getAllContexts", SynchronizedCollection.class); //$NON-NLS-1$
+		assertMethod("getAllContexts", SynchronizedIterable.class); //$NON-NLS-1$
 	}
 
 	/**
