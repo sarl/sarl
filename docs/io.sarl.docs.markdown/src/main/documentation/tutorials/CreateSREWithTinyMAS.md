@@ -1671,11 +1671,12 @@ Two functions must be implemented for accessing to the internal list of the beha
 		[:Success:]
 			package io.sarl.docs.tutorials.tinyMASSRE
 			import java.util.UUID
-			import java.util.Collection
 			import java.util.List
 			import java.util.ArrayList
 			import io.sarl.lang.core.Behavior
 			import io.sarl.core.Behaviors
+			import io.sarl.util.Collections3
+			import io.sarl.lang.util.SynchronizedIterable
 			abstract class BehaviorsSkill implements Behaviors {
 				var behaviors : List<Behavior>
 				[:On]
@@ -1683,12 +1684,14 @@ Two functions must be implemented for accessing to the internal list of the beha
 					!this.behaviors.isEmpty
 				}
 
-				def getRegisteredBehaviors : Collection<Behavior> {
-					new ArrayList(this.behaviors)
+				def getRegisteredBehaviors : SynchronizedIterable<Behavior> {
+					[:synccolbuild](Collections3::unmodifiableSynchronizedIterable)(this.behaviors, this)
 				}
 				[:Off]
 			}
 		[:End:]
+		
+The function call [:synccolbuild:] is provided by the SARL Development Kit in order to create synchronized collections.
 
 
 #### Updating the tinyMAS agent life-cycle for (un)registering the behaviors

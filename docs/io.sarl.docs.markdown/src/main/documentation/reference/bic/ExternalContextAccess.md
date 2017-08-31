@@ -11,7 +11,7 @@ top-right context in the figure above.
 		      documented --> 
 		[:Fact:]{typeof(io.sarl.core.[:externalcontextaccess!]).shouldHaveMethods(
 			"[:getcontext](getContext)(java.util.UUID) : io.sarl.lang.core.AgentContext",
-			"[:getallcontexts](getAllContexts) : io.sarl.lang.util.SynchronizedCollection",
+			"[:getallcontexts](getAllContexts) : io.sarl.lang.util.SynchronizedIterable",
 			"[:join](join)(java.util.UUID, java.util.UUID)",
 			"[:leave](leave)(java.util.UUID)",
 			"[:isinspace](isInSpace)(io.sarl.lang.core.Event, io.sarl.lang.core.Space) : boolean",
@@ -65,10 +65,10 @@ The following function enables an agent to retrieve all the contexts in which it
 		[:Success:]
 			package io.sarl.docs.reference.bic
 			import io.sarl.lang.core.AgentContext
-			import io.sarl.lang.util.SynchronizedCollection
+			import io.sarl.lang.util.SynchronizedIterable
 			interface Tmp {
 			[:On]
-				def [:getallcontexts!] : SynchronizedCollection<AgentContext>
+				def [:getallcontexts!] : SynchronizedIterable<AgentContext>
 			[:Off]
 			}
 		[:End:]
@@ -80,11 +80,11 @@ The default context is included in the replied collection.
 			package io.sarl.docs.reference.bic
 			import io.sarl.core.ExternalContextAccess
 			import io.sarl.lang.core.AgentContext
-			import io.sarl.lang.util.SynchronizedCollection
+			import io.sarl.lang.util.SynchronizedIterable
 			[:On]
 			agent A {
 				uses ExternalContextAccess
-				var c : SynchronizedCollection<AgentContext>
+				var c : SynchronizedIterable<AgentContext>
 				def myaction {
 					c = getAllContexts
 				}

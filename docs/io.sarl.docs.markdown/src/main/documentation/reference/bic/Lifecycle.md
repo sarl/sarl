@@ -10,9 +10,9 @@ the inner context, as well as the `killMe` action to stop the execution of an ag
 		[:Fact:]{typeof(io.sarl.core.[:lifecyclecap!]).shouldHaveMethods(
 			"[:fctkillme](killMe)",
 			"[:fctspawn](spawn)(java.lang.Class, java.lang.Object[]) : java.util.UUID",
-			"spawn(int, java.lang.Class, java.lang.Object[]) : java.util.Collection",
+			"spawn(int, java.lang.Class, java.lang.Object[]) : java.lang.Iterable",
 			"[:fctspawnincontext](spawnInContext)(java.lang.Class, io.sarl.lang.core.AgentContext, java.lang.Object[]) : java.util.UUID",
-			"spawnInContext(int, java.lang.Class, io.sarl.lang.core.AgentContext, java.lang.Object[]) : java.util.Collection",
+			"spawnInContext(int, java.lang.Class, io.sarl.lang.core.AgentContext, java.lang.Object[]) : java.lang.Iterable",
 			"spawnInContextWithID(java.lang.Class, java.util.UUID, io.sarl.lang.core.AgentContext, java.lang.Object[]) : java.util.UUID")
 		}
 
@@ -73,11 +73,10 @@ functions are provided for this task:
 			package io.sarl.docs.reference.bic
 			import io.sarl.lang.core.Agent
 			import java.util.UUID
-			import java.util.Collection
 			interface Tmp {
 			[:On]
 				def [:fctspawn!](agentType : Class<? extends Agent>, [:parameters](parameters) : Object*) : UUID
-				def [:fctspawn!]([:nbagents](nbAgents): int, agentType : Class<? extends Agent>, [:parameters!] : Object*) : Collection<UUID>
+				def [:fctspawn!]([:nbagents](nbAgents): int, agentType : Class<? extends Agent>, [:parameters!] : Object*) : Iterable<UUID>
 			[:Off]
 			}
 		[:End:]
@@ -106,13 +105,12 @@ Example:
 			import io.sarl.core.Lifecycle
 			import io.sarl.lang.core.Agent
 			import java.util.UUID
-			import java.util.Collection
 			[:On]
 			agent A {
 				uses Lifecycle
 				def myaction {
 					var aid : UUID
-					var listaid : Collection<UUID>
+					var listaid : Iterable<UUID>
 					var type : Class<? extends Agent>
 					var p1 : Object
 					var p2 : Object
@@ -171,14 +169,13 @@ Example:
 			import io.sarl.lang.core.AgentContext
 			import io.sarl.lang.core.Agent
 			import java.util.UUID
-			import java.util.Collection
 			[:On]
 			agent A {
 				uses Lifecycle
 				def myaction {
 					var c : AgentContext
 					var aid : UUID
-					var listaid : Collection<UUID>
+					var listaid : Iterable<UUID>
 					var type : Class<? extends Agent>
 					var p1 : Object
 					var p2 : Object

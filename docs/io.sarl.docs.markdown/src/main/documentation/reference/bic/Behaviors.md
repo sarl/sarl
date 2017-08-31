@@ -23,7 +23,7 @@ Please read the [Behavior Reference](../Behavior.md) for details.
 			"wake(io.sarl.lang.core.Event)",
 			"[:aseventlistener](asEventListener) : io.sarl.lang.core.EventListener",
 			"[:hasregisteredbehavior](hasRegisteredBehavior) : boolean",
-			"[:getregisteredbehaviors](getRegisteredBehaviors) : java.util.Collection")
+			"[:getregisteredbehaviors](getRegisteredBehaviors) : io.sarl.lang.util.SynchronizedIterable")
 		}
 
 
@@ -303,12 +303,12 @@ Two functions are provided for accessing to the collection of the registered beh
 
 		[:Success:]
 			package io.sarl.docs.reference.bic
-			import java.util.Collection
+			import io.sarl.lang.util.SynchronizedIterable
 			import io.sarl.lang.core.Behavior
 			interface Tmp {
 			[:On]
 				def [:hasregisteredbehavior!] : boolean
-				def [:getregisteredbehaviors!] : Collection<Behavior>
+				def [:getregisteredbehaviors!] : SynchronizedIterable<Behavior>
 			[:Off]
 			}
 		[:End:]
@@ -320,7 +320,7 @@ The [:getregisteredbehaviors!] replies an unmodifiable collection of the registe
 
 		[:Success:]
 			package io.sarl.docs.reference.bic
-			import java.util.Collection
+			import io.sarl.lang.util.SynchronizedIterable
 			import io.sarl.core.Behaviors
 			import io.sarl.lang.core.Behavior
 			import io.sarl.lang.core.EventListener
@@ -329,7 +329,7 @@ The [:getregisteredbehaviors!] replies an unmodifiable collection of the registe
 				def myaction {
 					[:On]
 					var b : boolean = hasRegisteredBehavior
-					var c : Collection<Behavior> = getRegisteredBehaviors
+					var c : SynchronizedIterable<Behavior> = getRegisteredBehaviors
 					[:Off]
 				}
 			}
