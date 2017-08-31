@@ -25,16 +25,18 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.xtext.xbase.lib.Procedures
 
 import io.sarl.lang.core.Agent
+import io.sarl.lang.core.SRESpecificDataContainer
 
 /**
  * Description of a task an agent has schedule to be performed at a later time.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class AgentTask {
+class AgentTask extends SRESpecificDataContainer {
 
 	/** A guard that is always true.
 	 */

@@ -35,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Address implements Serializable, Comparable<Address> {
+public class Address extends SRESpecificDataContainer implements Serializable, Comparable<Address> {
 
 	private static final long serialVersionUID = 1519844913685586094L;
 

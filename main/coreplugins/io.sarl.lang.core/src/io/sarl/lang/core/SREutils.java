@@ -53,50 +53,43 @@ public final class SREutils {
 		//
 	}
 
-	/** Replies the data associated to this agent trait by the SRE.
+	/** Replies the data associated to the container by the SRE.
 	 *
 	 * @param <S> the type of the data.
 	 * @param type the type of the data.
-	 * @param trait the trait.
+	 * @param container the container.
 	 * @return the SRE-specific data.
 	 */
 	@Pure
-	public static <S> S getSreSpecificData(AgentTrait trait, Class<S> type) {
-		assert trait != null;
-		return trait.getSreSpecificData(type);
+	public static <S> S getSreSpecificData(SRESpecificDataContainer container, Class<S> type) {
+		assert container != null;
+		return container.getSreSpecificData(type);
 	}
 
-	/** Replies the data associated to this agent by the SRE.
+	/** Change the data associated to the given container by the SRE.
+	 *
+	 * @param container the container.
+	 * @param data the SRE-specific data.
+	 */
+	public static void setSreSpecificData(SRESpecificDataContainer container, Object data) {
+		assert container != null;
+		container.setSreSpecificData(data);
+	}
+
+	/** Change the data associated to the given container by the SRE.
 	 *
 	 * @param <S> the type of the data.
 	 * @param type the type of the data.
-	 * @param agent the agent.
-	 * @return the SRE-specific data.
-	 */
-	@Pure
-	public static <S> S getSreSpecificData(Agent agent, Class<S> type) {
-		assert agent != null;
-		return agent.getSreSpecificData(type);
-	}
-
-	/** Change the data associated to this agent trait by the SRE.
-	 *
-	 * @param trait the trait.
+	 * @param container the container.
 	 * @param data the SRE-specific data.
+	 * @return the SRE-specific data that was associated to the container before associating data to it.
+	 * @since 0.6
 	 */
-	public static void setSreSpecificData(AgentTrait trait, Object data) {
-		assert trait != null;
-		trait.setSreSpecificData(data);
-	}
-
-	/** Change the data associated to this agent by the SRE.
-	 *
-	 * @param agent the agent.
-	 * @param data the SRE-specific data.
-	 */
-	public static void setSreSpecificData(Agent agent, Object data) {
-		assert agent != null;
-		agent.setSreSpecificData(data);
+	public static <S> S setSreSpecificData(SRESpecificDataContainer container, S data, Class<S> type) {
+		assert container != null;
+		final S oldData = container.getSreSpecificData(type);
+		container.setSreSpecificData(data);
+		return oldData;
 	}
 
 	/** Replies the internal skill reference of an agent.

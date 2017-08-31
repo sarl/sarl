@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SpaceID implements Serializable, Comparable<SpaceID> {
+public class SpaceID extends SRESpecificDataContainer implements Serializable, Comparable<SpaceID> {
 
 	private static final long serialVersionUID = 8764568066583474825L;
 
