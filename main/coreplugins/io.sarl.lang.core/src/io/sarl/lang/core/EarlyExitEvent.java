@@ -29,7 +29,9 @@ package io.sarl.lang.core;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated no replacement.
  */
+@Deprecated
 public abstract class EarlyExitEvent extends Event {
 
 	private static final long serialVersionUID = -5601857950368054559L;
