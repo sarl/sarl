@@ -21,9 +21,6 @@
 
 package io.sarl.core
 
-import org.eclipse.xtext.xbase.lib.Functions.Function1
-import org.eclipse.xtext.xbase.lib.Procedures
-
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.SRESpecificDataContainer
 
@@ -40,15 +37,15 @@ class AgentTask extends SRESpecificDataContainer {
 
 	/** A guard that is always true.
 	 */
-	public static val TRUE_GUARD : (Agent) => Boolean = [ Boolean.TRUE ]
+	public static val TRUE_GUARD : (Agent) => boolean = [ true ]
 
 	/** A guard that is always false.
 	 */
-	public static val FALSE_GUARD : (Agent) => Boolean = [ Boolean.FALSE ]
+	public static val FALSE_GUARD : (Agent) => boolean = [ false ]
 
 	var name : String
 
-	var guard : (Agent) => Boolean
+	var guard : (Agent) => boolean
 
 	var procedure : (Agent) => void
 
@@ -83,7 +80,7 @@ class AgentTask extends SRESpecificDataContainer {
 	 *
 	 * @return the guard.
 	 */
-	def getGuard : (Agent) => Boolean {
+	def getGuard : (Agent) => boolean {
 		this.guard
 	}
 
@@ -93,7 +90,7 @@ class AgentTask extends SRESpecificDataContainer {
 	 * @see #unless
 	 * @see #ifTrue
 	 */
-	def setGuard(guard : (Agent) => Boolean) : void {
+	def setGuard(guard : (Agent) => boolean) : void {
 		this.guard = guard
 	}
 
@@ -113,17 +110,17 @@ class AgentTask extends SRESpecificDataContainer {
 		this.name = name
 	}
 
-	/** Change the gard of this that with the negation of the given predicate.
+	/** Change the guard of this that with the negation of the given predicate.
 	 *
 	 * @param predicate - the code of the function that is the predicate to test.
 	 * @return <code>this</code>.
 	 * @see #setGuard
 	 */
-	def unless(predicate : (Agent) => Boolean) : AgentTask {
+	def unless(predicate : (Agent) => boolean) : AgentTask {
 		if (predicate === null) {
 			this.guard = FALSE_GUARD
 		} else {
-			this.guard = [ ^agent | if (predicate.apply(^agent) === Boolean.TRUE) Boolean.FALSE else Boolean.TRUE ]
+			this.guard = [ !predicate.apply(it) ]
 		}
 		return this
 	}
@@ -134,7 +131,7 @@ class AgentTask extends SRESpecificDataContainer {
 	 * @return <code>this</code>.
 	 * @see #setGuard
 	 */
-	def ifTrue(predicate : (Agent) => Boolean) : AgentTask {
+	def ifTrue(predicate : (Agent) => boolean) : AgentTask {
 		if (predicate === null) {
 			this.guard = null
 		} else {
@@ -143,9 +140,8 @@ class AgentTask extends SRESpecificDataContainer {
 		return this
 	}
 
-	@Override
-	def toString : String {
-		"AgentTask: " + this.name //$NON-NLS-1$
+	override toString : String {
+		"AgentTask: " + this.name
 	}
 
 	/**
