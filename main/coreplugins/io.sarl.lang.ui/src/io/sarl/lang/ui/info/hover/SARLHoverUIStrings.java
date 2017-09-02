@@ -24,6 +24,7 @@ package io.sarl.lang.ui.info.hover;
 import javax.inject.Inject;
 
 import org.eclipse.xtext.common.types.JvmFormalParameter;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.xbase.ui.hover.HoverUiStrings;
 
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
@@ -46,9 +47,12 @@ public class SARLHoverUIStrings extends HoverUiStrings {
 	@Inject
 	private SARLGrammarKeywordAccess keywords;
 
+	@Inject
+	private AnnotationLookup annotationFinder;
+
 	@Override
 	protected String parametersToString(Iterable<? extends JvmFormalParameter> elements, boolean isVarArgs, boolean includeName) {
-		return SARLUIStrings.getParameterString(elements, isVarArgs, includeName, this.keywords, this);
+		return SARLUIStrings.getParameterString(elements, isVarArgs, includeName, this.keywords, this.annotationFinder, this);
 	}
 
 }

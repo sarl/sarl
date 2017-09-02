@@ -40,6 +40,7 @@ import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmEnumerationType;
 import org.eclipse.xtext.common.types.JvmExecutable;
+import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
@@ -58,9 +59,9 @@ import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
+import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseImageAdornments;
-import org.eclipse.xtext.xbase.validation.UIStrings;
 
 import io.sarl.lang.compilation.typesystem.InheritanceHelper;
 import io.sarl.lang.sarl.SarlAction;
@@ -98,7 +99,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	public static final int BEHAVIOR_UNIT_TEXT_LENGTH = 7;
 
 	@Inject
-	private UIStrings uiStrings;
+	private SARLUIStrings uiStrings;
 
 	@Inject
 	private OperatorMapping operatorMapping;
@@ -179,7 +180,32 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @return the signature.
 	 */
 	protected StyledString signatureWithoutReturnType(StyledString simpleName, JvmExecutable element) {
-		return simpleName.append(this.uiStrings.parameters(element));
+		return simpleName.append(this.uiStrings.styledParameters(element));
+	}
+
+	@Override
+	protected StyledString signature(String simpleName, JvmIdentifiableElement element) {
+		final JvmTypeReference returnType;
+		if (element instanceof JvmOperation) {
+			returnType = ((JvmOperation) element).getReturnType();
+		} else if (element instanceof JvmField) {
+			returnType = ((JvmField) element).getType();
+		} else {
+			returnType = null;
+		}
+		final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(this.services, element);
+		final String returnTypeString = (returnType == null) ? this.keywords.getVoidKeyword()
+			: owner.toLightweightTypeReference(returnType).getHumanReadableName();
+		String decoratedPart = " : " + returnTypeString; //$NON-NLS-1$
+		final String typeParam = Strings.nullToEmpty(this.uiStrings.typeParameters(element));
+		if (!Strings.isNullOrEmpty(typeParam)) {
+			decoratedPart = " " + typeParam + " : " + returnTypeString; //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		final StyledString str = new StyledString();
+		str.append(simpleName);
+		str.append(this.uiStrings.styledParameters(element));
+		str.append(decoratedPart, StyledString.DECORATIONS_STYLER);
+		return str;
 	}
 
 	/** Create a string representation of the given element.
