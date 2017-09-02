@@ -28,12 +28,16 @@ import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmFeature;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
@@ -41,6 +45,8 @@ import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
 import org.eclipse.xtext.xbase.annotations.ui.outline.XbaseWithAnnotationsOutlineTreeProvider;
+import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
+import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import io.sarl.lang.compilation.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
@@ -50,6 +56,7 @@ import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.util.Utils;
 
 /**
  * Customization of the default outline structure.
@@ -68,6 +75,9 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	@Inject
 	@Named("DiagnosticDecorator")
 	private ILabelDecorator diagnoticDecorator;
+
+	@Inject
+	private CommonTypeComputationServices services;
 
 	/** Create a node for the SARL script.
 	 *
@@ -101,6 +111,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 * @param parentNode - the parent node.
 	 * @param modelElement - the feature container for which a node should be created.
 	 */
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	protected void _createNode(DocumentRootNode parentNode, XtendTypeDeclaration modelElement) {
 		//
 		// The text region is set to the model element, not to the model element's name as in the
@@ -120,15 +131,18 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 				(primarySourceElement == null) ? modelElement : primarySourceElement);
 		elementNode.setTextRegion(parserNode.getTextRegion());
 		//
+		boolean hasConstructor = false;
 		if (!modelElement.getMembers().isEmpty()) {
 			EObjectNode capacityUseNode = null;
 			EObjectNode capacityRequirementNode = null;
 
 			for (final EObject feature : modelElement.getMembers()) {
-				if (feature instanceof SarlField
+				if (feature instanceof SarlConstructor) {
+					hasConstructor = true;
+					createNode(elementNode, feature);
+				} else if (feature instanceof SarlField
 						|| feature instanceof SarlAction
 						|| feature instanceof SarlBehaviorUnit
-						|| feature instanceof SarlConstructor
 						|| feature instanceof XtendTypeDeclaration) {
 					createNode(elementNode, feature);
 				} else if (feature instanceof SarlCapacityUses) {
@@ -136,6 +150,20 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 				} else if (feature instanceof SarlRequiredCapacity) {
 					capacityRequirementNode = createRequiredCapacityNode(elementNode,
 							(SarlRequiredCapacity) feature, capacityRequirementNode);
+				}
+			}
+		}
+		if (!hasConstructor && modelElement instanceof XtendClass) {
+			final JvmTypeReference reference = ((XtendClass) modelElement).getExtends();
+			if (reference != null) {
+				final LightweightTypeReference lreference = Utils.toLightweightTypeReference(reference, this.services);
+				final JvmType type = lreference.getType();
+				if (type instanceof JvmDeclaredType) {
+					for (final JvmConstructor constructor : ((JvmDeclaredType) type).getDeclaredConstructors()) {
+						if (!constructor.getParameters().isEmpty()) {
+							createNode(elementNode, constructor);
+						}
+					}
 				}
 			}
 		}
