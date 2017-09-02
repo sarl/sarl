@@ -84,7 +84,7 @@ class BehaviorGuardEvaluatorRegistry {
 	}
 
 	private static def getTypeHierarchyOnDemand(concreteClass : Class<?>) : ImmutableSet<Class<?>> {
-		// TODO assert concreteClass != null;
+		assert concreteClass !== null
 		val typeHierarchy = concreteClass.exploreTypeHierarchy
 		try {
 			val eventType = concreteClass.reloadClass(typeof(Event))
@@ -98,8 +98,8 @@ class BehaviorGuardEvaluatorRegistry {
 	}
 
 	private static def getAnnotatedMethodMapOnDemand(concreteClass : Class<?>) : Map<Class<? extends Event>, Collection<Method>> {
-		//TODO assert concreteClass != null;
-		// TODO verify it effectively explores the whole type hierarchy
+		assert concreteClass !== null
+		// TODO verify if it effectively explores the whole type hierarchy
 		val typeHierarchy = concreteClass.exploreTypeHierarchy
 		val supertypes = typeHierarchy.filter [ !it.isInterface && typeof(Object) != it ]
 
@@ -120,7 +120,7 @@ class BehaviorGuardEvaluatorRegistry {
 		for (method : identifiers.values) {
 			val parameterTypes = method.parameterTypes
 			// Check the prototype of the event handler in debug mode only
-			// TODO assert checkEventHandlerPrototype(parameterTypes);
+			assert checkEventHandlerPrototype(parameterTypes)
 			val eventType = parameterTypes.get(0) as Class<? extends Event>
 			var methods = buffer.get(eventType)
 			if (methods === null) {
@@ -133,20 +133,20 @@ class BehaviorGuardEvaluatorRegistry {
 		ImmutableMap::copyOf(buffer)
 	}
 
-//	private static def checkEventHandlerPrototype(parameterTypes : Class<?>[]) : boolean {
-//		try {
-//			if (parameterTypes.length === 2
-//				&& parameterTypes.get(0) !== null
-//				&& reloadClass(parameterTypes.get(0), typeof(Event)).isAssignableFrom(parameterTypes.get(0))
-//				&& parameterTypes.get(1) !== null
-//				&& reloadClass(parameterTypes.get(1), typeof(Collection)).isAssignableFrom(parameterTypes.get(1))) {
-//				return true
-//			}
-//		} catch (ex : Exception) {
-//			//
-//		}
-//		return false
-//	}
+	private static def checkEventHandlerPrototype(parameterTypes : Class<?>[]) : boolean {
+		try {
+			if (parameterTypes.length === 2
+				&& parameterTypes.get(0) !== null
+				&& reloadClass(parameterTypes.get(0), typeof(Event)).isAssignableFrom(parameterTypes.get(0))
+				&& parameterTypes.get(1) !== null
+				&& reloadClass(parameterTypes.get(1), typeof(Collection)).isAssignableFrom(parameterTypes.get(1))) {
+				return true
+			}
+		} catch (ex : Exception) {
+			//
+		}
+		return false
+	}
 
 	private static def getAnnotatedMethodsPerEvent(listenerType : Class<?>) : Map<Class<? extends Event>, Collection<Method>> {
 		try {
@@ -234,7 +234,7 @@ class BehaviorGuardEvaluatorRegistry {
 			val it1 = this.parameterTypes.iterator
 			val it2 = obj.parameterTypes.iterator
 			while (it1.hasNext) {
-				//TODO assert it2.hasNext();
+				assert it2.hasNext
 				cmp = it1.next.name <=> it2.next.name
 				if (cmp !== 0) {
 					return cmp
@@ -304,8 +304,8 @@ class BehaviorGuardEvaluatorRegistry {
 				^event : Event,
 				eventTypes : Iterator<Class<?>>,
 				skipSubscriberFiltering : boolean) {
-			// TODO assert behaviorGuardEvaluators != null;
-			// TODO assert event != null;
+			assert behaviorGuardEvaluators !== null
+			assert ^event !== null
 			this.skipSubscriberFiltering = skipSubscriberFiltering
 			this.behaviorGuardEvaluators = behaviorGuardEvaluators
 			this.^event = ^event
@@ -362,8 +362,8 @@ class BehaviorGuardEvaluatorRegistry {
 		var next : BehaviorGuardEvaluator
 
 		new (iterator : Iterator<BehaviorGuardEvaluator>, subscriber : Object) {
-			// TODO assert iterator != null
-			// TODO assert subscriber != null;
+			assert iterator !== null
+			assert subscriber !== null
 			this.iterator = iterator
 			this.subscriber = subscriber
 			searchNext
@@ -384,7 +384,7 @@ class BehaviorGuardEvaluatorRegistry {
 		}
 
 		override next : BehaviorGuardEvaluator {
-			// TODO assert this.next != null;
+			assert this.next !== null
 			val next = this.next
 			searchNext
 			return next
@@ -426,7 +426,7 @@ class BehaviorGuardEvaluatorRegistry {
 	 * @param buffer the buffer to be used for storing the behavior guard evaluators.
 	 */
 	new (buffer : Map<Class<? extends Event>, Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>>>) {
-		// TODO assert buffer != null
+		assert buffer !== null
 		this.behaviorGuardEvaluators = buffer
 	}
 

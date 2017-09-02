@@ -58,8 +58,8 @@ import io.sarl.lang.core.Scope
 	}
 
 	override matches(address : Address) : boolean {
-		// TODO assert address != null;
 		this.addresses.contains(address)
+		assert address !== null
 	}
 
 	/** Create an scope restricted to the given addresses.
