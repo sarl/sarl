@@ -1975,19 +1975,31 @@ public class SARLValidator extends AbstractSARLValidator {
 				}
 			}
 
+			final boolean isSkill = container instanceof SarlSkill;
 			int index = 0;
 			for (final JvmTypeReference capacity : uses.getCapacities()) {
-				final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacity.getIdentifier());
-				final String operationName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(fieldName);
-				final JvmOperation operation = importedFeatures.get(operationName);
-				if (operation != null && !isLocallyUsed(operation, container)) {
+				final LightweightTypeReference lreference = toLightweightTypeReference(capacity);
+				if (isSkill && lreference.isAssignableFrom(jvmContainer)) {
 					addIssue(MessageFormat.format(
-							Messages.SARLValidator_78,
+							Messages.SARLValidator_22,
 							capacity.getSimpleName()),
 							uses,
 							SARL_CAPACITY_USES__CAPACITIES,
 							index, UNUSED_AGENT_CAPACITY,
 							capacity.getSimpleName());
+				} else {
+					final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacity.getIdentifier());
+					final String operationName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(fieldName);
+					final JvmOperation operation = importedFeatures.get(operationName);
+					if (operation != null && !isLocallyUsed(operation, container)) {
+						addIssue(MessageFormat.format(
+								Messages.SARLValidator_78,
+								capacity.getSimpleName()),
+								uses,
+								SARL_CAPACITY_USES__CAPACITIES,
+								index, UNUSED_AGENT_CAPACITY,
+								capacity.getSimpleName());
+					}
 				}
 				++index;
 			}
