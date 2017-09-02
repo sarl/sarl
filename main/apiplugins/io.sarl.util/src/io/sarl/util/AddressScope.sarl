@@ -21,8 +21,7 @@
 
 package io.sarl.util
 
-import java.util.Set
-import java.util.TreeSet
+import java.util.Arrays
 
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Scope
@@ -39,27 +38,42 @@ import io.sarl.lang.core.Scope
 
 	static val SCOPE_ID = "aid://"
 
-	val addresses : Set<Address>
+	static val NO_ADDRESS : Address[] = newArrayOfSize(0)
+
+	val addresses : Address[]
 
 	/**
 	 * @param addrs - addresses to put in the scope.
 	 */
 	new (addrs : Address*) {
-	    this.addresses = new TreeSet
-	    for (adr : addrs) {
-	        if (adr !== null) {
-	        	this.addresses += adr
-	        }
-	    }
+		if (addrs === null) {
+			this.addresses = NO_ADDRESS
+		} else {
+			this.addresses = addrs
+		}
+	}
+
+	/** Replies the addresses that are matched by this scope.
+	 *
+	 * @return the addresses.
+	 */
+	def getAddresses : Address[] {
+		this.addresses
 	}
 
 	override toString : String {
-		SCOPE_ID + this.addresses.toString
+		SCOPE_ID + Arrays::toString(this.addresses)
 	}
 
 	override matches(address : Address) : boolean {
-		this.addresses.contains(address)
 		assert address !== null
+		// TODO Do dichotomic search.
+		for (element : this.addresses) {
+			if (element == address) {
+				return true
+			}
+		}
+		return false
 	}
 
 	/** Create an scope restricted to the given addresses.
