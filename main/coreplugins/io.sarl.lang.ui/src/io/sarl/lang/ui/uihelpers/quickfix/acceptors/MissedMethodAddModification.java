@@ -60,6 +60,7 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 import org.eclipse.xtext.xbase.ui.document.DocumentSourceAppender.Factory.OptionalParameters;
 
+import io.sarl.lang.annotation.FiredEvent;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.compilation.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.compilation.typesystem.SARLAnnotationUtil;
@@ -67,6 +68,7 @@ import io.sarl.lang.sarl.actionprototype.FormalParameterProvider;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.sarl.actionprototype.InferredPrototype;
 import io.sarl.lang.sarl.actionprototype.QualifiedActionName;
+import io.sarl.lang.ui.compilation.codebuilder.SarlMethodBuilder;
 import io.sarl.lang.ui.compilation.codebuilder.SarlParameterBuilder;
 import io.sarl.lang.ui.uihelpers.quickfix.SARLQuickfixProvider;
 import io.sarl.lang.util.Utils;
@@ -156,6 +158,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				appendable.newLine().newLine();
 
 				final XtendMethodBuilder builder = this.methodBuilder.get();
+				final SarlMethodBuilder sarlBuilder = (builder instanceof SarlMethodBuilder) ? (SarlMethodBuilder) builder : null;
 
 				builder.setContext(declaringType);
 				builder.setOwner(declaringType);
@@ -197,6 +200,16 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				builder.setReturnType(cloneTypeReference(operation.getReturnType(), typeParameterMap));
 
 				builder.setExceptions(cloneTypeReferences(operation.getExceptions(), typeParameterMap));
+
+				if (sarlBuilder != null) {
+					final JvmAnnotationReference firedEvents = this.annotationUtils.findAnnotation(operation, FiredEvent.class.getName());
+					if (firedEvents != null) {
+						final List<JvmTypeReference> events = this.annotationUtils.findTypeValues(firedEvents);
+						if (events != null) {
+							sarlBuilder.setFires(cloneTypeReferences(events, typeParameterMap));
+						}
+					}
+				}
 
 				builder.build(appendable);
 			}

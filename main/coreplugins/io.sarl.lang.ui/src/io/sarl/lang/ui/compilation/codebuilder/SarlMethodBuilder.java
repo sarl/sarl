@@ -64,6 +64,27 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 	@Inject
 	private CommonTypeComputationServices services;
 
+	private List<LightweightTypeReference> fires;
+
+	/** Set the fired types.
+	 *
+	 * @param firedTypes the list of the fired types.
+	 */
+	public void setFires(List<LightweightTypeReference> firedTypes) {
+		this.fires = firedTypes;
+	}
+
+	/** Replies the fired types.
+	 *
+	 * @return the list of the fired types.
+	 */
+	public List<LightweightTypeReference> getFires() {
+		if (this.fires == null) {
+			return Collections.emptyList();
+		}
+		return this.fires;
+	}
+
 	@Override
 	public ISourceAppender build(ISourceAppender appendable) {
 		final JvmVisibility defaultVisibility = this.visiblityProvider.getDefaultJvmVisibility(getOwner(),
@@ -91,8 +112,30 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 		}
 		appendTypeParameters(appendable, getTypeParameters());
 		appendThrowsClause(appendable);
+		appendFiresClause(appendable);
 		if (!isAbstractFlag()) {
 			appendBody(appendable, ""); //$NON-NLS-1$
+		}
+		return appendable;
+	}
+
+	/** Append the "fires" clause.
+	 *
+	 * @param appendable the receiver.
+	 * @return the appendable.
+	 */
+	protected ISourceAppender appendFiresClause(ISourceAppender appendable) {
+		final List<LightweightTypeReference> types = getFires();
+		final Iterator<LightweightTypeReference> iterator = types.iterator();
+		if (iterator.hasNext()) {
+			appendable.append(" ").append(this.keywords.getFiresKeyword()).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
+			do {
+				final LightweightTypeReference type = iterator.next();
+				appendable.append(type);
+				if (iterator.hasNext()) {
+					appendable.append(this.keywords.getCommaKeyword()).append(" "); //$NON-NLS-1$
+				}
+			} while (iterator.hasNext());
 		}
 		return appendable;
 	}
