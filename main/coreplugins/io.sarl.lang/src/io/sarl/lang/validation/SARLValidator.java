@@ -189,6 +189,7 @@ import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
@@ -482,7 +483,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					Messages.SARLValidator_1,
 					this.grammarAccess.getFiresKeyword()),
 					action,
-					null);
+					SarlPackage.eINSTANCE.getSarlAction_FiredEvents());
 		}
 	}
 
