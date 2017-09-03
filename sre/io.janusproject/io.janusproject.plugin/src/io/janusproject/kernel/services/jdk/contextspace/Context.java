@@ -144,17 +144,6 @@ public class Context implements AgentContext {
 		return this.spaceRepository.createSpace(new SpaceID(this.id, spaceUUID, spec), spec, creationParams);
 	}
 
-	/**
-	 * {@inheritDoc}.
-	 * @deprecated see {@link #getOrCreateSpaceWithSpec(Class, UUID, Object...)}.
-	 */
-	@Override
-	@Deprecated
-	public <S extends Space> S getOrCreateSpace(Class<? extends SpaceSpecification<S>> spec, UUID spaceUUID,
-			Object... creationParams) {
-		return getOrCreateSpaceWithSpec(spec, spaceUUID, creationParams);
-	}
-
 	@Override
 	public <S extends Space> S getOrCreateSpaceWithSpec(Class<? extends SpaceSpecification<S>> spec, UUID spaceUUID,
 			Object... creationParams) {
@@ -162,7 +151,7 @@ public class Context implements AgentContext {
 	}
 
 	@Override
-	public <S extends Space> S getOrCreateSpaceWithID(UUID spaceUUID, Class<? extends SpaceSpecification<S>> spec,
+	public <S extends Space> S getOrCreateSpaceWithID(Class<? extends SpaceSpecification<S>> spec, UUID spaceUUID,
 			Object... creationParams) {
 		return this.spaceRepository.getOrCreateSpaceWithID(new SpaceID(this.id, spaceUUID, spec), spec, creationParams);
 	}

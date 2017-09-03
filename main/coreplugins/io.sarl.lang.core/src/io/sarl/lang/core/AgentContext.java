@@ -108,8 +108,10 @@ public interface AgentContext {
 	 * @deprecated see {@link #getOrCreateSpaceWithSpec(Class, UUID, Object...)}
 	 */
 	@Deprecated
-	<S extends Space> S getOrCreateSpace(Class<? extends SpaceSpecification<S>> spec,
-			UUID spaceUUID, Object... creationParams);
+	default <S extends Space> S getOrCreateSpace(Class<? extends SpaceSpecification<S>> spec,
+			UUID spaceUUID, Object... creationParams) {
+		return getOrCreateSpaceWithSpec(spec, spaceUUID, creationParams);
+	}
 
 	/** Retreive or create an instance of space which was created with the given specification.
 	 *
@@ -149,9 +151,35 @@ public interface AgentContext {
 	 * @see #getOrCreateSpaceWithID(UUID, Class, Object...)
 	 * @see #createSpace(Class, UUID, Object...)
 	 * @see #getSpace(UUID)
+	 * @deprecated see {@link #getOrCreateSpaceWithID(Class, UUID, Object...)}
 	 */
-	<S extends Space> S getOrCreateSpaceWithID(UUID spaceUUID,
-			Class<? extends SpaceSpecification<S>> spec, Object... creationParams);
+	@Deprecated
+	default <S extends Space> S getOrCreateSpaceWithID(UUID spaceUUID,
+			Class<? extends SpaceSpecification<S>> spec, Object... creationParams) {
+		return getOrCreateSpaceWithID(spec, spaceUUID, creationParams);
+	}
+
+	/** Retreive or create an instance of space with the given identifier.
+	 *
+	 * <p>This function tries to find a space with the given identifier.
+	 * If none was found, this function creates a new space with the given
+	 * specification and creation parameters.
+	 *
+	 * <p><strong>Caution:</strong> The <code>spaceUUID</code> parameter is given to
+	 * the specification when creating the space.
+	 *
+	 * @param <S> - type of the replied space.
+	 * @param spaceUUID - identifier of the space.
+	 * @param spec - specification of the space for creating the space.
+	 * @param creationParams - parameters to pass to the space constructor.
+	 * @return the space, never <code>null</code>.
+	 * @see #getOrCreateSpaceWithID(UUID, Class, Object...)
+	 * @see #createSpace(Class, UUID, Object...)
+	 * @see #getSpace(UUID)
+	 * @since 0.6
+	 */
+	<S extends Space> S getOrCreateSpaceWithID(Class<? extends SpaceSpecification<S>> spec,
+			UUID spaceUUID, Object... creationParams);
 
 	/** Retreive, but do not create, an instance of space following the given ID.
 	 * This function tries to find a space that fits the given specification.
