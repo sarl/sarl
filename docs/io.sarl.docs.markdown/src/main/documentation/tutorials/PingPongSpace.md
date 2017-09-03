@@ -265,7 +265,16 @@ which is getting a collection of addresses for building the matching predicate i
 [:Fact:]{typeof(io.sarl.util.Scopes)}
 [:Fact:]{typeof(io.sarl.util.Scopes).shouldHaveMethod("addresses(io.sarl.lang.core.Address[]) : io.sarl.lang.core.Scope")}
 
-In the following code, the scope permits to restrict to the initial sender of the [:pingevent:] event. 
+The SARL SDK contains also the class `IdentifierScope`. It is another implementation of a `Scope` on addresses. The creation
+of an instance of `IdentifierScope` is done with the utility function `Scopes.identifiers(UUID*)`,
+which is getting a collection of identifiers for building the matching predicate in the scope.
+[:Fact:]{typeof(io.sarl.util.IdentifierScope)}
+[:Fact:]{typeof(io.sarl.util.Scopes)}
+[:Fact:]{typeof(io.sarl.util.Scopes).shouldHaveMethod("identifiers(java.util.UUID[]) : io.sarl.lang.core.Scope")}
+
+In the following code, we select the first type of scope. It permits to restrict to the initial sender
+of the [:pingevent:] event. Because, the address of the initial sender is known directly, it is easier to
+use `Scopes.addresses(Address*)` than Scopes.identifiers(UUID*)`.
 
 		[:Success:]
 			package io.sarl.docs.tutorials.pingpongspace
@@ -305,7 +314,7 @@ In the following code, the scope permits to restrict to the initial sender of th
 					evt.source = ^space.getAddress(getID)
 					^space.emit(
 						evt,
-						Scopes.addresses( occurrence.source ))
+						Scopes::addresses( occurrence.source ))
 				}
 			}
 		[:End:]

@@ -270,8 +270,7 @@ Below, we update the bidding behavior by creating a scope, and providing it to t
 							if (priceIncrease > 0) {
 								var newPrice = occurrence.price + priceIncrease
 								if (newPrice <= maxPrice) {
-									var superScope = Scopes.addresses(
-										defaultSpace.getAddress(defaultContext.ID))
+									var superScope = Scopes::identifiers(defaultContext.ID)
 									emit(new Bid(newPrice), superScope)
 									myLastBid = newPrice
 								} else {
@@ -670,8 +669,7 @@ This function is provided by the [:lifecyclecap:] capacity.
 					if (priceIncrease > 0) {
 						var newPrice = occurrence.price + priceIncrease
 						if (newPrice <= maxPrice) {
-							var superScope = Scopes.addresses(
-								defaultSpace.getAddress(defaultContext.ID))
+							var superScope = Scopes::identifiers(defaultContext.ID)
 							emit(new Bid(newPrice), superScope)
 						}
 					}

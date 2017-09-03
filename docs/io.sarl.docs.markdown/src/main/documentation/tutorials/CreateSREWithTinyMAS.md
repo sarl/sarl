@@ -1482,7 +1482,7 @@ The obtained code is:
 				}
 
 				def willReceive(receiver : UUID, ^event : Event) {
-					emit(^event, Scopes::addresses(defaultSpace.getAddress(receiver)))
+					emit(^event, Scopes::identifiers(receiver))
 				}
 			[:Off]
 			}
