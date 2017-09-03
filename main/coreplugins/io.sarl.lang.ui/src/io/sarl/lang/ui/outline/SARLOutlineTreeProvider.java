@@ -158,15 +158,6 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		}
 	}
 
-	/** Create a node for the given feature container.
-	 *
-	 * @param parentNode - the parent node.
-	 * @param modelElement - the feature container for which a node should be created.
-	 */
-	protected void _createNode(DocumentRootNode parentNode, JvmConstructor modelElement) {
-		super._createNode(parentNode, modelElement);
-	}
-
 	private void createInheritedConstructors(EStructuralFeatureNode elementNode, XtendClass modelElement) {
 		final JvmTypeReference extend = modelElement.getExtends();
 		if (extend != null) {
@@ -175,9 +166,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 				final JvmType type = reference.getType();
 				if (type instanceof JvmDeclaredType) {
 					for (final JvmConstructor constructor : ((JvmDeclaredType) type).getDeclaredConstructors()) {
-						if (!constructor.getParameters().isEmpty()) {
-							createNode(elementNode, constructor);
-						}
+						createNode(elementNode, constructor);
 					}
 				}
 			}
