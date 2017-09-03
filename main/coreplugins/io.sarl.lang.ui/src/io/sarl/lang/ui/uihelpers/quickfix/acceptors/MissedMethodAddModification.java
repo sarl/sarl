@@ -261,12 +261,14 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 			final LinkedList<JvmGenericType> expectedReferences = new LinkedList<>();
 			expectedReferences.add(genType);
 
+			final String objectId = Object.class.getName();
+
 			while (!expectedReferences.isEmpty()) {
 				final JvmGenericType type = expectedReferences.removeFirst();
-				if (!type.getTypeParameters().isEmpty() && encounteredTypes.add(type.getIdentifier())) {
+				if (encounteredTypes.add(type.getIdentifier())) {
 
 					for (final JvmTypeReference superType : type.getSuperTypes()) {
-						if (superType instanceof JvmParameterizedTypeReference) {
+						if (!objectId.equals(superType.getIdentifier()) && superType instanceof JvmParameterizedTypeReference) {
 							final JvmParameterizedTypeReference parametizedReference = (JvmParameterizedTypeReference) superType;
 							if (!parametizedReference.getArguments().isEmpty()) {
 								final JvmGenericType genericSuperType = (JvmGenericType) parametizedReference.getType();
