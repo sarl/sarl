@@ -66,23 +66,29 @@ public class SarlParameterBuilder extends XtendParameterBuilder {
 
 	@Override
 	public ISourceAppender build(ISourceAppender appendable) {
-		appendModifiers(appendable);
-		appendable.append(this.keywords.protectKeyword(getName())).append(" "); //$NON-NLS-1$
-		appendable.append(this.keywords.getColonKeyword()).append(" "); //$NON-NLS-1$
+		final ISourceAppender mAppender;
+		if (appendable instanceof SourceAppenderWithTypeMapping) {
+			mAppender = appendable;
+		} else {
+			mAppender = new SourceAppenderWithTypeMapping(appendable, this.keywords);
+		}
+		appendModifiers(mAppender);
+		mAppender.append(this.keywords.protectKeyword(getName())).append(" "); //$NON-NLS-1$
+		mAppender.append(this.keywords.getColonKeyword()).append(" "); //$NON-NLS-1$
 		if (isVarArgsFlag()) {
-			appendType(appendable,
+			appendType(mAppender,
 					((ArrayTypeReference) getType()).getComponentType(),
 					Object.class.getSimpleName());
-			appendable.append(this.keywords.getWildcardAsteriskKeyword());
+			mAppender.append(this.keywords.getWildcardAsteriskKeyword());
 		} else  {
-			appendType(appendable, getType(), Object.class.getName());
+			appendType(mAppender, getType(), Object.class.getName());
 			final String defaultVal = getDefaultValue();
 			if (!Strings.isEmpty(defaultVal)) {
-				appendable.append(" ").append(this.keywords.getEqualsSignKeyword()); //$NON-NLS-1$
-				appendable.append(" ").append(defaultVal); //$NON-NLS-1$
+				mAppender.append(" ").append(this.keywords.getEqualsSignKeyword()); //$NON-NLS-1$
+				mAppender.append(" ").append(defaultVal); //$NON-NLS-1$
 			}
 		}
-		return appendable;
+		return mAppender;
 	}
 
 }

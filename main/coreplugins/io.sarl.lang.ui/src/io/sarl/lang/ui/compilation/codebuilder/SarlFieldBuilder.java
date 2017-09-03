@@ -52,16 +52,22 @@ public class SarlFieldBuilder extends XtendFieldBuilder {
 
 	@Override
 	public ISourceAppender build(ISourceAppender appendable) {
+		final ISourceAppender mAppender;
+		if (appendable instanceof SourceAppenderWithTypeMapping) {
+			mAppender = appendable;
+		} else {
+			mAppender = new SourceAppenderWithTypeMapping(appendable, this.keywords);
+		}
 		final JvmVisibility defaultVisibility = this.visiblityProvider.getDefaultJvmVisibility(getOwner(),
 				XtendPackage.eINSTANCE.getXtendField());
-		appendVisibility(appendable, getVisibility(), defaultVisibility);
+		appendVisibility(mAppender, getVisibility(), defaultVisibility);
 		if (isStaticFlag()) {
-			appendable.append(this.keywords.getStaticStaticKeyword()).append(" "); //$NON-NLS-1$
+			mAppender.append(this.keywords.getStaticStaticKeyword()).append(" "); //$NON-NLS-1$
 		}
-		appendable.append(this.keywords.protectKeyword(getFieldName()));
-		appendable.append(" ").append(this.keywords.getColonKeyword()).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
-		appendType(appendable, getFieldType(), Object.class.getName());
-		return appendable;
+		mAppender.append(this.keywords.protectKeyword(getFieldName()));
+		mAppender.append(" ").append(this.keywords.getColonKeyword()).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
+		appendType(mAppender, getFieldType(), Object.class.getName());
+		return mAppender;
 	}
 
 }

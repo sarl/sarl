@@ -52,14 +52,20 @@ public class SarlConstructorBuilder extends XtendConstructorBuilder {
 
 	@Override
 	public ISourceAppender build(ISourceAppender appendable) {
+		final ISourceAppender mAppender;
+		if (appendable instanceof SourceAppenderWithTypeMapping) {
+			mAppender = appendable;
+		} else {
+			mAppender = new SourceAppenderWithTypeMapping(appendable, this.keywords);
+		}
 		final JvmVisibility defaultVisibility = this.visiblityProvider.getDefaultJvmVisibility(getOwner(),
 				XtendPackage.eINSTANCE.getXtendConstructor());
-		appendVisibility(appendable, getVisibility(), defaultVisibility);
-		appendable.append(this.keywords.getNewKeyword());
-		appendParameters(appendable);
-		appendThrowsClause(appendable);
-		appendBody(appendable, ""); //$NON-NLS-1$
-		return appendable;
+		appendVisibility(mAppender, getVisibility(), defaultVisibility);
+		mAppender.append(this.keywords.getNewKeyword());
+		appendParameters(mAppender);
+		appendThrowsClause(mAppender);
+		appendBody(mAppender, ""); //$NON-NLS-1$
+		return mAppender;
 	}
 
 	@Override

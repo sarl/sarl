@@ -87,36 +87,42 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 
 	@Override
 	public ISourceAppender build(ISourceAppender appendable) {
+		final ISourceAppender mAppender;
+		if (appendable instanceof SourceAppenderWithTypeMapping) {
+			mAppender = appendable;
+		} else {
+			mAppender = new SourceAppenderWithTypeMapping(appendable, this.keywords);
+		}
 		final JvmVisibility defaultVisibility = this.visiblityProvider.getDefaultJvmVisibility(getOwner(),
 				XtendPackage.eINSTANCE.getXtendFunction());
-		appendVisibility(appendable, getVisibility(), defaultVisibility);
+		appendVisibility(mAppender, getVisibility(), defaultVisibility);
 		if (isStaticFlag()) {
-			appendable.append(this.keywords.getStaticStaticKeyword()).append(" "); //$NON-NLS-1$
+			mAppender.append(this.keywords.getStaticStaticKeyword()).append(" "); //$NON-NLS-1$
 		} else if (isAbstractFlag()) {
-			appendable.append(this.keywords.getAbstractKeyword()).append(" "); //$NON-NLS-1$
+			mAppender.append(this.keywords.getAbstractKeyword()).append(" "); //$NON-NLS-1$
 		}
 		if (isOverrideFlag()) {
-			appendable.append(this.keywords.getOverrideKeyword());
+			mAppender.append(this.keywords.getOverrideKeyword());
 		} else {
-			appendable.append(this.keywords.getDefKeyword());
+			mAppender.append(this.keywords.getDefKeyword());
 		}
-		appendable.append(" "); //$NON-NLS-1$
-		appendable.append(this.keywords.protectKeyword(getMethodName()));
-		appendParameters(appendable);
+		mAppender.append(" "); //$NON-NLS-1$
+		mAppender.append(this.keywords.protectKeyword(getMethodName()));
+		appendParameters(mAppender);
 		final LightweightTypeReference retType = getReturnType();
 		if (retType != null && !retType.isPrimitiveVoid()) {
-			appendable.append(" "); //$NON-NLS-1$
-			appendable.append(this.keywords.getColonKeyword());
-			appendable.append(" "); //$NON-NLS-1$
-			appendType(appendable, retType, void.class.getSimpleName());
+			mAppender.append(" "); //$NON-NLS-1$
+			mAppender.append(this.keywords.getColonKeyword());
+			mAppender.append(" "); //$NON-NLS-1$
+			appendType(mAppender, retType, void.class.getSimpleName());
 		}
-		appendTypeParameters(appendable, getTypeParameters());
-		appendThrowsClause(appendable);
-		appendFiresClause(appendable);
+		appendTypeParameters(mAppender, getTypeParameters());
+		appendThrowsClause(mAppender);
+		appendFiresClause(mAppender);
 		if (!isAbstractFlag()) {
-			appendBody(appendable, ""); //$NON-NLS-1$
+			appendBody(mAppender, ""); //$NON-NLS-1$
 		}
-		return appendable;
+		return mAppender;
 	}
 
 	/** Append the "fires" clause.
