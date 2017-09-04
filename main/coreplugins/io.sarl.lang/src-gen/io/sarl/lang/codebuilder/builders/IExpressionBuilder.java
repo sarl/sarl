@@ -60,7 +60,7 @@ public interface IExpressionBuilder {
 	 * @param context - the context of the expressions.
 	 * @param setter - the object that permits to assign the expression to the context.
 	 */
-	void eInit(EObject context, Procedure1<XExpression> setter, IJvmTypeProvider typeContext);
+	void eInit(EObject context, Procedure1<? super XExpression> setter, IJvmTypeProvider typeContext);
 
 	/** Replies the last created expression.
 	 *

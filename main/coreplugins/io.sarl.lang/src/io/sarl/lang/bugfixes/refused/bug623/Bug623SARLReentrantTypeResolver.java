@@ -38,7 +38,7 @@ import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
-import io.sarl.lang.compilation.typesystem.SARLReentrantTypeResolver;
+import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
 
 /**
  * Fixing the SARL issue 623: Generate real lambda.

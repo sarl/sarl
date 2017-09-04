@@ -1243,7 +1243,7 @@ public final class Utils {
 	 * @since 0.5
 	 * @see EcoreUtil2#getContainerOfType(EObject, Class)
 	 */
-	public static EObject getFirstContainerForPredicate(EObject element, Function1<EObject, Boolean> predicate) {
+	public static EObject getFirstContainerForPredicate(EObject element, Function1<? super EObject, ? extends Boolean> predicate) {
 		if (predicate == null || element == null) {
 			return null;
 		}

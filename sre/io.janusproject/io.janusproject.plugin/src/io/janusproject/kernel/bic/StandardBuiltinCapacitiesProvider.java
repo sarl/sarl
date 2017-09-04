@@ -100,7 +100,7 @@ public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvi
 	private ContextSpaceService contextRepository;
 
 	@Override
-	public void builtinCapacities(Agent agent, Procedure2<Class<? extends Capacity>, Skill> skillMappingCallback) {
+	public void builtinCapacities(Agent agent, Procedure2<? super Class<? extends Capacity>, ? super Skill> skillMappingCallback) {
 		if (skillMappingCallback != null) {
 			final UUID innerContextID = agent.getID();
 			final SpaceID innerSpaceID = new SpaceID(innerContextID, UUID.randomUUID(), OpenEventSpaceSpecification.class);

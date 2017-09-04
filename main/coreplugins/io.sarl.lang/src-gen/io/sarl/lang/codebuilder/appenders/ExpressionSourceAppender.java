@@ -76,7 +76,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	 * @param context - the context of the expressions.
 	 * @param setter - the object that permits to assign the expression to the context.
 	 */
-	public void eInit(EObject context, Procedure1<XExpression> setter, IJvmTypeProvider typeContext) {
+	public void eInit(EObject context, Procedure1<? super XExpression> setter, IJvmTypeProvider typeContext) {
 		this.builder.eInit(context, setter, typeContext);
 	}
 

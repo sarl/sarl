@@ -53,10 +53,10 @@ import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
-import io.sarl.lang.compilation.generator.extra.AbstractExtraLanguageGenerator;
-import io.sarl.lang.compilation.generator.extra.ExtraLanguageAppendable;
-import io.sarl.lang.compilation.generator.extra.ExtraLanguageTypeConverter;
-import io.sarl.lang.compilation.generator.extra.IExtraLanguageGeneratorContext;
+import io.sarl.lang.compiler.extra.AbstractExtraLanguageGenerator;
+import io.sarl.lang.compiler.extra.ExtraLanguageAppendable;
+import io.sarl.lang.compiler.extra.ExtraLanguageTypeConverter;
+import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorContext;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
@@ -266,7 +266,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 */
 	protected boolean generateTypeDeclaration(String name, boolean isAbstract,
 			List<? extends JvmTypeReference> superTypes, boolean ignoreObjectType, List<? extends XtendMember> members, PyAppendable it,
-			IExtraLanguageGeneratorContext context, Procedure2<PyAppendable, IExtraLanguageGeneratorContext> memberGenerator) {
+			IExtraLanguageGeneratorContext context, Procedure2<? super PyAppendable, ? super IExtraLanguageGeneratorContext> memberGenerator) {
 		if (!Strings.isEmpty(name)) {
 			if (!generatePythonClassDeclaration(name, isAbstract, superTypes, ignoreObjectType, it, context)
 				|| context.getCancelIndicator().isCanceled()) {

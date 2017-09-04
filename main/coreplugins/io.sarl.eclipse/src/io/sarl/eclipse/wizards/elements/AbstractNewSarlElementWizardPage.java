@@ -1213,8 +1213,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @since 0.5
 	 */
 	protected boolean createStandardSARLEventTemplates(String elementTypeName,
-			Function1<String, ISarlBehaviorUnitBuilder> behaviorUnitAdder,
-			Procedure1<String> usesAdder) {
+			Function1<? super String, ? extends ISarlBehaviorUnitBuilder> behaviorUnitAdder,
+			Procedure1<? super String> usesAdder) {
 		if (!isCreateStandardEventHandlers()) {
 			return false;
 		}
@@ -1295,8 +1295,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @since 0.5
 	 */
 	protected boolean createStandardSARLLifecycleFunctionTemplates(String elementTypeName,
-			Function1<String, ISarlActionBuilder> actionAdder,
-			Procedure1<String> usesAdder) {
+			Function1<? super String, ? extends ISarlActionBuilder> actionAdder,
+			Procedure1<? super String> usesAdder) {
 		if (!isCreateStandardLifecycleFunctions()) {
 			return false;
 		}

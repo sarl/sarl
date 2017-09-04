@@ -32,7 +32,7 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
-import io.sarl.lang.compilation.compiler.batch.Main;
+import io.sarl.lang.compiler.batch.Main;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 

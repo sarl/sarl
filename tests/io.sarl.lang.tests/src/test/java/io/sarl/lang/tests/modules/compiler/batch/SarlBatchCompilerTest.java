@@ -27,7 +27,7 @@ import javax.inject.Provider;
 
 import org.apache.log4j.Level;
 
-import io.sarl.lang.compilation.compiler.batch.SarlBatchCompiler;
+import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 
 
 /**

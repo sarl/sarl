@@ -49,7 +49,7 @@ import org.eclipse.xtext.xbase.annotations.ui.outline.XbaseWithAnnotationsOutlin
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
-import io.sarl.lang.compilation.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacityUses;

@@ -26,37 +26,43 @@ package io.sarl.lang.ui;
 import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
-
-import io.sarl.lang.compilation.generator.IGeneratorConfigProvider2;
-import io.sarl.lang.compilation.generator.extra.ExtraLanguageFeatureNameConverter;
-import io.sarl.lang.compilation.generator.extra.ExtraLanguageGeneratorSupport;
-import io.sarl.lang.compilation.generator.extra.ExtraLanguageTypeConverter;
-import io.sarl.lang.compilation.generator.extra.IExtraLanguageGeneratorProvider;
+import io.sarl.lang.compiler.IGeneratorConfigProvider2;
+import io.sarl.lang.compiler.extra.ExtraLanguageFeatureNameConverter;
+import io.sarl.lang.compiler.extra.ExtraLanguageGeneratorSupport;
+import io.sarl.lang.compiler.extra.ExtraLanguageTypeConverter;
+import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorProvider;
 import io.sarl.lang.ide.contentassist.antlr.PartialSARLContentAssistParser;
 import io.sarl.lang.ide.contentassist.antlr.SARLParser;
 import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;
-import io.sarl.lang.ui.compilation.builder.ProjectRelativeFileSystemAccess;
-import io.sarl.lang.ui.compilation.codebuilder.SarlCodeBuilderFactory;
-import io.sarl.lang.ui.compilation.codebuilder.SarlConstructorBuilder;
-import io.sarl.lang.ui.compilation.codebuilder.SarlFieldBuilder;
-import io.sarl.lang.ui.compilation.codebuilder.SarlMethodBuilder;
-import io.sarl.lang.ui.compilation.codebuilder.SarlParameterBuilder;
-import io.sarl.lang.ui.compilation.generator.EclipseGeneratorConfigProvider2;
-import io.sarl.lang.ui.compilation.generator.extra.ExtensionPointExtraLanguageGeneratorProvider;
-import io.sarl.lang.ui.compilation.generator.extra.ExtensionPointExtraLanguageOutputConfigurationProvider;
-import io.sarl.lang.ui.compilation.generator.extra.preferences.PreferenceBasedFeatureNameConverterRuleReader;
-import io.sarl.lang.ui.compilation.generator.extra.preferences.PreferenceBasedTypeConverterRuleReader;
-import io.sarl.lang.ui.compilation.highlighting.SARLHighlightingCalculator;
-import io.sarl.lang.ui.info.hover.SARLHoverSerializer;
-import io.sarl.lang.ui.info.hover.SARLHoverSignatureProvider;
-import io.sarl.lang.ui.info.hover.SARLHoverUIStrings;
-import io.sarl.lang.ui.info.hyperlinking.SARLHyperLinkingLabelProvider;
-import io.sarl.lang.ui.info.images.IQualifiedNameImageProvider;
-import io.sarl.lang.ui.info.images.QualifiedPluginImageHelper;
-import io.sarl.lang.ui.info.labeling.SARLDescriptionLabelProvider;
-import io.sarl.lang.ui.info.labeling.SARLDiagnosticLabelDecorator;
-import io.sarl.lang.ui.info.labeling.SARLLabelProvider;
-import io.sarl.lang.ui.info.labeling.SARLUIStrings;
+import io.sarl.lang.ui.codebuilder.SarlCodeBuilderFactory;
+import io.sarl.lang.ui.codebuilder.SarlConstructorBuilder;
+import io.sarl.lang.ui.codebuilder.SarlFieldBuilder;
+import io.sarl.lang.ui.codebuilder.SarlMethodBuilder;
+import io.sarl.lang.ui.codebuilder.SarlParameterBuilder;
+import io.sarl.lang.ui.compiler.EclipseGeneratorConfigProvider2;
+import io.sarl.lang.ui.compiler.ProjectRelativeFileSystemAccess;
+import io.sarl.lang.ui.compiler.extra.ExtensionPointExtraLanguageGeneratorProvider;
+import io.sarl.lang.ui.compiler.extra.ExtensionPointExtraLanguageOutputConfigurationProvider;
+import io.sarl.lang.ui.compiler.extra.preferences.PreferenceBasedFeatureNameConverterRuleReader;
+import io.sarl.lang.ui.compiler.extra.preferences.PreferenceBasedTypeConverterRuleReader;
+import io.sarl.lang.ui.contentassist.SARLContentAssistFactory;
+import io.sarl.lang.ui.contentassist.SARLProposalProvider;
+import io.sarl.lang.ui.contentassist.general.SARLContentProposalPriorities;
+import io.sarl.lang.ui.contentassist.imports.SARLImportingTypesProposalProvider;
+import io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor;
+import io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType;
+import io.sarl.lang.ui.contentassist.templates.SARLTemplateProposalProvider;
+import io.sarl.lang.ui.editor.SARLSourceViewer;
+import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
+import io.sarl.lang.ui.hover.SARLHoverSerializer;
+import io.sarl.lang.ui.hover.SARLHoverSignatureProvider;
+import io.sarl.lang.ui.hover.SARLHoverUIStrings;
+import io.sarl.lang.ui.labeling.IQualifiedNameImageProvider;
+import io.sarl.lang.ui.labeling.QualifiedPluginImageHelper;
+import io.sarl.lang.ui.labeling.SARLDescriptionLabelProvider;
+import io.sarl.lang.ui.labeling.SARLDiagnosticLabelDecorator;
+import io.sarl.lang.ui.labeling.SARLHyperLinkingLabelProvider;
+import io.sarl.lang.ui.labeling.SARLLabelProvider;
 import io.sarl.lang.ui.outline.SARLBehaviorUnitOutlineFilter;
 import io.sarl.lang.ui.outline.SARLFieldOutlineFilter;
 import io.sarl.lang.ui.outline.SARLOperationOutlineFilter;
@@ -67,17 +73,10 @@ import io.sarl.lang.ui.preferences.SARLBuilderConfigurationBlock;
 import io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess;
 import io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer;
 import io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock;
+import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
+import io.sarl.lang.ui.refactoring.rename.SARLRenameStrategyProvider;
 import io.sarl.lang.ui.tasks.SarlTaskTagProvider;
-import io.sarl.lang.ui.uihelpers.contentassist.SARLContentAssistFactory;
-import io.sarl.lang.ui.uihelpers.contentassist.SARLProposalProvider;
-import io.sarl.lang.ui.uihelpers.contentassist.general.SARLContentProposalPriorities;
-import io.sarl.lang.ui.uihelpers.contentassist.imports.SARLImportingTypesProposalProvider;
-import io.sarl.lang.ui.uihelpers.contentassist.javadoc.SARLJavaDocContentAssistProcessor;
-import io.sarl.lang.ui.uihelpers.contentassist.templates.SARLTemplateContextType;
-import io.sarl.lang.ui.uihelpers.contentassist.templates.SARLTemplateProposalProvider;
-import io.sarl.lang.ui.uihelpers.editor.SARLSourceViewer;
-import io.sarl.lang.ui.uihelpers.quickfix.SARLQuickfixProvider;
-import io.sarl.lang.ui.uihelpers.refactoring.rename.SARLRenameStrategyProvider;
+import io.sarl.lang.ui.validation.SARLUIStrings;
 import io.sarl.lang.ui.validation.SARLUIValidator;
 import io.sarl.lang.ui.validation.extra.ExtensionPointExtraLanguageValidatorProvider;
 import io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider;
@@ -528,6 +527,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ExtraLanguageTypeConverter.TypeConverterRuleReader> bindExtraLanguageTypeConverter$TypeConverterRuleReader() {
+		return PreferenceBasedTypeConverterRuleReader.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends XtendJavaDocContentAssistProcessor> bindXtendJavaDocContentAssistProcessor() {
 		return SARLJavaDocContentAssistProcessor.class;
 	}
@@ -535,6 +539,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IResourceForEditorInputFactory> bindIResourceForEditorInputFactory() {
 		return XbaseResourceForEditorInputFactory.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IExtraLanguageGeneratorProvider> bindIExtraLanguageGeneratorProvider() {
+		return ExtensionPointExtraLanguageGeneratorProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -563,14 +572,13 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends ISemanticHighlightingCalculator> bindIdeSemanticHighlightingCalculator() {
-		return SARLHighlightingCalculator.class;
+	public Class<? extends IGeneratorConfigProvider2> bindIGeneratorConfigProvider2() {
+		return EclipseGeneratorConfigProvider2.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	@SingletonBinding
-	public Class<? extends IQualifiedNameImageProvider> bindIQualifiedNameImageProvider() {
-		return SARLLabelProvider.class;
+	public Class<? extends ISemanticHighlightingCalculator> bindIdeSemanticHighlightingCalculator() {
+		return SARLHighlightingCalculator.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -581,11 +589,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IImageHelper> bindIImageHelper() {
 		return QualifiedPluginImageHelper.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends IGeneratorConfigProvider2> bindIGeneratorConfigProvider2() {
-		return EclipseGeneratorConfigProvider2.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -650,6 +653,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ExtraLanguageFeatureNameConverter.FeatureNameConverterRuleReader> bindExtraLanguageFeatureNameConverter$FeatureNameConverterRuleReader() {
+		return PreferenceBasedFeatureNameConverterRuleReader.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ITemplateProposalProvider> bindITemplateProposalProvider() {
 		return SARLTemplateProposalProvider.class;
 	}
@@ -665,13 +673,14 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends XtendFieldBuilder> bindXtendFieldBuilder() {
-		return SarlFieldBuilder.class;
+	@SingletonBinding
+	public Class<? extends IQualifiedNameImageProvider> bindIQualifiedNameImageProvider() {
+		return SARLLabelProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends ExtraLanguageTypeConverter.TypeConverterRuleReader> bindExtraLanguageTypeConverter$TypeConverterRuleReader() {
-		return PreferenceBasedTypeConverterRuleReader.class;
+	public Class<? extends XtendFieldBuilder> bindXtendFieldBuilder() {
+		return SarlFieldBuilder.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -687,16 +696,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends XtendHoverSerializer> bindXtendHoverSerializer() {
 		return SARLHoverSerializer.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends ExtraLanguageFeatureNameConverter.FeatureNameConverterRuleReader> bindExtraLanguageFeatureNameConverter$FeatureNameConverterRuleReader() {
-		return PreferenceBasedFeatureNameConverterRuleReader.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends IExtraLanguageGeneratorProvider> bindIExtraLanguageGeneratorProvider() {
-		return ExtensionPointExtraLanguageGeneratorProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

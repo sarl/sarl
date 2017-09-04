@@ -26,7 +26,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 
-import io.sarl.lang.compilation.generator.GeneratorConfig2;
+import io.sarl.lang.compiler.GeneratorConfig2;
 
 /** Accessors to the preferences for the SARL builder.
  *

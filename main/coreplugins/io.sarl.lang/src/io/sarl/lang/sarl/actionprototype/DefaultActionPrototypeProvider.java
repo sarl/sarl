@@ -47,9 +47,9 @@ import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.SarlSourceCode;
-import io.sarl.lang.compilation.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.util.Utils;
 
 /**

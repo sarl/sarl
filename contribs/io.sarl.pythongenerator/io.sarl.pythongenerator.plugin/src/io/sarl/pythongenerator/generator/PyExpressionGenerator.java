@@ -70,10 +70,10 @@ import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.typesystem.references.FunctionTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
-import io.sarl.lang.compilation.generator.extra.AbstractExpressionGenerator;
-import io.sarl.lang.compilation.generator.extra.IExtraLanguageConversionInitializer;
-import io.sarl.lang.compilation.generator.extra.IExtraLanguageGeneratorContext;
-import io.sarl.lang.compilation.generator.extra.IRootGenerator;
+import io.sarl.lang.compiler.extra.AbstractExpressionGenerator;
+import io.sarl.lang.compiler.extra.IExtraLanguageConversionInitializer;
+import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorContext;
+import io.sarl.lang.compiler.extra.IRootGenerator;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
@@ -992,7 +992,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 		@Override
 		protected void appendCall(JvmIdentifiableElement calledFeature, List<Object> leftOperand,
 				List<Object> receiver, String name,
-				List<XExpression> args, Function0<XExpression> beginOfBlock) {
+				List<XExpression> args, Function0<? extends XExpression> beginOfBlock) {
 			if (beginOfBlock != null) {
 				this.codeReceiver.append("if "); //$NON-NLS-1$
 				PyExpressionGenerator.this.generate(beginOfBlock.apply(), this.codeReceiver, this.context);

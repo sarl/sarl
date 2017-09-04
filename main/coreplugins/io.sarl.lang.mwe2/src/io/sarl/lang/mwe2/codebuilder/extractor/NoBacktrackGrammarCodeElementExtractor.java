@@ -70,7 +70,7 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 	}
 
 	private <T> T visitMembers(EObject grammarContainer, EObject container,
-			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> memberCallback) {
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> memberCallback) {
 		final Set<String> treatedMembers = new HashSet<>();
 		for (final Assignment nameAssignment : IterableExtensions.filter(
 				GrammarUtil.containedAssignments(container),
@@ -93,7 +93,7 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 	}
 
 	private <T> T visitTypeReferencingMembers(EObject grammarContainer, EObject container,
-			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> memberCallback) {
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> memberCallback) {
 		final Set<String> treatedMembers = new HashSet<>();
 		for (final Assignment nameAssignment : IterableExtensions.filter(
 				GrammarUtil.containedAssignments(container),
@@ -116,7 +116,7 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 	}
 
 	private <T> T visitConstructors(EObject grammarContainer, EObject container,
-			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> callback) {
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> callback) {
 		final Set<String> treatedConstructors = new HashSet<>();
 		for (final Assignment expressionAssignment : IterableExtensions.filter(
 				GrammarUtil.containedAssignments(container),
@@ -145,9 +145,10 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 	public <T> T visitMemberElements(
 			ElementDescription element,
 			EObject grammarContainer,
-			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> constructorCallback,
-			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> namedMemberCallback,
-			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> typeReferencingMemberCallback) {
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> constructorCallback,
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> namedMemberCallback,
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject,
+					? super EClassifier, ? extends T> typeReferencingMemberCallback) {
 		// Treat the standard members
 		if (namedMemberCallback != null) {
 			final T retVal = visitMembers(grammarContainer,  grammarContainer, namedMemberCallback);

@@ -23,7 +23,7 @@ package io.sarl.maven.docs.testing;
 
 import java.util.List;
 
-import io.sarl.lang.compilation.scoping.SARLImplicitlyImportedFeatures;
+import io.sarl.lang.scoping.SARLImplicitlyImportedFeatures;
 
 /** Implicitly imported extensions for the testing of the documentation.
  *

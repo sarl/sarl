@@ -26,7 +26,6 @@ package io.sarl.lang;
 import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
-
 import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import io.sarl.lang.codebuilder.builders.BlockExpressionBuilderImpl;
 import io.sarl.lang.codebuilder.builders.ExpressionBuilderImpl;
@@ -70,23 +69,15 @@ import io.sarl.lang.codebuilder.builders.SarlSkillBuilderImpl;
 import io.sarl.lang.codebuilder.builders.SarlSpaceBuilderImpl;
 import io.sarl.lang.codebuilder.builders.ScriptBuilderImpl;
 import io.sarl.lang.codebuilder.builders.TypeParameterBuilderImpl;
-import io.sarl.lang.compilation.compiler.SarlCompiler;
-import io.sarl.lang.compilation.controlflow.ExtendedSARLEarlyExitComputer;
-import io.sarl.lang.compilation.controlflow.ISarlEarlyExitComputer;
-import io.sarl.lang.compilation.controlflow.SARLEarlyExitComputer;
-import io.sarl.lang.compilation.generator.GeneratorConfigProvider2;
-import io.sarl.lang.compilation.generator.IGeneratorConfigProvider2;
-import io.sarl.lang.compilation.generator.SARLGeneratorConfigProvider;
-import io.sarl.lang.compilation.generator.SARLJvmGenerator;
-import io.sarl.lang.compilation.generator.SarlOutputConfigurationProvider;
-import io.sarl.lang.compilation.jvmmodel.SARLJvmModelInferrer;
-import io.sarl.lang.compilation.jvmmodel.SarlJvmModelAssociations;
-import io.sarl.lang.compilation.scoping.SARLImplicitlyImportedFeatures;
-import io.sarl.lang.compilation.scoping.SARLScopeProvider;
-import io.sarl.lang.compilation.scoping.SARLSerializerScopeProvider;
-import io.sarl.lang.compilation.typesystem.SARLExpressionHelper;
-import io.sarl.lang.compilation.typesystem.SARLReentrantTypeResolver;
-import io.sarl.lang.compilation.typesystem.SARLTypeComputer;
+import io.sarl.lang.compiler.GeneratorConfigProvider2;
+import io.sarl.lang.compiler.IGeneratorConfigProvider2;
+import io.sarl.lang.compiler.SARLGeneratorConfigProvider;
+import io.sarl.lang.compiler.SARLJvmGenerator;
+import io.sarl.lang.compiler.SarlCompiler;
+import io.sarl.lang.compiler.SarlOutputConfigurationProvider;
+import io.sarl.lang.controlflow.ExtendedSARLEarlyExitComputer;
+import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
+import io.sarl.lang.controlflow.SARLEarlyExitComputer;
 import io.sarl.lang.documentation.DocumentationFormatter;
 import io.sarl.lang.documentation.EcoreDocumentationBuilder;
 import io.sarl.lang.documentation.IDocumentationFormatter;
@@ -94,15 +85,23 @@ import io.sarl.lang.documentation.IEcoreDocumentationBuilder;
 import io.sarl.lang.documentation.SarlDocumentationProvider;
 import io.sarl.lang.formatting2.SARLFormatter;
 import io.sarl.lang.formatting2.SARLFormatterPreferenceKeys;
+import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
+import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.parser.antlr.SARLAntlrTokenFileProvider;
 import io.sarl.lang.parser.antlr.SARLParser;
 import io.sarl.lang.parser.antlr.internal.InternalSARLLexer;
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.actionprototype.DefaultActionPrototypeProvider;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.scoping.SARLImplicitlyImportedFeatures;
+import io.sarl.lang.scoping.SARLScopeProvider;
+import io.sarl.lang.scoping.SARLSerializerScopeProvider;
 import io.sarl.lang.serializer.SARLEcoreDocumentationSyntacticSequencer;
 import io.sarl.lang.serializer.SARLSemanticSequencer;
 import io.sarl.lang.services.SARLGrammarAccess;
+import io.sarl.lang.typesystem.SARLExpressionHelper;
+import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
+import io.sarl.lang.typesystem.SARLTypeComputer;
 import io.sarl.lang.validation.DefaultFeatureCallValidator;
 import io.sarl.lang.validation.IFeatureCallValidator;
 import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
@@ -527,11 +526,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends IGeneratorConfigProvider2> bindIGeneratorConfigProvider2() {
-		return GeneratorConfigProvider2.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends EarlyExitValidator> bindEarlyExitValidator() {
 		return SARLEarlyExitValidator.class;
 	}
@@ -544,6 +538,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ExtendedEarlyExitComputer> bindExtendedEarlyExitComputer() {
 		return ExtendedSARLEarlyExitComputer.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IActionPrototypeProvider> bindIActionPrototypeProvider() {
+		return DefaultActionPrototypeProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -569,11 +568,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends JvmModelAssociator> bindJvmModelAssociator() {
 		return SarlJvmModelAssociations.Impl.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
-	public Class<? extends IActionPrototypeProvider> bindIActionPrototypeProvider() {
-		return DefaultActionPrototypeProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -619,6 +613,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IGeneratorConfigProvider> bindIGeneratorConfigProvider() {
 		return SARLGeneratorConfigProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IGeneratorConfigProvider2> bindIGeneratorConfigProvider2() {
+		return GeneratorConfigProvider2.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

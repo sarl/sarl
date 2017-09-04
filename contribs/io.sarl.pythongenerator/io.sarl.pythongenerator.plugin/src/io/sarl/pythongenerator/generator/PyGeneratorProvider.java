@@ -25,7 +25,7 @@ import javax.inject.Singleton;
 
 import com.google.inject.Injector;
 
-import io.sarl.lang.ui.compilation.generator.extra.AbstractExtraLanguageGeneratorProvider;
+import io.sarl.lang.ui.compiler.extra.AbstractExtraLanguageGeneratorProvider;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 
 /** Provider the Python generator if is it enabled.

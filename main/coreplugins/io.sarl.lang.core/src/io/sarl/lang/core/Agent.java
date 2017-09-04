@@ -191,7 +191,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 		return skill;
 	}
 
-	private static void runOnImplementedCapacities(Skill skill, Procedure1<Class<? extends Capacity>> callback) {
+	private static void runOnImplementedCapacities(Skill skill, Procedure1<? super Class<? extends Capacity>> callback) {
 		TypeToken.of(skill.getClass()).getTypes().interfaces().stream().parallel().forEach((it) -> {
 			final Class<?> type = it.getRawType();
 			if (Capacity.class.isAssignableFrom(type) && !Capacity.class.equals(type)) {
