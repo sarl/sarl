@@ -74,7 +74,7 @@ capacity ExternalContextAccess {
 	 * The parameter <var>expectedDefaultSpaceID</var> is only used to check if
 	 * the caller of this function knows the ID of the default space in the context to
 	 * be involved in. Note that the context must already exists, and the default space
-	 * inside this context must have the sams ID as <var>expectedDefaultSpaceID</var>.
+	 * inside this context must have the same ID as <var>expectedDefaultSpaceID</var>.
 	 * If the given <var>expectedDefaultSpaceID</var> does not match the ID of the
 	 * default space in the context <var>contextID</var>, then the access to the context
 	 * is forbidden.
@@ -82,21 +82,35 @@ capacity ExternalContextAccess {
 	 * <p>This actions registers the agent in the default Space of the context with the
 	 * ID <var>contextID</var>.
 	 *
+	 * <p>This function replies {@code false} is the given identifiers corresponds to a context in which
+	 * the agent is already member.
+	 *
 	 * @param contextID the identifier of the context to join.
 	 * @param expectedDefaultSpaceID the known identifier of the default space in the agent context with the given identifier.
+	 * @return {@code true} if the context was joined. {@code false} if the given context id does not corresponds to a known context,
+	 *     or the given space identifier is not the one of the context's default space, or the agent is already member
+	 *     of the context with the given identifier (default context, or any other external context).
 	 * @fires ContextJoined in its inner Context default space (Behaviors#wake).
 	 * @fires MemberJoined in its parent Context default Space 
 	 */
-	def join(contextID : UUID, expectedDefaultSpaceID : UUID) fires ContextJoined, MemberJoined
+	def join(contextID : UUID, expectedDefaultSpaceID : UUID) : boolean fires ContextJoined, MemberJoined
 
 	/**
-	 * Leaves the parent's context. 
+	 * Leaves the parent's context.
+	 *
+	 * <p>Because an agent must be always into a context, this function fails (and replies {@code false}) when
+	 * the context to be leaved is the current default context of the agent, and there is no other context or
+	 * more than 1 other context that could be elected as the new default context.
 	 *
 	 * @param contextID the identifier of the context to leave.
+	 * @return {@code true} if the agent has leaved the context. {@code false} if the agent has not leaved
+	 *     the context: identifier is not related to a joined context, or the identifier if related to
+	 *     the default context, and their is not a unique joined external context that is different than
+	 *     the default context.
 	 * @fires ContextLeft in its inner Context default space (Behaviors#wake).
 	 * @fires MemberLeft in its parent Context default Space 
 	 */
-	def leave(contextID : UUID) fires ContextLeft, MemberLeft
+	def leave(contextID : UUID) : boolean fires ContextLeft, MemberLeft
 
 	/** Replies if the given event was emitted in the given space.
 	 *
