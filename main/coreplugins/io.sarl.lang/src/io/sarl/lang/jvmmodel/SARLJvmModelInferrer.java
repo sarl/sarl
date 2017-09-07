@@ -753,7 +753,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param target the JVM type that is receiving the default constructor.
 	 * @see GenerationContext#hasConstructor()
 	 */
-	protected void addDefaultConstructors(XtendTypeDeclaration source, JvmGenericType target) {
+	protected void appendDefaultConstructors(XtendTypeDeclaration source, JvmGenericType target) {
 		final GenerationContext context = getContext(target);
 		if (!context.hasConstructor()) {
 
@@ -778,7 +778,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					if (type instanceof JvmGenericType) {
 						copyVisibleJvmConstructors(
 								(JvmGenericType) type,
-								target, source, Sets.newTreeSet());
+								target, source, Sets.newTreeSet(),
+								JvmVisibility.PUBLIC);
 					}
 				}
 			}
@@ -893,7 +894,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			appendCloneFunctionIfCloneable(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
-			addDefaultConstructors(source, inferredJvmType);
+			appendDefaultConstructors(source, inferredJvmType);
 
 			// Add serialVersionUID field if the generated type is serializable
 			appendSerialNumberIfSerializable(context, source, inferredJvmType);
@@ -1100,7 +1101,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			appendCloneFunctionIfCloneable(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
-			addDefaultConstructors(source, inferredJvmType);
+			appendDefaultConstructors(source, inferredJvmType);
 
 			// Add serialVersionUID field if the generated type is serializable
 			appendSerialNumberIfSerializable(context, source, inferredJvmType);
@@ -1168,7 +1169,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			appendCloneFunctionIfCloneable(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
-			addDefaultConstructors(source, inferredJvmType);
+			appendDefaultConstructors(source, inferredJvmType);
 
 			// Add serialVersionUID field if the generated type is serializable
 			appendSerialNumberIfSerializable(context, source, inferredJvmType);
@@ -1230,7 +1231,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 
 			// Add the default constructors for the behavior, if not already added
-			addDefaultConstructors(source, inferredJvmType);
+			appendDefaultConstructors(source, inferredJvmType);
 
 			// Add functions dedicated to comparisons (equals, hashCode, etc.)
 			appendComparisonFunctions(context, source, inferredJvmType);
@@ -1308,7 +1309,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			appendCloneFunctionIfCloneable(context, source, inferredJvmType);
 
 			// Add the default constructors for the behavior, if not already added
-			addDefaultConstructors(source, inferredJvmType);
+			appendDefaultConstructors(source, inferredJvmType);
 
 			// Add serialVersionUID field if the generated type is serializable
 			appendSerialNumberIfSerializable(context, source, inferredJvmType);
@@ -3560,11 +3561,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param target the destination.
 	 * @param sarlSource the SARL source element. If {@code null}, the generated constructors will not be associated to the SARL element.
 	 * @param createdConstructors the set of constructors that are created before (input) or during (output) the invocation.
-	 * @since 0.5
+	 * @param minimalVisibility the minimal visibility to apply to the created constructors.
+	 * @since 0.6
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	protected void copyVisibleJvmConstructors(JvmGenericType source, JvmGenericType target,
-			XtendTypeDeclaration sarlSource, Set<ActionParameterTypes> createdConstructors) {
+			XtendTypeDeclaration sarlSource, Set<ActionParameterTypes> createdConstructors,
+			JvmVisibility minimalVisibility) {
 		final boolean samePackage = Objects.equal(source.getPackageName(), target.getPackageName());
 		final Iterable<JvmConstructor> constructors = Iterables.transform(Iterables.filter(source.getMembers(), (it) -> {
 			if (it instanceof JvmConstructor) {
@@ -3606,8 +3609,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 				newCons.setDeprecated(constructor.isDeprecated());
 				newCons.setSimpleName(target.getSimpleName());
-				newCons.setVisibility(constructor.getVisibility());
 				newCons.setVarArgs(constructor.isVarArgs());
+
+				JvmVisibility visibility = constructor.getVisibility();
+				if (minimalVisibility != null && minimalVisibility.compareTo(visibility) > 0) {
+					visibility = minimalVisibility;
+				}
+				newCons.setVisibility(visibility);
 
 				setBody(newCons, (it) -> {
 					it.append(this.grammarKeywordAccess.getSuperKeyword());
