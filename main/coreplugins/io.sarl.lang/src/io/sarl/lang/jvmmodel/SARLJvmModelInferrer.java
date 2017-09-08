@@ -56,7 +56,6 @@ import com.google.inject.Singleton;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.jvmmodel.SyntheticNameClashResolver;
 import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
@@ -91,17 +90,14 @@ import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmIntAnnotationValue;
-import org.eclipse.xtext.common.types.JvmLowerBound;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
-import org.eclipse.xtext.common.types.JvmTypeConstraint;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.JvmVisibility;
-import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.common.types.util.TypeReferences;
@@ -131,8 +127,6 @@ import org.eclipse.xtext.xbase.typesystem.InferredTypeIndicator;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
-import org.eclipse.xtext.xtype.XFunctionTypeRef;
-import org.eclipse.xtext.xtype.XtypeFactory;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.DefaultValue;
@@ -3256,118 +3250,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @return the result type, i.e. a copy of the source type.
 	 */
 	protected JvmTypeReference cloneWithTypeParametersAndProxies(JvmTypeReference type, JvmOperation forOperation) {
-		// TODO: Is similar function exist in Xtext?
-
-		if (type == null) {
-			return this._typeReferenceBuilder.typeRef(Object.class);
-		}
-
-		boolean cloneType = true;
-		JvmTypeReference typeCandidate = type;
-
-		final List<JvmTypeParameter> typeParameters = forOperation.getTypeParameters();
-		// Use also cloneType as a flag that indicates if the type was already found in type parameters.
-		if (!typeParameters.isEmpty() && cloneType) {
-			if (type instanceof JvmParameterizedTypeReference) {
-				// Try to clone the type parameters.
-				cloneType = false;
-				typeCandidate = cloneAndAssociate(type, typeParameters);
-			} else if (type instanceof XFunctionTypeRef) {
-				// Try to clone the function reference.
-				final XFunctionTypeRef functionRef = (XFunctionTypeRef) type;
-				cloneType = false;
-				final XFunctionTypeRef cloneReference = XtypeFactory.eINSTANCE.createXFunctionTypeRef();
-				for (final JvmTypeReference paramType : functionRef.getParamTypes()) {
-					cloneReference.getParamTypes().add(cloneAndAssociate(paramType, typeParameters));
-				}
-				cloneReference.setReturnType(cloneAndAssociate(functionRef.getReturnType(), typeParameters));
-				cloneReference.setInstanceContext(functionRef.isInstanceContext());
-				typeCandidate = cloneReference;
-			}
-		}
-
-		// Do the clone according to the type of the entity.
-		assert typeCandidate != null;
-		final JvmTypeReference returnType;
-		if (!cloneType) {
-			returnType = typeCandidate;
-		} else {
-			returnType = this.typeBuilder.cloneWithProxies(typeCandidate);
-		}
-		return returnType;
-	}
-
-	private JvmTypeReference cloneAndAssociate(
-			final JvmTypeReference type,
-			final List<JvmTypeParameter> typeParameters) {
-		final Map<String, JvmTypeParameter> typeParameterIdentifiers = new TreeMap<>();
-		for (final JvmTypeParameter typeParameter : typeParameters) {
-			typeParameterIdentifiers.put(typeParameter.getIdentifier(), typeParameter);
-		}
-
 		final boolean canAssociate = this.languageInfo.isLanguage(type.eResource());
-
-		EcoreUtil.Copier copier = new EcoreUtil.Copier(false) {
-			private static final long serialVersionUID = 698510355384773254L;
-
-			@SuppressWarnings("synthetic-access")
-			@Override
-			protected EObject createCopy(EObject eobject) {
-				final EObject result = super.createCopy(eobject);
-				if (result != null && eobject != null && !eobject.eIsProxy()) {
-					if (canAssociate) {
-						SARLJvmModelInferrer.this.associator.associate(eobject, result);
-					}
-				}
-				return result;
-			}
-
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public EObject copy(EObject eobject) {
-				final String id;
-				if (eobject instanceof JvmTypeReference) {
-					id = ((JvmTypeReference) eobject).getIdentifier();
-				} else if (eobject instanceof JvmIdentifiableElement) {
-					id = ((JvmIdentifiableElement) eobject).getIdentifier();
-				} else {
-					id = null;
-				}
-				if (id != null) {
-					final JvmTypeParameter param = typeParameterIdentifiers.get(id);
-					if (param != null) {
-						return SARLJvmModelInferrer.this.typeReferences.createTypeRef(param);
-					}
-				}
-				final EObject result = super.copy(eobject);
-				if (result instanceof JvmWildcardTypeReference) {
-					final JvmWildcardTypeReference wildcardType = (JvmWildcardTypeReference) result;
-					boolean upperBoundSeen = false;
-					for (final JvmTypeConstraint constraint : wildcardType.getConstraints()) {
-						if (constraint instanceof JvmUpperBound) {
-							upperBoundSeen = true;
-							break;
-						}
-					}
-					if (!upperBoundSeen) {
-						// no upper bound found - seems to be an invalid - assume object as upper bound
-						final JvmTypeReference object = SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(Object.class);
-						final JvmUpperBound upperBound = SARLJvmModelInferrer.this.typesFactory.createJvmUpperBound();
-						upperBound.setTypeReference(object);
-						wildcardType.getConstraints().add(0, upperBound);
-					}
-				}
-				return result;
-			}
-
-			@Override
-			protected void copyReference(EReference ereference, EObject eobject, EObject copyEObject) {
-				super.copyReference(ereference, eobject, copyEObject);
-			}
-		};
-		final JvmTypeReference copy = (JvmTypeReference) copier.copy(type);
-		copier.copyReferences();
-		return copy;
+		return Utils.cloneWithTypeParametersAndProxies(type, forOperation,
+				this._typeReferenceBuilder,
+				this.typeBuilder, this.typeReferences, this.typesFactory,
+				canAssociate ? this.associator : null);
 	}
 
 	/** Copy and clean the given documentation by removing any unecessary <code>@param</code>.
@@ -3467,31 +3354,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 *
 	 * @param fromOperation the operation from which the type parameters are copied.
 	 * @param toOperation the operation that will receives the new type parameters.
+	 * @see Utils#copyTypeParametersFromJvmOperation(JvmOperation, JvmOperation,
+	 *     org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder, JvmTypesBuilder, TypeReferences,
+	 *     TypesFactory, IJvmModelAssociator)
 	 */
 	protected void copyTypeParametersFromJvmOperation(JvmOperation fromOperation, JvmOperation toOperation) {
-		// Copy the generic types in two steps: first step is the name's copy.
-		for (final JvmTypeParameter typeParameter : fromOperation.getTypeParameters()) {
-			final JvmTypeParameter typeParameterCopy = this.typesFactory.createJvmTypeParameter();
-			typeParameterCopy.setName(typeParameter.getName());
-			toOperation.getTypeParameters().add(typeParameterCopy);
-		}
-		// Second step is the constraints' copy
-		for (int i = 0; i < fromOperation.getTypeParameters().size(); ++i) {
-			final JvmTypeParameter typeParameter = fromOperation.getTypeParameters().get(i);
-			final JvmTypeParameter typeParameterCopy = toOperation.getTypeParameters().get(i);
-			for (final JvmTypeConstraint constraint : typeParameter.getConstraints()) {
-				JvmTypeConstraint cst = null;
-				if (constraint instanceof JvmLowerBound) {
-					cst = this.typesFactory.createJvmLowerBound();
-				} else if (constraint instanceof JvmUpperBound) {
-					cst = this.typesFactory.createJvmUpperBound();
-				}
-				if (cst != null) {
-					typeParameterCopy.getConstraints().add(cst);
-					cst.setTypeReference(cloneWithTypeParametersAndProxies(constraint.getTypeReference(), toOperation));
-				}
-			}
-		}
+		Utils.copyTypeParametersFromJvmOperation(fromOperation, toOperation,
+				this._typeReferenceBuilder, this.typeBuilder, this.typeReferences, this.typesFactory, this.associator);
 	}
 
 	/** Copy the JVM operations from the source to the destination.
