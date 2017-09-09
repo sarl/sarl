@@ -2172,8 +2172,8 @@ Executing the registered tasks must be supported by a specific function, named `
 This function determines the current time (`currentTime`) in the tinyMAS platform.
 Then, it retrieves the `list` of the tasks to start at the current time.
 
-For each task in the `list`, the function tests if the task was cancelled or not.
-If the task was not cancelled, the function retrieves the task's guard (the condition
+For each task in the `list`, the function tests if the task was canceled or not.
+If the task was not canceled, the function retrieves the task's guard (the condition
 of execution) and evaluates it.
 
 If the task's guard is evaluated to <code>true</code>, the function executes

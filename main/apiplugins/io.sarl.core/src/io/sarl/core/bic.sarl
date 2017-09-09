@@ -416,7 +416,7 @@ capacity Schedules {
 	 *
 	 * <p>If this function is invoked from a {@code Behavior} and there is no provided task,
 	 * the created task will be associated to the behavior instance. It means that the task will
-	 * be automatically cancelled when the behavior instance is unregistered from the the owning agent.
+	 * be automatically canceled when the behavior instance is unregistered from the the owning agent.
 	 *
 	 * @param task the task that will run the given closure. If <code>null</code>, a new task is created.
 	 * @param delay time in milliseconds to delay the procedure execution.
@@ -430,7 +430,7 @@ capacity Schedules {
 	 * If a task with the specified name already exists, this task is returned.
 	 *
 	 * <p>If this function is invoked from a {@code Behavior}, the created task will be associated
-	 * to the behavior instance. It means that the task will be automatically cancelled when the behavior
+	 * to the behavior instance. It means that the task will be automatically canceled when the behavior
 	 * instance is unregistered from the the owning agent.
 	 *
 	 * @param name the name of the task. If {@code null} or empty, a random name will be given to the task.
@@ -440,8 +440,8 @@ capacity Schedules {
 
 	/**
 	 * Attempts to cancel execution of this task.  This attempt will
-	 * fail if the task has already completed, has already been cancelled,
-	 * or could not be cancelled for some other reason. If successful,
+	 * fail if the task has already completed, has already been canceled,
+	 * or could not be canceled for some other reason. If successful,
 	 * and this task has not started when <code>cancel</code> is called,
 	 * this task should never run.  If the task has already started,
 	 * then the <code>mayInterruptIfRunning</code> parameter determines
@@ -452,7 +452,7 @@ capacity Schedules {
 	 * @param mayInterruptIfRunning <code>true</code> if the thread executing this
 	 *     task should be interrupted; otherwise, in-progress tasks are allowed
 	 *     to complete
-	 * @return <code>false</code> if the task could not be cancelled,
+	 * @return <code>false</code> if the task could not be canceled,
 	 *     typically because it has already completed normally;
 	 *     <code>true</code> otherwise
 	 */
@@ -496,7 +496,7 @@ capacity Schedules {
 	 *
 	 * <p>If this function is invoked from a {@code Behavior} and there is no provided task,
 	 * the created task will be associated to the behavior instance. It means that the task will
-	 * be automatically cancelled when the behavior instance is unregistered from the the owning agent.
+	 * be automatically canceled when the behavior instance is unregistered from the the owning agent.
 	 *
 	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
 	 * @param period the number of milliseconds between two launches of the given procedure.

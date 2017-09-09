@@ -718,7 +718,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		try {
 			getContainer().run(true, false, op);
 		} catch (InterruptedException e) {
-			// cancelled by user
+			// canceled by user
 			return 0;
 		} catch (InvocationTargetException e) {
 			final Throwable realException = e.getTargetException();
