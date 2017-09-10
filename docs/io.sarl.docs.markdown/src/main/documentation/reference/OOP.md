@@ -35,7 +35,7 @@ differences between the SARL, Java and Xtend languages regarding the supports of
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td></tr>
-<tr><td>Definition of dispatch functions</td>
+<tr><td>[Definition of dispatch functions](./general/FuncDecls.md#dispatch-function)</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td></tr>
@@ -1223,31 +1223,33 @@ Method calls are bound based on the static types of arguments.
 Sometimes this is not what you want. Especially in the context of extension methods
 you would like to have polymorphic behavior.
 
-The [:dispatchmodifier:] modifier permits defining a dispatch method.
+The [:dispatchmodifier:] modifier permits defining a [dispatch method](./general/FuncDecls.md#dispatch-function).
 For a set of visible dispatch methods in the current type hierarchy with the same name and
 the same number of arguments, the compiler infers a synthetic dispatcher method.
 This dispatcher uses the common super type of all declared arguments.
-The method name of the actual dispatch cases is prepended with an underscore and the
-visibility of these methods is reducedBy adding the extension keyword to a field, a local variable or a
-parameter declaration, its instance methods become extension methods. to protected if they have been
-defined as public methods.
-Client code always binds to the synthesized dispatcher method.
 
 		[:Success:]
 			package io.sarl.docs.reference.oop
 			class MyClass {
+				def println(o : Object) {
+				}
 			[:On]
-				def [:dispatchmodifier](dispatch) printType(x : Number) { 
+				[:dispatchmodifier](dispatch) def getType(x : Number) { 
 				  "it's a number" 
 				}
 				 
-				def dispatch printType(x : Integer) { 
+				[:dispatchmodifier!] def getType(x : Integer) { 
 				  "it's an int" 
 				}
 
+				[:dispatchmodifier!] def getType(x : String) { 
+				  "it's a string" 
+				}
+
 				def clientCode {
-					System.out.println(printType(4.5)) // Print "it's a number"
-					System.out.println(printType(4))   // Print "it's an int"
+					getType(4.5).println
+					getType(4).println
+					getType("a string").println
 				}
 			[:Off]
 			}
