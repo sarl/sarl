@@ -164,14 +164,12 @@ import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.EarlyExit;
-import io.sarl.lang.compilation.jvmmodel.SarlJvmModelAssociations;
-import io.sarl.lang.compilation.typesystem.IOperationHelper;
-import io.sarl.lang.compilation.typesystem.SARLExpressionHelper;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
@@ -189,12 +187,15 @@ import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.typesystem.IOperationHelper;
+import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
@@ -482,7 +483,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					Messages.SARLValidator_1,
 					this.grammarAccess.getFiresKeyword()),
 					action,
-					null);
+					SarlPackage.eINSTANCE.getSarlAction_FiredEvents());
 		}
 	}
 
@@ -1975,19 +1976,31 @@ public class SARLValidator extends AbstractSARLValidator {
 				}
 			}
 
+			final boolean isSkill = container instanceof SarlSkill;
 			int index = 0;
 			for (final JvmTypeReference capacity : uses.getCapacities()) {
-				final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacity.getIdentifier());
-				final String operationName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(fieldName);
-				final JvmOperation operation = importedFeatures.get(operationName);
-				if (operation != null && !isLocallyUsed(operation, container)) {
+				final LightweightTypeReference lreference = toLightweightTypeReference(capacity);
+				if (isSkill && lreference.isAssignableFrom(jvmContainer)) {
 					addIssue(MessageFormat.format(
-							Messages.SARLValidator_78,
+							Messages.SARLValidator_22,
 							capacity.getSimpleName()),
 							uses,
 							SARL_CAPACITY_USES__CAPACITIES,
 							index, UNUSED_AGENT_CAPACITY,
 							capacity.getSimpleName());
+				} else {
+					final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacity.getIdentifier());
+					final String operationName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(fieldName);
+					final JvmOperation operation = importedFeatures.get(operationName);
+					if (operation != null && !isLocallyUsed(operation, container)) {
+						addIssue(MessageFormat.format(
+								Messages.SARLValidator_78,
+								capacity.getSimpleName()),
+								uses,
+								SARL_CAPACITY_USES__CAPACITIES,
+								index, UNUSED_AGENT_CAPACITY,
+								capacity.getSimpleName());
+					}
 				}
 				++index;
 			}

@@ -295,8 +295,8 @@ provides the following functions for managing the execution cancellation of an a
 		[:End:]
 
 
-The first function will reply `false` if the task has already completed, has already been cancelled,
-or could not be cancelled for some other reason (a failure means replying false).
+The first function will reply `false` if the task has already completed, has already been canceled,
+or could not be canceled for some other reason (a failure means replying false).
 If successful, and this task has not started when [:cancel:] is called, this task should never
 run. If the task has already started, then the [:mayinterrupt:] parameter determines
 whether the thread executing this task should be interrupted in an attempt to stop the task.

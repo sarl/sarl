@@ -12,8 +12,8 @@ top-right context in the figure above.
 		[:Fact:]{typeof(io.sarl.core.[:externalcontextaccess!]).shouldHaveMethods(
 			"[:getcontext](getContext)(java.util.UUID) : io.sarl.lang.core.AgentContext",
 			"[:getallcontexts](getAllContexts) : io.sarl.lang.util.SynchronizedIterable",
-			"[:join](join)(java.util.UUID, java.util.UUID)",
-			"[:leave](leave)(java.util.UUID)",
+			"[:join](join)(java.util.UUID, java.util.UUID) : boolean",
+			"[:leave](leave)(java.util.UUID) : boolean",
 			"[:isinspace](isInSpace)(io.sarl.lang.core.Event, io.sarl.lang.core.Space) : boolean",
 			"isInSpace(io.sarl.lang.core.Event, io.sarl.lang.core.SpaceID) : boolean",
 			"isInSpace(io.sarl.lang.core.Event, java.util.UUID) : boolean",

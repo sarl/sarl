@@ -35,7 +35,7 @@ import io.sarl.lang.util.ClearableReference;
  * @mavenartifactid $ArtifactId$
  * @since 0.4
  */
-abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
+public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 
 	/**
 	 * Returns a String representation of the Event E1 attributes only.

@@ -27,7 +27,7 @@ import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
-import io.sarl.lang.compilation.compiler.batch.ICompilatedResourceReceiver;
+import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
 
 /** Represents an code executor.
  *

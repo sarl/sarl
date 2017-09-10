@@ -27,46 +27,54 @@ differences between the SARL, Java and Xtend languages regarding the supports of
 <table><thead>
 <tr><th></th><th>SARL</th><th>Java</th><th>Xtend</th></tr>
 </thead><tbody>
-<tr><td>Object-oriented enumeration</td>
-			<td>No, only constants could be defined</td>
-			<td>Yes, constants and functions could be defined</td>
-			<td>No, only constants could be defined</td></tr>
-<tr><td>Definition of dispatching functions</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>Yes</td></tr>
-<tr><td>Extension methods</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>Yes</td></tr>
+<tr><td>[Object-oriented enumeration](#Enumeration)</td>
+			<td style="background: orange; color: white;">No, only constants could be defined</td>
+			<td style="background: green; color: white;">Yes, constants and functions could be defined</td>
+			<td style="background: orange; color: white;">No, only constants could be defined</td></tr>
+<tr><td>[Definition of static constructors](#static-constructor-definition)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td></tr>
+<tr><td>[Definition of dispatch functions](./general/FuncDecls.md#dispatch-function)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>[Extension methods](./general/Extension.md)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>[Definition of variadic functions](./general/FuncDecls.md#variadic-function)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>[Definition of default values for the formal parameters](./general/FuncDecls.md#default-value-for-the-formal-parameters)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td></tr>
+<tr><td>[Definition of lambda expressions](./general/Lambda.md)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>[Inference of types](./general/VarDecls.md#typing)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>[Operator overloading](./general/Operators.md##operator-overloading)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes</td></tr>
 <tr><td>Automatic generation of equals() and hashCode()</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>No</td></tr>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td></tr>
 <tr><td>Automatic generation of clone() when cloneable type</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>No</td></tr>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td></tr>
 <tr><td>Automatic generation of serialVersionUID when serializable type</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>No</td></tr>
-<tr><td>Definition of default values for the formal parameters</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>No</td></tr>
-<tr><td>Definition of lambda expressions</td>
-			<td>Yes</td>
-			<td>Yes</td>
-			<td>Yes</td></tr>
-<tr><td>Inference of types</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>Yes</td></tr>
-<tr><td>Operator overriding</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>Yes</td></tr>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td></tr>
 </tbody></table>
 
 
@@ -211,6 +219,25 @@ If no constructor is defined in the type and a super-type is declared, implicit 
 Implicit constructors has the same prototypes as the constructors of the super type.
 Details on implicit constructors are given in the reference documentation related to the
 [synthetic functions](./general/SyntheticFunctions.md).
+
+
+### Field Definition
+
+A field could be declared into a class following the [variable declaration syntax](./general/VarDecls.md).
+
+A field may be declared with the [:staticmodifier:] modifier. In this case, it becomes a static field, or class variable.
+A static field is a variable defined in a class of which a single copy exists, regardless of how many instances of the class exist.
+A static field is not an instance variable. It is a special type of class attribute (or class property, field, or data member).
+
+
+### Method Definition
+
+A method could be declared into a class following the [function declaration syntax](./general/FuncDecls.md).
+The overriding of an inhertited method is explained in section ["Method Overriding"](#method-overriding).
+
+A method may be declared with the [:staticmodifier:] modifier. In this case, it becomes a static method, or class method.
+A static method is a function that is not associated to a specific instance of the class.
+
 
 
 ### Modifiers
@@ -1196,31 +1223,33 @@ Method calls are bound based on the static types of arguments.
 Sometimes this is not what you want. Especially in the context of extension methods
 you would like to have polymorphic behavior.
 
-The [:dispatchmodifier:] modifier permits defining a dispatch method.
+The [:dispatchmodifier:] modifier permits defining a [dispatch method](./general/FuncDecls.md#dispatch-function).
 For a set of visible dispatch methods in the current type hierarchy with the same name and
 the same number of arguments, the compiler infers a synthetic dispatcher method.
 This dispatcher uses the common super type of all declared arguments.
-The method name of the actual dispatch cases is prepended with an underscore and the
-visibility of these methods is reducedBy adding the extension keyword to a field, a local variable or a
-parameter declaration, its instance methods become extension methods. to protected if they have been
-defined as public methods.
-Client code always binds to the synthesized dispatcher method.
 
 		[:Success:]
 			package io.sarl.docs.reference.oop
 			class MyClass {
+				def println(o : Object) {
+				}
 			[:On]
-				def [:dispatchmodifier](dispatch) printType(x : Number) { 
+				[:dispatchmodifier](dispatch) def getType(x : Number) { 
 				  "it's a number" 
 				}
 				 
-				def dispatch printType(x : Integer) { 
+				[:dispatchmodifier!] def getType(x : Integer) { 
 				  "it's an int" 
 				}
 
+				[:dispatchmodifier!] def getType(x : String) { 
+				  "it's a string" 
+				}
+
 				def clientCode {
-					System.out.println(printType(4.5)) // Print "it's a number"
-					System.out.println(printType(4))   // Print "it's an int"
+					getType(4.5).println
+					getType(4).println
+					getType("a string").println
 				}
 			[:Off]
 			}

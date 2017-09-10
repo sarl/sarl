@@ -75,7 +75,7 @@ capacity ExternalContextAccess {
 	 * The parameter <var>expectedDefaultSpaceID</var> is only used to check if
 	 * the caller of this function knows the ID of the default space in the context to
 	 * be involved in. Note that the context must already exists, and the default space
-	 * inside this context must have the sams ID as <var>expectedDefaultSpaceID</var>.
+	 * inside this context must have the same ID as <var>expectedDefaultSpaceID</var>.
 	 * If the given <var>expectedDefaultSpaceID</var> does not match the ID of the
 	 * default space in the context <var>contextID</var>, then the access to the context
 	 * is forbidden.
@@ -83,21 +83,35 @@ capacity ExternalContextAccess {
 	 * <p>This actions registers the agent in the default Space of the context with the
 	 * ID <var>contextID</var>.
 	 *
+	 * <p>This function replies {@code false} is the given identifiers corresponds to a context in which
+	 * the agent is already member.
+	 *
 	 * @param contextID the identifier of the context to join.
 	 * @param expectedDefaultSpaceID the known identifier of the default space in the agent context with the given identifier.
+	 * @return {@code true} if the context was joined. {@code false} if the given context id does not corresponds to a known context,
+	 *     or the given space identifier is not the one of the context's default space, or the agent is already member
+	 *     of the context with the given identifier (default context, or any other external context).
 	 * @fires ContextJoined in its inner Context default space (Behaviors#wake).
 	 * @fires MemberJoined in its parent Context default Space 
 	 */
-	def join(contextID : UUID, expectedDefaultSpaceID : UUID) fires ContextJoined, MemberJoined
+	def join(contextID : UUID, expectedDefaultSpaceID : UUID) : boolean fires ContextJoined, MemberJoined
 
 	/**
-	 * Leaves the parent's context. 
+	 * Leaves the parent's context.
+	 *
+	 * <p>Because an agent must be always into a context, this function fails (and replies {@code false}) when
+	 * the context to be leaved is the current default context of the agent, and there is no other context or
+	 * more than 1 other context that could be elected as the new default context.
 	 *
 	 * @param contextID the identifier of the context to leave.
+	 * @return {@code true} if the agent has leaved the context. {@code false} if the agent has not leaved
+	 *     the context: identifier is not related to a joined context, or the identifier if related to
+	 *     the default context, and their is not a unique joined external context that is different than
+	 *     the default context.
 	 * @fires ContextLeft in its inner Context default space (Behaviors#wake).
 	 * @fires MemberLeft in its parent Context default Space 
 	 */
-	def leave(contextID : UUID) fires ContextLeft, MemberLeft
+	def leave(contextID : UUID) : boolean fires ContextLeft, MemberLeft
 
 	/** Replies if the given event was emitted in the given space.
 	 *
@@ -414,7 +428,7 @@ capacity Schedules {
 	 *
 	 * <p>If this function is invoked from a {@code Behavior} and there is no provided task,
 	 * the created task will be associated to the behavior instance. It means that the task will
-	 * be automatically cancelled when the behavior instance is unregistered from the the owning agent.
+	 * be automatically canceled when the behavior instance is unregistered from the the owning agent.
 	 *
 	 * @param task the task that will run the given closure. If <code>null</code>, a new task is created.
 	 * @param delay time in milliseconds to delay the procedure execution.
@@ -428,7 +442,7 @@ capacity Schedules {
 	 * If a task with the specified name already exists, this task is returned.
 	 *
 	 * <p>If this function is invoked from a {@code Behavior}, the created task will be associated
-	 * to the behavior instance. It means that the task will be automatically cancelled when the behavior
+	 * to the behavior instance. It means that the task will be automatically canceled when the behavior
 	 * instance is unregistered from the the owning agent.
 	 *
 	 * @param name the name of the task. If {@code null} or empty, a random name will be given to the task.
@@ -438,8 +452,8 @@ capacity Schedules {
 
 	/**
 	 * Attempts to cancel execution of this task.  This attempt will
-	 * fail if the task has already completed, has already been cancelled,
-	 * or could not be cancelled for some other reason. If successful,
+	 * fail if the task has already completed, has already been canceled,
+	 * or could not be canceled for some other reason. If successful,
 	 * and this task has not started when <code>cancel</code> is called,
 	 * this task should never run.  If the task has already started,
 	 * then the <code>mayInterruptIfRunning</code> parameter determines
@@ -450,7 +464,7 @@ capacity Schedules {
 	 * @param mayInterruptIfRunning <code>true</code> if the thread executing this
 	 *     task should be interrupted; otherwise, in-progress tasks are allowed
 	 *     to complete
-	 * @return <code>false</code> if the task could not be cancelled,
+	 * @return <code>false</code> if the task could not be canceled,
 	 *     typically because it has already completed normally;
 	 *     <code>true</code> otherwise
 	 */
@@ -494,7 +508,7 @@ capacity Schedules {
 	 *
 	 * <p>If this function is invoked from a {@code Behavior} and there is no provided task,
 	 * the created task will be associated to the behavior instance. It means that the task will
-	 * be automatically cancelled when the behavior instance is unregistered from the the owning agent.
+	 * be automatically canceled when the behavior instance is unregistered from the the owning agent.
 	 *
 	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
 	 * @param period the number of milliseconds between two launches of the given procedure.

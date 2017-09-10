@@ -32,8 +32,8 @@ import com.google.inject.Injector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import io.sarl.lang.ui.compilation.generator.extra.ProjectAdapter;
-import io.sarl.lang.ui.compilation.generator.extra.preferences.ExtraLanguagePreferenceAccess;
+import io.sarl.lang.ui.compiler.extra.ProjectAdapter;
+import io.sarl.lang.ui.compiler.extra.preferences.ExtraLanguagePreferenceAccess;
 import io.sarl.lang.validation.extra.AbstractExtraLanguageValidator;
 import io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider;
 

@@ -104,7 +104,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
 
 import io.sarl.lang.SARLVersion;
-import io.sarl.lang.compilation.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
@@ -316,7 +316,7 @@ public abstract class AbstractSarlTest {
 					return true;
 				}
 			}
-			return true;
+			return false;
 		}
 
 		@Override

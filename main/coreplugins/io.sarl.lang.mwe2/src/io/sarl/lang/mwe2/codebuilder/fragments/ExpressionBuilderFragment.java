@@ -222,7 +222,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\tprivate "); //$NON-NLS-1$
 					it.append(Procedures.Procedure1.class);
-					it.append("<"); //$NON-NLS-1$
+					it.append("<? super "); //$NON-NLS-1$
 					it.append(XExpression.class);
 					it.append("> setter;"); //$NON-NLS-1$
 					it.newLineIfNotEmpty();
@@ -327,7 +327,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append(EObject.class);
 				it.append(" context, "); //$NON-NLS-1$
 				it.append(Procedures.Procedure1.class);
-				it.append("<"); //$NON-NLS-1$
+				it.append("<? super "); //$NON-NLS-1$
 				it.append(XExpression.class);
 				it.append("> setter, "); //$NON-NLS-1$
 				it.append(IJvmTypeProvider.class);

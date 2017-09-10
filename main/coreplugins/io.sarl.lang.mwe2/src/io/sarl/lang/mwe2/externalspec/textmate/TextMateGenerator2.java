@@ -493,7 +493,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 * @param proc the initializer.
 	 * @return the definition.
 	 */
-	protected Map<String, ?> pattern(Procedure1<Pattern> proc) {
+	protected Map<String, ?> pattern(Procedure1<? super Pattern> proc) {
 		final Pattern patternDefinition = new Pattern();
 		proc.apply(patternDefinition);
 		return patternDefinition.getDefinition();
@@ -568,7 +568,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 		 * @param proc the initializer.
 		 * @see TextMateGenerator2#pattern(Procedure1)
 		 */
-		public void pattern(Procedure1<Pattern> proc) {
+		public void pattern(Procedure1<? super Pattern> proc) {
 			final Map<String, ?> pattern = TextMateGenerator2.this.pattern(proc);
 			this.patterns.add(pattern);
 		}

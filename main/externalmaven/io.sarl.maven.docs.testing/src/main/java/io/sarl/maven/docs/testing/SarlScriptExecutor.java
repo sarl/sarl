@@ -43,8 +43,8 @@ import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.ComparisonFailure;
 
-import io.sarl.lang.compilation.compiler.batch.ICompilatedResourceReceiver;
-import io.sarl.lang.compilation.compiler.batch.SarlBatchCompiler;
+import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
+import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlScript;

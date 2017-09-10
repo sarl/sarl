@@ -146,20 +146,19 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	}
 
 	@Override
-	public void join(UUID futureContext, UUID futureContextDefaultSpaceID) {
+	public boolean join(UUID futureContext, UUID futureContextDefaultSpaceID) {
 		assert futureContext != null;
 		assert futureContextDefaultSpaceID != null;
 
 		if (this.contexts.contains(futureContext)) {
-			return;
+			return false;
 		}
 
 		final AgentContext ac = this.contextRepository.getContext(futureContext);
 		assert ac != null : "Unknown Context"; //$NON-NLS-1$
 
 		if (!futureContextDefaultSpaceID.equals(ac.getDefaultSpace().getSpaceID().getID())) {
-			throw new IllegalArgumentException(MessageFormat.format(Messages.ExternalContextAccessSkill_1,
-					futureContextDefaultSpaceID));
+			return false;
 		}
 
 		this.contexts.add(futureContext);
@@ -168,6 +167,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 
 		fireContextJoined(futureContext, futureContextDefaultSpaceID);
 		fireMemberJoined(ac);
+		return true;
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	}
 
 	@Override
-	public void leave(UUID contextID) {
+	public boolean leave(UUID contextID) {
 		assert contextID != null;
 
 		final AgentContext ac = this.contextRepository.getContext(contextID);
@@ -205,7 +205,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 		assert ac != null : "Unknown Context"; //$NON-NLS-1$
 
 		if (!this.contexts.contains(contextID)) {
-			return;
+			return false;
 		}
 
 		// To send this event the agent must still be inside the context and its default space
@@ -214,7 +214,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 
 		((OpenEventSpace) ac.getDefaultSpace()).unregister(getInternalEventBusCapacitySkill().asEventListener());
 
-		this.contexts.remove(contextID);
+		return this.contexts.remove(contextID);
 	}
 
 	/**

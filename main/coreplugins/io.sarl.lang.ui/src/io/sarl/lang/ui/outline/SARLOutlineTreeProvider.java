@@ -35,6 +35,7 @@ import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmFeature;
+import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
@@ -48,7 +49,7 @@ import org.eclipse.xtext.xbase.annotations.ui.outline.XbaseWithAnnotationsOutlin
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
-import io.sarl.lang.compilation.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacityUses;
@@ -154,15 +155,19 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 			}
 		}
 		if (!hasConstructor && modelElement instanceof XtendClass) {
-			final JvmTypeReference reference = ((XtendClass) modelElement).getExtends();
+			createInheritedConstructors(elementNode, (XtendClass) modelElement);
+		}
+	}
+
+	private void createInheritedConstructors(EStructuralFeatureNode elementNode, XtendClass modelElement) {
+		final JvmTypeReference extend = modelElement.getExtends();
+		if (extend != null) {
+			final LightweightTypeReference reference = Utils.toLightweightTypeReference(extend, this.services);
 			if (reference != null) {
-				final LightweightTypeReference lreference = Utils.toLightweightTypeReference(reference, this.services);
-				final JvmType type = lreference.getType();
+				final JvmType type = reference.getType();
 				if (type instanceof JvmDeclaredType) {
 					for (final JvmConstructor constructor : ((JvmDeclaredType) type).getDeclaredConstructors()) {
-						if (!constructor.getParameters().isEmpty()) {
-							createNode(elementNode, constructor);
-						}
+						createNode(elementNode, constructor);
 					}
 				}
 			}
@@ -226,6 +231,16 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean _isLeaf(XtendMember modelElement) {
+		return true;
+	}
+
+	/** Replies if the JVM elements are leafs in the outline.
+	 *
+	 * @param modelElement - the model element.
+	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean _isLeaf(JvmIdentifiableElement modelElement) {
 		return true;
 	}
 

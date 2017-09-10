@@ -108,14 +108,14 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 
 	private final List<String> mimeTypes = new ArrayList<>();
 
-	private Function2<File, String, File> outputDirectoryFilter;
+	private Function2<? super File, ? super String, ? extends File> outputDirectoryFilter;
 
 	/** Replies the default output directory filter.
 	 *
 	 * @return the filter, or {@code null}.
 	 * @since 0.6
 	 */
-	public Function2<File, String, File> getOutputDirectoryFilter() {
+	public Function2<? super File, ? super String, ? extends File> getOutputDirectoryFilter() {
 		return this.outputDirectoryFilter;
 	}
 
@@ -124,7 +124,7 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 * @param filter the filter, or {@code null} for avoiding default filtering.
 	 * @since 0.6
 	 */
-	public void setOutputDirectoryFilter(Function2<File, String, File> filter) {
+	public void setOutputDirectoryFilter(Function2<? super File, ? super String, ? extends File> filter) {
 		this.outputDirectoryFilter = filter;
 	}
 
@@ -616,7 +616,8 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 * @param content the content of the style file.
 	 * @param outputDirectoryFilter the output directory.
 	 */
-	protected void writeFile(String basename, T content, Function2<File, String, File> outputDirectoryFilter) {
+	protected void writeFile(String basename, T content,
+			Function2<? super File, ? super String, ? extends File> outputDirectoryFilter) {
 		// Create the file.
 		// Encode
 		final byte[] bytes = content.toString().getBytes(Charset.forName(getCodeConfig().getEncoding()));
@@ -640,7 +641,8 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 * @param outputDirectoryFilter the output directory.
 	 * @since 0.6
 	 */
-	protected void writeFile(String basename, byte[] content, Function2<File, String, File> outputDirectoryFilter) {
+	protected void writeFile(String basename, byte[] content,
+			Function2<? super File, ? super String, ? extends File> outputDirectoryFilter) {
 		for (final String output : getOutputs()) {
 			File directory = new File(output).getAbsoluteFile();
 			if (outputDirectoryFilter != null) {

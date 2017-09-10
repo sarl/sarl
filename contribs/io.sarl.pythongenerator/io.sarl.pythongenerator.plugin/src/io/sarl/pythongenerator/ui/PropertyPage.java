@@ -23,7 +23,7 @@ package io.sarl.pythongenerator.ui;
 
 import com.google.inject.Inject;
 
-import io.sarl.lang.ui.compilation.generator.extra.properties.AbstractExtraLanguagePropertyPage;
+import io.sarl.lang.ui.compiler.extra.properties.AbstractExtraLanguagePropertyPage;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 
 /** Property page for configuring the Python generator.

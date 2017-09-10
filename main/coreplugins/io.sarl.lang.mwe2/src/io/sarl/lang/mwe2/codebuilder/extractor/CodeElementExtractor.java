@@ -227,9 +227,10 @@ public interface CodeElementExtractor {
 	<T> T visitMemberElements(
 			ElementDescription element,
 			EObject grammarContainer,
-			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> constructorCallback,
-			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> namedMemberCallback,
-			Function4<CodeElementExtractor, EObject, EObject, EClassifier, T> typeReferencingMemberCallback);
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> constructorCallback,
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> namedMemberCallback,
+			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject,
+					? super EClassifier, ? extends T> typeReferencingMemberCallback);
 
 	/** Construct an element description.
 	 *

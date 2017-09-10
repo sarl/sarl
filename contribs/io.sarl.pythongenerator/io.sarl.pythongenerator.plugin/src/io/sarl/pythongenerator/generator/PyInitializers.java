@@ -36,7 +36,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.xtext.xbase.lib.Pair;
 
-import io.sarl.lang.compilation.generator.extra.IExtraLanguageConversionInitializer;
+import io.sarl.lang.compiler.extra.IExtraLanguageConversionInitializer;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 
 /** Initializers for Python 3.

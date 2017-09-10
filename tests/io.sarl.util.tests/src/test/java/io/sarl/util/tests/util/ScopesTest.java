@@ -24,12 +24,20 @@ package io.sarl.util.tests.util;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import static org.mockito.Mockito.*;
+
+import java.util.UUID;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Scope;
 import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.ManualMocking;
+import io.sarl.tests.api.Nullable;
 import io.sarl.util.Scopes;
 
 /**
@@ -39,7 +47,14 @@ import io.sarl.util.Scopes;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@ManualMocking
 public final class ScopesTest extends AbstractSarlTest {
+
+	@Nullable
+	private UUID id1;
+
+	@Nullable
+	private UUID id2;
 
 	@Mock
 	private Address base1;
@@ -53,6 +68,17 @@ public final class ScopesTest extends AbstractSarlTest {
 	@Mock
 	private Address base4;
 
+	@Before
+	public void setUp() {
+		this.id1 = UUID.randomUUID();
+		this.id2 = UUID.randomUUID();
+		MockitoAnnotations.initMocks(this);
+		when(this.base1.getUUID()).thenReturn(this.id1);
+		when(this.base2.getUUID()).thenReturn(this.id2);
+		when(this.base3.getUUID()).thenReturn(UUID.randomUUID());
+		when(this.base4.getUUID()).thenReturn(UUID.randomUUID());
+	}
+	
 	@Test
 	public void allParticipants() {
 		Scope<Address> scope = Scopes.allParticipants();
@@ -74,6 +100,24 @@ public final class ScopesTest extends AbstractSarlTest {
 	@Test
 	public void notAddresses() {
 		Scope<Address> scope = Scopes.notAddresses(this.base1, this.base2);
+		assertFalse(scope.matches(this.base1));
+		assertFalse(scope.matches(this.base2));
+		assertTrue(scope.matches(this.base3));
+		assertTrue(scope.matches(this.base4));
+	}
+
+	@Test
+	public void identifiers() {
+		Scope<Address> scope = Scopes.identifiers(this.id1, this.id2);
+		assertTrue(scope.matches(this.base1));
+		assertTrue(scope.matches(this.base2));
+		assertFalse(scope.matches(this.base3));
+		assertFalse(scope.matches(this.base4));
+	}
+
+	@Test
+	public void notIdentifiers() {
+		Scope<Address> scope = Scopes.notIdentifiers(this.id1, this.id2);
 		assertFalse(scope.matches(this.base1));
 		assertFalse(scope.matches(this.base2));
 		assertTrue(scope.matches(this.base3));
