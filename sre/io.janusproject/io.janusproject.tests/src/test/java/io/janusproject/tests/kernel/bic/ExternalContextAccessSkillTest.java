@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,6 +60,7 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpaceSpecification;
+import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Skill.UninstallationStage;
 import io.sarl.lang.core.Space;
@@ -69,6 +69,7 @@ import io.sarl.lang.util.ClearableReference;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.OpenEventSpace;
+import io.sarl.util.Scopes;
 
 /**
  * @author $Author: sgalland$
@@ -425,6 +426,43 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		when(event.getSource()).thenReturn(address);
 		//
 		assertFalse(this.skill.isInSpace(event, id));
+	}
+
+	@Test
+	public void emitEventScope() throws Exception {
+		final UUID contextId = UUID.randomUUID();
+		OpenEventSpace space = mock(OpenEventSpace.class);
+		when(space.getSpaceID()).thenReturn(new SpaceID(contextId, UUID.randomUUID(), EventSpaceSpecification.class));
+		
+		this.reflect.invoke(this.skill, "install");
+		Event event = mock(Event.class);
+		Scope<Address> scope = Scopes.allParticipants();
+		this.skill.emit(space, event, scope);
+		ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
+		ArgumentCaptor<Scope> argument3 = ArgumentCaptor.forClass(Scope.class);
+		verify(space, new Times(1)).emit(argument1.capture(), argument2.capture(), argument3.capture());
+		assertEquals(this.agent.getID(), argument1.getValue());
+		assertSame(event, argument2.getValue());
+		assertSame(scope, argument3.getValue());
+	}
+
+	@Test
+	public void emitEvent() throws Exception {
+		final UUID contextId = UUID.randomUUID();
+		OpenEventSpace space = mock(OpenEventSpace.class);
+		when(space.getSpaceID()).thenReturn(new SpaceID(contextId, UUID.randomUUID(), EventSpaceSpecification.class));
+
+		this.reflect.invoke(this.skill, "install");
+		Event event = mock(Event.class);
+		this.skill.emit(space, event);
+		ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
+		ArgumentCaptor<Scope> argument3 = ArgumentCaptor.forClass(Scope.class);
+		verify(space, new Times(1)).emit(argument1.capture(), argument2.capture(), argument3.capture());
+		assertEquals(this.agent.getID(), argument1.getValue());
+		assertSame(event, argument2.getValue());
+		assertNull(argument3.getValue());
 	}
 
 	public static class TestAgent extends Agent {
