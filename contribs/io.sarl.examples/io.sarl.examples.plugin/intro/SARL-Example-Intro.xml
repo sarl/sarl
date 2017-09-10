@@ -68,7 +68,29 @@
 			</link>
 		</group>
 
-		<html src="./tutorials_intro.html"/>
+		<html src="./javafx_intro.html"/>
+
+		<group style-id="quick-links" id="quick-links">
+			<link style-id="content-link" label="Fireworks in SARL"
+				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.fireworks%29"
+				id="JavaFX-Fireworks-Sample">
+				<text>
+					A JavaFX application showing fireworks on the screen.
+				</text>
+			</link>
+		</group>
+
+ 		<group style-id="quick-links" id="quick-links">
+ 			<link style-id="content-link" label="Fireworks in SARL"
+ 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.sierpinskyfractals%29"
+ 				id="JavaFX-SierPinskyFracatals-Sample">
+ 				<text>
+ 					A JavaFX application showing Sierpinky's fractals on the screen.
+ 				</text>
+ 			</link>
+ 		</group>
+ 
+ 		<html src="./tutorials_intro.html"/>
 
 		<group style-id="quick-links" id="quick-links">
 		    <link style-id="content-link" label="Auction between holonic members"

@@ -340,6 +340,75 @@ except that the variadic parameter cannot have a default value.
 		[:End:]
 
 
+## Dispatch Function
+
+Generally, method resolution and binding is done statically at compile time.
+Method calls are bound based on the static types of arguments.
+
+Sometimes this is not what you want. Especially in the context of extension methods
+you would like to have polymorphic behavior.
+
+The [:dispatchmodifier:] modifier permits defining a dispatch method.
+
+		[:Success:]
+			package io.sarl.docs.reference.oop
+			class MyClass {
+				def println(o : Object) {
+				}
+			[:On]
+				[:dispatchmodifier!] def getType(x : Integer) { 
+				  "[:intmsg](it's an int)" 
+				}
+
+				[:dispatchmodifier!] def getType(x : String) { 
+				  "[:strmsg](it's a string)" 
+				}
+
+				[:dispatchmodifier](dispatch) def [:gettypefct](getType)(x : Number) { 
+				  "[:numbermsg](it's a number)" 
+				}
+				 
+				def clientCode {
+					getType(4.5).println
+					getType(4).println
+					getType("a string").println
+				}
+			[:Off]
+			}
+		[:End:]
+
+
+For a set of visible dispatch methods in the current type hierarchy with the same name and
+the same number of arguments, the compiler infers a synthetic dispatcher method.
+From the example above, the SARL compiler infers the following function, named the synthesized dispatcher.
+
+		[:Success:]
+			package io.sarl.docs.reference.oop
+			class MyClass {
+			[:On]
+				def printType(x : Object) { 
+				  if (x instanceof Integer) {
+				    printType(x as Integer)
+				  } else if (x instanceof Number) {
+				    printType(x as Number)
+				  } else if (x instanceof String) {
+				    printType(x as String)
+				  }
+				}
+			[:Off]
+			}
+		[:End:]
+
+This dispatcher uses the common super type of all declared arguments.
+Client code always binds to the synthesized dispatcher method.
+
+In the example, the calls to the [:gettypefct:] functions produces the output:
+
+	[:numbermsg!]
+	[:intmsg!]
+	[:strmsg!]
+
+
 
 [:Include:](../generalsyntaxref.inc)
 

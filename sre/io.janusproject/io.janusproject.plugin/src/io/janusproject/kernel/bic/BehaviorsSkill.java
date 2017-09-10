@@ -160,8 +160,7 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 
 		if ((!(context instanceof InnerContextSkill)) || ((InnerContextSkill) context).hasInnerContext()) {
 			final EventSpace defSpace = context.getInnerContext().getDefaultSpace();
-			evt.setSource(defSpace.getAddress(getOwner().getID()));
-			defSpace.emit(evt, scope);
+			defSpace.emit(getID(), evt, scope);
 		} else {
 			// Do not call getInnerContext(), which is creating the inner context automatically.
 			// In place, try to send the event inside the agent only (and its behaviors).

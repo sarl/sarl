@@ -180,6 +180,7 @@ Please read the link:./CONTRIBUTING.adoc[guidelines for contributors].
 
 == 6. Authors and Contributors
 
+* image:https://avatars.githubusercontent.com/klmp200[width="50px",link=https://github.com/klmp200] Antoine Bartuccio, fireworks and Sierpinski fractal examples.
 * image:https://avatars.githubusercontent.com/m-ezzat[width="50px",link=https://github.com/m-ezzat] Mohamed Ezzat, code cleaning and optimization.
 * image:https://avatars.githubusercontent.com/jgfoster[width="50px",link=https://github.com/jgfoster] James Foster, documentation contributor.
 * image:https://avatars.githubusercontent.com/gallandarakhneorg[width="50px",link=https://github.com/gallandarakhneorg] link:http://www.multiagent.fr/People:Galland_stephane[Stéphane GALLAND], founder, original and active author.

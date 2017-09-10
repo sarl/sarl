@@ -253,10 +253,12 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		OpenEventSpace defSpace = this.spaces.get(this.spaceId);
 		assertNotNull(defSpace);
-		ArgumentCaptor<Event> argument3 = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture());
-		assertThat(argument3.getValue(), new IsInstanceOf(SpaceCreated.class));
-		assertEquals(id, ((SpaceCreated) argument3.getValue()).spaceID.getID());
+		ArgumentCaptor<UUID> argument3 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture(), argument4.capture());
+		assertNull(argument3.getValue());
+		assertThat(argument4.getValue(), new IsInstanceOf(SpaceCreated.class));
+		assertEquals(id, ((SpaceCreated) argument4.getValue()).spaceID.getID());
 	}
 
 	@Test
@@ -288,10 +290,12 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		OpenEventSpace defSpace = this.spaces.get(this.spaceId);
 		assertNotNull(defSpace);
-		ArgumentCaptor<Event> argument3 = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture());
-		assertThat(argument3.getValue(), new IsInstanceOf(SpaceCreated.class));
-		assertEquals(id, ((SpaceCreated) argument3.getValue()).spaceID.getID());
+		ArgumentCaptor<UUID> argument3 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture(), argument4.capture());
+		assertNull(argument3.getValue());
+		assertThat(argument4.getValue(), new IsInstanceOf(SpaceCreated.class));
+		assertEquals(id, ((SpaceCreated) argument4.getValue()).spaceID.getID());
 		//
 		OpenEventSpace space2 = this.context.getOrCreateSpaceWithSpec(OpenEventSpaceSpecification.class, id);
 		assertSame(space, space2);
@@ -326,10 +330,12 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		OpenEventSpace defSpace = this.spaces.get(this.spaceId);
 		assertNotNull(defSpace);
-		ArgumentCaptor<Event> argument3 = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture());
-		assertThat(argument3.getValue(), new IsInstanceOf(SpaceCreated.class));
-		assertEquals(id, ((SpaceCreated) argument3.getValue()).spaceID.getID());
+		ArgumentCaptor<UUID> argument3 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture(), argument4.capture());
+		assertNull(argument3.getValue());
+		assertThat(argument4.getValue(), new IsInstanceOf(SpaceCreated.class));
+		assertEquals(id, ((SpaceCreated) argument4.getValue()).spaceID.getID());
 		//
 		OpenEventSpace space2 = this.context.getOrCreateSpaceWithID(id, OpenEventSpaceSpecification.class);
 		assertSame(space, space2);

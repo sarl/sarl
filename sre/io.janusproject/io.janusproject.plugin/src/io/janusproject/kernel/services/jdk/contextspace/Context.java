@@ -207,7 +207,10 @@ public class Context implements AgentContext {
 				final EventSpace defSpace = this.context.getDefaultSpace();
 				// defSpace may be null if the created space is the default space.
 				if (defSpace != null) {
-					defSpace.emit(new SpaceCreated(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
+					defSpace.emit(
+							// No need to give an event source because it is explicitly set below.
+							null,
+							new SpaceCreated(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
 				}
 			}
 		}
@@ -220,7 +223,10 @@ public class Context implements AgentContext {
 				final EventSpace defSpace = this.context.getDefaultSpace();
 				// defSpace may be null if the created space is the default space.
 				if (defSpace != null) {
-					defSpace.emit(new SpaceDestroyed(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
+					defSpace.emit(
+							// No need to give an event source because it is explicitly set below.
+							null,
+							new SpaceDestroyed(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
 				}
 			}
 			// Notify the relays (other services)

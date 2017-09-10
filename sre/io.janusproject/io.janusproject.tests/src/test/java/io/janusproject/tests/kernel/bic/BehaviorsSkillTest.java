@@ -221,29 +221,27 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 	public void wake_noScope() {
 		Event event = mock(Event.class);
 		this.skill.wake(event);
-		ArgumentCaptor<Event> argument1 = ArgumentCaptor.forClass(Event.class);
-		ArgumentCaptor<Scope<Address>> argument2 = ArgumentCaptor.forClass(Scope.class);
-		Mockito.verify(this.innerSpace).emit(argument1.capture(), argument2.capture());
-		assertSame(event, argument1.getValue());
-		assertNull(argument2.getValue());
-		ArgumentCaptor<Address> argument3 = ArgumentCaptor.forClass(Address.class);
-		Mockito.verify(event).setSource(argument3.capture());
-		assertEquals(this.address, argument3.getValue());
+		ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
+		ArgumentCaptor<Scope<Address>> argument3 = ArgumentCaptor.forClass(Scope.class);
+		Mockito.verify(this.innerSpace).emit(argument1.capture(), argument2.capture(), argument3.capture());
+		assertEquals(this.agent.getID(), argument1.getValue());
+		assertSame(event, argument2.getValue());
+		assertNull(argument3.getValue());
 	}
 
 	@Test
 	public void wake_scope_all() {
 		Event event = mock(Event.class);
 		this.skill.wake(event, Scopes.allParticipants());
-		ArgumentCaptor<Event> argument1 = ArgumentCaptor.forClass(Event.class);
-		ArgumentCaptor<Scope<Address>> argument2 = ArgumentCaptor.forClass(Scope.class);
-		Mockito.verify(this.innerSpace).emit(argument1.capture(), argument2.capture());
-		assertSame(event, argument1.getValue());
-		assertNotNull(argument2.getValue());
-		assertSame(Scopes.allParticipants(), argument2.getValue());
-		ArgumentCaptor<Address> argument3 = ArgumentCaptor.forClass(Address.class);
-		Mockito.verify(event).setSource(argument3.capture());
-		assertEquals(this.address, argument3.getValue());
+		ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
+		ArgumentCaptor<Scope<Address>> argument3 = ArgumentCaptor.forClass(Scope.class);
+		Mockito.verify(this.innerSpace).emit(argument1.capture(), argument2.capture(), argument3.capture());
+		assertEquals(this.agent.getID(), argument1.getValue());
+		assertSame(event, argument2.getValue());
+		assertNotNull(argument3.getValue());
+		assertSame(Scopes.allParticipants(), argument3.getValue());
 	}
 
 	@Test
@@ -252,15 +250,14 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 		SpaceID spaceID = new SpaceID(UUID.randomUUID(), UUID.randomUUID(), null);
 		Scope<Address> scope = Scopes.addresses(new Address(spaceID, UUID.randomUUID()));
 		this.skill.wake(event, scope);
-		ArgumentCaptor<Event> argument1 = ArgumentCaptor.forClass(Event.class);
-		ArgumentCaptor<Scope<Address>> argument2 = ArgumentCaptor.forClass(Scope.class);
-		Mockito.verify(this.innerSpace).emit(argument1.capture(), argument2.capture());
-		assertSame(event, argument1.getValue());
-		assertNotNull(argument2.getValue());
-		assertSame(scope, argument2.getValue());
-		ArgumentCaptor<Address> argument3 = ArgumentCaptor.forClass(Address.class);
-		Mockito.verify(event).setSource(argument3.capture());
-		assertEquals(this.address, argument3.getValue());
+		ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
+		ArgumentCaptor<Scope<Address>> argument3 = ArgumentCaptor.forClass(Scope.class);
+		Mockito.verify(this.innerSpace).emit(argument1.capture(), argument2.capture(), argument3.capture());
+		assertEquals(this.agent.getID(), argument1.getValue());
+		assertSame(event, argument2.getValue());
+		assertNotNull(argument3.getValue());
+		assertSame(scope, argument3.getValue());
 	}
 
 	@Test

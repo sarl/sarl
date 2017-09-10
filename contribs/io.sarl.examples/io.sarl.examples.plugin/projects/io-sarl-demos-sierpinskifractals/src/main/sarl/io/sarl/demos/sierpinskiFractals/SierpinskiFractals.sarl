@@ -1,0 +1,34 @@
+package io.sarl.demos.sierpinskiFractals
+
+import io.sarl.demos.sierpinskiFractals.agents.Fractal
+import io.sarl.demos.sierpinskiFractals.gui.SierpinskiFractalsFxApplication
+import io.sarl.demos.sierpinskiFractals.gui.SierpinskiFractalsFxViewerController
+import io.sarl.demos.sierpinskiFractals.gui.fx.FxApplication
+import io.sarl.demos.sierpinskiFractals.gui.fx.FxBootAgent
+import io.sarl.demos.sierpinskiFractals.gui.fx.FxViewerController
+import io.sarl.lang.core.Agent
+import java.util.List
+import java.util.UUID
+
+/** Agent that is responsible of the application launching.
+ */
+agent SierpinskiFractals extends FxBootAgent {
+	
+	def getFxApplicationType : Class<? extends FxApplication> {
+		typeof(SierpinskiFractalsFxApplication)
+	}
+
+	def getApplicationBootAgentType : Class<? extends Agent> {
+		typeof(Fractal)
+	}
+
+	override buildApplicationBootAgentParameters(
+		launcherID : UUID,
+		controller : FxViewerController,
+		parameters : List<Object>) {
+		var ctrl = controller as SierpinskiFractalsFxViewerController
+		parameters += Configuration::GLOBAL_AREA
+		parameters += ctrl.positions
+	}
+
+}

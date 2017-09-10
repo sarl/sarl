@@ -1,0 +1,6 @@
+package io.sarl.demos.sierpinskiFractals.events
+
+/*
+ * Multiply signal to make Fractal agent multiply
+ */
+event Multiply

@@ -191,19 +191,21 @@ they were defined as actions in the agent.
 The [:intercap:] capacity provides the function `emit(Event)` for
 sending an event in the default space of the default context.
 [:Fact:]{typeof(io.sarl.core.DefaultContextInteractions).shouldHaveMethod("emit(io.sarl.lang.core.Event)")}
+The [:extercap:] capacity provides the function `emit(EventSpace, Event)` for
+sending an event in the given space.
+[:Fact:]{typeof(io.sarl.core.ExternalContextAccess).shouldHaveMethod("emit(io.sarl.lang.core.EventSpace,io.sarl.lang.core.Event)")}
+This latest function is used for sending the events.
 
 The [:pingevent:] event must be built with an index value as argument. This argument
 is the index stored in the [:pingevent:] event. For accessing the occurrence of the
 [:pingevent:] event, you must use the special keyword [:occkw:].
 In the following example, the [:pongevent:] event is built with the index argument
-stored in the received [:pingevent:] event. Because an event must always have a source
-and the space is not able to set this source for you, you must set the source of the
-event by yourself. The source of the event is the address of the pong agent in
-the sub-space. This address is replied by the [:getaddress:] function.
+stored in the received [:pingevent:] event.
 
 		[:Success:]
 			package io.sarl.docs.tutorials.pingpongspace
 			import io.sarl.core.DefaultContextInteractions
+			import io.sarl.core.ExternalContextAccess
 			import io.sarl.core.Behaviors
 			import java.util.UUID
 			import io.sarl.util.OpenEventSpace
@@ -223,7 +225,7 @@ the sub-space. This address is replied by the [:getaddress:] function.
 			}
 			[:On]agent PongAgent {
 				
-				[:useskw](uses) [:intercap](DefaultContextInteractions), Behaviors
+				[:useskw](uses) [:intercap](DefaultContextInteractions), [:extercap](ExternalContextAccess), Behaviors
 			
 				var ^space : OpenEventSpace
 				
@@ -236,7 +238,6 @@ the sub-space. This address is replied by the [:getaddress:] function.
 
 				on Ping {
 					var evt = new Pong( occurrence.index )
-					evt.source = ^space.[:getaddress](getAddress)(getID)
 					^space.emit( evt )
 				}
 			}
@@ -279,6 +280,7 @@ use `Scopes.addresses(Address*)` than Scopes.identifiers(UUID*)`.
 		[:Success:]
 			package io.sarl.docs.tutorials.pingpongspace
 			import io.sarl.core.DefaultContextInteractions
+			import io.sarl.core.ExternalContextAccess
 			import io.sarl.core.Behaviors
 			import java.util.UUID
 			import io.sarl.util.OpenEventSpace
@@ -298,7 +300,7 @@ use `Scopes.addresses(Address*)` than Scopes.identifiers(UUID*)`.
 				}
 			}
 			[:On]agent PongAgent {
-				uses DefaultContextInteractions, Behaviors
+				uses DefaultContextInteractions, ExternalContextAccess, Behaviors
 			
 				var ^space : OpenEventSpace
 				
@@ -311,7 +313,6 @@ use `Scopes.addresses(Address*)` than Scopes.identifiers(UUID*)`.
 
 				on Ping {
 					var evt = new Pong( occurrence.index )
-					evt.source = ^space.getAddress(getID)
 					^space.emit(
 						evt,
 						Scopes::addresses( occurrence.source ))
@@ -405,6 +406,7 @@ The receiving of the [:pingevent:] event is restricted to the sender of the
 		[:Success:]
 			package io.sarl.docs.tutorials.pingpongspace
 			import io.sarl.core.DefaultContextInteractions
+			import io.sarl.core.ExternalContextAccess
 			import io.sarl.core.Behaviors
 			import java.util.UUID
 			import io.sarl.util.OpenEventSpace
@@ -425,7 +427,7 @@ The receiving of the [:pingevent:] event is restricted to the sender of the
 			}
 			[:On]agent PingAgent {
 				
-				uses DefaultContextInteractions, Behaviors
+				uses DefaultContextInteractions, ExternalContextAccess, Behaviors
 			
 				var ^space : OpenEventSpace
 				
@@ -438,7 +440,6 @@ The receiving of the [:pingevent:] event is restricted to the sender of the
 
 				on Pong {
 					var evt = new Ping( occurrence.index + 1 )
-					evt.source = ^space.getAddress(getID)
 					^space.emit(evt) [ it == occurrence.source ]
 				}
 			}
@@ -456,6 +457,7 @@ receiving the [:initevent:] event.
 		[:Success:]
 			package io.sarl.docs.tutorials.pingpongspace
 			import io.sarl.core.DefaultContextInteractions
+			import io.sarl.core.ExternalContextAccess
 			import io.sarl.core.Behaviors
 			import java.util.UUID
 			import io.sarl.util.OpenEventSpace
@@ -476,7 +478,7 @@ receiving the [:initevent:] event.
 			}
 			[:On]agent PingAgent {
 				
-				uses DefaultContextInteractions, Behaviors
+				uses DefaultContextInteractions, ExternalContextAccess, Behaviors
 			
 				var ^space : OpenEventSpace
 				
@@ -486,13 +488,11 @@ receiving the [:initevent:] event.
 						occurrence.parameters.get(0) as UUID)
 					^space.register(asEventListener())
 					var evt = new Ping(0)
-					evt.source = ^space.getAddress(getID)
 					^space.emit( evt )
 				}
 
 				on Pong {
 					var evt = new Ping( occurrence.index + 1 )
-					evt.source = ^space.getAddress(getID)
 					^space.emit(evt) [ it == occurrence.source ]
 				}
 			}
@@ -523,6 +523,7 @@ one agent belonging to the default space. If not, the agent is sending the initi
 		[:Success:]
 			package io.sarl.docs.tutorials.pingpongspace
 			import io.sarl.core.DefaultContextInteractions
+			import io.sarl.core.ExternalContextAccess
 			import io.sarl.core.Behaviors
 			import java.util.UUID
 			import io.sarl.util.OpenEventSpace
@@ -544,7 +545,7 @@ one agent belonging to the default space. If not, the agent is sending the initi
 			}
 			[:On]agent PingAgent {
 				
-				uses DefaultContextInteractions, Behaviors, [:schedcap](Schedules)
+				uses DefaultContextInteractions, ExternalContextAccess, Behaviors, [:schedcap](Schedules)
 			
 				var ^space : OpenEventSpace
 				
@@ -557,7 +558,6 @@ one agent belonging to the default space. If not, the agent is sending the initi
 					task.[:everyfct](every)(1000) [
 						if (defaultSpace.participants.size > 1) {
 							var evt = new Ping(0)
-							evt.source = ^space.getAddress(getID)
 							^space.emit( evt )
 							task.cancel
 						}
@@ -566,7 +566,6 @@ one agent belonging to the default space. If not, the agent is sending the initi
 
 				on Pong {
 					var evt = new Ping( occurrence.index + 1 )
-					evt.source = ^space.getAddress(getID)
 					^space.emit(evt) [ it == occurrence.source ]
 				}
 			}

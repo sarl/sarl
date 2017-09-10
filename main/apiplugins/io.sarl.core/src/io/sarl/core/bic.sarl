@@ -34,6 +34,7 @@ import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
+import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
@@ -146,6 +147,17 @@ capacity ExternalContextAccess {
 	 */
 	@Pure
 	def isInSpace(^event : Event, spaceID : UUID) : boolean
+
+	/**
+	 * Emits a given event with the provided scope in the given space.
+	 * Equivalent to <code>space.emit(getID,event,scope)</code>
+	 *
+	 * @param space the space in which the event should be fired.
+	 * @param event the event to emit.
+	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If <code>null</code>, all the agents in the space will receive the event.
+	 * @since 0.6
+	 */
+	def emit(^space : EventSpace, ^event : Event, scope : Scope<Address> = null)
 
 }
 

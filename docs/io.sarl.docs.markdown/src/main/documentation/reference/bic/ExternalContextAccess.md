@@ -12,11 +12,13 @@ top-right context in the figure above.
 		[:Fact:]{typeof(io.sarl.core.[:externalcontextaccess!]).shouldHaveMethods(
 			"[:getcontext](getContext)(java.util.UUID) : io.sarl.lang.core.AgentContext",
 			"[:getallcontexts](getAllContexts) : io.sarl.lang.util.SynchronizedIterable",
-			"[:join](join)(java.util.UUID, java.util.UUID)",
-			"[:leave](leave)(java.util.UUID)",
+			"[:join](join)(java.util.UUID, java.util.UUID) : boolean",
+			"[:leave](leave)(java.util.UUID) : boolean",
 			"[:isinspace](isInSpace)(io.sarl.lang.core.Event, io.sarl.lang.core.Space) : boolean",
 			"isInSpace(io.sarl.lang.core.Event, io.sarl.lang.core.SpaceID) : boolean",
-			"isInSpace(io.sarl.lang.core.Event, java.util.UUID) : boolean")
+			"isInSpace(io.sarl.lang.core.Event, java.util.UUID) : boolean",
+			"emit(io.sarl.lang.core.EventSpace,io.sarl.lang.core.Event)",
+			"emit(io.sarl.lang.core.EventSpace,io.sarl.lang.core.Event,io.sarl.lang.core.Scope)")
 		}
 
 ## Retrieving a Context
@@ -215,8 +217,8 @@ the container).
 				uses ExternalContextAccess
 				var myspace : Space
 				def testOtherFunctions(e : Event) : boolean {
- 					return [:isinspace!](e, myspace.ID)
-					    || [:isinspace!](e, myspace.ID.ID)
+ 					return [:isinspace!](e, myspace.spaceID)
+					    || [:isinspace!](e, myspace.spaceID.ID)
 				}
 				[:On]
 				on [:eventtype1](AnEvent) [ [:isinspace!](occurrence, [:spacetype1](myspace)) ] {
@@ -226,6 +228,64 @@ the container).
 			}
 		[:End:]
 
+## Helper for firing an event in a space
+
+Regarding the definition of the `EventSpace` type, the event emiting function takes at least two parameters:
+
+* the identifier of the entity, which is firing the event, and
+* the event to be fired.
+
+The first parameter is used for setting the event's source when it was not already done.
+
+The [:externalcontextaccess:] provides functions for helping to fire events into an event space:
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.core.ExternalContextAccess
+			import io.sarl.lang.core.AgentContext
+			import io.sarl.lang.core.EventSpace
+			import java.util.UUID
+			event MyEvent
+			agent Tmp {
+				uses [:externalcontextaccess!]
+				def myfct {
+					var ^event = new MyEvent
+					var ^space : EventSpace
+					[:On]
+						[:spacename](^space).emit([:eventname](^event))
+					[:Off]
+				}
+			}
+		[:End:]
+
+This function's call is takes two parameters:
+
+* [:spacename:] is the variable which contains the reference to the space in which the event should be fired.
+* [:eventname:] is the variable which contains the event to fire.
+
+This function call is equivalent to:
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.core.ExternalContextAccess
+			import io.sarl.lang.core.AgentContext
+			import io.sarl.lang.core.EventSpace
+			import java.util.UUID
+			event MyEvent
+			agent Tmp {
+				uses [:externalcontextaccess!]
+				def myfct {
+					var ^event = new MyEvent
+					var ^space : EventSpace
+					[:On]
+						[:spacename!].emit([:getidfct](getID), [:eventname!])
+					[:Off]
+				}
+			}
+		[:End:]
+
+The [:getidfct:] function is provided by the current entity, e.g. an agent, for obtaining the identifier of the emitter.
+
+From a syntactic point of view, the two calls look similar. But, the call to the [:externalcontextaccess:] function uses
+the extension method syntax: the first argument to the function is written prior to the function's name.
 
 
 [:Include:](../../legal.inc)

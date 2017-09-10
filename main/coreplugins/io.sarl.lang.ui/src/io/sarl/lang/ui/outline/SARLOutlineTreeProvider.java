@@ -112,6 +112,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 * @param parentNode - the parent node.
 	 * @param modelElement - the feature container for which a node should be created.
 	 */
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	protected void _createNode(DocumentRootNode parentNode, XtendTypeDeclaration modelElement) {
 		//
 		// The text region is set to the model element, not to the model element's name as in the

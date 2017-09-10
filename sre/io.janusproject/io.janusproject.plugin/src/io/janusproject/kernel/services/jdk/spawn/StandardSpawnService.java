@@ -248,7 +248,10 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		assert source != null;
 		final AgentSpawned event = new AgentSpawned(source, agentClazz.getName(),
 				Collections2.transform(agents, (it) -> it.getID()));
-		defSpace.emit(event);
+		defSpace.emit(
+				// No need to give an event source because it is explicitly set above.
+				null,
+				event);
 	}
 
 	/** Notify the agent's listeners about its spawning.
@@ -471,7 +474,10 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 			synchronized (sc.mutex()) {
 				for (final AgentContext context : sc) {
 					final EventSpace defSpace = context.getDefaultSpace();
-					defSpace.emit(new AgentKilled(defSpace.getAddress(agent.getID()), agent.getID(), agent.getClass().getName()));
+					defSpace.emit(
+							// No need to give an event source because it is explicitly set below.
+							null,
+							new AgentKilled(defSpace.getAddress(agent.getID()), agent.getID(), agent.getClass().getName()));
 				}
 			}
 		} catch (RuntimeException e) {

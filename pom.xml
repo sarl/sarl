@@ -146,6 +146,14 @@
 
 	<contributors>
 		<contributor>
+			<name>Antoine Bartuccio</name>
+			<email>contact@klmp200.net</email>
+			<url>https://github.com/klmp200</url>
+			<roles>
+				<role>Fireworks and Sierpinski fractal examples</role>
+			</roles>
+		</contributor>
+		<contributor>
 			<name>Mohamed Ezzat</name>
 			<email>mohamed.ezzat@devfactory.com</email>
 			<url>https://github.com/m-ezzat</url>

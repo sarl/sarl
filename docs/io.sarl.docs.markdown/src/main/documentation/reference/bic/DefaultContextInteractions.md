@@ -18,7 +18,7 @@ For instance, the [:emit:] action is a shortcut for:
 				def myaction {
 					var ^event : Event = null
 					[:On]
-					defaultContext.defaultSpace.emit(^event)
+					defaultContext.defaultSpace.emit(getID, ^event)
 					[:Off]
 				}
 			}
@@ -133,7 +133,7 @@ The call to [:emit:] is equivalent to:
 				def myaction {
 					var ^event : Event = null
 					[:On]
-					defaultContext.defaultSpace.emit(^event)
+					defaultContext.defaultSpace.emit(getID, ^event)
 					[:Off]
 				}
 			}
@@ -372,8 +372,8 @@ the `event.[:isindefaultspace!]` is equivalent to `[:isindefaultspace!](event)`.
  					return isDefaultContext(defaultContext)
 					    || isDefaultContext(defaultContext.ID)
 					    || isDefaultSpace(defaultSpace)
-					    || isDefaultSpace(defaultSpace.ID)
-					    || isDefaultSpace(defaultSpace.ID.ID)
+					    || isDefaultSpace(defaultSpace.spaceID)
+					    || isDefaultSpace(defaultSpace.spaceID.ID)
 				}
 				[:On]
 				on [:eventtype1](AnEvent) [ occurrence.inDefaultSpace ] {

@@ -1,0 +1,36 @@
+package io.sarl.demos.sierpinskiFractals.objects
+
+/*
+ * Triangle object created by Fractal
+ */
+class Triangle {
+	
+	val bottomLeft : Vector2D
+	val bottomRight : Vector2D
+	val top : Vector2D
+	
+	new {
+		bottomLeft = new Vector2D
+		bottomRight = new Vector2D
+		top = new Vector2D
+	}
+	
+	new (bottomLeft: Vector2D, bottomRight: Vector2D, top: Vector2D){
+		this.bottomLeft = bottomLeft
+		this.top = top
+		this.bottomRight = bottomRight
+	}
+	
+	def getBottomLeft : Vector2D {
+		this.bottomLeft
+	}
+	
+	def getBottomRight : Vector2D {
+		this.bottomRight
+	}
+	
+	def getTop : Vector2D {
+		this.top
+	}
+	
+}

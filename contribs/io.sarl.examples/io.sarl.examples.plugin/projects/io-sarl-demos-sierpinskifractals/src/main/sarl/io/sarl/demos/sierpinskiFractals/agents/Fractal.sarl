@@ -1,0 +1,155 @@
+/** 
+ * 
+ */
+package io.sarl.demos.sierpinskiFractals.agents
+
+import io.sarl.core.Behaviors
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.core.MemberLeft
+import io.sarl.demos.sierpinskiFractals.events.Multiply
+import io.sarl.demos.sierpinskiFractals.gui.SierpinskiFractalsFxViewerController
+import io.sarl.demos.sierpinskiFractals.gui.fx.AppExit
+import io.sarl.demos.sierpinskiFractals.objects.Positions
+import io.sarl.demos.sierpinskiFractals.objects.Square
+import io.sarl.demos.sierpinskiFractals.objects.Triangle
+import io.sarl.demos.sierpinskiFractals.objects.Vector2D
+
+/*
+ * Fractal agent
+ * Can communicate with the GUI if not contained in an other agent
+ * Contains other Fractal agent in its inner context
+ */
+agent Fractal {
+
+	uses InnerContextAccess, Lifecycle, Behaviors
+	uses Logging
+	
+	var triangle : Triangle
+	var screenSurface : Square
+	var screenWidth : double
+	var positions : Positions
+
+	/*
+	 * Initialization step
+	 */
+	on Initialize [occurrence.parameters.size <= 1] {
+		screenSurface = new Square
+		positions = new Positions
+		screenWidth = screenSurface.width
+		generatePoints
+	}
+
+	/* 
+	 * Initialization step
+	 */
+	on Initialize [occurrence.parameters.size == 2] {
+		screenSurface = occurrence.parameters.get(0) as Square
+		positions = occurrence.parameters.get(1) as Positions
+		screenWidth = screenSurface.width
+		generatePoints
+	}
+
+	/* 
+	 * Initialization step
+	 */
+	on Initialize [occurrence.parameters.size == 3] {
+		screenSurface = occurrence.parameters.get(1) as Square
+		positions = occurrence.parameters.get(2) as Positions
+		var ctrl = occurrence.parameters.get(0) as SierpinskiFractalsFxViewerController
+		var guiSpace = ctrl.UISpace
+		guiSpace.register(asEventListener)
+		ctrl.draw
+		screenWidth = screenSurface.width
+		generatePoints
+	}
+	
+	/*
+	 * Generate triangle points
+	 */
+	def generatePoints {
+		triangle = new Triangle(
+			screenSurface.bottomLeft,
+			screenSurface.bottomRight,
+			new Vector2D(screenSurface.bottomLeft.x + screenWidth/2, screenSurface.topLeft.y)
+		)
+		positions.addTriangle(triangle)
+		info("Parent : " + parentID)
+	}
+	
+	/*
+	 * Multiply itself and create child Fractal
+	 */
+	def multiplication {
+		var screen1 = new Square(
+			triangle.bottomLeft,
+			screenWidth/2
+		)
+		var screen2 = new Square(
+			new Vector2D(screenSurface.bottomLeft.x + screenWidth/4, screenSurface.bottomLeft.y + screenWidth/2),
+			screenWidth/2
+		)
+		var screen3 = new Square(
+			new Vector2D(triangle.top.x, screenSurface.bottomLeft.y),
+			screenWidth/2
+		)
+
+		spawnInContext(Fractal, innerContext, screen1, positions)
+		spawnInContext(Fractal, innerContext, screen2, positions)
+		spawnInContext(Fractal, innerContext, screen3, positions)
+	}
+	
+	/*
+	 * Create and emit Multiply signal
+	 */
+	def emitMultiply {
+		var m = new Multiply
+		innerContext.defaultSpace.emit(ID, m)
+	}
+	
+	/*
+	 * Create and emit Exit signal
+	 */
+	def emitExit {
+		var e = new AppExit
+		innerContext.defaultSpace.emit(ID, e)
+	}
+	
+	/*
+	 * Multiply itself if signal comes from the GUI and have no member agent
+	 */
+	on Multiply [!hasMemberAgent] {
+		this.multiplication
+	}
+
+	/*
+	 * Transmit GUI emit signal if connected to GUI and have member agent
+	 */
+	on Multiply [hasMemberAgent] {
+		this.emitMultiply
+	}
+	
+	/*
+	 * Kill itself if have no member agent and is connected to the GUI
+	 */
+	on AppExit [!hasMemberAgent] {
+		killMe
+	}
+	
+	/*
+	 * Transmit a new Exit signal if have member agent and is connected to the GUI
+	 */
+	on AppExit [hasMemberAgent] {
+		this.emitExit
+	}
+	
+	/*
+	 * Kill itself when all member agent are killed
+	 */
+	on MemberLeft [!hasMemberAgent] {
+		killMe
+	}
+	
+}

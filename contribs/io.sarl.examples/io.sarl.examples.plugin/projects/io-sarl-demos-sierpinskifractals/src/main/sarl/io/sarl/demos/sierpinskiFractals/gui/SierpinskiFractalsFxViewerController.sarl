@@ -1,0 +1,77 @@
+package io.sarl.demos.sierpinskiFractals.gui;
+
+import io.sarl.demos.sierpinskiFractals.events.Multiply
+import io.sarl.demos.sierpinskiFractals.gui.fx.FxViewerController
+import io.sarl.demos.sierpinskiFractals.objects.Positions
+import java.util.concurrent.atomic.AtomicBoolean
+import javafx.animation.PauseTransition
+import javafx.fxml.FXML
+import javafx.scene.canvas.Canvas
+import javafx.scene.control.Button
+import javafx.scene.paint.Color
+
+import static extension javafx.util.Duration.*
+
+/** JavaFX controller for Sierpinski fractals.
+ */
+class SierpinskiFractalsFxViewerController extends FxViewerController {
+
+	var positions = new Positions
+	
+	val started = new AtomicBoolean
+
+	@FXML
+	var drawZone : Canvas
+	
+	@FXML
+	var multiplyButton : Button
+	
+	def getPositions : Positions {
+		this.positions
+	}
+	
+	override safeExit {
+		if (started.get) {
+			this.multiplyButton.disable = true
+		}
+		super.safeExit
+	}
+
+	/* 
+	 * Emit a multiply signal
+	 */
+	@FXML
+	def actionMultiply {
+		var evt = new Multiply
+		if (!started.getAndSet(true)) {
+			startAgentApplication() [
+				emitToAgents(evt)
+			]
+		} else {
+			emitToAgents(evt)
+		}
+	}
+	
+	/* 
+	 * Draw fractals on canvas
+	 */
+	def draw {
+		var gc = drawZone.graphicsContext2D
+		var wait = new PauseTransition(0.03.seconds)
+
+		gc.setStroke(Color::ORANGERED)
+		gc.setLineWidth(3)
+
+		wait.setOnFinished [ e |
+			gc.clearRect(0, 0, drawZone.width, drawZone.height)
+			positions.triangles.forEach [ t |
+				gc.strokeLine(t.bottomLeft.x, t.bottomLeft.y, t.top.x, t.top.y)
+				gc.strokeLine(t.top.x, t.top.y, t.bottomRight.x, t.bottomRight.y)
+				gc.strokeLine(t.bottomRight.x, t.bottomRight.y, t.bottomLeft.x, t.bottomLeft.y)
+			]
+			wait.playFromStart
+		]
+		wait.play
+	}
+	
+}

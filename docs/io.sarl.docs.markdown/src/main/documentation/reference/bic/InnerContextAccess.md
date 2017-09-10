@@ -149,8 +149,8 @@ the `event.[:isinnerdefaultspace!]` is equivalent to `[:isinnerdefaultspace!](ev
 				uses InnerContextAccess
 				def testOtherFunctions(s : Space) : boolean {
 					return isInnerDefaultSpace(s)
-					    || isInnerDefaultSpace(s.ID)
-					    || isInnerDefaultSpace(s.ID.ID)
+					    || isInnerDefaultSpace(s.spaceID)
+					    || isInnerDefaultSpace(s.spaceID.ID)
 				}
 				[:On]
 				on [:eventtype1](AnEvent) [ occurrence.inInnerDefaultSpace ] {
