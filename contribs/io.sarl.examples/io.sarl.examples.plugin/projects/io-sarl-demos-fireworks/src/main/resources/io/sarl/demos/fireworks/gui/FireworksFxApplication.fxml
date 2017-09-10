@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="main_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="608.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.sarl.demos.fireworks.gui.FireworksFxViewerController">
+   <children>
+      <Canvas fx:id="draw_zone" height="583.0" layoutX="199.0" layoutY="13.0" rotate="180.0" width="715.0" />
+      <Button fx:id="setup_button" layoutX="26.0" layoutY="45.0" mnemonicParsing="false" onAction="#actionSetup" text="%SetupButtonText">
+         <tooltip>
+            <Tooltip text="%SetupButtonTooltip" />
+         </tooltip></Button>
+      <Button fx:id="launch_button" disable="true" layoutX="26.0" layoutY="89.0" mnemonicParsing="false" onAction="#actionLaunch" text="%LaunchButtonText">
+         <tooltip>
+            <Tooltip text="%LaunchButtonTooltip" />
+         </tooltip></Button>
+      <AnchorPane layoutX="30.0" layoutY="145.0">
+         <children>
+            <ScrollBar fx:id="gravity_input" max="3.0" onMouseEntered="#actionGravityDisplay" prefHeight="17.0" prefWidth="159.0" unitIncrement="0.1" value="0.5">
+               <tooltip>
+                  <Tooltip text="%GravityTooltip" />
+               </tooltip></ScrollBar>
+            <Label fx:id="gravity_display" layoutX="135.0" layoutY="17.0" prefHeight="17.0" prefWidth="46.0" text="0,5" textAlignment="RIGHT" />
+            <Label layoutY="17.0" prefHeight="17.0" prefWidth="46.0" text="%GravityLabelText" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="27.0" layoutY="255.0">
+         <children>
+            <Label layoutX="4.0" layoutY="17.0" text="%FireQuantityLabelText" />
+            <Label fx:id="fire_quantity_display" layoutX="135.0" layoutY="17.0" prefHeight="17.0" prefWidth="46.0" text="30" textAlignment="RIGHT" />
+            <ScrollBar fx:id="fire_quantity_input" layoutX="4.0" max="50.0" min="5.0" onMouseEntered="#actionFireQuantityDisplay" prefHeight="17.0" prefWidth="159.0" value="30.0">
+               <tooltip>
+                  <Tooltip text="%FireQuantityTooltip" />
+               </tooltip></ScrollBar>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="30.0" layoutY="199.0">
+         <children>
+            <ScrollBar fx:id="rocket_quantity_input" max="40.0" min="1.0" onMouseEntered="#actionRocketQuantityDisplay" prefHeight="17.0" prefWidth="159.0" value="20.0">
+               <tooltip>
+                  <Tooltip text="%RocketQuantityTooltip" />
+               </tooltip></ScrollBar>
+            <Label layoutY="20.0" text="%RocketQuantityLabelText" />
+            <Label fx:id="rocket_quantity_display" layoutX="135.0" layoutY="20.0" prefHeight="17.0" prefWidth="46.0" text="20" textAlignment="RIGHT" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="stop_button" disable="true" layoutX="117.0" layoutY="89.0" mnemonicParsing="false" onAction="#actionStop" text="%StopButtonText">
+         <tooltip>
+            <Tooltip text="%StopButtonTooltip" />
+         </tooltip></Button>
+   </children>
+</Pane>

@@ -1,0 +1,46 @@
+/*
+* @Author: Bartuccio Antoine
+* @Date:   2017-05-26 16:41:58
+* @Last Modified by:   klmp200
+* @Last Modified time: 2017-05-26 17:29:05
+*/
+
+// Nice white #F9FAFB
+// Nice black #2B2B2B
+
+#main_pane {
+	-fx-background-color: #2B2B2B;
+}
+
+.scroll-bar {
+	-fx-background-color: rgb(57, 57, 57);
+}
+
+.scroll-bar .thumb {
+	-fx-background-color: rgb(169, 169, 169);
+	-fx-background-radius: 0em;
+	-fx-background-inserts: 0, 0, 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+	-fx-color: rgb(169, 169, 169);
+}
+
+.scroll-bar:hover .increment-arrow,
+.scroll-bar:hover .decrement-arrow {
+	-fx-color: #2B2B2B;
+	-fx-background-color: rgb(169, 169, 169);
+}
+
+.label {
+	-fx-text-fill: #F9FAFB;
+}
+
+.button {
+	-fx-background-radius: 0em;
+	-fx-background-inserts: 0, 0, 0;
+	-fx-focus-color: transparent;
+	-fx-text-fill: #2B2B2B;
+	-fx-background-color: rgb(169, 169, 169);
+}

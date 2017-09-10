@@ -43,7 +43,7 @@ Add in the `plugin.xml` file:
 	
 	<extension point="org.eclipse.emf.common.ui.examples">
 		<example wizardID="io.sarl.examples.myexample" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
-			<projectDescriptor name="io-sarl-demos-basic-myexample" contentURI="contents/io-sarl-demos-myexample.zip" description="%io_sarl_demos_myexample_Description"/>
+			<projectDescriptor name="io-sarl-demos-myexample" contentURI="contents/io-sarl-demos-myexample.zip" description="%io_sarl_demos_myexample_Description"/>
 			<fileToOpen location="io-sarl-demos-myexample/path/to/the/file/to/open"/>
 		</example>
 	</extension>
@@ -73,8 +73,8 @@ In order to add a quick link to the example, you should add  into the `plugin.xm
 	      point="org.eclipse.ui.intro.quicklinks">
 	      <command
 	       	id="org.eclipse.ui.newWizard(newWizardId=io.sarl.examples.myexample)"
-	         description="%io_sarl_demos_myexample__Description"
-	         label="%io_sarl_demos_myexample__Name"
+	         description="%io_sarl_demos_myexample_Description"
+	         label="%io_sarl_demos_myexample_Name"
 	         icon="platform:/plugin/org.eclipse.ui.intro.universal/themes/circles/graphics/icons/ctool/sa_onesample48.gif">
 	      </command>
 	</extension>

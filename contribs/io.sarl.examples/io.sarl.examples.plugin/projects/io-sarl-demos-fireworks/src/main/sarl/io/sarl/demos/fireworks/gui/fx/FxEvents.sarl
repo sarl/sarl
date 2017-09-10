@@ -1,0 +1,17 @@
+package io.sarl.demos.fireworks.gui.fx
+
+/* Triggered when the app need to be started.
+ */
+event AppStart {
+	val fxController : FxViewerController
+	val startFeedback : () => void
+
+	new (fxController : FxViewerController, feedback : () => void) {
+		this.fxController = fxController
+		this.startFeedback = feedback
+	}
+}
+
+/* Triggered when the app need to be exited.
+ */
+event AppExit
