@@ -287,7 +287,7 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void emitEventScope_fullscope() throws Exception {
+	public void emitUUIDEventScope_fullscope() throws Exception {
 		Event event;
 		Scope<Address> scope = Scopes.<Address> allParticipants();
 
@@ -295,7 +295,8 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 
 		event = Mockito.mock(Event.class);
 		Mockito.when(event.getSource()).thenReturn(this.address);
-		this.space.emit(event, scope);
+		// No need to give an event source because is it explicitly defined above.
+		this.space.emit(null, event, scope);
 
 		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.listener).receiveEvent(argument.capture());
@@ -310,7 +311,7 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void emitEventScope_scopeaddress() throws Exception {
+	public void emitUUIDEventScope_scopeaddress() throws Exception {
 		Event event;
 		Scope<Address> scope = Scopes.addresses(this.address);
 
@@ -318,7 +319,8 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 
 		event = Mockito.mock(Event.class);
 		Mockito.when(event.getSource()).thenReturn(this.address);
-		this.space.emit(event, scope);
+		// No need to give an event source because is it explicitly defined above.
+		this.space.emit(null, event, scope);
 
 		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.listener).receiveEvent(argument.capture());
@@ -333,7 +335,7 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void emitEventScope_scopeotheraddress() throws Exception {
+	public void emitUUIDEventScope_scopeotheraddress() throws Exception {
 		Address otherAddress = new Address(new SpaceID(UUID.randomUUID(), UUID.randomUUID(), OpenEventSpaceSpecification.class),
 				UUID.randomUUID());
 
@@ -344,7 +346,8 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 
 		event = Mockito.mock(Event.class);
 		Mockito.when(event.getSource()).thenReturn(this.address);
-		this.space.emit(event, scope);
+		// No need to give an event source because is it explicitly defined above.
+		this.space.emit(null, event, scope);
 		Mockito.verify(this.listener, new Times(0)).receiveEvent(Mockito.any());
 		{
 			ArgumentCaptor<Scope> netscope = ArgumentCaptor.forClass(Scope.class);
@@ -356,7 +359,7 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void emitEventScope_scopebothaddresses() throws Exception {
+	public void emitUUIDEventScope_scopebothaddresses() throws Exception {
 		Address otherAddress = new Address(new SpaceID(UUID.randomUUID(), UUID.randomUUID(), OpenEventSpaceSpecification.class),
 				UUID.randomUUID());
 
@@ -367,7 +370,118 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 
 		event = Mockito.mock(Event.class);
 		Mockito.when(event.getSource()).thenReturn(this.address);
-		this.space.emit(event, scope);
+		// No need to give an event source because is it explicitly defined above.
+		this.space.emit(null, event, scope);
+
+		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.listener).receiveEvent(argument.capture());
+		assertSame(event, argument.getValue());
+		{
+			ArgumentCaptor<Scope> netscope = ArgumentCaptor.forClass(Scope.class);
+			ArgumentCaptor<Event> netarg = ArgumentCaptor.forClass(Event.class);
+			Mockito.verify(this.network).publish(netscope.capture(), netarg.capture());
+			assertSame(scope, netscope.getValue());
+			assertSame(event, netarg.getValue());
+		}
+	}
+
+	@Test(expected = AssertionError.class)
+	public void emitUUIDEventScope_noSource_noEventSource() throws Exception {
+		final Event event = Mockito.mock(Event.class);
+		// No need to give an event source because is it explicitly defined above.
+		this.space.emit(null, event, null);
+	}
+
+	@Test
+	public void emitUUIDEventScope_fullscope_noSource() throws Exception {
+		Event event;
+		Scope<Address> scope = Scopes.<Address> allParticipants();
+
+		register();
+
+		event = Mockito.mock(Event.class);
+		Mockito.doCallRealMethod().when(event).setSource(Mockito.any());
+		Mockito.doCallRealMethod().when(event).getSource();
+		// No need to give an event source because is it explicitly defined above.
+		this.space.emit(this.address.getUUID(), event, scope);
+
+		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.listener).receiveEvent(argument.capture());
+		assertSame(event, argument.getValue());
+		{
+			ArgumentCaptor<Scope> netscope = ArgumentCaptor.forClass(Scope.class);
+			ArgumentCaptor<Event> netarg = ArgumentCaptor.forClass(Event.class);
+			Mockito.verify(this.network).publish(netscope.capture(), netarg.capture());
+			assertSame(scope, netscope.getValue());
+			assertSame(event, netarg.getValue());
+		}
+	}
+
+	@Test
+	public void emitUUIDEventScope_scopeaddress_noSource() throws Exception {
+		Event event;
+		Scope<Address> scope = Scopes.addresses(this.address);
+
+		register();
+
+		event = Mockito.mock(Event.class);
+		Mockito.doCallRealMethod().when(event).setSource(Mockito.any());
+		Mockito.doCallRealMethod().when(event).getSource();
+		// No need to give an event source because is it explicitly defined above.
+		this.space.emit(this.address.getUUID(), event, scope);
+
+		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.listener).receiveEvent(argument.capture());
+		assertSame(event, argument.getValue());
+		{
+			ArgumentCaptor<Scope> netscope = ArgumentCaptor.forClass(Scope.class);
+			ArgumentCaptor<Event> netarg = ArgumentCaptor.forClass(Event.class);
+			Mockito.verify(this.network).publish(netscope.capture(), netarg.capture());
+			assertSame(scope, netscope.getValue());
+			assertSame(event, netarg.getValue());
+		}
+	}
+
+	@Test
+	public void emitUUIDEventScope_scopeotheraddress_noSource() throws Exception {
+		Address otherAddress = new Address(new SpaceID(UUID.randomUUID(), UUID.randomUUID(), OpenEventSpaceSpecification.class),
+				UUID.randomUUID());
+
+		Event event;
+		Scope<Address> scope = Scopes.addresses(otherAddress);
+
+		register();
+
+		event = Mockito.mock(Event.class);
+		Mockito.doCallRealMethod().when(event).setSource(Mockito.any());
+		Mockito.doCallRealMethod().when(event).getSource();
+		// No need to give an event source because is it explicitly defined above.
+		this.space.emit(this.address.getUUID(), event, scope);
+		Mockito.verify(this.listener, new Times(0)).receiveEvent(Mockito.any());
+		{
+			ArgumentCaptor<Scope> netscope = ArgumentCaptor.forClass(Scope.class);
+			ArgumentCaptor<Event> netarg = ArgumentCaptor.forClass(Event.class);
+			Mockito.verify(this.network).publish(netscope.capture(), netarg.capture());
+			assertSame(scope, netscope.getValue());
+			assertSame(event, netarg.getValue());
+		}
+	}
+
+	@Test
+	public void emitUUIDEventScope_scopebothaddresses_noSource() throws Exception {
+		Address otherAddress = new Address(new SpaceID(UUID.randomUUID(), UUID.randomUUID(), OpenEventSpaceSpecification.class),
+				UUID.randomUUID());
+
+		Event event;
+		Scope<Address> scope = Scopes.addresses(this.address, otherAddress);
+
+		register();
+
+		event = Mockito.mock(Event.class);
+		Mockito.doCallRealMethod().when(event).setSource(Mockito.any());
+		Mockito.doCallRealMethod().when(event).getSource();
+		// No need to give an event source because is it explicitly defined above.
+		this.space.emit(this.address.getUUID(), event, scope);
 
 		ArgumentCaptor<Event> argument = ArgumentCaptor.forClass(Event.class);
 		Mockito.verify(this.listener).receiveEvent(argument.capture());

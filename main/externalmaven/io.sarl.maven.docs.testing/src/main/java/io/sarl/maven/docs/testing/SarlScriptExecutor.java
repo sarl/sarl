@@ -40,6 +40,7 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.interpreter.IEvaluationResult;
 import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
+import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.ComparisonFailure;
 
 import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
@@ -126,13 +127,6 @@ public class SarlScriptExecutor implements ScriptExecutor {
 	}
 
 	@Override
-	public List<String> compile(int lineno, String code) throws Exception {
-		List<String> issues = new ArrayList<>();
-		compile(lineno, code, issues, null);
-		return issues;
-	}
-
-	@Override
 	public File compile(int lineno, String code, List<String> issues, ICompilatedResourceReceiver receiver) throws Exception {
 		File rootFolder = createRootFolder();
 		File sourceFolder = createSourceFolder(rootFolder);
@@ -150,6 +144,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		this.compiler.setBootClassPath(this.bootClasspath);
 		this.compiler.setJavaSourceVersion(this.sourceVersion);
 		this.compiler.setAllWarningSeverities(Severity.IGNORE);
+		this.compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
 		this.compiler.setJavaCompilerVerbose(false);
 		this.compiler.getLogger().setLevel(Level.OFF);
 		this.compiler.addIssueMessageListener((issue, uri, message) -> {

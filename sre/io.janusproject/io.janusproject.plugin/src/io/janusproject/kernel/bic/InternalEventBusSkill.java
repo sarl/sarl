@@ -291,21 +291,25 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 
 	@Override
 	public void selfEvent(Event event) {
-		// Ensure that the event source is the agent itself!
-		event.setSource(getInnerDefaultSpaceAddress());
 		// If the event must be fired only by the
 		// agent itself, it is treated in this function.
 		// Otherwise, it is given to the asynchronous
 		// listener.
 		final Class<? extends Event> eventType = event.getClass();
 		if (Initialize.class.equals(eventType)) {
+			// Ensure that the event source is the agent itself!
+			event.setSource(getInnerDefaultSpaceAddress());
 			runInitializationStage(event);
 		} else if (Destroy.class.equals(eventType)) {
+			// Ensure that the event source is the agent itself!
+			event.setSource(getInnerDefaultSpaceAddress());
 			runDestructionStage(event);
 		} else if (AsynchronousAgentKillingEvent.class.equals(eventType)) {
 			// Asynchronous kill of the event.
 			this.agentAsEventListener.killOrMarkAsKilled();
 		} else if (getOwnerState().isEventHandling()) {
+			// Ensure that the event source is the agent itself!
+			event.setSource(getInnerDefaultSpaceAddress());
 			// Asynchronous parallel dispatching of this event
 			this.agentAsEventListener.receiveEvent(event);
 		}
