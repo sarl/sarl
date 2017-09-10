@@ -32,11 +32,18 @@ import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.IOperationHelper;
+import io.sarl.lang.util.Utils;
 
 
-/** SARL-specific generator. This generator forces the JvmOperation to be annotated with <code>@Pure</code>
- * dynamically.
+/** SARL-specific generator.
+ *
+ * <p>This generator:<ul>
+ * <li>forces the JvmOperation to be annotated with <code>@Pure</code>
+ * dynamically.</li>
+ * <li>Generate static initialization block from a static constructor.</li>
+ * </ul>
  *
  * <p>The roles of the different generation tools are:<ul>
  * <li>{@link SARLJvmModelInferrer}: Generating the expected Java Ecore model from the SARL Ecore model.</li>
@@ -54,6 +61,9 @@ import io.sarl.lang.typesystem.IOperationHelper;
 public class SARLJvmGenerator extends XtendGenerator {
 
 	@Inject
+	private SARLGrammarKeywordAccess keywords;
+
+	@Inject
 	private IOperationHelper operationHelper;
 
 	@Override
@@ -66,6 +76,34 @@ public class SARLJvmGenerator extends XtendGenerator {
 			}
 		}
 		return super.generateMembersInBody(it, appendable, config);
+	}
+
+	@Override
+	protected ITreeAppendable _generateMember(JvmOperation it, ITreeAppendable appendable, GeneratorConfig config) {
+		//System.err.println("Generates: <" + it.getSimpleName() + ">");
+		if (Utils.STATIC_CONSTRUCTOR_NAME.equals(it.getSimpleName())) {
+			// The constructor name is not the same as the declaring type.
+			// We assume that the constructor is a static constructor.
+			return generateStaticConstructor(it, appendable, config);
+		}
+		return super._generateMember(it, appendable, config);
+	}
+
+	/** Generate a static constructor from the given Jvm constructor.
+	 *
+	 * @param it the container of the code.
+	 * @param appendable the output.
+	 * @param config the generation configuration.
+	 * @return the appendable.
+	 */
+	protected ITreeAppendable generateStaticConstructor(JvmOperation it, ITreeAppendable appendable, GeneratorConfig config) {
+		appendable.newLine();
+		appendable.openScope();
+		generateJavaDoc(it, appendable, config);
+		final ITreeAppendable tracedAppendable = appendable.trace(it);
+		tracedAppendable.append(this.keywords.getStaticStaticKeyword()).append(" "); //$NON-NLS-1$
+		generateExecutableBody(it, tracedAppendable, config);
+		return appendable;
 	}
 
 }

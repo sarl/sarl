@@ -121,6 +121,12 @@ public final class Utils {
 	 */
 	public static final String HIDDEN_MEMBER_CHARACTER = "$"; //$NON-NLS-1$
 
+	/** Name of a static initializer.
+	 *
+	 * @since 0.6
+	 */
+	public static final String STATIC_CONSTRUCTOR_NAME = "static$new"; //$NON-NLS-1$
+
 	private static final String PREFIX_DEFAULT_VALUE = HIDDEN_MEMBER_CHARACTER + "DEFAULT_VALUE" //$NON-NLS-1$
 			+ HIDDEN_MEMBER_CHARACTER;
 

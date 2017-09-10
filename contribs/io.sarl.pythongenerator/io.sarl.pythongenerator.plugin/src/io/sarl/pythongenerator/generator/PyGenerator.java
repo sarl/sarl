@@ -382,20 +382,30 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 
 	/** Generate the Python code for an executable statement.
 	 *
-	 * @param name the name of the exectuable.
+	 * @param name the name of the executable.
 	 * @param executable the executable statement.
+	 * @param appendSelf indicates if the "self" parameter should be added.
 	 * @param isAbstract indicates if the executable is abstract.
 	 * @param returnType the type of the value to be returned, or {@code null} if void.
 	 * @param it the target for the generated content.
 	 * @param context the context.
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
-	protected void generateExecutable(String name, XtendExecutable executable, boolean isAbstract,
+	protected void generateExecutable(String name, XtendExecutable executable, boolean appendSelf, boolean isAbstract,
 			JvmTypeReference returnType, PyAppendable it, IExtraLanguageGeneratorContext context) {
 		it.append("def ").append(name); //$NON-NLS-1$
-		it.append("(self"); //$NON-NLS-1$
+		it.append("("); //$NON-NLS-1$
+		boolean firstParam = true;
+		if (appendSelf) {
+			firstParam = false;
+			it.append("self"); //$NON-NLS-1$
+		}
 		for (final XtendParameter parameter : executable.getParameters()) {
-			it.append(", "); //$NON-NLS-1$
+			if (firstParam) {
+				firstParam = false;
+			} else {
+				it.append(", "); //$NON-NLS-1$
+			}
 			if (parameter.isVarArg()) {
 				it.append("*"); //$NON-NLS-1$
 			}
@@ -748,7 +758,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 */
 	protected void _generate(SarlAction action, PyAppendable it, IExtraLanguageGeneratorContext context) {
 		final String feature = getFeatureNameConverter(context).convertDeclarationName(action.getName(), action);
-		generateExecutable(feature, action, action.isAbstract(),
+		generateExecutable(feature, action, !action.isStatic(), action.isAbstract(),
 				action.getReturnType(), it, context);
 	}
 
@@ -759,7 +769,12 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param context the context.
 	 */
 	protected void _generate(SarlConstructor constructor, PyAppendable it, IExtraLanguageGeneratorContext context) {
-		generateExecutable("__init__", constructor, false, null, it, context); //$NON-NLS-1$
+		if (constructor.isStatic()) {
+			generateExecutable("___static_init___", constructor, false, false, null, it, context); //$NON-NLS-1$
+			it.newLine().append("___static_init___()"); //$NON-NLS-1$
+		} else {
+			generateExecutable("__init__", constructor, true, false, null, it, context); //$NON-NLS-1$
+		}
 	}
 
 	/** Generate the given object.

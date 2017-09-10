@@ -1441,7 +1441,24 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	@Override
 	protected void transform(final XtendConstructor source, final JvmGenericType container) {
+		final String constructorName = container.getSimpleName();
+
+		// Special case: static constructor
+		if (source.isStatic()) {
+			final JvmOperation staticConstructor = this.typesFactory.createJvmOperation();
+			container.getMembers().add(staticConstructor);
+			this.associator.associatePrimary(source, staticConstructor);
+			staticConstructor.setSimpleName(Utils.STATIC_CONSTRUCTOR_NAME);
+			staticConstructor.setVisibility(JvmVisibility.PRIVATE);
+			staticConstructor.setStatic(true);
+			staticConstructor.setReturnType(this._typeReferenceBuilder.typeRef(Void.TYPE));
+			setBody(staticConstructor, source.getExpression());
+			copyAndCleanDocumentationTo(source, staticConstructor);
+			return;
+		}
+
 		final GenerationContext context = getContext(container);
+
 		final boolean isVarArgs = Utils.isVarArg(source.getParameters());
 
 		// Generate the unique identifier of the constructor.
@@ -1457,7 +1474,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		container.getMembers().add(constructor);
 		this.associator.associatePrimary(source, constructor);
 		final JvmVisibility visibility = source.getVisibility();
-		constructor.setSimpleName(container.getSimpleName());
+		constructor.setSimpleName(constructorName);
 		constructor.setVisibility(visibility);
 		constructor.setVarArgs(isVarArgs);
 

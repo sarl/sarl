@@ -176,6 +176,27 @@ public final class IssueCodes {
 	public static final String INVALID_EXTRA_LANGUAGE_GENERATION =
 			ISSUE_CODE_PREFIX + "invalid_extra_language_generation"; //$NON-NLS-1$
 
+	/**
+	 * The formal parameter is not expected at this location.
+	 * @since 0.6
+	 */
+	public static final String UNEXPECTED_FORMAL_PARAMETER =
+			ISSUE_CODE_PREFIX + "unexpected_formal_parameter"; //$NON-NLS-1$
+
+	/**
+	 * The exception throw is not expected at this location.
+	 * @since 0.6
+	 */
+	public static final String UNEXPECTED_EXCEPTION_THROW =
+			ISSUE_CODE_PREFIX + "unexpected_exception_throw"; //$NON-NLS-1$
+
+	/**
+	 * A body is missed.
+	 * @since 0.6
+	 */
+	public static final String MISSING_BODY =
+			ISSUE_CODE_PREFIX + "missing_body"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

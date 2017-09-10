@@ -95,6 +95,7 @@ import java.util.TreeMap;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -135,6 +136,7 @@ import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.util.JavaVersion;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.util.XtextVersion;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
@@ -161,6 +163,7 @@ import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.Override
 import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
+import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.EarlyExit;
@@ -219,8 +222,12 @@ import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
 public class SARLValidator extends AbstractSARLValidator {
 
 	@SuppressWarnings("synthetic-access")
-	private final SARLModifierValidator constructorModifierValidator = new SARLModifierValidator(
+	private final SARLModifierValidator constructorModifierValidatorForSpecialContainer = new SARLModifierValidator(
 			newArrayList(SARLValidator.this.visibilityModifers));
+
+	@SuppressWarnings("synthetic-access")
+	private final SARLModifierValidator staticConstructorModifierValidator = new SARLModifierValidator(
+			newArrayList("static")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator agentModifierValidator = new SARLModifierValidator(
@@ -355,6 +362,9 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private IQualifiedNameConverter qualifiedNameConverter;
+
+	@Inject
+	private ReadAndWriteTracking readAndWriteTracking;
 
 	// Update thet annotation target information
 	{
@@ -609,13 +619,15 @@ public class SARLValidator extends AbstractSARLValidator {
 	protected void checkModifiers(XtendConstructor constructor) {
 		final XtendTypeDeclaration declaringType = constructor.getDeclaringType();
 		if (declaringType != null) {
+			final String typeName = declaringType.getName();
+			final String msg = MessageFormat.format(Messages.SARLValidator_61, typeName);
 			if (declaringType instanceof SarlEvent
 					|| declaringType instanceof SarlAgent
 					|| declaringType instanceof SarlSkill
 					|| declaringType instanceof SarlBehavior) {
-				final String typeName = ((XtendTypeDeclaration) constructor.eContainer()).getName();
-				this.constructorModifierValidator.checkModifiers(constructor,
-						MessageFormat.format(Messages.SARLValidator_9, typeName));
+				this.constructorModifierValidatorForSpecialContainer.checkModifiers(constructor, msg);
+			} else if (constructor.isStatic()) {
+				this.staticConstructorModifierValidator.checkModifiers(constructor, msg);
 			} else {
 				super.checkModifiers(constructor);
 			}
@@ -874,7 +886,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkFinalFieldInitialization(SarlEvent event) {
 		final JvmGenericType inferredType = this.associations.getInferredType(event);
 		if (inferredType != null) {
-			super.checkFinalFieldInitialization(inferredType);
+			checkFinalFieldInitialization(inferredType);
 		}
 	}
 
@@ -886,7 +898,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkFinalFieldInitialization(SarlBehavior behavior) {
 		final JvmGenericType inferredType = this.associations.getInferredType(behavior);
 		if (inferredType != null) {
-			super.checkFinalFieldInitialization(inferredType);
+			checkFinalFieldInitialization(inferredType);
 		}
 	}
 
@@ -898,7 +910,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkFinalFieldInitialization(SarlSkill skill) {
 		final JvmGenericType inferredType = this.associations.getInferredType(skill);
 		if (inferredType != null) {
-			super.checkFinalFieldInitialization(inferredType);
+			checkFinalFieldInitialization(inferredType);
 		}
 	}
 
@@ -910,7 +922,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkFinalFieldInitialization(SarlAgent agent) {
 		final JvmGenericType inferredType = this.associations.getInferredType(agent);
 		if (inferredType != null) {
-			super.checkFinalFieldInitialization(inferredType);
+			checkFinalFieldInitialization(inferredType);
 		}
 	}
 
@@ -2378,6 +2390,103 @@ public class SARLValidator extends AbstractSARLValidator {
 					expression,
 					null);
 		}
+	}
+
+
+	/** Check for a valid prototype of a static constructor.
+	 *
+	 * @param constructor the constructor to analyze.
+	 */
+	@Check
+	public void checkStaticConstructorPrototype(XtendConstructor constructor) {
+		if (constructor.isStatic()) {
+			if (!constructor.getAnnotations().isEmpty()) {
+				error(Messages.SARLValidator_23,
+						constructor,
+						XtendPackage.eINSTANCE.getXtendAnnotationTarget_Annotations(),
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						org.eclipse.xtend.core.validation.IssueCodes.ANNOTATION_WRONG_TARGET);
+			}
+			if (!constructor.getTypeParameters().isEmpty()) {
+				error(Messages.SARLValidator_24,
+						constructor,
+						XtendPackage.eINSTANCE.getXtendExecutable_TypeParameters(),
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						org.eclipse.xtend.core.validation.IssueCodes.CONSTRUCTOR_TYPE_PARAMS_NOT_SUPPORTED);
+			}
+			if (!constructor.getParameters().isEmpty()) {
+				error(Messages.SARLValidator_26,
+						constructor,
+						XtendPackage.eINSTANCE.getXtendExecutable_Parameters(),
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						IssueCodes.UNEXPECTED_FORMAL_PARAMETER);
+			}
+			if (!constructor.getExceptions().isEmpty()) {
+				error(Messages.SARLValidator_27,
+						constructor,
+						XtendPackage.eINSTANCE.getXtendExecutable_Parameters(),
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						IssueCodes.UNEXPECTED_EXCEPTION_THROW);
+			}
+			if (constructor.getExpression() == null) {
+				error(Messages.SARLValidator_83,
+						constructor,
+						XtendPackage.eINSTANCE.getXtendExecutable_Expression(),
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						IssueCodes.MISSING_BODY);
+			}
+		}
+	}
+
+	@Override
+	protected boolean isInitialized(JvmField input) {
+		if (super.isInitialized(input)) {
+			return true;
+		}
+		// Check initialization into a static constructor.
+		final XtendField sarlField = (XtendField) this.associations.getPrimarySourceElement(input);
+		if (sarlField == null) {
+			return false;
+		}
+		final XtendTypeDeclaration declaringType = sarlField.getDeclaringType();
+		if (declaringType == null) {
+			return false;
+		}
+		for (final XtendConstructor staticConstructor : Iterables.filter(Iterables.filter(
+				declaringType.getMembers(), XtendConstructor.class), (it) -> it.isStatic())) {
+			if (staticConstructor.getExpression() != null) {
+				for (final XAssignment assign : EcoreUtil2.getAllContentsOfType(staticConstructor.getExpression(), XAssignment.class)) {
+					if (assign.isStatic() && Strings.equal(input.getIdentifier(), assign.getFeature().getIdentifier())) {
+						// Mark the field as initialized in order to be faster during the next initialization test.
+						this.readAndWriteTracking.markInitialized(input, null);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	protected void checkAssignment(XExpression expression, EStructuralFeature feature, boolean simpleAssignment) {
+		if (simpleAssignment && expression instanceof XAbstractFeatureCall) {
+			final JvmIdentifiableElement assignmentFeature = ((XAbstractFeatureCall) expression).getFeature();
+			if (assignmentFeature instanceof JvmField) {
+				final JvmField field = (JvmField) assignmentFeature;
+				if (!field.isFinal()) {
+					return;
+				}
+				final JvmIdentifiableElement container = getLogicalContainerProvider().getNearestLogicalContainer(expression);
+				if (container != null && container instanceof JvmOperation) {
+					final JvmOperation operation = (JvmOperation) container;
+					if (operation.isStatic() && field.getDeclaringType() == operation.getDeclaringType()
+						&& Utils.STATIC_CONSTRUCTOR_NAME.equals(operation.getSimpleName())) {
+						return;
+					}
+				}
+			}
+		}
+		super.checkAssignment(expression, feature, simpleAssignment);
 	}
 
 	/** The modifier validator for constructors.
