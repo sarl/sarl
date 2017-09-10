@@ -27,6 +27,7 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
+import org.eclipse.xtext.generator.IGenerator2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
@@ -39,6 +40,8 @@ import io.sarl.lang.bugfixes.pending.bug621.Bug621SARLValidator;
 import io.sarl.lang.bugfixes.refused.bug623.Bug623SARLReentrantTypeResolver;
 import io.sarl.lang.bugfixes.unpublished.bug356.Bug356ImportedNamespaceScopeProvider;
 import io.sarl.lang.bugfixes.unpublished.bug356.Bug356QualifiedNameConverter;
+import io.sarl.lang.compiler.SARLJvmGenerator;
+import io.sarl.lang.compiler.extra.ExtraLanguageGeneratorSupport;
 import io.sarl.lang.validation.ConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.SARLValidator;
@@ -97,6 +100,9 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 		binder.bind(ConfigurableIssueSeveritiesProvider.class).toProvider(provider);
 		binder.bind(IssueSeveritiesProvider.class).toProvider(provider);
 		binder.bind(IConfigurableIssueSeveritiesProvider.class).toProvider(provider);
+		// Configure the extra generator/validator provider.
+		binder.bind(IGenerator2.class).annotatedWith(Names.named(ExtraLanguageGeneratorSupport.MAIN_GENERATOR_NAME))
+				.to(SARLJvmGenerator.class);
 	}
 
 	@Override
