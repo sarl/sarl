@@ -27,50 +27,54 @@ differences between the SARL, Java and Xtend languages regarding the supports of
 <table><thead>
 <tr><th></th><th>SARL</th><th>Java</th><th>Xtend</th></tr>
 </thead><tbody>
-<tr><td>Object-oriented enumeration</td>
-			<td>No, only constants could be defined</td>
-			<td>Yes, constants and functions could be defined</td>
-			<td>No, only constants could be defined</td></tr>
-<tr><td>Definition of dispatching functions</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>Yes</td></tr>
-<tr><td>Extension methods</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>Yes</td></tr>
+<tr><td>[Object-oriented enumeration](#Enumeration)</td>
+			<td style="background: orange; color: white;">No, only constants could be defined</td>
+			<td style="background: green; color: white;">Yes, constants and functions could be defined</td>
+			<td style="background: orange; color: white;">No, only constants could be defined</td></tr>
 <tr><td>[Definition of static constructors](#static-constructor-definition)</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td></tr>
+<tr><td>Definition of dispatch functions</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>[Extension methods](./general/Extension.md)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>[Definition of variadic functions](./general/FuncDecls.md#variadic-function)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>[Definition of default values for the formal parameters](./general/FuncDecls.md#default-value-for-the-formal-parameters)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td></tr>
+<tr><td>[Definition of lambda expressions](./general/Lambda.md)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>[Inference of types](./general/VarDecls.md#typing)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>[Operator overloading](./general/Operators.md##operator-overloading)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes</td></tr>
 <tr><td>Automatic generation of equals() and hashCode()</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>No</td></tr>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td></tr>
 <tr><td>Automatic generation of clone() when cloneable type</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>No</td></tr>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td></tr>
 <tr><td>Automatic generation of serialVersionUID when serializable type</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>No</td></tr>
-<tr><td>Definition of default values for the formal parameters</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>No</td></tr>
-<tr><td>Definition of lambda expressions</td>
-			<td>Yes</td>
-			<td>Yes</td>
-			<td>Yes</td></tr>
-<tr><td>Inference of types</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>Yes</td></tr>
-<tr><td>Operator overriding</td>
-			<td>Yes</td>
-			<td>No</td>
-			<td>Yes</td></tr>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td></tr>
 </tbody></table>
 
 
@@ -246,6 +250,25 @@ Static constructors have the following properties:
 * A static constructor cannot be called directly.
 * The user has no control on when the static constructor is executed in the program.
 * A static constructor cannot throw an exception, except an *unchecked exception* (instance of `RuntimeException` or `Error`).
+
+
+
+### Field Definition
+
+A field could be declared into a class following the [variable declaration syntax](./general/VarDecls.md).
+
+A field may be declared with the [:staticmodifier:] modifier. In this case, it becomes a static field, or class variable.
+A static field is a variable defined in a class of which a single copy exists, regardless of how many instances of the class exist.
+A static field is not an instance variable. It is a special type of class attribute (or class property, field, or data member).
+
+
+### Method Definition
+
+A method could be declared into a class following the [function declaration syntax](./general/FuncDecls.md).
+The overriding of an inhertited method is explained in section ["Method Overriding"](#method-overriding).
+
+A method may be declared with the [:staticmodifier:] modifier. In this case, it becomes a static method, or class method.
+A static method is a function that is not associated to a specific instance of the class.
 
 
 
