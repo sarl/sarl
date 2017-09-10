@@ -39,6 +39,10 @@ differences between the SARL, Java and Xtend languages regarding the supports of
 			<td>Yes</td>
 			<td>No</td>
 			<td>Yes</td></tr>
+<tr><td>[Definition of static constructors](#static-constructor-definition)</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td></tr>
 <tr><td>Automatic generation of equals() and hashCode()</td>
 			<td>Yes</td>
 			<td>No</td>
@@ -211,6 +215,38 @@ If no constructor is defined in the type and a super-type is declared, implicit 
 Implicit constructors has the same prototypes as the constructors of the super type.
 Details on implicit constructors are given in the reference documentation related to the
 [synthetic functions](./general/SyntheticFunctions.md).
+
+### Static Constructor Definition
+
+A static constructor is used to initialize any static data, or to perform a particular action that needs to
+be performed once only. It is called automatically before the first instance is created or any static members are referenced.
+In the Java programming language, the static constructor is known as *static initialization block*.
+
+In the following example, the static field [:astaticfield:] is defined with the `final` modifier.
+It means the field must be intialized into the field declaration or into a static constructor.
+The static constructor is defined with the [:newkw:] prefixed by the [:staticmodifier:].
+The code block of the static constructor contains an assignment that is initializing the [:astaticfield:] field.
+
+		[:Success:]
+			package io.sarl.docs.reference.oop
+			[:On]
+			class MyClass {
+			  static val [:astaticfield](staticField) : int
+			  
+			  static [:newkw!] {
+			    staticField = 2
+			  }
+			}
+		[:End:]
+
+Static constructors have the following properties:
+
+* A static constructor does not take access modifiers or have parameters.
+* A static constructor is called automatically to initialize the class before the first instance is created.
+* A static constructor cannot be called directly.
+* The user has no control on when the static constructor is executed in the program.
+* A static constructor cannot throw an exception, except an *unchecked exception* (instance of `RuntimeException` or `Error`).
+
 
 
 ### Modifiers
