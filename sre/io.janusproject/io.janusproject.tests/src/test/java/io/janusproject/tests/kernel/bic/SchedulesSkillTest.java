@@ -35,6 +35,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -501,6 +502,7 @@ public class SchedulesSkillTest {
 		}
 
 		@Test
+		@Ignore
 		public void autodestroyTaskLaunchedFromBehavior() throws Exception {
 			runJanus(InitiatorTestingAgent.class);
 			Collection<String> collection = getResult(Collection.class, 0);

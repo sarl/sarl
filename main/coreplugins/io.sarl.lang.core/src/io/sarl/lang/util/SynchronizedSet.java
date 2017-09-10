@@ -46,13 +46,6 @@ import java.util.Set;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface SynchronizedSet<E> extends Set<E> {
-
-	/**
-	 * Replies the mutex that is used to synchronized the access to this set.
-	 *
-	 * @return the mutex.
-	 */
-	Object mutex();
-
+public interface SynchronizedSet<E> extends SynchronizedIterable<E>, Set<E> {
+	//
 }

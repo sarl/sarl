@@ -106,11 +106,11 @@ The boolean operators are listed below. Each operator takes one or two boolean v
 replies the boolean value resulting from the operational semantic of the operator. 
 
 
-| Operator        | Function Name  | Operator Semantic          |
-| --------------- | -------------- | -------------------------- |
-| a || b          | operator\_or   | If a then true else b.     | [:Fact:]$true || false$
-| a &amp;&amp;& b | operator\_and  | If a then b else false.    | [:Fact:]$true && true$
-| ! a             | operator\_not  | If a then false else true. | [:Fact:]$!false$
+| Operator         | Function Name  | Operator Semantic          |
+| ---------------- | -------------- | -------------------------- |
+| a &#124;&#124; b | operator\_or   | If a then true else b.     | [:Fact:]$true || false$
+| a &amp;&amp; b   | operator\_and  | If a then b else false.    | [:Fact:]$true && true$
+| ! a              | operator\_not  | If a then false else true. | [:Fact:]$!false$
 
 
 Each operator has an associated function name. This function contains
@@ -148,6 +148,17 @@ Each operator has an associated function name. This function contains
 the concrete implementation of the operational semantic of the
 operator. This function can be redefined as explained in the 
 [operator overloading section](#operator_overloading).
+
+Additional bitwise operators are available into the SARL library, but not associated to any operator:
+
+
+| Operator         | Operator Semantic                     |
+| ---------------- | ------------------------------------- |
+| a.bitwiseAnd(b)  | Do a bit-per-bit AND operation.       | [:Fact:]$1.bitwiseAnd(2)$
+| a.bitwiseOr(b)   | Do a bit-per-bit OR operation.        | [:Fact:]$1.bitwiseOr(2)$
+| a.bitwiseXor(b)  | Do a bit-per-bit XOR operation.       | [:Fact:]$1.bitwiseXor(2)$
+| a.bitwiseNot     | Do a bit-per-bit NEGATION operation.  | [:Fact:]$1.bitwiseNot$
+
 
 
 ## String Operators

@@ -70,11 +70,7 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 		return installationOrder;
 	}
 
-	/**
-	 * Replies the logger.
-	 *
-	 * @return the logger.
-	 */
+	@Override
 	public Logger getLogger() {
 		return this.logger;
 	}

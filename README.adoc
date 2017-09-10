@@ -180,11 +180,13 @@ Please read the link:./CONTRIBUTING.adoc[guidelines for contributors].
 
 == 6. Authors and Contributors
 
+* image:https://avatars.githubusercontent.com/klmp200[width="50px",link=https://github.com/klmp200] Antoine Bartuccio, fireworks and Sierpinski fractal examples.
 * image:https://avatars.githubusercontent.com/m-ezzat[width="50px",link=https://github.com/m-ezzat] Mohamed Ezzat, code cleaning and optimization.
 * image:https://avatars.githubusercontent.com/jgfoster[width="50px",link=https://github.com/jgfoster] James Foster, documentation contributor.
 * image:https://avatars.githubusercontent.com/gallandarakhneorg[width="50px",link=https://github.com/gallandarakhneorg] link:http://www.multiagent.fr/People:Galland_stephane[Stéphane GALLAND], founder, original and active author.
 * image:https://avatars.githubusercontent.com/ngaud[width="50px",link=https://github.com/ngaud] link:http://www.multiagent.fr/People:Gaud_nicolas[Nicolas GAUD], founder, original and active author.
 * image:https://avatars.githubusercontent.com/jjst[width="50px",link=https://github.com/jjst] Jeremie JOST, documentation contributor.
+* image:https://avatars.githubusercontent.com/tpiotrow[width="50px",link=https://github.com/tpiotrow] Thomas PIOTROWSKI, maven configuration.
 * image:https://avatars.githubusercontent.com/srodriguez[width="50px",link=https://github.com/srodriguez] link:http://gitia.org/members/sebastian-rodriguez[Sebastian RODRIGUEZ], founder, original and active author.
 
 == 7. License of SARL

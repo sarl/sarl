@@ -146,6 +146,14 @@
 
 	<contributors>
 		<contributor>
+			<name>Antoine Bartuccio</name>
+			<email>contact@klmp200.net</email>
+			<url>https://github.com/klmp200</url>
+			<roles>
+				<role>Fireworks and Sierpinski fractal examples</role>
+			</roles>
+		</contributor>
+		<contributor>
 			<name>Mohamed Ezzat</name>
 			<email>mohamed.ezzat@devfactory.com</email>
 			<url>https://github.com/m-ezzat</url>
@@ -167,6 +175,14 @@
 			<url>https://github.com/jjst</url>
 			<roles>
 				<role>Documentation Contributor</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Thomas Piotrowski</name>
+			<email>thomas.piotrowski@utbm.fr</email>
+			<url>https://github.com/tpiotrow</url>
+			<roles>
+				<role>Maven Configuration</role>
 			</roles>
 		</contributor>
 	</contributors>
@@ -459,6 +475,13 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>3.0.2</version>
+				</plugin>
+
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>3.1.0</version>
 				</plugin>
 
 				<plugin>

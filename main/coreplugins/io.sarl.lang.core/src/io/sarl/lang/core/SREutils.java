@@ -23,6 +23,8 @@ package io.sarl.lang.core;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.util.ClearableReference;
+
 /** Utilities for accessing to the part of the SARL API that is dedicated to the
  * SARL run-time environments (SRE).
  *
@@ -51,26 +53,72 @@ public final class SREutils {
 		//
 	}
 
-	/** Replies the data associated to this agent trait by the SRE.
+	/** Replies the data associated to the container by the SRE.
 	 *
 	 * @param <S> the type of the data.
 	 * @param type the type of the data.
-	 * @param trait the trait.
+	 * @param container the container.
 	 * @return the SRE-specific data.
 	 */
 	@Pure
-	public static <S> S getSreSpecificData(AgentTrait trait, Class<S> type) {
-		assert trait != null;
-		return trait.getSreSpecificData(type);
+	public static <S> S getSreSpecificData(SRESpecificDataContainer container, Class<S> type) {
+		assert container != null;
+		return container.getSreSpecificData(type);
 	}
 
-	/** Change the data associated to this agent trait by the SRE.
+	/** Change the data associated to the given container by the SRE.
 	 *
-	 * @param trait the trait.
+	 * @param container the container.
 	 * @param data the SRE-specific data.
 	 */
-	public static void setSreSpecificData(AgentTrait trait, Object data) {
-		trait.setSreSpecificData(data);
+	public static void setSreSpecificData(SRESpecificDataContainer container, Object data) {
+		assert container != null;
+		container.setSreSpecificData(data);
+	}
+
+	/** Change the data associated to the given container by the SRE.
+	 *
+	 * @param <S> the type of the data.
+	 * @param type the type of the data.
+	 * @param container the container.
+	 * @param data the SRE-specific data.
+	 * @return the SRE-specific data that was associated to the container before associating data to it.
+	 * @since 0.6
+	 */
+	public static <S> S setSreSpecificData(SRESpecificDataContainer container, S data, Class<S> type) {
+		assert container != null;
+		final S oldData = container.getSreSpecificData(type);
+		container.setSreSpecificData(data);
+		return oldData;
+	}
+
+	/** Replies the internal skill reference of an agent.
+	 *
+	 * @param agent the agent.
+	 * @param type the type of the capacity.
+	 * @return the skill reference
+	 * @throws UnimplementedCapacityException if the agent has not a skill for the given capacity.
+	 * @since 0.6
+	 */
+	@Pure
+	public static ClearableReference<Skill> getInternalSkillReference(Agent agent, Class<? extends Capacity> type) {
+		return agent.$getSkill(type);
+	}
+
+	/** Casts the internal skill reference of an agent.
+	 *
+	 * @param <S> the type of the capacity.
+	 * @param agent the agent.
+	 * @param reference the reference to cast.
+	 * @param type the type of the capacity.
+	 * @return the skill reference
+	 * @throws UnimplementedCapacityException if the agent has not a skill for the given capacity.
+	 * @since 0.6
+	 */
+	@Pure
+	public static <S extends Capacity> S castInternalSkillReference(Agent agent,
+			ClearableReference<Skill> reference, Class<S> type) {
+		return agent.$castSkill(type, reference);
 	}
 
 }

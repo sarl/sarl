@@ -21,6 +21,7 @@
 
 package io.sarl.util
 
+import java.security.AccessControlException
 import java.security.Principal
 
 import io.sarl.lang.core.Address
@@ -43,7 +44,10 @@ interface RestrictedAccessEventSpace extends EventSpace {
 
 	/**
 	 * Registers the entity inside this space.
-	 * After registering a new agent, the Space should emit a MemberJoined
+	 * The access to the space is control by access rights. If the requester
+	 * has not the correct rights, a {@link AccessControlException} is thrown.
+	 *
+	 * <p>After registering a new agent, the Space should emit a MemberJoined
 	 * event where the source is the address of the newly registered agent.
 	 *
 	 * <p>If the agent is already registered the address is return, but the listener is not replaced.
@@ -52,12 +56,16 @@ interface RestrictedAccessEventSpace extends EventSpace {
 	 * @param requester - object that is requesting the access.
 	 * @return the entity's address in this space
 	 * @fires ParticipantRegistered
+	 * @throws AccessControlException if the requester has not the right to access to the space.
 	 */
 	def register(entity : EventListener, requester : Principal) : Address
 
 	/**
 	 * Registers the entity inside this space.
-	 * After registering a new agent, the Space should emit a MemberJoined
+	 * The access to the space is control by access rights. If the requester
+	 * has not the correct rights, a {@link AccessControlException} is thrown.
+	 *
+	 * <p>After registering a new agent, the Space should emit a MemberJoined
 	 * event where the source is the address of the newly registered agent.
 	 *
 	 * <p>If the agent is already registered the address is return, but the listener is not replaced.
@@ -66,6 +74,7 @@ interface RestrictedAccessEventSpace extends EventSpace {
 	 * @param entity - object that is requesting the access.
 	 * @return the entity's address in this space
 	 * @fires ParticipantRegistered
+	 * @throws AccessControlException if the requester has not the right to access to the space.
 	 */
 	def register(entity : P) : Address with P extends EventListener & Principal
 

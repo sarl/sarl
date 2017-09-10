@@ -10,7 +10,7 @@ SRE executes or interprets compiled SARL code on an "hardware platform."
 The figure below illustrates the compilation process of a SARL program in which the
 run-time environment is involved.
 
-![SARL Generation Process](http://www.sarl.io/images/compilation-process.png)
+![SARL Generation Process](../compilation/compilation_process.png)
 
 The Tiny Multiagent Platform (tinyMAS) is a very small software platform, which permits to implement
 and run agent-based systems. This platform was written by St&eacute;phane GALLAND and Nicolas GAUD for the
@@ -984,6 +984,7 @@ The code is self-explaining.
 		[:Success:]
 			package io.sarl.docs.tutorials.tinyMASSRE
 			import java.util.UUID
+			import java.util.logging.Logger
 			import io.sarl.core.Logging
 			interface AgentIdentifier {
 				def setStringRepresentation(a : String)
@@ -1023,6 +1024,9 @@ The code is self-explaining.
 				def setLogLevel(level : int) {
 				}
 
+				def getLogger : Logger {
+					null
+				}
 
 				def error(message : Object, exception : Throwable = null, parameters : Object*) {
 					System::out.println("[" + getId.getString + "] ERROR: " + message)
@@ -1410,7 +1414,7 @@ with the event source identifier as argument.
 				}
 
 				def isDefaultSpace(^space : Space) : boolean {
-					^space.ID == defaultSpace.spaceID
+					^space.spaceID == defaultSpace.spaceID
 				}
 
 				def isDefaultSpace(^space : SpaceID) : boolean {
@@ -1468,17 +1472,17 @@ The obtained code is:
 			import io.sarl.util.Scopes
 			abstract class DefaultContextInteractionsSkill implements DefaultContextInteractions {
 				def getDefaultSpace : EventSpace { null }
-				def getOwner : Agent
+				def getOwner : Agent { null }
 			[:On]
 				def emit(^event : Event, scope : Scope<Address> = null) {
 					if (^event.source === null) {
 						^event.source = defaultSpace.getAddress(owner.ID)
 					}
-					defaultSpace.emit(^event, scope)
+					defaultSpace.emit(owner.ID, ^event, scope)
 				}
 
 				def willReceive(receiver : UUID, ^event : Event) {
-					emit(^event, Scopes::addresses(defaultSpace.getAddress(receiver)))
+					emit(^event, Scopes::identifiers(receiver))
 				}
 			[:Off]
 			}
@@ -1667,11 +1671,12 @@ Two functions must be implemented for accessing to the internal list of the beha
 		[:Success:]
 			package io.sarl.docs.tutorials.tinyMASSRE
 			import java.util.UUID
-			import java.util.Collection
 			import java.util.List
 			import java.util.ArrayList
 			import io.sarl.lang.core.Behavior
 			import io.sarl.core.Behaviors
+			import io.sarl.util.Collections3
+			import io.sarl.lang.util.SynchronizedIterable
 			abstract class BehaviorsSkill implements Behaviors {
 				var behaviors : List<Behavior>
 				[:On]
@@ -1679,12 +1684,14 @@ Two functions must be implemented for accessing to the internal list of the beha
 					!this.behaviors.isEmpty
 				}
 
-				def getRegisteredBehaviors : Collection<Behavior> {
-					new ArrayList(this.behaviors)
+				def getRegisteredBehaviors : SynchronizedIterable<Behavior> {
+					[:synccolbuild](Collections3::unmodifiableSynchronizedIterable)(this.behaviors, this)
 				}
 				[:Off]
 			}
 		[:End:]
+		
+The function call [:synccolbuild:] is provided by the SARL Development Kit in order to create synchronized collections.
 
 
 #### Updating the tinyMAS agent life-cycle for (un)registering the behaviors
@@ -2165,8 +2172,8 @@ Executing the registered tasks must be supported by a specific function, named `
 This function determines the current time (`currentTime`) in the tinyMAS platform.
 Then, it retrieves the `list` of the tasks to start at the current time.
 
-For each task in the `list`, the function tests if the task was cancelled or not.
-If the task was not cancelled, the function retrieves the task's guard (the condition
+For each task in the `list`, the function tests if the task was canceled or not.
+If the task was not canceled, the function retrieves the task's guard (the condition
 of execution) and evaluates it.
 
 If the task's guard is evaluated to <code>true</code>, the function executes
@@ -2925,8 +2932,8 @@ The obtained code is:
 							agentType = null
 						}
 						var spawnEvent = new AgentSpawned(source,
-								Identifiers::toUUID(id),
-								agentType)
+								agentType,
+								Identifiers::toUUID(id))
 						containingBoot.defaultSpace.emit(spawnEvent)
 					}
 

@@ -21,16 +21,23 @@
 
 package io.sarl.lang.ui.codebuilder;
 
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import com.google.common.collect.Iterables;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.ide.codebuilder.AbstractParameterBuilder;
 import org.eclipse.xtend.ide.codebuilder.XtendMethodBuilder;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
+import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
+import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
+import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
@@ -54,34 +61,122 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 	@Inject
 	private IDefaultVisibilityProvider visiblityProvider;
 
+	@Inject
+	private CommonTypeComputationServices services;
+
+	private List<LightweightTypeReference> fires;
+
+	/** Set the fired types.
+	 *
+	 * @param firedTypes the list of the fired types.
+	 */
+	public void setFires(List<LightweightTypeReference> firedTypes) {
+		this.fires = firedTypes;
+	}
+
+	/** Replies the fired types.
+	 *
+	 * @return the list of the fired types.
+	 */
+	public List<LightweightTypeReference> getFires() {
+		if (this.fires == null) {
+			return Collections.emptyList();
+		}
+		return this.fires;
+	}
+
 	@Override
 	public ISourceAppender build(ISourceAppender appendable) {
+		final ISourceAppender mAppender;
+		if (appendable instanceof SourceAppenderWithTypeMapping) {
+			mAppender = appendable;
+		} else {
+			mAppender = new SourceAppenderWithTypeMapping(appendable, this.keywords);
+		}
 		final JvmVisibility defaultVisibility = this.visiblityProvider.getDefaultJvmVisibility(getOwner(),
 				XtendPackage.eINSTANCE.getXtendFunction());
-		appendVisibility(appendable, getVisibility(), defaultVisibility);
+		appendVisibility(mAppender, getVisibility(), defaultVisibility);
 		if (isStaticFlag()) {
-			appendable.append(this.keywords.getStaticStaticKeyword()).append(" "); //$NON-NLS-1$
+			mAppender.append(this.keywords.getStaticStaticKeyword()).append(" "); //$NON-NLS-1$
 		} else if (isAbstractFlag()) {
-			appendable.append(this.keywords.getAbstractKeyword()).append(" "); //$NON-NLS-1$
+			mAppender.append(this.keywords.getAbstractKeyword()).append(" "); //$NON-NLS-1$
 		}
 		if (isOverrideFlag()) {
-			appendable.append(this.keywords.getOverrideKeyword());
+			mAppender.append(this.keywords.getOverrideKeyword());
 		} else {
-			appendable.append(this.keywords.getDefKeyword());
+			mAppender.append(this.keywords.getDefKeyword());
 		}
-		appendable.append(" "); //$NON-NLS-1$
-		appendable.append(this.keywords.protectKeyword(getMethodName()));
-		appendParameters(appendable);
+		mAppender.append(" "); //$NON-NLS-1$
+		mAppender.append(this.keywords.protectKeyword(getMethodName()));
+		appendParameters(mAppender);
 		final LightweightTypeReference retType = getReturnType();
 		if (retType != null && !retType.isPrimitiveVoid()) {
-			appendable.append(" "); //$NON-NLS-1$
-			appendable.append(this.keywords.getColonKeyword());
-			appendable.append(" "); //$NON-NLS-1$
-			appendType(appendable, retType, void.class.getSimpleName());
+			mAppender.append(" "); //$NON-NLS-1$
+			mAppender.append(this.keywords.getColonKeyword());
+			mAppender.append(" "); //$NON-NLS-1$
+			appendType(mAppender, retType, void.class.getSimpleName());
 		}
-		appendThrowsClause(appendable);
+		appendTypeParameters(mAppender, getTypeParameters());
+		appendThrowsClause(mAppender);
+		appendFiresClause(mAppender);
 		if (!isAbstractFlag()) {
-			appendBody(appendable, ""); //$NON-NLS-1$
+			appendBody(mAppender, ""); //$NON-NLS-1$
+		}
+		return mAppender;
+	}
+
+	/** Append the "fires" clause.
+	 *
+	 * @param appendable the receiver.
+	 * @return the appendable.
+	 */
+	protected ISourceAppender appendFiresClause(ISourceAppender appendable) {
+		final List<LightweightTypeReference> types = getFires();
+		final Iterator<LightweightTypeReference> iterator = types.iterator();
+		if (iterator.hasNext()) {
+			appendable.append(" ").append(this.keywords.getFiresKeyword()).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
+			do {
+				final LightweightTypeReference type = iterator.next();
+				appendable.append(type);
+				if (iterator.hasNext()) {
+					appendable.append(this.keywords.getCommaKeyword()).append(" "); //$NON-NLS-1$
+				}
+			} while (iterator.hasNext());
+		}
+		return appendable;
+	}
+
+	@Override
+	protected ISourceAppender appendTypeParameters(ISourceAppender appendable, List<JvmTypeParameter> typeParameters) {
+		final Iterator<JvmTypeParameter> iterator = typeParameters.iterator();
+		if (iterator.hasNext()) {
+			appendable.append(" ").append(this.keywords.getWithKeyword()).append(" "); //$NON-NLS-1$//$NON-NLS-2$
+			final String objectId = Object.class.getName();
+			do {
+				final JvmTypeParameter typeParameter = iterator.next();
+				appendable.append(this.keywords.protectKeyword(typeParameter.getName()));
+				final Iterable<JvmUpperBound> upperBounds =
+						Iterables.filter(Iterables.filter(typeParameter.getConstraints(), JvmUpperBound.class),
+						(it) -> !it.getTypeReference().getIdentifier().equals(objectId));
+				final Iterator<JvmUpperBound> iterator2 = upperBounds.iterator();
+				if (iterator2.hasNext()) {
+					appendable.append(" ").append(this.keywords.getExtendsKeyword()).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
+					boolean isFirst = true;
+					final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(this.services, getContext());
+					for (final JvmUpperBound upperBound: upperBounds) {
+						if (!isFirst) {
+							appendable.append(" ").append(this.keywords.getAmpersandKeyword()).append(" "); //$NON-NLS-1$ //$NON-NLS-2$
+						}
+						isFirst = false;
+						appendType(appendable,
+								owner.toLightweightTypeReference(upperBound.getTypeReference()),
+								Object.class.getSimpleName());
+					}
+				}
+				if (iterator.hasNext()) {
+					appendable.append(this.keywords.getCommaKeyword()).append(" "); //$NON-NLS-1$
+				}
+			} while (iterator.hasNext());
 		}
 		return appendable;
 	}

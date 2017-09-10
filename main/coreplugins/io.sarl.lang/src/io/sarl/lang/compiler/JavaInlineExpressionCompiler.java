@@ -62,9 +62,6 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
-import io.sarl.lang.generator.GeneratorConfig2;
-import io.sarl.lang.generator.GeneratorConfigProvider2;
-
 
 /** Compiler for creating inline expressions with Java syntax.
  *

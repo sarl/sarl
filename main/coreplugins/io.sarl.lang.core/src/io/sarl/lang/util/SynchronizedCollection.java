@@ -47,13 +47,6 @@ import java.util.Collection;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface SynchronizedCollection<E> extends Collection<E> {
-
-	/**
-	 * Replies the mutex that is used to synchronized the access to this collection.
-	 *
-	 * @return the mutex.
-	 */
-	Object mutex();
-
+public interface SynchronizedCollection<E> extends SynchronizedIterable<E>, Collection<E> {
+	//
 }

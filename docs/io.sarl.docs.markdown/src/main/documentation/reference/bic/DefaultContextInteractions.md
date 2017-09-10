@@ -18,7 +18,7 @@ For instance, the [:emit:] action is a shortcut for:
 				def myaction {
 					var ^event : Event = null
 					[:On]
-					defaultContext.defaultSpace.emit(^event)
+					defaultContext.defaultSpace.emit(getID, ^event)
 					[:Off]
 				}
 			}
@@ -133,7 +133,7 @@ The call to [:emit:] is equivalent to:
 				def myaction {
 					var ^event : Event = null
 					[:On]
-					defaultContext.defaultSpace.emit(^event)
+					defaultContext.defaultSpace.emit(getID, ^event)
 					[:Off]
 				}
 			}
@@ -194,7 +194,7 @@ The following example is equivalent to the feature call of [:emit:] without the 
 		[:End:]
 
 
-A default implementation of a scope using addresses is implemented in the class `[:addressscope](io.sarl.util.[:addressscopebn]$AddressScope$)`. [:Fact:]{typeof([:addressscope!])}
+A default implementation of a scope using addresses, of `Address` type is implemented in the class `[:addressscope](io.sarl.util.[:addressscopebn]$AddressScope$)`. [:Fact:]{typeof([:addressscope!])}
 The utility class [:scopesbn:] provides the [:addresses:] function for creating an instance of [:addressscopebn:].
 
 		[:Success:]
@@ -210,6 +210,28 @@ The utility class [:scopesbn:] provides the [:addresses:] function for creating 
 					var a2 : Address
 					[:On]
 					emit(new MyEvent, [:scopesbn!]::[:addresses](addresses)(a1, a2))
+					[:Off]
+				}
+			}
+		[:End:]
+
+Another default implementation of a scope using identifiers, of `UUID` type is implemented in the class `[:identifierscope](io.sarl.util.[:identifierscopebn]$IdentifierScope$)`. [:Fact:]{typeof([:identifierscope!])}
+The utility class [:scopesbn:] provides the [:identifiers:] function for creating an instance of [:identifierscopebn:].
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import java.util.UUID
+			import io.sarl.core.DefaultContextInteractions
+			import io.sarl.lang.core.Address
+			import [:scopes!]
+			event MyEvent
+			agent A {
+				uses DefaultContextInteractions
+				def myaction {
+					var id1 : UUID
+					var id2 : UUID
+					[:On]
+					emit(new MyEvent, [:scopesbn!]::[:identifiers](identifiers)(id1, id2))
 					[:Off]
 				}
 			}
@@ -350,8 +372,8 @@ the `event.[:isindefaultspace!]` is equivalent to `[:isindefaultspace!](event)`.
  					return isDefaultContext(defaultContext)
 					    || isDefaultContext(defaultContext.ID)
 					    || isDefaultSpace(defaultSpace)
-					    || isDefaultSpace(defaultSpace.ID)
-					    || isDefaultSpace(defaultSpace.ID.ID)
+					    || isDefaultSpace(defaultSpace.spaceID)
+					    || isDefaultSpace(defaultSpace.spaceID.ID)
 				}
 				[:On]
 				on [:eventtype1](AnEvent) [ occurrence.inDefaultSpace ] {

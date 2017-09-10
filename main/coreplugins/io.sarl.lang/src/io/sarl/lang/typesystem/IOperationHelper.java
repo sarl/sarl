@@ -29,7 +29,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
-import io.sarl.lang.actionprototype.InferredPrototype;
+import io.sarl.lang.sarl.actionprototype.InferredPrototype;
 
 /**
  * Helper on operations.
@@ -100,6 +100,6 @@ public interface IOperationHelper {
 	 * @see Pure
 	 * @see #adaptIfPossible(JvmOperation)
 	 */
-	void attachAdapter(JvmOperation operation, Procedure1<IOperationHelper> dynamicCallback);
+	void attachAdapter(JvmOperation operation, Procedure1<? super IOperationHelper> dynamicCallback);
 
 }

@@ -41,8 +41,6 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 
 	private WeakReference<Agent> agentRef;
 
-	private transient Object sreSpecificData;
-
 	/** Construct a trait to the given agent.
 	 *
 	 * @param agent - the owner of this trait.
@@ -199,27 +197,6 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 			return false;
 		}
 		return owner.isFromMe(event);
-	}
-
-	/** Replies the data associated to this agent trait by the SRE.
-	 *
-	 * @param <S> the type of the data.
-	 * @param type the type of the data.
-	 * @return the SRE-specific data.
-	 * @since 0.5
-	 */
-	@Pure
-	<S> S getSreSpecificData(Class<S> type) {
-		return type.cast(this.sreSpecificData);
-	}
-
-	/** Change the data associated to this agent trait by the SRE.
-	 *
-	 * @param data the SRE-specific data.
-	 * @since 0.5
-	 */
-	void setSreSpecificData(Object data) {
-		this.sreSpecificData = data;
 	}
 
 }

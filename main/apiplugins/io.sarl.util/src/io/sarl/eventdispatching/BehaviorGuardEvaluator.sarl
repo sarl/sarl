@@ -52,7 +52,7 @@ final class BehaviorGuardEvaluator {
 	 * @param method - the method to call to evaluate a guard
 	 */
     new (target : Object, method : Method) {
-    	// TODO assert target != null
+    	assert target !== null
         this.target = target
         this.method = method
     }

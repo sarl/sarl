@@ -29,7 +29,7 @@ import com.google.inject.Singleton;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.generator.OutputConfiguration;
 
-import io.sarl.lang.generator.extra.ExtraLanguageOutputConfigurations;
+import io.sarl.lang.compiler.extra.ExtraLanguageOutputConfigurations;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 import io.sarl.pythongenerator.generator.Messages;
 

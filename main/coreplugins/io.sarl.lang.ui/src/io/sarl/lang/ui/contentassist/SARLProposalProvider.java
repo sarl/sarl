@@ -83,7 +83,7 @@ import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.contentassist.general.SARLContentProposalPriorities;
-import io.sarl.lang.ui.images.SARLImages;
+import io.sarl.lang.ui.labeling.SARLImages;
 import io.sarl.lang.util.Utils;
 
 /** Provides proposal for the content assist mechanism.

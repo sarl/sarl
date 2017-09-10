@@ -18,10 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.sarl.util
 
 import io.sarl.lang.util.SynchronizedCollection
+import io.sarl.lang.util.SynchronizedIterable
 import io.sarl.lang.util.SynchronizedSet
 import java.io.ObjectOutputStream
 import java.io.Serializable
@@ -30,7 +30,6 @@ import java.util.Collection
 import java.util.Collections
 import java.util.Iterator
 import java.util.Set
-import java.util.Spliterator
 
 /** Utilities on collections.
  *
@@ -284,7 +283,7 @@ final class Collections3 {
 			throw new UnsupportedOperationException
 		}
 
-		override  remove(element : Object) : boolean {
+		override remove(element : Object) : boolean {
 			throw new UnsupportedOperationException
 		}
 
@@ -418,13 +417,13 @@ final class Collections3 {
 	 * <p>It is imperative that the user manually synchronize on the returned
 	 * set when iterating over it:
 	 * <pre>
-	 *  Set s = Collections.synchronizedSet(new HashSet());
-	 *      ...
-	 *  synchronized (s) {
-	 *      Iterator i = s.iterator(); // Must be in the synchronized block
-	 *      while (i.hasNext())
-	 *          foo(i.next());
-	 *  }
+	 * Set s = Collections.synchronizedSet(new HashSet());
+	 * ...
+	 * synchronized (s) {
+	 * Iterator i = s.iterator(); // Must be in the synchronized block
+	 * while (i.hasNext())
+	 * foo(i.next());
+	 * }
 	 * </pre>
 	 * Failure to follow this advice may result in non-deterministic behavior.
 	 *
@@ -449,13 +448,13 @@ final class Collections3 {
 	 * <p>It is imperative that the user manually synchronize on the returned
 	 * collection when iterating over it:
 	 * <pre>
-	 *  Collection c = Collections.synchronizedCollection(myCollection);
-	 *     ...
-	 *  synchronized (c) {
-	 *      Iterator i = c.iterator(); // Must be in the synchronized block
-	 *      while (i.hasNext())
-	 *         foo(i.next());
-	 *  }
+	 * Collection c = Collections.synchronizedCollection(myCollection);
+	 * ...
+	 * synchronized (c) {
+	 * Iterator i = c.iterator(); // Must be in the synchronized block
+	 * while (i.hasNext())
+	 * foo(i.next());
+	 * }
 	 * </pre>
 	 * Failure to follow this advice may result in non-deterministic behavior.
 	 *
@@ -515,13 +514,13 @@ final class Collections3 {
 	 * <p>It is imperative that the user manually synchronize on the returned
 	 * set when iterating over it:
 	 * <pre>
-	 *  Set s = Collections.synchronizedSet(new HashSet());
-	 *      ...
-	 *  synchronized (s) {
-	 *      Iterator i = s.iterator(); // Must be in the synchronized block
-	 *      while (i.hasNext())
-	 *          foo(i.next());
-	 *  }
+	 * Set s = Collections.synchronizedSet(new HashSet());
+	 * ...
+	 * synchronized (s) {
+	 * Iterator i = s.iterator(); // Must be in the synchronized block
+	 * while (i.hasNext())
+	 * foo(i.next());
+	 * }
 	 * </pre>
 	 * Failure to follow this advice may result in non-deterministic behavior.
 	 *
@@ -536,5 +535,62 @@ final class Collections3 {
 	static def unmodifiableSynchronizedSet(elements : Set<T>, mutex : Object) : SynchronizedSet<T> with T {
 		new UnmodifiableSynchronizedSetWrapper(elements, mutex)
 	}
+	/** 
+	 * Returns an immutable synchronized (thread-safe) iterable  backed by the specified
+	 * iterable.  In order to guarantee serial access, it is critical that
+	 * <strong>all</strong> access to the backing set is accomplished
+	 * through the returned set.
+	 * 
+	 * <p>It is imperative that the user manually synchronize on the returned
+	 * set when iterating over it:
+	 * <pre>
+	 * Set s = Collections.synchronizedSet(new HashSet());
+	 * ...
+	 * synchronized (s) {
+	 * Iterator i = s.iterator(); // Must be in the synchronized block
+	 * while (i.hasNext())
+	 * foo(i.next());
+	 * }
+	 * </pre>
+	 * Failure to follow this advice may result in non-deterministic behavior.
+	 * 
+	 * <p>The returned set will be serializable if the specified set is
+	 * serializable.
+	 * 
+	 * @param <T> - type of the elements in the iterable.
+	 * @param elements - the set to transform as unmodifiable set.
+	 * @param mutex is the mutex to use for synchronizing.
+	 * @return an unmodifiable synchronized iterable.
+	 */
+	static def unmodifiableSynchronizedIterable(elements : Iterable<T>, mutex : Object) : SynchronizedIterable<T> with T {
+		new UnmodifiableSynchronizedIterableWrapper(elements, mutex)
+	}
+	/** Unmodifiable synchronized iterable.
+	 * 
+	 * @param <E> the type of the elements in the collection.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class UnmodifiableSynchronizedIterableWrapper<E> implements SynchronizedIterable<E> {
 
+		val iterable : Iterable<E>
+
+		val mutex : Object
+
+		package new (iterable : Iterable<E>, mutex : Object) {
+			this.iterable = iterable
+			this.mutex = mutex
+		}
+
+		override iterator : Iterator<E> {
+			new UnmodifiableIterator(this.iterable.iterator)
+		}
+
+		override mutex : Object {
+			return this.mutex
+		}
+
+	}
 }

@@ -599,7 +599,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	 *
 	 * @param monitor the progress monitor
 	 * @throws CoreException thrown when the project creation or configuration failed
-	 * @throws InterruptedException thrown when the user cancelled the project creation
+	 * @throws InterruptedException thrown when the user canceled the project creation
 	 */
 	public void performFinish(IProgressMonitor monitor) throws CoreException, InterruptedException {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 4);

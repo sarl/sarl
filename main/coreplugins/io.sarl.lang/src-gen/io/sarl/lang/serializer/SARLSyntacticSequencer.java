@@ -597,6 +597,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) '[' declaredFormalParameters+=JvmFormalParameter
 	 *     (rule start) (ambiguity) '[' explicitSyntax?='|'
 	 *     (rule start) (ambiguity) '[' expression=XExpressionInClosure
+	 *     (rule start) (ambiguity) 'assert' condition=XExpression
 	 *     (rule start) (ambiguity) 'break' (rule start)
 	 *     (rule start) (ambiguity) 'do' body=XExpression
 	 *     (rule start) (ambiguity) 'false' (rule start)
@@ -625,6 +626,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) feature=[JvmIdentifiableElement|FeatureCallID]
 	 *     (rule start) (ambiguity) feature=[JvmIdentifiableElement|IdOrSuper]
 	 *     (rule start) (ambiguity) feature=[JvmIdentifiableElement|OpUnary]
+	 *     (rule start) (ambiguity) isStatic?='assume'
 	 *     (rule start) (ambiguity) isTrue?='true'
 	 *     (rule start) (ambiguity) value=Number
 	 *     (rule start) (ambiguity) value=STRING
@@ -653,6 +655,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) '[' declaredFormalParameters+=JvmFormalParameter
 	 *     (rule start) (ambiguity) '[' explicitSyntax?='|'
 	 *     (rule start) (ambiguity) '[' expression=XExpressionInClosure
+	 *     (rule start) (ambiguity) 'assert' condition=XExpression
 	 *     (rule start) (ambiguity) 'break' ')' (rule start)
 	 *     (rule start) (ambiguity) 'do' body=XExpression
 	 *     (rule start) (ambiguity) 'false' ')' (rule start)
@@ -681,6 +684,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) feature=[JvmIdentifiableElement|FeatureCallID]
 	 *     (rule start) (ambiguity) feature=[JvmIdentifiableElement|IdOrSuper]
 	 *     (rule start) (ambiguity) feature=[JvmIdentifiableElement|OpUnary]
+	 *     (rule start) (ambiguity) isStatic?='assume'
 	 *     (rule start) (ambiguity) isTrue?='true'
 	 *     (rule start) (ambiguity) value=Number
 	 *     (rule start) (ambiguity) value=STRING

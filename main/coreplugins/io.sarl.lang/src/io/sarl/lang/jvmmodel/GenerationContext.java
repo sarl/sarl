@@ -42,11 +42,11 @@ import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import io.sarl.lang.SARLVersion;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.generator.GeneratorConfig2;
-import io.sarl.lang.generator.IGeneratorConfigProvider2;
+import io.sarl.lang.compiler.GeneratorConfig2;
+import io.sarl.lang.compiler.IGeneratorConfigProvider2;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
+import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 
 /** Describe generation context.
  *
@@ -111,7 +111,7 @@ abstract class GenerationContext {
 	 * evaluating guards and returning the event handler runnables.
 	 */
 	@SuppressWarnings("unchecked")
-	private final Map<String, Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>> guardEvaluators
+	private final Map<String, Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>>> guardEvaluators
 			= CollectionLiterals.newHashMap();
 
 	/** The context object.
@@ -209,7 +209,7 @@ abstract class GenerationContext {
 	 *
 	 * @return the guard evaluators.
 	 */
-	public Collection<Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>>>
+	public Collection<Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>>>
 			getGuardEvaluationCodes() {
 		return this.guardEvaluators.values();
 	}
@@ -219,11 +219,11 @@ abstract class GenerationContext {
 	 * @param source the source of the guard evaluation.
 	 * @return the guard evaluators.
 	 */
-	public Collection<Procedure1<ITreeAppendable>> getGuardEvalationCodeFor(SarlBehaviorUnit source) {
+	public Collection<Procedure1<? super ITreeAppendable>> getGuardEvalationCodeFor(SarlBehaviorUnit source) {
 		assert source != null;
 		final String id = source.getName().getIdentifier();
-		final Collection<Procedure1<ITreeAppendable>> evaluators;
-		final Pair<SarlBehaviorUnit, Collection<Procedure1<ITreeAppendable>>> pair = this.guardEvaluators.get(id);
+		final Collection<Procedure1<? super ITreeAppendable>> evaluators;
+		final Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>> pair = this.guardEvaluators.get(id);
 		if (pair == null) {
 			evaluators = new ArrayList<>();
 			this.guardEvaluators.put(id, new Pair<>(source, evaluators));

@@ -37,13 +37,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.core.Flags;
+import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
@@ -56,12 +60,18 @@ import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmLowerBound;
 import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeConstraint;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
+import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -71,6 +81,9 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationElementValuePair;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
+import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator;
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Inline;
@@ -80,15 +93,17 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
+import org.eclipse.xtext.xtype.XFunctionTypeRef;
+import org.eclipse.xtext.xtype.XtypeFactory;
 import org.osgi.framework.Version;
 
 import io.sarl.lang.SARLVersion;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlFormalParameter;
+import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.ActionPrototype;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /**
@@ -1195,7 +1210,10 @@ public final class Utils {
 		if (type != null && type.isInterface()) {
 			final Map<ActionPrototype, JvmOperation> operations = new HashMap<>();
 			populateInterfaceElements(type, operations, null, sarlSignatureProvider);
-			return operations.size() == 1;
+			if (operations.size() == 1) {
+				final JvmOperation op = operations.values().iterator().next();
+				return !op.isStatic() && !op.isDefault();
+			}
 		}
 		return false;
 	}
@@ -1240,7 +1258,7 @@ public final class Utils {
 	 * @since 0.5
 	 * @see EcoreUtil2#getContainerOfType(EObject, Class)
 	 */
-	public static EObject getFirstContainerForPredicate(EObject element, Function1<EObject, Boolean> predicate) {
+	public static EObject getFirstContainerForPredicate(EObject element, Function1<? super EObject, ? extends Boolean> predicate) {
 		if (predicate == null || element == null) {
 			return null;
 		}
@@ -1345,6 +1363,245 @@ public final class Utils {
 			buffer.append('}');
 		}
 		return buffer.toString();
+	}
+
+	/** Clone the given type reference that for being link to the given operation.
+	 *
+	 * <p>The proxies are not resolved, and the type parameters are clone when they are
+	 * related to the type parameter of the type container.
+	 *
+	 * @param type the source type.
+	 * @param forOperation the operation that will contain the result type.
+	 * @param typeParameterBuilder the builder if type parameter.
+	 * @param typeBuilder the builder of type.
+	 * @param typeReferences the builder of type references.
+	 * @param jvmTypesFactory the factory of Jvm types.
+	 * @param associator the associator to use, or {@code null} if none.
+	 * @return the result type, i.e. a copy of the source type.
+	 * @since 0.6
+	 */
+	public static JvmTypeReference cloneWithTypeParametersAndProxies(JvmTypeReference type, JvmOperation forOperation,
+			JvmTypeReferenceBuilder typeParameterBuilder, JvmTypesBuilder typeBuilder,
+			TypeReferences typeReferences, TypesFactory jvmTypesFactory,
+			IJvmModelAssociator associator) {
+		return cloneWithTypeParametersAndProxies(type, forOperation.getTypeParameters(),
+				typeParameterBuilder, typeBuilder, typeReferences, jvmTypesFactory, associator);
+	}
+
+	/** Clone the given type reference that for being link to the given operation.
+	 *
+	 * <p>The proxies are not resolved, and the type parameters are clone when they are
+	 * related to the type parameter of the type container.
+	 *
+	 * @param type the source type.
+	 * @param typeParameters the type parameters of the operation that will contain the result type.
+	 * @param typeParameterBuilder the builder if type parameter.
+	 * @param typeBuilder the builder of type.
+	 * @param typeReferences the builder of type references.
+	 * @param jvmTypesFactory the factory of Jvm types.
+	 * @param associator the associator to use, or {@code null} if none.
+	 * @return the result type, i.e. a copy of the source type.
+	 * @since 0.6
+	 */
+	public static JvmTypeReference cloneWithTypeParametersAndProxies(JvmTypeReference type,
+			List<JvmTypeParameter> typeParameters,
+			JvmTypeReferenceBuilder typeParameterBuilder, JvmTypesBuilder typeBuilder,
+			TypeReferences typeReferences, TypesFactory jvmTypesFactory,
+			IJvmModelAssociator associator) {
+		// TODO: Is similar function exist in Xtext?
+
+		if (type == null) {
+			return typeParameterBuilder.typeRef(Object.class);
+		}
+
+		boolean cloneType = true;
+		JvmTypeReference typeCandidate = type;
+
+		// Use also cloneType as a flag that indicates if the type was already found in type parameters.
+		if (!typeParameters.isEmpty() && cloneType) {
+			if (type instanceof JvmParameterizedTypeReference) {
+				// Try to clone the type parameters.
+				cloneType = false;
+				typeCandidate = cloneAndAssociate(type, typeParameters, typeParameterBuilder,
+						typeReferences, jvmTypesFactory, associator);
+			} else if (type instanceof XFunctionTypeRef) {
+				// Try to clone the function reference.
+				final XFunctionTypeRef functionRef = (XFunctionTypeRef) type;
+				cloneType = false;
+				final XFunctionTypeRef cloneReference = XtypeFactory.eINSTANCE.createXFunctionTypeRef();
+				for (final JvmTypeReference paramType : functionRef.getParamTypes()) {
+					cloneReference.getParamTypes().add(cloneAndAssociate(paramType, typeParameters, typeParameterBuilder,
+							typeReferences, jvmTypesFactory, associator));
+				}
+				cloneReference.setReturnType(cloneAndAssociate(functionRef.getReturnType(), typeParameters,
+						typeParameterBuilder, typeReferences, jvmTypesFactory, associator));
+				cloneReference.setInstanceContext(functionRef.isInstanceContext());
+				typeCandidate = cloneReference;
+			}
+		}
+
+		// Do the clone according to the type of the entity.
+		assert typeCandidate != null;
+		final JvmTypeReference returnType;
+		if (!cloneType) {
+			returnType = typeCandidate;
+		} else {
+			returnType = typeBuilder.cloneWithProxies(typeCandidate);
+		}
+		return returnType;
+	}
+
+	private static JvmTypeReference cloneAndAssociate(
+			final JvmTypeReference type,
+			final List<JvmTypeParameter> typeParameters,
+			JvmTypeReferenceBuilder typeParameterBuilder,
+			TypeReferences typeReferences,
+			TypesFactory jvmTypesFactory,
+			IJvmModelAssociator associator) {
+		final Map<String, JvmTypeParameter> typeParameterIdentifiers = new TreeMap<>();
+		for (final JvmTypeParameter typeParameter : typeParameters) {
+			typeParameterIdentifiers.put(typeParameter.getIdentifier(), typeParameter);
+		}
+
+		EcoreUtil.Copier copier = new EcoreUtil.Copier(false) {
+			private static final long serialVersionUID = 698510355384773254L;
+
+			@Override
+			protected EObject createCopy(EObject eobject) {
+				final EObject result = super.createCopy(eobject);
+				if (result != null && eobject != null && !eobject.eIsProxy()) {
+					if (associator != null) {
+						associator.associate(eobject, result);
+					}
+				}
+				return result;
+			}
+
+			@Override
+			public EObject copy(EObject eobject) {
+				final String id;
+				if (eobject instanceof JvmTypeReference) {
+					id = ((JvmTypeReference) eobject).getIdentifier();
+				} else if (eobject instanceof JvmIdentifiableElement) {
+					id = ((JvmIdentifiableElement) eobject).getIdentifier();
+				} else {
+					id = null;
+				}
+				if (id != null) {
+					final JvmTypeParameter param = typeParameterIdentifiers.get(id);
+					if (param != null) {
+						return typeReferences.createTypeRef(param);
+					}
+				}
+				final EObject result = super.copy(eobject);
+				if (result instanceof JvmWildcardTypeReference) {
+					final JvmWildcardTypeReference wildcardType = (JvmWildcardTypeReference) result;
+					boolean upperBoundSeen = false;
+					for (final JvmTypeConstraint constraint : wildcardType.getConstraints()) {
+						if (constraint instanceof JvmUpperBound) {
+							upperBoundSeen = true;
+							break;
+						}
+					}
+					if (!upperBoundSeen) {
+						// no upper bound found - seems to be an invalid - assume object as upper bound
+						final JvmTypeReference object = typeParameterBuilder.typeRef(Object.class);
+						final JvmUpperBound upperBound = jvmTypesFactory.createJvmUpperBound();
+						upperBound.setTypeReference(object);
+						wildcardType.getConstraints().add(0, upperBound);
+					}
+				}
+				return result;
+			}
+
+			@Override
+			protected void copyReference(EReference ereference, EObject eobject, EObject copyEObject) {
+				super.copyReference(ereference, eobject, copyEObject);
+			}
+		};
+		final JvmTypeReference copy = (JvmTypeReference) copier.copy(type);
+		copier.copyReferences();
+		return copy;
+	}
+
+	/** Copy the type parameters from a JvmOperation.
+	 *
+	 * <p>This function differs from {@link XtendJvmModelInferrer#copyAndFixTypeParameters(List,
+	 * org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
+	 * and {@link XtendJvmModelInferrer#copyTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
+	 * in the fact that the type parameters were already generated and fixed. The current function supper generic types by
+	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmOperation,
+	 * JvmTypeReferenceBuilder, JvmTypesBuilder, TypeReferences, TypesFactory, IJvmModelAssociator)}.
+	 *
+	 * @param fromOperation the operation from which the type parameters are copied.
+	 * @param toOperation the operation that will receives the new type parameters.
+	 * @param typeParameterBuilder the builder if type parameter.
+	 * @param typeBuilder the builder of type.
+	 * @param typeReferences the builder of type references.
+	 * @param jvmTypesFactory the factory of Jvm types.
+	 * @param associator the associator to use, or {@code null} if none.
+	 * @since 0.6
+	 */
+	public static void copyTypeParametersFromJvmOperation(JvmOperation fromOperation, JvmOperation toOperation,
+			JvmTypeReferenceBuilder typeParameterBuilder, JvmTypesBuilder typeBuilder,
+			TypeReferences typeReferences, TypesFactory jvmTypesFactory,
+			IJvmModelAssociator associator) {
+		copyTypeParametersFromJvmOperation(
+				fromOperation.getTypeParameters(),
+				toOperation.getTypeParameters(),
+				typeParameterBuilder, typeBuilder, typeReferences, jvmTypesFactory, associator);
+	}
+
+	/** Copy the type parameters from a JvmOperation.
+	 *
+	 * <p>This function differs from {@link XtendJvmModelInferrer#copyAndFixTypeParameters(List,
+	 * org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
+	 * and {@link XtendJvmModelInferrer#copyTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
+	 * in the fact that the type parameters were already generated and fixed. The current function supper generic types by
+	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmOperation,
+	 * JvmTypeReferenceBuilder, JvmTypesBuilder, TypeReferences, TypesFactory, IJvmModelAssociator)}.
+	 *
+	 * @param inputParameters the type parameters in the source operation.
+	 * @param outputParameters the list of type parameters to be filled out.
+	 * @param typeParameterBuilder the builder if type parameter.
+	 * @param typeBuilder the builder of type.
+	 * @param typeReferences the builder of type references.
+	 * @param jvmTypesFactory the factory of Jvm types.
+	 * @param associator the associator to use, or {@code null} if none.
+	 * @since 0.6
+	 */
+	public static void copyTypeParametersFromJvmOperation(List<JvmTypeParameter> inputParameters,
+			List<JvmTypeParameter> outputParameters,
+			JvmTypeReferenceBuilder typeParameterBuilder, JvmTypesBuilder typeBuilder,
+			TypeReferences typeReferences, TypesFactory jvmTypesFactory,
+			IJvmModelAssociator associator) {
+		// Copy the generic types in two steps: first step is the name's copy.
+		for (final JvmTypeParameter typeParameter : inputParameters) {
+			final JvmTypeParameter typeParameterCopy = jvmTypesFactory.createJvmTypeParameter();
+			typeParameterCopy.setName(typeParameter.getName());
+			outputParameters.add(typeParameterCopy);
+		}
+		// Second step is the constraints' copy
+		for (int i = 0; i < inputParameters.size(); ++i) {
+			final JvmTypeParameter typeParameter = inputParameters.get(i);
+			final JvmTypeParameter typeParameterCopy = outputParameters.get(i);
+			for (final JvmTypeConstraint constraint : typeParameter.getConstraints()) {
+				JvmTypeConstraint cst = null;
+				if (constraint instanceof JvmLowerBound) {
+					cst = jvmTypesFactory.createJvmLowerBound();
+				} else if (constraint instanceof JvmUpperBound) {
+					cst = jvmTypesFactory.createJvmUpperBound();
+				}
+				if (cst != null) {
+					typeParameterCopy.getConstraints().add(cst);
+					cst.setTypeReference(cloneWithTypeParametersAndProxies(
+							constraint.getTypeReference(),
+							outputParameters,
+							typeParameterBuilder, typeBuilder, typeReferences, jvmTypesFactory,
+							associator));
+				}
+			}
+		}
 	}
 
 }

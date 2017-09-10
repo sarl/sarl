@@ -55,7 +55,7 @@ class SarlLexer(RegexLexer):
 			(r'//.*?\n', Comment.Single),
 			(r'/\*.*?\*/', Comment.Multiline),
 			(r'@[a-zA-Z_][\w.]*', Name.Decorator),
-			(r'(as|break|case|catch|default|do|else|extends|extension|finally|fires|for|if|implements|instanceof|new|on|requires|return|super|switch|throw|throws|try|typeof|uses|while|with)\b',
+			(r'(as|assert|assume|break|case|catch|default|do|else|extends|extension|finally|fires|for|if|implements|instanceof|new|on|requires|return|super|switch|throw|throws|try|typeof|uses|while|with)\b',
 			 Keyword),
 			(r'(abstract|def|dispatch|final|native|override|private|protected|public|static|strictfp|synchronized|transient|val|var|volatile)\b', Keyword.Declaration),
 			 (r'(boolean|byte|char|double|float|int|long|short|void)\b',

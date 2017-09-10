@@ -316,7 +316,7 @@ public abstract class AbstractSarlTest {
 					return true;
 				}
 			}
-			return true;
+			return false;
 		}
 
 		@Override

@@ -484,8 +484,8 @@ Workflow {
     			overrideAll = true
     			
     			runtime = {
-    				bind = "io.sarl.lang.actionprototype.IActionPrototypeProvider"
-    				to = "io.sarl.lang.actionprototype.DefaultActionPrototypeProvider"
+    				bind = "io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider"
+    				to = "io.sarl.lang.sarl.actionprototype.DefaultActionPrototypeProvider"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.validation.ConfigurableIssueCodesProvider"
@@ -513,7 +513,7 @@ Workflow {
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.compiler.JvmModelGenerator"
-    				to = "io.sarl.lang.generator.SARLJvmGenerator"
+    				to = "io.sarl.lang.compiler.SARLJvmGenerator"
    				}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer"
@@ -537,11 +537,11 @@ Workflow {
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.generator.IOutputConfigurationProvider"
-    				to = "io.sarl.lang.generator.SarlOutputConfigurationProvider"
+    				to = "io.sarl.lang.compiler.SarlOutputConfigurationProvider"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"
-    				to = "io.sarl.lang.generator.SarlOutputConfigurationProvider"
+    				to = "io.sarl.lang.compiler.SarlOutputConfigurationProvider"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator"
@@ -572,20 +572,20 @@ Workflow {
  				}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider"
-    				to = "io.sarl.lang.generator.SARLGeneratorConfigProvider"
+    				to = "io.sarl.lang.compiler.SARLGeneratorConfigProvider"
    				}
     			runtime = {
-    				bind = "io.sarl.lang.generator.IGeneratorConfigProvider2"
-    				to = "io.sarl.lang.generator.GeneratorConfigProvider2"
+    				bind = "io.sarl.lang.compiler.IGeneratorConfigProvider2"
+    				to = "io.sarl.lang.compiler.GeneratorConfigProvider2"
    				}
 
     			ui = {
     				bind = "org.eclipse.xtext.generator.IOutputConfigurationProvider"
-    				to = "io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageOutputConfigurationProvider"
+    				to = "io.sarl.lang.ui.compiler.extra.ExtensionPointExtraLanguageOutputConfigurationProvider"
     			}
     			ui = {
     				bind = "org.eclipse.xtext.generator.IContextualOutputConfigurationProvider"
-    				to = "io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageOutputConfigurationProvider"
+    				to = "io.sarl.lang.ui.compiler.extra.ExtensionPointExtraLanguageOutputConfigurationProvider"
     			}
     			ui = {
     				bind = "org.eclipse.xtend.ide.contentassist.javadoc.XtendJavaDocContentAssistProcessor"
@@ -608,7 +608,7 @@ Workflow {
     				singleton = true
     			}
     			ui = {
-    				bind = "io.sarl.lang.ui.images.IQualifiedNameImageProvider"
+    				bind = "io.sarl.lang.ui.labeling.IQualifiedNameImageProvider"
     				to = "io.sarl.lang.ui.labeling.SARLLabelProvider"
     				singleton = true
     			}
@@ -693,18 +693,18 @@ Workflow {
     			}
     			ui = {
     				bind = "org.eclipse.xtext.ui.IImageHelper"
-    				to = "io.sarl.lang.ui.images.QualifiedPluginImageHelper"
+    				to = "io.sarl.lang.ui.labeling.QualifiedPluginImageHelper"
     				override = true
     			}
     			ui = {
     				bind = "org.eclipse.xtext.ui.IImageHelper$IImageDescriptorHelper"
-    				to = "io.sarl.lang.ui.images.QualifiedPluginImageHelper"
+    				to = "io.sarl.lang.ui.labeling.QualifiedPluginImageHelper"
     				override = true
     				functionName = "bindIImageDescriptorHelper"
     			}
     			ui = {
-    				bind = "io.sarl.lang.generator.IGeneratorConfigProvider2"
-    				to = "io.sarl.lang.ui.builder.EclipseGeneratorConfigProvider2"
+    				bind = "io.sarl.lang.compiler.IGeneratorConfigProvider2"
+    				to = "io.sarl.lang.ui.compiler.EclipseGeneratorConfigProvider2"
    				}
     			ui = {
     				bind = "org.eclipse.xtext.builder.preferences.BuilderConfigurationBlock"
@@ -729,12 +729,12 @@ Workflow {
    				}
     			ui = {
     				bind = "org.eclipse.xtext.xbase.validation.UIStrings"
-    				to = "io.sarl.lang.ui.labeling.SARLUIStrings"
+    				to = "io.sarl.lang.ui.validation.SARLUIStrings"
    				}
     			ui = {
     				bind = "org.eclipse.jface.viewers.ILabelProvider"
     				annotatedWith = "org.eclipse.xtext.ui.editor.hyperlinking.HyperlinkLabelProvider"
-    				to = "io.sarl.lang.ui.hyperlinking.SARLHyperLinkingLabelProvider"
+    				to = "io.sarl.lang.ui.labeling.SARLHyperLinkingLabelProvider"
     				functionName = "configureHyperlinkLabelProvider"
    				}
     			ui = {
@@ -759,23 +759,23 @@ Workflow {
    				}
     			ui = {
     				bind = "org.eclipse.xtext.generator.IGenerator"
-    				to = "io.sarl.lang.generator.extra.ExtraLanguageGeneratorSupport"
+    				to = "io.sarl.lang.compiler.extra.ExtraLanguageGeneratorSupport"
    				}
     			ui = {
-    				bind = "io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider"
-    				to = "io.sarl.lang.ui.generator.extra.ExtensionPointExtraLanguageGeneratorProvider"
+    				bind = "io.sarl.lang.compiler.extra.IExtraLanguageGeneratorProvider"
+    				to = "io.sarl.lang.ui.compiler.extra.ExtensionPointExtraLanguageGeneratorProvider"
    				}
     			ui = {
     				bind = "io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider"
     				to = "io.sarl.lang.ui.validation.extra.ExtensionPointExtraLanguageValidatorProvider"
    				}
     			ui = {
-    				bind = "io.sarl.lang.generator.extra.ExtraLanguageTypeConverter$TypeConverterRuleReader"
-    				to = "io.sarl.lang.ui.generator.extra.preferences.PreferenceBasedTypeConverterRuleReader"
+    				bind = "io.sarl.lang.compiler.extra.ExtraLanguageTypeConverter$TypeConverterRuleReader"
+    				to = "io.sarl.lang.ui.compiler.extra.preferences.PreferenceBasedTypeConverterRuleReader"
    				}
     			ui = {
-    				bind = "io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter$FeatureNameConverterRuleReader"
-    				to = "io.sarl.lang.ui.generator.extra.preferences.PreferenceBasedFeatureNameConverterRuleReader"
+    				bind = "io.sarl.lang.compiler.extra.ExtraLanguageFeatureNameConverter$FeatureNameConverterRuleReader"
+    				to = "io.sarl.lang.ui.compiler.extra.preferences.PreferenceBasedFeatureNameConverterRuleReader"
    				}
     		}
 
@@ -922,12 +922,12 @@ Workflow {
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.parser.antlr.ISyntaxErrorMessageProvider"
-    				to = "io.sarl.lang.parser.SARLSyntaxErrorMessageProvider"
+    				to = "io.sarl.lang.validation.SARLSyntaxErrorMessageProvider"
     				singleton = true
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.parser.antlr.SyntaxErrorMessageProvider"
-    				to = "io.sarl.lang.parser.SARLSyntaxErrorMessageProvider"
+    				to = "io.sarl.lang.validation.SARLSyntaxErrorMessageProvider"
     				singleton = true
     			}
 
@@ -937,7 +937,7 @@ Workflow {
    				}
     			ui = {
     				bind = "org.eclipse.xtext.generator.AbstractFileSystemAccess2"
-    				to = "io.sarl.lang.ui.builder.ProjectRelativeFileSystemAccess"
+    				to = "io.sarl.lang.ui.compiler.ProjectRelativeFileSystemAccess"
    				}
     			ui = {
     				bind = "org.eclipse.xtend.core.macro.AbstractFileSystemSupport"

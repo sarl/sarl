@@ -58,11 +58,11 @@ import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
 
-import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter;
-import io.sarl.lang.generator.extra.ExtraLanguageFeatureNameConverter.ConversionType;
-import io.sarl.lang.generator.extra.ExtraLanguageTypeConverter;
-import io.sarl.lang.generator.extra.IExtraLanguageConversionInitializer;
-import io.sarl.lang.generator.extra.IExtraLanguageGeneratorContext;
+import io.sarl.lang.compiler.extra.ExtraLanguageFeatureNameConverter;
+import io.sarl.lang.compiler.extra.ExtraLanguageFeatureNameConverter.ConversionType;
+import io.sarl.lang.compiler.extra.ExtraLanguageTypeConverter;
+import io.sarl.lang.compiler.extra.IExtraLanguageConversionInitializer;
+import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorContext;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.IssueCodes;
 
@@ -365,7 +365,7 @@ public abstract class AbstractExtraLanguageValidator {
 	 * @param errorHandler the error handler.
 	 * @return {@code true} if a type mapping is defined.
 	 */
-	protected boolean doTypeMappingCheck(EObject source, JvmType type, Procedure3<EObject, JvmType, String> errorHandler) {
+	protected boolean doTypeMappingCheck(EObject source, JvmType type, Procedure3<? super EObject, ? super JvmType, ? super String> errorHandler) {
 		if (source != null && type != null) {
 			final ExtraLanguageTypeConverter converter = getTypeConverter();
 			final String qn = type.getQualifiedName();
@@ -408,8 +408,8 @@ public abstract class AbstractExtraLanguageValidator {
 	 * @param featureErrorHandler the error handler for the feature call conversion.
 	 */
 	protected void doCheckMemberFeatureCallMapping(XAbstractFeatureCall featureCall,
-			Procedure3<EObject, JvmType, String> typeErrorHandler,
-			Function2<EObject, JvmIdentifiableElement, Boolean> featureErrorHandler) {
+			Procedure3<? super EObject, ? super JvmType, ? super String> typeErrorHandler,
+			Function2<? super EObject, ? super JvmIdentifiableElement, ? extends Boolean> featureErrorHandler) {
 		final XAbstractFeatureCall rootFeatureCall = getRootFeatureCall(featureCall);
 		final Map<Object, Object> context = getContext().getContext();
 		if (isCheckedFeatureCall(context, rootFeatureCall)) {
@@ -435,8 +435,8 @@ public abstract class AbstractExtraLanguageValidator {
 	}
 
 	private boolean internalCheckMemberFeaturCallMapping(XAbstractFeatureCall featureCall,
-			Procedure3<EObject, JvmType, String> typeErrorHandler,
-			Function2<EObject, JvmIdentifiableElement, Boolean> featureErrorHandler) {
+			Procedure3<? super EObject, ? super JvmType, ? super String> typeErrorHandler,
+			Function2<? super EObject, ? super JvmIdentifiableElement, ? extends Boolean> featureErrorHandler) {
 		final ExtraLanguageFeatureNameConverter converter = getFeatureNameConverter();
 		if (converter != null) {
 			final ConversionType conversionType = converter.getConversionTypeFor(featureCall);

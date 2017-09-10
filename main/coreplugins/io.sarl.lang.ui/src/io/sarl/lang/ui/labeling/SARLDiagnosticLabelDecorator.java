@@ -45,7 +45,7 @@ import org.eclipse.xtext.ui.IImageHelper;
 import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
 
 /**
- * A decorator that add the diagnotic results on Ecore elements.
+ * A decorator that add the diagnostic results on Ecore elements.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -134,19 +134,21 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 		// - parser error (from the resource) or semantic error (from Diagnostician)
 		// - parser warning or semantic warning
 		final Resource resource = element.eResource();
-		if (hasParserIssue(node, resource.getErrors())) {
-			return JavaElementImageDescriptor.ERROR;
-		}
-		final Diagnostic diagnostic = Diagnostician.INSTANCE.validate(element);
-        switch (diagnostic.getSeverity()) {
-        case Diagnostic.ERROR:
-        	return JavaElementImageDescriptor.ERROR;
-        case Diagnostic.WARNING:
-        	return JavaElementImageDescriptor.WARNING;
-        default:
-        }
-		if (hasParserIssue(node, resource.getWarnings())) {
-			return JavaElementImageDescriptor.WARNING;
+		if (!resource.getURI().isArchive()) {
+			if (hasParserIssue(node, resource.getErrors())) {
+				return JavaElementImageDescriptor.ERROR;
+			}
+			final Diagnostic diagnostic = Diagnostician.INSTANCE.validate(element);
+	        switch (diagnostic.getSeverity()) {
+	        case Diagnostic.ERROR:
+	        	return JavaElementImageDescriptor.ERROR;
+	        case Diagnostic.WARNING:
+	        	return JavaElementImageDescriptor.WARNING;
+	        default:
+	        }
+			if (hasParserIssue(node, resource.getWarnings())) {
+				return JavaElementImageDescriptor.WARNING;
+			}
 		}
 		return 0;
 	}

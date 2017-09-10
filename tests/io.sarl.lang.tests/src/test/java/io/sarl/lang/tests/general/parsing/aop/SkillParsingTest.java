@@ -2407,6 +2407,62 @@ public class SkillParsingTest {
 		}
 
 		@Test
+		public void agentUnsuedCapacity_3() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myfct",
+					"}",
+					"capacity C2 extends C1 {",
+					"	def myfct2",
+					"}",
+					"skill S1 implements C2 {",
+					"	uses C2",
+					"	def myfct {}",
+					"	def myfct2 {}",
+					"   def myaction {",
+					"     myfct",
+					"   }",
+					"}"
+					));
+			List<Issue> issues = issues(mas);
+			assertWarning(
+					issues,
+					mas,
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
+					IssueCodes.UNUSED_AGENT_CAPACITY,
+					"Unnecessary use of the capacity 'C2'");
+			assertNoMoreIssues(issues, mas);
+		}
+
+		@Test
+		public void agentUnsuedCapacity_4() throws Exception {
+			SarlScript mas = file(multilineString(
+					"capacity C1 {",
+					"	def myfct",
+					"}",
+					"capacity C2 extends C1 {",
+					"	def myfct2",
+					"}",
+					"skill S1 implements C2 {",
+					"	uses C1",
+					"	def myfct {}",
+					"	def myfct2 {}",
+					"   def myaction {",
+					"     myfct",
+					"   }",
+					"}"
+					));
+			List<Issue> issues = issues(mas);
+			assertWarning(
+					issues,
+					mas,
+					SarlPackage.eINSTANCE.getSarlCapacityUses(),
+					IssueCodes.UNUSED_AGENT_CAPACITY,
+					"Unnecessary use of the capacity 'C1'");
+			assertNoMoreIssues(issues, mas);
+		}
+
+		@Test
 		public void multipleCapacityUses_0() throws Exception {
 			SarlScript mas = file(multilineString(
 					"capacity C1 {}",

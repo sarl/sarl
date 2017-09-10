@@ -21,6 +21,7 @@ package io.janusproject.tests.kernel.services.jdk.spawn;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -238,10 +239,12 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		assertEquals("a", argument3.getValue()[0]); //$NON-NLS-1$
 		assertEquals("b", argument3.getValue()[1]); //$NON-NLS-1$
 		//
-		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(this.defaultSpace, new Times(1)).emit(argument4.capture());
-		assertTrue(argument4.getValue() instanceof AgentSpawned);
-		assertContainsCollection(((AgentSpawned) argument4.getValue()).agentIdentifiers, agentIds);
+		ArgumentCaptor<UUID> argument4 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.defaultSpace, new Times(1)).emit(argument4.capture(), argument5.capture());
+		assertNull(argument4.getValue());
+		assertTrue(argument5.getValue() instanceof AgentSpawned);
+		assertContainsCollection(((AgentSpawned) argument5.getValue()).agentIdentifiers, agentIds);
 	}
 
 	@AvoidServiceStartForTest
@@ -289,10 +292,12 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		Mockito.verify(this.serviceListener, new Times(1)).agentDestroy(argument4.capture());
 		assertSame(ag, argument4.getValue());
 		//
-		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(this.defaultSpace, new Times(2)).emit(argument5.capture());
-		assertTrue(argument5.getValue() instanceof AgentKilled);
-		assertEquals(agentIds.get(0), ((AgentKilled) argument5.getValue()).agentID);
+		ArgumentCaptor<UUID> argument5 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument6 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(this.defaultSpace, new Times(2)).emit(argument5.capture(), argument6.capture());
+		assertNull(argument5.getValue());
+		assertTrue(argument6.getValue() instanceof AgentKilled);
+		assertEquals(agentIds.get(0), ((AgentKilled) argument6.getValue()).agentID);
 		//
 		Mockito.verify(this.kernelListener, new Times(1)).kernelAgentDestroy();
 	}

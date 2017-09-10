@@ -98,32 +98,20 @@ public class SARLFormatter extends XtendFormatter {
 	 */
 	public static final String COMMENT_PREFIX_NAME = "io.sarl.lang.formatting2.COMMENT_PREFIX"; //$NON-NLS-1$
 
-	private static final Procedure1<IHiddenRegionFormatter> ONE_SPACE = new Procedure1<IHiddenRegionFormatter>() {
-		@Override
-		public void apply(IHiddenRegionFormatter it) {
-			it.oneSpace();
-		}
+	private static final Procedure1<? super IHiddenRegionFormatter> ONE_SPACE = (it) -> {
+		it.oneSpace();
 	};
 
-	private static final Procedure1<IHiddenRegionFormatter> NO_SPACE = new Procedure1<IHiddenRegionFormatter>() {
-		@Override
-		public void apply(IHiddenRegionFormatter it) {
-			it.noSpace();
-		}
+	private static final Procedure1<? super IHiddenRegionFormatter> NO_SPACE = (it) -> {
+		it.noSpace();
 	};
 
-	private static final Procedure1<IHiddenRegionFormatter> NEW_LINE = new Procedure1<IHiddenRegionFormatter>() {
-		@Override
-		public void apply(IHiddenRegionFormatter it) {
-			it.newLine();
-		}
+	private static final Procedure1<? super IHiddenRegionFormatter> NEW_LINE = (it) -> {
+		it.newLine();
 	};
 
-	private static final Procedure1<IHiddenRegionFormatter> INDENT = new Procedure1<IHiddenRegionFormatter>() {
-		@Override
-		public void apply(IHiddenRegionFormatter it) {
-			it.indent();
-		}
+	private static final Procedure1<? super IHiddenRegionFormatter> INDENT = (it) -> {
+		it.indent();
 	};
 
 	@Inject

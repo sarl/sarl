@@ -23,6 +23,7 @@ import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.Test;
 
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.tests.bugs.to00999.Bug730;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /** Testing class for issue: Ambiguous call to capacity functions
@@ -33,6 +34,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see Bug730
  */
 @SuppressWarnings("all")
 public class Bug558 extends AbstractSarlTest {

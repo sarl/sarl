@@ -64,9 +64,9 @@ import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
-import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
 import io.sarl.maven.docs.testing.ScriptExecutor;

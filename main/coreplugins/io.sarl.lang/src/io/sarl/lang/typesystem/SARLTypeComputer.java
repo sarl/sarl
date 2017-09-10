@@ -26,17 +26,19 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
+import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputationState;
-import org.eclipse.xtext.xbase.typesystem.conformance.ConformanceFlags;
 import org.eclipse.xtext.xbase.typesystem.internal.AmbiguousFeatureLinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
+import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 
 /** Customized type computer for SARL specific expressions.
@@ -98,8 +100,16 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	 */
 	protected boolean isIgnorableCallToFeature(JvmIdentifiableElement feature) {
 		if (feature instanceof JvmOperation) {
-			final JvmAnnotationReference reference = this.annotationLookup.findAnnotation(
-					(JvmOperation) feature, Deprecated.class);
+			JvmAnnotationTarget target = (JvmOperation) feature;
+			JvmAnnotationReference reference = this.annotationLookup.findAnnotation(target, Deprecated.class);
+			if (reference == null) {
+				do {
+					target = EcoreUtil2.getContainerOfType(target.eContainer(), JvmAnnotationTarget.class);
+					if (target != null) {
+						reference = this.annotationLookup.findAnnotation(target, Deprecated.class);
+					}
+				} while (reference == null && target != null);
+			}
 			return reference != null;
 		}
 		return false;
@@ -109,19 +119,30 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	public void computeTypes(XExpression expression, ITypeComputationState state) {
 		if (expression instanceof SarlBreakExpression) {
 			_computeTypes((SarlBreakExpression) expression, state);
+		} else if (expression instanceof SarlAssertExpression) {
+			_computeTypes((SarlAssertExpression) expression, state);
 		} else {
 			super.computeTypes(expression, state);
 		}
 	}
 
-	/** Computethe type of a break expression.
+	/** Compute the type of a break expression.
 	 *
 	 * @param object the expression.
 	 * @param state the state of the type resolver.
 	 */
 	protected void _computeTypes(SarlBreakExpression object, ITypeComputationState state) {
 		final LightweightTypeReference primitiveVoid = getPrimitiveVoid(state);
-		state.acceptActualType(primitiveVoid, ConformanceFlags.EXPLICIT_VOID_RETURN);
+		state.acceptActualType(primitiveVoid);
+	}
+
+	/** Compute the type of an assert expression.
+	 *
+	 * @param object the expression.
+	 * @param state the state of the type resolver.
+	 */
+	protected void _computeTypes(SarlAssertExpression object, ITypeComputationState state) {
+		state.withExpectation(getTypeForName(Boolean.class, state)).computeTypes(object.getCondition());
 	}
 
 }

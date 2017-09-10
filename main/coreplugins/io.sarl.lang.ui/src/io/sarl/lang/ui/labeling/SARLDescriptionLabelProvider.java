@@ -45,7 +45,6 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
-import io.sarl.lang.ui.images.SARLImages;
 
 /**
  * Provides labels for a IEObjectDescriptions and IResourceDescriptions.

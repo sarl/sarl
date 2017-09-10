@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Capacity;
-import io.sarl.lang.util.SynchronizedCollection;
+import io.sarl.lang.util.SynchronizedIterable;
 
 /**
  * @author $Author: sgalland$
@@ -48,14 +48,14 @@ public class ExternalContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(7, this.type.getDeclaredMethods().length);
+		assertEquals(9, this.type.getDeclaredMethods().length);
 	}
 
 	/**
 	 */
 	@Test
 	public void getAllContexts() {
-		assertMethod("getAllContexts", SynchronizedCollection.class); //$NON-NLS-1$
+		assertMethod("getAllContexts", SynchronizedIterable.class); //$NON-NLS-1$
 	}
 
 	/**
@@ -69,14 +69,14 @@ public class ExternalContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void join() {
-		assertMethod("join", void.class, UUID.class, UUID.class); //$NON-NLS-1$
+		assertMethod("join", boolean.class, UUID.class, UUID.class); //$NON-NLS-1$
 	}
 
 	/**
 	 */
 	@Test
 	public void leave() {
-		assertMethod("leave", void.class, UUID.class); //$NON-NLS-1$
+		assertMethod("leave", boolean.class, UUID.class); //$NON-NLS-1$
 	}
 
 }

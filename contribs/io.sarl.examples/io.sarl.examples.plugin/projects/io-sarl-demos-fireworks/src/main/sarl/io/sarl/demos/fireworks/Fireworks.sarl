@@ -1,0 +1,21 @@
+package io.sarl.demos.fireworks
+
+import io.sarl.demos.fireworks.agents.LaunchingArea
+import io.sarl.demos.fireworks.gui.FireworksFxApplication
+import io.sarl.demos.fireworks.gui.fx.FxApplication
+import io.sarl.demos.fireworks.gui.fx.FxBootAgent
+import io.sarl.lang.core.Agent
+
+/** Agent that is responsible of the application launching.
+ */
+agent Fireworks extends FxBootAgent {
+	
+	def getFxApplicationType : Class<? extends FxApplication> {
+		typeof(FireworksFxApplication)
+	}
+
+	def getApplicationBootAgentType : Class<? extends Agent> {
+		typeof(LaunchingArea)
+	}
+
+}

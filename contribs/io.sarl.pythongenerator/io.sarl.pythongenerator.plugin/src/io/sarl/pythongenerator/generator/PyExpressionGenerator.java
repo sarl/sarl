@@ -70,10 +70,11 @@ import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.typesystem.references.FunctionTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
-import io.sarl.lang.generator.extra.AbstractExpressionGenerator;
-import io.sarl.lang.generator.extra.IExtraLanguageConversionInitializer;
-import io.sarl.lang.generator.extra.IExtraLanguageGeneratorContext;
-import io.sarl.lang.generator.extra.IRootGenerator;
+import io.sarl.lang.compiler.extra.AbstractExpressionGenerator;
+import io.sarl.lang.compiler.extra.IExtraLanguageConversionInitializer;
+import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorContext;
+import io.sarl.lang.compiler.extra.IRootGenerator;
+import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 
@@ -314,6 +315,31 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 			it.append("return ").append(toDefaultValue(context.getExpectedExpressionType().toJavaCompliantTypeReference())); //$NON-NLS-1$
 		}
 		return breakStatement;
+	}
+
+	/** Generate the given object.
+	 *
+	 * @param assertStatement the assert statement.
+	 * @param it the target for the generated content.
+	 * @param context the context.
+	 * @return the statement.
+	 */
+	protected XExpression _generate(SarlAssertExpression assertStatement, IAppendable it, IExtraLanguageGeneratorContext context) {
+		final boolean haveAssert = !assertStatement.isIsStatic() && assertStatement.getCondition() != null;
+		if (haveAssert) {
+			it.append("assert (lambda:"); //$NON-NLS-1$
+			it.increaseIndentation().newLine();
+			generate(assertStatement.getCondition(), it, context);
+			it.decreaseIndentation().newLine();
+			it.append(")()"); //$NON-NLS-1$
+		}
+		if (context.getExpectedExpressionType() != null) {
+			if (haveAssert) {
+				it.newLine();
+			}
+			it.append("return ").append(toDefaultValue(context.getExpectedExpressionType().toJavaCompliantTypeReference())); //$NON-NLS-1$
+		}
+		return assertStatement;
 	}
 
 	/** Generate the given object.
@@ -966,7 +992,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 		@Override
 		protected void appendCall(JvmIdentifiableElement calledFeature, List<Object> leftOperand,
 				List<Object> receiver, String name,
-				List<XExpression> args, Function0<XExpression> beginOfBlock) {
+				List<XExpression> args, Function0<? extends XExpression> beginOfBlock) {
 			if (beginOfBlock != null) {
 				this.codeReceiver.append("if "); //$NON-NLS-1$
 				PyExpressionGenerator.this.generate(beginOfBlock.apply(), this.codeReceiver, this.context);

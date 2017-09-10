@@ -1,0 +1,28 @@
+package io.sarl.demos.fireworks
+
+/** General confiuration.
+ */
+final class Configuration {
+
+	/** Delay in millis for refreshing the rockets.
+	 */
+	public static val ROCKET_REFRESH_DELAY = 100
+
+	/** Delay for refreshing the fires.
+	 */
+	public static val FIRE_REFRESH_DELAY = 100
+	
+	/** 
+	 * Delay in millis between to rocket launchs.
+	 */
+	public static val ROCKET_LIFECYCLE_SCHEDULING_RATE = 30
+
+	/** 
+	 * Delay in millis between to fire launchs.
+	 */
+	public static val FIRE_LIFECYCLE_SCHEDULING_RATE = 30
+	
+	private new() {
+	}
+
+}

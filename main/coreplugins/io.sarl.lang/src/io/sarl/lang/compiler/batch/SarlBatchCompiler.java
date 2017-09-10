@@ -101,9 +101,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.resource.BatchLinkableResource;
 
 import io.sarl.lang.SARLConfig;
-import io.sarl.lang.generator.GeneratorConfig2;
-import io.sarl.lang.generator.GeneratorConfigProvider2;
-import io.sarl.lang.generator.IGeneratorConfigProvider2;
+import io.sarl.lang.compiler.GeneratorConfig2;
+import io.sarl.lang.compiler.GeneratorConfigProvider2;
+import io.sarl.lang.compiler.IGeneratorConfigProvider2;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 
@@ -1172,7 +1172,7 @@ public class SarlBatchCompiler {
 	 * @param resourceSet the container of the scripts.
 	 * @param validResources will be filled by this function with the collection of resources that was successfully validated.
 	 * @param cancelIndicator monitor for cancelling the compilation.
-	 * @return <code>true</code> if an error exists in the issues. Replies <code>false</code> if the activity is cancelled.
+	 * @return <code>true</code> if an error exists in the issues. Replies <code>false</code> if the activity is canceled.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected boolean validate(ResourceSet resourceSet, Collection<Resource> validResources, CancelIndicator cancelIndicator) {
@@ -1237,7 +1237,7 @@ public class SarlBatchCompiler {
 	 * @param sourceDirectory the source directory where stubs are stored.
 	 * @param classDirectory the output directory, where stub binary files should be generated.
 	 * @param cancelIndicator monitor for cancelling the compilation.
-	 * @return the success status. Replies <code>false</code> if the activity is cancelled.
+	 * @return the success status. Replies <code>false</code> if the activity is canceled.
 	 */
 	protected boolean preCompileStubs(File sourceDirectory, File classDirectory, CancelIndicator cancelIndicator) {
 		assert cancelIndicator != null;
@@ -1250,7 +1250,7 @@ public class SarlBatchCompiler {
 	 * @param sourceDirectory the source directory where java files are stored.
 	 * @param classDirectory the output directory, where binary files should be generated.
 	 * @param cancelIndicator monitor for cancelling the compilation.
-	 * @return the success status. Replies <code>false</code> if the activity is cancelled.
+	 * @return the success status. Replies <code>false</code> if the activity is canceled.
 	 */
 	protected boolean preCompileJava(File sourceDirectory, File classDirectory, CancelIndicator cancelIndicator) {
 		assert cancelIndicator != null;
@@ -1262,7 +1262,7 @@ public class SarlBatchCompiler {
 	/** Compile the java files after the compilation of the project's files.
 	 *
 	 * @param cancelIndicator monitor for cancelling the compilation.
-	 * @return the success status. Replies <code>false</code> if the activity is cancelled.
+	 * @return the success status. Replies <code>false</code> if the activity is canceled.
 	 */
 	protected boolean postCompileJava(CancelIndicator cancelIndicator) {
 		assert cancelIndicator != null;
@@ -1301,7 +1301,7 @@ public class SarlBatchCompiler {
 	 * @param classPathEntries classpath entries.
 	 * @param enableCompilerOutput indicates if the Java compiler output is displayed.
 	 * @param cancelIndicator monitor for cancelling the compilation.
-	 * @return the success status. Replies <code>false</code> if the activity is cancelled.
+	 * @return the success status. Replies <code>false</code> if the activity is canceled.
 	 */
 	@SuppressWarnings({ "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "resource" })
 	protected boolean runJavaCompiler(File classDirectory, Iterable<File> sourcePathDirectories,
@@ -1454,7 +1454,7 @@ public class SarlBatchCompiler {
 	 *
 	 * @param resourceSet the input resource set.
 	 * @param cancelIndicator monitor for cancelling the compilation.
-	 * @return the folder in which the stubs are located. Replies <code>null</code> if the activity is cancelled.
+	 * @return the folder in which the stubs are located. Replies <code>null</code> if the activity is canceled.
 	 */
 	protected File createStubs(ResourceSet resourceSet, CancelIndicator cancelIndicator) {
 		final File outputDirectory = createTempDir(STUB_FOLDER_PREFIX);
@@ -1549,7 +1549,7 @@ public class SarlBatchCompiler {
 	/** Check the compiler configuration; and logs errors.
 	 *
 	 * @param cancelIndicator monitor for cancelling the compilation.
-	 * @return success status. Replies <code>false</code> if the operation is cancelled.
+	 * @return success status. Replies <code>false</code> if the operation is canceled.
 	 */
 	protected boolean checkConfiguration(CancelIndicator cancelIndicator) {
 		assert cancelIndicator != null;

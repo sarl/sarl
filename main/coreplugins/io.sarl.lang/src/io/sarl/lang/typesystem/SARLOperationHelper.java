@@ -83,12 +83,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.IActionPrototypeProvider;
-import io.sarl.lang.actionprototype.InferredPrototype;
-import io.sarl.lang.actionprototype.QualifiedActionName;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.sarl.actionprototype.InferredPrototype;
+import io.sarl.lang.sarl.actionprototype.QualifiedActionName;
 import io.sarl.lang.util.Utils;
 
 /**
@@ -763,7 +763,7 @@ public class SARLOperationHelper implements IOperationHelper {
 	}
 
 	@Override
-	public void attachAdapter(JvmOperation operation, Procedure1<IOperationHelper> dynamicCallback) {
+	public void attachAdapter(JvmOperation operation, Procedure1<? super IOperationHelper> dynamicCallback) {
 		if (operation != null && dynamicCallback != null) {
 			AnnotationJavaGenerationAdapter adapter = (AnnotationJavaGenerationAdapter) EcoreUtil.getAdapter(
 					operation.eAdapters(), AnnotationJavaGenerationAdapter.class);
@@ -1087,13 +1087,13 @@ public class SARLOperationHelper implements IOperationHelper {
 	 */
 	public static class AnnotationJavaGenerationAdapter extends AdapterImpl {
 
-		private List<Procedure1<IOperationHelper>> runnable;
+		private List<Procedure1<? super IOperationHelper>> runnable;
 
 		/** Add a dynamic generator.
 		 *
 		 * @param generator the generator.
 		 */
-		public void addGenerator(Procedure1<IOperationHelper> generator) {
+		public void addGenerator(Procedure1<?  super IOperationHelper> generator) {
 			if (generator != null) {
 				synchronized (this) {
 					if (this.runnable == null) {
@@ -1126,7 +1126,7 @@ public class SARLOperationHelper implements IOperationHelper {
 		public void attachDynamicAnnotations(IOperationHelper helper, JvmOperation operation, ISideEffectContext context) {
 			synchronized (this) {
 				if (this.runnable != null) {
-					for (final Procedure1<IOperationHelper> generator : this.runnable) {
+					for (final Procedure1<? super IOperationHelper> generator : this.runnable) {
 						final IOperationHelper hlp;
 						if (context == null || !(helper instanceof SARLOperationHelper)) {
 							hlp = helper;
@@ -1186,7 +1186,7 @@ public class SARLOperationHelper implements IOperationHelper {
 		}
 
 		@Override
-		public void attachAdapter(JvmOperation operation, Procedure1<IOperationHelper> dynamicCallback) {
+		public void attachAdapter(JvmOperation operation, Procedure1<? super IOperationHelper> dynamicCallback) {
 			this.delegate.attachAdapter(operation, dynamicCallback);
 		}
 

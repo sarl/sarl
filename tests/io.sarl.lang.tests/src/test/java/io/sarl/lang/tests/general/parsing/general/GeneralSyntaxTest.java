@@ -15,9 +15,9 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
-import io.sarl.lang.parser.SyntaxIssueCodes;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.validation.SyntaxIssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 
 import org.eclipse.xtext.xbase.validation.IssueCodes;

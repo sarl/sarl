@@ -62,19 +62,20 @@ import org.eclipse.xtext.util.Arrays;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 import org.eclipse.xtext.validation.Issue;
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 
-import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.DefaultValueUse;
-import io.sarl.lang.parser.SyntaxIssueCodes;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.ui.quickfix.acceptors.ActionAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.AnnotationRemoveModification;
@@ -94,6 +95,7 @@ import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeAddModification;
 import io.sarl.lang.ui.quickfix.acceptors.ReturnTypeReplaceModification;
 import io.sarl.lang.ui.quickfix.acceptors.SuperTypeRemoveModification;
 import io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification;
+import io.sarl.lang.validation.SyntaxIssueCodes;
 
 /**
  * Custom quickfixes.
@@ -139,6 +141,12 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	@Inject
 	private AnnotationLookup annotationFinder;
+
+	@Inject
+	private JvmTypeReferenceBuilder typeParameterBuilder;
+
+	@Inject
+	private JvmTypesBuilder typeBuilder;
 
 	/** Replies if the given code is for a ignorable warning.
 	 *
@@ -256,10 +264,28 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Replies the type services.
 	 *
-	 * @return the type serices.
+	 * @return the type services.
 	 */
 	public CommonTypeComputationServices getTypeServices() {
 		return this.services;
+	}
+
+	/** Replies the type parameter builder.
+	 *
+	 * @return the builder.
+	 * @since 0.6
+	 */
+	public JvmTypeReferenceBuilder getJvmTypeParameterBuilder() {
+		return this.typeParameterBuilder;
+	}
+
+	/** Replies the type builder.
+	 *
+	 * @return the builder.
+	 * @since 0.6
+	 */
+	public JvmTypesBuilder getJvmTypeBuilder() {
+		return this.typeBuilder;
 	}
 
 	/** Replies the JVM associations.

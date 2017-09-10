@@ -53,6 +53,9 @@ public class Messages extends NLS {
 	public static String SARLValidator_18;
 	public static String SARLValidator_19;
 	public static String SARLValidator_2;
+	public static String SARLValidator_20;
+	public static String SARLValidator_21;
+	public static String SARLValidator_22;
 	public static String SARLValidator_25;
 	public static String SARLValidator_28;
 	public static String SARLValidator_29;
@@ -78,12 +81,14 @@ public class Messages extends NLS {
 	public static String SARLValidator_49;
 	public static String SARLValidator_5;
 	public static String SARLValidator_50;
+	public static String SARLValidator_51;
 	public static String SARLValidator_52;
 	public static String SARLValidator_53;
 	public static String SARLValidator_54;
 	public static String SARLValidator_55;
 	public static String SARLValidator_57;
 	public static String SARLValidator_58;
+	public static String SARLValidator_59;
 	public static String SARLValidator_6;
 	public static String SARLValidator_62;
 	public static String SARLValidator_63;
@@ -110,4 +115,6 @@ public class Messages extends NLS {
 	public static String SARLValidator_86;
 	public static String SARLValidator_87;
 	public static String SARLValidator_9;
+	public static String SARLSyntaxErrorMessageProvider_0;
+	public static String SARLSyntaxErrorMessageProvider_1;
 }

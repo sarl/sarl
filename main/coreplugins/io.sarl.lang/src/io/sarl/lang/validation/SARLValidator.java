@@ -163,8 +163,6 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 
 import io.sarl.lang.SARLVersion;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
@@ -176,6 +174,7 @@ import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlArtifact;
+import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlBreakExpression;
@@ -188,11 +187,15 @@ import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
+import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
+import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.IOperationHelper;
+import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
@@ -381,6 +384,18 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
+	@Override
+	protected boolean isValueExpectedRecursive(XExpression expr) {
+		final EObject container = expr.eContainer();
+		if (container instanceof SarlBreakExpression) {
+			return false;
+		}
+		if (container instanceof SarlAssertExpression) {
+			return true;
+		}
+		return super.isValueExpectedRecursive(expr);
+	}
+
 	/** Copied from the Xtend validtor.
 	 *
 	 * <p>TODO: Change the visilibility in the Xtend validator.
@@ -468,7 +483,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					Messages.SARLValidator_1,
 					this.grammarAccess.getFiresKeyword()),
 					action,
-					null);
+					SarlPackage.eINSTANCE.getSarlAction_FiredEvents());
 		}
 	}
 
@@ -1126,7 +1141,30 @@ public class SARLValidator extends AbstractSARLValidator {
 			final JvmTypeReference rawType = param.getParameterType();
 			assert rawType != null;
 			final LightweightTypeReference toType = toLightweightTypeReference(rawType, true);
-			final LightweightTypeReference fromType = getActualType(defaultValue);
+			if (toType == null) {
+				error(MessageFormat.format(
+						Messages.SARLValidator_20,
+						param.getName()),
+						param,
+						XtendPackage.Literals.XTEND_PARAMETER__PARAMETER_TYPE,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_TYPE);
+				return;
+			}
+			LightweightTypeReference fromType = getExpectedType(defaultValue);
+			if (fromType == null) {
+				fromType = getActualType(defaultValue);
+				if (fromType == null) {
+					error(MessageFormat.format(
+							Messages.SARLValidator_21,
+							param.getName()),
+							param,
+							SARL_FORMAL_PARAMETER__DEFAULT_VALUE,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_TYPE);
+					return;
+				}
+			}
 			if (!Utils.canCast(fromType, toType, true, false, true)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_38,
@@ -1938,19 +1976,31 @@ public class SARLValidator extends AbstractSARLValidator {
 				}
 			}
 
+			final boolean isSkill = container instanceof SarlSkill;
 			int index = 0;
 			for (final JvmTypeReference capacity : uses.getCapacities()) {
-				final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacity.getIdentifier());
-				final String operationName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(fieldName);
-				final JvmOperation operation = importedFeatures.get(operationName);
-				if (operation != null && !isLocallyUsed(operation, container)) {
+				final LightweightTypeReference lreference = toLightweightTypeReference(capacity);
+				if (isSkill && lreference.isAssignableFrom(jvmContainer)) {
 					addIssue(MessageFormat.format(
-							Messages.SARLValidator_78,
+							Messages.SARLValidator_22,
 							capacity.getSimpleName()),
 							uses,
 							SARL_CAPACITY_USES__CAPACITIES,
 							index, UNUSED_AGENT_CAPACITY,
 							capacity.getSimpleName());
+				} else {
+					final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacity.getIdentifier());
+					final String operationName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(fieldName);
+					final JvmOperation operation = importedFeatures.get(operationName);
+					if (operation != null && !isLocallyUsed(operation, container)) {
+						addIssue(MessageFormat.format(
+								Messages.SARLValidator_78,
+								capacity.getSimpleName()),
+								uses,
+								SARL_CAPACITY_USES__CAPACITIES,
+								index, UNUSED_AGENT_CAPACITY,
+								capacity.getSimpleName());
+					}
 				}
 				++index;
 			}
@@ -2278,6 +2328,55 @@ public class SARLValidator extends AbstractSARLValidator {
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes.INVALID_USE_OF_BREAK);
+		}
+	}
+
+	/** Check for usage of assert keyword.
+	 *
+	 * @param expression the expression to analyze.
+	 */
+	@Check
+	public void checkAssertKeywordUse(SarlAssertExpression expression) {
+		final XExpression condition = expression.getCondition();
+		if (condition != null) {
+			final LightweightTypeReference fromType = getActualType(condition);
+			if (!fromType.isAssignableFrom(Boolean.TYPE)) {
+				error(MessageFormat.format(
+						Messages.SARLValidator_38,
+						getNameOfTypes(fromType), boolean.class.getName()),
+						condition,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						INCOMPATIBLE_TYPES);
+				return;
+			}
+			if (getExpressionHelper() instanceof SARLExpressionHelper) {
+				final SARLExpressionHelper helper = (SARLExpressionHelper) getExpressionHelper();
+				final Boolean constant = helper.toBooleanPrimitiveWrapperConstant(condition);
+				if (constant == Boolean.TRUE && !isIgnored(DISCOURAGED_BOOLEAN_EXPRESSION)) {
+					addIssue(Messages.SARLValidator_51,
+							condition,
+							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							DISCOURAGED_BOOLEAN_EXPRESSION);
+					return;
+				}
+			}
+		}
+	}
+
+	/** Check for usage of assert keyword.
+	 *
+	 * @param expression the expression to analyze.
+	 */
+	@Check
+	public void checkAssumeKeywordUse(SarlAssertExpression expression) {
+		if (expression.isIsStatic()) {
+			error(MessageFormat.format(
+					Messages.SARLValidator_0,
+					this.grammarAccess.getIsStaticAssumeKeyword()),
+					expression,
+					null);
 		}
 	}
 

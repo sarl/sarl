@@ -101,14 +101,12 @@ public class DefaultContextInteractionsSkill extends BuiltinSkill implements Def
 
 	@Override
 	public void emit(Event event) {
-		event.setSource(getDefaultAddress());
-		this.defaultSpace.emit(event);
+		this.defaultSpace.emit(getOwner().getID(), event, null);
 	}
 
 	@Override
 	public void emit(Event event, Scope<Address> scope) {
-		event.setSource(getDefaultAddress());
-		this.defaultSpace.emit(event, scope);
+		this.defaultSpace.emit(getOwner().getID(), event, scope);
 	}
 
 	@Override

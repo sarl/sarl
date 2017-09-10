@@ -32,7 +32,7 @@ import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalFactory;
 import org.eclipse.xtext.xbase.ui.contentassist.ImportingTypesProposalProvider;
 
 import io.sarl.lang.typesystem.InheritanceHelper;
-import io.sarl.lang.ui.images.IQualifiedNameImageProvider;
+import io.sarl.lang.ui.labeling.IQualifiedNameImageProvider;
 
 /** Provider of proposals for the types to be imported.
  * This provider is part of the content assist mechanism. Its goal is not to provide

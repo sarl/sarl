@@ -37,6 +37,7 @@ import com.google.inject.Provider;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.internal.ui.text.correction.IProposalRelevance;
+import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend.ide.codebuilder.XtendMethodBuilder;
 import org.eclipse.xtext.EcoreUtil2;
@@ -50,23 +51,29 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.TypesFactory;
+import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 import org.eclipse.xtext.xbase.ui.document.DocumentSourceAppender.Factory.OptionalParameters;
 
-import io.sarl.lang.actionprototype.FormalParameterProvider;
-import io.sarl.lang.actionprototype.IActionPrototypeProvider;
-import io.sarl.lang.actionprototype.InferredPrototype;
-import io.sarl.lang.actionprototype.QualifiedActionName;
+import io.sarl.lang.annotation.FiredEvent;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.sarl.actionprototype.FormalParameterProvider;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.sarl.actionprototype.InferredPrototype;
+import io.sarl.lang.sarl.actionprototype.QualifiedActionName;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
+import io.sarl.lang.ui.codebuilder.SarlMethodBuilder;
 import io.sarl.lang.ui.codebuilder.SarlParameterBuilder;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 import io.sarl.lang.util.Utils;
@@ -156,19 +163,20 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				appendable.newLine().newLine();
 
 				final XtendMethodBuilder builder = this.methodBuilder.get();
+				final SarlMethodBuilder sarlBuilder = (builder instanceof SarlMethodBuilder) ? (SarlMethodBuilder) builder : null;
 
 				builder.setContext(declaringType);
 				builder.setOwner(declaringType);
 				builder.setMethodName(operation.getSimpleName());
 
 				builder.setStaticFlag(false);
-				builder.setOverrideFlag(true);
+				builder.setOverrideFlag(!getTools().isIgnorable(IssueCodes.MISSING_OVERRIDE));
 				builder.setAbstractFlag(false);
 
 				builder.setBodyGenerator(null);
 
 				builder.setVisibility(operation.getVisibility());
-				builder.setTypeParameters(cloneTypeParameters(operation.getTypeParameters()));
+				builder.setTypeParameters(cloneTypeParameters(operation));
 
 				final QualifiedActionName qualifiedActionName = this.actionPrototypeProvider.createQualifiedActionName(
 						declaringType,
@@ -197,6 +205,16 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				builder.setReturnType(cloneTypeReference(operation.getReturnType(), typeParameterMap));
 
 				builder.setExceptions(cloneTypeReferences(operation.getExceptions(), typeParameterMap));
+
+				if (sarlBuilder != null) {
+					final JvmAnnotationReference firedEvents = this.annotationUtils.findAnnotation(operation, FiredEvent.class.getName());
+					if (firedEvents != null) {
+						final List<JvmTypeReference> events = this.annotationUtils.findTypeValues(firedEvents);
+						if (events != null) {
+							sarlBuilder.setFires(cloneTypeReferences(events, typeParameterMap));
+						}
+					}
+				}
 
 				builder.build(appendable);
 			}
@@ -248,12 +266,14 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 			final LinkedList<JvmGenericType> expectedReferences = new LinkedList<>();
 			expectedReferences.add(genType);
 
+			final String objectId = Object.class.getName();
+
 			while (!expectedReferences.isEmpty()) {
 				final JvmGenericType type = expectedReferences.removeFirst();
-				if (!type.getTypeParameters().isEmpty() && encounteredTypes.add(type.getIdentifier())) {
+				if (encounteredTypes.add(type.getIdentifier())) {
 
 					for (final JvmTypeReference superType : type.getSuperTypes()) {
-						if (superType instanceof JvmParameterizedTypeReference) {
+						if (!objectId.equals(superType.getIdentifier()) && superType instanceof JvmParameterizedTypeReference) {
 							final JvmParameterizedTypeReference parametizedReference = (JvmParameterizedTypeReference) superType;
 							if (!parametizedReference.getArguments().isEmpty()) {
 								final JvmGenericType genericSuperType = (JvmGenericType) parametizedReference.getType();
@@ -306,30 +326,24 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 		return newList;
 	}
 
-	/** Clone the given type by applying thee type parameter mapping when necessary.
-	 *
-	 * @param type the type to clone.
-	 * @param typeParameterMap the type parameter mapping.
-	 * @return the clone.
-	 */
 	private LightweightTypeReference cloneTypeReference(JvmTypeReference type,
 			Map<String, JvmTypeReference> typeParameterMap) {
 		final JvmTypeReference mappedReference = mapToTypeParameter(type, typeParameterMap);
 		return Utils.toLightweightTypeReference(mappedReference, this.services);
 	}
 
-	/** Clone the given type parameters.
-	 *
-	 * @param typeParameters the types to clone.
-	 * @param typeParameterMap the type parameter mapping.
-	 * @return the types.
-	 */
-	private static List<JvmTypeParameter> cloneTypeParameters(List<JvmTypeParameter> typeParameters) {
-		final List<JvmTypeParameter> newList = new ArrayList<>(typeParameters.size());
-		for (final JvmTypeParameter type : typeParameters) {
-			newList.add(EcoreUtil2.cloneWithProxies(type));
-		}
-		return newList;
+	private List<JvmTypeParameter> cloneTypeParameters(JvmOperation fromOperation) {
+		final SARLQuickfixProvider tools = getTools();
+		final JvmTypeReferenceBuilder builder1 = tools.getJvmTypeParameterBuilder();
+		final JvmTypesBuilder builder2 = tools.getJvmTypeBuilder();
+		final TypeReferences builder3 = tools.getTypeServices().getTypeReferences();
+		final TypesFactory builder4 = tools.getTypeServices().getTypesFactory();
+		final List<JvmTypeParameter> outParameters = new ArrayList<>();
+		Utils.copyTypeParametersFromJvmOperation(
+				fromOperation.getTypeParameters(),
+				outParameters,
+				builder1, builder2, builder3, builder4, null);
+		return outParameters;
 	}
 
 }

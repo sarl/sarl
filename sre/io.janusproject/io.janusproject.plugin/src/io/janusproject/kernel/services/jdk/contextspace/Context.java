@@ -39,6 +39,8 @@ import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
 import io.sarl.lang.util.SynchronizedCollection;
+import io.sarl.lang.util.SynchronizedIterable;
+import io.sarl.util.Collections3;
 import io.sarl.util.OpenEventSpace;
 import io.sarl.util.OpenEventSpaceSpecification;
 
@@ -125,30 +127,21 @@ public class Context implements AgentContext {
 	}
 
 	@Override
-	public <S extends Space> SynchronizedCollection<S> getSpaces(Class<? extends SpaceSpecification<S>> spec) {
-		return this.spaceRepository.getSpaces(spec);
+	public <S extends Space> SynchronizedIterable<S> getSpaces(Class<? extends SpaceSpecification<S>> spec) {
+		final SynchronizedCollection<S> col = this.spaceRepository.getSpaces(spec);
+		return Collections3.unmodifiableSynchronizedIterable(col, col.mutex());
 	}
 
 	@Override
-	public SynchronizedCollection<? extends io.sarl.lang.core.Space> getSpaces() {
-		return this.spaceRepository.getSpaces();
+	public SynchronizedIterable<? extends io.sarl.lang.core.Space> getSpaces() {
+		final SynchronizedCollection<? extends io.sarl.lang.core.Space> col = this.spaceRepository.getSpaces();
+		return Collections3.unmodifiableSynchronizedIterable(col, col.mutex());
 	}
 
 	@Override
 	public <S extends io.sarl.lang.core.Space> S createSpace(Class<? extends SpaceSpecification<S>> spec, UUID spaceUUID,
 			Object... creationParams) {
 		return this.spaceRepository.createSpace(new SpaceID(this.id, spaceUUID, spec), spec, creationParams);
-	}
-
-	/**
-	 * {@inheritDoc}.
-	 * @deprecated see {@link #getOrCreateSpaceWithSpec(Class, UUID, Object...)}.
-	 */
-	@Override
-	@Deprecated
-	public <S extends Space> S getOrCreateSpace(Class<? extends SpaceSpecification<S>> spec, UUID spaceUUID,
-			Object... creationParams) {
-		return getOrCreateSpaceWithSpec(spec, spaceUUID, creationParams);
 	}
 
 	@Override
@@ -158,7 +151,7 @@ public class Context implements AgentContext {
 	}
 
 	@Override
-	public <S extends Space> S getOrCreateSpaceWithID(UUID spaceUUID, Class<? extends SpaceSpecification<S>> spec,
+	public <S extends Space> S getOrCreateSpaceWithID(Class<? extends SpaceSpecification<S>> spec, UUID spaceUUID,
 			Object... creationParams) {
 		return this.spaceRepository.getOrCreateSpaceWithID(new SpaceID(this.id, spaceUUID, spec), spec, creationParams);
 	}
@@ -214,7 +207,10 @@ public class Context implements AgentContext {
 				final EventSpace defSpace = this.context.getDefaultSpace();
 				// defSpace may be null if the created space is the default space.
 				if (defSpace != null) {
-					defSpace.emit(new SpaceCreated(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
+					defSpace.emit(
+							// No need to give an event source because it is explicitly set below.
+							null,
+							new SpaceCreated(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
 				}
 			}
 		}
@@ -227,7 +223,10 @@ public class Context implements AgentContext {
 				final EventSpace defSpace = this.context.getDefaultSpace();
 				// defSpace may be null if the created space is the default space.
 				if (defSpace != null) {
-					defSpace.emit(new SpaceDestroyed(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
+					defSpace.emit(
+							// No need to give an event source because it is explicitly set below.
+							null,
+							new SpaceDestroyed(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
 				}
 			}
 			// Notify the relays (other services)

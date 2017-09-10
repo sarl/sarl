@@ -62,7 +62,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 
 	private EObject context;
 
-	private Procedure1<XExpression> setter;
+	private Procedure1<? super XExpression> setter;
 
 	private XExpression expr;
 
@@ -70,7 +70,7 @@ public class ExpressionBuilderImpl extends AbstractBuilder implements IExpressio
 	 * @param context - the context of the expressions.
 	 * @param setter - the object that permits to assign the expression to the context.
 	 */
-	public void eInit(EObject context, Procedure1<XExpression> setter, IJvmTypeProvider typeContext) {
+	public void eInit(EObject context, Procedure1<? super XExpression> setter, IJvmTypeProvider typeContext) {
 		setTypeResolutionContext(typeContext);
 		this.context = context;
 		this.setter = setter;

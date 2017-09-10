@@ -62,7 +62,7 @@ public class EcorePackageRenameStrategy implements DefaultRenameStrategyProvider
 
 	private String currentPackageName;
 
-	private Function1<ResourceSet, URI> uriProvider;
+	private Function1<? super ResourceSet, ? extends URI> uriProvider;
 
 	/**
 	 * Validate the package name.

@@ -116,7 +116,7 @@ public class AgentInternalEventsDispatcher {
 	 * @param filter - the filter function. It could be {@code null}.
 	 * @param callback function which is invoked just after the first registration of the object. It could be {@code null}.
 	 */
-	public void register(Object object, Function1<? super Event, ? extends Boolean> filter, Procedure1<Object> callback) {
+	public void register(Object object, Function1<? super Event, ? extends Boolean> filter, Procedure1<? super Object> callback) {
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
 			this.behaviorGuardEvaluatorRegistry.register(object, filter, callback);
 		}
@@ -129,7 +129,7 @@ public class AgentInternalEventsDispatcher {
 	 * @param callback function which is invoked just before the object is unregistered.
 	 * @throws IllegalArgumentException if the object was not previously registered.
 	 */
-	public void unregister(Object object, Procedure1<Object> callback) {
+	public void unregister(Object object, Procedure1<? super Object> callback) {
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
 			this.behaviorGuardEvaluatorRegistry.unregister(object, callback);
 		}
@@ -141,7 +141,7 @@ public class AgentInternalEventsDispatcher {
 	 * @param callback function which is invoked just before the object is unregistered.
 	 * @throws IllegalArgumentException if the object was not previously registered.
 	 */
-	public void unregisterAll(Procedure1<Object> callback) {
+	public void unregisterAll(Procedure1<? super Object> callback) {
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
 			this.behaviorGuardEvaluatorRegistry.unregisterAll(callback);
 		}

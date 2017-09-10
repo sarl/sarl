@@ -26,8 +26,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 
-import io.sarl.lang.generator.extra.IExtraLanguageConversionInitializer;
-import io.sarl.lang.ui.generator.extra.preferences.ExtraLanguagePreferenceAccess;
+import io.sarl.lang.compiler.extra.IExtraLanguageConversionInitializer;
+import io.sarl.lang.ui.compiler.extra.preferences.ExtraLanguagePreferenceAccess;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 import io.sarl.pythongenerator.generator.PyInitializers;
 

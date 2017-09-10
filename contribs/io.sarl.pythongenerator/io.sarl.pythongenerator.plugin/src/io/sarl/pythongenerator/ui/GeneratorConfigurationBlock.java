@@ -24,7 +24,7 @@ package io.sarl.pythongenerator.ui;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.graphics.Image;
 
-import io.sarl.lang.ui.generator.extra.properties.AbstractGeneratorConfigurationBlock;
+import io.sarl.lang.ui.compiler.extra.properties.AbstractGeneratorConfigurationBlock;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 
 /** Configuration block for the Python generator.

@@ -39,6 +39,7 @@ import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.util.Collections3;
 import io.sarl.util.OpenEventSpace;
@@ -176,7 +177,7 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	}
 
 	@Override
-	public synchronized SynchronizedSet<UUID> getMemberAgents() {
+	public synchronized SynchronizedIterable<UUID> getMemberAgents() {
 		if (this.innerContext != null) {
 			final SynchronizedSet<UUID> participants = this.innerContext.getDefaultSpace().getParticipants();
 			assert participants != null;

@@ -27,7 +27,7 @@ import java.util.Map;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.lib.Inline;
 
-import io.sarl.lang.actionprototype.InferredPrototype;
+import io.sarl.lang.sarl.actionprototype.InferredPrototype;
 
 /**
  * Context for side effect detection.

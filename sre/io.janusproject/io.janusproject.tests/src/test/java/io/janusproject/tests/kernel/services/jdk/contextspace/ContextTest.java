@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -91,6 +92,14 @@ public class ContextTest extends AbstractJanusTest {
 
 	@Nullable
 	private SpaceRepositoryListener privateListener;
+
+	private <T> List<T> toArrayList(Iterable<T> iterable) {
+		final List<T> col = new ArrayList<>();
+		for (final T obj : iterable) {
+			col.add(obj);
+		}
+		return col;
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -223,7 +232,7 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		assertNotNull(space);
 		assertEquals(id, space.getSpaceID().getID());
-		c = this.context.getSpaces();
+		c = toArrayList(this.context.getSpaces());
 		assertNotNull(c);
 		assertEquals(2, c.size());
 		Collection<UUID> ids = new ArrayList<>();
@@ -244,10 +253,12 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		OpenEventSpace defSpace = this.spaces.get(this.spaceId);
 		assertNotNull(defSpace);
-		ArgumentCaptor<Event> argument3 = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture());
-		assertThat(argument3.getValue(), new IsInstanceOf(SpaceCreated.class));
-		assertEquals(id, ((SpaceCreated) argument3.getValue()).spaceID.getID());
+		ArgumentCaptor<UUID> argument3 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture(), argument4.capture());
+		assertNull(argument3.getValue());
+		assertThat(argument4.getValue(), new IsInstanceOf(SpaceCreated.class));
+		assertEquals(id, ((SpaceCreated) argument4.getValue()).spaceID.getID());
 	}
 
 	@Test
@@ -258,7 +269,7 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		assertNotNull(space);
 		assertEquals(id, space.getSpaceID().getID());
-		c = this.context.getSpaces();
+		c = toArrayList(this.context.getSpaces());
 		assertNotNull(c);
 		assertEquals(2, c.size());
 		Collection<UUID> ids = new ArrayList<>();
@@ -279,10 +290,12 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		OpenEventSpace defSpace = this.spaces.get(this.spaceId);
 		assertNotNull(defSpace);
-		ArgumentCaptor<Event> argument3 = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture());
-		assertThat(argument3.getValue(), new IsInstanceOf(SpaceCreated.class));
-		assertEquals(id, ((SpaceCreated) argument3.getValue()).spaceID.getID());
+		ArgumentCaptor<UUID> argument3 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture(), argument4.capture());
+		assertNull(argument3.getValue());
+		assertThat(argument4.getValue(), new IsInstanceOf(SpaceCreated.class));
+		assertEquals(id, ((SpaceCreated) argument4.getValue()).spaceID.getID());
 		//
 		OpenEventSpace space2 = this.context.getOrCreateSpaceWithSpec(OpenEventSpaceSpecification.class, id);
 		assertSame(space, space2);
@@ -296,7 +309,7 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		assertNotNull(space);
 		assertEquals(id, space.getSpaceID().getID());
-		c = this.context.getSpaces();
+		c = toArrayList(this.context.getSpaces());
 		assertNotNull(c);
 		assertEquals(2, c.size());
 		Collection<UUID> ids = new ArrayList<>();
@@ -317,10 +330,12 @@ public class ContextTest extends AbstractJanusTest {
 		//
 		OpenEventSpace defSpace = this.spaces.get(this.spaceId);
 		assertNotNull(defSpace);
-		ArgumentCaptor<Event> argument3 = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture());
-		assertThat(argument3.getValue(), new IsInstanceOf(SpaceCreated.class));
-		assertEquals(id, ((SpaceCreated) argument3.getValue()).spaceID.getID());
+		ArgumentCaptor<UUID> argument3 = ArgumentCaptor.forClass(UUID.class);
+		ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
+		Mockito.verify(defSpace, new Times(1)).emit(argument3.capture(), argument4.capture());
+		assertNull(argument3.getValue());
+		assertThat(argument4.getValue(), new IsInstanceOf(SpaceCreated.class));
+		assertEquals(id, ((SpaceCreated) argument4.getValue()).spaceID.getID());
 		//
 		OpenEventSpace space2 = this.context.getOrCreateSpaceWithID(id, OpenEventSpaceSpecification.class);
 		assertSame(space, space2);
@@ -329,7 +344,7 @@ public class ContextTest extends AbstractJanusTest {
 	@Test
 	public void getSpaces() {
 		Collection<? extends Space> c;
-		c = this.context.getSpaces();
+		c = toArrayList(this.context.getSpaces());
 		assertNotNull(c);
 		assertEquals(1, c.size());
 		assertEquals(this.spaceId, c.iterator().next().getSpaceID().getID());
@@ -337,7 +352,7 @@ public class ContextTest extends AbstractJanusTest {
 		UUID id = UUID.randomUUID();
 		this.context.createSpace(OpenEventSpaceSpecification.class, id);
 		//
-		c = this.context.getSpaces();
+		c = toArrayList(this.context.getSpaces());
 		assertNotNull(c);
 		assertEquals(2, c.size());
 		Collection<UUID> ids = new ArrayList<>();
@@ -352,7 +367,7 @@ public class ContextTest extends AbstractJanusTest {
 	@Test
 	public void getSpacesClass() {
 		Collection<OpenEventSpace> c;
-		c = this.context.getSpaces(OpenEventSpaceSpecification.class);
+		c = toArrayList(this.context.getSpaces(OpenEventSpaceSpecification.class));
 		assertNotNull(c);
 		assertEquals(1, c.size());
 		assertEquals(this.spaceId, c.iterator().next().getSpaceID().getID());
@@ -360,7 +375,7 @@ public class ContextTest extends AbstractJanusTest {
 		UUID id = UUID.randomUUID();
 		this.context.createSpace(OpenEventSpaceSpecification.class, id);
 		//
-		c = this.context.getSpaces(OpenEventSpaceSpecification.class);
+		c = toArrayList(this.context.getSpaces(OpenEventSpaceSpecification.class));
 		assertNotNull(c);
 		assertEquals(2, c.size());
 		Collection<UUID> ids = new ArrayList<>();

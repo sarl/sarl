@@ -21,6 +21,8 @@
 
 package io.sarl.util
 
+import java.util.UUID
+
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Scope
 
@@ -58,7 +60,7 @@ final class Scopes {
 		new AddressScope(addresses)
 	}
 
-	/** Create an scope that is fordidding the given addresses.
+	/** Create an scope that is forbidding the given addresses.
 	 *
 	 * @param addresses - addresses to exclude from the scope.
 	 * @return the scope forbidding the given addresses.
@@ -67,6 +69,27 @@ final class Scopes {
 	static def notAddresses(addresses : Address*) : Scope<Address> {
 		not(addresses(addresses))
 	}
+
+	/** Create an scope restricted to the given agent identifiers.
+	 *
+	 * @param identifiers - identifiers to put in the scope.
+	 * @return the scope restricted to the given agent identifiers.
+	 * @since 0.6
+	 */
+	static def identifiers(identifiers : UUID*) : Scope<Address> {
+		new IdentifierScope(identifiers)
+	}
+
+	/** Create an scope that is forbidding the given agent identifiers.
+	 *
+	 * @param identifiers - identifiers to exclude from the scope.
+	 * @return the scope forbidding the given identifiers.
+	 * @since 0.5
+	 */
+	static def notIdentifiers(identifiers : UUID*) : Scope<Address> {
+		not(identifiers(identifiers))
+	}
+
 
 	/** Create an scope that is the negation of the given scope.
 	 *

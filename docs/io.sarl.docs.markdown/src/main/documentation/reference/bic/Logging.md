@@ -13,6 +13,7 @@ The built-in capacity `[:loggingcap]{Logging}` provides tools for printing messa
 			"[:fctwarning!](java.lang.Object, java.lang.Object[])",
 			"[:fctinfo](info)(java.lang.Object, java.lang.Object[])",
 			"[:fctdebug](debug)(java.lang.Object, java.lang.Object[])",
+			"[:fctgetlogger](getLogger) : java.util.logging.Logger",
 			"[:fctgetloglevel](getLogLevel) : int",
 			"[:fctsetloglevel](setLogLevel)(int)",
 			"[:fctiserrorlogenabled](isErrorLogEnabled) : boolean",
@@ -230,6 +231,21 @@ Example:
 				def myaction {
 					[:fctsetloggingname!]("the name of the agent")
 				}
+			}
+		[:End:]
+
+## Accessing to the backend logger
+
+The [:loggingcap:] capacity is based on the logging system of run-time virtual machine.
+The [:fctgetlogger:] function provides you the access to the backend logger that is associated to the agent. 
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import java.util.logging.Logger
+			interface Tmp {
+			[:On]
+				def [:fctgetlogger!] : Logger
+			[:Off]
 			}
 		[:End:]
 

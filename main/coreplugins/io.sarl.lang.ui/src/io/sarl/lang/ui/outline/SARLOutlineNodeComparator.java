@@ -124,7 +124,8 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 				}
 				return METHOD_PRIORITY;
 			}
-			if (XTEND_CONSTRUCTOR.isSuperTypeOf(objectNodeType)) {
+			if (XTEND_CONSTRUCTOR.isSuperTypeOf(objectNodeType)
+					|| TypesPackage.Literals.JVM_CONSTRUCTOR.isSuperTypeOf(objectNodeType)) {
 				return CONSTRUCTOR_PRIORITY;
 			}
 			if (SARL_BEHAVIOR_UNIT.isSuperTypeOf(objectNodeType)) {

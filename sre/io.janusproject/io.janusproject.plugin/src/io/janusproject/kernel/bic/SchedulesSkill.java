@@ -54,6 +54,8 @@ import io.sarl.lang.core.Capacities;
 import io.sarl.lang.core.SREutils;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.SynchronizedSet;
+import io.sarl.util.Collections3;
 
 /**
  * Skill that permits to execute tasks with an executor service.
@@ -138,10 +140,10 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	}
 
 	@Override
-	public Collection<String> getActiveTasks() {
+	public SynchronizedSet<String> getActiveTasks() {
 		synchronized (getTaskListMutex()) {
 			//TODO: Avoid copy of collection
-			return Lists.newArrayList(this.tasks.keySet());
+			return Collections3.unmodifiableSynchronizedSet(this.tasks.keySet(), getTaskListMutex());
 		}
 	}
 
@@ -307,7 +309,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 * @param mayInterruptIfRunning indicates if the task's thread  could be interrupt.
 	 * @param updateAgentTraitReferences indicates if the references in the task's agent trait may be updates, if
 	 *     they exist.
-	 * @return {@code true} if the task is cancelled, {@code false} if not.
+	 * @return {@code true} if the task is canceled, {@code false} if not.
 	 */
 	protected boolean cancel(AgentTask task, boolean mayInterruptIfRunning, boolean updateAgentTraitReferences) {
 		if (task != null) {

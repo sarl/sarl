@@ -43,7 +43,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XtypePackage;
 
-import io.sarl.lang.generator.extra.IExtraLanguageConversionInitializer;
+import io.sarl.lang.compiler.extra.IExtraLanguageConversionInitializer;
 import io.sarl.lang.validation.extra.AbstractExtraLanguageValidator;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 import io.sarl.pythongenerator.generator.PyInitializers;
@@ -61,21 +61,21 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 
 	/** Error handler for the type conversions.
 	 */
-	private final Procedure3<EObject, JvmType, String> typeErrorHandler1 = (source, invalidType, name) -> {
+	private final Procedure3<? super EObject, ? super JvmType, ? super String> typeErrorHandler1 = (source, invalidType, name) -> {
 		error(MessageFormat.format(Messages.PyValidator_0, name), source,
 				XtypePackage.eINSTANCE.getXImportDeclaration_ImportedType());
 	};
 
 	/** Error handler for the type conversions.
 	 */
-	private final Procedure3<EObject, JvmType, String> typeErrorHandler2 = (source, invalidType, name) -> {
+	private final Procedure3<? super EObject, ? super JvmType, ? super String> typeErrorHandler2 = (source, invalidType, name) -> {
 		error(MessageFormat.format(Messages.PyValidator_0, name), source,
 				XbasePackage.eINSTANCE.getXAbstractFeatureCall_Feature());
 	};
 
 	/** Error handler for the feature conversions.
 	 */
-	private final Function2<EObject, JvmIdentifiableElement, Boolean> featureErrorHandler = (source, element) -> {
+	private final Function2<? super EObject, ? super JvmIdentifiableElement, ? extends Boolean> featureErrorHandler = (source, element) -> {
 		final String message;
 		if (element instanceof JvmConstructor) {
 			message = MessageFormat.format(Messages.PyValidator_1, this.simpleNameProvider.getSimpleName(element));

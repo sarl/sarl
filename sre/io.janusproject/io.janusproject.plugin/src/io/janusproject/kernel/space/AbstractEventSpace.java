@@ -121,13 +121,15 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 *
 	 * <p>This function emits on the internal event bus of the agent (call to {@link #doEmit(Event, Scope)}), and on the network.
 	 *
+	 * @param eventSource - the source of the event.
 	 * @param event - the event to emit.
 	 * @param scope - description of the scope of the event, i.e. the receivers of the event.
+	 * @since 2.0.6.0
 	 */
-	public final void emit(Event event, Scope<Address> scope) {
+	public final void emit(UUID eventSource, Event event, Scope<Address> scope) {
 		assert event != null;
-		assert event.getSource() != null : "Every event must have a source"; //$NON-NLS-1$
-		assert this.getSpaceID().equals(event.getSource().getSpaceId()) : "The source address must belong to this space"; //$NON-NLS-1$
+		ensureEventSource(eventSource, event);
+		assert getSpaceID().equals(event.getSource().getSpaceId()) : "The source address must belong to this space"; //$NON-NLS-1$
 		try {
 			final Scope<Address> scopeInstance = (scope == null) ? Scopes.<Address>allParticipants() : scope;
 			this.network.publish(scopeInstance, event);
@@ -136,6 +138,22 @@ public abstract class AbstractEventSpace extends SpaceBase {
 			this.logger.error(Messages.AbstractEventSpace_0, event, scope, e);
 		}
 
+	}
+
+	/** Ensure that the given event has a source.
+	 *
+	 * @param eventSource - the source of the event.
+	 * @param event - the event to emit.
+	 * @since 2.0.6.0
+	 */
+	protected void ensureEventSource(UUID eventSource, Event event) {
+		if (event.getSource() == null) {
+			if (eventSource != null) {
+				event.setSource(new Address(getSpaceID(), eventSource));
+			} else {
+				throw new AssertionError("Every event must have a source"); //$NON-NLS-1$
+			}
+		}
 	}
 
 	/**

@@ -24,16 +24,20 @@ package io.sarl.lang.compiler;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.compiler.XtendCompiler;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationAnnotationValue;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationValue;
@@ -54,23 +58,29 @@ import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.linking.ILinker;
+import org.eclipse.xtext.util.JavaVersion;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XTypeLiteral;
+import org.eclipse.xtext.xbase.XVariableDeclaration;
+import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
-import io.sarl.lang.generator.SARLJvmGenerator;
 import io.sarl.lang.jvmmodel.Messages;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
+import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
+import io.sarl.lang.typesystem.SARLExpressionHelper;
 
 
 /** The compiler from SARL to the target language.
@@ -102,6 +112,7 @@ import io.sarl.lang.sarl.SarlBreakExpression;
  * @mavenartifactid $ArtifactId$
  * @since 0.4
  */
+@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SarlCompiler extends XtendCompiler {
 
 	private static final String INLINE_VARIABLE_PREFIX = "$"; //$NON-NLS-1$
@@ -123,6 +134,12 @@ public class SarlCompiler extends XtendCompiler {
 
 	@Inject
 	private IBatchTypeResolver batchTypeResolver;
+
+	@Inject
+	private IGeneratorConfigProvider generatorConfigProvider;
+
+	@Inject
+	private SARLExpressionHelper sarlExpressionHelper;
 
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	private static String getAnnotationStringValue(JvmAnnotationValue value) {
@@ -196,15 +213,15 @@ public class SarlCompiler extends XtendCompiler {
 		final List<JvmTypeReference> importedTypes = Lists.newArrayListWithCapacity(2);
 		for (final JvmAnnotationValue annotationValue: inlineAnnotation.getValues()) {
 			final String valueName = annotationValue.getValueName();
-			if (Strings.isNullOrEmpty(valueName)) {
+			if (Strings.isEmpty(valueName)) {
 				// Special case: the annotation value as no associated operation.
 				// If it appends, we could assumes that the operation is "value()"
-				if (!Strings.isNullOrEmpty(formatString)) {
+				if (!Strings.isEmpty(formatString)) {
 					throw new IllegalStateException();
 				}
 				formatString = getAnnotationStringValue(annotationValue);
 			} else if (INLINE_VALUE_NAME.equals(valueName)) {
-				if (!Strings.isNullOrEmpty(formatString)) {
+				if (!Strings.isEmpty(formatString)) {
 					throw new IllegalStateException();
 				}
 				formatString = getAnnotationStringValue(annotationValue);
@@ -330,6 +347,8 @@ public class SarlCompiler extends XtendCompiler {
 	public void doInternalToJavaStatement(XExpression obj, ITreeAppendable appendable, boolean isReferenced) {
 		if (obj instanceof SarlBreakExpression) {
 			_toJavaStatement((SarlBreakExpression) obj, appendable, isReferenced);
+		} else if (obj instanceof SarlAssertExpression) {
+			_toJavaStatement((SarlAssertExpression) obj, appendable, isReferenced);
 		} else {
 			try {
 				super.doInternalToJavaStatement(obj, appendable, isReferenced);
@@ -340,7 +359,23 @@ public class SarlCompiler extends XtendCompiler {
 		}
 	}
 
-	/** Generate the JAva code for the break keyword.
+	@Override
+	public void internalToConvertedExpression(XExpression obj, ITreeAppendable appendable) {
+		if (obj instanceof SarlBreakExpression) {
+			_toJavaExpression((SarlBreakExpression) obj, appendable);
+		} else if (obj instanceof SarlAssertExpression) {
+			_toJavaExpression((SarlAssertExpression) obj, appendable);
+		} else {
+			try {
+				super.internalToConvertedExpression(obj, appendable);
+			} catch (IllegalStateException exception) {
+				// Log the exception but do not fail the generation.
+				logInternalError(exception);
+			}
+		}
+	}
+
+	/** Generate the Java code related to the preparation statements for the break keyword.
 	 *
 	 * @param breakExpression the expression.
 	 * @param appendable the output.
@@ -349,6 +384,155 @@ public class SarlCompiler extends XtendCompiler {
 	@SuppressWarnings("static-method")
 	protected void _toJavaStatement(SarlBreakExpression breakExpression, ITreeAppendable appendable, boolean isReferenced) {
 		appendable.newLine().append("break;"); //$NON-NLS-1$
+	}
+
+	/** Generate the Java code to the preparation statements for the assert keyword.
+	 *
+	 * @param assertExpression the expression.
+	 * @param appendable the output.
+	 * @param isReferenced indicates if the expression is referenced.
+	 */
+	protected void _toJavaStatement(SarlAssertExpression assertExpression, ITreeAppendable appendable, boolean isReferenced) {
+		if (!assertExpression.isIsStatic() && assertExpression.getCondition() != null && isAtLeastJava8(assertExpression)) {
+			final XExpression condition = assertExpression.getCondition();
+			final LightweightTypeReference actualType = getLightweightType(condition);
+			if (actualType != null) {
+				final Boolean booleanConstant = this.sarlExpressionHelper.toBooleanPrimitiveWrapperConstant(condition);
+				if (booleanConstant != null) {
+					appendable.newLine().append("assert "); //$NON-NLS-1$
+					appendable.append(booleanConstant.toString());
+				} else {
+					// Get the local variables.
+					final Map<XVariableDeclaration, XFeatureCall> localVariables = getReferencedLocalVariable(condition, true);
+
+					final String className = appendable.declareUniqueNameVariable(assertExpression, "$AssertEvaluator$"); //$NON-NLS-1$
+
+					appendable.openScope();
+					try {
+						reassignThisInClosure(appendable, findKnownTopLevelType(Object.class, assertExpression));
+
+						appendable.newLine().append("class ").append(className).append(" {"); //$NON-NLS-1$ //$NON-NLS-2$
+						appendable.increaseIndentation().newLine();
+						appendable.append("final boolean $$result;").newLine(); //$NON-NLS-1$
+						appendable.append(className).append("("); //$NON-NLS-1$
+						boolean first = true;
+						for (final Entry<XVariableDeclaration, XFeatureCall> localVariable : localVariables.entrySet()) {
+							if (first) {
+								first = false;
+							} else {
+								appendable.append(", "); //$NON-NLS-1$
+							}
+							final JvmTypeReference localVariableType = getType(localVariable.getValue());
+							appendable.append("final ").append(toLightweight(localVariableType, assertExpression)); //$NON-NLS-1$
+							appendable.append(" ").append(localVariable.getKey().getName()); //$NON-NLS-1$
+						}
+						appendable.append(") {"); //$NON-NLS-1$
+						appendable.increaseIndentation();
+						internalToJavaStatement(condition, appendable, true);
+						appendable.newLine();
+						appendable.append("this.$$result = "); //$NON-NLS-1$
+						internalToConvertedExpression(condition, appendable, actualType);
+						appendable.append(";"); //$NON-NLS-1$
+						appendable.decreaseIndentation().newLine();
+						appendable.append("}"); //$NON-NLS-1$
+						appendable.decreaseIndentation().newLine();
+						appendable.append("}"); //$NON-NLS-1$
+						appendable.newLine();
+						appendable.append("assert new ").append(className).append("("); //$NON-NLS-1$ //$NON-NLS-2$
+						first = true;
+						for (final XVariableDeclaration localVariable : localVariables.keySet()) {
+							if (first) {
+								first = false;
+							} else {
+								appendable.append(", "); //$NON-NLS-1$
+							}
+							appendable.append(localVariable.getName());
+						}
+						appendable.append(").$$result"); //$NON-NLS-1$
+					} finally {
+						appendable.closeScope();
+					}
+				}
+				if (!Strings.isEmpty(assertExpression.getMessage())) {
+					appendable.append(" : \""); //$NON-NLS-1$
+					appendable.append(Strings.convertToJavaString(assertExpression.getMessage()));
+					appendable.append("\""); //$NON-NLS-1$
+				}
+				appendable.append(";"); //$NON-NLS-1$
+			}
+		}
+	}
+
+	/** Replies all the variables that are referenced into the given expression.
+	 *
+	 * @param expression the expression.
+	 * @param onlyWritable if {@code true} only the writable variables are replied. Otherwise, all variables are replied.
+	 * @return the referenced variables.
+	 */
+	@SuppressWarnings("static-method")
+	protected Map<XVariableDeclaration, XFeatureCall> getReferencedLocalVariable(XExpression expression, boolean onlyWritable) {
+		final Map<XVariableDeclaration, XFeatureCall> localVariables = new TreeMap<>((k1, k2) -> {
+			return k1.getIdentifier().compareTo(k2.getIdentifier());
+		});
+		for (final XFeatureCall featureCall : EcoreUtil2.getAllContentsOfType(expression, XFeatureCall.class)) {
+			if (featureCall.getFeature() instanceof XVariableDeclaration) {
+				final XVariableDeclaration localVariable = (XVariableDeclaration) featureCall.getFeature();
+				if ((!onlyWritable || localVariable.isWriteable()) && !localVariables.containsKey(localVariable)) {
+					localVariables.put(localVariable, featureCall);
+				}
+			}
+		}
+		return localVariables;
+	}
+
+	/** Replies if the generation is for Java version 8 at least.
+	 *
+	 * @param context the context.
+	 * @return {@code true} if Java 8 or newer.
+	 */
+	protected boolean isAtLeastJava8(EObject context) {
+		return this.generatorConfigProvider.get(EcoreUtil.getRootContainer(context)).getJavaSourceVersion().isAtLeast(JavaVersion.JAVA8);
+	}
+
+	/** Generate the Java code related to the expression for the break keyword.
+	 *
+	 * @param breakExpression the expression.
+	 * @param appendable the output.
+	 */
+	@SuppressWarnings("static-method")
+	protected void _toJavaExpression(SarlBreakExpression breakExpression, ITreeAppendable appendable) {
+		appendable.append("/* error - couldn't compile nested break */"); //$NON-NLS-1$
+	}
+
+	/** Generate the Java code related to the expression for the assert keyword.
+	 *
+	 * @param assertExpression the expression.
+	 * @param appendable the output.
+	 */
+	protected void _toJavaExpression(SarlAssertExpression assertExpression, ITreeAppendable appendable) {
+		if (!assertExpression.isIsStatic() && isAtLeastJava8(assertExpression)) {
+			appendable.append("/* error - couldn't compile nested assert */"); //$NON-NLS-1$
+		}
+	}
+
+	@Override
+	protected boolean internalCanCompileToJavaExpression(XExpression expression, ITreeAppendable appendable) {
+		if (expression instanceof SarlBreakExpression) {
+			return true;
+		}
+		if (expression instanceof SarlAssertExpression) {
+			return true;
+		}
+		return super.internalCanCompileToJavaExpression(expression, appendable);
+	}
+
+	@Override
+	protected boolean isVariableDeclarationRequired(XExpression expression, ITreeAppendable appendable, boolean recursive) {
+		final EObject container = expression.eContainer();
+		if (container instanceof SarlAssertExpression) {
+			return false;
+		}
+		return super.isVariableDeclarationRequired(expression, appendable, recursive);
 	}
 
 	/** Log an internal error but do not fail.

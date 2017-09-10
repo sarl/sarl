@@ -53,21 +53,15 @@ import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.IActionPrototypeProvider;
-import io.sarl.lang.actionprototype.InferredPrototype;
-import io.sarl.lang.actionprototype.InferredStandardParameter;
-import io.sarl.lang.actionprototype.InferredValuedParameter;
-import io.sarl.lang.actionprototype.QualifiedActionName;
+import io.sarl.lang.compiler.extra.AbstractExtraLanguageGenerator;
+import io.sarl.lang.compiler.extra.ExtraLanguageAppendable;
+import io.sarl.lang.compiler.extra.ExtraLanguageTypeConverter;
+import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorContext;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
-import io.sarl.lang.generator.extra.AbstractExtraLanguageGenerator;
-import io.sarl.lang.generator.extra.ExtraLanguageAppendable;
-import io.sarl.lang.generator.extra.ExtraLanguageTypeConverter;
-import io.sarl.lang.generator.extra.IExtraLanguageGeneratorContext;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
@@ -83,6 +77,12 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlSkill;
+import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
+import io.sarl.lang.sarl.actionprototype.InferredPrototype;
+import io.sarl.lang.sarl.actionprototype.InferredStandardParameter;
+import io.sarl.lang.sarl.actionprototype.InferredValuedParameter;
+import io.sarl.lang.sarl.actionprototype.QualifiedActionName;
 import io.sarl.lang.util.Utils;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 import io.sarl.pythongenerator.configuration.PyOutputConfigurationProvider;
@@ -266,7 +266,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 */
 	protected boolean generateTypeDeclaration(String name, boolean isAbstract,
 			List<? extends JvmTypeReference> superTypes, boolean ignoreObjectType, List<? extends XtendMember> members, PyAppendable it,
-			IExtraLanguageGeneratorContext context, Procedure2<PyAppendable, IExtraLanguageGeneratorContext> memberGenerator) {
+			IExtraLanguageGeneratorContext context, Procedure2<? super PyAppendable, ? super IExtraLanguageGeneratorContext> memberGenerator) {
 		if (!Strings.isEmpty(name)) {
 			if (!generatePythonClassDeclaration(name, isAbstract, superTypes, ignoreObjectType, it, context)
 				|| context.getCancelIndicator().isCanceled()) {

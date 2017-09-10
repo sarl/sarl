@@ -272,7 +272,7 @@ public final class SARLRuntime {
 	 * @param sres - The installed SREs.
 	 * @param monitor the progress monitor to use for reporting progress to the user. It is the caller's responsibility
 	 *        to call done() on the given monitor. Accepts <code>null</code>, indicating that no progress should be
-	 *        reported and that the operation cannot be cancelled.
+	 *        reported and that the operation cannot be canceled.
 	 * @throws CoreException if trying to set the default SRE install encounters problems
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")

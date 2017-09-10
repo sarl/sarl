@@ -70,10 +70,6 @@ import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XbaseFactory;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
-import io.sarl.lang.actionprototype.FormalParameterProvider;
-import io.sarl.lang.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SyntheticMember;
@@ -82,6 +78,10 @@ import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.IFormalParameterBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlConstructorBuilder;
+import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.ActionPrototype;
+import io.sarl.lang.sarl.actionprototype.FormalParameterProvider;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.util.Utils;
 
 

@@ -115,40 +115,44 @@ If failing, revert 2.10, fix the problem, and go back to 2.6.
 
 Updload the Maven Bundle on Maven Central with http://oss.sonatype.org
 
-=== 3.2) Changelog
+=== 3.2) Debian Packages
+
+Create and upload the debian packages.
+
+=== 3.3) Changelog
 
 Create the "Changes" page for the website, and add a link to the "Changes" page of the previous website inside.
 In this way, it will be possible to following the change history from the ealier to older changes.
 
-=== 3.3) Synchronize with other projects
+=== 3.4) Synchronize with other projects
 
 Synchronize the link:https://github.com/sarl/awesome-sarl[Awesome SARL project] with the "Community" page of the website.
 
-=== 3.4) News
+=== 3.5) News
 
 Add a "News" in the SARL website.
 
-=== 3.5) Update the SARL website
+=== 3.6) Update the SARL website
 
      $> cd path/to/sarl-site
      $> rake build_full
      $> rake transfer
 
-=== 3.6) Commit and push the website Gits.
+=== 3.7) Commit and push the website Gits.
 
-=== 3.7) Clean issues
+=== 3.8) Clean issues
 
 Move all the remaining issues on Github to the following version.
 
-=== 3.8) Close milestones
+=== 3.9) Close milestones
 
 Close the released milestone on Github.
 
-=== 3.9) Release Notes
+=== 3.10) Release Notes
 
 Add release notes on Github (from the Changes page on the website), attached to the release tag.
 
-=== 3.10) Announcements
+=== 3.11) Announcements
 
 Announce the new version of SARL on the mailing lists.
 

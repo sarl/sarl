@@ -1,0 +1,61 @@
+package io.sarl.demos.fireworks.gui.fx
+
+import io.sarl.core.AgentSpawned
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+import io.sarl.lang.core.Agent
+import io.sarl.util.OpenEventSpaceSpecification
+import java.util.UUID
+import javafx.application.Application
+
+import static io.sarl.demos.fireworks.gui.fx.FxApplication.*
+
+/** Abstract definition of an agent that is able to boot a JavaFX application. 
+ */
+abstract agent FxBootAgent {
+
+	uses Lifecycle, DefaultContextInteractions, Behaviors, Schedules, Logging
+
+	var launcherID : UUID
+	var startFeedback : () => void
+
+	on Initialize {
+		loggingName = "BootAgent"
+		var ^space = defaultContext.createSpace(
+			typeof(OpenEventSpaceSpecification),
+			UUID::randomUUID
+		)
+		^space.register(asEventListener)
+		FxApplication::eventSpaceCandidate = ^space
+		execute [Application::launch(this.fxApplicationType)]
+	}
+
+	on AppStart {
+		this.startFeedback = occurrence.startFeedback
+		this.launcherID = UUID::randomUUID
+		spawnInContextWithID(
+			this.applicationBootAgentType,
+			this.launcherID,
+			defaultContext,
+			occurrence.fxController)
+	}
+	
+	on AgentSpawned [it.agentIdentifiers.contains(this.launcherID)] {
+		var feedback = this.startFeedback
+		this.startFeedback = null
+		feedback?.apply 
+	}
+
+	on AppExit {
+		killMe
+	}
+
+	abstract def getFxApplicationType : Class<? extends FxApplication>
+
+	abstract def getApplicationBootAgentType : Class<? extends Agent>
+
+}

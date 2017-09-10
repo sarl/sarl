@@ -22,6 +22,7 @@
 package io.sarl.maven.docs.testing;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.ImplementedBy;
@@ -70,7 +71,11 @@ public interface ScriptExecutor {
 	 * @return the issues.
 	 * @throws Exception if compilation failed.
 	 */
-	List<String> compile(int lineno, String code) throws Exception;
+	default List<String> compile(int lineno, String code) throws Exception {
+		List<String> issues = new ArrayList<>();
+		compile(lineno, code, issues, null);
+		return issues;
+	}
 
 	/** Compile the given code and replies the issues.
 	 *

@@ -37,7 +37,9 @@
 					</execution>
 				</executions>
 				<configuration>
-					<descriptor>with-dependencies.xml</descriptor>
+					<descriptors>
+						<descriptor>with-dependencies.xml</descriptor>
+					</descriptors>
 					<archive>
 						<manifest>
 							<mainClass>${cliCompilerMainClass}</mainClass>
@@ -60,7 +62,7 @@
 						<configuration>
 							<headerType>console</headerType>
 							<outfile>${project.build.directory}/${cliCompilerName}.exe</outfile>
-							<jar>${project.build.directory}/${project.build.finalName}.jar</jar>
+							<jar>${project.build.directory}/${project.build.finalName}-cli.jar</jar>
 							<icon>${project.basedir}/icons/sarlc.ico</icon>
 							<classPath>
 								<mainClass>${cliCompilerMainClass}</mainClass>
@@ -107,7 +109,7 @@
 								<concat dest="${sarlc.linux.output.full}" binary="yes">
 									<fileset file="${sarlc.linux.output}" />
 									<fileset
-										file="${project.build.directory}/${project.build.finalName}.jar" />
+										file="${project.build.directory}/${project.build.finalName}-cli.jar" />
 								</concat>
 								<chmod perm="ugo+x">
 									<fileset file="${sarlc.linux.output.full}" />

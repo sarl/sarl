@@ -105,14 +105,14 @@ import io.sarl.eclipse.util.Jdt2Ecore;
 import io.sarl.eclipse.util.Jdt2Ecore.ActionBuilder;
 import io.sarl.eclipse.util.Jdt2Ecore.ConstructorBuilder;
 import io.sarl.eclipse.util.Jdt2Ecore.TypeFinder;
-import io.sarl.lang.actionprototype.ActionParameterTypes;
-import io.sarl.lang.actionprototype.ActionPrototype;
 import io.sarl.lang.codebuilder.CodeBuilderFactory;
 import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.IExpressionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlActionBuilder;
 import io.sarl.lang.codebuilder.builders.ISarlBehaviorUnitBuilder;
 import io.sarl.lang.formatting2.FormatterFacade;
+import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
+import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 
 /**
  * Abstract implementation of a wizard page for creating new SARL elements.
@@ -718,7 +718,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		try {
 			getContainer().run(true, false, op);
 		} catch (InterruptedException e) {
-			// cancelled by user
+			// canceled by user
 			return 0;
 		} catch (InvocationTargetException e) {
 			final Throwable realException = e.getTargetException();
@@ -1213,8 +1213,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @since 0.5
 	 */
 	protected boolean createStandardSARLEventTemplates(String elementTypeName,
-			Function1<String, ISarlBehaviorUnitBuilder> behaviorUnitAdder,
-			Procedure1<String> usesAdder) {
+			Function1<? super String, ? extends ISarlBehaviorUnitBuilder> behaviorUnitAdder,
+			Procedure1<? super String> usesAdder) {
 		if (!isCreateStandardEventHandlers()) {
 			return false;
 		}
@@ -1295,8 +1295,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @since 0.5
 	 */
 	protected boolean createStandardSARLLifecycleFunctionTemplates(String elementTypeName,
-			Function1<String, ISarlActionBuilder> actionAdder,
-			Procedure1<String> usesAdder) {
+			Function1<? super String, ? extends ISarlActionBuilder> actionAdder,
+			Procedure1<? super String> usesAdder) {
 		if (!isCreateStandardLifecycleFunctions()) {
 			return false;
 		}
