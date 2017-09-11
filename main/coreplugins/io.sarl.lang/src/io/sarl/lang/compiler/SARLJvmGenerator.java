@@ -24,15 +24,14 @@ package io.sarl.lang.compiler;
 import javax.inject.Inject;
 
 import org.eclipse.xtend.core.compiler.XtendGenerator;
-import org.eclipse.xtext.common.types.JvmDeclaredType;
-import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
-import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.util.Utils;
 
@@ -61,32 +60,50 @@ import io.sarl.lang.util.Utils;
 public class SARLJvmGenerator extends XtendGenerator {
 
 	@Inject
-	private SARLGrammarKeywordAccess keywords;
-
-	@Inject
 	private IOperationHelper operationHelper;
 
-	@Override
-	public ITreeAppendable generateMembersInBody(JvmDeclaredType it, ITreeAppendable appendable,
-			GeneratorConfig config) {
-		for (final JvmMember member : getMembersToBeCompiled(it)) {
-			if (member instanceof JvmOperation) {
-				// Add the @Pure annotation dynamically
-				this.operationHelper.adaptIfPossible((JvmOperation) member);
-			}
-		}
-		return super.generateMembersInBody(it, appendable, config);
-	}
+	@Inject
+	private AnnotationLookup annotations;
 
 	@Override
 	protected ITreeAppendable _generateMember(JvmOperation it, ITreeAppendable appendable, GeneratorConfig config) {
-		//System.err.println("Generates: <" + it.getSimpleName() + ">");
 		if (Utils.STATIC_CONSTRUCTOR_NAME.equals(it.getSimpleName())) {
 			// The constructor name is not the same as the declaring type.
 			// We assume that the constructor is a static constructor.
 			return generateStaticConstructor(it, appendable, config);
 		}
-		return super._generateMember(it, appendable, config);
+		// The code below is adapted from the code of the Xtend super type.
+		appendable.newLine();
+		appendable.openScope();
+		generateJavaDoc(it, appendable, config);
+		final ITreeAppendable tracedAppendable = appendable.trace(it);
+		generateAnnotations(it.getAnnotations(), tracedAppendable, true, config);
+		// Specific case: automatic generation
+		if (this.operationHelper.isPureOperation(it)
+				&& this.annotations.findAnnotation(it, Pure.class) == null) {
+			tracedAppendable.append("@").append(Pure.class).newLine(); //$NON-NLS-1$
+		}
+		generateModifier(it, tracedAppendable, config);
+		generateTypeParameterDeclaration(it, tracedAppendable, config);
+		if (it.getReturnType() == null) {
+			tracedAppendable.append("void"); //$NON-NLS-1$
+		} else {
+			this._errorSafeExtensions.serializeSafely(it.getReturnType(), Object.class.getSimpleName(), tracedAppendable);
+		}
+		tracedAppendable.append(" "); //$NON-NLS-1$
+		this._treeAppendableUtil.traceSignificant(tracedAppendable, it).append(makeJavaIdentifier(it.getSimpleName()));
+		tracedAppendable.append("("); //$NON-NLS-1$
+		generateParameters(it, tracedAppendable, config);
+		tracedAppendable.append(")"); //$NON-NLS-1$
+		generateThrowsClause(it, tracedAppendable, config);
+		if (it.isAbstract() || !hasBody(it)) {
+			tracedAppendable.append(";"); //$NON-NLS-1$
+		} else {
+			tracedAppendable.append(" "); //$NON-NLS-1$
+			generateExecutableBody(it, tracedAppendable, config);
+		}
+		appendable.closeScope();
+		return appendable;
 	}
 
 	/** Generate a static constructor from the given Jvm constructor.
@@ -101,7 +118,7 @@ public class SARLJvmGenerator extends XtendGenerator {
 		appendable.openScope();
 		generateJavaDoc(it, appendable, config);
 		final ITreeAppendable tracedAppendable = appendable.trace(it);
-		tracedAppendable.append(this.keywords.getStaticStaticKeyword()).append(" "); //$NON-NLS-1$
+		tracedAppendable.append("static "); //$NON-NLS-1$
 		generateExecutableBody(it, tracedAppendable, config);
 		return appendable;
 	}

@@ -116,6 +116,15 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 
 	@Override
 	public String toString() {
+		return toString(false);
+	}
+
+	/** Replies the string representation of this list of parameters.
+	 *
+	 * @param isRaw indicates if the output should be raw (without type parameters) or not (with type parameters).
+	 * @return the string representation of the parameter list.
+	 */
+	public String toString(boolean isRaw) {
 		if (!isEmpty()) {
 			final StringBuilder b = new StringBuilder();
 			final int size = size() - 1;
@@ -123,11 +132,20 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 				if (i > 0) {
 					b.append(","); //$NON-NLS-1$
 				}
-				b.append(get(i));
+				final String elt;
+				if (isRaw) {
+					elt = get(i).replaceFirst("\\<.*\\>", ""); //$NON-NLS-1$ //$NON-NLS-2$
+				} else {
+					elt = get(i);
+				}
+				b.append(elt);
 			}
 			String lastElement = get(size);
 			if (isVarArg()) {
 				lastElement = lastElement.replaceFirst("\\[\\]$", "*");  //$NON-NLS-1$//$NON-NLS-2$
+			}
+			if (isRaw) {
+				lastElement = lastElement.replaceFirst("\\<.*\\>", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			if (size > 0) {
 				b.append(","); //$NON-NLS-1$
@@ -166,7 +184,16 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 	 * @return the action key.
 	 */
 	public ActionPrototype toActionPrototype(String actionName) {
-		return new ActionPrototype(actionName, this);
+		return new ActionPrototype(actionName, this, false);
+	}
+
+	/** Replies the action prototype associate to this list of parameters with the type parameters.
+	 *
+	 * @param actionName - the id of the action.
+	 * @return the action key without the type parameters.
+	 */
+	public ActionPrototype toRawActionPrototype(String actionName) {
+		return new ActionPrototype(actionName, this, true);
 	}
 
 }

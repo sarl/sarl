@@ -1739,14 +1739,16 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (context != null && context.getGeneratorConfig2().isGeneratePureAnnotation()
 					&& this.typeReferences.findDeclaredType(Pure.class, source) != null) {
 				addDynamicPureAnnotationGenerator = inheritedOperation == null;
-				this.operationHelper.attachAdapter(operation, (it) -> {
+				this.operationHelper.attachPureAnnotationAdapter(operation, (op, helper) -> {
+					boolean addPureAnnotation = false;
 					if (inheritedOperation != null) {
-						if (it.isPureOperation(inheritedOperation) && !it.isPureOperation(operation)) {
-							addAnnotationSafe(operation, Pure.class);
+						if (helper.isPureOperation(inheritedOperation)) {
+							addPureAnnotation = true;
 						}
-					} else if (it.isPurableOperation(source) && !it.isPureOperation(operation)) {
-						addAnnotationSafe(operation, Pure.class);
+					} else if (helper.isPurableOperation(source)) {
+						addPureAnnotation = true;
 					}
+					return addPureAnnotation;
 				});
 			} else {
 				addDynamicPureAnnotationGenerator = false;
@@ -1921,12 +1923,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							}
 						}
 						if (addDynamicPureAnnotationGenerator) {
-							this.operationHelper.attachAdapter(operation2, (it) -> {
-								it.adaptIfPossible(operation);
-								if (it.isPureOperation(operation)
-										&& !it.isPureOperation(operation2)) {
-									addAnnotationSafe(operation2, Pure.class);
-								}
+							this.operationHelper.attachPureAnnotationAdapter(operation2, (op, helper) -> {
+								return helper.isPureOperation(operation);
 							});
 						}
 
@@ -2651,14 +2649,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				boolean couldCreateEqualsFunction = true;
 				if (!isEqualsUserDefined) {
 					final ActionPrototype prototype = new ActionPrototype(EQUALS_FUNCTION_NAME,
-							this.sarlSignatureProvider.createParameterTypesFromString(Object.class.getName()));
+							this.sarlSignatureProvider.createParameterTypesFromString(Object.class.getName()), false);
 					couldCreateEqualsFunction = !finalOperations.containsKey(prototype);
 				}
 
 				boolean couldCreateHashCodeFunction = true;
 				if (!isHashCodeUserDefined) {
 					final ActionPrototype prototype = new ActionPrototype(HASHCODE_FUNCTION_NAME,
-							this.sarlSignatureProvider.createParameterTypesForVoid());
+							this.sarlSignatureProvider.createParameterTypesForVoid(), false);
 					couldCreateHashCodeFunction = !finalOperations.containsKey(prototype);
 				}
 
@@ -2798,7 +2796,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 
 		final ActionPrototype standardPrototype = new ActionPrototype(CLONE_FUNCTION_NAME,
-				this.sarlSignatureProvider.createParameterTypesForVoid());
+				this.sarlSignatureProvider.createParameterTypesForVoid(), false);
 
 		final Map<ActionPrototype, JvmOperation> finalOperations = new TreeMap<>();
 		Utils.populateInheritanceContext(

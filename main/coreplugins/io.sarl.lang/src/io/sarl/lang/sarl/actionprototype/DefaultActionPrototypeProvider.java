@@ -366,7 +366,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 
 	@Override
 	public ActionPrototype createActionPrototype(String actionName, ActionParameterTypes parameters) {
-		return new ActionPrototype(actionName, parameters);
+		return new ActionPrototype(actionName, parameters, false);
 	}
 
 	@Override

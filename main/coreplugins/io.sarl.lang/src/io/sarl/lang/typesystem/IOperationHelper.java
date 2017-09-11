@@ -25,7 +25,7 @@ import com.google.inject.ImplementedBy;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
@@ -83,23 +83,23 @@ public interface IOperationHelper {
 	 */
 	boolean hasSideEffects(InferredPrototype calledOperation, XExpression expr);
 
-	/** Adapt the given operation.
-	 *
-	 * <p>For example, attach the <code>@Pure</code> annotation to the given operation.
+	/** Replies if the given operation could be annotated with {@code @Pure} according
+	 * to its associated adapters.
 	 *
 	 * @param operation - the operation to update.
-	 * @see Pure
-	 * @see #attachAdapter(JvmOperation, Procedure1)
+	 * @return {@code true} if the given operation could be annotated.
 	 */
-	void adaptIfPossible(JvmOperation operation);
+	boolean evaluatePureAnnotationAdapters(JvmOperation operation);
 
-	/** Create an adapter for the given operation.
+	/** Create an adapter for attached an pure annotation adapter to given operation.
 	 *
 	 * @param operation - the operation to update.
-	 * @param dynamicCallback - the code to run for adapting the operation.
+	 * @param dynamicCallback - the code to run for adapting the operation. This call back replies {@code true}
+	 *     if the operation could be annotated with {@code @Pure}.
 	 * @see Pure
-	 * @see #adaptIfPossible(JvmOperation)
+	 * @see #evaluatePureAnnotationAdapters(JvmOperation)
 	 */
-	void attachAdapter(JvmOperation operation, Procedure1<? super IOperationHelper> dynamicCallback);
+	void attachPureAnnotationAdapter(JvmOperation operation,
+			Function2<? super JvmOperation, ? super IOperationHelper, ? extends Boolean> dynamicCallback);
 
 }

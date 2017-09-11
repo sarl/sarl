@@ -49,7 +49,7 @@ public class ActionPrototypeTest {
 	@Before
 	public void setUp() {
 		this.parameters = new ActionParameterTypes("int,float,java.lang.String*");
-		this.prototype = new ActionPrototype("myfct", this.parameters);
+		this.prototype = new ActionPrototype("myfct", this.parameters, false);
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class ActionPrototypeTest {
 	@Test
 	public void testEquals_3() {
 		ActionParameterTypes params = new ActionParameterTypes("int,float,java.lang.String*");
-		ActionPrototype proto = new ActionPrototype("myfct", params);
+		ActionPrototype proto = new ActionPrototype("myfct", params, false);
 		assertTrue(this.prototype.equals(proto));
 		assertTrue(proto.equals(this.prototype));
 	}
@@ -99,7 +99,7 @@ public class ActionPrototypeTest {
 	@Test
 	public void testEquals_4() {
 		ActionParameterTypes params = new ActionParameterTypes("int,float");
-		ActionPrototype proto = new ActionPrototype("myfct", params);
+		ActionPrototype proto = new ActionPrototype("myfct", params, false);
 		assertFalse(this.prototype.equals(proto));
 		assertFalse(proto.equals(this.prototype));
 	}
@@ -107,7 +107,7 @@ public class ActionPrototypeTest {
 	@Test
 	public void testEquals_5() {
 		ActionParameterTypes params = new ActionParameterTypes("int,float,java.lang.String*");
-		ActionPrototype proto = new ActionPrototype("myfct2", params);
+		ActionPrototype proto = new ActionPrototype("myfct2", params, false);
 		assertFalse(this.prototype.equals(proto));
 		assertFalse(proto.equals(this.prototype));
 	}
@@ -126,21 +126,21 @@ public class ActionPrototypeTest {
 	@Test
 	public void testHashCode_2() {
 		ActionParameterTypes params = new ActionParameterTypes("int,float,java.lang.String*");
-		ActionPrototype proto = new ActionPrototype("myfct", params);
+		ActionPrototype proto = new ActionPrototype("myfct", params, false);
 		assertEquals(this.prototype.hashCode(), proto.hashCode());
 	}
 
 	@Test
 	public void testHashCode_3() {
 		ActionParameterTypes params = new ActionParameterTypes("int,float");
-		ActionPrototype proto = new ActionPrototype("myfct", params);
+		ActionPrototype proto = new ActionPrototype("myfct", params, false);
 		assertNotEquals(this.prototype.hashCode(), proto.hashCode());
 	}
 
 	@Test
 	public void testHashCode_5() {
 		ActionParameterTypes params = new ActionParameterTypes("int,float,java.lang.String*");
-		ActionPrototype proto = new ActionPrototype("myfct2", params);
+		ActionPrototype proto = new ActionPrototype("myfct2", params, false);
 		assertNotEquals(this.prototype.hashCode(), proto.hashCode());
 	}
 
@@ -169,7 +169,7 @@ public class ActionPrototypeTest {
 	@Test
 	public void compareTo_3() {
 		ActionParameterTypes params = new ActionParameterTypes("int,float,java.lang.String*");
-		ActionPrototype proto = new ActionPrototype("myfct", params);
+		ActionPrototype proto = new ActionPrototype("myfct", params, false);
 		assertEquals(0, this.prototype.compareTo(proto));
 		assertEquals(0, proto.compareTo(this.prototype));
 	}
@@ -177,7 +177,7 @@ public class ActionPrototypeTest {
 	@Test
 	public void compareTo_4() {
 		ActionParameterTypes params = new ActionParameterTypes("int,float");
-		ActionPrototype proto = new ActionPrototype("myfct", params);
+		ActionPrototype proto = new ActionPrototype("myfct", params, false);
 		assertEquals(1, this.prototype.compareTo(proto));
 		assertEquals(-1, proto.compareTo(this.prototype));
 	}
@@ -185,7 +185,7 @@ public class ActionPrototypeTest {
 	@Test
 	public void compareTo_5() {
 		ActionParameterTypes params = new ActionParameterTypes("int,float,java.lang.String*");
-		ActionPrototype proto = new ActionPrototype("myfct2", params);
+		ActionPrototype proto = new ActionPrototype("myfct2", params, false);
 		assertEquals(-1, this.prototype.compareTo(proto));
 		assertEquals(1, proto.compareTo(this.prototype));
 	}

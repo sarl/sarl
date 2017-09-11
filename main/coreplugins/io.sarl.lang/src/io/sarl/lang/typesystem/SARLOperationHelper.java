@@ -78,12 +78,14 @@ import org.eclipse.xtext.xbase.XThrowExpression;
 import org.eclipse.xtext.xbase.XTryCatchFinallyExpression;
 import org.eclipse.xtext.xbase.XUnaryOperation;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.sarl.SarlAssertExpression;
+import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
@@ -596,6 +598,29 @@ public class SARLOperationHelper implements IOperationHelper {
 		return false;
 	}
 
+	/** Test if the given expression has side effects.
+	 *
+	 * @param expression the expression.
+	 * @param context the list of context expressions.
+	 * @return {@code true} if the expression has side effects.
+	 */
+	@SuppressWarnings("static-method")
+	protected Boolean _hasSideEffects(SarlAssertExpression expression, ISideEffectContext context) {
+		// Assume => expression.isStatic === true
+		return false;
+	}
+
+	/** Test if the given expression has side effects.
+	 *
+	 * @param expression the expression.
+	 * @param context the list of context expressions.
+	 * @return {@code true} if the expression has side effects.
+	 */
+	@SuppressWarnings("static-method")
+	protected Boolean _hasSideEffects(SarlBreakExpression expression, ISideEffectContext context) {
+		return false;
+	}
+
 	/** Replies if the given operator is a reassignment operator.
 	 * A reassignment operator changes its left operand.
 	 *
@@ -644,8 +669,8 @@ public class SARLOperationHelper implements IOperationHelper {
 			final ISideEffectContext ctx = new SideEffectContext(
 					Iterables.concat(context.getCalledOperations(),
 							Collections.singleton(getInferredPrototype(operation))));
-			adaptIfPossible(operation, ctx);
-			if (this.annotations.findAnnotation(operation, Pure.class) != null) {
+			if (this.annotations.findAnnotation(operation, Pure.class) != null
+					|| evaluatePureAnnotationAdapters(operation, ctx)) {
 				return false;
 			}
 			if (this.nameValidator.isNamePatternForNotPureOperation(operation)) {
@@ -654,7 +679,8 @@ public class SARLOperationHelper implements IOperationHelper {
 			if (this.nameValidator.isNamePatternForPureOperation(operation)
 					|| (operation.isStatic() && hasPrimitiveParameters(operation))) {
 				for (final XExpression ex : expression.getActualArguments()) {
-					if (hasSideEffects(ex, context)) {
+					final Boolean bool = hasSideEffects(ex, context);
+					if (bool != null && bool.booleanValue()) {
 						return true;
 					}
 				}
@@ -674,9 +700,14 @@ public class SARLOperationHelper implements IOperationHelper {
 			if (Strings.equal(container, prototype.getActionName().getDeclaringType().getIdentifier())
 					&& Strings.equal(operation.getSimpleName(), prototype.getActionName().getActionName())) {
 				final String prefix = container + "."; //$NON-NLS-1$
+				final String operationId = operation.getIdentifier();
 				for (final ActionParameterTypes types : prototype.getParameterTypeAlternatives()) {
-					final String name = prefix + types.toActionPrototype(operation.getSimpleName()).toString();
-					if (Strings.equal(operation.getIdentifier(), name)) {
+					String name = prefix + types.toActionPrototype(operation.getSimpleName()).toString();
+					if (Strings.equal(operationId, name)) {
+						return true;
+					}
+					name = prefix + types.toRawActionPrototype(operation.getSimpleName()).toString();
+					if (Strings.equal(operationId, name)) {
 						return true;
 					}
 				}
@@ -736,16 +767,17 @@ public class SARLOperationHelper implements IOperationHelper {
 	}
 
 	@Override
-	public void adaptIfPossible(JvmOperation operation) {
-		adaptIfPossible(operation, null);
+	public boolean evaluatePureAnnotationAdapters(JvmOperation operation) {
+		return evaluatePureAnnotationAdapters(operation, null);
 	}
 
-	/** Adapt the operation if possible with the given context.
+	/** Evalute the Pure annotatino adapters.
 	 *
 	 * @param operation the operation to adapt.
 	 * @param context the context.
+	 * @return {@code true} if the pure annotation could be associated to the given operation.
 	 */
-	void adaptIfPossible(JvmOperation operation, ISideEffectContext context) {
+	boolean evaluatePureAnnotationAdapters(org.eclipse.xtext.common.types.JvmOperation operation, ISideEffectContext context) {
 		int index = -1;
 		int i = 0;
 		for (final Adapter adapter : operation.eAdapters()) {
@@ -756,14 +788,16 @@ public class SARLOperationHelper implements IOperationHelper {
 			++i;
 		}
 		if (index >= 0) {
-			final AnnotationJavaGenerationAdapter annotationAdapter = (AnnotationJavaGenerationAdapter) operation.eAdapters().remove(index);
+			final AnnotationJavaGenerationAdapter annotationAdapter = (AnnotationJavaGenerationAdapter) operation.eAdapters().get(index);
 			assert annotationAdapter != null;
-			annotationAdapter.attachDynamicAnnotations(this, operation, context);
+			return annotationAdapter.applyAdaptations(this, operation, context);
 		}
+		return false;
 	}
 
 	@Override
-	public void attachAdapter(JvmOperation operation, Procedure1<? super IOperationHelper> dynamicCallback) {
+	public void attachPureAnnotationAdapter(JvmOperation operation,
+			Function2<? super JvmOperation, ? super IOperationHelper, ? extends Boolean> dynamicCallback) {
 		if (operation != null && dynamicCallback != null) {
 			AnnotationJavaGenerationAdapter adapter = (AnnotationJavaGenerationAdapter) EcoreUtil.getAdapter(
 					operation.eAdapters(), AnnotationJavaGenerationAdapter.class);
@@ -771,7 +805,7 @@ public class SARLOperationHelper implements IOperationHelper {
 				adapter = new AnnotationJavaGenerationAdapter();
 				operation.eAdapters().add(adapter);
 			}
-			adapter.addGenerator(dynamicCallback);
+			adapter.addPredicate(dynamicCallback);
 		}
 	}
 
@@ -780,8 +814,8 @@ public class SARLOperationHelper implements IOperationHelper {
 		if (operation == null) {
 			return false;
 		}
-		adaptIfPossible(operation);
-		return this.annotations.findAnnotation(operation, Pure.class) != null;
+		return this.annotations.findAnnotation(operation, Pure.class) != null
+				|| evaluatePureAnnotationAdapters(operation);
 	}
 
 	/** Context for the side effect.
@@ -1087,28 +1121,28 @@ public class SARLOperationHelper implements IOperationHelper {
 	 */
 	public static class AnnotationJavaGenerationAdapter extends AdapterImpl {
 
-		private List<Procedure1<? super IOperationHelper>> runnable;
+		private Collection<Function2<? super JvmOperation, ? super IOperationHelper, ? extends Boolean>> predicates;
 
-		/** Add a dynamic generator.
+		/** Add a predicate.
 		 *
-		 * @param generator the generator.
+		 * @param predicate the predicate.
 		 */
-		public void addGenerator(Procedure1<?  super IOperationHelper> generator) {
-			if (generator != null) {
+		public void addPredicate(Function2<? super JvmOperation, ? super IOperationHelper, ? extends Boolean> predicate) {
+			if (predicate != null) {
 				synchronized (this) {
-					if (this.runnable == null) {
-						this.runnable = new ArrayList<>();
+					if (this.predicates == null) {
+						this.predicates = new ArrayList<>();
 					}
-					this.runnable.add(generator);
+					this.predicates.add(predicate);
 				}
 			}
 		}
 
-		/** Remove all the dynamic generators.
+		/** Remove all the predicates.
 		 */
-		public void removeAllGenerators() {
+		public void removeAllPredicates() {
 			synchronized (this) {
-				this.runnable = null;
+				this.predicates = null;
 			}
 		}
 
@@ -1117,31 +1151,36 @@ public class SARLOperationHelper implements IOperationHelper {
 			return type == AnnotationJavaGenerationAdapter.class;
 		}
 
-		/** Attach dynamic annotations to the given operation.
+		/** Evaluate the predicates.
 		 *
 		 * @param helper the helper.
 		 * @param operation the operation to adapt.
 		 * @param context the context or {@code null} if none.
+		 * @return the view to the operation with adaptations.
 		 */
-		public void attachDynamicAnnotations(IOperationHelper helper, JvmOperation operation, ISideEffectContext context) {
+		public boolean applyAdaptations(IOperationHelper helper, JvmOperation operation, ISideEffectContext context) {
 			synchronized (this) {
-				if (this.runnable != null) {
-					for (final Procedure1<? super IOperationHelper> generator : this.runnable) {
+				if (this.predicates != null && !this.predicates.isEmpty()) {
+					for (final Function2<? super JvmOperation, ? super IOperationHelper, ? extends Boolean> predicate : this.predicates) {
 						final IOperationHelper hlp;
-						if (context == null || !(helper instanceof SARLOperationHelper)) {
-							hlp = helper;
-						} else {
+						if (context != null && helper instanceof SARLOperationHelper) {
 							hlp = new SubHelper((SARLOperationHelper) helper, context);
+						} else {
+							hlp = helper;
 						}
-						generator.apply(hlp);
+						final Boolean bool = predicate.apply(operation, hlp);
+						if (bool != null && bool.booleanValue()) {
+							return true;
+						}
 					}
 				}
 			}
+			return false;
 		}
 
 	}
 
-	/** Internal sub helper.
+	/** Internal sub helper. This helper forces the use of a specific side effect context.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -1181,13 +1220,14 @@ public class SARLOperationHelper implements IOperationHelper {
 		}
 
 		@Override
-		public void adaptIfPossible(JvmOperation operation) {
-			this.delegate.adaptIfPossible(operation, this.context);
+		public boolean evaluatePureAnnotationAdapters(JvmOperation operation) {
+			return this.delegate.evaluatePureAnnotationAdapters(operation, this.context);
 		}
 
 		@Override
-		public void attachAdapter(JvmOperation operation, Procedure1<? super IOperationHelper> dynamicCallback) {
-			this.delegate.attachAdapter(operation, dynamicCallback);
+		public void attachPureAnnotationAdapter(JvmOperation operation,
+				Function2<? super JvmOperation, ? super IOperationHelper, ? extends Boolean> dynamicCallback) {
+			this.delegate.attachPureAnnotationAdapter(operation, dynamicCallback);
 		}
 
 	}
