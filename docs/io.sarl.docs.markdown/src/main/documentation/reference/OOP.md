@@ -13,68 +13,119 @@ The basics of OOP are enabled in the SARL scripts. If you need more complex or m
 complete support of the OOP, you should use a dedicated language, such as Java,
 [Xtend](https://eclipse.org/xtend/), or [Scala](http://www.scala-lang.org/).
 
-<note>The SARL Eclipse product includes the tools for programming with the Java and Xtend languages</note>
+<note>The SARL Eclipse product includes the tools for programming with the Java and Xtend languages.</note>
 
 
 ## Comparison between SARL, Java and Xtend
 
-Java and [Xtend](https://www.eclipse.org/xtend/) are both object-oriented programming languages.
+<a href="https://en.wikipedia.org/wiki/Java_(programming_language)">Java</a>, [Xtend](https://www.eclipse.org/xtend/) and
+[Scala](http://scala-lang.org/) are object-oriented programming languages.
 As SARL, Xtend is based on the [Xtext](https://www.eclipse.org/Xtext/) libraries for compiling to the Java language.
 
 The main features coming from the Java language are supported by SARL too. The following table provides the major
-differences between the SARL, Java and Xtend languages regarding the supports of the object-oriented features.
+differences between the SARL, Java, Xtend and Scala languages, excluding any feature provided by the development
+environment (Eclipse, IntelliJ...)
 
 <table><thead>
-<tr><th></th><th>SARL</th><th>Java</th><th>Xtend</th></tr>
+<tr><th></th><th>SARL</th><th>Java</th><th>Xtend</th><th>Scala</th></tr>
 </thead><tbody>
-<tr><td>[Object-oriented enumeration](#Enumeration)</td>
+<tr><td colspan=5><strong>Agent-oriented programming</strong></td></tr>
+<tr><td><a href="../index.md#agent-oriented-programming">Agent, Capacity, Skill, Behavior...</a></td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: yellow; color: darkgray;">Partial: actor paradigm</td></tr>
+<tr><td colspan=5><strong>Object-oriented programming</strong></td></tr>
+<tr><td><a href="./OOP.md">Definition of class and interface types</a></td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td><a href="#Enumeration>Object-oriented enumeration</a></td>
 			<td style="background: orange; color: white;">No, only constants could be defined</td>
 			<td style="background: green; color: white;">Yes, constants and functions could be defined</td>
-			<td style="background: orange; color: white;">No, only constants could be defined</td></tr>
-<tr><td>[Definition of static constructors](#static-constructor-definition)</td>
+			<td style="background: orange; color: white;">No, only constants could be defined</td>
+			<td style="background: green; color: white;">Yes, constants and functions could be defined</td></tr>
+<tr><td><a href="#annotation-type">Definition of annotation types</a></td>
 			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td><a href="#static-constructor-definition">Definition of static constructors</a></td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: yellow; color: darkgray;">See companion object</td></tr>
+<tr><td>Automatic generation of <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals-java.lang.Object-"><code>equals()</code></a>
+            and <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--"><code>hashCode()</code></a></td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes, see case class</td></tr>
+<tr><td>Automatic generation of <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#clone--"><code>clone()</code></a>
+            when <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Cloneable.html">cloneable type</a></td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>Automatic generation of a serialVersionUID field when
+        <a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html">serializable type</a></td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: yellow; color: darkgray;">Manual with <code>@SerialVersionUID</code></td></tr>
+<tr><td colspan=5><strong>Functions, Procedures and Operators</strong></td></tr>
+<tr><td><a href="./general/FuncDecls.md#dispatch-function">Definition of dispatch functions</a></td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td></tr>
-<tr><td>[Definition of dispatch functions](./general/FuncDecls.md#dispatch-function)</td>
+<tr><td><a href="./general/Extension.md">Extension methods</a></td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td>[Extension methods](./general/Extension.md)</td>
+<tr><td><a href="./general/FuncDecls.md#variadic-function">Definition of variadic functions</a></td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td><a href="./general/FuncDecls.md#default-value-for-the-formal-parameters">Definition of default values for the formal parameters</a></td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td>[Definition of variadic functions](./general/FuncDecls.md#variadic-function)</td>
+<tr><td><a href="./general/Operators.md##operator-overloading">Operator overloading</a></td>
 			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td>[Definition of default values for the formal parameters](./general/FuncDecls.md#default-value-for-the-formal-parameters)</td>
+<tr><td>Automatic detection of and marking <a href="http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.9/org/eclipse/xtext/xbase/lib/Pure.html">pure functions</a></td>
 			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: orange; color: white;">No</td></tr>
-<tr><td>[Definition of lambda expressions](./general/Lambda.md)</td>
+<tr><td colspan=5><strong>Expressions</strong></td></tr>
+<tr><td><a href="./general/Lambda.md">Definition of lambda expressions</a></td>
+			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td>[Inference of types](./general/VarDecls.md#typing)</td>
+<tr><td><a href="./general/VarDecls.md#typing">Inference of types</a></td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td><a href="./general/LoopExpression.md#breaking-a-loop">Support the <code>break</code> statement</a></td>
+			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td>[Operator overloading](./general/Operators.md##operator-overloading)</td>
+<tr><td><a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/branch.html">Support the <code>continue</code> statement</a></td>
+			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td>Automatic generation of equals() and hashCode()</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td></tr>
-<tr><td>Automatic generation of clone() when cloneable type</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td></tr>
-<tr><td>Automatic generation of serialVersionUID when serializable type</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td></tr>
 </tbody></table>
 
 
