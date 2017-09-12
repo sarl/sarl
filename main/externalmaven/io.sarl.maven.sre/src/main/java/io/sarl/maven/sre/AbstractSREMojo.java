@@ -29,6 +29,7 @@ import java.util.Objects;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import com.google.common.base.Strings;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -65,6 +66,13 @@ public abstract class AbstractSREMojo extends AbstractMojo {
 	 */
 	@Parameter(required = true)
 	private String mainClass;
+
+	/** The bootstrap of the SRE.
+	 *
+	 * @since 0.6
+	 */
+	@Parameter(required = false)
+	private String bootstrap;
 
 	/**
 	 * The version of the SARL specification supported by the SRE.
@@ -188,6 +196,22 @@ public abstract class AbstractSREMojo extends AbstractMojo {
 	 */
 	protected void setMainClass(String name) {
 		this.mainClass = name;
+	}
+
+	/** The name of the bootstrap of the SRE.
+	 *
+	 * @return the bootstrap, or <code>null</code>.
+	 */
+	protected String getBootstrap() {
+		return Strings.emptyToNull(this.bootstrap);
+	}
+
+	/** Change the bootstrap of the SRE.
+	 *
+	 * @param bootstrap the bootstrap.
+	 */
+	protected void setBootstrap(String bootstrap) {
+		this.bootstrap = Strings.emptyToNull(bootstrap);
 	}
 
 	/** Replies the version number of the SARL specification supported by the SRE.

@@ -5,6 +5,7 @@
 				<goals>
 					<goal>createmanifest</goal>
 					<goal>updatemanifest</goal>
+					<goal>addbootstrap</goal>
 				</goals>
 			</pluginExecutionFilter>
 			<action>
