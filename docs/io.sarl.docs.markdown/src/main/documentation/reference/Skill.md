@@ -247,7 +247,7 @@ This section introduces the modifiers for the Skill.
 The modifiers are usually written before the keyword for defining the Skill.
 
 The complete description of the modifiers' semantic is available in
-[this section](./OOP.md#modifiers).
+[this section](./OOP.md#7-modifiers).
 
 #### Skill Modifiers
 

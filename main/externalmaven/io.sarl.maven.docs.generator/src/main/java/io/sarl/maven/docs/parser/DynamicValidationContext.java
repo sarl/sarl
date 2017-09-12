@@ -22,13 +22,20 @@
 package io.sarl.maven.docs.parser;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import com.google.common.io.Files;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.junit.Assert;
+import org.junit.AssumptionViolatedException;
 
 /** Context for building a dynamic validation component.
  *
@@ -44,7 +51,27 @@ public class DynamicValidationContext {
 
 	private List<String> resources;
 
+	private List<String> destinations;
+
 	private List<String> tmpResources;
+
+	@Override
+	public String toString() {
+		final StringBuilder buffer = new StringBuilder();
+		buffer.append("sources = ").append(getSourceRoots()).append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer.append("resources = ").append(getResourceRoots()).append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer.append("tmp = ").append(getTempResourceRoots()).append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer.append("destinations = ").append(getDestinationRoots()).append("\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		return buffer.toString();
+	}
+
+	private static File canon(File file) {
+		try {
+			return file.getCanonicalFile();
+		} catch (IOException e) {
+			return file;
+		}
+	}
 
 	/** Replies the root folders for sources.
 	 *
@@ -60,6 +87,22 @@ public class DynamicValidationContext {
 	 */
 	public void setSourceRoots(List<String> roots) {
 		this.sources = roots;
+	}
+
+	/** Replies the root folders for destinations.
+	 *
+	 * @return the root folders.
+	 */
+	public List<String> getDestinationRoots() {
+		return this.destinations == null ? Collections.emptyList() : this.destinations;
+	}
+
+	/** Change the root folders for destinations.
+	 *
+	 * @param roots the root folders.
+	 */
+	public void setDestinationRoots(List<String> roots) {
+		this.destinations = roots;
 	}
 
 	/** Replies the root folders for resources.
@@ -100,45 +143,48 @@ public class DynamicValidationContext {
 		this.tmpResources = roots;
 	}
 
-	/** Append to the given receiver the code for testing the existency of a file.
+	/** Append to the given receiver the code for testing the existence of a file.
 	 *
 	 * @param receiver the receiver.
 	 * @param relativeFile the filename to test.
 	 * @param errorLabel the label to be output when the file was not found.
 	 */
-	public void appendFileExistencyTest(ITreeAppendable receiver, File relativeFile, String errorLabel) {
+	public void appendFileExistenceTest(ITreeAppendable receiver, File relativeFile, String errorLabel) {
 		if (relativeFile.isAbsolute()) {
 			receiver.newLine();
+			receiver.append("{"); //$NON-NLS-1$
+			receiver.increaseIndentation().newLine();
 			receiver.append(File.class).append(" file = new ").append(File.class); //$NON-NLS-1$
 			receiver.append("(\"").append(Strings.convertToJavaString(relativeFile.toString())).append("\");"); //$NON-NLS-1$ //$NON-NLS-2$
 			receiver.newLine();
 			receiver.append(Assert.class).append(".assertTrue(\"" + Strings.convertToJavaString(errorLabel) //$NON-NLS-1$
 					+ ": \" + file, file.exists());"); //$NON-NLS-1$
-		} else {
-			for (final String resource : getResourceRoots()) {
-				final File fileInResource = FileSystem.makeAbsolute(relativeFile, new File(resource));
-				appendSafeFileExistencyTest(receiver, fileInResource);
-			}
-			for (final String resource : getTempResourceRoots()) {
-				final File fileInResource = FileSystem.makeAbsolute(relativeFile, new File(resource));
-				appendSafeFileExistencyTest(receiver, fileInResource);
-			}
-			receiver.newLine();
-			receiver.append(Assert.class).append(".fail(\"" + Strings.convertToJavaString(errorLabel) //$NON-NLS-1$
-				+ ": " + Strings.convertToJavaString(relativeFile.toString()) + "\");"); //$NON-NLS-1$ //$NON-NLS-2$
+			receiver.decreaseIndentation().newLine();
+			receiver.append("}"); //$NON-NLS-1$
 		}
+		for (final String resource : getResourceRoots()) {
+			final File fileInResource = canon(FileSystem.makeAbsolute(relativeFile, new File(resource)));
+			appendSafeFileExistenceTest(receiver, fileInResource);
+		}
+		for (final String resource : getTempResourceRoots()) {
+			final File fileInResource = canon(FileSystem.makeAbsolute(relativeFile, new File(resource)));
+			appendSafeFileExistenceTest(receiver, fileInResource);
+		}
+		receiver.newLine();
+		receiver.append(Assert.class).append(".fail(\"" + Strings.convertToJavaString(errorLabel) //$NON-NLS-1$
+			+ ": " + Strings.convertToJavaString(relativeFile.toString()) + "\");"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	/** Append to the given receiver the code for testing the existency of a file.
+	/** Append to the given receiver the code for testing the existence of a file.
 	 *
 	 * @param receiver the receiver.
 	 * @param relativeFile the filename to test.
 	 * @param errorLabel the label to be output when the file was not found.
 	 * @param extensions the file extensions to be considered as equivalent.
 	 */
-	public void appendFileExistencyTest(ITreeAppendable receiver, File relativeFile, String errorLabel, Iterable<String> extensions) {
+	public void appendFileExistenceTest(ITreeAppendable receiver, File relativeFile, String errorLabel, Iterable<String> extensions) {
 		if (!hasExtension(relativeFile, extensions)) {
-			appendFileExistencyTest(receiver, relativeFile, errorLabel);
+			appendFileExistenceTest(receiver, relativeFile, errorLabel);
 			return;
 		}
 
@@ -147,15 +193,15 @@ public class DynamicValidationContext {
 		for (final String newExtension : extensions) {
 			final File fileWithNewExtension = FileSystem.addExtension(fileWithoutExtension, newExtension);
 			if (relativeFile.isAbsolute()) {
-				appendSafeFileExistencyTest(receiver, fileWithNewExtension);
+				appendSafeFileExistenceTest(receiver, fileWithNewExtension);
 			} else {
 				for (final String resource : getResourceRoots()) {
-					final File fileInResource = FileSystem.makeAbsolute(fileWithNewExtension, new File(resource));
-					appendSafeFileExistencyTest(receiver, fileInResource);
+					final File fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
+					appendSafeFileExistenceTest(receiver, fileInResource);
 				}
 				for (final String resource : getTempResourceRoots()) {
-					final File fileInResource = FileSystem.makeAbsolute(fileWithNewExtension, new File(resource));
-					appendSafeFileExistencyTest(receiver, fileInResource);
+					final File fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
+					appendSafeFileExistenceTest(receiver, fileInResource);
 				}
 			}
 		}
@@ -176,7 +222,7 @@ public class DynamicValidationContext {
 		receiver.append("]\");"); //$NON-NLS-1$
 	}
 
-	private static void appendSafeFileExistencyTest(ITreeAppendable receiver, File fileInResource) {
+	private static void appendSafeFileExistenceTest(ITreeAppendable receiver, File fileInResource) {
 		receiver.newLine();
 		receiver.append("{"); //$NON-NLS-1$
 		receiver.increaseIndentation().newLine();
@@ -200,6 +246,90 @@ public class DynamicValidationContext {
 			}
 		}
 		return false;
+	}
+
+	/** Append to the given receiver the code for testing the existence of an title anchor.
+	 *
+	 * @param receiver the receiver.
+	 * @param relativeFile the filename to test.
+	 * @param anchor the name of the title reference.
+	 * @param sectionPatternSpecification the regular expression for extracting a title from the file content.
+	 * @param extensions the file extensions to be considered as equivalent.
+	 */
+	public void appendTitleAnchorExistenceTest(ITreeAppendable receiver, File relativeFile, String anchor,
+			String sectionPatternSpecification, Iterable<String> extensions) {
+		if (!hasExtension(relativeFile, extensions)) {
+			return;
+		}
+
+		final File fileWithoutExtension = FileSystem.removeExtension(relativeFile);
+
+		receiver.append(Pattern.class).append(" sectionPattern = "); //$NON-NLS-1$
+		receiver.append(Pattern.class).append(".compile(\""); //$NON-NLS-1$
+		receiver.append(Strings.convertToJavaString(sectionPatternSpecification));
+		receiver.append("\", ").append(Pattern.class).append(".MULTILINE);").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
+
+		for (final String newExtension : extensions) {
+			final File fileWithNewExtension = FileSystem.addExtension(fileWithoutExtension, newExtension);
+			if (relativeFile.isAbsolute()) {
+				appendSafeTitleAnchorExistenceTest(receiver, fileWithNewExtension, anchor);
+			} else {
+				for (final String resource : getDestinationRoots()) {
+					final File fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
+					appendSafeTitleAnchorExistenceTest(receiver, fileInResource, anchor);
+				}
+				for (final String resource : getTempResourceRoots()) {
+					final File fileInResource = canon(FileSystem.makeAbsolute(fileWithNewExtension, new File(resource)));
+					appendSafeTitleAnchorExistenceTest(receiver, fileInResource, anchor);
+				}
+			}
+		}
+		receiver.newLine();
+		receiver.append("throw new ").append(AssumptionViolatedException.class).append("(\""); //$NON-NLS-1$ //$NON-NLS-2$
+		final StringBuilder errorFilename = new StringBuilder();
+		errorFilename.append(Strings.convertToJavaString(fileWithoutExtension.toString()));
+		errorFilename.append("{"); //$NON-NLS-1$
+		boolean first = true;
+		for (final String ext : extensions) {
+			if (first) {
+				first = false;
+			} else {
+				errorFilename.append(","); //$NON-NLS-1$
+			}
+			errorFilename.append(Strings.convertToJavaString(ext));
+		}
+		receiver.append("}"); //$NON-NLS-1$
+		receiver.append(Strings.convertToJavaString(MessageFormat.format(Messages.DynamicValidationContext_0, anchor, errorFilename)));
+		receiver.append("\");"); //$NON-NLS-1$
+	}
+
+	private static void appendSafeTitleAnchorExistenceTest(ITreeAppendable receiver, File fileInResource, String anchor) {
+		receiver.newLine();
+		receiver.append("{").increaseIndentation().newLine(); //$NON-NLS-1$
+		receiver.append("// ").append(FileSystem.extension(fileInResource)).append(": "); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append(fileInResource.getName()).newLine();
+		receiver.append(File.class).append(" theFile = new ").append(File.class).append("(\""); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append(Strings.convertToJavaString(fileInResource.toString())).append("\");"); //$NON-NLS-1$
+		receiver.newLine().append("if (theFile.exists()) {"); //$NON-NLS-1$
+		receiver.increaseIndentation().newLine();
+		receiver.append("String content = ").append(Strings.class); //$NON-NLS-1$
+		receiver.append(".concat(\"\\n\", ").append(Files.class); //$NON-NLS-1$
+		receiver.append(".readLines(theFile, "); //$NON-NLS-1$
+		receiver.append(Charset.class).append(".defaultCharset()));").newLine(); //$NON-NLS-1$
+		receiver.append(Matcher.class).append(" matcher = sectionPattern.matcher(content);").newLine(); //$NON-NLS-1$
+		receiver.append("while (matcher.find()) {").increaseIndentation().newLine(); //$NON-NLS-1$
+		receiver.append("String title = matcher.group(1);").newLine(); //$NON-NLS-1$
+		receiver.append("String key = computeHeaderId(title);").newLine(); //$NON-NLS-1$
+		receiver.append("if (\"").append(Strings.convertToJavaString(anchor)).append("\".equals(key)) {"); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.increaseIndentation().newLine().append("return;").decreaseIndentation().newLine(); //$NON-NLS-1$
+		receiver.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
+		receiver.append("}").newLine().append(Assert.class).append(".fail(\""); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append(Strings.convertToJavaString(MessageFormat.format(Messages.DynamicValidationContext_0,
+				anchor, fileInResource.getName())));
+		receiver.append("\");").newLine(); //$NON-NLS-1$
+		receiver.append("return;"); //$NON-NLS-1$
+		receiver.decreaseIndentation().newLine();
+		receiver.append("}").decreaseIndentation().newLine().append("}"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

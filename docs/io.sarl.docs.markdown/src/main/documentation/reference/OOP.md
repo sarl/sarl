@@ -75,7 +75,7 @@ environment (Eclipse, IntelliJ...)
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: yellow; color: black;">Manual with <code>@SerialVersionUID</code></td></tr>
 <tr><td colspan=5><strong>Functions, Procedures and Operators</strong></td></tr>
-<tr><td><a href="./general/FuncDecls.md#dispatch-function">Definition of dispatch functions</a></td>
+<tr><td><a href="./general/FuncDecls.md#7-dispatch-function">Definition of dispatch functions</a></td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td>
@@ -329,7 +329,7 @@ Modifiers are used to modify declarations of types and type members. This sectio
 The modifiers are usually written before the keyword for defining the class.
 
 The complete description of the modifiers' semantic is available in
-[this section](./OOP.md#modifiers).
+[this section](#modifiers).
 
 
 #### Top Class Modifiers
@@ -528,7 +528,7 @@ its behavior. The [:overridemodifier:] keyword is specified for clearly marking 
 implementation of [:getfullnamefct:] as an override of the parent's implementation.
 
 <note>The return type of the [:getfullnamefct:] method (called with the name [:fullnamefct:],
-according to the [property access syntax](./general/MemberAccess.md#property_syntax))
+according to the [property access syntax](./general/MemberAccess.md#1-property-syntax))
 is not specified in the overriding prototype since it could be inferred by the SARL compiler.</note>
 
 For preventing a function to be overridden, you should add the [:finalmodifier:] modifier in the signature of
@@ -730,7 +730,7 @@ Modifiers are used to modify declarations of types and type members. This sectio
 The modifiers are usually written before the keyword for defining the interface.
 
 The complete description of the modifiers' semantic is available in
-[this section](./OOP.md#modifiers).
+[this section](#modifiers).
 
 
 #### Top Interface Modifiers
@@ -871,7 +871,7 @@ Modifiers are used to modify declarations of types and type members. This sectio
 The modifiers are usually written before the keyword for defining the enumeration.
 
 The complete description of the modifiers' semantic is available in
-[this section](./OOP.md#modifiers).
+[this section](#modifiers).
 
 
 #### Top Enumeration Modifiers
@@ -973,7 +973,7 @@ This section introduces the modifiers for the annotation types.
 The modifiers are usually written before the keyword for defining the annotation type.
 
 The complete description of the modifiers' semantic is available in
-[this section](./OOP.md#modifiers).
+[this section](#modifiers).
 
 #### Top Annotation Type Modifiers
 
@@ -1306,7 +1306,7 @@ Method calls are bound based on the static types of arguments.
 Sometimes this is not what you want. Especially in the context of extension methods
 you would like to have polymorphic behavior.
 
-The [:dispatchmodifier:] modifier permits defining a [dispatch method](./general/FuncDecls.md#dispatch-function).
+The [:dispatchmodifier:] modifier permits defining a [dispatch method](./general/FuncDecls.md#7-dispatch-function).
 For a set of visible dispatch methods in the current type hierarchy with the same name and
 the same number of arguments, the compiler infers a synthetic dispatcher method.
 This dispatcher uses the common super type of all declared arguments.
@@ -1342,7 +1342,7 @@ This dispatcher uses the common super type of all declared arguments.
 ### extension Modifier
 
 This modifier enables to mark a field, a formal parameter, or a local variable as
-an [extension provider](./GeneralSyntax.md#extension_methods).
+an [extension provider](./general/Extension.md).
 
 Extension methods allow adding new methods to existing  types without modifying them. This is really 
 helpful as they can greatly improve the readability. They use a simple syntactic trick: the first parameter of a method

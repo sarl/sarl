@@ -203,7 +203,7 @@ This section introduces the modifiers for the event.
 The modifiers are usually written before the keyword for defining the event.
 
 The complete description of the modifiers' semantic is available in
-[this section](./OOP.md#modifiers).
+[this section](./OOP.md#7-modifiers).
 
 
 #### Event Modifiers
@@ -258,7 +258,7 @@ events.</veryimportantnote>
 
 Two types of reserved events exist:
 
-* the events reserved in the SARL Core Specification for the [agent's life cycle](./Agent.md#behaviors_of_an_agent); and
+* the events reserved in the SARL Core Specification for the [agent's life cycle](./Agent.md#4-behaviors-of-an-agent); and
 * the events supported by the [Built-in Capacities](./BIC.md).
 
 

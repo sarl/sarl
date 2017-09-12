@@ -35,6 +35,7 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "io.sarl.maven.docs.markdown.messages"; //$NON-NLS-1$
 	public static String MarkdownParser_0;
 	public static String MarkdownParser_1;
+	public static String MarkdownParser_2;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

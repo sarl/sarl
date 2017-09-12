@@ -216,6 +216,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		validationContext.setSourceRoots(this.session.getCurrentProject().getCompileSourceRoots());
 		validationContext.setResourceRoots(Lists.transform(this.session.getCurrentProject().getResources(),
 				(it) -> it.getDirectory()));
+		validationContext.setDestinationRoots(
+				Collections.singletonList(this.session.getCurrentProject().getBuild().getOutputDirectory()));
 		final List<DynamicValidationComponent> specificComponents = parser.getMarkerSpecificValidationComponents(
 				inputFile, sourceFolder, validationContext);
 		if (successCompilationComponents.isEmpty() && failureCompilationComponents.isEmpty()
@@ -445,6 +447,21 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		it.append(Assert.class).append(".fail(\"Expecting issues but did not find one [line:\" + lineno + \"]\");"); //$NON-NLS-1$
 		it.decreaseIndentation().newLine();
 		it.append("}"); //$NON-NLS-1$
+		it.decreaseIndentation().newLine();
+		it.append("}"); //$NON-NLS-1$
+		it.newLine().newLine();
+		it.append("public String computeHeaderId(String header) {"); //$NON-NLS-1$
+		it.increaseIndentation().newLine();
+		it.append("String id = header.replaceAll(\"[^a-zA-Z0-9]+\", \"-\");").newLine(); //$NON-NLS-1$
+		it.append("id = id.toLowerCase();").newLine(); //$NON-NLS-1$
+		it.append("id = id.replaceFirst(\"^[^a-zA-Z0-9]+\", \"\");").newLine(); //$NON-NLS-1$
+		it.append("id = id.replaceFirst(\"[^a-zA-Z0-9]+$\", \"\");").newLine(); //$NON-NLS-1$
+		it.append("if (Strings.isEmpty(id)) {"); //$NON-NLS-1$
+		it.increaseIndentation().newLine();
+		it.append("return \"section\";"); //$NON-NLS-1$
+		it.decreaseIndentation().newLine();
+		it.append("}").newLine(); //$NON-NLS-1$
+		it.append("return id;"); //$NON-NLS-1$
 		it.decreaseIndentation().newLine();
 		it.append("}"); //$NON-NLS-1$
 		it.newLine().newLine();

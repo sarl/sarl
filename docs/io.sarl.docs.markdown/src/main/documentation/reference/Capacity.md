@@ -97,7 +97,7 @@ Modifiers are used to modify declarations of types and type members. This sectio
 The modifiers are usually written before the keyword defining the Capacity.
 
 The complete description of the modifier semantics is available in
-[this section](./OOP.md#modifiers).
+[this section](./OOP.md#7-modifiers).
 
 
 #### Capacity Modifiers

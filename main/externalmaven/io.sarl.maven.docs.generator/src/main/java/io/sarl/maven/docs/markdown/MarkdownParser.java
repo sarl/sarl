@@ -29,6 +29,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -114,6 +115,9 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 	private static final String SECTION_PATTERN_NO_AUTONUMBERING =
 			"^([#]+)\\s*(.*?)\\s*(?:\\{\\s*([a-z\\-]+)\\s*\\})?\\s*$"; //$NON-NLS-1$
+
+	private static final String SECTION_PATTERN_TITLE_EXTRACTOR =
+			"^(?:[#]+)\\s*((?:[0-9]+(?:\\.[0-9]+)*\\.?)?\\s*.*?\\s*(?:\\{\\s*([a-z\\-]+)\\s*\\})?)\\s*$"; //$NON-NLS-1$
 
 	private IntegerRange outlineDepthRange = new IntegerRange(DEFAULT_OUTLINE_TOP_LEVEL, DEFAULT_OUTLINE_TOP_LEVEL);
 
@@ -739,7 +743,18 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 */
 	public static String computeHeaderId(String headerNumber, String headerText) {
 		final String fullText = Strings.emptyIfNull(headerNumber) + " " + Strings.emptyIfNull(headerText); //$NON-NLS-1$
-		String id = fullText.replaceAll("[^a-zA-Z0-9]+", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+		return computeHeaderId(fullText);
+	}
+
+	/** Create the id of a section header.
+	 *
+	 * <p>The ID format follows the ReadCarpet standards.
+	 *
+	 * @param header the section header text.
+	 * @return the identifier.
+	 */
+	public static String computeHeaderId(String header) {
+		String id = header.replaceAll("[^a-zA-Z0-9]+", "-"); //$NON-NLS-1$ //$NON-NLS-2$
 		id = id.toLowerCase();
 		id = id.replaceFirst("^[^a-zA-Z0-9]+", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		id = id.replaceFirst("[^a-zA-Z0-9]+$", ""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -909,18 +924,18 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 			final URL url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
 			if (URISchemeType.FILE.isURL(url)) {
 				if (isLocalFileReferenceValidation()) {
-					final DynamicValidationComponent component = createLocalFileValidatorComponent(
+					final Collection<DynamicValidationComponent> newComponents = createLocalFileValidatorComponents(
 							it, url, lineno, currentFile, context);
-					if (component != null) {
-						components.add(component);
+					if (newComponents != null && !newComponents.isEmpty()) {
+						components.addAll(newComponents);
 					}
 				}
 			} else if (URISchemeType.HTTP.isURL(url) || URISchemeType.HTTPS.isURL(url) || URISchemeType.FTP.isURL(url)) {
 				if (isRemoteReferenceValidation()) {
-					final DynamicValidationComponent component = createRemoteReferenceValidatorComponent(
+					final Collection<DynamicValidationComponent> newComponents = createRemoteReferenceValidatorComponents(
 							it, url, lineno, currentFile, context);
-					if (component != null) {
-						components.add(component);
+					if (newComponents != null && !newComponents.isEmpty()) {
+						components.addAll(newComponents);
 					}
 				}
 			}
@@ -953,7 +968,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 			@Override
 			public void generateValidationCode(ITreeAppendable it) {
-				context.appendFileExistencyTest(it, filename, Messages.MarkdownParser_0);
+				context.appendFileExistenceTest(it, filename, Messages.MarkdownParser_0);
 			}
 		};
 	}
@@ -968,14 +983,14 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @return the validation component.
 	 */
 	@SuppressWarnings("static-method")
-	protected DynamicValidationComponent createLocalFileValidatorComponent(Link it, URL url, int lineno,
+	protected Collection<DynamicValidationComponent> createLocalFileValidatorComponents(Link it, URL url, int lineno,
 			File currentFile, DynamicValidationContext context) {
 		File fn = FileSystem.convertURLToFile(url);
 		if (Strings.isEmpty(fn.getName())) {
 			// Special case: the URL should point to a anchor in the current document.
 			final String linkRef = url.getRef();
 			if (Strings.isEmpty(linkRef)) {
-				return new DynamicValidationComponent() {
+				return Arrays.asList(new DynamicValidationComponent() {
 					@Override
 					public String functionName() {
 						return "File_reference_test_" + lineno + "_"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -983,11 +998,12 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 					@Override
 					public void generateValidationCode(ITreeAppendable it2) {
-						it2.append(Assert.class).append(".fail(\"Invalid reference format: "); //$NON-NLS-1$
-						it2.append(Strings.convertToJavaString(it.getUrl().toString()));
+						it2.append(Assert.class).append(".fail(\""); //$NON-NLS-1$
+						it2.append(Strings.convertToJavaString(
+								MessageFormat.format(Messages.MarkdownParser_2, it.getUrl())));
 						it2.append("\");"); //$NON-NLS-1$
 					}
-				};
+				});
 			}
 			// No need to validate the current file's existency.
 			return null;
@@ -999,7 +1015,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		final String extension = FileSystem.extension(filename);
 		if (isMarkdownFileExtension(extension) || isHtmlFileExtension(extension)) {
 			// Special case: the file may be a HTML or a Markdown file.
-			return new DynamicValidationComponent() {
+			final DynamicValidationComponent existence = new DynamicValidationComponent() {
 				@Override
 				public String functionName() {
 					return "Documentation_reference_test_" + lineno + "_"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -1008,14 +1024,35 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 				@Override
 				public void generateValidationCode(ITreeAppendable it) {
 					context.setTempResourceRoots(context.getSourceRoots());
-					context.appendFileExistencyTest(it, filename, Messages.MarkdownParser_1,
+					context.appendFileExistenceTest(it, filename, Messages.MarkdownParser_1,
 							Iterables.concat(
 									Arrays.asList(MARKDOWN_FILE_EXTENSIONS),
 									Arrays.asList(HTML_FILE_EXTENSIONS)));
 				}
 			};
+			if (!Strings.isEmpty(url.getRef())) {
+				final DynamicValidationComponent refValidity = new DynamicValidationComponent() {
+					@Override
+					public String functionName() {
+						return "Documentation_reference_anchor_test_" + lineno + "_"; //$NON-NLS-1$ //$NON-NLS-2$
+					}
+
+					@Override
+					public void generateValidationCode(ITreeAppendable it) {
+						context.setTempResourceRoots(null);
+						context.appendTitleAnchorExistenceTest(it, filename,
+								url.getRef(),
+								SECTION_PATTERN_TITLE_EXTRACTOR,
+								Iterables.concat(
+										Arrays.asList(MARKDOWN_FILE_EXTENSIONS),
+										Arrays.asList(HTML_FILE_EXTENSIONS)));
+					}
+				};
+				return Arrays.asList(existence, refValidity);
+			}
+			return Collections.singleton(existence);
 		}
-		return new DynamicValidationComponent() {
+		return Arrays.asList(new DynamicValidationComponent() {
 			@Override
 			public String functionName() {
 				return "File_reference_test_" + lineno + "_"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -1023,9 +1060,9 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 			@Override
 			public void generateValidationCode(ITreeAppendable it) {
-				context.appendFileExistencyTest(it, filename, Messages.MarkdownParser_1);
+				context.appendFileExistenceTest(it, filename, Messages.MarkdownParser_1);
 			}
-		};
+		});
 	}
 
 	/** Create a validation component for an hyper reference to a remote Internet page.
@@ -1038,9 +1075,9 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @return the validation component.
 	 */
 	@SuppressWarnings("static-method")
-	protected DynamicValidationComponent createRemoteReferenceValidatorComponent(Link it, URL url, int lineno,
+	protected Collection<DynamicValidationComponent> createRemoteReferenceValidatorComponents(Link it, URL url, int lineno,
 			File currentFile, DynamicValidationContext context) {
-		return new DynamicValidationComponent() {
+		return Collections.singleton(new DynamicValidationComponent() {
 			@Override
 			public String functionName() {
 				return "Web_reference_test_" + lineno + "_"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -1054,7 +1091,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 				it.append(Strings.convertToJavaString(url.toExternalForm()));
 				it.append("\"));"); //$NON-NLS-1$
 			}
-		};
+		});
 	}
 
 }

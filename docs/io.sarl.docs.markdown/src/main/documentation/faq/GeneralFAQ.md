@@ -29,7 +29,7 @@ Unlike other JVM languages, SARL has zero interoperability issues with Java: eve
 __The language is platform- and architecture-independent.__
 
 For a brief comparison between SARL, Java and Xtend languages, see the Section
-"[Comparison between SARL and other languages](../reference/OOP.md#comparison-between-sarl-and-other-languages)".
+"[Comparison between SARL and other languages](../reference/OOP.md#1-comparison-between-sarl-and-other-languages)".
 
 
 ### Can I use SARL to make agent-based software?
