@@ -23,11 +23,9 @@ package io.sarl.core
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.TimeUnit
-import java.util.Collection
 import java.util.logging.Logger
 
 import io.sarl.core.AgentTask
-import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
@@ -38,7 +36,6 @@ import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.SynchronizedCollection
 import io.sarl.lang.util.SynchronizedSet
 import io.sarl.lang.util.SynchronizedIterable
 
