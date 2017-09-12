@@ -17,6 +17,7 @@
 	<properties>
 		<jkernel.version>2.${project.version}</jkernel.version>
 		<cliRunnerMainClass>io.janusproject.Boot</cliRunnerMainClass>
+		<bootstrap>io.janusproject.Bootstrap</bootstrap>
 	</properties>
 
 	<build>
@@ -115,12 +116,14 @@
 						<noMoreOption>--</noMoreOption>
 					</commandLineOptions>
 					<mainClass>${cliRunnerMainClass}</mainClass>
+					<bootstrap>${bootstrap}</bootstrap>
 				</configuration>
 
 				<executions>
 					<execution>
 						<goals>
 							<goal>updatemanifest</goal>
+							<goal>addbootstrap</goal>
 						</goals>
 					</execution>
 				</executions>

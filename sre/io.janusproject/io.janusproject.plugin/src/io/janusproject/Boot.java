@@ -57,6 +57,8 @@ import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.network.NetworkConfig;
 import io.janusproject.util.LoggerCreator;
 
+import io.sarl.core.SRE;
+import io.sarl.core.SREBootstrap;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.core.Agent;
 
@@ -909,6 +911,11 @@ public final class Boot {
 		// Get the start-up injection module
 		assert startupModule != null : "No platform injection module"; //$NON-NLS-1$
 		final Kernel k = Kernel.create(startupModule);
+		// Force the bootstrap to reference the created kernel.
+		final SREBootstrap bootstrap = SRE.getBootstrap();
+		if (bootstrap instanceof Bootstrap) {
+			((Bootstrap) bootstrap).setKernel(k);
+		}
 		final Logger logger = k.getLogger();
 		if (logger != null) {
 			logger.info(MessageFormat.format(Messages.Boot_22, agentCls.getName()));

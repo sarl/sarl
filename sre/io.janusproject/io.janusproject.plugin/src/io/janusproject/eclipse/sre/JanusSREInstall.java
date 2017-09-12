@@ -31,6 +31,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import io.janusproject.Boot;
+import io.janusproject.Bootstrap;
 import io.janusproject.JanusConfig;
 import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
 
@@ -76,6 +77,7 @@ public class JanusSREInstall extends AbstractSREInstall {
 		this.location = this.janusSREInstallPath.toPortableString();
 		setName(JanusConfig.JANUS_DEFAULT_PLATFORM_NAME);
 		setMainClass(Boot.class.getName());
+		setBootstrap(Bootstrap.class.getName());
 		//
 		setClassPathEntries(dependencies.getTransitiveRuntimeClasspathEntries(true));
 	}
