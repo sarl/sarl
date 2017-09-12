@@ -21,7 +21,6 @@
 
 package io.sarl.eclipse.runtime;
 
-
 /**
  * Constants that are representing elements in the SRE's manifest file.
  *
@@ -116,6 +115,10 @@ public final class SREConstants {
 	 */
 	public static final String XML_MAIN_CLASS = "mainClass"; //$NON-NLS-1$
 
+	/** Attribute name of the SRE's bootstrap.
+	 */
+	public static final String XML_BOOTSTRAP = "bootstrap"; //$NON-NLS-1$
+
 	/** Node name of a library used by the SRE.
 	 */
 	public static final String XML_LIBRARY_LOCATION = "libraryLocation"; //$NON-NLS-1$
@@ -139,6 +142,12 @@ public final class SREConstants {
 	/** Attribute name indicating if the SRE is standalone.
 	 */
 	public static final String XML_STANDALONE_SRE = "standalone"; //$NON-NLS-1$
+
+	private static final String SERVICE_PATH = "META-INF/services/"; //$NON-NLS-1$
+
+	/** Path of the file that contains the SRE bootstrap definition.
+	 */
+	public static final String SERVICE_SRE_BOOTSTRAP = SERVICE_PATH + "io.sarl.core.SREBootstrap"; //$NON-NLS-1$
 
 	private SREConstants() {
 		//

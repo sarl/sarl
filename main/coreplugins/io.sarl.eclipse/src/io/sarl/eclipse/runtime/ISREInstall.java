@@ -96,7 +96,7 @@ public interface ISREInstall extends Cloneable {
 	/** Returns the id for this SRE.
 	 * The SRE id is not intended to be presented to users.
 	 *
-	 * @return the SRE identifier. Must not return <code>null</code>.
+	 * @return the SRE identifier. Must not return {@code null}.
 	 */
 	String getId();
 
@@ -106,9 +106,9 @@ public interface ISREInstall extends Cloneable {
 	 *
 	 * <p>This function replies the name of the SRE, or
 	 * a default value if there is no name replied by {@link #getNameNoDefault()}.
-	 * Consequently, this function never replies <code>null</code>.
+	 * Consequently, this function never replies {@code null}.
 	 *
-	 * @return the display name of this SRE. May not return <code>null</code>.
+	 * @return the display name of this SRE. May not return {@code null}.
 	 * @see #getNameNoDefault()
 	 */
 	String getName();
@@ -118,9 +118,9 @@ public interface ISREInstall extends Cloneable {
 	 *
 	 * <p>This function replies the name of the SRE but never
 	 * any default value replied by {@link #getName()}.
-	 * Consequently, this function could reply <code>null</code>.
+	 * Consequently, this function could reply {@code null}.
 	 *
-	 * @return the display name of this SRE. May return <code>null</code>.
+	 * @return the display name of this SRE. May return {@code null}.
 	 * @see #getName()
 	 */
 	String getNameNoDefault();
@@ -130,15 +130,22 @@ public interface ISREInstall extends Cloneable {
 	 * the runtime environment.
 	 *
 	 * @return the fully qualified name of the main class of the SRE.
-	 *      Must not return <code>null</code>.
+	 *      Must not return {@code null}.
 	 */
 	String getMainClass();
+
+	/**
+	 * Returns the fully qualified name of the SRE bootstrap associated to this SRE.
+	 *
+	 * @return the fully qualified name of the bootstrap, or {@code null} if none.
+	 */
+	String getBootstrap();
 
 	/**
 	 * Returns the location of this runtime environment.
 	 * The semantic of the location depends on the type of the ISREInstall.
 	 *
-	 * @return the location of the runtime environment. Must be never <code>null</code>.
+	 * @return the location of the runtime environment. Must be never {@code null}.
 	 */
 	String getLocation();
 
@@ -146,7 +153,7 @@ public interface ISREInstall extends Cloneable {
 	 * Returns the minimal version number of the SARL specification
 	 * that is supported by the SRE.
 	 *
-	 * @return the minimal version number. Must not return <code>null</code>.
+	 * @return the minimal version number. Must not return {@code null}.
 	 */
 	String getMinimalSARLVersion();
 
@@ -154,7 +161,7 @@ public interface ISREInstall extends Cloneable {
 	 * Returns the maximal version number of the SARL specification
 	 * that is supported by the SRE.
 	 *
-	 * @return the maximal version number. Must not return <code>null</code>.
+	 * @return the maximal version number. Must not return {@code null}.
 	 */
 	String getMaximalSARLVersion();
 
@@ -162,7 +169,7 @@ public interface ISREInstall extends Cloneable {
 	 * Returns the library locations of this ISREInstall.
 	 *
 	 * @return 	The library locations of this ISREInstall.
-	 *     Must not return <code>null</code>.
+	 *     Must not return {@code null}.
 	 */
 	List<IRuntimeClasspathEntry> getClassPathEntries();
 
@@ -204,7 +211,7 @@ public interface ISREInstall extends Cloneable {
 	 * Change the display name of this SRE.
 	 * The SRE name is intended to be presented to users.
 	 *
-	 * @param name - the display name of this SRE. May be <code>null</code>.
+	 * @param name - the display name of this SRE. May be {@code null}.
 	 */
 	void setName(String name);
 
@@ -212,7 +219,7 @@ public interface ISREInstall extends Cloneable {
 	 * Change the library locations of this ISREInstall.
 	 *
 	 * @param libraries - The library locations of this ISREInstall.
-	 *     Must not be <code>null</code>.
+	 *     Must not be {@code null}.
 	 */
 	void setClassPathEntries(List<IRuntimeClasspathEntry> libraries);
 
@@ -220,7 +227,7 @@ public interface ISREInstall extends Cloneable {
 	 * Change the library locations of this ISREInstall.
 	 *
 	 * @param libraries - The library locations of this ISREInstall.
-	 *     Must not be <code>null</code>.
+	 *     Must not be {@code null}.
 	 */
 	default void setClassPathEntries(Iterable<IRuntimeClasspathEntry> libraries) {
 		final List<IRuntimeClasspathEntry> list;
@@ -241,7 +248,7 @@ public interface ISREInstall extends Cloneable {
 	 * Change the minimal version number of the SARL specification
 	 * that is supported by the SRE.
 	 *
-	 * @param version - the minimal version number. Must not be <code>null</code>.
+	 * @param version - the minimal version number. Must not be {@code null}.
 	 */
 	void setMinimalSARLVersion(String version);
 
@@ -249,7 +256,7 @@ public interface ISREInstall extends Cloneable {
 	 * Change the maximal version number of the SARL specification
 	 * that is supported by the SRE.
 	 *
-	 * @param version - the maximal version number. Must not be <code>null</code>.
+	 * @param version - the maximal version number. Must not be {@code null}.
 	 */
 	void setMaximalSARLVersion(String version);
 
@@ -258,9 +265,16 @@ public interface ISREInstall extends Cloneable {
 	 * the runtime environment.
 	 *
 	 * @param mainClass - the fully qualified name of the main class of the SRE.
-	 *      Must not be <code>null</code>.
+	 *      Must not be {@code null}.
 	 */
 	void setMainClass(String mainClass);
+
+	/**
+	 * Change the fully qualified name of the bootstrap.
+	 *
+	 * @param bootstrap - the fully qualified name of the bootstrap, or {@code null}.
+	 */
+	void setBootstrap(String bootstrap);
 
 	/** Change the <code>Map</code> that contains String name/value pairs that
 	 * represent VM-specific attributes for this SRE.

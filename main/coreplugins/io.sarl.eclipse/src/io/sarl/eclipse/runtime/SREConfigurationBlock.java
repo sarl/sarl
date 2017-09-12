@@ -719,7 +719,7 @@ public class SREConfigurationBlock {
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public void sreChanged(org.eclipse.jdt.launching.PropertyChangeEvent event) {
-			if (!PROPERTY_NAME.equals(event.getProperty())) {
+			if (!PROPERTY_NAME.equals(event.getProperty()) && !PROPERTY_MAINCLASS.equals(event.getProperty())) {
 				return;
 			}
 			final ISREInstall sre = (ISREInstall) event.getSource();

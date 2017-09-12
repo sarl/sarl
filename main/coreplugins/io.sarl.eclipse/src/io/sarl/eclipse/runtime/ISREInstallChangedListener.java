@@ -97,6 +97,18 @@ public interface ISREInstallChangedListener extends EventListener {
 			+ ".STANDALONE_SRE"; //$NON-NLS-1$
 
 	/**
+	 * Property constant indicating the main class associated
+	 * with a SRE install has changed.
+	 */
+	String PROPERTY_MAINCLASS = SARLEclipsePlugin.PLUGIN_ID + ".PROPERTY_MAINCLASS"; //$NON-NLS-1$
+
+	/**
+	 * Property constant indicating the bootstrap associated
+	 * with a SRE install has changed.
+	 */
+	String PROPERTY_BOOTSTRAP = SARLEclipsePlugin.PLUGIN_ID + ".PROPERTY_BOOTSTRAP"; //$NON-NLS-1$
+
+	/**
 	 * Notification that the workspace default SRE install
 	 * has changed.
 	 *

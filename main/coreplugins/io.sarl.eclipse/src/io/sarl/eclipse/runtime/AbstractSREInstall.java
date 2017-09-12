@@ -62,6 +62,8 @@ public abstract class AbstractSREInstall implements ISREInstall {
 
 	private String mainClass;
 
+	private String bootstrap;
+
 	private boolean isStandalone;
 
 	private List<IRuntimeClasspathEntry> classPathEntries;
@@ -301,6 +303,15 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	}
 
 	@Override
+	public String getBootstrap() {
+		if (isDirty()) {
+			setDirty(false);
+			resolveDirtyFields(true);
+		}
+		return this.bootstrap;
+	}
+
+	@Override
 	public List<IRuntimeClasspathEntry> getClassPathEntries() {
 		if (isDirty()) {
 			setDirty(false);
@@ -457,8 +468,25 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		final String normalizedName = Strings.nullToEmpty(mainClass);
 		if (!normalizedName.equals(Strings.nullToEmpty(this.mainClass))) {
 			final PropertyChangeEvent event = new PropertyChangeEvent(
-					this, ISREInstallChangedListener.PROPERTY_NAME, this.mainClass, normalizedName);
+					this, ISREInstallChangedListener.PROPERTY_MAINCLASS, this.mainClass, normalizedName);
 			this.mainClass = normalizedName;
+			if (this.notify) {
+				SARLRuntime.fireSREChanged(event);
+			}
+		}
+	}
+
+	@Override
+	public void setBootstrap(String bootstrap) {
+		if (isDirty()) {
+			setDirty(false);
+			resolveDirtyFields(true);
+		}
+		final String normalizedName = Strings.nullToEmpty(bootstrap);
+		if (!normalizedName.equals(Strings.nullToEmpty(this.bootstrap))) {
+			final PropertyChangeEvent event = new PropertyChangeEvent(
+					this, ISREInstallChangedListener.PROPERTY_BOOTSTRAP, this.bootstrap, normalizedName);
+			this.bootstrap = normalizedName;
 			if (this.notify) {
 				SARLRuntime.fireSREChanged(event);
 			}

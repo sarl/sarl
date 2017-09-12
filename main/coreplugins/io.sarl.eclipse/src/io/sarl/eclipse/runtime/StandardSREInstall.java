@@ -21,8 +21,11 @@
 
 package io.sarl.eclipse.runtime;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -34,6 +37,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
@@ -320,6 +324,26 @@ public class StandardSREInstall extends AbstractSREInstall {
 					}
 					setClassPathEntries(classPath);
 				}
+				//
+				// Bootstrap
+				final ZipEntry jEntry = jFile.getEntry(SREConstants.SERVICE_SRE_BOOTSTRAP);
+				String bootstrap = null;
+				if (jEntry != null) {
+					try (InputStream is = jFile.getInputStream(jEntry)) {
+						try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+							String line = reader.readLine();
+							if (line != null) {
+								line = line.trim();
+								if (!line.isEmpty()) {
+									bootstrap = line;
+								}
+							}
+						}
+					}
+				}
+				if (forceSettings || Strings.isNullOrEmpty(getBootstrap())) {
+					setBootstrap(bootstrap);
+				}
 			} catch (SREException e) {
 				throw e;
 			} catch (Throwable e) {
@@ -387,6 +411,12 @@ public class StandardSREInstall extends AbstractSREInstall {
 		if (!mainClass.equals(this.manifestMainClass)) {
 			element.setAttribute(SREConstants.XML_MAIN_CLASS, mainClass);
 		}
+		final String bootstrap = Strings.nullToEmpty(getBootstrap());
+		if (!Strings.isNullOrEmpty(bootstrap)) {
+			element.setAttribute(SREConstants.XML_BOOTSTRAP, bootstrap);
+		} else {
+			element.removeAttribute(SREConstants.XML_BOOTSTRAP);
+		}
 		final List<IRuntimeClasspathEntry> libraries = getClassPathEntries();
 		if (libraries.size() != 1 || !libraries.get(0).getClasspathEntry().getPath().equals(this.jarFile)) {
 			final IPath rootPath = path.removeLastSegments(1);
@@ -410,6 +440,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void setFromXML(Element element) throws IOException {
 		final IPath path = parsePath(
 				element.getAttribute(SREConstants.XML_LIBRARY_PATH), null, null);
@@ -431,6 +462,11 @@ public class StandardSREInstall extends AbstractSREInstall {
 				final String mainClass = element.getAttribute(SREConstants.XML_MAIN_CLASS);
 				if (!Strings.isNullOrEmpty(mainClass)) {
 					setMainClass(mainClass);
+				}
+
+				final String bootstrap = element.getAttribute(SREConstants.XML_BOOTSTRAP);
+				if (!Strings.isNullOrEmpty(bootstrap)) {
+					setBootstrap(bootstrap);
 				}
 
 				final List<IRuntimeClasspathEntry> locations = new ArrayList<>();
