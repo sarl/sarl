@@ -23,6 +23,7 @@ package io.sarl.maven.docs.markdown;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -55,6 +56,9 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.IntegerRange;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import io.sarl.maven.docs.bugs.FileSystemAddons;
 import io.sarl.maven.docs.parser.AbstractMarkerLanguageParser;
@@ -133,6 +137,8 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 	private boolean transformMdToHtmlReferences = true;
 
+	private boolean transformPureHtmlReferences = true;
+
 	@Override
 	@Inject
 	public void setDocumentParser(SarlDocumentationParser parser) {
@@ -207,6 +213,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	/** Replies if the references to the Markdown files should be transform to references to HTML pages.
 	 *
 	 * @return {@code true} if the references should be validated.
+	 * @see #isPureHtmlReferenceTransformation()
 	 */
 	public boolean isMarkdownToHtmlReferenceTransformation() {
 		return this.transformMdToHtmlReferences;
@@ -215,9 +222,28 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	/** Change the flag that indicates if the references the Markdown files should be transform to references to HTML pages.
 	 *
 	 * @param transform {@code true} if the references should be validated.
+	 * @see #setPureHtmlReferenceTransformation(boolean)
 	 */
 	public void setMarkdownToHtmlReferenceTransformation(boolean transform) {
 		this.transformMdToHtmlReferences = transform;
+	}
+
+	/** Replies if the pure HTML references (in "a" tags) should be transform to references to HTML pages.
+	 *
+	 * @return {@code true} if the references should be validated.
+	 * @see #isMarkdownToHtmlReferenceTransformation()
+	 */
+	public boolean isPureHtmlReferenceTransformation() {
+		return this.transformPureHtmlReferences;
+	}
+
+	/** Change the flag that indicates if the pure html references should be transform to references to HTML pages.
+	 *
+	 * @param transform {@code true} if the references should be validated.
+	 * @see #setMarkdownToHtmlReferenceTransformation(boolean)
+	 */
+	public void setPureHtmlReferenceTransformation(boolean transform) {
+		this.transformPureHtmlReferences = transform;
 	}
 
 	/** Replies if the references to the local files should be validated.
@@ -411,23 +437,75 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	@Override
 	protected String postProcessingTransformation(String content) {
 		String result = updateOutline(content);
-		result = transformLinks(result);
+		result = transformMardownLinks(result);
+		result = transformHtmlLinks(result);
 		return result;
 	}
 
-	/** Apply link transformation.
+	/** Apply link transformation on the HTML links.
 	 *
 	 * @param content the original content.
 	 * @return the result of the transformation.
 	 */
-	protected String transformLinks(String content) {
+	protected String transformHtmlLinks(String content) {
+		if (!isPureHtmlReferenceTransformation()) {
+			return content;
+		}
+
+		// Prepare replacement data structures
+		final Map<String, String> replacements = new TreeMap<>();
+
+		// Visit the links and record the transformations
+		final org.jsoup.select.NodeVisitor visitor = new org.jsoup.select.NodeVisitor() {
+			@Override
+			public void tail(org.jsoup.nodes.Node node, int index) {
+				//
+			}
+
+			@Override
+			public void head(org.jsoup.nodes.Node node, int index) {
+				if (node instanceof Element) {
+					final Element tag = (Element) node;
+					if ("a".equals(tag.nodeName()) && tag.hasAttr("href")) { //$NON-NLS-1$ //$NON-NLS-2$
+						final String href = tag.attr("href"); //$NON-NLS-1$
+						if (!Strings.isEmpty(href)) {
+							URL url = FileSystem.convertStringToURL(href, true);
+							url = transformURL(url);
+							if (url != null) {
+								replacements.put(href, convertURLToString(url));
+							}
+						}
+					}
+				}
+			}
+		};
+		final Document htmlDocument = Jsoup.parse(content);
+		htmlDocument.traverse(visitor);
+
+		// Apply the replacements
+		if (!replacements.isEmpty()) {
+			String buffer = content;
+			for (final Entry<String, String> entry : replacements.entrySet()) {
+				final String source = entry.getKey();
+				final String dest = entry.getValue();
+				buffer = buffer.replaceAll(Pattern.quote(source), Matcher.quoteReplacement(dest));
+			}
+			return buffer;
+		}
+		return content;
+	}
+
+	/** Apply link transformation on the Markdown links.
+	 *
+	 * @param content the original content.
+	 * @return the result of the transformation.
+	 */
+	protected String transformMardownLinks(String content) {
 		if (!isMarkdownToHtmlReferenceTransformation()) {
 			return content;
 		}
-		final MutableDataSet options = new MutableDataSet();
-		final Parser parser = Parser.builder(options).build();
-		final Node document = parser.parse(content);
 
+		// Prepare replacement data structures
 		final Map<BasedSequence, String> replacements = new TreeMap<>((cmp1, cmp2) -> {
 			final int cmp = Integer.compare(cmp2.getStartOffset(), cmp1.getStartOffset());
 			if (cmp != 0) {
@@ -436,20 +514,21 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 			return Integer.compare(cmp2.getEndOffset(), cmp1.getEndOffset());
 		});
 
+		// Visit the links and record the transformations
+		final MutableDataSet options = new MutableDataSet();
+		final Parser parser = Parser.builder(options).build();
+		final Node document = parser.parse(content);
 		final NodeVisitor visitor = new NodeVisitor(
 				new VisitHandler<>(Link.class, (it) -> {
-					final URL url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
-					if (URISchemeType.FILE.isURL(url)) {
-						File filename = FileSystem.convertURLToFile(url);
-						final String extension = FileSystem.extension(filename);
-						if (isMarkdownFileExtension(extension)) {
-							filename = FileSystem.replaceExtension(filename, ".html"); //$NON-NLS-1$
-							replacements.put(it.getUrl(), FileSystemAddons.convertFileToURL(filename, true).getPath());
-						}
+					URL url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
+					url = transformURL(url);
+					if (url != null) {
+						replacements.put(it.getUrl(), convertURLToString(url));
 					}
 				}));
 		visitor.visitChildren(document);
 
+		// Apply the replacements
 		if (!replacements.isEmpty()) {
 			final StringBuilder buffer = new StringBuilder(content);
 			for (final Entry<BasedSequence, String> entry : replacements.entrySet()) {
@@ -459,6 +538,53 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 			return buffer.toString();
 		}
 		return content;
+	}
+
+	/** Convert the given URL to its string representation that is compatible with Markdown document linking mechanism.
+	 *
+	 * @param url the URL to transform.
+	 * @return the sting representation of the URL.
+	 */
+	static String convertURLToString(URL url) {
+		if (URISchemeType.FILE.isURL(url)) {
+			final StringBuilder externalForm = new StringBuilder();
+			externalForm.append(url.getPath());
+			final String ref = url.getRef();
+			if (!Strings.isEmpty(ref)) {
+				externalForm.append("#").append(ref); //$NON-NLS-1$
+			}
+			return externalForm.toString();
+		}
+		return url.toExternalForm();
+	}
+
+	/** Transform an URL from Markdown format to HTML format.
+	 *
+	 * <p>Usually, the file extension ".md" is replaced by ".html".
+	 *
+	 * @param link the link to transform.
+	 * @return the result of the transformation. {@code null} if the link should not changed.
+	 */
+	@SuppressWarnings("static-method")
+	protected URL transformURL(URL link) {
+		if (URISchemeType.FILE.isURL(link)) {
+			File filename = FileSystem.convertURLToFile(link);
+			final String extension = FileSystem.extension(filename);
+			if (isMarkdownFileExtension(extension)) {
+				filename = FileSystem.replaceExtension(filename, ".html"); //$NON-NLS-1$
+				final String anchor = link.getRef();
+				final URL url = FileSystemAddons.convertFileToURL(filename, true);
+				if (!Strings.isEmpty(anchor)) {
+					try {
+						return new URL(url.toExternalForm() + "#" + anchor); //$NON-NLS-1$
+					} catch (MalformedURLException e) {
+						//
+					}
+				}
+				return url;
+			}
+		}
+		return null;
 	}
 
 	/** Replies if the given extension is for Markdown file.

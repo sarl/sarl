@@ -16,7 +16,7 @@ complete support of the OOP, you should use a dedicated language, such as Java,
 <note>The SARL Eclipse product includes the tools for programming with the Java and Xtend languages.</note>
 
 
-## Comparison between SARL, Java and Xtend
+## Comparison between SARL and Other Languages
 
 <a href="https://en.wikipedia.org/wiki/Java_(programming_language)">Java</a>, [Xtend](https://www.eclipse.org/xtend/) and
 [Scala](http://scala-lang.org/) are object-oriented programming languages.
@@ -34,14 +34,14 @@ environment (Eclipse, IntelliJ...)
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: orange; color: white;">No</td>
-			<td style="background: yellow; color: darkgray;">Partial: actor paradigm</td></tr>
+			<td style="background: yellow; color: black;">Partial: actor paradigm</td></tr>
 <tr><td colspan=5><strong>Object-oriented programming</strong></td></tr>
 <tr><td><a href="./OOP.md">Definition of class and interface types</a></td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="#Enumeration>Object-oriented enumeration</a></td>
+<tr><td><a href="#Enumeration">Object-oriented enumeration</a>
 			<td style="background: orange; color: white;">No, only constants could be defined</td>
 			<td style="background: green; color: white;">Yes, constants and functions could be defined</td>
 			<td style="background: orange; color: white;">No, only constants could be defined</td>
@@ -55,7 +55,7 @@ environment (Eclipse, IntelliJ...)
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
-			<td style="background: yellow; color: darkgray;">See companion object</td></tr>
+			<td style="background: yellow; color: black;">See companion object</td></tr>
 <tr><td>Automatic generation of <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals-java.lang.Object-"><code>equals()</code></a>
             and <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--"><code>hashCode()</code></a></td>
 			<td style="background: green; color: white;">Yes</td>
@@ -73,7 +73,7 @@ environment (Eclipse, IntelliJ...)
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: orange; color: white;">No</td>
-			<td style="background: yellow; color: darkgray;">Manual with <code>@SerialVersionUID</code></td></tr>
+			<td style="background: yellow; color: black;">Manual with <code>@SerialVersionUID</code></td></tr>
 <tr><td colspan=5><strong>Functions, Procedures and Operators</strong></td></tr>
 <tr><td><a href="./general/FuncDecls.md#dispatch-function">Definition of dispatch functions</a></td>
 			<td style="background: green; color: white;">Yes</td>
@@ -95,12 +95,12 @@ environment (Eclipse, IntelliJ...)
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./general/Operators.md##operator-overloading">Operator overloading</a></td>
+<tr><td><a href="./general/Operators.md#operator-overloading">Operator overloading</a></td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td>Automatic detection of and marking <a href="http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.9/org/eclipse/xtext/xbase/lib/Pure.html">pure functions</a></td>
+<tr><td>Automatic detection of <a href="http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.9/org/eclipse/xtext/xbase/lib/Pure.html">pure functions</a> and marking</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: orange; color: white;">No</td>

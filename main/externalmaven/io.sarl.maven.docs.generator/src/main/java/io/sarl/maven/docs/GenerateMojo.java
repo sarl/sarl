@@ -56,10 +56,23 @@ public class GenerateMojo extends AbstractDocumentationMojo {
 	protected String outputDirectory;
 
 	/**
-	 * Indicates if the Markdown references should be transformed to references to HTML files.
+	 * Indicates if the Markdown references (addresses in links) should be transformed to
+	 * their equivalent HTML addresses. For example "./repo/file.md" is transformed
+	 * to "./repo/file.html".
+	 *
+	 * @see #transformPureHtmlLinks
 	 */
 	@Parameter(defaultValue = "true", required = false)
 	protected boolean md2html;
+
+	/** Indicates if the pure html references (addresses in the "a" tags) should be
+	 * transformed to their equivalent HTML addresses. For example "./repo/file.md" is transformed
+	 * to "./repo/file.html".
+	 *
+	 * @see #md2html
+	 */
+	@Parameter(defaultValue = "true", required = false)
+	protected boolean transformPureHtmlLinks;
 
 	/**
 	 * Indicates if the sections should be automatically numbered.
@@ -107,6 +120,7 @@ public class GenerateMojo extends AbstractDocumentationMojo {
 			mdParser.setAutoSectionNumbering(this.autoSectionNumbering);
 			mdParser.setOutlineDepthRange(AbstractMarkerLanguageParser.parseRange(this.outlineDepth, 1));
 			mdParser.setMarkdownToHtmlReferenceTransformation(this.md2html);
+			mdParser.setPureHtmlReferenceTransformation(this.transformPureHtmlLinks);
 			mdParser.setOutlineStyleId(this.outlineStyleId);
 		}
 		return parser;

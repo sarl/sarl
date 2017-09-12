@@ -17,6 +17,8 @@
 	<properties>
 		<!-- URL of the maven repository of Janus -->
 		<janus.maven.repository.url>http://maven.janusproject.io</janus.maven.repository.url>
+		<!-- Are the links' addresses converted from a Markdown format to a HTML format? -->
+		<convert.links>true</convert.links>
 	</properties>
 
 	<dependencies>
@@ -85,7 +87,8 @@
 					<addYamlHeader>true</addYamlHeader>
 					<githubExtension>true</githubExtension>
 
-					<md2html>true</md2html>
+					<md2html>${convert.links}</md2html>
+					<transformPureHtmlLinks>${convert.links}</transformPureHtmlLinks>
 
 					<autoSectionNumbering>true</autoSectionNumbering>
 					<addSectionLabels>true</addSectionLabels>

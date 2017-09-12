@@ -22,7 +22,10 @@
 		<dependency>
 			<groupId>com.vladsch.flexmark</groupId>
 			<artifactId>flexmark</artifactId>
-			<version>0.18.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
 		</dependency>
 
 		<dependency>
