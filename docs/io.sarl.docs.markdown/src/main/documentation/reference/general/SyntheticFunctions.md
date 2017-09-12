@@ -1,4 +1,4 @@
-# Synthethic Functions
+# Synthetic Functions
 
 [:Outline:]
 

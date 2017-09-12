@@ -3053,10 +3053,10 @@ The previously defined configuration elements must appear inside the manifest fi
 tinyMAS platform.
 
 The <code>Main-Class</code> entry must appear in the main section of the manifest. For example,
-the `Boot` class that is defined in the previous sections of this document is the main class of the tinyMAS SRE.
+the [:tinymasbootclassname:] class that is defined in the previous sections of this document is the main class of the tinyMAS SRE.
 It must be specified in the manifest file as:
 
-	[:mfcli11!]: org.arakhne.tinymas.sarl.Boot
+	[:mfcli11!]: [:tinymasbootclass](org.arakhne.tinymas.sarl.[:tinymasbootclassname]$Boot$)
 
 
 The other configuration elements from the previous section must be specified in the manifest file in
@@ -3064,7 +3064,7 @@ a specific section, named <code>SARL-Runtime-Environment</code>.
 
 The following manifest context gives an example of the tinyMAS SRE declaration:
 
-	[:mfcli11!]: org.arakhne.tinymas.sarl.Boot
+	[:mfcli11!]: [:tinymasbootclass!]
 	
 	[:sresection!]:
 	[:mfcli14!]: TinyMAS
@@ -3133,10 +3133,10 @@ SRE developer to update the manifest file automatically when the SRE project is 
 
 The Maven plugin is:
 
-* GroupID: `io.sarl.maven`
-* ArtifactID: `io.sarl.maven.sre`
+* GroupID: [:mavenplugingroup:]
+* ArtifactID: [:mavenpluginartifact:]
 
-The mojo action defined by the SRE Maven plugin is `updatemanifest`. This mojo action
+The mojo action defined by the SRE Maven plugin is [:mavengoalupdatemanifest:]. This mojo action
 updates the existing manifest file with the SRE information.
 
 The following XML code gives an example of Maven configuration that enables to use the SRE Maven plugin.
@@ -3145,8 +3145,8 @@ The following XML code gives an example of Maven configuration that enables to u
 <build>
 	<plugins>
 		<plugin>
-			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.sre</artifactId>
+			<groupId>[:mavenplugingroup](io.sarl.maven)</groupId>
+			<artifactId>[:mavenpluginartifact](io.sarl.maven.sre)</artifactId>
 			<version>${sarl.version}</version>
 			<configuration>
 				<sreName>TinyMAS</sreName>
@@ -3163,14 +3163,14 @@ The following XML code gives an example of Maven configuration that enables to u
 					<noMoreOption></noMoreOption>
 					<standaloneSRE>true</standaloneSRE>
 				</commandLineOptions>
-				<mainClass>${cliRunnerMainClass}</mainClass>
+				<mainClass>[:tinymasbootclass!]</mainClass>
 			</configuration>
 
 			<executions>
 				<execution>
 					<id>update-manifest-standard</id>
 					<goals>
-						<goal>updatemanifest</goal>
+						<goal>[:mavengoalupdatemanifest](updatemanifest)</goal>
 					</goals>
 				</execution>
 			</executions>
@@ -3178,6 +3178,77 @@ The following XML code gives an example of Maven configuration that enables to u
  	</plugins>
 </build>
 ```
+
+## Configuration of a SRE Bootstrap
+
+An SRE bootstrap is a service that is provided by a SRE (here TinyMAS) for launching agents.
+
+A bootstrap service is a well-known interface, named [:bootstrapname:] that enables to launch agents
+programmatically without having a specific SRE library into the *compilation classpath* of your project.
+
+The [:bootstrapname:] service provides the following functions:
+
+		[:ShowType:]([:bootstrapqname]{io.sarl.core.[:bootstrapname]$SREBootstrap$})
+
+
+### Configuration by hand
+
+A SRE library, e.g. [Janus](../tools/Janus.md) may provide an implementation of the [:bootstrapname:] service.
+In order to found this implementation dynamically, the SRE library should declare the bootstrap implementation class.
+To do so, the file `META-INF/services/[:bootstrapqname!]` must be created.
+This file contains a single line, which is the fully qualified name of the bootstrap implementation class.
+
+As soon the SRE library is included into the *run-time classpath*, the SRE utility class is able to find the
+bootstrap implementation class. This SRE utility class is the major front-end for launching the agents programmatically.
+
+
+### Configuration with Maven plugin
+
+The above [:mavenpluginartifact:] Maven plugin provides a tool for created the service definition.
+First, you have to define the [:mavenbootstrapprop:] property with the fully qualified name of the bootstrap implementation class.
+Second, you should run the [:mavengoaladdbootstrap:] goal.
+The resulting Mavne configuration becomes (after upadting the configuration above):
+
+```xml
+<build>
+	<plugins>
+		<plugin>
+			<groupId>[:mavenplugingroup!]</groupId>
+			<artifactId>[:mavenpluginartifact!]</artifactId>
+			<version>${sarl.version}</version>
+			<configuration>
+				<sreName>TinyMAS</sreName>
+				<commandLineOptions>
+					<hideInfo></hideInfo>
+					<hideLogo></hideLogo>
+					<showInfo></showInfo>
+					<showLogo></showLogo>
+					<defaultContextId></defaultContextId>
+					<randomContextId></randomContextId>
+					<bootAgentContextId></bootAgentContextId>
+					<offline></offline>
+					<embedded></embedded>
+					<noMoreOption></noMoreOption>
+					<standaloneSRE>true</standaloneSRE>
+				</commandLineOptions>
+				<mainClass>[:tinymasbootclass!]</mainClass>
+				<[:mavenbootstrapprop](bootstrap)>$org.arakhne.tinymas.sarl.Bootstrap</[:mavenbootstrapprop!]>
+			</configuration>
+
+			<executions>
+				<execution>
+					<id>update-manifest-standard</id>
+					<goals>
+						<goal>[:mavengoalupdatemanifest!]</goal>
+						<goal>[:mavengoaladdbootstrap](addbootstrap)</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+ 	</plugins>
+</build>
+```
+
 
 
 [:Include:](../legal.inc)
