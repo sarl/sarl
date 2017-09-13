@@ -37,7 +37,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement is {@link DynamicSkillProvider} since 0.6
  */
+@Deprecated
 @FunctionalInterface
 public interface BuiltinCapacitiesProvider {
 

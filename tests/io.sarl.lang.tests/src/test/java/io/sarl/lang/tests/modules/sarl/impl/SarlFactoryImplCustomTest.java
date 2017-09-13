@@ -128,7 +128,7 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 	public void constructor() throws Exception {
 		SarlScript mas = file(multilineString(
 				"agent A1 {",
-				"	new { super(null, null, null) }",
+				"	new { super(null, null) }",
 				"}"
 				));
 		validate(mas).assertNoErrors();

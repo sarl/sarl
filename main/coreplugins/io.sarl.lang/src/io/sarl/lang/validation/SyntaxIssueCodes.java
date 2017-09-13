@@ -21,8 +21,6 @@
 
 package io.sarl.lang.validation;
 
-import org.eclipse.xtext.xtext.parser.CardinalityAwareSyntaxErrorMessageProvider;
-
 /** List of issue codes for the parser.
  *
  * @author $Author: sgalland$
@@ -39,10 +37,6 @@ public final class SyntaxIssueCodes {
 	/** Identifier of the issue related to the invalid used of a reserved keyword.
 	 */
 	public static final String USED_RESERVED_KEYWORD = ISSUE_CODE_PREFIX + "used_reserved_keyword"; //$NON-NLS-1$
-
-	/** A cardinality is overridden.
-	 */
-	public static final String OVERRIDDEN_CARDINALITY = CardinalityAwareSyntaxErrorMessageProvider.CARDINALITY_ISSUE;
 
 	private SyntaxIssueCodes() {
 		//

@@ -55,9 +55,13 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 
 	private final UUID id;
 
-	private final Map<Class<? extends Capacity>, ClearableReference<Skill>> skills = new ConcurrentHashMap<>();
-
 	private final UUID parentID;
+
+	private final DynamicSkillProvider skillProvider;
+
+	/** Skill repository.
+	 */
+	private final Map<Class<? extends Capacity>, ClearableReference<Skill>> skillRepository = new ConcurrentHashMap<>();
 
 	/**
 	 * Creates a new agent with a parent <code>parentID</code> and initialize the built-in capacity
@@ -68,19 +72,20 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * @param parentID - the agent's parent.
 	 * @param agentID - the identifier of the agent, or
 	 *                  <code>null</code> for computing it randomly.
+	 * @deprecated See {@link #Agent(UUID, UUID, DynamicSkillProvider)}.
 	 */
+	@Deprecated
 	@Inject
 	public Agent(
 			BuiltinCapacitiesProvider provider,
 			UUID parentID,
 			UUID agentID) {
-		this.parentID = parentID;
-		this.id = (agentID == null) ? UUID.randomUUID() : agentID;
+		this(parentID, agentID);
 		if (provider != null) {
 			final Map<Class<? extends Capacity>, Skill> builtinCapacities = provider.getBuiltinCapacities(this);
 			if (builtinCapacities != null && !builtinCapacities.isEmpty()) {
 				for (final Entry<Class<? extends Capacity>, Skill> bic : builtinCapacities.entrySet()) {
-					mapCapacity(bic.getKey(), bic.getValue());
+					$mapCapacity(bic.getKey(), bic.getValue());
 				}
 			}
 		}
@@ -97,11 +102,26 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	public Agent(
 			UUID parentID,
 			UUID agentID) {
-		this(null, parentID, agentID);
+		this(parentID, agentID, null);
 	}
 
-	private ClearableReference<Skill> mapCapacity(Class<? extends Capacity> capacity, Skill skill) {
-		return this.skills.put(capacity, new ClearableReference<>(skill));
+	/**
+	 * Creates a new agent with a parent <code>parentID</code> without initializing the built-in capacities.
+	 *
+	 * @param parentID - the agent's spawner.
+	 * @param agentID - the identifier of the agent, or
+	 *                  <code>null</code> for computing it randomly.
+	 * @param skillProvider - provides the skills dynamically on demand.
+	 * @since 0.6
+	 */
+	@Inject
+	public Agent(
+			UUID parentID,
+			UUID agentID,
+			DynamicSkillProvider skillProvider) {
+		this.parentID = parentID;
+		this.id = (agentID == null) ? UUID.randomUUID() : agentID;
+		this.skillProvider = skillProvider;
 	}
 
 	@Override
@@ -138,12 +158,34 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 		return this.id;
 	}
 
+	/** Replies the skill repository.
+	 *
+	 * <p>This function is part of the private API of the library.
+	 *
+	 * @return the skill repository.
+	 */
+	Map<Class<? extends Capacity>, ClearableReference<Skill>> $getSkillRepository() {
+		return this.skillRepository;
+	}
+
+	/** Create the mapping between the capacity and the skill.
+	 *
+	 * <p>This function is part of the private API of the library.
+	 *
+	 * @param capacity the capacity to map.
+	 * @param skill the skill to map.
+	 * @return the previous mapping, or {@code null}.
+	 */
+	ClearableReference<Skill> $mapCapacity(Class<? extends Capacity> capacity, Skill skill) {
+		return this.skillRepository.put(capacity, new ClearableReference<>(skill));
+	}
+
 	/**
 	 * Set the skill for the {@link Capacity} <code>capacity</code>.
 	 *
 	 * @param <S> - type of the skill.
 	 * @param capacity capacity to set.
-	 * @param skill implementaion of <code>capacity</code>.
+	 * @param skill implementation of <code>capacity</code>.
 	 * @return the skill that was set.
 	 * @deprecated since 0.4, see {@link #setSkill(Skill, Class...)}
 	 */
@@ -160,7 +202,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 		skill.setOwner(this);
 		if (capacities == null || capacities.length == 0) {
 			runOnImplementedCapacities(skill, (capacity) -> {
-				final ClearableReference<Skill> oldS = mapCapacity(capacity, skill);
+				final ClearableReference<Skill> oldS = $mapCapacity(capacity, skill);
 				skill.registerUse();
 				if (oldS != null) {
 					final Skill oldSkill = oldS.clear();
@@ -178,7 +220,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 							"the skill must implement the given capacity " //$NON-NLS-1$
 							+ capacity.getName());
 				}
-				final ClearableReference<Skill> oldS = mapCapacity(capacity, skill);
+				final ClearableReference<Skill> oldS = $mapCapacity(capacity, skill);
 				skill.registerUse();
 				if (oldS != null) {
 					final Skill oldSkill = oldS.clear();
@@ -209,7 +251,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Override
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		assert capacity != null;
-		final ClearableReference<Skill> reference = this.skills.remove(capacity);
+		final ClearableReference<Skill> reference = this.skillRepository.remove(capacity);
 		if (reference != null) {
 			final Skill skill = reference.clear();
 			if (skill != null) {
@@ -246,8 +288,15 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Override
 	@Pure
 	protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
-		final ClearableReference<Skill> skill = this.skills.get(capacity);
+		final ClearableReference<Skill> skill = this.skillRepository.get(capacity);
 		if (skill == null) {
+			// Try to load dynamically the skill
+			if (this.skillProvider != null) {
+				final ClearableReference<Skill> reference = this.skillProvider.installSkill(this, capacity);
+				if (reference != null) {
+					return reference;
+				}
+			}
 			throw new UnimplementedCapacityException(capacity, getID());
 		}
 		return skill;
@@ -257,7 +306,14 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Pure
 	protected boolean hasSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
-		return this.skills.containsKey(capacity);
+		if (!this.skillRepository.containsKey(capacity)) {
+			if (this.skillProvider != null) {
+				final ClearableReference<Skill> reference = this.skillProvider.installSkill(this, capacity);
+				return reference != null;
+			}
+			return false;
+		}
+		return true;
 	}
 
 	@Override

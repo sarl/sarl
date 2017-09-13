@@ -22,8 +22,6 @@
 package io.janusproject.kernel.bic;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,6 +41,7 @@ import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
+import io.sarl.lang.core.SREutils;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Skill.UninstallationStage;
 import io.sarl.lang.util.ClearableReference;
@@ -60,12 +59,6 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 	private static final Comparator<BuiltinSkill> ORDER_COMPARATOR = new OrderComparator();
 
 	private static final Comparator<BuiltinSkill> REVERSE_ORDER_COMPARATOR = new ReverseOrderComparator();
-
-	private static Method skillInstallationMethod;
-
-	private static Method skillUninstallationMethod;
-
-	private static Field agentSkillField;
 
 	private final UUID agentID;
 
@@ -112,19 +105,12 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 		uninstallSkillsFinalStage(skills);
 	}
 
-	@SuppressWarnings({"unchecked", "checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:npathcomplexity"})
 	private static Iterable<? extends Skill> getAllSkills(Agent agent, boolean inReverseOrder) {
 		// Use reflection to ignore the "private/protected" access right.
 		try {
 			// Get the registered skills
-			if (agentSkillField == null) {
-				final Field field = Agent.class.getDeclaredField("skills"); //$NON-NLS-1$
-				if (!field.isAccessible()) {
-					field.setAccessible(true);
-				}
-				agentSkillField = field;
-			}
-			final Map<?, ClearableReference<Skill>> skills = (Map<?, ClearableReference<Skill>>) agentSkillField.get(agent);
+			final Map<?, ClearableReference<Skill>> skills = SREutils.getSkillRepository(agent);
 			if (skills != null) {
 				final List<BuiltinSkill> builtinSkills = new ArrayList<>();
 				final Set<Skill> otherSkills = new TreeSet<>((first, second) -> {
@@ -167,15 +153,8 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 		// Only the BICs will be install at startup
 		try {
 			// Use reflection to ignore the "private/protected" access right.
-			if (skillInstallationMethod == null) {
-				final Method method = Skill.class.getDeclaredMethod("install"); //$NON-NLS-1$
-				if (!method.isAccessible()) {
-					method.setAccessible(true);
-				}
-				skillInstallationMethod = method;
-			}
 			for (final Skill s : getAllSkills(agent, false)) {
-				skillInstallationMethod.invoke(s);
+				SREutils.doSkillInstallation(s);
 			}
 		} catch (RuntimeException e) {
 			throw e;
@@ -195,15 +174,8 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 	private static void uninstallSkillsPreStage(Iterable<? extends Skill> skills) {
 		try {
 			// Use reflection to ignore the "private/protected" access right.
-			if (skillUninstallationMethod == null) {
-				final Method method = Skill.class.getDeclaredMethod("uninstall", UninstallationStage.class); //$NON-NLS-1$
-				if (!method.isAccessible()) {
-					method.setAccessible(true);
-				}
-				skillUninstallationMethod = method;
-			}
 			for (final Skill s : skills) {
-				skillUninstallationMethod.invoke(s, UninstallationStage.PRE_DESTROY_EVENT);
+				SREutils.doSkillUninstallation(s, UninstallationStage.PRE_DESTROY_EVENT);
 			}
 		} catch (RuntimeException e) {
 			throw e;
@@ -222,15 +194,8 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 	private static void uninstallSkillsFinalStage(Iterable<? extends Skill> skills) {
 		try {
 			// Use reflection to ignore the "private/protected" access right.
-			if (skillUninstallationMethod == null) {
-				final Method method = Skill.class.getDeclaredMethod("uninstall", UninstallationStage.class); //$NON-NLS-1$
-				if (!method.isAccessible()) {
-					method.setAccessible(true);
-				}
-				skillUninstallationMethod = method;
-			}
 			for (final Skill s : skills) {
-				skillUninstallationMethod.invoke(s, UninstallationStage.POST_DESTROY_EVENT);
+				SREutils.doSkillUninstallation(s, UninstallationStage.POST_DESTROY_EVENT);
 			}
 		} catch (RuntimeException e) {
 			throw e;

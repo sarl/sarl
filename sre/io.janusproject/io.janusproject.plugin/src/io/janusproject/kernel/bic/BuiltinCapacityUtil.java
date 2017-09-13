@@ -21,12 +21,11 @@
 
 package io.janusproject.kernel.bic;
 
-import java.lang.reflect.Method;
-
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
+import io.sarl.lang.core.SREutils;
 import io.sarl.lang.util.SynchronizedIterable;
 
 /**
@@ -39,30 +38,19 @@ import io.sarl.lang.util.SynchronizedIterable;
  */
 public final class BuiltinCapacityUtil {
 
-	private static Method methodGetSkill;
-
 	private BuiltinCapacityUtil() {
 		//
-	}
-
-	private static Method getMethodGetSkill() throws Exception {
-		if (methodGetSkill == null) {
-			methodGetSkill = Agent.class.getDeclaredMethod("getSkill", Class.class); //$NON-NLS-1$
-			methodGetSkill.setAccessible(true);
-		}
-		return methodGetSkill;
 	}
 
 	/**
 	 * Replies the contexts in which the agent is located.
 	 *
-	 * @param agent - the agent for which the contexts must be retreived.
+	 * @param agent - the agent for which the contexts must be retrieved.
 	 * @return the contexts of the agents.
-	 * @throws Exception - when it is not possible to retreive the contexts.
+	 * @throws Exception - when it is not possible to retrieve the contexts.
 	 */
 	public static SynchronizedIterable<AgentContext> getContextsOf(Agent agent) throws Exception {
-		final Method method = getMethodGetSkill();
-		final ExternalContextAccess skill = (ExternalContextAccess) method.invoke(agent, ExternalContextAccess.class);
+		final ExternalContextAccess skill = SREutils.getInternalSkill(agent, ExternalContextAccess.class);
 		assert skill != null;
 		return skill.getAllContexts();
 	}
@@ -75,8 +63,7 @@ public final class BuiltinCapacityUtil {
 	 * @throws Exception - when it is not possible to retreive the inner context.
 	 */
 	public static AgentContext getContextIn(Agent agent) throws Exception {
-		final Method method = getMethodGetSkill();
-		final InnerContextAccess skill = (InnerContextAccess) method.invoke(agent, InnerContextAccess.class);
+		final InnerContextAccess skill = SREutils.getInternalSkill(agent, InnerContextAccess.class);
 
 		if (skill instanceof InnerContextSkill) {
 			final InnerContextSkill janusSkill = (InnerContextSkill) skill;

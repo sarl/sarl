@@ -21,8 +21,12 @@
 
 package io.sarl.lang.core;
 
+import java.util.Map;
+
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.annotation.PrivateAPI;
+import io.sarl.lang.core.Skill.UninstallationStage;
 import io.sarl.lang.util.ClearableReference;
 
 /** Utilities for accessing to the part of the SARL API that is dedicated to the
@@ -47,6 +51,7 @@ import io.sarl.lang.util.ClearableReference;
  * @mavenartifactid $ArtifactId$
  * @since 0.5
  */
+@PrivateAPI
 public final class SREutils {
 
 	private SREutils() {
@@ -119,6 +124,65 @@ public final class SREutils {
 	public static <S extends Capacity> S castInternalSkillReference(Agent agent,
 			ClearableReference<Skill> reference, Class<S> type) {
 		return agent.$castSkill(type, reference);
+	}
+
+	/** Replies the internal skill of an agent.
+	 *
+	 * @param <S> the type of the capacity.
+	 * @param agent the agent.
+	 * @param type the type of the capacity.
+	 * @return the skill.
+	 * @throws UnimplementedCapacityException if the agent has not a skill for the given capacity.
+	 * @since 0.6
+	 */
+	@Pure
+	public static <S extends Capacity> S getInternalSkill(Agent agent, Class<S> type) {
+		return agent.getSkill(type);
+	}
+
+	/** Create the mapping between the capacity and the skill.
+	 *
+	 * <p>This function does not call {@link Skill#install()}.
+	 *
+	 * @param agent the agent.
+	 * @param capacity the capacity to map.
+	 * @param skill the skill to map.
+	 * @return the previous mapping, or {@code null}.
+	 * @since 0.6
+	 */
+	public static ClearableReference<Skill> createSkillMapping(Agent agent, Class<? extends Capacity> capacity, Skill skill) {
+		return agent.$mapCapacity(capacity, skill);
+	}
+
+	/** Replies the skill repository of the given agent.
+	 *
+	 * <p>The replied repository is not protected against asynchronous accesses.
+	 *
+	 * @param agent the agent.
+	 * @return the repository.
+	 * @since 0.6
+	 */
+	public static Map<Class<? extends Capacity>, ClearableReference<Skill>> getSkillRepository(Agent agent) {
+		return agent.$getSkillRepository();
+	}
+
+	/** Do the installation of the given skill.
+	 *
+	 * @param skill the skill to be installed.
+	 * @since 0.6
+	 */
+	public static void doSkillInstallation(Skill skill) {
+		skill.install();
+	}
+
+	/** Do the uninstallation of the given skill.
+	 *
+	 * @param skill the skill to be uninstalled.
+	 * @param stage the uninstallation stage, never {@code null}.
+	 * @since 0.6
+	 */
+	public static void doSkillUninstallation(Skill skill, UninstallationStage stage) {
+		skill.uninstall(stage);
 	}
 
 }

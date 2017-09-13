@@ -23,7 +23,6 @@ package io.janusproject.kernel.services.jdk.spawn;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,7 +61,7 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.EventSpace;
-import io.sarl.lang.core.Skill;
+import io.sarl.lang.core.SREutils;
 import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.sarlspecification.SarlSpecificationChecker;
@@ -83,29 +82,6 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	/** Maximum number of agents to be launch by a single thread.
 	 */
 	private static final int CREATION_POOL_SIZE = 128;
-
-	/** Static reference to the private function for setting the build-in capacities.
-	 */
-	private static final Method MAP_CAPACITY_FUNCTION;
-
-	/** Static reference to the private function for setting the build-in capacities.
-	 */
-	private static final Method GET_SKILL_FUNCTION;
-
-	static {
-		try {
-			MAP_CAPACITY_FUNCTION = Agent.class.getDeclaredMethod("mapCapacity", Class.class, Skill.class); //$NON-NLS-1$
-			MAP_CAPACITY_FUNCTION.setAccessible(true);
-		} catch (NoSuchMethodException | SecurityException e) {
-			throw new Error(Messages.StandardSpawnService_4, e);
-		}
-		try {
-			GET_SKILL_FUNCTION = Agent.class.getDeclaredMethod("getSkill", Class.class); //$NON-NLS-1$
-			GET_SKILL_FUNCTION.setAccessible(true);
-		} catch (NoSuchMethodException | SecurityException e) {
-			throw new Error(Messages.StandardSpawnService_6, e);
-		}
-	}
 
 	private final ListenerCollection<?> globalListeners = new ListenerCollection<>();
 
@@ -194,8 +170,8 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 					// Create the builtin capacities / skill installation will be done later in the life cycle.
 					StandardSpawnService.this.builtinCapacityProvider.builtinCapacities(agent, (capacity, skill) -> {
 						try {
-							MAP_CAPACITY_FUNCTION.invoke(agent, capacity, skill);
-						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+							SREutils.createSkillMapping(agent, capacity, skill);
+						} catch (Exception e) {
 							throw new Error(Messages.StandardSpawnService_5, e);
 						}
 					});
@@ -321,9 +297,9 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		if (killAgent != null) {
 			try {
-				final Logging skill = (Logging) GET_SKILL_FUNCTION.invoke(killAgent, Logging.class);
+				final Logging skill = SREutils.getInternalSkill(killAgent, Logging.class);
 				skill.warning(warningMessage);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			} catch (Exception e) {
 				throw new Error(Messages.StandardSpawnService_9, e);
 			}
 		} else {
