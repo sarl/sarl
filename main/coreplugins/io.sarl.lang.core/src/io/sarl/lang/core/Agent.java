@@ -85,7 +85,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 			final Map<Class<? extends Capacity>, Skill> builtinCapacities = provider.getBuiltinCapacities(this);
 			if (builtinCapacities != null && !builtinCapacities.isEmpty()) {
 				for (final Entry<Class<? extends Capacity>, Skill> bic : builtinCapacities.entrySet()) {
-					$mapCapacity(bic.getKey(), bic.getValue());
+					$mapCapacityGetOld(bic.getKey(), bic.getValue());
 				}
 			}
 		}
@@ -175,9 +175,25 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * @param capacity the capacity to map.
 	 * @param skill the skill to map.
 	 * @return the previous mapping, or {@code null}.
+	 * @see #$mapCapacityGetNew(Class, Skill)
 	 */
-	ClearableReference<Skill> $mapCapacity(Class<? extends Capacity> capacity, Skill skill) {
+	ClearableReference<Skill> $mapCapacityGetOld(Class<? extends Capacity> capacity, Skill skill) {
 		return this.skillRepository.put(capacity, new ClearableReference<>(skill));
+	}
+
+	/** Create the mapping between the capacity and the skill.
+	 *
+	 * <p>This function is part of the private API of the library.
+	 *
+	 * @param capacity the capacity to map.
+	 * @param skill the skill to map.
+	 * @return the created reference, never {@code null}.
+	 * @see #$mapCapacityGetOld(Class, Skill)
+	 */
+	ClearableReference<Skill> $mapCapacityGetNew(Class<? extends Capacity> capacity, Skill skill) {
+		final ClearableReference<Skill> newReference = new ClearableReference<>(skill);
+		this.skillRepository.put(capacity, newReference);
+		return newReference;
 	}
 
 	/**
@@ -202,7 +218,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 		skill.setOwner(this);
 		if (capacities == null || capacities.length == 0) {
 			runOnImplementedCapacities(skill, (capacity) -> {
-				final ClearableReference<Skill> oldS = $mapCapacity(capacity, skill);
+				final ClearableReference<Skill> oldS = $mapCapacityGetOld(capacity, skill);
 				skill.registerUse();
 				if (oldS != null) {
 					final Skill oldSkill = oldS.clear();
@@ -220,7 +236,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 							"the skill must implement the given capacity " //$NON-NLS-1$
 							+ capacity.getName());
 				}
-				final ClearableReference<Skill> oldS = $mapCapacity(capacity, skill);
+				final ClearableReference<Skill> oldS = $mapCapacityGetOld(capacity, skill);
 				skill.registerUse();
 				if (oldS != null) {
 					final Skill oldSkill = oldS.clear();
