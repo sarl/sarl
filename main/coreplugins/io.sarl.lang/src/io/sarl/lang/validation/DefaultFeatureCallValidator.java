@@ -21,6 +21,8 @@
 
 package io.sarl.lang.validation;
 
+import javax.inject.Inject;
+
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendEnum;
@@ -28,8 +30,12 @@ import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
 
+import io.sarl.lang.annotation.PrivateAPI;
+import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.util.Utils;
 
 /** Validator of the feature calls.
@@ -40,6 +46,12 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  */
 public class DefaultFeatureCallValidator implements IFeatureCallValidator {
+
+	@Inject
+	private SARLAnnotationUtil annotations;
+
+	@Inject
+	private ILogicalContainerProvider containerProvider;
 
 	/** Construct the validator.
 	 */
@@ -61,13 +73,47 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 		if (call != null && call.getFeature() != null) {
 			final JvmIdentifiableElement feature = call.getFeature();
 			final String id = feature.getQualifiedName();
+			// Exit is forbidden on a agent-based system
 			if ("java.lang.System.exit".equals(id)) { //$NON-NLS-1$
 				return !isInsideOOTypeDeclaration(call);
 			}
+			// Avoid any call to the hidden functions (function name contains "$" character).
 			if (Utils.isHiddenMember(feature.getSimpleName())
 				&& !Utils.isNameForHiddenCapacityImplementationCallingMethod(feature.getSimpleName())) {
 				return true;
 			}
+			// Avoid any reference to private API.
+			if (isPrivateAPI(feature) && !isPrivateAPI(call)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isPrivateAPI(JvmIdentifiableElement element) {
+		JvmMember featureContainer = EcoreUtil2.getContainerOfType(element, JvmMember.class);
+		while (featureContainer != null) {
+			final Boolean value = this.annotations.findBooleanValue(featureContainer, PrivateAPI.class);
+			if (value != null && !value.booleanValue()) {
+				return true;
+			}
+			featureContainer = EcoreUtil2.getContainerOfType(featureContainer.eContainer(), JvmMember.class);
+		}
+		return false;
+	}
+
+	private boolean isPrivateAPI(XAbstractFeatureCall element) {
+		final JvmIdentifiableElement jvmElement = this.containerProvider.getNearestLogicalContainer(element);
+		return jvmElement != null && isPrivateAPICaller(jvmElement);
+	}
+
+	private boolean isPrivateAPICaller(JvmIdentifiableElement element) {
+		JvmMember featureContainer = EcoreUtil2.getContainerOfType(element, JvmMember.class);
+		while (featureContainer != null) {
+			if (this.annotations.findAnnotation(featureContainer, PrivateAPI.class.getName()) != null) {
+				return true;
+			}
+			featureContainer = EcoreUtil2.getContainerOfType(featureContainer.eContainer(), JvmMember.class);
 		}
 		return false;
 	}
@@ -75,7 +121,8 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 	@Override
 	public boolean isDiscouragedCall(XAbstractFeatureCall call) {
 		if (call != null && call.getFeature() != null) {
-			final String id = call.getFeature().getQualifiedName();
+			final JvmIdentifiableElement feature = call.getFeature();
+			final String id = feature.getQualifiedName();
 			if (id != null) {
 				switch (id) {
 				case "java.lang.System.err": //$NON-NLS-1$

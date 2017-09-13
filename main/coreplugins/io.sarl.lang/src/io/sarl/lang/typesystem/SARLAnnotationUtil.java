@@ -33,6 +33,7 @@ import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.common.types.JvmAnnotationValue;
+import org.eclipse.xtext.common.types.JvmBooleanAnnotationValue;
 import org.eclipse.xtext.common.types.JvmIntAnnotationValue;
 import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
@@ -61,7 +62,7 @@ public class SARLAnnotationUtil {
 
 	/** Extract the string value of the given annotation, if it exists.
 	 *
-	 * @param op - the annoted element.
+	 * @param op - the annotated element.
 	 * @param annotationType - the type of the annotation to consider
 	 * @return the value of the annotation, or {@code null} if no annotation or no
 	 *     value.
@@ -97,7 +98,7 @@ public class SARLAnnotationUtil {
 
 	/** Extract the string values of the given annotation, if they exist.
 	 *
-	 * @param op - the annoted element.
+	 * @param op - the annotated element.
 	 * @param annotationType - the type of the annotation to consider
 	 * @return the values of the annotation, never {@code null}.
 	 */
@@ -132,7 +133,7 @@ public class SARLAnnotationUtil {
 
 	/** Extract the type values of the given annotation, if they exist.
 	 *
-	 * @param op - the annoted element.
+	 * @param op - the annotated element.
 	 * @param annotationType - the type of the annotation to consider
 	 * @return the values of the annotation, never {@code null}.
 	 */
@@ -167,7 +168,7 @@ public class SARLAnnotationUtil {
 
 	/** Extract the integer value of the given annotation, if it exists.
 	 *
-	 * @param op - the annoted element.
+	 * @param op - the annotated element.
 	 * @param annotationType - the type of the annotation to consider
 	 * @return the value of the annotation, or {@code null} if no annotation or no
 	 *     value.
@@ -205,7 +206,7 @@ public class SARLAnnotationUtil {
 
 	/** Extract the integer values of the given annotation, if they exist.
 	 *
-	 * @param op - the annoted element.
+	 * @param op - the annotated element.
 	 * @param annotationType - the type of the annotation to consider
 	 * @return the values of the annotation, never {@code null}.
 	 * @since 0.6
@@ -232,7 +233,7 @@ public class SARLAnnotationUtil {
 			if (value instanceof JvmIntAnnotationValue) {
 				for (final Integer intValue : ((JvmIntAnnotationValue) value).getValues()) {
 					if (intValue != null) {
-						values.add(intValue.intValue());
+						values.add(intValue);
 					}
 				}
 			}
@@ -259,6 +260,81 @@ public class SARLAnnotationUtil {
 			}
 		}
 		return null;
+	}
+
+	/** Extract the boolean value of the given annotation, if it exists.
+	 *
+	 * @param op - the annotated element.
+	 * @param annotationType - the type of the annotation to consider
+	 * @return the value of the annotation, or {@code null} if no annotation or no
+	 *     value.
+	 * @since 0.6
+	 */
+	public Boolean findBooleanValue(JvmAnnotationTarget op, Class<? extends Annotation> annotationType) {
+		final JvmAnnotationReference reference = this.lookup.findAnnotation(op, annotationType);
+		if (reference != null) {
+			return findBooleanValue(reference);
+		}
+		return null;
+	}
+
+	/** Extract the boolean value of the given annotation, if it exists.
+	 *
+	 * @param reference the reference to the annotation.
+	 * @return the value of the annotation, or {@code null} if no annotation or no
+	 *     value.
+	 * @since 0.6
+	 */
+	@SuppressWarnings("static-method")
+	public Boolean findBooleanValue(JvmAnnotationReference reference) {
+		assert reference != null;
+		for (final JvmAnnotationValue value : reference.getValues()) {
+			if (value instanceof JvmBooleanAnnotationValue) {
+				for (final Boolean intValue : ((JvmBooleanAnnotationValue) value).getValues()) {
+					if (intValue != null) {
+						return intValue;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	/** Extract the boolean values of the given annotation, if they exist.
+	 *
+	 * @param op - the annotated element.
+	 * @param annotationType - the type of the annotation to consider
+	 * @return the values of the annotation, never {@code null}.
+	 * @since 0.6
+	 */
+	public List<Boolean> findBooleanValues(JvmAnnotationTarget op, Class<? extends Annotation> annotationType) {
+		final JvmAnnotationReference reference = this.lookup.findAnnotation(op, annotationType);
+		if (reference != null) {
+			return findBooleanValues(reference);
+		}
+		return null;
+	}
+
+	/** Extract the boolean values of the given annotation, if they exist.
+	 *
+	 * @param reference the reference to the annotation.
+	 * @return the values of the annotation, never {@code null}.
+	 * @since 0.6
+	 */
+	@SuppressWarnings("static-method")
+	public List<Boolean> findBooleanValues(JvmAnnotationReference reference) {
+		assert reference != null;
+		final List<Boolean> values = new ArrayList<>();
+		for (final JvmAnnotationValue value : reference.getValues()) {
+			if (value instanceof JvmBooleanAnnotationValue) {
+				for (final Boolean boolValue : ((JvmBooleanAnnotationValue) value).getValues()) {
+					if (boolValue != null) {
+						values.add(boolValue);
+					}
+				}
+			}
+		}
+		return values;
 	}
 
 }
