@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
-Bundle-Version: 0.6.0.qualifier
+Bundle-Version: 0.6.0
 Bundle-SymbolicName: io.sarl.lang; singleton:=true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
