@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.compiler"
       label="SARL Compiler"
-      version="0.6.0.qualifier"
+      version="0.7.0.qualifier"
       plugin="io.sarl.lang.ui">
 
    <description url="http://www.sarl.io/about/">
@@ -222,7 +222,7 @@
    </url>
 
    <requires>
-      <import plugin="io.sarl.lang.core" version="0.6.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang.core" version="0.7.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.core" version="2.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext" version="2.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase" version="2.12.0" match="greaterOrEqual"/>
@@ -231,7 +231,7 @@
       <import plugin="org.eclipse.xtext.util" version="2.12.0" match="greaterOrEqual"/>
       <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j"/>
-      <import plugin="io.sarl.lang" version="0.6.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang" version="0.7.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui" version="2.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui.shared" version="2.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui.codetemplates.ui" version="2.12.0" match="greaterOrEqual"/>

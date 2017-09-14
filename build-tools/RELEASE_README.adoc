@@ -177,21 +177,26 @@ Announce the new version of SARL on:
 Revert steps 2.1 to 2.5; and change the following:
 
 * Version ranges in the `Required-Bundles` of `MANIFEST.MF`.
-* Versions in the requirements of `feature.xml`.
-* Versions in the `*.product`.
-* Versions in the `category.xml`.
+* Versions in the requirements of `feature.xml` (in root tag and in the "sarl" and "janus"" plugins references).
+* Versions in the `*.product` (in root tag and feature tag).
+* Versions in the `category.xml` (in feature tags, url and version).
 * Uncomment the Snapshot Maven repository.
+
 
 === 4.2) Upgrade versions
 
 Change the version numbers into the archive files stored in the `io.sarl.tests.testdata` project.
 
-=== 4.3) Compiling locally without error.
+=== 4.3) Change the UI resources.
+
+Change the UI resources (splash screen, etc.)
+
+=== 4.4) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
      $> mvn clean install
 
-=== 4.4) Commit and push to Github:
+=== 4.5) Commit and push to Github:
 
      $> git commit
      $> git push --all
