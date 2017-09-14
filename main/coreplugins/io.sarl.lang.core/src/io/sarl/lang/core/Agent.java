@@ -57,11 +57,11 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 
 	private final UUID parentID;
 
-	private final DynamicSkillProvider skillProvider;
-
 	/** Skill repository.
 	 */
 	private final Map<Class<? extends Capacity>, ClearableReference<Skill>> skillRepository = new ConcurrentHashMap<>();
+
+	private DynamicSkillProvider skillProvider;
 
 	/**
 	 * Creates a new agent with a parent <code>parentID</code> and initialize the built-in capacity
@@ -156,6 +156,17 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Pure
 	public UUID getID() {
 		return this.id;
+	}
+
+	/** Change te dynamic skill provider.
+	 *
+	 * <p>This function is part of the private API of the library.
+	 *
+	 * @param provider the skill provider.
+	 * @since 0.6
+	 */
+	void $setDynamicSkillProvider(DynamicSkillProvider provider) {
+		this.skillProvider = provider;
 	}
 
 	/** Replies the skill repository.

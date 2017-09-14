@@ -64,4 +64,13 @@ public class ClearableReference<T> {
 		return ref;
 	}
 
+	@Override
+	public String toString() {
+		final T ref = this.reference;
+		if (ref != null) {
+			return ref.toString();
+		}
+		return "null"; //$NON-NLS-1$
+	}
+
 }

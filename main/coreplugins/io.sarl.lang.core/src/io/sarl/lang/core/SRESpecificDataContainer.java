@@ -45,7 +45,7 @@ public abstract class SRESpecificDataContainer {
 	 * @since 0.5
 	 */
 	@Pure
-	<S> S getSreSpecificData(Class<S> type) {
+	<S> S $getSreSpecificData(Class<S> type) {
 		return type.cast(this.sreSpecificData);
 	}
 
@@ -54,7 +54,7 @@ public abstract class SRESpecificDataContainer {
 	 * @param data the SRE-specific data.
 	 * @since 0.5
 	 */
-	void setSreSpecificData(Object data) {
+	void $setSreSpecificData(Object data) {
 		this.sreSpecificData = data;
 	}
 

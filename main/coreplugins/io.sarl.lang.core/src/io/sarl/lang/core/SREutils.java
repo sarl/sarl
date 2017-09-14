@@ -68,7 +68,7 @@ public final class SREutils {
 	@Pure
 	public static <S> S getSreSpecificData(SRESpecificDataContainer container, Class<S> type) {
 		assert container != null;
-		return container.getSreSpecificData(type);
+		return container.$getSreSpecificData(type);
 	}
 
 	/** Change the data associated to the given container by the SRE.
@@ -78,7 +78,7 @@ public final class SREutils {
 	 */
 	public static void setSreSpecificData(SRESpecificDataContainer container, Object data) {
 		assert container != null;
-		container.setSreSpecificData(data);
+		container.$setSreSpecificData(data);
 	}
 
 	/** Change the data associated to the given container by the SRE.
@@ -92,8 +92,8 @@ public final class SREutils {
 	 */
 	public static <S> S setSreSpecificData(SRESpecificDataContainer container, S data, Class<S> type) {
 		assert container != null;
-		final S oldData = container.getSreSpecificData(type);
-		container.setSreSpecificData(data);
+		final S oldData = container.$getSreSpecificData(type);
+		container.$setSreSpecificData(data);
 		return oldData;
 	}
 
@@ -181,6 +181,16 @@ public final class SREutils {
 	 */
 	public static Map<Class<? extends Capacity>, ClearableReference<Skill>> getSkillRepository(Agent agent) {
 		return agent.$getSkillRepository();
+	}
+
+	/** Change the dynamic skill provider of an agent.
+	 *
+	 * @param agent the agent.
+	 * @param provider the provider.
+	 * @since 0.6
+	 */
+	public static void setDynamicSkillProvider(Agent agent, DynamicSkillProvider provider) {
+		agent.$setDynamicSkillProvider(provider);
 	}
 
 	/** Do the installation of the given skill.
