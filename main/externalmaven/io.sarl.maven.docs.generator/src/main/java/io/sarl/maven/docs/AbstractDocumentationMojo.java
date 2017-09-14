@@ -55,7 +55,7 @@ import org.apache.maven.shared.utils.io.DirectoryScanner;
 import org.apache.maven.toolchain.Toolchain;
 import org.apache.maven.toolchain.ToolchainManager;
 import org.apache.maven.toolchain.ToolchainPrivate;
-import org.apache.maven.toolchain.java.JavaToolChain;
+import org.apache.maven.toolchain.java.JavaToolchain;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.xtext.Constants;
@@ -562,8 +562,8 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 */
 	protected String getBootClassPath() throws IOException {
 		final Toolchain toolchain = this.toolchainManager.getToolchainFromBuildContext("jdk", this.session); //$NON-NLS-1$
-		if (toolchain instanceof JavaToolChain && toolchain instanceof ToolchainPrivate) {
-			final JavaToolChain javaToolChain = (JavaToolChain) toolchain;
+		if (toolchain instanceof JavaToolchain && toolchain instanceof ToolchainPrivate) {
+			final JavaToolchain javaToolChain = (JavaToolchain) toolchain;
 			final ToolchainPrivate privateJavaToolChain = (ToolchainPrivate) toolchain;
 			String[] includes = {"jre/lib/*", "jre/lib/ext/*", "jre/lib/endorsed/*"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			String[] excludes = new String[0];

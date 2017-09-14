@@ -19,11 +19,6 @@ The steps for releasing SARL are:
      $> rm -rf $HOME/.m2/repository
      $> mvn clean install
 
-You may compile the documentation is a different process if Maven complains to be out of memory.
-
-     $> cd docs/io.sarl.docs.suite
-     $> mvn clean install
-
 === 1.3) Commit all the changes
 
 === 1.4) Tag the version
@@ -77,11 +72,6 @@ Splash screen, icons...
      $> rm -rf $HOME/.m2/repository
      $> mvn clean install
 
-You may compile the documentation in a different process if Maven complains to be out of memory.
-
-     $> cd docs/io.sarl.docs.suite
-     $> mvn clean install
-
 === 2.7) Check auto-generated files
 
 Check if the `about.mappings` files and the `SARLVersion.java` file are containing the correct version numbers.
@@ -94,20 +84,26 @@ Prepare the bundles for Maven Central:
 
 Copy the bundles inside a safe folder for the Phase 3.
 
-=== 2.9) Commit and push to Github
+=== 2.9) Javadoc Generation
+
+Generate the Javadoc for the public API (the real generation will be done by the Rake script of the website):
+
+     $> ./build-tools/scripts/generate-aggregate-javadoc.sh
+
+=== 2.10) Commit and push to Github
 
      $> git commit
      $> git push --all
 
-=== 2.10) Tag the Git with the version number
+=== 2.11) Tag the Git with the version number
 
      $> git tag "vX.Y.Z"
      $> git push --tags
 
-=== 2.11) Compilation on CI server
+=== 2.12) Compilation on CI server
 
 On Hudson, launch a build for updating the maven repositories and the Eclipse update sites.
-If failing, revert 2.10, fix the problem, and go back to 2.6.
+If failing, revert 2.11, fix the problem, and go back to 2.6.
 
 == 3) PHASE 3: DISSEMINATION OF THE RELEASE VERSION
 
@@ -152,9 +148,19 @@ Close the released milestone on Github.
 
 Add release notes on Github (from the Changes page on the website), attached to the release tag.
 
-=== 3.11) Announcements
+=== 3.11) Wikipedia Review
 
-Announce the new version of SARL on the mailing lists.
+Review the text on Wikipedia: https://en.wikipedia.org/wiki/SARL_language
+
+=== 3.12) Announcements
+
+Announce the new version of SARL on:
+
+* SARL's Google groups https://groups.google.com/forum/#!forum/sarl
+* SARL's Facebook page https://www.facebook.com/sarllanguage/
+* Research mailing lists
+* Google+
+* Linked-in
 
 == 4) PHASE 4: DEVELOPMENT VERSION
 
@@ -175,11 +181,6 @@ Change the version numbers into the archive files stored in the `io.sarl.tests.t
 === 4.3) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
-     $> mvn clean install
-
-You may compile the documentation in a different process if Maven complains to be out of memory.
-
-     $> cd docs/io.sarl.docs.suite
      $> mvn clean install
 
 === 4.4) Commit and push to Github:

@@ -50,7 +50,7 @@ import org.apache.maven.shared.utils.io.DirectoryScanner;
 import org.apache.maven.toolchain.Toolchain;
 import org.apache.maven.toolchain.ToolchainManager;
 import org.apache.maven.toolchain.ToolchainPrivate;
-import org.apache.maven.toolchain.java.JavaToolChain;
+import org.apache.maven.toolchain.java.JavaToolchain;
 import org.arakhne.afc.vmutil.locale.Locale;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
@@ -217,8 +217,8 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 
 	private String getBootClassPath() throws MojoExecutionException {
 		final Toolchain toolchain = this.toolchainManager.getToolchainFromBuildContext("jdk", this.mavenHelper.getSession()); //$NON-NLS-1$
-		if (toolchain instanceof JavaToolChain && toolchain instanceof ToolchainPrivate) {
-			final JavaToolChain javaToolChain = (JavaToolChain) toolchain;
+		if (toolchain instanceof JavaToolchain && toolchain instanceof ToolchainPrivate) {
+			final JavaToolchain javaToolChain = (JavaToolchain) toolchain;
 			final ToolchainPrivate privateJavaToolChain = (ToolchainPrivate) toolchain;
 			getLog().info(Locale.getString(AbstractSarlBatchCompilerMojo.class, "USING_TOOLCHAIN", javaToolChain)); //$NON-NLS-1$
 

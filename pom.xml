@@ -34,12 +34,12 @@
 		<!-- Version of the Xtext API -->
 		<xtext.version>2.12.0</xtext.version>
 		<xtext.version.next>2.12.1</xtext.version.next>
-		<!-- Version of the MWE2 library -->
+		<!-- Version of the MWE2 library (used for accessing the mwe2 P2) -->
 		<mwe2.version>2.9.0</mwe2.version>
-		<!-- Version of the Xpand library -->
+		<!-- Version of the Xpand library (used for accessing the Xpand P2) -->
 		<xpand.version>R201605260315</xpand.version>
 		
-		<!-- Version of the OSGi module that provides the NLS -->
+		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
 		<afc.version>13.0</afc.version>
@@ -49,7 +49,7 @@
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module -->
 		<tycho.version>1.0.0</tycho.version>
-		<!-- Java FX version (used for accessing the jfx repository) -->
+		<!-- Java FX version (used for accessing the jfx P2) -->
 		<efxclipse.version>3.0.0</efxclipse.version>
 		<!-- Version of the ZeroMQ library -->
 		<zeromq.version>0.4.2</zeromq.version>
@@ -337,7 +337,7 @@
 			<dependency>
 				<groupId>commons-cli</groupId>
 				<artifactId>commons-cli</artifactId>
-				<version>1.3.1</version>
+				<version>1.4</version>
 			</dependency>
 			<dependency>
 				<groupId>com.hazelcast</groupId>
@@ -352,7 +352,7 @@
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
-				<version>2.8.0</version>
+				<version>2.8.1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
@@ -362,17 +362,17 @@
 			<dependency>
 				<groupId>org.javassist</groupId>
 				<artifactId>javassist</artifactId>
-				<version>3.22.0-CR1</version>
+				<version>3.22.0-CR2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugin-tools</groupId>
 				<artifactId>maven-plugin-annotations</artifactId>
-				<version>3.4</version>
+				<version>3.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.3.9</version>
+				<version>3.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -382,7 +382,7 @@
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>3.7.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -408,7 +408,7 @@
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-plugin-api</artifactId>
-				<version>3.3.9</version>
+				<version>3.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
@@ -418,7 +418,7 @@
 			<dependency>
 				<groupId>com.vladsch.flexmark</groupId>
 				<artifactId>flexmark</artifactId>
-				<version>0.18.7</version>
+				<version>0.27.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jsoup</groupId>
@@ -437,7 +437,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>2.12</version>
+				<version>3.0.0</version>
 			</extension>
 		</extensions>
 		<pluginManagement>
@@ -463,7 +463,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.5.1</version>
+					<version>3.7.0</version>
 					<configuration>
 						<source>${compiler.level}</source>
 						<target>${compiler.level}</target>
@@ -478,7 +478,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.12</version>
+					<version>3.0.0</version>
 				</plugin>
 
 				<plugin>
@@ -503,7 +503,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>3.0.2</version>
 				</plugin>
 
 				<plugin>
@@ -527,7 +527,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>wagon-maven-plugin</artifactId>
-					<version>1.0</version>
+					<version>1.0.6</version>
 				</plugin>
 
 				<plugin>
@@ -557,7 +557,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.19.1</version>
+					<version>2.20</version>
 				</plugin>
 
 				<plugin>
@@ -569,7 +569,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.4</version>
+					<version>3.5</version>
 					<executions>
 						<execution>
 							<id>generated-helpmojo</id>
@@ -583,7 +583,7 @@
 				<plugin>
 					<groupId>com.akathist.maven.plugins.launch4j</groupId>
 					<artifactId>launch4j-maven-plugin</artifactId>
-					<version>1.7.12</version>
+					<version>1.7.19</version>
 				</plugin>
 
 				<plugin>
@@ -651,7 +651,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.4</version>
+					<version>3.0.0-M1</version>
 					<configuration>
 						<docencoding>${project.build.sourceEncoding}</docencoding>
 						<encoding>${project.build.sourceEncoding}</encoding>
@@ -803,17 +803,17 @@
 				<configuration>
 					<scripts>
 						<script><![CDATA[
-							def now = session.getStartTime();
-							//************************
-							// Detect root directory
-							def currentDirectory = project.basedir;
-							def previousDirectory = null;
-				            def fileObj = new File(currentDirectory, "pom.xml");
-							while (fileObj.isFile()) {
-								previousDirectory = currentDirectory;
-								currentDirectory = fileObj.getParent();
-								currentDirectory = new File(currentDirectory).getParent();
-					            fileObj = new File(currentDirectory, "pom.xml");
+						    def now = session.getStartTime();
+						    //************************
+						    // Detect root directory
+						    def currentDirectory = project.basedir;
+						    def previousDirectory = null;
+					            def fileObj = new File(currentDirectory, "pom.xml");
+						    while (fileObj.isFile()) {
+						        previousDirectory = currentDirectory;
+						        currentDirectory = fileObj.getParent();
+						        currentDirectory = new File(currentDirectory).getParent();
+					                fileObj = new File(currentDirectory, "pom.xml");
 						    }
 						    if (previousDirectory == null || !(new File(previousDirectory, "pom.xml").isFile())) {
 						    	throw new Exception("Unable to detect root directory");
