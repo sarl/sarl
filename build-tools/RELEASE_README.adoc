@@ -100,10 +100,18 @@ Generate the Javadoc for the public API (the real generation will be done by the
      $> git tag "vX.Y.Z"
      $> git push --tags
 
-=== 2.12) Compilation on CI server
+=== 2.12) Release onto the SARL servers.
 
-On Hudson, launch a build for updating the maven repositories and the Eclipse update sites.
-If failing, revert 2.11, fix the problem, and go back to 2.6.
+For uploading the release files onto the SARL server, you could use the provided script:
+
+     $> ./build-tools/scripts/mvn-release-sarl.sh
+
+This script needs to have environment variables for defining the SARL server addresses, and the access login.
+
+     export MAVENSARLIO_URL=dav:https://XXX
+     export UPDATESSARLIO_URL=dav:https://YYY
+     export MAVENSARLIO_USER=ZZZ
+
 
 == 3) PHASE 3: DISSEMINATION OF THE RELEASE VERSION
 
@@ -187,9 +195,4 @@ Change the version numbers into the archive files stored in the `io.sarl.tests.t
 
      $> git commit
      $> git push --all
-
-=== 4.5) Compilation on CI server
-
-On Hudson, launch a build for updating the maven repositories and the Eclipse update sites.
-
 
