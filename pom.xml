@@ -5,7 +5,7 @@
 
 	<groupId>io.sarl</groupId>
 	<artifactId>io.sarl</artifactId>
-	<version>0.6.0-SNAPSHOT</version>
+	<version>0.6.0</version>
 
 	<name>SARL Agent Oriented Programming Language</name>
 	<url>${sarlUrl}</url>
@@ -25,7 +25,7 @@
 	<properties>
 
 		<!-- Version of the SARL API -->
-		<sarl.version>0.6.0-SNAPSHOT</sarl.version>
+		<sarl.version>0.6.0</sarl.version>
 		<janus.version>2.${sarl.version}</janus.version>
 
 		<!-- The versions of the following Xtext libraries are available at:
@@ -527,7 +527,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>wagon-maven-plugin</artifactId>
-					<version>1.0.6</version>
+					<version>1.0</version>
 				</plugin>
 
 				<plugin>

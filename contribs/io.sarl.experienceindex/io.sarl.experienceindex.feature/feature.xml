@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.experienceindex.feature"
       label="SARL Experience Index"
-      version="0.6.0.qualifier"
+      version="0.6.0"
       plugin="io.sarl.experienceindex.plugin">
 
    <description url="http://www.sarl.io/about/">
