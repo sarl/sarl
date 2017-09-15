@@ -32,6 +32,7 @@ import io.sarl.lang.core.BuiltinCapacitiesProvider;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("deprecation")
 public final class MockFinalAgent extends Agent {
 
 	/**

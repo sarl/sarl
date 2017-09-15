@@ -105,6 +105,7 @@ public class Messages extends NLS {
 	public static String SARLValidator_69;
 	public static String SARLValidator_7;
 	public static String SARLValidator_70;
+	public static String SARLValidator_71;
 	public static String SARLValidator_72;
 	public static String SARLValidator_73;
 	public static String SARLValidator_74;
@@ -121,6 +122,7 @@ public class Messages extends NLS {
 	public static String SARLValidator_85;
 	public static String SARLValidator_86;
 	public static String SARLValidator_87;
+	public static String SARLValidator_88;
 	public static String SARLValidator_9;
 	public static String SARLSyntaxErrorMessageProvider_0;
 	public static String SARLSyntaxErrorMessageProvider_1;

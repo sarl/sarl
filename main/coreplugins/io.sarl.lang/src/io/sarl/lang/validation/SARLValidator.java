@@ -152,16 +152,20 @@ import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XForLoopExpression;
+import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
 import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
+import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
+import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
@@ -170,6 +174,7 @@ import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.DefaultSkill;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
@@ -366,7 +371,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Inject
 	private ReadAndWriteTracking readAndWriteTracking;
 
-	// Update thet annotation target information
+	// Update the annotation target information
 	{
 		final ImmutableMultimap.Builder<Class<?>, ElementType> result = ImmutableMultimap.builder();
 		result.putAll(this.targetInfos);
@@ -392,6 +397,18 @@ public class SARLValidator extends AbstractSARLValidator {
 		} catch (Exception exception) {
 			throw new Error(exception);
 		}
+	}
+
+	/** Create a lightweight type reference from the given type.
+	 *
+	 * @param type the type to point to.
+	 * @param context the context in which the reference is located.
+	 * @return the reference.
+	 */
+	protected LightweightTypeReference toLightweightTypeReference(JvmType type, EObject context) {
+		final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(getServices(), context);
+		final LightweightTypeReferenceFactory factory = new LightweightTypeReferenceFactory(owner, false);
+		return factory.toLightweightReference(type);
 	}
 
 	@Override
@@ -2487,6 +2504,49 @@ public class SARLValidator extends AbstractSARLValidator {
 			}
 		}
 		super.checkAssignment(expression, feature, simpleAssignment);
+	}
+
+	/** Check the correct usage of the {@link DefaultSkill} annotation.
+	 *
+	 * @param capacity the associated capacity to check.
+	 */
+	@Check
+	@SuppressWarnings("checkstyle:nestedifdepth")
+	public void checkDefaultSkillAnnotation(SarlCapacity capacity) {
+		final String annotationId = DefaultSkill.class.getName();
+		final XAnnotation annotation = IterableExtensions.findFirst(capacity.getAnnotations(), (it) -> {
+			return Strings.equal(annotationId, it.getAnnotationType().getIdentifier());
+		});
+		if (annotation != null) {
+			final XExpression expr = annotation.getValue();
+			if (expr instanceof XTypeLiteral) {
+				final XTypeLiteral typeLiteral = (XTypeLiteral) expr;
+				final JvmType type = typeLiteral.getType();
+				if (type != null && !type.eIsProxy()) {
+					final LightweightTypeReference reference = toLightweightTypeReference(type, capacity);
+					// Validating by the annotation value's type.
+					if (reference.isSubtypeOf(Skill.class)) {
+						final EObject element = this.associations.getPrimaryJvmElement(capacity);
+						assert element instanceof JvmType;
+						if (!reference.isSubtypeOf((JvmType) element)) {
+							error(MessageFormat.format(
+									Messages.SARLValidator_71,
+									capacity.getName(), type.getSimpleName()),
+									expr,
+									null,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+									IssueCodes.INVALID_DEFAULT_SKILL_ANNOTATION);
+						}
+						return;
+					}
+				}
+			}
+			error(Messages.SARLValidator_88,
+					expr,
+					null,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					IssueCodes.INVALID_DEFAULT_SKILL_ANNOTATION);
+		}
 	}
 
 	/** The modifier validator for constructors.

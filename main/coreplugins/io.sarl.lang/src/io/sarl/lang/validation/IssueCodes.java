@@ -197,6 +197,13 @@ public final class IssueCodes {
 	public static final String MISSING_BODY =
 			ISSUE_CODE_PREFIX + "missing_body"; //$NON-NLS-1$
 
+	/**
+	 * The {@code @DefaultSkill} annotation has an improper value.
+	 * @since 0.7
+	 */
+	public static final String INVALID_DEFAULT_SKILL_ANNOTATION =
+			ISSUE_CODE_PREFIX + "invalid_default_skill_annotation"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}
