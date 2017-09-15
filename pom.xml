@@ -583,7 +583,7 @@
 				<plugin>
 					<groupId>com.akathist.maven.plugins.launch4j</groupId>
 					<artifactId>launch4j-maven-plugin</artifactId>
-					<version>1.7.19</version>
+					<version>1.7.18</version>
 				</plugin>
 
 				<plugin>
