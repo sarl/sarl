@@ -26,6 +26,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.google.inject.Inject;
+import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 import io.janusproject.services.contextspace.ContextSpaceService;
 
@@ -118,8 +120,10 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	}
 
 	@Override
-	protected String attributesToString() {
-		return super.attributesToString() + ", addressInDefaultspace = " + this.agentAddressInInnerDefaultSpace; //$NON-NLS-1$
+	@Pure
+	public void toString(ToStringBuilder builder) {
+		super.toString(builder);
+		builder.add("addressInDefaultspace", this.agentAddressInInnerDefaultSpace); //$NON-NLS-1$
 	}
 
 	@Override

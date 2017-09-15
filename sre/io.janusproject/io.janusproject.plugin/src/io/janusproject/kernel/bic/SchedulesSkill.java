@@ -39,6 +39,8 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.executor.ExecutorService;
@@ -112,8 +114,10 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	}
 
 	@Override
-	protected String attributesToString() {
-		return super.attributesToString() + ", tasks = " + this.tasks; //$NON-NLS-1$
+	@Pure
+	public void toString(ToStringBuilder builder) {
+		super.toString(builder);
+		builder.add("tasks", this.tasks); //$NON-NLS-1$
 	}
 
 	/**

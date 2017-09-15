@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * This class describes all the addresses used by the kernel to identify its
@@ -62,9 +63,11 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	@Override
 	@Pure
 	public String toString() {
-		return "Address [agentId=" + this.agentId //$NON-NLS-1$
-				+ ", spaceId=" + this.spaceId //$NON-NLS-1$
-				+ "]"; //$NON-NLS-1$
+		final ToStringBuilder builder = new ToStringBuilder(this);
+		builder.add("type", getClass().getSimpleName()); //$NON-NLS-1$
+		builder.add("agentId", this.agentId); //$NON-NLS-1$
+		builder.add("spaceId", this.spaceId); //$NON-NLS-1$
+		return builder.toString();
 	}
 
 	/**

@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /** Elementary interaction unit inside an {@link EventSpace} An event is the
  * specification of some occurrence in a Space that may potentially trigger
@@ -101,25 +102,23 @@ public abstract class Event implements Serializable {
 		this.source = source;
 	}
 
-	/**
-	 * Returns a String representation of the Event E1 attributes only.
-	 *
-	 * @return the string representation of the attributes of this Event.
-	 */
-	@Pure
-	protected String attributesToString() {
-		final StringBuilder result = new StringBuilder();
-		result.append("source = "); //$NON-NLS-1$
-		result.append(this.source);
-		return result.toString();
-	}
-
 	@Override
 	@Pure
-	public String toString() {
-		return getClass().getSimpleName()
-				+ " [" + attributesToString() //$NON-NLS-1$
-				+ "]"; //$NON-NLS-1$
+	public final String toString() {
+		final ToStringBuilder builder = new ToStringBuilder(this);
+		toString(builder);
+		return builder.toString();
+	}
+
+	/** fill the given builder with the string representation of this object.
+	 *
+	 * @param builder the string builder.
+	 * @since 0.7
+	 */
+	@Pure
+	protected void toString(ToStringBuilder builder) {
+		builder.add("type", getClass().getSimpleName()); //$NON-NLS-1$
+		builder.add("source", this.source); //$NON-NLS-1$
 	}
 
 	/** Replies if the event was emitted by an entity with the given address.

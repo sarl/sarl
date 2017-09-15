@@ -123,6 +123,7 @@ import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.InferredTypeIndicator;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
@@ -2700,23 +2701,27 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 
 		if (!declaredInstanceFields.isEmpty()) {
+			final JvmTypeReference voidType = this._typeReferenceBuilder.typeRef(Void.TYPE);
 			final JvmOperation op = SARLJvmModelInferrer.this.typeBuilder.toMethod(
 					source,
-					"attributesToString", //$NON-NLS-1$
-					SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(String.class), (it2) -> {
+					"toString", //$NON-NLS-1$
+					voidType, (it2) -> {
 					it2.setVisibility(JvmVisibility.PROTECTED);
 					SARLJvmModelInferrer.this.typeBuilder.setDocumentation(it2,
 							MessageFormat.format(Messages.SARLJvmModelInferrer_2,
 									target.getSimpleName()));
+					final JvmFormalParameter param = this.typesFactory.createJvmFormalParameter();
+					param.setName("builder"); //$NON-NLS-1$
+					param.setParameterType(SARLJvmModelInferrer.this._typeReferenceBuilder.typeRef(ToStringBuilder.class));
+					it2.getParameters().add(param);
 					setBody(it2, (it3) -> {
-						it3.append("StringBuilder result = new StringBuilder(" //$NON-NLS-1$
-								+ "super.attributesToString());").newLine(); //$NON-NLS-1$
+						it3.append("super.toString(builder);"); //$NON-NLS-1$
 						for (final JvmField attr : declaredInstanceFields) {
-							it3.append("result.append(\"" + attr.getSimpleName() //$NON-NLS-1$
-								+ "  = \").append(this." //$NON-NLS-1$
-								+ attr.getSimpleName() + ");").newLine(); //$NON-NLS-1$
+							it3.newLine();
+							it3.append("builder.add(\"" + attr.getSimpleName() //$NON-NLS-1$
+								+ "\", this." //$NON-NLS-1$
+								+ attr.getSimpleName() + ");"); //$NON-NLS-1$
 						}
-						it3.append("return result.toString();"); //$NON-NLS-1$
 					});
 				});
 			if (op != null) {

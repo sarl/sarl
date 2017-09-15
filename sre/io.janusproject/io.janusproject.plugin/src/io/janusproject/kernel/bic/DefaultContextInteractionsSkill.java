@@ -23,6 +23,9 @@ package io.janusproject.kernel.bic;
 
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
+
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Lifecycle;
 import io.sarl.lang.core.Address;
@@ -88,10 +91,12 @@ public class DefaultContextInteractionsSkill extends BuiltinSkill implements Def
 	}
 
 	@Override
-	protected String attributesToString() {
-		return super.attributesToString() + ", parentContext = " + this.parentContext //$NON-NLS-1$
-				+ ", defaultSpace = " + this.defaultSpace //$NON-NLS-1$
-				+ ", addressInDefaultspace = " + this.addressInParentDefaultSpace; //$NON-NLS-1$
+	@Pure
+	public void toString(ToStringBuilder builder) {
+		super.toString(builder);
+		builder.add("parentContext", this.parentContext); //$NON-NLS-1$
+		builder.add("defaultSpace", this.defaultSpace); //$NON-NLS-1$
+		builder.add("addressInDefaultspace", this.addressInParentDefaultSpace); //$NON-NLS-1$
 	}
 
 	@Override

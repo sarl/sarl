@@ -24,6 +24,7 @@ package io.sarl.lang.core;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 import io.sarl.lang.util.ClearableReference;
 
@@ -37,13 +38,21 @@ import io.sarl.lang.util.ClearableReference;
  */
 public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 
-	/**
-	 * Returns a String representation of the Event E1 attributes only.
+	@Override
+	@Pure
+	public final String toString() {
+		final ToStringBuilder builder = new ToStringBuilder(this);
+		toString(builder);
+		return builder.toString();
+	}
+
+	/** fill the given builder with the string representation of this object.
 	 *
-	 * @return the string representation of the attributes of this Event.
+	 * @param builder the string builder.
+	 * @since 0.7
 	 */
 	@Pure
-	protected abstract String attributesToString();
+	protected abstract void toString(ToStringBuilder builder);
 
 	/** Replies the skill corresponding to the given capacity.
 	 *

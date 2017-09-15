@@ -33,6 +33,7 @@ import com.google.common.reflect.TypeToken;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.SarlSpecification;
@@ -125,21 +126,11 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	}
 
 	@Override
-	protected String attributesToString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("id = "); //$NON-NLS-1$
-		builder.append(this.id);
-		builder.append(", parentID="); //$NON-NLS-1$
-		builder.append(this.parentID);
-		return builder.toString();
-	}
-
-	@Override
 	@Pure
-	public String toString() {
-		return getClass().getSimpleName()
-				+ " [" + attributesToString() //$NON-NLS-1$
-				+ "]"; //$NON-NLS-1$
+	protected void toString(ToStringBuilder builder) {
+		builder.add("type", getClass().getSimpleName()); //$NON-NLS-1$
+		builder.add("id", this.id); //$NON-NLS-1$
+		builder.add("parentID", this.parentID); //$NON-NLS-1$
 	}
 
 	/**

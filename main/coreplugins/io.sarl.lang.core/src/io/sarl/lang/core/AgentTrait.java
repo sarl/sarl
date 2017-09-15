@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 import io.sarl.lang.util.ClearableReference;
 
@@ -57,19 +58,9 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 
 	@Override
 	@Pure
-	protected String attributesToString() {
-		final StringBuilder result = new StringBuilder();
-		result.append("owner = "); //$NON-NLS-1$
-		result.append(getOwner());
-		return result.toString();
-	}
-
-	@Override
-	@Pure
-	public String toString() {
-		return getClass().getSimpleName()
-				+ " [" + attributesToString() //$NON-NLS-1$
-				+ "]"; //$NON-NLS-1$
+	protected void toString(ToStringBuilder builder) {
+		builder.add("type", getClass().getSimpleName()); //$NON-NLS-1$
+		builder.add("owner", getOwner()); //$NON-NLS-1$
 	}
 
 	/** Set the agent that has this trait.

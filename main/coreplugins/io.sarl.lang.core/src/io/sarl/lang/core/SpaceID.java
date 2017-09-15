@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Unique Identifier for a {@link Space}.
@@ -145,10 +146,12 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 	@Override
 	@Pure
 	public String toString() {
-		return "SpaceID [id=" + this.id //$NON-NLS-1$
-				+ ", contextID=" + this.contextID //$NON-NLS-1$
-				+ ", spaceSpec=" + this.spaceSpec //$NON-NLS-1$
-				+ "]"; //$NON-NLS-1$
+		final ToStringBuilder builder = new ToStringBuilder(this);
+		builder.add("type", getClass().getSimpleName()); //$NON-NLS-1$
+		builder.add("id", this.id); //$NON-NLS-1$
+		builder.add("contextID", this.contextID); //$NON-NLS-1$
+		builder.add("spaceSpec", this.spaceSpec); //$NON-NLS-1$
+		return builder.toString();
 	}
 
 	@Override

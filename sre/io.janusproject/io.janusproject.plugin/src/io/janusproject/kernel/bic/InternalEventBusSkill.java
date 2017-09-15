@@ -33,6 +33,8 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Queues;
 import com.google.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.Pure;
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 import io.janusproject.kernel.bic.internaleventdispatching.AgentInternalEventsDispatcher;
 import io.janusproject.services.logging.LogService;
@@ -124,9 +126,11 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 	}
 
 	@Override
-	protected String attributesToString() {
-		return super.attributesToString() + ", state = " + getOwnerState() //$NON-NLS-1$
-				+ ", addressInDefaultspace = " + this.agentAddressInInnerDefaultSpace; //$NON-NLS-1$
+	@Pure
+	public void toString(ToStringBuilder builder) {
+		super.toString(builder);
+		builder.add("state", getOwnerState()); //$NON-NLS-1$
+		builder.add("addressInDefaultspace", this.agentAddressInInnerDefaultSpace); //$NON-NLS-1$
 	}
 
 	@Override
