@@ -63,6 +63,9 @@
 	* [Synchronization expression](./reference/general/Synchronization.md)
 * Errors and exceptions:
 	* [Exceptions](./reference/general/Exception.md)
+	* [Assertions](./reference/general/Assertion.md)
+* Meta-programming:
+	* [Active annotations](./reference/general/ActiveAnnotations.md)
 
 ### Agent-Oriented Programming
 

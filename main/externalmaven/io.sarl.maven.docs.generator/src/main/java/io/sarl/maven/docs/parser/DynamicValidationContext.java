@@ -25,12 +25,16 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.io.Files;
+import org.apache.commons.lang3.StringUtils;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
@@ -269,6 +273,9 @@ public class DynamicValidationContext {
 		receiver.append(Strings.convertToJavaString(sectionPatternSpecification));
 		receiver.append("\", ").append(Pattern.class).append(".MULTILINE);").newLine(); //$NON-NLS-1$ //$NON-NLS-2$
 
+		receiver.append(Set.class).append(" alternatives = new "); //$NON-NLS-1$
+		receiver.append(TreeSet.class).append("<>();").newLine(); //$NON-NLS-1$
+
 		for (final String newExtension : extensions) {
 			final File fileWithNewExtension = FileSystem.addExtension(fileWithoutExtension, newExtension);
 			if (relativeFile.isAbsolute()) {
@@ -285,7 +292,7 @@ public class DynamicValidationContext {
 			}
 		}
 		receiver.newLine();
-		receiver.append("throw new ").append(AssumptionViolatedException.class).append("(\""); //$NON-NLS-1$ //$NON-NLS-2$
+
 		final StringBuilder errorFilename = new StringBuilder();
 		errorFilename.append(Strings.convertToJavaString(fileWithoutExtension.toString()));
 		errorFilename.append("{"); //$NON-NLS-1$
@@ -298,8 +305,24 @@ public class DynamicValidationContext {
 			}
 			errorFilename.append(Strings.convertToJavaString(ext));
 		}
-		receiver.append("}"); //$NON-NLS-1$
-		receiver.append(Strings.convertToJavaString(MessageFormat.format(Messages.DynamicValidationContext_0, anchor, errorFilename)));
+		errorFilename.append("}"); //$NON-NLS-1$
+
+		receiver.append(List.class).append("<String> alternativeLists = new "); //$NON-NLS-1$
+		receiver.append(ArrayList.class).append("<>(alternatives);").newLine(); //$NON-NLS-1$
+		receiver.append(Collections.class).append(".sort(alternativeLists, (a, b) -> {"); //$NON-NLS-1$
+		receiver.increaseIndentation().newLine();
+		receiver.append("int la = ").append(StringUtils.class).append(".getLevenshteinDistance(a, \""); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append(Strings.convertToJavaString(anchor)).append("\");").newLine(); //$NON-NLS-1$
+		receiver.append("int lb = ").append(StringUtils.class).append(".getLevenshteinDistance(b, \""); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append(Strings.convertToJavaString(anchor)).append("\");").newLine(); //$NON-NLS-1$
+		receiver.append("int cmp = la - lb;").newLine(); //$NON-NLS-1$
+		receiver.append("if (cmp != 0) return 0;").newLine(); //$NON-NLS-1$
+		receiver.append("return a.compareTo(b);").decreaseIndentation().newLine(); //$NON-NLS-1$
+		receiver.append("});").newLine(); //$NON-NLS-1$
+
+		receiver.append("throw new ").append(AssumptionViolatedException.class).append("(\""); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append(Strings.convertToJavaString(MessageFormat.format(Messages.DynamicValidationContext_0,
+				anchor, errorFilename, "\"+alternativeLists+\""))); //$NON-NLS-1$
 		receiver.append("\");"); //$NON-NLS-1$
 	}
 

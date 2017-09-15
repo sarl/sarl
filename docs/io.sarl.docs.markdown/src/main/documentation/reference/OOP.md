@@ -56,24 +56,49 @@ environment (Eclipse, IntelliJ...)
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: yellow; color: black;">See companion object</td></tr>
-<tr><td>Automatic generation of <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals-java.lang.Object-"><code>equals()</code></a>
-            and <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--"><code>hashCode()</code></a></td>
+<tr><td>Inheritance of constructors</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td></tr>
+<tr><td><a href="./general/ActiveAnnotations.md#Data">Automatic creation of read-only data structure</a></td>
+			<td style="background: yellow; color: black;">Manual with <code>@Data</code> annotation</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: yellow; color: black;">Manual with <code>@Data</code> annotation</td>
+			<td style="background: orange; color: white;">No</td></tr>
+<tr><td><a href="./general/ActiveAnnotations.md#Accessors">Automatic creation of getters and setters</a></td>
+			<td style="background: yellow; color: black;">Manual with <code>@Accessors</code> annotation</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: yellow; color: black;">Manual with <code>@Accessors</code> annotation</td>
+			<td style="background: green; color: white;">Yes</td></tr>
+<tr><td>Automatic creation of final-field constructor</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: yellow; color: black;">Manual with <code>@FinalFieldsConstructor</code> annotation</td>
+			<td style="background: orange; color: white;">No</td></tr>
+<tr><td>Automatic creation of <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals-java.lang.Object-"><code>equals()</code></a>
+            and <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--"><code>hashCode()</code></a></td>
+			<td style="background: green; color: white;">Yes</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: yellow; color: black;">Manual with <code>@EqualsHashCode</code> annotation</td>
 			<td style="background: green; color: white;">Yes, see case class</td></tr>
-<tr><td>Automatic generation of <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#clone--"><code>clone()</code></a>
+<tr><td>Automatic creation of <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#clone--"><code>clone()</code></a>
             when <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Cloneable.html">cloneable type</a></td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td>Automatic generation of a serialVersionUID field when
+<tr><td>Automatic creation of a serialVersionUID field when
         <a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html">serializable type</a></td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: yellow; color: black;">Manual with <code>@SerialVersionUID</code></td></tr>
+<tr><td><a href="./general/ActiveAnnotations.md#ToString">Automatic creation of the <code>toString()</code> function.</a></td>
+			<td style="background: yellow; color: black;">Manual with <code>@ToString</code> annotation</td>
+			<td style="background: orange; color: white;">No</td>
+			<td style="background: yellow; color: black;">Manual with <code>@ToString</code> annotation</td>
+			<td style="background: green; color: white;">Yes, see case class</td></tr>
 <tr><td colspan=5><strong>Functions, Procedures and Operators</strong></td></tr>
 <tr><td><a href="./general/FuncDecls.md#7-dispatch-function">Definition of dispatch functions</a></td>
 			<td style="background: green; color: white;">Yes</td>

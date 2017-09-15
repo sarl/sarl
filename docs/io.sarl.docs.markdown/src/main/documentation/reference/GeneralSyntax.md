@@ -123,6 +123,8 @@ In the following pages, you could find details on the different elements of the 
 * Errors and exceptions:
 	* [Exceptions](./general/Exception.md)
 	* [Assertions](./general/Assertion.md)
+* Meta-programming:
+	* [Active annotations](./general/ActiveAnnotations.md)
 
 
 

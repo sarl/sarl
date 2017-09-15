@@ -34,14 +34,6 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>vmutils</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>util</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
 		</dependency>
