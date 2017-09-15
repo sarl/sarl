@@ -49,6 +49,8 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 		"io.sarl.lang.core", //$NON-NLS-1$
 		"io.sarl.util", //$NON-NLS-1$
 		"io.sarl.core", //$NON-NLS-1$
+		// For active annotations
+		"org.eclipse.xtend.lib", //$NON-NLS-1$
 	};
 
 	/**
