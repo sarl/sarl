@@ -122,6 +122,12 @@ import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtend.lib.annotations.Accessors;
+import org.eclipse.xtend.lib.annotations.Data;
+import org.eclipse.xtend.lib.annotations.Delegate;
+import org.eclipse.xtend.lib.annotations.EqualsHashCode;
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor;
+import org.eclipse.xtend.lib.annotations.ToString;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
@@ -2547,6 +2553,69 @@ public class SARLValidator extends AbstractSARLValidator {
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					IssueCodes.INVALID_DEFAULT_SKILL_ANNOTATION);
 		}
+	}
+
+	@Override
+	public void checkAnnotationTarget(XAnnotation annotation) {
+		super.checkAnnotationTarget(annotation);
+		if (isForbiddenActiveAnnotation(annotation)) {
+			error(Messages.SARLValidator_89,
+					annotation,
+					null,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
+		} else if (isOOActiveAnnotation(annotation)) {
+			XtendTypeDeclaration container = EcoreUtil2.getContainerOfType(annotation.eContainer(), XtendTypeDeclaration.class);
+			while (container != null && (container.isAnonymous() || container.getName() == null)) {
+				container = EcoreUtil2.getContainerOfType(container.eContainer(), XtendTypeDeclaration.class);
+			}
+			if (!isOOType(container)) {
+				error(Messages.SARLValidator_90,
+						annotation,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
+			}
+		}
+	}
+
+	/** Replies if the given element is an object oriented type.
+	 *
+	 * @param type the type to test.
+	 * @return {@code true} if the type is an object oriented type.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isOOType(XtendTypeDeclaration type) {
+		return type instanceof XtendClass
+				|| type instanceof XtendInterface
+				|| type instanceof XtendEnum
+				|| type instanceof XtendAnnotationType;
+	}
+
+	/** Replies if the given annotation is an active annotation for object-oriented elements.
+	 *
+	 * @param annotation the annotation.
+	 * @return {@code true} if the annotation should be used only for OO elements.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isOOActiveAnnotation(XAnnotation annotation) {
+		final String name = annotation.getAnnotationType().getQualifiedName();
+		return Strings.equal(Accessors.class.getName(), name)
+				|| Strings.equal(Data.class.getName(), name)
+				|| Strings.equal(Delegate.class.getName(), name)
+				|| Strings.equal(ToString.class.getName(), name);
+	}
+
+	/** Replies if the given annotation is a forbidden active annotation.
+	 *
+	 * @param annotation the annotation.
+	 * @return {@code true} if the annotation is forbidden.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isForbiddenActiveAnnotation(XAnnotation annotation) {
+		final String name = annotation.getAnnotationType().getQualifiedName();
+		return Strings.equal(EqualsHashCode.class.getName(), name)
+				|| Strings.equal(FinalFieldsConstructor.class.getName(), name);
 	}
 
 	/** The modifier validator for constructors.
