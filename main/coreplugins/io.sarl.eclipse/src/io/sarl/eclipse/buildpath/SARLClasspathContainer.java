@@ -62,7 +62,7 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 
 	@Override
 	public int getKind() {
-		return K_SYSTEM;
+		return K_APPLICATION;
 	}
 
 	@Override
