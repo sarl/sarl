@@ -34,6 +34,7 @@ import io.janusproject.Boot;
 import io.janusproject.Bootstrap;
 import io.janusproject.JanusConfig;
 import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
+import io.janusproject.eclipse.buildpath.JanusClasspathContainerInitializer;
 
 import io.sarl.eclipse.runtime.AbstractSREInstall;
 import io.sarl.eclipse.runtime.SREConstants;
@@ -90,6 +91,11 @@ public class JanusSREInstall extends AbstractSREInstall {
 	@Override
 	public String getLocation() {
 		return this.location;
+	}
+
+	@Override
+	public IPath getPreferredClassPathContainerPath() {
+		return JanusClasspathContainerInitializer.CONTAINER_ID;
 	}
 
 	@Override

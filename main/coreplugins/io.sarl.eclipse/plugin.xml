@@ -636,5 +636,12 @@
 		<activityPatternBinding activityId="io.sarl.eclipse.activities.xtendContributions"
 	                            pattern=".*[Xx]tend.*"/>
    </extension>
+   <extension
+         point="org.eclipse.jdt.launching.classpathProviders">
+      <classpathProvider
+            class="io.sarl.eclipse.launching.shortcuts.SarlStandardClasspathProvider"
+            id="io.sarl.eclipse.launching.shortcuts.SarlStandardClasspathProvider">
+      </classpathProvider>
+   </extension>
 
 </plugin>

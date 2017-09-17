@@ -134,6 +134,11 @@ public class StandardSREInstall extends AbstractSREInstall {
 	}
 
 	@Override
+	public IPath getPreferredClassPathContainerPath() {
+		return null;
+	}
+
+	@Override
 	public StandardSREInstall clone() {
 		final StandardSREInstall clone = (StandardSREInstall) super.clone();
 		clone.jarFile = this.jarFile == null ? null : Path.fromPortableString(clone.jarFile.toPortableString());

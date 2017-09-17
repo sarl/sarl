@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.w3c.dom.Document;
@@ -172,6 +173,13 @@ public interface ISREInstall extends Cloneable {
 	 *     Must not return {@code null}.
 	 */
 	List<IRuntimeClasspathEntry> getClassPathEntries();
+
+	/** Replies the path o the preferred container.
+	 *
+	 * @return the preferred container's path, or {@code null}.
+	 * @since 0.7
+	 */
+	IPath getPreferredClassPathContainerPath();
 
 	/** Replies the available command line options for this SRE.
 	 *
