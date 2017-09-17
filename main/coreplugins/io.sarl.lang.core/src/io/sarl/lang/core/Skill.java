@@ -23,6 +23,9 @@ package io.sarl.lang.core;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * A possible implementation of a capacity fulfilling all the constraints of
  * this specification. Require Capacities should be accessed via the
@@ -59,6 +62,21 @@ public abstract class Skill extends AgentTrait {
 	 */
 	public Skill() {
 		super();
+	}
+
+	/** Replies the caller of the capacity functions.
+	 *
+	 * <p>The replied value has a meaning inside the skills' functions that
+	 * are implemented the capacities' functions.
+	 *
+	 * @return the caller, or {@code null} if the caller is unknown (assuming that the caller is the agent itself).
+	 * @since 0.7
+	 */
+	@SuppressWarnings("static-method")
+	@Pure
+	@Inline(value = "$1.getCaller()", imported = Capacities.class, constantExpression = true)
+	protected AgentTrait getCaller() {
+		return Capacities.getCaller();
 	}
 
 	/** Mark this skill as used by one user.

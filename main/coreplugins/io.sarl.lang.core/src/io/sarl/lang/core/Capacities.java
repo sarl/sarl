@@ -23,6 +23,8 @@ package io.sarl.lang.core;
 
 import java.lang.reflect.Constructor;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Utility functions related to the capacities.
  *
  * @author $Author: sgalland$
@@ -50,6 +52,7 @@ public final class Capacities {
 	 *
 	 * @return the caller, or {@code null} if the caller is unknown (assuming that the caller is the agent itself).
 	 */
+	@Pure
 	public static AgentTrait getCaller() {
 		return CALLER.get();
 	}
@@ -81,6 +84,7 @@ public final class Capacities {
 	 * @throws Exception if the delegator cannot be created.
 	 * @see #createSkillDelegatorIfPossible(Skill, Class, AgentTrait)
 	 */
+	@Pure
 	public static <C extends Capacity> C createSkillDelegator(Skill originalSkill, Class<C> capacity, AgentTrait capacityCaller)
 			throws Exception {
 		final String name = capacity.getName() + CAPACITY_WRAPPER_NAME;
@@ -115,6 +119,7 @@ public final class Capacities {
 	 * @throws ClassCastException if the skill is not implementing the capacity.
 	 * @see #createSkillDelegator(Skill, Class, AgentTrait)
 	 */
+	@Pure
 	public static <C extends Capacity> C createSkillDelegatorIfPossible(Skill originalSkill, Class<C> capacity, AgentTrait capacityCaller)
 			throws ClassCastException {
 		try {
