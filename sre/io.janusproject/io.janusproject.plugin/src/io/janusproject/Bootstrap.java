@@ -29,6 +29,7 @@ import io.janusproject.kernel.Kernel;
 
 import io.sarl.core.SREBootstrap;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.AgentContext;
 
 /**
  * Represents an access point to the SARL run-time environment (SRE).
@@ -84,6 +85,18 @@ public final class Bootstrap implements SREBootstrap {
 	@Override
 	public UUID getBootAgentIdentifier() {
 		return Boot.getBootAgentIdentifier();
+	}
+
+	@Override
+	public AgentContext startWithoutAgent() {
+		Kernel kern = this.kernel;
+		if (kern == null) {
+			synchronized (this) {
+				this.kernel = Boot.startWithoutAgent();
+				kern = this.kernel;
+			}
+		}
+		return kern.getJanusContext();
 	}
 
 }

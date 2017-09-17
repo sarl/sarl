@@ -24,6 +24,7 @@ import java.lang.ref.SoftReference
 import java.util.ServiceLoader
 import java.util.UUID
 import io.sarl.lang.core.Agent
+import io.sarl.lang.core.AgentContext
 
 /**
  * Represents an access point to the SARL run-time environment (SRE).
@@ -38,6 +39,15 @@ import io.sarl.lang.core.Agent
  * @since 0.6
  */
 interface SREBootstrap {
+
+	/**
+	 * Start the SRE without an agent.
+	 This function prepare the default context.
+	 *
+	 * @return the context that is created by the bootstrap. If {@code null} there is no context created.
+	 * @since 0.7
+	 */
+	def startWithoutAgent : AgentContext
 
 	/**
 	 * Launch the SRE and the first agent in the kernel.
@@ -183,6 +193,10 @@ final class SRE {
 	private static class VoidSREBootstrap implements SREBootstrap {
 
 		package new {
+		}
+
+		override startWithoutAgent : AgentContext {
+			null
 		}
 
 		override startAgent(agentCls : Class<? extends Agent>, params : Object*) : UUID {

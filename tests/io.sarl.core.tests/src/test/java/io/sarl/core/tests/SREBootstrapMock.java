@@ -24,6 +24,7 @@ import java.util.UUID;
 
 import io.sarl.core.SREBootstrap;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.AgentContext;
 
 /**
  * @author $Author: sgalland$
@@ -45,6 +46,11 @@ public class SREBootstrapMock implements SREBootstrap {
 
 	@Override
 	public UUID getBootAgentIdentifier() {
+		throw new IllegalStateException();
+	}
+
+	@Override
+	public AgentContext startWithoutAgent() {
 		throw new IllegalStateException();
 	}
 

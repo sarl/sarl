@@ -909,13 +909,7 @@ public final class Boot {
 		// Set the boot agent classname
 		System.setProperty(JanusConfig.BOOT_AGENT, agentCls.getName());
 		// Get the start-up injection module
-		assert startupModule != null : "No platform injection module"; //$NON-NLS-1$
-		final Kernel k = Kernel.create(startupModule);
-		// Force the bootstrap to reference the created kernel.
-		final SREBootstrap bootstrap = SRE.getBootstrap();
-		if (bootstrap instanceof Bootstrap) {
-			((Bootstrap) bootstrap).setKernel(k);
-		}
+		final Kernel k = startWithoutAgent(startupModule);
 		final Logger logger = k.getLogger();
 		if (logger != null) {
 			logger.info(MessageFormat.format(Messages.Boot_22, agentCls.getName()));
@@ -927,6 +921,42 @@ public final class Boot {
 			System.getProperties().remove(JanusConfig.BOOT_AGENT_ID);
 		}
 		return k;
+	}
+
+	/**
+	 * Start the SRE without an agent. This function prepare the default context.
+	 *
+	 * @param startupModule - the injection module to use for initializing the platform.
+	 * @return the context that is created by the bootstrap. If {@code null} there is no context created.
+	 * @since 2.0.7.0
+	 */
+	public static Kernel startWithoutAgent(Module startupModule) {
+		assert startupModule != null : "No platform injection module"; //$NON-NLS-1$
+		final Kernel k = Kernel.create(startupModule);
+		// Force the bootstrap to reference the created kernel.
+		final SREBootstrap bootstrap = SRE.getBootstrap();
+		if (bootstrap instanceof Bootstrap) {
+			((Bootstrap) bootstrap).setKernel(k);
+		}
+		return k;
+	}
+
+	/**
+	 * Start the SRE without an agent. This function prepare the default context.
+	 *
+	 * @return the context that is created by the bootstrap. If {@code null} there is no context created.
+	 * @since 2.0.7.0
+	 */
+	public static Kernel startWithoutAgent() {
+		final Class<? extends Module> startupModule = JanusConfig.getSystemPropertyAsClass(Module.class,
+				JanusConfig.INJECTION_MODULE_NAME,
+				JanusConfig.INJECTION_MODULE_NAME_VALUE);
+		assert startupModule != null : "No platform injection module"; //$NON-NLS-1$
+		try {
+			return startWithoutAgent(startupModule.newInstance());
+		} catch (Exception exception) {
+			throw new IllegalStateException(exception);
+		}
 	}
 
 	/**
