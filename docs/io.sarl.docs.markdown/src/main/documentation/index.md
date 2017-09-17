@@ -36,6 +36,7 @@
 
 * [Event Creation with a Builder](./bestpractices/EventBuilder.md)
 * [Event Handler Overriding](./bestpractices/EventHandlerOverriding.md)
+* [Creating Space with Operation User Accessibility](./bestpractices/SpaceWithCallerIdentity.md)
 
 ## Reference Documentation
 

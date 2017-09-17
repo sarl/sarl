@@ -661,7 +661,7 @@ public final class ShouldExtensions {
 			throw new ShouldException("Invalid return type for the prototype: " + name //$NON-NLS-1$
 					+ "\nactual: " + method.getReturnType().getName()); //$NON-NLS-1$
 		}
-		return null;
+		throw new ShouldException("Prototype not found: " + name + "\nSearch pattern: " + pattern); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/** Ensure that the given type has the given methods.
