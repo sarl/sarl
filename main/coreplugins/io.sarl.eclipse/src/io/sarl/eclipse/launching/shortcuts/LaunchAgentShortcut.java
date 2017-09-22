@@ -32,6 +32,7 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
@@ -240,7 +241,7 @@ public class LaunchAgentShortcut implements ILaunchShortcut2 {
 		}
 	}
 
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
 	private List<AgentDescription> findAgents(Object[] elements, IProgressService progress)
 			throws InvocationTargetException, InterruptedException {
 		final List<AgentDescription> descs = new ArrayList<>();
@@ -264,19 +265,37 @@ public class LaunchAgentShortcut implements ILaunchShortcut2 {
 							final Object current = stack.removeFirst();
 							if (current instanceof IFile) {
 								final IFile file = (IFile) current;
-								final ResourceSet resourceSet = this.resourceSetProvider.get(file.getProject());
-								final URI resourceURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
-								final Resource resource = resourceSet.getResource(resourceURI, true);
-								if (resource != null) {
-									final String projectName = file.getProject().getName();
-									for (final EObject content : resource.getContents()) {
-										if (content instanceof SarlScript) {
-											for (final SarlAgent agent : EcoreUtil2.getAllContentsOfType(content, SarlAgent.class)) {
-												descs.add(new AgentDescription(
-														projectName,
-														this.nameProvider.getFullyQualifiedName(agent).toString()));
+								if (isValidResource(file)) {
+									final ResourceSet resourceSet = this.resourceSetProvider.get(file.getProject());
+									final URI resourceURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
+									if (resourceURI != null) {
+										try {
+											final Resource resource = resourceSet.getResource(resourceURI, true);
+											if (resource != null) {
+												final String projectName = file.getProject().getName();
+												for (final EObject content : resource.getContents()) {
+													if (content instanceof SarlScript) {
+														for (final SarlAgent agent : EcoreUtil2.getAllContentsOfType(content, SarlAgent.class)) {
+															descs.add(new AgentDescription(
+																	projectName,
+																	this.nameProvider.getFullyQualifiedName(agent).toString()));
+														}
+													}
+												}
 											}
+										} catch (Throwable exception) {
+											// The exception is ignore because it is assumed it is caused by a
+											// file from which a Xtext resource cannot be extracted.
 										}
+									}
+								}
+							} else if (current instanceof IFolder) {
+								final IFolder folder = (IFolder) current;
+								if (isValidResource(folder)) {
+									try {
+										stack.addAll(Arrays.asList(folder.members(0)));
+									} catch (CoreException exception) {
+										// Ignore the failing resources
 									}
 								}
 							} else if (current instanceof IType) {
@@ -312,7 +331,17 @@ public class LaunchAgentShortcut implements ILaunchShortcut2 {
 		return descs;
 	}
 
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
+	/** Replies if the given resource could be considered for discovering an agent to be launched.
+	 *
+	 * @param resource the resource.
+	 * @return {@code true} if the resource could be explored.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isValidResource(IResource resource) {
+		return resource.isAccessible() && !resource.isHidden() && !resource.isPhantom() && !resource.isDerived();
+	}
+
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
 	private IResource findResource(Object[] elements) {
 		try {
 			for (final Object element : elements) {
@@ -322,7 +351,10 @@ public class LaunchAgentShortcut implements ILaunchShortcut2 {
 					for (final Pair<IStorage, IProject> storage: this.storage2UriMapper.getStorages(fileURI)) {
 						final Object obj = storage.getFirst();
 						if (obj instanceof IResource) {
-							return (IResource) obj;
+							final IResource res = (IResource) obj;
+							if (isValidResource(res)) {
+								return res;
+							}
 						}
 					}
 				} else {
@@ -332,15 +364,26 @@ public class LaunchAgentShortcut implements ILaunchShortcut2 {
 						final Object current = stack.removeFirst();
 						if (current instanceof IFile) {
 							final IFile file = (IFile) current;
-							final ResourceSet resourceSet = this.resourceSetProvider.get(file.getProject());
-							final URI resourceURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
-							final Resource resource = resourceSet.getResource(resourceURI, true);
-							if (resource != null) {
-								for (final EObject content : resource.getContents()) {
-									if (content instanceof SarlScript
-										&& !EcoreUtil2.getAllContentsOfType(content, SarlAgent.class).isEmpty()) {
-										return file;
+							if (isValidResource(file)) {
+								final ResourceSet resourceSet = this.resourceSetProvider.get(file.getProject());
+								final URI resourceURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
+								final Resource resource = resourceSet.getResource(resourceURI, true);
+								if (resource != null) {
+									for (final EObject content : resource.getContents()) {
+										if (content instanceof SarlScript
+											&& !EcoreUtil2.getAllContentsOfType(content, SarlAgent.class).isEmpty()) {
+											return file;
+										}
 									}
+								}
+							}
+						} else if (current instanceof IFolder) {
+							final IFolder folder = (IFolder) current;
+							if (isValidResource(folder)) {
+								try {
+									stack.addAll(Arrays.asList(folder.members(0)));
+								} catch (CoreException exception) {
+									// Ignore the failing resources
 								}
 							}
 						} else if (current instanceof IType) {
