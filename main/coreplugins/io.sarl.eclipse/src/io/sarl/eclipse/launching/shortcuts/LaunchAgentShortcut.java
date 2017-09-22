@@ -54,7 +54,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -80,6 +79,7 @@ import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 import org.eclipse.xtext.util.Pair;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
 import io.sarl.eclipse.util.Jdt2Ecore;
@@ -199,7 +199,8 @@ public class LaunchAgentShortcut implements ILaunchShortcut2 {
 		try {
 			return this.configurator.newConfiguration(projectName, fullyQualifiedNameOfAgent);
 		} catch (CoreException exception) {
-			MessageDialog.openError(getShell(), Messages.SARLLaunchShortcut_0, exception.getStatus().getMessage());
+			SARLEclipsePlugin.getDefault().openError(getShell(),
+					Messages.SARLLaunchShortcut_0, exception.getStatus().getMessage(), exception);
 			return null;
 		}
 	}
@@ -216,7 +217,8 @@ public class LaunchAgentShortcut implements ILaunchShortcut2 {
 			final List<AgentDescription> agents = findAgents(scope, PlatformUI.getWorkbench().getProgressService());
 			AgentDescription agent = null;
 			if (agents.isEmpty()) {
-				MessageDialog.openError(getShell(), Messages.SARLLaunchShortcut_0, Messages.SARLLaunchShortcut_2);
+				SARLEclipsePlugin.getDefault().openError(getShell(), Messages.SARLLaunchShortcut_0, Messages.SARLLaunchShortcut_2,
+						null);
 			} else if (agents.size() > 1) {
 				agent = chooseType(agents);
 			}  else {
@@ -226,13 +228,15 @@ public class LaunchAgentShortcut implements ILaunchShortcut2 {
 				try {
 					launch(agent.projectName, agent.agentName, mode);
 				} catch (CoreException e) {
-					MessageDialog.openError(getShell(), Messages.SARLLaunchShortcut_0, e.getMessage());
+					SARLEclipsePlugin.getDefault().openError(getShell(), Messages.SARLLaunchShortcut_0,
+							e.getStatus().getMessage(), e);
 				}
 			}
 		} catch (InterruptedException exception) {
 			//
 		} catch (InvocationTargetException exception) {
-			MessageDialog.openError(getShell(), Messages.SARLLaunchShortcut_0, exception.getLocalizedMessage());
+			SARLEclipsePlugin.getDefault().openError(getShell(), Messages.SARLLaunchShortcut_0, null,
+					exception);
 		}
 	}
 

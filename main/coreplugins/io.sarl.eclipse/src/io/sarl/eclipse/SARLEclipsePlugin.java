@@ -21,9 +21,12 @@
 
 package io.sarl.eclipse;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.google.common.base.Strings;
+import com.google.common.base.Throwables;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
@@ -31,10 +34,13 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.internal.debug.Debug;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -139,9 +145,8 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @param cause - the cause of the problem.
 	 * @return the status.
 	 */
-	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, String message, Throwable cause) {
-		return new Status(severity, PLUGIN_ID, message, cause);
+		return createStatus(severity, 0, message, cause);
 	}
 
 	/** Create a status.
@@ -152,9 +157,35 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @param cause - the cause of the problem.
 	 * @return the status.
 	 */
-	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, int code, String message, Throwable cause) {
-		return new Status(severity, PLUGIN_ID, code, message, cause);
+		String msg = message;
+		if (Strings.isNullOrEmpty(msg)) {
+			msg = cause.getLocalizedMessage();
+			if (Strings.isNullOrEmpty(msg)) {
+				msg = cause.getMessage();
+			}
+			if (Strings.isNullOrEmpty(msg)) {
+				msg = cause.getClass().getSimpleName();
+			}
+		}
+		if (cause != null) {
+			final List<IStatus> childStatuses = new ArrayList<>();
+			final StackTraceElement[] stackTraces = cause.getStackTrace();
+			for (final StackTraceElement stackTrace: stackTraces) {
+				final IStatus status = createStatus(severity, stackTrace.toString());
+				childStatuses.add(status);
+			}
+
+			final IStatus[] children = new IStatus[childStatuses.size()];
+			if (!childStatuses.isEmpty()) {
+				childStatuses.toArray(children);
+			}
+			return new MultiStatus(PLUGIN_ID,
+					code,
+					children,
+					msg, cause);
+		}
+		return new Status(severity, PLUGIN_ID, code, msg, cause);
 	}
 
 	/** Create a status.
@@ -164,14 +195,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, Throwable cause) {
-		String message = cause.getLocalizedMessage();
-		if (Strings.isNullOrEmpty(message)) {
-			message = cause.getMessage();
-		}
-		if (Strings.isNullOrEmpty(message)) {
-			message = cause.getClass().getSimpleName();
-		}
-		return createStatus(severity, message, cause);
+		return createStatus(severity, 0, null, cause);
 	}
 
 	/** Create a status.
@@ -182,14 +206,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, int code, Throwable cause) {
-		String message = cause.getLocalizedMessage();
-		if (Strings.isNullOrEmpty(message)) {
-			message = cause.getMessage();
-		}
-		if (Strings.isNullOrEmpty(message)) {
-			message = cause.getClass().getSimpleName();
-		}
-		return createStatus(severity, code, message, cause);
+		return createStatus(severity, code, null, cause);
 	}
 
 	/** Create a status.
@@ -198,9 +215,8 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @param message - the message associated to the status.
 	 * @return the status.
 	 */
-	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, String message) {
-		return new Status(severity, PLUGIN_ID, message);
+		return createStatus(severity, 0, message);
 	}
 
 	/** Create a status.
@@ -210,9 +226,8 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * @param message - the message associated to the status.
 	 * @return the status.
 	 */
-	@SuppressWarnings("static-method")
 	public IStatus createStatus(int severity, int code, String message) {
-		return new Status(severity, PLUGIN_ID, code, message, null);
+		return createStatus(severity, code, message, null);
 	}
 
 	/** Create a ok status.
@@ -310,6 +325,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * Logs an internal error with the specified throwable.
 	 *
 	 * @param exception the exception to be logged
+	 * @see #openError(Shell, String, String, Throwable)
 	 */
 	public void log(Throwable exception) {
 		if (exception instanceof CoreException) {
@@ -343,6 +359,27 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 			prefs.flush();
 		} catch (BackingStoreException e) {
 			getILog().log(createStatus(IStatus.ERROR, e));
+		}
+	}
+
+	/**
+	 * Display an error dialog and log the error.
+	 *
+	 * @param shell the parent container.
+	 * @param title the title of the dialog box.
+	 * @param message the message to display into the dialog box.
+	 * @param exception the exception to be logged.
+	 * @since 0.6
+	 * @see #log(Throwable)
+	 */
+	public void openError(Shell shell, String title, String message, Throwable exception) {
+		final Throwable ex = (exception != null) ? Throwables.getRootCause(exception) : null;
+		if (ex != null) {
+			log(ex);
+			final IStatus status = createStatus(IStatus.ERROR, message, ex);
+			ErrorDialog.openError(shell, title, message, status);
+		} else {
+			MessageDialog.openError(shell, title, message);
 		}
 	}
 
