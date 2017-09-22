@@ -67,13 +67,15 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 
 	private static final int STATIC_METHOD_PRIORITY = 80;
 
-	private static final int FIELD_PRIORITY = 90;
+	private static final int STATIC_CONSTRUCTOR = 90;
 
-	private static final int CONSTRUCTOR_PRIORITY = 100;
+	private static final int FIELD_PRIORITY = 100;
 
-	private static final int BEHAVIOR_UNIT_PRIORITY = 110;
+	private static final int CONSTRUCTOR_PRIORITY = 110;
 
-	private static final int METHOD_PRIORITY = 120;
+	private static final int BEHAVIOR_UNIT_PRIORITY = 120;
+
+	private static final int METHOD_PRIORITY = 130;
 
 	/** Construct a comparator.
 	 */
@@ -124,8 +126,13 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 				}
 				return METHOD_PRIORITY;
 			}
-			if (XTEND_CONSTRUCTOR.isSuperTypeOf(objectNodeType)
-					|| TypesPackage.Literals.JVM_CONSTRUCTOR.isSuperTypeOf(objectNodeType)) {
+			if (XTEND_CONSTRUCTOR.isSuperTypeOf(objectNodeType)) {
+				if (isStatic(objectNode)) {
+					return STATIC_CONSTRUCTOR;
+				}
+				return CONSTRUCTOR_PRIORITY;
+			}
+			if (TypesPackage.Literals.JVM_CONSTRUCTOR.isSuperTypeOf(objectNodeType)) {
 				return CONSTRUCTOR_PRIORITY;
 			}
 			if (SARL_BEHAVIOR_UNIT.isSuperTypeOf(objectNodeType)) {

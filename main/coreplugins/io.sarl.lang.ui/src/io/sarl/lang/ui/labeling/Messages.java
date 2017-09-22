@@ -35,6 +35,7 @@ public class Messages extends NLS {
 	public static String SARLLabelProvider_0;
 	public static String SARLLabelProvider_1;
 	public static String SARLLabelProvider_2;
+	public static String SARLLabelProvider_3;
 	public static String SARLHyperLinkingLabelProvider_0;
 	static {
 		// initialize resource bundle

@@ -38,7 +38,7 @@ import com.google.common.base.Strings
  * @mavenartifactid $ArtifactId$
  *
  */
-final class BehaviorGuardEvaluator {
+class BehaviorGuardEvaluator {
 
     /** The object with the {@code PerceptGuardEvaluator} method. */
     val target : Object
@@ -66,7 +66,7 @@ final class BehaviorGuardEvaluator {
 	 *        {@code PerceptGuardEvaluator} method is declared
 	 * @throws InvocationTargetException - exception during evaluation, can find the method to invoke
 	 */
-	def evaluateGuard(^event : Object, behaviorsMethodsToExecute : Collection<Runnable>) {
+	def evaluateGuard(^event : Object, behaviorsMethodsToExecute : Collection<Runnable>) : void {
 		try {
 			this.method.accessible = true
 			this.method.invoke(this.target, ^event, behaviorsMethodsToExecute)

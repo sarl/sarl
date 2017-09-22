@@ -73,7 +73,6 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.LayoutUtil;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.SelectionButtonDialogFieldGroup;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -722,8 +721,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			return 0;
 		} catch (InvocationTargetException e) {
 			final Throwable realException = e.getTargetException();
-			SARLEclipsePlugin.getDefault().log(realException);
-			MessageDialog.openError(getShell(), getTitle(), realException.getMessage());
+			SARLEclipsePlugin.getDefault().openError(getShell(), getTitle(),
+					realException.getMessage(), realException);
 		}
 		return size[0];
 	}
