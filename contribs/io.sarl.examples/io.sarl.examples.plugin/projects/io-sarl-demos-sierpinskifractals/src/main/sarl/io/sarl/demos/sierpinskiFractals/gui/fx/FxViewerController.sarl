@@ -40,7 +40,7 @@ abstract class FxViewerController implements EventListener {
 
 	/** Emit an event to the agents.
 	 */
-	def emitToAgents(^event : Event) {
+	def emitToAgents(^event : Event) : void {
 		if (this.^space !== null) {
 			this.^space.emit(ID, ^event)
 		}
