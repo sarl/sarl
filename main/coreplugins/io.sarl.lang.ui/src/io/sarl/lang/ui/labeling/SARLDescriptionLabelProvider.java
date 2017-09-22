@@ -201,6 +201,9 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlConstructor constructor) {
+		if (constructor.isStatic()) {
+			return this.images.forStaticConstructor();
+		}
 		return this.images.forConstructor(
 				constructor.getVisibility(),
 				this.adornments.get(this.jvmModelAssociations.getInferredConstructor(constructor)));

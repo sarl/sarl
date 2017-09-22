@@ -21,6 +21,8 @@
 
 package io.sarl.lang.ui.labeling;
 
+import static org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider.getMethodImageDescriptor;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
@@ -211,6 +213,17 @@ public class SARLImages extends XtendImages {
 	 */
 	public ImageDescriptor forCapacityRequirement() {
 		return forCapacity(JvmVisibility.PRIVATE, 0);
+	}
+
+	/** Replies the image descriptor for the "static constructors".
+	 *
+	 * @return the image descriptor for the agents.
+	 * @since 0.6
+	 */
+	public ImageDescriptor forStaticConstructor() {
+		return getDecorated(
+				getMethodImageDescriptor(false, toFlags(JvmVisibility.PUBLIC)),
+				JavaElementImageDescriptor.CONSTRUCTOR | JavaElementImageDescriptor.STATIC);
 	}
 
 	/**

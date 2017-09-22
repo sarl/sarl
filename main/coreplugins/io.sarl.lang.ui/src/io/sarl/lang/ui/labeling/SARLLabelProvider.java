@@ -35,6 +35,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
 import org.eclipse.xtend.ide.labeling.XtendLabelProvider;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
@@ -383,6 +384,9 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 * @see #imageDescriptor(Object)
 	 */
 	protected ImageDescriptor imageDescriptor(SarlConstructor element) {
+		if (element.isStatic()) {
+			return this.images.forStaticConstructor();
+		}
 		return this.images.forConstructor(
 				element.getVisibility(),
 				this.adornments.get(this.jvmModelAssociations.getInferredConstructor(element)));
@@ -564,6 +568,14 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 			text.append(txt, StyledString.DECORATIONS_STYLER);
 		}
 		return text;
+	}
+
+	@Override
+	protected String text(XtendConstructor element) {
+		if (element.isStatic()) {
+			return Messages.SARLLabelProvider_3;
+		}
+		return super.text(element);
 	}
 
 	@Override
