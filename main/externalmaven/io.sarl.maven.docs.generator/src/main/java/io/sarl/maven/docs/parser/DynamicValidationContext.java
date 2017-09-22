@@ -39,7 +39,6 @@ import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.junit.Assert;
-import org.junit.AssumptionViolatedException;
 
 /** Context for building a dynamic validation component.
  *
@@ -295,17 +294,7 @@ public class DynamicValidationContext {
 
 		final StringBuilder errorFilename = new StringBuilder();
 		errorFilename.append(Strings.convertToJavaString(fileWithoutExtension.toString()));
-		errorFilename.append("{"); //$NON-NLS-1$
-		boolean first = true;
-		for (final String ext : extensions) {
-			if (first) {
-				first = false;
-			} else {
-				errorFilename.append(","); //$NON-NLS-1$
-			}
-			errorFilename.append(Strings.convertToJavaString(ext));
-		}
-		errorFilename.append("}"); //$NON-NLS-1$
+		errorFilename.append(".*"); //$NON-NLS-1$
 
 		receiver.append(List.class).append("<String> alternativeLists = new "); //$NON-NLS-1$
 		receiver.append(ArrayList.class).append("<>(alternatives);").newLine(); //$NON-NLS-1$
@@ -316,14 +305,14 @@ public class DynamicValidationContext {
 		receiver.append("int lb = ").append(StringUtils.class).append(".getLevenshteinDistance(b, \""); //$NON-NLS-1$ //$NON-NLS-2$
 		receiver.append(Strings.convertToJavaString(anchor)).append("\");").newLine(); //$NON-NLS-1$
 		receiver.append("int cmp = la - lb;").newLine(); //$NON-NLS-1$
-		receiver.append("if (cmp != 0) return 0;").newLine(); //$NON-NLS-1$
+		receiver.append("if (cmp != 0) return cmp;").newLine(); //$NON-NLS-1$
 		receiver.append("return a.compareTo(b);").decreaseIndentation().newLine(); //$NON-NLS-1$
 		receiver.append("});").newLine(); //$NON-NLS-1$
 
-		receiver.append("throw new ").append(AssumptionViolatedException.class).append("(\""); //$NON-NLS-1$ //$NON-NLS-2$
-		receiver.append(Strings.convertToJavaString(MessageFormat.format(Messages.DynamicValidationContext_0,
-				anchor, errorFilename, "\"+alternativeLists+\""))); //$NON-NLS-1$
-		receiver.append("\");"); //$NON-NLS-1$
+		receiver.append("throw new ").append(AssertionError.class).append("(\""); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append(Strings.convertToJavaString(MessageFormat.format(Messages.DynamicValidationContext_1,
+				anchor, errorFilename)));
+		receiver.append("\" + alternativeLists.toString());"); //$NON-NLS-1$
 	}
 
 	private static void appendSafeTitleAnchorExistenceTest(ITreeAppendable receiver, File fileInResource, String anchor) {
