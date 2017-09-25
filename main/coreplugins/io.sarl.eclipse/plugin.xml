@@ -338,6 +338,13 @@
         <keywordReference id="org.eclipse.jdt.ui.severities"/>
 	    <keywordReference id="org.eclipse.jdt.ui.formatter"/>
     </page>
+    <page
+          category="io.sarl.lang.SARL"
+          class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.preferences.SarlEditorPreferencePage"
+          id="io.sarl.eclipse.preferences.SarlEditorPreferencePage"
+          name="%preference.sarlEditor">
+        <keywordReference id="io.sarl.eclipse.keyword_SARL"/>
+    </page>
  </extension>
  <extension
        point="org.eclipse.ui.propertyPages">
