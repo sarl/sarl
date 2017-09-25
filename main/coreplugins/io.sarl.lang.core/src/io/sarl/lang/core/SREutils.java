@@ -21,7 +21,7 @@
 
 package io.sarl.lang.core;
 
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -179,7 +179,7 @@ public final class SREutils {
 	 * @return the repository.
 	 * @since 0.6
 	 */
-	public static Map<Class<? extends Capacity>, ClearableReference<Skill>> getSkillRepository(Agent agent) {
+	public static ConcurrentMap<Class<? extends Capacity>, ClearableReference<Skill>> getSkillRepository(Agent agent) {
 		return agent.$getSkillRepository();
 	}
 

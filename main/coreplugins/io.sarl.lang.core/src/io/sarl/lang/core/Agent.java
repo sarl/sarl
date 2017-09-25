@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.inject.Inject;
 
@@ -60,7 +61,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 
 	/** Skill repository.
 	 */
-	private final Map<Class<? extends Capacity>, ClearableReference<Skill>> skillRepository = new ConcurrentHashMap<>();
+	private final ConcurrentMap<Class<? extends Capacity>, ClearableReference<Skill>> skillRepository = new ConcurrentHashMap<>();
 
 	private DynamicSkillProvider skillProvider;
 
@@ -166,7 +167,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 *
 	 * @return the skill repository.
 	 */
-	Map<Class<? extends Capacity>, ClearableReference<Skill>> $getSkillRepository() {
+	ConcurrentMap<Class<? extends Capacity>, ClearableReference<Skill>> $getSkillRepository() {
 		return this.skillRepository;
 	}
 
