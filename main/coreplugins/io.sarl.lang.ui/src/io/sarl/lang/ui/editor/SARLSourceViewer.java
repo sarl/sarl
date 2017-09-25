@@ -54,6 +54,9 @@ public class SARLSourceViewer extends RichStringAwareSourceViewer {
 	@Inject
 	private Provider<IDocumentAutoFormatter> autoFormatterProvider;
 
+	@Inject
+	private SARLSourceViewerPreferenceAccess preferences;
+
 	/** Constructor.
 	 *
 	 * @param parent the container.
@@ -65,6 +68,15 @@ public class SARLSourceViewer extends RichStringAwareSourceViewer {
 	public SARLSourceViewer(Composite parent, IVerticalRuler ruler, IOverviewRuler overviewRuler,
 			boolean showsAnnotationOverview, int styles) {
 		super(parent, ruler, overviewRuler, showsAnnotationOverview, styles);
+	}
+
+	/** Replies if the auto-formatting feature is enable on paste actions.
+	 *
+	 * @return {@code true} if the auto-formatter is turn on.
+	 * @since 0.7
+	 */
+	public boolean isAutoFormattingEnable() {
+		return this.preferences.isAutoFormattingEnabled();
 	}
 
 	/** Replies the document auto-formatter.
@@ -85,7 +97,7 @@ public class SARLSourceViewer extends RichStringAwareSourceViewer {
 
 	@Override
 	public void doOperation(int operation) {
-		if (operation == ITextOperationTarget.PASTE) {
+		if (operation == ITextOperationTarget.PASTE && isAutoFormattingEnable()) {
 			final IRewriteTarget target = getRewriteTarget();
 			target.beginCompoundChange();
 			final IDocumentAutoFormatter formatter = getDocumentAutoFormatter();
