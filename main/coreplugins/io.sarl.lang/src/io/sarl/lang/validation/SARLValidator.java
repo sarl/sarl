@@ -196,6 +196,7 @@ import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
@@ -421,6 +422,9 @@ public class SARLValidator extends AbstractSARLValidator {
 	protected boolean isValueExpectedRecursive(XExpression expr) {
 		final EObject container = expr.eContainer();
 		if (container instanceof SarlBreakExpression) {
+			return false;
+		}
+		if (container instanceof SarlContinueExpression) {
 			return false;
 		}
 		if (container instanceof SarlAssertExpression) {
@@ -2348,21 +2352,50 @@ public class SARLValidator extends AbstractSARLValidator {
 				(it) -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
 				|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression);
 		if (container instanceof XExpression) {
-			if (!isIgnored(IssueCodes.DISCOURAGED_BREAK_KEYWORD_USE)
+			if (!isIgnored(IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE)
 					&& container instanceof XBasicForLoopExpression) {
 				addIssue(
-						Messages.SARLValidator_17,
+						MessageFormat.format(Messages.SARLValidator_17, this.grammarAccess.getBreakKeyword()),
 						expression,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						IssueCodes.DISCOURAGED_BREAK_KEYWORD_USE);
+						IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE);
 			}
 		} else {
-			error(Messages.SARLValidator_18,
+			error(MessageFormat.format(Messages.SARLValidator_18, this.grammarAccess.getBreakKeyword()),
 					expression,
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					IssueCodes.INVALID_USE_OF_BREAK);
+					IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD);
+		}
+	}
+
+	/** Check for usage of continue inside loops.
+	 *
+	 * @param expression the expression to analyze.
+	 * @since 0.7
+	 */
+	@Check
+	public void checkContinueKeywordUse(SarlContinueExpression expression) {
+		final EObject container = Utils.getFirstContainerForPredicate(expression,
+				(it) -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
+				|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression);
+		if (container instanceof XExpression) {
+			if (!isIgnored(IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE)
+					&& container instanceof XBasicForLoopExpression) {
+				addIssue(
+						MessageFormat.format(Messages.SARLValidator_17, this.grammarAccess.getContinueKeyword()),
+						expression,
+						null,
+						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+						IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE);
+			}
+		} else {
+			error(MessageFormat.format(Messages.SARLValidator_18, this.grammarAccess.getContinueKeyword()),
+					expression,
+					null,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD);
 		}
 	}
 

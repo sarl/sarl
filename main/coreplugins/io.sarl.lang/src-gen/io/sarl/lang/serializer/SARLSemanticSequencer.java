@@ -36,6 +36,7 @@ import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.sarl.SarlEnumLiteral;
 import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
@@ -265,6 +266,9 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					return; 
 				}
 				else break;
+			case SarlPackage.SARL_CONTINUE_EXPRESSION:
+				sequence_ContinueExpression(context, (SarlContinueExpression) semanticObject); 
+				return; 
 			case SarlPackage.SARL_ENUM_LITERAL:
 				sequence_XtendEnumLiteral(context, (SarlEnumLiteral) semanticObject); 
 				return; 
@@ -1286,6 +1290,53 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     annotations+=XAnnotation*
 	 */
 	protected void sequence_CapacityMember_SarlAction_2(ISerializationContext context, XtendMember semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ContinueExpression returns SarlContinueExpression
+	 *     XPrimaryExpression returns SarlContinueExpression
+	 *     XExpressionOrSimpleConstructorCall returns SarlContinueExpression
+	 *     RichStringPart returns SarlContinueExpression
+	 *     XAnnotationElementValueOrCommaList returns SarlContinueExpression
+	 *     XAnnotationElementValueOrCommaList.XListLiteral_1_1_0 returns SarlContinueExpression
+	 *     XAnnotationElementValue returns SarlContinueExpression
+	 *     XAnnotationOrExpression returns SarlContinueExpression
+	 *     XExpression returns SarlContinueExpression
+	 *     XAssignment returns SarlContinueExpression
+	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns SarlContinueExpression
+	 *     XOrExpression returns SarlContinueExpression
+	 *     XOrExpression.XBinaryOperation_1_0_0_0 returns SarlContinueExpression
+	 *     XAndExpression returns SarlContinueExpression
+	 *     XAndExpression.XBinaryOperation_1_0_0_0 returns SarlContinueExpression
+	 *     XEqualityExpression returns SarlContinueExpression
+	 *     XEqualityExpression.XBinaryOperation_1_0_0_0 returns SarlContinueExpression
+	 *     XRelationalExpression returns SarlContinueExpression
+	 *     XRelationalExpression.XInstanceOfExpression_1_0_0_0_0 returns SarlContinueExpression
+	 *     XRelationalExpression.XBinaryOperation_1_1_0_0_0 returns SarlContinueExpression
+	 *     XOtherOperatorExpression returns SarlContinueExpression
+	 *     XOtherOperatorExpression.XBinaryOperation_1_0_0_0 returns SarlContinueExpression
+	 *     XAdditiveExpression returns SarlContinueExpression
+	 *     XAdditiveExpression.XBinaryOperation_1_0_0_0 returns SarlContinueExpression
+	 *     XMultiplicativeExpression returns SarlContinueExpression
+	 *     XMultiplicativeExpression.XBinaryOperation_1_0_0_0 returns SarlContinueExpression
+	 *     XUnaryOperation returns SarlContinueExpression
+	 *     XCastedExpression returns SarlContinueExpression
+	 *     XCastedExpression.XCastedExpression_1_0_0_0 returns SarlContinueExpression
+	 *     XPostfixOperation returns SarlContinueExpression
+	 *     XPostfixOperation.XPostfixOperation_1_0_0 returns SarlContinueExpression
+	 *     XMemberFeatureCall returns SarlContinueExpression
+	 *     XMemberFeatureCall.XAssignment_1_0_0_0_0 returns SarlContinueExpression
+	 *     XMemberFeatureCall.XMemberFeatureCall_1_1_0_0_0 returns SarlContinueExpression
+	 *     XParenthesizedExpression returns SarlContinueExpression
+	 *     XExpressionOrVarDeclaration returns SarlContinueExpression
+	 *
+	 * Constraint:
+	 *     {SarlContinueExpression}
+	 */
+	protected void sequence_ContinueExpression(ISerializationContext context, SarlContinueExpression semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

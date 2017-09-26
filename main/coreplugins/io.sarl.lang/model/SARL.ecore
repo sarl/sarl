@@ -28,6 +28,17 @@
   </eClassifiers>
   <eClassifiers
       xsi:type="ecore:EClass"
+      name="SarlContinueExpression"
+      eSuperTypes="../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression">
+    <eAnnotations
+        source="http://www.eclipse.org/emf/2002/GenModel">
+      <details
+          key="documentation"
+          value="@since 0.7"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers
+      xsi:type="ecore:EClass"
       name="SarlAssertExpression"
       eSuperTypes="../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression">
     <eAnnotations

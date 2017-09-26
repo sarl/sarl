@@ -80,6 +80,7 @@ import io.sarl.lang.jvmmodel.Messages;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
+import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 
 
@@ -347,6 +348,8 @@ public class SarlCompiler extends XtendCompiler {
 	public void doInternalToJavaStatement(XExpression obj, ITreeAppendable appendable, boolean isReferenced) {
 		if (obj instanceof SarlBreakExpression) {
 			_toJavaStatement((SarlBreakExpression) obj, appendable, isReferenced);
+		} else if (obj instanceof SarlContinueExpression) {
+			_toJavaStatement((SarlContinueExpression) obj, appendable, isReferenced);
 		} else if (obj instanceof SarlAssertExpression) {
 			_toJavaStatement((SarlAssertExpression) obj, appendable, isReferenced);
 		} else {
@@ -363,6 +366,8 @@ public class SarlCompiler extends XtendCompiler {
 	public void internalToConvertedExpression(XExpression obj, ITreeAppendable appendable) {
 		if (obj instanceof SarlBreakExpression) {
 			_toJavaExpression((SarlBreakExpression) obj, appendable);
+		} else if (obj instanceof SarlContinueExpression) {
+			_toJavaExpression((SarlContinueExpression) obj, appendable);
 		} else if (obj instanceof SarlAssertExpression) {
 			_toJavaExpression((SarlAssertExpression) obj, appendable);
 		} else {
@@ -384,6 +389,18 @@ public class SarlCompiler extends XtendCompiler {
 	@SuppressWarnings("static-method")
 	protected void _toJavaStatement(SarlBreakExpression breakExpression, ITreeAppendable appendable, boolean isReferenced) {
 		appendable.newLine().append("break;"); //$NON-NLS-1$
+	}
+
+	/** Generate the Java code related to the preparation statements for the break keyword.
+	 *
+	 * @param breakExpression the expression.
+	 * @param appendable the output.
+	 * @param isReferenced indicates if the expression is referenced.
+	 * @since 0.7
+	 */
+	@SuppressWarnings("static-method")
+	protected void _toJavaStatement(SarlContinueExpression breakExpression, ITreeAppendable appendable, boolean isReferenced) {
+		appendable.newLine().append("continue;"); //$NON-NLS-1$
 	}
 
 	/** Generate the Java code to the preparation statements for the assert keyword.
@@ -504,6 +521,17 @@ public class SarlCompiler extends XtendCompiler {
 		appendable.append("/* error - couldn't compile nested break */"); //$NON-NLS-1$
 	}
 
+	/** Generate the Java code related to the expression for the continue keyword.
+	 *
+	 * @param breakExpression the expression.
+	 * @param appendable the output.
+	 * @since 0.7
+	 */
+	@SuppressWarnings("static-method")
+	protected void _toJavaExpression(SarlContinueExpression breakExpression, ITreeAppendable appendable) {
+		appendable.append("/* error - couldn't compile nested continue */"); //$NON-NLS-1$
+	}
+
 	/** Generate the Java code related to the expression for the assert keyword.
 	 *
 	 * @param assertExpression the expression.
@@ -518,6 +546,9 @@ public class SarlCompiler extends XtendCompiler {
 	@Override
 	protected boolean internalCanCompileToJavaExpression(XExpression expression, ITreeAppendable appendable) {
 		if (expression instanceof SarlBreakExpression) {
+			return true;
+		}
+		if (expression instanceof SarlContinueExpression) {
 			return true;
 		}
 		if (expression instanceof SarlAssertExpression) {

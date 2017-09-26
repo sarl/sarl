@@ -38,6 +38,7 @@ import org.eclipse.xtext.xbase.controlflow.DefaultEarlyExitComputer;
 
 import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.sarl.SarlBreakExpression;
+import io.sarl.lang.sarl.SarlContinueExpression;
 
 /** Compute the early-exit flag for the SARL statements.
  *
@@ -82,7 +83,7 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements I
 
 	@Override
 	public boolean isEarlyExitLoop(XExpression expression) {
-		return expression instanceof SarlBreakExpression;
+		return expression instanceof SarlBreakExpression || expression instanceof SarlContinueExpression;
 	}
 
 }

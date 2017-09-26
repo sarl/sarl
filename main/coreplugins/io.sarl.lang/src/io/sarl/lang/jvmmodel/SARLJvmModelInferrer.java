@@ -161,6 +161,7 @@ import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.sarl.SarlEnumLiteral;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
@@ -3561,7 +3562,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 		}
 		if (expr == null || expr instanceof XAssignment || expr instanceof XVariableDeclaration
-				|| expr instanceof SarlBreakExpression || expr instanceof SarlAssertExpression) {
+				|| expr instanceof SarlBreakExpression || expr instanceof SarlContinueExpression
+				|| expr instanceof SarlAssertExpression) {
 			return this._typeReferenceBuilder.typeRef(Void.TYPE);
 		}
 		return this.typeBuilder.inferredType(body);

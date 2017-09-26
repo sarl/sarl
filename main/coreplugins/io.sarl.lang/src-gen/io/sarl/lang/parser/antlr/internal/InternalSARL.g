@@ -7475,6 +7475,36 @@ ruleBreakExpression returns [EObject current=null]
 	)
 ;
 
+// Entry rule entryRuleContinueExpression
+entryRuleContinueExpression returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getContinueExpressionRule()); }
+	iv_ruleContinueExpression=ruleContinueExpression
+	{ $current=$iv_ruleContinueExpression.current; }
+	EOF;
+
+// Rule ContinueExpression
+ruleContinueExpression returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getContinueExpressionAccess().getSarlContinueExpressionAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='continue'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getContinueExpressionAccess().getContinueKeyword_1());
+		}
+	)
+;
+
 // Entry rule entryRuleAssertExpression
 entryRuleAssertExpression returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getAssertExpressionRule()); }
@@ -7503,7 +7533,7 @@ ruleAssertExpression returns [EObject current=null]
 			newLeafNode(otherlv_1, grammarAccess.getAssertExpressionAccess().getAssertKeyword_1());
 		}
 		(
-			('abstract' | 'annotation' | 'class' | 'create' | 'def' | 'dispatch' | 'enum' | 'extends' | 'final' | 'implements' | 'import' | 'interface' | 'override' | 'package' | 'public' | 'private' | 'protected' | 'static' | 'throws' | 'strictfp' | 'native' | 'volatile' | 'synchronized' | 'transient' | 'AFTER' | 'BEFORE' | 'SEPARATOR' | 'extension' | '!' | '-' | '+' | 'break' | 'assert' | 'assume' | 'new' | '{' | 'switch' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING | RULE_RICH_TEXT | RULE_RICH_TEXT_START)=>
+			('abstract' | 'annotation' | 'class' | 'create' | 'def' | 'dispatch' | 'enum' | 'extends' | 'final' | 'implements' | 'import' | 'interface' | 'override' | 'package' | 'public' | 'private' | 'protected' | 'static' | 'throws' | 'strictfp' | 'native' | 'volatile' | 'synchronized' | 'transient' | 'AFTER' | 'BEFORE' | 'SEPARATOR' | 'extension' | '!' | '-' | '+' | 'break' | 'continue' | 'assert' | 'assume' | 'new' | '{' | 'switch' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING | RULE_RICH_TEXT | RULE_RICH_TEXT_START)=>
 			(
 				{
 					newCompositeNode(grammarAccess.getAssertExpressionAccess().getConditionXExpressionParserRuleCall_2_0());
@@ -7590,7 +7620,7 @@ ruleAssumeExpression returns [EObject current=null]
 			)
 		)
 		(
-			('abstract' | 'annotation' | 'class' | 'create' | 'def' | 'dispatch' | 'enum' | 'extends' | 'final' | 'implements' | 'import' | 'interface' | 'override' | 'package' | 'public' | 'private' | 'protected' | 'static' | 'throws' | 'strictfp' | 'native' | 'volatile' | 'synchronized' | 'transient' | 'AFTER' | 'BEFORE' | 'SEPARATOR' | 'extension' | '!' | '-' | '+' | 'break' | 'assert' | 'assume' | 'new' | '{' | 'switch' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING | RULE_RICH_TEXT | RULE_RICH_TEXT_START)=>
+			('abstract' | 'annotation' | 'class' | 'create' | 'def' | 'dispatch' | 'enum' | 'extends' | 'final' | 'implements' | 'import' | 'interface' | 'override' | 'package' | 'public' | 'private' | 'protected' | 'static' | 'throws' | 'strictfp' | 'native' | 'volatile' | 'synchronized' | 'transient' | 'AFTER' | 'BEFORE' | 'SEPARATOR' | 'extension' | '!' | '-' | '+' | 'break' | 'continue' | 'assert' | 'assume' | 'new' | '{' | 'switch' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING | RULE_RICH_TEXT | RULE_RICH_TEXT_START)=>
 			(
 				{
 					newCompositeNode(grammarAccess.getAssumeExpressionAccess().getConditionXExpressionParserRuleCall_2_0());
@@ -7665,47 +7695,56 @@ ruleXPrimaryExpression returns [EObject current=null]
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getAssertExpressionParserRuleCall_1());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getContinueExpressionParserRuleCall_1());
 		}
-		this_AssertExpression_1=ruleAssertExpression
+		this_ContinueExpression_1=ruleContinueExpression
 		{
-			$current = $this_AssertExpression_1.current;
+			$current = $this_ContinueExpression_1.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getAssumeExpressionParserRuleCall_2());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getAssertExpressionParserRuleCall_2());
 		}
-		this_AssumeExpression_2=ruleAssumeExpression
+		this_AssertExpression_2=ruleAssertExpression
 		{
-			$current = $this_AssumeExpression_2.current;
+			$current = $this_AssertExpression_2.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXConstructorCallParserRuleCall_3());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getAssumeExpressionParserRuleCall_3());
 		}
-		this_XConstructorCall_3=ruleXConstructorCall
+		this_AssumeExpression_3=ruleAssumeExpression
 		{
-			$current = $this_XConstructorCall_3.current;
+			$current = $this_AssumeExpression_3.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXBlockExpressionParserRuleCall_4());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXConstructorCallParserRuleCall_4());
 		}
-		this_XBlockExpression_4=ruleXBlockExpression
+		this_XConstructorCall_4=ruleXConstructorCall
 		{
-			$current = $this_XBlockExpression_4.current;
+			$current = $this_XConstructorCall_4.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXSwitchExpressionParserRuleCall_5());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXBlockExpressionParserRuleCall_5());
 		}
-		this_XSwitchExpression_5=ruleXSwitchExpression
+		this_XBlockExpression_5=ruleXBlockExpression
 		{
-			$current = $this_XSwitchExpression_5.current;
+			$current = $this_XBlockExpression_5.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXSwitchExpressionParserRuleCall_6());
+		}
+		this_XSwitchExpression_6=ruleXSwitchExpression
+		{
+			$current = $this_XSwitchExpression_6.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
@@ -7718,39 +7757,39 @@ ruleXPrimaryExpression returns [EObject current=null]
 			)
 			)=>
 			{
-				newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXSynchronizedExpressionParserRuleCall_6());
+				newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXSynchronizedExpressionParserRuleCall_7());
 			}
-			this_XSynchronizedExpression_6=ruleXSynchronizedExpression
+			this_XSynchronizedExpression_7=ruleXSynchronizedExpression
 			{
-				$current = $this_XSynchronizedExpression_6.current;
+				$current = $this_XSynchronizedExpression_7.current;
 				afterParserOrEnumRuleCall();
 			}
 		)
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXFeatureCallParserRuleCall_7());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXFeatureCallParserRuleCall_8());
 		}
-		this_XFeatureCall_7=ruleXFeatureCall
+		this_XFeatureCall_8=ruleXFeatureCall
 		{
-			$current = $this_XFeatureCall_7.current;
+			$current = $this_XFeatureCall_8.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXLiteralParserRuleCall_8());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXLiteralParserRuleCall_9());
 		}
-		this_XLiteral_8=ruleXLiteral
+		this_XLiteral_9=ruleXLiteral
 		{
-			$current = $this_XLiteral_8.current;
+			$current = $this_XLiteral_9.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXIfExpressionParserRuleCall_9());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXIfExpressionParserRuleCall_10());
 		}
-		this_XIfExpression_9=ruleXIfExpression
+		this_XIfExpression_10=ruleXIfExpression
 		{
-			$current = $this_XIfExpression_9.current;
+			$current = $this_XIfExpression_10.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
@@ -7769,75 +7808,75 @@ ruleXPrimaryExpression returns [EObject current=null]
 			)
 			)=>
 			{
-				newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXForLoopExpressionParserRuleCall_10());
+				newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXForLoopExpressionParserRuleCall_11());
 			}
-			this_XForLoopExpression_10=ruleXForLoopExpression
+			this_XForLoopExpression_11=ruleXForLoopExpression
 			{
-				$current = $this_XForLoopExpression_10.current;
+				$current = $this_XForLoopExpression_11.current;
 				afterParserOrEnumRuleCall();
 			}
 		)
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXBasicForLoopExpressionParserRuleCall_11());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXBasicForLoopExpressionParserRuleCall_12());
 		}
-		this_XBasicForLoopExpression_11=ruleXBasicForLoopExpression
+		this_XBasicForLoopExpression_12=ruleXBasicForLoopExpression
 		{
-			$current = $this_XBasicForLoopExpression_11.current;
+			$current = $this_XBasicForLoopExpression_12.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXWhileExpressionParserRuleCall_12());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXWhileExpressionParserRuleCall_13());
 		}
-		this_XWhileExpression_12=ruleXWhileExpression
+		this_XWhileExpression_13=ruleXWhileExpression
 		{
-			$current = $this_XWhileExpression_12.current;
+			$current = $this_XWhileExpression_13.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXDoWhileExpressionParserRuleCall_13());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXDoWhileExpressionParserRuleCall_14());
 		}
-		this_XDoWhileExpression_13=ruleXDoWhileExpression
+		this_XDoWhileExpression_14=ruleXDoWhileExpression
 		{
-			$current = $this_XDoWhileExpression_13.current;
+			$current = $this_XDoWhileExpression_14.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXThrowExpressionParserRuleCall_14());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXThrowExpressionParserRuleCall_15());
 		}
-		this_XThrowExpression_14=ruleXThrowExpression
+		this_XThrowExpression_15=ruleXThrowExpression
 		{
-			$current = $this_XThrowExpression_14.current;
+			$current = $this_XThrowExpression_15.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXReturnExpressionParserRuleCall_15());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXReturnExpressionParserRuleCall_16());
 		}
-		this_XReturnExpression_15=ruleXReturnExpression
+		this_XReturnExpression_16=ruleXReturnExpression
 		{
-			$current = $this_XReturnExpression_15.current;
+			$current = $this_XReturnExpression_16.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXTryCatchFinallyExpressionParserRuleCall_16());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXTryCatchFinallyExpressionParserRuleCall_17());
 		}
-		this_XTryCatchFinallyExpression_16=ruleXTryCatchFinallyExpression
+		this_XTryCatchFinallyExpression_17=ruleXTryCatchFinallyExpression
 		{
-			$current = $this_XTryCatchFinallyExpression_16.current;
+			$current = $this_XTryCatchFinallyExpression_17.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXParenthesizedExpressionParserRuleCall_17());
+			newCompositeNode(grammarAccess.getXPrimaryExpressionAccess().getXParenthesizedExpressionParserRuleCall_18());
 		}
-		this_XParenthesizedExpression_17=ruleXParenthesizedExpression
+		this_XParenthesizedExpression_18=ruleXParenthesizedExpression
 		{
-			$current = $this_XParenthesizedExpression_17.current;
+			$current = $this_XParenthesizedExpression_18.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
@@ -15227,7 +15266,7 @@ ruleXReturnExpression returns [EObject current=null]
 			newLeafNode(otherlv_1, grammarAccess.getXReturnExpressionAccess().getReturnKeyword_1());
 		}
 		(
-			('abstract' | 'annotation' | 'class' | 'create' | 'def' | 'dispatch' | 'enum' | 'extends' | 'final' | 'implements' | 'import' | 'interface' | 'override' | 'package' | 'public' | 'private' | 'protected' | 'static' | 'throws' | 'strictfp' | 'native' | 'volatile' | 'synchronized' | 'transient' | 'AFTER' | 'BEFORE' | 'SEPARATOR' | 'extension' | '!' | '-' | '+' | 'break' | 'assert' | 'assume' | 'new' | '{' | 'switch' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING | RULE_RICH_TEXT | RULE_RICH_TEXT_START)=>
+			('abstract' | 'annotation' | 'class' | 'create' | 'def' | 'dispatch' | 'enum' | 'extends' | 'final' | 'implements' | 'import' | 'interface' | 'override' | 'package' | 'public' | 'private' | 'protected' | 'static' | 'throws' | 'strictfp' | 'native' | 'volatile' | 'synchronized' | 'transient' | 'AFTER' | 'BEFORE' | 'SEPARATOR' | 'extension' | '!' | '-' | '+' | 'break' | 'continue' | 'assert' | 'assume' | 'new' | '{' | 'switch' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING | RULE_RICH_TEXT | RULE_RICH_TEXT_START)=>
 			(
 				{
 					newCompositeNode(grammarAccess.getXReturnExpressionAccess().getExpressionXExpressionParserRuleCall_2_0());

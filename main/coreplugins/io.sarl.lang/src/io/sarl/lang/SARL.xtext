@@ -431,6 +431,11 @@ BreakExpression returns xbase::XExpression :
 	'break'
 ;
 
+ContinueExpression returns xbase::XExpression :
+	{SarlContinueExpression}
+	'continue'
+;
+
 AssertExpression returns xbase::XExpression :
 	{SarlAssertExpression}
 	'assert' (->condition=XExpression) (->',' message=STRING)?
@@ -449,6 +454,7 @@ AssumeExpression returns xbase::XExpression :
 XPrimaryExpression returns xbase::XExpression:
 	// Below the SARL specific expressions
 	BreakExpression |
+	ContinueExpression |
 	AssertExpression |
 	AssumeExpression |
 	// Below the expressions inherited from Xtext/Xtend

@@ -321,6 +321,7 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 					put(grammarAccess.getParameterAccess().getGroup_6_1(), "rule__Parameter__Group_6_1__0");
 					put(grammarAccess.getXtendEnumLiteralAccess().getGroup(), "rule__XtendEnumLiteral__Group__0");
 					put(grammarAccess.getBreakExpressionAccess().getGroup(), "rule__BreakExpression__Group__0");
+					put(grammarAccess.getContinueExpressionAccess().getGroup(), "rule__ContinueExpression__Group__0");
 					put(grammarAccess.getAssertExpressionAccess().getGroup(), "rule__AssertExpression__Group__0");
 					put(grammarAccess.getAssertExpressionAccess().getGroup_3(), "rule__AssertExpression__Group_3__0");
 					put(grammarAccess.getAssumeExpressionAccess().getGroup(), "rule__AssumeExpression__Group__0");

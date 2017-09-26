@@ -516,6 +516,13 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getTypeAccess().getSpaceKeyword_2_5_2().getValue();
 	}
 
+	/** Keyword: {@code continue}.
+	 * Source: io.sarl.lang.SARL
+	 */
+	public String getContinueKeyword() {
+		return this.grammarAccess.getContinueExpressionAccess().getContinueKeyword_1().getValue();
+	}
+
 	/** Keyword: {@code ===}.
 	 * Source: io.sarl.lang.SARL
 	 */
@@ -894,6 +901,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getSkillKeyword());
 			kws.add(getDefKeyword());
 			kws.add(getFiresKeyword());
+			kws.add(getContinueKeyword());
 			kws.add(getOverrideKeyword());
 			kws.add(getThrowKeyword());
 			kws.add(getElseKeyword());

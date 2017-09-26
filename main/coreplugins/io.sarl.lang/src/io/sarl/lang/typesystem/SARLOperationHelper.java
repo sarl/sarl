@@ -87,6 +87,7 @@ import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.sarl.actionprototype.InferredPrototype;
@@ -618,6 +619,18 @@ public class SARLOperationHelper implements IOperationHelper {
 	 */
 	@SuppressWarnings("static-method")
 	protected Boolean _hasSideEffects(SarlBreakExpression expression, ISideEffectContext context) {
+		return false;
+	}
+
+	/** Test if the given expression has side effects.
+	 *
+	 * @param expression the expression.
+	 * @param context the list of context expressions.
+	 * @return {@code true} if the expression has side effects.
+	 * @since 0.7
+	 */
+	@SuppressWarnings("static-method")
+	protected Boolean _hasSideEffects(SarlContinueExpression expression, ISideEffectContext context) {
 		return false;
 	}
 

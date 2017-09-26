@@ -40,6 +40,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
+import io.sarl.lang.sarl.SarlContinueExpression;
 
 /** Customized type computer for SARL specific expressions.
  *
@@ -119,6 +120,8 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	public void computeTypes(XExpression expression, ITypeComputationState state) {
 		if (expression instanceof SarlBreakExpression) {
 			_computeTypes((SarlBreakExpression) expression, state);
+		} else if (expression instanceof SarlContinueExpression) {
+			_computeTypes((SarlContinueExpression) expression, state);
 		} else if (expression instanceof SarlAssertExpression) {
 			_computeTypes((SarlAssertExpression) expression, state);
 		} else {
@@ -132,6 +135,17 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	 * @param state the state of the type resolver.
 	 */
 	protected void _computeTypes(SarlBreakExpression object, ITypeComputationState state) {
+		final LightweightTypeReference primitiveVoid = getPrimitiveVoid(state);
+		state.acceptActualType(primitiveVoid);
+	}
+
+	/** Compute the type of a break expression.
+	 *
+	 * @param object the expression.
+	 * @param state the state of the type resolver.
+	 * @since 0.7
+	 */
+	protected void _computeTypes(SarlContinueExpression object, ITypeComputationState state) {
 		final LightweightTypeReference primitiveVoid = getPrimitiveVoid(state);
 		state.acceptActualType(primitiveVoid);
 	}

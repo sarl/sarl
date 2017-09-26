@@ -14,6 +14,7 @@ import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlConstructor;
+import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.sarl.SarlEnumLiteral;
 import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
@@ -72,6 +73,13 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @generated
 	 */
 	private EClass sarlBreakExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sarlContinueExpressionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -304,6 +312,16 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	public EClass getSarlBreakExpression()
 	{
 		return sarlBreakExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getSarlContinueExpression()
+	{
+		return sarlContinueExpressionEClass;
 	}
 
 	/**
@@ -712,6 +730,8 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 		sarlBreakExpressionEClass = createEClass(SARL_BREAK_EXPRESSION);
 
+		sarlContinueExpressionEClass = createEClass(SARL_CONTINUE_EXPRESSION);
+
 		sarlAssertExpressionEClass = createEClass(SARL_ASSERT_EXPRESSION);
 		createEReference(sarlAssertExpressionEClass, SARL_ASSERT_EXPRESSION__CONDITION);
 		createEAttribute(sarlAssertExpressionEClass, SARL_ASSERT_EXPRESSION__MESSAGE);
@@ -806,6 +826,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		sarlScriptEClass.getESuperTypes().add(theXtendPackage.getXtendFile());
 		sarlFieldEClass.getESuperTypes().add(theXtendPackage.getXtendField());
 		sarlBreakExpressionEClass.getESuperTypes().add(theXbasePackage.getXExpression());
+		sarlContinueExpressionEClass.getESuperTypes().add(theXbasePackage.getXExpression());
 		sarlAssertExpressionEClass.getESuperTypes().add(theXbasePackage.getXExpression());
 		sarlActionEClass.getESuperTypes().add(theXtendPackage.getXtendFunction());
 		sarlConstructorEClass.getESuperTypes().add(theXtendPackage.getXtendConstructor());
@@ -832,6 +853,8 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		initEClass(sarlFieldEClass, SarlField.class, "SarlField", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(sarlBreakExpressionEClass, SarlBreakExpression.class, "SarlBreakExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(sarlContinueExpressionEClass, SarlContinueExpression.class, "SarlContinueExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(sarlAssertExpressionEClass, SarlAssertExpression.class, "SarlAssertExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSarlAssertExpression_Condition(), theXbasePackage.getXExpression(), null, "condition", null, 0, 1, SarlAssertExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

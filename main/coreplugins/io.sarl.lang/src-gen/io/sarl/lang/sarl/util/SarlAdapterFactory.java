@@ -107,6 +107,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 				return createSarlBreakExpressionAdapter();
 			}
 			@Override
+			public Adapter caseSarlContinueExpression(SarlContinueExpression object)
+			{
+				return createSarlContinueExpressionAdapter();
+			}
+			@Override
 			public Adapter caseSarlAssertExpression(SarlAssertExpression object)
 			{
 				return createSarlAssertExpressionAdapter();
@@ -339,6 +344,21 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createSarlBreakExpressionAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlContinueExpression <em>Continue Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see io.sarl.lang.sarl.SarlContinueExpression
+	 * @generated
+	 */
+	public Adapter createSarlContinueExpressionAdapter()
 	{
 		return null;
 	}

@@ -98,7 +98,7 @@ syn keyword sarlModifier abstract def dispatch final native override private pro
 syn cluster sarlTop add=sarlModifier
 
 " keywords for the 'sarlKeyword' family.
-syn keyword sarlKeyword as assert assume break case catch default do else extends extension finally fires for if implements instanceof new on requires return super switch throw throws try typeof uses while with
+syn keyword sarlKeyword as assert assume break case catch continue default do else extends extension finally fires for if implements instanceof new on requires return super switch throw throws try typeof uses while with
 syn cluster sarlTop add=sarlKeyword
 
 " catch errors caused by wrong parenthesis

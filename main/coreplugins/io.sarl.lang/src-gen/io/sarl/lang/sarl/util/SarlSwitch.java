@@ -115,6 +115,14 @@ public class SarlSwitch<T> extends Switch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case SarlPackage.SARL_CONTINUE_EXPRESSION:
+			{
+				SarlContinueExpression sarlContinueExpression = (SarlContinueExpression)theEObject;
+				T result = caseSarlContinueExpression(sarlContinueExpression);
+				if (result == null) result = caseXExpression(sarlContinueExpression);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case SarlPackage.SARL_ASSERT_EXPRESSION:
 			{
 				SarlAssertExpression sarlAssertExpression = (SarlAssertExpression)theEObject;
@@ -353,6 +361,22 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseSarlBreakExpression(SarlBreakExpression object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Continue Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Continue Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSarlContinueExpression(SarlContinueExpression object)
 	{
 		return null;
 	}

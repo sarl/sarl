@@ -156,18 +156,18 @@ public final class IssueCodes {
 			ISSUE_CODE_PREFIX + "manual_inline_definition"; //$NON-NLS-1$
 
 	/**
-	 * The use of the "break" statement is discouraged at this location.
+	 * The use of the "break" or "continue" statement is discouraged at this location.
 	 * @since 0.5
 	 */
-	public static final String DISCOURAGED_BREAK_KEYWORD_USE =
-			ISSUE_CODE_PREFIX + "discouraged_break_keyword_use"; //$NON-NLS-1$
+	public static final String DISCOURAGED_LOOP_BREAKING_KEYWORD_USE =
+			ISSUE_CODE_PREFIX + "discouraged_loop_breaking_keyword_use"; //$NON-NLS-1$
 
 	/**
-	 * Invalid use of the "break" keyword.
+	 * Invalid use of the "break" or "continue" keyword.
 	 * @since 0.5
 	 */
-	public static final String INVALID_USE_OF_BREAK =
-			ISSUE_CODE_PREFIX + "invalid_use_of_break"; //$NON-NLS-1$
+	public static final String INVALID_USE_OF_LOOP_BREAKING_KEYWORD =
+			ISSUE_CODE_PREFIX + "invalid_use_of_loop_breaking_keyword"; //$NON-NLS-1$
 
 	/**
 	 * Invalid extra-language generation.

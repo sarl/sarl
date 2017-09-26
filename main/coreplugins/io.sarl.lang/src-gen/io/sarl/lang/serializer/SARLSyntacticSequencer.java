@@ -599,6 +599,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) '[' expression=XExpressionInClosure
 	 *     (rule start) (ambiguity) 'assert' condition=XExpression
 	 *     (rule start) (ambiguity) 'break' (rule start)
+	 *     (rule start) (ambiguity) 'continue' (rule start)
 	 *     (rule start) (ambiguity) 'do' body=XExpression
 	 *     (rule start) (ambiguity) 'false' (rule start)
 	 *     (rule start) (ambiguity) 'for' '(' ';' ';' ')' eachExpression=XExpression
@@ -657,6 +658,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) '[' expression=XExpressionInClosure
 	 *     (rule start) (ambiguity) 'assert' condition=XExpression
 	 *     (rule start) (ambiguity) 'break' ')' (rule start)
+	 *     (rule start) (ambiguity) 'continue' ')' (rule start)
 	 *     (rule start) (ambiguity) 'do' body=XExpression
 	 *     (rule start) (ambiguity) 'false' ')' (rule start)
 	 *     (rule start) (ambiguity) 'for' '(' ';' ';' ')' eachExpression=XExpression

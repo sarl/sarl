@@ -8,6 +8,7 @@
   <genPackages prefix="Sarl" basePackage="io.sarl.lang" disposableProviderFactory="true"
       fileExtensions="sarl" ecorePackage="SARL.ecore#/">
     <genClasses ecoreClass="SARL.ecore#//SarlBreakExpression"/>
+    <genClasses ecoreClass="SARL.ecore#//SarlContinueExpression"/>
     <genClasses ecoreClass="SARL.ecore#//SarlAssertExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAssertExpression/condition"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAssertExpression/message"/>

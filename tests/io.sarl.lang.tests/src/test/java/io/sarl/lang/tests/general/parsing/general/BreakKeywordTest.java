@@ -54,7 +54,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				));
 		validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBreakExpression(),
-				IssueCodes.INVALID_USE_OF_BREAK,
+				IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD,
 				"Invalid use of the break keyword");
 	}
 
@@ -71,7 +71,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				));
 		validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBreakExpression(),
-				IssueCodes.INVALID_USE_OF_BREAK,
+				IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD,
 				"Invalid use of the break keyword");
 	}
 
@@ -86,7 +86,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				));
 		validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBreakExpression(),
-				IssueCodes.INVALID_USE_OF_BREAK,
+				IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD,
 				"Invalid use of the break keyword");
 	}
 
@@ -201,7 +201,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				));
 		validate(mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlBreakExpression(),
-				IssueCodes.DISCOURAGED_BREAK_KEYWORD_USE,
+				IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE,
 				"Discouraged use of the break keyword inside a basic loop");
 	}
 
@@ -218,7 +218,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 				));
 		validate(mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlBreakExpression(),
-				IssueCodes.DISCOURAGED_BREAK_KEYWORD_USE,
+				IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE,
 				"Discouraged use of the break keyword inside a basic loop");
 	}
 

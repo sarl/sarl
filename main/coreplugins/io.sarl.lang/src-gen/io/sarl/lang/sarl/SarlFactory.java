@@ -50,6 +50,15 @@ public interface SarlFactory extends EFactory
 	SarlBreakExpression createSarlBreakExpression();
 
 	/**
+	 * Returns a new object of class '<em>Continue Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Continue Expression</em>'.
+	 * @generated
+	 */
+	SarlContinueExpression createSarlContinueExpression();
+
+	/**
 	 * Returns a new object of class '<em>Assert Expression</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

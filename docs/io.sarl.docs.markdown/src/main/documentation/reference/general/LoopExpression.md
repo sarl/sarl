@@ -117,8 +117,8 @@ The type of a while loop is `void`.
 ## Breaking a loop
 
 The [:break:] keyword is provides for breaking the enclosing loop.
-When this keyword is run, the control flow exists for the nearest
-enclosing loop, and run the statement that is jsut following the loop
+When this keyword is run, the control flow exits for the nearest
+enclosing loop, and run the statement that is just following the loop
 expression in the sequence of instructions.
 
 		[:Success:]
@@ -130,6 +130,31 @@ expression in the sequence of instructions.
 					for (v : tab) {
 						if (v == 1) {
 							[:break](break)
+						}
+					}
+					[:Off]
+				}
+			}
+		[:End:]
+
+
+## Jump to the next iteration
+
+The [:continue:] keyword is provides for stopping the execution of the
+current iteration into loop, and jumping to the next iteration.
+When this keyword is run, the control flow jumps to the next iteration
+for the nearest enclosing loop, and run the statement that is just at
+the beginning of the loop's block expression.
+
+		[:Success:]
+			package io.sarl.docs.reference.gsr
+			agent A {
+				def example {
+					var tab : String[]
+					[:On]
+					for (v : tab) {
+						if (v == 1) {
+							[:continue](continue)
 						}
 					}
 					[:Off]

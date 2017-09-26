@@ -76,6 +76,7 @@ import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorContext;
 import io.sarl.lang.compiler.extra.IRootGenerator;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
+import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 
 /** Generator of XExpression for Python 3.
@@ -315,6 +316,23 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 			it.append("return ").append(toDefaultValue(context.getExpectedExpressionType().toJavaCompliantTypeReference())); //$NON-NLS-1$
 		}
 		return breakStatement;
+	}
+
+	/** Generate the given object.
+	 *
+	 * @param continueStatement the continue statement.
+	 * @param it the target for the generated content.
+	 * @param context the context.
+	 * @return the statement.
+	 */
+	@SuppressWarnings("static-method")
+	protected XExpression _generate(SarlContinueExpression continueStatement, IAppendable it, IExtraLanguageGeneratorContext context) {
+		if (context.getExpectedExpressionType() == null) {
+			it.append("continue"); //$NON-NLS-1$
+		} else {
+			it.append("return ").append(toDefaultValue(context.getExpectedExpressionType().toJavaCompliantTypeReference())); //$NON-NLS-1$
+		}
+		return continueStatement;
 	}
 
 	/** Generate the given object.

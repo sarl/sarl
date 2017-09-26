@@ -146,8 +146,8 @@ environment (Eclipse, IntelliJ...)
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/branch.html">Support the <code>continue</code> statement</a></td>
-			<td style="background: orange; color: white;">No</td>
+<tr><td><a href="./general/LoopExpression.md#jump-to-the-next-iteration">Support the <code>continue</code> statement</a></td>
+			<td style="background: green; color: white;">Yes</td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td></tr>
