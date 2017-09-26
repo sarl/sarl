@@ -14,8 +14,8 @@ be specify also, even if these parts are equal
 to zero.  Consequently:
 
 * [:number1:] is correct;
-* [:number2:] is incorrect;
-* [:number3:] is correct;
+* [:number2:] is correct;
+* [:number3:] is incorrect;
 * [:number4:] is incorrect.
 
 		[:Success:]
