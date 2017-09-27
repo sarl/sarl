@@ -3,11 +3,81 @@
 [:Outline:]
 
 For running an agent, you must launch this agent on the runtime environment.
-This document explains how to launch an agent on the
-[Janus platform](http://www.janusproject.io) from a Java program.
+This document explains how to launch an agent on any SARL Run-time Environment (SRE)
+from a Java program.
+
+The default SRE is the [Janus platform](http://www.janusproject.io). 
 
 
-## Boot of Janus
+## Definition of the SRE Bootstrap
+
+In the SARL API, a bootstrap is definition is provided.
+It represents an access point to the SRE from any program.
+This access point may be used for accessing the features of the underlying SRE,
+independently of the implementation.
+In other words, the SRE Bootstrap gives access to the standard SRE functions without
+forcing you to add an explicit dependency to the SRE Library, e.g. Janus, into your
+application classpath.
+
+The SARL API defines a SRE bootstrap as:
+
+		[:ShowType:]([:bootstrap]$io.sarl.core.SREBootstrap$)
+
+
+A run-time environment, such as [Janus](http://www.janusproject.io) must provide a service implementing this bootstrap interface.
+The standard Java service management feature is used. in other words, the SRE should
+[declare the service implementation](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html) into
+its `META-INF/services/[:bootstrap!]` file.
+
+
+## Using the SRE Bootstrap
+
+In order to help you to use the bootstrap functions, the SARL API provides a static utility type, named [:sre:].
+In the following code, the [:sre:] utility type is used for retrieving the bootstrap.
+ 
+		[:Success:]
+			package io.sarl.docs.bootstrap
+			import io.sarl.core.SRE
+			[:On]
+			class MyProgram {
+			
+				static def main(arguments : String*) {
+					var bootstrap = [:sre](SRE)::getBootstrap
+				}
+			
+			}
+			[:Off]
+		[:End:]
+
+Then, it is possible to use the bootstrap for launching an agent. In the following example, a agent of type
+[:myagent:] is launched.
+
+		[:Success:]
+			package io.sarl.docs.bootstrap
+			import io.sarl.core.SRE
+			agent [:myagent](MyAgent) {
+			}
+			class MyProgram {
+			
+				static def main(arguments : String*) {
+					[:On]
+					var bootstrap = [:sre](SRE)::getBootstrap
+					bootstrap.[:startfct](startAgent)(typeof([:myagent!]))
+					[:Off]
+				}
+			
+			}
+		[:End:]
+
+In the case you want to launch more than one agent programmatically,
+you could call the [:startfct:] function the number of times you need.
+
+
+## Direct Access to the API of the Janus SRE
+
+
+Caution: using the API of Janus within your program is not recommended by the SARL team.
+
 
 
 The Janus platform provides a [:boot:] class. For launching the platform, you must use this boot class.
@@ -41,8 +111,6 @@ If you want to launch more agents, please read the next section.</importantnote>
 			}
 		[:End:]
 
-
-## Launching more agents programmatically with Janus
 
 In  the case you want to launch more than one agent programmatically,
 you could use the [:kernel:] instance provided by Janus.
