@@ -142,7 +142,7 @@ could be used for launching the agents:
 				def [:fctspawnincontext!]([:nbagents!] : int,
 				                   agentType : Class<? extends Agent>,
 				                   context : AgentContext,
-				                   [:parameters!] : Object*) : UUID
+				                   [:parameters!] : Object*) : Iterable<UUID>
 			[:Off]
 			}
 		[:End:]
