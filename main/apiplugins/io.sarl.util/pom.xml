@@ -102,6 +102,7 @@
 							<configuration>
 								<sources>
 									<source>${project.basedir}/src</source>
+									<source>${project.basedir}/src-gen</source>
 								</sources>
 							</configuration>
 						</plugin>

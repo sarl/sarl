@@ -156,7 +156,7 @@ final class SRE {
 	 *
 	 * @param sre the current SRE.
 	 */
-	static def setBootstrap(sre : SREBootstrap) {
+	static def setBootstrap(sre : SREBootstrap) : void {
 		synchronized (typeof(SRE)) {
 			currentSRE = sre
 		}

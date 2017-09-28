@@ -30,7 +30,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>public-sarl-api-module-set</id>
+			<id>public-janus-api-module-set</id>
 			<activation>
 				<property>
 					<name>publicSarlApiModuleSet</name>
@@ -39,7 +39,6 @@
 			</activation>
 			<modules>
 				<module>io.janusproject.plugin</module>
-				<module>io.janusproject.kernel</module>
 			</modules>
 		</profile>
 	</profiles>

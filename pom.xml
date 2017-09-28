@@ -677,12 +677,20 @@
 						</bottom>
 						<groups>
 							<group>
-								<title>SARL Language</title>
-								<packages>io.sarl.lang:io.sarl.lang.core:io.sarl.lang.annotation:io.sarl.lang.scoping.batch:io.sarl.lang.util</packages>
+								<title>Standard Development Kit</title>
+								<packages>io.sarl.core*:io.sarl.util*</packages>
 							</group>
 							<group>
-								<title>Standard Development Kit</title>
-								<packages>io.sarl.core:io.sarl.util</packages>
+								<title>SARL Language</title>
+								<packages>io.sarl.lang*</packages>
+							</group>
+							<group>
+								<title>Tools for SARL Run-time Environments</title>
+								<packages>io.sarl.eventdispatching:io.sarl.sarlspecification</packages>
+							</group>
+							<group>
+								<title>Janus Run-time Environment</title>
+								<packages>io.janusproject*</packages>
 							</group>
 						</groups>
 						<tags>
