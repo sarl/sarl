@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="117">
+<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="118">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.egit.feature.group" version="4.8.0.201706111038-r"/>
-<unit id="org.eclipse.epp.mpc.feature.group" version="1.6.0.v20170616-0843"/>
-<unit id="org.eclipse.equinox.executable.feature.group" version="3.7.0.v20170531-1133"/>
-<unit id="org.eclipse.jdt.feature.group" version="3.13.0.v20170612-0950"/>
-<unit id="org.eclipse.m2e.feature.feature.group" version="1.8.0.20170516-2043"/>
-<unit id="org.eclipse.pde.source.feature.group" version="3.13.0.v20170612-0950"/>
-<unit id="org.eclipse.platform.feature.group" version="4.7.0.v20170612-1255"/>
-<unit id="org.eclipse.platform.ide" version="4.7.0.I20170612-0950"/>
-<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.9.0.v201705041406"/>
-<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.9.0.v201705162046"/>
-<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.9.0.v201706011851"/>
+<unit id="org.eclipse.epp.mpc.feature.group" version="1.6.1.v20170906-1830"/>
+<unit id="org.eclipse.equinox.executable.feature.group" version="3.7.1.v20170811-1325"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.13.1.v20170906-1700"/>
+<unit id="org.eclipse.m2e.feature.feature.group" version="1.8.1.20170728-1531"/>
+<unit id="org.eclipse.pde.source.feature.group" version="3.13.1.v20170906-1700"/>
+<unit id="org.eclipse.platform.feature.group" version="4.7.1.v20170906-1700"/>
+<unit id="org.eclipse.platform.ide" version="4.7.1.M20170906-1700"/>
+<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.9.1.v201707201954"/>
+<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.9.1.v201707201954"/>
+<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.9.1.v201707042225"/>
 <unit id="org.eclipse.xsd.feature.group" version="2.13.0.v20170609-0928"/>
 <repository location="http://download.eclipse.org/releases/oxygen"/>
 </location>
